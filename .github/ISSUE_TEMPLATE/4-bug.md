@@ -27,7 +27,7 @@ If applicable, add a stacktrace to help explain your problem.
 
 ```
 
-**System (please complete the following information):**
+**System**
  - OS: [e.g. iOS]
  - Browser [e.g. chrome, safari]
  - Version [e.g. 135]
