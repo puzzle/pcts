@@ -18,7 +18,7 @@ public class ExamplePersistenceService {
     }
 
     public Example create(CreateExampleDto dto){
-        return new Example(17, dto.text());
+        return repository.add(dto);
     }
 
     public Example getById(long id){

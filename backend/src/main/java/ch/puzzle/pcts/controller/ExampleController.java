@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/example")
+@RequestMapping("/api/v1/examples")
 public class ExampleController {
     private final ExampleMapper mapper;
     private final ExampleService service;

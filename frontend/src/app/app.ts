@@ -1,10 +1,10 @@
 import {Component, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {RouterLink, RouterOutlet} from '@angular/router';
 import "@puzzleitc/puzzle-shell";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterLink, RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css',
   schemas: [
