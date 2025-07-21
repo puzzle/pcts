@@ -1,4 +1,4 @@
-package ch.puzzle.pcts.model;
+package ch.puzzle.pcts.model.example;
 
 public class Example {
     private long id;

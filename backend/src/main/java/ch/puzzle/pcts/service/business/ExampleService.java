@@ -1,7 +1,7 @@
 package ch.puzzle.pcts.service.business;
 
-import ch.puzzle.pcts.dto.CreateExampleDto;
-import ch.puzzle.pcts.model.Example;
+import ch.puzzle.pcts.dto.example.CreateExampleDto;
+import ch.puzzle.pcts.model.example.Example;
 import ch.puzzle.pcts.service.persistence.ExamplePersistenceService;
 import ch.puzzle.pcts.service.validation.ExampleValidationService;
 import org.springframework.stereotype.Service;

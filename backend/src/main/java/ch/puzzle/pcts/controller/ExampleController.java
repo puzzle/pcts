@@ -1,14 +1,13 @@
 package ch.puzzle.pcts.controller;
 
-import ch.puzzle.pcts.dto.CreateExampleDto;
-import ch.puzzle.pcts.dto.ExampleDto;
+import ch.puzzle.pcts.dto.example.CreateExampleDto;
+import ch.puzzle.pcts.dto.example.ExampleDto;
 import ch.puzzle.pcts.mapper.ExampleMapper;
-import ch.puzzle.pcts.model.Example;
+import ch.puzzle.pcts.model.example.Example;
 import ch.puzzle.pcts.service.business.ExampleService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,7 +1,7 @@
 package ch.puzzle.pcts.mapper;
 
-import ch.puzzle.pcts.dto.ExampleDto;
-import ch.puzzle.pcts.model.Example;
+import ch.puzzle.pcts.dto.example.ExampleDto;
+import ch.puzzle.pcts.model.example.Example;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

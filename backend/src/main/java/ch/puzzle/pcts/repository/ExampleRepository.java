@@ -1,7 +1,7 @@
 package ch.puzzle.pcts.repository;
 
-import ch.puzzle.pcts.dto.CreateExampleDto;
-import ch.puzzle.pcts.model.Example;
+import ch.puzzle.pcts.dto.example.CreateExampleDto;
+import ch.puzzle.pcts.model.example.Example;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

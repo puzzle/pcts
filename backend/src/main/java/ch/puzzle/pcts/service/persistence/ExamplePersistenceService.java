@@ -1,7 +1,7 @@
 package ch.puzzle.pcts.service.persistence;
 
-import ch.puzzle.pcts.dto.CreateExampleDto;
-import ch.puzzle.pcts.model.Example;
+import ch.puzzle.pcts.dto.example.CreateExampleDto;
+import ch.puzzle.pcts.model.example.Example;
 import ch.puzzle.pcts.repository.ExampleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

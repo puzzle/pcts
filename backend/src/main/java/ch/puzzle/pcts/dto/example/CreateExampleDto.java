@@ -1,4 +1,4 @@
-package ch.puzzle.pcts.dto;
+package ch.puzzle.pcts.dto.example;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
