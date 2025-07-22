@@ -8,8 +8,12 @@ theme = "light"
 
 [output.html]
 default-theme="light"
-preferred-dark-theme="navy"
+preferred-dark-theme="light"
 git-repository-url = "https://github.com/puzzle/pcts"
 
+[output.html.print]
+enable = false
+
 [preprocessor.plantuml]
-plantuml-cmd="plantuml"
+#plantuml-cmd="plantuml"
+plantuml-cmd="https://www.plantuml.com/plantuml"
