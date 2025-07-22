@@ -1,0 +1,11 @@
+# General Guidelines
+- Use common best practices for both Spring Boot & [Angular](https://angular.dev/style-guide#organize-your-project-by-feature-areas)
+- Use [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/#summary) with the following types:
+  - `feat`
+  - `fix`
+  - `build`
+  - `ci`
+  - `docs`
+  - `refactor`
+  - `test`
+- Rebase before opening a PR, to ensure your branch is current
