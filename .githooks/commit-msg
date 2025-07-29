@@ -1,0 +1,11 @@
+#!/bin/sh
+
+MSG=$(<"$1")
+
+# Example: chore(dependencies): Update dependencies #123
+echo "$MSG" | grep -Eq '^(build|chore|ci|docs|feat|fix|refactor|revert|style|test)(\([a-zA-Z0-9_-]+\))?: .+( #[0-9]+)?$' \
+  || {
+    echo "Your commit message does not conform to the project standard!"
+    echo "Your commit message was: '$MSG'"
+    exit 1
+}
