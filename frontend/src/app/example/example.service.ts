@@ -1,16 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ExampleDto } from './dto/example.dto';
 import { CreateExampleDto } from './dto/create-example.dto';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ExampleService {
-  private readonly apiUrl = '/api/v1/examples';
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) {}
+  private readonly apiUrl = '/api/v1/examples';
 
   getAllExamples(): Observable<ExampleDto[]> {
     return this.http.get<ExampleDto[]>(this.apiUrl);

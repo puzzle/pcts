@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ExampleService } from './example.service';
 import { Observable } from 'rxjs';
 import { ExampleDto } from './dto/example.dto';
@@ -8,12 +8,12 @@ import { CommonModule } from '@angular/common';
   selector: 'app-example',
   imports: [CommonModule],
   templateUrl: './example.component.html',
-  styleUrl: './example.component.css',
+  styleUrl: './example.component.css'
 })
-export class Example implements OnInit {
-  examples$!: Observable<ExampleDto[]>;
+export class ExampleComponent implements OnInit {
+  private service = inject(ExampleService);
 
-  constructor(private service: ExampleService) {}
+  examples$!: Observable<ExampleDto[]>;
 
   ngOnInit(): void {
     this.examples$ = this.service.getAllExamples();
@@ -22,12 +22,12 @@ export class Example implements OnInit {
   createNewExample(): void {
     this.service
       .createExample({
-        text: 'Example: Another cool example!',
+        text: 'Example: Another cool example!'
       })
       .subscribe({
         next: () => {
           this.examples$ = this.service.getAllExamples();
-        },
+        }
       });
   }
 }

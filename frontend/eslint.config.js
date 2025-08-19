@@ -100,7 +100,10 @@ export default tsEslint.config(
           allowDeclarations: true,
         },
       ],
-      '@typescript-eslint/no-empty-function': ['error', { allow: ['arrowFunctions', 'constructors'] }],
+      '@typescript-eslint/no-empty-function': [
+        'error',
+        { allow: ['arrowFunctions', 'constructors'] },
+      ],
       //Turned off to allow ! in the code
       '@typescript-eslint/no-non-null-assertion': 'off',
       '@typescript-eslint/no-non-null-asserted-optional-chain': 'off',
@@ -113,7 +116,10 @@ export default tsEslint.config(
       '@stylistic/quotes': ['error', 'single'],
       '@stylistic/padded-blocks': ['error', 'never'],
       '@stylistic/dot-location': ['error', 'property'],
-      '@stylistic/newline-per-chained-call': ['error', { ignoreChainWithDepth: 1 }],
+      '@stylistic/newline-per-chained-call': [
+        'error',
+        { ignoreChainWithDepth: 1 },
+      ],
       '@stylistic/indent': ['error', 2],
       '@stylistic/quote-props': ['error', 'as-needed'],
       '@stylistic/object-property-newline': ['error'],
@@ -173,7 +179,7 @@ export default tsEslint.config(
           selector: 'typeParameter',
           format: ['PascalCase'],
         },
-      ]
+      ],
     },
   },
 
