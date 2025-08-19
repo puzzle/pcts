@@ -6,7 +6,15 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "format:all": "npm run lint:format && npm run prettier:lint:format",
+    "check-linting:all": "npm run lint && npm run prettier:lint",
+    "lint:format:specific": "eslint --fix  --no-warn-ignored",
+    "lint:format": "eslint --fix .",
+    "lint": "eslint .",
+    "prettier:lint:format:specific": "prettier --write ",
+    "prettier:lint:format": "prettier --write .",
+    "prettier:lint": "prettier --check ."
   },
   "private": true,
   "dependencies": {
@@ -22,16 +30,31 @@
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
+    "@angular-eslint/eslint-plugin": "^20.1.1",
+    "@angular-eslint/eslint-plugin-template": "^20.1.1",
+    "@angular-eslint/schematics": "^20.1.1",
+    "@angular-eslint/template-parser": "^20.1.1",
     "@angular/build": "^20.0.0",
     "@angular/cli": "^20.0.0",
     "@angular/compiler-cli": "^20.0.0",
+    "@html-eslint/eslint-plugin": "^0.45.0",
+    "@stylistic/eslint-plugin": "^5.2.3",
     "@types/jasmine": "~5.1.0",
+    "angular-eslint": "^20.1.1",
+    "eslint": "^9.29.0",
+    "eslint-plugin-check-file": "^3.0.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-unused-imports": "^4.2.0",
     "jasmine-core": "~5.7.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.8.2"
+    "prettier": "^3.6.2",
+    "prettier-eslint": "^16.4.2",
+    "typescript": "~5.8.2",
+    "typescript-eslint": "8.34.1"
   }
 }
