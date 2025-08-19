@@ -22,10 +22,14 @@ public class ExampleValidationService {
     }
 
     public void validateOnCreate(ExampleDto dto) {
+
         if (!dto.text().contains("Example")) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
                                     "Text does need to include 'Example'",
                                     ErrorKey.VALIDATION_DOES_NOT_INCLUDE);
+        }
+        else if (dto.id() != null) {
+            throw new PCTSException(HttpStatus.BAD_REQUEST, "Id needs to be undefined", ErrorKey.VALIDATION_DOES_NOT_INCLUDE);
         }
         // with the persistenceService, things like duplications and the like can also
         // be checked
