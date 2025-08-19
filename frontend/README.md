@@ -52,6 +52,19 @@ For end-to-end (e2e) testing, run:
 ng e2e
 ```
 
+## Running Formatter
+
+```bash  
+# Check code formatting: 
+npm run format:all  
+```
+```bash  
+# Format the code: 
+npm run format  
+```
+
+
+
 Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
 
 ## Additional Resources

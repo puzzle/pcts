@@ -1,6 +1,6 @@
 src/assets/
 dist/
 .angular/
-# The following files alredy getting formatting by eslint
+# The following files are already getting formatted by eslint
 **/*.html
 **/*.ts
