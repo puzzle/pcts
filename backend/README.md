@@ -4,10 +4,12 @@ The backend of this project is written in Spring Boot.
 ## Formatting
 We use the ***spotless*** Plugin for formatting the Java code:
 https://github.com/diffplug/spotless
+
+## Development
 ### Dev-Database 
 The database can be started via docker
 - cd into the root directory of the project
-- cd `docker`
+- `cd docker`
 - Run `docker compose up`
 
 
