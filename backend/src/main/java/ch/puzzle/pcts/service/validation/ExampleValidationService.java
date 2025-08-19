@@ -1,6 +1,6 @@
 package ch.puzzle.pcts.service.validation;
 
-import ch.puzzle.pcts.dto.example.CreateExampleDto;
+import ch.puzzle.pcts.dto.example.ExampleDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.service.persistence.ExamplePersistenceService;
@@ -21,7 +21,7 @@ public class ExampleValidationService {
         this.persistenceService = persistenceService;
     }
 
-    public void validateOnCreate(CreateExampleDto dto) {
+    public void validateOnCreate(ExampleDto dto) {
         if (!dto.text().contains("Example")) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
                                     "Text does need to include 'Example'",

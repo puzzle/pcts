@@ -1,6 +1,5 @@
 package ch.puzzle.pcts.controller;
 
-import ch.puzzle.pcts.dto.example.CreateExampleDto;
 import ch.puzzle.pcts.dto.example.ExampleDto;
 import ch.puzzle.pcts.mapper.ExampleMapper;
 import ch.puzzle.pcts.model.example.Example;
@@ -50,7 +49,7 @@ public class ExampleController {
     }
 
     @PostMapping
-    public ResponseEntity<ExampleDto> createNew(@Valid @RequestBody CreateExampleDto dto) {
+    public ResponseEntity<ExampleDto> createNew(@Valid @RequestBody ExampleDto dto) {
         Example newExample = service.create(dto);
         return ResponseEntity.ok(mapper.toDto(newExample));
     }
