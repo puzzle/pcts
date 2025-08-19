@@ -7,11 +7,11 @@ public class Example {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_example")
     @SequenceGenerator(name = "sequence_example", allocationSize = 1)
-    private long id;
+    private Long id;
 
     private String text;
 
-    public Example(long id, String text) {
+    public Example(Long id, String text) {
         this.id = id;
         this.text = text;
     }
@@ -19,11 +19,11 @@ public class Example {
     public Example() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

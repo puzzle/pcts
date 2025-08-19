@@ -29,6 +29,7 @@ public class ExampleService {
     }
 
     public Example create(ExampleDto dto) {
+        System.out.println(dto.id());;
         validationService.validateOnCreate(dto);
         return persistenceService.create(exampleMapper.fromDto(dto));
     }
