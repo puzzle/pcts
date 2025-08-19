@@ -1,0 +1,24 @@
+name: 'Format'
+
+on: [push]
+jobs:
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{vars.NODE_VERSION}}
+
+      - name: Npm install
+        run: npm ci
+
+      - name: Format frontend
+        run: npm run check-linting:all
