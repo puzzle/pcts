@@ -13,10 +13,10 @@ Each commit message should consist of a **type**, an optional **scope**, a **sub
 type(scope): subject #issue-number
 ```
 
-### Type
+### Types
 The type must be one of the following:
-- `feat`: A new feature
-- `fix`: A bug fix
+- `feat`: A new feature in the software the user uses
+- `fix`: A bug fix in the software the user uses
 - `docs`: Documentation only changes
 - `style`: Changes that do not affect the meaning of the code (white-space, formatting, ...)
 - `refactor`: A code change that neither fixes a bug nor adds a feature
@@ -31,6 +31,24 @@ The type must be one of the following:
 - `fix(api): Correctly handle null values in user endpoint #123`
 - `docs: Update README with setup instructions #45`
 - `chore: Upgrade project dependencies #78`
+
+## Git Branching
+- Branches should be written in lowercase characters, hyphens and numbers. 
+- Each branch should also have a prefix like this `feature/`, `bug/`, ... .
+- If a branch is connected to an issue, the issue number should be included after the prefix. For example `feature/1829-...` for the issue 1829.
+
+### Prefix
+The prefix should be one of the following:
+- `feature`: A new feature in the software the user uses or everything that cannot be placed under another category
+- `bug`: A bug fix in the software the user uses
+- `docs`: Documentation only changes
+- `renovate`: Reserved for the Renovate bot
+
+### Examples
+- `bug/1571-inconsistent-auto-calculation-on-metric-keyresults`
+- `feature/18-create-member-view`
+- `bug/remove-wrong-reference` (this branch does not have an associated ticket)
+- `docs/12-add-missing-db-setup`
 
 ## Pull Requests (PR)
 - **PR description:** Add any needed additional context to the PR description.
