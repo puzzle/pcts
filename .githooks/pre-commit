@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 GIT_BASE_PATH=$(git rev-parse --show-toplevel)
 FRONTEND_PATH="$GIT_BASE_PATH"/frontend
 BACKEND_PATH="$GIT_BASE_PATH"/backend
@@ -6,9 +6,11 @@ FORMATTED_FILE_EXTENSIONS="java|ts|html|css|scss|xml|json|yml|yaml|mjs"
 
 get_changed_files() {
     path=$1
+    delimiter=${2:-' '}
     GIT_BASE_PATH=$(git rev-parse --show-toplevel)
-    # shellcheck disable=SC1087
-    git diff --cached  --name-only --diff-filter=d --line-prefix="$GIT_BASE_PATH"/ "$path" | grep -E "\.($FORMATTED_FILE_EXTENSIONS)$"  | tr '\n' ' '
+    git diff --cached --name-only --diff-filter=d --line-prefix="$GIT_BASE_PATH"/ "$path" \
+        | grep -E "\.($FORMATTED_FILE_EXTENSIONS)$" \
+        | tr '\n' "$delimiter"
 }
 
 has_changed() {
@@ -16,8 +18,10 @@ has_changed() {
     echo "$files" | grep -q .
 }
 
-Frontend_Files=$(get_changed_files "$FRONTEND_PATH")
-backend_files=$(get_changed_files "$BACKEND_PATH")
+Frontend_Files=$(get_changed_files "$FRONTEND_PATH" ' ')
+backend_files=$(get_changed_files "$BACKEND_PATH" ' ')
+backend_files_for_maven=$(get_changed_files "$BACKEND_PATH" ',')
+
 echo "*****Running prettier******"
 cd "$FRONTEND_PATH" || exit
 if ! has_changed "$Frontend_Files"; then
@@ -47,7 +51,7 @@ echo "---------------------------------------------------------"
 backend_files=$(get_changed_files "$BACKEND_PATH")
 echo "*****Running maven formatter******"
 cd "$BACKEND_PATH" || exit
-has_changed "$backend_files" && mvn -f pom.xml spotless:apply -DspotlessFiles="$backend_files" || echo "No files found to format"
+has_changed "$backend_files_for_maven" && mvn -f pom.xml spotless:apply -DspotlessFiles="$backend_files_for_maven" || echo "No files found to format"
 echo "*****Finish running maven formatter******"
 
 echo "---------------------------------------------------------"
