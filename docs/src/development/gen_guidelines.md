@@ -14,6 +14,8 @@ type(scope): subject #issue-number
 ```
 
 ### Types
+The type should answer the Question 'What kind of change was made?', e.g. a fix or a new CI workflow.
+
 The type must be one of the following:
 - `feat`: A new feature in the software the user uses
 - `fix`: A bug fix in the software the user uses
@@ -26,11 +28,23 @@ The type must be one of the following:
 - `chore`: Other changes that do not modify source or test files
 - `revert`: Reverts a previous commit
 
+### Scopes
+The scope should answer the question 'Where in the codebase was the change made?', e.g. in the API or in the authentication module. 
+
+Scopes are more fluid than types and are thus not handled as strictly. Some example scopes are:
+- `overview`: A specific part of the frontend
+- `shared`: Shared services or components
+- `api`: Changes in a DTO or controller
+- `service`: Changes in some validation or business service
+- `persistence`: Changes in a persistence service
+- `db`: Anything related to database schemas or migrations
+- `deps`: Dependency updates
+
 ### Examples
 - `feat: Allow users to upload a profile picture`
 - `fix(api): Correctly handle null values in user endpoint #123`
 - `docs: Update README with setup instructions #45`
-- `chore: Upgrade project dependencies #78`
+- `chore(deps): Upgrade project dependencies #78`
 
 ## Git Branching
 - Branches should be written in lowercase characters, hyphens and numbers. 
