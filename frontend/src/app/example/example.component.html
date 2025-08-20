@@ -1,7 +1,7 @@
 @for (example of examples$ | async; track example.id) {
-  <p>{{ example.text }}</p>
+<p>{{ example.text }}</p>
 } @empty {
-  <p>No examples!</p>
+<p>No examples!</p>
 }
 
 <button (click)="createNewExample()">I want to create a new example!</button>
