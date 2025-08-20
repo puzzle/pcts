@@ -4,9 +4,8 @@ import ch.puzzle.pcts.dto.example.CreateExampleDto;
 import ch.puzzle.pcts.model.example.Example;
 import ch.puzzle.pcts.service.persistence.ExamplePersistenceService;
 import ch.puzzle.pcts.service.validation.ExampleValidationService;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ExampleService {
@@ -18,15 +17,15 @@ public class ExampleService {
         this.persistenceService = persistenceService;
     }
 
-    public Example getById(long id){
+    public Example getById(long id) {
         return persistenceService.getById(id);
     }
 
-    public List<Example> getAll(){
+    public List<Example> getAll() {
         return persistenceService.getAll();
     }
 
-    public Example create(CreateExampleDto dto){
+    public Example create(CreateExampleDto dto) {
         validationService.validateOnCreate(dto);
         return persistenceService.create(dto);
     }

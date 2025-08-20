@@ -9,7 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 /**
- * Validation services should be used to validate business needs, not simple things that can be done with an @NotNull annotation
+ * Validation services should be used to validate business needs, not simple
+ * things that can be done with an @NotNull annotation
  */
 @Component
 public class ExampleValidationService {
@@ -20,10 +21,13 @@ public class ExampleValidationService {
         this.persistenceService = persistenceService;
     }
 
-    public void validateOnCreate(CreateExampleDto dto){
-        if(!dto.text().contains("Example")){
-            throw new PCTSException(HttpStatus.BAD_REQUEST, "Text does need to include 'Example'", ErrorKey.VALIDATION_DOES_NOT_INCLUDE);
+    public void validateOnCreate(CreateExampleDto dto) {
+        if (!dto.text().contains("Example")) {
+            throw new PCTSException(HttpStatus.BAD_REQUEST,
+                                    "Text does need to include 'Example'",
+                                    ErrorKey.VALIDATION_DOES_NOT_INCLUDE);
         }
-        // with the persistenceService, things like duplications and the like can also be checked
+        // with the persistenceService, things like duplications and the like can also
+        // be checked
     }
 }
