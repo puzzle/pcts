@@ -52,15 +52,15 @@ For end-to-end (e2e) testing, run:
 ng e2e
 ```
 
-## Running Formatter
+## Running formatters
 
 ```bash  
 # Check code formatting: 
-npm run format:all  
+npm run check-linting:all
 ```
 ```bash  
 # Format the code: 
-npm run format  
+npm run format:all  
 ```
 
 

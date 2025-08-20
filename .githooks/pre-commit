@@ -1,7 +1,7 @@
 #!/bin/sh
 GIT_BASE_PATH=$(git rev-parse --show-toplevel)
 FRONTEND_PATH="$GIT_BASE_PATH"/frontend
-FORMATTED_FILE_EXTENSIONS="java|ts|html|css|scss|xml|json|yml|yaml|mjs"
+FORMATTED_FILE_EXTENSIONS="ts|html|css|scss|xml|json|yml|yaml|mjs"
 
 get_changed_files() {
     path=$1
@@ -19,14 +19,26 @@ has_changed() {
 frontend_files=$(get_changed_files "$FRONTEND_PATH")
 echo "*****Running prettier******"
 cd "$FRONTEND_PATH" || exit
-has_changed "$frontend_files" && npm run prettier:lint:format:specific $frontend_files || echo "No files found to format"
+if ! has_changed "$frontend_files"; then
+  echo "No files found to format. Skipping."
+else
+  echo "Formatting changed frontend files..."
+  npm run prettier:lint:format:specific $frontend_files || exit 1
+fi
 echo "*****Finish running prettier******"
 
 echo "---------------------------------------------------------"
 
 echo "*****Running eslint******"
 cd "$FRONTEND_PATH" || exit
-has_changed "$frontend_files" && npm run lint:format:specific $frontend_files || echo "No files found to format"
+has_changed "$frontend_files"
+if ! has_changed "$frontend_files"; then
+  echo "No files found to format. Skipping."
+else
+  echo "Formatting changed frontend files..."
+  npm run lint:format:specific $frontend_files || exit 1
+fi
+
 echo "*****Finish running eslint******"
 
 echo "---------------------------------------------------------"
