@@ -4,9 +4,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class Auth {
-
   /*
-  This is an example of a service, which should be shared over multiple different other components.
+   *This is an example of a service, which should be shared over multiple different other components.
    */
 
   constructor() { }

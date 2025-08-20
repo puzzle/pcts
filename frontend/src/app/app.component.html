@@ -1,0 +1,25 @@
+<pzsh-container>
+  <pzsh-topbar></pzsh-topbar>
+  <pzsh-banner>
+    <svg
+      slot="tangram"
+      xmlns="http://www.w3.org/2000/svg"
+      width="50"
+      height="50"
+      fill="none"
+    ><g
+        fill-rule="evenodd"
+        clip-path="url(#clip0)"
+        clip-rule="evenodd"
+      ><path fill="#61B44B" d="M50.5 0H0l25.3 25.3L50.5 0z"/><path fill="#46BCC0" d="M50.5 50H0l25.3-25.3L50.5 50z"/></g><defs><clipPath id="clip0"><path fill="#fff" d="M0 0h50.5v50H0z"/></clipPath></defs></svg>
+  </pzsh-banner>
+  <pzsh-menu>
+    <pzsh-nav slot="nav">
+      <pzsh-nav-item routerLink="">Home</pzsh-nav-item>
+      <pzsh-nav-item routerLink="example">Example</pzsh-nav-item>
+    </pzsh-nav>
+  </pzsh-menu>
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+</pzsh-container>
