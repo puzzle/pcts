@@ -38,7 +38,7 @@ public class ExampleController {
         return ResponseEntity.ok(mapper.toDto(service.getAll()));
     }
 
-    @Operation(summary = "Get Example by ID", description = "Find the example by its ID")
+    @Operation(summary = "Get example by ID", description = "Find the example by its ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the example",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ExampleDto.class))}),
