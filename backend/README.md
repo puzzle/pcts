@@ -11,7 +11,7 @@ https://github.com/diffplug/spotless
 
 If you have not set up our [Git Hooks](../README.md#git-hooks) we strongly encourage you to do so since they also contain a check for the formatting whenever you commit.
 
-### How to update the spotless configuration using intelij:
+### How to update the spotless configuration using Intellij IDEA:
 - Open `Go to Settings -> Editor -> Code styles -> Java`
 - Select the default project config and export it to a file
 - Then make the changes you want to the code style config. Make sure to ***HIT APPLY*** and then export it as a file
