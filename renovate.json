@@ -5,10 +5,10 @@
     ":rebaseStalePrs"
   ],
   "schedule" : [
-    "* 1-5 * * 1-5"
+    "* 23,0-5 * * *"
   ],
   "automergeSchedule": [
-    "* 5-7 * * 1-5"
+    "* 23,0-5 * * *"
   ],
   "automergeType": "pr",
   "timezone": "Europe/Zurich",
