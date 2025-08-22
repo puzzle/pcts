@@ -31,7 +31,7 @@
     },
     {
       "matchDatasources": [ "maven" ],
-      "matchPackagePrefixes": [ "ch.puzzle.okr" ],
+      "matchPackagePrefixes": [ "ch.puzzle.pcts" ],
       "matchDepTypes": [ "parent" ],
       "enabled": false
     }
