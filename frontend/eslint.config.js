@@ -6,7 +6,6 @@ import html from '@html-eslint/eslint-plugin'
 import angular from 'angular-eslint'
 import htmlParser from '@html-eslint/parser'
 import checkFile from 'eslint-plugin-check-file'
-
 export default tsEslint.config(
   {
     files: ['src/app/shared/types/**/*'],
