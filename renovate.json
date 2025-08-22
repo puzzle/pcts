@@ -1,0 +1,39 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":rebaseStalePrs"
+  ],
+  "schedule" : [
+    "* 23,0-4 * * *"
+  ],
+  "automergeSchedule": [
+    "* 23,0-4 * * *"
+  ],
+  "automergeType": "pr",
+  "timezone": "Europe/Zurich",
+  "packageRules": [
+    {
+      "groupName": "All Angular packages",
+      "matchPackageNames": ["^@angular", "^@angular-eslint"],
+      "matchUpdateTypes": ["major", "minor", "patch"]
+    },
+    {
+      "groupName": "All devDependencies (minor and patch)",
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    },
+    {
+      "groupName": "All ESLint packages",
+      "matchPackageNames": ["eslint", "typescript-eslint"],
+      "matchUpdateTypes": ["major", "minor", "patch"]
+    },
+    {
+      "matchDatasources": [ "maven" ],
+      "matchPackagePrefixes": [ "ch.puzzle.pcts" ],
+      "matchDepTypes": [ "parent" ],
+      "enabled": false
+    }
+  ]
+}
