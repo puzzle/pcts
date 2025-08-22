@@ -1,3 +1,27 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+
+# Created by https://www.toptal.com/developers/gitignore/api/intellij+all,linux,maven,angular,visualstudiocode
+# Edit at https://www.toptal.com/developers/gitignore?templates=intellij+all,linux,maven,angular,visualstudiocode
+
+### Angular ###
+## Angular ##
+# compiled output
+dist/
+tmp/
+app/**/*.js
+app/**/*.js.map
+
+# dependencies
+node_modules/
+bower_components/
+
 # IDEs and editors
 .idea/*
 
@@ -25,6 +49,7 @@ out/
 ### Maven ###
 target/
 
+#TODO: Check with Giannin whether someone uses VS_CODE
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json
