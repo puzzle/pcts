@@ -6,6 +6,7 @@ import ch.puzzle.pcts.mapper.ExampleMapper;
 import ch.puzzle.pcts.model.example.Example;
 import ch.puzzle.pcts.service.business.ExampleService;
 import jakarta.validation.Valid;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/v1/examples")
 public class ExampleController {
@@ -24,24 +23,24 @@ public class ExampleController {
     private final ExampleService service;
 
     @Autowired
-    public ExampleController(ExampleMapper mapper, ExampleService service){
+    public ExampleController(ExampleMapper mapper, ExampleService service) {
         this.mapper = mapper;
         this.service = service;
     }
 
     @GetMapping
-    public ResponseEntity<List<ExampleDto>> getExample(){
+    public ResponseEntity<List<ExampleDto>> getExample() {
         return ResponseEntity.ok(mapper.toDto(service.getAll()));
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<ExampleDto> getExampleById(@PathVariable long id){
+    public ResponseEntity<ExampleDto> getExampleById(@PathVariable long id) {
         Example example = service.getById(id);
         return ResponseEntity.ok(mapper.toDto(example));
     }
 
     @PostMapping
-    public ResponseEntity<ExampleDto> createNew(@Valid @RequestBody CreateExampleDto dto){
+    public ResponseEntity<ExampleDto> createNew(@Valid @RequestBody CreateExampleDto dto) {
         Example newExample = service.create(dto);
         return ResponseEntity.ok(mapper.toDto(newExample));
     }
