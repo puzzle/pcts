@@ -1,0 +1,44 @@
+name: 'Format'
+
+on: [push]
+jobs:
+
+  backend:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up JDK ${{vars.JAVA_VERSION}}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{vars.JAVA_VERSION}}
+          distribution: 'adopt'
+          server-id: github
+          settings-path: ${{github.workspace}}
+
+      - name: Format backend
+        run: mvn spotless:check
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{vars.NODE_VERSION}}
+
+      - name: Npm install
+        run: npm ci
+
+      - name: Format frontend
+        run: npm run check-linting:all

@@ -1,49 +1,61 @@
-#!/bin/sh
-GIT_BASE_PATH=$(git rev-parse --show-toplevel)
-FRONTEND_PATH="$GIT_BASE_PATH"/frontend
-FORMATTED_FILE_EXTENSIONS="ts|html|css|scss|xml|json|yml|yaml|mjs"
+#!/bin/bash
+git_base_path=$(git rev-parse --show-toplevel)
+frontend_path="$git_base_path"/frontend
+backend_path="$git_base_path"/backend
+formatted_file_extensions="java|ts|html|css|scss|xml|json|yml|yaml|mjs"
 
 get_changed_files() {
     path=$1
-    GIT_BASE_PATH=$(git rev-parse --show-toplevel)
-    # shellcheck disable=SC1087
-    git diff --cached  --name-only --diff-filter=d --line-prefix="$GIT_BASE_PATH"/ "$path" | grep -E "\.($FORMATTED_FILE_EXTENSIONS)$"  | tr '\n' ' '
+    delimiter=${2:-' '}
+    git diff --cached --name-only --diff-filter=d --line-prefix="$git_base_path"/ "$path" \
+        | grep -E "\.($formatted_file_extensions)$" \
+        | tr '\n' "$delimiter"
 }
 
 has_changed() {
-    Files=$1
-    echo "$Files" | grep -q .
+    files=$1
+    echo "$files" | grep -q .
 }
 
+frontend_files=$(get_changed_files "$frontend_path" ' ')
+backend_files=$(get_changed_files "$backend_path" ' ')
+backend_files_for_maven=$(get_changed_files "$backend_path" ',')
 
-Frontend_Files=$(get_changed_files "$FRONTEND_PATH")
 echo "*****Running prettier******"
-cd "$FRONTEND_PATH" || exit
-if ! has_changed "$Frontend_Files"; then
+cd "$frontend_path" || exit
+if ! has_changed "$frontend_files"; then
   echo "No files found to format. Skipping."
 else
   echo "Formatting changed frontend files..."
-  npm run prettier:lint:format:specific $Frontend_Files || exit 1
+  npm run prettier:lint:format:specific $frontend_files || exit 1
 fi
 echo "*****Finish running prettier******"
 
 echo "---------------------------------------------------------"
 
 echo "*****Running eslint******"
-cd "$FRONTEND_PATH" || exit
-has_changed "$Frontend_Files"
-if ! has_changed "$Frontend_Files"; then
+cd "$frontend_path" || exit
+has_changed "$frontend_files"
+if ! has_changed "$frontend_files"; then
   echo "No files found to format. Skipping."
 else
   echo "Formatting changed frontend files..."
-  npm run lint:format:specific $Frontend_Files || exit 1
+  npm run lint:format:specific $frontend_files || exit 1
 fi
 
 echo "*****Finish running eslint******"
 
 echo "---------------------------------------------------------"
 
+echo "*****Running maven formatter******"
+cd "$backend_path" || exit
+has_changed "$backend_files_for_maven" && mvn -f pom.xml spotless:apply -DspotlessFiles="$backend_files_for_maven" || echo "No files found to format"
+echo "*****Finish running maven formatter******"
+
+echo "---------------------------------------------------------"
+
 echo "*****Adding changes to git******"
-cd "$GIT_BASE_PATH" || exit
-has_changed "$Frontend_Files" && git add $Frontend_Files -v || echo "No frontend files changed, nothing to add"
+cd "$git_base_path" || exit
+has_changed "$frontend_files" && git add $frontend_files -v || echo "No frontend files changed, nothing to add"
+has_changed "$backend_files" && git add $backend_files -v || echo "No backend files files changed, nothing to add"
 echo "*****Formatted files added again******"
