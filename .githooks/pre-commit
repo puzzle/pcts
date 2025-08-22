@@ -1,15 +1,14 @@
 #!/bin/bash
-GIT_BASE_PATH=$(git rev-parse --show-toplevel)
-FRONTEND_PATH="$GIT_BASE_PATH"/frontend
-BACKEND_PATH="$GIT_BASE_PATH"/backend
-FORMATTED_FILE_EXTENSIONS="java|ts|html|css|scss|xml|json|yml|yaml|mjs"
+git_base_path=$(git rev-parse --show-toplevel)
+frontend_path="$git_base_path"/frontend
+backend_path="$git_base_path"/backend
+formatted_file_extensions="java|ts|html|css|scss|xml|json|yml|yaml|mjs"
 
 get_changed_files() {
     path=$1
     delimiter=${2:-' '}
-    GIT_BASE_PATH=$(git rev-parse --show-toplevel)
-    git diff --cached --name-only --diff-filter=d --line-prefix="$GIT_BASE_PATH"/ "$path" \
-        | grep -E "\.($FORMATTED_FILE_EXTENSIONS)$" \
+    git diff --cached --name-only --diff-filter=d --line-prefix="$git_base_path"/ "$path" \
+        | grep -E "\.($formatted_file_extensions)$" \
         | tr '\n' "$delimiter"
 }
 
@@ -18,12 +17,12 @@ has_changed() {
     echo "$files" | grep -q .
 }
 
-frontend_files=$(get_changed_files "$FRONTEND_PATH" ' ')
-backend_files=$(get_changed_files "$BACKEND_PATH" ' ')
-backend_files_for_maven=$(get_changed_files "$BACKEND_PATH" ',')
+frontend_files=$(get_changed_files "$frontend_path" ' ')
+backend_files=$(get_changed_files "$backend_path" ' ')
+backend_files_for_maven=$(get_changed_files "$backend_path" ',')
 
 echo "*****Running prettier******"
-cd "$FRONTEND_PATH" || exit
+cd "$frontend_path" || exit
 if ! has_changed "$frontend_files"; then
   echo "No files found to format. Skipping."
 else
@@ -35,7 +34,7 @@ echo "*****Finish running prettier******"
 echo "---------------------------------------------------------"
 
 echo "*****Running eslint******"
-cd "$FRONTEND_PATH" || exit
+cd "$frontend_path" || exit
 has_changed "$frontend_files"
 if ! has_changed "$frontend_files"; then
   echo "No files found to format. Skipping."
@@ -49,17 +48,14 @@ echo "*****Finish running eslint******"
 echo "---------------------------------------------------------"
 
 echo "*****Running maven formatter******"
-cd "$BACKEND_PATH" || exit
+cd "$backend_path" || exit
 has_changed "$backend_files_for_maven" && mvn -f pom.xml spotless:apply -DspotlessFiles="$backend_files_for_maven" || echo "No files found to format"
 echo "*****Finish running maven formatter******"
 
 echo "---------------------------------------------------------"
 
 echo "*****Adding changes to git******"
-cd "$GIT_BASE_PATH" || exit
+cd "$git_base_path" || exit
 has_changed "$frontend_files" && git add $frontend_files -v || echo "No frontend files changed, nothing to add"
 has_changed "$backend_files" && git add $backend_files -v || echo "No backend files files changed, nothing to add"
 echo "*****Formatted files added again******"
-
-status=$?
-exit $status
