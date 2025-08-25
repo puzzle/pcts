@@ -40,10 +40,9 @@ public class ExampleController {
 
     @Operation(summary = "Get example by ID", description = "Find the example by its ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Found the example",
-                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ExampleDto.class))}),
-            @ApiResponse(responseCode = "404", description = "Can't find example", content = @Content)
-    })
+            @ApiResponse(responseCode = "200", description = "Found the example", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = ExampleDto.class)) }),
+            @ApiResponse(responseCode = "404", description = "Can't find example", content = @Content) })
     @GetMapping("{id}")
     public ResponseEntity<ExampleDto> getExampleById(@PathVariable long id) {
         Example example = service.getById(id);
