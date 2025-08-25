@@ -25,7 +25,6 @@ out/
 ### Maven ###
 target/
 
-#TODO: Check with Giannin whether someone uses VS_CODE
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json
