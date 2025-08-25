@@ -38,6 +38,8 @@ This will compile your project and store the build artifacts in the `dist/` dire
 
 ## Running tests
 
+We use [Jest](https://jestjs.io/) for frontend testing.
+
 ```bash
 npm run test
 ```
