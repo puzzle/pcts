@@ -6,7 +6,6 @@ import html from '@html-eslint/eslint-plugin'
 import angular from 'angular-eslint'
 import htmlParser from '@html-eslint/parser'
 import checkFile from 'eslint-plugin-check-file'
-
 export default tsEslint.config(
   {
     files: ['src/app/shared/types/**/*'],
@@ -20,7 +19,12 @@ export default tsEslint.config(
     },
   },
   {
-    ignores: ['cypress/downloads/**/*', 'dist/**/*'], // #TODO: Match cypress path to project #12- E2E setup
+    ignores: [
+      'cypress/downloads/**/*',
+      'dist/**',
+      '.angular/**',
+      'node_modules/**',
+    ], // #TODO: Match cypress path to project #12- E2E setup
   },
   {
     files: ['src/**/*.ts', 'cypress/**/*.ts'], // #TODO: Match cypress path to project #12- E2E setup
