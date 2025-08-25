@@ -35,11 +35,31 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
-      <dependency>
-          <groupId>org.springdoc</groupId>
-          <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-          <version>2.8.9</version>
-      </dependency>
+				<dependency>
+					 <groupId>org.postgresql</groupId>
+					 <artifactId>postgresql</artifactId>
+					 <scope>runtime</scope>
+				</dependency>
+				<dependency>
+					 <groupId>org.springframework.boot</groupId>
+					 <artifactId>spring-boot-starter-data-jpa</artifactId>
+				</dependency>
+				<dependency>
+					 <groupId>org.flywaydb</groupId>
+					 <artifactId>flyway-core</artifactId>
+					 <version>11.11.1</version>
+				</dependency>
+				<dependency>
+					 <groupId>org.flywaydb</groupId>
+					 <artifactId>flyway-database-postgresql</artifactId>
+					 <version>11.11.1</version>
+					 <scope>runtime</scope>
+				</dependency>
+    <dependency>
+					 <groupId>org.springdoc</groupId>
+					 <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+					 <version>2.8.9</version>
+				</dependency>
 
     <!-- Dev Tools   -->
     <dependency>
@@ -65,15 +85,6 @@
       <artifactId>spring-security-test</artifactId>
       <scope>test</scope>
     </dependency>
-			<dependency>
-				<groupId>org.postgresql</groupId>
-				<artifactId>postgresql</artifactId>
-				<scope>runtime</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-data-jpa</artifactId>
-			</dependency>
   </dependencies>
   <build>
     <plugins>
