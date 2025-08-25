@@ -1,8 +1,8 @@
-truncate table example cascade;
+TRUNCATE TABLE example CASCADE;
 
 
-insert into example (id, text)
-values (1, 'Example 1'),
+INSERT INTO example (id, text)
+VALUES (1, 'Example 1'),
        (11, 'Example 2'),
        (21, 'Example 3'),
        (31, 'Example 4'),

@@ -1,10 +1,9 @@
 package ch.puzzle.pcts.service.business;
 
-import ch.puzzle.pcts.dto.example.ExampleDto;
-import ch.puzzle.pcts.mapper.ExampleMapper;
 import ch.puzzle.pcts.model.example.Example;
 import ch.puzzle.pcts.service.persistence.ExamplePersistenceService;
 import ch.puzzle.pcts.service.validation.ExampleValidationService;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +11,10 @@ import org.springframework.stereotype.Service;
 public class ExampleService {
     private final ExampleValidationService validationService;
     private final ExamplePersistenceService persistenceService;
-    private final ExampleMapper exampleMapper;
 
-    public ExampleService(ExampleValidationService validationService, ExamplePersistenceService persistenceService,
-                          ExampleMapper exampleMapper) {
+    public ExampleService(ExampleValidationService validationService, ExamplePersistenceService persistenceService) {
         this.validationService = validationService;
         this.persistenceService = persistenceService;
-        this.exampleMapper = exampleMapper;
     }
 
     public Example getById(long id) {
@@ -29,9 +25,9 @@ public class ExampleService {
         return persistenceService.getAll();
     }
 
-    public Example create(ExampleDto dto) {
-        System.out.println(dto.id());;
-        validationService.validateOnCreate(dto);
-        return persistenceService.create(exampleMapper.fromDto(dto));
+    @Transactional
+    public Example create(Example example) {
+        validationService.validateOnCreate(example);
+        return persistenceService.create(example);
     }
 }

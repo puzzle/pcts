@@ -12,14 +12,12 @@ The database can be started via docker
 - `cd docker`
 - Run `docker compose up`
 ### Dev-Backend
-Make sure to setup the DB first
+Make sure to set up the DB first
 #### Console
 You can start the backend via Console
 - cd to the project root
 - `cd backend`
 - `mvn spring-boot:run -Dspring-boot.run.arguments="--spring.profiles.active=dev"`
-#### IDE
-You can just set your active profile to dev in the run configuration
 
 
 ### Checking and applying formatting
