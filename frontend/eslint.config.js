@@ -37,7 +37,11 @@ export default tsEslint.config(
     processor: angular.processInlineTemplates,
     languageOptions: {
       parserOptions: {
-        project: ['./tsconfig.json', './tsconfig.spec.json'],
+        project: [
+          './tsconfig.json',
+          './tsconfig.spec.json',
+          './tsconfig.app.json',
+        ],
       },
       globals: {
         //Cypress things not recognized by eslint

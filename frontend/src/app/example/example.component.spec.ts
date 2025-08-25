@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ExampleComponent } from './example.component';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('Example', () => {
   let component: ExampleComponent;
@@ -8,6 +10,8 @@ describe('Example', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
+      providers: [provideHttpClient(),
+        provideHttpClientTesting()],
       imports: [ExampleComponent]
     })
       .compileComponents();
