@@ -5,6 +5,11 @@ import ch.puzzle.pcts.dto.example.ExampleDto;
 import ch.puzzle.pcts.mapper.ExampleMapper;
 import ch.puzzle.pcts.model.example.Example;
 import ch.puzzle.pcts.service.business.ExampleService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +38,11 @@ public class ExampleController {
         return ResponseEntity.ok(mapper.toDto(service.getAll()));
     }
 
+    @Operation(summary = "Get example by ID", description = "Find the example by its ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found the example", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = ExampleDto.class)) }),
+            @ApiResponse(responseCode = "404", description = "Can't find example", content = @Content) })
     @GetMapping("{id}")
     public ResponseEntity<ExampleDto> getExampleById(@PathVariable long id) {
         Example example = service.getById(id);
