@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
+jest.mock('@puzzleitc/puzzle-shell', () => jest.fn());
 
 describe('AppComponent', () => {
   beforeEach(async() => {

@@ -1,0 +1,25 @@
+name: 'Frontend tests'
+
+on:
+  push:
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{vars.NODE_VERSION}}
+
+      - name: Npm install
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm test
