@@ -20,7 +20,7 @@ jobs:
     env:
       MDBOOK_VERSION: 0.4.49
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: dtolnay/rust-toolchain@stable
       - name: Install mdBook and dependencies
         run: |
