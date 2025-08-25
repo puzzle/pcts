@@ -19,7 +19,7 @@ If you have not set up our [Git Hooks](../README.md#git-hooks) we strongly encou
 - Finally copy all additions to the formatter file in the backend project
 
 ## Api Documentation
-We use ***springdoc-openapi*** library for documenting the api.
+We use the ***springdoc-openapi*** library for documenting the API.
 
 ### Accessing the Api Documentation
 
