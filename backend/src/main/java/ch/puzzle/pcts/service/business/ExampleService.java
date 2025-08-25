@@ -1,9 +1,9 @@
 package ch.puzzle.pcts.service.business;
 
-import ch.puzzle.pcts.dto.example.CreateExampleDto;
 import ch.puzzle.pcts.model.example.Example;
 import ch.puzzle.pcts.service.persistence.ExamplePersistenceService;
 import ch.puzzle.pcts.service.validation.ExampleValidationService;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +25,9 @@ public class ExampleService {
         return persistenceService.getAll();
     }
 
-    public Example create(CreateExampleDto dto) {
-        validationService.validateOnCreate(dto);
-        return persistenceService.create(dto);
+    @Transactional
+    public Example create(Example example) {
+        validationService.validateOnCreate(example);
+        return persistenceService.create(example);
     }
 }

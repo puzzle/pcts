@@ -1,4 +1,4 @@
 package ch.puzzle.pcts.dto.example;
 
-public record ExampleDto(long id, String text) {
+public record ExampleDto(Long id, String text) {
 }
