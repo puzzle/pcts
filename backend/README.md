@@ -12,7 +12,7 @@ The database can be started via docker
 - `cd docker`
 - Run `docker compose up`
 ### Dev-Backend
-Make Sure to Setup the DB first
+Make sure to setup the DB first
 #### Console
 You can start the backend via Console
 - cd to the project root
