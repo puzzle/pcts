@@ -50,7 +50,7 @@ public class ExampleController {
 
     @PostMapping
     public ResponseEntity<ExampleDto> createNew(@Valid @RequestBody ExampleDto dto) {
-        Example newExample = service.create(dto);
+        Example newExample = service.create(mapper.fromDto(dto));
         return ResponseEntity.ok(mapper.toDto(newExample));
     }
 }

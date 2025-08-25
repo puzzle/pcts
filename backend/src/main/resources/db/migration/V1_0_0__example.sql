@@ -1,7 +1,7 @@
-create sequence if not exists sequence_example;
-create table if not exists example
+CREATE SEQUENCE IF NOT EXISTS sequence_example;
+CREATE TABLE IF NOT EXISTS example
 (
-    id        bigint       not null
-        primary key,
-    text     varchar(250) not null
+    id        BIGINT       NOT NUll
+        PRIMARY KEY,
+    text     VARCHAR(250) NOT NULL
 );
