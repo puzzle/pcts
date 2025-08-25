@@ -14,7 +14,8 @@ public class ExampleService {
     private final ExamplePersistenceService persistenceService;
     private final ExampleMapper exampleMapper;
 
-    public ExampleService(ExampleValidationService validationService, ExamplePersistenceService persistenceService, ExampleMapper exampleMapper) {
+    public ExampleService(ExampleValidationService validationService, ExamplePersistenceService persistenceService,
+                          ExampleMapper exampleMapper) {
         this.validationService = validationService;
         this.persistenceService = persistenceService;
         this.exampleMapper = exampleMapper;
