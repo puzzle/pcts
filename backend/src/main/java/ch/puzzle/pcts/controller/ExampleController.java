@@ -3,7 +3,7 @@ package ch.puzzle.pcts.controller;
 import ch.puzzle.pcts.dto.example.ExampleDto;
 import ch.puzzle.pcts.mapper.ExampleMapper;
 import ch.puzzle.pcts.model.example.Example;
-import ch.puzzle.pcts.service.business.ExampleService;
+import ch.puzzle.pcts.service.business.ExampleBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,10 +24,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/examples")
 public class ExampleController {
     private final ExampleMapper mapper;
-    private final ExampleService service;
+    private final ExampleBusinessService service;
 
     @Autowired
-    public ExampleController(ExampleMapper mapper, ExampleService service) {
+    public ExampleController(ExampleMapper mapper, ExampleBusinessService service) {
         this.mapper = mapper;
         this.service = service;
     }

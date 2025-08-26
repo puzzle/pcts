@@ -61,6 +61,19 @@
 					 <version>2.8.9</version>
 				</dependency>
 
+      <dependency>
+          <groupId>org.testcontainers</groupId>
+          <artifactId>junit-jupiter</artifactId>
+          <version>1.19.8</version>
+          <scope>test</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.testcontainers</groupId>
+          <artifactId>postgresql</artifactId>
+          <version>1.19.8</version>
+          <scope>test</scope>
+      </dependency>
+
     <!-- Dev Tools   -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -85,6 +98,16 @@
       <artifactId>spring-security-test</artifactId>
       <scope>test</scope>
     </dependency>
+      <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>4.13.2</version>
+      </dependency>
+      <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <scope>test</scope>
+      </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -126,6 +149,11 @@
             <importOrder />
           </java>
         </configuration>
+      </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.5.3</version>
       </plugin>
 					 <plugin>
 						  <groupId>org.cyclonedx</groupId>
