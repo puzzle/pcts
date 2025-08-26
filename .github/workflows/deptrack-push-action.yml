@@ -1,14 +1,14 @@
 name: 'Dependency Track Deployment'
 
-on:
-  pull_request:
-    types:
-      - closed
-    branches: [ main ]
+on: push
+#  pull_request:
+#    types:
+#      - closed
+#    branches: [ main ]
 
 jobs:
   generate-and-push-sbom:
-    if: github.event.pull_request.merged == true
+#    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -20,7 +20,7 @@ jobs:
 
       - name: Install cdxgen
         working-directory: frontend
-        run: npm install -g @cyclonedx/cdxgen@11.1.2
+        run: npm install -g @cyclonedx/cdxgen@11.6.0
 
       - name: 'Generate SBOM for maven dependencies'
         working-directory: backend
