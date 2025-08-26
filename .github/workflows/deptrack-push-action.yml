@@ -7,6 +7,7 @@ jobs:
     strategy:
       matrix:
         environment: [STAGING, PROD]
+    environment: ${{ matrix.environment }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v5
