@@ -213,7 +213,6 @@ export default tsEslint.config(
       parser: htmlParser,
     },
     rules: {
-      ...html.configs['flat/recommended'].rules,
       //Html eslint rules
       // Must be defined. If not, all recommended rules will be lost
       '@html-eslint/require-img-alt': 'off',
