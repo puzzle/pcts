@@ -1,14 +1,14 @@
 name: 'Dependency Track Deployment'
 
-on: push
-#  pull_request:
-#    types:
-#      - closed
-#    branches: [ main ]
+on:
+  pull_request:
+    types:
+      - closed
+    branches: [ main ]
 
 jobs:
   generate-and-push-sbom:
-#    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     strategy:
       matrix:
