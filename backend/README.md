@@ -25,8 +25,5 @@ We use the ***springdoc-openapi*** library for documenting the API.
 
 Our API documentation is generated using ***springdoc-openapi***. You can access it through a web interface (Swagger UI) or as a raw json file (OpenAPI 3 specification).
 
-#### Access Points
-
-**For Development**
 - [Swagger UI](http://localhost:8080/swagger-ui/index.html)
 - [OpenAPI 3 specification](http://localhost:8080/v3/api-docs)
