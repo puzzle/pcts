@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        environment: [staging, prod]
+        environment: [STAGING, PROD]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v5
