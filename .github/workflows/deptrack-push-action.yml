@@ -10,10 +10,7 @@ jobs:
   generate-and-push-sbom:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        environment: [STAGING, PROD]
-    environment: ${{ matrix.environment }}
+    environment: STAGING
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v5
