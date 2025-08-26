@@ -1,0 +1,47 @@
+name: 'Dependency Track Deployment'
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches: [ main ]
+
+jobs:
+  generate-and-push-sbom:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    environment: STAGING
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v5
+
+      - name: Install cdxgen
+        working-directory: frontend
+        run: npm install -g @cyclonedx/cdxgen@11.6.0
+
+      - name: 'Generate SBOM for maven dependencies'
+        working-directory: backend
+        run: mvn org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom
+
+      - name: 'Generate SBOM for npm dependencies'
+        working-directory: frontend
+        run: cdxgen -o ../sbom-npm.json -t npm .
+
+      - name: 'Merge frontend and backend SBOMs'
+        run: |
+          docker run --rm -v $(pwd):/data cyclonedx/cyclonedx-cli merge --hierarchical --name PCTS --version latest --input-files data/backend/target/bom.xml data/sbom-npm.json  --output-format json --output-file data/sbom.json
+
+      - name: 'Validate SBOM'
+        run: docker run --rm -v $(pwd):/data cyclonedx/cyclonedx-cli validate --input-format json --input-version v1_6 --input-file data/sbom.json --fail-on-errors
+
+      - name: 'Push merged SBOM to dependency track'
+        env:
+          PROJECT_NAME: ${{ vars.DEPENDENCY_TRACK_PROJECT_NAME }}
+        run: |
+          curl --verbose -s --location --request POST ${{ secrets.DEPENDENCY_TRACK_URL }} \
+          --header "X-Api-Key: ${{ secrets.SECRET_OWASP_DT_KEY }}" \
+          --header "Content-Type: multipart/form-data" \
+          --form "autoCreate=true" \
+          --form "projectName=${PROJECT_NAME:-$GITHUB_REPOSITORY}" \
+          --form "projectVersion=latest" \
+          --form "bom=@sbom.json"
