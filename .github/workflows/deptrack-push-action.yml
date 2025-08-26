@@ -25,10 +25,10 @@ jobs:
 
       - name: 'Merge frontend and backend SBOMs'
         run: |
-          docker run --rm -v $(pwd):/data cyclonedx/cyclonedx-cli merge --hierarchical --name PCTS --version latest --input-files data/backend/target/bom.xml data/sbom-npm.json --output-file data/sbom.xml
+          docker run --rm -v $(pwd):/data cyclonedx/cyclonedx-cli merge --hierarchical --name PCTS --version latest --input-files data/backend/target/bom.xml data/sbom-npm.json  --output-format json --output-file data/sbom.json
 
       - name: 'Validate SBOM'
-        run: docker run --rm -v $(pwd):/data cyclonedx/cyclonedx-cli validate --input-format xml --input-version v1_6 --input-file data/sbom.xml --fail-on-errors
+        run: docker run --rm -v $(pwd):/data cyclonedx/cyclonedx-cli validate --input-format json --input-version v1_6 --input-file data/sbom.json --fail-on-errors
 
       - name: 'Push merged SBOM to dependency track'
         env:
@@ -40,4 +40,4 @@ jobs:
           --form "autoCreate=true" \
           --form "projectName=${PROJECT_NAME:-$GITHUB_REPOSITORY}" \
           --form "projectVersion=latest" \
-          --form "bom=@sbom.xml"
+          --form "bom=@sbom.json"
