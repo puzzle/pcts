@@ -42,3 +42,36 @@ jobs:
 
       - name: Format frontend
         run: npm run check-linting:all
+
+  markdownlint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install npm
+        run: npm install -g npm
+
+      - name: Install markdownlint
+        run: npm install markdownlint --save-dev
+
+      - name: Markdown linting
+        run: mdl .
+
+  yamllint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install yamllint
+        run: sudo apt-get install yamllint
+
+      - name: yaml linting
+        run: yamllint .
