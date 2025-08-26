@@ -1,6 +1,5 @@
 package ch.puzzle.pcts.service.persistence;
 
-import ch.puzzle.pcts.dto.example.CreateExampleDto;
 import ch.puzzle.pcts.model.example.Example;
 import ch.puzzle.pcts.repository.ExampleRepository;
 import java.util.List;
@@ -16,8 +15,8 @@ public class ExamplePersistenceService {
         this.repository = repository;
     }
 
-    public Example create(CreateExampleDto dto) {
-        return repository.add(dto);
+    public Example create(Example example) {
+        return repository.save(example);
     }
 
     public Example getById(long id) {
@@ -25,6 +24,6 @@ public class ExamplePersistenceService {
     }
 
     public List<Example> getAll() {
-        return repository.getAll();
+        return repository.findAll();
     }
 }

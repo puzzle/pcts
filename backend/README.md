@@ -1,6 +1,20 @@
 # PCTS Backend
 The backend of this project is written in Spring Boot.
 
+## Development
+### Dev-Database
+The database can be started via docker
+- cd into the root directory of the project
+- `cd docker`
+- Run `docker compose up`
+### Dev-Backend
+Make sure to set up the DB first
+#### Terminal
+You can start the backend via Terminal
+- cd to the project root
+- `cd backend`
+- `mvn spring-boot:run -Dspring-boot.run.arguments="--spring.profiles.active=dev"`
+
 ## Formatting
 We use the ***spotless*** Plugin for formatting the Java code:
 https://github.com/diffplug/spotless
