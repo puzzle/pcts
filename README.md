@@ -17,7 +17,8 @@ git config --local core.hooksPath .githooks/
 
 We use [markdownlint](https://github.com/markdownlint/markdownlint)
 for formating markdown files
-and [yamllint](https://github.com/adrienverge/yamllint) for formating yaml files.
+and [yamllint](https://github.com/adrienverge/yamllint) for formating
+yaml and yml files.
 
 #### Installation
 
@@ -25,3 +26,8 @@ Check the official GitHub documentation for Installation:
 
 - [markdownlint](https://github.com/markdownlint/markdownlint#installation)
 - [yamllint](https://github.com/adrienverge/yamllint#installation)
+
+#### Local Usage
+
+- **markdownlint** `mdl "file"` or `mdl "directory"`
+- **yamllint** `yamllint "file"` or `yamllint "directory"`
