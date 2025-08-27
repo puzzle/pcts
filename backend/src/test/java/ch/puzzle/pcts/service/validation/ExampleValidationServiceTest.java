@@ -27,9 +27,9 @@ class ExampleValidationServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @DisplayName("Should be successful on validateOnCreate() when action is valid")
+    @DisplayName("Should be successful on validateOnCreate() when example is valid")
     @Test
-    void shouldBeSuccessfulOnValidateOnCreateWhenActionIsValid() {
+    void shouldBeSuccessfulOnValidateOnCreateWhenExampleIsValid() {
         Example example = new Example();
         example.setText("This is an Example text");
         example.setId(null);
@@ -39,7 +39,7 @@ class ExampleValidationServiceTest {
     }
     @DisplayName("should throw exception on validateOnCreate() when model is invalid")
     @Test
-    void shouldThrowExceptionOnValidateOnCreateWhenActionIsInvalid() {
+    void shouldThrowExceptionOnValidateOnCreateWhenExampleIsInvalid() {
         Example example = new Example();
         example.setText("Invalid text");
         example.setId(null);

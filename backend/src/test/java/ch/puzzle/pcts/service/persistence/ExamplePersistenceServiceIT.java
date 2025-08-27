@@ -52,7 +52,7 @@ class ExamplePersistenceServiceIT {
     @DisplayName("Should create example")
     @Test
     @Transactional
-    void shouldCreateCreate() {
+    void shouldCreate() {
         Example example = new Example(null, "Example 3");
         persistenceService.create(example);
 
