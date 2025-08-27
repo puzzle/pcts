@@ -52,11 +52,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Install npm
-        run: npm install -g npm
+      - name: Install Ruby
+        run: sudo apt-get install ruby-full
 
       - name: Install markdownlint
-        run: npm install markdownlint --save-dev
+        run: gem install mdl
 
       - name: Markdown linting
         run: mdl .
