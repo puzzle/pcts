@@ -1,3 +1,6 @@
+<h1>{{ (example()| async)?.text }}</h1>
+<input type="number" [(ngModel)]="this.exampleId"/>
+
 @for (example of examples$ | async; track example.id) {
 <p>{{ example.text }}</p>
 } @empty {
