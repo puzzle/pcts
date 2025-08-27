@@ -8,6 +8,7 @@ import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.example.Example;
 import ch.puzzle.pcts.service.persistence.ExamplePersistenceService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -26,18 +27,19 @@ class ExampleValidationServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    @DisplayName("Should be successful on validateOnCreate() when action is valid")
     @Test
-    void validateOnCreate_shouldPass_whenValidExample() {
+    void shouldBeSuccessfulOnValidateOnCreateWhenActionIsValid() {
         Example example = new Example();
         example.setText("This is an Example text");
         example.setId(null);
 
         assertDoesNotThrow(() -> validationService.validateOnCreate(example));
-        verifyNoInteractions(persistenceService); // not used in current method
+        verifyNoInteractions(persistenceService);
     }
-
+    @DisplayName("should throw exception on validateOnCreate() when model is invalid")
     @Test
-    void validateOnCreate_shouldThrow_whenTextDoesNotContainExample() {
+    void shouldThrowExceptionOnValidateOnCreateWhenActionIsInvalid() {
         Example example = new Example();
         example.setText("Invalid text");
         example.setId(null);
@@ -48,8 +50,9 @@ class ExampleValidationServiceTest {
         assertEquals(ErrorKey.VALIDATION_DOES_NOT_INCLUDE, exception.getErrorKey());
     }
 
+    @DisplayName("Should throw exception on validateOnCreate() when model is null")
     @Test
-    void validateOnCreate_shouldThrow_whenIdIsNotNull() {
+    void shouldThrowExceptionOnValidateOnCreateWhenModelIsNull() {
         Example example = new Example();
         example.setText("This contains Example");
         example.setId(123L);

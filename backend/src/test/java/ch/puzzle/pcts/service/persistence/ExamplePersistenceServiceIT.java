@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.puzzle.pcts.model.example.Example;
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,11 +34,13 @@ class ExamplePersistenceServiceIT {
     @Autowired
     private ExamplePersistenceService persistenceService;
 
+    @DisplayName("Should establish db connection")
     @Test
-    void connectionEstablished() {
+    void shouldEstablishConnection() {
         assertThat(postgres.isRunning()).isTrue();
     }
 
+    @DisplayName("Should get example by id")
     @Test
     void shouldGetExampleById() {
         Example example = persistenceService.getById(1L);
@@ -46,6 +49,7 @@ class ExamplePersistenceServiceIT {
         assertThat(example.getId()).isEqualTo(1L);
     }
 
+    @DisplayName("Should create example")
     @Test
     @Transactional
     void shouldCreateCreate() {
@@ -56,6 +60,7 @@ class ExamplePersistenceServiceIT {
         assertThat(example).isEqualTo(result);
     }
 
+    @DisplayName("Should get all examples")
     @Test
     void shouldGetAllExamples() {
         List<Example> all = persistenceService.getAll();

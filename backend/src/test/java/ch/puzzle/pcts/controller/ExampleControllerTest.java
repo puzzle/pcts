@@ -9,6 +9,7 @@ import ch.puzzle.pcts.model.example.Example;
 import ch.puzzle.pcts.service.business.ExampleBusinessService;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -31,9 +32,10 @@ class ExampleControllerTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    @DisplayName("Should successfully get all examples")
     @Test
-    void getExample_shouldReturnMappedList() {
-        Example example = new Example();
+    void shouldGetAllExamples() {
+        Example example = new Example(null, "Example 1");
         ExampleDto dto = new ExampleDto(null, "Example 1");
 
         when(service.getAll()).thenReturn(List.of(example));
@@ -49,10 +51,11 @@ class ExampleControllerTest {
         verify(mapper).toDto(List.of(example));
     }
 
+    @DisplayName("Should successfully get example by id")
     @Test
-    void getExampleById_shouldReturnMappedDto() {
+    void shouldGetExampleById() {
         long id = 42L;
-        Example example = new Example();
+        Example example = new Example(null, "Example 1");
         ExampleDto dto = new ExampleDto(null, "Example 1");
 
         when(service.getById(id)).thenReturn(example);
@@ -67,11 +70,12 @@ class ExampleControllerTest {
         verify(mapper).toDto(example);
     }
 
+    @DisplayName("Should successfully create new example")
     @Test
-    void createNew_shouldReturnCreatedDto() {
+    void shouldCreateNewExample() {
         ExampleDto inputDto = new ExampleDto(null, "Example 1");
-        Example example = new Example();
-        Example createdExample = new Example();
+        Example example = new Example(null, "Example 1");
+        Example createdExample = new Example(null, "Example 1");
         ExampleDto outputDto = new ExampleDto(null, "Example 1");
 
         when(mapper.fromDto(inputDto)).thenReturn(example);
