@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -38,11 +39,27 @@ class ExamplePersistenceServiceIT {
     }
 
     @Test
-    void testGetAll() {
-        // when
+    void shouldGetExampleById() {
+        Example example = persistenceService.getById(1L);
+
+        assertThat(example).isNotNull();
+        assertThat(example.getId()).isEqualTo(1L);
+    }
+
+    @Test
+    @Transactional
+    void shouldCreateCreate() {
+        Example example = new Example(null, "Example 3");
+        persistenceService.create(example);
+
+        Example result = persistenceService.getById(3L);
+        assertThat(example).isEqualTo(result);
+    }
+
+    @Test
+    void shouldGetAllExamples() {
         List<Example> all = persistenceService.getAll();
 
-        // then
         assertThat(all).hasSize(2);
         assertThat(all).extracting(Example::getText).containsExactlyInAnyOrder("Example 1", "Example 2");
     }
