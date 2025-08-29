@@ -8,11 +8,12 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ExampleService {
+public class ExampleBusinessService {
     private final ExampleValidationService validationService;
     private final ExamplePersistenceService persistenceService;
 
-    public ExampleService(ExampleValidationService validationService, ExamplePersistenceService persistenceService) {
+    public ExampleBusinessService(ExampleValidationService validationService,
+                                  ExamplePersistenceService persistenceService) {
         this.validationService = validationService;
         this.persistenceService = persistenceService;
     }
