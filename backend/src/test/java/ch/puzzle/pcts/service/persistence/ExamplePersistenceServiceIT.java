@@ -6,6 +6,7 @@ import ch.puzzle.pcts.model.example.Example;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,12 +37,14 @@ class ExamplePersistenceServiceIT {
 
     @DisplayName("Should establish DB connection")
     @Test
+    @Order(0)
     void shouldEstablishConnection() {
         assertThat(postgres.isRunning()).isTrue();
     }
 
     @DisplayName("Should get example by id")
     @Test
+    @Order(1)
     void shouldGetExampleById() {
         Example example = persistenceService.getById(1L);
 
@@ -51,6 +54,7 @@ class ExamplePersistenceServiceIT {
 
     @DisplayName("Should get all examples")
     @Test
+    @Order(1)
     void shouldGetAllExamples() {
         List<Example> all = persistenceService.getAll();
 
