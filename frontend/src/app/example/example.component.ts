@@ -1,6 +1,5 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
+import { Component, computed, inject, signal, WritableSignal } from '@angular/core';
 import { ExampleService } from './example.service';
-import { Observable } from 'rxjs';
 import { ExampleDto } from './dto/example.dto';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -12,28 +11,29 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './example.component.html',
   styleUrl: './example.component.css'
 })
-export class ExampleComponent implements OnInit {
+export class ExampleComponent {
   private service = inject(ExampleService);
 
   exampleId = signal<number>(1);
 
   example = computed(() => this.service.getExampleById(this.exampleId()));
 
-  examples$!: Observable<ExampleDto[]>;
+  examples: WritableSignal<ExampleDto[]> = signal([]);
 
-  ngOnInit(): void {
-    this.examples$ = this.service.getAllExamples();
+  constructor() {
+    this.service.getAllExamples()
+      .subscribe((examples: ExampleDto[]) => {
+        this.examples.set(examples);
+      });
   }
 
   createNewExample(): void {
-    this.service
-      .createExample({
-        text: 'Example: Another cool example!'
-      })
-      .subscribe({
-        next: () => {
-          this.examples$ = this.service.getAllExamples();
-        }
+    const example = {
+      text: 'Another cool Example!'
+    };
+    this.service.createExample(example)
+      .subscribe((example: ExampleDto) => {
+        this.examples.update((examples) => examples.concat(example));
       });
   }
 }
