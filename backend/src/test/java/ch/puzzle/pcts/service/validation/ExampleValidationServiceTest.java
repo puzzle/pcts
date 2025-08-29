@@ -7,6 +7,7 @@ import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.example.Example;
 import ch.puzzle.pcts.service.persistence.ExamplePersistenceService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 class ExampleValidationServiceTest {
+    private AutoCloseable closeable;
 
     @Mock
     private ExamplePersistenceService persistenceService;
@@ -24,7 +26,12 @@ class ExampleValidationServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        closeable = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        closeable.close();
     }
 
     @DisplayName("Should be successful on validateOnCreate() when example is valid")
@@ -37,9 +44,9 @@ class ExampleValidationServiceTest {
         assertDoesNotThrow(() -> validationService.validateOnCreate(example));
         verifyNoInteractions(persistenceService);
     }
-    @DisplayName("should throw exception on validateOnCreate() when model is invalid")
+    @DisplayName("Should throw exception on validateOnCreate() when text does not include Example")
     @Test
-    void shouldThrowExceptionOnValidateOnCreateWhenExampleIsInvalid() {
+    void shouldThrowExceptionOnValidateOnCreateWhenTextDoesNotIncludeExample() {
         Example example = new Example();
         example.setText("Invalid text");
         example.setId(null);
@@ -50,9 +57,9 @@ class ExampleValidationServiceTest {
         assertEquals(ErrorKey.VALIDATION_DOES_NOT_INCLUDE, exception.getErrorKey());
     }
 
-    @DisplayName("Should throw exception on validateOnCreate() when model is null")
+    @DisplayName("Should throw exception on validateOnCreate() when id is not null")
     @Test
-    void shouldThrowExceptionOnValidateOnCreateWhenModelIsNull() {
+    void shouldThrowExceptionOnValidateOnCreateWhenIdIsNotNull() {
         Example example = new Example();
         example.setText("This contains Example");
         example.setId(123L);

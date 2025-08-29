@@ -22,7 +22,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 class ExamplePersistenceServiceIT {
 
     @Container
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine");
+    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17-alpine");
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
@@ -34,7 +34,7 @@ class ExamplePersistenceServiceIT {
     @Autowired
     private ExamplePersistenceService persistenceService;
 
-    @DisplayName("Should establish db connection")
+    @DisplayName("Should establish DB connection")
     @Test
     void shouldEstablishConnection() {
         assertThat(postgres.isRunning()).isTrue();

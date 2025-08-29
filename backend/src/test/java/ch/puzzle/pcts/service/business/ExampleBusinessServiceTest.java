@@ -50,6 +50,7 @@ class ExampleBusinessServiceTest {
 
         List<Example> result = businessService.getAll();
 
+        assertArrayEquals(examples.toArray(), result.toArray());
         assertEquals(2, result.size());
         verify(persistenceService).getAll();
     }
