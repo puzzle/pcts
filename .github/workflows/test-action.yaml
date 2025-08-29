@@ -38,5 +38,5 @@ jobs:
           java-version: ${{vars.JAVA_VERSION}}
           distribution: 'adopt'
 
-      - name: Use Maven to run unittests and integration tests
+      - name: Use Maven to run unit and integration tests
         run: mvn clean verify

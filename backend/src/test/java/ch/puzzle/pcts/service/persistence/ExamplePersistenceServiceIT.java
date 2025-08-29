@@ -3,6 +3,7 @@ package ch.puzzle.pcts.service.persistence;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.puzzle.pcts.model.example.Example;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -49,17 +49,6 @@ class ExamplePersistenceServiceIT {
         assertThat(example.getId()).isEqualTo(1L);
     }
 
-    @DisplayName("Should create example")
-    @Test
-    @Transactional
-    void shouldCreate() {
-        Example example = new Example(null, "Example 3");
-        persistenceService.create(example);
-
-        Example result = persistenceService.getById(3L);
-        assertThat(example).isEqualTo(result);
-    }
-
     @DisplayName("Should get all examples")
     @Test
     void shouldGetAllExamples() {
@@ -67,5 +56,16 @@ class ExamplePersistenceServiceIT {
 
         assertThat(all).hasSize(2);
         assertThat(all).extracting(Example::getText).containsExactlyInAnyOrder("Example 1", "Example 2");
+    }
+
+    @DisplayName("Should create example")
+    @Transactional
+    @Test
+    void shouldCreate() {
+        Example example = new Example(null, "Example 3");
+        persistenceService.create(example);
+
+        Example result = persistenceService.getById(3L);
+        assertThat(example).isEqualTo(result);
     }
 }

@@ -149,9 +149,30 @@
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.5.3</version>
-      </plugin>
-					 <plugin>
+            <configuration>
+                <excludes>
+                    <exclude>**/*IT.java</exclude>
+                </excludes>
+            </configuration>
+            <executions>
+                <execution>
+                    <id>integration-test</id>
+                    <goals>
+                        <goal>test</goal>
+                    </goals>
+                    <phase>integration-test</phase>
+                    <configuration>
+                        <excludes>
+                            <exclude>none</exclude>
+                        </excludes>
+                        <includes>
+                            <include>**/*IT.java</include>
+                        </includes>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+        <plugin>
 						  <groupId>org.cyclonedx</groupId>
 						  <artifactId>cyclonedx-maven-plugin</artifactId>
 						  <version>2.9.1</version>
