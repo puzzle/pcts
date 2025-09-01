@@ -77,7 +77,7 @@ cd "$git_base_path" || exit
 if ! has_changed "$md_files"; then
   echo "No markdown files found to lint. Skipping."
 else
-  mdl $md_files
+  mdl $md_files || exit 1
 fi
 echo "*****Finish running markdown lint******"
 
@@ -88,9 +88,9 @@ cd "$git_base_path" || exit
 if ! has_changed "$yaml_files"; then
   echo "No yaml files found to lint. Skipping."
 else
-  yamllint $yaml_files
+  yamllint $yaml_files || exit 1
 fi
-echo "*****Finish running markdown lint******"
+echo "*****Finish running yaml lint******"
 
 echo "---------------------------------------------------------"
 
