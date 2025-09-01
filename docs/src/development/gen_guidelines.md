@@ -17,7 +17,7 @@ with the following types: `build`, `chore`, `ci`, `docs`, `feat`, `fix`, `refact
 Each commit message should consist of a **type**, an optional **scope**,
 a **subject** and an optional **issue number**.
 
-```
+```text
 type(scope): subject #issue-number
 ```
 

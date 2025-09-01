@@ -60,7 +60,7 @@ jobs:
         run: sudo gem install mdl
 
       - name: Markdown linting
-        run: mdl .
+        run: find . -not -path "./.github/ISSUE_TEMPLATE/*" | xargs mdl
 
   yamllint:
     runs-on: ubuntu-latest

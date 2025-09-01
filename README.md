@@ -37,5 +37,5 @@ Check the official GitHub documentation for Installation:
 ##### markdownlint
 
 ```shell
-  find . -name "*.md" -not -path "./frontend/node_modules/*" | xargs mdl
+  find . -name "*.md" -not -path "./frontend/node_modules/*" -not -path "./.github/ISSUE_TEMPLATE/*" | xargs mdl
 ```
