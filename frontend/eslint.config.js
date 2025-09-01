@@ -4,6 +4,8 @@ import unusedImports from 'eslint-plugin-unused-imports'
 import stylistic from '@stylistic/eslint-plugin'
 import html from '@html-eslint/eslint-plugin'
 import angular from 'angular-eslint'
+import angularParser from '@angular-eslint/template-parser'
+import angularTemplate from '@angular-eslint/eslint-plugin-template'
 import htmlParser from '@html-eslint/parser'
 import checkFile from 'eslint-plugin-check-file'
 export default tsEslint.config(
@@ -215,13 +217,24 @@ export default tsEslint.config(
     rules: {
       //Html eslint rules
       // Must be defined. If not, all recommended rules will be lost
-      '@html-eslint/require-img-alt': 'off',
+      '@html-eslint/require-img-alt': 'error',
       '@html-eslint/indent': ['error', 2],
       '@html-eslint/require-closing-tags': ['error', { selfClosing: 'always' }],
       //Doesn't work with Angular 17+
       '@html-eslint/element-newline': 'off',
     },
   },
+  // {
+  //   files: ['**/*.component.html'],
+  //   extends: [
+  //     eslint.configs.recommended,
+  //     ...angularTemplate.configs.recommended,
+  //   ],
+  //
+  //   rules: {
+  //     '@angular-eslint/template/accessibility-alt-text': 'error',
+  //   }
+  // },
   {
     plugins: {
       'unused-imports': unusedImports,
