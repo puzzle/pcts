@@ -14,10 +14,10 @@ There are some hooks, which are strongly encouraged to use. Simply execute the f
 
 ### Formatting
 
-We use [markdownlint](https://github.com/markdownlint/markdownlint)for formating markdown files
+We use [markdownlint](https://github.com/markdownlint/markdownlint) for formating markdown files
 and [yamllint](https://github.com/adrienverge/yamllint) for formating yaml and yml files.
 
-We excluded the markdown rule `MD013` (line-length), because this rule does not work when the default value is changed.
+We've disabled the markdown `MD013` line-length rule. The default limit of 80 characters is too restrictive, and we're unable to change it to a more flexible value.
 
 #### Installation
 
@@ -27,6 +27,11 @@ Check the official GitHub documentation for Installation:
 - [yamllint](https://github.com/adrienverge/yamllint#installation)
 
 #### Usage
+
+If you run the following commands the complete project expect for `node_modules` and `ISSUE_TEMPLATE` is checked for markdown or yaml files.
+If no output is seen, that means that the linters didn't find any issues.
+
+The commands are also run automatic in the precommit hook.
 
 ##### yamllint
 
