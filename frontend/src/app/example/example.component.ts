@@ -1,33 +1,39 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, computed, inject, signal, WritableSignal } from '@angular/core';
 import { ExampleService } from './example.service';
-import { Observable } from 'rxjs';
 import { ExampleDto } from './dto/example.dto';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-example',
-  imports: [CommonModule],
+  imports: [CommonModule,
+    FormsModule],
   templateUrl: './example.component.html',
   styleUrl: './example.component.css'
 })
-export class ExampleComponent implements OnInit {
+export class ExampleComponent {
   private service = inject(ExampleService);
 
-  examples$!: Observable<ExampleDto[]>;
+  exampleId = signal<number>(1);
 
-  ngOnInit(): void {
-    this.examples$ = this.service.getAllExamples();
+  example = computed(() => this.service.getExampleById(this.exampleId()));
+
+  examples: WritableSignal<ExampleDto[]> = signal([]);
+
+  constructor() {
+    this.service.getAllExamples()
+      .subscribe((examples: ExampleDto[]) => {
+        this.examples.set(examples);
+      });
   }
 
   createNewExample(): void {
-    this.service
-      .createExample({
-        text: 'Example: Another cool example!'
-      })
-      .subscribe({
-        next: () => {
-          this.examples$ = this.service.getAllExamples();
-        }
+    const example = {
+      text: 'Another cool Example!'
+    };
+    this.service.createExample(example)
+      .subscribe((example: ExampleDto) => {
+        this.examples.update((examples) => examples.concat(example));
       });
   }
 }

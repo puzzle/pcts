@@ -1,4 +1,7 @@
-@for (example of examples$ | async; track example.id) {
+<h1>{{ (example()| async)?.text }}</h1>
+<input type="number" [(ngModel)]="exampleId"/>
+
+@for (example of this.examples(); track example.id) {
 <p>{{ example.text }}</p>
 } @empty {
 <p>No examples!</p>
