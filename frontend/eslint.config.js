@@ -25,6 +25,7 @@ export default tsEslint.config(
       'dist/**',
       '.angular/**',
       'node_modules/**',
+      'src/app/app.component.html',
     ], // #TODO: Match cypress path to project #12- E2E setup
   },
   {
