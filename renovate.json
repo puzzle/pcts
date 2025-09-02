@@ -5,7 +5,7 @@
     ":rebaseStalePrs"
   ],
   "schedule" : [
-    "* 23-4 * * *"
+    "* 23,0-4 * * *"
   ],
   "automergeSchedule": [
     "* 23-4 * * *"
