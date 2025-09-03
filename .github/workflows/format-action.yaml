@@ -1,3 +1,4 @@
+---
 name: 'Format'
 
 on: [push]
@@ -42,3 +43,38 @@ jobs:
 
       - name: Format frontend
         run: npm run check-linting:all
+
+  markdownlint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install Ruby
+        run: sudo apt-get install ruby-full
+
+      - name: Install markdownlint
+        run: sudo gem install mdl
+
+      - name: Markdown linting
+        run: |
+          find . -name "*.md" \
+          -not -path "./.github/ISSUE_TEMPLATE/*" | xargs mdl
+
+  yamllint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install yamllint
+        run: sudo apt-get install yamllint
+
+      - name: yaml linting
+        run: yamllint .

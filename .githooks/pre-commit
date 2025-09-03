@@ -2,13 +2,29 @@
 git_base_path=$(git rev-parse --show-toplevel)
 frontend_path="$git_base_path"/frontend
 backend_path="$git_base_path"/backend
-formatted_file_extensions="java|ts|html|css|scss|xml|json|yml|yaml|mjs"
+formatted_file_extensions="java|ts|html|css|scss|xml|json|yml|yaml|mjs|md"
 
 get_changed_files() {
     path=$1
     delimiter=${2:-' '}
     git diff --cached --name-only --diff-filter=d --line-prefix="$git_base_path"/ "$path" \
         | grep -E "\.($formatted_file_extensions)$" \
+        | tr '\n' "$delimiter"
+}
+
+get_changed_yaml_files() {
+    path=$1
+    delimiter=${2:-' '}
+    git diff --cached --name-only --diff-filter=d --line-prefix="$git_base_path"/ -- "$path" ":(exclude).github/ISSUE_TEMPLATE/" \
+        | grep -E "\.(yml|yaml)$" \
+        | tr '\n' "$delimiter"
+}
+
+get_changed_md_files() {
+    path=$1
+    delimiter=${2:-' '}
+    git diff --cached --name-only --diff-filter=d --line-prefix="$git_base_path"/ -- "$path" ":(exclude).github/ISSUE_TEMPLATE/" \
+        | grep -E "\.md$" \
         | tr '\n' "$delimiter"
 }
 
@@ -20,6 +36,8 @@ has_changed() {
 frontend_files=$(get_changed_files "$frontend_path" ' ')
 backend_files=$(get_changed_files "$backend_path" ' ')
 backend_files_for_maven=$(get_changed_files "$backend_path" ',')
+md_files=$(get_changed_md_files "$git_base_path" ' ')
+yaml_files=$(get_changed_yaml_files "$git_base_path" ' ')
 
 echo "*****Running prettier******"
 cd "$frontend_path" || exit
@@ -51,6 +69,28 @@ echo "*****Running maven formatter******"
 cd "$backend_path" || exit
 has_changed "$backend_files_for_maven" && mvn -f pom.xml spotless:apply -DspotlessFiles="$backend_files_for_maven" || echo "No files found to format"
 echo "*****Finish running maven formatter******"
+
+echo "---------------------------------------------------------"
+
+echo "*****Running markdown lint******"
+cd "$git_base_path" || exit
+if ! has_changed "$md_files"; then
+  echo "No markdown files found to lint. Skipping."
+else
+  mdl $md_files || exit 1
+fi
+echo "*****Finish running markdown lint******"
+
+echo "---------------------------------------------------------"
+
+echo "*****Running yaml lint******"
+cd "$git_base_path" || exit
+if ! has_changed "$yaml_files"; then
+  echo "No yaml files found to lint. Skipping."
+else
+  yamllint $yaml_files || exit 1
+fi
+echo "*****Finish running yaml lint******"
 
 echo "---------------------------------------------------------"
 
