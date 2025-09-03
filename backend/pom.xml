@@ -188,6 +188,7 @@
 							<excludes>
 								<exclude>ch/puzzle/pcts/model/**</exclude>
 								<exclude>ch/puzzle/pcts/dto/**</exclude>
+								<exclude>ch/puzzle/pcts/exception/**</exclude>
 								<exclude>ch/puzzle/pcts/PctsApplication.java</exclude>
 								<exclude>ch/puzzle/pcts/SpringSecurityConfig.java</exclude>
 							</excludes>
