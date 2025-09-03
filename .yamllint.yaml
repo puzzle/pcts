@@ -1,6 +1,12 @@
 ---
 extends: default
 
+ignore: |
+  node_modules
+  frontend/node_modules/
+
 rules:
   truthy:
     allowed-values: ['true', 'false', 'on']
+  document-start:
+    level: error
