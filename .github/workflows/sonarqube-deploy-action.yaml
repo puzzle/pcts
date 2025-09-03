@@ -32,4 +32,4 @@ jobs:
         run: cd frontend && npm run test -- --coverage
 
       - name: Build and analyze
-        run: cd backend  && mvn clean verify sonar:sonar -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.host.url=${{vars.SONAR_HOST_URL}}
+        run: mvn clean verify sonar:sonar -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.host.url=${{vars.SONAR_HOST_URL}}
