@@ -4,7 +4,8 @@ import unusedImports from 'eslint-plugin-unused-imports'
 import stylistic from '@stylistic/eslint-plugin'
 import html from '@html-eslint/eslint-plugin'
 import angular from 'angular-eslint'
-import htmlParser from '@html-eslint/parser'
+import angularTemplateParser from '@angular-eslint/template-parser'
+import angularTemplate from '@angular-eslint/eslint-plugin-template'
 import checkFile from 'eslint-plugin-check-file'
 export default tsEslint.config(
   {
@@ -24,6 +25,7 @@ export default tsEslint.config(
       'dist/**',
       '.angular/**',
       'node_modules/**',
+      'src/app/app.component.html',
     ], // #TODO: Match cypress path to project #12- E2E setup
   },
   {
@@ -206,19 +208,25 @@ export default tsEslint.config(
   },
 
   {
-    files: ['**/*.html'],
-    // recommended configuration included in the plugin
-    ...html.configs['flat/recommended'],
+    files: ['**/*.component.html'],
+    ...angular.configs.recommended,
     languageOptions: {
-      parser: htmlParser,
+      parser: angularTemplateParser,
     },
     rules: {
-      //Html eslint rules
-      // Must be defined. If not, all recommended rules will be lost
-      '@html-eslint/require-img-alt': 'off',
-      '@html-eslint/indent': ['error', 2],
-      '@html-eslint/require-closing-tags': ['error', { selfClosing: 'always' }],
-      //Doesn't work with Angular 17+
+      '@angular-eslint/template/alt-text': 'error',
+      '@angular-eslint/template/valid-aria': 'error',
+      '@angular-eslint/template/elements-content': 'error',
+      '@angular-eslint/template/button-has-type': 'warn',
+      '@angular-eslint/template/label-has-associated-control': 'error',
+      '@angular-eslint/template/click-events-have-key-events': 'error',
+      '@angular-eslint/template/interactive-supports-focus': 'error',
+      '@angular-eslint/template/no-positive-tabindex': 'error',
+      '@angular-eslint/template/use-track-by-function': 'warn',
+      '@angular-eslint/template/no-negated-async': 'error',
+      '@angular-eslint/template/no-inline-styles': 'error',
+      '@angular-eslint/template/prefer-self-closing-tags': 'error',
+
       '@html-eslint/element-newline': 'off',
     },
   },
@@ -228,6 +236,7 @@ export default tsEslint.config(
       '@stylistic': stylistic,
       '@html-eslint': html,
       'check-file': checkFile,
+      '@angular-eslint/template': angularTemplate,
     },
   }
 )
