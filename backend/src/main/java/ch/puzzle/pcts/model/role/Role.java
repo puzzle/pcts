@@ -14,10 +14,13 @@ public class Role {
 
     private LocalDateTime deleted_at;
 
-    public Role(Long id, String name, LocalDateTime deleted_at) {
+    private boolean isManagement;
+
+    public Role(Long id, String name, LocalDateTime deleted_at, boolean isManagement) {
         this.id = id;
         this.name = name;
         this.deleted_at = deleted_at;
+        this.isManagement = isManagement;
     }
 
     public Role() {
@@ -45,5 +48,13 @@ public class Role {
 
     public void setDeleted_at(LocalDateTime deleted_at) {
         this.deleted_at = deleted_at;
+    }
+
+    public boolean getIsManagement() {
+        return this.isManagement;
+    }
+
+    public void setIsManagement(boolean isManagement) {
+        this.isManagement = isManagement;
     }
 }
