@@ -1,20 +1,19 @@
-FROM node:24.0-alpine AS build
+FROM node:24.0-alpine AS builder
 
 WORKDIR /app
 
-COPY package*.json /app/
+COPY package.json package-lock.json ./
 
-RUN npm install
+RUN npm ci
 
-COPY . /app
+COPY . .
 
-RUN npm run build
+RUN npm run build -- --output-path=./dist/ --configuration=production
 
+FROM nginx:alpine AS runner
 
+COPY --from=builder /app/dist/browser /usr/share/nginx/html
 
-FROM node:24.0-alpine
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
-COPY --from=build /app/dist /usr/src/app
-ENV PORT 4200
-CMD [ "node", "index.js" ]
+EXPOSE 4200
+
+CMD ["nginx", "-g", "daemon off;"]

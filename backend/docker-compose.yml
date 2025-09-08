@@ -10,3 +10,10 @@ services:
       POSTGRES_DB: pcts
     ports:
       - 5432:5432
+  pcts-app:
+    container_name: pcts-app
+    build: .
+    ports:
+      - 8080:8080
+    depends_on:
+      - pcts-db

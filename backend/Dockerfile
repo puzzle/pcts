@@ -1,19 +1,19 @@
-FROM maven:3-eclipse-temurin-17-alpine AS build
+FROM maven:3-eclipse-temurin-21-alpine AS builder
 
 WORKDIR /app
 
 COPY pom.xml .
 
-RUN mvn clean install
-
 COPY src ./src
 
-RUN mvn package
+RUN mvn clean install -DskipTests
 
-FROM openjdk
+FROM openjdk:21 AS runner
 
 WORKDIR /app
 
 EXPOSE 8080
 
-COPY --from=build /app/target/*.jar pcts
+COPY --from=builder /app/target/*.jar app.jar
+
+ENTRYPOINT ["java","-jar","app.jar"]
