@@ -17,10 +17,10 @@ public class RoleMapper {
     }
 
     public RoleDto toDto(Role model) {
-        return new RoleDto(model.getId(), model.getName(), model.getDeleted_at(), model.getIsManagement());
+        return new RoleDto(model.getId(), model.getName(), model.getIsManagement());
     }
 
     public Role fromDto(RoleDto dto) {
-        return new Role(dto.id(), dto.name(), dto.deleted_at(), dto.isManagement());
+        return new Role(dto.id(), dto.name(), null, dto.isManagement());
     }
 }
