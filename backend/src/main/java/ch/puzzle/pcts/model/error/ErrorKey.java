@@ -4,5 +4,8 @@ public enum ErrorKey {
     VALIDATION,
     VALIDATION_DOES_NOT_INCLUDE,
     INTERNAL,
-    ID_IS_NOT_NULL
+    ID_IS_NOT_NULL,
+    NOT_FOUND,
+    ROLE_NAME_IS_NULL,
+    ROLE_NAME_IS_EMPTY,
 }
