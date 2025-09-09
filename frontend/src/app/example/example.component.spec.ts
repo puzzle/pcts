@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ExampleComponent } from './example.component';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('Example', () => {
   let component: ExampleComponent;
@@ -12,7 +13,8 @@ describe('Example', () => {
     await TestBed.configureTestingModule({
       providers: [provideHttpClient(),
         provideHttpClientTesting()],
-      imports: [ExampleComponent]
+      imports: [ExampleComponent,
+        TranslateModule.forRoot()]
     })
       .compileComponents();
 
