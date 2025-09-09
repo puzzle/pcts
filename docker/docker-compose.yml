@@ -1,0 +1,26 @@
+---
+services:
+  pcts-db:
+    container_name: pcts-dev-db
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pwd
+      POSTGRES_DB: pcts
+    ports:
+      - "5432:5432"
+  pcts-backend:
+    container_name: pcts-backend
+    build: ../backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - pcts-db
+  pcts-frontend:
+    container_name: pcts-frontend
+    build:
+      context: ../frontend
+      dockerfile: ../frontend/Dockerfile
+    ports:
+      - "4200:80"

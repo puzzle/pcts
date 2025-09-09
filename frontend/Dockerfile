@@ -12,6 +12,8 @@ RUN npm run build -- --output-path=./dist/ --configuration=production
 
 FROM nginx:alpine AS runner
 
+COPY nginx.conf /etc/nginx/
+
 COPY --from=builder /app/dist/browser /usr/share/nginx/html
 
 EXPOSE 4200
