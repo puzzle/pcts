@@ -18,7 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/role")
+@RequestMapping("/api/v1/roles")
 public class RoleController {
     private final RoleMapper mapper;
     private final RoleBusinessService service;

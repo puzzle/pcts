@@ -2,8 +2,12 @@ package ch.puzzle.pcts.model.role;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
+@SQLDelete(sql = "UPDATE role SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
+@Where(clause = "deleted_at IS NULL")
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_role")
@@ -12,7 +16,7 @@ public class Role {
 
     private String name;
 
-    private LocalDateTime deletedAt;
+    private LocalDateTime deletedAt = null;
 
     private boolean isManagement;
 
