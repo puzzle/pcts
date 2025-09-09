@@ -19,10 +19,3 @@ services:
       - pcts-db
     environment:
       SPRING_PROFILE: dev
-  pcts-frontend:
-    container_name: pcts-frontend
-    build:
-      context: ../frontend
-      dockerfile: ../frontend/Dockerfile
-    ports:
-      - "4200:80"
