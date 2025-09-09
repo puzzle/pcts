@@ -33,6 +33,6 @@ public class RolePersistenceService {
     }
 
     public void delete(Long id) {
-        repository.softDeleteById(id);
+        repository.deleteById(id);
     }
 }

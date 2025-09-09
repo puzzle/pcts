@@ -22,9 +22,4 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
     @Modifying
     @Query("UPDATE Role r SET r.name = :name, r.isManagement = :isManagement WHERE r.id = :id")
     void update(@Param("id") Long id, @Param("name") String name, @Param("isManagement") boolean isManagement);
-
-    @Transactional
-    @Modifying
-    @Query("UPDATE Role r SET r.deletedAt = CURRENT_TIMESTAMP WHERE r.id = :id")
-    void softDeleteById(@Param("id") Long id);
 }

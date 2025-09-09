@@ -21,23 +21,22 @@ public class RoleBusinessService {
     }
 
     public Role getById(long id) {
-        validationService.validateIfExists(id);
+        validationService.validateOnGetById(id);
         return persistenceService.getById(id);
     }
 
     public Role create(Role role) {
-        validationService.validateOnSetData(role);
+        validationService.validateOnCreate(role);
         return persistenceService.create(role);
     }
 
     public Role update(Long id, Role role) {
-        validationService.validateIfExists(id);
-        validationService.validateName(role.getName());
+        validationService.validateOnUpdate(id, role);
         return persistenceService.update(id, role);
     }
 
     public Role delete(Long id) {
-        validationService.validateIfExists(id);
+        validationService.validateOnDelete(id);
         Role deletedRole = persistenceService.getById(id);
         persistenceService.delete(id);
         return deletedRole;
