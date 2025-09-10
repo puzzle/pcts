@@ -3,11 +3,13 @@ import { ExampleService } from './example.service';
 import { ExampleDto } from './dto/example.dto';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-example',
   imports: [CommonModule,
-    FormsModule],
+    FormsModule,
+    TranslatePipe],
   templateUrl: './example.component.html',
   styleUrl: './example.component.css'
 })

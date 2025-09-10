@@ -2,9 +2,9 @@
 <input type="number" [(ngModel)]="exampleId"/>
 
 @for (example of this.examples(); track example.id) {
-<p>{{ example.text }}</p>
+  <p>{{ example.text }}</p>
 } @empty {
-<p>No examples!</p>
+  <p>{{ "EXAMPLE.NO_EXAMPLES" | translate }}</p>
 }
 
-<button type="button" (click)="createNewExample()">I want to create a new example!</button>
+<button type="button" (click)="createNewExample()">{{ "EXAMPLE.CREATE" | translate }}</button>
