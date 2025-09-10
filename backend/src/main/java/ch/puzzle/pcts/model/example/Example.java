@@ -34,4 +34,8 @@ public class Example {
     public void setText(String text) {
         this.text = text;
     }
+
+    public String toString() {
+        return "Example{id=" + id + ", text=" + text + "}";
+    }
 }
