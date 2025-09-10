@@ -53,3 +53,22 @@ The commands are also run automatic in the precommit hook.
 ```shell
   find . -name "*.md" -not -path "./frontend/node_modules/*" -not -path "./.github/ISSUE_TEMPLATE/*" | xargs mdl
 ```
+
+### Docker
+
+To start the application with docker navigate to the docker directory.
+From Repository root `cd docker`
+
+you can start the docker with different docker profiles:
+
+**Full-stack:**
+
+```shell
+  docker compose up
+```
+
+**Backend only:**
+
+```shell
+  docker compose --profile up
+```
