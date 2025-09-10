@@ -4,7 +4,7 @@
 @for (example of this.examples(); track example.id) {
   <p>{{ example.text }}</p>
 } @empty {
-  <p>{{ "example.no-examples" | translate }}</p>
+  <p>{{ "EXAMPLE.NO_EXAMPLES" | translate }}</p>
 }
 
-<button type="button" (click)="createNewExample()">{{ "example.create" | translate }}</button>
+<button type="button" (click)="createNewExample()">{{ "EXAMPLE.CREATE" | translate }}</button>

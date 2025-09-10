@@ -1,8 +1,8 @@
 {
-  "pcts-logo": "Puzzle PCTS Logo",
-  "logout": "Abmelden",
-  "example": {
-    "no-examples": "Keine Beispiele!",
-    "create": "Ich will ein Beispiel erstellen!"
+  "PCTS_LOGO_ALT": "Puzzle PCTS Logo",
+  "LOGOUT": "Abmelden",
+  "EXAMPLE": {
+    "NO_EXAMPLES": "Keine Beispiele!",
+    "CREATE": "Ich will ein Beispiel erstellen!"
   }
 }
