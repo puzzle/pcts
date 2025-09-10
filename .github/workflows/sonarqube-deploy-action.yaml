@@ -4,7 +4,7 @@ name: 'SonarQube Analysis'
 on: push
 
 jobs:
- quality-gate:
+  quality-gate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
