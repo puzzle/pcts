@@ -20,7 +20,7 @@ public class RolePersistenceService {
     }
 
     public Role getById(long id) {
-        return repository.getByID(id);
+        return repository.findById(id).orElse(null);
     }
 
     public List<Role> getAll() {
@@ -28,8 +28,8 @@ public class RolePersistenceService {
     }
 
     public Role update(Long id, Role role) {
-        repository.update(id, role.getName(), role.getIsManagement());
-        return repository.getByID(id);
+        role.setId(id);
+        return repository.save(role);
     }
 
     public void delete(Long id) {
