@@ -3,6 +3,7 @@ package ch.puzzle.pcts.service.persistence;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.repository.RoleRepository;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,8 +20,8 @@ public class RolePersistenceService {
         return repository.save(role);
     }
 
-    public Role getById(long id) {
-        return repository.findById(id).orElse(null);
+    public Optional<Role> getById(long id) {
+        return repository.findById(id);
     }
 
     public List<Role> getAll() {
