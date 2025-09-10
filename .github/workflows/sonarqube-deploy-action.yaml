@@ -1,10 +1,10 @@
 ---
-name: 'Sonarqube deployment'
+name: 'SonarQube Analysis'
 
 on: push
 
 jobs:
-  deploy-sonarqube:
+ quality-gate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
