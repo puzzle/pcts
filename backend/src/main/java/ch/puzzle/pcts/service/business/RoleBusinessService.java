@@ -1,9 +1,12 @@
 package ch.puzzle.pcts.service.business;
 
+import ch.puzzle.pcts.exception.PCTSException;
+import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.persistence.RolePersistenceService;
 import ch.puzzle.pcts.service.validation.RoleValidationService;
 import java.util.List;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,7 +25,11 @@ public class RoleBusinessService {
 
     public Role getById(long id) {
         validationService.validateOnGetById(id);
-        return persistenceService.getById(id);
+        return persistenceService
+                .getById(id)
+                .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,
+                                                     "Role with id: " + id + " does not exist.",
+                                                     ErrorKey.NOT_FOUND));
     }
 
     public Role create(Role role) {
@@ -37,7 +44,7 @@ public class RoleBusinessService {
 
     public Role delete(Long id) {
         validationService.validateOnDelete(id);
-        Role deletedRole = persistenceService.getById(id);
+        Role deletedRole = this.getById(id);
         persistenceService.delete(id);
         return deletedRole;
     }
