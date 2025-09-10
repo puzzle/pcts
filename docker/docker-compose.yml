@@ -10,7 +10,7 @@ services:
       POSTGRES_DB: pcts
     ports:
       - "5432:5432"
-    profiles: ['', backend]
+    profiles: ['', backend, db]
   pcts-backend:
     container_name: pcts-backend
     build: ../backend
@@ -19,6 +19,7 @@ services:
     depends_on:
       - pcts-db
     environment:
+      PCTS_SPRING_DATASOURCE_URL: pcts-db
       SPRING_PROFILE: dev
     profiles: ['', backend]
   pcts-frontend:

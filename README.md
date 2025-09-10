@@ -67,8 +67,14 @@ you can start the docker with different docker profiles:
   docker compose up
 ```
 
-**Backend only:**
+**Backend and DB:**
 
 ```shell
-  docker compose --profile up
+  docker compose --profile backend up
+```
+
+**only DB:**
+
+```shell
+  docker compose --profile db up
 ```
