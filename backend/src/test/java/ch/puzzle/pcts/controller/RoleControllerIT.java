@@ -31,7 +31,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @Import(SpringSecurityConfig.class)
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(RoleController.class)
-public class RoleControllerIT {
+class RoleControllerIT {
 
     @MockitoBean
     private RoleBusinessService service;
