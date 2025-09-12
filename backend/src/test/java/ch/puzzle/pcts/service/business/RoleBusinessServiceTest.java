@@ -17,7 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-public class RoleBusinessServiceTest {
+class RoleBusinessServiceTest {
 
     @Mock
     private RoleValidationService validationService;

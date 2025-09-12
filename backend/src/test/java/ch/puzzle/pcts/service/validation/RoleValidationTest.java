@@ -17,7 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-public class RoleValidationTest {
+class RoleValidationTest {
     private AutoCloseable closeable;
 
     @Mock
