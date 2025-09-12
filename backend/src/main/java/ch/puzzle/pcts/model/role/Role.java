@@ -1,7 +1,6 @@
 package ch.puzzle.pcts.model.role;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -16,14 +15,11 @@ public class Role {
 
     private String name;
 
-    private LocalDateTime deletedAt = null;
-
     private boolean isManagement;
 
-    public Role(Long id, String name, LocalDateTime deletedAt, boolean isManagement) {
+    public Role(Long id, String name, boolean isManagement) {
         this.id = id;
         this.name = name;
-        this.deletedAt = deletedAt;
         this.isManagement = isManagement;
     }
 
@@ -44,14 +40,6 @@ public class Role {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public LocalDateTime getDeletedAt() {
-        return deletedAt;
-    }
-
-    public void setDeletedAt(LocalDateTime deletedAt) {
-        this.deletedAt = deletedAt;
     }
 
     public boolean getIsManagement() {

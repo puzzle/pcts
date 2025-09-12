@@ -1,0 +1,156 @@
+package ch.puzzle.pcts.controller;
+
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import ch.puzzle.pcts.SpringSecurityConfig;
+import ch.puzzle.pcts.dto.role.RoleDto;
+import ch.puzzle.pcts.mapper.RoleMapper;
+import ch.puzzle.pcts.model.role.Role;
+import ch.puzzle.pcts.service.business.RoleBusinessService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.BDDMockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
+
+@Import(SpringSecurityConfig.class)
+@ExtendWith(MockitoExtension.class)
+@WebMvcTest(RoleController.class)
+public class RoleControllerIT {
+
+    @MockitoBean
+    private RoleBusinessService service;
+
+    @MockitoBean
+    private RoleMapper mapper;
+
+    @Autowired
+    private MockMvc mvc;
+
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    private static final String BASEURL = "/api/v1/roles";
+
+    private Role role;
+    private RoleDto requestDto;
+    private RoleDto dto;
+    private Long id;
+
+    @BeforeEach
+    void setUp() {
+        role = new Role(1L, "Role 1", false);
+        requestDto = new RoleDto(null, "Role 1", false);
+        dto = new RoleDto(1L, "Role 1", false);
+        id = 1L;
+    }
+
+    @DisplayName("Should successfully get all roles")
+    @Test
+    void shouldGetAllRoles() throws Exception {
+        BDDMockito.given(service.getAll()).willReturn(List.of(role));
+        BDDMockito.given(mapper.toDto(any(List.class))).willReturn(List.of(dto));
+
+        mvc
+                .perform(get(BASEURL)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].id").value(dto.id()))
+                .andExpect(jsonPath("$[0].name").value(dto.name()))
+                .andExpect(jsonPath("$[0].isManagement").value(dto.isManagement()));
+
+        verify(service, times(1)).getAll();
+        verify(mapper, times(1)).toDto(any(List.class));
+    }
+
+    @DisplayName("Should successfully get role by id")
+    @Test
+    void shouldGetRoleById() throws Exception {
+        BDDMockito.given(service.getById(anyLong())).willReturn(role);
+        BDDMockito.given(mapper.toDto(any(Role.class))).willReturn(dto);
+
+        mvc.perform(get(BASEURL + "/1").with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(status().isOk());
+
+        verify(service, times(1)).getById(eq(1L));
+        verify(mapper, times(1)).toDto(any(Role.class));
+    }
+
+    @DisplayName("Should successfully create new role")
+    @Test
+    void shouldCreateNewRole() throws Exception {
+        BDDMockito.given(mapper.fromDto(any(RoleDto.class))).willReturn(role);
+        BDDMockito.given(service.create(any(Role.class))).willReturn(role);
+        BDDMockito.given(mapper.toDto(any(Role.class))).willReturn(dto);
+
+        mvc
+                .perform(post(BASEURL)
+                        .content(objectMapper.writeValueAsString(requestDto))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.isManagement").value(false))
+                .andExpect(jsonPath("$.name").value("Role 1"));
+
+        verify(mapper, times(1)).fromDto(any(RoleDto.class));
+        verify(service, times(1)).create(any(Role.class));
+        verify(mapper, times(1)).toDto(any(Role.class));
+    }
+
+    @DisplayName("Should successfully update role")
+    @Test
+    void shouldUpdateRole() throws Exception {
+        BDDMockito.given(mapper.fromDto(any(RoleDto.class))).willReturn(role);
+        BDDMockito.given(service.update(any(Long.class), any(Role.class))).willReturn(role);
+        BDDMockito.given(mapper.toDto(any(Role.class))).willReturn(dto);
+
+        mvc
+                .perform(put(BASEURL + "/" + id)
+                        .content(objectMapper.writeValueAsString(requestDto))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.isManagement").value(false))
+                .andExpect(jsonPath("$.name").value("Role 1"));
+
+        verify(mapper, times(1)).fromDto(any(RoleDto.class));
+        verify(service, times(1)).update(any(Long.class), any(Role.class));
+        verify(mapper, times(1)).toDto(any(Role.class));
+    }
+
+    @DisplayName("Should successfully delete role")
+    @Test
+    void shouldDeleteRole() throws Exception {
+        BDDMockito.given(service.delete(any(Long.class))).willReturn(role);
+        BDDMockito.given(mapper.toDto(any(Role.class))).willReturn(dto);
+
+        mvc
+                .perform(delete(BASEURL + "/" + id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().is(204))
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.isManagement").value(false))
+                .andExpect(jsonPath("$.name").value("Role 1"));
+
+        verify(service, times(1)).delete(any(Long.class));
+        verify(mapper, times(1)).toDto(any(Role.class));
+    }
+}

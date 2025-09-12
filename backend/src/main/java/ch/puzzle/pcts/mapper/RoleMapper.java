@@ -21,6 +21,6 @@ public class RoleMapper {
     }
 
     public Role fromDto(RoleDto dto) {
-        return new Role(dto.id(), dto.name(), null, dto.isManagement());
+        return new Role(dto.id(), dto.name(), dto.isManagement());
     }
 }
