@@ -43,6 +43,7 @@ export default tsEslint.config(
           './tsconfig.json',
           './tsconfig.spec.json',
           './tsconfig.app.json',
+          './cypress/tsconfig.json',
         ],
       },
       globals: {

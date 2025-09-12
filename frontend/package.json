@@ -14,7 +14,8 @@
     "lint": "eslint .",
     "prettier:lint:format:specific": "prettier --write ",
     "prettier:lint:format": "prettier --write .",
-    "prettier:lint": "prettier --check ."
+    "prettier:lint": "prettier --check .",
+    "cy:open": "cypress open"
   },
   "private": true,
   "dependencies": {
