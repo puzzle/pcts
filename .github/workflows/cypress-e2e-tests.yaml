@@ -1,0 +1,15 @@
+---
+name: 'E2E Tests'
+
+on:
+  workflow_run:
+    workflows: [Tests, Format]
+    types: [completed]
+    branches: ['*']
+
+jobs:
+  e2e-tests:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    uses: ./.github/workflows/reusable__e2e-testing.yml
+    with:
+      COMMIT_HASH: ${{ github.sha }}

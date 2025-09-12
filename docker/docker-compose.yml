@@ -10,9 +10,9 @@ services:
       POSTGRES_DB: pcts
     ports:
       - "5432:5432"
-    profiles: ['', backend, db]
-  pcts-backend:
-    container_name: pcts-backend
+    profiles: ['', backend, db, e2e]
+  pcts-dev-backend:
+    container_name: pcts-dev-backend
     build: ../backend
     ports:
       - "8080:8080"
@@ -22,6 +22,18 @@ services:
       PCTS_SPRING_DATASOURCE_URL: pcts-db
       SPRING_PROFILE: dev
     profiles: ['', backend]
+
+  pcts-e2e-backend:
+    container_name: pcts-e2e-backend
+    build: ../backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - pcts-db
+    environment:
+      SPRING_PROFILE: e2e-test
+    profiles: [e2e]
+
   pcts-frontend:
     container_name: pcts-frontend
     build:
@@ -29,4 +41,4 @@ services:
       dockerfile: ../frontend/Dockerfile
     ports:
       - "4200:80"
-    profiles: ['']
+    profiles: ['', e2e]
