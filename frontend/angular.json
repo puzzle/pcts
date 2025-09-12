@@ -21,6 +21,10 @@
                 "input": "public"
               }
             ],
+            "loader": {
+              ".woff": "file",
+              ".woff2": "file"
+            },
             "styles": [
               "src/styles.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css"

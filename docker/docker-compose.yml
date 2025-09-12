@@ -1,7 +1,7 @@
 ---
 services:
   pcts-db:
-    container_name: ptcs-dev-db
+    container_name: pcts-db
     image: postgres:17
     restart: unless-stopped
     environment:
@@ -9,4 +9,24 @@ services:
       POSTGRES_PASSWORD: pwd
       POSTGRES_DB: pcts
     ports:
-      - 5432:5432
+      - "5432:5432"
+    profiles: ['', backend, db]
+  pcts-backend:
+    container_name: pcts-backend
+    build: ../backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - pcts-db
+    environment:
+      PCTS_SPRING_DATASOURCE_URL: pcts-db
+      SPRING_PROFILE: dev
+    profiles: ['', backend]
+  pcts-frontend:
+    container_name: pcts-frontend
+    build:
+      context: ../frontend
+      dockerfile: ../frontend/Dockerfile
+    ports:
+      - "4200:80"
+    profiles: ['']
