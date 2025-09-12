@@ -56,10 +56,9 @@ The commands are also run automatic in the precommit hook.
 
 ### Docker
 
-To start the application with docker navigate to the docker directory.
-From Repository root `cd docker`
+To start the application with Docker, navigate to the `/docker` directory.
 
-you can start the docker with different docker profiles:
+There are different profiles available.
 
 **Full-stack:**
 
@@ -73,7 +72,7 @@ you can start the docker with different docker profiles:
   docker compose --profile backend up
 ```
 
-**only DB:**
+**Only DB:**
 
 ```shell
   docker compose --profile db up
