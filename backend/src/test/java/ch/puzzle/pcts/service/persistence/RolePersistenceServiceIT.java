@@ -70,11 +70,11 @@ class RolePersistenceServiceIT {
     void shouldCreate() {
         Role role = new Role(null, "Role 3", false);
 
-        persistenceService.create(role);
-        Optional<Role> result = persistenceService.getById(3L);
+        Role result = persistenceService.create(role);
 
-        assertThat(result.isPresent()).isTrue();
-        assertThat(role.getId()).isEqualTo(3L);
+        assertThat(result.getId()).isEqualTo(3L);
+        assertThat(result.getName()).isEqualTo(role.getName());
+        assertThat(result.getIsManagement()).isEqualTo(role.getIsManagement());
     }
 
     @DisplayName("Should update role")

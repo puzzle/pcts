@@ -44,7 +44,6 @@ public class RoleBusinessService {
 
     public void delete(Long id) {
         validationService.validateOnDelete(id);
-        Role deletedRole = this.getById(id);
         persistenceService.delete(id);
     }
 }

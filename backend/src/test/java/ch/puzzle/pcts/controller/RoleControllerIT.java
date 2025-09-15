@@ -85,7 +85,12 @@ class RoleControllerIT {
         BDDMockito.given(service.getById(anyLong())).willReturn(role);
         BDDMockito.given(mapper.toDto(any(Role.class))).willReturn(expectedDto);
 
-        mvc.perform(get(BASEURL + "/1").with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(status().isOk());
+        mvc
+                .perform(get(BASEURL + "/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.isManagement").value(false))
+                .andExpect(jsonPath("$.name").value("Role 1"));
 
         verify(service, times(1)).getById(eq(1L));
         verify(mapper, times(1)).toDto(any(Role.class));
@@ -139,18 +144,14 @@ class RoleControllerIT {
     @Test
     void shouldDeleteRole() throws Exception {
         BDDMockito.willDoNothing().given(service).delete(anyLong());
-        BDDMockito.given(mapper.toDto(any(Role.class))).willReturn(expectedDto);
 
         mvc
                 .perform(delete(BASEURL + "/" + id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().is(204))
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.isManagement").value(false))
-                .andExpect(jsonPath("$.name").value("Role 1"));
+                .andExpect(jsonPath("$").doesNotExist());
 
         verify(service, times(1)).delete(any(Long.class));
-        verify(mapper, times(1)).toDto(any(Role.class));
     }
 }

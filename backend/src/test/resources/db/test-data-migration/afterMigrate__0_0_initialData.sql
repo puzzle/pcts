@@ -8,11 +8,10 @@ SELECT setval('sequence_example', (SELECT MAX(id) FROM example));
 
 TRUNCATE TABLE role CASCADE;
 
-INSERT INTO role (id, name, deleted_at, is_management)
+INSERT INTO role (name, deleted_at, is_management)
 VALUES
-    (1, 'Role 1', '1970-01-01 00:00:00', TRUE),
-    (2, 'Role 2', null, false);
+    ('Role 1', '1970-01-01 00:00:00', TRUE),
+    ('Role 2', null,  FALSE);
 
-SELECT setval('sequence_role', (SELECT MAX(id) FROM role));
 
 

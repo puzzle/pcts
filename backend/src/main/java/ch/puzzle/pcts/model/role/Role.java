@@ -9,8 +9,7 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("deleted_at IS NULL")
 public class Role {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_role")
-    @SequenceGenerator(name = "sequence_role", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
