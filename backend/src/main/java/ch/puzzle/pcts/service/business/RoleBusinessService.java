@@ -42,10 +42,9 @@ public class RoleBusinessService {
         return persistenceService.update(id, role);
     }
 
-    public Role delete(Long id) {
+    public void delete(Long id) {
         validationService.validateOnDelete(id);
         Role deletedRole = this.getById(id);
         persistenceService.delete(id);
-        return deletedRole;
     }
 }

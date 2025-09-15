@@ -69,12 +69,11 @@ public class RoleController {
 
     @Operation(summary = "Delete a role")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Role deleted successfully", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = RoleDto.class)) }),
+            @ApiResponse(responseCode = "204", description = "Role deleted successfully", content = @Content),
             @ApiResponse(responseCode = "404", description = "Role not found", content = @Content) })
     @DeleteMapping("{id}")
-    public ResponseEntity<RoleDto> deleteRole(@PathVariable Long id) {
-        Role deletedRole = service.delete(id);
-        return ResponseEntity.status(204).body(mapper.toDto(deletedRole));
+    public ResponseEntity deleteRole(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.status(204).build();
     }
 }

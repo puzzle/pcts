@@ -92,9 +92,8 @@ class RoleBusinessServiceTest {
         Role role = new Role(id, "Role1", false);
         when(persistenceService.getById(id)).thenReturn(Optional.of(role));
 
-        Role result = businessService.delete(id);
+        businessService.delete(id);
 
-        assertEquals(role, result);
         verify(validationService).validateOnDelete(id);
         verify(persistenceService).getById(id);
         verify(persistenceService).delete(id);

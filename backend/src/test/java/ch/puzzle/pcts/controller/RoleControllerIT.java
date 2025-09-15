@@ -48,14 +48,14 @@ class RoleControllerIT {
 
     private Role role;
     private RoleDto requestDto;
-    private RoleDto dto;
+    private RoleDto expectedDto;
     private Long id;
 
     @BeforeEach
     void setUp() {
         role = new Role(1L, "Role 1", false);
         requestDto = new RoleDto(null, "Role 1", false);
-        dto = new RoleDto(1L, "Role 1", false);
+        expectedDto = new RoleDto(1L, "Role 1", false);
         id = 1L;
     }
 
@@ -63,7 +63,7 @@ class RoleControllerIT {
     @Test
     void shouldGetAllRoles() throws Exception {
         BDDMockito.given(service.getAll()).willReturn(List.of(role));
-        BDDMockito.given(mapper.toDto(any(List.class))).willReturn(List.of(dto));
+        BDDMockito.given(mapper.toDto(any(List.class))).willReturn(List.of(expectedDto));
 
         mvc
                 .perform(get(BASEURL)
@@ -71,9 +71,9 @@ class RoleControllerIT {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].id").value(dto.id()))
-                .andExpect(jsonPath("$[0].name").value(dto.name()))
-                .andExpect(jsonPath("$[0].isManagement").value(dto.isManagement()));
+                .andExpect(jsonPath("$[0].id").value(expectedDto.id()))
+                .andExpect(jsonPath("$[0].name").value(expectedDto.name()))
+                .andExpect(jsonPath("$[0].isManagement").value(expectedDto.isManagement()));
 
         verify(service, times(1)).getAll();
         verify(mapper, times(1)).toDto(any(List.class));
@@ -83,7 +83,7 @@ class RoleControllerIT {
     @Test
     void shouldGetRoleById() throws Exception {
         BDDMockito.given(service.getById(anyLong())).willReturn(role);
-        BDDMockito.given(mapper.toDto(any(Role.class))).willReturn(dto);
+        BDDMockito.given(mapper.toDto(any(Role.class))).willReturn(expectedDto);
 
         mvc.perform(get(BASEURL + "/1").with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(status().isOk());
 
@@ -96,7 +96,7 @@ class RoleControllerIT {
     void shouldCreateNewRole() throws Exception {
         BDDMockito.given(mapper.fromDto(any(RoleDto.class))).willReturn(role);
         BDDMockito.given(service.create(any(Role.class))).willReturn(role);
-        BDDMockito.given(mapper.toDto(any(Role.class))).willReturn(dto);
+        BDDMockito.given(mapper.toDto(any(Role.class))).willReturn(expectedDto);
 
         mvc
                 .perform(post(BASEURL)
@@ -118,7 +118,7 @@ class RoleControllerIT {
     void shouldUpdateRole() throws Exception {
         BDDMockito.given(mapper.fromDto(any(RoleDto.class))).willReturn(role);
         BDDMockito.given(service.update(any(Long.class), any(Role.class))).willReturn(role);
-        BDDMockito.given(mapper.toDto(any(Role.class))).willReturn(dto);
+        BDDMockito.given(mapper.toDto(any(Role.class))).willReturn(expectedDto);
 
         mvc
                 .perform(put(BASEURL + "/" + id)
@@ -138,8 +138,8 @@ class RoleControllerIT {
     @DisplayName("Should successfully delete role")
     @Test
     void shouldDeleteRole() throws Exception {
-        BDDMockito.given(service.delete(any(Long.class))).willReturn(role);
-        BDDMockito.given(mapper.toDto(any(Role.class))).willReturn(dto);
+        BDDMockito.willDoNothing().given(service).delete(anyLong());
+        BDDMockito.given(mapper.toDto(any(Role.class))).willReturn(expectedDto);
 
         mvc
                 .perform(delete(BASEURL + "/" + id)
