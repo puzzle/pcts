@@ -102,8 +102,8 @@ class RolePersistenceServiceIT {
         long id = 2;
 
         persistenceService.delete(id);
-        Optional<Role> result = persistenceService.getById(id);
 
+        Optional<Role> result = persistenceService.getById(id);
         assertThat(result.isPresent()).isFalse();
     }
 }
