@@ -1,0 +1,58 @@
+package ch.puzzle.pcts.service.validation;
+
+import ch.puzzle.pcts.exception.PCTSException;
+import ch.puzzle.pcts.model.certificate.Certificate;
+import ch.puzzle.pcts.model.error.ErrorKey;
+import ch.puzzle.pcts.service.persistence.CertificatePersistenceService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
+
+@Component
+public class CertificateValidationService {
+    private final CertificatePersistenceService persistenceService;
+
+    @Autowired
+    public CertificateValidationService(CertificatePersistenceService persistenceService) {
+        this.persistenceService = persistenceService;
+    }
+
+    public void validateOnCreate(Certificate certificate) {
+
+    }
+
+    public void validateOnGetById(Long id) {
+
+    }
+
+    public void validateOnUpdate(Certificate certificate) {
+
+    }
+
+    public void validateOnDelete(Long id) {
+    }
+
+    private void validateIfIdIsNull(Long id) {
+        if (id != null) {
+            throw new PCTSException(HttpStatus.BAD_REQUEST, "Id needs to be undefined", ErrorKey.ID_IS_NOT_NULL);
+        }
+    }
+
+    private void validateName(String name) {
+        if (name == null) {
+            throw new PCTSException(HttpStatus.BAD_REQUEST, "Name must not be null", ErrorKey.ROLE_NAME_IS_NULL);
+        }
+
+        if (name.isBlank()) {
+            throw new PCTSException(HttpStatus.BAD_REQUEST, "Name must not be empty", ErrorKey.ROLE_NAME_IS_EMPTY);
+        }
+    }
+
+    private void validateIfExists(long id) {
+        persistenceService
+                .getById(id)
+                .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,
+                                                     "Role with id: " + id + " does not exist.",
+                                                     ErrorKey.NOT_FOUND));
+    }
+}
