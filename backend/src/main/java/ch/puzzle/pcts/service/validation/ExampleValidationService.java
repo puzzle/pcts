@@ -3,8 +3,6 @@ package ch.puzzle.pcts.service.validation;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.example.Example;
-import ch.puzzle.pcts.service.persistence.ExamplePersistenceService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -14,13 +12,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ExampleValidationService {
-    private final ExamplePersistenceService persistenceService;
-
-    @Autowired
-    public ExampleValidationService(ExamplePersistenceService persistenceService) {
-        this.persistenceService = persistenceService;
-    }
-
     public void validateOnCreate(Example example) {
 
         if (!example.getText().contains("Example")) {
