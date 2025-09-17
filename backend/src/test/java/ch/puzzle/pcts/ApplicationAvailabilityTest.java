@@ -1,8 +1,7 @@
 package ch.puzzle.pcts;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,13 +21,11 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @AutoConfigureMockMvc
 @Testcontainers
 class ApplicationAvailabilityTest {
-    @Autowired
-    private MockMvc mvc;
-
     private static final String BASEURL = "/actuator/health/";
-
     @Container
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17-alpine");
+    @Autowired
+    private MockMvc mvc;
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
@@ -40,12 +37,20 @@ class ApplicationAvailabilityTest {
     @DisplayName("Should accept traffic")
     @Test
     void shouldAcceptTraffic() throws Exception {
-        mvc.perform(get(BASEURL + "readiness")).andExpect(status().isOk()).andExpect(jsonPath("$.status").value("UP"));
+        mvc
+                .perform(get(BASEURL + "readiness"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("UP"))
+                .andExpect(content().string("{\"status\":\"UP\"}"));
     }
 
     @DisplayName("Should be live")
     @Test
     void shouldBeLive() throws Exception {
-        mvc.perform(get(BASEURL + "liveness")).andExpect(status().isOk()).andExpect(jsonPath("$.status").value("UP"));
+        mvc
+                .perform(get(BASEURL + "liveness"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("UP"))
+                .andExpect(content().string("{\"status\":\"UP\"}"));;
     }
 }
