@@ -14,7 +14,9 @@
     "lint": "eslint .",
     "prettier:lint:format:specific": "prettier --write ",
     "prettier:lint:format": "prettier --write .",
-    "prettier:lint": "prettier --check ."
+    "prettier:lint": "prettier --check .",
+    "cy:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "private": true,
   "dependencies": {
@@ -28,6 +30,7 @@
     "@ngx-translate/http-loader": "^17.0.0",
     "@puzzleitc/puzzle-shell": "^5.1.0",
     "bootstrap": "^5.3.7",
+    "cypress": "^15.2.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },

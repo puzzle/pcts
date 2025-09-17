@@ -22,6 +22,7 @@ services:
       PCTS_SPRING_DATASOURCE_URL: pcts-db
       SPRING_PROFILE: dev
     profiles: ['', backend]
+
   pcts-frontend:
     container_name: pcts-frontend
     build:

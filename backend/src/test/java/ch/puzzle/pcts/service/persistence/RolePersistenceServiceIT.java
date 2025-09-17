@@ -49,7 +49,7 @@ class RolePersistenceServiceIT {
     void shouldGetRoleById() {
         Optional<Role> role = persistenceService.getById(2L);
 
-        assertThat(role.isPresent()).isTrue();
+        assertThat(role).isPresent();
         assertThat(role.get().getId()).isEqualTo(2L);
     }
 
@@ -88,10 +88,10 @@ class RolePersistenceServiceIT {
         persistenceService.update(id, role);
         Optional<Role> result = persistenceService.getById(id);
 
-        assertThat(result.isPresent()).isTrue();
+        assertThat(result).isPresent();
         assertThat(result.get().getId()).isEqualTo(id);
         assertThat(role.getName()).isEqualTo("Updated role");
-        assertThat(role.getIsManagement()).isEqualTo(true);
+        assertThat(role.getIsManagement()).isTrue();
     }
 
     @DisplayName("Should delete role")
@@ -104,6 +104,6 @@ class RolePersistenceServiceIT {
         persistenceService.delete(id);
 
         Optional<Role> result = persistenceService.getById(id);
-        assertThat(result.isPresent()).isFalse();
+        assertThat(result).isNotPresent();
     }
 }

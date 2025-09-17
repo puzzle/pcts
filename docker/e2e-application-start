@@ -1,0 +1,12 @@
+#!/bin/bash
+git_base_path=$(git rev-parse --show-toplevel)
+
+echo "**Changing into the docker directory**"
+cd "$git_base_path"/docker
+
+echo "**Merging and running the docker-compose file**"
+echo "----------------------------------------------------------------"
+docker compose -f docker-compose.yml -f docker-compose.e2e.yml up
+
+echo "**Stopping the docker containers**"
+trap 'docker compose down' EXIT

@@ -1,9 +1,14 @@
 ---
-name: 'Format'
+name: "Reusable - Format"
 
-on: [push]
+on:
+  workflow_call:
+    inputs:
+      COMMIT_HASH:
+        type: string
+        required: false
+
 jobs:
-
   backend:
     runs-on: ubuntu-24.04
     defaults:
@@ -12,14 +17,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.COMMIT_HASH }}
 
-      - name: Set up JDK ${{vars.JAVA_VERSION}}
+      - name: Set up JDK ${{ vars.JAVA_VERSION }}
         uses: actions/setup-java@v5
         with:
-          java-version: ${{vars.JAVA_VERSION}}
-          distribution: 'adopt'
+          java-version: ${{ vars.JAVA_VERSION }}
+          distribution: adopt
           server-id: github
-          settings-path: ${{github.workspace}}
+          settings-path: ${{ github.workspace }}
 
       - name: Format backend
         run: mvn spotless:check
@@ -32,11 +39,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.COMMIT_HASH }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: ${{vars.NODE_VERSION}}
+          node-version: ${{ vars.NODE_VERSION }}
 
       - name: Npm install
         run: npm ci
@@ -52,6 +61,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.COMMIT_HASH }}
 
       - name: Install Ruby
         run: sudo apt-get install ruby-full
@@ -72,9 +83,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.COMMIT_HASH }}
 
       - name: Install yamllint
-        run: sudo apt-get install yamllint
+        run: sudo apt-get install -y yamllint
 
       - name: yaml linting
         run: yamllint .

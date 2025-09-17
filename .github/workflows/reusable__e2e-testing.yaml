@@ -1,0 +1,85 @@
+---
+name: 'Reusable - Run E2E Tests (Matrix)'
+
+on:
+  workflow_call:
+    inputs:
+      DOCKER_IMAGE_TAG:
+        type: string
+        description: 'The full Docker image tag being tested'
+        required: false
+      COMMIT_HASH:
+        type: string
+        description: 'The commit hash from which to check out the repository'
+        required: false
+
+jobs:
+  get-e2e-files:
+    runs-on: ubuntu-latest
+    outputs:
+      file_list: ${{ steps.generate-file-list.outputs.file_list }}
+    steps:
+      - name: Checkout Target Repo Code (to find test files)
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.COMMIT_HASH }}
+
+      - name: Install jq (JSON processor)
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Generate list of E2E test files
+        id: generate-file-list
+        env:
+          E2E_DIR: frontend/cypress/e2e
+        run: |
+          if [ -d "$E2E_DIR" ] && [ "$(ls -A $E2E_DIR)" ]; then
+            FILES=$(ls $E2E_DIR | jq -R . | jq -s . | jq -c)
+            echo "Found test files: $FILES"
+          else
+            echo "No test files found in $E2E_DIR or directory does not exist."
+            FILES="[]"
+          fi
+          echo "file_list=$FILES" >> $GITHUB_OUTPUT
+
+  e2e:
+    needs: get-e2e-files
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        file: ${{ fromJSON(needs.get-e2e-files.outputs.file_list) }}
+    env:
+      BRANCH_NAME: ${{ github.ref_name || github.base_ref }}
+      COMMIT_REF: ${{ inputs.COMMIT_HASH || github.ref_name }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ env.COMMIT_REF }}
+
+      - name: Start application stack with Docker Compose
+        run: cd docker && docker compose -f docker-compose.yml -f docker-compose.e2e.yml up -d
+
+      - name: Set up node for Cypress
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+
+      - name: Cypress run e2e tests
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: frontend
+          install: true
+          wait-on: 'http://localhost:4200/'
+          wait-on-timeout: 300
+          browser: chrome
+          headed: false
+          config: baseUrl=http://localhost:4200/
+          spec: cypress/e2e/${{ matrix.file }}
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cypress-screenshots for ${{ matrix.file }}
+          path: frontend/cypress/screenshots
