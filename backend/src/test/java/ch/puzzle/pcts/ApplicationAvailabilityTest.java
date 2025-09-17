@@ -51,6 +51,6 @@ class ApplicationAvailabilityTest {
                 .perform(get(BASEURL + "liveness"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("UP"))
-                .andExpect(content().string("{\"status\":\"UP\"}"));;
+                .andExpect(content().string("{\"status\":\"UP\"}"));
     }
 }
