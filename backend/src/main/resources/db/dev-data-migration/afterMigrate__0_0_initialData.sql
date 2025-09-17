@@ -29,6 +29,12 @@ VALUES
     ('/mobility'),
     ('/bbt'),
     ('/mid');
+
+TRUNCATE TABLE certificate CASCADE;
+
+INSERT INTO certificate (name, points, is_deleted, comment)
+VALUES
+    ('Test', 2.5, false, 'This is a test')
 TRUNCATE TABLE experience_type CASCADE;
 
 INSERT INTO experience_type (name, highly_relevant_points, limited_relevant_points, little_relevant_points)

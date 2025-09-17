@@ -18,18 +18,22 @@ public class CertificateValidationService {
     }
 
     public void validateOnCreate(Certificate certificate) {
-
+        validateIfIdIsNull(certificate.getId());
+        validateName(certificate.getName());
     }
 
     public void validateOnGetById(Long id) {
-
+        validateIfExists(id);
     }
 
-    public void validateOnUpdate(Certificate certificate) {
-
+    public void validateOnUpdate(Long id, Certificate certificate) {
+        validateIfExists(id);
+        validateIfIdIsNull(certificate.getId());
+        validateName(certificate.getName());
     }
 
     public void validateOnDelete(Long id) {
+        validateIfExists(id);
     }
 
     private void validateIfIdIsNull(Long id) {
@@ -52,7 +56,7 @@ public class CertificateValidationService {
         persistenceService
                 .getById(id)
                 .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,
-                                                     "Role with id: " + id + " does not exist.",
+                                                     "Certificate with id: " + id + " does not exist.",
                                                      ErrorKey.NOT_FOUND));
     }
 }

@@ -21,6 +21,12 @@ VALUES
     ('OrganisationUnit 2', null);
 
 
+TRUNCATE TABLE certificate CASCADE;
+
+INSERT INTO certificate (name, points, is_deleted, comment)
+VALUES
+    ('Certificate 1', 5.5, false, 'This is Certificate 1')
+
 TRUNCATE TABLE experience_type CASCADE;
 
 INSERT INTO experience_type (name, highly_relevant_points, limited_relevant_points, little_relevant_points)

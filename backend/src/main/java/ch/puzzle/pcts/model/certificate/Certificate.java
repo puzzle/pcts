@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.model.certificate;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 public class Certificate {
@@ -11,14 +12,14 @@ public class Certificate {
     private String name;
 
     @Column(nullable = false)
-    private double points;
+    private BigDecimal points;
 
     @Column(nullable = false)
     private boolean is_deleted;
 
     private String comment;
 
-    public Certificate(long id, String name, double points, boolean is_deleted, String comment) {
+    public Certificate(Long id, String name, BigDecimal points, boolean is_deleted, String comment) {
         this.id = id;
         this.name = name;
         this.points = points;
@@ -45,11 +46,11 @@ public class Certificate {
         this.name = name;
     }
 
-    public double getPoints() {
+    public BigDecimal getPoints() {
         return points;
     }
 
-    public void setPoints(double points) {
+    public void setPoints(BigDecimal points) {
         this.points = points;
     }
 
