@@ -1,6 +1,8 @@
+import HomePage from '../pages/homePage';
+
 describe('example page', () => {
   beforeEach(() => {
-    cy.visitDefaultPage();
+    HomePage.visitDefaultPage();
   });
 
   it('should show html', () => {

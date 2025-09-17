@@ -36,8 +36,3 @@
 //     }
 //   }
 // }
-
-Cypress.Commands.add('visitDefaultPage', () => {
-  // Probably add the login in this command as well, see OKR for inspiration
-  cy.visit('/')
-});
