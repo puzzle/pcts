@@ -21,6 +21,12 @@ VALUES
     ('Extern', FALSE),
     ('Consultant', FALSE);
 
+INSERT INTO organisation_unit (name)
+VALUES
+    ('/zh'),
+    ('/mobility'),
+    ('/bbt'),
+    ('/mid')
 TRUNCATE TABLE experience_type CASCADE;
 
 INSERT INTO experience_type (name, highly_relevant_points, limited_relevant_points, little_relevant_points)
