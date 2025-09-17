@@ -34,6 +34,16 @@ class ApplicationAvailabilityTest {
         registry.add("spring.datasource.password", postgres::getPassword);
     }
 
+    @DisplayName("Should be healthy")
+    @Test
+    void shouldBeHealthy() throws Exception {
+        mvc
+                .perform(get(BASEURL))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("UP"))
+                .andExpect(content().string("{\"status\":\"UP\",\"groups\":[\"liveness\",\"readiness\"]}"));
+    }
+
     @DisplayName("Should accept traffic")
     @Test
     void shouldAcceptTraffic() throws Exception {
