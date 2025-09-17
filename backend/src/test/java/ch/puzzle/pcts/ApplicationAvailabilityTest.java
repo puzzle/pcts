@@ -1,28 +1,31 @@
 package ch.puzzle.pcts;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.availability.ApplicationAvailability;
-import org.springframework.boot.availability.LivenessState;
-import org.springframework.boot.availability.ReadinessState;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @SpringBootTest
-@Testcontainers
 @ActiveProfiles("test")
+@AutoConfigureMockMvc
+@Testcontainers
 class ApplicationAvailabilityTest {
-
     @Autowired
-    private ApplicationAvailability applicationAvailability;
+    private MockMvc mvc;
+
+    private static final String BASEURL = "/actuator/health/";
 
     @Container
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17-alpine");
@@ -36,13 +39,13 @@ class ApplicationAvailabilityTest {
 
     @DisplayName("Should accept traffic")
     @Test
-    void shouldAcceptTraffic() {
-        assertThat(applicationAvailability.getReadinessState()).isEqualTo(ReadinessState.ACCEPTING_TRAFFIC);
+    void shouldAcceptTraffic() throws Exception {
+        mvc.perform(get(BASEURL + "readiness")).andExpect(status().isOk()).andExpect(jsonPath("$.status").value("UP"));
     }
 
     @DisplayName("Should be live")
     @Test
-    void shouldBeLive() {
-        assertThat(applicationAvailability.getLivenessState()).isEqualTo(LivenessState.CORRECT);
+    void shouldBeLive() throws Exception {
+        mvc.perform(get(BASEURL + "liveness")).andExpect(status().isOk()).andExpect(jsonPath("$.status").value("UP"));
     }
 }
