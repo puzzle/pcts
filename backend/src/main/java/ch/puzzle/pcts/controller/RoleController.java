@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -40,12 +39,10 @@ public class RoleController {
     }
 
     @Operation(summary = "Get a role by ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "A single role.", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = RoleDto.class)) }),
-            @ApiResponse(responseCode = "404", description = "Role not found.", content = @Content) })
+    @ApiResponse(responseCode = "200", description = "A single role.", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = RoleDto.class)) })
     @GetMapping("{roleId}")
-    public ResponseEntity<RoleDto> getRoleById(@Parameter(description = "ID of the degree type to retrieve.", required = true)
+    public ResponseEntity<RoleDto> getRoleById(@Parameter(description = "ID of the role to retrieve.", required = true)
     @PathVariable long roleId) {
         Role role = service.getById(roleId);
         return ResponseEntity.ok(mapper.toDto(role));
@@ -61,23 +58,19 @@ public class RoleController {
     }
 
     @Operation(summary = "Update a role")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Role updated successfully.", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = RoleDto.class)) }),
-            @ApiResponse(responseCode = "404", description = "Role not found.", content = @Content) })
+    @ApiResponse(responseCode = "200", description = "Role updated successfully.", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = RoleDto.class)) })
     @PutMapping("{roleId}")
-    public ResponseEntity<RoleDto> updateRole(@Parameter(description = "ID of the degree type to update.", required = true)
+    public ResponseEntity<RoleDto> updateRole(@Parameter(description = "ID of the role to update.", required = true)
     @PathVariable Long roleId, @RequestBody RoleDto dto) {
         Role updatedRole = service.update(roleId, mapper.fromDto(dto));
         return ResponseEntity.ok(mapper.toDto(updatedRole));
     }
 
     @Operation(summary = "Delete a role")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Role deleted successfully.", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Role not found.", content = @Content) })
+    @ApiResponse(responseCode = "204", description = "Role deleted successfully.", content = @Content)
     @DeleteMapping("{roleId}")
-    public ResponseEntity<Void> deleteRole(@Parameter(description = "ID of the degree type to delete.", required = true)
+    public ResponseEntity<Void> deleteRole(@Parameter(description = "ID of the role to delete.", required = true)
     @PathVariable Long roleId) {
         service.delete(roleId);
         return ResponseEntity.status(204).build();
