@@ -21,6 +21,6 @@ public class CertificateMapper {
     }
 
     public Certificate fromDto(CertificateDto dto) {
-        return new Certificate(dto.id(), dto.name(), dto.points(), false, dto.comment());
+        return new Certificate(dto.id(), dto.name(), dto.points(), dto.comment());
     }
 }

@@ -2,8 +2,12 @@ package ch.puzzle.pcts.model.certificate;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
+@SQLDelete(sql = "UPDATE certificate SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
+@SQLRestriction("deleted_at IS NULL")
 public class Certificate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,16 +18,12 @@ public class Certificate {
     @Column(nullable = false)
     private BigDecimal points;
 
-    @Column(nullable = false)
-    private boolean is_deleted;
-
     private String comment;
 
-    public Certificate(Long id, String name, BigDecimal points, boolean is_deleted, String comment) {
+    public Certificate(Long id, String name, BigDecimal points, String comment) {
         this.id = id;
         this.name = name;
         this.points = points;
-        this.is_deleted = is_deleted;
         this.comment = comment;
     }
 
@@ -52,14 +52,6 @@ public class Certificate {
 
     public void setPoints(BigDecimal points) {
         this.points = points;
-    }
-
-    public boolean isDeleted() {
-        return is_deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        is_deleted = deleted;
     }
 
     public String getComment() {
