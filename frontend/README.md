@@ -69,7 +69,8 @@ To run the backend for Cypress testing, you need to start the application with t
 
 ### In case of failing tests
 
-- Make sure the application is healthy and running
+- Make sure you do not have any additional or missing data in your database from a previous testrun
+- Confirm that the application is healthy and running
 - Restart the application and / or restart cypress
 - Otherwise, check the logs
 
