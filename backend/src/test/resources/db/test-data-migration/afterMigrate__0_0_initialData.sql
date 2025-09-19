@@ -13,5 +13,11 @@ VALUES
     ('Role 1', '1970-01-01 00:00:00', TRUE),
     ('Role 2', null,  FALSE);
 
+TRUNCATE TABLE certificate CASCADE;
 
-
+INSERT INTO certificate (name, points, deleted_at, comment)
+VALUES
+    ('Certificate 1', 5.5, null, 'This is Certificate 1'),
+    ('Certificate 2', 1, null, 'This is Certificate 2'),
+    ('Certificate 3', 3, null, 'This is Certificate 3'),
+    ('Certificate 4', 0.5, null, 'This is Certificate 4');

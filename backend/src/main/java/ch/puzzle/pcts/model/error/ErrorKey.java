@@ -8,4 +8,5 @@ public enum ErrorKey {
     NOT_FOUND,
     ROLE_NAME_IS_NULL,
     ROLE_NAME_IS_EMPTY,
+    INVALID_ARGUMENT
 }

@@ -20,3 +20,9 @@ VALUES
     ('Intern', FALSE),
     ('Extern', FALSE),
     ('Consultant', FALSE);
+
+TRUNCATE TABLE certificate CASCADE;
+
+INSERT INTO certificate (name, points, deleted_at, comment)
+VALUES
+    ('Test', 2.5, null, 'This is a test')
