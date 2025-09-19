@@ -5,11 +5,14 @@ import ch.puzzle.pcts.mapper.OrganisationUnitMapper;
 import ch.puzzle.pcts.model.organisation_unit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.OrganisationUnitBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/organisation_unit")
+@RequestMapping("/api/v1/organisation-units")
+@Tag(name = "organisation-units")
 public class OrganisationUnitController {
     private final OrganisationUnitMapper mapper;
     private final OrganisationUnitBusinessService service;
@@ -29,7 +33,7 @@ public class OrganisationUnitController {
     }
 
     @Operation(summary = "List all organisation units")
-    @ApiResponse(responseCode = "200", description = "A list of organisation units", content = {
+    @ApiResponse(responseCode = "200", description = "A list of organisation units.", content = {
             @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = OrganisationUnitDto.class))) })
     @GetMapping
     public ResponseEntity<List<OrganisationUnitDto>> getOrganisationUnit() {
@@ -37,33 +41,39 @@ public class OrganisationUnitController {
     }
 
     @Operation(summary = "Get an organisation unit by ID")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "A single organisation unit", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = OrganisationUnitDto.class)) }),
-            @ApiResponse(responseCode = "404", description = "OrganisationUnit not found", content = @Content) })
-    @GetMapping("{id}")
-    public ResponseEntity<OrganisationUnitDto> getOrganisationUnitById(@PathVariable long id) {
-        OrganisationUnit organisationUnit = service.getById(id);
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the organisation unit.", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = OrganisationUnitDto.class)) }),
+            @ApiResponse(responseCode = "404", description = "Organisation unit not found.", content = @Content) })
+    @GetMapping("{organisationUnitId}")
+    public ResponseEntity<OrganisationUnitDto> getOrganisationUnitById(@Parameter(description = "ID of the degree type to retrieve.", required = true)
+    @PathVariable long organisationUnitId) {
+        OrganisationUnit organisationUnit = service.getById(organisationUnitId);
         return ResponseEntity.ok(mapper.toDto(organisationUnit));
     }
 
     @Operation(summary = "Create a new organisation unit")
-    @ApiResponse(responseCode = "201", description = "organisation unit created successfully", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = OrganisationUnitDto.class)) })
+    @RequestBody(description = "The organisation unit object to be created.", required = true)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Organisation unit created successfully.", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = OrganisationUnitDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Invalid input provided.", content = @Content) })
     @PostMapping
-    public ResponseEntity<OrganisationUnitDto> createNew(@Valid @RequestBody OrganisationUnitDto dto) {
+    public ResponseEntity<OrganisationUnitDto> createOrganisationUnit(@Valid @RequestBody OrganisationUnitDto dto) {
         OrganisationUnit newOrganisationUnit = service.create(mapper.fromDto(dto));
         return ResponseEntity.status(201).body(mapper.toDto(newOrganisationUnit));
     }
 
     @Operation(summary = "Update an organisation unit")
+    @RequestBody(description = "The updated organisation unit data.", required = true)
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Organisation unit updated successfully", content = {
+            @ApiResponse(responseCode = "200", description = "Organisation unit updated successfully.", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = OrganisationUnitDto.class)) }),
             @ApiResponse(responseCode = "404", description = "Organisation unit not found", content = @Content) })
-    @PutMapping("{id}")
-    public ResponseEntity<OrganisationUnitDto> updateOrganisationUnit(@PathVariable Long id,
-                                                                      @RequestBody OrganisationUnitDto dto) {
-        OrganisationUnit updatedOrganisationUnit = service.update(id, mapper.fromDto(dto));
+    @PutMapping("{organisationUnitId}")
+    public ResponseEntity<OrganisationUnitDto> updateOrganisationUnit(@Parameter(description = "ID of the degree type to update.", required = true)
+    @PathVariable Long organisationUnitId, @RequestBody OrganisationUnitDto dto) {
+        OrganisationUnit updatedOrganisationUnit = service.update(organisationUnitId, mapper.fromDto(dto));
         return ResponseEntity.ok(mapper.toDto(updatedOrganisationUnit));
     }
 
@@ -71,9 +81,10 @@ public class OrganisationUnitController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Organisation unit deleted successfully", content = @Content),
             @ApiResponse(responseCode = "404", description = "Organisation unit not found", content = @Content) })
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteOrganisationUnit(@PathVariable Long id) {
-        service.delete(id);
+    @DeleteMapping("{organisationUnitId}")
+    public ResponseEntity<Void> deleteOrganisationUnit(@Parameter(description = "ID of the degree type to delete.", required = true)
+    @PathVariable Long organisationUnitId) {
+        service.delete(organisationUnitId);
         return ResponseEntity.status(204).build();
     }
 }
