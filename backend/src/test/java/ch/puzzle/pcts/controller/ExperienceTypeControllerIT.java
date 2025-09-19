@@ -1,0 +1,173 @@
+package ch.puzzle.pcts.controller;
+
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import ch.puzzle.pcts.SpringSecurityConfig;
+import ch.puzzle.pcts.dto.experienceType.ExperienceTypeDto;
+import ch.puzzle.pcts.mapper.ExperienceTypeMapper;
+import ch.puzzle.pcts.model.experienceType.ExperienceType;
+import ch.puzzle.pcts.service.business.ExperienceTypeBusinessService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.math.BigDecimal;
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.BDDMockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
+
+@Import(SpringSecurityConfig.class)
+@ExtendWith(MockitoExtension.class)
+@WebMvcTest(ExperienceTypeController.class)
+class ExperienceTypeControllerIT {
+
+    private static final String BASEURL = "/api/v1/experience-types";
+    ObjectMapper objectMapper = new ObjectMapper();
+    @MockitoBean
+    private ExperienceTypeBusinessService service;
+    @MockitoBean
+    private ExperienceTypeMapper mapper;
+    @Autowired
+    private MockMvc mvc;
+    private ExperienceType experienceType;
+    private ExperienceTypeDto requestDto;
+    private ExperienceTypeDto expectedDto;
+    private Long id;
+
+    @BeforeEach
+    void setUp() {
+        id = 1L;
+        experienceType = new ExperienceType(id,
+                                            "ExperienceType 1",
+                                            BigDecimal.valueOf(5.3),
+                                            BigDecimal.valueOf(4.7),
+                                            BigDecimal.valueOf(0));
+        requestDto = new ExperienceTypeDto(null,
+                                           "ExperienceType 1",
+                                           BigDecimal.valueOf(5.3),
+                                           BigDecimal.valueOf(4.7),
+                                           BigDecimal.valueOf(0));
+        expectedDto = new ExperienceTypeDto(id,
+                                            "ExperienceType 1",
+                                            BigDecimal.valueOf(5.3),
+                                            BigDecimal.valueOf(4.7),
+                                            BigDecimal.valueOf(0));
+    }
+
+    @DisplayName("Should successfully get all experienceTypes")
+    @Test
+    void shouldGetAllExperienceTypes() throws Exception {
+        BDDMockito.given(service.getAll()).willReturn(List.of(experienceType));
+        BDDMockito.given(mapper.toDto(any(List.class))).willReturn(List.of(expectedDto));
+        mvc
+                .perform(get(BASEURL)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].id").value(expectedDto.id()))
+                .andExpect(jsonPath("$[0].name").value(expectedDto.name()))
+                .andExpect(jsonPath("$[0].highlyRelevantPoints").value(expectedDto.highlyRelevantPoints()))
+                .andExpect(jsonPath("$[0].limitedRelevantPoints").value(expectedDto.limitedRelevantPoints()))
+                .andExpect(jsonPath("$[0].littleRelevantPoints").value(expectedDto.littleRelevantPoints()));
+        verify(service, times(1)).getAll();
+        verify(mapper, times(1)).toDto(any(List.class));
+    }
+
+    @DisplayName("Should successfully get experienceType by id")
+    @Test
+    void shouldGetExperienceTypeById() throws Exception {
+        BDDMockito.given(service.getById(anyLong())).willReturn(experienceType);
+        BDDMockito.given(mapper.toDto(any(ExperienceType.class))).willReturn(expectedDto);
+
+        mvc
+                .perform(get(BASEURL + "/" + id)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.name").value(expectedDto.name()))
+                .andExpect(jsonPath("$.highlyRelevantPoints").value(expectedDto.highlyRelevantPoints()))
+                .andExpect(jsonPath("$.limitedRelevantPoints").value(expectedDto.limitedRelevantPoints()))
+                .andExpect(jsonPath("$.littleRelevantPoints").value(expectedDto.littleRelevantPoints()));
+
+        verify(service, times(1)).getById(eq(1L));
+        verify(mapper, times(1)).toDto(any(ExperienceType.class));
+    }
+
+    @DisplayName("Should successfully create new experienceType")
+    @Test
+    void shouldCreateNewExperienceType() throws Exception {
+        BDDMockito.given(mapper.fromDto(any(ExperienceTypeDto.class))).willReturn(experienceType);
+        BDDMockito.given(service.create(any(ExperienceType.class))).willReturn(experienceType);
+        BDDMockito.given(mapper.toDto(any(ExperienceType.class))).willReturn(expectedDto);
+
+        mvc
+                .perform(post(BASEURL)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .content(objectMapper.writeValueAsString(requestDto))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.name").value(expectedDto.name()))
+                .andExpect(jsonPath("$.highlyRelevantPoints").value(expectedDto.highlyRelevantPoints()))
+                .andExpect(jsonPath("$.limitedRelevantPoints").value(expectedDto.limitedRelevantPoints()))
+                .andExpect(jsonPath("$.littleRelevantPoints").value(expectedDto.littleRelevantPoints()));
+
+        verify(mapper, times(1)).fromDto(any(ExperienceTypeDto.class));
+        verify(service, times(1)).create(any(ExperienceType.class));
+        verify(mapper, times(1)).toDto(any(ExperienceType.class));
+    }
+
+    @DisplayName("Should successfully update experienceType")
+    @Test
+    void shouldUpdateExperienceType() throws Exception {
+        BDDMockito.given(mapper.fromDto(any(ExperienceTypeDto.class))).willReturn(experienceType);
+        BDDMockito.given(service.update(any(Long.class), any(ExperienceType.class))).willReturn(experienceType);
+        BDDMockito.given(mapper.toDto(any(ExperienceType.class))).willReturn(expectedDto);
+
+        mvc
+                .perform(put(BASEURL + "/" + id)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .content(objectMapper.writeValueAsString(requestDto))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.name").value(expectedDto.name()))
+                .andExpect(jsonPath("$.highlyRelevantPoints").value(expectedDto.highlyRelevantPoints()))
+                .andExpect(jsonPath("$.limitedRelevantPoints").value(expectedDto.limitedRelevantPoints()))
+                .andExpect(jsonPath("$.littleRelevantPoints").value(expectedDto.littleRelevantPoints()));
+
+        verify(mapper, times(1)).fromDto(any(ExperienceTypeDto.class));
+        verify(service, times(1)).update(any(Long.class), any(ExperienceType.class));
+        verify(mapper, times(1)).toDto(any(ExperienceType.class));
+    }
+
+    @DisplayName("Should successfully delete experienceType")
+    @Test
+    void shouldDeleteExperienceType() throws Exception {
+        BDDMockito.willDoNothing().given(service).delete(anyLong());
+
+        mvc
+                .perform(delete(BASEURL + "/" + id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().is(204))
+                .andExpect(jsonPath("$").doesNotExist());
+
+        verify(service, times(1)).delete(any(Long.class));
+    }
+}

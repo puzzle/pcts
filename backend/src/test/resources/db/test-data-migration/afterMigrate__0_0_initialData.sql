@@ -13,5 +13,12 @@ VALUES
     ('Role 1', '1970-01-01 00:00:00', TRUE),
     ('Role 2', null,  FALSE);
 
+TRUNCATE TABLE experience_type CASCADE;
+
+INSERT INTO experience_type (name, highly_relevant_points, limited_relevant_points, little_relevant_points)
+VALUES
+    ('ExperienceType 1', 0, 12, 0),
+    ('ExperienceType 2', 12, 6, 0)
+
 
 
