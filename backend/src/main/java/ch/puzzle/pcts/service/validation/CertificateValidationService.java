@@ -4,6 +4,7 @@ import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.service.persistence.CertificatePersistenceService;
+import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,7 @@ public class CertificateValidationService {
     public void validateOnCreate(Certificate certificate) {
         validateIfIdIsNull(certificate.getId());
         validateName(certificate.getName());
+        validatePoints(certificate.getPoints());
     }
 
     public void validateOnGetById(Long id) {
@@ -30,6 +32,7 @@ public class CertificateValidationService {
         validateIfExists(id);
         validateIfIdIsNull(certificate.getId());
         validateName(certificate.getName());
+        validatePoints(certificate.getPoints());
     }
 
     public void validateOnDelete(Long id) {
@@ -58,5 +61,25 @@ public class CertificateValidationService {
                 .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,
                                                      "Certificate with id: " + id + " does not exist.",
                                                      ErrorKey.NOT_FOUND));
+    }
+
+    private void validatePoints(BigDecimal points) {
+        if (points == null) {
+            throw new PCTSException(HttpStatus.BAD_REQUEST,
+                                    "Points value must not be null.",
+                                    ErrorKey.INVALID_ARGUMENT);
+        }
+
+        if (points.signum() < 0) {
+            throw new PCTSException(HttpStatus.BAD_REQUEST,
+                                    "Points value must not be negative.",
+                                    ErrorKey.INVALID_ARGUMENT);
+        }
+
+        if (points.stripTrailingZeros().scale() > 2) {
+            throw new PCTSException(HttpStatus.BAD_REQUEST,
+                                    "Points value must not have more than two decimal places.",
+                                    ErrorKey.INVALID_ARGUMENT);
+        }
     }
 }
