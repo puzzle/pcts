@@ -61,4 +61,10 @@ public class Certificate {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+    @Override
+    public String toString() {
+        return "Certificate{" + "id=" + id + ", name='" + name + '\'' + ", points=" + points + ", comment='" + comment
+               + '\'' + '}';
+    }
 }
