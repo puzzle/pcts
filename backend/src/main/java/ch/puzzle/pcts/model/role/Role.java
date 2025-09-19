@@ -48,4 +48,9 @@ public class Role {
     public void setIsManagement(boolean isManagement) {
         this.isManagement = isManagement;
     }
+
+    @Override
+    public String toString() {
+        return "Role{" + "id=" + id + ", name='" + name + '\'' + ", isManagement=" + isManagement + '}';
+    }
 }
