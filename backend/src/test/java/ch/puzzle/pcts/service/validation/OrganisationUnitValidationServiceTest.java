@@ -6,8 +6,8 @@ import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
-import ch.puzzle.pcts.model.role.Role;
-import ch.puzzle.pcts.service.persistence.RolePersistenceService;
+import ch.puzzle.pcts.model.organisation_unit.OrganisationUnit;
+import ch.puzzle.pcts.service.persistence.OrganisationUnitPersistenceService;
 import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,14 +17,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-class RoleValidationTest {
+class OrganisationUnitValidationServiceTest {
     private AutoCloseable closeable;
 
     @Mock
-    private RolePersistenceService persistenceService;
+    private OrganisationUnitPersistenceService persistenceService;
 
     @InjectMocks
-    private RoleValidationService validationService;
+    private OrganisationUnitValidationService validationService;
 
     @BeforeEach
     void setUp() {
@@ -41,7 +41,7 @@ class RoleValidationTest {
     void shouldBeSuccessfulOnValidateOnGetByIdWhenIdIsValid() {
         long id = 1L;
 
-        when(persistenceService.getById(id)).thenReturn(Optional.of(new Role()));
+        when(persistenceService.getById(id)).thenReturn(Optional.of(new OrganisationUnit()));
         assertDoesNotThrow(() -> validationService.validateOnGetById(id));
     }
 
@@ -54,27 +54,28 @@ class RoleValidationTest {
 
         PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnGetById(id));
 
-        assertEquals("Role with id: " + id + " does not exist.", exception.getReason());
+        assertEquals("Organisation Unit with id: " + id + " does not exist.", exception.getReason());
         assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
     }
 
-    @DisplayName("Should be successful on validateOnCreate() when role is valid")
+    @DisplayName("Should be successful on validateOnCreate() when organisationUnit is valid")
     @Test
-    void shouldBeSuccessfulOnValidateOnCreateWhenRoleIsValid() {
-        Role role = new Role();
-        role.setName("New role");
+    void shouldBeSuccessfulOnValidateOnCreateWhenOrganisationUnitIsValid() {
+        OrganisationUnit organisationUnit = new OrganisationUnit();
+        organisationUnit.setName("New Organisation Unit");
 
-        assertDoesNotThrow(() -> validationService.validateOnCreate(role));
+        assertDoesNotThrow(() -> validationService.validateOnCreate(organisationUnit));
     }
 
     @DisplayName("Should throw exception on validateOnCreate() when id is not null")
     @Test
     void shouldThrowExceptionOnValidateOnCreateWhenIdIsNotNull() {
-        Role role = new Role();
-        role.setName("Role");
-        role.setId(123L);
+        OrganisationUnit organisationUnit = new OrganisationUnit();
+        organisationUnit.setName("OrganisationUnit");
+        organisationUnit.setId(123L);
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnCreate(role));
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> validationService.validateOnCreate(organisationUnit));
 
         assertEquals("Id needs to be undefined", exception.getReason());
         assertEquals(ErrorKey.ID_IS_NOT_NULL, exception.getErrorKey());
@@ -83,31 +84,33 @@ class RoleValidationTest {
     @DisplayName("Should throw exception on validateOnCreate() when name is null")
     @Test
     void shouldThrowExceptionOnValidateOnCreateWhenNameIsNull() {
-        Role role = new Role();
+        OrganisationUnit organisationUnit = new OrganisationUnit();
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnCreate(role));
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> validationService.validateOnCreate(organisationUnit));
 
         assertEquals("Name must not be null", exception.getReason());
-        assertEquals(ErrorKey.ROLE_NAME_IS_NULL, exception.getErrorKey());
+        assertEquals(ErrorKey.ORGANIZATION_UNIT_NAME_IS_NULL, exception.getErrorKey());
     }
 
     @DisplayName("Should throw exception on validateOnCreate() when name is blank")
     @Test
     void shouldThrowExceptionOnValidateOnCreateWhenNameBlank() {
-        Role role = new Role();
-        role.setName("");
+        OrganisationUnit organisationUnit = new OrganisationUnit();
+        organisationUnit.setName("");
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnCreate(role));
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> validationService.validateOnCreate(organisationUnit));
 
         assertEquals("Name must not be empty", exception.getReason());
-        assertEquals(ErrorKey.ROLE_NAME_IS_EMPTY, exception.getErrorKey());
+        assertEquals(ErrorKey.ORGANIZATION_UNIT_NAME_IS_EMPTY, exception.getErrorKey());
     }
 
     @DisplayName("Should be successful on validateOnDelete() when id is valid")
     @Test
     void shouldBeSuccessfulOnValidateOnDeleteWhenIdIsValid() {
         long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(new Role()));
+        when(persistenceService.getById(id)).thenReturn(Optional.of(new OrganisationUnit()));
 
         assertDoesNotThrow(() -> validationService.validateOnDelete(id));
     }
@@ -120,43 +123,45 @@ class RoleValidationTest {
 
         PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnDelete(id));
 
-        assertEquals("Role with id: " + id + " does not exist.", exception.getReason());
+        assertEquals("Organisation Unit with id: " + id + " does not exist.", exception.getReason());
         assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
     }
 
     @DisplayName("Should be successful on validateOnUpdate() when id is valid")
     @Test
     void shouldBeSuccessfulOnValidateOnUpdateWhenIdIsValid() {
-        Role role = new Role();
-        role.setName("Role");
+        OrganisationUnit organisationUnit = new OrganisationUnit();
+        organisationUnit.setName("OrganisationUnit");
         long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(new Role()));
+        when(persistenceService.getById(id)).thenReturn(Optional.of(new OrganisationUnit()));
 
-        assertDoesNotThrow(() -> validationService.validateOnUpdate(id, role));
+        assertDoesNotThrow(() -> validationService.validateOnUpdate(id, organisationUnit));
     }
 
     @DisplayName("Should throw exception on validateOnUpdate() when id is invalid")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateIdWhenIdIsInvalid() {
-        Role role = new Role();
+        OrganisationUnit organisationUnit = new OrganisationUnit();
         long id = -1;
         when(persistenceService.getById(id)).thenReturn(Optional.empty());
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnUpdate(id, role));
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> validationService.validateOnUpdate(id, organisationUnit));
 
-        assertEquals("Role with id: " + id + " does not exist.", exception.getReason());
+        assertEquals("Organisation Unit with id: " + id + " does not exist.", exception.getReason());
         assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
     }
 
     @DisplayName("Should throw exception on validateOnUpdate() when id is not null")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenIdIsNotNull() {
-        Role role = new Role();
-        role.setId(123L);
+        OrganisationUnit organisationUnit = new OrganisationUnit();
+        organisationUnit.setId(123L);
         long id = 1;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(new Role()));
+        when(persistenceService.getById(id)).thenReturn(Optional.of(new OrganisationUnit()));
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnUpdate(id, role));
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> validationService.validateOnUpdate(id, organisationUnit));
 
         assertEquals("Id needs to be undefined", exception.getReason());
         assertEquals(ErrorKey.ID_IS_NOT_NULL, exception.getErrorKey());
@@ -165,27 +170,29 @@ class RoleValidationTest {
     @DisplayName("Should throw exception on validateOnUpdate() when name is null")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameIsNull() {
-        Role role = new Role();
+        OrganisationUnit organisationUnit = new OrganisationUnit();
         long id = 1;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(new Role()));
+        when(persistenceService.getById(id)).thenReturn(Optional.of(new OrganisationUnit()));
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnUpdate(id, role));
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> validationService.validateOnUpdate(id, organisationUnit));
 
         assertEquals("Name must not be null", exception.getReason());
-        assertEquals(ErrorKey.ROLE_NAME_IS_NULL, exception.getErrorKey());
+        assertEquals(ErrorKey.ORGANIZATION_UNIT_NAME_IS_NULL, exception.getErrorKey());
     }
 
     @DisplayName("Should throw exception on validateOnUpdate() when name is blank")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameBlank() {
-        Role role = new Role();
-        role.setName("");
+        OrganisationUnit organisationUnit = new OrganisationUnit();
+        organisationUnit.setName("");
         long id = 1;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(new Role()));
+        when(persistenceService.getById(id)).thenReturn(Optional.of(new OrganisationUnit()));
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnUpdate(id, role));
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> validationService.validateOnUpdate(id, organisationUnit));
 
         assertEquals("Name must not be empty", exception.getReason());
-        assertEquals(ErrorKey.ROLE_NAME_IS_EMPTY, exception.getErrorKey());
+        assertEquals(ErrorKey.ORGANIZATION_UNIT_NAME_IS_EMPTY, exception.getErrorKey());
     }
 }
