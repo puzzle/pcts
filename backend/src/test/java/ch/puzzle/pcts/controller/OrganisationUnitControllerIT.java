@@ -111,7 +111,7 @@ public class OrganisationUnitControllerIT {
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.name").value("Organisation unit 1"));
+                .andExpect(jsonPath("$.name").value("OrganisationUnit 1"));
 
         verify(mapper, times(1)).fromDto(any(OrganisationUnitDto.class));
         verify(service, times(1)).create(any(OrganisationUnit.class));
