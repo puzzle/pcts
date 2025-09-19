@@ -20,3 +20,10 @@ VALUES
     ('Intern', FALSE),
     ('Extern', FALSE),
     ('Consultant', FALSE);
+
+INSERT INTO organisation_unit (name)
+VALUES
+    ('/zh'),
+    ('/mobility'),
+    ('/bbt'),
+    ('/mid')
