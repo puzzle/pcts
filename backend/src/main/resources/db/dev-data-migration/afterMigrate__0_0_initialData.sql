@@ -20,3 +20,12 @@ VALUES
     ('Intern', FALSE),
     ('Extern', FALSE),
     ('Consultant', FALSE);
+
+TRUNCATE TABLE degree_type CASCADE;
+
+INSERT INTO degree_type (name, highly_relevant_points, limited_relevant_points, little_relevant_points)
+VALUES
+    ('Bachelor''s Degree', 100, 50, 10),
+    ('Master''s Degree', 120, 60, 15),
+    ('PhD', 150, 75, 20),
+    ('Associate Degree', 80, 40, 5);

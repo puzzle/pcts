@@ -8,4 +8,6 @@ public enum ErrorKey {
     NOT_FOUND,
     ROLE_NAME_IS_NULL,
     ROLE_NAME_IS_EMPTY,
+    DEGREE_TYPE_NAME_IS_NULL,
+    DEGREE_TYPE_NAME_IS_EMPTY,
 }
