@@ -51,7 +51,7 @@ public class CertificateControllerIT {
 
     @BeforeEach
     void setUp() {
-        certificate = new Certificate(1L, "Certificate 1", new BigDecimal("5.5"), false, "This is Certificate 1");
+        certificate = new Certificate(1L, "Certificate 1", new BigDecimal("5.5"), "This is Certificate 1");
         requestDto = new CertificateDto(null, "Certificate 1", new BigDecimal("5.5"), "This is Certificate 1");
         dto = new CertificateDto(1L, "Certificate 1", new BigDecimal("5.5"), "This is Certificate 1");
     }

@@ -15,8 +15,8 @@ VALUES
 
 TRUNCATE TABLE certificate CASCADE;
 
-INSERT INTO certificate (name, points, is_deleted, comment)
+INSERT INTO certificate (name, points, deleted_at, comment)
 VALUES
-    ('Certificate 1', 5.5, false, 'This is Certificate 1')
+    ('Certificate 1', 5.5, null, 'This is Certificate 1')
 
 
