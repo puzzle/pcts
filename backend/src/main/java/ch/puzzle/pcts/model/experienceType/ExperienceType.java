@@ -1,15 +1,11 @@
 package ch.puzzle.pcts.model.experienceType;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
 public class ExperienceType {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_example")
     private Long id;
 
     private String name;

@@ -4,6 +4,7 @@ import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.experienceType.ExperienceType;
 import ch.puzzle.pcts.service.persistence.ExperienceTypePersistenceService;
+import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,8 @@ public class ExperienceTypeValidationService {
     public void validateOnCreate(ExperienceType experienceType) {
         validateIfIdIsNull(experienceType.getId());
         validateName(experienceType.getName());
+        validateIfPointsArePositive(experienceType);
+        validateIfPointsHaveLessThanTwoDecimalPlaces(experienceType);
     }
 
     public void validateOnDelete(Long id) {
@@ -32,8 +35,7 @@ public class ExperienceTypeValidationService {
 
     public void validateOnUpdate(Long id, ExperienceType experienceType) {
         validateIfExists(id);
-        validateIfIdIsNull(experienceType.getId());
-        validateName(experienceType.getName());
+        validateOnCreate(experienceType);
     }
 
     private void validateIfIdIsNull(Long id) {
@@ -64,14 +66,28 @@ public class ExperienceTypeValidationService {
                                                      ErrorKey.NOT_FOUND));
     }
 
-    // private void validateIfPointsArePositive(BigDecimal highlyRelevantPoints,
-    // BigDecimal limitedRelevantPoints,
-    // BigDecimal littleRelevantPoints) {
-    // if (highlyRelevantPoints.signum() < 0|| limitedRelevantPoints.signum() < 0||
-    // littleRelevantPoints.signum() < 0){
-    //
-    //
-    // }
-    //
-    // }
+    private void validateIfPointsArePositive(ExperienceType experienceType) {
+        if (experienceType.getHighlyRelevantPoints().signum() < 0
+            || experienceType.getLimitedRelevantPoints().signum() < 0
+            || experienceType.getLittleRelevantPoints().signum() < 0) {
+            throw new PCTSException(HttpStatus.BAD_REQUEST,
+                                    "ExperienceType has negative points",
+                                    ErrorKey.EXPERIENCE_TYPE_POINTS_ARE_NEGATIVE);
+        }
+    }
+
+    private void validateIfPointsHaveLessThanTwoDecimalPlaces(ExperienceType experienceType) {
+        if (getNumberOfDecimalPlaces(experienceType.getHighlyRelevantPoints()) > 2
+            || getNumberOfDecimalPlaces(experienceType.getLimitedRelevantPoints()) > 2
+            || getNumberOfDecimalPlaces(experienceType.getLittleRelevantPoints()) > 2) {
+            throw new PCTSException(HttpStatus.BAD_REQUEST,
+                                    "ExperienceType has points with more than 2 decimal places",
+                                    ErrorKey.EXPERIENCE_TYPE_POINTS_HAVE_MORE_THAN_TWO_DECIMAL_PLACES);
+        }
+    }
+
+    private int getNumberOfDecimalPlaces(BigDecimal bigDecimal) {
+        int scale = bigDecimal.stripTrailingZeros().scale();
+        return Math.max(scale, 0);
+    }
 }
