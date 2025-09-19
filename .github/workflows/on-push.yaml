@@ -1,0 +1,24 @@
+---
+name: "On push"
+
+on:
+  push:
+
+jobs:
+  format:
+    uses: ./.github/workflows/reusable__format.yaml
+    with:
+      COMMIT_HASH: ${{ github.sha }}
+
+  tests:
+    uses: ./.github/workflows/reusable__tests.yaml
+    with:
+      COMMIT_HASH: ${{ github.sha }}
+
+  e2e-tests:
+    needs:
+      - format
+      - tests
+    uses: ./.github/workflows/reusable__e2e-testing.yaml
+    with:
+      COMMIT_HASH: ${{ github.sha }}

@@ -92,7 +92,7 @@ class RoleControllerIT {
                 .andExpect(jsonPath("$.isManagement").value(false))
                 .andExpect(jsonPath("$.name").value("Role 1"));
 
-        verify(service, times(1)).getById(eq(1L));
+        verify(service, times(1)).getById((1L));
         verify(mapper, times(1)).toDto(any(Role.class));
     }
 

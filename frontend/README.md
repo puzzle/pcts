@@ -49,13 +49,30 @@ We use [Jest](https://jestjs.io/) for frontend testing.
 npm run test
 ```
 
-## Running end-to-end tests
+## End-to-end tests
 
-For end-to-end (e2e) testing, run:
+We use [Cypress](https://www.cypress.io/) for running our end-to-end tests. Here is everything you need to know:
 
-```bash
-ng e2e
-```
+### Local setup
+
+To run the backend for Cypress testing, you need to start the application with the correct Docker profile. To achieve this, make sure you're in the docker directory and execute this command: `./e2e-application-start`
+
+### Running Tests
+
+**To run all tests headless use:**
+
+- `npm run cypress:run`
+
+**To only run selected tests headfull use:**
+
+- `npm run cypress:open`
+
+### In case of failing tests
+
+- Make sure you do not have any additional or missing data in your database from a previous testrun
+- Confirm that the application is healthy and running
+- Restart the application and / or restart cypress
+- Otherwise, check the logs
 
 ## Running formatters
 
