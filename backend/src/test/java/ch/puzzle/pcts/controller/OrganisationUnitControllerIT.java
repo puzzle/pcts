@@ -56,9 +56,9 @@ public class OrganisationUnitControllerIT {
 
     @BeforeEach
     void setUp() {
-        organisationUnit = new OrganisationUnit(1L, "Organisation unit 1");
-        requestDto = new OrganisationUnitDto(null, "Organisation unit 1");
-        expectedDto = new OrganisationUnitDto(1L, "Organisation unit 1");
+        organisationUnit = new OrganisationUnit(1L, "OrganisationUnit 1");
+        requestDto = new OrganisationUnitDto(null, "OrganisationUnit 1");
+        expectedDto = new OrganisationUnitDto(1L, "OrganisationUnit 1");
         id = 1L;
     }
 
@@ -132,7 +132,7 @@ public class OrganisationUnitControllerIT {
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.name").value("Organisation unit 1"));
+                .andExpect(jsonPath("$.name").value("OrganisationUnit 1"));
 
         verify(mapper, times(1)).fromDto(any(OrganisationUnitDto.class));
         verify(service, times(1)).update(any(Long.class), any(OrganisationUnit.class));
