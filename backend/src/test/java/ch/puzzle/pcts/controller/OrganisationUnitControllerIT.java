@@ -47,7 +47,7 @@ public class OrganisationUnitControllerIT {
 
     ObjectMapper objectMapper = new ObjectMapper();
 
-    private static final String BASEURL = "/api/v1/organisation_unit";
+    private static final String BASEURL = "/api/v1/organisation-units";
 
     private OrganisationUnit organisationUnit;
     private OrganisationUnitDto requestDto;
