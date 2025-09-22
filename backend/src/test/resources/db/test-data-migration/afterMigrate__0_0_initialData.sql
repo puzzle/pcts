@@ -20,5 +20,10 @@ VALUES
     ('ExperienceType 1', 0, 12, 4.005),
     ('ExperienceType 2', 12, 10.7989, 6)
 
+TRUNCATE TABLE degree_type CASCADE;
+
+INSERT INTO degree_type (name, highly_relevant_points, limited_relevant_points, little_relevant_points)
+VALUES
+    ('Degree type 1', 120, 60, 15);
 
 

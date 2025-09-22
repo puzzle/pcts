@@ -19,9 +19,9 @@ public class DegreeTypeMapper {
     public DegreeType fromDto(DegreeTypeWithoutIdDto dto) {
         return new DegreeType(null,
                               dto.name(),
-                              dto.highly_relevant_points(),
-                              dto.limited_relevant_points(),
-                              dto.little_relevant_points());
+                              dto.highlyRelevantPoints(),
+                              dto.limitedRelevantPoints(),
+                              dto.littleRelevantPoints());
     }
 
     public DegreeTypeDto toDto(DegreeType model) {

@@ -43,7 +43,7 @@ public class DegreeTypeValidationService {
         validateIfExists(id);
     }
 
-    private void validateIfExists(long id) {
+    private void validateIfExists(Long id) {
         persistenceService
                 .getById(id)
                 .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,
@@ -71,68 +71,23 @@ public class DegreeTypeValidationService {
 
     private void validateRelevantPoints(BigDecimal highlyRelevantPoints, BigDecimal limitedRelevantPoints,
                                         BigDecimal littleRelevantPoints) {
-        validateHighlyRelevantPoints(highlyRelevantPoints);
-        validateLimitedRelevantPointsPoints(limitedRelevantPoints);
-        validateLittleRelevantPointsPoints(littleRelevantPoints);
-    }
-
-    private void validateHighlyRelevantPoints(BigDecimal highlyRelevantPoints) {
-        if (highlyRelevantPoints == null) {
+        if (highlyRelevantPoints == null || limitedRelevantPoints == null || littleRelevantPoints == null) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "highlyRelevantPoints must not be null",
-                                    ErrorKey.DEGREE_TYPE_HIGHLY_RELEVANT_POINTS_ARE_NULL);
+                                    "relevant points must not be null",
+                                    ErrorKey.DEGREE_TYPE_RELEVANT_POINTS_ARE_NULL);
         }
 
-        if (highlyRelevantPoints.signum() == -1) {
+        if (highlyRelevantPoints.signum() < 0 || limitedRelevantPoints.signum() < 0
+            || littleRelevantPoints.signum() < 0) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "highlyRelevantPoints must not be positive",
-                                    ErrorKey.DEGREE_TYPE_HIGHLY_RELEVANT_POINTS_ARE_NEGATIVE);
+                                    "relevant points must not be negative",
+                                    ErrorKey.DEGREE_TYPE_RELEVANT_POINTS_ARE_NEGATIVE);
         }
 
-        if (highlyRelevantPoints.scale() > 2) {
+        if (highlyRelevantPoints.scale() > 2 || limitedRelevantPoints.scale() > 2 || littleRelevantPoints.scale() > 2) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "highlyRelevantPoints must not have more than 2 decimal places",
-                                    ErrorKey.DEGREE_TYPE_HIGHLY_RELEVANT_POINTS_HAVE_TOO_MANY_DECIMAL_PLACES);
-        }
-    }
-
-    private void validateLimitedRelevantPointsPoints(BigDecimal limitedRelevantPoints) {
-        if (limitedRelevantPoints == null) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "limitedRelevantPoints must not be null",
-                                    ErrorKey.DEGREE_TYPE_LIMITED_RELEVANT_POINTS_ARE_NULL);
-        }
-
-        if (limitedRelevantPoints.signum() == -1) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "limitedRelevantPoints must not be positive",
-                                    ErrorKey.DEGREE_TYPE_LIMITED_RELEVANT_POINTS_ARE_NEGATIVE);
-        }
-
-        if (limitedRelevantPoints.scale() > 2) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "limitedRelevantPoints must not have more than 2 decimal places",
-                                    ErrorKey.DEGREE_TYPE_LIMITED_RELEVANT_POINTS_HAVE_TOO_MANY_DECIMAL_PLACES);
-        }
-    }
-
-    private void validateLittleRelevantPointsPoints(BigDecimal littleRelevantPoints) {
-        if (littleRelevantPoints == null) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "littleRelevantPoints must not be null",
-                                    ErrorKey.DEGREE_TYPE_LITTLE_RELEVANT_POINTS_ARE_NULL);
-        }
-
-        if (littleRelevantPoints.signum() == -1) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "littleRelevantPoints must not be positive",
-                                    ErrorKey.DEGREE_TYPE_LITTLE_RELEVANT_POINTS_ARE_NEGATIVE);
-        }
-
-        if (littleRelevantPoints.scale() > 2) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "littleRelevantPoints must not have more than 2 decimal places",
-                                    ErrorKey.DEGREE_TYPE_LITTLE_RELEVANT_POINTS_HAVE_TOO_MANY_DECIMAL_PLACES);
+                                    "relevant points must not have more than 2 decimal places",
+                                    ErrorKey.DEGREE_TYPE_RELEVANT_POINTS_HAVE_TOO_MANY_DECIMAL_PLACES);
         }
     }
 }
