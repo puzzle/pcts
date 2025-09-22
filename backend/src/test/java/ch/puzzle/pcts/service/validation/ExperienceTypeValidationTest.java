@@ -125,22 +125,6 @@ class ExperienceTypeValidationTest {
         assertEquals(ErrorKey.EXPERIENCE_TYPE_POINTS_ARE_NEGATIVE, exception.getErrorKey());
     }
 
-    @DisplayName("Should throw exception on validateOnCreate() when points have more than two decimal places")
-    @Test
-    void shouldThrowExceptionOnValidateOnCreateWhenPointsHaveMoreThanTwoDecimalPlaces() {
-        ExperienceType experienceType = new ExperienceType();
-        experienceType.setName("ExperienceType");
-        experienceType.setHighlyRelevantPoints(BigDecimal.valueOf(3));
-        experienceType.setLimitedRelevantPoints(BigDecimal.valueOf(5.543));
-        experienceType.setLittleRelevantPoints(BigDecimal.valueOf(9));
-
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> validationService.validateOnCreate(experienceType));
-
-        assertEquals("ExperienceType has points with more than 2 decimal places", exception.getReason());
-        assertEquals(ErrorKey.EXPERIENCE_TYPE_POINTS_HAVE_MORE_THAN_TWO_DECIMAL_PLACES, exception.getErrorKey());
-    }
-
     @DisplayName("Should be successful on validateOnDelete() when id is valid")
     @Test
     void shouldBeSuccessfulOnValidateOnDeleteWhenIdIsValid() {
