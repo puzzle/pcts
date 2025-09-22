@@ -7,14 +7,17 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/certificates")
+@Tag(name = "certificates")
 public class CertificateController {
     private final CertificateBusinessService service;
     private final CertificateMapper mapper;
@@ -28,7 +31,7 @@ public class CertificateController {
     @ApiResponse(responseCode = "200", description = "A list off Certificates", content = {
             @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = CertificateDto.class))) })
     @GetMapping
-    public ResponseEntity<List<CertificateDto>> getCertificate() {
+    public ResponseEntity<List<CertificateDto>> getCertificates() {
         return ResponseEntity.ok(mapper.toDto(service.getAll()));
     }
 
@@ -37,29 +40,34 @@ public class CertificateController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = CertificateDto.class)) }),
             @ApiResponse(responseCode = "404", description = "Certificate not found", content = @Content) })
     @GetMapping("{id}")
-    public ResponseEntity<CertificateDto> getCertificatesById(@PathVariable Long id) {
+    public ResponseEntity<CertificateDto> getCertificateById(@PathVariable Long id) {
         return ResponseEntity.ok(mapper.toDto(service.getById(id)));
     }
 
     @Operation(summary = "Create a new Certificate")
-    @ApiResponse(responseCode = "201", description = "Certificate created successfully", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = CertificateDto.class)) })
+    @RequestBody(description = "The certificate object to be created.", required = true)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Certificate created successfully", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = CertificateDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Can't create new Certificate, not allowed to give an ID", content = @Content) })
     @PostMapping
     public ResponseEntity<CertificateDto> createNew(@RequestBody CertificateDto dto) {
         return ResponseEntity.ok(mapper.toDto(service.create(mapper.fromDto(dto))));
     }
 
-    @Operation(summary = "Update a Certificate")
+    @Operation(summary = "Update a Certificate by ID")
+    @RequestBody(description = "The updated certificate data.", required = true)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Certificate updated successfully", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = CertificateDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Can't create new Certificate, required attributes are not set", content = @Content),
             @ApiResponse(responseCode = "404", description = "Certificate not found", content = @Content) })
     @PutMapping("{id}")
     public ResponseEntity<CertificateDto> updateCertificate(@PathVariable Long id, @RequestBody CertificateDto dto) {
         return ResponseEntity.ok(mapper.toDto(service.update(id, mapper.fromDto(dto))));
     }
 
-    @Operation(summary = "Delete a Certificate")
+    @Operation(summary = "Delete a Certificate by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Certificate deleted successfully", content = @Content),
             @ApiResponse(responseCode = "404", description = "Certificate not found", content = @Content) })
