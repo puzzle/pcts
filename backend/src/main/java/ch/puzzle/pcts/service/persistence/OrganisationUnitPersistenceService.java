@@ -28,6 +28,10 @@ public class OrganisationUnitPersistenceService {
         return repository.findAll();
     }
 
+    public OrganisationUnit getByName(String name) {
+        return repository.findByName(name);
+    }
+
     public OrganisationUnit update(Long id, OrganisationUnit organisationUnit) {
         organisationUnit.setId(id);
         return repository.save(organisationUnit);
