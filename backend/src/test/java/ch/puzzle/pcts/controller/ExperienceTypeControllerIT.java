@@ -104,7 +104,7 @@ class ExperienceTypeControllerIT {
                 .andExpect(jsonPath("$.limitedRelevantPoints").value(expectedDto.limitedRelevantPoints()))
                 .andExpect(jsonPath("$.littleRelevantPoints").value(expectedDto.littleRelevantPoints()));
 
-        verify(service, times(1)).getById(eq(1L));
+        verify(service, times(1)).getById(1L);
         verify(mapper, times(1)).toDto(any(ExperienceType.class));
     }
 

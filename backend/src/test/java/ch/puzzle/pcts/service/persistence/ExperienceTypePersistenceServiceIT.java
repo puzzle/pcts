@@ -119,6 +119,6 @@ class ExperienceTypePersistenceServiceIT {
         persistenceService.delete(id);
 
         Optional<ExperienceType> result = persistenceService.getById(id);
-        assertThat(result.isPresent()).isFalse();
+        assertThat(result).isEmpty();
     }
 }
