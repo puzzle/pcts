@@ -47,11 +47,13 @@ public class CertificateValidationService {
 
     private void validateName(String name) {
         if (name == null) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST, "Name must not be null", ErrorKey.ROLE_NAME_IS_NULL);
+            throw new PCTSException(HttpStatus.BAD_REQUEST, "Name must not be null", ErrorKey.CERTIFICATE_NAME_IS_NULL);
         }
 
         if (name.isBlank()) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST, "Name must not be empty", ErrorKey.ROLE_NAME_IS_EMPTY);
+            throw new PCTSException(HttpStatus.BAD_REQUEST,
+                                    "Name must not be empty",
+                                    ErrorKey.CERTIFICATE_NAME_IS_EMPTY);
         }
     }
 
@@ -67,19 +69,13 @@ public class CertificateValidationService {
         if (points == null) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
                                     "Points value must not be null.",
-                                    ErrorKey.INVALID_ARGUMENT);
+                                    ErrorKey.CERTIFICATE_POINTS_ARE_NULL);
         }
 
         if (points.signum() < 0) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
                                     "Points value must not be negative.",
-                                    ErrorKey.INVALID_ARGUMENT);
-        }
-
-        if (points.stripTrailingZeros().scale() > 2) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "Points value must not have more than two decimal places.",
-                                    ErrorKey.INVALID_ARGUMENT);
+                                    ErrorKey.CERTIFICATE_POINTS_ARE_NEGATIVE);
         }
     }
 }

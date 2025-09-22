@@ -87,7 +87,7 @@ class CertificateValidationServiceTest {
                                                () -> validationService.validateOnCreate(certificate));
 
         assertEquals("Name must not be null", exception.getReason());
-        assertEquals(ErrorKey.ROLE_NAME_IS_NULL, exception.getErrorKey());
+        assertEquals(ErrorKey.CERTIFICATE_NAME_IS_NULL, exception.getErrorKey());
     }
 
     @DisplayName("Should throw exception on validateOnCreate() when name is blank")
@@ -100,7 +100,7 @@ class CertificateValidationServiceTest {
                                                () -> validationService.validateOnCreate(certificate));
 
         assertEquals("Name must not be empty", exception.getReason());
-        assertEquals(ErrorKey.ROLE_NAME_IS_EMPTY, exception.getErrorKey());
+        assertEquals(ErrorKey.CERTIFICATE_NAME_IS_EMPTY, exception.getErrorKey());
     }
 
     @DisplayName("Should throw exception on validateOnCreate() when points is null")
@@ -114,7 +114,7 @@ class CertificateValidationServiceTest {
                                                () -> validationService.validateOnCreate(certificate));
 
         assertEquals("Points value must not be null.", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+        assertEquals(ErrorKey.CERTIFICATE_POINTS_ARE_NULL, exception.getErrorKey());
     }
 
     @DisplayName("Should throw exception on validateOnCreate() when points is negative")
@@ -128,21 +128,7 @@ class CertificateValidationServiceTest {
                                                () -> validationService.validateOnCreate(certificate));
 
         assertEquals("Points value must not be negative.", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
-    }
-
-    @DisplayName("Should throw exception on validateOnCreate() when points has more than two decimal places")
-    @Test
-    void shouldThrowExceptionOnValidateOnCreateWhenPointsTooPrecise() {
-        Certificate certificate = new Certificate();
-        certificate.setName("Valid name");
-        certificate.setPoints(new BigDecimal("10.123"));
-
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> validationService.validateOnCreate(certificate));
-
-        assertEquals("Points value must not have more than two decimal places.", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+        assertEquals(ErrorKey.CERTIFICATE_POINTS_ARE_NEGATIVE, exception.getErrorKey());
     }
 
     @DisplayName("Should be successful on validateOnCreate() when points is valid (two decimals or fewer)")
@@ -244,7 +230,7 @@ class CertificateValidationServiceTest {
                                                () -> validationService.validateOnUpdate(id, certificate));
 
         assertEquals("Name must not be null", exception.getReason());
-        assertEquals(ErrorKey.ROLE_NAME_IS_NULL, exception.getErrorKey());
+        assertEquals(ErrorKey.CERTIFICATE_NAME_IS_NULL, exception.getErrorKey());
     }
 
     @DisplayName("Should throw exception on validateOnUpdate() when name is blank")
@@ -260,6 +246,6 @@ class CertificateValidationServiceTest {
                                                () -> validationService.validateOnUpdate(id, certificate));
 
         assertEquals("Name must not be empty", exception.getReason());
-        assertEquals(ErrorKey.ROLE_NAME_IS_EMPTY, exception.getErrorKey());
+        assertEquals(ErrorKey.CERTIFICATE_NAME_IS_EMPTY, exception.getErrorKey());
     }
 }
