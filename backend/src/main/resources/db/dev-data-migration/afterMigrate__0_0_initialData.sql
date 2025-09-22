@@ -21,6 +21,8 @@ VALUES
     ('Extern', FALSE),
     ('Consultant', FALSE);
 
+TRUNCATE TABLE organisation_unit CASCADE;
+
 INSERT INTO organisation_unit (name)
 VALUES
     ('/zh'),
