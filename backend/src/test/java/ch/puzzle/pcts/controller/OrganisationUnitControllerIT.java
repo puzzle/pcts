@@ -34,7 +34,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @Import(SpringSecurityConfig.class)
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(OrganisationUnitController.class)
-public class OrganisationUnitControllerIT {
+class OrganisationUnitControllerIT {
 
     @MockitoBean
     private OrganisationUnitBusinessService service;
@@ -93,7 +93,7 @@ public class OrganisationUnitControllerIT {
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.name").value("OrganisationUnit 1"));
 
-        verify(service, times(1)).getById(eq(1L));
+        verify(service, times(1)).getById(1L);
         verify(mapper, times(1)).toDto(any(OrganisationUnit.class));
     }
 

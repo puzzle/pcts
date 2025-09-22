@@ -49,7 +49,7 @@ class OrganisationUnitPersistenceServiceIT {
     void shouldGetOrganisationUnitById() {
         Optional<OrganisationUnit> organisationUnit = persistenceService.getById(2L);
 
-        assertThat(organisationUnit.isPresent()).isTrue();
+        assertThat(organisationUnit).isPresent();
         assertThat(organisationUnit.get().getId()).isEqualTo(2L);
     }
 
@@ -87,7 +87,7 @@ class OrganisationUnitPersistenceServiceIT {
         persistenceService.update(id, organisationUnit);
         Optional<OrganisationUnit> result = persistenceService.getById(id);
 
-        assertThat(result.isPresent()).isTrue();
+        assertThat(result).isPresent();
         assertThat(result.get().getId()).isEqualTo(id);
         assertThat(organisationUnit.getName()).isEqualTo("Updated organisationUnit");
     }
@@ -102,6 +102,6 @@ class OrganisationUnitPersistenceServiceIT {
         persistenceService.delete(id);
 
         Optional<OrganisationUnit> result = persistenceService.getById(id);
-        assertThat(result.isPresent()).isFalse();
+        assertThat(result).isNotPresent();
     }
 }

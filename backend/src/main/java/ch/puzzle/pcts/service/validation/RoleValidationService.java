@@ -52,7 +52,7 @@ public class RoleValidationService {
         }
 
         if (persistenceService.getByName(name) != null) {
-            throw new PCTSException(HttpStatus.CONFLICT, "Name already exists", ErrorKey.ROLE_NAME_ALREADY_EXISTS);
+            throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.ROLE_NAME_ALREADY_EXISTS);
         }
     }
 
