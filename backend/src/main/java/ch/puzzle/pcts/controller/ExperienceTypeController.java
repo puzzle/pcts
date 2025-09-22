@@ -33,7 +33,7 @@ public class ExperienceTypeController {
     }
 
     @Operation(summary = "List all experience-types")
-    @ApiResponse(responseCode = "200", description = "A list of experience-types", content = {
+    @ApiResponse(responseCode = "200", description = "A list of experience-types.", content = {
             @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ExperienceTypeDto.class))) })
     @GetMapping
     public ResponseEntity<List<ExperienceTypeDto>> getExperienceTypes() {
@@ -41,7 +41,7 @@ public class ExperienceTypeController {
     }
 
     @Operation(summary = "Get a experience-type by ID")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "A single experience-type", content = {
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "A single experience-type.", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = ExperienceTypeDto.class)) }), })
     @GetMapping("{experienceTypeId}")
     public ResponseEntity<ExperienceTypeDto> getExperienceTypeById(@Parameter(description = "ID of the experience-type to retrieve.", required = true)
@@ -52,7 +52,7 @@ public class ExperienceTypeController {
 
     @Operation(summary = "Create a new experience-type")
     @RequestBody(description = "The experience-type object to be created.", required = true)
-    @ApiResponse(responseCode = "201", description = "experience-type created successfully", content = {
+    @ApiResponse(responseCode = "201", description = "experience-type created successfully.", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = ExperienceTypeDto.class)) })
     @PostMapping
     public ResponseEntity<ExperienceTypeDto> createExperienceType(@Valid @RequestBody ExperienceTypeDto dto) {
@@ -61,9 +61,9 @@ public class ExperienceTypeController {
     }
 
     @Operation(summary = "Update a experience-type")
-    @RequestBody(description = "The updated experience type data", required = true)
+    @RequestBody(description = "The updated experience type data.", required = true)
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "experience-type updated successfully", content = {
+            @ApiResponse(responseCode = "200", description = "experience-type updated successfully.", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = ExperienceTypeDto.class)) }), })
     @PutMapping("{experienceTypeId}")
     public ResponseEntity<ExperienceTypeDto> updateExperienceType(@Parameter(description = "ID of the experience-type to update.", required = true)
@@ -74,7 +74,7 @@ public class ExperienceTypeController {
 
     @Operation(summary = "Delete a experience-type")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "experience-type deleted successfully", content = @Content) })
+            @ApiResponse(responseCode = "204", description = "experience-type deleted successfully.", content = @Content) })
     @DeleteMapping("{experienceTypeId}")
     public ResponseEntity<Void> deleteExperienceType(@Parameter(description = "ID of the experience-type to delete.", required = true)
     @PathVariable Long experienceTypeId) {
