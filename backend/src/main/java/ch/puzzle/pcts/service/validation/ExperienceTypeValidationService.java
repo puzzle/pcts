@@ -24,7 +24,7 @@ public class ExperienceTypeValidationService {
     public void validateOnCreate(ExperienceType experienceType) {
         validateIfIdIsNull(experienceType.getId());
         validateName(experienceType.getName());
-        validateIfPointsArePositive(experienceType);
+        validateExperienceTypePoints(experienceType);
     }
 
     public void validateOnDelete(Long id) {
@@ -64,7 +64,13 @@ public class ExperienceTypeValidationService {
                                                      ErrorKey.NOT_FOUND));
     }
 
-    private void validateIfPointsArePositive(ExperienceType experienceType) {
+    private void validateExperienceTypePoints(ExperienceType experienceType) {
+        if (experienceType.getHighlyRelevantPoints() == null || experienceType.getLimitedRelevantPoints() == null
+            || experienceType.getLittleRelevantPoints() == null) {
+            throw new PCTSException(HttpStatus.BAD_REQUEST,
+                                    "ExperienceType has points with null as value",
+                                    ErrorKey.EXPERIENCE_TYPE_POINTS_ARE_NULL);
+        }
         if (experienceType.getHighlyRelevantPoints().signum() < 0
             || experienceType.getLimitedRelevantPoints().signum() < 0
             || experienceType.getLittleRelevantPoints().signum() < 0) {

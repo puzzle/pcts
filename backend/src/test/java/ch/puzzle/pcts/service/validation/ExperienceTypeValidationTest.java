@@ -109,6 +109,22 @@ class ExperienceTypeValidationTest {
         assertEquals(ErrorKey.EXPERIENCE_TYPE_NAME_IS_EMPTY, exception.getErrorKey());
     }
 
+    @DisplayName("Should throw exception on validateOnCreate() when points are null")
+    @Test
+    void shouldThrowExceptionOnValidateOnCreateWhenPointsAreNull() {
+        ExperienceType experienceType = new ExperienceType();
+        experienceType.setName("ExperienceType");
+        experienceType.setHighlyRelevantPoints(BigDecimal.valueOf(4));
+        experienceType.setLimitedRelevantPoints(null);
+        experienceType.setLittleRelevantPoints(BigDecimal.valueOf(9));
+
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> validationService.validateOnCreate(experienceType));
+
+        assertEquals("ExperienceType has points with null as value", exception.getReason());
+        assertEquals(ErrorKey.EXPERIENCE_TYPE_POINTS_ARE_NULL, exception.getErrorKey());
+    }
+
     @DisplayName("Should throw exception on validateOnCreate() when points are negative")
     @Test
     void shouldThrowExceptionOnValidateOnCreateWhenPointsAreNegative() {
