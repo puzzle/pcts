@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.mapper;
 
 import ch.puzzle.pcts.dto.degreeType.DegreeTypeDto;
+import ch.puzzle.pcts.dto.degreeType.DegreeTypeWithoutIdDto;
 import ch.puzzle.pcts.model.degreeType.DegreeType;
 import java.util.List;
 import org.springframework.stereotype.Component;
@@ -15,8 +16,16 @@ public class DegreeTypeMapper {
         return dtos.stream().map(this::fromDto).toList();
     }
 
+    public DegreeType fromDto(DegreeTypeWithoutIdDto dto) {
+        return new DegreeType(null,
+                              dto.name(),
+                              dto.highly_relevant_points(),
+                              dto.limited_relevant_points(),
+                              dto.little_relevant_points());
+    }
+
     public DegreeTypeDto toDto(DegreeType model) {
-        return new DegreeTypeDto(model.getId(),
+        return new DegreeTypeDto(model.getDegreeTypeId(),
                                  model.getName(),
                                  model.getHighlyRelevantPoints(),
                                  model.getLimitedRelevantPoints(),
@@ -24,7 +33,10 @@ public class DegreeTypeMapper {
     }
 
     public DegreeType fromDto(DegreeTypeDto dto) {
-        return new DegreeType(dto
-                .id(), dto.name(), dto.highlyRelevantPoints(), dto.limitedRelevantPoints(), dto.littleRelevantPoints());
+        return new DegreeType(dto.degreeTypeId(),
+                              dto.name(),
+                              dto.highlyRelevantPoints(),
+                              dto.limitedRelevantPoints(),
+                              dto.littleRelevantPoints());
     }
 }
