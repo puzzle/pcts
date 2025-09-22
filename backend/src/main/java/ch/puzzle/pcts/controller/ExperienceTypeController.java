@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -51,7 +50,7 @@ public class ExperienceTypeController {
     }
 
     @Operation(summary = "Create a new experience-type")
-    @RequestBody(description = "The experience-type object to be created.", required = true)
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The experience-type object to be created.", required = true)
     @ApiResponse(responseCode = "201", description = "experience-type created successfully.", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = ExperienceTypeDto.class)) })
     @PostMapping
@@ -61,7 +60,7 @@ public class ExperienceTypeController {
     }
 
     @Operation(summary = "Update a experience-type")
-    @RequestBody(description = "The updated experience type data.", required = true)
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The updated experience type data.", required = true)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "experience-type updated successfully.", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = ExperienceTypeDto.class)) }), })
