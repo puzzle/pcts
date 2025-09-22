@@ -44,7 +44,7 @@ public class OrganisationUnitController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = OrganisationUnitDto.class)) })
     @GetMapping("{organisationUnitId}")
     public ResponseEntity<OrganisationUnitDto> getOrganisationUnitById(@Parameter(description = "ID of the organisation unit to retrieve.", required = true)
-    @PathVariable long organisationUnitId) {
+    @PathVariable Long organisationUnitId) {
         OrganisationUnit organisationUnit = service.getById(organisationUnitId);
         return ResponseEntity.ok(mapper.toDto(organisationUnit));
     }

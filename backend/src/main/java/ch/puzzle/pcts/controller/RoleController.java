@@ -43,7 +43,7 @@ public class RoleController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = RoleDto.class)) })
     @GetMapping("{roleId}")
     public ResponseEntity<RoleDto> getRoleById(@Parameter(description = "ID of the role to retrieve.", required = true)
-    @PathVariable long roleId) {
+    @PathVariable Long roleId) {
         Role role = service.getById(roleId);
         return ResponseEntity.ok(mapper.toDto(role));
     }
