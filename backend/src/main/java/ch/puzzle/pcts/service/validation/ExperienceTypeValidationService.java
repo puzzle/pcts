@@ -4,7 +4,6 @@ import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.experienceType.ExperienceType;
 import ch.puzzle.pcts.service.persistence.ExperienceTypePersistenceService;
-import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -26,7 +25,6 @@ public class ExperienceTypeValidationService {
         validateIfIdIsNull(experienceType.getId());
         validateName(experienceType.getName());
         validateIfPointsArePositive(experienceType);
-        validateIfPointsHaveLessThanTwoDecimalPlaces(experienceType);
     }
 
     public void validateOnDelete(Long id) {
@@ -74,20 +72,5 @@ public class ExperienceTypeValidationService {
                                     "ExperienceType has negative points",
                                     ErrorKey.EXPERIENCE_TYPE_POINTS_ARE_NEGATIVE);
         }
-    }
-
-    private void validateIfPointsHaveLessThanTwoDecimalPlaces(ExperienceType experienceType) {
-        if (getNumberOfDecimalPlaces(experienceType.getHighlyRelevantPoints()) > 2
-            || getNumberOfDecimalPlaces(experienceType.getLimitedRelevantPoints()) > 2
-            || getNumberOfDecimalPlaces(experienceType.getLittleRelevantPoints()) > 2) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "ExperienceType has points with more than 2 decimal places",
-                                    ErrorKey.EXPERIENCE_TYPE_POINTS_HAVE_MORE_THAN_TWO_DECIMAL_PLACES);
-        }
-    }
-
-    private int getNumberOfDecimalPlaces(BigDecimal bigDecimal) {
-        int scale = bigDecimal.stripTrailingZeros().scale();
-        return Math.max(scale, 0);
     }
 }
