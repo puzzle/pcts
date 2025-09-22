@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,9 +50,10 @@ public class CertificateController {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = CertificateDto.class)) }),
             @ApiResponse(responseCode = "400", description = "Can't create new Certificate, not allowed to give an ID", content = @Content) })
     @PostMapping
-    public ResponseEntity<CertificateDto> createNew(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Certificate as json to create a new Certificate.", required = true)
+    public ResponseEntity<CertificateDto> createNewCertificate(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Certificate as json to create a new Certificate.", required = true)
     @RequestBody CertificateDto dto) {
-        return ResponseEntity.ok(mapper.toDto(service.create(mapper.fromDto(dto))));
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDto(service.create(mapper.fromDto(dto))));
     }
 
     @Operation(summary = "Update a Certificate by ID")
