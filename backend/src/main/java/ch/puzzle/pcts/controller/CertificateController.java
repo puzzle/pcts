@@ -28,7 +28,7 @@ public class CertificateController {
     }
 
     @Operation(summary = "List all Certificates")
-    @ApiResponse(responseCode = "200", description = "A list off Certificates", content = {
+    @ApiResponse(responseCode = "200", description = "A list off Certificates.", content = {
             @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = CertificateDto.class))) })
     @GetMapping
     public ResponseEntity<List<CertificateDto>> getCertificates() {
@@ -36,43 +36,42 @@ public class CertificateController {
     }
 
     @Operation(summary = "Get Certificate by ID")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "A single certificate", content = {
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "A single certificate.", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = CertificateDto.class)) }),
-            @ApiResponse(responseCode = "404", description = "Certificate not found", content = @Content) })
+            @ApiResponse(responseCode = "404", description = "Certificate not found.", content = @Content) })
     @GetMapping("{id}")
     public ResponseEntity<CertificateDto> getCertificateById(@PathVariable Long id) {
         return ResponseEntity.ok(mapper.toDto(service.getById(id)));
     }
 
     @Operation(summary = "Create a new Certificate")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Certificate as json to create a new Certificate.", required = true)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Certificate created successfully", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = CertificateDto.class)) }),
-            @ApiResponse(responseCode = "400", description = "Can't create new Certificate, not allowed to give an ID", content = @Content) })
+            @ApiResponse(responseCode = "400", description = "Can't create new Certificate, not allowed to give an ID.", content = @Content) })
     @PostMapping
-    public ResponseEntity<CertificateDto> createNewCertificate(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Certificate as json to create a new Certificate.", required = true)
-    @RequestBody CertificateDto dto) {
+    public ResponseEntity<CertificateDto> createNewCertificate(@RequestBody CertificateDto dto) {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDto(service.create(mapper.fromDto(dto))));
     }
 
     @Operation(summary = "Update a Certificate by ID")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Certificate as json to update an existing Certificate.", required = true)
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Certificate updated successfully", content = {
+            @ApiResponse(responseCode = "200", description = "Certificate updated successfully.", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = CertificateDto.class)) }),
-            @ApiResponse(responseCode = "400", description = "Can't create new Certificate, required attributes are not set", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Certificate not found", content = @Content) })
+            @ApiResponse(responseCode = "400", description = "Can't create new Certificate, required attributes are not set.", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Certificate not found.", content = @Content) })
     @PutMapping("{id}")
-    public ResponseEntity<CertificateDto> updateCertificate(@PathVariable Long id,
-                                                            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Certificate as json to update an existing Certificate.", required = true)
-                                                            @RequestBody CertificateDto dto) {
+    public ResponseEntity<CertificateDto> updateCertificate(@PathVariable Long id, @RequestBody CertificateDto dto) {
         return ResponseEntity.ok(mapper.toDto(service.update(id, mapper.fromDto(dto))));
     }
 
     @Operation(summary = "Delete a Certificate by ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Certificate deleted successfully", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Certificate not found", content = @Content) })
+            @ApiResponse(responseCode = "204", description = "Certificate deleted successfully.", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Certificate not found.", content = @Content) })
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteCertificate(@PathVariable Long id) {
         service.delete(id);
