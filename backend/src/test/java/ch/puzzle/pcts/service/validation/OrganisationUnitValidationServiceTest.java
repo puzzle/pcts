@@ -106,6 +106,21 @@ class OrganisationUnitValidationServiceTest {
         assertEquals(ErrorKey.ORGANIZATION_UNIT_NAME_IS_EMPTY, exception.getErrorKey());
     }
 
+    @DisplayName("Should throw exception on validateOnCreate() when name already exists")
+    @Test
+    void shouldThrowExceptionOnValidateOnCreateWhenNameAlreadyExists() {
+        OrganisationUnit organisationUnit = new OrganisationUnit();
+        organisationUnit.setName("Existing Organisation unit");
+
+        when(persistenceService.getByName("Existing Organisation unit")).thenReturn(new OrganisationUnit());
+
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> validationService.validateOnCreate(organisationUnit));
+
+        assertEquals("Name already exists", exception.getReason());
+        assertEquals(ErrorKey.ORGANIZATION_UNIT_NAME_ALREADY_EXISTS, exception.getErrorKey());
+    }
+
     @DisplayName("Should be successful on validateOnDelete() when id is valid")
     @Test
     void shouldBeSuccessfulOnValidateOnDeleteWhenIdIsValid() {
@@ -194,5 +209,22 @@ class OrganisationUnitValidationServiceTest {
 
         assertEquals("Name must not be empty", exception.getReason());
         assertEquals(ErrorKey.ORGANIZATION_UNIT_NAME_IS_EMPTY, exception.getErrorKey());
+    }
+
+    @DisplayName("Should throw exception on validateOnUpdate() when name already exists")
+    @Test
+    void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExists() {
+        OrganisationUnit organisationUnit = new OrganisationUnit();
+        organisationUnit.setName("Existing Organisation unit");
+        long id = 1;
+
+        when(persistenceService.getById(id)).thenReturn(Optional.of(new OrganisationUnit()));
+        when(persistenceService.getByName("Existing Organisation unit")).thenReturn(new OrganisationUnit());
+
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> validationService.validateOnUpdate(id, organisationUnit));
+
+        assertEquals("Name already exists", exception.getReason());
+        assertEquals(ErrorKey.ORGANIZATION_UNIT_NAME_ALREADY_EXISTS, exception.getErrorKey());
     }
 }

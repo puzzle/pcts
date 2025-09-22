@@ -103,6 +103,20 @@ class RoleValidationServiceTest {
         assertEquals(ErrorKey.ROLE_NAME_IS_EMPTY, exception.getErrorKey());
     }
 
+    @DisplayName("Should throw exception on validateOnCreate() when name already exists")
+    @Test
+    void shouldThrowExceptionOnValidateOnCreateWhenNameAlreadyExists() {
+        Role role = new Role();
+        role.setName("Existing Role");
+
+        when(persistenceService.getByName("Existing Role")).thenReturn(new Role());
+
+        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnCreate(role));
+
+        assertEquals("Name already exists", exception.getReason());
+        assertEquals(ErrorKey.ROLE_NAME_ALREADY_EXISTS, exception.getErrorKey());
+    }
+
     @DisplayName("Should be successful on validateOnDelete() when id is valid")
     @Test
     void shouldBeSuccessfulOnValidateOnDeleteWhenIdIsValid() {
@@ -187,5 +201,21 @@ class RoleValidationServiceTest {
 
         assertEquals("Name must not be empty", exception.getReason());
         assertEquals(ErrorKey.ROLE_NAME_IS_EMPTY, exception.getErrorKey());
+    }
+
+    @DisplayName("Should throw exception on validateOnUpdate() when name already exists")
+    @Test
+    void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExists() {
+        Role role = new Role();
+        role.setName("Existing Role");
+        long id = 1;
+
+        when(persistenceService.getById(id)).thenReturn(Optional.of(new Role()));
+        when(persistenceService.getByName("Existing Role")).thenReturn(new Role());
+
+        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnUpdate(id, role));
+
+        assertEquals("Name already exists", exception.getReason());
+        assertEquals(ErrorKey.ROLE_NAME_ALREADY_EXISTS, exception.getErrorKey());
     }
 }
