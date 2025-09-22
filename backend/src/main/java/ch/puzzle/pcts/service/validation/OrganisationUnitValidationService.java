@@ -54,6 +54,12 @@ public class OrganisationUnitValidationService {
                                     "Name must not be empty",
                                     ErrorKey.ORGANIZATION_UNIT_NAME_IS_EMPTY);
         }
+
+        if (persistenceService.getByName(name) != null) {
+            throw new PCTSException(HttpStatus.CONFLICT,
+                                    "Name already exists",
+                                    ErrorKey.ORGANIZATION_UNIT_NAME_ALREADY_EXISTS);
+        }
     }
 
     private void validateIfExists(long id) {

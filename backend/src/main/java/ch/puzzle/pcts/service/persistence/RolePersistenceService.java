@@ -24,6 +24,10 @@ public class RolePersistenceService {
         return repository.findById(id);
     }
 
+    public Role getByName(String name) {
+        return repository.findByName(name);
+    }
+
     public List<Role> getAll() {
         return repository.findAll();
     }
