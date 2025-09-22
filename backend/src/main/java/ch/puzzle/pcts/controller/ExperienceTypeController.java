@@ -42,8 +42,7 @@ public class ExperienceTypeController {
 
     @Operation(summary = "Get a experience-type by ID")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "A single experience-type", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = ExperienceTypeDto.class)) }),
-            @ApiResponse(responseCode = "404", description = "experience-type not found", content = @Content) })
+            @Content(mediaType = "application/json", schema = @Schema(implementation = ExperienceTypeDto.class)) }), })
     @GetMapping("{experienceTypeId}")
     public ResponseEntity<ExperienceTypeDto> getExperienceTypeById(@Parameter(description = "ID of the experience-type to retrieve.", required = true)
     @PathVariable Long experienceTypeId) {
@@ -65,8 +64,7 @@ public class ExperienceTypeController {
     @RequestBody(description = "The updated experience type data", required = true)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "experience-type updated successfully", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = ExperienceTypeDto.class)) }),
-            @ApiResponse(responseCode = "404", description = "experience-type not found", content = @Content) })
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = ExperienceTypeDto.class)) }), })
     @PutMapping("{experienceTypeId}")
     public ResponseEntity<ExperienceTypeDto> updateExperienceType(@Parameter(description = "ID of the experience-type to update.", required = true)
     @PathVariable Long experienceTypeId, @RequestBody ExperienceTypeDto dto) {
@@ -76,8 +74,7 @@ public class ExperienceTypeController {
 
     @Operation(summary = "Delete a experience-type")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "experience-type deleted successfully", content = @Content),
-            @ApiResponse(responseCode = "404", description = "experience-type not found", content = @Content) })
+            @ApiResponse(responseCode = "204", description = "experience-type deleted successfully", content = @Content) })
     @DeleteMapping("{experienceTypeId}")
     public ResponseEntity<Void> deleteExperienceType(@Parameter(description = "ID of the experience-type to delete.", required = true)
     @PathVariable Long experienceTypeId) {
