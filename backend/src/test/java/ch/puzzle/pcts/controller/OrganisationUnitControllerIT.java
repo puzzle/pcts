@@ -62,7 +62,7 @@ class OrganisationUnitControllerIT {
         id = 1L;
     }
 
-    @DisplayName("Should successfully organisation unit all organisation units")
+    @DisplayName("Should successfully get all roles organisation units")
     @Test
     void shouldGetAllOrganisationUnits() throws Exception {
         BDDMockito.given(service.getAll()).willReturn(List.of(organisationUnit));
