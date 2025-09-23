@@ -34,7 +34,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @Import(SpringSecurityConfig.class)
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(DegreeTypeController.class)
-public class DegreeTypeControllerIT {
+class DegreeTypeControllerIT {
 
     @MockitoBean
     private DegreeTypeBusinessService service;
@@ -111,7 +111,7 @@ public class DegreeTypeControllerIT {
                 .andExpect(jsonPath("$.limitedRelevantPoints").value(new BigDecimal("2.0")))
                 .andExpect(jsonPath("$.littleRelevantPoints").value(new BigDecimal("3.0")));
 
-        verify(service, times(1)).getById(eq(1L));
+        verify(service, times(1)).getById(1L);
         verify(mapper, times(1)).toDto(any(DegreeType.class));
     }
 

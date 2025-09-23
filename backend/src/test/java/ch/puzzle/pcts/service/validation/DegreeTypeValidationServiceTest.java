@@ -18,7 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-public class DegreeTypeValidationServiceTest {
+class DegreeTypeValidationServiceTest {
     private AutoCloseable closeable;
 
     @Mock

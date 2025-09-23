@@ -23,7 +23,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest
 @Testcontainers
 @ActiveProfiles("test")
-public class DegreeTypePersistenceServiceTest {
+class DegreeTypePersistenceServiceTest {
 
     @Container
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17-alpine");
@@ -51,7 +51,7 @@ public class DegreeTypePersistenceServiceTest {
     void shouldGetDegreeTypeById() {
         Optional<DegreeType> degreeType = persistenceService.getById(1L);
 
-        assertThat(degreeType.isPresent()).isTrue();
+        assertThat(degreeType).isPresent();
         assertThat(degreeType.get().getDegreeTypeId()).isEqualTo(1L);
     }
 
@@ -110,7 +110,7 @@ public class DegreeTypePersistenceServiceTest {
         persistenceService.update(id, degreeType);
         Optional<DegreeType> result = persistenceService.getById(id);
 
-        assertThat(result.isPresent()).isTrue();
+        assertThat(result).isPresent();
         assertThat(result.get().getDegreeTypeId()).isEqualTo(id);
         assertThat(degreeType.getName()).isEqualTo("Updated degree type");
         assertThat(degreeType.getHighlyRelevantPoints()).isEqualTo(new BigDecimal("2.0"));
@@ -128,6 +128,6 @@ public class DegreeTypePersistenceServiceTest {
         persistenceService.delete(id);
 
         Optional<DegreeType> result = persistenceService.getById(id);
-        assertThat(result.isPresent()).isFalse();
+        assertThat(result).isNotPresent();
     }
 }
