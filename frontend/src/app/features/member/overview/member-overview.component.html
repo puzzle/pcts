@@ -5,17 +5,19 @@
       <mat-icon matPrefix>search</mat-icon>
       <input
         matInput
+        [value]="searchText"
         (keyup)="applyFilter($event)"
         placeholder="Suchen"
         #input>
     </mat-form-field>
+
     <div>
       <button
         type="button"
         mat-stroked-button
         class="rounded-0"
-        [class.active]="alleSelected"
-        (click)="toggleAlle()">
+        [class.active]="allFilter"
+        (click)="toggleFilter('all')">
         Alle
       </button>
 
@@ -23,8 +25,8 @@
         type="button"
         mat-stroked-button
         class="rounded-0"
-        [class.active]="memberSelected"
-        (click)="toggleMember()">
+        [class.active]="memberFilter"
+        (click)="toggleFilter('member')">
         Member
       </button>
 
@@ -32,8 +34,8 @@
         type="button"
         mat-stroked-button
         class="rounded-0"
-        [class.active]="bewerberSelected"
-        (click)="toggleBewerber()">
+        [class.active]="applicantFilter"
+        (click)="toggleFilter('applicant')">
         Bewerber
       </button>
     </div>
