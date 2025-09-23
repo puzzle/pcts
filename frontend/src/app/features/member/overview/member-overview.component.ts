@@ -9,6 +9,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { DatePipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-member-overview.component',
@@ -31,6 +32,10 @@ export class MemberOverviewComponent {
 
   private datePipe: DatePipe = inject(DatePipe);
 
+  private router = inject(Router);
+
+  private route = inject(ActivatedRoute);
+
   displayedColumns: string[] = [
     'name',
     'birthday',
@@ -44,13 +49,13 @@ export class MemberOverviewComponent {
 
   members: WritableSignal<MemberDto[]> = signal([]);
 
-  alleSelected = true;
+  allFilter = true;
 
-  memberSelected = false;
+  memberFilter = false;
 
-  bewerberSelected = false;
+  applicantFilter = false;
 
-  private searchText = '';
+  searchText = '';
 
   constructor() {
     this.service.getAllMembers()
@@ -65,8 +70,18 @@ export class MemberOverviewComponent {
       this.dataSource.sort = this.sort();
       this.applyCombinedFilter();
     });
-  }
 
+    this.route.queryParams.subscribe((params) => {
+      this.searchText = params['q'] ? decodeURIComponent(params['q']) : '';
+      const status = params['status'] || 'all';
+
+      this.allFilter = status === 'all';
+      this.memberFilter = status.includes('member') && status !== 'all';
+      this.applicantFilter = status.includes('applicant') && status !== 'all';
+
+      this.applyCombinedFilter();
+    });
+  }
 
   createFilterPredicate(): (data: MemberDto, filter: string) => boolean {
     return (member: MemberDto, filter: string): boolean => {
@@ -76,13 +91,13 @@ export class MemberOverviewComponent {
 
       let statusMatch = false;
       const employmentState = member.employmentState?.toLowerCase() || '';
-      if (status === 'alle') {
+      if (status === 'all') {
         statusMatch = true;
       } else if (status === 'member' && employmentState === 'member') {
         statusMatch = true;
-      } else if (status === 'bewerber' && employmentState === 'bewerber') {
+      } else if (status === 'applicant' && employmentState === 'bewerber') {
         statusMatch = true;
-      } else if (status === 'member+bewerber' && (employmentState === 'member' || employmentState === 'bewerber')) {
+      } else if (status === 'member+applicant' && (employmentState === 'member' || employmentState === 'bewerber')) {
         statusMatch = true;
       }
 
@@ -112,18 +127,17 @@ export class MemberOverviewComponent {
     this.applyCombinedFilter();
   }
 
-
   private applyCombinedFilter() {
     let statusFilterValue = 'none';
 
-    if (this.alleSelected) {
-      statusFilterValue = 'alle';
-    } else if (this.memberSelected && this.bewerberSelected) {
-      statusFilterValue = 'member+bewerber';
-    } else if (this.memberSelected) {
+    if (this.allFilter) {
+      statusFilterValue = 'all';
+    } else if (this.memberFilter && this.applicantFilter) {
+      statusFilterValue = 'member+applicant';
+    } else if (this.memberFilter) {
       statusFilterValue = 'member';
-    } else if (this.bewerberSelected) {
-      statusFilterValue = 'bewerber';
+    } else if (this.applicantFilter) {
+      statusFilterValue = 'applicant';
     }
 
     const combinedFilter = {
@@ -131,29 +145,29 @@ export class MemberOverviewComponent {
       status: statusFilterValue
     };
     this.dataSource.filter = JSON.stringify(combinedFilter);
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        q: this.searchText ? encodeURIComponent(this.searchText) : null,
+        status: statusFilterValue !== 'all' ? statusFilterValue : null
+      },
+      queryParamsHandling: 'merge'
+    });
   }
 
-  toggleAlle() {
-    this.alleSelected = true;
-    this.memberSelected = false;
-    this.bewerberSelected = false;
-    this.applyCombinedFilter();
-  }
-
-  toggleMember() {
-    this.memberSelected = !this.memberSelected;
-    this.alleSelected = false;
-    if (!this.memberSelected && !this.bewerberSelected) {
-      this.alleSelected = true;
-    }
-    this.applyCombinedFilter();
-  }
-
-  toggleBewerber() {
-    this.bewerberSelected = !this.bewerberSelected;
-    this.alleSelected = false;
-    if (!this.memberSelected && !this.bewerberSelected) {
-      this.alleSelected = true;
+  toggleFilter(statusFilterValue: string) {
+    if (statusFilterValue === 'all') {
+      this.allFilter = true;
+      this.memberFilter = false;
+      this.applicantFilter = false;
+    } else {
+      const key = statusFilterValue === 'member' ? 'memberFilter' : 'applicantFilter';
+      this[key] = !this[key];
+      this.allFilter = false;
+      if (!this.memberFilter && !this.applicantFilter) {
+        this.allFilter = true;
+      }
     }
     this.applyCombinedFilter();
   }
