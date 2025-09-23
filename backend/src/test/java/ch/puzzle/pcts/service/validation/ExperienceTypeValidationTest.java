@@ -13,6 +13,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -97,10 +99,11 @@ class ExperienceTypeValidationTest {
     }
 
     @DisplayName("Should throw exception on validateOnCreate() when name is blank")
-    @Test
-    void shouldThrowExceptionOnValidateOnCreateWhenNameBlank() {
+    @ParameterizedTest
+    @ValueSource(strings = { "", "   " })
+    void shouldThrowExceptionOnValidateOnCreateWhenNameBlank(String name) {
         ExperienceType experienceType = new ExperienceType();
-        experienceType.setName("");
+        experienceType.setName(name);
 
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> validationService.validateOnCreate(experienceType));
@@ -189,5 +192,77 @@ class ExperienceTypeValidationTest {
 
         assertEquals("ExperienceType with id: " + id + " does not exist.", exception.getReason());
         assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
+    }
+
+    @DisplayName("Should throw exception on validateOnUpdate() when id is not null")
+    @Test
+    void shouldThrowExceptionOnValidateOnUpdateWhenIdIsNotNull() {
+        ExperienceType experienceType = new ExperienceType();
+        experienceType.setName("ExperienceType");
+        experienceType.setId(123L);
+
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> validationService.validateOnUpdate(1L, experienceType));
+
+        assertEquals("Id needs to be undefined", exception.getReason());
+        assertEquals(ErrorKey.ID_IS_NOT_NULL, exception.getErrorKey());
+    }
+
+    @DisplayName("Should throw exception on validateOnUpdate() when name is null")
+    @Test
+    void shouldThrowExceptionOnValidateOnUpdateWhenNameIsNull() {
+        ExperienceType experienceType = new ExperienceType();
+
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> validationService.validateOnUpdate(1L, experienceType));
+
+        assertEquals("Name must not be null", exception.getReason());
+        assertEquals(ErrorKey.EXPERIENCE_TYPE_NAME_IS_NULL, exception.getErrorKey());
+    }
+
+    @DisplayName("Should throw exception on validateOnUpdate() when name is blank")
+    @ParameterizedTest
+    @ValueSource(strings = { "", "   " })
+    void shouldThrowExceptionOnValidateOnUpdateWhenNameBlank(String name) {
+        ExperienceType experienceType = new ExperienceType();
+        experienceType.setName(name);
+
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> validationService.validateOnUpdate(1L, experienceType));
+
+        assertEquals("Name must not be empty", exception.getReason());
+        assertEquals(ErrorKey.EXPERIENCE_TYPE_NAME_IS_EMPTY, exception.getErrorKey());
+    }
+
+    @DisplayName("Should throw exception on validateOnUpdate() when points are null")
+    @Test
+    void shouldThrowExceptionOnValidateOnUpdateWhenPointsAreNull() {
+        ExperienceType experienceType = new ExperienceType();
+        experienceType.setName("ExperienceType");
+        experienceType.setHighlyRelevantPoints(BigDecimal.valueOf(4));
+        experienceType.setLimitedRelevantPoints(null);
+        experienceType.setLittleRelevantPoints(BigDecimal.valueOf(9));
+
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> validationService.validateOnUpdate(1L, experienceType));
+
+        assertEquals("ExperienceType has points with null as value", exception.getReason());
+        assertEquals(ErrorKey.EXPERIENCE_TYPE_POINTS_ARE_NULL, exception.getErrorKey());
+    }
+
+    @DisplayName("Should throw exception on validateOnUpdate() when points are negative")
+    @Test
+    void shouldThrowExceptionOnValidateOnUpdateWhenPointsAreNegative() {
+        ExperienceType experienceType = new ExperienceType();
+        experienceType.setName("ExperienceType");
+        experienceType.setHighlyRelevantPoints(BigDecimal.valueOf(-1));
+        experienceType.setLimitedRelevantPoints(BigDecimal.valueOf(5));
+        experienceType.setLittleRelevantPoints(BigDecimal.valueOf(9));
+
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> validationService.validateOnUpdate(1L, experienceType));
+
+        assertEquals("ExperienceType has negative points", exception.getReason());
+        assertEquals(ErrorKey.EXPERIENCE_TYPE_POINTS_ARE_NEGATIVE, exception.getErrorKey());
     }
 }

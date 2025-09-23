@@ -7,5 +7,6 @@ CREATE TABLE IF NOT EXISTS experience_type
     name                      TEXT    NOT NULL,
     highly_relevant_points    PCTS,
     limited_relevant_points   PCTS,
-    little_relevant_points    PCTS
+    little_relevant_points    PCTS,
+    deleted_at      TIMESTAMP DEFAULT NULL
 );

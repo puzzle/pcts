@@ -16,8 +16,9 @@ public class ExperienceTypePersistenceService {
         this.repository = repository;
     }
 
-    public ExperienceType create(ExperienceType role) {
-        return repository.save(role);
+    public ExperienceType create(ExperienceType experienceType) {
+        experienceType.roundPoints();
+        return repository.save(experienceType);
     }
 
     public Optional<ExperienceType> getById(long id) {
@@ -28,9 +29,10 @@ public class ExperienceTypePersistenceService {
         return repository.findAll();
     }
 
-    public ExperienceType update(Long id, ExperienceType experience) {
-        experience.setId(id);
-        return repository.save(experience);
+    public ExperienceType update(Long id, ExperienceType experienceType) {
+        experienceType.setId(id);
+        experienceType.roundPoints();
+        return repository.save(experienceType);
     }
 
     public void delete(Long id) {

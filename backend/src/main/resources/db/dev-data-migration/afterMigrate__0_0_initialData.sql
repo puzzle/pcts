@@ -25,11 +25,11 @@ TRUNCATE TABLE experience_type CASCADE;
 
 INSERT INTO experience_type (name, highly_relevant_points, limited_relevant_points, little_relevant_points)
 VALUES
-    ('Internship', 0, 12, 0),
-    ('Research Project', 12, 6, 0),
-    ('Volunteer Work', 8, 4, 1),
-    ('Freelance Work', 0, 0, 8),
-    ('Hackathon', 9, 0,0),
-    ('Leadership Role', 13, 0, 0),
+    ('Internship', 4, 2, 1.5),
+    ('Volunteer Work', 2, 1.5, 1),
+    ('Hackathon', 9, 4,2),
+    ('Leadership Role', 13, 7, 5),
+    ('Research Project', 6, 5, 3.25),
     ('Coursework Project', 7, 3, 1),
-    ('Professional Job', 0, 8, 4);
+    ('Freelance Work', 7, 6.25, 4),
+    ('Professional Job', 4.5, 2, 1);

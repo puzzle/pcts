@@ -39,7 +39,7 @@ public class ExperienceTypeController {
         return ResponseEntity.ok(mapper.toDto(service.getAll()));
     }
 
-    @Operation(summary = "Get a experience-type by ID")
+    @Operation(summary = "Get an experience-type by ID")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "A single experience-type.", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = ExperienceTypeDto.class)) }), })
     @GetMapping("{experienceTypeId}")
@@ -59,7 +59,7 @@ public class ExperienceTypeController {
         return ResponseEntity.status(201).body(mapper.toDto(newExperienceType));
     }
 
-    @Operation(summary = "Update a experience-type")
+    @Operation(summary = "Update an experience-type")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The updated experience type data.", required = true)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "experience-type updated successfully.", content = {
@@ -71,7 +71,7 @@ public class ExperienceTypeController {
         return ResponseEntity.ok(mapper.toDto(updatedExperienceType));
     }
 
-    @Operation(summary = "Delete a experience-type")
+    @Operation(summary = "Delete an experience-type")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "experience-type deleted successfully.", content = @Content) })
     @DeleteMapping("{experienceTypeId}")

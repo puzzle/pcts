@@ -1,11 +1,20 @@
 package ch.puzzle.pcts.model.experienceType;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
+@SQLDelete(sql = "UPDATE experience_type SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
+@SQLRestriction("deleted_at IS NULL")
 public class ExperienceType {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_example")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -66,6 +75,16 @@ public class ExperienceType {
 
     public void setLittleRelevantPoints(BigDecimal littleRelevantPoints) {
         this.littleRelevantPoints = littleRelevantPoints;
+    }
+
+    public void roundPoints() {
+        this.highlyRelevantPoints = round(this.highlyRelevantPoints);
+        this.limitedRelevantPoints = round(this.limitedRelevantPoints);
+        this.littleRelevantPoints = round(this.littleRelevantPoints);
+    }
+
+    private BigDecimal round(BigDecimal points) {
+        return new BigDecimal(points.setScale(2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString());
     }
 
     @Override
