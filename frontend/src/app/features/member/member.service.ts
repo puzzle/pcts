@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { EmploymentState, Member } from './member.model';
+import { MemberDto } from './member.dto';
 import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MemberService {
-  getAllMembers(): Observable<Member[]> {
+  getAllMembers(): Observable<MemberDto[]> {
     return of([
       {
         id: 1,
@@ -14,9 +14,12 @@ export class MemberService {
         lastName: 'Morant',
         birthday: new Date(),
         abbreviation: 'JM',
-        employmentState: EmploymentState.ACTIVE,
+        employmentState: 'Member',
         dateOfHire: new Date(),
-        organisationUnit: '/mem'
+        organisationUnit: {
+          id: 1,
+          name: '/mem'
+        }
       },
       {
         id: 2,
@@ -24,9 +27,12 @@ export class MemberService {
         lastName: 'Jackson Jr',
         birthday: new Date(),
         abbreviation: 'JJJ',
-        employmentState: EmploymentState.ACTIVE,
+        employmentState: 'Member',
         dateOfHire: new Date(),
-        organisationUnit: '/mem'
+        organisationUnit: {
+          id: 1,
+          name: '/mem'
+        }
       },
       {
         id: 3,
@@ -34,9 +40,12 @@ export class MemberService {
         lastName: 'Desmond',
         birthday: new Date(),
         abbreviation: 'BD',
-        employmentState: EmploymentState.ALUMNI,
+        employmentState: 'Ex Member',
         dateOfHire: new Date(),
-        organisationUnit: '/mem'
+        organisationUnit: {
+          id: 1,
+          name: '/mem'
+        }
       },
       {
         id: 4,
@@ -44,9 +53,12 @@ export class MemberService {
         lastName: 'Williams',
         birthday: new Date(),
         abbreviation: 'JW',
-        employmentState: EmploymentState.APPLICANT,
+        employmentState: 'Bewerber',
         dateOfHire: new Date(),
-        organisationUnit: '/mem'
+        organisationUnit: {
+          id: 1,
+          name: '/rookie'
+        }
       }
     ]);
   }
