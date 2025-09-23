@@ -201,6 +201,7 @@ class ExperienceTypeValidationTest {
         experienceType.setName("ExperienceType");
         experienceType.setId(123L);
 
+        when(persistenceService.getById(1L)).thenReturn(Optional.of(new ExperienceType()));
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> validationService.validateOnUpdate(1L, experienceType));
 
@@ -213,6 +214,7 @@ class ExperienceTypeValidationTest {
     void shouldThrowExceptionOnValidateOnUpdateWhenNameIsNull() {
         ExperienceType experienceType = new ExperienceType();
 
+        when(persistenceService.getById(1L)).thenReturn(Optional.of(new ExperienceType()));
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> validationService.validateOnUpdate(1L, experienceType));
 
@@ -227,6 +229,7 @@ class ExperienceTypeValidationTest {
         ExperienceType experienceType = new ExperienceType();
         experienceType.setName(name);
 
+        when(persistenceService.getById(1L)).thenReturn(Optional.of(new ExperienceType()));
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> validationService.validateOnUpdate(1L, experienceType));
 
@@ -243,6 +246,7 @@ class ExperienceTypeValidationTest {
         experienceType.setLimitedRelevantPoints(null);
         experienceType.setLittleRelevantPoints(BigDecimal.valueOf(9));
 
+        when(persistenceService.getById(1L)).thenReturn(Optional.of(new ExperienceType()));
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> validationService.validateOnUpdate(1L, experienceType));
 
@@ -259,6 +263,7 @@ class ExperienceTypeValidationTest {
         experienceType.setLimitedRelevantPoints(BigDecimal.valueOf(5));
         experienceType.setLittleRelevantPoints(BigDecimal.valueOf(9));
 
+        when(persistenceService.getById(1L)).thenReturn(Optional.of(new ExperienceType()));
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> validationService.validateOnUpdate(1L, experienceType));
 
