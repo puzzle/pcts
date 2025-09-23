@@ -11,46 +11,42 @@ export class MemberService {
       {
         id: 1,
         name: 'Ja',
-        last_name: 'Morant',
+        lastName: 'Morant',
         birthday: new Date(),
         abbreviation: 'JM',
-        employment_state: EmploymentState.MEMBER,
-        date_of_hire: new Date(),
-        is_admin: false,
-        organisation_unit: '/mem'
+        employmentState: EmploymentState.ACTIVE,
+        dateOfHire: new Date(),
+        organisationUnit: '/mem'
       },
       {
         id: 2,
-        name: 'jaren',
-        last_name: 'jackson jr',
+        name: 'Jaren',
+        lastName: 'Jackson Jr',
         birthday: new Date(),
         abbreviation: 'JJJ',
-        employment_state: EmploymentState.MEMBER,
-        date_of_hire: new Date(),
-        is_admin: false,
-        organisation_unit: '/mem'
+        employmentState: EmploymentState.ACTIVE,
+        dateOfHire: new Date(),
+        organisationUnit: '/mem'
       },
       {
-        id: 2,
-        name: 'jaylen',
-        last_name: 'Williams',
-        birthday: new Date(),
-        abbreviation: 'JW',
-        employment_state: EmploymentState.BEWERBER,
-        date_of_hire: new Date(),
-        is_admin: false,
-        organisation_unit: '/mem'
-      },
-      {
-        id: 2,
+        id: 3,
         name: 'Bane',
-        last_name: 'Desmond',
+        lastName: 'Desmond',
+        birthday: new Date(),
+        abbreviation: 'BD',
+        employmentState: EmploymentState.ALUMNI,
+        dateOfHire: new Date(),
+        organisationUnit: '/mem'
+      },
+      {
+        id: 4,
+        name: 'Jaylan',
+        lastName: 'Williams',
         birthday: new Date(),
         abbreviation: 'JW',
-        employment_state: EmploymentState.EX_MEMBER,
-        date_of_hire: new Date(),
-        is_admin: false,
-        organisation_unit: '/mem'
+        employmentState: EmploymentState.APPLICANT,
+        dateOfHire: new Date(),
+        organisationUnit: '/mem'
       }
     ]);
   }
