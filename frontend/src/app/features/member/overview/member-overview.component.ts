@@ -1,6 +1,6 @@
 import { Component, effect, inject, Signal, signal, viewChild, WritableSignal } from '@angular/core';
 import { MemberService } from '../member.service';
-import { EmploymentState, Member } from '../member.model';
+import { MemberDto } from '../member.dto';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
@@ -38,11 +38,11 @@ export class MemberOverviewComponent {
     'status'
   ];
 
-  dataSource = new MatTableDataSource<Member>();
+  dataSource = new MatTableDataSource<MemberDto>();
 
   sort: Signal<MatSort> = viewChild.required(MatSort);
 
-  members: WritableSignal<Member[]> = signal([]);
+  members: WritableSignal<MemberDto[]> = signal([]);
 
   alleSelected = true;
 
@@ -54,7 +54,7 @@ export class MemberOverviewComponent {
 
   constructor() {
     this.service.getAllMembers()
-      .subscribe((members: Member[]) => {
+      .subscribe((members: MemberDto[]) => {
         this.members.set(members);
       });
 
@@ -68,8 +68,8 @@ export class MemberOverviewComponent {
   }
 
 
-  createFilterPredicate(): (data: Member, filter: string) => boolean {
-    return (member: Member, filter: string): boolean => {
+  createFilterPredicate(): (data: MemberDto, filter: string) => boolean {
+    return (member: MemberDto, filter: string): boolean => {
       const filterValues = JSON.parse(filter);
       const searchTxt = filterValues.text.toLowerCase();
       const status = filterValues.status;
@@ -78,11 +78,11 @@ export class MemberOverviewComponent {
       const employmentState = member.employmentState?.toLowerCase() || '';
       if (status === 'alle') {
         statusMatch = true;
-      } else if (status === 'member' && employmentState === EmploymentState.ACTIVE) {
+      } else if (status === 'member' && employmentState === 'member') {
         statusMatch = true;
-      } else if (status === 'bewerber' && employmentState === EmploymentState.APPLICANT) {
+      } else if (status === 'bewerber' && employmentState === 'bewerber') {
         statusMatch = true;
-      } else if (status === 'member+bewerber' && (employmentState === EmploymentState.ACTIVE || employmentState === EmploymentState.APPLICANT)) {
+      } else if (status === 'member+bewerber' && (employmentState === 'member' || employmentState === 'bewerber')) {
         statusMatch = true;
       }
 
@@ -92,12 +92,9 @@ export class MemberOverviewComponent {
         member.name +
         member.lastName +
         formattedBirthday +
-        member.organisationUnit +
+        member.organisationUnit.name +
         member.employmentState
       ).toLowerCase();
-
-      console.log('memberDataString' + memberDataString);
-      console.log('searchTxt' + searchTxt);
 
       const searchTerms: string[] = searchTxt.toLowerCase()
         .split(' ')

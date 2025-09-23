@@ -61,7 +61,7 @@
 
     <ng-container matColumnDef="organisation_unit">
       <th mat-header-cell *matHeaderCellDef mat-sort-header="organisation_unit"> Division</th>
-      <td mat-cell *matCellDef="let member"> {{ member.organisationUnit }}</td>
+      <td mat-cell *matCellDef="let member"> {{ member.organisationUnit.name }}</td>
     </ng-container>
 
     <ng-container matColumnDef="status">
