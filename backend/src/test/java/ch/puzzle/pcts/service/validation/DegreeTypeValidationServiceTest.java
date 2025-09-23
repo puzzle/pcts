@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import ch.puzzle.pcts.exception.PCTSException;
-import ch.puzzle.pcts.model.degreeType.DegreeType;
+import ch.puzzle.pcts.model.degree_type.DegreeType;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.service.persistence.DegreeTypePersistenceService;
 import java.math.BigDecimal;

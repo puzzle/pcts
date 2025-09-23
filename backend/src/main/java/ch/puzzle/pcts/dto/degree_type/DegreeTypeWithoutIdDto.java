@@ -1,4 +1,4 @@
-package ch.puzzle.pcts.dto.degreeType;
+package ch.puzzle.pcts.dto.degree_type;
 
 import java.math.BigDecimal;
 

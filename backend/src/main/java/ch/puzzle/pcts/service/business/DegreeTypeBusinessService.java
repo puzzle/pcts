@@ -1,8 +1,8 @@
 package ch.puzzle.pcts.service.business;
 
-import ch.puzzle.pcts.dto.degreeType.DegreeTypeNameDto;
+import ch.puzzle.pcts.dto.degree_type.DegreeTypeNameDto;
 import ch.puzzle.pcts.exception.PCTSException;
-import ch.puzzle.pcts.model.degreeType.DegreeType;
+import ch.puzzle.pcts.model.degree_type.DegreeType;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.service.persistence.DegreeTypePersistenceService;
 import ch.puzzle.pcts.service.validation.DegreeTypeValidationService;

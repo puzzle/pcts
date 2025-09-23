@@ -1,7 +1,7 @@
 package ch.puzzle.pcts.service.persistence;
 
-import ch.puzzle.pcts.dto.degreeType.DegreeTypeNameDto;
-import ch.puzzle.pcts.model.degreeType.DegreeType;
+import ch.puzzle.pcts.dto.degree_type.DegreeTypeNameDto;
+import ch.puzzle.pcts.model.degree_type.DegreeType;
 import ch.puzzle.pcts.repository.DegreeTypeRepository;
 import java.util.List;
 import java.util.Optional;

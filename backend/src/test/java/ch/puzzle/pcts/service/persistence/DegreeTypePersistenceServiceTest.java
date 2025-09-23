@@ -2,8 +2,8 @@ package ch.puzzle.pcts.service.persistence;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.puzzle.pcts.dto.degreeType.DegreeTypeNameDto;
-import ch.puzzle.pcts.model.degreeType.DegreeType;
+import ch.puzzle.pcts.dto.degree_type.DegreeTypeNameDto;
+import ch.puzzle.pcts.model.degree_type.DegreeType;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;

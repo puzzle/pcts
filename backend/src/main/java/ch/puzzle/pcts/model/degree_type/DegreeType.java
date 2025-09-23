@@ -1,4 +1,4 @@
-package ch.puzzle.pcts.model.degreeType;
+package ch.puzzle.pcts.model.degree_type;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

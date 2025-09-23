@@ -1,10 +1,10 @@
 package ch.puzzle.pcts.controller;
 
-import ch.puzzle.pcts.dto.degreeType.DegreeTypeDto;
-import ch.puzzle.pcts.dto.degreeType.DegreeTypeNameDto;
-import ch.puzzle.pcts.dto.degreeType.DegreeTypeWithoutIdDto;
+import ch.puzzle.pcts.dto.degree_type.DegreeTypeDto;
+import ch.puzzle.pcts.dto.degree_type.DegreeTypeNameDto;
+import ch.puzzle.pcts.dto.degree_type.DegreeTypeWithoutIdDto;
 import ch.puzzle.pcts.mapper.DegreeTypeMapper;
-import ch.puzzle.pcts.model.degreeType.DegreeType;
+import ch.puzzle.pcts.model.degree_type.DegreeType;
 import ch.puzzle.pcts.service.business.DegreeTypeBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
