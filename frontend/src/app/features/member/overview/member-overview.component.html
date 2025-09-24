@@ -1,7 +1,8 @@
 <div class="w-75 mx-auto mt-5">
   <h1 class="pt-3">Members ({{ this.members().length }})</h1>
   <div class="d-flex flex-row justify-content-between">
-    <mat-form-field appearance="outline" class="w-25 small-form-field">
+    <div class="w-25 d-flex flex-row">
+    <mat-form-field appearance="outline" class="w-75 small-form-field">
       <mat-icon matPrefix>search</mat-icon>
       <input
         matInput
@@ -10,7 +11,10 @@
         placeholder="Suchen"
         #input>
     </mat-form-field>
-
+    <button mat-stroked-button>
+      Suchen
+    </button>
+    </div>
     <div>
       <button
         type="button"
@@ -37,6 +41,15 @@
         [class.active]="applicantFilter"
         (click)="toggleFilter('applicant')">
         Bewerber
+      </button>
+
+      <button
+        type="button"
+        mat-stroked-button
+        class="rounded-0"
+        [class.active]="exMemberFilter"
+        (click)="toggleFilter('ex-member')">
+        Ex-Member
       </button>
     </div>
 
