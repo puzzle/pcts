@@ -1,6 +1,6 @@
 import { Component, effect, inject, Signal, signal, viewChild, WritableSignal } from '@angular/core';
 import { MemberService } from '../member.service';
-import { MemberDto } from '../member.dto';
+import { MemberModel } from '../member.model';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
@@ -9,7 +9,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { DatePipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 @Component({
   selector: 'app-member-overview.component',
@@ -43,11 +43,11 @@ export class MemberOverviewComponent {
     'status'
   ];
 
-  dataSource = new MatTableDataSource<MemberDto>();
+  dataSource: MatTableDataSource<MemberModel> = new MatTableDataSource<MemberModel>();
 
   sort: Signal<MatSort> = viewChild.required(MatSort);
 
-  members: WritableSignal<MemberDto[]> = signal([]);
+  members: WritableSignal<MemberModel[]> = signal([]);
 
   allFilter = true;
 
@@ -55,55 +55,54 @@ export class MemberOverviewComponent {
 
   applicantFilter = false;
 
+  exMemberFilter = false;
+
   searchText = '';
 
   constructor() {
     this.service.getAllMembers()
-      .subscribe((members: MemberDto[]) => {
+      .subscribe((members: MemberModel[]): void => {
         this.members.set(members);
       });
 
     this.dataSource.filterPredicate = this.createFilterPredicate();
 
-    effect(() => {
+    effect((): void => {
       this.dataSource.data = this.members();
       this.dataSource.sort = this.sort();
       this.applyCombinedFilter();
     });
 
-    this.route.queryParams.subscribe((params) => {
+    this.route.queryParams.subscribe((params: Params): void => {
       this.searchText = params['q'] ? decodeURIComponent(params['q']) : '';
-      const status = params['status'] || 'all';
+
+      const status: string = params['status'] || 'all';
+      const statuses: string[] = status.split('+');
 
       this.allFilter = status === 'all';
-      this.memberFilter = status.includes('member') && status !== 'all';
-      this.applicantFilter = status.includes('applicant') && status !== 'all';
+      this.memberFilter = statuses.includes('member');
+      this.applicantFilter = statuses.includes('applicant');
+      this.exMemberFilter = statuses.includes('ex-member');
 
       this.applyCombinedFilter();
     });
   }
 
-  createFilterPredicate(): (data: MemberDto, filter: string) => boolean {
-    return (member: MemberDto, filter: string): boolean => {
+  createFilterPredicate(): (data: MemberModel, filter: string) => boolean {
+    return (member: MemberModel, filter: string): boolean => {
       const filterValues = JSON.parse(filter);
-      const searchTxt = filterValues.text.toLowerCase();
-      const status = filterValues.status;
+      const searchTxt: string = filterValues.text.toLowerCase();
+      const status: string = filterValues.status;
 
-      let statusMatch = false;
-      const employmentState = member.employmentState?.toLowerCase() || '';
-      if (status === 'all') {
-        statusMatch = true;
-      } else if (status === 'member' && employmentState === 'member') {
-        statusMatch = true;
-      } else if (status === 'applicant' && employmentState === 'bewerber') {
-        statusMatch = true;
-      } else if (status === 'member+applicant' && (employmentState === 'member' || employmentState === 'bewerber')) {
-        statusMatch = true;
-      }
+      const statuses: string[] = status.split('+');
+      const employmentState: string = member.employmentState?.toLowerCase() || '';
 
-      const formattedBirthday = this.datePipe.transform(member.birthday, 'dd.MM.yyyy');
+      const statusMatch: boolean = status === 'all' || statuses.includes(employmentState);
 
-      const memberDataString = (
+
+      const formattedBirthday: string | null = this.datePipe.transform(member.birthday, 'dd.MM.yyyy');
+
+      const memberDataString: string = (
         member.name +
         member.lastName +
         formattedBirthday +
@@ -111,8 +110,7 @@ export class MemberOverviewComponent {
         member.employmentState
       ).toLowerCase();
 
-      const searchTerms: string[] = searchTxt.toLowerCase()
-        .split(' ')
+      const searchTerms: string[] = searchTxt.split(' ')
         .filter(Boolean);
 
       const isTextMatch: boolean = searchTerms.every((term) => memberDataString.includes(term));
@@ -121,24 +119,26 @@ export class MemberOverviewComponent {
     };
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.searchText = filterValue;
+
+  applyFilter(event: Event): void {
+    this.searchText = (event.target as HTMLInputElement).value;
     this.applyCombinedFilter();
   }
 
-  private applyCombinedFilter() {
-    let statusFilterValue = 'none';
-
-    if (this.allFilter) {
-      statusFilterValue = 'all';
-    } else if (this.memberFilter && this.applicantFilter) {
-      statusFilterValue = 'member+applicant';
-    } else if (this.memberFilter) {
-      statusFilterValue = 'member';
-    } else if (this.applicantFilter) {
-      statusFilterValue = 'applicant';
+  private applyCombinedFilter(): void {
+    const selected: string[] = [];
+    if (this.memberFilter) {
+      selected.push('member');
     }
+    if (this.applicantFilter) {
+      selected.push('applicant');
+    }
+    if (this.exMemberFilter) {
+      selected.push('ex-member');
+    }
+
+    const statusFilterValue: string = selected.length ? selected.join('+') : 'all';
+
 
     const combinedFilter = {
       text: this.searchText,
@@ -156,18 +156,26 @@ export class MemberOverviewComponent {
     });
   }
 
-  toggleFilter(statusFilterValue: string) {
-    if (statusFilterValue === 'all') {
-      this.allFilter = true;
-      this.memberFilter = false;
-      this.applicantFilter = false;
-    } else {
-      const key = statusFilterValue === 'member' ? 'memberFilter' : 'applicantFilter';
-      this[key] = !this[key];
-      this.allFilter = false;
-      if (!this.memberFilter && !this.applicantFilter) {
+
+  toggleFilter(statusFilterValue: string): void {
+    switch (statusFilterValue) {
+      case 'applicant':
+        this.applicantFilter = !this.applicantFilter;
+        this.allFilter = false;
+        break;
+      case 'ex-member':
+        this.exMemberFilter = !this.exMemberFilter;
+        this.allFilter = false;
+        break;
+      case 'member':
+        this.memberFilter = !this.memberFilter;
+        this.allFilter = false;
+        break;
+      default:
         this.allFilter = true;
-      }
+        this.memberFilter = false;
+        this.applicantFilter = false;
+        this.exMemberFilter = false;
     }
     this.applyCombinedFilter();
   }

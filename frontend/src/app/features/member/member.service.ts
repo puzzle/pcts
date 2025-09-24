@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { MemberDto } from './member.dto';
+import { MemberModel } from './member.model';
 import { Observable, of } from 'rxjs';
+import { EmploymentState } from '../../shared/enum/employment-state.enum';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MemberService {
-  getAllMembers(): Observable<MemberDto[]> {
+  getAllMembers(): Observable<MemberModel[]> {
     return of([
       {
         id: 1,
@@ -14,7 +15,7 @@ export class MemberService {
         lastName: 'Morant',
         birthday: new Date(),
         abbreviation: 'JM',
-        employmentState: 'Member',
+        employmentState: EmploymentState.MEMBER,
         dateOfHire: new Date(),
         organisationUnit: {
           id: 1,
@@ -27,7 +28,7 @@ export class MemberService {
         lastName: 'Jackson Jr',
         birthday: new Date(),
         abbreviation: 'JJJ',
-        employmentState: 'Member',
+        employmentState: EmploymentState.MEMBER,
         dateOfHire: new Date(),
         organisationUnit: {
           id: 1,
@@ -40,7 +41,7 @@ export class MemberService {
         lastName: 'Desmond',
         birthday: new Date(),
         abbreviation: 'BD',
-        employmentState: 'Ex Member',
+        employmentState: EmploymentState.EXMEMBER,
         dateOfHire: new Date(),
         organisationUnit: {
           id: 1,
@@ -53,7 +54,7 @@ export class MemberService {
         lastName: 'Williams',
         birthday: new Date(),
         abbreviation: 'JW',
-        employmentState: 'Bewerber',
+        employmentState: EmploymentState.APPLICANT,
         dateOfHire: new Date(),
         organisationUnit: {
           id: 1,
