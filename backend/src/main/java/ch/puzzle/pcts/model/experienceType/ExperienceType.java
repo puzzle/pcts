@@ -5,7 +5,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -75,16 +74,6 @@ public class ExperienceType {
 
     public void setLittleRelevantPoints(BigDecimal littleRelevantPoints) {
         this.littleRelevantPoints = littleRelevantPoints;
-    }
-
-    public void roundPoints() {
-        this.highlyRelevantPoints = round(this.highlyRelevantPoints);
-        this.limitedRelevantPoints = round(this.limitedRelevantPoints);
-        this.littleRelevantPoints = round(this.littleRelevantPoints);
-    }
-
-    private BigDecimal round(BigDecimal points) {
-        return new BigDecimal(points.setScale(2, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString());
     }
 
     @Override

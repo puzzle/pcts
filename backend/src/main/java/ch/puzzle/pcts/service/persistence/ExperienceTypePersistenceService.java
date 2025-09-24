@@ -2,6 +2,7 @@ package ch.puzzle.pcts.service.persistence;
 
 import ch.puzzle.pcts.model.experienceType.ExperienceType;
 import ch.puzzle.pcts.repository.ExperienceTypeRepository;
+import jakarta.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,16 +10,20 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ExperienceTypePersistenceService {
+    private final EntityManager entityManager;
+
     private final ExperienceTypeRepository repository;
 
     @Autowired
-    public ExperienceTypePersistenceService(ExperienceTypeRepository repository) {
+    public ExperienceTypePersistenceService(EntityManager entityManager, ExperienceTypeRepository repository) {
+        this.entityManager = entityManager;
         this.repository = repository;
     }
 
     public ExperienceType create(ExperienceType experienceType) {
-        experienceType.roundPoints();
-        return repository.save(experienceType);
+        ExperienceType createdExperienceType = repository.saveAndFlush(experienceType);
+        entityManager.refresh(createdExperienceType);
+        return createdExperienceType;
     }
 
     public Optional<ExperienceType> getById(long id) {
@@ -31,8 +36,9 @@ public class ExperienceTypePersistenceService {
 
     public ExperienceType update(Long id, ExperienceType experienceType) {
         experienceType.setId(id);
-        experienceType.roundPoints();
-        return repository.save(experienceType);
+        ExperienceType updatedExperienceType = repository.saveAndFlush(experienceType);
+        entityManager.refresh(updatedExperienceType);
+        return updatedExperienceType;
     }
 
     public void delete(Long id) {
