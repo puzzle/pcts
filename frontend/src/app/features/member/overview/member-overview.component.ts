@@ -119,9 +119,8 @@ export class MemberOverviewComponent {
     };
   }
 
-
-  applyFilter(event: Event): void {
-    this.searchText = (event.target as HTMLInputElement).value;
+  applyFilter(searchText: string): void {
+    this.searchText = searchText;
     this.applyCombinedFilter();
   }
 

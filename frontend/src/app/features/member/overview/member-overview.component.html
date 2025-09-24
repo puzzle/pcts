@@ -1,19 +1,16 @@
 <div class="w-75 mx-auto mt-5">
   <h1 class="pt-3">Members ({{ this.members().length }})</h1>
   <div class="d-flex flex-row justify-content-between">
-    <div class="w-25 d-flex flex-row">
-    <mat-form-field appearance="outline" class="w-75 small-form-field">
-      <mat-icon matPrefix>search</mat-icon>
-      <input
-        matInput
-        [value]="searchText"
-        (keyup)="applyFilter($event)"
-        placeholder="Suchen"
-        #input>
-    </mat-form-field>
-    <button mat-stroked-button>
-      Suchen
-    </button>
+    <div class="w-25 d-flex flex-row align-items-start">
+      <mat-form-field appearance="outline" class="w-75 small-form-field">
+        <mat-icon matPrefix>search</mat-icon>
+        <input
+          matInput
+          [value]="searchText"
+          (keyup)="applyFilter(input.value)"
+          placeholder="Suchen"
+          #input>
+      </mat-form-field>
     </div>
     <div>
       <button
@@ -53,14 +50,14 @@
       </button>
     </div>
 
-    <button mat-stroked-button>
+    <button type="button" mat-stroked-button>
       <mat-icon>add</mat-icon>
       Member hinzufügen
     </button>
   </div>
 
   <table mat-table [dataSource]="this.dataSource" class="mat-elevation-z8 table table-striped table-hover member-table"
-         matSort matSortActive="name" matSortDirection="desc">
+         matSort matSortActive="name" matSortDirection="asc">
 
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header="name"> Name</th>
