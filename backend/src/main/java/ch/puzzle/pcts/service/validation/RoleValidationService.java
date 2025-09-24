@@ -51,11 +51,9 @@ public class RoleValidationService {
             throw new PCTSException(HttpStatus.BAD_REQUEST, "Name must not be empty", ErrorKey.ROLE_NAME_IS_EMPTY);
         }
 
-        persistenceService
-                .getByName(name)
-                .orElseThrow(() -> new PCTSException(HttpStatus.BAD_REQUEST,
-                                                     "Name already exists",
-                                                     ErrorKey.ROLE_NAME_ALREADY_EXISTS));
+        persistenceService.getByName(name).ifPresent(role -> {
+            throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.ROLE_NAME_ALREADY_EXISTS);
+        });
 
     }
 
