@@ -1,1 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+.small-form-field .mat-mdc-form-field-flex {
+  height: 36px;
+  align-items: center;
+}
