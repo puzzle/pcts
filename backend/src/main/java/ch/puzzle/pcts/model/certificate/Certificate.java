@@ -2,6 +2,7 @@ package ch.puzzle.pcts.model.certificate;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.util.Set;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -20,11 +21,16 @@ public class Certificate {
 
     private String comment;
 
-    public Certificate(Long id, String name, BigDecimal points, String comment) {
+    @ManyToMany
+    @JoinTable(name = "certificate_tag", joinColumns = @JoinColumn(name = "certificate_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private Set<Tag> tags;
+
+    public Certificate(Long id, String name, BigDecimal points, String comment, Set<Tag> tags) {
         this.id = id;
         this.name = name;
         this.points = points;
         this.comment = comment;
+        this.tags = tags;
     }
 
     public Certificate() {
@@ -62,9 +68,17 @@ public class Certificate {
         this.comment = comment;
     }
 
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
+    }
+
     @Override
     public String toString() {
         return "Certificate{" + "id=" + id + ", name='" + name + '\'' + ", points=" + points + ", comment='" + comment
-               + '\'' + '}';
+               + '\'' + ", tags=" + tags + '}';
     }
 }

@@ -2,11 +2,22 @@ package ch.puzzle.pcts.mapper;
 
 import ch.puzzle.pcts.dto.certificate.CertificateDto;
 import ch.puzzle.pcts.model.certificate.Certificate;
+import ch.puzzle.pcts.model.certificate.Tag;
+import ch.puzzle.pcts.repository.TagRepository;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CertificateMapper {
+
+    private final TagRepository tagRepository;
+
+    public CertificateMapper(TagRepository tagRepository) {
+        this.tagRepository = tagRepository;
+    }
 
     public List<CertificateDto> toDto(List<Certificate> models) {
         return models.stream().map(this::toDto).toList();
@@ -17,10 +28,24 @@ public class CertificateMapper {
     }
 
     public CertificateDto toDto(Certificate model) {
-        return new CertificateDto(model.getId(), model.getName(), model.getPoints(), model.getComment());
+        return new CertificateDto(model.getId(),
+                                  model.getName(),
+                                  model.getPoints(),
+                                  model.getComment(),
+                                  model.getTags().stream().map(Tag::getName).toList());
     }
 
     public Certificate fromDto(CertificateDto dto) {
-        return new Certificate(dto.id(), dto.name(), dto.points(), dto.comment());
+        Set<Tag> tags = dto
+                .tags()
+                .stream()
+                .flatMap(tagName -> Arrays.stream(tagName.split(",")))
+                .map(String::trim)
+                .filter(name -> !name.isEmpty())
+                .map(name -> tagRepository
+                        .findByNameIgnoreCase(name)
+                        .orElseGet(() -> tagRepository.save(new Tag(null, name))))
+                .collect(Collectors.toSet());
+        return new Certificate(dto.id(), dto.name(), dto.points(), dto.comment(), tags);
     }
 }
