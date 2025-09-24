@@ -14,7 +14,8 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { EmploymentState } from '../../../shared/enum/employment-state.enum';
 
 @Component({
-  selector: 'app-member-overview.component',
+  selector: 'app-member-overview',
+  standalone: true,
   providers: [DatePipe],
   imports: [
     ReactiveFormsModule,
@@ -52,15 +53,11 @@ export class MemberOverviewComponent {
 
   members: WritableSignal<MemberModel[]> = signal([]);
 
-  allFilter = true;
-
-  memberFilter = false;
-
-  applicantFilter = false;
-
-  exMemberFilter = false;
+  activeFilters = new Set<string>();
 
   searchText = '';
+
+  employmentStateValues = Object.values(EmploymentState);
 
   constructor() {
     this.service.getAllMembers()
@@ -79,12 +76,12 @@ export class MemberOverviewComponent {
     this.route.queryParams.subscribe((params: Params): void => {
       this.searchText = params['q'] ? decodeURIComponent(params['q']) : '';
 
-      const status: string = params['status'] || 'all';
-      const statuses: string[] = status.split('+');
-      this.allFilter = status === 'all';
-      this.memberFilter = statuses.includes(EmploymentState.MEMBER);
-      this.applicantFilter = statuses.includes(EmploymentState.APPLICANT);
-      this.exMemberFilter = statuses.includes(EmploymentState.EXMEMBER);
+      this.activeFilters.clear();
+      const status: string = params['status'];
+      if (status) {
+        status.split('+')
+          .forEach((s) => this.activeFilters.add(s));
+      }
 
       this.applyCombinedFilter();
     });
@@ -99,8 +96,7 @@ export class MemberOverviewComponent {
       const statuses: string[] = status.split('+');
       const employmentState: string = member.employmentState || '';
 
-      const statusMatch: boolean = status === 'all' || statuses.includes(employmentState);
-
+      const statusMatch: boolean = status === '' || statuses.includes(employmentState);
 
       const formattedBirthday: string | null = this.datePipe.transform(member.birthday, 'dd.MM.yyyy');
 
@@ -127,17 +123,8 @@ export class MemberOverviewComponent {
   }
 
   private applyCombinedFilter(): void {
-    const selected: string[] = [];
-    if (this.memberFilter) {
-      selected.push(EmploymentState.MEMBER);
-    }
-    if (this.applicantFilter) {
-      selected.push(EmploymentState.APPLICANT);
-    }
-    if (this.exMemberFilter) {
-      selected.push(EmploymentState.EXMEMBER);
-    }
-    const statusFilterValue: string = selected.length ? selected.join('+') : 'all';
+    const selected: string[] = Array.from(this.activeFilters);
+    const statusFilterValue: string = selected.length ? selected.join('+') : '';
 
     const combinedFilter = {
       text: this.searchText,
@@ -150,35 +137,35 @@ export class MemberOverviewComponent {
       relativeTo: this.route,
       queryParams: {
         q: this.searchText ? encodeURIComponent(this.searchText) : null,
-        status: statusFilterValue !== 'all' ? statusFilterValue : null
+        status: statusFilterValue !== '' ? statusFilterValue : null
       },
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
+      replaceUrl: true
     });
   }
 
-
   toggleFilter(statusFilterValue: string): void {
-    switch (statusFilterValue) {
-      case EmploymentState.APPLICANT:
-        this.applicantFilter = !this.applicantFilter;
-        this.allFilter = false;
-        break;
-      case EmploymentState.EXMEMBER:
-        this.exMemberFilter = !this.exMemberFilter;
-        this.allFilter = false;
-        break;
-      case EmploymentState.MEMBER:
-        this.memberFilter = !this.memberFilter;
-        this.allFilter = false;
-        break;
-      default:
-        this.allFilter = true;
-        this.memberFilter = false;
-        this.applicantFilter = false;
-        this.exMemberFilter = false;
+    if (statusFilterValue === '') {
+      this.activeFilters.clear();
+    } else {
+      if (this.activeFilters.has(statusFilterValue)) {
+        this.activeFilters.delete(statusFilterValue);
+      } else {
+        this.activeFilters.add(statusFilterValue);
+      }
     }
     this.applyCombinedFilter();
   }
 
-  protected readonly EmploymentState = EmploymentState;
+  isFilterActive(status: string): boolean {
+    return this.activeFilters.has(status);
+  }
+
+  isAllFilterActive(): boolean {
+    const all = this.activeFilters.size === 0 || this.activeFilters.size === 3;
+    if (all) {
+      this.employmentStateValues.forEach((s) => this.activeFilters.delete(s));
+    }
+    return all;
+  }
 }

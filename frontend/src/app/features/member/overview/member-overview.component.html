@@ -17,37 +17,21 @@
         type="button"
         mat-stroked-button
         class="rounded-0"
-        [class.active]="allFilter"
-        (click)="toggleFilter('all')">
+        [class.active]="isAllFilterActive()"
+        (click)="toggleFilter('')">
         {{'MEMBER.OVERVIEW.ALL' | translate }}
       </button>
 
-      <button
-        type="button"
-        mat-stroked-button
-        class="rounded-0"
-        [class.active]="memberFilter"
-        (click)="toggleFilter(EmploymentState.MEMBER)">
-        {{'MEMBER.EMPLOYMENT_STATUS_VALUES.MEMBER' | translate }}
-      </button>
-
-      <button
-        type="button"
-        mat-stroked-button
-        class="rounded-0"
-        [class.active]="applicantFilter"
-        (click)="toggleFilter(EmploymentState.APPLICANT)">
-        {{'MEMBER.EMPLOYMENT_STATUS_VALUES.APPLICANT' | translate }}
-      </button>
-
-      <button
-        type="button"
-        mat-stroked-button
-        class="rounded-0"
-        [class.active]="exMemberFilter"
-        (click)="toggleFilter(EmploymentState.EXMEMBER)">
-        {{'MEMBER.EMPLOYMENT_STATUS_VALUES.EX_MEMBER' | translate }}
-      </button>
+      @for (state of employmentStateValues; track state) {
+        <button
+          type="button"
+          mat-stroked-button
+          class="rounded-0"
+          [class.active]="isFilterActive(state)"
+          (click)="toggleFilter(state)">
+          {{'MEMBER.EMPLOYMENT_STATUS_VALUES.' + state | translate }}
+        </button>
+      }
     </div>
 
     <button type="button" mat-stroked-button>
