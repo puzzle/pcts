@@ -2,6 +2,7 @@ package ch.puzzle.pcts.controller;
 
 import ch.puzzle.pcts.dto.certificate.CertificateDto;
 import ch.puzzle.pcts.mapper.CertificateMapper;
+import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.service.business.CertificateBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -52,8 +53,9 @@ public class CertificateController {
             @ApiResponse(responseCode = "400", description = "Can't create new Certificate, not allowed to give an ID.", content = @Content) })
     @PostMapping
     public ResponseEntity<CertificateDto> createNewCertificate(@RequestBody CertificateDto dto) {
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDto(service.create(mapper.fromDto(dto))));
+        Certificate certificate = mapper.fromDto(dto);
+        Certificate created = service.create(certificate);
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDto(created));
     }
 
     @Operation(summary = "Update a Certificate by ID")

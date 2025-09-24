@@ -36,16 +36,15 @@ public class CertificateMapper {
     }
 
     public Certificate fromDto(CertificateDto dto) {
-        Set<Tag> tags = dto
+        Set<Tag> rawTags = dto
                 .tags()
                 .stream()
                 .flatMap(tagName -> Arrays.stream(tagName.split(",")))
                 .map(String::trim)
                 .filter(name -> !name.isEmpty())
-                .map(name -> tagRepository
-                        .findByNameIgnoreCase(name)
-                        .orElseGet(() -> tagRepository.save(new Tag(null, name))))
+                .map(name -> new Tag(null, name))
                 .collect(Collectors.toSet());
-        return new Certificate(dto.id(), dto.name(), dto.points(), dto.comment(), tags);
+
+        return new Certificate(dto.id(), dto.name(), dto.points(), dto.comment(), rawTags);
     }
 }
