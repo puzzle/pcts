@@ -28,7 +28,7 @@ public class OrganisationUnitPersistenceService {
         return repository.findAll();
     }
 
-    public OrganisationUnit getByName(String name) {
+    public Optional<OrganisationUnit> getByName(String name) {
         return repository.findByName(name);
     }
 

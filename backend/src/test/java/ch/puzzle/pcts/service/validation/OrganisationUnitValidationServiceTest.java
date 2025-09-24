@@ -112,7 +112,8 @@ class OrganisationUnitValidationServiceTest {
         OrganisationUnit organisationUnit = new OrganisationUnit();
         organisationUnit.setName("Existing Organisation unit");
 
-        when(persistenceService.getByName("Existing Organisation unit")).thenReturn(new OrganisationUnit());
+        when(persistenceService.getByName("Existing Organisation unit"))
+                .thenReturn(Optional.of(new OrganisationUnit()));
 
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> validationService.validateOnCreate(organisationUnit));
@@ -219,7 +220,8 @@ class OrganisationUnitValidationServiceTest {
         long id = 1;
 
         when(persistenceService.getById(id)).thenReturn(Optional.of(new OrganisationUnit()));
-        when(persistenceService.getByName("Existing Organisation unit")).thenReturn(new OrganisationUnit());
+        when(persistenceService.getByName("Existing Organisation unit"))
+                .thenReturn(Optional.of(new OrganisationUnit()));
 
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> validationService.validateOnUpdate(id, organisationUnit));

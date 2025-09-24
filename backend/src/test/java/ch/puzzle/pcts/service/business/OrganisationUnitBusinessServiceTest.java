@@ -15,9 +15,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 
 class OrganisationUnitBusinessServiceTest {
 
@@ -34,6 +32,9 @@ class OrganisationUnitBusinessServiceTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
+
+    @Captor
+    ArgumentCaptor<OrganisationUnit> organisationUnitCaptor;
 
     @DisplayName("Should get organisationUnit by id")
     @Test
@@ -119,5 +120,18 @@ class OrganisationUnitBusinessServiceTest {
 
         verify(validationService).validateOnDelete(id);
         verify(persistenceService).delete(id);
+    }
+
+    @DisplayName("Should trim role name")
+    @Test
+    void shouldTrimRoleName() {
+
+        businessService.create(new OrganisationUnit(1L, " OrganisationUnit "));
+
+        verify(persistenceService).create(organisationUnitCaptor.capture());
+        OrganisationUnit savedOrganisationUnit = organisationUnitCaptor.getValue();
+
+        assertEquals("OrganisationUnit", savedOrganisationUnit.getName());
+        assertEquals(1L, savedOrganisationUnit.getId());
     }
 }

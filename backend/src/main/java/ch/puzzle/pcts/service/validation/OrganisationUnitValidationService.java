@@ -55,7 +55,7 @@ public class OrganisationUnitValidationService {
                                     ErrorKey.ORGANIZATION_UNIT_NAME_IS_EMPTY);
         }
 
-        if (persistenceService.getByName(name) != null) {
+        if (persistenceService.getByName(name).isPresent()) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
                                     "Name already exists",
                                     ErrorKey.ORGANIZATION_UNIT_NAME_ALREADY_EXISTS);

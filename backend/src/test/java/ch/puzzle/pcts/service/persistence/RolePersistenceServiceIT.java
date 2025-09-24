@@ -106,4 +106,15 @@ class RolePersistenceServiceIT {
         Optional<Role> result = persistenceService.getById(id);
         assertThat(result).isNotPresent();
     }
+
+    @DisplayName("Should get role by name")
+    @Test
+    @Order(1)
+    void shouldGetRoleByName() {
+        Optional<Role> result = persistenceService.getByName("Role 2");
+
+        assertThat(result).isPresent();
+        assertThat(result.get().getName()).isEqualTo("Role 2");
+        assertThat(result.get().getIsManagement()).isFalse();
+    }
 }

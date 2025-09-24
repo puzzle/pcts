@@ -109,7 +109,7 @@ class RoleValidationServiceTest {
         Role role = new Role();
         role.setName("Existing Role");
 
-        when(persistenceService.getByName("Existing Role")).thenReturn(new Role());
+        when(persistenceService.getByName("Existing Role")).thenReturn(Optional.of(new Role()));
 
         PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnCreate(role));
 
@@ -211,7 +211,7 @@ class RoleValidationServiceTest {
         long id = 1;
 
         when(persistenceService.getById(id)).thenReturn(Optional.of(new Role()));
-        when(persistenceService.getByName("Existing Role")).thenReturn(new Role());
+        when(persistenceService.getByName("Existing Role")).thenReturn(Optional.of(new Role()));
 
         PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnUpdate(id, role));
 

@@ -104,4 +104,14 @@ class OrganisationUnitPersistenceServiceIT {
         Optional<OrganisationUnit> result = persistenceService.getById(id);
         assertThat(result).isNotPresent();
     }
+
+    @DisplayName("Should get organisationUnit by name")
+    @Test
+    @Order(1)
+    void shouldGetRoleByName() {
+        Optional<OrganisationUnit> result = persistenceService.getByName("OrganisationUnit 2");
+
+        assertThat(result).isPresent();
+        assertThat(result.get().getName()).isEqualTo("OrganisationUnit 2");
+    }
 }
