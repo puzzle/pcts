@@ -23,6 +23,7 @@ public class ExperienceTypePersistenceService {
 
     @Transactional
     public ExperienceType create(ExperienceType experienceType) {
+        experienceType.setName(experienceType.getName().trim());
         ExperienceType createdExperienceType = repository.saveAndFlush(experienceType);
         entityManager.refresh(createdExperienceType);
         return createdExperienceType;
@@ -38,6 +39,7 @@ public class ExperienceTypePersistenceService {
 
     @Transactional
     public ExperienceType update(Long id, ExperienceType experienceType) {
+        experienceType.setName(experienceType.getName().trim());
         experienceType.setId(id);
         ExperienceType updatedExperienceType = repository.saveAndFlush(experienceType);
         entityManager.refresh(updatedExperienceType);
