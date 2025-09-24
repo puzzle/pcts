@@ -1,7 +1,6 @@
 package ch.puzzle.pcts.controller;
 
 import ch.puzzle.pcts.dto.degree_type.DegreeTypeDto;
-import ch.puzzle.pcts.dto.degree_type.DegreeTypeNameDto;
 import ch.puzzle.pcts.mapper.DegreeTypeMapper;
 import ch.puzzle.pcts.model.degree_type.DegreeType;
 import ch.puzzle.pcts.service.business.DegreeTypeBusinessService;
@@ -11,7 +10,6 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -41,7 +39,8 @@ public class DegreeTypeController {
     }
 
     @Operation(summary = "Create a degree type")
-    @ApiResponse(responseCode = "201", description = "Degree type created successfully", content = {
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The degree-type object to be created.", required = true)
+    @ApiResponse(responseCode = "201", description = "Degree type created successfully.", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = DegreeTypeDto.class)) })
     @PostMapping
     public ResponseEntity<DegreeTypeDto> createNew(@Valid @RequestBody DegreeTypeDto dto) {
@@ -49,19 +48,9 @@ public class DegreeTypeController {
         return ResponseEntity.status(201).body(mapper.toDto(newDegreeType));
     }
 
-    @Operation(summary = "List all names and IDs of valid degree types")
-    @ApiResponse(responseCode = "200", description = "A list of all valid degree types IDs and names", content = {
-            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = DegreeTypeNameDto.class))) })
-    @GetMapping("/names")
-    public ResponseEntity<List<DegreeTypeNameDto>> getNameAndId() {
-        return ResponseEntity.ok(service.getAllNames());
-    }
-
-    @Operation(summary = "Get a singel degree type by ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "The requested degree type", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = DegreeTypeDto.class)) }),
-            @ApiResponse(responseCode = "404", description = "Degree type not found", content = @Content) })
+    @Operation(summary = "Get a single degree type by ID")
+    @ApiResponse(responseCode = "200", description = "The requested degree type", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = DegreeTypeDto.class)) })
     @GetMapping("{id}")
     public ResponseEntity<DegreeTypeDto> getById(@Parameter(description = "ID of the degree type to retrieve.")
     @PathVariable Long id) {
@@ -70,10 +59,9 @@ public class DegreeTypeController {
     }
 
     @Operation(summary = "Update a degree type")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Degree type updated successfully", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = DegreeTypeDto.class)) }),
-            @ApiResponse(responseCode = "404", description = "Degree type not found", content = @Content) })
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The degree-type object to be updated.", required = true)
+    @ApiResponse(responseCode = "200", description = "Degree type updated successfully", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = DegreeTypeDto.class)) })
     @PutMapping("{id}")
     public ResponseEntity<DegreeTypeDto> update(@Parameter(description = "ID of the degree type to update")
     @PathVariable() Long id, @RequestBody DegreeTypeDto dto) {
@@ -82,9 +70,7 @@ public class DegreeTypeController {
     }
 
     @Operation(summary = "Delete a degree type")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Degree type deleted successfully", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Degree type not found", content = @Content) })
+    @ApiResponse(responseCode = "204", description = "Degree type deleted successfully", content = @Content)
     @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@Parameter(description = "ID of the degree type to delete")
     @PathVariable Long id) {

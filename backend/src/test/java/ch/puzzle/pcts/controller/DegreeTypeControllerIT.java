@@ -9,7 +9,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.degree_type.DegreeTypeDto;
-import ch.puzzle.pcts.dto.degree_type.DegreeTypeNameDto;
 import ch.puzzle.pcts.mapper.DegreeTypeMapper;
 import ch.puzzle.pcts.model.degree_type.DegreeType;
 import ch.puzzle.pcts.service.business.DegreeTypeBusinessService;
@@ -49,7 +48,6 @@ class DegreeTypeControllerIT {
     private static final String BASEURL = "/api/v1/degree-types";
 
     private DegreeType degreeType;
-    private DegreeTypeNameDto degreeTypeNameDto;
     private DegreeType requestDto;
     private DegreeTypeDto expectedDto;
     private Long id;
@@ -61,7 +59,6 @@ class DegreeTypeControllerIT {
                                     new BigDecimal("1.0"),
                                     new BigDecimal("2.0"),
                                     new BigDecimal("3.0"));
-        degreeTypeNameDto = new DegreeTypeNameDto(1L, "Degree type 1");
         requestDto = new DegreeType(1L,
                                     "Degree type 1",
                                     new BigDecimal("1.0"),
@@ -113,23 +110,6 @@ class DegreeTypeControllerIT {
 
         verify(service, times(1)).getById(1L);
         verify(mapper, times(1)).toDto(any(DegreeType.class));
-    }
-
-    @DisplayName("Should successfully get all degree types names by id")
-    @Test
-    void shouldGetAllDegreeTypesNamesById() throws Exception {
-        BDDMockito.given(service.getAllNames()).willReturn(List.of(degreeTypeNameDto));
-
-        mvc
-                .perform(get(BASEURL + "/names")
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].id").value(expectedDto.id()))
-                .andExpect(jsonPath("$[0].name").value(expectedDto.name()));
-
-        verify(service, times(1)).getAllNames();
     }
 
     @DisplayName("Should successfully create new degree type")

@@ -4,14 +4,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.puzzle.pcts.dto.degree_type.DegreeTypeNameDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.degree_type.DegreeType;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.service.persistence.DegreeTypePersistenceService;
 import ch.puzzle.pcts.service.validation.DegreeTypeValidationService;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -91,7 +89,7 @@ class DegreeTypeBusinessServiceTest {
     @DisplayName("Should get empty list")
     @Test
     void shouldGetEmptyList() {
-        when(persistenceService.getAll()).thenReturn(new ArrayList<>());
+        when(persistenceService.getAll()).thenReturn(List.of());
 
         List<DegreeType> result = businessService.getAll();
 
@@ -142,18 +140,5 @@ class DegreeTypeBusinessServiceTest {
 
         verify(validationService).validateOnDelete(id);
         verify(persistenceService).delete(id);
-    }
-
-    @DisplayName("Should get all names")
-    @Test
-    void shouldGetAllNames() {
-        List<DegreeTypeNameDto> allNames = List
-                .of(new DegreeTypeNameDto(1L, "Degree type 1"), new DegreeTypeNameDto(2L, "Degree type 2"));
-        when(persistenceService.getAllNames()).thenReturn(allNames);
-
-        List<DegreeTypeNameDto> result = businessService.getAllNames();
-
-        assertEquals(allNames, result);
-        verify(persistenceService).getAllNames();
     }
 }

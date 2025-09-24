@@ -1,6 +1,5 @@
 package ch.puzzle.pcts.service.business;
 
-import ch.puzzle.pcts.dto.degree_type.DegreeTypeNameDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.degree_type.DegreeType;
 import ch.puzzle.pcts.model.error.ErrorKey;
@@ -26,12 +25,9 @@ public class DegreeTypeBusinessService {
     }
 
     public DegreeType create(DegreeType degreeType) {
+        degreeType.setName(degreeType.getName().trim());
         validationService.validateOnCreate(degreeType);
         return persistenceService.create(degreeType);
-    }
-
-    public List<DegreeTypeNameDto> getAllNames() {
-        return persistenceService.getAllNames();
     }
 
     public DegreeType getById(Long id) {
@@ -44,6 +40,7 @@ public class DegreeTypeBusinessService {
     }
 
     public DegreeType update(Long id, DegreeType degreeType) {
+        degreeType.setName(degreeType.getName().trim());
         validationService.validateOnUpdate(id, degreeType);
         return persistenceService.update(id, degreeType);
     }

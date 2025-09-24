@@ -24,6 +24,7 @@ TRUNCATE TABLE degree_type CASCADE;
 
 INSERT INTO degree_type (name, highly_relevant_points, limited_relevant_points, little_relevant_points)
 VALUES
-    ('Degree type 1', 120, 60, 15);
+    ('Degree type 1', 120, 60, 15),
+    ('Degree type 2', 12, 3, 2);
 
 

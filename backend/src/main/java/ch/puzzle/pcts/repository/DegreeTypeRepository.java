@@ -1,15 +1,9 @@
 package ch.puzzle.pcts.repository;
 
-import ch.puzzle.pcts.dto.degree_type.DegreeTypeNameDto;
 import ch.puzzle.pcts.model.degree_type.DegreeType;
-import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DegreeTypeRepository extends JpaRepository<DegreeType, Long> {
-
-    @Query("SELECT id, name FROM DegreeType")
-    List<DegreeTypeNameDto> findAllNames();
 }
