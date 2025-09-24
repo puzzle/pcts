@@ -10,6 +10,8 @@ import { DatePipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
+import { EmploymentState } from '../../../shared/enum/employment-state.enum';
 
 @Component({
   selector: 'app-member-overview.component',
@@ -22,7 +24,8 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
     MatSortModule,
     DatePipe,
     MatIcon,
-    MatButton
+    MatButton,
+    TranslatePipe
   ],
   templateUrl: './member-overview.component.html',
   styleUrl: './member-overview.component.css'
@@ -78,11 +81,10 @@ export class MemberOverviewComponent {
 
       const status: string = params['status'] || 'all';
       const statuses: string[] = status.split('+');
-
       this.allFilter = status === 'all';
-      this.memberFilter = statuses.includes('member');
-      this.applicantFilter = statuses.includes('applicant');
-      this.exMemberFilter = statuses.includes('ex-member');
+      this.memberFilter = statuses.includes(EmploymentState.MEMBER);
+      this.applicantFilter = statuses.includes(EmploymentState.APPLICANT);
+      this.exMemberFilter = statuses.includes(EmploymentState.EXMEMBER);
 
       this.applyCombinedFilter();
     });
@@ -95,7 +97,7 @@ export class MemberOverviewComponent {
       const status: string = filterValues.status;
 
       const statuses: string[] = status.split('+');
-      const employmentState: string = member.employmentState?.toLowerCase() || '';
+      const employmentState: string = member.employmentState || '';
 
       const statusMatch: boolean = status === 'all' || statuses.includes(employmentState);
 
@@ -127,22 +129,21 @@ export class MemberOverviewComponent {
   private applyCombinedFilter(): void {
     const selected: string[] = [];
     if (this.memberFilter) {
-      selected.push('member');
+      selected.push(EmploymentState.MEMBER);
     }
     if (this.applicantFilter) {
-      selected.push('applicant');
+      selected.push(EmploymentState.APPLICANT);
     }
     if (this.exMemberFilter) {
-      selected.push('ex-member');
+      selected.push(EmploymentState.EXMEMBER);
     }
-
     const statusFilterValue: string = selected.length ? selected.join('+') : 'all';
-
 
     const combinedFilter = {
       text: this.searchText,
       status: statusFilterValue
     };
+
     this.dataSource.filter = JSON.stringify(combinedFilter);
 
     this.router.navigate([], {
@@ -158,15 +159,15 @@ export class MemberOverviewComponent {
 
   toggleFilter(statusFilterValue: string): void {
     switch (statusFilterValue) {
-      case 'applicant':
+      case EmploymentState.APPLICANT:
         this.applicantFilter = !this.applicantFilter;
         this.allFilter = false;
         break;
-      case 'ex-member':
+      case EmploymentState.EXMEMBER:
         this.exMemberFilter = !this.exMemberFilter;
         this.allFilter = false;
         break;
-      case 'member':
+      case EmploymentState.MEMBER:
         this.memberFilter = !this.memberFilter;
         this.allFilter = false;
         break;
@@ -178,4 +179,6 @@ export class MemberOverviewComponent {
     }
     this.applyCombinedFilter();
   }
+
+  protected readonly EmploymentState = EmploymentState;
 }
