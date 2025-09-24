@@ -6,12 +6,14 @@ import static org.mockito.Mockito.when;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificate.Certificate;
+import ch.puzzle.pcts.model.certificate.Tag;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.service.persistence.CertificatePersistenceService;
 import ch.puzzle.pcts.service.validation.CertificateValidationService;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,6 +29,9 @@ class CertificateBusinessServiceTest {
     @Mock
     private CertificatePersistenceService persistenceService;
 
+    @Mock
+    private TagBusinessService tagBusinessService;
+
     @InjectMocks
     private CertificateBusinessService businessService;
 
@@ -38,7 +43,11 @@ class CertificateBusinessServiceTest {
     @DisplayName("Should get certificate by id")
     @Test
     void shouldGetById() {
-        Certificate certificate = new Certificate(1L, "Master of Art", BigDecimal.ONE, "Comment");
+        Certificate certificate = new Certificate(1L,
+                                                  "Master of Art",
+                                                  BigDecimal.ONE,
+                                                  "Comment",
+                                                  Set.of(new Tag(1L, "Important tag")));
         when(persistenceService.getById(1L)).thenReturn(Optional.of(certificate));
 
         Certificate result = businessService.getById(1L);
@@ -62,7 +71,11 @@ class CertificateBusinessServiceTest {
     @DisplayName("Should create certificate")
     @Test
     void shouldCreate() {
-        Certificate certificate = new Certificate(1L, "Bachelor of Business Administration", BigDecimal.ONE, "Comment");
+        Certificate certificate = new Certificate(1L,
+                                                  "Bachelor of Business Administration",
+                                                  BigDecimal.ONE,
+                                                  "Comment",
+                                                  Set.of(new Tag(1L, "Important tag")));
         when(persistenceService.create(certificate)).thenReturn(certificate);
 
         Certificate result = businessService.create(certificate);
@@ -76,8 +89,16 @@ class CertificateBusinessServiceTest {
     @Test
     void shouldGetAll() {
         List<Certificate> certificates = List
-                .of(new Certificate(1L, "Bachelor of Sciences", BigDecimal.ONE, "Comment"),
-                    new Certificate(2L, "Master of Business Administration", BigDecimal.ONE, "Comment"));
+                .of(new Certificate(1L,
+                                    "Bachelor of Sciences",
+                                    BigDecimal.ONE,
+                                    "Comment",
+                                    Set.of(new Tag(1L, "Important tag"))),
+                    new Certificate(2L,
+                                    "Master of Business Administration",
+                                    BigDecimal.ONE,
+                                    "Comment",
+                                    Set.of(new Tag(1L, "Important tag"))));
         when(persistenceService.getAll()).thenReturn(certificates);
 
         List<Certificate> result = businessService.getAll();
@@ -91,7 +112,11 @@ class CertificateBusinessServiceTest {
     @Test
     void shouldUpdate() {
         Long id = 1L;
-        Certificate certificate = new Certificate(1L, "Certificate in Advanced English", BigDecimal.ONE, "Comment");
+        Certificate certificate = new Certificate(1L,
+                                                  "Certificate in Advanced English",
+                                                  BigDecimal.ONE,
+                                                  "Comment",
+                                                  Set.of(new Tag(1L, "Important tag")));
         when(persistenceService.update(id, certificate)).thenReturn(certificate);
 
         Certificate result = businessService.update(id, certificate);
