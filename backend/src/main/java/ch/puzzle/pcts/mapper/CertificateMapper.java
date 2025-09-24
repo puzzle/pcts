@@ -3,7 +3,6 @@ package ch.puzzle.pcts.mapper;
 import ch.puzzle.pcts.dto.certificate.CertificateDto;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificate.Tag;
-import ch.puzzle.pcts.repository.TagRepository;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -12,12 +11,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CertificateMapper {
-
-    private final TagRepository tagRepository;
-
-    public CertificateMapper(TagRepository tagRepository) {
-        this.tagRepository = tagRepository;
-    }
 
     public List<CertificateDto> toDto(List<Certificate> models) {
         return models.stream().map(this::toDto).toList();
