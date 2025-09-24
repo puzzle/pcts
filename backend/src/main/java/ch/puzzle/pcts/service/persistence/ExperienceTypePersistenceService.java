@@ -3,6 +3,7 @@ package ch.puzzle.pcts.service.persistence;
 import ch.puzzle.pcts.model.experienceType.ExperienceType;
 import ch.puzzle.pcts.repository.ExperienceTypeRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ public class ExperienceTypePersistenceService {
         this.repository = repository;
     }
 
+    @Transactional
     public ExperienceType create(ExperienceType experienceType) {
         ExperienceType createdExperienceType = repository.saveAndFlush(experienceType);
         entityManager.refresh(createdExperienceType);
@@ -34,6 +36,7 @@ public class ExperienceTypePersistenceService {
         return repository.findAll();
     }
 
+    @Transactional
     public ExperienceType update(Long id, ExperienceType experienceType) {
         experienceType.setId(id);
         ExperienceType updatedExperienceType = repository.saveAndFlush(experienceType);
