@@ -52,7 +52,7 @@ class DegreeTypePersistenceServiceTest {
         Optional<DegreeType> degreeType = persistenceService.getById(1L);
 
         assertThat(degreeType).isPresent();
-        assertThat(degreeType.get().getDegreeTypeId()).isEqualTo(1L);
+        assertThat(degreeType.get().getId()).isEqualTo(1L);
     }
 
     @DisplayName("Should get all degree types")
@@ -62,7 +62,7 @@ class DegreeTypePersistenceServiceTest {
         List<DegreeType> all = persistenceService.getAll();
 
         assertThat(all).hasSize(1);
-        assertThat(all).extracting(DegreeType::getDegreeTypeId).containsExactlyInAnyOrder(1L);
+        assertThat(all).extracting(DegreeType::getId).containsExactlyInAnyOrder(1L);
     }
 
     @DisplayName("Should get all degree types names")
@@ -88,7 +88,7 @@ class DegreeTypePersistenceServiceTest {
 
         DegreeType result = persistenceService.create(degreeType);
 
-        assertThat(result.getDegreeTypeId()).isEqualTo(2L);
+        assertThat(result.getId()).isEqualTo(2L);
         assertThat(result.getName()).isEqualTo(degreeType.getName());
         assertThat(result.getHighlyRelevantPoints()).isEqualTo(degreeType.getHighlyRelevantPoints());
         assertThat(result.getLimitedRelevantPoints()).isEqualTo(degreeType.getLimitedRelevantPoints());
@@ -111,7 +111,7 @@ class DegreeTypePersistenceServiceTest {
         Optional<DegreeType> result = persistenceService.getById(id);
 
         assertThat(result).isPresent();
-        assertThat(result.get().getDegreeTypeId()).isEqualTo(id);
+        assertThat(result.get().getId()).isEqualTo(id);
         assertThat(degreeType.getName()).isEqualTo("Updated degree type");
         assertThat(degreeType.getHighlyRelevantPoints()).isEqualTo(new BigDecimal("2.0"));
         assertThat(degreeType.getLimitedRelevantPoints()).isEqualTo(new BigDecimal("3.0"));

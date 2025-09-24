@@ -60,7 +60,7 @@ class DegreeTypeBusinessServiceTest {
 
         PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(1L));
 
-        assertEquals("Degree type with degreeTypeId: " + 1 + " does not exist.", exception.getReason());
+        assertEquals("Degree type with id: " + 1 + " does not exist.", exception.getReason());
         assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
         verify(persistenceService).getById(1L);
     }

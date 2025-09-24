@@ -55,7 +55,7 @@ class DegreeTypeValidationServiceTest {
 
         PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnGetById(id));
 
-        assertEquals("Degree type with degreeTypeId: " + id + " does not exist.", exception.getReason());
+        assertEquals("Degree type with id: " + id + " does not exist.", exception.getReason());
         assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
     }
 
@@ -75,7 +75,7 @@ class DegreeTypeValidationServiceTest {
     @Test
     void shouldThrowExceptionOnValidateOnCreateWhenIdIsNotNull() {
         DegreeType degreeType = new DegreeType();
-        degreeType.setDegreeTypeId(123L);
+        degreeType.setId(123L);
 
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> validationService.validateOnCreate(degreeType));
@@ -118,8 +118,8 @@ class DegreeTypeValidationServiceTest {
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> validationService.validateOnCreate(degreeType));
 
-        assertEquals("relevant points must not be null", exception.getReason());
-        assertEquals(ErrorKey.DEGREE_TYPE_RELEVANT_POINTS_ARE_NULL, exception.getErrorKey());
+        assertEquals("points must not be null", exception.getReason());
+        assertEquals(ErrorKey.DEGREE_TYPE_POINTS_ARE_NULL, exception.getErrorKey());
     }
 
     @DisplayName("Should throw exception on validateOnCreate() when relevant points are negative")
@@ -134,24 +134,8 @@ class DegreeTypeValidationServiceTest {
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> validationService.validateOnCreate(degreeType));
 
-        assertEquals("relevant points must not be negative", exception.getReason());
-        assertEquals(ErrorKey.DEGREE_TYPE_RELEVANT_POINTS_ARE_NEGATIVE, exception.getErrorKey());
-    }
-
-    @DisplayName("Should throw exception on validateOnCreate() when relevant points have more than 2 decimal places")
-    @Test
-    void shouldThrowExceptionOnValidateOnCreateWhenRelevantPointsHaveMoreThanTwoDecimalPlaces() {
-        DegreeType degreeType = new DegreeType();
-        degreeType.setName("Valid Degree type");
-        degreeType.setHighlyRelevantPoints(new BigDecimal("1.123"));
-        degreeType.setLimitedRelevantPoints(new BigDecimal("1.123"));
-        degreeType.setLittleRelevantPoints(new BigDecimal("1.123"));
-
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> validationService.validateOnCreate(degreeType));
-
-        assertEquals("relevant points must not have more than 2 decimal places", exception.getReason());
-        assertEquals(ErrorKey.DEGREE_TYPE_RELEVANT_POINTS_HAVE_TOO_MANY_DECIMAL_PLACES, exception.getErrorKey());
+        assertEquals("points must not be negative", exception.getReason());
+        assertEquals(ErrorKey.DEGREE_TYPE_POINTS_ARE_NEGATIVE, exception.getErrorKey());
     }
 
     @DisplayName("Should be successful on validateOnUpdate() when everything is valid")
@@ -178,7 +162,7 @@ class DegreeTypeValidationServiceTest {
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> validationService.validateOnUpdate(id, degreeType));
 
-        assertEquals("Degree type with degreeTypeId: " + id + " does not exist.", exception.getReason());
+        assertEquals("Degree type with id: " + id + " does not exist.", exception.getReason());
         assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
     }
 
@@ -186,7 +170,7 @@ class DegreeTypeValidationServiceTest {
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenIdIsNotNull() {
         DegreeType degreeType = new DegreeType();
-        degreeType.setDegreeTypeId(123L);
+        degreeType.setId(123L);
         long id = 1;
         when(persistenceService.getById(id)).thenReturn(Optional.of(new DegreeType()));
 
@@ -237,8 +221,8 @@ class DegreeTypeValidationServiceTest {
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> validationService.validateOnUpdate(id, degreeType));
 
-        assertEquals("relevant points must not be null", exception.getReason());
-        assertEquals(ErrorKey.DEGREE_TYPE_RELEVANT_POINTS_ARE_NULL, exception.getErrorKey());
+        assertEquals("points must not be null", exception.getReason());
+        assertEquals(ErrorKey.DEGREE_TYPE_POINTS_ARE_NULL, exception.getErrorKey());
     }
 
     @DisplayName("Should throw exception on validateOnUpdate() when relevant points are negative")
@@ -255,26 +239,8 @@ class DegreeTypeValidationServiceTest {
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> validationService.validateOnUpdate(id, degreeType));
 
-        assertEquals("relevant points must not be negative", exception.getReason());
-        assertEquals(ErrorKey.DEGREE_TYPE_RELEVANT_POINTS_ARE_NEGATIVE, exception.getErrorKey());
-    }
-
-    @DisplayName("Should throw exception on validateOnUpdate() when relevant points have more than two decimal places")
-    @Test
-    void shouldThrowExceptionOnValidateOnUpdateWhenRelevantPointsHaveMoreThanTwoDecimalPlaces() {
-        DegreeType degreeType = new DegreeType();
-        degreeType.setName("Valid Degree type");
-        degreeType.setHighlyRelevantPoints(new BigDecimal("1.123"));
-        degreeType.setLimitedRelevantPoints(new BigDecimal("1.123"));
-        degreeType.setLittleRelevantPoints(new BigDecimal("1.123"));
-        Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(new DegreeType()));
-
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> validationService.validateOnUpdate(id, degreeType));
-
-        assertEquals("relevant points must not have more than 2 decimal places", exception.getReason());
-        assertEquals(ErrorKey.DEGREE_TYPE_RELEVANT_POINTS_HAVE_TOO_MANY_DECIMAL_PLACES, exception.getErrorKey());
+        assertEquals("points must not be negative", exception.getReason());
+        assertEquals(ErrorKey.DEGREE_TYPE_POINTS_ARE_NEGATIVE, exception.getErrorKey());
     }
 
     @DisplayName("Should be successful on validateOnDelete() when id is valid")
@@ -294,7 +260,7 @@ class DegreeTypeValidationServiceTest {
 
         PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnDelete(id));
 
-        assertEquals("Degree type with degreeTypeId: " + id + " does not exist.", exception.getReason());
+        assertEquals("Degree type with id: " + id + " does not exist.", exception.getReason());
         assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
     }
 }

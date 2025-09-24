@@ -30,7 +30,7 @@ public class DegreeTypePersistenceService {
     }
 
     public DegreeType update(Long id, DegreeType degreeType) {
-        degreeType.setDegreeTypeId(id);
+        degreeType.setId(id);
         return repository.save(degreeType);
     }
 

@@ -2,7 +2,6 @@ package ch.puzzle.pcts.controller;
 
 import ch.puzzle.pcts.dto.degree_type.DegreeTypeDto;
 import ch.puzzle.pcts.dto.degree_type.DegreeTypeNameDto;
-import ch.puzzle.pcts.dto.degree_type.DegreeTypeWithoutIdDto;
 import ch.puzzle.pcts.mapper.DegreeTypeMapper;
 import ch.puzzle.pcts.model.degree_type.DegreeType;
 import ch.puzzle.pcts.service.business.DegreeTypeBusinessService;
@@ -45,7 +44,7 @@ public class DegreeTypeController {
     @ApiResponse(responseCode = "201", description = "Degree type created successfully", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = DegreeTypeDto.class)) })
     @PostMapping
-    public ResponseEntity<DegreeTypeDto> createNew(@Valid @RequestBody DegreeTypeWithoutIdDto dto) {
+    public ResponseEntity<DegreeTypeDto> createNew(@Valid @RequestBody DegreeTypeDto dto) {
         DegreeType newDegreeType = service.create(mapper.fromDto(dto));
         return ResponseEntity.status(201).body(mapper.toDto(newDegreeType));
     }
@@ -63,10 +62,10 @@ public class DegreeTypeController {
             @ApiResponse(responseCode = "200", description = "The requested degree type", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = DegreeTypeDto.class)) }),
             @ApiResponse(responseCode = "404", description = "Degree type not found", content = @Content) })
-    @GetMapping("{degreeTypeId}")
+    @GetMapping("{id}")
     public ResponseEntity<DegreeTypeDto> getById(@Parameter(description = "ID of the degree type to retrieve.")
-    @PathVariable Long degreeTypeId) {
-        DegreeType degreeType = service.getById(degreeTypeId);
+    @PathVariable Long id) {
+        DegreeType degreeType = service.getById(id);
         return ResponseEntity.ok(mapper.toDto(degreeType));
     }
 
@@ -75,10 +74,10 @@ public class DegreeTypeController {
             @ApiResponse(responseCode = "200", description = "Degree type updated successfully", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = DegreeTypeDto.class)) }),
             @ApiResponse(responseCode = "404", description = "Degree type not found", content = @Content) })
-    @PutMapping("{degreeTypeId}")
+    @PutMapping("{id}")
     public ResponseEntity<DegreeTypeDto> update(@Parameter(description = "ID of the degree type to update")
-    @PathVariable() Long degreeTypeId, @RequestBody DegreeTypeWithoutIdDto dto) {
-        DegreeType updatedDegreeType = service.update(degreeTypeId, mapper.fromDto(dto));
+    @PathVariable() Long id, @RequestBody DegreeTypeDto dto) {
+        DegreeType updatedDegreeType = service.update(id, mapper.fromDto(dto));
         return ResponseEntity.ok(mapper.toDto(updatedDegreeType));
     }
 
@@ -86,10 +85,10 @@ public class DegreeTypeController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Degree type deleted successfully", content = @Content),
             @ApiResponse(responseCode = "404", description = "Degree type not found", content = @Content) })
-    @DeleteMapping("{degreeTypeId}")
+    @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@Parameter(description = "ID of the degree type to delete")
-    @PathVariable Long degreeTypeId) {
-        service.delete(degreeTypeId);
+    @PathVariable Long id) {
+        service.delete(id);
         return ResponseEntity.status(204).build();
     }
 }

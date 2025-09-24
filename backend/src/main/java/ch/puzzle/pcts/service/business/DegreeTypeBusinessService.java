@@ -39,7 +39,7 @@ public class DegreeTypeBusinessService {
         return persistenceService
                 .getById(id)
                 .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,
-                                                     "Degree type with degreeTypeId: " + id + " does not exist.",
+                                                     "Degree type with id: " + id + " does not exist.",
                                                      ErrorKey.NOT_FOUND));
     }
 

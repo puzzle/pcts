@@ -38,7 +38,7 @@ TRUNCATE TABLE degree_type CASCADE;
 
 INSERT INTO degree_type (name, highly_relevant_points, limited_relevant_points, little_relevant_points)
 VALUES
-    ('Bachelor''s Degree', 100, 50, 10),
-    ('Master''s Degree', 120, 60, 15),
-    ('PhD', 150, 75, 20),
-    ('Associate Degree', 80, 40, 5);
+    ('Bachelor''s Degree', 21.575, 16.5, 11),
+    ('Master''s Degree', 25, 17.99, 15.325),
+    ('PhD', 16, 13.555, 10.25),
+    ('Associate Degree', 11, 9.5, 5.75);

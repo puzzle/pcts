@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DegreeTypeRepository extends JpaRepository<DegreeType, Long> {
 
-    @Query("SELECT degreeTypeId, name FROM DegreeType")
+    @Query("SELECT id, name FROM DegreeType")
     List<DegreeTypeNameDto> findAllNames();
 }

@@ -10,7 +10,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.degree_type.DegreeTypeDto;
 import ch.puzzle.pcts.dto.degree_type.DegreeTypeNameDto;
-import ch.puzzle.pcts.dto.degree_type.DegreeTypeWithoutIdDto;
 import ch.puzzle.pcts.mapper.DegreeTypeMapper;
 import ch.puzzle.pcts.model.degree_type.DegreeType;
 import ch.puzzle.pcts.service.business.DegreeTypeBusinessService;
@@ -51,9 +50,9 @@ class DegreeTypeControllerIT {
 
     private DegreeType degreeType;
     private DegreeTypeNameDto degreeTypeNameDto;
-    private DegreeTypeWithoutIdDto requestDto;
+    private DegreeType requestDto;
     private DegreeTypeDto expectedDto;
-    private Long degreeTypeId;
+    private Long id;
 
     @BeforeEach
     void setUp() {
@@ -63,16 +62,17 @@ class DegreeTypeControllerIT {
                                     new BigDecimal("2.0"),
                                     new BigDecimal("3.0"));
         degreeTypeNameDto = new DegreeTypeNameDto(1L, "Degree type 1");
-        requestDto = new DegreeTypeWithoutIdDto("Degree type 1",
-                                                new BigDecimal("1.0"),
-                                                new BigDecimal("2.0"),
-                                                new BigDecimal("3.0"));
+        requestDto = new DegreeType(1L,
+                                    "Degree type 1",
+                                    new BigDecimal("1.0"),
+                                    new BigDecimal("2.0"),
+                                    new BigDecimal("3.0"));
         expectedDto = new DegreeTypeDto(1L,
                                         "Degree type 1",
                                         new BigDecimal("1.0"),
                                         new BigDecimal("2.0"),
                                         new BigDecimal("3.0"));
-        degreeTypeId = 1L;
+        id = 1L;
     }
 
     @DisplayName("Should successfully get all degree types")
@@ -87,7 +87,7 @@ class DegreeTypeControllerIT {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].degreeTypeId").value(expectedDto.degreeTypeId()))
+                .andExpect(jsonPath("$[0].id").value(expectedDto.id()))
                 .andExpect(jsonPath("$[0].name").value(expectedDto.name()))
                 .andExpect(jsonPath("$[0].highlyRelevantPoints").value(expectedDto.highlyRelevantPoints()))
                 .andExpect(jsonPath("$[0].limitedRelevantPoints").value(expectedDto.limitedRelevantPoints()))
@@ -106,7 +106,7 @@ class DegreeTypeControllerIT {
         mvc
                 .perform(get(BASEURL + "/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.degreeTypeId").isNumber())
+                .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.highlyRelevantPoints").value(new BigDecimal("1.0")))
                 .andExpect(jsonPath("$.limitedRelevantPoints").value(new BigDecimal("2.0")))
                 .andExpect(jsonPath("$.littleRelevantPoints").value(new BigDecimal("3.0")));
@@ -126,7 +126,7 @@ class DegreeTypeControllerIT {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].degreeTypeId").value(expectedDto.degreeTypeId()))
+                .andExpect(jsonPath("$[0].id").value(expectedDto.id()))
                 .andExpect(jsonPath("$[0].name").value(expectedDto.name()));
 
         verify(service, times(1)).getAllNames();
@@ -135,7 +135,7 @@ class DegreeTypeControllerIT {
     @DisplayName("Should successfully create new degree type")
     @Test
     void shouldCreateNewDegreeType() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(DegreeTypeWithoutIdDto.class))).willReturn(degreeType);
+        BDDMockito.given(mapper.fromDto(any(DegreeTypeDto.class))).willReturn(degreeType);
         BDDMockito.given(service.create(any(DegreeType.class))).willReturn(degreeType);
         BDDMockito.given(mapper.toDto(any(DegreeType.class))).willReturn(expectedDto);
 
@@ -145,12 +145,12 @@ class DegreeTypeControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.degreeTypeId").isNumber())
+                .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.highlyRelevantPoints").value(new BigDecimal("1.0")))
                 .andExpect(jsonPath("$.limitedRelevantPoints").value(new BigDecimal("2.0")))
                 .andExpect(jsonPath("$.littleRelevantPoints").value(new BigDecimal("3.0")));
 
-        verify(mapper, times(1)).fromDto(any(DegreeTypeWithoutIdDto.class));
+        verify(mapper, times(1)).fromDto(any(DegreeTypeDto.class));
         verify(service, times(1)).create(any(DegreeType.class));
         verify(mapper, times(1)).toDto(any(DegreeType.class));
     }
@@ -158,22 +158,22 @@ class DegreeTypeControllerIT {
     @DisplayName("Should successfully update Degree type")
     @Test
     void shouldUpdateDegreeType() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(DegreeTypeWithoutIdDto.class))).willReturn(degreeType);
+        BDDMockito.given(mapper.fromDto(any(DegreeTypeDto.class))).willReturn(degreeType);
         BDDMockito.given(service.update(any(Long.class), any(DegreeType.class))).willReturn(degreeType);
         BDDMockito.given(mapper.toDto(any(DegreeType.class))).willReturn(expectedDto);
 
         mvc
-                .perform(put(BASEURL + "/" + degreeTypeId)
+                .perform(put(BASEURL + "/" + id)
                         .content(objectMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.degreeTypeId").isNumber())
+                .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.highlyRelevantPoints").value(new BigDecimal("1.0")))
                 .andExpect(jsonPath("$.limitedRelevantPoints").value(new BigDecimal("2.0")))
                 .andExpect(jsonPath("$.littleRelevantPoints").value(new BigDecimal("3.0")));
 
-        verify(mapper, times(1)).fromDto(any(DegreeTypeWithoutIdDto.class));
+        verify(mapper, times(1)).fromDto(any(DegreeTypeDto.class));
         verify(service, times(1)).update(any(Long.class), any(DegreeType.class));
         verify(mapper, times(1)).toDto(any(DegreeType.class));
     }
@@ -184,7 +184,7 @@ class DegreeTypeControllerIT {
         BDDMockito.willDoNothing().given(service).delete(anyLong());
 
         mvc
-                .perform(delete(BASEURL + "/" + degreeTypeId)
+                .perform(delete(BASEURL + "/" + id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().is(204))

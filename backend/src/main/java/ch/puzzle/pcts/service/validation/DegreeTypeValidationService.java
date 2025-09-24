@@ -4,7 +4,6 @@ import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.degree_type.DegreeType;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.service.persistence.DegreeTypePersistenceService;
-import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -19,11 +18,9 @@ public class DegreeTypeValidationService {
     }
 
     public void validateOnCreate(DegreeType degreeType) {
-        validateIfIdIsNull(degreeType.getDegreeTypeId());
+        validateIfIdIsNull(degreeType.getId());
         validateName(degreeType.getName());
-        validateRelevantPoints(degreeType.getHighlyRelevantPoints(),
-                               degreeType.getLimitedRelevantPoints(),
-                               degreeType.getLittleRelevantPoints());
+        validatePoints(degreeType);
     }
 
     public void validateOnGetById(Long id) {
@@ -32,11 +29,9 @@ public class DegreeTypeValidationService {
 
     public void validateOnUpdate(Long id, DegreeType degreeType) {
         validateIfExists(id);
-        validateIfIdIsNull(degreeType.getDegreeTypeId());
+        validateIfIdIsNull(degreeType.getId());
         validateName(degreeType.getName());
-        validateRelevantPoints(degreeType.getHighlyRelevantPoints(),
-                               degreeType.getLimitedRelevantPoints(),
-                               degreeType.getLittleRelevantPoints());
+        validatePoints(degreeType);
     }
 
     public void validateOnDelete(Long id) {
@@ -47,7 +42,7 @@ public class DegreeTypeValidationService {
         persistenceService
                 .getById(id)
                 .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,
-                                                     "Degree type with degreeTypeId: " + id + " does not exist.",
+                                                     "Degree type with id: " + id + " does not exist.",
                                                      ErrorKey.NOT_FOUND));
     }
 
@@ -69,25 +64,19 @@ public class DegreeTypeValidationService {
         }
     }
 
-    private void validateRelevantPoints(BigDecimal highlyRelevantPoints, BigDecimal limitedRelevantPoints,
-                                        BigDecimal littleRelevantPoints) {
-        if (highlyRelevantPoints == null || limitedRelevantPoints == null || littleRelevantPoints == null) {
+    private void validatePoints(DegreeType degreeType) {
+        if (degreeType.getHighlyRelevantPoints() == null || degreeType.getLimitedRelevantPoints() == null
+            || degreeType.getLittleRelevantPoints() == null) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "relevant points must not be null",
-                                    ErrorKey.DEGREE_TYPE_RELEVANT_POINTS_ARE_NULL);
+                                    "points must not be null",
+                                    ErrorKey.DEGREE_TYPE_POINTS_ARE_NULL);
         }
 
-        if (highlyRelevantPoints.signum() < 0 || limitedRelevantPoints.signum() < 0
-            || littleRelevantPoints.signum() < 0) {
+        if (degreeType.getHighlyRelevantPoints().signum() < 0 || degreeType.getLimitedRelevantPoints().signum() < 0
+            || degreeType.getLittleRelevantPoints().signum() < 0) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "relevant points must not be negative",
-                                    ErrorKey.DEGREE_TYPE_RELEVANT_POINTS_ARE_NEGATIVE);
-        }
-
-        if (highlyRelevantPoints.scale() > 2 || limitedRelevantPoints.scale() > 2 || littleRelevantPoints.scale() > 2) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "relevant points must not have more than 2 decimal places",
-                                    ErrorKey.DEGREE_TYPE_RELEVANT_POINTS_HAVE_TOO_MANY_DECIMAL_PLACES);
+                                    "points must not be negative",
+                                    ErrorKey.DEGREE_TYPE_POINTS_ARE_NEGATIVE);
         }
     }
 }

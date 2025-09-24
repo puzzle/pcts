@@ -9,12 +9,12 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
-@SQLDelete(sql = "UPDATE degree_type SET deleted_at = CURRENT_TIMESTAMP WHERE degree_type_id = ?")
+@SQLDelete(sql = "UPDATE degree_type SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
 public class DegreeType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long degreeTypeId;
+    private Long id;
 
     private String name;
 
@@ -26,7 +26,7 @@ public class DegreeType {
 
     public DegreeType(Long id, String name, BigDecimal highlyRelevantPoints, BigDecimal limitedRelevantPoints,
                       BigDecimal littleRelevantPoints) {
-        this.degreeTypeId = id;
+        this.id = id;
         this.name = name;
         this.highlyRelevantPoints = highlyRelevantPoints;
         this.limitedRelevantPoints = limitedRelevantPoints;
@@ -36,12 +36,12 @@ public class DegreeType {
     public DegreeType() {
     }
 
-    public Long getDegreeTypeId() {
-        return degreeTypeId;
+    public Long getId() {
+        return id;
     }
 
-    public void setDegreeTypeId(Long degreeTypeId) {
-        this.degreeTypeId = degreeTypeId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
