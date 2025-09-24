@@ -1,0 +1,77 @@
+<div class="w-75 mx-auto mt-5">
+  <h1>Member {{ isEdit ? 'Ändern' : 'Hinzufügen' }}</h1>
+
+  <b>Personalien</b>
+
+  <form [formGroup]="memberForm" (ngSubmit)="onSubmit()" class="d-flex flex-column gap-3 w-75">
+    <div class="d-flex flex-column">
+      <label for="firstname">Vorname</label>
+      <input id="firstname" type="text" placeholder="Christoph" formControlName="firstname">
+    </div>
+
+    <div class="d-flex flex-column">
+      <label for="lastname">Nachname</label>
+      <input id="lastname" type="text" placeholder="Stähli" formControlName="lastname">
+    </div>
+
+    <div class="d-flex flex-column">
+      <label for="abbreviation">Kürzel</label>
+      <input id="abbreviation" type="text" placeholder="CS" formControlName="abbreviation">
+    </div>
+
+    <div class="d-flex flex-column">
+      <label for="birthdate">Geburtsdatum</label>
+      <input id="birthdate" type="date" formControlName="birthdate">
+    </div>
+
+    <div class="d-flex flex-column">
+      <label for="employmentDate">Anstellungsdatum</label>
+      <input id="employmentDate" type="date" formControlName="employmentDate">
+    </div>
+
+    <mat-form-field>
+      <mat-label for="status">Status</mat-label>
+      <input
+        type="text"
+        placeholder="Bitte auswählen"
+        aria-label="Bitte auswählen"
+        matInput
+        [formControl]="statusSearch"
+        [matAutocomplete]="auto">
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-option value="" disabled>Bitte auswählen</mat-option>
+        @for (employeeState of filteredStatusOptions(); track employeeState) {
+          <mat-option [value]="employeeState">{{ employeeState }}</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field class="d-flex flex-column z-3">
+      <mat-label for="division">Division</mat-label>
+      <input
+        type="text"
+        placeholder="Bitte auswählen"
+        aria-label="Bitte auswählen"
+        matInput
+        [formControl]="organisationSearch"
+        [matAutocomplete]="auto">
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-option value="" disabled>Bitte auswählen</mat-option>
+        @for (item of filteredOrganisationUnitsOptions(); track item.name) {
+          <mat-option [value]="item.name">{{ item.name }}</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <div class="d-flex flex-row gap-3 z-0">
+      <button type="button" (click)="onCancel()">Abbrechen</button>
+      <button type="submit" [disabled]="!memberForm.valid">{{ isEdit ? 'Speicher' : 'Hinzufügen' }}</button>
+    </div>
+  </form>
+</div>
+
+<button mat-stroked-button>
+  <mat-icon>add</mat-icon>
+  Member hinzufügen
+</button>
+
