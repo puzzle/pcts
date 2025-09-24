@@ -31,7 +31,7 @@ public class DegreeTypeController {
     }
 
     @Operation(summary = "List all degree types")
-    @ApiResponse(responseCode = "200", description = "A list of degree types", content = {
+    @ApiResponse(responseCode = "200", description = "A list of degree types.", content = {
             @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = DegreeTypeDto.class))) })
     @GetMapping
     public ResponseEntity<List<DegreeTypeDto>> getDegreeType() {
@@ -49,7 +49,7 @@ public class DegreeTypeController {
     }
 
     @Operation(summary = "Get a single degree type by ID")
-    @ApiResponse(responseCode = "200", description = "The requested degree type", content = {
+    @ApiResponse(responseCode = "200", description = "The requested degree type.", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = DegreeTypeDto.class)) })
     @GetMapping("{id}")
     public ResponseEntity<DegreeTypeDto> getById(@Parameter(description = "ID of the degree type to retrieve.")
@@ -60,19 +60,19 @@ public class DegreeTypeController {
 
     @Operation(summary = "Update a degree type")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The degree-type object to be updated.", required = true)
-    @ApiResponse(responseCode = "200", description = "Degree type updated successfully", content = {
+    @ApiResponse(responseCode = "200", description = "Degree type updated successfully.", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = DegreeTypeDto.class)) })
     @PutMapping("{id}")
-    public ResponseEntity<DegreeTypeDto> update(@Parameter(description = "ID of the degree type to update")
+    public ResponseEntity<DegreeTypeDto> update(@Parameter(description = "ID of the degree type to update.")
     @PathVariable() Long id, @RequestBody DegreeTypeDto dto) {
         DegreeType updatedDegreeType = service.update(id, mapper.fromDto(dto));
         return ResponseEntity.ok(mapper.toDto(updatedDegreeType));
     }
 
     @Operation(summary = "Delete a degree type")
-    @ApiResponse(responseCode = "204", description = "Degree type deleted successfully", content = @Content)
+    @ApiResponse(responseCode = "204", description = "Degree type deleted successfully.", content = @Content)
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> delete(@Parameter(description = "ID of the degree type to delete")
+    public ResponseEntity<Void> delete(@Parameter(description = "ID of the degree type to delete.")
     @PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.status(204).build();
