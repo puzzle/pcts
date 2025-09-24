@@ -4,5 +4,24 @@
   "EXAMPLE": {
     "NO_EXAMPLES": "Keine Beispiele!",
     "CREATE": "Ich will ein Beispiel erstellen!"
+  },
+  "MEMBER": {
+    "NAME": "Name",
+    "BIRTHDATE": " Geburtsdatum",
+    "ORGANISATION_UNIT": "Division",
+
+    "OVERVIEW": {
+      "MEMBERS": "Members",
+      "SEARCH": "Suchen",
+      "ALL": "Alle",
+      "ADD_MEMBER": "Member hinzufügen",
+      "NO_SEARCH_RESULT": "Kein Member mit den Attributen "
+    },
+    "EMPLOYMENT_STATUS": "Anstellungsstatus",
+    "EMPLOYMENT_STATUS_VALUES": {
+      "MEMBER": "Member",
+      "APPLICANT": "Bewerber",
+      "EX_MEMBER": "Ex-Member"
+    }
   }
 }
