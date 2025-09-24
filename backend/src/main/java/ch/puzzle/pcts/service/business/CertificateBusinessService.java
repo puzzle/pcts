@@ -13,15 +13,21 @@ import org.springframework.stereotype.Service;
 public class CertificateBusinessService {
     private final CertificateValidationService validationService;
     private final CertificatePersistenceService persistenceService;
+    private final TagBusinessService tagBusinessService;
 
     public CertificateBusinessService(CertificateValidationService certificateValidationService,
-                                      CertificatePersistenceService certificatePersistenceService) {
+                                      CertificatePersistenceService certificatePersistenceService,
+                                      TagBusinessService tagBusinessService) {
         this.validationService = certificateValidationService;
         this.persistenceService = certificatePersistenceService;
+        this.tagBusinessService = tagBusinessService;
     }
 
     public Certificate create(Certificate certificate) {
         validationService.validateOnCreate(certificate);
+
+        certificate.setTags(tagBusinessService.resolveTags(certificate.getTags()));
+
         return persistenceService.create(certificate);
     }
 
@@ -40,8 +46,12 @@ public class CertificateBusinessService {
 
     public Certificate update(Long id, Certificate certificate) {
         validationService.validateOnUpdate(id, certificate);
+
+        certificate.setTags(tagBusinessService.resolveTags(certificate.getTags()));
+
         return persistenceService.update(id, certificate);
     }
+
     public void delete(Long id) {
         validationService.validateOnDelete(id);
         persistenceService.delete(id);
