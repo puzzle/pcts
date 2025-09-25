@@ -25,6 +25,17 @@ public class Certificate {
     @JoinTable(name = "certificate_tag", joinColumns = @JoinColumn(name = "certificate_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags;
 
+    @Enumerated(EnumType.STRING)
+    private CertificateType certificateType;
+
+    public Certificate(Long id, String name, BigDecimal points, String comment, CertificateType certificateType) {
+        this.id = id;
+        this.name = name;
+        this.points = points;
+        this.comment = comment;
+        this.certificateType = certificateType;
+    }
+
     public Certificate(Long id, String name, BigDecimal points, String comment, Set<Tag> tags) {
         this.id = id;
         this.name = name;
@@ -74,6 +85,14 @@ public class Certificate {
 
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
+    }
+
+    public CertificateType getCertificateType() {
+        return certificateType;
+    }
+
+    public void setCertificateType(CertificateType certificateType) {
+        this.certificateType = certificateType;
     }
 
     @Override

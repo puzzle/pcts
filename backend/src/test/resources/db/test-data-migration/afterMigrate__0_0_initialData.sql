@@ -13,6 +13,13 @@ VALUES
     ('Role 1', '1970-01-01 00:00:00', TRUE),
     ('Role 2', null,  FALSE);
 
+TRUNCATE TABLE experience_type CASCADE;
+
+INSERT INTO experience_type (name, highly_relevant_points, limited_relevant_points, little_relevant_points)
+    VALUES
+        ('ExperienceType 1', 0, 12, 4.005),
+        ('ExperienceType 2', 12, 10.7989, 6);
+
 TRUNCATE TABLE certificate CASCADE;
 
 INSERT INTO certificate (name, points, deleted_at, comment)
@@ -22,12 +29,8 @@ VALUES
     ('Certificate 3', 3, null, 'This is Certificate 3'),
     ('Certificate 4', 0.5, null, 'This is Certificate 4');
 
-TRUNCATE TABLE experience_type CASCADE;
-
-INSERT INTO experience_type (name, highly_relevant_points, limited_relevant_points, little_relevant_points)
+INSERT INTO certificate (name, points, deleted_at, comment, certificate_type)
 VALUES
-    ('ExperienceType 1', 0, 12, 4.005),
-    ('ExperienceType 2', 12, 10.7989, 6)
-
-
-
+    ('LeadershipExperience 1', 5.5, null, 'This is LeadershipExperience 1', 'MILITARY_FUNCTION'),
+    ('LeadershipExperience 2', 1, null, 'This is LeadershipExperience 2', 'YOUTH_AND_SPORT'),
+    ('LeadershipExperience 3', 3, null, 'This is LeadershipExperience 3', 'LEADERSHIP_TRAINING');

@@ -21,6 +21,19 @@ VALUES
     ('Extern', FALSE),
     ('Consultant', FALSE);
 
+TRUNCATE TABLE experience_type CASCADE;
+
+INSERT INTO experience_type (name, highly_relevant_points, limited_relevant_points, little_relevant_points)
+VALUES
+    ('Internship', 4, 2, 1.5),
+    ('Volunteer Work', 2, 1.5, 1),
+    ('Hackathon', 9, 4,2),
+    ('Leadership Role', 13, 7, 5),
+    ('Research Project', 6, 5, 3.25),
+    ('Coursework Project', 7, 3, 1),
+    ('Freelance Work', 7, 6.25, 4),
+    ('Professional Job', 4.5, 2, 1);
+
 TRUNCATE TABLE certificate CASCADE;
 
 INSERT INTO certificate (name, points, deleted_at, comment)
@@ -36,15 +49,8 @@ VALUES
     ('Project Management Professional (PMP)', 8.5, NULL, 'Globally recognized project management certification'),
     ('Microsoft Certified: Azure Administrator Associate', 7.5, NULL, 'Managing Azure cloud services and resources');
 
-TRUNCATE TABLE experience_type CASCADE;
-
-INSERT INTO experience_type (name, highly_relevant_points, limited_relevant_points, little_relevant_points)
+INSERT INTO certificate (name, points, deleted_at, comment, certificate_type)
 VALUES
-    ('Internship', 4, 2, 1.5),
-    ('Volunteer Work', 2, 1.5, 1),
-    ('Hackathon', 9, 4,2),
-    ('Leadership Role', 13, 7, 5),
-    ('Research Project', 6, 5, 3.25),
-    ('Coursework Project', 7, 3, 1),
-    ('Freelance Work', 7, 6.25, 4),
-    ('Professional Job', 4.5, 2, 1);
+    ('Soldier', 7.5, NULL, '', 'MILITARY_FUNCTION'),
+    ('Ski Camp Manager', 5, NULL, '', 'YOUTH_AND_SPORT'),
+    ('Leader Essentials', 2, NULL, '', 'LEADERSHIP_TRAINING');

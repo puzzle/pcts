@@ -9,12 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CertificatePersistenceService {
+public class LeadershipExperiencePersistenceService {
 
     private final CertificateRepository repository;
 
     @Autowired
-    public CertificatePersistenceService(CertificateRepository certificateRepository) {
+    public LeadershipExperiencePersistenceService(CertificateRepository certificateRepository) {
         this.repository = certificateRepository;
     }
 
@@ -23,11 +23,11 @@ public class CertificatePersistenceService {
     }
 
     public Optional<Certificate> getById(Long id) {
-        return repository.findByCertificateTypeAndId(CertificateType.CERTIFICATE, id);
+        return repository.findByCertificateTypeNotAndId(CertificateType.CERTIFICATE, id);
     }
 
     public List<Certificate> getAll() {
-        return repository.findByCertificateType(CertificateType.CERTIFICATE);
+        return repository.findByCertificateTypeNot(CertificateType.CERTIFICATE);
     }
 
     public Certificate update(Long id, Certificate certificate) {
