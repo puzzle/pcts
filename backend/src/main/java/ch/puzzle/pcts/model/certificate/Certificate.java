@@ -28,13 +28,20 @@ public class Certificate {
     @Enumerated(EnumType.STRING)
     private CertificateType certificateType;
 
-    public Certificate(Long id, String name, BigDecimal points, String comment, Set<Tag> tags, CertificateType certificateType) {
+    public Certificate(Long id, String name, BigDecimal points, String comment, CertificateType certificateType) {
+        this.id = id;
+        this.name = name;
+        this.points = points;
+        this.comment = comment;
+        this.certificateType = certificateType;
+    }
+
+    public Certificate(Long id, String name, BigDecimal points, String comment, Set<Tag> tags) {
         this.id = id;
         this.name = name;
         this.points = points;
         this.comment = comment;
         this.tags = tags;
-        this.certificateType = certificateType;
     }
 
     public Certificate() {

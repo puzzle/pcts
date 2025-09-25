@@ -85,8 +85,7 @@ class CertificatePersistenceServiceIT {
                                                   "This is a newly created certificate",
                                                   Set
                                                           .of(new Tag(1L, "Important tag"),
-                                                              new Tag(null, "Way more important tag")),
-                                                  CertificateType.CERTIFICATE);
+                                                              new Tag(null, "Way more important tag")));
 
         Certificate result = persistenceService.create(certificate);
 
@@ -110,8 +109,7 @@ class CertificatePersistenceServiceIT {
                                                   "This is a updated certificate",
                                                   Set
                                                           .of(new Tag(null, "Important tag"),
-                                                              new Tag(null, "Way more important tag")),
-                                                  CertificateType.CERTIFICATE);
+                                                              new Tag(null, "Way more important tag")));
 
         persistenceService.update(id, certificate);
         Optional<Certificate> result = persistenceService.getById(id);

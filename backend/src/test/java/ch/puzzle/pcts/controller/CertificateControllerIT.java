@@ -10,7 +10,6 @@ import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.certificate.CertificateDto;
 import ch.puzzle.pcts.mapper.CertificateMapper;
 import ch.puzzle.pcts.model.certificate.Certificate;
-import ch.puzzle.pcts.model.certificate.CertificateType;
 import ch.puzzle.pcts.model.certificate.Tag;
 import ch.puzzle.pcts.service.business.CertificateBusinessService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -57,24 +56,17 @@ class CertificateControllerIT {
     @BeforeEach
     void setUp() {
         Set<Tag> tags = Set.of(new Tag(1L, "Tag 1"), new Tag(2L, "Tag 2"));
-        certificate = new Certificate(1L,
-                                      "Certificate 1",
-                                      new BigDecimal("5.5"),
-                                      "This is Certificate 1",
-                                      tags,
-                                      CertificateType.CERTIFICATE);
+        certificate = new Certificate(1L, "Certificate 1", new BigDecimal("5.5"), "This is Certificate 1", tags);
         requestDto = new CertificateDto(null,
                                         "Certificate 1",
                                         new BigDecimal("5.5"),
                                         "This is Certificate 1",
-                                        tags.stream().map(Tag::getName).toList(),
-                                        CertificateType.CERTIFICATE);
+                                        tags.stream().map(Tag::getName).toList());
         expectedDto = new CertificateDto(1L,
                                          "Certificate 1",
                                          new BigDecimal("5.5"),
                                          "This is Certificate 1",
-                                         tags.stream().map(Tag::getName).toList(),
-                                         CertificateType.CERTIFICATE);
+                                         tags.stream().map(Tag::getName).toList());
         id = 1L;
     }
 

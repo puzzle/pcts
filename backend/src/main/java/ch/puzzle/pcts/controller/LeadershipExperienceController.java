@@ -1,6 +1,6 @@
 package ch.puzzle.pcts.controller;
 
-import ch.puzzle.pcts.dto.leadershipExperience.LeadershipExperienceDto;
+import ch.puzzle.pcts.dto.leadership_experience.LeadershipExperienceDto;
 import ch.puzzle.pcts.mapper.LeadershipExperienceMapper;
 import ch.puzzle.pcts.service.business.LeadershipExperienceBusinessService;
 import io.swagger.v3.oas.annotations.Operation;

@@ -1,4 +1,4 @@
-package ch.puzzle.pcts.dto.leadershipExperience;
+package ch.puzzle.pcts.dto.leadership_experience;
 
 import ch.puzzle.pcts.model.certificate.CertificateType;
 import io.swagger.v3.oas.annotations.media.Schema;

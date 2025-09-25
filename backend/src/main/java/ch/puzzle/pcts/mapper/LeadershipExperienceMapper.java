@@ -1,6 +1,6 @@
 package ch.puzzle.pcts.mapper;
 
-import ch.puzzle.pcts.dto.leadershipExperience.LeadershipExperienceDto;
+import ch.puzzle.pcts.dto.leadership_experience.LeadershipExperienceDto;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import java.util.List;
 import org.springframework.stereotype.Component;
@@ -22,6 +22,6 @@ public class LeadershipExperienceMapper {
     }
 
     public Certificate fromDto(LeadershipExperienceDto dto) {
-        return new Certificate(dto.id(), dto.name(), dto.points(), dto.comment(), null, dto.certificateType());
+        return new Certificate(dto.id(), dto.name(), dto.points(), dto.comment(), dto.certificateType());
     }
 }
