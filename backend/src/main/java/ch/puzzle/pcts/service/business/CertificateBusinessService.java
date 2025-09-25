@@ -2,6 +2,7 @@ package ch.puzzle.pcts.service.business;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificate.Certificate;
+import ch.puzzle.pcts.model.certificate.CertificateType;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.service.persistence.CertificatePersistenceService;
 import ch.puzzle.pcts.service.validation.CertificateValidationService;
@@ -26,6 +27,7 @@ public class CertificateBusinessService {
     public Certificate create(Certificate certificate) {
         validationService.validateOnCreate(certificate);
 
+        certificate.setCertificateType(CertificateType.CERTIFICATE);
         certificate.setTags(tagBusinessService.resolveTags(certificate.getTags()));
 
         return persistenceService.create(certificate);

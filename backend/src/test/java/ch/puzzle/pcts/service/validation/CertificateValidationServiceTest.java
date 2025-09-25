@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificate.Certificate;
+import ch.puzzle.pcts.model.certificate.CertificateType;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.service.persistence.CertificatePersistenceService;
 import java.math.BigDecimal;
@@ -151,6 +152,21 @@ class CertificateValidationServiceTest {
         assertDoesNotThrow(() -> validationService.validateOnCreate(certificate));
     }
 
+    @DisplayName("Should throw exception on validateOnCreate() when certificate type is not null")
+    @Test
+    void shouldThrowExceptionOnValidateOnCreateWhenCertificateTypeIsNotNull() {
+        Certificate certificate = new Certificate();
+        certificate.setName("Valid name");
+        certificate.setPoints(BigDecimal.valueOf(50));
+        certificate.setCertificateType(CertificateType.LEADERSHIP_TRAINING);
+
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> validationService.validateOnCreate(certificate));
+
+        assertEquals("Certificate type needs to be undefined.", exception.getReason());
+        assertEquals(ErrorKey.CERTIFICATE_TYPE_IS_NOT_NULL, exception.getErrorKey());
+    }
+
     @DisplayName("Should be successful on validateOnDelete() when id is valid")
     @Test
     void shouldBeSuccessfulOnValidateOnDeleteWhenIdIsValid() {
@@ -247,5 +263,23 @@ class CertificateValidationServiceTest {
 
         assertEquals("Name must not be empty", exception.getReason());
         assertEquals(ErrorKey.CERTIFICATE_NAME_IS_EMPTY, exception.getErrorKey());
+    }
+
+    @DisplayName("Should throw exception on validateOnUpdate() when certificate type is not null")
+    @Test
+    void shouldThrowExceptionOnValidateOnUpdateWhenCertificateTypeIsNotNull() {
+        long id = 1L;
+        Certificate certificate = new Certificate();
+        certificate.setName("Valid name");
+        certificate.setPoints(BigDecimal.valueOf(5));
+        certificate.setCertificateType(CertificateType.CERTIFICATE);
+
+        when(persistenceService.getById(id)).thenReturn(Optional.of(new Certificate()));
+
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> validationService.validateOnUpdate(id, certificate));
+
+        assertEquals("Certificate type needs to be undefined.", exception.getReason());
+        assertEquals(ErrorKey.CERTIFICATE_TYPE_IS_NOT_NULL, exception.getErrorKey());
     }
 }

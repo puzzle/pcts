@@ -15,19 +15,12 @@ VALUES
 
 TRUNCATE TABLE certificate CASCADE;
 
-INSERT INTO certificate (name, points, deleted_at, comment)
+INSERT INTO certificate (name, points, deleted_at, comment, certificate_type)
 VALUES
-    ('Certificate 1', 5.5, null, 'This is Certificate 1'),
-    ('Certificate 2', 1, null, 'This is Certificate 2'),
-    ('Certificate 3', 3, null, 'This is Certificate 3'),
-    ('Certificate 4', 0.5, null, 'This is Certificate 4');
-
-TRUNCATE TABLE experience_type CASCADE;
-
-INSERT INTO experience_type (name, highly_relevant_points, limited_relevant_points, little_relevant_points)
-VALUES
-    ('ExperienceType 1', 0, 12, 4.005),
-    ('ExperienceType 2', 12, 10.7989, 6)
-
-
-
+    ('Certificate 1', 5.5, null, 'This is Certificate 1', 'CERTIFICATE'),
+    ('Certificate 2', 1, null, 'This is Certificate 2', 'CERTIFICATE'),
+    ('Certificate 3', 3, null, 'This is Certificate 3', 'CERTIFICATE'),
+    ('Certificate 4', 0.5, null, 'This is Certificate 4', 'CERTIFICATE'),
+    ('LeadershipExperience 1', 5.5, null, 'This is LeadershipExperience 1', 'MILITARY_FUNCTION'),
+    ('LeadershipExperience 2', 1, null, 'This is LeadershipExperience 2', 'YOUTH_AND_SPORT'),
+    ('LeadershipExperience 3', 3, null, 'This is LeadershipExperience 3', 'LEADERSHIP_TRAINING');

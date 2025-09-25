@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificate.Certificate;
+import ch.puzzle.pcts.model.certificate.CertificateType;
 import ch.puzzle.pcts.model.certificate.Tag;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.service.persistence.CertificatePersistenceService;
@@ -47,7 +48,8 @@ class CertificateBusinessServiceTest {
                                                   "Master of Art",
                                                   BigDecimal.ONE,
                                                   "Comment",
-                                                  Set.of(new Tag(1L, "Important tag")));
+                                                  Set.of(new Tag(1L, "Important tag")),
+                                                  CertificateType.CERTIFICATE);
         when(persistenceService.getById(1L)).thenReturn(Optional.of(certificate));
 
         Certificate result = businessService.getById(1L);
@@ -75,7 +77,8 @@ class CertificateBusinessServiceTest {
                                                   "Bachelor of Business Administration",
                                                   BigDecimal.ONE,
                                                   "Comment",
-                                                  Set.of(new Tag(1L, "Important tag")));
+                                                  Set.of(new Tag(1L, "Important tag")),
+                                                  CertificateType.CERTIFICATE);
         when(persistenceService.create(certificate)).thenReturn(certificate);
 
         Certificate result = businessService.create(certificate);
@@ -93,12 +96,14 @@ class CertificateBusinessServiceTest {
                                     "Bachelor of Sciences",
                                     BigDecimal.ONE,
                                     "Comment",
-                                    Set.of(new Tag(1L, "Important tag"))),
+                                    Set.of(new Tag(1L, "Important tag")),
+                                    CertificateType.CERTIFICATE),
                     new Certificate(2L,
                                     "Master of Business Administration",
                                     BigDecimal.ONE,
                                     "Comment",
-                                    Set.of(new Tag(1L, "Important tag"))));
+                                    Set.of(new Tag(1L, "Important tag")),
+                                    CertificateType.CERTIFICATE));
         when(persistenceService.getAll()).thenReturn(certificates);
 
         List<Certificate> result = businessService.getAll();
@@ -116,7 +121,8 @@ class CertificateBusinessServiceTest {
                                                   "Certificate in Advanced English",
                                                   BigDecimal.ONE,
                                                   "Comment",
-                                                  Set.of(new Tag(1L, "Important tag")));
+                                                  Set.of(new Tag(1L, "Important tag")),
+                                                  CertificateType.CERTIFICATE);
         when(persistenceService.update(id, certificate)).thenReturn(certificate);
 
         Certificate result = businessService.update(id, certificate);

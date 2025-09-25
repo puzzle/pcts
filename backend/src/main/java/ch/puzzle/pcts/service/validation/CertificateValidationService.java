@@ -2,6 +2,7 @@ package ch.puzzle.pcts.service.validation;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificate.Certificate;
+import ch.puzzle.pcts.model.certificate.CertificateType;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.service.persistence.CertificatePersistenceService;
 import java.math.BigDecimal;
@@ -22,6 +23,7 @@ public class CertificateValidationService {
         validateIfIdIsNull(certificate.getId());
         validateName(certificate.getName());
         validatePoints(certificate.getPoints());
+        validateCertificateType(certificate.getCertificateType());
     }
 
     public void validateOnGetById(Long id) {
@@ -33,6 +35,7 @@ public class CertificateValidationService {
         validateIfIdIsNull(certificate.getId());
         validateName(certificate.getName());
         validatePoints(certificate.getPoints());
+        validateCertificateType(certificate.getCertificateType());
     }
 
     public void validateOnDelete(Long id) {
@@ -76,6 +79,14 @@ public class CertificateValidationService {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
                                     "Points value must not be negative.",
                                     ErrorKey.CERTIFICATE_POINTS_ARE_NEGATIVE);
+        }
+    }
+
+    private void validateCertificateType(CertificateType certificateType) {
+        if (certificateType != null) {
+            throw new PCTSException(HttpStatus.BAD_REQUEST,
+                                    "Certificate type needs to be undefined.",
+                                    ErrorKey.CERTIFICATE_TYPE_IS_NOT_NULL);
         }
     }
 }

@@ -4,7 +4,8 @@ CREATE TABLE IF NOT EXISTS certificate
     name            TEXT,
     points          NUMERIC(6,2) NOT NULL CHECK (points >= 0),
     deleted_at      TIMESTAMP DEFAULT NULL,
-    comment         TEXT
+    comment         TEXT,
+    certificate_type    TEXT CHECK ( certificate_type in ('CERTIFICATE','MILITARY_FUNCTION', 'YOUTH_AND_SPORT', 'LEADERSHIP_TRAINING') )
 );
 
 CREATE TABLE IF NOT EXISTS tag (
