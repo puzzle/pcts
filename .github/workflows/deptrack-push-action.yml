@@ -1,16 +1,17 @@
 ---
 name: 'Dependency Track Deployment'
 
-on:
-  pull_request:
-    types:
-      - closed
-    branches:
-      - main
+on: push
+
+#  pull_request:
+#    types:
+#      - closed
+#    branches:
+#      - main
 
 jobs:
   generate-and-push-sbom:
-    if: github.event.pull_request.merged == true
+#    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     environment: STAGING
     steps:
@@ -38,8 +39,11 @@ jobs:
           --output-format json --output-file data/sbom.json
 
       - name: 'Validate SBOM'
-        run: docker run --rm -v $(pwd):/data cyclonedx/cyclonedx-cli validate \
-          --input-format json --input-version v1_6 --input-file data/sbom.json \
+        run: |
+          docker run --rm -v $(pwd):/data cyclonedx/cyclonedx-cli validate \
+          --input-format json \
+          --input-version v1_6 \
+          --input-file data/sbom.json \
           --fail-on-errors
 
       - name: 'Push merged SBOM to dependency track'
