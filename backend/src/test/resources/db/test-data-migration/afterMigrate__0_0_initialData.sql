@@ -18,7 +18,7 @@ TRUNCATE TABLE experience_type CASCADE;
 INSERT INTO experience_type (name, highly_relevant_points, limited_relevant_points, little_relevant_points)
     VALUES
         ('ExperienceType 1', 0, 12, 4.005),
-        ('ExperienceType 2', 12, 10.7989, 6)
+        ('ExperienceType 2', 12, 10.7989, 6);
 
 TRUNCATE TABLE certificate CASCADE;
 
