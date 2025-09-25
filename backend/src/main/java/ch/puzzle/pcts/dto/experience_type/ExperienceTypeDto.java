@@ -1,4 +1,4 @@
-package ch.puzzle.pcts.dto.experienceType;
+package ch.puzzle.pcts.dto.experience_type;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;

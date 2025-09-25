@@ -1,4 +1,4 @@
-package ch.puzzle.pcts.model.experienceType;
+package ch.puzzle.pcts.model.experience_type;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
