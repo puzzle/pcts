@@ -33,13 +33,13 @@ import { EmploymentState } from '../../../shared/enum/employment-state.enum';
   styleUrl: './member-overview.component.css'
 })
 export class MemberOverviewComponent {
-  private service: MemberService = inject(MemberService);
+  private readonly service: MemberService = inject(MemberService);
 
-  private datePipe: DatePipe = inject(DatePipe);
+  private readonly datePipe: DatePipe = inject(DatePipe);
 
-  private router = inject(Router);
+  private readonly router = inject(Router);
 
-  private route = inject(ActivatedRoute);
+  private readonly route = inject(ActivatedRoute);
 
   displayedColumns: string[] = [
     'name',
