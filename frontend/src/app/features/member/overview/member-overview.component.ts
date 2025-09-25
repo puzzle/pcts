@@ -1,7 +1,7 @@
 import { Component, effect, inject, Signal, signal, viewChild, WritableSignal } from '@angular/core';
 import { MemberService } from '../member.service';
 import { MemberModel } from '../member.model';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,9 +9,10 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { DatePipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
-import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { EmploymentState } from '../../../shared/enum/employment-state.enum';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-member-overview',
@@ -56,7 +57,7 @@ export class MemberOverviewComponent {
 
   activeFilters = new Set<string>();
 
-  searchText = '';
+  searchControl = new FormControl('');
 
   employmentStateValues = Object.values(EmploymentState);
 
@@ -74,18 +75,17 @@ export class MemberOverviewComponent {
       this.applyCombinedFilter();
     });
 
-    this.route.queryParams.subscribe((params: Params): void => {
-      this.searchText = params['q'] ? decodeURIComponent(params['q']) : '';
-
-      this.activeFilters.clear();
-      const status: string = params['status'];
-      if (status) {
-        status.split('+')
-          .forEach((s) => this.activeFilters.add(s));
-      }
-
+    this.route.data.subscribe(({ filters }) => {
+      this.searchControl.setValue(filters.searchText, { emitEvent: false });
+      this.activeFilters = new Set(filters.statuses);
       this.applyCombinedFilter();
     });
+
+    this.searchControl.valueChanges
+      .pipe(debounceTime(300))
+      .subscribe(() => {
+        this.applyCombinedFilter();
+      });
   }
 
   createFilterPredicate(): (data: MemberModel, filter: string) => boolean {
@@ -94,17 +94,13 @@ export class MemberOverviewComponent {
       const searchTxt: string = filterValues.text.toLowerCase();
       const status: string = filterValues.status;
 
-      const statuses: string[] = status.split('+');
-      const employmentState: string = member.employmentState || '';
-
-      const statusMatch: boolean = status === '' || statuses.includes(employmentState);
-
-      const formattedBirthday: string | null = this.datePipe.transform(member.birthday, 'dd.MM.yyyy');
+      const statusMatch: boolean = status === '' || status.split('+')
+        .includes(member.employmentState);
 
       const memberDataString: string = (
         member.name +
         member.lastName +
-        formattedBirthday +
+        this.datePipe.transform(member.birthday, 'dd.MM.yyyy') +
         member.organisationUnit.name +
         member.employmentState
       ).toLowerCase();
@@ -118,26 +114,19 @@ export class MemberOverviewComponent {
     };
   }
 
-  applyFilter(searchText: string): void {
-    this.searchText = searchText;
-    this.applyCombinedFilter();
-  }
-
   applyCombinedFilter(): void {
     const selected: string[] = Array.from(this.activeFilters);
     const statusFilterValue: string = selected.length ? selected.join('+') : '';
 
-    const combinedFilter = {
-      text: this.searchText,
+    this.dataSource.filter = JSON.stringify({
+      text: this.searchControl.value ?? '',
       status: statusFilterValue
-    };
-
-    this.dataSource.filter = JSON.stringify(combinedFilter);
+    });
 
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        q: this.searchText ? encodeURIComponent(this.searchText) : null,
+        q: this.searchControl.value ? encodeURIComponent(this.searchControl.value) : null,
         status: statusFilterValue !== '' ? statusFilterValue : null
       },
       queryParamsHandling: 'merge',
