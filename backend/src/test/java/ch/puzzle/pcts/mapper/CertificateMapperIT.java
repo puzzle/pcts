@@ -6,6 +6,7 @@ import ch.puzzle.pcts.dto.certificate.CertificateDto;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificate.Tag;
 import java.math.BigDecimal;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,13 +32,13 @@ class CertificateMapperIT {
                                                            BigDecimal.ONE,
                                                            "Test",
                                                            List.of("Important tag", "One more tag"));
+        Set<Tag> tags = new LinkedHashSet<>(List.of(new Tag(null, "Important tag"), new Tag(null, "One more tag")));
+
         Certificate certificate = new Certificate(1L,
                                                   "Bachelor of Business Administration",
                                                   BigDecimal.ONE,
                                                   "Test",
-                                                  Set
-                                                          .of(new Tag(null, "Important tag"),
-                                                              new Tag(null, "One more tag")));
+                                                  tags);
 
         Certificate result = mapper.fromDto(certificateDto);
         assertEquals(certificate.toString(), result.toString());
@@ -64,6 +65,9 @@ class CertificateMapperIT {
     @DisplayName("Should return list of certificates")
     @Test
     void shouldGetListOfCertificates() {
+        Set<Tag> exampleTags = new LinkedHashSet<>(List
+                .of(new Tag(null, "Important tag"), new Tag(null, "One more tag")));
+
         List<CertificateDto> dtos = List
                 .of(new CertificateDto(1L,
                                        "Certificate in Advanced English",
@@ -76,16 +80,8 @@ class CertificateMapperIT {
                                        "Test",
                                        List.of("Important tag", "One more tag")));
         List<Certificate> models = List
-                .of(new Certificate(1L,
-                                    "Certificate in Advanced English",
-                                    BigDecimal.ONE,
-                                    "Test",
-                                    Set.of(new Tag(null, "Important tag"), new Tag(null, "One more tag"))),
-                    new Certificate(2L,
-                                    "Certificate of Advanced Studies",
-                                    BigDecimal.ONE,
-                                    "Test",
-                                    Set.of(new Tag(null, "Important tag"), new Tag(null, "One more tag"))));
+                .of(new Certificate(1L, "Certificate in Advanced English", BigDecimal.ONE, "Test", exampleTags),
+                    new Certificate(2L, "Certificate of Advanced Studies", BigDecimal.ONE, "Test", exampleTags));
 
         List<Certificate> result = mapper.fromDto(dtos);
         assertEquals(models.toString(), result.toString());

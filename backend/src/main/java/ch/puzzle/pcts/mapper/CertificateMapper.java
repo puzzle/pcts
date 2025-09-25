@@ -4,6 +4,7 @@ import ch.puzzle.pcts.dto.certificate.CertificateDto;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificate.Tag;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,7 +37,7 @@ public class CertificateMapper {
                 .map(String::trim)
                 .filter(name -> !name.isEmpty())
                 .map(name -> new Tag(null, name))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toCollection(LinkedHashSet::new));
 
         return new Certificate(dto.id(), dto.name(), dto.points(), dto.comment(), rawTags);
     }

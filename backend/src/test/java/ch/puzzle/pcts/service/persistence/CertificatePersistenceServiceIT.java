@@ -1,12 +1,15 @@
 package ch.puzzle.pcts.service.persistence;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCollection;
 
 import ch.puzzle.pcts.model.certificate.Certificate;
+import ch.puzzle.pcts.model.certificate.Tag;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -76,7 +79,10 @@ class CertificatePersistenceServiceIT {
         Certificate certificate = new Certificate(null,
                                                   "Created certificate",
                                                   BigDecimal.valueOf(3),
-                                                  "This is a newly created certificate");
+                                                  "This is a newly created certificate",
+                                                  Set
+                                                          .of(new Tag(1L, "Important tag"),
+                                                              new Tag(null, "Way more important tag")));
 
         Certificate result = persistenceService.create(certificate);
 
@@ -84,6 +90,7 @@ class CertificatePersistenceServiceIT {
         assertThat(result.getName()).isEqualTo(certificate.getName());
         assertThat(result.getPoints()).isEqualTo(certificate.getPoints());
         assertThat(result.getComment()).isEqualTo(certificate.getComment());
+        assertThat(result.getTags()).isEqualTo(certificate.getTags());
     }
 
     @DisplayName("Should update certificate")
@@ -95,7 +102,10 @@ class CertificatePersistenceServiceIT {
         Certificate certificate = new Certificate(null,
                                                   "Updated certificate",
                                                   BigDecimal.valueOf(3),
-                                                  "This is a updated certificate");
+                                                  "This is a updated certificate",
+                                                  Set
+                                                          .of(new Tag(null, "Important tag"),
+                                                              new Tag(null, "Way more important tag")));
 
         persistenceService.update(id, certificate);
         Optional<Certificate> result = persistenceService.getById(id);
@@ -105,6 +115,11 @@ class CertificatePersistenceServiceIT {
         assertThat(certificate.getName()).isEqualTo("Updated certificate");
         assertThat(certificate.getPoints()).isEqualTo(BigDecimal.valueOf(3));
         assertThat(certificate.getComment()).isEqualTo("This is a updated certificate");
+        assertThat(certificate.getTags().size())
+                .isEqualTo(Set.of(new Tag(null, "Important tag"), new Tag(null, "Way more important tag")).size());
+        assertThatCollection(certificate.getTags())
+                .extracting(Tag::getName)
+                .containsExactlyInAnyOrder("Important tag", "Way more important tag");
     }
 
     @DisplayName("Should delete certificate")
