@@ -2,6 +2,7 @@ package ch.puzzle.pcts.service.persistence;
 
 import ch.puzzle.pcts.model.organisation_unit.OrganisationUnit;
 import ch.puzzle.pcts.repository.OrganisationUnitRepository;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ public class OrganisationUnitPersistenceService {
         this.repository = repository;
     }
 
+    @Transactional
     public OrganisationUnit create(OrganisationUnit organisationUnit) {
         return repository.save(organisationUnit);
     }
@@ -32,6 +34,7 @@ public class OrganisationUnitPersistenceService {
         return repository.findByName(name);
     }
 
+    @Transactional
     public OrganisationUnit update(Long id, OrganisationUnit organisationUnit) {
         organisationUnit.setId(id);
         return repository.save(organisationUnit);
