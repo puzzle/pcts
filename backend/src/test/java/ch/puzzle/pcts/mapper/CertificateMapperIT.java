@@ -32,13 +32,15 @@ class CertificateMapperIT {
                                                            BigDecimal.ONE,
                                                            "Test",
                                                            List.of("Important tag", "One more tag"));
-        Set<Tag> tags = new LinkedHashSet<>(List.of(new Tag(null, "Important tag"), new Tag(null, "One more tag")));
+
+        Set<Tag> exampleTags = new LinkedHashSet<>(List
+                .of(new Tag(null, "Important tag"), new Tag(null, "One more tag")));
 
         Certificate certificate = new Certificate(1L,
                                                   "Bachelor of Business Administration",
                                                   BigDecimal.ONE,
                                                   "Test",
-                                                  tags);
+                                                  exampleTags);
 
         Certificate result = mapper.fromDto(certificateDto);
         assertEquals(certificate.toString(), result.toString());
@@ -47,11 +49,10 @@ class CertificateMapperIT {
     @DisplayName("Should return certificate dto")
     @Test
     void shouldReturnCertificateDto() {
-        Certificate model = new Certificate(1L,
-                                            "Bachelor of Sciences",
-                                            BigDecimal.ONE,
-                                            "Test",
-                                            Set.of(new Tag(null, "Important tag"), new Tag(null, "One more tag")));
+        Set<Tag> exampleTags = new LinkedHashSet<>(List
+                .of(new Tag(null, "Important tag"), new Tag(null, "One more tag")));
+
+        Certificate model = new Certificate(1L, "Bachelor of Sciences", BigDecimal.ONE, "Test", exampleTags);
         CertificateDto dto = new CertificateDto(1L,
                                                 "Bachelor of Sciences",
                                                 BigDecimal.ONE,
@@ -90,17 +91,16 @@ class CertificateMapperIT {
     @DisplayName("Should return list of certificate dtos")
     @Test
     void shouldGetListOfCertificateDtos() {
+        Set<Tag> exampleTags = new LinkedHashSet<>(List
+                .of(new Tag(null, "Important tag"), new Tag(null, "One more tag")));
+
         List<Certificate> models = List
                 .of(new Certificate(1L,
                                     "Executive Master of Business Administration",
                                     BigDecimal.ONE,
                                     "Test",
-                                    Set.of(new Tag(null, "Important tag"), new Tag(null, "One more tag"))),
-                    new Certificate(2L,
-                                    "Master of Science",
-                                    BigDecimal.ONE,
-                                    "Test",
-                                    Set.of(new Tag(null, "Important tag"), new Tag(null, "One more tag"))));
+                                    exampleTags),
+                    new Certificate(2L, "Master of Science", BigDecimal.ONE, "Test", exampleTags));
         List<CertificateDto> dtos = List
                 .of(new CertificateDto(1L,
                                        "Executive Master of Business Administration",
