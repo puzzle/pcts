@@ -60,19 +60,6 @@ describe('MemberOverviewComponent', () => {
       .toEqual(membersMock);
   });
 
-  describe('applyFilter', () => {
-    it.each([['Bane'],
-      ['ja Morant'],
-      ['']])('should update searchText to "%s" and apply filter', (searchText) => {
-      const spy = jest.spyOn(component as any, 'applyCombinedFilter');
-      component.applyFilter(searchText);
-      expect(component.searchText)
-        .toBe(searchText);
-      expect(spy)
-        .toHaveBeenCalled();
-    });
-  });
-
   describe('toggleFilter', () => {
     it.each([EmploymentState.MEMBER,
       EmploymentState.EXMEMBER,
@@ -145,6 +132,21 @@ describe('MemberOverviewComponent', () => {
         status });
       expect(predicate(member, filter))
         .toBe(expected);
+    });
+  });
+
+  describe('applyCombinedFilter', () => {
+    it.each([['Bane'],
+      ['ja Morant'],
+      ['']])('should update searchControl to "%s" and apply filter', (searchText) => {
+      const spy = jest.spyOn(component as any, 'applyCombinedFilter');
+      component.searchControl.setValue(searchText);
+      component.applyCombinedFilter();
+
+      expect(component.searchControl.value)
+        .toBe(searchText);
+      expect(spy)
+        .toHaveBeenCalled();
     });
   });
 });

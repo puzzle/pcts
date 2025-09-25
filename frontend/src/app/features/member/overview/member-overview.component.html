@@ -6,10 +6,8 @@
         <mat-icon matPrefix>search</mat-icon>
         <input
           matInput
-          [value]="searchText"
-          (keyup)="applyFilter(input.value)"
-          placeholder="{{'MEMBER.OVERVIEW.SEARCH' | translate }}"
-          #input>
+          [formControl]="searchControl"
+          placeholder="{{'MEMBER.OVERVIEW.SEARCH' | translate }}">
       </mat-form-field>
     </div>
     <div>
@@ -69,8 +67,7 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
     <tr *matNoDataRow >
-      <td colspan="4">{{'MEMBER.OVERVIEW.NO_SEARCH_RESULT' | translate }} "{{ input.value }}"</td>
+      <td colspan="4">{{'MEMBER.OVERVIEW.NO_SEARCH_RESULT' | translate }} "{{ searchControl.value }}"</td>
     </tr>
   </table>
-
 </div>
