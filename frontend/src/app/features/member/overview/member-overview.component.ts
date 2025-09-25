@@ -9,7 +9,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { DatePipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { EmploymentState } from '../../../shared/enum/employment-state.enum';
 
@@ -26,7 +26,8 @@ import { EmploymentState } from '../../../shared/enum/employment-state.enum';
     DatePipe,
     MatIcon,
     MatButton,
-    TranslatePipe
+    TranslatePipe,
+    RouterLink
   ],
   templateUrl: './member-overview.component.html',
   styleUrl: './member-overview.component.css'
@@ -122,7 +123,7 @@ export class MemberOverviewComponent {
     this.applyCombinedFilter();
   }
 
-  private applyCombinedFilter(): void {
+  applyCombinedFilter(): void {
     const selected: string[] = Array.from(this.activeFilters);
     const statusFilterValue: string = selected.length ? selected.join('+') : '';
 
@@ -145,14 +146,10 @@ export class MemberOverviewComponent {
   }
 
   toggleFilter(statusFilterValue: string): void {
-    if (statusFilterValue === '') {
-      this.activeFilters.clear();
+    if (this.activeFilters.has(statusFilterValue)) {
+      this.activeFilters.delete(statusFilterValue);
     } else {
-      if (this.activeFilters.has(statusFilterValue)) {
-        this.activeFilters.delete(statusFilterValue);
-      } else {
-        this.activeFilters.add(statusFilterValue);
-      }
+      this.activeFilters.add(statusFilterValue);
     }
     this.applyCombinedFilter();
   }
@@ -162,7 +159,7 @@ export class MemberOverviewComponent {
   }
 
   isAllFilterActive(): boolean {
-    const all = this.activeFilters.size === 0 || this.activeFilters.size === 3;
+    const all = this.activeFilters.size === 0 || this.activeFilters.size === this.employmentStateValues.length;
     if (all) {
       this.employmentStateValues.forEach((s) => this.activeFilters.delete(s));
     }
