@@ -1,6 +1,5 @@
 package ch.puzzle.pcts.dto.certificate;
 
-import ch.puzzle.pcts.model.certificate.CertificateType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import java.util.List;

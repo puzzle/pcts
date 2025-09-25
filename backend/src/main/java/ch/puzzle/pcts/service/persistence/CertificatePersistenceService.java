@@ -23,11 +23,11 @@ public class CertificatePersistenceService {
     }
 
     public Optional<Certificate> getById(Long id) {
-        return repository.findById(id);
+        return repository.findByCertificateTypeAndId(CertificateType.CERTIFICATE, id);
     }
 
     public List<Certificate> getAll() {
-        return repository.findAll();
+        return repository.findByCertificateType(CertificateType.CERTIFICATE);
     }
 
     public Certificate update(Long id, Certificate certificate) {
