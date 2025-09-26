@@ -2,7 +2,7 @@ package ch.puzzle.pcts.service.persistence;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.puzzle.pcts.model.organisation_unit.OrganisationUnit;
+import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;

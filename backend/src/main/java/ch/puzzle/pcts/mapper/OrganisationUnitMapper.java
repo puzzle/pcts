@@ -1,7 +1,7 @@
 package ch.puzzle.pcts.mapper;
 
-import ch.puzzle.pcts.dto.organisation_unit.OrganisationUnitDto;
-import ch.puzzle.pcts.model.organisation_unit.OrganisationUnit;
+import ch.puzzle.pcts.dto.organisationunit.OrganisationUnitDto;
+import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import java.util.List;
 import org.springframework.stereotype.Component;
 

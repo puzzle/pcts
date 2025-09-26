@@ -2,7 +2,7 @@ package ch.puzzle.pcts.service.business;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
-import ch.puzzle.pcts.model.organisation_unit.OrganisationUnit;
+import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.persistence.OrganisationUnitPersistenceService;
 import ch.puzzle.pcts.service.validation.OrganisationUnitValidationService;
 import java.util.List;

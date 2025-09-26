@@ -1,4 +1,4 @@
-package ch.puzzle.pcts.model.organisation_unit;
+package ch.puzzle.pcts.model.organisationunit;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.SQLDelete;

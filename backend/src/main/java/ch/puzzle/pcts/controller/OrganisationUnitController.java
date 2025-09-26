@@ -1,8 +1,8 @@
 package ch.puzzle.pcts.controller;
 
-import ch.puzzle.pcts.dto.organisation_unit.OrganisationUnitDto;
+import ch.puzzle.pcts.dto.organisationunit.OrganisationUnitDto;
 import ch.puzzle.pcts.mapper.OrganisationUnitMapper;
-import ch.puzzle.pcts.model.organisation_unit.OrganisationUnit;
+import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.OrganisationUnitBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

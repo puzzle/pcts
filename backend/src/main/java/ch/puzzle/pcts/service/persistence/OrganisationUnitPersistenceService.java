@@ -1,6 +1,6 @@
 package ch.puzzle.pcts.service.persistence;
 
-import ch.puzzle.pcts.model.organisation_unit.OrganisationUnit;
+import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.repository.OrganisationUnitRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;

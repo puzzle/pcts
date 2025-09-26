@@ -1,6 +1,5 @@
 package ch.puzzle.pcts.controller;
 
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
@@ -11,9 +10,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.puzzle.pcts.SpringSecurityConfig;
-import ch.puzzle.pcts.dto.organisation_unit.OrganisationUnitDto;
+import ch.puzzle.pcts.dto.organisationunit.OrganisationUnitDto;
 import ch.puzzle.pcts.mapper.OrganisationUnitMapper;
-import ch.puzzle.pcts.model.organisation_unit.OrganisationUnit;
+import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.OrganisationUnitBusinessService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;

@@ -1,4 +1,4 @@
-package ch.puzzle.pcts.dto.organisation_unit;
+package ch.puzzle.pcts.dto.organisationunit;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
