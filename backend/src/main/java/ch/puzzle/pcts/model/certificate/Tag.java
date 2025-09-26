@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.model.certificate;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Tag {
@@ -8,6 +9,7 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     private String name;
 
     public Tag(Long id, String name) {

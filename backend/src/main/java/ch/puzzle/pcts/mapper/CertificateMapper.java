@@ -3,10 +3,7 @@ package ch.puzzle.pcts.mapper;
 import ch.puzzle.pcts.dto.certificate.CertificateDto;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificate.Tag;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
@@ -26,18 +23,21 @@ public class CertificateMapper {
                                   model.getName(),
                                   model.getPoints(),
                                   model.getComment(),
-                                  model.getTags().stream().map(Tag::getName).toList());
+                                  model.getTags() == null ? List.of()
+                                          : model.getTags().stream().map(Tag::getName).toList());
     }
 
     public Certificate fromDto(CertificateDto dto) {
-        Set<Tag> rawTags = dto
-                .tags()
-                .stream()
-                .flatMap(tagName -> Arrays.stream(tagName.split(",")))
-                .map(String::trim)
-                .filter(name -> !name.isBlank())
-                .map(name -> new Tag(null, name))
-                .collect(Collectors.toCollection(LinkedHashSet::new));
+        Set<Tag> rawTags = dto.tags() == null ? Set.of()
+                : dto
+                        .tags()
+                        .stream()
+                        .filter(Objects::nonNull)
+                        .filter(name -> !name.isBlank())
+                        .flatMap(tagName -> Arrays.stream(tagName.split(",")))
+                        .map(String::trim)
+                        .map(name -> new Tag(null, name))
+                        .collect(Collectors.toCollection(LinkedHashSet::new));
 
         return new Certificate(dto.id(), dto.name(), dto.points(), dto.comment(), rawTags);
     }
