@@ -2,7 +2,7 @@ package ch.puzzle.pcts.service.persistence;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.puzzle.pcts.model.role.Role;
+import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +21,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest
 @Testcontainers
 @ActiveProfiles("test")
-class RolePersistenceServiceIT {
+class OrganisationUnitPersistenceServiceIT {
 
     @Container
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17-alpine");
@@ -34,7 +34,7 @@ class RolePersistenceServiceIT {
     }
 
     @Autowired
-    private RolePersistenceService persistenceService;
+    private OrganisationUnitPersistenceService persistenceService;
 
     @DisplayName("Should establish DB connection")
     @Test
@@ -43,58 +43,56 @@ class RolePersistenceServiceIT {
         assertThat(postgres.isRunning()).isTrue();
     }
 
-    @DisplayName("Should get role by id")
+    @DisplayName("Should get organisationUnit by id")
     @Test
     @Order(1)
-    void shouldGetRoleById() {
-        Optional<Role> role = persistenceService.getById(2L);
+    void shouldGetOrganisationUnitById() {
+        Optional<OrganisationUnit> organisationUnit = persistenceService.getById(2L);
 
-        assertThat(role).isPresent();
-        assertThat(role.get().getId()).isEqualTo(2L);
+        assertThat(organisationUnit).isPresent();
+        assertThat(organisationUnit.get().getId()).isEqualTo(2L);
     }
 
-    @DisplayName("Should get all roles")
+    @DisplayName("Should get all organisationUnits")
     @Test
     @Order(1)
-    void shouldGetAllRoles() {
-        List<Role> all = persistenceService.getAll();
+    void shouldGetAllOrganisationUnits() {
+        List<OrganisationUnit> all = persistenceService.getAll();
 
         assertThat(all).hasSize(1);
-        assertThat(all).extracting(Role::getName).containsExactlyInAnyOrder("Role 2");
+        assertThat(all).extracting(OrganisationUnit::getName).containsExactlyInAnyOrder("OrganisationUnit 2");
     }
 
-    @DisplayName("Should create role")
+    @DisplayName("Should create organisationUnit")
     @Transactional
     @Test
     @Order(2)
     void shouldCreate() {
-        Role role = new Role(null, "Role 3", false);
+        OrganisationUnit organisationUnit = new OrganisationUnit(null, "OrganisationUnit 3");
 
-        Role result = persistenceService.create(role);
+        OrganisationUnit result = persistenceService.create(organisationUnit);
 
         assertThat(result.getId()).isEqualTo(3L);
-        assertThat(result.getName()).isEqualTo(role.getName());
-        assertThat(result.getIsManagement()).isEqualTo(role.getIsManagement());
+        assertThat(result.getName()).isEqualTo(organisationUnit.getName());
     }
 
-    @DisplayName("Should update role")
+    @DisplayName("Should update organisationUnit")
     @Transactional
     @Test
     @Order(2)
     void shouldUpdate() {
         long id = 2;
-        Role role = new Role(null, "Updated role", true);
+        OrganisationUnit organisationUnit = new OrganisationUnit(null, "Updated organisationUnit");
 
-        persistenceService.update(id, role);
-        Optional<Role> result = persistenceService.getById(id);
+        persistenceService.update(id, organisationUnit);
+        Optional<OrganisationUnit> result = persistenceService.getById(id);
 
         assertThat(result).isPresent();
         assertThat(result.get().getId()).isEqualTo(id);
-        assertThat(role.getName()).isEqualTo("Updated role");
-        assertThat(role.getIsManagement()).isTrue();
+        assertThat(organisationUnit.getName()).isEqualTo("Updated organisationUnit");
     }
 
-    @DisplayName("Should delete role")
+    @DisplayName("Should delete organisationUnit")
     @Transactional
     @Test
     @Order(3)
@@ -103,18 +101,17 @@ class RolePersistenceServiceIT {
 
         persistenceService.delete(id);
 
-        Optional<Role> result = persistenceService.getById(id);
+        Optional<OrganisationUnit> result = persistenceService.getById(id);
         assertThat(result).isNotPresent();
     }
 
-    @DisplayName("Should get role by name")
+    @DisplayName("Should get organisationUnit by name")
     @Test
     @Order(1)
     void shouldGetRoleByName() {
-        Optional<Role> result = persistenceService.getByName("Role 2");
+        Optional<OrganisationUnit> result = persistenceService.getByName("OrganisationUnit 2");
 
         assertThat(result).isPresent();
-        assertThat(result.get().getName()).isEqualTo("Role 2");
-        assertThat(result.get().getIsManagement()).isFalse();
+        assertThat(result.get().getName()).isEqualTo("OrganisationUnit 2");
     }
 }

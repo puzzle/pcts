@@ -1,28 +1,25 @@
-package ch.puzzle.pcts.model.role;
+package ch.puzzle.pcts.model.organisationunit;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
-@SQLDelete(sql = "UPDATE role SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
+@SQLDelete(sql = "UPDATE organisation_unit SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
-public class Role {
+public class OrganisationUnit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
 
-    private boolean isManagement;
-
-    public Role(Long id, String name, boolean isManagement) {
+    public OrganisationUnit(Long id, String name) {
         this.id = id;
         this.name = name;
-        this.isManagement = isManagement;
     }
 
-    public Role() {
+    public OrganisationUnit() {
     }
 
     public Long getId() {
@@ -41,16 +38,8 @@ public class Role {
         this.name = name;
     }
 
-    public boolean getIsManagement() {
-        return this.isManagement;
-    }
-
-    public void setIsManagement(boolean isManagement) {
-        this.isManagement = isManagement;
-    }
-
     @Override
     public String toString() {
-        return "Role{" + "id=" + id + ", name='" + name + '\'' + ", isManagement=" + isManagement + '}';
+        return "OrganisationUnit{" + "id=" + id + ", name='" + name + '\'' + '}';
     }
 }

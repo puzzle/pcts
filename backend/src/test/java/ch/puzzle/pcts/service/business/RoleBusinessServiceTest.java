@@ -15,9 +15,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 
 class RoleBusinessServiceTest {
 
@@ -34,6 +32,9 @@ class RoleBusinessServiceTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
+
+    @Captor
+    ArgumentCaptor<Role> roleCaptor;
 
     @DisplayName("Should get role by id")
     @Test
@@ -118,5 +119,18 @@ class RoleBusinessServiceTest {
 
         verify(validationService).validateOnDelete(id);
         verify(persistenceService).delete(id);
+    }
+
+    @DisplayName("Should trim role name")
+    @Test
+    void shouldTrimRoleName() {
+
+        businessService.create(new Role(1L, " Role ", false));
+
+        verify(persistenceService).create(roleCaptor.capture());
+        Role savedRole = roleCaptor.getValue();
+
+        assertEquals("Role", savedRole.getName());
+        assertEquals(1L, savedRole.getId());
     }
 }

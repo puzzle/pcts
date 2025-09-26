@@ -17,7 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-class RoleValidationTest {
+class RoleValidationServiceTest {
     private AutoCloseable closeable;
 
     @Mock
@@ -101,6 +101,20 @@ class RoleValidationTest {
 
         assertEquals("Name must not be empty", exception.getReason());
         assertEquals(ErrorKey.ROLE_NAME_IS_EMPTY, exception.getErrorKey());
+    }
+
+    @DisplayName("Should throw exception on validateOnCreate() when name already exists")
+    @Test
+    void shouldThrowExceptionOnValidateOnCreateWhenNameAlreadyExists() {
+        Role role = new Role();
+        role.setName("Existing Role");
+
+        when(persistenceService.getByName("Existing Role")).thenReturn(Optional.of(new Role()));
+
+        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnCreate(role));
+
+        assertEquals("Name already exists", exception.getReason());
+        assertEquals(ErrorKey.ROLE_NAME_ALREADY_EXISTS, exception.getErrorKey());
     }
 
     @DisplayName("Should be successful on validateOnDelete() when id is valid")
@@ -187,5 +201,47 @@ class RoleValidationTest {
 
         assertEquals("Name must not be empty", exception.getReason());
         assertEquals(ErrorKey.ROLE_NAME_IS_EMPTY, exception.getErrorKey());
+    }
+
+    @DisplayName("Should Throw Exception on validateOnUpdate() when name already exists for another Role")
+    @Test
+    void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExistsForAnotherRole() {
+        long id = 1L;
+        String name = "Role";
+
+        Role role = new Role();
+        role.setName(name);
+
+        Role anotherRole = new Role();
+        anotherRole.setName(name);
+        anotherRole.setId(2L);
+
+        when(persistenceService.getById(id)).thenReturn(Optional.of(role));
+        when(persistenceService.getByName(name)).thenReturn(Optional.of(anotherRole));
+
+        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnUpdate(id, role));
+
+        assertEquals("Name already exists", exception.getReason());
+        assertEquals(ErrorKey.ROLE_NAME_ALREADY_EXISTS, exception.getErrorKey());
+    }
+
+    @DisplayName("Should not Throw Exception on validateOnUpdate() when name stays the same")
+    @Test
+    void shouldNotThrowExceptionOnValidateOnUpdateWhenNameStaysTheSame() {
+        long id = 1L;
+        String name = "Role";
+
+        Role newRole = new Role();
+        newRole.setName(name);
+
+        Role oldRole = new Role();
+        oldRole.setName(name);
+        oldRole.setId(id);
+
+        when(persistenceService.getById(id)).thenReturn(Optional.of(newRole));
+        when(persistenceService.getByName(name)).thenReturn(Optional.of(oldRole));
+
+        assertDoesNotThrow(() -> validationService.validateOnUpdate(id, newRole));
+
     }
 }

@@ -13,6 +13,14 @@ VALUES
     ('Role 1', '1970-01-01 00:00:00', TRUE),
     ('Role 2', null,  FALSE);
 
+TRUNCATE TABLE organisation_unit CASCADE;
+
+INSERT INTO organisation_unit (name, deleted_at)
+VALUES
+    ('OrganisationUnit 1', '1970-01-01 00:00:00'),
+    ('OrganisationUnit 2', null);
+
+
 TRUNCATE TABLE experience_type CASCADE;
 
 INSERT INTO experience_type (name, highly_relevant_points, limited_relevant_points, little_relevant_points)

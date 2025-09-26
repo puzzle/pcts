@@ -5,3 +5,7 @@ CREATE TABLE IF NOT EXISTS role
     deleted_at      TIMESTAMP DEFAULT NULL,
     is_management   BOOLEAN NOT NULL DEFAULT FALSE
 );
+
+CREATE UNIQUE INDEX role_name_undeleted_unique
+    ON role (name)
+    WHERE deleted_at IS NULL;
