@@ -1,7 +1,6 @@
 package ch.puzzle.pcts.service.persistence;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCollection;
 
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificate.Tag;
@@ -38,6 +37,9 @@ class CertificatePersistenceServiceIT {
 
     @Autowired
     private CertificatePersistenceService persistenceService;
+
+    @Autowired
+    private TagPersistenceService tagPersistenceService;
 
     @DisplayName("Should establish DB connection")
     @Test
@@ -111,13 +113,14 @@ class CertificatePersistenceServiceIT {
         Optional<Certificate> result = persistenceService.getById(id);
 
         assertThat(result).isPresent();
-        assertThat(result.get().getId()).isEqualTo(id);
-        assertThat(certificate.getName()).isEqualTo("Updated certificate");
-        assertThat(certificate.getPoints()).isEqualTo(BigDecimal.valueOf(3));
-        assertThat(certificate.getComment()).isEqualTo("This is a updated certificate");
-        assertThat(certificate.getTags().size())
-                .isEqualTo(Set.of(new Tag(null, "Important tag"), new Tag(null, "Way more important tag")).size());
-        assertThatCollection(certificate.getTags())
+        Certificate updated = result.get();
+
+        assertThat(updated.getId()).isEqualTo(id);
+        assertThat(updated.getName()).isEqualTo("Updated certificate");
+        assertThat(updated.getPoints()).isEqualByComparingTo(BigDecimal.valueOf(3));
+        assertThat(updated.getComment()).isEqualTo("This is a updated certificate");
+        System.out.println(result);
+        assertThat(updated.getTags())
                 .extracting(Tag::getName)
                 .containsExactlyInAnyOrder("Important tag", "Way more important tag");
     }
