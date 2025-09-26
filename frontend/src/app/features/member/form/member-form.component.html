@@ -1,77 +1,141 @@
 <div class="w-75 mx-auto mt-5">
-  <h1>Member {{ isEdit ? 'Ändern' : 'Hinzufügen' }}</h1>
+  <h1>Member
+    @if (isEdit) {
+      {{ "EDIT" | translate}}
+    } @else {
+      {{ "ADD" | translate}}
+    }
+  </h1>
 
-  <b>Personalien</b>
+  <p class="fw-bold">{{ "MEMBER.FORM.PERSONAL_DETAILS" | translate }}</p>
 
-  <form [formGroup]="memberForm" (ngSubmit)="onSubmit()" class="d-flex flex-column gap-3 w-75">
-    <div class="d-flex flex-column">
-      <label for="firstname">Vorname</label>
-      <input id="firstname" type="text" placeholder="Christoph" formControlName="firstname">
+  <form [formGroup]="memberForm" (ngSubmit)="onSubmit()" class="form">
+
+    <div class="input-container">
+      <div class="input">
+        <mat-form-field class="w-100">
+          <mat-label class="ps-2">{{ "MEMBER.FIRSTNAME" | translate }}</mat-label>
+          <input type="text" [formControl]="firstname" matInput class="ps-2">
+
+        </mat-form-field>
+      </div>
+      @if (firstname.invalid  && (firstname.dirty || firstname.touched)) {
+        <mat-error class="error-msg-container"><mat-icon>error_outline</mat-icon> {{ "MEMBER.FORM.MUST_BE_FILLED_OUT" | translate }}</mat-error>
+      }
     </div>
 
-    <div class="d-flex flex-column">
-      <label for="lastname">Nachname</label>
-      <input id="lastname" type="text" placeholder="Stähli" formControlName="lastname">
+    <div class="input-container">
+      <div class="input">
+        <mat-form-field class="w-100">
+          <mat-label class="ps-2">{{ "MEMBER.LASTNAME" | translate }}</mat-label>
+          <input type="text" [formControl]="lastname" matInput class="ps-2">
+        </mat-form-field>
+      </div>
+      @if (lastname.invalid && (lastname.dirty || lastname.touched)) {
+        <mat-error class="error-msg-container"><mat-icon>error_outline</mat-icon> {{ "MEMBER.FORM.MUST_BE_FILLED_OUT" | translate }}</mat-error>
+      }
     </div>
 
-    <div class="d-flex flex-column">
-      <label for="abbreviation">Kürzel</label>
-      <input id="abbreviation" type="text" placeholder="CS" formControlName="abbreviation">
+
+    <div class="input-container">
+      <div class="input">
+        <mat-form-field class="w-100">
+          <mat-label class="ps-2">{{ "MEMBER.ABBREVIATION" | translate }}</mat-label>
+          <input type="text" [formControl]="abbreviation" matInput class="ps-2">
+        </mat-form-field>
+      </div>
+      @if (abbreviation.invalid && (abbreviation.dirty || abbreviation.touched)) {
+        <mat-error class="error-msg-container"><mat-icon>error_outline</mat-icon> {{ "MEMBER.FORM.MUST_BE_FILLED_OUT" | translate }}</mat-error>
+      }
     </div>
 
-    <div class="d-flex flex-column">
-      <label for="birthdate">Geburtsdatum</label>
-      <input id="birthdate" type="date" formControlName="birthdate">
+    <div class="input-container">
+      <div class="input">
+        <mat-form-field class="w-100">
+          <mat-label class="ps-2">{{ "MEMBER.BIRTHDATE" | translate }}</mat-label>
+          <input [formControl]="birthday" matInput [matDatepicker]="birthdayPicker" class="ps-2">
+          <mat-datepicker-toggle matIconSuffix [for]="birthdayPicker" />
+          <mat-datepicker #birthdayPicker />
+        </mat-form-field>
+      </div>
+      @if (birthday.hasError('required') && (birthday.dirty || birthday.touched)) {
+        <mat-error class="error-msg-container"><mat-icon>error_outline</mat-icon> {{ "MEMBER.FORM.MUST_BE_FILLED_OUT" | translate }}</mat-error>
+      }
+      @if (birthday.hasError('invalidDate') && (birthday.dirty || birthday.touched)) {
+        <mat-error class="error-msg-container"><mat-icon>error_outline</mat-icon> {{ "MEMBER.FORM.DATE_PAST" | translate}}</mat-error>
+      }
     </div>
 
-    <div class="d-flex flex-column">
-      <label for="employmentDate">Anstellungsdatum</label>
-      <input id="employmentDate" type="date" formControlName="employmentDate">
+
+    <div class="input-container">
+      <div class="input">
+        <mat-form-field class="w-100">
+          <mat-label>{{ "MEMBER.EMPLOYMENT_DATE" | translate }}</mat-label>
+          <input type="date" [formControl]="employmentDate" matInput class="ps-2">
+        </mat-form-field>
+      </div>
+      @if (employmentDate.hasError('required') && (employmentDate.dirty || employmentDate.touched)) {
+        <mat-error class="error-msg-container"><mat-icon>error_outline</mat-icon> {{ "MEMBER.FORM.MUST_BE_FILLED_OUT" | translate }}</mat-error>
+      }
+      @if (employmentDate.hasError('invalidDate') && (employmentDate.dirty || employmentDate.touched)) {
+        <mat-error class="error-msg-container"><mat-icon>error_outline</mat-icon> {{ "MEMBER.FORM.DATE_FUTURE" | translate}}</mat-error>
+      }
     </div>
 
-    <mat-form-field>
-      <mat-label for="status">Status</mat-label>
-      <input
-        type="text"
-        placeholder="Bitte auswählen"
-        aria-label="Bitte auswählen"
-        matInput
-        [formControl]="statusSearch"
-        [matAutocomplete]="auto">
-      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-        <mat-option value="" disabled>Bitte auswählen</mat-option>
-        @for (employeeState of filteredStatusOptions(); track employeeState) {
-          <mat-option [value]="employeeState">{{ employeeState }}</mat-option>
-        }
-      </mat-autocomplete>
-    </mat-form-field>
+    <div class="input-container">
+      <div class="input">
+        <mat-form-field class="w-100">
+          <mat-label class="ps-2">{{ "MEMBER.EMPLOYMENT_STATE" | translate }}</mat-label>
+          <input
+            type="text"
+            matInput
+            [formControl]="employmentState"
+            [matAutocomplete]="employmentStateAuto"
+            class="ps-2">
+          <mat-autocomplete autoActiveFirstOption #employmentStateAuto="matAutocomplete" class="bg-white">
+            @for (employeeState of filteredEmploymentStateOptions(); track employeeState) {
+              <mat-option [value]="employeeState">{{ employeeState }}</mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      @if (employmentState.invalid && (employmentState.dirty || employmentState.touched)) {
+        <mat-error class="error-msg-container"><mat-icon>error_outline</mat-icon> {{ "MEMBER.FORM.MUST_BE_FILLED_OUT" | translate }}</mat-error>
+      }
+    </div>
 
-    <mat-form-field class="d-flex flex-column z-3">
-      <mat-label for="division">Division</mat-label>
-      <input
-        type="text"
-        placeholder="Bitte auswählen"
-        aria-label="Bitte auswählen"
-        matInput
-        [formControl]="organisationSearch"
-        [matAutocomplete]="auto">
-      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-        <mat-option value="" disabled>Bitte auswählen</mat-option>
-        @for (item of filteredOrganisationUnitsOptions(); track item.name) {
-          <mat-option [value]="item.name">{{ item.name }}</mat-option>
-        }
-      </mat-autocomplete>
-    </mat-form-field>
+    <div class="input-container">
+      <div class="input">
+        <mat-form-field class="w-100">
+        <mat-label class="ps-2">{{ "MEMBER.ORGANISATION_UNIT" | translate }}</mat-label>
+        <input
+          type="text"
+          matInput
+          [formControl]="organisationUnit"
+          [matAutocomplete]="organisationUnitAuto"
+          class="ps-2">
+        <mat-autocomplete autoActiveFirstOption #organisationUnitAuto="matAutocomplete" class="bg-white">
+          @for (organisationUnit of filteredOrganisationUnitsOptions(); track organisationUnit.name) {
+            <mat-option [value]="organisationUnit.name">{{ organisationUnit.name }}</mat-option>
+          }
+        </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      @if (organisationUnit.invalid && (organisationUnit.dirty || organisationUnit.touched)) {
+        <mat-error class="error-msg-container"><mat-icon>error_outline</mat-icon> {{ "MEMBER.FORM.MUST_BE_FILLED_OUT" | translate }}</mat-error>
+      }
+    </div>
 
     <div class="d-flex flex-row gap-3 z-0">
-      <button type="button" (click)="onCancel()">Abbrechen</button>
-      <button type="submit" [disabled]="!memberForm.valid">{{ isEdit ? 'Speicher' : 'Hinzufügen' }}</button>
+      <button class="cancel-button" type="button" (click)="onCancel()">{{ "CANCEL" | translate }}</button>
+      <button mat-stroked-button class="submit-button" type="submit" [disabled]="!memberForm.valid">
+        @if (isEdit) {
+          {{ "SAVE" | translate }}
+        } @else {
+          {{ "ADD" | translate }}
+        }
+      </button>
     </div>
   </form>
 </div>
-
-<button mat-stroked-button>
-  <mat-icon>add</mat-icon>
-  Member hinzufügen
-</button>
 
