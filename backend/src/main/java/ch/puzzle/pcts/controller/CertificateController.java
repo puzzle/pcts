@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -37,9 +36,8 @@ public class CertificateController {
     }
 
     @Operation(summary = "Get Certificate by ID")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "A single certificate.", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = CertificateDto.class)) }),
-            @ApiResponse(responseCode = "404", description = "Certificate not found.", content = @Content) })
+    @ApiResponse(responseCode = "200", description = "A single certificate.", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = CertificateDto.class)) })
     @GetMapping("{id}")
     public ResponseEntity<CertificateDto> getCertificateById(@PathVariable Long id) {
         return ResponseEntity.ok(mapper.toDto(service.getById(id)));
@@ -47,10 +45,8 @@ public class CertificateController {
 
     @Operation(summary = "Create a new Certificate")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Certificate as json to create a new Certificate.", required = true)
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Certificate created successfully", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = CertificateDto.class)) }),
-            @ApiResponse(responseCode = "400", description = "Can't create new Certificate, not allowed to give an ID.", content = @Content) })
+    @ApiResponse(responseCode = "201", description = "Certificate created successfully.", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = CertificateDto.class)) })
     @PostMapping
     public ResponseEntity<CertificateDto> createNewCertificate(@RequestBody CertificateDto dto) {
         Certificate certificate = mapper.fromDto(dto);
@@ -60,20 +56,15 @@ public class CertificateController {
 
     @Operation(summary = "Update a Certificate by ID")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Certificate as json to update an existing Certificate.", required = true)
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Certificate updated successfully.", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = CertificateDto.class)) }),
-            @ApiResponse(responseCode = "400", description = "Can't create new Certificate, required attributes are not set.", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Certificate not found.", content = @Content) })
+    @ApiResponse(responseCode = "200", description = "Certificate updated successfully.", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = CertificateDto.class)) })
     @PutMapping("{id}")
     public ResponseEntity<CertificateDto> updateCertificate(@PathVariable Long id, @RequestBody CertificateDto dto) {
         return ResponseEntity.ok(mapper.toDto(service.update(id, mapper.fromDto(dto))));
     }
 
     @Operation(summary = "Delete a Certificate by ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Certificate deleted successfully.", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Certificate not found.", content = @Content) })
+    @ApiResponse(responseCode = "204", description = "Certificate deleted successfully.", content = @Content)
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteCertificate(@PathVariable Long id) {
         service.delete(id);
