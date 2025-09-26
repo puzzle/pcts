@@ -24,7 +24,7 @@ public class CertificatePersistenceService {
 
     @Transactional
     public Certificate create(Certificate certificate) {
-        Certificate createdCertificate = repository.saveAndFlush(certificate);
+        Certificate createdCertificate = repository.save(certificate);
         entityManager.refresh(createdCertificate);
         return createdCertificate;
     }
@@ -40,7 +40,7 @@ public class CertificatePersistenceService {
     @Transactional
     public Certificate update(Long id, Certificate certificate) {
         certificate.setId(id);
-        Certificate updatedCertificate = repository.saveAndFlush(certificate);
+        Certificate updatedCertificate = repository.save(certificate);
         entityManager.refresh(updatedCertificate);
         return updatedCertificate;
     }

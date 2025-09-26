@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS tag (
     name VARCHAR(255) NOT NULL
 );
 
-CREATE UNIQUE INDEX tag_name_lower_idx ON tag (LOWER(name));
+CREATE UNIQUE INDEX tag_name_lower ON tag (LOWER(name));
 
 CREATE TABLE certificate_tag
 (

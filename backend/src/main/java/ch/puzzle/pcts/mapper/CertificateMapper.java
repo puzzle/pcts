@@ -35,7 +35,7 @@ public class CertificateMapper {
                 .stream()
                 .flatMap(tagName -> Arrays.stream(tagName.split(",")))
                 .map(String::trim)
-                .filter(name -> !name.isEmpty())
+                .filter(name -> !name.isBlank())
                 .map(name -> new Tag(null, name))
                 .collect(Collectors.toCollection(LinkedHashSet::new));
 
