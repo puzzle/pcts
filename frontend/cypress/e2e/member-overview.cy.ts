@@ -6,15 +6,6 @@ describe('MemberOverviewComponent', () => {
     HomePage.visitDefaultPage();
   });
 
-  it('should display the page title and member count', () => {
-    cy.get('h1')
-      .should('contain.text', translations.MEMBER.OVERVIEW.MEMBERS)
-      .and('contain.text', '(');
-
-    cy.get('table')
-      .should('exist');
-  });
-
   it('should search members by name', () => {
     cy.get('input[matinput]')
       .type('Ja Morant');
@@ -27,6 +18,15 @@ describe('MemberOverviewComponent', () => {
             expect(text.toLowerCase()).to.include('ja morant');
           });
       });
+  });
+
+  it('should display the page title and member count', () => {
+    cy.get('h1')
+      .should('contain.text', translations.MEMBER.OVERVIEW.MEMBERS)
+      .and('contain.text', '(');
+
+    cy.get('table')
+      .should('exist');
   });
 
   it('should show "no results" message if nothing matches', () => {
