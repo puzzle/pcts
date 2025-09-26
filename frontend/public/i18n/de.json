@@ -15,7 +15,7 @@
       "SEARCH": "Suchen",
       "ALL": "Alle",
       "ADD_MEMBER": "Member hinzufügen",
-      "NO_SEARCH_RESULT": "Kein Member mit den Attributen "
+      "NO_SEARCH_RESULT": "Kein Member mit den Attributen \"{{searchValue}}\" gefunden."
     },
     "EMPLOYMENT_STATUS": "Anstellungsstatus",
     "EMPLOYMENT_STATUS_VALUES": {
