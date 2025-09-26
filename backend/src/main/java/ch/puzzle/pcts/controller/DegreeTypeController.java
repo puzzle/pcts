@@ -1,8 +1,8 @@
 package ch.puzzle.pcts.controller;
 
-import ch.puzzle.pcts.dto.degree_type.DegreeTypeDto;
+import ch.puzzle.pcts.dto.degreetype.DegreeTypeDto;
 import ch.puzzle.pcts.mapper.DegreeTypeMapper;
-import ch.puzzle.pcts.model.degree_type.DegreeType;
+import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.service.business.DegreeTypeBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

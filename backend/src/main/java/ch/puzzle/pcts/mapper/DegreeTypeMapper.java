@@ -1,7 +1,7 @@
 package ch.puzzle.pcts.mapper;
 
-import ch.puzzle.pcts.dto.degree_type.DegreeTypeDto;
-import ch.puzzle.pcts.model.degree_type.DegreeType;
+import ch.puzzle.pcts.dto.degreetype.DegreeTypeDto;
+import ch.puzzle.pcts.model.degreetype.DegreeType;
 import java.util.List;
 import org.springframework.stereotype.Component;
 

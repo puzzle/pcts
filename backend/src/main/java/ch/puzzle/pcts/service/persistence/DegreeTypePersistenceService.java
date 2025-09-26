@@ -1,6 +1,6 @@
 package ch.puzzle.pcts.service.persistence;
 
-import ch.puzzle.pcts.model.degree_type.DegreeType;
+import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.repository.DegreeTypeRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;

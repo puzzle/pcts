@@ -1,8 +1,8 @@
 package ch.puzzle.pcts.controller;
 
-import ch.puzzle.pcts.dto.experience_type.ExperienceTypeDto;
+import ch.puzzle.pcts.dto.experiencetype.ExperienceTypeDto;
 import ch.puzzle.pcts.mapper.ExperienceTypeMapper;
-import ch.puzzle.pcts.model.experience_type.ExperienceType;
+import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.service.business.ExperienceTypeBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

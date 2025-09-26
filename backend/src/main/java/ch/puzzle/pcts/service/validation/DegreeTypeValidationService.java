@@ -1,7 +1,7 @@
 package ch.puzzle.pcts.service.validation;
 
 import ch.puzzle.pcts.exception.PCTSException;
-import ch.puzzle.pcts.model.degree_type.DegreeType;
+import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.service.persistence.DegreeTypePersistenceService;
 import org.springframework.beans.factory.annotation.Autowired;

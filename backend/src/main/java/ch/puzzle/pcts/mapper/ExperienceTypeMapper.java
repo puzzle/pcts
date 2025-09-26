@@ -1,7 +1,7 @@
 package ch.puzzle.pcts.mapper;
 
-import ch.puzzle.pcts.dto.experience_type.ExperienceTypeDto;
-import ch.puzzle.pcts.model.experience_type.ExperienceType;
+import ch.puzzle.pcts.dto.experiencetype.ExperienceTypeDto;
+import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import java.util.List;
 import org.springframework.stereotype.Component;
 

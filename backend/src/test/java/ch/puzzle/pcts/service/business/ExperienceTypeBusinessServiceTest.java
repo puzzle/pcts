@@ -6,7 +6,7 @@ import static org.mockito.Mockito.when;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
-import ch.puzzle.pcts.model.experience_type.ExperienceType;
+import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.service.persistence.ExperienceTypePersistenceService;
 import ch.puzzle.pcts.service.validation.ExperienceTypeValidationService;
 import java.math.BigDecimal;

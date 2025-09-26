@@ -2,7 +2,7 @@ package ch.puzzle.pcts.service.persistence;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.puzzle.pcts.model.experience_type.ExperienceType;
+import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;

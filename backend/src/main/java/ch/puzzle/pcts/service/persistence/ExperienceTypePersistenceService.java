@@ -1,6 +1,6 @@
 package ch.puzzle.pcts.service.persistence;
 
-import ch.puzzle.pcts.model.experience_type.ExperienceType;
+import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.repository.ExperienceTypeRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
