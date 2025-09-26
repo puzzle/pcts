@@ -5,7 +5,7 @@ import {
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  ValidationErrors,
+  ValidationErrors, ValidatorFn,
   Validators
 } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -16,7 +16,10 @@ import { EmploymentState } from '../dto/member.model';
 import { OrganisationUnit } from '../dto/organisation-unit.model';
 import { MemberService } from '../member.service';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatIcon } from '@angular/material/icon';
+import { MatButton } from '@angular/material/button';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-member-form.component',
@@ -29,7 +32,10 @@ import { MatIcon } from '@angular/material/icon';
     MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
-    MatIcon
+    MatButton,
+    TranslatePipe,
+    MatIconModule,
+    MatDatepickerModule
   ],
   templateUrl: './member-form.component.html',
   styleUrl: './member-form.component.css'
@@ -39,19 +45,16 @@ export class MemberFormComponent implements OnInit {
 
   protected isEdit = false;
 
-  protected statusOptions: EmploymentState[] = [EmploymentState.BEWERBER,
+  protected employmentStateOptions: EmploymentState[] = [EmploymentState.BEWERBER,
     EmploymentState.EX_MEMBER,
     EmploymentState.MEMBER];
 
-  protected filteredStatusOptions: WritableSignal<EmploymentState[]> = signal([]);
-
-  protected statusSearch = new FormControl('', [Validators.required]);
+  protected filteredEmploymentStateOptions: WritableSignal<EmploymentState[]> = signal([]);
 
   protected organisationUnitsOptions: OrganisationUnit[] = [];
 
   protected filteredOrganisationUnitsOptions: WritableSignal<OrganisationUnit[]> = signal([]);
 
-  protected organisationSearch = new FormControl('', [Validators.required]);
 
   protected memberService: MemberService = inject(MemberService);
 
@@ -63,21 +66,26 @@ export class MemberFormComponent implements OnInit {
     firstname: new FormControl('', [Validators.required]),
     lastname: new FormControl('', [Validators.required]),
     abbreviation: new FormControl('', [Validators.required]),
-    birthdate: new FormControl('', [Validators.required]),
-    employmentDate: new FormControl('', [Validators.required,
-      this.isDateInPast]),
-    status: new FormControl(null, [Validators.required]),
+    birthdate: new FormControl('', [Validators.required,
+      validateDate(ValidationType.PAST)]),
+    employmentDate: new FormControl('', [Validators.required]),
+    employmentState: new FormControl(null, [Validators.required]),
     organisationUnit: new FormControl(null, [Validators.required])
   });
 
   ngOnInit() {
     this.memberService.getAllOrganisationUnits()
       .subscribe({
-        next: (orgUnits) => this.organisationUnitsOptions = orgUnits,
-        error: (error) => console.log('Error loading divisions', error)
+        next: (orgUnits) => {
+          this.organisationUnitsOptions = orgUnits;
+          this.filteredOrganisationUnitsOptions.set(this.organisationUnitsOptions);
+        },
+        error: (error) => console.log('Error loading organisation units', error)
       });
 
-    this.organisationSearch.valueChanges.subscribe((value) => {
+    this.filteredEmploymentStateOptions.set(this.employmentStateOptions);
+
+    this.organisationUnit.valueChanges.subscribe((value) => {
       if (!value) {
         this.filteredOrganisationUnitsOptions.set(this.organisationUnitsOptions);
       } else {
@@ -85,11 +93,11 @@ export class MemberFormComponent implements OnInit {
       }
     });
 
-    this.statusSearch.valueChanges.subscribe((value) => {
+    this.employmentState.valueChanges.subscribe((value) => {
       if (!value) {
-        this.filteredStatusOptions.set(this.statusOptions);
+        this.filteredEmploymentStateOptions.set(this.employmentStateOptions);
       } else {
-        this.filteredStatusOptions.set(this.filterStatus(value));
+        this.filteredEmploymentStateOptions.set(this.filterEmploymentState(value));
       }
     });
 
@@ -114,10 +122,10 @@ export class MemberFormComponent implements OnInit {
               .substring(0, 10));
             this.memberForm.controls['employmentDate'].setValue(member.date_of_hire.toISOString()
               .substring(0, 10));
-            this.memberForm.controls['status'].setValue(member.employment_state);
+            this.memberForm.controls['employmentState'].setValue(member.employment_state);
 
-            const divisionObject = this.organisationUnitsOptions.find((d) => d === member.organisation_unit);
-            this.memberForm.controls['division'].setValue(divisionObject);
+            const organisationUnit = this.organisationUnitsOptions.find((d) => d.name === member.organisation_unit.name);
+            this.memberForm.controls['organisationUnit'].setValue(organisationUnit?.name);
           }
         });
     }
@@ -130,28 +138,16 @@ export class MemberFormComponent implements OnInit {
       last_name: this.memberForm.get('lastname')?.value,
       birthday: this.memberForm.get('birthdate')?.value,
       abbreviation: this.memberForm.get('abbreviation')?.value,
-      employment_state: this.memberForm.get('status')?.value,
+      employment_state: this.memberForm.get('employmentState')?.value,
       date_of_hire: this.memberForm.get('employmentDate')?.value,
       is_admin: false,
-      organisation_unit: this.memberForm.get('division')?.value
+      organisation_unit: this.memberForm.get('organisationUnit')?.value
     });
     this.router.navigate(['']);
   }
 
   onCancel() {
     this.router.navigate(['']);
-  }
-
-
-  isDateInPast(control: AbstractControl): ValidationErrors | null {
-    const inputDate = new Date(control.value);
-    const today = new Date();
-
-    if (isNaN(inputDate.getTime())) {
-      return null;
-    }
-
-    return inputDate < today ? null : { dateNotInPast: true };
   }
 
   private filterOrg(value: string): OrganisationUnit[] {
@@ -161,10 +157,66 @@ export class MemberFormComponent implements OnInit {
       .includes(filterValue));
   }
 
-  private filterStatus(value: string): EmploymentState[] {
+  private filterEmploymentState(value: string): EmploymentState[] {
     const filterValue = value.toLowerCase();
 
-    return this.statusOptions.filter((option) => option.toLowerCase()
+    return this.employmentStateOptions.filter((option) => option.toLowerCase()
       .includes(filterValue));
   }
+
+  get firstname(): FormControl {
+    return this.memberForm.get('firstname') as FormControl;
+  }
+
+  get lastname(): FormControl {
+    return this.memberForm.get('lastname') as FormControl;
+  }
+
+  get abbreviation(): FormControl {
+    return this.memberForm.get('abbreviation') as FormControl;
+  }
+
+  get birthday(): FormControl {
+    return this.memberForm.get('birthdate') as FormControl;
+  }
+
+  get employmentDate(): FormControl {
+    return this.memberForm.get('employmentDate') as FormControl;
+  }
+
+  get employmentState(): FormControl {
+    return this.memberForm.get('employmentState') as FormControl;
+  }
+
+  get organisationUnit(): FormControl {
+    return this.memberForm.get('organisationUnit') as FormControl;
+  }
+}
+
+export enum ValidationType {
+  PAST = 'past',
+  FUTURE = 'future'
+}
+
+export function validateDate(type: ValidationType): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (!control.value) {
+      return null;
+    }
+
+    const date = new Date(control.value);
+    const today = new Date();
+
+    if (type === ValidationType.PAST) {
+      if (date >= today) {
+        return { invalidDate: true };
+      }
+    } else if (type === ValidationType.FUTURE) {
+      if (date <= today) {
+        return { invalidDate: true };
+      }
+    }
+
+    return null;
+  };
 }
