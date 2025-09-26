@@ -44,7 +44,7 @@ public class CertificateController {
     }
 
     @Operation(summary = "Create a new Certificate")
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Certificate as json to create a new Certificate.", required = true)
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The data to create a new Certificate.", required = true)
     @ApiResponse(responseCode = "201", description = "Certificate created successfully.", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = CertificateDto.class)) })
     @PostMapping
