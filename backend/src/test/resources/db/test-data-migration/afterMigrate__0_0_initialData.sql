@@ -43,5 +43,16 @@ INSERT INTO degree_type (name, highly_relevant_points, limited_relevant_points, 
 VALUES
     ('Degree type 1', 120.55, 60, 15.45),
     ('Degree type 2', 12, 3.961, 3);
+TRUNCATE TABLE tag CASCADE;
 
+INSERT INTO tag (name)
+VALUES
+    ('Tag 1'),
+    ('Longer tag name');
 
+TRUNCATE TABLE CERTIFICATE_TAG CASCADE;
+
+INSERT INTO CERTIFICATE_TAG (CERTIFICATE_ID, TAG_ID)
+VALUES
+    (1, 1),
+    (2, 2);
