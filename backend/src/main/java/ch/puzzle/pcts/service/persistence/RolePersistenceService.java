@@ -2,6 +2,7 @@ package ch.puzzle.pcts.service.persistence;
 
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.repository.RoleRepository;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ public class RolePersistenceService {
         this.repository = repository;
     }
 
+    @Transactional
     public Role create(Role role) {
         return repository.save(role);
     }
@@ -32,6 +34,7 @@ public class RolePersistenceService {
         return repository.findAll();
     }
 
+    @Transactional
     public Role update(Long id, Role role) {
         role.setId(id);
         return repository.save(role);
