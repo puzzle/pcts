@@ -1,17 +1,40 @@
 import { TestBed } from '@angular/core/testing';
-import { ResolveFn } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { MemberOverviewResolver } from './member-overview-resolver';
 
-import { memberOverviewResolver } from './member-overview-resolver';
-
-describe('memberOverviewResolver', () => {
-  const executeResolver: ResolveFn<boolean> = (...resolverParameters) => TestBed.runInInjectionContext(() => memberOverviewResolver(...resolverParameters));
+describe('MemberOverviewResolver', () => {
+  let resolver: MemberOverviewResolver;
+  let route: ActivatedRouteSnapshot;
+  let state: RouterStateSnapshot;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [MemberOverviewResolver]
+    });
+    resolver = TestBed.inject(MemberOverviewResolver);
+    route = new ActivatedRouteSnapshot();
+    state = {} as RouterStateSnapshot;
   });
 
-  it('should be created', () => {
-    expect(executeResolver)
+  it('should create', () => {
+    expect(resolver)
       .toBeTruthy();
+  });
+
+  it('should return empty params when none are given', () => {
+    route.queryParams = {};
+    expect(resolver.resolve(route, state))
+      .toEqual({ searchText: '',
+        statuses: [] });
+  });
+
+  it('should resolve q and status params', () => {
+    route.queryParams = { q: encodeURIComponent('ja'),
+      status: encodeURIComponent('MEMBER+EX_MEMBER') };
+    const result = resolver.resolve(route, state);
+    expect(result)
+      .toEqual({ searchText: 'ja',
+        statuses: ['MEMBER',
+          'EX_MEMBER'] });
   });
 });

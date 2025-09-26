@@ -67,7 +67,7 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
     <tr *matNoDataRow >
-      <td colspan="4">{{'MEMBER.OVERVIEW.NO_SEARCH_RESULT' | translate }} "{{ searchControl.value }}"</td>
+      <td colspan="4">{{'MEMBER.OVERVIEW.NO_SEARCH_RESULT' | translate:{ searchValue: searchControl.value } }}</td>
     </tr>
   </table>
 </div>
