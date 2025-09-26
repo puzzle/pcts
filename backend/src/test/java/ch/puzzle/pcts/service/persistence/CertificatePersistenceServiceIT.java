@@ -84,7 +84,7 @@ class CertificatePersistenceServiceIT {
                                                   "This is a newly created certificate",
                                                   Set
                                                           .of(new Tag(1L, "Important tag"),
-                                                              new Tag(null, "Way more important tag")));
+                                                              new Tag(2L, "Way more important tag")));
 
         Certificate result = persistenceService.create(certificate);
 
