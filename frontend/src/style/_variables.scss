@@ -1,0 +1,33 @@
+@use 'sass:color';
+
+$table-primary-color: rgb(180, 180, 180);
+$table-secondary-color: rgb(240, 240, 240);
+$table-header-color: rgb(210, 210, 210);
+
+$pz-dark-blue: #1e5a96;
+
+$pz-dark-blue-palette: (
+  50: color.adjust($pz-dark-blue, $lightness: 50%),
+  100: color.adjust($pz-dark-blue, $lightness: 40%),
+  200: color.adjust($pz-dark-blue, $lightness: 30%),
+  300: color.adjust($pz-dark-blue, $lightness: 20%),
+  400: color.adjust($pz-dark-blue, $lightness: 10%),
+  500: $pz-dark-blue,
+  600: color.adjust($pz-dark-blue, $lightness: -10%),
+  700: color.adjust($pz-dark-blue, $lightness: -20%),
+  800: color.adjust($pz-dark-blue, $lightness: -30%),
+  900: color.adjust($pz-dark-blue, $lightness: -40%),
+  1000: color.adjust($pz-dark-blue, $lightness: -50%),
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: white,
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  ),
+);

@@ -1,0 +1,22 @@
+@use '@angular/material' as mat;
+@use 'variables';
+
+.small-form-field {
+  @include mat.form-field-density(-4);
+}
+
+$my-primary: mat.m2-define-palette(variables.$pz-dark-blue-palette, 500);
+$my-accent: mat.m2-define-palette(mat.$m2-grey-palette, 900);
+$my-warn: mat.m2-define-palette(mat.$m2-red-palette);
+
+$pz-theme: mat.m2-define-light-theme(
+  (
+    color: (
+      primary: $my-primary,
+      accent: $my-accent,
+      warn: $my-warn,
+    ),
+  )
+);
+
+@include mat.all-component-themes($pz-theme);
