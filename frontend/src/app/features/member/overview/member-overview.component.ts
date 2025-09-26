@@ -14,6 +14,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { EmploymentState } from '../../../shared/enum/employment-state.enum';
 import { debounceTime } from 'rxjs/operators';
 
+
 @Component({
   selector: 'app-member-overview',
   standalone: true,
@@ -55,11 +56,11 @@ export class MemberOverviewComponent {
 
   members: WritableSignal<MemberModel[]> = signal([]);
 
-  activeFilters = new Set<string>();
+  activeFilters = new Set<EmploymentState>();
 
   searchControl = new FormControl('');
 
-  employmentStateValues = Object.values(EmploymentState);
+  employmentStateValues: EmploymentState[] = Object.values(EmploymentState);
 
   constructor() {
     this.service.getAllMembers()
@@ -134,7 +135,7 @@ export class MemberOverviewComponent {
     });
   }
 
-  toggleFilter(statusFilterValue: string): void {
+  toggleFilter(statusFilterValue: EmploymentState): void {
     if (this.activeFilters.has(statusFilterValue)) {
       this.activeFilters.delete(statusFilterValue);
     } else {
@@ -143,7 +144,7 @@ export class MemberOverviewComponent {
     this.applyCombinedFilter();
   }
 
-  isFilterActive(status: string): boolean {
+  isFilterActive(status: EmploymentState): boolean {
     return this.activeFilters.has(status);
   }
 

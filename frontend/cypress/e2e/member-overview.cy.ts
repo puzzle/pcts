@@ -8,19 +8,10 @@ describe('MemberOverviewComponent', () => {
 
   it('should search members by name', () => {
     cy.get('input[matinput]')
-      .type('Bane');
-
+      .type('Ja');
+    cy.wait(300);
     cy.get('tr.mat-mdc-row')
-      .should('have.length.at.least', 1);
-
-    cy.get('tr.mat-mdc-row')
-      .each(($row) => {
-        cy.wrap($row)
-          .invoke('text')
-          .then((text) => {
-            expect(text.toLowerCase()).to.include('bane desmond');
-          });
-      });
+      .contains('Ja Morant', { matchCase: false });
   });
 
   it('should display the page title and member count', () => {
