@@ -10,7 +10,7 @@ import { DatePipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { EmploymentState } from '../../../shared/enum/employment-state.enum';
 import { debounceTime } from 'rxjs/operators';
 
@@ -42,6 +42,8 @@ export class MemberOverviewComponent {
   private readonly router = inject(Router);
 
   private readonly route = inject(ActivatedRoute);
+
+  private readonly translate = inject(TranslateService);
 
   displayedColumns: string[] = [
     'name',
@@ -103,7 +105,7 @@ export class MemberOverviewComponent {
         member.lastName +
         this.datePipe.transform(member.birthday, 'dd.MM.yyyy') +
         member.organisationUnit.name +
-        member.employmentState
+        this.translate.instant('MEMBER.EMPLOYMENT_STATUS_VALUES.' + member.employmentState)
       ).toLowerCase();
 
       const searchTerms: string[] = searchTxt.split(' ')
