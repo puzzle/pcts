@@ -66,3 +66,24 @@ VALUES
     ('Master''s Degree', 25, 17.99, 15.325),
     ('PhD', 16, 13.555, 10.25),
     ('Associate Degree', 11, 9.5, 5.75);
+
+TRUNCATE TABLE tag CASCADE;
+
+INSERT INTO tag (name)
+VALUES
+    ('Machine learning'),
+    ('GitLab Sales Core'),
+    ('AWSA01'),
+    ('Berufsbildner'),
+    ('GitLab 101');
+
+TRUNCATE TABLE CERTIFICATE_TAG CASCADE;
+
+INSERT INTO CERTIFICATE_TAG (CERTIFICATE_ID, TAG_ID)
+VALUES
+    (1, 1),
+    (3, 2),
+    (4, 3),
+    (7, 4),
+    (10, 5),
+    (10, 5);
