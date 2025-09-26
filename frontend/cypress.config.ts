@@ -6,7 +6,8 @@ export default defineConfig({
     experimentalMemoryManagement: true,
     testIsolation: true,
     viewportWidth: 1920,
-    viewportHeight: 1080
+    viewportHeight: 1080,
+    defaultBrowser: "chrome",
   },
   retries: {
     // Configure retry attempts for `cypress run`
