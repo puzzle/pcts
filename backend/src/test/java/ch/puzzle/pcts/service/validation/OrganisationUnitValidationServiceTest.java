@@ -212,21 +212,45 @@ class OrganisationUnitValidationServiceTest {
         assertEquals(ErrorKey.ORGANIZATION_UNIT_NAME_IS_EMPTY, exception.getErrorKey());
     }
 
-    @DisplayName("Should throw exception on validateOnUpdate() when name already exists")
+    @DisplayName("Should Throw Exception on validateOnUpdate() when name already exists for another organisation unit")
     @Test
-    void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExists() {
-        OrganisationUnit organisationUnit = new OrganisationUnit();
-        organisationUnit.setName("Existing Organisation unit");
-        long id = 1;
+    void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExistsForAnotherOrganisationUnit() {
+        long id = 1L;
+        String name = "Organisation Unit";
 
-        when(persistenceService.getById(id)).thenReturn(Optional.of(new OrganisationUnit()));
-        when(persistenceService.getByName("Existing Organisation unit"))
-                .thenReturn(Optional.of(new OrganisationUnit()));
+        OrganisationUnit organisationUnit = new OrganisationUnit();
+        organisationUnit.setName(name);
+
+        OrganisationUnit anotherOrganisationUnit = new OrganisationUnit();
+        anotherOrganisationUnit.setName(name);
+        anotherOrganisationUnit.setId(2L);
+
+        when(persistenceService.getById(id)).thenReturn(Optional.of(organisationUnit));
+        when(persistenceService.getByName(name)).thenReturn(Optional.of(anotherOrganisationUnit));
 
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> validationService.validateOnUpdate(id, organisationUnit));
 
         assertEquals("Name already exists", exception.getReason());
         assertEquals(ErrorKey.ORGANIZATION_UNIT_NAME_ALREADY_EXISTS, exception.getErrorKey());
+    }
+
+    @DisplayName("Should not Throw Exception on validateOnUpdate() when name stays the same")
+    @Test
+    void shouldNotThrowExceptionOnValidateOnUpdateWhenNameStaysTheSame() {
+        long id = 1L;
+        String name = "Organisation Unit";
+
+        OrganisationUnit newOrganisationUnit = new OrganisationUnit();
+        newOrganisationUnit.setName(name);
+
+        OrganisationUnit organisationUnit = new OrganisationUnit();
+        organisationUnit.setName(name);
+        organisationUnit.setId(id);
+
+        when(persistenceService.getById(id)).thenReturn(Optional.of(newOrganisationUnit));
+        when(persistenceService.getByName(name)).thenReturn(Optional.of(organisationUnit));
+
+        assertDoesNotThrow(() -> validationService.validateOnUpdate(id, newOrganisationUnit));
     }
 }
