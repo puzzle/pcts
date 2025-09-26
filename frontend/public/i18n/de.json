@@ -1,10 +1,25 @@
 {
   "PCTS_LOGO_ALT": "Puzzle PCTS Logo",
   "LOGOUT": "Abmelden",
+  "ADD": "Hinzufügen",
+  "EDIT": "Ändern",
+  "CANCEL": "Abbrechen",
+  "SAVE": "Speichern",
   "MEMBER": {
-    "NAME": "Name",
-    "BIRTHDATE": " Geburtsdatum",
+    "FIRSTNAME": "Vorname",
+    "LASTNAME": "Nachname",
+    "ABBREVIATION": "Kürzel",
+    "BIRTHDATE": "Geburtsdatum",
+    "EMPLOYMENT_DATE": "Ansellungsdatum",
+    "EMPLOYMENT_STATE": "Status",
     "ORGANISATION_UNIT": "Division",
+
+    "FORM": {
+      "MUST_BE_FILLED_OUT": "Muss ausgefühlt sein",
+      "DATE_PAST": "Datum muss in der Vergangenheit liegen",
+      "DATE_FUTURE": "Datum muss in der Zukunft liegen",
+      "PERSONAL_DETAILS": "Personalien"
+    },
 
     "OVERVIEW": {
       "MEMBERS": "Members",
