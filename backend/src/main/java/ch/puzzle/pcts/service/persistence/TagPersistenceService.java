@@ -23,4 +23,8 @@ public class TagPersistenceService {
     public Optional<Tag> findWithIgnoreCase(String tagName) {
         return repository.findByNameIgnoreCase(tagName);
     }
+
+    public Optional<Tag> getById(Long id) {
+        return repository.findById(id);
+    }
 }
