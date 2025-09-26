@@ -11,7 +11,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     FormsModule,
     TranslatePipe],
   templateUrl: './example.component.html',
-  styleUrl: './example.component.css'
+  styleUrl: './example.component.scss'
 })
 export class ExampleComponent {
   private service = inject(ExampleService);

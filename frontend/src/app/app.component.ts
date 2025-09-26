@@ -8,7 +8,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [RouterOutlet,
     TranslatePipe],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
+  styleUrl: './app.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppComponent {

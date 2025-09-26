@@ -32,7 +32,7 @@ import { debounceTime } from 'rxjs/operators';
     RouterLink
   ],
   templateUrl: './member-overview.component.html',
-  styleUrl: './member-overview.component.css'
+  styleUrl: './member-overview.component.scss'
 })
 export class MemberOverviewComponent {
   private readonly service: MemberService = inject(MemberService);
