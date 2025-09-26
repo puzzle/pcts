@@ -33,3 +33,12 @@ VALUES
     ('Coursework Project', 7, 3, 1),
     ('Freelance Work', 7, 6.25, 4),
     ('Professional Job', 4.5, 2, 1);
+
+TRUNCATE TABLE degree_type CASCADE;
+
+INSERT INTO degree_type (name, highly_relevant_points, limited_relevant_points, little_relevant_points)
+VALUES
+    ('Bachelor''s Degree', 21.575, 16.5, 11),
+    ('Master''s Degree', 25, 17.99, 15.325),
+    ('PhD', 16, 13.555, 10.25),
+    ('Associate Degree', 11, 9.5, 5.75);

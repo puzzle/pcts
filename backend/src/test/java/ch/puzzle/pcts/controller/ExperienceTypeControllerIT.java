@@ -8,9 +8,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.puzzle.pcts.SpringSecurityConfig;
-import ch.puzzle.pcts.dto.experienceType.ExperienceTypeDto;
+import ch.puzzle.pcts.dto.experiencetype.ExperienceTypeDto;
 import ch.puzzle.pcts.mapper.ExperienceTypeMapper;
-import ch.puzzle.pcts.model.experienceType.ExperienceType;
+import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.service.business.ExperienceTypeBusinessService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;

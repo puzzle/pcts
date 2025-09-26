@@ -2,7 +2,7 @@ package ch.puzzle.pcts.service.persistence;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.puzzle.pcts.model.experiencetype.ExperienceType;
+import ch.puzzle.pcts.model.degreetype.DegreeType;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
@@ -22,7 +22,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest
 @Testcontainers
 @ActiveProfiles("test")
-class ExperienceTypePersistenceServiceIT {
+class DegreeTypePersistenceServiceTest {
 
     @Container
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17-alpine");
@@ -35,7 +35,7 @@ class ExperienceTypePersistenceServiceIT {
     }
 
     @Autowired
-    private ExperienceTypePersistenceService persistenceService;
+    private DegreeTypePersistenceService persistenceService;
 
     @DisplayName("Should establish DB connection")
     @Test
@@ -44,115 +44,113 @@ class ExperienceTypePersistenceServiceIT {
         assertThat(postgres.isRunning()).isTrue();
     }
 
-    @DisplayName("Should get experienceType by id")
+    @DisplayName("Should get degreeTypes by id")
     @Test
     @Order(1)
-    void shouldGetExperienceTypeById() {
-        Optional<ExperienceType> experienceType = persistenceService.getById(2L);
+    void shouldGetDegreeTypeById() {
+        Optional<DegreeType> degreeType = persistenceService.getById(2L);
 
-        assertThat(experienceType).isPresent();
-        assertThat(experienceType.get().getId()).isEqualTo(2L);
+        assertThat(degreeType).isPresent();
+        assertThat(degreeType.get().getId()).isEqualTo(2L);
     }
 
-    @DisplayName("Should get all experienceTypes")
+    @DisplayName("Should get all degreeTypes")
     @Test
     @Order(1)
-    void shouldGetAllExperienceTypes() {
-        List<ExperienceType> all = persistenceService.getAll();
+    void shouldGetAllDegreeTypes() {
+        List<DegreeType> all = persistenceService.getAll();
 
         assertThat(all).hasSize(2);
-        assertThat(all)
-                .extracting(ExperienceType::getName)
-                .containsExactlyInAnyOrder("ExperienceType 1", "ExperienceType 2");
+        assertThat(all).extracting(DegreeType::getName).containsExactlyInAnyOrder("Degree type 1", "Degree type 2");
     }
 
-    @DisplayName("Should create experienceType")
+    @DisplayName("Should create degreeTypes")
     @Transactional
     @Test
     @Order(2)
     void shouldCreate() {
-        ExperienceType experienceType = new ExperienceType(null,
-                                                           "ExperienceType 3",
-                                                           BigDecimal.valueOf(10),
-                                                           BigDecimal.valueOf(5),
-                                                           BigDecimal.valueOf(2));
+        DegreeType degreeType = new DegreeType(null,
+                                               "DegreeTypes 3",
+                                               BigDecimal.valueOf(10),
+                                               BigDecimal.valueOf(5),
+                                               BigDecimal.valueOf(2));
 
-        ExperienceType result = persistenceService.create(experienceType);
+        DegreeType result = persistenceService.create(degreeType);
 
         assertThat(result.getId()).isEqualTo(3L);
-        assertThat(result.getName()).isEqualTo(experienceType.getName());
+        assertThat(result.getName()).isEqualTo(degreeType.getName());
         assertThat(result.getHighlyRelevantPoints()).isEqualTo(new BigDecimal("10.00"));
         assertThat(result.getLimitedRelevantPoints()).isEqualTo(new BigDecimal("5.00"));
         assertThat(result.getLittleRelevantPoints()).isEqualTo(new BigDecimal("2.00"));
     }
 
-    @DisplayName("Should correctly round after creating a experienceType")
+    @DisplayName("Should correctly round after creating a degreeType")
     @Transactional
     @Test
     @Order(2)
     void shouldCorrectlyRoundAfterCreate() {
-        ExperienceType experienceType = new ExperienceType(null,
-                                                           "ExperienceType 3",
-                                                           BigDecimal.valueOf(10.055),
-                                                           BigDecimal.valueOf(5.603),
-                                                           BigDecimal.valueOf(2.005));
+        DegreeType degreeType = new DegreeType(null,
+                                               "DegreeType 3",
+                                               BigDecimal.valueOf(10.055),
+                                               BigDecimal.valueOf(5.603),
+                                               BigDecimal.valueOf(2.005));
 
-        ExperienceType result = persistenceService.create(experienceType);
+        DegreeType result = persistenceService.create(degreeType);
 
         assertThat(result.getId()).isEqualTo(4L);
-        assertThat(result.getName()).isEqualTo(experienceType.getName());
+        assertThat(result.getName()).isEqualTo(degreeType.getName());
         assertThat(result.getHighlyRelevantPoints()).isEqualTo(new BigDecimal("10.06"));
         assertThat(result.getLimitedRelevantPoints()).isEqualTo(new BigDecimal("5.60"));
         assertThat(result.getLittleRelevantPoints()).isEqualTo(new BigDecimal("2.01"));
     }
 
-    @DisplayName("Should correctly round after updating a experienceType")
+    @DisplayName("Should correctly round after updating a degreeType")
     @Transactional
     @Test
     @Order(2)
     void shouldCorrectlyRoundAfterUpdate() {
         long id = 2;
-        ExperienceType updated = new ExperienceType(null,
-                                                    "Updated experienceType",
-                                                    BigDecimal.valueOf(10.055),
-                                                    BigDecimal.valueOf(5.603),
-                                                    BigDecimal.valueOf(2.005));
+        DegreeType degreeTypeToRound = new DegreeType(null,
+                                                      "DegreeType to Round",
+                                                      BigDecimal.valueOf(10.055),
+                                                      BigDecimal.valueOf(5.603),
+                                                      BigDecimal.valueOf(2.005));
 
-        persistenceService.update(id, updated);
-        Optional<ExperienceType> result = persistenceService.getById(id);
+        persistenceService.update(id, degreeTypeToRound);
+        Optional<DegreeType> result = persistenceService.getById(id);
 
         assertThat(result).isPresent();
         assertThat(result.get().getId()).isEqualTo(id);
-        assertThat(result.get().getName()).isEqualTo("Updated experienceType");
+        assertThat(result.get().getName()).isEqualTo("DegreeType to Round");
         assertThat(result.get().getHighlyRelevantPoints()).isEqualTo(new BigDecimal("10.06"));
         assertThat(result.get().getLimitedRelevantPoints()).isEqualTo(new BigDecimal("5.60"));
         assertThat(result.get().getLittleRelevantPoints()).isEqualTo(new BigDecimal("2.01"));
     }
 
-    @DisplayName("Should update experienceType")
+    @DisplayName("Should update degreeType")
     @Transactional
     @Test
     @Order(2)
     void shouldUpdate() {
         long id = 2;
-        ExperienceType updated = new ExperienceType(null,
-                                                    "Updated experienceType",
-                                                    BigDecimal.valueOf(20),
-                                                    BigDecimal.valueOf(10),
-                                                    BigDecimal.valueOf(5));
+        DegreeType updated = new DegreeType(null,
+                                            "Updated degreeType",
+                                            BigDecimal.valueOf(20),
+                                            BigDecimal.valueOf(10),
+                                            BigDecimal.valueOf(5));
 
         persistenceService.update(id, updated);
-        Optional<ExperienceType> result = persistenceService.getById(id);
+        Optional<DegreeType> result = persistenceService.getById(id);
 
         assertThat(result).isPresent();
         assertThat(result.get().getId()).isEqualTo(id);
-        assertThat(result.get().getName()).isEqualTo("Updated experienceType");
+        assertThat(result.get().getName()).isEqualTo("Updated degreeType");
         assertThat(result.get().getHighlyRelevantPoints()).isEqualTo(new BigDecimal("20.00"));
         assertThat(result.get().getLimitedRelevantPoints()).isEqualTo(new BigDecimal("10.00"));
         assertThat(result.get().getLittleRelevantPoints()).isEqualTo(new BigDecimal("5.00"));
     }
 
-    @DisplayName("Should delete experienceType")
+    @DisplayName("Should delete degreeType")
     @Transactional
     @Test
     @Order(3)
@@ -161,7 +159,7 @@ class ExperienceTypePersistenceServiceIT {
 
         persistenceService.delete(id);
 
-        Optional<ExperienceType> result = persistenceService.getById(id);
+        Optional<DegreeType> result = persistenceService.getById(id);
         assertThat(result).isEmpty();
     }
 }

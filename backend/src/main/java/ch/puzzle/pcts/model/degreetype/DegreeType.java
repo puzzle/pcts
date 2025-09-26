@@ -1,4 +1,4 @@
-package ch.puzzle.pcts.model.experienceType;
+package ch.puzzle.pcts.model.degreetype;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,9 +9,9 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
-@SQLDelete(sql = "UPDATE experience_type SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
+@SQLDelete(sql = "UPDATE degree_type SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
-public class ExperienceType {
+public class DegreeType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,8 +24,8 @@ public class ExperienceType {
 
     private BigDecimal littleRelevantPoints;
 
-    public ExperienceType(Long id, String name, BigDecimal highlyRelevantPoints, BigDecimal limitedRelevantPoints,
-                          BigDecimal littleRelevantPoints) {
+    public DegreeType(Long id, String name, BigDecimal highlyRelevantPoints, BigDecimal limitedRelevantPoints,
+                      BigDecimal littleRelevantPoints) {
         this.id = id;
         this.name = name;
         this.highlyRelevantPoints = highlyRelevantPoints;
@@ -33,7 +33,7 @@ public class ExperienceType {
         this.littleRelevantPoints = littleRelevantPoints;
     }
 
-    public ExperienceType() {
+    public DegreeType() {
     }
 
     public Long getId() {
@@ -78,9 +78,8 @@ public class ExperienceType {
 
     @Override
     public String toString() {
-        return "ExperienceType{" + "id=" + id + ", name='" + name + '\'' + ", highlyRelevantPoints="
-               + highlyRelevantPoints + ", limitedRelevantPoints=" + limitedRelevantPoints + ", littleRelevantPoints="
-               + littleRelevantPoints + '}';
+        return "DegreeType{" + "id=" + id + ", name='" + name + '\'' + ", highlyRelevantPoints=" + highlyRelevantPoints
+               + ", limitedRelevantPoints=" + limitedRelevantPoints + ", littleRelevantPoints=" + littleRelevantPoints
+               + '}';
     }
-
 }
