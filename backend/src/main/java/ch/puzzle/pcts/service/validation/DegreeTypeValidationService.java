@@ -6,9 +6,9 @@ import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.service.persistence.DegreeTypePersistenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class DegreeTypeValidationService {
     private final DegreeTypePersistenceService persistenceService;
 

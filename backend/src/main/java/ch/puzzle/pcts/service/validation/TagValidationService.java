@@ -4,9 +4,9 @@ import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificate.Tag;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class TagValidationService {
 
     public void validateName(Tag tag) {

@@ -49,12 +49,19 @@ public class CertificateBusinessService {
 
         certificate.setTags(tagBusinessService.resolveTags(certificate.getTags()));
 
-        return persistenceService.update(id, certificate);
+        Certificate result = persistenceService.update(id, certificate);
+
+        tagBusinessService.deleteUnusedTags();
+
+        return result;
     }
 
     public void delete(Long id) {
         validationService.validateOnDelete(id);
+
         persistenceService.delete(id);
+
+        tagBusinessService.deleteUnusedTags();
     }
 
 }

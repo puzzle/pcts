@@ -19,11 +19,21 @@ public class TagBusinessService {
     }
 
     public Set<Tag> resolveTags(Set<Tag> rawTags) {
+        if (rawTags == null || rawTags.isEmpty()) {
+            return Set.of();
+        }
+
         return rawTags.stream().map(tag -> {
             validationService.validateName(tag);
             return persistenceService
                     .findWithIgnoreCase(tag.getName())
                     .orElseGet(() -> persistenceService.create(new Tag(null, tag.getName())));
         }).collect(Collectors.toSet());
+    }
+
+    public void deleteUnusedTags() {
+        Set<Tag> unusedTags = persistenceService.findAllUnusedTags();
+
+        persistenceService.delete(unusedTags);
     }
 }

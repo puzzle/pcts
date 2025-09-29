@@ -2,31 +2,22 @@ package ch.puzzle.pcts.service.persistence;
 
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.repository.CertificateRepository;
-import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class CertificatePersistenceService {
-
-    private EntityManager entityManager;
-
     private final CertificateRepository repository;
 
-    @Autowired
-    public CertificatePersistenceService(CertificateRepository certificateRepository, EntityManager entityManager) {
+    public CertificatePersistenceService(CertificateRepository certificateRepository) {
         this.repository = certificateRepository;
-        this.entityManager = entityManager;
     }
 
     @Transactional
     public Certificate create(Certificate certificate) {
-        Certificate createdCertificate = repository.save(certificate);
-        entityManager.refresh(createdCertificate);
-        return createdCertificate;
+        return repository.save(certificate);
     }
 
     public Optional<Certificate> getById(Long id) {
@@ -40,9 +31,7 @@ public class CertificatePersistenceService {
     @Transactional
     public Certificate update(Long id, Certificate certificate) {
         certificate.setId(id);
-        Certificate updatedCertificate = repository.save(certificate);
-        entityManager.refresh(updatedCertificate);
-        return updatedCertificate;
+        return repository.save(certificate);
     }
 
     public void delete(Long id) {

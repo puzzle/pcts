@@ -3,14 +3,12 @@ package ch.puzzle.pcts.service.persistence;
 import ch.puzzle.pcts.model.example.Example;
 import ch.puzzle.pcts.repository.ExampleRepository;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class ExamplePersistenceService {
     private final ExampleRepository repository;
 
-    @Autowired
     public ExamplePersistenceService(ExampleRepository repository) {
         this.repository = repository;
     }
