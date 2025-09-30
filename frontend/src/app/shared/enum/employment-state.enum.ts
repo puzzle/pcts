@@ -1,5 +1,5 @@
 export enum EmploymentState {
-  EXMEMBER = 'EX_MEMBER',
+  APPLICANT = 'APPLICANT',
   MEMBER = 'MEMBER',
-  APPLICANT = 'APPLICANT'
+  EX_MEMBER = 'EX_MEMBER'
 }

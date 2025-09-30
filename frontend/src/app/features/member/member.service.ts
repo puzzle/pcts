@@ -41,7 +41,7 @@ export class MemberService {
         lastName: 'Desmond',
         birthday: new Date(),
         abbreviation: 'BD',
-        employmentState: EmploymentState.EXMEMBER,
+        employmentState: EmploymentState.EX_MEMBER,
         dateOfHire: new Date(),
         organisationUnit: {
           id: 1,

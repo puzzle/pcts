@@ -33,6 +33,7 @@
     "@puzzleitc/puzzle-shell": "^5.1.0",
     "bootstrap": "^5.3.7",
     "cypress": "^15.2.0",
+    "material-icons": "^1.13.14",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },

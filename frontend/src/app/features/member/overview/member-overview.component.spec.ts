@@ -27,7 +27,7 @@ describe('MemberOverviewComponent', () => {
     lastName: 'Desmond',
     birthday: new Date(2016, 5, 15),
     abbreviation: 'BD',
-    employmentState: EmploymentState.EXMEMBER,
+    employmentState: EmploymentState.EX_MEMBER,
     organisationUnit: { id: 2,
       name: '/ww' },
     dateOfHire: new Date(2017, 3, 1) }];
@@ -62,7 +62,7 @@ describe('MemberOverviewComponent', () => {
 
   describe('toggleFilter', () => {
     it.each([EmploymentState.MEMBER,
-      EmploymentState.EXMEMBER,
+      EmploymentState.EX_MEMBER,
       EmploymentState.APPLICANT])('should toggle filter %s', (status) => {
       component.toggleFilter(status);
       expect(component.isFilterActive(status))
@@ -75,7 +75,7 @@ describe('MemberOverviewComponent', () => {
 
     it('should clear all filters when ALL is active', () => {
       component.toggleFilter(EmploymentState.MEMBER);
-      component.toggleFilter(EmploymentState.EXMEMBER);
+      component.toggleFilter(EmploymentState.EX_MEMBER);
       component.toggleFilter(EmploymentState.APPLICANT);
 
       component.activeFilters.clear();
@@ -111,7 +111,7 @@ describe('MemberOverviewComponent', () => {
   describe('createFilterPredicate', () => {
     const testCases = [
       { searchText: 'ja',
-        status: EmploymentState.EXMEMBER,
+        status: EmploymentState.EX_MEMBER,
         expected: false },
       { searchText: 'Morant',
         status: '',
