@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.controller;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -86,8 +87,7 @@ class CertificateControllerIT {
                 .andExpect(jsonPath("$[0].points").value(expectedDto.points()))
                 .andExpect(jsonPath("$[0].comment").value(expectedDto.comment()))
                 .andExpect(jsonPath("$[0].tags.length()").value(expectedDto.tags().size()))
-                .andExpect(jsonPath("$[0].tags[0]").value("Tag 1"))
-                .andExpect(jsonPath("$[0].tags[1]").value("Tag 2"));
+                .andExpect(jsonPath("$.[0].tags").value(containsInAnyOrder("Tag 1", "Tag 2")));
 
         verify(service, times(1)).getAll();
         verify(mapper, times(1)).toDto(any(List.class));
@@ -107,8 +107,7 @@ class CertificateControllerIT {
                 .andExpect(jsonPath("$.points").value(new BigDecimal("5.5")))
                 .andExpect(jsonPath("$.comment").value("This is Certificate 1"))
                 .andExpect(jsonPath("$.tags.length()").value(expectedDto.tags().size()))
-                .andExpect(jsonPath("$.tags[0]").value("Tag 1"))
-                .andExpect(jsonPath("$.tags[1]").value("Tag 2"));
+                .andExpect(jsonPath("$.tags").value(containsInAnyOrder("Tag 1", "Tag 2")));
 
         verify(service, times(1)).getById((1L));
         verify(mapper, times(1)).toDto(any(Certificate.class));
@@ -132,8 +131,7 @@ class CertificateControllerIT {
                 .andExpect(jsonPath("$.points").value(new BigDecimal("5.5")))
                 .andExpect(jsonPath("$.comment").value("This is Certificate 1"))
                 .andExpect(jsonPath("$.tags.length()").value(expectedDto.tags().size()))
-                .andExpect(jsonPath("$.tags[0]").value("Tag 1"))
-                .andExpect(jsonPath("$.tags[1]").value("Tag 2"));
+                .andExpect(jsonPath("$.tags").value(containsInAnyOrder("Tag 1", "Tag 2")));
 
         verify(mapper, times(1)).fromDto(any(CertificateDto.class));
         verify(service, times(1)).create(any(Certificate.class));
@@ -158,8 +156,7 @@ class CertificateControllerIT {
                 .andExpect(jsonPath("$.points").value(new BigDecimal("5.5")))
                 .andExpect(jsonPath("$.comment").value("This is Certificate 1"))
                 .andExpect(jsonPath("$.tags.length()").value(expectedDto.tags().size()))
-                .andExpect(jsonPath("$.tags[0]").value("Tag 1"))
-                .andExpect(jsonPath("$.tags[1]").value("Tag 2"));
+                .andExpect(jsonPath("$.tags").value(containsInAnyOrder("Tag 1", "Tag 2")));
 
         verify(mapper, times(1)).fromDto(any(CertificateDto.class));
         verify(service, times(1)).update(any(Long.class), any(Certificate.class));

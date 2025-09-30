@@ -73,44 +73,24 @@ class ExperienceTypePersistenceServiceIT {
     void shouldCreate() {
         ExperienceType experienceType = new ExperienceType(null,
                                                            "ExperienceType 3",
-                                                           BigDecimal.valueOf(10),
-                                                           BigDecimal.valueOf(5),
-                                                           BigDecimal.valueOf(2));
-
-        ExperienceType result = persistenceService.create(experienceType);
-
-        assertThat(result.getId()).isEqualTo(3L);
-        assertThat(result.getName()).isEqualTo(experienceType.getName());
-        assertThat(result.getHighlyRelevantPoints()).isEqualTo(new BigDecimal("10.00"));
-        assertThat(result.getLimitedRelevantPoints()).isEqualTo(new BigDecimal("5.00"));
-        assertThat(result.getLittleRelevantPoints()).isEqualTo(new BigDecimal("2.00"));
-    }
-
-    @DisplayName("Should correctly round after creating a experienceType")
-    @Transactional
-    @Test
-    @Order(2)
-    void shouldCorrectlyRoundAfterCreate() {
-        ExperienceType experienceType = new ExperienceType(null,
-                                                           "ExperienceType 3",
                                                            BigDecimal.valueOf(10.055),
                                                            BigDecimal.valueOf(5.603),
                                                            BigDecimal.valueOf(2.005));
 
         ExperienceType result = persistenceService.create(experienceType);
 
-        assertThat(result.getId()).isEqualTo(4L);
+        assertThat(result.getId()).isEqualTo(3L);
         assertThat(result.getName()).isEqualTo(experienceType.getName());
-        assertThat(result.getHighlyRelevantPoints()).isEqualTo(new BigDecimal("10.06"));
-        assertThat(result.getLimitedRelevantPoints()).isEqualTo(new BigDecimal("5.60"));
-        assertThat(result.getLittleRelevantPoints()).isEqualTo(new BigDecimal("2.01"));
+        assertThat(result.getHighlyRelevantPoints()).isEqualByComparingTo(BigDecimal.valueOf(10.055));
+        assertThat(result.getLimitedRelevantPoints()).isEqualByComparingTo(BigDecimal.valueOf(5.603));
+        assertThat(result.getLittleRelevantPoints()).isEqualByComparingTo(BigDecimal.valueOf(2.005));
     }
 
-    @DisplayName("Should correctly round after updating a experienceType")
+    @DisplayName("Should update experienceType")
     @Transactional
     @Test
     @Order(2)
-    void shouldCorrectlyRoundAfterUpdate() {
+    void shouldUpdate() {
         long id = 2;
         ExperienceType updated = new ExperienceType(null,
                                                     "Updated experienceType",
@@ -124,32 +104,9 @@ class ExperienceTypePersistenceServiceIT {
         assertThat(result).isPresent();
         assertThat(result.get().getId()).isEqualTo(id);
         assertThat(result.get().getName()).isEqualTo("Updated experienceType");
-        assertThat(result.get().getHighlyRelevantPoints()).isEqualTo(new BigDecimal("10.06"));
-        assertThat(result.get().getLimitedRelevantPoints()).isEqualTo(new BigDecimal("5.60"));
-        assertThat(result.get().getLittleRelevantPoints()).isEqualTo(new BigDecimal("2.01"));
-    }
-
-    @DisplayName("Should update experienceType")
-    @Transactional
-    @Test
-    @Order(2)
-    void shouldUpdate() {
-        long id = 2;
-        ExperienceType updated = new ExperienceType(null,
-                                                    "Updated experienceType",
-                                                    BigDecimal.valueOf(20),
-                                                    BigDecimal.valueOf(10),
-                                                    BigDecimal.valueOf(5));
-
-        persistenceService.update(id, updated);
-        Optional<ExperienceType> result = persistenceService.getById(id);
-
-        assertThat(result).isPresent();
-        assertThat(result.get().getId()).isEqualTo(id);
-        assertThat(result.get().getName()).isEqualTo("Updated experienceType");
-        assertThat(result.get().getHighlyRelevantPoints()).isEqualTo(new BigDecimal("20.00"));
-        assertThat(result.get().getLimitedRelevantPoints()).isEqualTo(new BigDecimal("10.00"));
-        assertThat(result.get().getLittleRelevantPoints()).isEqualTo(new BigDecimal("5.00"));
+        assertThat(result.get().getHighlyRelevantPoints()).isEqualByComparingTo(BigDecimal.valueOf(10.055));
+        assertThat(result.get().getLimitedRelevantPoints()).isEqualByComparingTo(BigDecimal.valueOf(5.603));
+        assertThat(result.get().getLittleRelevantPoints()).isEqualByComparingTo(BigDecimal.valueOf(2.005));
     }
 
     @DisplayName("Should delete experienceType")

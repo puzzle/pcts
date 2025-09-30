@@ -57,7 +57,7 @@ class CertificatePersistenceServiceIT {
         assertThat(certificate).isPresent();
         assertThat(certificate.get().getId()).isEqualTo(3L);
         assertThat(certificate.get().getName()).isEqualTo("Certificate 3");
-        assertThat(certificate.get().getPoints()).isEqualTo(new BigDecimal("3.00"));
+        assertThat(certificate.get().getPoints()).isEqualByComparingTo(BigDecimal.valueOf(3));
         assertThat(certificate.get().getComment()).isEqualTo("This is Certificate 3");
     }
 
@@ -90,7 +90,7 @@ class CertificatePersistenceServiceIT {
 
         assertThat(result.getId()).isEqualTo(5L);
         assertThat(result.getName()).isEqualTo(certificate.getName());
-        assertThat(result.getPoints()).isEqualTo(certificate.getPoints());
+        assertThat(result.getPoints()).isEqualByComparingTo(certificate.getPoints());
         assertThat(result.getComment()).isEqualTo(certificate.getComment());
         assertThat(result.getTags()).isEqualTo(certificate.getTags());
     }

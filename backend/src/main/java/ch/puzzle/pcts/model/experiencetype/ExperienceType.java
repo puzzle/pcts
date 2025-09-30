@@ -1,12 +1,10 @@
 package ch.puzzle.pcts.model.experiencetype;
 
-import ch.puzzle.pcts.util.Formatter;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -55,8 +53,7 @@ public class ExperienceType {
     }
 
     public BigDecimal getHighlyRelevantPoints() {
-        DecimalFormat df = Formatter.createFormatting();
-        return highlyRelevantPoints == null ? null : new BigDecimal(df.format(highlyRelevantPoints));
+        return highlyRelevantPoints;
     }
 
     public void setHighlyRelevantPoints(BigDecimal highlyRelevantPoints) {
@@ -64,8 +61,7 @@ public class ExperienceType {
     }
 
     public BigDecimal getLimitedRelevantPoints() {
-        DecimalFormat df = Formatter.createFormatting();
-        return limitedRelevantPoints == null ? null : new BigDecimal(df.format(limitedRelevantPoints));
+        return limitedRelevantPoints;
     }
 
     public void setLimitedRelevantPoints(BigDecimal limitedRelevantPoints) {
@@ -73,8 +69,7 @@ public class ExperienceType {
     }
 
     public BigDecimal getLittleRelevantPoints() {
-        DecimalFormat df = Formatter.createFormatting();
-        return littleRelevantPoints == null ? null : new BigDecimal(df.format(littleRelevantPoints));
+        return littleRelevantPoints;
     }
 
     public void setLittleRelevantPoints(BigDecimal littleRelevantPoints) {
