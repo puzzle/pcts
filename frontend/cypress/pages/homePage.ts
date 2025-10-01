@@ -10,12 +10,9 @@ class HomePage extends Page {
     return cy.getByTestId('member-title');
   }
 
-  searchInput() {
-    return cy.getByTestId('search-input');
-  }
-
   fillSearchInput(text: string) {
-    this.searchInput()
+    cy
+      .getByTestId('search-input')
       .clear()
       .type(text);
   }
@@ -32,7 +29,7 @@ class HomePage extends Page {
     return cy.getByTestId('no-results-row');
   }
 
-  filterAll() {
+  resetEmploymentStateFilter() {
     return cy.getByTestId('all');
   }
 

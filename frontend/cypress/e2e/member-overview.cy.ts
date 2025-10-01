@@ -46,7 +46,7 @@ describe('MemberOverviewComponent', () => {
   });
 
   it('should reset filters when "All" is clicked', () => {
-    HomePage.filterAll()
+    HomePage.resetEmploymentStateFilter()
       .click();
     HomePage.memberRows()
       .should('exist');
