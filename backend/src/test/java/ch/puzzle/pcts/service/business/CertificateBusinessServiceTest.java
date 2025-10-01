@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.service.business;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -83,6 +84,8 @@ class CertificateBusinessServiceTest {
         assertEquals(certificate, result);
         verify(validationService).validateOnCreate(certificate);
         verify(persistenceService).create(certificate);
+
+        verify(tagBusinessService).resolveTags(any());
     }
 
     @DisplayName("Should get all certificates")
@@ -124,6 +127,8 @@ class CertificateBusinessServiceTest {
         assertEquals(certificate, result);
         verify(validationService).validateOnUpdate(id, certificate);
         verify(persistenceService).update(id, certificate);
+
+        verify(tagBusinessService).deleteUnusedTags();
     }
 
     @DisplayName("Should delete certificate")
@@ -135,5 +140,7 @@ class CertificateBusinessServiceTest {
 
         verify(validationService).validateOnDelete(id);
         verify(persistenceService).delete(id);
+
+        verify(tagBusinessService).deleteUnusedTags();
     }
 }

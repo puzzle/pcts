@@ -12,16 +12,14 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.MockitoAnnotations;
 
-class CertificateMapperIT {
-    @InjectMocks
+class CertificateMapperTest {
+
     private CertificateMapper mapper;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        mapper = new CertificateMapper();
     }
 
     @DisplayName("Should return certificate")
