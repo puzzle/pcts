@@ -1,0 +1,120 @@
+<div class="w-75 mx-auto mt-5" data-testid="member-overview">
+  <h1 class="pt-3" data-testid="member-title">
+    {{ "MEMBER.OVERVIEW.MEMBERS" | translate }} ({{ members().length }})
+  </h1>
+
+  <div class="d-flex flex-row justify-content-between">
+    <div class="w-25 d-flex flex-row align-items-start">
+      <mat-form-field
+        color="primary"
+        appearance="outline"
+        class="w-75 small-form-field"
+        data-testid="search-field"
+      >
+        <mat-icon matPrefix>search</mat-icon>
+        <input
+          matInput
+          [formControl]="searchControl"
+          placeholder="{{ 'MEMBER.OVERVIEW.SEARCH' | translate }}"
+          data-testid="search-input"
+        />
+      </mat-form-field>
+    </div>
+
+    <div data-testid="filters">
+      <button
+        type="button"
+        mat-stroked-button
+        class="rounded-0"
+        [class.active]="isAllFilterActive()"
+        (click)="activeFilters.clear(); applyCombinedFilter();"
+        data-testid="all"
+      >
+        {{ 'MEMBER.OVERVIEW.ALL' | translate }}
+      </button>
+
+      @for (state of employmentStateValues; track state) {
+        <button
+          type="button"
+          mat-stroked-button
+          class="rounded-0"
+          [class.active]="isFilterActive(state)"
+          (click)="toggleFilter(state)"
+          [attr.data-testid]="state"
+        >
+          {{ 'MEMBER.EMPLOYMENT_STATUS_VALUES.' + state | translate }}
+        </button>
+      }
+    </div>
+
+    <button
+      type="button"
+      mat-stroked-button
+      data-testid="add-member-button"
+    >
+      <mat-icon>add</mat-icon>
+      {{ 'MEMBER.OVERVIEW.ADD_MEMBER' | translate }}
+    </button>
+  </div>
+
+  <table
+    mat-table
+    [dataSource]="this.dataSource"
+    class="mat-elevation-z8 table table-striped table-hover member-table"
+    matSort
+    matSortActive="name"
+    matSortDirection="asc"
+    data-testid="member-table"
+  >
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="name">
+        {{ 'MEMBER.NAME' | translate }}
+      </th>
+      <td mat-cell *matCellDef="let member" data-testid="member-name">
+        <a [routerLink]="['/member', member.id]" class="fw-bold">
+          {{ member.name }} {{ member.lastName }}
+        </a>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="birthday">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="birthday">
+        {{ 'MEMBER.BIRTHDATE' | translate }}
+      </th>
+      <td mat-cell *matCellDef="let member" data-testid="member-birthday">
+        {{ member.birthday | date:'dd.MM.yyyy' }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="organisation_unit">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="organisation_unit">
+        {{ 'MEMBER.ORGANISATION_UNIT' | translate }}
+      </th>
+      <td mat-cell *matCellDef="let member" data-testid="member-organisation">
+        {{ member.organisationUnit.name }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="employment_state">
+        {{ 'MEMBER.EMPLOYMENT_STATUS' | translate }}
+      </th>
+      <td mat-cell *matCellDef="let member" data-testid="member-status">
+        {{ "MEMBER.EMPLOYMENT_STATUS_VALUES." + member.employmentState | translate }}
+      </td>
+    </ng-container>
+
+    <tr class="h-25" mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: displayedColumns;"
+      data-testid="member-row"
+    ></tr>
+
+    <tr *matNoDataRow data-testid="no-results-row">
+      <td colspan="4">
+        {{ 'MEMBER.OVERVIEW.NO_SEARCH_RESULT' | translate:{searchValue: searchControl.value} }}
+      </td>
+    </tr>
+  </table>
+</div>

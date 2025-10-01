@@ -1,0 +1,19 @@
+@use 'variables';
+
+.member-table {
+  width: 100%;
+
+  th {
+    background-color: variables.$table-header-color;
+    border-bottom: 2px solid variables.$table-header-color;
+  }
+
+  td {
+    vertical-align: middle;
+    border-bottom: 1px solid variables.$table-secondary-color;
+  }
+}
+
+button.active {
+  background-color: variables.$table-primary-color;
+}

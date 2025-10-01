@@ -20,10 +20,12 @@
   },
   "private": true,
   "dependencies": {
+    "@angular/cdk": "^20.2.4",
     "@angular/common": "^20.2.1",
     "@angular/compiler": "^20.2.1",
     "@angular/core": "^20.2.1",
     "@angular/forms": "^20.2.1",
+    "@angular/material": "^20.2.4",
     "@angular/platform-browser": "^20.2.1",
     "@angular/router": "^20.2.1",
     "@ngx-translate/core": "^17.0.0",
@@ -31,6 +33,7 @@
     "@puzzleitc/puzzle-shell": "^5.1.0",
     "bootstrap": "^5.3.7",
     "cypress": "^15.2.0",
+    "material-icons": "^1.13.14",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },

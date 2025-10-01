@@ -209,7 +209,7 @@ export default tsEslint.config(
   },
 
   {
-    files: ['**/*.component.html'],
+    files: ['**/*.component.html', '**/index.html'],
     ...angular.configs.recommended,
     languageOptions: {
       parser: angularTemplateParser,
