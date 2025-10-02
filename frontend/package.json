@@ -34,8 +34,8 @@
     "@puzzleitc/puzzle-shell": "^5.1.0",
     "bootstrap": "^5.3.7",
     "cypress": "^15.2.0",
-    "material-icons": "^1.13.14",
     "material": "^0.9.24",
+    "material-icons": "^1.13.14",
     "momentum": "^4.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
@@ -48,6 +48,7 @@
     "@angular/build": "^20.0.0",
     "@angular/cli": "^20.0.0",
     "@angular/compiler-cli": "^20.2.1",
+    "@angular/localize": "^20.2.4",
     "@html-eslint/eslint-plugin": "^0.47.0",
     "@stylistic/eslint-plugin": "^5.2.3",
     "@types/jasmine": "~5.1.0",

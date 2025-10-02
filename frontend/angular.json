@@ -33,7 +33,8 @@
             "stylePreprocessorOptions": {
               "includePaths": ["src/style"]
             },
-            "scripts": ["node_modules/bootstrap/dist/js/bootstrap.min.js"]
+            "scripts": ["node_modules/bootstrap/dist/js/bootstrap.min.js"],
+            "polyfills": ["@angular/localize/init"]
           },
           "configurations": {
             "production": {
@@ -93,7 +94,8 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/style/styles.scss"]
+            "styles": ["src/style/styles.scss"],
+            "polyfills": ["@angular/localize/init"]
           }
         },
         "lint": {

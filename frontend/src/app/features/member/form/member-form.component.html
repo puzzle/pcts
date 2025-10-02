@@ -9,116 +9,75 @@
 
   <p class="fw-bold">{{ "MEMBER.FORM.PERSONAL_DETAILS" | translate }}</p>
 
-  <form [formGroup]="memberForm" (ngSubmit)="onSubmit()" class="form">
+  <form [formGroup]="memberForm" (ngSubmit)="onSubmit()" class="d-flex flex-column gap-3">
 
-<!--    <div class="input-container">-->
-<!--      <div class="input">-->
-        <mat-form-field appearance="outline">
-          <mat-label>{{ "MEMBER.FIRSTNAME" | translate }}</mat-label>
-          <input type="text" formControlName="firstname" matInput class="ps-2">
-          <app-error [form]="memberForm" formControlPath="firstname" />
+    <mat-form-field>
+      <mat-label>{{ "MEMBER.FIRSTNAME" | translate }}</mat-label>
+      <input type="text" formControlName="name" matInput>
+      <mat-error><app-error [form]="memberForm" formControlPath="name" [maxErrors]="1"/></mat-error>
+    </mat-form-field>
 
-        </mat-form-field>
-<!--      </div>-->
-<!--    </div>-->
+    <mat-form-field appearance="outline">
+      <mat-label>{{ "MEMBER.LASTNAME" | translate }}</mat-label>
+      <input type="text" formControlName="lastname" matInput>
+      <mat-error><app-error [form]="memberForm" formControlPath="lastname" [maxErrors]="1"/></mat-error>
+    </mat-form-field>
 
+    <mat-form-field appearance="outline">
+      <mat-label>{{ "MEMBER.NICKNAME" | translate }}</mat-label>
+      <input type="text" formControlName="abbreviation" matInput class="ps-2">
+    </mat-form-field>
 
-    <p>
-      <mat-form-field appearance="outline">
-        <mat-label>Outline form field</mat-label>
-        <input matInput placeholder="Placeholder">
-        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-        <mat-hint>Hint</mat-hint>
-      </mat-form-field>
-    </p>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ "MEMBER.BIRTHDATE" | translate }}</mat-label>
+      <input formControlName="birthday" matInput [matDatepicker]="birthdatePicker" class="ps-2">
+      <mat-datepicker-toggle matIconSuffix [for]="birthdatePicker" />
+      <mat-datepicker #birthdatePicker />
+      <mat-error><app-error [form]="memberForm" formControlPath="birthday" [maxErrors]="1"/></mat-error>
+    </mat-form-field>
 
+    <mat-form-field appearance="outline">
+      <mat-label>{{ "MEMBER.EMPLOYMENT_DATE" | translate }}</mat-label>
+      <input formControlName="dateOfHire" matInput [matDatepicker]="employmentDatePicker" class="ps-2">
+      <mat-datepicker-toggle matIconSuffix [for]="employmentDatePicker" />
+      <mat-datepicker #employmentDatePicker />
+    </mat-form-field>
 
+    <mat-form-field appearance="outline">
+      <mat-label>{{ "MEMBER.EMPLOYMENT_STATUS" | translate }}</mat-label>
+      <input
+        type="text"
+        matInput
+        formControlName="employmentState"
+        [matAutocomplete]="employmentStateAuto"
+        class="ps-2">
+      <mat-autocomplete autoActiveFirstOption #employmentStateAuto="matAutocomplete" class="bg-white" [displayWith]="displayEmploymentState.bind(this)">
+        @for (employeeState of employmentStateFilteredOptions(); track employeeState) {
+          <mat-option [value]="employeeState">
+            {{ displayEmploymentState(employeeState) }}
+          </mat-option>
+        }
+      </mat-autocomplete>
+      <mat-error><app-error [form]="memberForm" formControlPath="employmentState" [maxErrors]="1"/></mat-error>
+    </mat-form-field>
 
-    <div class="input-container">
-      <div class="input">
-        <mat-form-field>
-          <mat-label>{{ "MEMBER.LASTNAME" | translate }}</mat-label>
-          <input type="text" formControlName="lastname" matInput class="ps-2">
-        </mat-form-field>
-      </div>
-      <app-error [form]="memberForm" formControlPath="lastname" />
-    </div>
-
-
-    <div class="input-container">
-      <div class="input">
-        <mat-form-field>
-          <mat-label>{{ "MEMBER.NICKNAME" | translate }}</mat-label>
-          <input type="text" formControlName="nickname" matInput class="ps-2">
-        </mat-form-field>
-      </div>
-    </div>
-
-    <div class="input-container">
-      <div class="input">
-        <mat-form-field>
-          <mat-label>{{ "MEMBER.BIRTHDATE" | translate }}</mat-label>
-          <input formControlName="birthdate" matInput [matDatepicker]="birthdatePicker" class="ps-2">
-          <mat-datepicker-toggle matIconSuffix [for]="birthdatePicker" />
-          <mat-datepicker #birthdatePicker />
-        </mat-form-field>
-      </div>
-      <app-error [form]="memberForm" formControlPath="birthdate" />
-    </div>
-
-
-    <div class="input-container">
-      <div class="input">
-        <mat-form-field>
-          <mat-label>{{ "MEMBER.EMPLOYMENT_DATE" | translate }}</mat-label>
-          <input formControlName="employmentDate" matInput [matDatepicker]="employmentDatePicker" class="ps-2">
-          <mat-datepicker-toggle matIconSuffix [for]="employmentDatePicker" />
-          <mat-datepicker #employmentDatePicker />
-        </mat-form-field>
-      </div>
-    </div>
-
-    <div class="input-container">
-      <div class="input">
-        <mat-form-field>
-          <mat-label>{{ "MEMBER.EMPLOYMENT_STATE" | translate }}</mat-label>
-          <input
-            type="text"
-            matInput
-            formControlName="employmentState"
-            [matAutocomplete]="employmentStateAuto"
-            class="ps-2">
-          <mat-autocomplete autoActiveFirstOption #employmentStateAuto="matAutocomplete" class="bg-white">
-            @for (employeeState of filteredEmploymentStateOptions(); track employeeState) {
-              <mat-option [value]="employeeState">{{ employeeState }}</mat-option>
-            }
-          </mat-autocomplete>
-        </mat-form-field>
-      </div>
-      <app-error [form]="memberForm" formControlPath="employmentState" />
-    </div>
-
-    <div class="input-container">
-      <div class="input">
-        <mat-form-field class="w-100">
-        <mat-label class="ps-2">{{ "MEMBER.ORGANISATION_UNIT" | translate }}</mat-label>
-        <input
-          type="text"
-          matInput
-          formControlName="organisationUnit"
-          [matAutocomplete]="organisationUnitAuto"
-          class="ps-2">
-        <mat-autocomplete autoActiveFirstOption #organisationUnitAuto="matAutocomplete" class="bg-white">
-          @for (organisationUnit of filteredOrganisationUnitsOptions(); track organisationUnit.name) {
-            <mat-option [value]="organisationUnit.name">{{ organisationUnit.name }}</mat-option>
-          }
-        </mat-autocomplete>
-        </mat-form-field>
-      </div>
-    </div>
+    <mat-form-field appearance="outline">
+    <mat-label class="ps-2">{{ "MEMBER.ORGANISATION_UNIT" | translate }}</mat-label>
+    <input
+      type="text"
+      matInput
+      formControlName="organisationUnit"
+      [matAutocomplete]="organisationUnitAuto"
+      class="ps-2">
+    <mat-autocomplete autoActiveFirstOption #organisationUnitAuto="matAutocomplete" class="bg-white" [displayWith]="displayOrganisationUnit.bind(this)">
+      @for (organisationUnit of organisationUnitFilteredOptions(); track organisationUnit) {
+        <mat-option [value]="organisationUnit">{{displayOrganisationUnit(organisationUnit)}}</mat-option>
+      }
+    </mat-autocomplete>
+    </mat-form-field>
 
     <div class="d-flex flex-row gap-3 z-0">
-      <button class="cancel-button" type="button" (click)="onCancel()">{{ "CANCEL" | translate }}</button>
+      <button mat-stroked-button class="cancel-button" type="button" (click)="onCancel()">{{ "CANCEL" | translate }}</button>
       <button mat-stroked-button class="submit-button" type="submit" [disabled]="!memberForm.valid">
         @if (isEdit) {
           {{ "SAVE" | translate }}
