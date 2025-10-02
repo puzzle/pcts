@@ -13,33 +13,21 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EmploymentState } from '../member.model';
-import { OrganisationUnit } from '../../organisation-unit/organisation-unit.model';
 import { MemberService } from '../member.service';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButton } from '@angular/material/button';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+
+import { OrganisationUnitModel } from '../../organisation-unit/organisation-unit.model';
+import { EmploymentState } from '../../../shared/enum/employment-state.enum';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ErrorComponent } from '../../../shared/error/error.component';
-
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatDateFormats } from '@angular/material/core';
-import { MomentDateAdapter } from '@angular/material-moment-adapter';
-
-const MY_DATE_FORMATS: MatDateFormats = {
-  parse: {
-    dateInput: 'DD.MM.yyyy'
-  },
-  display: {
-    dateInput: 'DD.MM.yyyy',
-    monthYearLabel: 'MMM yyyy',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM yyyy'
-  }
-};
+import { MemberModel } from '../member.model';
 
 @Component({
-  selector: 'app-member-form.component',
+  selector: 'app-member-form',
   imports: [
     MatFormFieldModule,
     MatSelectModule,
@@ -56,48 +44,47 @@ const MY_DATE_FORMATS: MatDateFormats = {
     ErrorComponent
   ],
   templateUrl: './member-form.component.html',
-  styleUrl: './member-form.component.scss',
-  providers: [{ provide: DateAdapter,
-    useClass: MomentDateAdapter,
-    deps: [MAT_DATE_LOCALE] },
-  { provide: MAT_DATE_FORMATS,
-    useValue: MY_DATE_FORMATS }]
+  styleUrl: './member-form.component.scss'
 })
 export class MemberFormComponent implements OnInit {
-  protected id: number | null = null;
-
   protected isEdit = false;
 
-  protected employmentStateOptions: EmploymentState[] = Object.values(EmploymentState);
-
-  protected organisationUnitsOptions: OrganisationUnit[] = [];
-
-  protected memberService: MemberService = inject(MemberService);
-
-  protected route: ActivatedRoute = inject(ActivatedRoute);
-
-  protected router: Router = inject(Router);
-
   protected memberForm: FormGroup = new FormGroup({
-    firstname: new FormControl('', [Validators.required]),
+    name: new FormControl('', [Validators.required]),
     lastname: new FormControl('', [Validators.required]),
-    nickname: new FormControl(''),
-    birthdate: new FormControl('', [Validators.required,
-      this.validateDate()]),
-    employmentDate: new FormControl(''),
+    abbreviation: new FormControl(''),
+    birthday: new FormControl('', [Validators.required,
+      this.isDateInPast()]),
+    dateOfHire: new FormControl(''),
     employmentState: new FormControl(null, [Validators.required]),
     organisationUnit: new FormControl(null)
   });
 
-  protected filteredEmploymentStateOptions = computed(() => {
-    const value = this.memberForm.get('employmentState')?.value;
-    return value ? this.filterEmploymentState(value) : this.employmentStateOptions;
+  private readonly employmentStateOptions: EmploymentState[] = Object.values(EmploymentState);
+
+  protected employmentStateControlSignal = toSignal(this.memberForm.get('employmentState')!.valueChanges, { initialValue: this.memberForm.get('employmentState')!.value });
+
+  protected employmentStateFilteredOptions = computed(() => {
+    const value = this.employmentStateControlSignal() || '';
+    return this.filterEmploymentState(value);
   });
 
-  protected filteredOrganisationUnitsOptions = computed(() => {
-    const value = this.memberForm.get('organisationUnit')?.value;
-    return value ? this.filterOrg(value) : this.organisationUnitsOptions;
+  private organisationUnitsOptions: OrganisationUnitModel[] = [];
+
+  protected organisationUnitControlSignal = toSignal(this.memberForm.get('organisationUnit')!.valueChanges, { initialValue: this.memberForm.get('organisationUnit')!.value });
+
+  protected organisationUnitFilteredOptions = computed(() => {
+    const value = this.organisationUnitControlSignal() || '';
+    return this.filterOrganisationUnit(value);
   });
+
+  private readonly translateService = inject(TranslateService);
+
+  private readonly memberService = inject(MemberService);
+
+  private readonly route = inject(ActivatedRoute);
+
+  private readonly router = inject(Router);
 
   ngOnInit() {
     this.memberService.getAllOrganisationUnits()
@@ -111,37 +98,36 @@ export class MemberFormComponent implements OnInit {
   }
 
   loadMember(id: number) {
-    if (id) {
-      this.memberService.getMemberById(id)
-        .subscribe({
-          next: (member) => {
-            this.memberForm.controls['firstname'].setValue(member.name);
-            this.memberForm.controls['lastname'].setValue(member.last_name);
-            this.memberForm.controls['nickname'].setValue(member.nickname);
-            this.memberForm.controls['birthdate'].setValue(member.birthday);
-            this.memberForm.controls['employmentDate'].setValue(member.date_of_hire);
-            this.memberForm.controls['employmentState'].setValue(member.employment_state);
+    const { name, lastname, abbreviation, birthday, dateOfHire, employmentState, organisationUnit } = this.memberForm.controls;
 
-            const organisationUnit = this.organisationUnitsOptions.find((d) => d.name === member.organisation_unit.name);
-            this.memberForm.controls['organisationUnit'].setValue(organisationUnit?.name);
-          }
-        });
-    }
+    this.memberService.getMemberById(id)
+      .subscribe((member) => {
+        this.translateService.get('MEMBER.EMPLOYMENT_STATUS_VALUES.' + member.employmentState)
+          .subscribe(() => {
+            employmentState.setValue(member.employmentState);
+          });
+
+        name.setValue(member.name);
+        lastname.setValue(member.lastName);
+        abbreviation.setValue(member.abbreviation);
+        birthday.setValue(member.birthday);
+        dateOfHire.setValue(member.dateOfHire);
+        organisationUnit.setValue(member.organisationUnit);
+      });
   }
 
   onSubmit() {
     const formValues = this.memberForm.value;
 
-    const newMember = {
+    const newMember: MemberModel = {
       id: 0,
-      name: formValues.firstname,
-      last_name: formValues.lastname,
-      birthday: formValues.birthdate,
-      nickname: formValues.nickname,
-      employment_state: formValues.employmentState,
-      date_of_hire: formValues.employmentDate,
-      is_admin: false,
-      organisation_unit: formValues.organisationUnit
+      name: formValues.name,
+      lastName: formValues.lastname,
+      birthday: formValues.birthday,
+      abbreviation: formValues.abbreviation,
+      employmentState: formValues.employmentState,
+      dateOfHire: formValues.dateOfHire,
+      organisationUnit: formValues.organisationUnit
     };
 
     this.memberService.addMember(newMember);
@@ -152,21 +138,7 @@ export class MemberFormComponent implements OnInit {
     this.router.navigate(['']);
   }
 
-  private filterOrg(value: string): OrganisationUnit[] {
-    const filterValue = value.toLowerCase();
-
-    return this.organisationUnitsOptions.filter((option) => option.name.toLowerCase()
-      .includes(filterValue));
-  }
-
-  private filterEmploymentState(value: string): EmploymentState[] {
-    const filterValue = value.toLowerCase();
-
-    return this.employmentStateOptions.filter((option) => option.toLowerCase()
-      .includes(filterValue));
-  }
-
-  validateDate(): ValidatorFn {
+  isDateInPast(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       if (!control.value) {
         return null;
@@ -181,5 +153,39 @@ export class MemberFormComponent implements OnInit {
 
       return null;
     };
+  }
+
+  protected displayEmploymentState(employmentState: EmploymentState | string): string {
+    if (!employmentState) {
+      return '';
+    }
+    const translationKey = 'MEMBER.EMPLOYMENT_STATUS_VALUES.' + employmentState;
+    return this.translateService.instant(translationKey);
+  }
+
+  protected displayOrganisationUnit(organisationUnit: OrganisationUnitModel): string {
+    if (!organisationUnit) {
+      return '';
+    }
+
+    return organisationUnit.name;
+  }
+
+  protected filterEmploymentState(value: string): EmploymentState[] {
+    const filterValue = value?.toLowerCase() || '';
+
+    return this.employmentStateOptions.filter((option) => {
+      const translationKey = 'MEMBER.EMPLOYMENT_STATUS_VALUES.' + option;
+      const translatedValue = this.translateService.instant(translationKey);
+      return translatedValue.toLowerCase()
+        .includes(filterValue);
+    });
+  }
+
+  private filterOrganisationUnit(value: OrganisationUnitModel | string): OrganisationUnitModel[] {
+    const filterValue = (typeof value === 'string' ? value : value.name).toLowerCase();
+
+    return this.organisationUnitsOptions.filter((option) => option.name.toLowerCase()
+      .includes(filterValue));
   }
 }

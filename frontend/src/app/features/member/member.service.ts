@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { MemberModel } from './member.model';
 import { Observable, of } from 'rxjs';
-import { OrganisationUnit } from './dto/organisation-unit.model';
 import { EmploymentState } from '../../shared/enum/employment-state.enum';
+import { MemberModel } from './member.model';
+import { OrganisationUnitModel } from '../organisation-unit/organisation-unit.model';
 
 @Injectable({
   providedIn: 'root'
@@ -63,7 +63,9 @@ export class MemberService {
         }
       }
     ]);
-  getAllOrganisationUnits(): Observable<OrganisationUnit[]> {
+  }
+
+  getAllOrganisationUnits(): Observable<OrganisationUnitModel[]> {
     return of([
       {
         id: 1,
@@ -84,27 +86,27 @@ export class MemberService {
     ]);
   }
 
-  getMemberById(id: number): Observable<Member> {
+  getMemberById(id: number): Observable<MemberModel> {
     return of({
       id: 1,
       name: 'Ja',
-      last_name: 'Morant',
+      lastName: 'Morant',
       birthday: new Date(),
-      nickname: 'JM',
-      employment_state: EmploymentState.MEMBER,
-      date_of_hire: new Date(),
-      is_admin: false,
-      organisation_unit: {
+      abbreviation: 'JM',
+      employmentState: EmploymentState.MEMBER,
+      dateOfHire: new Date(),
+      organisationUnit: {
         id: 4,
         name: '/mem'
       }
     });
   }
 
-  addMember(member: Member): Observable<Member> {
+  addMember(member: MemberModel): Observable<MemberModel> {
     console.log(member);
     return of({
       ...member
     });
   }
 }
+

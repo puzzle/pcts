@@ -2,19 +2,18 @@ import { Routes } from '@angular/router';
 import { ExampleComponent } from './features/example/example.component';
 import { MemberFormComponent } from './features/member/form/member-form.component';
 import { idResolver } from './features/member/form/id-resolver.service';
-import { ExampleComponent } from './features/example/example.component';
 import { MemberOverviewComponent } from './features/member/overview/member-overview.component';
 import { MemberOverviewResolver } from './features/member/overview/member-overview-resolver';
 
 export const routes: Routes = [{ path: 'example',
   component: ExampleComponent },
-  {
-    path: '',
-    component: MemberOverviewComponent,
-    resolve: {filters: MemberOverviewResolver}
-  },
-  {
-    path: 'member',
+{
+  path: '',
+  component: MemberOverviewComponent,
+  resolve: { filters: MemberOverviewResolver }
+},
+{
+  path: 'member',
   children: [{ path: 'add',
     component: MemberFormComponent },
   { path: ':id/edit',
