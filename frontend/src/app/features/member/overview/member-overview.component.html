@@ -51,6 +51,7 @@
       type="button"
       mat-stroked-button
       data-testid="add-member-button"
+      (click)="handleAddMemberClick()"
     >
       <mat-icon>add</mat-icon>
       {{ 'MEMBER.OVERVIEW.ADD_MEMBER' | translate }}

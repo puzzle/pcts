@@ -5,11 +5,11 @@ import { MemberOverviewComponent } from './features/member/overview/member-overv
 import { MemberOverviewResolver } from './features/member/overview/member-overview-resolver';
 
 export const routes: Routes = [{ path: '',
-    component: MemberOverviewComponent,
-    resolve: {filters: MemberOverviewResolver}
-  },
-  {
-    path: 'member',
+  component: MemberOverviewComponent,
+  resolve: { filters: MemberOverviewResolver }
+},
+{
+  path: 'member',
   children: [{ path: 'add',
     component: MemberFormComponent },
   { path: ':id/edit',
