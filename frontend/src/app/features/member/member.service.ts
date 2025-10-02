@@ -90,7 +90,7 @@ export class MemberService {
       name: 'Ja',
       last_name: 'Morant',
       birthday: new Date(),
-      abbreviation: 'JM',
+      nickname: 'JM',
       employment_state: EmploymentState.MEMBER,
       date_of_hire: new Date(),
       is_admin: false,

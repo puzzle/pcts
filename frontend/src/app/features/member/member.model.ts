@@ -1,14 +1,14 @@
-import { OrganisationUnitModel } from '../organisation-unit/organisation-unit.model';
-import { EmploymentState } from '../../shared/enum/employment-state.enum';
+import { OrganisationUnit } from '../organisation-unit/organisation-unit.model';
 
-export interface MemberModel {
+export interface Member {
   id: number;
   name: string;
-  lastName: string;
+  last_name: string;
   birthday: Date;
-  abbreviation: string;
-  employmentState: EmploymentState;
-  organisationUnit: OrganisationUnitModel;
-  dateOfHire: Date;
+  nickname: string;
+  employment_state: EmploymentState;
+  date_of_hire: Date;
+  is_admin: boolean;
+  organisation_unit: OrganisationUnit;
 }
 
