@@ -2,8 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { MemberModel } from './member.model';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { OrganisationUnit } from './dto/organisation-unit.model';
 import { EmploymentState } from '../../shared/enum/employment-state.enum';
+import {OrganisationUnitModel} from '../organisation-unit/organisation-unit.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,7 @@ export class MemberService {
     return this.httpClient.get<MemberModel[]>(this.API_URL);
   }
 
-  getAllOrganisationUnits(): Observable<OrganisationUnit[]> {
+  getAllOrganisationUnits(): Observable<OrganisationUnitModel[]> {
     return of([
       {
         id: 1,

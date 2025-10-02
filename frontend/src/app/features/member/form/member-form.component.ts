@@ -1,25 +1,42 @@
-import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  ValidationErrors, ValidatorFn,
+  ValidationErrors,
+  ValidatorFn,
   Validators
 } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EmploymentState } from '../dto/member.model';
-import { OrganisationUnit } from '../dto/organisation-unit.model';
+import { EmploymentState } from '../member.model';
+import { OrganisationUnit } from '../../organisation-unit/organisation-unit.model';
 import { MemberService } from '../member.service';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButton } from '@angular/material/button';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { ErrorComponent } from '../../../shared/error/error.component';
+
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatDateFormats } from '@angular/material/core';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+
+const MY_DATE_FORMATS: MatDateFormats = {
+  parse: {
+    dateInput: 'DD.MM.yyyy'
+  },
+  display: {
+    dateInput: 'DD.MM.yyyy',
+    monthYearLabel: 'MMM yyyy',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM yyyy'
+  }
+};
 
 @Component({
   selector: 'app-member-form.component',
@@ -35,26 +52,25 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatButton,
     TranslatePipe,
     MatIconModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    ErrorComponent
   ],
   templateUrl: './member-form.component.html',
-  styleUrl: './member-form.component.css'
+  styleUrl: './member-form.component.scss',
+  providers: [{ provide: DateAdapter,
+    useClass: MomentDateAdapter,
+    deps: [MAT_DATE_LOCALE] },
+  { provide: MAT_DATE_FORMATS,
+    useValue: MY_DATE_FORMATS }]
 })
 export class MemberFormComponent implements OnInit {
   protected id: number | null = null;
 
   protected isEdit = false;
 
-  protected employmentStateOptions: EmploymentState[] = [EmploymentState.BEWERBER,
-    EmploymentState.EX_MEMBER,
-    EmploymentState.MEMBER];
-
-  protected filteredEmploymentStateOptions: WritableSignal<EmploymentState[]> = signal([]);
+  protected employmentStateOptions: EmploymentState[] = Object.values(EmploymentState);
 
   protected organisationUnitsOptions: OrganisationUnit[] = [];
-
-  protected filteredOrganisationUnitsOptions: WritableSignal<OrganisationUnit[]> = signal([]);
-
 
   protected memberService: MemberService = inject(MemberService);
 
@@ -65,49 +81,33 @@ export class MemberFormComponent implements OnInit {
   protected memberForm: FormGroup = new FormGroup({
     firstname: new FormControl('', [Validators.required]),
     lastname: new FormControl('', [Validators.required]),
-    abbreviation: new FormControl('', [Validators.required]),
+    nickname: new FormControl(''),
     birthdate: new FormControl('', [Validators.required,
-      validateDate(ValidationType.PAST)]),
-    employmentDate: new FormControl('', [Validators.required]),
+      this.validateDate()]),
+    employmentDate: new FormControl(''),
     employmentState: new FormControl(null, [Validators.required]),
-    organisationUnit: new FormControl(null, [Validators.required])
+    organisationUnit: new FormControl(null)
+  });
+
+  protected filteredEmploymentStateOptions = computed(() => {
+    const value = this.memberForm.get('employmentState')?.value;
+    return value ? this.filterEmploymentState(value) : this.employmentStateOptions;
+  });
+
+  protected filteredOrganisationUnitsOptions = computed(() => {
+    const value = this.memberForm.get('organisationUnit')?.value;
+    return value ? this.filterOrg(value) : this.organisationUnitsOptions;
   });
 
   ngOnInit() {
     this.memberService.getAllOrganisationUnits()
       .subscribe({
-        next: (orgUnits) => {
-          this.organisationUnitsOptions = orgUnits;
-          this.filteredOrganisationUnitsOptions.set(this.organisationUnitsOptions);
-        },
-        error: (error) => console.log('Error loading organisation units', error)
+        next: (orgUnits) => this.organisationUnitsOptions = orgUnits,
+        error: (error) => console.error('Error loading organisation units', error)
       });
 
-    this.filteredEmploymentStateOptions.set(this.employmentStateOptions);
-
-    this.organisationUnit.valueChanges.subscribe((value) => {
-      if (!value) {
-        this.filteredOrganisationUnitsOptions.set(this.organisationUnitsOptions);
-      } else {
-        this.filteredOrganisationUnitsOptions.set(this.filterOrg(value));
-      }
-    });
-
-    this.employmentState.valueChanges.subscribe((value) => {
-      if (!value) {
-        this.filteredEmploymentStateOptions.set(this.employmentStateOptions);
-      } else {
-        this.filteredEmploymentStateOptions.set(this.filterEmploymentState(value));
-      }
-    });
-
-    const idParam = this.route.snapshot.paramMap.get('id');
-    if (idParam) {
-      this.isEdit = true;
-      this.loadMember(+idParam);
-    } else {
-      this.isEdit = false;
-    }
+    const id: number | null = this.route.snapshot.paramMap.get('id') ? Number(this.route.snapshot.paramMap.get('id')) : null;
+    this.loadMember(id!);
   }
 
   loadMember(id: number) {
@@ -117,11 +117,9 @@ export class MemberFormComponent implements OnInit {
           next: (member) => {
             this.memberForm.controls['firstname'].setValue(member.name);
             this.memberForm.controls['lastname'].setValue(member.last_name);
-            this.memberForm.controls['abbreviation'].setValue(member.abbreviation);
-            this.memberForm.controls['birthdate'].setValue(member.birthday.toISOString()
-              .substring(0, 10));
-            this.memberForm.controls['employmentDate'].setValue(member.date_of_hire.toISOString()
-              .substring(0, 10));
+            this.memberForm.controls['nickname'].setValue(member.nickname);
+            this.memberForm.controls['birthdate'].setValue(member.birthday);
+            this.memberForm.controls['employmentDate'].setValue(member.date_of_hire);
             this.memberForm.controls['employmentState'].setValue(member.employment_state);
 
             const organisationUnit = this.organisationUnitsOptions.find((d) => d.name === member.organisation_unit.name);
@@ -132,17 +130,21 @@ export class MemberFormComponent implements OnInit {
   }
 
   onSubmit() {
-    this.memberService.addMember({
+    const formValues = this.memberForm.value;
+
+    const newMember = {
       id: 0,
-      name: this.memberForm.get('firstname')?.value,
-      last_name: this.memberForm.get('lastname')?.value,
-      birthday: this.memberForm.get('birthdate')?.value,
-      abbreviation: this.memberForm.get('abbreviation')?.value,
-      employment_state: this.memberForm.get('employmentState')?.value,
-      date_of_hire: this.memberForm.get('employmentDate')?.value,
+      name: formValues.firstname,
+      last_name: formValues.lastname,
+      birthday: formValues.birthdate,
+      nickname: formValues.nickname,
+      employment_state: formValues.employmentState,
+      date_of_hire: formValues.employmentDate,
       is_admin: false,
-      organisation_unit: this.memberForm.get('organisationUnit')?.value
-    });
+      organisation_unit: formValues.organisationUnit
+    };
+
+    this.memberService.addMember(newMember);
     this.router.navigate(['']);
   }
 
@@ -164,59 +166,20 @@ export class MemberFormComponent implements OnInit {
       .includes(filterValue));
   }
 
-  get firstname(): FormControl {
-    return this.memberForm.get('firstname') as FormControl;
-  }
+  validateDate(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) {
+        return null;
+      }
 
-  get lastname(): FormControl {
-    return this.memberForm.get('lastname') as FormControl;
-  }
+      const date = new Date(control.value);
+      const today = new Date();
 
-  get abbreviation(): FormControl {
-    return this.memberForm.get('abbreviation') as FormControl;
-  }
-
-  get birthday(): FormControl {
-    return this.memberForm.get('birthdate') as FormControl;
-  }
-
-  get employmentDate(): FormControl {
-    return this.memberForm.get('employmentDate') as FormControl;
-  }
-
-  get employmentState(): FormControl {
-    return this.memberForm.get('employmentState') as FormControl;
-  }
-
-  get organisationUnit(): FormControl {
-    return this.memberForm.get('organisationUnit') as FormControl;
-  }
-}
-
-export enum ValidationType {
-  PAST = 'past',
-  FUTURE = 'future'
-}
-
-export function validateDate(type: ValidationType): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    if (!control.value) {
-      return null;
-    }
-
-    const date = new Date(control.value);
-    const today = new Date();
-
-    if (type === ValidationType.PAST) {
       if (date >= today) {
-        return { invalidDate: true };
+        return { date_is_in_future: true };
       }
-    } else if (type === ValidationType.FUTURE) {
-      if (date <= today) {
-        return { invalidDate: true };
-      }
-    }
 
-    return null;
-  };
+      return null;
+    };
+  }
 }
