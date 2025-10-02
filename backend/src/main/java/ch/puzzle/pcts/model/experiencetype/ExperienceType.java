@@ -82,5 +82,4 @@ public class ExperienceType {
                + highlyRelevantPoints + ", limitedRelevantPoints=" + limitedRelevantPoints + ", littleRelevantPoints="
                + littleRelevantPoints + '}';
     }
-
 }

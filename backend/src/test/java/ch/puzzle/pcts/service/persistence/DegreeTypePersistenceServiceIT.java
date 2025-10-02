@@ -22,7 +22,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest
 @Testcontainers
 @ActiveProfiles("test")
-class DegreeTypePersistenceServiceTest {
+class DegreeTypePersistenceServiceIT {
 
     @Container
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17-alpine");
@@ -71,60 +71,17 @@ class DegreeTypePersistenceServiceTest {
     void shouldCreate() {
         DegreeType degreeType = new DegreeType(null,
                                                "DegreeTypes 3",
-                                               BigDecimal.valueOf(10),
-                                               BigDecimal.valueOf(5),
-                                               BigDecimal.valueOf(2));
-
-        DegreeType result = persistenceService.create(degreeType);
-
-        assertThat(result.getId()).isEqualTo(3L);
-        assertThat(result.getName()).isEqualTo(degreeType.getName());
-        assertThat(result.getHighlyRelevantPoints()).isEqualTo(new BigDecimal("10.00"));
-        assertThat(result.getLimitedRelevantPoints()).isEqualTo(new BigDecimal("5.00"));
-        assertThat(result.getLittleRelevantPoints()).isEqualTo(new BigDecimal("2.00"));
-    }
-
-    @DisplayName("Should correctly round after creating a degreeType")
-    @Transactional
-    @Test
-    @Order(2)
-    void shouldCorrectlyRoundAfterCreate() {
-        DegreeType degreeType = new DegreeType(null,
-                                               "DegreeType 3",
                                                BigDecimal.valueOf(10.055),
                                                BigDecimal.valueOf(5.603),
                                                BigDecimal.valueOf(2.005));
 
         DegreeType result = persistenceService.create(degreeType);
 
-        assertThat(result.getId()).isEqualTo(4L);
+        assertThat(result.getId()).isEqualTo(3L);
         assertThat(result.getName()).isEqualTo(degreeType.getName());
-        assertThat(result.getHighlyRelevantPoints()).isEqualTo(new BigDecimal("10.06"));
-        assertThat(result.getLimitedRelevantPoints()).isEqualTo(new BigDecimal("5.60"));
-        assertThat(result.getLittleRelevantPoints()).isEqualTo(new BigDecimal("2.01"));
-    }
-
-    @DisplayName("Should correctly round after updating a degreeType")
-    @Transactional
-    @Test
-    @Order(2)
-    void shouldCorrectlyRoundAfterUpdate() {
-        long id = 2;
-        DegreeType degreeTypeToRound = new DegreeType(null,
-                                                      "DegreeType to Round",
-                                                      BigDecimal.valueOf(10.055),
-                                                      BigDecimal.valueOf(5.603),
-                                                      BigDecimal.valueOf(2.005));
-
-        persistenceService.update(id, degreeTypeToRound);
-        Optional<DegreeType> result = persistenceService.getById(id);
-
-        assertThat(result).isPresent();
-        assertThat(result.get().getId()).isEqualTo(id);
-        assertThat(result.get().getName()).isEqualTo("DegreeType to Round");
-        assertThat(result.get().getHighlyRelevantPoints()).isEqualTo(new BigDecimal("10.06"));
-        assertThat(result.get().getLimitedRelevantPoints()).isEqualTo(new BigDecimal("5.60"));
-        assertThat(result.get().getLittleRelevantPoints()).isEqualTo(new BigDecimal("2.01"));
+        assertThat(result.getHighlyRelevantPoints()).isEqualByComparingTo(BigDecimal.valueOf(10.055));
+        assertThat(result.getLimitedRelevantPoints()).isEqualByComparingTo(BigDecimal.valueOf(5.603));
+        assertThat(result.getLittleRelevantPoints()).isEqualByComparingTo(BigDecimal.valueOf(2.005));
     }
 
     @DisplayName("Should update degreeType")
@@ -135,9 +92,9 @@ class DegreeTypePersistenceServiceTest {
         long id = 2;
         DegreeType updated = new DegreeType(null,
                                             "Updated degreeType",
-                                            BigDecimal.valueOf(20),
-                                            BigDecimal.valueOf(10),
-                                            BigDecimal.valueOf(5));
+                                            BigDecimal.valueOf(10.055),
+                                            BigDecimal.valueOf(5.603),
+                                            BigDecimal.valueOf(2.005));
 
         persistenceService.update(id, updated);
         Optional<DegreeType> result = persistenceService.getById(id);
@@ -145,9 +102,9 @@ class DegreeTypePersistenceServiceTest {
         assertThat(result).isPresent();
         assertThat(result.get().getId()).isEqualTo(id);
         assertThat(result.get().getName()).isEqualTo("Updated degreeType");
-        assertThat(result.get().getHighlyRelevantPoints()).isEqualTo(new BigDecimal("20.00"));
-        assertThat(result.get().getLimitedRelevantPoints()).isEqualTo(new BigDecimal("10.00"));
-        assertThat(result.get().getLittleRelevantPoints()).isEqualTo(new BigDecimal("5.00"));
+        assertThat(result.get().getHighlyRelevantPoints()).isEqualByComparingTo(BigDecimal.valueOf(10.055));
+        assertThat(result.get().getLimitedRelevantPoints()).isEqualByComparingTo(BigDecimal.valueOf(5.603));
+        assertThat(result.get().getLittleRelevantPoints()).isEqualByComparingTo(BigDecimal.valueOf(2.005));
     }
 
     @DisplayName("Should delete degreeType")

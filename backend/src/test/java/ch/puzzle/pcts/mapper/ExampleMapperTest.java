@@ -8,16 +8,13 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.MockitoAnnotations;
 
-class ExampleMapperIT {
-    @InjectMocks
+class ExampleMapperTest {
     private ExampleMapper mapper;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        mapper = new ExampleMapper();
     }
 
     @DisplayName("Should return example")

@@ -21,6 +21,15 @@ VALUES
     ('OrganisationUnit 2', null);
 
 
+TRUNCATE TABLE certificate CASCADE;
+
+INSERT INTO certificate (name, points, deleted_at, comment)
+VALUES
+    ('Certificate 1', 5.5, null, 'This is Certificate 1'),
+    ('Certificate 2', 1, null, 'This is Certificate 2'),
+    ('Certificate 3', 3, null, 'This is Certificate 3'),
+    ('Certificate 4', 0.5, null, 'This is Certificate 4');
+
 TRUNCATE TABLE experience_type CASCADE;
 
 INSERT INTO experience_type (name, highly_relevant_points, limited_relevant_points, little_relevant_points)
@@ -34,5 +43,16 @@ INSERT INTO degree_type (name, highly_relevant_points, limited_relevant_points, 
 VALUES
     ('Degree type 1', 120.55, 60, 15.45),
     ('Degree type 2', 12, 3.961, 3);
+TRUNCATE TABLE tag CASCADE;
 
+INSERT INTO tag (name)
+VALUES
+    ('Tag 1'),
+    ('Longer tag name');
 
+TRUNCATE TABLE CERTIFICATE_TAG CASCADE;
+
+INSERT INTO CERTIFICATE_TAG (CERTIFICATE_ID, TAG_ID)
+VALUES
+    (1, 1),
+    (2, 2);

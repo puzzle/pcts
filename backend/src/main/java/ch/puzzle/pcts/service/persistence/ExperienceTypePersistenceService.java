@@ -2,31 +2,24 @@ package ch.puzzle.pcts.service.persistence;
 
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.repository.ExperienceTypeRepository;
-import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class ExperienceTypePersistenceService {
-    private final EntityManager entityManager;
 
     private final ExperienceTypeRepository repository;
 
-    @Autowired
-    public ExperienceTypePersistenceService(EntityManager entityManager, ExperienceTypeRepository repository) {
-        this.entityManager = entityManager;
+    public ExperienceTypePersistenceService(ExperienceTypeRepository repository) {
         this.repository = repository;
     }
 
     @Transactional
     public ExperienceType create(ExperienceType experienceType) {
         experienceType.setName(experienceType.getName().trim());
-        ExperienceType createdExperienceType = repository.saveAndFlush(experienceType);
-        entityManager.refresh(createdExperienceType);
-        return createdExperienceType;
+        return repository.save(experienceType);
     }
 
     public Optional<ExperienceType> getById(long id) {
@@ -41,9 +34,7 @@ public class ExperienceTypePersistenceService {
     public ExperienceType update(Long id, ExperienceType experienceType) {
         experienceType.setName(experienceType.getName().trim());
         experienceType.setId(id);
-        ExperienceType updatedExperienceType = repository.saveAndFlush(experienceType);
-        entityManager.refresh(updatedExperienceType);
-        return updatedExperienceType;
+        return repository.save(experienceType);
     }
 
     public void delete(Long id) {

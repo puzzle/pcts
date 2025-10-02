@@ -2,23 +2,17 @@ package ch.puzzle.pcts.service.persistence;
 
 import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.repository.DegreeTypeRepository;
-import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class DegreeTypePersistenceService {
     private final DegreeTypeRepository repository;
 
-    private final EntityManager entityManager;
-
-    @Autowired
-    public DegreeTypePersistenceService(DegreeTypeRepository repository, EntityManager entityManager) {
+    public DegreeTypePersistenceService(DegreeTypeRepository repository) {
         this.repository = repository;
-        this.entityManager = entityManager;
     }
 
     public List<DegreeType> getAll() {
@@ -27,9 +21,7 @@ public class DegreeTypePersistenceService {
 
     @Transactional
     public DegreeType create(DegreeType degreeType) {
-        DegreeType createdDegreeType = repository.saveAndFlush(degreeType);
-        entityManager.refresh(createdDegreeType);
-        return createdDegreeType;
+        return repository.save(degreeType);
     }
 
     public Optional<DegreeType> getById(Long id) {
@@ -39,9 +31,7 @@ public class DegreeTypePersistenceService {
     @Transactional
     public DegreeType update(Long id, DegreeType degreeType) {
         degreeType.setId(id);
-        DegreeType updatedDegreeType = repository.saveAndFlush(degreeType);
-        entityManager.refresh(updatedDegreeType);
-        return updatedDegreeType;
+        return repository.save(degreeType);
     }
 
     public void delete(Long id) {
