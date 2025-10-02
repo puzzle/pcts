@@ -1,0 +1,10 @@
+mat-label {
+  position: absolute;
+  top: 60px;
+  left: 0;
+
+  display: flex;
+  color: #ba1a1a;
+  gap: 0.25rem;
+  align-items: center;
+}
