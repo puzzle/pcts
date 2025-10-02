@@ -1,33 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
 @use 'custom_angular';
 @use 'variables';
 
 @import 'material-icons/iconfont/material-icons.css';
-
-html,
-body {
-  height: 100%;
-  margin: 0;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
-}
-
-/*.mdc-line-ripple::before {*/
-/*  display: none;*/
-/*}*/
-/*.mdc-line-ripple--active::after {*/
-/*  display: none;*/
-/*}*/
-/*.mat-mdc-form-field-subscript-wrapper {*/
-/*  display: none;*/
-/*}*/
-
-mat-calendar {
-  background-color: white;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-}
-
-mat-mdc-tooltip {
-  background-color: white;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  border-radius: 0.5rem;
-}

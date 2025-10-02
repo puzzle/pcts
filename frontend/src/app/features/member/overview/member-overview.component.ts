@@ -157,4 +157,8 @@ export class MemberOverviewComponent {
     }
     return all;
   }
+
+  handleAddMemberClick(): void {
+    this.router.navigate(['/member/add']);
+  }
 }

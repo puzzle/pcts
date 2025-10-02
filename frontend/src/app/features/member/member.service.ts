@@ -3,7 +3,7 @@ import { MemberModel } from './member.model';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { EmploymentState } from '../../shared/enum/employment-state.enum';
-import {OrganisationUnitModel} from '../organisation-unit/organisation-unit.model';
+import { OrganisationUnitModel } from '../organisation-unit/organisation-unit.model';
 
 @Injectable({
   providedIn: 'root'

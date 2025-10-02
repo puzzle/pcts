@@ -7,15 +7,17 @@
   "SAVE": "Speichern",
   "REQUIRED": "Muss ausgefühlt sein",
   "DATE_IS_IN_FUTURE": "Datum muss in der Vergangenheit liegen",
+  "MATDATEPICKERPARSE": "Datum ist ungültig",
 
   "MEMBER": {
+    "NAME": "Name",
     "FIRSTNAME": "Vorname",
     "LASTNAME": "Nachname",
     "NICKNAME": "Kürzel",
     "BIRTHDATE": "Geburtsdatum",
     "EMPLOYMENT_DATE": "Ansellungsdatum",
-    "EMPLOYMENT_STATE": "Status",
     "ORGANISATION_UNIT": "Division",
+    "EMPLOYMENT_STATUS": "Anstellungsstatus",
 
     "FORM": {
       "PERSONAL_DETAILS": "Personalien"
@@ -28,7 +30,6 @@
       "ADD_MEMBER": "Member hinzufügen",
       "NO_SEARCH_RESULT": "Kein Member mit den Attributen \"{{searchValue}}\" gefunden."
     },
-    "EMPLOYMENT_STATUS": "Anstellungsstatus",
     "EMPLOYMENT_STATUS_VALUES": {
       "MEMBER": "Member",
       "APPLICANT": "Bewerber",

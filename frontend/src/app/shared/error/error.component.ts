@@ -1,7 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
-
-import { FormsModule } from '@angular/forms';
+import { FormGroup, FormControl, FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
@@ -23,6 +21,8 @@ import { TranslateModule } from '@ngx-translate/core';
 export class ErrorComponent {
   @Input() form!: FormGroup;
 
+  @Input() maxErrors: number = Number.MAX_SAFE_INTEGER;
+
   @Input() formControlPath!: string;
 
   get formControl(): FormControl | null {
@@ -37,6 +37,7 @@ export class ErrorComponent {
     }
 
     return control.errors ? Object.keys(control.errors)
-      .map((key) => key.toUpperCase()) : [];
+      .map((key) => key.toUpperCase())
+      .slice(0, this.maxErrors) : [];
   }
 }
