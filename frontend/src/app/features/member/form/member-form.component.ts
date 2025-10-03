@@ -12,7 +12,7 @@ import {
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MemberService } from '../member.service';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButton } from '@angular/material/button';
@@ -25,6 +25,7 @@ import { EmploymentState } from '../../../shared/enum/employment-state.enum';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ErrorComponent } from '../../../shared/error/error.component';
 import { MemberModel } from '../member.model';
+import { OrganisationUnitService } from '../../organisation-unit/organisation-unit.service';
 
 @Component({
   selector: 'app-member-form',
@@ -41,13 +42,16 @@ import { MemberModel } from '../member.model';
     TranslatePipe,
     MatIconModule,
     MatDatepickerModule,
-    ErrorComponent
+    ErrorComponent,
+    RouterLink
   ],
   templateUrl: './member-form.component.html',
   styleUrl: './member-form.component.scss'
 })
 export class MemberFormComponent implements OnInit {
   protected isEdit = false;
+
+  private id = 0;
 
   protected memberForm: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
@@ -82,25 +86,31 @@ export class MemberFormComponent implements OnInit {
 
   private readonly memberService = inject(MemberService);
 
+  private readonly organisationUnitService = inject(OrganisationUnitService);
+
   private readonly route = inject(ActivatedRoute);
 
   private readonly router = inject(Router);
 
   ngOnInit() {
-    this.memberService.getAllOrganisationUnits()
+    this.organisationUnitService.getAllOrganisationUnits()
       .subscribe({
         next: (orgUnits) => this.organisationUnitsOptions = orgUnits,
         error: (error) => console.error('Error loading organisation units', error)
       });
 
-    const id: number | null = this.route.snapshot.paramMap.get('id') ? Number(this.route.snapshot.paramMap.get('id')) : null;
-    this.loadMember(id!);
+    this.id = this.route.snapshot.paramMap.get('id') ? Number(this.route.snapshot.paramMap.get('id')) : 0;
+    this.isEdit = this.id !== 0;
+
+    if (this.isEdit) {
+      this.loadMember();
+    }
   }
 
-  loadMember(id: number) {
+  loadMember() {
     const { name, lastname, abbreviation, birthday, dateOfHire, employmentState, organisationUnit } = this.memberForm.controls;
 
-    this.memberService.getMemberById(id)
+    this.memberService.getMemberById(this.id)
       .subscribe((member) => {
         this.translateService.get('MEMBER.EMPLOYMENT_STATUS_VALUES.' + member.employmentState)
           .subscribe(() => {
@@ -117,25 +127,18 @@ export class MemberFormComponent implements OnInit {
   }
 
   onSubmit() {
-    const formValues = this.memberForm.value;
+    const memberToSave: MemberModel = {
+      ...this.memberForm.value,
+      id: 0
+    } as MemberModel;
 
-    const newMember: MemberModel = {
-      id: 0,
-      name: formValues.name,
-      lastName: formValues.lastname,
-      birthday: formValues.birthday,
-      abbreviation: formValues.abbreviation,
-      employmentState: formValues.employmentState,
-      dateOfHire: formValues.dateOfHire,
-      organisationUnit: formValues.organisationUnit
-    };
+    if (this.isEdit) {
+      this.memberService.updateMember(this.id, memberToSave);
+    } else {
+      this.memberService.addMember(memberToSave);
+    }
 
-    this.memberService.addMember(newMember);
-    this.router.navigate(['']);
-  }
-
-  onCancel() {
-    this.router.navigate(['']);
+    this.router.navigate(['/']);
   }
 
   isDateInPast(): ValidatorFn {
