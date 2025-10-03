@@ -17,41 +17,40 @@
       <mat-error><app-error [form]="memberForm" formControlPath="name" [maxErrors]="1"/></mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
+    <mat-form-field>
       <mat-label>{{ "MEMBER.LASTNAME" | translate }}</mat-label>
       <input type="text" formControlName="lastname" matInput>
       <mat-error><app-error [form]="memberForm" formControlPath="lastname" [maxErrors]="1"/></mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
+    <mat-form-field>
       <mat-label>{{ "MEMBER.NICKNAME" | translate }}</mat-label>
-      <input type="text" formControlName="abbreviation" matInput class="ps-2">
+      <input type="text" formControlName="abbreviation" matInput>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
+    <mat-form-field>
       <mat-label>{{ "MEMBER.BIRTHDATE" | translate }}</mat-label>
-      <input formControlName="birthday" matInput [matDatepicker]="birthdatePicker" class="ps-2">
+      <input formControlName="birthday" matInput [matDatepicker]="birthdatePicker">
       <mat-datepicker-toggle matIconSuffix [for]="birthdatePicker" />
       <mat-datepicker #birthdatePicker />
       <mat-error><app-error [form]="memberForm" formControlPath="birthday" [maxErrors]="1"/></mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
+    <mat-form-field>
       <mat-label>{{ "MEMBER.EMPLOYMENT_DATE" | translate }}</mat-label>
-      <input formControlName="dateOfHire" matInput [matDatepicker]="employmentDatePicker" class="ps-2">
+      <input formControlName="dateOfHire" matInput [matDatepicker]="employmentDatePicker">
       <mat-datepicker-toggle matIconSuffix [for]="employmentDatePicker" />
       <mat-datepicker #employmentDatePicker />
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
+    <mat-form-field>
       <mat-label>{{ "MEMBER.EMPLOYMENT_STATUS" | translate }}</mat-label>
       <input
         type="text"
         matInput
         formControlName="employmentState"
-        [matAutocomplete]="employmentStateAuto"
-        class="ps-2">
-      <mat-autocomplete autoActiveFirstOption #employmentStateAuto="matAutocomplete" class="bg-white" [displayWith]="displayEmploymentState.bind(this)">
+        [matAutocomplete]="employmentStateAuto">
+      <mat-autocomplete autoActiveFirstOption #employmentStateAuto="matAutocomplete" [displayWith]="displayEmploymentState.bind(this)">
         @for (employeeState of employmentStateFilteredOptions(); track employeeState) {
           <mat-option [value]="employeeState">
             {{ displayEmploymentState(employeeState) }}
@@ -61,15 +60,14 @@
       <mat-error><app-error [form]="memberForm" formControlPath="employmentState" [maxErrors]="1"/></mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-    <mat-label class="ps-2">{{ "MEMBER.ORGANISATION_UNIT" | translate }}</mat-label>
+    <mat-form-field>
+    <mat-label>{{ "MEMBER.ORGANISATION_UNIT" | translate }}</mat-label>
     <input
       type="text"
       matInput
       formControlName="organisationUnit"
-      [matAutocomplete]="organisationUnitAuto"
-      class="ps-2">
-    <mat-autocomplete autoActiveFirstOption #organisationUnitAuto="matAutocomplete" class="bg-white" [displayWith]="displayOrganisationUnit.bind(this)">
+      [matAutocomplete]="organisationUnitAuto">
+    <mat-autocomplete autoActiveFirstOption #organisationUnitAuto="matAutocomplete" [displayWith]="displayOrganisationUnit.bind(this)">
       @for (organisationUnit of organisationUnitFilteredOptions(); track organisationUnit) {
         <mat-option [value]="organisationUnit">{{displayOrganisationUnit(organisationUnit)}}</mat-option>
       }
@@ -77,8 +75,8 @@
     </mat-form-field>
 
     <div class="d-flex flex-row gap-3 z-0">
-      <button mat-stroked-button class="cancel-button" type="button" (click)="onCancel()">{{ "CANCEL" | translate }}</button>
-      <button mat-stroked-button class="submit-button" type="submit" [disabled]="!memberForm.valid">
+      <button mat-stroked-button type="button" [routerLink]="['/']">{{ "CANCEL" | translate }}</button>
+      <button mat-flat-button color="primary" type="submit" [disabled]="!memberForm.valid">
         @if (isEdit) {
           {{ "SAVE" | translate }}
         } @else {
