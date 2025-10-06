@@ -17,14 +17,21 @@ import org.springframework.stereotype.Component;
 @Component
 
 public class MemberValidationService {
-    private final Validator validator;
 
+    private final Validator validator;
     private final MemberPersistenceService persistenceService;
 
     @Autowired
     public MemberValidationService(MemberPersistenceService persistenceService) {
         this.persistenceService = persistenceService;
-        try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
+        try (ValidatorFactory factory = Validation
+                .byDefaultProvider()
+                .configure()
+                .messageInterpolator(new FieldAwareMessageInterpolator(Validation
+                        .byDefaultProvider()
+                        .configure()
+                        .getDefaultMessageInterpolator()))
+                .buildValidatorFactory()) {
             validator = factory.getValidator();
         }
     }
@@ -34,7 +41,7 @@ public class MemberValidationService {
     }
 
     public void validateOnCreate(Member member) {
-
+        validate(member);
     }
 
     public void validateOnDelete(Long id) {

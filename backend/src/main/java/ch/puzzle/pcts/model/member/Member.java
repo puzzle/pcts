@@ -1,6 +1,5 @@
 package ch.puzzle.pcts.model.member;
 
-import ch.puzzle.pcts.model.MessageKey;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -18,30 +17,33 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
-    @Size(min = 2, max = 250, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
+    @NotBlank(message = "{ATTRIBUTE_NOT_BLANK}")
+    @NotNull(message = "{ATTRIBUTE_NOT_NULL}")
+    @Size(min = 2, max = 250, message = "{ATTRIBUTE_SIZE_BETWEEN}")
     private String name;
 
-    @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
-    @Size(min = 2, max = 250, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
+    @NotBlank(message = "{attribute.not.blank}")
+    @NotNull(message = "{attribute.notnull}")
+    @Size(min = 2, max = 250, message = "{attribute.size.between}")
     private String lastName;
 
     @Enumerated(EnumType.STRING)
     private EmploymentState employmentState;
 
-    @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
-    @Size(min = 2, max = 3, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
+    @NotBlank(message = "{ATTRIBUTE_NOT_BLANK}")
+    @NotNull(message = "{ATTRIBUTE_NOT_NULL}")
+    @Size(min = 2, max = 250, message = "{ATTRIBUTE_SIZE_BETWEEN}")
     private String abbreviation;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
+    // @NotBlank(message = "{ATTRIBUTE_NOT_BLANK}")
+    @NotNull(message = "{ATTRIBUTE_NOT_NULL}")
     private Date dateOfHire;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
+    @NotNull(message = "{ATTRIBUTE_NOT_NULL}")
     private boolean isAdmin;
 
+    // @NotBlank(message = "{ATTRIBUTE_NOT_BLANK}")
+    @NotNull(message = "{ATTRIBUTE_NOT_NULL}")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organisation_unit")
     private OrganisationUnit organisationUnit;
