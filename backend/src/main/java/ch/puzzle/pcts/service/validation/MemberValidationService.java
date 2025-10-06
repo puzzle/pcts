@@ -21,7 +21,6 @@ public class MemberValidationService {
     private final Validator validator;
     private final MemberPersistenceService persistenceService;
 
-    @Autowired
     public MemberValidationService(MemberPersistenceService persistenceService) {
         this.persistenceService = persistenceService;
         try (ValidatorFactory factory = Validation
@@ -49,7 +48,8 @@ public class MemberValidationService {
     }
 
     public void validateOnUpdate(Long id, Member member) {
-
+        // TODO: validate ID!
+        validate(member);
     }
 
     public void throwExceptionWhenIdIsNull(Long i) {
@@ -69,6 +69,7 @@ public class MemberValidationService {
                     .stream()
                     .map(ConstraintViolation::getMessage)
                     .collect(Collectors.joining(", "));
+            // TODO: handle it properly here
             throw new PCTSException(HttpStatus.BAD_REQUEST, errorMessages, ErrorKey.INVALID_ARGUMENT);
         }
     }

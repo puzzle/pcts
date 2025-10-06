@@ -17,9 +17,9 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "{ATTRIBUTE_NOT_BLANK}")
-    @NotNull(message = "{ATTRIBUTE_NOT_NULL}")
-    @Size(min = 2, max = 250, message = "{ATTRIBUTE_SIZE_BETWEEN}")
+    @NotBlank(message = "{attribute.not.blank}")
+    @NotNull(message = "{attribute.notnull}")
+    @Size(min = 2, max = 250, message = "{attribute.size.between}")
     private String name;
 
     @NotBlank(message = "{attribute.not.blank}")
@@ -30,25 +30,24 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private EmploymentState employmentState;
 
-    @NotBlank(message = "{ATTRIBUTE_NOT_BLANK}")
-    @NotNull(message = "{ATTRIBUTE_NOT_NULL}")
-    @Size(min = 2, max = 250, message = "{ATTRIBUTE_SIZE_BETWEEN}")
+    @NotBlank(message = "{attribute.not.blank}")
+    @NotNull(message = "{attribute.notnull}")
+    @Size(min = 2, max = 250, message = "{attribute.size.between}")
     private String abbreviation;
 
-    // @NotBlank(message = "{ATTRIBUTE_NOT_BLANK}")
-    @NotNull(message = "{ATTRIBUTE_NOT_NULL}")
+    @NotNull(message = "{attribute.notnull}")
     private Date dateOfHire;
 
-    @NotNull(message = "{ATTRIBUTE_NOT_NULL}")
+    @NotNull(message = "{attribute.notnull}")
     private boolean isAdmin;
 
-    // @NotBlank(message = "{ATTRIBUTE_NOT_BLANK}")
-    @NotNull(message = "{ATTRIBUTE_NOT_NULL}")
+    @NotNull(message = "{attribute.notnull}")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organisation_unit")
     private OrganisationUnit organisationUnit;
 
     public Member() {
+        // TODO: either delete me or comment why this must be here.
     }
 
     public Member(Long id, String name, String lastName, EmploymentState employmentState, String abbreviation,
