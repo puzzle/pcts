@@ -1,7 +1,11 @@
 package ch.puzzle.pcts.model.member;
 
+import ch.puzzle.pcts.model.MessageKey;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.util.Date;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -14,17 +18,28 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
+    @Size(min = 2, max = 250, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String name;
 
+    @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
+    @Size(min = 2, max = 250, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String lastName;
 
     @Enumerated(EnumType.STRING)
     private EmploymentState employmentState;
 
+    @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
+    @Size(min = 2, max = 3, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String abbreviation;
 
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     private Date dateOfHire;
 
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     private boolean isAdmin;
 
     @ManyToOne(fetch = FetchType.LAZY)

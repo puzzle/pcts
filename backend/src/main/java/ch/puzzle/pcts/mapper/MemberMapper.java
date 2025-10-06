@@ -3,7 +3,9 @@ package ch.puzzle.pcts.mapper;
 import ch.puzzle.pcts.dto.member.MemberDto;
 import ch.puzzle.pcts.model.member.Member;
 import java.util.List;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MemberMapper {
     public List<MemberDto> toDto(List<Member> models) {
         return models.stream().map(this::toDto).toList();
