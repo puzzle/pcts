@@ -1,6 +1,6 @@
 package ch.puzzle.pcts.model.member;
 
-import ch.puzzle.pcts.model.organisation_unit.OrganisationUnit;
+import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import jakarta.persistence.*;
 import java.util.Date;
 import org.hibernate.annotations.SQLDelete;

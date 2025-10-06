@@ -1,7 +1,7 @@
 package ch.puzzle.pcts.dto.member;
 
 import ch.puzzle.pcts.model.member.EmploymentState;
-import ch.puzzle.pcts.model.organisation_unit.OrganisationUnit;
+import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Date;
 
