@@ -21,11 +21,17 @@ public class FieldAwareMessageInterpolator implements MessageInterpolator {
 
     @Override
     public String interpolate(String messageTemplate, Context context, Locale locale) {
-        String fieldName = "daf";
+        // we first apply the default only afterwards we add the additional fields so this delegate needs to be on top!
+        String resolvedTemplate = delegate.interpolate(messageTemplate, context, locale);
+
+
+        String className = null;
+        String fieldName = "UNKNOWN";
 
         HibernateMessageInterpolatorContext hibernateContext = context
                 .unwrap(HibernateMessageInterpolatorContext.class);
         if (hibernateContext != null) {
+            className = hibernateContext.getRootBeanType().getSimpleName();
             Path propertyPath = hibernateContext.getPropertyPath();
             Path.Node leaf = null;
             for (Path.Node node : propertyPath) {
@@ -36,17 +42,24 @@ public class FieldAwareMessageInterpolator implements MessageInterpolator {
             }
         }
 
-        // Object das = (ConstraintDescriptorImpl) context.;
-        // System.out.println(das);
+        // option to add the name of the class --> might help later on we can define a custom format
+        // we then could parse the format in the frontend as we want and show errors any way we like
+        if (resolvedTemplate.contains("{class}") && className != null) {
+            resolvedTemplate = resolvedTemplate.replace("{class}", className);
+        }
 
-        // if (fieldAttr != null && !fieldAttr.toString().isBlank()) {
-        // fieldName = fieldAttr.toString();
-        // System.out.println("fieldname is:" + fieldName + "+".repeat(20));
-        // } else {
-        // System.out.println("*".repeat(20));
-        // }
+        // sometimes it is useful to have the given value but not always so we do it conditionally
+        Object actualValue = context.getValidatedValue();
+        if (resolvedTemplate.contains("{value}")) {
+            String givenValue = actualValue != null ? actualValue.toString() : "null";
+            resolvedTemplate = resolvedTemplate.replace("{value}", givenValue);
+        }
 
-        String interpolated = messageTemplate.replace("{field}", fieldName);
-        return delegate.interpolate(interpolated, context, locale);
+        // maybe we do not want the field in some messages therefore we make it conditional
+        if (resolvedTemplate.contains("{field}")) {
+            resolvedTemplate = resolvedTemplate.replace("{field}", fieldName);
+        }
+        return resolvedTemplate;
+
     }
 }
