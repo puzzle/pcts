@@ -1,11 +1,9 @@
 package ch.puzzle.pcts.service.persistence;
 
-import ch.puzzle.pcts.exception.PCTSException;
-import ch.puzzle.pcts.model.error.ErrorKey;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.http.HttpStatus;
 
 /**
  * @param <T>
@@ -21,12 +19,8 @@ public abstract class PersistenceBase<T, I> {
         this.repository = repository;
     }
 
-    public T getById(I id) throws PCTSException {
-        return repository
-                .findById(id)
-                .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,
-                                                     getModelName() + " with id: " + id + " does not exist.",
-                                                     ErrorKey.NOT_FOUND));
+    public Optional<T> getById(I id) {
+        return repository.findById(id);
     }
 
     public List<T> getAll() {
@@ -41,6 +35,4 @@ public abstract class PersistenceBase<T, I> {
     public void delete(I id) {
         repository.deleteById(id);
     }
-
-    public abstract String getModelName();
 }

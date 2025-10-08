@@ -39,8 +39,4 @@ public class OrganisationUnitPersistenceService {
         organisationUnit.setId(id);
         return repository.save(organisationUnit);
     }
-
-    public void delete(Long id) {
-        repository.deleteById(id);
-    }
 }
