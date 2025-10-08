@@ -47,7 +47,7 @@ export class MemberOverviewComponent {
 
   displayedColumns: string[] = [
     'name',
-    'birthday',
+    'birthDate',
     'organisation_unit',
     'status'
   ];
@@ -83,6 +83,7 @@ export class MemberOverviewComponent {
       this.activeFilters = new Set(filters.statuses);
       this.applyCombinedFilter();
     });
+    console.log();
 
     this.searchControl.valueChanges
       .pipe(debounceTime(300))
@@ -103,7 +104,7 @@ export class MemberOverviewComponent {
       const memberDataString: string = (
         member.name +
         member.lastName +
-        this.datePipe.transform(member.birthday, 'dd.MM.yyyy') +
+        this.datePipe.transform(member.birthDate, 'dd.MM.yyyy') +
         member.organisationUnit.name +
         this.translate.instant('MEMBER.EMPLOYMENT_STATUS_VALUES.' + member.employmentState)
       ).toLowerCase();
