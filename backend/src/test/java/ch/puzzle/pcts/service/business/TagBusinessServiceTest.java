@@ -39,7 +39,7 @@ class TagBusinessServiceTest {
         Set<Tag> result = businessService.resolveTags(Set.of(rawTag));
 
         assertThat(result).containsExactly(existingTag);
-        verify(persistenceService, never()).create(any());
+        verify(persistenceService, never()).save(any());
     }
 
     @DisplayName("Should create a new tag if it does not exist yet")
@@ -49,14 +49,14 @@ class TagBusinessServiceTest {
         Tag createdTag = new Tag(2L, "NewTag");
 
         when(persistenceService.findWithIgnoreCase("NewTag")).thenReturn(Optional.empty());
-        when(persistenceService.create(any(Tag.class))).thenReturn(createdTag);
+        when(persistenceService.save(any(Tag.class))).thenReturn(createdTag);
 
         Set<Tag> result = businessService.resolveTags(Set.of(rawTag));
 
         assertThat(result).containsExactly(createdTag);
 
         ArgumentCaptor<Tag> captor = ArgumentCaptor.forClass(Tag.class);
-        verify(persistenceService).create(captor.capture());
+        verify(persistenceService).save(captor.capture());
         assertThat(captor.getValue().getName()).isEqualTo("NewTag");
     }
 
@@ -71,7 +71,7 @@ class TagBusinessServiceTest {
 
         when(persistenceService.findWithIgnoreCase("Existing")).thenReturn(Optional.of(existingTag));
         when(persistenceService.findWithIgnoreCase("Fresh")).thenReturn(Optional.empty());
-        when(persistenceService.create(any(Tag.class))).thenReturn(createdTag);
+        when(persistenceService.save(any(Tag.class))).thenReturn(createdTag);
 
         Set<Tag> result = businessService.resolveTags(Set.of(tag1, tag2));
 
@@ -87,6 +87,6 @@ class TagBusinessServiceTest {
 
         businessService.deleteUnusedTags();
 
-        verify(persistenceService).delete(Set.of(unusedTag));
+        verify(persistenceService).deleteAll(Set.of(unusedTag));
     }
 }

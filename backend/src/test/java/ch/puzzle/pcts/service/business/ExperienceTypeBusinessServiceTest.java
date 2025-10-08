@@ -100,26 +100,26 @@ class ExperienceTypeBusinessServiceTest {
     @DisplayName("Should create experienceType")
     @Test
     void shouldCreate() {
-        when(persistenceService.create(experienceType1)).thenReturn(experienceType1);
+        when(persistenceService.save(experienceType1)).thenReturn(experienceType1);
 
         ExperienceType result = businessService.create(experienceType1);
 
         assertEquals(experienceType1, result);
         verify(validationService).validateOnCreate(experienceType1);
-        verify(persistenceService).create(experienceType1);
+        verify(persistenceService).save(experienceType1);
     }
 
     @DisplayName("Should update experienceType")
     @Test
     void shouldUpdate() {
         Long id = 1L;
-        when(persistenceService.update(id, experienceType2)).thenReturn(experienceType2);
+        when(persistenceService.save(experienceType2)).thenReturn(experienceType2);
 
         ExperienceType result = businessService.update(id, experienceType2);
 
         assertEquals(experienceType2, result);
         verify(validationService).validateOnUpdate(id, experienceType2);
-        verify(persistenceService).update(id, experienceType2);
+        verify(persistenceService).save(experienceType2);
     }
 
     @DisplayName("Should delete experienceType")

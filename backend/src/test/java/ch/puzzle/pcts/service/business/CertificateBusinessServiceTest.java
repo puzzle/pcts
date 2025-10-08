@@ -62,13 +62,13 @@ class CertificateBusinessServiceTest {
                                                   BigDecimal.ONE,
                                                   "Comment",
                                                   Set.of(new Tag(1L, "Important tag")));
-        when(persistenceService.create(certificate)).thenReturn(certificate);
+        when(persistenceService.save(certificate)).thenReturn(certificate);
 
         Certificate result = businessService.create(certificate);
 
         assertEquals(certificate, result);
         verify(validationService).validateOnCreate(certificate);
-        verify(persistenceService).create(certificate);
+        verify(persistenceService).save(certificate);
         verify(tagBusinessService).resolveTags(any());
     }
 
@@ -104,13 +104,13 @@ class CertificateBusinessServiceTest {
                                                   BigDecimal.ONE,
                                                   "Comment",
                                                   Set.of(new Tag(1L, "Important tag")));
-        when(persistenceService.update(id, certificate)).thenReturn(certificate);
+        when(persistenceService.save(certificate)).thenReturn(certificate);
 
         Certificate result = businessService.update(id, certificate);
 
         assertEquals(certificate, result);
         verify(validationService).validateOnUpdate(id, certificate);
-        verify(persistenceService).update(id, certificate);
+        verify(persistenceService).save(certificate);
         verify(tagBusinessService).deleteUnusedTags();
     }
 
