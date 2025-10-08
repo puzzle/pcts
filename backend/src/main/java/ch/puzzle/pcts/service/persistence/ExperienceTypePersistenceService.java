@@ -6,11 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ExperienceTypePersistenceService extends PersistenceBase<ExperienceType, ExperienceTypeRepository> {
-
-    private final ExperienceTypeRepository repository;
-
     public ExperienceTypePersistenceService(ExperienceTypeRepository repository) {
         super(repository);
-        this.repository = repository;
     }
 }
