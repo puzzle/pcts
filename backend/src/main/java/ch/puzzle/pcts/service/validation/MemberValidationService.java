@@ -10,7 +10,6 @@ import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -48,7 +47,7 @@ public class MemberValidationService {
     }
 
     public void validateOnUpdate(Long id, Member member) {
-        // TODO: validate ID!
+        throwExceptionWhenIdIsNull(member.getId());
         validate(member);
     }
 
@@ -69,7 +68,6 @@ public class MemberValidationService {
                     .stream()
                     .map(ConstraintViolation::getMessage)
                     .collect(Collectors.joining(", "));
-            // TODO: handle it properly here
             throw new PCTSException(HttpStatus.BAD_REQUEST, errorMessages, ErrorKey.INVALID_ARGUMENT);
         }
     }

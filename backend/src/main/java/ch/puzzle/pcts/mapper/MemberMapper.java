@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.mapper;
 
 import ch.puzzle.pcts.dto.member.MemberDto;
+import ch.puzzle.pcts.dto.member.MemberInputDto;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.business.OrganisationUnitBusinessService;
 import java.util.List;
@@ -9,14 +10,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class MemberMapper {
     OrganisationUnitBusinessService organisationUnitBusinessService;
-    public MemberMapper(OrganisationUnitBusinessService organisationUnitBusinessService) {
+    OrganisationUnitMapper organisationUnitMapper;
+
+    public MemberMapper(OrganisationUnitBusinessService organisationUnitBusinessService,
+                        OrganisationUnitMapper organisationUnitMapper) {
         this.organisationUnitBusinessService = organisationUnitBusinessService;
+        this.organisationUnitMapper = organisationUnitMapper;
     }
     public List<MemberDto> toDto(List<Member> models) {
         return models.stream().map(this::toDto).toList();
     }
 
-    public List<Member> fromDto(List<MemberDto> dtos) {
+    public List<Member> fromDto(List<MemberInputDto> dtos) {
         return dtos.stream().map(this::fromDto).toList();
     }
 
@@ -27,17 +32,20 @@ public class MemberMapper {
                              model.getEmploymentState(),
                              model.getAbbreviation(),
                              model.getDateOfHire(),
-                             model.isAdmin());  //TODO: dont forget to add me back
+                             model.getBirthDate(),
+                             model.isAdmin(),
+                             organisationUnitMapper.toDto(model.getOrganisationUnit()));
     }
 
-    public Member fromDto(MemberDto dto) {
+    public Member fromDto(MemberInputDto dto) {
         return new Member(dto.id(),
                           dto.name(),
                           dto.lastName(),
                           dto.employmentState(),
                           dto.abbreviation(),
                           dto.dateOfHire(),
+                          dto.birthDate(),
                           dto.isAdmin(),
-                          organisationUnitBusinessService.getById(1)); // TODO: dont forget to change me.
+                          organisationUnitBusinessService.getById(dto.organisationUnitId()));
     }
 }

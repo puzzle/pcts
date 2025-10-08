@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.controller;
 
 import ch.puzzle.pcts.dto.member.MemberDto;
+import ch.puzzle.pcts.dto.member.MemberInputDto;
 import ch.puzzle.pcts.mapper.MemberMapper;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
@@ -51,9 +52,9 @@ public class MemberController {
     @Operation(summary = "Create a new member")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The member object to be created.", required = true)
     @ApiResponse(responseCode = "201", description = "member created successfully.", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = MemberDto.class)) })
+            @Content(mediaType = "application/json", schema = @Schema(implementation = MemberInputDto.class)) })
     @PostMapping
-    public ResponseEntity<MemberDto> createMember(@Valid @RequestBody MemberDto dto) {
+    public ResponseEntity<MemberDto> createMember(@Valid @RequestBody MemberInputDto dto) {
         Member newMember = service.create(mapper.fromDto(dto));
         return ResponseEntity.status(201).body(mapper.toDto(newMember));
     }
@@ -61,10 +62,10 @@ public class MemberController {
     @Operation(summary = "Update an member")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The updated member data.", required = true)
     @ApiResponse(responseCode = "200", description = "member updated successfully.", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = MemberDto.class)) })
+            @Content(mediaType = "application/json", schema = @Schema(implementation = MemberInputDto.class)) })
     @PutMapping("{memberId}")
     public ResponseEntity<MemberDto> updateMember(@Parameter(description = "ID of the member to update.", required = true)
-    @PathVariable Long memberId, @RequestBody MemberDto dto) {
+    @PathVariable Long memberId, @RequestBody MemberInputDto dto) {
         Member updatedMember = service.update(memberId, mapper.fromDto(dto));
         return ResponseEntity.ok(mapper.toDto(updatedMember));
     }
