@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RolePersistenceService extends PersistenceBase<Role, Long> {
+public class RolePersistenceService extends PersistenceBase<Role, RoleRepository> {
     private final RoleRepository repository;
 
     public RolePersistenceService(RoleRepository repository) {

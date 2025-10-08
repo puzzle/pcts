@@ -4,7 +4,7 @@ import ch.puzzle.pcts.repository.DegreeTypeRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DegreeTypePersistenceService extends PersistenceBase<DegreeType, Long> {
+public class DegreeTypePersistenceService extends PersistenceBase<DegreeType, DegreeTypeRepository> {
     private final DegreeTypeRepository repository;
 
     public DegreeTypePersistenceService(DegreeTypeRepository repository) {
