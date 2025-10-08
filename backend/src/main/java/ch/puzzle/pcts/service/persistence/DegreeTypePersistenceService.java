@@ -5,10 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DegreeTypePersistenceService extends PersistenceBase<DegreeType, DegreeTypeRepository> {
-    private final DegreeTypeRepository repository;
-
     public DegreeTypePersistenceService(DegreeTypeRepository repository) {
         super(repository);
-        this.repository = repository;
     }
 }
