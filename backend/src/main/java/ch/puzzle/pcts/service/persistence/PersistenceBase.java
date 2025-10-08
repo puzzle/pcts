@@ -8,18 +8,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * @param <T>
  *            the Type or entity of the repository
- * @param <I>
- *            the Identifier or primary key of the entity
+ * @param <R>
+ *            the Repository of the entity
  */
-public abstract class PersistenceBase<T, I> {
+public abstract class PersistenceBase<T, R extends JpaRepository<T, Long>> {
 
-    private final JpaRepository<T, I> repository;
+    private final R repository;
 
-    protected PersistenceBase(JpaRepository<T, I> repository) {
+    protected PersistenceBase(R repository) {
         this.repository = repository;
     }
 
-    public Optional<T> getById(I id) {
+    public Optional<T> getById(Long id) {
         return repository.findById(id);
     }
 
@@ -32,7 +32,7 @@ public abstract class PersistenceBase<T, I> {
         return repository.save(model);
     }
 
-    public void delete(I id) {
+    public void delete(Long id) {
         repository.deleteById(id);
     }
 }

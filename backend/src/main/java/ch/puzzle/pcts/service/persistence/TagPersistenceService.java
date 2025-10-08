@@ -7,7 +7,7 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TagPersistenceService extends PersistenceBase<Tag, Long> {
+public class TagPersistenceService extends PersistenceBase<Tag, TagRepository> {
 
     private final TagRepository repository;
 
