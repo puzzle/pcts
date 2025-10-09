@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ErrorComponent } from './error.component';
+import { InputField } from './input-field';
 
-describe('ErrorComponent', () => {
-  let component: ErrorComponent;
-  let fixture: ComponentFixture<ErrorComponent>;
+describe('InputField', () => {
+  let component: InputField;
+  let fixture: ComponentFixture<InputField>;
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      imports: [ErrorComponent]
+      imports: [InputField]
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(ErrorComponent);
+    fixture = TestBed.createComponent(InputField);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

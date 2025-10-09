@@ -7,30 +7,15 @@ import { EmploymentState } from '../../../shared/enum/employment-state.enum';
 import { of } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { MemberService } from '../member.service';
+import { member1, member2 } from '../../../shared/test/test-data';
 
 describe('MemberOverviewComponent', () => {
   let component: MemberOverviewComponent;
   let fixture: ComponentFixture<MemberOverviewComponent>;
   let memberServiceMock: Partial<MemberService>;
 
-  const membersMock: MemberModel[] = [{ id: 1,
-    name: 'Ja',
-    lastName: 'Morant',
-    birthDate: new Date(2018, 0, 1),
-    abbreviation: 'JM',
-    employmentState: EmploymentState.MEMBER,
-    organisationUnit: { id: 1,
-      name: '/mem' },
-    dateOfHire: new Date(2019, 0, 1) },
-  { id: 2,
-    name: 'Bane',
-    lastName: 'Desmond',
-    birthDate: new Date(2016, 5, 15),
-    abbreviation: 'BD',
-    employmentState: EmploymentState.EX_MEMBER,
-    organisationUnit: { id: 2,
-      name: '/ww' },
-    dateOfHire: new Date(2017, 3, 1) }];
+  const membersMock: MemberModel[] = [member1,
+    member2];
 
   beforeEach(async() => {
     memberServiceMock = {

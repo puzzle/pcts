@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { MemberFormComponent } from './features/member/form/member-form.component';
-import { idResolver } from './features/member/form/id-resolver.service';
+import { idResolver } from './features/member/member-form-resolver';
 import { MemberOverviewComponent } from './features/member/overview/member-overview.component';
 import { MemberOverviewResolver } from './features/member/overview/member-overview-resolver';
 
@@ -15,6 +15,6 @@ export const routes: Routes = [{ path: '',
   { path: ':id/edit',
     component: MemberFormComponent,
     resolve: {
-      id: idResolver
+      memberData: idResolver
     } }]
 }];

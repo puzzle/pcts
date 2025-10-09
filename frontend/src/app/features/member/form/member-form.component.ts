@@ -1,7 +1,6 @@
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, Signal, signal } from '@angular/core';
 import {
-  AbstractControl,
-  FormControl,
+  AbstractControl, FormBuilder,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
@@ -23,9 +22,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { OrganisationUnitModel } from '../../organisation-unit/organisation-unit.model';
 import { EmploymentState } from '../../../shared/enum/employment-state.enum';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ErrorComponent } from '../../../shared/error/error.component';
 import { MemberModel } from '../member.model';
 import { OrganisationUnitService } from '../../organisation-unit/organisation-unit.service';
+import { InputField } from '../../../shared/input-field/input-field';
+import { InputTypeEnum } from '../../../shared/input-field/input-type.enum';
 
 @Component({
   selector: 'app-member-form',
@@ -42,26 +42,49 @@ import { OrganisationUnitService } from '../../organisation-unit/organisation-un
     TranslatePipe,
     MatIconModule,
     MatDatepickerModule,
-    ErrorComponent,
-    RouterLink
+    RouterLink,
+    InputField
   ],
   templateUrl: './member-form.component.html',
   styleUrl: './member-form.component.scss'
 })
 export class MemberFormComponent implements OnInit {
-  protected isEdit = false;
+  private readonly translateService = inject(TranslateService);
 
-  private id = 0;
+  private readonly memberService = inject(MemberService);
 
-  protected memberForm: FormGroup = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    lastname: new FormControl('', [Validators.required]),
-    abbreviation: new FormControl(''),
-    birthday: new FormControl('', [Validators.required,
-      this.isDateInPast()]),
-    dateOfHire: new FormControl(''),
-    employmentState: new FormControl(null, [Validators.required]),
-    organisationUnit: new FormControl(null)
+  private readonly organisationUnitService = inject(OrganisationUnitService);
+
+  private readonly route = inject(ActivatedRoute);
+
+  private readonly router = inject(Router);
+
+  private readonly fb = inject(FormBuilder);
+
+  protected readonly InputTypeEnum = InputTypeEnum;
+
+  protected isEdit = signal<boolean>(false);
+
+  protected pageTitleKey: Signal<string> = computed(() => (this.isEdit() ? 'GENERAL.EDIT' : 'GENERAL.ADD'));
+
+  protected submitButtonKey: Signal<string> = computed(() => (this.isEdit() ? 'GENERAL.SAVE' : 'GENERAL.ADD'));
+
+  protected memberForm: FormGroup = this.fb.group({
+    id: [null],
+    name: ['',
+      Validators.required],
+    lastName: ['',
+      Validators.required],
+    abbreviation: [''],
+    birthday: ['',
+      [Validators.required,
+        this.isDateInPast]],
+    dateOfHire: [''],
+    employmentState: [null,
+      [Validators.required,
+        this.isAEnumValue]],
+    organisationUnit: [null,
+      this.isAObject]
   });
 
   private readonly employmentStateOptions: EmploymentState[] = Object.values(EmploymentState);
@@ -73,68 +96,39 @@ export class MemberFormComponent implements OnInit {
     return this.filterEmploymentState(value);
   });
 
-  private organisationUnitsOptions: OrganisationUnitModel[] = [];
+  private readonly organisationUnitsOptions = toSignal(this.organisationUnitService.getAllOrganisationUnits(), { initialValue: [] });
 
   protected organisationUnitControlSignal = toSignal(this.memberForm.get('organisationUnit')!.valueChanges, { initialValue: this.memberForm.get('organisationUnit')!.value });
 
   protected organisationUnitFilteredOptions = computed(() => {
-    const value = this.organisationUnitControlSignal() || '';
+    const value = this.organisationUnitControlSignal();
     return this.filterOrganisationUnit(value);
   });
 
-  private readonly translateService = inject(TranslateService);
-
-  private readonly memberService = inject(MemberService);
-
-  private readonly organisationUnitService = inject(OrganisationUnitService);
-
-  private readonly route = inject(ActivatedRoute);
-
-  private readonly router = inject(Router);
-
-  ngOnInit() {
-    this.organisationUnitService.getAllOrganisationUnits()
-      .subscribe({
-        next: (orgUnits) => this.organisationUnitsOptions = orgUnits,
-        error: (error) => console.error('Error loading organisation units', error)
-      });
-
-    this.id = this.route.snapshot.paramMap.get('id') ? Number(this.route.snapshot.paramMap.get('id')) : 0;
-    this.isEdit = this.id !== 0;
-
-    if (this.isEdit) {
-      this.loadMember();
-    }
+  ngOnInit(): void {
+    this.loadMember();
   }
 
   loadMember() {
-    const { name, lastname, abbreviation, birthday, dateOfHire, employmentState, organisationUnit } = this.memberForm.controls;
-
-    this.memberService.getMemberById(this.id)
-      .subscribe((member) => {
-        this.translateService.get('MEMBER.EMPLOYMENT_STATUS_VALUES.' + member.employmentState)
-          .subscribe(() => {
-            employmentState.setValue(member.employmentState);
-          });
-
-        name.setValue(member.name);
-        lastname.setValue(member.lastName);
-        abbreviation.setValue(member.abbreviation);
-        birthday.setValue(member.birthday);
-        dateOfHire.setValue(member.dateOfHire);
-        organisationUnit.setValue(member.organisationUnit);
-      });
+    const member = this.route.snapshot.data['memberData'] as MemberModel;
+    if (member?.id) {
+      this.isEdit.set(true);
+    }
+    this.memberForm.patchValue(member);
   }
 
   onSubmit() {
-    const memberToSave: MemberModel = {
-      ...this.memberForm.value,
-      id: 0
-    } as MemberModel;
+    this.memberForm.markAllAsTouched();
+    if (this.memberForm.invalid) {
+      return;
+    }
 
-    if (this.isEdit) {
-      this.memberService.updateMember(this.id, memberToSave);
+    const memberToSave = this.memberForm.getRawValue() as MemberModel;
+
+    if (this.isEdit()) {
+      this.memberService.updateMember(this.memberForm.get('id')?.value, memberToSave);
     } else {
+      memberToSave.id = 0;
       this.memberService.addMember(memberToSave);
     }
 
@@ -155,6 +149,40 @@ export class MemberFormComponent implements OnInit {
       }
 
       return null;
+    };
+  }
+
+  isAObject(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+
+      if (!value) {
+        return null;
+      }
+
+      if (typeof value === 'string') {
+        return { require_selection: true };
+      }
+
+      const isValidOption = this.organisationUnitsOptions()
+        .includes(value);
+
+      return isValidOption ? null : { invalid_option: true };
+    };
+  }
+
+  isAEnumValue(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+
+      if (!value) {
+        return null;
+      }
+
+      if (value === EmploymentState.EX_MEMBER || value === EmploymentState.APPLICANT || value === EmploymentState.MEMBER) {
+        return null;
+      }
+      return { invalid_entry: true };
     };
   }
 
@@ -185,10 +213,20 @@ export class MemberFormComponent implements OnInit {
     });
   }
 
-  private filterOrganisationUnit(value: OrganisationUnitModel | string): OrganisationUnitModel[] {
+  private filterOrganisationUnit(value: OrganisationUnitModel | string | null): OrganisationUnitModel[] {
+    if (value === null || value === undefined || value === '') {
+      return this.organisationUnitsOptions();
+    }
+
+
     const filterValue = (typeof value === 'string' ? value : value.name).toLowerCase();
 
-    return this.organisationUnitsOptions.filter((option) => option.name.toLowerCase()
-      .includes(filterValue));
+    if (filterValue === '') {
+      return this.organisationUnitsOptions();
+    }
+
+    return this.organisationUnitsOptions()
+      .filter((option) => option.name.toLowerCase()
+        .includes(filterValue));
   }
 }

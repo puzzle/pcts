@@ -1,29 +1,17 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { OrganisationUnitModel } from './organisation-unit.model';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrganisationUnitService {
+  private httpClient = inject(HttpClient);
+
+  private readonly API_URL = '/api/v1/organisation-units';
+
   getAllOrganisationUnits(): Observable<OrganisationUnitModel[]> {
-    return of([
-      {
-        id: 1,
-        name: '/mobility'
-      },
-      {
-        id: 2,
-        name: '/bbt'
-      },
-      {
-        id: 3,
-        name: '/sys'
-      },
-      {
-        id: 4,
-        name: '/mem'
-      }
-    ]);
+    return this.httpClient.get<OrganisationUnitModel[]>(this.API_URL);
   }
 }
