@@ -77,8 +77,8 @@ class MemberPersistenceServiceIT {
     void shouldCreate() {
         Member member = Member.Builder
                 .builder()
-                .withId(1L)
-                .withName("Member1")
+                .withId(null)
+                .withName("Member 3")
                 .withLastName("Test")
                 .withEmploymentState(EmploymentState.APPLICANT)
                 .withAbbreviation("M1")
@@ -86,7 +86,7 @@ class MemberPersistenceServiceIT {
                 .withBirthDate(commonDate)
                 .withIsAdmin(false)
                 .withOrganisationUnit(organisationUnit)
-                .build();;
+                .build();
 
         Member result = persistenceService.create(member);
 
@@ -103,7 +103,7 @@ class MemberPersistenceServiceIT {
         Member member = Member.Builder
                 .builder()
                 .withId(1L)
-                .withName("Member1")
+                .withName("Updated member")
                 .withLastName("Test")
                 .withEmploymentState(EmploymentState.APPLICANT)
                 .withAbbreviation("M1")
