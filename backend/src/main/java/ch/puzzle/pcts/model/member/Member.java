@@ -47,7 +47,7 @@ public class Member {
         this.organisationUnit = organisationUnit;
     }
 
-    protected Member() {
+    public Member() {
         // JPA requires a no-arg constructor
     }
 
