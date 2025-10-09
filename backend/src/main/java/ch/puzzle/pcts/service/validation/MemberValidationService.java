@@ -15,7 +15,7 @@ public class MemberValidationService {
     }
 
     public void validateOnCreate(Member member) {
-        // TODO Validation gets added in Story #144 or #111
+        // Will get content in the future.
     }
 
     public void validateOnDelete(Long id) {
