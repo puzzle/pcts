@@ -1,21 +1,28 @@
 {
   "PCTS_LOGO_ALT": "Puzzle PCTS Logo",
   "LOGOUT": "Abmelden",
-  "ADD": "Hinzufügen",
-  "EDIT": "Ändern",
-  "CANCEL": "Abbrechen",
-  "SAVE": "Speichern",
-  "REQUIRED": "Muss ausgefühlt sein",
-  "DATE_IS_IN_FUTURE": "Datum muss in der Vergangenheit liegen",
-  "MATDATEPICKERPARSE": "Datum ist ungültig",
+
+  "GENERAL": {
+    "ADD": "Hinzufügen",
+    "EDIT": "Ändern",
+    "CANCEL": "Abbrechen",
+    "SAVE": "Speichern"
+  },
+
+  "VALIDATION": {
+    "REQUIRED": "Muss ausgefühlt sein",
+    "DATE_IS_IN_FUTURE": "Datum muss in der Vergangenheit liegen",
+    "INVALID_ENTRY": "Ungültige Eingabe",
+    "MATDATEPICKERPARSE": "Ungültiges Datum"
+  },
 
   "MEMBER": {
     "NAME": "Name",
     "FIRSTNAME": "Vorname",
     "LASTNAME": "Nachname",
-    "NICKNAME": "Kürzel",
-    "BIRTHDATE": "Geburtsdatum",
-    "EMPLOYMENT_DATE": "Ansellungsdatum",
+    "ABBREVIATION": "Kürzel",
+    "BIRTHDAY": "Geburtsdatum",
+    "DATE_OF_HIRE": "Ansellungsdatum",
     "ORGANISATION_UNIT": "Division",
     "EMPLOYMENT_STATUS": "Anstellungsstatus",
 

@@ -1,0 +1,43 @@
+<mat-form-field class="w-100">
+  <mat-label>{{labelKey | translate}}</mat-label>
+  @switch (type) {
+    @case (InputTypeEnum.TEXT) {
+      <input
+        type="text"
+        [formControl]="formControl!"
+        matInput
+      >
+    }
+    @case (InputTypeEnum.DATE) {
+      <input
+        [formControl]="formControl!"
+        matInput
+        [matDatepicker]="datePicker"
+      >
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="datePicker"
+      />
+      <mat-datepicker #datePicker />
+    }
+    @case (InputTypeEnum.DROPDOWN) {
+      <input
+        type="text"
+        matInput
+        [formControl]="formControl!"
+        [matAutocomplete]="auto"
+      >
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayWith">
+        @for (option of dropdownOptions(); track option) {
+          <mat-option [value]="option">
+            {{displayWith(option)}}
+          </mat-option>
+        }
+      </mat-autocomplete>
+    }
+  }
+
+  @for (errorMessage of getErrorMessages(); track errorMessage) {
+    <mat-error>{{errorMessage | translate}}</mat-error>
+  }
+</mat-form-field>

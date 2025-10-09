@@ -1,88 +1,27 @@
 <div class="w-75 mx-auto mt-5">
-  <h1>Member
-    @if (isEdit) {
-      {{ "EDIT" | translate}}
-    } @else {
-      {{ "ADD" | translate}}
-    }
-  </h1>
+  <h1>Member {{pageTitleKey() | translate}}</h1>
 
   <p class="fw-bold">{{ "MEMBER.FORM.PERSONAL_DETAILS" | translate }}</p>
 
-  <form [formGroup]="memberForm" (ngSubmit)="onSubmit()" class="d-flex flex-column gap-3">
+  <form [formGroup]="memberForm" (ngSubmit)="onSubmit()">
 
-    <mat-form-field>
-      <mat-label>{{ "MEMBER.FIRSTNAME" | translate }}</mat-label>
-      <input type="text" formControlName="name" matInput>
-      <mat-error><app-error [form]="memberForm" formControlPath="name" [maxErrors]="1"/></mat-error>
-    </mat-form-field>
+    <app-input-field [formControl]="memberForm.controls.name" labelKey="MEMBER.FIRSTNAME" [formGroup]="memberForm" />
 
-    <mat-form-field>
-      <mat-label>{{ "MEMBER.LASTNAME" | translate }}</mat-label>
-      <input type="text" formControlName="lastname" matInput>
-      <mat-error><app-error [form]="memberForm" formControlPath="lastname" [maxErrors]="1"/></mat-error>
-    </mat-form-field>
+    <app-input-field [formControl]="memberForm.controls.lastName" labelKey="MEMBER.LASTNAME" [formGroup]="memberForm" />
 
-    <mat-form-field>
-      <mat-label>{{ "MEMBER.NICKNAME" | translate }}</mat-label>
-      <input type="text" formControlName="abbreviation" matInput>
-    </mat-form-field>
+    <app-input-field [formControl]="memberForm.controls.abbreviation" labelKey="MEMBER.ABBREVIATION" [formGroup]="memberForm" />
 
-    <mat-form-field>
-      <mat-label>{{ "MEMBER.BIRTHDATE" | translate }}</mat-label>
-      <input formControlName="birthday" matInput [matDatepicker]="birthdatePicker">
-      <mat-datepicker-toggle matIconSuffix [for]="birthdatePicker" />
-      <mat-datepicker #birthdatePicker />
-      <mat-error><app-error [form]="memberForm" formControlPath="birthday" [maxErrors]="1"/></mat-error>
-    </mat-form-field>
+    <app-input-field [formControl]="memberForm.controls.birthday" labelKey="MEMBER.BIRTHDAY" [formGroup]="memberForm" [type]="InputTypeEnum.DATE" />
 
-    <mat-form-field>
-      <mat-label>{{ "MEMBER.EMPLOYMENT_DATE" | translate }}</mat-label>
-      <input formControlName="dateOfHire" matInput [matDatepicker]="employmentDatePicker">
-      <mat-datepicker-toggle matIconSuffix [for]="employmentDatePicker" />
-      <mat-datepicker #employmentDatePicker />
-    </mat-form-field>
+    <app-input-field [formControl]="memberForm.controls.dateOfHire" labelKey="MEMBER.DATE_OF_HIRE" [formGroup]="memberForm" [type]="InputTypeEnum.DATE" />
 
-    <mat-form-field>
-      <mat-label>{{ "MEMBER.EMPLOYMENT_STATUS" | translate }}</mat-label>
-      <input
-        type="text"
-        matInput
-        formControlName="employmentState"
-        [matAutocomplete]="employmentStateAuto">
-      <mat-autocomplete autoActiveFirstOption #employmentStateAuto="matAutocomplete" [displayWith]="displayEmploymentState.bind(this)">
-        @for (employeeState of employmentStateFilteredOptions(); track employeeState) {
-          <mat-option [value]="employeeState">
-            {{ displayEmploymentState(employeeState) }}
-          </mat-option>
-        }
-      </mat-autocomplete>
-      <mat-error><app-error [form]="memberForm" formControlPath="employmentState" [maxErrors]="1"/></mat-error>
-    </mat-form-field>
+    <app-input-field [formControl]="memberForm.controls.employmentState" labelKey="MEMBER.EMPLOYMENT_STATUS" [formGroup]="memberForm" [type]="InputTypeEnum.DROPDOWN" [dropdownOptions]="employmentStateFilteredOptions" [displayWith]="displayEmploymentState.bind(this)" />
 
-    <mat-form-field>
-    <mat-label>{{ "MEMBER.ORGANISATION_UNIT" | translate }}</mat-label>
-    <input
-      type="text"
-      matInput
-      formControlName="organisationUnit"
-      [matAutocomplete]="organisationUnitAuto">
-    <mat-autocomplete autoActiveFirstOption #organisationUnitAuto="matAutocomplete" [displayWith]="displayOrganisationUnit.bind(this)">
-      @for (organisationUnit of organisationUnitFilteredOptions(); track organisationUnit) {
-        <mat-option [value]="organisationUnit">{{displayOrganisationUnit(organisationUnit)}}</mat-option>
-      }
-    </mat-autocomplete>
-    </mat-form-field>
+    <app-input-field [formControl]="memberForm.controls.organisationUnit" labelKey="MEMBER.ORGANISATION_UNIT" [formGroup]="memberForm" [type]="InputTypeEnum.DROPDOWN" [dropdownOptions]="organisationUnitFilteredOptions" [displayWith]="displayOrganisationUnit.bind(this)" />
 
-    <div class="d-flex flex-row gap-3 z-0">
-      <button mat-stroked-button type="button" [routerLink]="['/']">{{ "CANCEL" | translate }}</button>
-      <button mat-flat-button color="primary" type="submit" [disabled]="!memberForm.valid">
-        @if (isEdit) {
-          {{ "SAVE" | translate }}
-        } @else {
-          {{ "ADD" | translate }}
-        }
-      </button>
+    <div class="d-flex flex-row gap-3">
+      <button mat-stroked-button type="button" [routerLink]="['/']">{{ "GENERAL.CANCEL" | translate }}</button>
+      <button mat-flat-button color="primary" type="submit" [disabled]="!memberForm.valid"> {{submitButtonKey() | translate}} </button>
     </div>
   </form>
 </div>
