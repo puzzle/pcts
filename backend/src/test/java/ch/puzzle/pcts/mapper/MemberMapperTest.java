@@ -65,10 +65,8 @@ class MemberMapperTest {
                                                     true,
                                                     organisationUnit);
 
-        // When
         MemberDto result = mapper.toDto(modelWithApplicantState);
 
-        // Then
         assertEquals(modelWithApplicantState.getId(), result.id());
         assertEquals(modelWithApplicantState.getName(), result.name());
         assertEquals(modelWithApplicantState.getLastName(), result.lastName());
@@ -93,10 +91,8 @@ class MemberMapperTest {
                                                                  false,
                                                                  orgUnitId);
 
-        // When
         Member result = mapper.fromDto(dtoWithExMemberState);
 
-        // Then
         assertEquals(dtoWithExMemberState.id(), result.getId());
         assertEquals(dtoWithExMemberState.name(), result.getName());
         assertEquals(dtoWithExMemberState.lastName(), result.getLastName());
@@ -122,10 +118,8 @@ class MemberMapperTest {
                                     organisationUnit);
         List<Member> members = List.of(member1, member2);
 
-        // When
         List<MemberDto> result = mapper.toDto(members);
 
-        // Then
         assertEquals(2, result.size());
         MemberDto resultDto1 = result.get(0);
         assertEquals(member1.getId(), resultDto1.id());
@@ -160,10 +154,8 @@ class MemberMapperTest {
                                                  orgUnitId);
         List<MemberInputDto> dtos = List.of(dto1, dto2);
 
-        // When
         List<Member> result = mapper.fromDto(dtos);
 
-        // Then
         assertEquals(2, result.size());
         Member resultModel1 = result.get(0);
         assertEquals(dto1.id(), resultModel1.getId());

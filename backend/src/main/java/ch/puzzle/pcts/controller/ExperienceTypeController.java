@@ -14,7 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +24,6 @@ public class ExperienceTypeController {
     private final ExperienceTypeMapper mapper;
     private final ExperienceTypeBusinessService service;
 
-    @Autowired
     public ExperienceTypeController(ExperienceTypeMapper mapper, ExperienceTypeBusinessService service) {
         this.mapper = mapper;
         this.service = service;

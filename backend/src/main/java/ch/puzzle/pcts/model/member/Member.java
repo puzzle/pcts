@@ -122,4 +122,12 @@ public class Member {
     public void setOrganisationUnit(OrganisationUnit organisationUnit) {
         this.organisationUnit = organisationUnit;
     }
+
+    @Override
+    public String toString() {
+        return "Member{" + "id=" + id + ", name='" + name + '\'' + ", lastName='" + lastName + '\''
+               + ", employmentState=" + employmentState + ", abbreviation='" + abbreviation + '\'' + ", dateOfHire="
+               + dateOfHire + ", birthDate=" + birthDate + ", isAdmin=" + isAdmin + ", organisationUnit="
+               + organisationUnit + '}';
+    }
 }

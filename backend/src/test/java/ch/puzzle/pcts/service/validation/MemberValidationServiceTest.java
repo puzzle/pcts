@@ -5,20 +5,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.member.Member;
-import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 class MemberValidationServiceTest {
     private AutoCloseable closeable;
-
-    @Mock
-    private MemberPersistenceService persistenceService;
 
     @InjectMocks
     private MemberValidationService validationService;

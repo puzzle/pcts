@@ -83,7 +83,6 @@ export class MemberOverviewComponent {
       this.activeFilters = new Set(filters.statuses);
       this.applyCombinedFilter();
     });
-    console.log();
 
     this.searchControl.valueChanges
       .pipe(debounceTime(300))

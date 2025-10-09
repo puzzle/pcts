@@ -10,9 +10,6 @@ import org.springframework.stereotype.Component;
 
 public class MemberValidationService {
 
-    public MemberValidationService() {
-    }
-
     public void validateOnGetById(Long id) {
         throwExceptionWhenIdIsNull(id);
     }

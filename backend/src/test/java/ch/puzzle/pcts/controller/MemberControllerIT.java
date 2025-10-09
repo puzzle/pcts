@@ -72,9 +72,9 @@ class MemberControllerIT {
 
         member = new Member(id,
                             "Susi",
-                            "Sommer",
+                            "Miller",
                             EmploymentState.APPLICANT,
-                            "SS",
+                            "SM",
                             dateOfHire,
                             birthDate,
                             true,
@@ -84,9 +84,9 @@ class MemberControllerIT {
 
         requestDto = new MemberInputDto(null,
                                         "Susi",
-                                        "Sommer",
+                                        "Miller",
                                         EmploymentState.APPLICANT,
-                                        "SS",
+                                        "SM",
                                         dateOfHire,
                                         birthDate,
                                         true,
@@ -94,9 +94,9 @@ class MemberControllerIT {
 
         expectedDto = new MemberDto(id,
                                     "Susi",
-                                    "Sommer",
+                                    "Miller",
                                     EmploymentState.APPLICANT,
-                                    "SS",
+                                    "SM",
                                     dateOfHire,
                                     birthDate,
                                     true,
@@ -139,9 +139,9 @@ class MemberControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.name").value("Susi"))
-                .andExpect(jsonPath("$.lastName").value("Sommer"))
+                .andExpect(jsonPath("$.lastName").value("Miller"))
                 .andExpect(jsonPath("$.employmentState").value("APPLICANT"))
-                .andExpect(jsonPath("$.abbreviation").value("SS"))
+                .andExpect(jsonPath("$.abbreviation").value("SM"))
                 .andExpect(jsonPath("$.isAdmin").value(true))
                 .andExpect(jsonPath("$.organisationUnit.id").value(1))
                 .andExpect(jsonPath("$.organisationUnit.name").value("/bbt"));
@@ -165,9 +165,9 @@ class MemberControllerIT {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.name").value("Susi"))
-                .andExpect(jsonPath("$.lastName").value("Sommer"))
+                .andExpect(jsonPath("$.lastName").value("Miller"))
                 .andExpect(jsonPath("$.employmentState").value("APPLICANT"))
-                .andExpect(jsonPath("$.abbreviation").value("SS"))
+                .andExpect(jsonPath("$.abbreviation").value("SM"))
                 .andExpect(jsonPath("$.isAdmin").value(true))
                 .andExpect(jsonPath("$.organisationUnit.id").value(1))
                 .andExpect(jsonPath("$.organisationUnit.name").value("/bbt"));
@@ -192,9 +192,9 @@ class MemberControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.name").value("Susi"))
-                .andExpect(jsonPath("$.lastName").value("Sommer"))
+                .andExpect(jsonPath("$.lastName").value("Miller"))
                 .andExpect(jsonPath("$.employmentState").value("APPLICANT"))
-                .andExpect(jsonPath("$.abbreviation").value("SS"))
+                .andExpect(jsonPath("$.abbreviation").value("SM"))
                 .andExpect(jsonPath("$.isAdmin").value(true))
                 .andExpect(jsonPath("$.organisationUnit.id").value(1))
                 .andExpect(jsonPath("$.organisationUnit.name").value("/bbt"));

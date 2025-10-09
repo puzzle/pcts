@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +25,6 @@ public class ExampleController {
     private final ExampleMapper mapper;
     private final ExampleBusinessService service;
 
-    @Autowired
     public ExampleController(ExampleMapper mapper, ExampleBusinessService service) {
         this.mapper = mapper;
         this.service = service;
