@@ -24,7 +24,7 @@ public class OrganisationUnitValidationService {
 
     public void validateOnCreate(OrganisationUnit organisationUnit) {
         validateIfIdIsNull(organisationUnit.getId());
-        validateNameConstraints(organisationUnit.getName());
+        validateNameConstraints(organisationUnit.getName(), organisationUnit.getId());
         validateNameUniqueness(organisationUnit.getName());
     }
 
@@ -35,7 +35,7 @@ public class OrganisationUnitValidationService {
     public void validateOnUpdate(Long id, OrganisationUnit organisationUnit) {
         validateIfExists(id);
         validateIfIdIsNull(organisationUnit.getId());
-        validateNameConstraints(organisationUnit.getName());
+        validateNameConstraints(organisationUnit.getName(), organisationUnit.getId());
         validateNameUniqueExcludingSelf(id, organisationUnit.getName());
     }
 
@@ -45,7 +45,7 @@ public class OrganisationUnitValidationService {
         }
     }
 
-    private void validateNameConstraints(String name) {
+    private void validateNameConstraints(String name, Long id) {
         if (name == null) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
                                     "Name must not be null",
@@ -58,7 +58,11 @@ public class OrganisationUnitValidationService {
                                     ErrorKey.ORGANIZATION_UNIT_NAME_IS_EMPTY);
         }
 
-        if (persistenceService.getByName(name) != null) {
+        Optional<OrganisationUnit> sameNameOrganisationUnit = persistenceService
+                .getByName(name)
+                .filter(role -> role.getId() != null && role.getId().equals(id));
+
+        if (sameNameOrganisationUnit.isPresent()) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
                                     "Name already exists",
                                     ErrorKey.ORGANIZATION_UNIT_NAME_ALREADY_EXISTS);

@@ -24,7 +24,7 @@ public class RoleValidationService {
 
     public void validateOnCreate(Role role) {
         validateIfIdIsNull(role.getId());
-        validateNameConstraints(role.getName());
+        validateNameConstraints(role.getName(), role.getId());
         validateNameUniqueness(role.getName());
     }
 
@@ -35,7 +35,7 @@ public class RoleValidationService {
     public void validateOnUpdate(Long id, Role role) {
         validateIfExists(id);
         validateIfIdIsNull(role.getId());
-        validateNameConstraints(role.getName());
+        validateNameConstraints(role.getName(), role.getId());
         validateNameUniqueExcludingSelf(id, role.getName());
     }
 
@@ -45,7 +45,7 @@ public class RoleValidationService {
         }
     }
 
-    private void validateNameConstraints(String name) {
+    private void validateNameConstraints(String name, Long id) {
         if (name == null) {
             throw new PCTSException(HttpStatus.BAD_REQUEST, "Name must not be null", ErrorKey.ROLE_NAME_IS_NULL);
         }
@@ -54,7 +54,11 @@ public class RoleValidationService {
             throw new PCTSException(HttpStatus.BAD_REQUEST, "Name must not be empty", ErrorKey.ROLE_NAME_IS_EMPTY);
         }
 
-        if (persistenceService.getByName(name) != null) {
+        Optional<Role> sameNameRole = persistenceService
+                .getByName(name)
+                .filter(role -> role.getId() != null && role.getId().equals(id));
+
+        if (sameNameRole.isPresent()) {
             throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.ROLE_NAME_ALREADY_EXISTS);
         }
     }
