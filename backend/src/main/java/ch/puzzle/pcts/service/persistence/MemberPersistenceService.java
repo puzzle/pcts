@@ -19,6 +19,7 @@ public class MemberPersistenceService {
 
     @Transactional
     public Member create(Member member) {
+        System.out.println(member.getOrganisationUnit());
         return repository.save(member);
     }
 

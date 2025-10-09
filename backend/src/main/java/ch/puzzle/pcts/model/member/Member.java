@@ -30,7 +30,7 @@ public class Member {
 
     private boolean isAdmin;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organisation_unit")
     private OrganisationUnit organisationUnit;
 

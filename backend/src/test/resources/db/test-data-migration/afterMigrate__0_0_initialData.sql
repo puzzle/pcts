@@ -56,3 +56,11 @@ INSERT INTO CERTIFICATE_TAG (CERTIFICATE_ID, TAG_ID)
 VALUES
     (1, 1),
     (2, 2);
+
+TRUNCATE TABLE member CASCADE;
+
+INSERT INTO member (id, name, last_name, abbreviation, employment_state, date_of_hire, birth_date, is_admin, organisation_unit)
+VALUES
+    (1, 'Member 1', 'Test', 'M1', 'MEMBER', '2021-07-15', '1999-08-10', TRUE, 1),
+    (2, 'Member 2', 'Test', 'M2', 'MEMBER', '2020-06-01', '1998-03-03', FALSE, 2)
+
