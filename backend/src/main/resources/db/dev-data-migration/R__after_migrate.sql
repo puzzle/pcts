@@ -1,4 +1,3 @@
-TRUNCATE TABLE example CASCADE;
 TRUNCATE TABLE role CASCADE;
 TRUNCATE TABLE organisation_unit CASCADE;
 TRUNCATE TABLE certificate CASCADE;
@@ -6,16 +5,6 @@ TRUNCATE TABLE experience_type CASCADE;
 TRUNCATE TABLE degree_type CASCADE;
 TRUNCATE TABLE tag CASCADE;
 TRUNCATE TABLE CERTIFICATE_TAG CASCADE;
-
-INSERT INTO example (id, text)
-VALUES (1, 'Example 1'),
-       (2, 'Example 2'),
-       (3, 'Example 3'),
-       (4, 'Example 4'),
-       (5, 'Example 5');
-
-SELECT setval('sequence_example', (SELECT MAX(id) FROM example));
-
 
 INSERT INTO role (id, name, is_management)
 VALUES
