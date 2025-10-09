@@ -2,9 +2,6 @@ package ch.puzzle.pcts.model.member;
 
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import java.util.Date;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -18,41 +15,24 @@ public class Member {
     @SequenceGenerator(name = "member_id_seq", allocationSize = 1)
     private Long id;
 
-    @NotBlank(message = "{attribute.not.blank}")
-    @NotNull(message = "{attribute.notnull}")
-    @Size(min = 2, max = 250, message = "{attribute.size.between}")
     private String name;
 
-    @NotBlank(message = "{attribute.not.blank}")
-    @NotNull(message = "{attribute.notnull}")
-    @Size(min = 2, max = 250, message = "{attribute.size.between}")
     private String lastName;
 
     @Enumerated(EnumType.STRING)
     private EmploymentState employmentState;
 
-    @NotBlank(message = "{attribute.not.blank}")
-    @NotNull(message = "{attribute.notnull}")
-    @Size(min = 2, max = 250, message = "{attribute.size.between}")
     private String abbreviation;
 
-    @NotNull(message = "{attribute.notnull}")
     private Date dateOfHire;
 
-    @NotNull(message = "{attribute.notnull}")
     private Date birthDate;
 
-    @NotNull(message = "{attribute.notnull}")
     private boolean isAdmin;
 
-    @NotNull(message = "{attribute.notnull}")
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "organisation_unit")
     private OrganisationUnit organisationUnit;
-
-    public Member() {
-        // TODO: either delete me or comment why this must be here.
-    }
 
     public Member(Long id, String name, String lastName, EmploymentState employmentState, String abbreviation,
                   Date dateOfHire, Date birthDate, boolean isAdmin, OrganisationUnit organisationUnit) {
@@ -65,6 +45,10 @@ public class Member {
         this.birthDate = birthDate;
         this.isAdmin = isAdmin;
         this.organisationUnit = organisationUnit;
+    }
+
+    protected Member() {
+        // JPA requires a no-arg constructor
     }
 
     public Long getId() {
