@@ -14,7 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-public class MemberValidationServiceTest {
+class MemberValidationServiceTest {
     private AutoCloseable closeable;
 
     @Mock
@@ -73,7 +73,7 @@ public class MemberValidationServiceTest {
         Member member = new Member();
         member.setId(1L);
 
-        assertDoesNotThrow(() -> validationService.validateOnUpdate(1L, member));
+        assertDoesNotThrow(() -> validationService.validateOnUpdate(member));
     }
 
     @DisplayName("Should throw exception on validateOnUpdate() when member id is null")
@@ -82,8 +82,7 @@ public class MemberValidationServiceTest {
         Member member = new Member();
         member.setId(null);
 
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> validationService.validateOnUpdate(1L, member));
+        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnUpdate(member));
 
         assertEquals(ErrorKey.ID_IS_NULL, exception.getErrorKey());
     }

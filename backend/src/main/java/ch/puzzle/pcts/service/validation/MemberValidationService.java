@@ -3,7 +3,6 @@ package ch.puzzle.pcts.service.validation;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.member.Member;
-import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -11,10 +10,7 @@ import org.springframework.stereotype.Component;
 
 public class MemberValidationService {
 
-    private final MemberPersistenceService persistenceService;
-
-    public MemberValidationService(MemberPersistenceService persistenceService) {
-        this.persistenceService = persistenceService;
+    public MemberValidationService() {
     }
 
     public void validateOnGetById(Long id) {
@@ -22,13 +18,14 @@ public class MemberValidationService {
     }
 
     public void validateOnCreate(Member member) {
+        // TODO Validation gets added in Story #144 or #111
     }
 
     public void validateOnDelete(Long id) {
         throwExceptionWhenIdIsNull(id);
     }
 
-    public void validateOnUpdate(Long id, Member member) {
+    public void validateOnUpdate(Member member) {
         throwExceptionWhenIdIsNull(member.getId());
     }
 

@@ -24,12 +24,12 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest
 @Testcontainers
 @ActiveProfiles("test")
-public class MemberPersistenceServiceIT {
+class MemberPersistenceServiceIT {
 
     @Container
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17-alpine");
 
-    private final OrganisationUnit organisationUnit = new OrganisationUnit(1L, "/bbt");;
+    private final OrganisationUnit organisationUnit = new OrganisationUnit(1L, "/bbt");
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
@@ -52,10 +52,10 @@ public class MemberPersistenceServiceIT {
     @Test
     @Order(1)
     void shouldGetMemberById() {
-        Optional<Member> organisationUnit = persistenceService.getById(2L);
+        Optional<Member> optionalOrganisationUnit = persistenceService.getById(2L);
 
-        assertThat(organisationUnit).isPresent();
-        assertThat(organisationUnit.get().getId()).isEqualTo(2L);
+        assertThat(optionalOrganisationUnit).isPresent();
+        assertThat(optionalOrganisationUnit.get().getId()).isEqualTo(2L);
     }
 
     @DisplayName("Should get all members")

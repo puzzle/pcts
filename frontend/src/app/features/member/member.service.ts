@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class MemberService {
-  private httpClient = inject(HttpClient);
+  private readonly httpClient = inject(HttpClient);
 
   private readonly API_URL = '/api/v1/members';
 

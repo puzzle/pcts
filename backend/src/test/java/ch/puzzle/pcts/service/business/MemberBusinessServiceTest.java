@@ -21,7 +21,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
-public class MemberBusinessServiceTest {
+class MemberBusinessServiceTest {
 
     @Mock
     private MemberValidationService validationService;
@@ -156,7 +156,7 @@ public class MemberBusinessServiceTest {
         Member result = businessService.update(id, member);
 
         assertEquals(member, result);
-        verify(validationService).validateOnUpdate(id, member);
+        verify(validationService).validateOnUpdate(member);
         verify(persistenceService).update(id, member);
     }
 
