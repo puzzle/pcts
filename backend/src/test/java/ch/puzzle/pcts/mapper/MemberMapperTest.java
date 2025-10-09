@@ -38,15 +38,18 @@ class MemberMapperTest {
         organisationUnit = new OrganisationUnit(orgUnitId, "/bbt");
         organisationUnitDto = new OrganisationUnitDto(orgUnitId, "/bbt");
 
-        member1 = new Member(1L,
-                             "John",
-                             "Doe",
-                             EmploymentState.MEMBER,
-                             "JD",
-                             commonDate,
-                             commonDate,
-                             true,
-                             organisationUnit);
+        member1 = Member.Builder
+                .builder()
+                .withId(1L)
+                .withName("Susi")
+                .withLastName("Miller")
+                .withEmploymentState(EmploymentState.APPLICANT)
+                .withAbbreviation("SM")
+                .withDateOfHire(commonDate)
+                .withBirthDate(commonDate)
+                .withIsAdmin(true)
+                .withOrganisationUnit(organisationUnit)
+                .build();
 
         when(organisationUnitMapper.toDto(organisationUnit)).thenReturn(organisationUnitDto);
         when(organisationUnitBusinessService.getById(orgUnitId)).thenReturn(organisationUnit);
@@ -55,15 +58,18 @@ class MemberMapperTest {
     @DisplayName("Should map Member model to MemberDto correctly")
     @Test
     void shouldReturnMemberDto() {
-        Member modelWithApplicantState = new Member(1L,
-                                                    "John",
-                                                    "Doe",
-                                                    EmploymentState.APPLICANT,
-                                                    "JD",
-                                                    commonDate,
-                                                    commonDate,
-                                                    true,
-                                                    organisationUnit);
+        Member modelWithApplicantState = Member.Builder
+                .builder()
+                .withId(1L)
+                .withName("Susi")
+                .withLastName("Miller")
+                .withEmploymentState(EmploymentState.APPLICANT)
+                .withAbbreviation("SM")
+                .withDateOfHire(commonDate)
+                .withBirthDate(commonDate)
+                .withIsAdmin(true)
+                .withOrganisationUnit(organisationUnit)
+                .build();
 
         MemberDto result = mapper.toDto(modelWithApplicantState);
 
@@ -107,15 +113,18 @@ class MemberMapperTest {
     @DisplayName("Should map list of Member models to list of MemberDtos")
     @Test
     void shouldReturnListOfMemberDtos() {
-        Member member2 = new Member(2L,
-                                    "Jane",
-                                    "Smith",
-                                    EmploymentState.MEMBER,
-                                    "JS",
-                                    commonDate,
-                                    commonDate,
-                                    false,
-                                    organisationUnit);
+        Member member2 = Member.Builder
+                .builder()
+                .withId(1L)
+                .withName("Susi")
+                .withLastName("Miller")
+                .withEmploymentState(EmploymentState.APPLICANT)
+                .withAbbreviation("SM")
+                .withDateOfHire(commonDate)
+                .withBirthDate(commonDate)
+                .withIsAdmin(true)
+                .withOrganisationUnit(organisationUnit)
+                .build();
         List<Member> members = List.of(member1, member2);
 
         List<MemberDto> result = mapper.toDto(members);

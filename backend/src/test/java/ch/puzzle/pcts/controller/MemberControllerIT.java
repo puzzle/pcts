@@ -59,36 +59,35 @@ class MemberControllerIT {
 
     private OrganisationUnit organisationUnit;
     private OrganisationUnitDto organisationUnitDto;
-    private Date dateOfHire;
-    private Date birthDate;
+
+    private final Date commonDate = new Date(0L);
 
     @BeforeEach
     void setUp() {
         id = 1L;
         organisationUnitDto = new OrganisationUnitDto(1L, "/bbt");
         organisationUnit = new OrganisationUnit(1L, "/bbt");
-        dateOfHire = new Date();
-        birthDate = new Date();
 
-        member = new Member(id,
-                            "Susi",
-                            "Miller",
-                            EmploymentState.APPLICANT,
-                            "SM",
-                            dateOfHire,
-                            birthDate,
-                            true,
-                            organisationUnit
-
-        );
+        member = Member.Builder
+                .builder()
+                .withId(id)
+                .withName("Susi")
+                .withLastName("Miller")
+                .withEmploymentState(EmploymentState.APPLICANT)
+                .withAbbreviation("SM")
+                .withDateOfHire(commonDate)
+                .withBirthDate(commonDate)
+                .withIsAdmin(true)
+                .withOrganisationUnit(organisationUnit)
+                .build();
 
         requestDto = new MemberInputDto(null,
                                         "Susi",
                                         "Miller",
                                         EmploymentState.APPLICANT,
                                         "SM",
-                                        dateOfHire,
-                                        birthDate,
+                                        commonDate,
+                                        commonDate,
                                         true,
                                         1L);
 
@@ -97,8 +96,8 @@ class MemberControllerIT {
                                     "Miller",
                                     EmploymentState.APPLICANT,
                                     "SM",
-                                    dateOfHire,
-                                    birthDate,
+                                    commonDate,
+                                    commonDate,
                                     true,
                                     organisationUnitDto);
     }

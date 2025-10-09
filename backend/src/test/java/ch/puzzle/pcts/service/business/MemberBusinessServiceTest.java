@@ -47,15 +47,18 @@ class MemberBusinessServiceTest {
     @DisplayName("Should get member by id")
     @Test
     void shouldGetById() {
-        Member member = new Member(1L,
-                                   "Member1",
-                                   "Test",
-                                   EmploymentState.MEMBER,
-                                   "M1",
-                                   commonDate,
-                                   commonDate,
-                                   false,
-                                   organisationUnit);
+        Member member = Member.Builder
+                .builder()
+                .withId(1L)
+                .withName("Member1")
+                .withLastName("Test")
+                .withEmploymentState(EmploymentState.APPLICANT)
+                .withAbbreviation("M1")
+                .withDateOfHire(commonDate)
+                .withBirthDate(commonDate)
+                .withIsAdmin(false)
+                .withOrganisationUnit(organisationUnit)
+                .build();;
         when(persistenceService.getById(1L)).thenReturn(Optional.of(member));
 
         Member result = businessService.getById(1L);
@@ -80,24 +83,30 @@ class MemberBusinessServiceTest {
     @Test
     void shouldGetAll() {
         List<Member> members = List
-                .of(new Member(1L,
-                               "Member1",
-                               "Test",
-                               EmploymentState.MEMBER,
-                               "M1",
-                               commonDate,
-                               commonDate,
-                               false,
-                               organisationUnit),
-                    new Member(2L,
-                               "Member2",
-                               "Test",
-                               EmploymentState.MEMBER,
-                               "M2",
-                               commonDate,
-                               commonDate,
-                               false,
-                               organisationUnit));
+                .of(Member.Builder
+                        .builder()
+                        .withId(1L)
+                        .withName("Member1")
+                        .withLastName("Test")
+                        .withEmploymentState(EmploymentState.APPLICANT)
+                        .withAbbreviation("M1")
+                        .withDateOfHire(commonDate)
+                        .withBirthDate(commonDate)
+                        .withIsAdmin(false)
+                        .withOrganisationUnit(organisationUnit)
+                        .build(),
+                    Member.Builder
+                            .builder()
+                            .withId(1L)
+                            .withName("Member2")
+                            .withLastName("Test")
+                            .withEmploymentState(EmploymentState.APPLICANT)
+                            .withAbbreviation("M2")
+                            .withDateOfHire(commonDate)
+                            .withBirthDate(commonDate)
+                            .withIsAdmin(false)
+                            .withOrganisationUnit(organisationUnit)
+                            .build());
         when(persistenceService.getAll()).thenReturn(members);
 
         List<Member> result = businessService.getAll();
@@ -120,15 +129,18 @@ class MemberBusinessServiceTest {
     @DisplayName("Should create member")
     @Test
     void shouldCreate() {
-        Member member = new Member(1L,
-                                   "Member1",
-                                   "Test",
-                                   EmploymentState.MEMBER,
-                                   "M1",
-                                   commonDate,
-                                   commonDate,
-                                   false,
-                                   organisationUnit);
+        Member member = Member.Builder
+                .builder()
+                .withId(1L)
+                .withName("Member1")
+                .withLastName("Test")
+                .withEmploymentState(EmploymentState.APPLICANT)
+                .withAbbreviation("M1")
+                .withDateOfHire(commonDate)
+                .withBirthDate(commonDate)
+                .withIsAdmin(false)
+                .withOrganisationUnit(organisationUnit)
+                .build();
         when(persistenceService.create(member)).thenReturn(member);
 
         Member result = businessService.create(member);
@@ -142,15 +154,18 @@ class MemberBusinessServiceTest {
     @Test
     void shouldUpdate() {
         Long id = 1L;
-        Member member = new Member(1L,
-                                   "Member1",
-                                   "Test",
-                                   EmploymentState.MEMBER,
-                                   "M1",
-                                   commonDate,
-                                   commonDate,
-                                   false,
-                                   organisationUnit);
+        Member member = Member.Builder
+                .builder()
+                .withId(1L)
+                .withName("Member1")
+                .withLastName("Test")
+                .withEmploymentState(EmploymentState.APPLICANT)
+                .withAbbreviation("M1")
+                .withDateOfHire(commonDate)
+                .withBirthDate(commonDate)
+                .withIsAdmin(false)
+                .withOrganisationUnit(organisationUnit)
+                .build();
         when(persistenceService.update(id, member)).thenReturn(member);
 
         Member result = businessService.update(id, member);
@@ -176,15 +191,18 @@ class MemberBusinessServiceTest {
     void shouldTrimRoleName() {
 
         businessService
-                .create(new Member(1L,
-                                   "Member1",
-                                   "Test",
-                                   EmploymentState.MEMBER,
-                                   "M1",
-                                   commonDate,
-                                   commonDate,
-                                   false,
-                                   organisationUnit));
+                .create(Member.Builder
+                        .builder()
+                        .withId(1L)
+                        .withName("Member1")
+                        .withLastName("Test")
+                        .withEmploymentState(EmploymentState.APPLICANT)
+                        .withAbbreviation("M1")
+                        .withDateOfHire(commonDate)
+                        .withBirthDate(commonDate)
+                        .withIsAdmin(false)
+                        .withOrganisationUnit(organisationUnit)
+                        .build());
 
         verify(persistenceService).create(memberCaptor.capture());
         Member savedMember = memberCaptor.getValue();

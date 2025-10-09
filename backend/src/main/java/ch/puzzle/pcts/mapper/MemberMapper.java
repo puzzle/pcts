@@ -38,14 +38,17 @@ public class MemberMapper {
     }
 
     public Member fromDto(MemberInputDto dto) {
-        return new Member(dto.id(),
-                          dto.name(),
-                          dto.lastName(),
-                          dto.employmentState(),
-                          dto.abbreviation(),
-                          dto.dateOfHire(),
-                          dto.birthDate(),
-                          dto.isAdmin(),
-                          organisationUnitBusinessService.getById(dto.organisationUnitId()));
+        return Member.Builder
+                .builder()
+                .withId(dto.id())
+                .withName(dto.name())
+                .withLastName(dto.lastName())
+                .withEmploymentState(dto.employmentState())
+                .withAbbreviation(dto.abbreviation())
+                .withDateOfHire(dto.dateOfHire())
+                .withBirthDate(dto.birthDate())
+                .withIsAdmin(dto.isAdmin())
+                .withOrganisationUnit(organisationUnitBusinessService.getById(dto.organisationUnitId()))
+                .build();
     }
 }

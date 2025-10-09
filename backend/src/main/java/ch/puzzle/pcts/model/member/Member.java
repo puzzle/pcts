@@ -34,17 +34,16 @@ public class Member {
     @JoinColumn(name = "organisation_unit")
     private OrganisationUnit organisationUnit;
 
-    public Member(Long id, String name, String lastName, EmploymentState employmentState, String abbreviation,
-                  Date dateOfHire, Date birthDate, boolean isAdmin, OrganisationUnit organisationUnit) {
-        this.id = id;
-        this.name = name;
-        this.lastName = lastName;
-        this.employmentState = employmentState;
-        this.abbreviation = abbreviation;
-        this.dateOfHire = dateOfHire;
-        this.birthDate = birthDate;
-        this.isAdmin = isAdmin;
-        this.organisationUnit = organisationUnit;
+    private Member(Builder builder) {
+        this.id = builder.id;
+        this.name = builder.name;
+        this.lastName = builder.lastName;
+        this.employmentState = builder.employmentState;
+        this.abbreviation = builder.abbreviation;
+        this.dateOfHire = builder.dateOfHire;
+        this.birthDate = builder.birthDate;
+        this.isAdmin = builder.isAdmin;
+        this.organisationUnit = builder.organisationUnit;
     }
 
     public Member() {
@@ -129,5 +128,73 @@ public class Member {
                + ", employmentState=" + employmentState + ", abbreviation='" + abbreviation + '\'' + ", dateOfHire="
                + dateOfHire + ", birthDate=" + birthDate + ", isAdmin=" + isAdmin + ", organisationUnit="
                + organisationUnit + '}';
+    }
+
+    public static final class Builder {
+        private Long id;
+        private String name;
+        private String lastName;
+        private EmploymentState employmentState;
+        private String abbreviation;
+        private Date dateOfHire;
+        private Date birthDate;
+        private boolean isAdmin;
+        private OrganisationUnit organisationUnit;
+
+        private Builder() {
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder withLastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public Builder withEmploymentState(EmploymentState employmentState) {
+            this.employmentState = employmentState;
+            return this;
+        }
+
+        public Builder withAbbreviation(String abbreviation) {
+            this.abbreviation = abbreviation;
+            return this;
+        }
+
+        public Builder withDateOfHire(Date dateOfHire) {
+            this.dateOfHire = dateOfHire;
+            return this;
+        }
+
+        public Builder withBirthDate(Date birthDate) {
+            this.birthDate = birthDate;
+            return this;
+        }
+
+        public Builder withIsAdmin(boolean isAdmin) {
+            this.isAdmin = isAdmin;
+            return this;
+        }
+
+        public Builder withOrganisationUnit(OrganisationUnit organisationUnit) {
+            this.organisationUnit = organisationUnit;
+            return this;
+        }
+
+        public Member build() {
+            return new Member(this);
+        }
     }
 }
