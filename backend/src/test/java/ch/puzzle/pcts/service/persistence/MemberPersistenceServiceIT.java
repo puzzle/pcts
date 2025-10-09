@@ -111,7 +111,7 @@ class MemberPersistenceServiceIT {
                 .withBirthDate(commonDate)
                 .withIsAdmin(false)
                 .withOrganisationUnit(organisationUnit)
-                .build();;
+                .build();
 
         persistenceService.update(id, member);
         Optional<Member> result = persistenceService.getById(id);

@@ -58,7 +58,7 @@ class MemberBusinessServiceTest {
                 .withBirthDate(commonDate)
                 .withIsAdmin(false)
                 .withOrganisationUnit(organisationUnit)
-                .build();;
+                .build();
         when(persistenceService.getById(1L)).thenReturn(Optional.of(member));
 
         Member result = businessService.getById(1L);
