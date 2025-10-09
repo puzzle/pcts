@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.service.persistence;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificate.Tag;
 import ch.puzzle.pcts.repository.CertificateRepository;
@@ -9,10 +11,10 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.springframework.transaction.annotation.Transactional;
 
 class CertificatePersistenceServiceIT
         extends
