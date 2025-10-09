@@ -3,11 +3,13 @@ package ch.puzzle.pcts.service.persistence;
 import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.repository.DegreeTypeRepository;
 import java.math.BigDecimal;
+import org.springframework.beans.factory.annotation.Autowired;
 
 class DegreeTypePersistenceServiceIT
         extends
             PersistenceBaseIT<DegreeType, DegreeTypeRepository, DegreeTypePersistenceService> {
 
+    @Autowired
     DegreeTypePersistenceServiceIT(DegreeTypePersistenceService service) {
         super(service);
     }

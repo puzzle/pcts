@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 class OrganisationUnitPersistenceServiceIT
         extends
@@ -15,6 +16,7 @@ class OrganisationUnitPersistenceServiceIT
 
     private final OrganisationUnitPersistenceService service;
 
+    @Autowired
     OrganisationUnitPersistenceServiceIT(OrganisationUnitPersistenceService service) {
         super(service);
         this.service = service;

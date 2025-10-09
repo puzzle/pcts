@@ -5,11 +5,13 @@ import ch.puzzle.pcts.model.certificate.Tag;
 import ch.puzzle.pcts.repository.CertificateRepository;
 import java.math.BigDecimal;
 import java.util.Set;
+import org.springframework.beans.factory.annotation.Autowired;
 
 class CertificatePersistenceServiceIT
         extends
             PersistenceBaseIT<Certificate, CertificateRepository, CertificatePersistenceService> {
 
+    @Autowired
     CertificatePersistenceServiceIT(CertificatePersistenceService service) {
         super(service);
     }

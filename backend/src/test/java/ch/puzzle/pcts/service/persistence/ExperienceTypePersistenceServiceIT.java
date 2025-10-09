@@ -3,11 +3,13 @@ package ch.puzzle.pcts.service.persistence;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.repository.ExperienceTypeRepository;
 import java.math.BigDecimal;
+import org.springframework.beans.factory.annotation.Autowired;
 
 class ExperienceTypePersistenceServiceIT
         extends
             PersistenceBaseIT<ExperienceType, ExperienceTypeRepository, ExperienceTypePersistenceService> {
 
+    @Autowired
     ExperienceTypePersistenceServiceIT(ExperienceTypePersistenceService service) {
         super(service);
     }
