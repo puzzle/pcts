@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.puzzle.pcts.model.certificate.Tag;
 import ch.puzzle.pcts.repository.TagRepository;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -33,6 +34,10 @@ class TagPersistenceServiceIT extends PersistenceBaseIT<Tag, TagRepository, TagP
     @Override
     Tag getUpdateEntity() {
         return new Tag(null, "Updated tag");
+    }
+
+    List<Tag> getAll() {
+        return List.of(new Tag(1L, "Tag 1"), new Tag(2L, "Longer tag name"));
     }
 
     @Override
