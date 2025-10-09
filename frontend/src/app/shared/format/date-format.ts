@@ -1,13 +1,17 @@
 import { MatDateFormats } from '@angular/material/core';
 
-export const DATE_FORMAT: MatDateFormats = {
+export const GLOBAL_DATE_FORMAT = 'dd.MM.yyyy';
+
+export const CUSTOM_LUXON_DATE_FORMATS: MatDateFormats = {
   parse: {
-    dateInput: 'DD.MM.yyyy'
+    dateInput: GLOBAL_DATE_FORMAT
   },
   display: {
-    dateInput: 'DD.MM.yyyy',
-    monthYearLabel: 'MMM yyyy',
+    dateInput: GLOBAL_DATE_FORMAT,
+
+    monthYearLabel: 'MMM YYYY',
+
     dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM yyyy'
+    monthYearA11yLabel: 'MMMM YYYY'
   }
 };
