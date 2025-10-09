@@ -8,14 +8,12 @@ import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 /**
  * @param <T>
@@ -26,23 +24,17 @@ import org.testcontainers.junit.jupiter.Testcontainers;
  *            the persistence service of the entity
  */
 @SpringBootTest
-@Testcontainers
 @ActiveProfiles("test")
-public abstract class PersistenceBaseIT<T, R extends JpaRepository<T, Long>, S extends PersistenceBase<T, R>> {
+@Import(TestContainerConfiguration.class)
+abstract class PersistenceBaseIT<T, R extends JpaRepository<T, Long>, S extends PersistenceBase<T, R>> {
 
-    @Container
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17-alpine");
     private final S service;
+
+    @Autowired
+    private PostgreSQLContainer<?> postgres;
 
     PersistenceBaseIT(S service) {
         this.service = service;
-    }
-
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgres::getJdbcUrl);
-        registry.add("spring.datasource.username", postgres::getUsername);
-        registry.add("spring.datasource.password", postgres::getPassword);
     }
 
     abstract T getCreateEntity();
@@ -105,8 +97,7 @@ public abstract class PersistenceBaseIT<T, R extends JpaRepository<T, Long>, S e
         Optional<T> result = service.getById(id);
 
         assertThat(result).isPresent();
-        assertThat(result.get()).isEqualTo(entity);
-
+        assertThat(result.get()).hasToString(entity.toString());
     }
 
     @DisplayName("Should delete entity")

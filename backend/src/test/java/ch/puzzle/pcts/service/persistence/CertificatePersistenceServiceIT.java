@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,6 +20,7 @@ class CertificatePersistenceServiceIT
 
     private CertificatePersistenceService service;
 
+    @Autowired
     CertificatePersistenceServiceIT(CertificatePersistenceService service) {
         super(service);
         this.service = service;

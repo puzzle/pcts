@@ -8,11 +8,13 @@ import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 class RolePersistenceServiceIT extends PersistenceBaseIT<Role, RoleRepository, RolePersistenceService> {
 
     private final RolePersistenceService service;
 
+    @Autowired
     RolePersistenceServiceIT(RolePersistenceService service) {
         super(service);
         this.service = service;
