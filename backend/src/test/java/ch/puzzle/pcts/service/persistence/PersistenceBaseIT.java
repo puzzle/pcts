@@ -82,6 +82,7 @@ abstract class PersistenceBaseIT<T, R extends JpaRepository<T, Long>, S extends 
 
     @DisplayName("Should get all entities")
     @Test
+    @Transactional
     @Order(1)
     void shouldGetAllEntities() {
         List<T> all = service.getAll();

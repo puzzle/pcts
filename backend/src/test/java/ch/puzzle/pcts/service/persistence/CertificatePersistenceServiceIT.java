@@ -1,20 +1,30 @@
 package ch.puzzle.pcts.service.persistence;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificate.Tag;
 import ch.puzzle.pcts.repository.CertificateRepository;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 class CertificatePersistenceServiceIT
         extends
             PersistenceBaseIT<Certificate, CertificateRepository, CertificatePersistenceService> {
 
+    CertificatePersistenceService service;
+
     @Autowired
     CertificatePersistenceServiceIT(CertificatePersistenceService service) {
         super(service);
+        this.service = service;
     }
 
     @Override
@@ -60,5 +70,31 @@ class CertificatePersistenceServiceIT
     @Override
     void setId(Certificate certificate, Long id) {
         certificate.setId(id);
+    }
+
+    @Override
+    @DisplayName("Should update certificate")
+    @Transactional
+    @Test
+    @Order(2)
+    void shouldUpdate() {
+        long id = 4;
+        Certificate certificate = getUpdateEntity();
+
+        certificate.setId(id);
+        service.save(certificate);
+        Optional<Certificate> result = service.getById(id);
+
+        assertThat(result).isPresent();
+
+        Certificate updated = result.get();
+
+        assertThat(updated.getId()).isEqualTo(id);
+        assertThat(updated.getName()).isEqualTo("Updated certificate");
+        assertThat(updated.getPoints()).isEqualByComparingTo(BigDecimal.valueOf(3));
+        assertThat(updated.getComment()).isEqualTo("This is a updated certificate");
+        assertThat(updated.getTags())
+                .extracting(Tag::getName)
+                .containsExactlyInAnyOrder("Important tag", "Way more important tag");
     }
 }
