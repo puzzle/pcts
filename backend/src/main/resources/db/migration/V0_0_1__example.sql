@@ -1,6 +1,0 @@
-CREATE SEQUENCE IF NOT EXISTS sequence_example;
-CREATE TABLE IF NOT EXISTS example
-(
-    id       BIGINT NOT NUll PRIMARY KEY,
-    text     VARCHAR(250) NOT NULL
-);
