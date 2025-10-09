@@ -52,7 +52,7 @@ public class MemberController {
     @Operation(summary = "Create a new member")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The member object to be created.", required = true)
     @ApiResponse(responseCode = "201", description = "member created successfully.", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = MemberInputDto.class)) })
+            @Content(mediaType = "application/json", schema = @Schema(implementation = MemberDto.class)) })
     @PostMapping
     public ResponseEntity<MemberDto> createMember(@Valid @RequestBody MemberInputDto dto) {
         Member newMember = service.create(mapper.fromDto(dto));

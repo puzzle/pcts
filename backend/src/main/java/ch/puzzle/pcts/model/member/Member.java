@@ -14,7 +14,8 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("deleted_at IS NULL")
 public class Member {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "member_id_seq")
+    @SequenceGenerator(name = "member_id_seq", allocationSize = 1)
     private Long id;
 
     @NotBlank(message = "{attribute.not.blank}")

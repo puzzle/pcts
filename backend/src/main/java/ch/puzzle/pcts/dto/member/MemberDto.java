@@ -14,5 +14,5 @@ public record MemberDto(
         @Schema(description = "The date of hire of the member.", example = "2025-09-24", requiredMode = Schema.RequiredMode.REQUIRED, nullable = false) Date dateOfHire,
         @Schema(description = "The birth date of the member", example = "1995-02-19", requiredMode = Schema.RequiredMode.REQUIRED, nullable = false) Date birthDate,
         @Schema(description = "Whether the member is an admin or not.", example = "true", requiredMode = Schema.RequiredMode.REQUIRED, nullable = false) boolean isAdmin,
-        @Schema(description = "The Organisation unit of the member.", example = "1", requiredMode = Schema.RequiredMode.REQUIRED, nullable = false, minLength = 1) OrganisationUnitDto organisationUnit) {
+        @Schema(description = "The Organisation unit of the member.", example = "\"{\\\"id\\\": 1, \\\"name\\\": \\\"/bbc\\\"}\"", requiredMode = Schema.RequiredMode.REQUIRED, nullable = false, minLength = 1) OrganisationUnitDto organisationUnit) {
 }
