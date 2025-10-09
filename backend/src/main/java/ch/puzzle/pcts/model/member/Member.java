@@ -47,7 +47,6 @@ public class Member {
     }
 
     public Member() {
-        // JPA requires a no-arg constructor
     }
 
     public Long getId() {

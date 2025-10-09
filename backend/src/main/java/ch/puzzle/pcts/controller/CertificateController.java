@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/certificates")
-@Tag(name = "certificates")
+@Tag(name = "certificates", description = "certificates of members")
 public class CertificateController {
     private final CertificateBusinessService service;
     private final CertificateMapper mapper;

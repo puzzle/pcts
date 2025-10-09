@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/v1/organisation-units")
-@Tag(name = "organisation-units")
+@Tag(name = "organisation-units", description = "organisation units of member")
 public class OrganisationUnitController {
     private final OrganisationUnitMapper mapper;
     private final OrganisationUnitBusinessService service;
