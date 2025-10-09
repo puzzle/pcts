@@ -37,12 +37,30 @@ abstract class PersistenceBaseIT<T, R extends JpaRepository<T, Long>, S extends 
         this.service = service;
     }
 
+    /**
+     * Returns an object of the entity used to save it in the database
+     */
     abstract T getCreateEntity();
 
+    /**
+     * Returns an object of the Entity used to update an object in the database
+     */
     abstract T getUpdateEntity();
 
+    /**
+     * A list of all the objects with this datatype stored in the database shouldn't
+     * contain soft deleted ones
+     */
+    abstract List<T> getAll();
+
+    /**
+     * A method to get the id of the entity
+     */
     abstract Long getId(T entity);
 
+    /**
+     * A method to set the id of the entity
+     */
     abstract void setId(T entity, Long id);
 
     @DisplayName("Should establish DB connection")
@@ -68,7 +86,8 @@ abstract class PersistenceBaseIT<T, R extends JpaRepository<T, Long>, S extends 
     void shouldGetAllEntities() {
         List<T> all = service.getAll();
 
-        assertThat(all).hasSize(1);
+        assertThat(all).hasSize(getAll().size());
+        assertThat(all).hasToString(getAll().toString());
     }
 
     @DisplayName("Should create entity")

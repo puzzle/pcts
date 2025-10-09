@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.repository.RoleRepository;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
@@ -28,6 +29,10 @@ class RolePersistenceServiceIT extends PersistenceBaseIT<Role, RoleRepository, R
     @Override
     Role getUpdateEntity() {
         return new Role(null, "Updated role", true);
+    }
+
+    List<Role> getAll() {
+        return List.of(new Role(2L, "Role 2", false));
     }
 
     @Override

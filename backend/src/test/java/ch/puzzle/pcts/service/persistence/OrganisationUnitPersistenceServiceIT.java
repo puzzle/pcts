@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.repository.OrganisationUnitRepository;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
@@ -30,6 +31,11 @@ class OrganisationUnitPersistenceServiceIT
     @Override
     OrganisationUnit getUpdateEntity() {
         return new OrganisationUnit(null, "Updated organisationUnit");
+    }
+
+    @Override
+    List<OrganisationUnit> getAll() {
+        return List.of(new OrganisationUnit(2L, "OrganisationUnit 2"));
     }
 
     @Override

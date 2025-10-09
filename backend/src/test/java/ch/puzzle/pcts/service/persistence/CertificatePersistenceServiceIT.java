@@ -45,6 +45,23 @@ class CertificatePersistenceServiceIT
     }
 
     @Override
+    List<Certificate> getAll() {
+        return List
+                .of(new Certificate(1L,
+                                    "Certificate 1",
+                                    BigDecimal.valueOf(5.5),
+                                    "This is Certificate 1",
+                                    Set.of(new Tag(1L, "Tag 1"))),
+                    new Certificate(2L,
+                                    "Certificate 2",
+                                    BigDecimal.valueOf(1),
+                                    "This is Certificate 2",
+                                    Set.of(new Tag(2L, "Longer tag name"))),
+                    new Certificate(3L, "Certificate 3", BigDecimal.valueOf(3), "This is Certificate 3", Set.of()),
+                    new Certificate(4L, "Certificate 4", BigDecimal.valueOf(0.5), "This is Certificate 4", Set.of()));
+    }
+
+    @Override
     Long getId(Certificate certificate) {
         return certificate.getId();
     }
