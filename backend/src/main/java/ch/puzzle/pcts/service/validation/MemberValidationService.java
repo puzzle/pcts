@@ -21,7 +21,7 @@ public class MemberValidationService {
         throwExceptionWhenIdIsNull(id);
     }
 
-    public void validateOnUpdate(Long id, Member member) {
+    public void validateOnUpdate(Long id) {
         throwExceptionWhenIdIsNull(id);
     }
 
