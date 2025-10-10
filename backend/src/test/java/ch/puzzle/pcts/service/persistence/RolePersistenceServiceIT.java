@@ -35,16 +35,6 @@ class RolePersistenceServiceIT extends PersistenceBaseIT<Role, RoleRepository, R
         return List.of(new Role(2L, "Role 2", false));
     }
 
-    @Override
-    Long getId(Role role) {
-        return role.getId();
-    }
-
-    @Override
-    void setId(Role role, Long id) {
-        role.setId(id);
-    }
-
     @DisplayName("Should get role by name")
     @Test
     @Order(1)

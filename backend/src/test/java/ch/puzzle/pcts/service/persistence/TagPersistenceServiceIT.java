@@ -40,16 +40,6 @@ class TagPersistenceServiceIT extends PersistenceBaseIT<Tag, TagRepository, TagP
         return List.of(new Tag(1L, "Tag 1"), new Tag(2L, "Longer tag name"));
     }
 
-    @Override
-    Long getId(Tag tag) {
-        return tag.getId();
-    }
-
-    @Override
-    void setId(Tag tag, Long id) {
-        tag.setId(id);
-    }
-
     @DisplayName("Should find tag by name written in different cases")
     @Transactional
     @ParameterizedTest

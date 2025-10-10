@@ -47,14 +47,4 @@ class DegreeTypePersistenceServiceIT
                                    BigDecimal.valueOf(3.961),
                                    BigDecimal.valueOf(3)));
     }
-
-    @Override
-    Long getId(DegreeType degreeType) {
-        return degreeType.getId();
-    }
-
-    @Override
-    void setId(DegreeType degreeType, Long id) {
-        degreeType.setId(id);
-    }
 }

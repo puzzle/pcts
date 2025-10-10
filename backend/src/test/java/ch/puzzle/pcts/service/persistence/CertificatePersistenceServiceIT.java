@@ -63,16 +63,6 @@ class CertificatePersistenceServiceIT
     }
 
     @Override
-    Long getId(Certificate certificate) {
-        return certificate.getId();
-    }
-
-    @Override
-    void setId(Certificate certificate, Long id) {
-        certificate.setId(id);
-    }
-
-    @Override
     @DisplayName("Should update certificate")
     @Transactional
     @Test
