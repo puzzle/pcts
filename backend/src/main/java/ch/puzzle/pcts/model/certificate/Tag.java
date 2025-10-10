@@ -1,10 +1,11 @@
 package ch.puzzle.pcts.model.certificate;
 
+import ch.puzzle.pcts.model.Model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-public class Tag {
+public class Tag implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

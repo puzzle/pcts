@@ -47,14 +47,4 @@ class ExperienceTypePersistenceServiceIT
                                        BigDecimal.valueOf(10.7989),
                                        BigDecimal.valueOf(6)));
     }
-
-    @Override
-    Long getId(ExperienceType experienceType) {
-        return experienceType.getId();
-    }
-
-    @Override
-    void setId(ExperienceType experienceType, Long id) {
-        experienceType.setId(id);
-    }
 }

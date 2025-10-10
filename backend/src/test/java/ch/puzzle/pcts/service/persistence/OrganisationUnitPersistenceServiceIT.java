@@ -38,16 +38,6 @@ class OrganisationUnitPersistenceServiceIT
         return List.of(new OrganisationUnit(2L, "OrganisationUnit 2"));
     }
 
-    @Override
-    Long getId(OrganisationUnit organisationUnit) {
-        return organisationUnit.getId();
-    }
-
-    @Override
-    void setId(OrganisationUnit organisationUnit, Long id) {
-        organisationUnit.setId(id);
-    }
-
     @DisplayName("Should get organisationUnit by name")
     @Test
     @Order(1)

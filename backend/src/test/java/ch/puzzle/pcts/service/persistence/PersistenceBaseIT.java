@@ -2,6 +2,7 @@ package ch.puzzle.pcts.service.persistence;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.puzzle.pcts.model.Model;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +27,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 @SpringBootTest
 @ActiveProfiles("test")
 @Import(TestContainerConfiguration.class)
-abstract class PersistenceBaseIT<T, R extends JpaRepository<T, Long>, S extends PersistenceBase<T, R>> {
+abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Long>, S extends PersistenceBase<T, R>> {
 
     private final S service;
 
@@ -53,16 +54,6 @@ abstract class PersistenceBaseIT<T, R extends JpaRepository<T, Long>, S extends 
      */
     abstract List<T> getAll();
 
-    /**
-     * A method to get the id of the entity
-     */
-    abstract Long getId(T entity);
-
-    /**
-     * A method to set the id of the entity
-     */
-    abstract void setId(T entity, Long id);
-
     @DisplayName("Should establish DB connection")
     @Test
     @Order(0)
@@ -77,7 +68,7 @@ abstract class PersistenceBaseIT<T, R extends JpaRepository<T, Long>, S extends 
         Optional<T> entity = service.getById(2L);
 
         assertThat(entity).isPresent();
-        assertThat(getId(entity.get())).isEqualTo(2L);
+        assertThat(entity.get().getId()).isEqualTo(2L);
     }
 
     @DisplayName("Should get all entities")
@@ -88,7 +79,7 @@ abstract class PersistenceBaseIT<T, R extends JpaRepository<T, Long>, S extends 
         List<T> all = service.getAll();
 
         assertThat(all).hasSize(getAll().size());
-        assertThat(all).hasToString(getAll().toString());
+        assertThat(all).usingRecursiveComparison().isEqualTo(getAll());
     }
 
     @DisplayName("Should create entity")
@@ -100,7 +91,7 @@ abstract class PersistenceBaseIT<T, R extends JpaRepository<T, Long>, S extends 
 
         T result = service.save(entity);
 
-        setId(entity, getId(result));
+        entity.setId(result.getId());
         assertThat(result).isEqualTo(entity);
     }
 
@@ -111,13 +102,13 @@ abstract class PersistenceBaseIT<T, R extends JpaRepository<T, Long>, S extends 
     void shouldUpdate() {
         long id = 2;
         T entity = getUpdateEntity();
-        setId(entity, id);
+        entity.setId(id);
         service.save(entity);
 
         Optional<T> result = service.getById(id);
 
         assertThat(result).isPresent();
-        assertThat(result.get()).hasToString(entity.toString());
+        assertThat(result.get()).usingRecursiveComparison().isEqualTo(entity);
     }
 
     @DisplayName("Should delete entity")

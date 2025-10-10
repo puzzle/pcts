@@ -73,7 +73,8 @@ class CertificatePersistenceServiceIT
         certificate.setId(id);
     }
 
-    @DisplayName("Should update certificate and leadership experience")
+    @Override
+    @DisplayName("Should update certificate")
     @Transactional
     @Test
     @Order(2)
