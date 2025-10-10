@@ -6,6 +6,7 @@ import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.service.persistence.CertificatePersistenceService;
 import ch.puzzle.pcts.service.validation.CertificateValidationService;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -33,15 +34,22 @@ public class CertificateBusinessService {
 
     public Certificate getById(long id) {
         validationService.validateOnGetById(id);
-        return persistenceService
-                .getById(id)
-                .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,
-                                                     "Certificate with id: " + id + " does not exist.",
-                                                     ErrorKey.NOT_FOUND));
+
+        Optional<Certificate> optionalCertificate = persistenceService.getById(id);
+
+        if (optionalCertificate.isPresent()) {
+            Certificate certificate = optionalCertificate.get();
+            validationService.validateCertificateType(certificate.getCertificateType());
+            return certificate;
+        } else {
+            throw new PCTSException(HttpStatus.NOT_FOUND,
+                                    "Certificate with id: " + id + " does not exist.",
+                                    ErrorKey.NOT_FOUND);
+        }
     }
 
     public List<Certificate> getAll() {
-        return persistenceService.getAll();
+        return persistenceService.getAllCertificates();
     }
 
     public Certificate update(Long id, Certificate certificate) {
