@@ -3,10 +3,10 @@ CREATE TABLE IF NOT EXISTS member
     id                  BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name                TEXT NOT NULL,
     last_name           TEXT NOT NULL,
-    abbreviation        TEXT,
+    abbreviation        TEXT NOT NULL,
     employment_state    TEXT NOT NULL,
-    date_of_hire        DATE NOT NULL,
-    birth_date          DATE,
+    date_of_hire        DATE,
+    birth_date          DATE NOT NULL,
     organisation_unit   BIGINT,
     deleted_at          TIMESTAMP DEFAULT NULL
 );
