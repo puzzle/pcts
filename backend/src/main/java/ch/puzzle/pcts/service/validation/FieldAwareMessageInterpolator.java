@@ -65,7 +65,7 @@ public class FieldAwareMessageInterpolator implements MessageInterpolator {
         // maybe we do not want the field in some messages therefore we make it
         // conditional
         // TODO: PoC: check whether replace is already null save!
-        if (resolvedTemplate.contains("{field}")) {
+        if (resolvedTemplate.contains("{field}") && fieldName != null) {
             resolvedTemplate = resolvedTemplate.replace("{field}", fieldName);
         }
         return resolvedTemplate;
