@@ -7,18 +7,17 @@ import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificate.CertificateType;
 import java.math.BigDecimal;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = LeadershipExperienceMapper.class)
 class LeadershipExperienceMapperTest {
-    @Autowired
     private LeadershipExperienceMapper mapper;
+
+    @BeforeEach
+    void setUp() {
+        mapper = new LeadershipExperienceMapper();
+    }
 
     @DisplayName("Should return certificate")
     @Test
@@ -36,7 +35,7 @@ class LeadershipExperienceMapperTest {
                                                   CertificateType.LEADERSHIP_TRAINING);
 
         Certificate result = mapper.fromDto(leadershipExperienceDto);
-        assertEquals(certificate, result);
+        assertEquals(certificate.toString(), result.toString());
     }
 
     @DisplayName("Should return leadershipExperienceDto")
@@ -55,7 +54,7 @@ class LeadershipExperienceMapperTest {
                                                                   CertificateType.LEADERSHIP_TRAINING);
 
         LeadershipExperienceDto result = mapper.toDto(model);
-        assertEquals(dto, result);
+        assertEquals(dto.toString(), result.toString());
     }
 
     @DisplayName("Should return list of certificates")
@@ -79,7 +78,7 @@ class LeadershipExperienceMapperTest {
                     new LeadershipExperienceDto(2L, "Sergeant", BigDecimal.TWO, "", CertificateType.MILITARY_FUNCTION));
 
         List<Certificate> result = mapper.fromDto(dtos);
-        assertEquals(certificates, result);
+        assertEquals(certificates.toString(), result.toString());
     }
 
     @DisplayName("Should return list of leadershipExperienceDtos")
@@ -103,6 +102,6 @@ class LeadershipExperienceMapperTest {
                     new LeadershipExperienceDto(2L, "Sergeant", BigDecimal.TWO, "", CertificateType.MILITARY_FUNCTION));
 
         List<LeadershipExperienceDto> result = mapper.toDto(certificates);
-        assertEquals(dtos, result);
+        assertEquals(dtos.toString(), result.toString());
     }
 }

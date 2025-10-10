@@ -13,14 +13,13 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.MockitoAnnotations;
 
-@ExtendWith(MockitoExtension.class)
 class CertificateBusinessServiceTest {
 
     @Mock
@@ -34,6 +33,11 @@ class CertificateBusinessServiceTest {
 
     @InjectMocks
     private CertificateBusinessService businessService;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @DisplayName("Should get certificate by id and validate certificate type")
     @Test

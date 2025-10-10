@@ -9,18 +9,17 @@ import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = CertificateMapper.class)
 class CertificateMapperTest {
-    @Autowired
     private CertificateMapper mapper;
+
+    @BeforeEach
+    void setUp() {
+        mapper = new CertificateMapper();
+    }
 
     @DisplayName("Should return certificate")
     @Test
