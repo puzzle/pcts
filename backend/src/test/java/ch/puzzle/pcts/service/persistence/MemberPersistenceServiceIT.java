@@ -6,7 +6,7 @@ import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import jakarta.transaction.Transactional;
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -29,9 +29,9 @@ class MemberPersistenceServiceIT {
     @Container
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17-alpine");
 
-    private final OrganisationUnit organisationUnit = new OrganisationUnit(1L, "/bbt");
+    private final OrganisationUnit organisationUnit = new OrganisationUnit(2L, "OrganisationUnit 2");
 
-    private final Date commonDate = new Date(0L);
+    private final Timestamp commonDate = new Timestamp(0L);
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
@@ -73,7 +73,7 @@ class MemberPersistenceServiceIT {
     @DisplayName("Should create members")
     @Transactional
     @Test
-    @Order(2)
+    @Order(3)
     void shouldCreate() {
         Member member = Member.Builder
                 .builder()
@@ -91,6 +91,13 @@ class MemberPersistenceServiceIT {
 
         assertThat(result.getId()).isEqualTo(3L);
         assertThat(result.getName()).isEqualTo(member.getName());
+        assertThat(result.getLastName()).isEqualTo(member.getLastName());
+        assertThat(result.getEmploymentState()).isEqualTo(member.getEmploymentState());
+        assertThat(result.getAbbreviation()).isEqualTo(member.getAbbreviation());
+        assertThat(result.getDateOfHire()).isEqualTo(member.getDateOfHire());
+        assertThat(result.getBirthDate()).isEqualTo(member.getBirthDate());
+        assertThat(result.getOrganisationUnit().getId()).isEqualTo(member.getOrganisationUnit().getId());
+        assertThat(result.getOrganisationUnit().getName()).isEqualTo(member.getOrganisationUnit().getName());
     }
 
     @DisplayName("Should update members")
@@ -101,7 +108,7 @@ class MemberPersistenceServiceIT {
         long id = 2;
         Member member = Member.Builder
                 .builder()
-                .withId(1L)
+                .withId(id)
                 .withName("Updated member")
                 .withLastName("Test")
                 .withEmploymentState(EmploymentState.APPLICANT)
@@ -116,7 +123,14 @@ class MemberPersistenceServiceIT {
 
         assertThat(result).isPresent();
         assertThat(result.get().getId()).isEqualTo(id);
-        assertThat(member.getName()).isEqualTo("Updated member");
+        assertThat(result.get().getName()).isEqualTo(member.getName());
+        assertThat(result.get().getLastName()).isEqualTo(member.getLastName());
+        assertThat(result.get().getEmploymentState()).isEqualTo(member.getEmploymentState());
+        assertThat(result.get().getAbbreviation()).isEqualTo(member.getAbbreviation());
+        assertThat(result.get().getDateOfHire()).isEqualTo(member.getDateOfHire());
+        assertThat(result.get().getBirthDate()).isEqualTo(member.getBirthDate());
+        assertThat(result.get().getOrganisationUnit().getId()).isEqualTo(member.getOrganisationUnit().getId());
+        assertThat(result.get().getOrganisationUnit().getName()).isEqualTo(member.getOrganisationUnit().getName());
     }
 
     @DisplayName("Should delete members")

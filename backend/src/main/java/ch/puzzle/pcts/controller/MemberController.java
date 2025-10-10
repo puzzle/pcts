@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/members")
-@Tag(name = "member", description = "Manage the members of the organisation, including user profiles and status")
+@Tag(name = "member", description = "Manage the members of the organisation, including status and organisation unit")
 public class MemberController {
     private final MemberMapper mapper;
     private final MemberBusinessService service;
