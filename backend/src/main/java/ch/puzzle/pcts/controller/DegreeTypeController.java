@@ -13,18 +13,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/degree-types")
-@Tag(name = "degree-types")
+@Tag(name = "degree-types", description = "Manage the types of academic degrees")
 public class DegreeTypeController {
     private final DegreeTypeMapper mapper;
     private final DegreeTypeBusinessService service;
 
-    @Autowired
     public DegreeTypeController(DegreeTypeMapper mapper, DegreeTypeBusinessService service) {
         this.mapper = mapper;
         this.service = service;

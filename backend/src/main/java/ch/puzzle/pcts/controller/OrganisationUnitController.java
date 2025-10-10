@@ -13,19 +13,17 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/v1/organisation-units")
-@Tag(name = "organisation-units")
+@Tag(name = "organisation-units", description = "Manage departments, teams, or other subdivisions of the organisation")
 public class OrganisationUnitController {
     private final OrganisationUnitMapper mapper;
     private final OrganisationUnitBusinessService service;
 
-    @Autowired
     public OrganisationUnitController(OrganisationUnitMapper mapper, OrganisationUnitBusinessService service) {
         this.mapper = mapper;
         this.service = service;

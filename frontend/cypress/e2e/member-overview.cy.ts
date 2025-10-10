@@ -8,10 +8,10 @@ describe('MemberOverviewComponent', () => {
   });
 
   it('should search members by name', () => {
-    HomePage.fillSearchInput('Ja');
+    HomePage.fillSearchInput('Lena');
     cy.wait(300);
     HomePage.memberRows()
-      .contains('Ja Morant', { matchCase: false });
+      .contains('Lena Müller', { matchCase: false });
   });
 
   it('should display the page title and member count', () => {

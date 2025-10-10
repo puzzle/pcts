@@ -77,12 +77,12 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="birthday">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="birthday">
+    <ng-container matColumnDef="birthDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="birthDate">
         {{ 'MEMBER.BIRTHDATE' | translate }}
       </th>
       <td mat-cell *matCellDef="let member" data-testid="member-birthday">
-        {{ member.birthday | date:'dd.MM.yyyy' }}
+        {{ member.birthDate | date:'dd.MM.yyyy' }}
       </td>
     </ng-container>
 

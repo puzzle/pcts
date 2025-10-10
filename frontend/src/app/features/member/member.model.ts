@@ -5,7 +5,7 @@ export interface MemberModel {
   id: number;
   name: string;
   lastName: string;
-  birthday: Date;
+  birthDate: Date;
   abbreviation: string;
   employmentState: EmploymentState;
   organisationUnit: OrganisationUnitModel;

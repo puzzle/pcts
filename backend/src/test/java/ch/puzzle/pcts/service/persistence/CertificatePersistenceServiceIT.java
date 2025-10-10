@@ -119,7 +119,6 @@ class CertificatePersistenceServiceIT {
         assertThat(updated.getName()).isEqualTo("Updated certificate");
         assertThat(updated.getPoints()).isEqualByComparingTo(BigDecimal.valueOf(3));
         assertThat(updated.getComment()).isEqualTo("This is a updated certificate");
-        System.out.println(result);
         assertThat(updated.getTags())
                 .extracting(Tag::getName)
                 .containsExactlyInAnyOrder("Important tag", "Way more important tag");
