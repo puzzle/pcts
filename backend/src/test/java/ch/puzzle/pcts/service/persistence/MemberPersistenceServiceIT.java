@@ -84,13 +84,12 @@ class MemberPersistenceServiceIT {
                 .withAbbreviation("M1")
                 .withDateOfHire(commonDate)
                 .withBirthDate(commonDate)
-                .withIsAdmin(false)
                 .withOrganisationUnit(organisationUnit)
                 .build();
 
         Member result = persistenceService.create(member);
 
-        assertThat(result.getId()).isEqualTo(1000L);
+        assertThat(result.getId()).isEqualTo(3L);
         assertThat(result.getName()).isEqualTo(member.getName());
     }
 
@@ -109,7 +108,6 @@ class MemberPersistenceServiceIT {
                 .withAbbreviation("M1")
                 .withDateOfHire(commonDate)
                 .withBirthDate(commonDate)
-                .withIsAdmin(false)
                 .withOrganisationUnit(organisationUnit)
                 .build();
 

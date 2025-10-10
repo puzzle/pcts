@@ -12,14 +12,13 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/members")
-@Tag(name = "member", description = "members of the organisation")
+@Tag(name = "member", description = "Manage the members of the organisation, including user profiles and status")
 public class MemberController {
     private final MemberMapper mapper;
     private final MemberBusinessService service;
@@ -37,7 +36,7 @@ public class MemberController {
         return ResponseEntity.ok(mapper.toDto(service.getAll()));
     }
 
-    @Operation(summary = "Get an member by ID")
+    @Operation(summary = "Get a member by ID")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved the member.", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = MemberDto.class)) })
     @GetMapping("{memberId}")
@@ -52,12 +51,12 @@ public class MemberController {
     @ApiResponse(responseCode = "201", description = "member created successfully.", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = MemberDto.class)) })
     @PostMapping
-    public ResponseEntity<MemberDto> createMember(@Valid @RequestBody MemberInputDto dto) {
+    public ResponseEntity<MemberDto> createMember(@RequestBody MemberInputDto dto) {
         Member newMember = service.create(mapper.fromDto(dto));
         return ResponseEntity.status(201).body(mapper.toDto(newMember));
     }
 
-    @Operation(summary = "Update an member")
+    @Operation(summary = "Update a member")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The updated member data.", required = true)
     @ApiResponse(responseCode = "200", description = "member updated successfully.", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = MemberInputDto.class)) })
@@ -68,7 +67,7 @@ public class MemberController {
         return ResponseEntity.ok(mapper.toDto(updatedMember));
     }
 
-    @Operation(summary = "Delete an member")
+    @Operation(summary = "Delete a member")
     @ApiResponse(responseCode = "204", description = "member deleted successfully", content = @Content)
     @DeleteMapping("{memberId}")
     public ResponseEntity<Void> deleteMember(@Parameter(description = "ID of the member to delete.", required = true)

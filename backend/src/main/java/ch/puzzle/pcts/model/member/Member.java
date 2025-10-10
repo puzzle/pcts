@@ -11,8 +11,7 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("deleted_at IS NULL")
 public class Member {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "member_id_seq")
-    @SequenceGenerator(name = "member_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -28,8 +27,6 @@ public class Member {
 
     private Date birthDate;
 
-    private boolean isAdmin;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organisation_unit")
     private OrganisationUnit organisationUnit;
@@ -42,7 +39,6 @@ public class Member {
         this.abbreviation = builder.abbreviation;
         this.dateOfHire = builder.dateOfHire;
         this.birthDate = builder.birthDate;
-        this.isAdmin = builder.isAdmin;
         this.organisationUnit = builder.organisationUnit;
     }
 
@@ -105,14 +101,6 @@ public class Member {
         this.birthDate = birthDate;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
-    }
-
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
-    }
-
     public OrganisationUnit getOrganisationUnit() {
         return organisationUnit;
     }
@@ -125,8 +113,7 @@ public class Member {
     public String toString() {
         return "Member{" + "id=" + id + ", name='" + name + '\'' + ", lastName='" + lastName + '\''
                + ", employmentState=" + employmentState + ", abbreviation='" + abbreviation + '\'' + ", dateOfHire="
-               + dateOfHire + ", birthDate=" + birthDate + ", isAdmin=" + isAdmin + ", organisationUnit="
-               + organisationUnit + '}';
+               + dateOfHire + ", birthDate=" + birthDate + ", organisationUnit=" + organisationUnit + '}';
     }
 
     public static final class Builder {
@@ -137,7 +124,6 @@ public class Member {
         private String abbreviation;
         private Date dateOfHire;
         private Date birthDate;
-        private boolean isAdmin;
         private OrganisationUnit organisationUnit;
 
         private Builder() {
@@ -179,11 +165,6 @@ public class Member {
 
         public Builder withBirthDate(Date birthDate) {
             this.birthDate = birthDate;
-            return this;
-        }
-
-        public Builder withIsAdmin(boolean isAdmin) {
-            this.isAdmin = isAdmin;
             return this;
         }
 

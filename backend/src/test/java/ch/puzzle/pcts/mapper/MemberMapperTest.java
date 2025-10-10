@@ -47,7 +47,6 @@ class MemberMapperTest {
                 .withAbbreviation("SM")
                 .withDateOfHire(commonDate)
                 .withBirthDate(commonDate)
-                .withIsAdmin(true)
                 .withOrganisationUnit(organisationUnit)
                 .build();
 
@@ -67,7 +66,6 @@ class MemberMapperTest {
                 .withAbbreviation("SM")
                 .withDateOfHire(commonDate)
                 .withBirthDate(commonDate)
-                .withIsAdmin(true)
                 .withOrganisationUnit(organisationUnit)
                 .build();
 
@@ -80,33 +78,28 @@ class MemberMapperTest {
         assertEquals(modelWithApplicantState.getAbbreviation(), result.abbreviation());
         assertEquals(modelWithApplicantState.getDateOfHire(), result.dateOfHire());
         assertEquals(modelWithApplicantState.getBirthDate(), result.birthDate());
-        assertEquals(modelWithApplicantState.isAdmin(), result.isAdmin());
         assertEquals(organisationUnitDto, result.organisationUnit());
     }
 
     @DisplayName("Should map MemberInputDto to Member model correctly")
     @Test
     void shouldReturnMemberModel() {
-        MemberInputDto dtoWithExMemberState = new MemberInputDto(1L,
-                                                                 "Jane",
+        MemberInputDto dtoWithExMemberState = new MemberInputDto("Jane",
                                                                  "Smith",
                                                                  EmploymentState.EX_MEMBER,
                                                                  "JS",
                                                                  commonDate,
                                                                  commonDate,
-                                                                 false,
                                                                  orgUnitId);
 
         Member result = mapper.fromDto(dtoWithExMemberState);
 
-        assertEquals(dtoWithExMemberState.id(), result.getId());
         assertEquals(dtoWithExMemberState.name(), result.getName());
         assertEquals(dtoWithExMemberState.lastName(), result.getLastName());
         assertEquals(dtoWithExMemberState.employmentState(), result.getEmploymentState());
         assertEquals(dtoWithExMemberState.abbreviation(), result.getAbbreviation());
         assertEquals(dtoWithExMemberState.dateOfHire(), result.getDateOfHire());
         assertEquals(dtoWithExMemberState.birthDate(), result.getBirthDate());
-        assertEquals(dtoWithExMemberState.isAdmin(), result.isAdmin());
         assertEquals(organisationUnit, result.getOrganisationUnit());
     }
 
@@ -122,7 +115,6 @@ class MemberMapperTest {
                 .withAbbreviation("SM")
                 .withDateOfHire(commonDate)
                 .withBirthDate(commonDate)
-                .withIsAdmin(true)
                 .withOrganisationUnit(organisationUnit)
                 .build();
         List<Member> members = List.of(member1, member2);
@@ -143,23 +135,19 @@ class MemberMapperTest {
     @DisplayName("Should map list of MemberInputDtos to list of Member models")
     @Test
     void shouldReturnListOfMembers() {
-        MemberInputDto dto1 = new MemberInputDto(member1.getId(),
-                                                 member1.getName(),
+        MemberInputDto dto1 = new MemberInputDto(member1.getName(),
                                                  member1.getLastName(),
                                                  member1.getEmploymentState(),
                                                  member1.getAbbreviation(),
                                                  member1.getDateOfHire(),
                                                  member1.getBirthDate(),
-                                                 member1.isAdmin(),
                                                  orgUnitId);
-        MemberInputDto dto2 = new MemberInputDto(2L,
-                                                 "Jane",
+        MemberInputDto dto2 = new MemberInputDto("Jane",
                                                  "Smith",
                                                  EmploymentState.MEMBER,
                                                  "JS",
                                                  commonDate,
                                                  commonDate,
-                                                 false,
                                                  orgUnitId);
         List<MemberInputDto> dtos = List.of(dto1, dto2);
 
@@ -167,12 +155,11 @@ class MemberMapperTest {
 
         assertEquals(2, result.size());
         Member resultModel1 = result.get(0);
-        assertEquals(dto1.id(), resultModel1.getId());
         assertEquals(dto1.name(), resultModel1.getName());
         assertEquals(dto1.employmentState(), resultModel1.getEmploymentState());
         assertEquals(organisationUnit, resultModel1.getOrganisationUnit());
 
         Member resultModel2 = result.get(1);
-        assertEquals(dto2.id(), resultModel2.getId());
+        assertEquals(dto2.abbreviation(), resultModel2.getAbbreviation());
     }
 }

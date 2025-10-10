@@ -6,9 +6,9 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class MemberPersistenceService {
     private final MemberRepository repository;
 
@@ -36,6 +36,7 @@ public class MemberPersistenceService {
         return repository.save(member);
     }
 
+    @Transactional
     public void delete(Long id) {
         repository.deleteById(id);
     }

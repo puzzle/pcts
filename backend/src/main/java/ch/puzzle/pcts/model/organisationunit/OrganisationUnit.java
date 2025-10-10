@@ -1,8 +1,6 @@
 package ch.puzzle.pcts.model.organisationunit;
 
-import ch.puzzle.pcts.model.member.Member;
 import jakarta.persistence.*;
-import java.util.List;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -15,9 +13,6 @@ public class OrganisationUnit {
     private Long id;
 
     private String name;
-
-    @OneToMany(mappedBy = "organisationUnit")
-    private List<Member> members;
 
     public OrganisationUnit(Long id, String name) {
         this.id = id;

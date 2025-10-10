@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/degree-types")
-@Tag(name = "degree-types", description = "degree types of members")
+@Tag(name = "degree-types", description = "Manage the types of academic degrees")
 public class DegreeTypeController {
     private final DegreeTypeMapper mapper;
     private final DegreeTypeBusinessService service;

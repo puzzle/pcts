@@ -66,18 +66,17 @@ class MemberValidationServiceTest {
     @Test
     void shouldBeSuccessfulOnValidateOnUpdateWhenMemberIdIsNotNull() {
         Member member = new Member();
-        member.setId(1L);
 
-        assertDoesNotThrow(() -> validationService.validateOnUpdate(member));
+        assertDoesNotThrow(() -> validationService.validateOnUpdate(1L, member));
     }
 
-    @DisplayName("Should throw exception on validateOnUpdate() when member id is null")
+    @DisplayName("Should throw exception on validateOnUpdate() when id is null")
     @Test
-    void shouldThrowExceptionOnValidateOnUpdateWhenMemberIdIsNull() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenIdIsNull() {
         Member member = new Member();
-        member.setId(null);
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnUpdate(member));
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> validationService.validateOnUpdate(null, member));
 
         assertEquals(ErrorKey.ID_IS_NULL, exception.getErrorKey());
     }

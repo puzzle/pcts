@@ -42,7 +42,7 @@ public class MemberBusinessService {
 
     public Member update(Long id, Member member) {
         member.setName(member.getName().trim());
-        validationService.validateOnUpdate(member);
+        validationService.validateOnUpdate(id, member);
         return persistenceService.update(id, member);
     }
 

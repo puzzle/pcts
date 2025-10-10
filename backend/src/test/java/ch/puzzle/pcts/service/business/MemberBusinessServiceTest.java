@@ -56,7 +56,6 @@ class MemberBusinessServiceTest {
                 .withAbbreviation("M1")
                 .withDateOfHire(commonDate)
                 .withBirthDate(commonDate)
-                .withIsAdmin(false)
                 .withOrganisationUnit(organisationUnit)
                 .build();
         when(persistenceService.getById(1L)).thenReturn(Optional.of(member));
@@ -92,7 +91,6 @@ class MemberBusinessServiceTest {
                         .withAbbreviation("M1")
                         .withDateOfHire(commonDate)
                         .withBirthDate(commonDate)
-                        .withIsAdmin(false)
                         .withOrganisationUnit(organisationUnit)
                         .build(),
                     Member.Builder
@@ -104,7 +102,6 @@ class MemberBusinessServiceTest {
                             .withAbbreviation("M2")
                             .withDateOfHire(commonDate)
                             .withBirthDate(commonDate)
-                            .withIsAdmin(false)
                             .withOrganisationUnit(organisationUnit)
                             .build());
         when(persistenceService.getAll()).thenReturn(members);
@@ -138,7 +135,6 @@ class MemberBusinessServiceTest {
                 .withAbbreviation("M1")
                 .withDateOfHire(commonDate)
                 .withBirthDate(commonDate)
-                .withIsAdmin(false)
                 .withOrganisationUnit(organisationUnit)
                 .build();
         when(persistenceService.create(member)).thenReturn(member);
@@ -163,7 +159,6 @@ class MemberBusinessServiceTest {
                 .withAbbreviation("M1")
                 .withDateOfHire(commonDate)
                 .withBirthDate(commonDate)
-                .withIsAdmin(false)
                 .withOrganisationUnit(organisationUnit)
                 .build();
         when(persistenceService.update(id, member)).thenReturn(member);
@@ -171,7 +166,7 @@ class MemberBusinessServiceTest {
         Member result = businessService.update(id, member);
 
         assertEquals(member, result);
-        verify(validationService).validateOnUpdate(member);
+        verify(validationService).validateOnUpdate(id, member);
         verify(persistenceService).update(id, member);
     }
 
@@ -200,7 +195,6 @@ class MemberBusinessServiceTest {
                         .withAbbreviation("M1")
                         .withDateOfHire(commonDate)
                         .withBirthDate(commonDate)
-                        .withIsAdmin(false)
                         .withOrganisationUnit(organisationUnit)
                         .build());
 

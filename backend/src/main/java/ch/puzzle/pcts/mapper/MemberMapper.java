@@ -33,21 +33,18 @@ public class MemberMapper {
                              model.getAbbreviation(),
                              model.getDateOfHire(),
                              model.getBirthDate(),
-                             model.isAdmin(),
                              organisationUnitMapper.toDto(model.getOrganisationUnit()));
     }
 
     public Member fromDto(MemberInputDto dto) {
         return Member.Builder
                 .builder()
-                .withId(dto.id())
                 .withName(dto.name())
                 .withLastName(dto.lastName())
                 .withEmploymentState(dto.employmentState())
                 .withAbbreviation(dto.abbreviation())
                 .withDateOfHire(dto.dateOfHire())
                 .withBirthDate(dto.birthDate())
-                .withIsAdmin(dto.isAdmin())
                 .withOrganisationUnit(organisationUnitBusinessService.getById(dto.organisationUnitId()))
                 .build();
     }
