@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.model.certificate;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Set;
 import org.hibernate.annotations.SQLDelete;
@@ -14,9 +15,10 @@ public class Certificate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     private String name;
 
-    @Column(nullable = false)
+    @NotNull
     private BigDecimal points;
 
     private String comment;
@@ -25,12 +27,26 @@ public class Certificate {
     @JoinTable(name = "certificate_tag", joinColumns = @JoinColumn(name = "certificate_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags;
 
-    public Certificate(Long id, String name, BigDecimal points, String comment, Set<Tag> tags) {
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private CertificateType certificateType;
+
+    public Certificate(Long id, String name, BigDecimal points, String comment, Set<Tag> tags,
+                       CertificateType certificateType) {
         this.id = id;
         this.name = name;
         this.points = points;
         this.comment = comment;
         this.tags = tags;
+        this.certificateType = certificateType;
+    }
+
+    public Certificate(Long id, String name, BigDecimal points, String comment, Set<Tag> tags) {
+        this(id, name, points, comment, tags, CertificateType.CERTIFICATE);
+    }
+
+    public Certificate(Long id, String name, BigDecimal points, String comment, CertificateType certificateType) {
+        this(id, name, points, comment, null, certificateType);
     }
 
     public Certificate() {
@@ -74,6 +90,14 @@ public class Certificate {
 
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
+    }
+
+    public CertificateType getCertificateType() {
+        return certificateType;
+    }
+
+    public void setCertificateType(CertificateType certificateType) {
+        this.certificateType = certificateType;
     }
 
     @Override

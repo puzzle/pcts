@@ -3,6 +3,7 @@ package ch.puzzle.pcts.service.persistence;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.puzzle.pcts.model.certificate.Certificate;
+import ch.puzzle.pcts.model.certificate.CertificateType;
 import ch.puzzle.pcts.model.certificate.Tag;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
@@ -48,10 +49,10 @@ class CertificatePersistenceServiceIT {
         assertThat(postgres.isRunning()).isTrue();
     }
 
-    @DisplayName("Should get certificate by id")
+    @DisplayName("Should get certificate and leadership experience by id")
     @Test
     @Order(1)
-    void shouldGetCertificateById() {
+    void shouldGetById() {
         Optional<Certificate> certificate = persistenceService.getById(3L);
 
         assertThat(certificate).isPresent();
@@ -59,13 +60,15 @@ class CertificatePersistenceServiceIT {
         assertThat(certificate.get().getName()).isEqualTo("Certificate 3");
         assertThat(certificate.get().getPoints()).isEqualByComparingTo(BigDecimal.valueOf(3));
         assertThat(certificate.get().getComment()).isEqualTo("This is Certificate 3");
+        assertThat(certificate.get().getCertificateType()).isEqualTo(CertificateType.CERTIFICATE);
+
     }
 
     @DisplayName("Should get all certificates")
     @Test
     @Order(1)
     void shouldGetAllCertificates() {
-        List<Certificate> all = persistenceService.getAll();
+        List<Certificate> all = persistenceService.getAllCertificates();
 
         assertThat(all).hasSize(4);
         assertThat(all)
@@ -73,7 +76,21 @@ class CertificatePersistenceServiceIT {
                 .containsExactlyInAnyOrder("Certificate 1", "Certificate 2", "Certificate 3", "Certificate 4");
     }
 
-    @DisplayName("Should create certificate")
+    @DisplayName("Should get all leadership experiences")
+    @Test
+    @Order(1)
+    void shouldGetAllLeadershipExperiences() {
+        List<Certificate> all = persistenceService.getAllLeadershipExperiences();
+
+        assertThat(all).hasSize(3);
+        assertThat(all)
+                .extracting(Certificate::getName)
+                .containsExactlyInAnyOrder("LeadershipExperience 1",
+                                           "LeadershipExperience 2",
+                                           "LeadershipExperience 3");
+    }
+
+    @DisplayName("Should create a certificate and a leadership experience")
     @Transactional
     @Test
     @Order(2)
@@ -86,21 +103,37 @@ class CertificatePersistenceServiceIT {
                                                           .of(new Tag(1L, "Important tag"),
                                                               new Tag(2L, "Way more important tag")));
 
-        Certificate result = persistenceService.create(certificate);
+        Certificate leadershipExperience = new Certificate(null,
+                                                           "Created leadership experience",
+                                                           BigDecimal.valueOf(3),
+                                                           "This is a newly created leadership experience",
+                                                           CertificateType.LEADERSHIP_TRAINING);
 
-        assertThat(result.getId()).isEqualTo(5L);
-        assertThat(result.getName()).isEqualTo(certificate.getName());
-        assertThat(result.getPoints()).isEqualByComparingTo(certificate.getPoints());
-        assertThat(result.getComment()).isEqualTo(certificate.getComment());
-        assertThat(result.getTags()).isEqualTo(certificate.getTags());
+        Certificate createdCertificate = persistenceService.create(certificate);
+        Certificate createdLeadershipExperience = persistenceService.create(leadershipExperience);
+
+        assertThat(createdCertificate.getId()).isEqualTo(8L);
+        assertThat(createdCertificate.getName()).isEqualTo(certificate.getName());
+        assertThat(createdCertificate.getPoints()).isEqualByComparingTo(certificate.getPoints());
+        assertThat(createdCertificate.getComment()).isEqualTo(certificate.getComment());
+        assertThat(createdCertificate.getTags()).isEqualTo(certificate.getTags());
+        assertThat(createdCertificate.getCertificateType()).isEqualTo(CertificateType.CERTIFICATE);
+
+        assertThat(createdLeadershipExperience.getId()).isEqualTo(9L);
+        assertThat(createdLeadershipExperience.getName()).isEqualTo(leadershipExperience.getName());
+        assertThat(createdLeadershipExperience.getPoints()).isEqualByComparingTo(leadershipExperience.getPoints());
+        assertThat(createdLeadershipExperience.getComment()).isEqualTo(leadershipExperience.getComment());
+        assertThat(createdLeadershipExperience.getCertificateType()).isEqualTo(CertificateType.LEADERSHIP_TRAINING);
     }
 
-    @DisplayName("Should update certificate")
+    @DisplayName("Should update certificate and leadership experience")
     @Transactional
     @Test
     @Order(2)
     void shouldUpdate() {
-        long id = 4;
+        long cId = 4;
+        long lId = 5;
+
         Certificate certificate = new Certificate(null,
                                                   "Updated certificate",
                                                   BigDecimal.valueOf(3),
@@ -109,19 +142,37 @@ class CertificatePersistenceServiceIT {
                                                           .of(new Tag(null, "Important tag"),
                                                               new Tag(null, "Way more important tag")));
 
-        persistenceService.update(id, certificate);
-        Optional<Certificate> result = persistenceService.getById(id);
+        Certificate leadershipExperience = new Certificate(null,
+                                                           "Updated leadership experience",
+                                                           BigDecimal.valueOf(5),
+                                                           "This is a updated leadership experience",
+                                                           CertificateType.YOUTH_AND_SPORT);
 
-        assertThat(result).isPresent();
-        Certificate updated = result.get();
+        persistenceService.update(cId, certificate);
+        persistenceService.update(lId, leadershipExperience);
+        Optional<Certificate> certificateResult = persistenceService.getById(cId);
+        Optional<Certificate> leadershipResult = persistenceService.getById(lId);
 
-        assertThat(updated.getId()).isEqualTo(id);
-        assertThat(updated.getName()).isEqualTo("Updated certificate");
-        assertThat(updated.getPoints()).isEqualByComparingTo(BigDecimal.valueOf(3));
-        assertThat(updated.getComment()).isEqualTo("This is a updated certificate");
-        assertThat(updated.getTags())
+        assertThat(certificateResult).isPresent();
+        Certificate updatedCertificate = certificateResult.get();
+
+        assertThat(updatedCertificate.getId()).isEqualTo(cId);
+        assertThat(updatedCertificate.getName()).isEqualTo("Updated certificate");
+        assertThat(updatedCertificate.getPoints()).isEqualByComparingTo(BigDecimal.valueOf(3));
+        assertThat(updatedCertificate.getComment()).isEqualTo("This is a updated certificate");
+        assertThat(updatedCertificate.getTags())
                 .extracting(Tag::getName)
                 .containsExactlyInAnyOrder("Important tag", "Way more important tag");
+        assertThat(certificate.getCertificateType()).isEqualTo(CertificateType.CERTIFICATE);
+
+        assertThat(leadershipResult).isPresent();
+        Certificate updatedLeadership = leadershipResult.get();
+
+        assertThat(updatedLeadership.getId()).isEqualTo(lId);
+        assertThat(updatedLeadership.getName()).isEqualTo("Updated leadership experience");
+        assertThat(updatedLeadership.getPoints()).isEqualByComparingTo(BigDecimal.valueOf(5));
+        assertThat(updatedLeadership.getComment()).isEqualTo("This is a updated leadership experience");
+        assertThat(leadershipExperience.getCertificateType()).isEqualTo(CertificateType.YOUTH_AND_SPORT);
     }
 
     @DisplayName("Should delete certificate")
