@@ -87,13 +87,13 @@ class RoleBusinessServiceTest {
     @Test
     void shouldCreate() {
         Role role = new Role(1L, "Role1", false);
-        when(persistenceService.create(role)).thenReturn(role);
+        when(persistenceService.save(role)).thenReturn(role);
 
         Role result = businessService.create(role);
 
         assertEquals(role, result);
         verify(validationService).validateOnCreate(role);
-        verify(persistenceService).create(role);
+        verify(persistenceService).save(role);
     }
 
     @DisplayName("Should update role")
@@ -101,13 +101,13 @@ class RoleBusinessServiceTest {
     void shouldUpdate() {
         Long id = 1L;
         Role role = new Role(1L, "Role1", false);
-        when(persistenceService.update(id, role)).thenReturn(role);
+        when(persistenceService.save(role)).thenReturn(role);
 
         Role result = businessService.update(id, role);
 
         assertEquals(role, result);
         verify(validationService).validateOnUpdate(id, role);
-        verify(persistenceService).update(id, role);
+        verify(persistenceService).save(role);
     }
 
     @DisplayName("Should delete role")
@@ -127,7 +127,7 @@ class RoleBusinessServiceTest {
 
         businessService.create(new Role(1L, " Role ", false));
 
-        verify(persistenceService).create(roleCaptor.capture());
+        verify(persistenceService).save(roleCaptor.capture());
         Role savedRole = roleCaptor.getValue();
 
         assertEquals("Role", savedRole.getName());

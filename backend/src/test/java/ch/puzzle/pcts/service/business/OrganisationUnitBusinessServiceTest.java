@@ -88,13 +88,13 @@ class OrganisationUnitBusinessServiceTest {
     @Test
     void shouldCreate() {
         OrganisationUnit organisationUnit = new OrganisationUnit(1L, "OrganisationUnit1");
-        when(persistenceService.create(organisationUnit)).thenReturn(organisationUnit);
+        when(persistenceService.save(organisationUnit)).thenReturn(organisationUnit);
 
         OrganisationUnit result = businessService.create(organisationUnit);
 
         assertEquals(organisationUnit, result);
         verify(validationService).validateOnCreate(organisationUnit);
-        verify(persistenceService).create(organisationUnit);
+        verify(persistenceService).save(organisationUnit);
     }
 
     @DisplayName("Should update organisationUnit")
@@ -102,13 +102,13 @@ class OrganisationUnitBusinessServiceTest {
     void shouldUpdate() {
         Long id = 1L;
         OrganisationUnit organisationUnit = new OrganisationUnit(1L, "OrganisationUnit1");
-        when(persistenceService.update(id, organisationUnit)).thenReturn(organisationUnit);
+        when(persistenceService.save(organisationUnit)).thenReturn(organisationUnit);
 
         OrganisationUnit result = businessService.update(id, organisationUnit);
 
         assertEquals(organisationUnit, result);
         verify(validationService).validateOnUpdate(id, organisationUnit);
-        verify(persistenceService).update(id, organisationUnit);
+        verify(persistenceService).save(organisationUnit);
     }
 
     @DisplayName("Should delete organisationUnit")
@@ -128,7 +128,7 @@ class OrganisationUnitBusinessServiceTest {
 
         businessService.create(new OrganisationUnit(1L, " OrganisationUnit "));
 
-        verify(persistenceService).create(organisationUnitCaptor.capture());
+        verify(persistenceService).save(organisationUnitCaptor.capture());
         OrganisationUnit savedOrganisationUnit = organisationUnitCaptor.getValue();
 
         assertEquals("OrganisationUnit", savedOrganisationUnit.getName());
