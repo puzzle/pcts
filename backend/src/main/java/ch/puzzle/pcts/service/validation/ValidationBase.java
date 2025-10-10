@@ -49,7 +49,7 @@ public abstract class ValidationBase<T> {
 
     public void throwExceptionWhenIdIsNull(Long i) {
         if (i == null) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST, ErrorKey.INVALID_ARGUMENT);
+            throw new PCTSException(HttpStatus.BAD_REQUEST, "Id must not be zero", ErrorKey.INVALID_ARGUMENT);
         }
     }
 
