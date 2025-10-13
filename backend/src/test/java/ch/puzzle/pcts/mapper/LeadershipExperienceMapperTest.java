@@ -7,17 +7,19 @@ import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificate.CertificateType;
 import java.math.BigDecimal;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+@ExtendWith({ SpringExtension.class, MockitoExtension.class })
+@ContextConfiguration(classes = LeadershipExperienceMapper.class)
 class LeadershipExperienceMapperTest {
+    @Autowired
     private LeadershipExperienceMapper mapper;
-
-    @BeforeEach
-    void setUp() {
-        mapper = new LeadershipExperienceMapper();
-    }
 
     @DisplayName("Should return certificate")
     @Test
