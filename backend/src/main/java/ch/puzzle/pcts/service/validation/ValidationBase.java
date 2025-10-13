@@ -6,6 +6,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
@@ -30,26 +31,41 @@ public abstract class ValidationBase<T> {
         }
     }
 
-    public void validateOnGetById(Long id) {
+    public void validateOnGet(Long id) {
         throwExceptionWhenIdIsNull(id);
     }
 
-    public void validateOnCreate(T member) {
-        validate(member);
-    }
+    public abstract void validateOnCreate(T member);
+
+    public abstract void validateOnUpdate(Long id, T model);
 
     public void validateOnDelete(Long id) {
         throwExceptionWhenIdIsNull(id);
     }
 
-    public void validateOnUpdate(Long id, T member) {
-        throwExceptionWhenIdIsNull(id);
-        validate(member);
-    }
-
     public void throwExceptionWhenIdIsNull(Long i) {
         if (i == null) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST, "Id must not be zero", ErrorKey.INVALID_ARGUMENT);
+            throw new PCTSException(HttpStatus.BAD_REQUEST, "Id must not be null.", ErrorKey.INVALID_ARGUMENT);
+        }
+    }
+
+    public void throwExceptionWhenIdHasChanged(Long id, Long modelId) {
+        if (!Objects.equals(id, modelId)) {
+            throw new PCTSException(HttpStatus.BAD_REQUEST,
+                                    "The queried id must match the id in the model.",
+                                    ErrorKey.INVALID_ARGUMENT);
+        }
+    }
+
+    public void throwExceptionWhenIdIsNotNull(Long id) {
+        if (id != null) {
+            throw new PCTSException(HttpStatus.BAD_REQUEST, "Id must be null.", ErrorKey.INVALID_ARGUMENT);
+        }
+    }
+
+    public void throwExceptionWhenModelIsNull(T model) {
+        if (model == null) {
+            throw new PCTSException(HttpStatus.BAD_REQUEST, "Model must not be null.", ErrorKey.INVALID_ARGUMENT);
         }
     }
 

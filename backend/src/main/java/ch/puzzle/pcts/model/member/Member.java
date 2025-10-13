@@ -6,6 +6,9 @@ import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.util.Date;
 import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
@@ -18,16 +21,28 @@ public class Member implements Model {
     private Long id;
 
     private String firstName;
+    @NotBlank(message = "{attribute.not.blank}")
+    @NotNull(message = "{attribute.notnull}")
+    @Size(min = 2, max = 250, message = "{attribute.size.between}")
+    private String name;
 
+    @NotBlank(message = "{attribute.not.blank}")
+    @NotNull(message = "{attribute.notnull}")
+    @Size(min = 2, max = 250, message = "{attribute.size.between}")
     private String lastName;
 
     @Enumerated(EnumType.STRING)
+    @NotNull(message = "{attribute.notnull}")
     private EmploymentState employmentState;
 
+    @NotBlank(message = "{attribute.not.blank}")
+    @NotNull(message = "{attribute.notnull}")
+    @Size(min = 2, max = 250, message = "{attribute.size.between}")
     private String abbreviation;
 
     private Date dateOfHire;
 
+    @NotNull(message = "{attribute.notnull}")
     private Date birthDate;
 
     @Column(name = "deleted_at", insertable = false, updatable = false)
