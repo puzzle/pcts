@@ -1,12 +1,12 @@
 TRUNCATE TABLE organisation_unit CASCADE;
 TRUNCATE TABLE member CASCADE;
 
-INSERT INTO organisation_unit (id, name)
+INSERT INTO organisation_unit (name)
 VALUES
-    (1, '/zh'),
-    (2, '/mobility'),
-    (3, '/bbt'),
-    (4, '/mid');
+    ('/zh'),
+    ('/mobility'),
+    ('/bbt'),
+    ('/mid');
 
 INSERT INTO member (name, last_name, abbreviation, employment_state, date_of_hire, birth_date, organisation_unit)
 VALUES
