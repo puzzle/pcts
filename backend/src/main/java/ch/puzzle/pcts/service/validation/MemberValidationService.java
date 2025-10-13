@@ -1,33 +1,25 @@
 package ch.puzzle.pcts.service.validation;
 
-import ch.puzzle.pcts.exception.PCTSException;
-import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.member.Member;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MemberValidationService {
+public class MemberValidationService extends ValidationBase<Member> {
 
-    public void validateOnGetById(Long id) {
-        throwExceptionWhenIdIsNull(id);
-    }
-
+    @Override
     public void validateOnCreate(Member member) {
-        // Will get content in the future.
+        throwExceptionWhenModelIsNull(member);
+        throwExceptionWhenIdIsNotNull(member.getId());
+
+        validate(member);
     }
 
-    public void validateOnDelete(Long id) {
+    @Override
+    public void validateOnUpdate(Long id, Member member) {
+        throwExceptionWhenModelIsNull(member);
         throwExceptionWhenIdIsNull(id);
-    }
+        throwExceptionWhenIdHasChanged(id, member.getId());
 
-    public void validateOnUpdate(Long id) {
-        throwExceptionWhenIdIsNull(id);
-    }
-
-    public void throwExceptionWhenIdIsNull(Long id) {
-        if (id == null) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST, ErrorKey.ID_IS_NULL);
-        }
+        validate(member);
     }
 }
