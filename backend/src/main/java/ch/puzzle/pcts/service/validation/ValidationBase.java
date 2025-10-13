@@ -80,7 +80,7 @@ public abstract class ValidationBase<T> {
                     .stream()
                     .map(ConstraintViolation::getMessage)
                     .collect(Collectors.joining(", "));
-            // TODO: handle it properly here
+            // TODO: map her into the new ErrorDtos #145
             throw new PCTSException(HttpStatus.BAD_REQUEST, errorMessages, ErrorKey.INVALID_ARGUMENT);
         }
     }
