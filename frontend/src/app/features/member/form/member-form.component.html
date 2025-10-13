@@ -1,27 +1,27 @@
 <div class="w-75 mx-auto mt-5">
-  <h1>Member {{pageTitleKey() | translate}}</h1>
+  <h1 data-testid="title">Member {{pageTitleKey() | translate}}</h1>
 
   <p class="fw-bold">{{ "MEMBER.FORM.PERSONAL_DETAILS" | translate }}</p>
 
   <form [formGroup]="memberForm" (ngSubmit)="onSubmit()">
 
-    <app-input-field [formControl]="memberForm.controls.name" labelKey="MEMBER.FIRSTNAME" [formGroup]="memberForm" />
+    <app-input-field formControlPath="name" labelKey="MEMBER.FIRSTNAME" [formGroup]="memberForm" />
 
-    <app-input-field [formControl]="memberForm.controls.lastName" labelKey="MEMBER.LASTNAME" [formGroup]="memberForm" />
+    <app-input-field formControlPath="lastName" labelKey="MEMBER.LASTNAME" [formGroup]="memberForm" />
 
-    <app-input-field [formControl]="memberForm.controls.abbreviation" labelKey="MEMBER.ABBREVIATION" [formGroup]="memberForm" />
+    <app-input-field formControlPath="abbreviation" labelKey="MEMBER.ABBREVIATION" [formGroup]="memberForm" />
 
-    <app-input-field [formControl]="memberForm.controls.birthday" labelKey="MEMBER.BIRTHDAY" [formGroup]="memberForm" [type]="InputTypeEnum.DATE" />
+    <app-input-field formControlPath="birthday" labelKey="MEMBER.BIRTHDAY" [formGroup]="memberForm" [type]="InputTypeEnum.DATE" />
 
-    <app-input-field [formControl]="memberForm.controls.dateOfHire" labelKey="MEMBER.DATE_OF_HIRE" [formGroup]="memberForm" [type]="InputTypeEnum.DATE" />
+    <app-input-field formControlPath="dateOfHire" labelKey="MEMBER.DATE_OF_HIRE" [formGroup]="memberForm" [type]="InputTypeEnum.DATE" />
 
-    <app-input-field [formControl]="memberForm.controls.employmentState" labelKey="MEMBER.EMPLOYMENT_STATUS" [formGroup]="memberForm" [type]="InputTypeEnum.DROPDOWN" [dropdownOptions]="employmentStateFilteredOptions" [displayWith]="displayEmploymentState.bind(this)" />
+    <app-input-field formControlPath="employmentState" labelKey="MEMBER.EMPLOYMENT_STATUS" [formGroup]="memberForm" [type]="InputTypeEnum.DROPDOWN" [dropdownOptions]="employmentStateFilteredOptions" [displayWith]="displayEmploymentState.bind(this)" />
 
-    <app-input-field [formControl]="memberForm.controls.organisationUnit" labelKey="MEMBER.ORGANISATION_UNIT" [formGroup]="memberForm" [type]="InputTypeEnum.DROPDOWN" [dropdownOptions]="organisationUnitFilteredOptions" [displayWith]="displayOrganisationUnit.bind(this)" />
+    <app-input-field formControlPath="organisationUnit" labelKey="MEMBER.ORGANISATION_UNIT" [formGroup]="memberForm" [type]="InputTypeEnum.DROPDOWN" [dropdownOptions]="organisationUnitFilteredOptions" [displayWith]="displayOrganisationUnit.bind(this)" />
 
     <div class="d-flex flex-row gap-3">
       <button mat-stroked-button type="button" [routerLink]="['/']">{{ "GENERAL.CANCEL" | translate }}</button>
-      <button mat-flat-button color="primary" type="submit" [disabled]="!memberForm.valid"> {{submitButtonKey() | translate}} </button>
+      <button mat-flat-button color="primary" type="submit" data-testid="submit-button" [disabled]="!memberForm.valid"> {{submitButtonKey() | translate}} </button>
     </div>
   </form>
 </div>

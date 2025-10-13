@@ -1,43 +1,59 @@
-<mat-form-field class="w-100">
-  <mat-label>{{labelKey | translate}}</mat-label>
-  @switch (type) {
+ @switch (type) {
     @case (InputTypeEnum.TEXT) {
-      <input
-        type="text"
-        [formControl]="formControl!"
-        matInput
-      >
+      <mat-form-field class="w-100">
+        <mat-label>{{labelKey | translate}}</mat-label>
+        <input
+          type="text"
+          [formControl]="formControl!"
+          matInput
+          [attr.data-testid]='formControlPath'
+        >
+        @for (errorMessage of getErrorMessages(); track errorMessage) {
+          <mat-error data-testid="validation-error">{{ errorMessage | translate }}</mat-error>
+        }
+      </mat-form-field>
     }
     @case (InputTypeEnum.DATE) {
-      <input
-        [formControl]="formControl!"
-        matInput
-        [matDatepicker]="datePicker"
-      >
-      <mat-datepicker-toggle
-        matIconSuffix
-        [for]="datePicker"
-      />
-      <mat-datepicker #datePicker />
+      <mat-form-field class="w-100">
+        <mat-label>{{labelKey | translate}}</mat-label>
+        <input
+          [formControl]="formControl!"
+          matInput
+          [matDatepicker]="datePicker"
+          [attr.data-testid]='formControlPath'
+        >
+        <mat-datepicker-toggle style="float: right;" matIconSuffix
+          [for]="datePicker"
+        />
+        <mat-datepicker #datePicker/>
+        @for (errorMessage of getErrorMessages(); track errorMessage) {
+          <mat-error data-testid="validation-error">{{ errorMessage | translate }}</mat-error>
+        }
+      </mat-form-field>
     }
     @case (InputTypeEnum.DROPDOWN) {
-      <input
-        type="text"
-        matInput
-        [formControl]="formControl!"
-        [matAutocomplete]="auto"
-      >
-      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayWith">
-        @for (option of dropdownOptions(); track option) {
-          <mat-option [value]="option">
-            {{displayWith(option)}}
-          </mat-option>
+      <mat-form-field class="w-100">
+        <mat-label>{{labelKey | translate}}</mat-label>
+        <input
+          type="text"
+          matInput
+          [formControl]="formControl!"
+          [matAutocomplete]="auto"
+          [attr.data-testid]='formControlPath'
+        >
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayWith">
+          @for (option of dropdownOptions(); track option) {
+            <mat-option [value]="option">
+              {{ displayWith(option) }}
+            </mat-option>
+          }
+        </mat-autocomplete>
+        @for (errorMessage of getErrorMessages(); track errorMessage) {
+          <mat-error data-testid="validation-error">{{ errorMessage | translate }}</mat-error>
         }
-      </mat-autocomplete>
+      </mat-form-field>
     }
   }
 
-  @for (errorMessage of getErrorMessages(); track errorMessage) {
-    <mat-error>{{errorMessage | translate}}</mat-error>
-  }
-</mat-form-field>
+
+
