@@ -4,9 +4,7 @@ import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import java.util.Date;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -41,6 +39,7 @@ public class Member {
     private Date dateOfHire;
 
     @NotNull(message = "{attribute.notnull}")
+    @Past(message = "{attribute.no.past}")
     private Date birthDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
