@@ -1,6 +1,7 @@
-import { Component, computed, inject, OnInit, Signal, signal } from '@angular/core';
+import {Component, computed, inject, OnInit, Signal, signal} from '@angular/core';
 import {
-  AbstractControl, FormBuilder,
+  AbstractControl,
+  FormBuilder,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
@@ -8,24 +9,24 @@ import {
   ValidatorFn,
   Validators
 } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { MemberService } from '../member.service';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatButton } from '@angular/material/button';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {MemberService} from '../member.service';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatButton} from '@angular/material/button';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {MatIconModule} from '@angular/material/icon';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
-import { OrganisationUnitModel } from '../../organisation-unit/organisation-unit.model';
-import { EmploymentState } from '../../../shared/enum/employment-state.enum';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { MemberModel } from '../member.model';
-import { OrganisationUnitService } from '../../organisation-unit/organisation-unit.service';
-import { InputField } from '../../../shared/input-field/input-field';
-import { InputTypeEnum } from '../../../shared/input-field/input-type.enum';
+import {OrganisationUnitModel} from '../../organisation-unit/organisation-unit.model';
+import {EmploymentState} from '../../../shared/enum/employment-state.enum';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {MemberModel} from '../member.model';
+import {OrganisationUnitService} from '../../organisation-unit/organisation-unit.service';
+import {InputField} from '../../../shared/input-field/input-field';
+import {InputTypeEnum} from '../../../shared/input-field/input-type.enum';
 
 @Component({
   selector: 'app-member-form',
@@ -43,7 +44,7 @@ import { InputTypeEnum } from '../../../shared/input-field/input-type.enum';
     MatIconModule,
     MatDatepickerModule,
     RouterLink,
-    InputField
+    InputField,
   ],
   templateUrl: './member-form.component.html',
   styleUrl: './member-form.component.scss'
@@ -78,13 +79,13 @@ export class MemberFormComponent implements OnInit {
     abbreviation: [''],
     birthday: ['',
       [Validators.required,
-        this.isDateInPast]],
+        this.isDateInPast()]],
     dateOfHire: [''],
     employmentState: [null,
       [Validators.required,
-        this.isAEnumValue]],
+        this.isAEmploymentState()]],
     organisationUnit: [null,
-      this.isAObject]
+      this.isAOrganisationUnit()]
   });
 
   private readonly employmentStateOptions: EmploymentState[] = Object.values(EmploymentState);
@@ -106,7 +107,10 @@ export class MemberFormComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.loadMember();
+    //wait until the i18n translation json is loaded
+    this.translateService.onLangChange.subscribe(() => {
+      this.loadMember();
+    });
   }
 
   loadMember() {
@@ -119,6 +123,7 @@ export class MemberFormComponent implements OnInit {
 
   onSubmit() {
     this.memberForm.markAllAsTouched();
+    this.memberForm.markAllAsDirty();
     if (this.memberForm.invalid) {
       return;
     }
@@ -144,6 +149,8 @@ export class MemberFormComponent implements OnInit {
       const date = new Date(control.value);
       const today = new Date();
 
+      console.log(date)
+
       if (date >= today) {
         return { date_is_in_future: true };
       }
@@ -152,7 +159,7 @@ export class MemberFormComponent implements OnInit {
     };
   }
 
-  isAObject(): ValidatorFn {
+  isAOrganisationUnit(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
 
@@ -161,17 +168,17 @@ export class MemberFormComponent implements OnInit {
       }
 
       if (typeof value === 'string') {
-        return { require_selection: true };
+        return {invalid_entry: true};
       }
 
       const isValidOption = this.organisationUnitsOptions()
         .includes(value);
 
-      return isValidOption ? null : { invalid_option: true };
+      return isValidOption ? null : {invalid_entry: true};
     };
   }
 
-  isAEnumValue(): ValidatorFn {
+  isAEmploymentState(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
 
