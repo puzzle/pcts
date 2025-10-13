@@ -5,17 +5,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import ch.puzzle.pcts.dto.example.ExampleDto;
 import ch.puzzle.pcts.model.example.Example;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+@ExtendWith({ SpringExtension.class, MockitoExtension.class })
+@ContextConfiguration(classes = ExampleMapper.class)
 class ExampleMapperTest {
+    @Autowired
     private ExampleMapper mapper;
-
-    @BeforeEach
-    void setUp() {
-        mapper = new ExampleMapper();
-    }
 
     @DisplayName("Should return example")
     @Test
