@@ -9,32 +9,21 @@ import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.persistence.RolePersistenceService;
 import java.util.Optional;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class RoleValidationServiceTest {
-    private AutoCloseable closeable;
 
     @Mock
     private RolePersistenceService persistenceService;
 
     @InjectMocks
     private RoleValidationService validationService;
-
-    @BeforeEach
-    void setUp() {
-        closeable = MockitoAnnotations.openMocks(this);
-    }
-
-    @AfterEach
-    void tearDown() throws Exception {
-        closeable.close();
-    }
 
     @DisplayName("Should be successful on validateOnGetById() when id valid")
     @Test

@@ -8,14 +8,15 @@ import ch.puzzle.pcts.service.persistence.TagPersistenceService;
 import ch.puzzle.pcts.service.validation.TagValidationService;
 import java.util.Optional;
 import java.util.Set;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class TagBusinessServiceTest {
 
     @Mock
@@ -26,11 +27,6 @@ class TagBusinessServiceTest {
 
     @InjectMocks
     private TagBusinessService businessService;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @DisplayName("Should return existing tag if it is already persisted")
     @Test

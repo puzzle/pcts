@@ -11,13 +11,14 @@ import ch.puzzle.pcts.service.validation.LeadershipExperienceValidationService;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class LeadershipExperienceBusinessServiceTest {
 
     @Mock
@@ -28,11 +29,6 @@ class LeadershipExperienceBusinessServiceTest {
 
     @InjectMocks
     private LeadershipExperienceBusinessService businessService;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @DisplayName("Should get leadershipExperience by id and validate certificate type")
     @Test

@@ -7,13 +7,14 @@ import ch.puzzle.pcts.model.example.Example;
 import ch.puzzle.pcts.service.persistence.ExamplePersistenceService;
 import ch.puzzle.pcts.service.validation.ExampleValidationService;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class ExampleBusinessServiceTest {
 
     @Mock
@@ -24,11 +25,6 @@ class ExampleBusinessServiceTest {
 
     @InjectMocks
     private ExampleBusinessService businessService;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @DisplayName("Should get example by id")
     @Test

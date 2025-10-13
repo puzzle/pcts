@@ -13,30 +13,21 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class CertificateValidationServiceTest {
-    private AutoCloseable closeable;
 
     @Mock
     private CertificatePersistenceService persistenceService;
 
     @InjectMocks
     private CertificateValidationService validationService;
-
-    @BeforeEach
-    void setUp() {
-        closeable = MockitoAnnotations.openMocks(this);
-    }
-
-    @AfterEach
-    void tearDown() throws Exception {
-        closeable.close();
-    }
 
     @DisplayName("Should be successful on validateOnGetById() when id valid")
     @Test
