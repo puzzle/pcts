@@ -58,13 +58,13 @@ class LeadershipExperienceBusinessServiceTest {
                                                            "Comment",
                                                            CertificateType.MILITARY_FUNCTION);
 
-        when(persistenceService.create(leadershipExperience)).thenReturn(leadershipExperience);
+        when(persistenceService.save(leadershipExperience)).thenReturn(leadershipExperience);
 
         Certificate result = businessService.create(leadershipExperience);
 
         assertEquals(leadershipExperience, result);
         verify(validationService).validateOnCreate(leadershipExperience);
-        verify(persistenceService).create(leadershipExperience);
+        verify(persistenceService).save(leadershipExperience);
     }
 
     @DisplayName("Should get all leadershipExperiences")
@@ -99,13 +99,13 @@ class LeadershipExperienceBusinessServiceTest {
                                                            BigDecimal.ONE,
                                                            "Comment",
                                                            CertificateType.LEADERSHIP_TRAINING);
-        when(persistenceService.update(id, leadershipExperience)).thenReturn(leadershipExperience);
+        when(persistenceService.save(leadershipExperience)).thenReturn(leadershipExperience);
 
         Certificate result = businessService.update(id, leadershipExperience);
 
         assertEquals(leadershipExperience, result);
         verify(validationService).validateOnUpdate(id, leadershipExperience);
-        verify(persistenceService).update(id, leadershipExperience);
+        verify(persistenceService).save(leadershipExperience);
     }
 
     @DisplayName("Should delete leadershipExperience")

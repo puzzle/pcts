@@ -24,7 +24,7 @@ public class LeadershipExperienceBusinessService {
     public Certificate create(Certificate leadershipExperience) {
         validationService.validateOnCreate(leadershipExperience);
 
-        return persistenceService.create(leadershipExperience);
+        return persistenceService.save(leadershipExperience);
     }
 
     public Certificate getById(long id) {
@@ -49,7 +49,8 @@ public class LeadershipExperienceBusinessService {
 
     public Certificate update(Long id, Certificate leadershipExperience) {
         validationService.validateOnUpdate(id, leadershipExperience);
-        return persistenceService.update(id, leadershipExperience);
+        leadershipExperience.setId(id);
+        return persistenceService.save(leadershipExperience);
     }
     public void delete(Long id) {
         validationService.validateOnDelete(id);
