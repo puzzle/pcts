@@ -35,13 +35,11 @@ public class MemberBusinessService {
     }
 
     public Member create(Member member) {
-        member.setName(member.getName().trim());
         validationService.validateOnCreate(member);
         return persistenceService.create(member);
     }
 
     public Member update(Long id, Member member) {
-        member.setName(member.getName().trim());
         validationService.validateOnUpdate(id);
         return persistenceService.update(id, member);
     }

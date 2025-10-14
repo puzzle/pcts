@@ -33,13 +33,11 @@ public class RoleBusinessService {
     }
 
     public Role create(Role role) {
-        role.setName(role.getName().trim());
         validationService.validateOnCreate(role);
         return persistenceService.create(role);
     }
 
     public Role update(Long id, Role role) {
-        role.setName(role.getName().trim());
         validationService.validateOnUpdate(id, role);
         return persistenceService.update(id, role);
     }

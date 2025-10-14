@@ -18,7 +18,6 @@ public class ExperienceTypePersistenceService {
 
     @Transactional
     public ExperienceType create(ExperienceType experienceType) {
-        experienceType.setName(experienceType.getName().trim());
         return repository.save(experienceType);
     }
 
@@ -32,7 +31,6 @@ public class ExperienceTypePersistenceService {
 
     @Transactional
     public ExperienceType update(Long id, ExperienceType experienceType) {
-        experienceType.setName(experienceType.getName().trim());
         experienceType.setId(id);
         return repository.save(experienceType);
     }
