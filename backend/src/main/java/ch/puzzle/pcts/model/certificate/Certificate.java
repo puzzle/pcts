@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.model.certificate;
 
+import ch.puzzle.pcts.model.Model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -11,7 +12,7 @@ import org.hibernate.annotations.SQLRestriction;
 @Entity
 @SQLDelete(sql = "UPDATE certificate SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
-public class Certificate {
+public class Certificate implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
