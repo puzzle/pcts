@@ -3,9 +3,8 @@ package ch.puzzle.pcts.service.persistence;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificate.CertificateType;
 import ch.puzzle.pcts.repository.CertificateRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class CertificatePersistenceService extends PersistenceBase<Certificate, CertificateRepository> {
