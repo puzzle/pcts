@@ -19,9 +19,6 @@ class CertificatePersistenceServiceIT extends PersistenceBasicIT {
     @Autowired
     private CertificatePersistenceService persistenceService;
 
-    @Autowired
-    private TagPersistenceService tagPersistenceService;
-
     @DisplayName("Should get certificate and leadership experience by id")
     @Test
     void shouldGetById() {
