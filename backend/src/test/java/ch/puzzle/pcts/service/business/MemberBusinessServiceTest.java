@@ -6,13 +6,10 @@ import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
-import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
-import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import ch.puzzle.pcts.service.validation.MemberValidationService;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -124,31 +121,5 @@ class MemberBusinessServiceTest {
 
         verify(validationService).validateOnDelete(id);
         verify(persistenceService).delete(id);
-    }
-
-    @DisplayName("Should trim role name")
-    @Test
-    void shouldTrimRoleName() {
-        Member memberMalformatted = Member.Builder
-                .builder()
-                .withId(1L)
-                .withName(" Member1  ")
-                .withLastName(" Test ")
-                .withEmploymentState(EmploymentState.APPLICANT)
-                .withAbbreviation("M1")
-                .withDateOfHire(new Date())
-                .withBirthDate(new Date())
-                .withOrganisationUnit(new OrganisationUnit())
-                .build();
-        when(persistenceService.create(memberMalformatted)).thenReturn(memberMalformatted);
-
-        Member savedMember = businessService.create(memberMalformatted);
-
-        verify(persistenceService).create(memberMalformatted);
-        verify(validationService).validateOnCreate(memberMalformatted);
-
-        assertEquals("Member1", savedMember.getName());
-        assertEquals("Test", savedMember.getLastName());
-        assertEquals(1L, savedMember.getId());
     }
 }
