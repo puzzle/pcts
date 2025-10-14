@@ -3,6 +3,7 @@ package ch.puzzle.pcts.model.certificate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.Set;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -104,5 +105,20 @@ public class Certificate {
     public String toString() {
         return "Certificate{" + "id=" + id + ", name='" + name + '\'' + ", points=" + points + ", comment='" + comment
                + '\'' + ", tags=" + tags + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Certificate that = (Certificate) o;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(points, that.points)
+               && Objects.equals(comment, that.comment) && Objects.equals(tags, that.tags)
+               && certificateType == that.certificateType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, points, comment, tags, certificateType);
     }
 }
