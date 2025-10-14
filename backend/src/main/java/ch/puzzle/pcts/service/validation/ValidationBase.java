@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.service.validation;
 
 import ch.puzzle.pcts.exception.PCTSException;
+import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -15,7 +16,7 @@ import org.springframework.http.HttpStatus;
  * @param <T>
  *            the Type or entity of the repository
  */
-public abstract class ValidationBase<T> {
+public abstract class ValidationBase<T extends Model> {
     private final Validator validator;
 
     ValidationBase() {
@@ -35,9 +36,20 @@ public abstract class ValidationBase<T> {
         throwExceptionWhenIdIsNull(id);
     }
 
-    public abstract void validateOnCreate(T member);
+    public void validateOnCreate(T model) {
+        throwExceptionWhenModelIsNull(model);
+        throwExceptionWhenIdIsNotNull(model.getId());
 
-    public abstract void validateOnUpdate(Long id, T model);
+        validate(model);
+    }
+
+    public void validateOnUpdate(Long id, T model) {
+        throwExceptionWhenIdIsNull(id);
+        throwExceptionWhenModelIsNull(model);
+        throwExceptionWhenIdHasChanged(id, model.getId());
+
+        validate(model);
+    }
 
     public void validateOnDelete(Long id) {
         throwExceptionWhenIdIsNull(id);
