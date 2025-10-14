@@ -4,24 +4,44 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
+import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
+import java.sql.Timestamp;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class MemberValidationServiceTest {
+class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, MemberValidationService> {
 
     @InjectMocks
-    private MemberValidationService validationService;
+    MemberValidationService service;
 
-    @DisplayName("Should be successful on validateOnGetById() when id is not null")
-    @Test
-    void shouldBeSuccessfulOnValidateOnGetByIdWhenIdIsNotNull() {
-        Long id = 1L;
-        assertDoesNotThrow(() -> validationService.validateOnGetById(id));
+    @Override
+    Member getModel() {
+        return Member.Builder
+                .builder()
+                .withId(null)
+                .withName("Member 3")
+                .withLastName("Test")
+                .withEmploymentState(EmploymentState.APPLICANT)
+                .withAbbreviation("M1")
+                .withDateOfHire(new Timestamp(0L))
+                .withBirthDate(new Timestamp(0L))
+                .withOrganisationUnit(new OrganisationUnit(1L, "Organisation Unit"))
+                .build();
+    }
+
+    @Override
+    void validate() {
+    }
+
+    @Override
+    MemberValidationService getService() {
+        return service;
     }
 
     @DisplayName("Should throw exception on validateOnGetById() when id is null")
@@ -38,7 +58,7 @@ class MemberValidationServiceTest {
     @Test
     void shouldBeSuccessfulOnValidateOnDeleteWhenIdIsNotNull() {
         Long id = 1L;
-        assertDoesNotThrow(() -> validationService.validateOnDelete(id));
+        assertDoesNotThrow(() -> service.validateOnDelete(id));
     }
 
     @DisplayName("Should throw exception on validateOnDelete() when id is null")
@@ -54,7 +74,7 @@ class MemberValidationServiceTest {
     @DisplayName("Should be successful on validateOnUpdate() when member id is not null")
     @Test
     void shouldBeSuccessfulOnValidateOnUpdateWhenMemberIdIsNotNull() {
-        assertDoesNotThrow(() -> validationService.validateOnUpdate(1L));
+        assertDoesNotThrow(() -> service.validateOnUpdate(1L));
     }
 
     @DisplayName("Should throw exception on validateOnUpdate() when id is null")
@@ -69,6 +89,6 @@ class MemberValidationServiceTest {
     @Test
     void shouldBeSuccessfulOnValidateOnCreateWhenMemberIsValid() {
         Member member = new Member();
-        assertDoesNotThrow(() -> validationService.validateOnCreate(member));
+        assertDoesNotThrow(() -> service.validateOnCreate(member));
     }
 }
