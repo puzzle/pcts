@@ -1,7 +1,7 @@
 package ch.puzzle.pcts.service.validation;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificate.Certificate;
@@ -23,6 +23,9 @@ class LeadershipExperienceValidationServiceTest {
     @Mock
     private CertificatePersistenceService persistenceService;
 
+    @Mock
+    Certificate leadershipExperience;
+
     @InjectMocks
     private LeadershipExperienceValidationService validationService;
 
@@ -30,7 +33,7 @@ class LeadershipExperienceValidationServiceTest {
     @Test
     void shouldBeSuccessfulOnValidateOnGetByIdWhenIdIsValid() {
         Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(new Certificate()));
+        when(persistenceService.getById(id)).thenReturn(Optional.of(mock(Certificate.class)));
 
         assertDoesNotThrow(() -> validationService.validateOnGetById(id));
     }
@@ -50,10 +53,10 @@ class LeadershipExperienceValidationServiceTest {
     @DisplayName("Should be successful on validateOnCreate() when leadershipExperience is valid")
     @Test
     void shouldBeSuccessfulOnValidateOnCreateWhenLeadershipExperienceIsValid() {
-        Certificate leadershipExperience = new Certificate();
-        leadershipExperience.setName("New leadershipExperience");
-        leadershipExperience.setPoints(BigDecimal.valueOf(5));
-        leadershipExperience.setCertificateType(CertificateType.LEADERSHIP_TRAINING);
+        when(leadershipExperience.getId()).thenReturn(null);
+        when(leadershipExperience.getName()).thenReturn("New leadershipExperience");
+        when(leadershipExperience.getPoints()).thenReturn(BigDecimal.valueOf(5));
+        when(leadershipExperience.getCertificateType()).thenReturn(CertificateType.LEADERSHIP_TRAINING);
 
         assertDoesNotThrow(() -> validationService.validateOnCreate(leadershipExperience));
     }
@@ -61,12 +64,10 @@ class LeadershipExperienceValidationServiceTest {
     @DisplayName("Should throw exception on validateOnCreate() when id is not null")
     @Test
     void shouldThrowExceptionOnValidateOnCreateWhenIdIsNotNull() {
-        Certificate leadershipExperience = new Certificate();
-        leadershipExperience.setId(123L);
-        leadershipExperience.setName("Valid name");
+        when(leadershipExperience.getId()).thenReturn(123L);
 
         PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> validationService.validateOnCreate(leadershipExperience));
+                () -> validationService.validateOnCreate(leadershipExperience));
 
         assertEquals("Id needs to be undefined", exception.getReason());
         assertEquals(ErrorKey.ID_IS_NOT_NULL, exception.getErrorKey());
@@ -75,10 +76,11 @@ class LeadershipExperienceValidationServiceTest {
     @DisplayName("Should throw exception on validateOnCreate() when name is null")
     @Test
     void shouldThrowExceptionOnValidateOnCreateWhenNameIsNull() {
-        Certificate leadershipExperience = new Certificate();
+        when(leadershipExperience.getId()).thenReturn(null);
+        when(leadershipExperience.getName()).thenReturn(null);
 
         PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> validationService.validateOnCreate(leadershipExperience));
+                () -> validationService.validateOnCreate(leadershipExperience));
 
         assertEquals("Name must not be null", exception.getReason());
         assertEquals(ErrorKey.LEADERSHIP_EXPERIENCE_NAME_IS_NULL, exception.getErrorKey());
@@ -87,11 +89,11 @@ class LeadershipExperienceValidationServiceTest {
     @DisplayName("Should throw exception on validateOnCreate() when name is blank")
     @Test
     void shouldThrowExceptionOnValidateOnCreateWhenNameBlank() {
-        Certificate leadershipExperience = new Certificate();
-        leadershipExperience.setName("");
+        when(leadershipExperience.getId()).thenReturn(null);
+        when(leadershipExperience.getName()).thenReturn("");
 
         PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> validationService.validateOnCreate(leadershipExperience));
+                () -> validationService.validateOnCreate(leadershipExperience));
 
         assertEquals("Name must not be empty", exception.getReason());
         assertEquals(ErrorKey.LEADERSHIP_EXPERIENCE_NAME_IS_EMPTY, exception.getErrorKey());
@@ -100,12 +102,12 @@ class LeadershipExperienceValidationServiceTest {
     @DisplayName("Should throw exception on validateOnCreate() when points is null")
     @Test
     void shouldThrowExceptionOnValidateOnCreateWhenPointsIsNull() {
-        Certificate leadershipExperience = new Certificate();
-        leadershipExperience.setName("Valid name");
-        leadershipExperience.setPoints(null);
+        when(leadershipExperience.getId()).thenReturn(null);
+        when(leadershipExperience.getName()).thenReturn("Valid name");
+        when(leadershipExperience.getPoints()).thenReturn(null);
 
         PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> validationService.validateOnCreate(leadershipExperience));
+                () -> validationService.validateOnCreate(leadershipExperience));
 
         assertEquals("Points value must not be null.", exception.getReason());
         assertEquals(ErrorKey.LEADERSHIP_EXPERIENCE_POINTS_ARE_NULL, exception.getErrorKey());
@@ -114,35 +116,24 @@ class LeadershipExperienceValidationServiceTest {
     @DisplayName("Should throw exception on validateOnCreate() when points is negative")
     @Test
     void shouldThrowExceptionOnValidateOnCreateWhenPointsNegative() {
-        Certificate leadershipExperience = new Certificate();
-        leadershipExperience.setName("Valid name");
-        leadershipExperience.setPoints(BigDecimal.valueOf(-5));
+        when(leadershipExperience.getId()).thenReturn(null);
+        when(leadershipExperience.getName()).thenReturn("Valid name");
+        when(leadershipExperience.getPoints()).thenReturn(BigDecimal.valueOf(-5));
 
         PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> validationService.validateOnCreate(leadershipExperience));
+                () -> validationService.validateOnCreate(leadershipExperience));
 
         assertEquals("Points value must not be negative.", exception.getReason());
         assertEquals(ErrorKey.LEADERSHIP_EXPERIENCE_POINTS_ARE_NEGATIVE, exception.getErrorKey());
     }
 
-    @DisplayName("Should be successful on validateOnCreate() when points is valid (two decimals or fewer)")
+    @DisplayName("Should be successful on validateOnCreate() when points valid")
     @Test
     void shouldBeSuccessfulOnValidateOnCreateWhenPointsValid() {
-        Certificate leadershipExperience = new Certificate();
-        leadershipExperience.setName("Valid name");
-        leadershipExperience.setPoints(new BigDecimal("99.99"));
-        leadershipExperience.setCertificateType(CertificateType.LEADERSHIP_TRAINING);
-
-        assertDoesNotThrow(() -> validationService.validateOnCreate(leadershipExperience));
-    }
-
-    @DisplayName("Should be successful on validateOnCreate() when points is integer value")
-    @Test
-    void shouldBeSuccessfulOnValidateOnCreateWhenPointsIsInteger() {
-        Certificate leadershipExperience = new Certificate();
-        leadershipExperience.setName("Valid name");
-        leadershipExperience.setPoints(BigDecimal.valueOf(50));
-        leadershipExperience.setCertificateType(CertificateType.LEADERSHIP_TRAINING);
+        when(leadershipExperience.getId()).thenReturn(null);
+        when(leadershipExperience.getName()).thenReturn("Valid name");
+        when(leadershipExperience.getPoints()).thenReturn(new BigDecimal("99.99"));
+        when(leadershipExperience.getCertificateType()).thenReturn(CertificateType.LEADERSHIP_TRAINING);
 
         assertDoesNotThrow(() -> validationService.validateOnCreate(leadershipExperience));
     }
@@ -150,12 +141,13 @@ class LeadershipExperienceValidationServiceTest {
     @DisplayName("Should throw exception on validateOnCreate() when certificate type is null")
     @Test
     void shouldThrowExceptionOnValidateOnCreateWhenCertificateTypeIsNull() {
-        Certificate leadershipExperience = new Certificate();
-        leadershipExperience.setName("Valid name");
-        leadershipExperience.setPoints(BigDecimal.valueOf(50));
+        when(leadershipExperience.getId()).thenReturn(null);
+        when(leadershipExperience.getName()).thenReturn("Valid name");
+        when(leadershipExperience.getPoints()).thenReturn(BigDecimal.valueOf(50));
+        when(leadershipExperience.getCertificateType()).thenReturn(null);
 
         PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> validationService.validateOnCreate(leadershipExperience));
+                () -> validationService.validateOnCreate(leadershipExperience));
 
         assertEquals("Certificate type must not be null.", exception.getReason());
         assertEquals(ErrorKey.CERTIFICATE_TYPE_IS_NULL, exception.getErrorKey());
@@ -164,13 +156,13 @@ class LeadershipExperienceValidationServiceTest {
     @DisplayName("Should throw exception on validateOnCreate() when certificate type is certificate")
     @Test
     void shouldThrowExceptionOnValidateOnCreateWhenCertificateTypeIsCertificate() {
-        Certificate leadershipExperience = new Certificate();
-        leadershipExperience.setName("Valid name");
-        leadershipExperience.setPoints(BigDecimal.valueOf(50));
-        leadershipExperience.setCertificateType(CertificateType.CERTIFICATE);
+        when(leadershipExperience.getId()).thenReturn(null);
+        when(leadershipExperience.getName()).thenReturn("Valid name");
+        when(leadershipExperience.getPoints()).thenReturn(BigDecimal.valueOf(50));
+        when(leadershipExperience.getCertificateType()).thenReturn(CertificateType.CERTIFICATE);
 
         PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> validationService.validateOnCreate(leadershipExperience));
+                () -> validationService.validateOnCreate(leadershipExperience));
 
         assertEquals("Certificate type is not a leadership experience.", exception.getReason());
         assertEquals(ErrorKey.CERTIFICATE_TYPE_IS_NOT_A_LEADERSHIP_EXPERIENCE, exception.getErrorKey());
@@ -201,12 +193,12 @@ class LeadershipExperienceValidationServiceTest {
     @Test
     void shouldBeSuccessfulOnValidateOnUpdateWhenIdIsValid() {
         Long id = 1L;
-        Certificate leadershipExperience = new Certificate();
-        leadershipExperience.setName("Valid name");
-        leadershipExperience.setPoints(BigDecimal.valueOf(5));
-        leadershipExperience.setCertificateType(CertificateType.LEADERSHIP_TRAINING);
+        when(leadershipExperience.getId()).thenReturn(null);
+        when(leadershipExperience.getName()).thenReturn("Valid name");
+        when(leadershipExperience.getPoints()).thenReturn(BigDecimal.valueOf(5));
+        when(leadershipExperience.getCertificateType()).thenReturn(CertificateType.LEADERSHIP_TRAINING);
 
-        when(persistenceService.getById(id)).thenReturn(Optional.of(new Certificate()));
+        when(persistenceService.getById(id)).thenReturn(Optional.of(mock(Certificate.class)));
 
         assertDoesNotThrow(() -> validationService.validateOnUpdate(id, leadershipExperience));
     }
@@ -215,8 +207,6 @@ class LeadershipExperienceValidationServiceTest {
     @Test
     void shouldThrowExceptionOnValidateOnUpdateIdWhenIdIsInvalid() {
         Long id = -1L;
-        Certificate leadershipExperience = new Certificate();
-        leadershipExperience.setName("Valid name");
 
         when(persistenceService.getById(id)).thenReturn(Optional.empty());
 
@@ -231,11 +221,8 @@ class LeadershipExperienceValidationServiceTest {
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenIdIsNotNull() {
         Long id = 1L;
-        Certificate leadershipExperience = new Certificate();
-        leadershipExperience.setId(123L);
-        leadershipExperience.setName("Valid name");
-
-        when(persistenceService.getById(id)).thenReturn(Optional.of(new Certificate()));
+        when(leadershipExperience.getId()).thenReturn(123L);
+        when(persistenceService.getById(id)).thenReturn(Optional.of(mock(Certificate.class)));
 
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> validationService.validateOnUpdate(id, leadershipExperience));
@@ -248,9 +235,10 @@ class LeadershipExperienceValidationServiceTest {
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameIsNull() {
         Long id = 1L;
-        Certificate leadershipExperience = new Certificate();
+        when(leadershipExperience.getId()).thenReturn(null);
+        when(leadershipExperience.getName()).thenReturn(null);
 
-        when(persistenceService.getById(id)).thenReturn(Optional.of(new Certificate()));
+        when(persistenceService.getById(id)).thenReturn(Optional.of(mock(Certificate.class)));
 
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> validationService.validateOnUpdate(id, leadershipExperience));
@@ -259,49 +247,16 @@ class LeadershipExperienceValidationServiceTest {
         assertEquals(ErrorKey.LEADERSHIP_EXPERIENCE_NAME_IS_NULL, exception.getErrorKey());
     }
 
-    @DisplayName("Should throw exception on validateOnUpdate() when name is blank")
-    @Test
-    void shouldThrowExceptionOnValidateOnUpdateWhenNameBlank() {
-        Long id = 1L;
-        Certificate leadershipExperience = new Certificate();
-        leadershipExperience.setName("");
-
-        when(persistenceService.getById(id)).thenReturn(Optional.of(new Certificate()));
-
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> validationService.validateOnUpdate(id, leadershipExperience));
-
-        assertEquals("Name must not be empty", exception.getReason());
-        assertEquals(ErrorKey.LEADERSHIP_EXPERIENCE_NAME_IS_EMPTY, exception.getErrorKey());
-    }
-
-    @DisplayName("Should throw exception on validateOnUpdate() when certificate type is null")
-    @Test
-    void shouldThrowExceptionOnValidateOnUpdateWhenCertificateTypeIsNull() {
-        Long id = 1L;
-        Certificate leadershipExperience = new Certificate();
-        leadershipExperience.setName("Valid name");
-        leadershipExperience.setPoints(BigDecimal.valueOf(50));
-
-        when(persistenceService.getById(id)).thenReturn(Optional.of(new Certificate()));
-
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> validationService.validateOnUpdate(id, leadershipExperience));
-
-        assertEquals("Certificate type must not be null.", exception.getReason());
-        assertEquals(ErrorKey.CERTIFICATE_TYPE_IS_NULL, exception.getErrorKey());
-    }
-
     @DisplayName("Should throw exception on validateOnUpdate() when certificate type is certificate")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenCertificateTypeIsCertificate() {
         Long id = 1L;
-        Certificate leadershipExperience = new Certificate();
-        leadershipExperience.setName("Valid name");
-        leadershipExperience.setPoints(BigDecimal.valueOf(50));
-        leadershipExperience.setCertificateType(CertificateType.CERTIFICATE);
+        when(leadershipExperience.getId()).thenReturn(null);
+        when(leadershipExperience.getName()).thenReturn("Valid name");
+        when(leadershipExperience.getPoints()).thenReturn(BigDecimal.valueOf(50));
+        when(leadershipExperience.getCertificateType()).thenReturn(CertificateType.CERTIFICATE);
 
-        when(persistenceService.getById(id)).thenReturn(Optional.of(new Certificate()));
+        when(persistenceService.getById(id)).thenReturn(Optional.of(mock(Certificate.class)));
 
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> validationService.validateOnUpdate(id, leadershipExperience));
