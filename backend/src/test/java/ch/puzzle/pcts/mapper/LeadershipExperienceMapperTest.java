@@ -36,7 +36,7 @@ class LeadershipExperienceMapperTest {
                                                   CertificateType.LEADERSHIP_TRAINING);
 
         Certificate result = mapper.fromDto(leadershipExperienceDto);
-        assertEquals(certificate.toString(), result.toString());
+        assertEquals(certificate, result);
     }
 
     @DisplayName("Should return leadershipExperienceDto")
@@ -55,7 +55,7 @@ class LeadershipExperienceMapperTest {
                                                                   CertificateType.LEADERSHIP_TRAINING);
 
         LeadershipExperienceDto result = mapper.toDto(model);
-        assertEquals(dto.toString(), result.toString());
+        assertEquals(dto, result);
     }
 
     @DisplayName("Should return list of certificates")
@@ -79,7 +79,7 @@ class LeadershipExperienceMapperTest {
                     new LeadershipExperienceDto(2L, "Sergeant", BigDecimal.TWO, "", CertificateType.MILITARY_FUNCTION));
 
         List<Certificate> result = mapper.fromDto(dtos);
-        assertEquals(certificates.toString(), result.toString());
+        assertEquals(certificates, result);
     }
 
     @DisplayName("Should return list of leadershipExperienceDtos")
@@ -103,6 +103,6 @@ class LeadershipExperienceMapperTest {
                     new LeadershipExperienceDto(2L, "Sergeant", BigDecimal.TWO, "", CertificateType.MILITARY_FUNCTION));
 
         List<LeadershipExperienceDto> result = mapper.toDto(certificates);
-        assertEquals(dtos.toString(), result.toString());
+        assertEquals(dtos, result);
     }
 }
