@@ -32,7 +32,7 @@ class CertificateValidationServiceTest {
     @DisplayName("Should be successful on validateOnGetById() when id valid")
     @Test
     void shouldBeSuccessfulOnValidateOnGetByIdWhenIdIsValid() {
-        long id = 1L;
+        Long id = 1L;
         when(persistenceService.getById(id)).thenReturn(Optional.of(new Certificate()));
 
         assertDoesNotThrow(() -> validationService.validateOnGetById(id));
@@ -41,7 +41,7 @@ class CertificateValidationServiceTest {
     @DisplayName("Should throw exception on validateOnGetById() when id is invalid")
     @Test
     void shouldThrowExceptionOnValidateOnGetByIdWhenIdIsInvalid() {
-        long id = -1L;
+        Long id = -1L;
         when(persistenceService.getById(id)).thenReturn(Optional.empty());
 
         PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnGetById(id));
@@ -169,7 +169,7 @@ class CertificateValidationServiceTest {
     @DisplayName("Should be successful on validateOnDelete() when id is valid")
     @Test
     void shouldBeSuccessfulOnValidateOnDeleteWhenIdIsValid() {
-        long id = 1L;
+        Long id = 1L;
         when(persistenceService.getById(id)).thenReturn(Optional.of(new Certificate()));
 
         assertDoesNotThrow(() -> validationService.validateOnDelete(id));
@@ -178,7 +178,7 @@ class CertificateValidationServiceTest {
     @DisplayName("Should throw exception on validateOnDelete() when id is invalid")
     @Test
     void shouldThrowExceptionOnValidateOnDeleteIdWhenIdIsInvalid() {
-        long id = -1L;
+        Long id = -1L;
         when(persistenceService.getById(id)).thenReturn(Optional.empty());
 
         PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnDelete(id));
@@ -190,7 +190,7 @@ class CertificateValidationServiceTest {
     @DisplayName("Should be successful on validateOnUpdate() when id is valid")
     @Test
     void shouldBeSuccessfulOnValidateOnUpdateWhenIdIsValid() {
-        long id = 1L;
+        Long id = 1L;
         Certificate certificate = new Certificate();
         certificate.setName("Valid name");
         certificate.setPoints(BigDecimal.valueOf(5));
@@ -204,7 +204,7 @@ class CertificateValidationServiceTest {
     @DisplayName("Should throw exception on validateOnUpdate() when id is invalid")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateIdWhenIdIsInvalid() {
-        long id = -1L;
+        Long id = -1L;
         Certificate certificate = new Certificate();
         certificate.setName("Valid name");
 
@@ -220,7 +220,7 @@ class CertificateValidationServiceTest {
     @DisplayName("Should throw exception on validateOnUpdate() when id is not null in certificate")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenIdIsNotNull() {
-        long id = 1L;
+        Long id = 1L;
         Certificate certificate = new Certificate();
         certificate.setId(123L);
         certificate.setName("Valid name");
@@ -237,7 +237,7 @@ class CertificateValidationServiceTest {
     @DisplayName("Should throw exception on validateOnUpdate() when name is null")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameIsNull() {
-        long id = 1L;
+        Long id = 1L;
         Certificate certificate = new Certificate();
 
         when(persistenceService.getById(id)).thenReturn(Optional.of(new Certificate()));
@@ -252,7 +252,7 @@ class CertificateValidationServiceTest {
     @DisplayName("Should throw exception on validateOnUpdate() when name is blank")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameBlank() {
-        long id = 1L;
+        Long id = 1L;
         Certificate certificate = new Certificate();
         certificate.setName("");
 
@@ -269,7 +269,7 @@ class CertificateValidationServiceTest {
     @ParameterizedTest
     @MethodSource("leadershipExperienceTypes")
     void shouldThrowExceptionOnValidateOnUpdateWhenCertificateTypeIsNotCertificate(CertificateType certificateType) {
-        long id = 1L;
+        Long id = 1L;
         Certificate certificate = new Certificate();
         certificate.setName("Valid name");
         certificate.setPoints(BigDecimal.valueOf(5));
@@ -287,7 +287,7 @@ class CertificateValidationServiceTest {
     @DisplayName("Should throw exception when certificate type is null")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenCertificateTypeIsNull() {
-        long id = 1L;
+        Long id = 1L;
         Certificate certificate = new Certificate();
         certificate.setName("Valid name");
         certificate.setPoints(BigDecimal.valueOf(5));

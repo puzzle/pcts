@@ -30,7 +30,7 @@ class ExperienceTypeValidationTest {
     @DisplayName("Should be successful on validateOnGetById() when id valid")
     @Test
     void shouldBeSuccessfulOnValidateOnGetByIdWhenIdIsValid() {
-        long id = 1L;
+        Long id = 1L;
 
         when(persistenceService.getById(id)).thenReturn(Optional.of(new ExperienceType()));
         assertDoesNotThrow(() -> validationService.validateOnGetById(id));
@@ -39,7 +39,7 @@ class ExperienceTypeValidationTest {
     @DisplayName("Should throw exception on validateOnGetById() when id is invalid")
     @Test
     void shouldThrowExceptionOnValidateOnGetByIdWhenIdIsInvalid() {
-        long id = -1;
+        Long id = -1L;
 
         when(persistenceService.getById(id)).thenReturn(Optional.empty());
 
@@ -136,7 +136,7 @@ class ExperienceTypeValidationTest {
     @DisplayName("Should be successful on validateOnDelete() when id is valid")
     @Test
     void shouldBeSuccessfulOnValidateOnDeleteWhenIdIsValid() {
-        long id = 1L;
+        Long id = 1L;
         when(persistenceService.getById(id)).thenReturn(Optional.of(new ExperienceType()));
 
         assertDoesNotThrow(() -> validationService.validateOnDelete(id));
@@ -145,7 +145,7 @@ class ExperienceTypeValidationTest {
     @DisplayName("Should throw exception on validateOnDelete() when id is invalid")
     @Test
     void shouldThrowExceptionOnValidateOnDeleteIdWhenIdIsInvalid() {
-        long id = -1;
+        Long id = -1L;
         when(persistenceService.getById(id)).thenReturn(Optional.empty());
 
         PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnDelete(id));
@@ -163,7 +163,7 @@ class ExperienceTypeValidationTest {
         experienceType.setLimitedRelevantPoints(BigDecimal.valueOf(2));
         experienceType.setLittleRelevantPoints(BigDecimal.valueOf(1));
 
-        long id = 1L;
+        Long id = 1L;
         when(persistenceService.getById(id)).thenReturn(Optional.of(new ExperienceType()));
 
         assertDoesNotThrow(() -> validationService.validateOnUpdate(id, experienceType));
@@ -173,7 +173,7 @@ class ExperienceTypeValidationTest {
     @Test
     void shouldThrowExceptionOnValidateOnUpdateIdWhenIdIsInvalid() {
         ExperienceType experienceType = new ExperienceType();
-        long id = -1;
+        Long id = -1L;
         when(persistenceService.getById(id)).thenReturn(Optional.empty());
 
         PCTSException exception = assertThrows(PCTSException.class,

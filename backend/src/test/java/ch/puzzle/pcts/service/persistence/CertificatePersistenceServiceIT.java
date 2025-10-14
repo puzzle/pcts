@@ -131,8 +131,8 @@ class CertificatePersistenceServiceIT {
     @Test
     @Order(2)
     void shouldUpdate() {
-        long cId = 4;
-        long lId = 5;
+        Long cId = 4L;
+        Long lId = 5L;
 
         Certificate certificate = new Certificate(null,
                                                   "Updated certificate",
@@ -180,7 +180,7 @@ class CertificatePersistenceServiceIT {
     @Test
     @Order(3)
     void shouldDelete() {
-        long id = 2;
+        Long id = 2L;
 
         persistenceService.delete(id);
 

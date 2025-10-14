@@ -25,7 +25,7 @@ public class MemberBusinessService {
         return persistenceService.getAll();
     }
 
-    public Member getById(long id) {
+    public Member getById(Long id) {
         validationService.validateOnGetById(id);
         return persistenceService
                 .getById(id)

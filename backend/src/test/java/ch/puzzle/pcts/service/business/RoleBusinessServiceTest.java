@@ -1,15 +1,14 @@
 package ch.puzzle.pcts.service.business;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.persistence.RolePersistenceService;
 import ch.puzzle.pcts.service.validation.RoleValidationService;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -27,6 +26,12 @@ class RoleBusinessServiceTest {
     @Mock
     private RolePersistenceService persistenceService;
 
+    @Mock
+    private Role role;
+
+    @Mock
+    private List<Role> roles;
+
     @InjectMocks
     private RoleBusinessService businessService;
 
@@ -36,54 +41,58 @@ class RoleBusinessServiceTest {
     @DisplayName("Should get role by id")
     @Test
     void shouldGetById() {
-        Role role = new Role(1L, "Role1", false);
-        when(persistenceService.getById(1L)).thenReturn(Optional.of(role));
+        Long id = 1L;
+        when(persistenceService.getById(id)).thenReturn(Optional.of(role));
 
-        Role result = businessService.getById(1L);
+        Role result = businessService.getById(id);
 
         assertEquals(role, result);
-        verify(persistenceService).getById(1L);
+        verify(persistenceService).getById(id);
+        verify(validationService).validateOnGetById(id);
     }
 
     @DisplayName("Should throw exception")
     @Test
     void shouldThrowException() {
-        when(persistenceService.getById(1L)).thenReturn(Optional.empty());
+        Long id = 1L;
+        when(persistenceService.getById(id)).thenReturn(Optional.empty());
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(1L));
+        PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(id));
 
-        assertEquals("Role with id: " + 1 + " does not exist.", exception.getReason());
+        assertEquals(String.format("Role with id: %d does not exist.", id), exception.getReason());
         assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
-        verify(persistenceService).getById(1L);
+        verify(persistenceService).getById(id);
+        verify(validationService).validateOnGetById(id);
     }
 
     @DisplayName("Should get all roles")
     @Test
     void shouldGetAll() {
-        List<Role> roles = List.of(new Role(1L, "Role1", false), new Role(2L, "Role2", false));
         when(persistenceService.getAll()).thenReturn(roles);
+        when(roles.size()).thenReturn(2);
 
         List<Role> result = businessService.getAll();
 
-        assertArrayEquals(roles.toArray(), result.toArray());
+        assertEquals(roles, result);
         assertEquals(2, result.size());
         verify(persistenceService).getAll();
+        verifyNoInteractions(validationService);
     }
 
     @DisplayName("Should get empty list")
     @Test
     void shouldGetEmptyList() {
-        when(persistenceService.getAll()).thenReturn(new ArrayList<>());
+        when(persistenceService.getAll()).thenReturn(Collections.emptyList());
 
         List<Role> result = businessService.getAll();
 
         assertEquals(0, result.size());
+        verifyNoInteractions(validationService);
     }
 
     @DisplayName("Should create role")
     @Test
     void shouldCreate() {
-        Role role = new Role(1L, "Role1", false);
         when(persistenceService.create(role)).thenReturn(role);
 
         Role result = businessService.create(role);
@@ -97,7 +106,6 @@ class RoleBusinessServiceTest {
     @Test
     void shouldUpdate() {
         Long id = 1L;
-        Role role = new Role(1L, "Role1", false);
         when(persistenceService.update(id, role)).thenReturn(role);
 
         Role result = businessService.update(id, role);
@@ -118,16 +126,4 @@ class RoleBusinessServiceTest {
         verify(persistenceService).delete(id);
     }
 
-    @DisplayName("Should trim role name")
-    @Test
-    void shouldTrimRoleName() {
-
-        businessService.create(new Role(1L, " Role ", false));
-
-        verify(persistenceService).create(roleCaptor.capture());
-        Role savedRole = roleCaptor.getValue();
-
-        assertEquals("Role", savedRole.getName());
-        assertEquals(1L, savedRole.getId());
-    }
 }

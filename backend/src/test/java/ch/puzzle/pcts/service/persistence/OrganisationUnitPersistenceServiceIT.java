@@ -81,7 +81,7 @@ class OrganisationUnitPersistenceServiceIT {
     @Test
     @Order(2)
     void shouldUpdate() {
-        long id = 2;
+        Long id = 2L;
         OrganisationUnit organisationUnit = new OrganisationUnit(null, "Updated organisationUnit");
 
         persistenceService.update(id, organisationUnit);
@@ -97,7 +97,7 @@ class OrganisationUnitPersistenceServiceIT {
     @Test
     @Order(3)
     void shouldDelete() {
-        long id = 2;
+        Long id = 2L;
 
         persistenceService.delete(id);
 

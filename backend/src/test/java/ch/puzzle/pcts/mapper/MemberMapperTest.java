@@ -27,7 +27,7 @@ class MemberMapperTest {
     private OrganisationUnitDto organisationUnitDto;
     private Member member1;
     private final Date commonDate = new Date(0L);
-    private final long orgUnitId = 1L;
+    private final Long orgUnitId = 1L;
 
     @BeforeEach
     void setUp() {

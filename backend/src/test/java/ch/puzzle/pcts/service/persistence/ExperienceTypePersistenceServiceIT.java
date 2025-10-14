@@ -91,7 +91,7 @@ class ExperienceTypePersistenceServiceIT {
     @Test
     @Order(2)
     void shouldUpdate() {
-        long id = 2;
+        Long id = 2L;
         ExperienceType updated = new ExperienceType(null,
                                                     "Updated experienceType",
                                                     BigDecimal.valueOf(10.055),
@@ -114,7 +114,7 @@ class ExperienceTypePersistenceServiceIT {
     @Test
     @Order(3)
     void shouldDelete() {
-        long id = 2;
+        Long id = 2L;
 
         persistenceService.delete(id);
 

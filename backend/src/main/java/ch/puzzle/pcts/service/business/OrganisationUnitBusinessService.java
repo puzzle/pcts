@@ -24,7 +24,7 @@ public class OrganisationUnitBusinessService {
         return persistenceService.getAll();
     }
 
-    public OrganisationUnit getById(long id) {
+    public OrganisationUnit getById(Long id) {
         validationService.validateOnGetById(id);
         return persistenceService
                 .getById(id)

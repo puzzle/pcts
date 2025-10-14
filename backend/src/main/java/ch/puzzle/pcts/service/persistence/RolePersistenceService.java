@@ -2,7 +2,6 @@ package ch.puzzle.pcts.service.persistence;
 
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.repository.RoleRepository;
-import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -15,12 +14,11 @@ public class RolePersistenceService {
         this.repository = repository;
     }
 
-    @Transactional
     public Role create(Role role) {
         return repository.save(role);
     }
 
-    public Optional<Role> getById(long id) {
+    public Optional<Role> getById(Long id) {
         return repository.findById(id);
     }
 
@@ -32,7 +30,6 @@ public class RolePersistenceService {
         return repository.findAll();
     }
 
-    @Transactional
     public Role update(Long id, Role role) {
         role.setId(id);
         return repository.save(role);

@@ -29,7 +29,7 @@ class DegreeTypeValidationServiceTest {
     @DisplayName("Should be successful on validateOnGetById() when id valid")
     @Test
     void shouldBeSuccessfulOnValidateOnGetByIdWhenIdIsValid() {
-        long id = 1L;
+        Long id = 1L;
 
         when(persistenceService.getById(id)).thenReturn(Optional.of(new DegreeType()));
         assertDoesNotThrow(() -> validationService.validateOnGetById(id));
@@ -38,7 +38,7 @@ class DegreeTypeValidationServiceTest {
     @DisplayName("Should throw exception on validateOnGetById() when id is invalid")
     @Test
     void shouldThrowExceptionOnValidateOnGetByIdWhenIdIsInvalid() {
-        long id = -1;
+        Long id = -1L;
 
         when(persistenceService.getById(id)).thenReturn(Optional.empty());
 
@@ -135,7 +135,7 @@ class DegreeTypeValidationServiceTest {
         degreeType.setHighlyRelevantPoints(new BigDecimal("1.25"));
         degreeType.setLimitedRelevantPoints(new BigDecimal("1.25"));
         degreeType.setLittleRelevantPoints(new BigDecimal("1.25"));
-        long id = 1L;
+        Long id = 1L;
         when(persistenceService.getById(id)).thenReturn(Optional.of(new DegreeType()));
 
         assertDoesNotThrow(() -> validationService.validateOnUpdate(id, degreeType));
@@ -145,7 +145,7 @@ class DegreeTypeValidationServiceTest {
     @Test
     void shouldThrowExceptionOnValidateOnUpdateIdWhenIdIsInvalid() {
         DegreeType degreeType = new DegreeType();
-        long id = -1;
+        Long id = -1L;
         when(persistenceService.getById(id)).thenReturn(Optional.empty());
 
         PCTSException exception = assertThrows(PCTSException.class,
@@ -160,7 +160,7 @@ class DegreeTypeValidationServiceTest {
     void shouldThrowExceptionOnValidateOnUpdateWhenIdIsNotNull() {
         DegreeType degreeType = new DegreeType();
         degreeType.setId(123L);
-        long id = 1;
+        Long id = 1L;
         when(persistenceService.getById(id)).thenReturn(Optional.of(new DegreeType()));
 
         PCTSException exception = assertThrows(PCTSException.class,
@@ -174,7 +174,7 @@ class DegreeTypeValidationServiceTest {
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameIsNull() {
         DegreeType degreeType = new DegreeType();
-        long id = 1;
+        Long id = 1L;
         when(persistenceService.getById(id)).thenReturn(Optional.of(new DegreeType()));
 
         PCTSException exception = assertThrows(PCTSException.class,
@@ -189,7 +189,7 @@ class DegreeTypeValidationServiceTest {
     void shouldThrowExceptionOnValidateOnUpdateWhenNameBlank() {
         DegreeType degreeType = new DegreeType();
         degreeType.setName("");
-        long id = 1;
+        Long id = 1L;
         when(persistenceService.getById(id)).thenReturn(Optional.of(new DegreeType()));
 
         PCTSException exception = assertThrows(PCTSException.class,
@@ -235,7 +235,7 @@ class DegreeTypeValidationServiceTest {
     @DisplayName("Should be successful on validateOnDelete() when id is valid")
     @Test
     void shouldBeSuccessfulOnValidateOnDeleteWhenIdIsValid() {
-        long id = 1L;
+        Long id = 1L;
         when(persistenceService.getById(id)).thenReturn(Optional.of(new DegreeType()));
 
         assertDoesNotThrow(() -> validationService.validateOnDelete(id));
@@ -244,7 +244,7 @@ class DegreeTypeValidationServiceTest {
     @DisplayName("Should throw exception on validateOnDelete() when id is invalid")
     @Test
     void shouldThrowExceptionOnValidateOnDeleteIdWhenIdIsInvalid() {
-        long id = -1;
+        Long id = -1L;
         when(persistenceService.getById(id)).thenReturn(Optional.empty());
 
         PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnDelete(id));

@@ -89,7 +89,7 @@ class DegreeTypePersistenceServiceIT {
     @Test
     @Order(2)
     void shouldUpdate() {
-        long id = 2;
+        Long id = 2L;
         DegreeType updated = new DegreeType(null,
                                             "Updated degreeType",
                                             BigDecimal.valueOf(10.055),
@@ -112,7 +112,7 @@ class DegreeTypePersistenceServiceIT {
     @Test
     @Order(3)
     void shouldDelete() {
-        long id = 2;
+        Long id = 2L;
 
         persistenceService.delete(id);
 

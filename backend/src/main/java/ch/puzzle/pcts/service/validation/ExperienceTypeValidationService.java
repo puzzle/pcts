@@ -4,7 +4,6 @@ import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.service.persistence.ExperienceTypePersistenceService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 public class ExperienceTypeValidationService {
     private final ExperienceTypePersistenceService persistenceService;
 
-    @Autowired
     public ExperienceTypeValidationService(ExperienceTypePersistenceService persistenceService) {
         this.persistenceService = persistenceService;
     }
@@ -56,7 +54,7 @@ public class ExperienceTypeValidationService {
         }
     }
 
-    private void validateIfExists(long id) {
+    private void validateIfExists(Long id) {
         persistenceService
                 .getById(id)
                 .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,

@@ -105,7 +105,7 @@ class MemberPersistenceServiceIT {
     @Test
     @Order(2)
     void shouldUpdate() {
-        long id = 2;
+        Long id = 2L;
         Member member = Member.Builder
                 .builder()
                 .withId(id)
@@ -138,7 +138,7 @@ class MemberPersistenceServiceIT {
     @Test
     @Order(3)
     void shouldDelete() {
-        long id = 2;
+        Long id = 2L;
 
         persistenceService.delete(id);
 

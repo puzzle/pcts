@@ -3,7 +3,6 @@ package ch.puzzle.pcts.service.persistence;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificate.CertificateType;
 import ch.puzzle.pcts.repository.CertificateRepository;
-import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,6 @@ public class CertificatePersistenceService {
         this.repository = certificateRepository;
     }
 
-    @Transactional
     public Certificate create(Certificate certificate) {
         return repository.save(certificate);
     }
@@ -34,7 +32,6 @@ public class CertificatePersistenceService {
         return repository.findByCertificateTypeNot(CertificateType.CERTIFICATE);
     }
 
-    @Transactional
     public Certificate update(Long id, Certificate certificate) {
         certificate.setId(id);
         return repository.save(certificate);

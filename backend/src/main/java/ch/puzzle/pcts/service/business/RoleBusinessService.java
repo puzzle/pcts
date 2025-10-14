@@ -23,7 +23,7 @@ public class RoleBusinessService {
         return persistenceService.getAll();
     }
 
-    public Role getById(long id) {
+    public Role getById(Long id) {
         validationService.validateOnGetById(id);
         return persistenceService
                 .getById(id)

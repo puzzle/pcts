@@ -82,7 +82,7 @@ class RolePersistenceServiceIT {
     @Test
     @Order(2)
     void shouldUpdate() {
-        long id = 2;
+        Long id = 2L;
         Role role = new Role(null, "Updated role", true);
 
         persistenceService.update(id, role);
@@ -99,7 +99,7 @@ class RolePersistenceServiceIT {
     @Test
     @Order(3)
     void shouldDelete() {
-        long id = 2;
+        Long id = 2L;
 
         persistenceService.delete(id);
 

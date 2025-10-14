@@ -1,15 +1,14 @@
 package ch.puzzle.pcts.service.business;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.persistence.OrganisationUnitPersistenceService;
 import ch.puzzle.pcts.service.validation.OrganisationUnitValidationService;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -27,64 +26,71 @@ class OrganisationUnitBusinessServiceTest {
     @Mock
     private OrganisationUnitPersistenceService persistenceService;
 
+    @Mock
+    private OrganisationUnit organisationUnit;
+
+    @Mock
+    private List<OrganisationUnit> organisationUnits;
+
     @InjectMocks
     private OrganisationUnitBusinessService businessService;
-
-    @Captor
-    ArgumentCaptor<OrganisationUnit> organisationUnitCaptor;
 
     @DisplayName("Should get organisationUnit by id")
     @Test
     void shouldGetById() {
-        OrganisationUnit organisationUnit = new OrganisationUnit(1L, "OrganisationUnit1");
-        when(persistenceService.getById(1L)).thenReturn(Optional.of(organisationUnit));
+        Long id = 1L;
+        when(persistenceService.getById(id)).thenReturn(Optional.of(organisationUnit));
 
-        OrganisationUnit result = businessService.getById(1L);
+        OrganisationUnit result = businessService.getById(id);
 
         assertEquals(organisationUnit, result);
-        verify(persistenceService).getById(1L);
+        verify(persistenceService).getById(id);
+        verify(validationService).validateOnGetById(id);
     }
 
     @DisplayName("Should throw exception")
     @Test
     void shouldThrowException() {
-        when(persistenceService.getById(1L)).thenReturn(Optional.empty());
+        Long id = 1L;
+        when(persistenceService.getById(id)).thenReturn(Optional.empty());
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(1L));
+        PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(id));
 
-        assertEquals("Organisation unit with id: " + 1 + " does not exist.", exception.getReason());
+        assertEquals(String.format("Organisation unit with id: %d does not exist.", id), exception.getReason());
         assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
-        verify(persistenceService).getById(1L);
+        verify(persistenceService).getById(id);
+        verify(validationService).validateOnGetById(id);
     }
 
     @DisplayName("Should get all organisationUnits")
     @Test
     void shouldGetAll() {
-        List<OrganisationUnit> organisationUnits = List
-                .of(new OrganisationUnit(1L, "OrganisationUnit1"), new OrganisationUnit(2L, "OrganisationUnit2"));
         when(persistenceService.getAll()).thenReturn(organisationUnits);
+        when(organisationUnits.size()).thenReturn(2);
 
         List<OrganisationUnit> result = businessService.getAll();
 
-        assertArrayEquals(organisationUnits.toArray(), result.toArray());
+        assertEquals(organisationUnits, result);
         assertEquals(2, result.size());
         verify(persistenceService).getAll();
+        verifyNoInteractions(validationService);
     }
 
     @DisplayName("Should get empty list")
     @Test
     void shouldGetEmptyList() {
-        when(persistenceService.getAll()).thenReturn(new ArrayList<>());
+        when(persistenceService.getAll()).thenReturn(Collections.emptyList());
 
         List<OrganisationUnit> result = businessService.getAll();
 
         assertEquals(0, result.size());
+        verify(persistenceService).getAll();
+        verifyNoInteractions(validationService);
     }
 
     @DisplayName("Should create organisationUnit")
     @Test
     void shouldCreate() {
-        OrganisationUnit organisationUnit = new OrganisationUnit(1L, "OrganisationUnit1");
         when(persistenceService.create(organisationUnit)).thenReturn(organisationUnit);
 
         OrganisationUnit result = businessService.create(organisationUnit);
@@ -98,7 +104,6 @@ class OrganisationUnitBusinessServiceTest {
     @Test
     void shouldUpdate() {
         Long id = 1L;
-        OrganisationUnit organisationUnit = new OrganisationUnit(1L, "OrganisationUnit1");
         when(persistenceService.update(id, organisationUnit)).thenReturn(organisationUnit);
 
         OrganisationUnit result = businessService.update(id, organisationUnit);
@@ -117,18 +122,5 @@ class OrganisationUnitBusinessServiceTest {
 
         verify(validationService).validateOnDelete(id);
         verify(persistenceService).delete(id);
-    }
-
-    @DisplayName("Should trim role name")
-    @Test
-    void shouldTrimRoleName() {
-
-        businessService.create(new OrganisationUnit(1L, " OrganisationUnit "));
-
-        verify(persistenceService).create(organisationUnitCaptor.capture());
-        OrganisationUnit savedOrganisationUnit = organisationUnitCaptor.getValue();
-
-        assertEquals("OrganisationUnit", savedOrganisationUnit.getName());
-        assertEquals(1L, savedOrganisationUnit.getId());
     }
 }
