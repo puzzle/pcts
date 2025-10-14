@@ -12,11 +12,13 @@ import ch.puzzle.pcts.service.validation.RoleValidationService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class RoleBusinessServiceTest {
 
     @Mock
@@ -27,11 +29,6 @@ class RoleBusinessServiceTest {
 
     @InjectMocks
     private RoleBusinessService businessService;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Captor
     ArgumentCaptor<Role> roleCaptor;

@@ -1,8 +1,8 @@
 TRUNCATE TABLE example CASCADE;
 
-INSERT INTO example (id, text)
-VALUES (1, 'Example 1'),
-       (2, 'Example 2');
+INSERT INTO example (text)
+VALUES ('Example 1'),
+       ('Example 2');
 
 SELECT setval('sequence_example', (SELECT MAX(id) FROM example));
 
@@ -20,15 +20,20 @@ VALUES
     ('OrganisationUnit 1', '1970-01-01 00:00:00'),
     ('OrganisationUnit 2', null);
 
-
 TRUNCATE TABLE certificate CASCADE;
 
-INSERT INTO certificate (name, points, deleted_at, comment)
+INSERT INTO certificate (name, points, deleted_at, comment, certificate_type)
 VALUES
-    ('Certificate 1', 5.5, null, 'This is Certificate 1'),
-    ('Certificate 2', 1, null, 'This is Certificate 2'),
-    ('Certificate 3', 3, null, 'This is Certificate 3'),
-    ('Certificate 4', 0.5, null, 'This is Certificate 4');
+    ('Certificate 1', 5.5, null, 'This is Certificate 1', 'CERTIFICATE'),
+    ('Certificate 2', 1, null, 'This is Certificate 2', 'CERTIFICATE'),
+    ('Certificate 3', 3, null, 'This is Certificate 3', 'CERTIFICATE'),
+    ('Certificate 4', 0.5, null, 'This is Certificate 4', 'CERTIFICATE');
+
+INSERT INTO certificate (name, points, deleted_at, comment, certificate_type)
+VALUES
+    ('LeadershipExperience 1', 5.5, null, 'This is LeadershipExperience 1', 'MILITARY_FUNCTION'),
+    ('LeadershipExperience 2', 1, null, 'This is LeadershipExperience 2', 'YOUTH_AND_SPORT'),
+    ('LeadershipExperience 3', 3, null, 'This is LeadershipExperience 3', 'LEADERSHIP_TRAINING');
 
 TRUNCATE TABLE experience_type CASCADE;
 
@@ -43,6 +48,7 @@ INSERT INTO degree_type (name, highly_relevant_points, limited_relevant_points, 
 VALUES
     ('Degree type 1', 120.55, 60, 15.45),
     ('Degree type 2', 12, 3.961, 3);
+
 TRUNCATE TABLE tag CASCADE;
 
 INSERT INTO tag (name)

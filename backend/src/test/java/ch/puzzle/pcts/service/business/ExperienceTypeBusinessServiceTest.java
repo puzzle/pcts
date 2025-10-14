@@ -16,10 +16,12 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class ExperienceTypeBusinessServiceTest {
 
     @Mock
@@ -47,8 +49,6 @@ class ExperienceTypeBusinessServiceTest {
                                              BigDecimal.valueOf(6),
                                              BigDecimal.valueOf(10),
                                              BigDecimal.valueOf(8));
-
-        MockitoAnnotations.openMocks(this);
     }
 
     @DisplayName("Should get experienceType by id")

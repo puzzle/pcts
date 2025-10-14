@@ -5,23 +5,22 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificate.Tag;
-import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.service.persistence.CertificatePersistenceService;
 import ch.puzzle.pcts.service.validation.CertificateValidationService;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class CertificateBusinessServiceTest {
 
     @Mock
@@ -36,37 +35,23 @@ class CertificateBusinessServiceTest {
     @InjectMocks
     private CertificateBusinessService businessService;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
-    @DisplayName("Should get certificate by id")
+    @DisplayName("Should get certificate by id and validate certificate type")
     @Test
-    void shouldGetById() {
-        Certificate certificate = new Certificate(1L,
+    void shouldGetByIdAndValidateCertificateType() {
+        long id = 1L;
+        Certificate certificate = new Certificate(id,
                                                   "Master of Art",
                                                   BigDecimal.ONE,
                                                   "Comment",
                                                   Set.of(new Tag(1L, "Important tag")));
-        when(persistenceService.getById(1L)).thenReturn(Optional.of(certificate));
+        when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
 
-        Certificate result = businessService.getById(1L);
+        Certificate result = businessService.getById(id);
 
         assertEquals(certificate, result);
-        verify(persistenceService).getById(1L);
-    }
-
-    @DisplayName("Should throw exception when role id is not found")
-    @Test
-    void shouldThrowExceptionWhenRoleIdNotFound() {
-        when(persistenceService.getById(1L)).thenReturn(Optional.empty());
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(1L));
-
-        assertEquals("Certificate with id: " + 1 + " does not exist.", exception.getReason());
-        assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
-        verify(persistenceService).getById(1L);
+        verify(validationService).validateOnGetById(id);
+        verify(persistenceService).getById(id);
+        verify(validationService).validateCertificateType(certificate.getCertificateType());
     }
 
     @DisplayName("Should create certificate")
@@ -84,7 +69,6 @@ class CertificateBusinessServiceTest {
         assertEquals(certificate, result);
         verify(validationService).validateOnCreate(certificate);
         verify(persistenceService).create(certificate);
-
         verify(tagBusinessService).resolveTags(any());
     }
 
@@ -102,13 +86,13 @@ class CertificateBusinessServiceTest {
                                     BigDecimal.ONE,
                                     "Comment",
                                     Set.of(new Tag(1L, "Important tag"))));
-        when(persistenceService.getAll()).thenReturn(certificates);
+        when(persistenceService.getAllCertificates()).thenReturn(certificates);
 
         List<Certificate> result = businessService.getAll();
 
         assertArrayEquals(certificates.toArray(), result.toArray());
         assertEquals(2, result.size());
-        verify(persistenceService).getAll();
+        verify(persistenceService).getAllCertificates();
     }
 
     @DisplayName("Should update certificates")
@@ -127,7 +111,6 @@ class CertificateBusinessServiceTest {
         assertEquals(certificate, result);
         verify(validationService).validateOnUpdate(id, certificate);
         verify(persistenceService).update(id, certificate);
-
         verify(tagBusinessService).deleteUnusedTags();
     }
 
@@ -140,7 +123,6 @@ class CertificateBusinessServiceTest {
 
         verify(validationService).validateOnDelete(id);
         verify(persistenceService).delete(id);
-
         verify(tagBusinessService).deleteUnusedTags();
     }
 }

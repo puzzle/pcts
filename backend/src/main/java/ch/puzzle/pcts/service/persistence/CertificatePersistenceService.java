@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.service.persistence;
 
 import ch.puzzle.pcts.model.certificate.Certificate;
+import ch.puzzle.pcts.model.certificate.CertificateType;
 import ch.puzzle.pcts.repository.CertificateRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CertificatePersistenceService {
+
     private final CertificateRepository repository;
 
     public CertificatePersistenceService(CertificateRepository certificateRepository) {
@@ -24,8 +26,12 @@ public class CertificatePersistenceService {
         return repository.findById(id);
     }
 
-    public List<Certificate> getAll() {
-        return repository.findAll();
+    public List<Certificate> getAllCertificates() {
+        return repository.findByCertificateType(CertificateType.CERTIFICATE);
+    }
+
+    public List<Certificate> getAllLeadershipExperiences() {
+        return repository.findByCertificateTypeNot(CertificateType.CERTIFICATE);
     }
 
     @Transactional

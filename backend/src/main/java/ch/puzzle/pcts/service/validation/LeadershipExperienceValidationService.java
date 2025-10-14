@@ -8,34 +8,34 @@ import ch.puzzle.pcts.service.persistence.CertificatePersistenceService;
 import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
-public class CertificateValidationService {
+@Component
+public class LeadershipExperienceValidationService {
     private final CertificatePersistenceService persistenceService;
 
     @Autowired
-    public CertificateValidationService(CertificatePersistenceService persistenceService) {
+    public LeadershipExperienceValidationService(CertificatePersistenceService persistenceService) {
         this.persistenceService = persistenceService;
     }
 
-    public void validateOnCreate(Certificate certificate) {
-        validateIfIdIsNull(certificate.getId());
-        validateName(certificate.getName());
-        validatePoints(certificate.getPoints());
-        validateCertificateType(certificate.getCertificateType());
+    public void validateOnCreate(Certificate leadershipExperience) {
+        validateIfIdIsNull(leadershipExperience.getId());
+        validateName(leadershipExperience.getName());
+        validatePoints(leadershipExperience.getPoints());
+        validateCertificateType(leadershipExperience.getCertificateType());
     }
 
     public void validateOnGetById(Long id) {
         validateIfExists(id);
     }
 
-    public void validateOnUpdate(Long id, Certificate certificate) {
+    public void validateOnUpdate(Long id, Certificate leadershipExperience) {
         validateIfExists(id);
-        validateIfIdIsNull(certificate.getId());
-        validateName(certificate.getName());
-        validatePoints(certificate.getPoints());
-        validateCertificateType(certificate.getCertificateType());
+        validateIfIdIsNull(leadershipExperience.getId());
+        validateName(leadershipExperience.getName());
+        validatePoints(leadershipExperience.getPoints());
+        validateCertificateType(leadershipExperience.getCertificateType());
     }
 
     public void validateOnDelete(Long id) {
@@ -48,10 +48,10 @@ public class CertificateValidationService {
                                     "Certificate type must not be null.",
                                     ErrorKey.CERTIFICATE_TYPE_IS_NULL);
         }
-        if (certificateType != CertificateType.CERTIFICATE) {
+        if (!certificateType.isLeadershipExperience()) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "Certificate type is not certificate.",
-                                    ErrorKey.CERTIFICATE_TYPE_IS_NOT_CERTIFICATE);
+                                    "Certificate type is not a leadership experience.",
+                                    ErrorKey.CERTIFICATE_TYPE_IS_NOT_A_LEADERSHIP_EXPERIENCE);
         }
     }
 
@@ -63,13 +63,15 @@ public class CertificateValidationService {
 
     private void validateName(String name) {
         if (name == null) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST, "Name must not be null", ErrorKey.CERTIFICATE_NAME_IS_NULL);
+            throw new PCTSException(HttpStatus.BAD_REQUEST,
+                                    "Name must not be null",
+                                    ErrorKey.LEADERSHIP_EXPERIENCE_NAME_IS_NULL);
         }
 
         if (name.isBlank()) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
                                     "Name must not be empty",
-                                    ErrorKey.CERTIFICATE_NAME_IS_EMPTY);
+                                    ErrorKey.LEADERSHIP_EXPERIENCE_NAME_IS_EMPTY);
         }
     }
 
@@ -77,7 +79,7 @@ public class CertificateValidationService {
         persistenceService
                 .getById(id)
                 .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,
-                                                     "Certificate with id: " + id + " does not exist.",
+                                                     "LeadershipExperience with id: " + id + " does not exist.",
                                                      ErrorKey.NOT_FOUND));
     }
 
@@ -85,13 +87,13 @@ public class CertificateValidationService {
         if (points == null) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
                                     "Points value must not be null.",
-                                    ErrorKey.CERTIFICATE_POINTS_ARE_NULL);
+                                    ErrorKey.LEADERSHIP_EXPERIENCE_POINTS_ARE_NULL);
         }
 
         if (points.signum() < 0) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
                                     "Points value must not be negative.",
-                                    ErrorKey.CERTIFICATE_POINTS_ARE_NEGATIVE);
+                                    ErrorKey.LEADERSHIP_EXPERIENCE_POINTS_ARE_NEGATIVE);
         }
     }
 }

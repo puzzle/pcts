@@ -5,33 +5,29 @@ import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificate.Certificate;
+import ch.puzzle.pcts.model.certificate.CertificateType;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.service.persistence.CertificatePersistenceService;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Optional;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class CertificateValidationServiceTest {
-    private AutoCloseable closeable;
 
     @Mock
     private CertificatePersistenceService persistenceService;
 
     @InjectMocks
     private CertificateValidationService validationService;
-
-    @BeforeEach
-    void setUp() {
-        closeable = MockitoAnnotations.openMocks(this);
-    }
-
-    @AfterEach
-    void tearDown() throws Exception {
-        closeable.close();
-    }
 
     @DisplayName("Should be successful on validateOnGetById() when id valid")
     @Test
@@ -60,6 +56,7 @@ class CertificateValidationServiceTest {
         Certificate certificate = new Certificate();
         certificate.setName("New certificate");
         certificate.setPoints(BigDecimal.valueOf(5));
+        certificate.setCertificateType(CertificateType.CERTIFICATE);
 
         assertDoesNotThrow(() -> validationService.validateOnCreate(certificate));
     }
@@ -137,6 +134,7 @@ class CertificateValidationServiceTest {
         Certificate certificate = new Certificate();
         certificate.setName("Valid name");
         certificate.setPoints(new BigDecimal("99.99"));
+        certificate.setCertificateType(CertificateType.CERTIFICATE);
 
         assertDoesNotThrow(() -> validationService.validateOnCreate(certificate));
     }
@@ -147,8 +145,25 @@ class CertificateValidationServiceTest {
         Certificate certificate = new Certificate();
         certificate.setName("Valid name");
         certificate.setPoints(BigDecimal.valueOf(50));
+        certificate.setCertificateType(CertificateType.CERTIFICATE);
 
         assertDoesNotThrow(() -> validationService.validateOnCreate(certificate));
+    }
+
+    @DisplayName("Should throw exception on validateOnCreate() when certificate type is not certificate")
+    @ParameterizedTest
+    @MethodSource("leadershipExperienceTypes")
+    void shouldThrowExceptionOnValidateOnCreateWhenCertificateTypeIsNotCertificate(CertificateType certificateType) {
+        Certificate certificate = new Certificate();
+        certificate.setName("Valid name");
+        certificate.setPoints(BigDecimal.valueOf(50));
+        certificate.setCertificateType(certificateType);
+
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> validationService.validateOnCreate(certificate));
+
+        assertEquals("Certificate type is not certificate.", exception.getReason());
+        assertEquals(ErrorKey.CERTIFICATE_TYPE_IS_NOT_CERTIFICATE, exception.getErrorKey());
     }
 
     @DisplayName("Should be successful on validateOnDelete() when id is valid")
@@ -179,6 +194,7 @@ class CertificateValidationServiceTest {
         Certificate certificate = new Certificate();
         certificate.setName("Valid name");
         certificate.setPoints(BigDecimal.valueOf(5));
+        certificate.setCertificateType(CertificateType.CERTIFICATE);
 
         when(persistenceService.getById(id)).thenReturn(Optional.of(new Certificate()));
 
@@ -247,5 +263,46 @@ class CertificateValidationServiceTest {
 
         assertEquals("Name must not be empty", exception.getReason());
         assertEquals(ErrorKey.CERTIFICATE_NAME_IS_EMPTY, exception.getErrorKey());
+    }
+
+    @DisplayName("Should throw exception on validateOnUpdate() when certificate type is not certificate")
+    @ParameterizedTest
+    @MethodSource("leadershipExperienceTypes")
+    void shouldThrowExceptionOnValidateOnUpdateWhenCertificateTypeIsNotCertificate(CertificateType certificateType) {
+        long id = 1L;
+        Certificate certificate = new Certificate();
+        certificate.setName("Valid name");
+        certificate.setPoints(BigDecimal.valueOf(5));
+        certificate.setCertificateType(certificateType);
+
+        when(persistenceService.getById(id)).thenReturn(Optional.of(new Certificate()));
+
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> validationService.validateOnUpdate(id, certificate));
+
+        assertEquals("Certificate type is not certificate.", exception.getReason());
+        assertEquals(ErrorKey.CERTIFICATE_TYPE_IS_NOT_CERTIFICATE, exception.getErrorKey());
+    }
+
+    @DisplayName("Should throw exception when certificate type is null")
+    @Test
+    void shouldThrowExceptionOnValidateOnUpdateWhenCertificateTypeIsNull() {
+        long id = 1L;
+        Certificate certificate = new Certificate();
+        certificate.setName("Valid name");
+        certificate.setPoints(BigDecimal.valueOf(5));
+        certificate.setCertificateType(null);
+
+        when(persistenceService.getById(id)).thenReturn(Optional.of(new Certificate()));
+
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> validationService.validateOnUpdate(id, certificate));
+
+        assertEquals("Certificate type must not be null.", exception.getReason());
+        assertEquals(ErrorKey.CERTIFICATE_TYPE_IS_NULL, exception.getErrorKey());
+    }
+
+    private static Stream<CertificateType> leadershipExperienceTypes() {
+        return Arrays.stream(CertificateType.values()).filter(CertificateType::isLeadershipExperience);
     }
 }

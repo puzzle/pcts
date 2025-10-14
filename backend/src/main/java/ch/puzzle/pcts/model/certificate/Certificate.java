@@ -1,7 +1,9 @@
 package ch.puzzle.pcts.model.certificate;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.Set;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -14,9 +16,10 @@ public class Certificate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     private String name;
 
-    @Column(nullable = false)
+    @NotNull
     private BigDecimal points;
 
     private String comment;
@@ -25,12 +28,26 @@ public class Certificate {
     @JoinTable(name = "certificate_tag", joinColumns = @JoinColumn(name = "certificate_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags;
 
-    public Certificate(Long id, String name, BigDecimal points, String comment, Set<Tag> tags) {
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private CertificateType certificateType;
+
+    public Certificate(Long id, String name, BigDecimal points, String comment, Set<Tag> tags,
+                       CertificateType certificateType) {
         this.id = id;
         this.name = name;
         this.points = points;
         this.comment = comment;
         this.tags = tags;
+        this.certificateType = certificateType;
+    }
+
+    public Certificate(Long id, String name, BigDecimal points, String comment, Set<Tag> tags) {
+        this(id, name, points, comment, tags, CertificateType.CERTIFICATE);
+    }
+
+    public Certificate(Long id, String name, BigDecimal points, String comment, CertificateType certificateType) {
+        this(id, name, points, comment, null, certificateType);
     }
 
     public Certificate() {
@@ -76,9 +93,32 @@ public class Certificate {
         this.tags = tags;
     }
 
+    public CertificateType getCertificateType() {
+        return certificateType;
+    }
+
+    public void setCertificateType(CertificateType certificateType) {
+        this.certificateType = certificateType;
+    }
+
     @Override
     public String toString() {
         return "Certificate{" + "id=" + id + ", name='" + name + '\'' + ", points=" + points + ", comment='" + comment
                + '\'' + ", tags=" + tags + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Certificate that = (Certificate) o;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(points, that.points)
+               && Objects.equals(comment, that.comment) && Objects.equals(tags, that.tags)
+               && certificateType == that.certificateType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, points, comment, tags, certificateType);
     }
 }
