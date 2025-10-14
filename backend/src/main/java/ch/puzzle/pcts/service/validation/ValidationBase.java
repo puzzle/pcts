@@ -36,7 +36,7 @@ public abstract class ValidationBase<T extends Model> {
         }
     }
 
-    public void validateOnGetById(Long id) {
+    public void validateOnGet(Long id) {
         throwExceptionWhenIdIsNull(id);
     }
 
