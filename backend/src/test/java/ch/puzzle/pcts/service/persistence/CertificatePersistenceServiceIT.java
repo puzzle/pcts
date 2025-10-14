@@ -11,30 +11,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
-@SpringBootTest
-@Testcontainers
-@ActiveProfiles("test")
-class CertificatePersistenceServiceIT {
-    @Container
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17-alpine");
-
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgres::getJdbcUrl);
-        registry.add("spring.datasource.username", postgres::getUsername);
-        registry.add("spring.datasource.password", postgres::getPassword);
-    }
+class CertificatePersistenceServiceIT extends PersistenceBasicIT {
 
     @Autowired
     private CertificatePersistenceService persistenceService;
@@ -42,16 +22,8 @@ class CertificatePersistenceServiceIT {
     @Autowired
     private TagPersistenceService tagPersistenceService;
 
-    @DisplayName("Should establish DB connection")
-    @Test
-    @Order(0)
-    void shouldEstablishConnection() {
-        assertThat(postgres.isRunning()).isTrue();
-    }
-
     @DisplayName("Should get certificate and leadership experience by id")
     @Test
-    @Order(1)
     void shouldGetById() {
         Optional<Certificate> certificate = persistenceService.getById(3L);
 
@@ -66,7 +38,6 @@ class CertificatePersistenceServiceIT {
 
     @DisplayName("Should get all certificates")
     @Test
-    @Order(1)
     void shouldGetAllCertificates() {
         List<Certificate> all = persistenceService.getAllCertificates();
 
@@ -78,7 +49,6 @@ class CertificatePersistenceServiceIT {
 
     @DisplayName("Should get all leadership experiences")
     @Test
-    @Order(1)
     void shouldGetAllLeadershipExperiences() {
         List<Certificate> all = persistenceService.getAllLeadershipExperiences();
 
@@ -93,7 +63,6 @@ class CertificatePersistenceServiceIT {
     @DisplayName("Should create a certificate and a leadership experience")
     @Transactional
     @Test
-    @Order(2)
     void shouldCreate() {
         Certificate certificate = new Certificate(null,
                                                   "Created certificate",
@@ -129,7 +98,6 @@ class CertificatePersistenceServiceIT {
     @DisplayName("Should update certificate and leadership experience")
     @Transactional
     @Test
-    @Order(2)
     void shouldUpdate() {
         Long cId = 4L;
         Long lId = 5L;
@@ -178,7 +146,6 @@ class CertificatePersistenceServiceIT {
     @DisplayName("Should delete certificate")
     @Transactional
     @Test
-    @Order(3)
     void shouldDelete() {
         Long id = 2L;
 
