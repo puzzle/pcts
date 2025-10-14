@@ -27,7 +27,7 @@ public class ExperienceType {
     public ExperienceType(Long id, String name, BigDecimal highlyRelevantPoints, BigDecimal limitedRelevantPoints,
                           BigDecimal littleRelevantPoints) {
         this.id = id;
-        this.name = name;
+        this.name = name == null ? null : name.trim();
         this.highlyRelevantPoints = highlyRelevantPoints;
         this.limitedRelevantPoints = limitedRelevantPoints;
         this.littleRelevantPoints = littleRelevantPoints;
@@ -49,7 +49,7 @@ public class ExperienceType {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name == null ? null : name.trim();
     }
 
     public BigDecimal getHighlyRelevantPoints() {

@@ -18,7 +18,7 @@ public class Role {
 
     public Role(Long id, String name, boolean isManagement) {
         this.id = id;
-        this.name = name;
+        this.name = name == null ? null : name.trim();
         this.isManagement = isManagement;
     }
 
@@ -38,7 +38,7 @@ public class Role {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name == null ? null : name.trim();
     }
 
     public boolean getIsManagement() {

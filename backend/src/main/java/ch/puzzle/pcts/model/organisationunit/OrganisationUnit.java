@@ -16,7 +16,7 @@ public class OrganisationUnit {
 
     public OrganisationUnit(Long id, String name) {
         this.id = id;
-        this.name = name;
+        this.name = name == null ? null : name.trim();
     }
 
     public OrganisationUnit() {
@@ -35,7 +35,7 @@ public class OrganisationUnit {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name == null ? null : name.trim();
     }
 
     @Override

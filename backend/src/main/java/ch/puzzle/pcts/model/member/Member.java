@@ -58,7 +58,7 @@ public class Member {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name == null ? null : name.trim();
     }
 
     public String getLastName() {
@@ -66,7 +66,7 @@ public class Member {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.lastName = lastName == null ? null : lastName.trim();
     }
 
     public EmploymentState getEmploymentState() {
@@ -82,7 +82,7 @@ public class Member {
     }
 
     public void setAbbreviation(String abbreviation) {
-        this.abbreviation = abbreviation;
+        this.abbreviation = abbreviation == null ? null : abbreviation.trim();
     }
 
     public Date getDateOfHire() {
@@ -139,12 +139,12 @@ public class Member {
         }
 
         public Builder withName(String name) {
-            this.name = name;
+            this.name = name == null ? null : name.trim();
             return this;
         }
 
         public Builder withLastName(String lastName) {
-            this.lastName = lastName;
+            this.lastName = lastName == null ? null : lastName.trim();
             return this;
         }
 
@@ -154,7 +154,7 @@ public class Member {
         }
 
         public Builder withAbbreviation(String abbreviation) {
-            this.abbreviation = abbreviation;
+            this.abbreviation = abbreviation == null ? null : abbreviation.trim();
             return this;
         }
 

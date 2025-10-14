@@ -35,9 +35,9 @@ public class Certificate {
     public Certificate(Long id, String name, BigDecimal points, String comment, Set<Tag> tags,
                        CertificateType certificateType) {
         this.id = id;
-        this.name = name;
+        this.name = name.trim();
         this.points = points;
-        this.comment = comment;
+        this.comment = comment == null ? null : comment.trim();
         this.tags = tags;
         this.certificateType = certificateType;
     }
@@ -66,7 +66,7 @@ public class Certificate {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.trim();
     }
 
     public BigDecimal getPoints() {
@@ -82,7 +82,7 @@ public class Certificate {
     }
 
     public void setComment(String comment) {
-        this.comment = comment;
+        this.comment = comment == null ? null : comment.trim();
     }
 
     public Set<Tag> getTags() {
@@ -104,7 +104,7 @@ public class Certificate {
     @Override
     public String toString() {
         return "Certificate{" + "id=" + id + ", name='" + name + '\'' + ", points=" + points + ", comment='" + comment
-               + '\'' + ", tags=" + tags + '}';
+               + '\'' + ", tags=" + tags + ", certificateType=" + certificateType + '}';
     }
 
     @Override
