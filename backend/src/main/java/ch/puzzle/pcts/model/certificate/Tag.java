@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.model.certificate;
 
+import static org.apache.commons.lang3.StringUtils.trim;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -14,7 +16,7 @@ public class Tag {
 
     public Tag(Long id, String name) {
         this.id = id;
-        this.name = name.trim();
+        this.name = trim(name);
     }
 
     public Tag() {
@@ -33,7 +35,7 @@ public class Tag {
     }
 
     public void setName(String name) {
-        this.name = name.trim();
+        this.name = trim(name);
     }
 
     @Override

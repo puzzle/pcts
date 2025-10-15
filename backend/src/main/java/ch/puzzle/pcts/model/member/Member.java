@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.model.member;
 
+import static org.apache.commons.lang3.StringUtils.trim;
+
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import jakarta.persistence.*;
 import java.util.Date;
@@ -58,7 +60,7 @@ public class Member {
     }
 
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = trim(name);
     }
 
     public String getLastName() {
@@ -66,7 +68,7 @@ public class Member {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName == null ? null : lastName.trim();
+        this.lastName = trim(lastName);
     }
 
     public EmploymentState getEmploymentState() {
@@ -82,7 +84,7 @@ public class Member {
     }
 
     public void setAbbreviation(String abbreviation) {
-        this.abbreviation = abbreviation == null ? null : abbreviation.trim();
+        this.abbreviation = trim(abbreviation);
     }
 
     public Date getDateOfHire() {
@@ -139,12 +141,12 @@ public class Member {
         }
 
         public Builder withName(String name) {
-            this.name = name == null ? null : name.trim();
+            this.name = trim(name);
             return this;
         }
 
         public Builder withLastName(String lastName) {
-            this.lastName = lastName == null ? null : lastName.trim();
+            this.lastName = trim(lastName);
             return this;
         }
 
@@ -154,7 +156,7 @@ public class Member {
         }
 
         public Builder withAbbreviation(String abbreviation) {
-            this.abbreviation = abbreviation == null ? null : abbreviation.trim();
+            this.abbreviation = trim(abbreviation);
             return this;
         }
 

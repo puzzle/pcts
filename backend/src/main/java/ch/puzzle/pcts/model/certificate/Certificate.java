@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.model.certificate;
 
+import static org.apache.commons.lang3.StringUtils.trim;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -35,9 +37,9 @@ public class Certificate {
     public Certificate(Long id, String name, BigDecimal points, String comment, Set<Tag> tags,
                        CertificateType certificateType) {
         this.id = id;
-        this.name = name.trim();
+        this.name = trim(name);
         this.points = points;
-        this.comment = comment == null ? null : comment.trim();
+        this.comment = trim(comment);
         this.tags = tags;
         this.certificateType = certificateType;
     }
@@ -66,7 +68,7 @@ public class Certificate {
     }
 
     public void setName(String name) {
-        this.name = name.trim();
+        this.name = trim(name);
     }
 
     public BigDecimal getPoints() {
@@ -82,7 +84,7 @@ public class Certificate {
     }
 
     public void setComment(String comment) {
-        this.comment = comment == null ? null : comment.trim();
+        this.comment = trim(comment);
     }
 
     public Set<Tag> getTags() {

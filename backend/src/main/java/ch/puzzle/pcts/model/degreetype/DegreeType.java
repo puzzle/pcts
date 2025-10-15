@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.model.degreetype;
 
+import static org.apache.commons.lang3.StringUtils.trim;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,7 +29,7 @@ public class DegreeType {
     public DegreeType(Long id, String name, BigDecimal highlyRelevantPoints, BigDecimal limitedRelevantPoints,
                       BigDecimal littleRelevantPoints) {
         this.id = id;
-        this.name = name == null ? null : name.trim();
+        this.name = trim(name);
         this.highlyRelevantPoints = highlyRelevantPoints;
         this.limitedRelevantPoints = limitedRelevantPoints;
         this.littleRelevantPoints = littleRelevantPoints;
@@ -49,7 +51,7 @@ public class DegreeType {
     }
 
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = trim(name);
     }
 
     public BigDecimal getHighlyRelevantPoints() {
