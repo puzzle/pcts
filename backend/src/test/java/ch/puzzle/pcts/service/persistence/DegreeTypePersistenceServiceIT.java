@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class DegreeTypePersistenceServiceIT extends PersistenceBasicIT {
+class DegreeTypePersistenceServiceIT extends PersistenceCoreIT {
 
     @Autowired
     private DegreeTypePersistenceService persistenceService;

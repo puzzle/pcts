@@ -14,7 +14,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class CertificatePersistenceServiceIT extends PersistenceBasicIT {
+class CertificatePersistenceServiceIT extends PersistenceCoreIT {
 
     @Autowired
     private CertificatePersistenceService persistenceService;

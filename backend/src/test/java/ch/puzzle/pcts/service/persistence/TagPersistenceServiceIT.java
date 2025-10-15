@@ -10,7 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class TagPersistenceServiceIT extends PersistenceBasicIT {
+class TagPersistenceServiceIT extends PersistenceCoreIT {
 
     @Autowired
     private TagPersistenceService persistenceService;

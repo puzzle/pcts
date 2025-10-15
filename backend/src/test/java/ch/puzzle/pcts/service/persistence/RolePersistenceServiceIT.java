@@ -10,7 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class RolePersistenceServiceIT extends PersistenceBasicIT {
+class RolePersistenceServiceIT extends PersistenceCoreIT {
     @Autowired
     private RolePersistenceService persistenceService;
 

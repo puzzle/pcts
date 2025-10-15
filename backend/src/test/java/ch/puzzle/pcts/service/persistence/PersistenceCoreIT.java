@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 @IT
-class PersistenceBasicIT {
+class PersistenceCoreIT {
     @Autowired
     PostgreSQLContainer<?> postgres;
 
