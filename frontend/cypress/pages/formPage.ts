@@ -1,4 +1,4 @@
-import {Page} from './page';
+import { Page } from './page';
 
 class FormPage extends Page {
   visitAdd() {
@@ -10,13 +10,15 @@ class FormPage extends Page {
   }
 
   addTextToFieldAndCheckButtonState(fieldName: string, fieldValue: string) {
-    cy.getByTestId(fieldName).type(fieldValue);
-    this.isSaveDisabled()
+    cy.getByTestId(fieldName)
+      .type(fieldValue);
+    this.isSaveDisabled();
   }
 
   isSaveDisabled() {
-    cy.getByTestId('submit-button').should('be.disabled');
+    cy.getByTestId('submit-button')
+      .should('be.disabled');
   }
 }
 
-export default new FormPage()
+export default new FormPage();

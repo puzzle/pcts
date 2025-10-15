@@ -1,70 +1,79 @@
-import {MatDatepickerModule, MatDatepickerToggle} from '@angular/material/datepicker';
-import {InputTypeEnum} from './input-type.enum';
-import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from '@angular/material/autocomplete';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
-import {Component, Input, OnInit, signal, Signal} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {TranslatePipe} from '@ngx-translate/core';
-import {MatError, MatFormField, MatLabel, MatSuffix} from '@angular/material/form-field';
-import {MatInput} from '@angular/material/input';
-import {MatIconModule} from '@angular/material/icon'; // <-- Import this module
+import {
+  Component, computed, contentChild,
+  effect, ElementRef,
+  inject,
+  viewChild
+} from '@angular/core';
+import { NgControl, ReactiveFormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MAT_FORM_FIELD, MatError, MatFormField, MatFormFieldControl, MatLabel } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { CaseFormatter } from '../format/case-formatter';
+import { MatAutocomplete } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-input-field',
   imports: [
-    TranslatePipe,
     MatLabel,
     MatFormField,
-    MatInput,
     ReactiveFormsModule,
-    MatError,
     MatDatepickerModule,
-    MatSuffix,
-    MatAutocompleteTrigger,
-    MatAutocomplete,
-    MatOption,
     MatIconModule,
-    MatDatepickerToggle
+    MatError,
+    TranslatePipe
   ],
   templateUrl: './input-field.html',
   styleUrl: './input-field.scss',
-  standalone: true
+  standalone: true,
+  providers: [{ provide: MAT_FORM_FIELD,
+    useValue: InputField }],
+  viewProviders: [{ provide: MAT_FORM_FIELD,
+    useValue: InputField }]
 })
-export class InputField<T> implements OnInit {
-  protected readonly InputTypeEnum = InputTypeEnum;
+export class InputField {
+  private readonly caseFormatter = inject(CaseFormatter);
 
-  @Input({ required: true }) labelKey!: string;
+  matFormField = viewChild.required(MatFormField);
 
-  @Input({required: true}) formGroup!: FormGroup;
+  matFormFieldControl = contentChild.required(MatFormFieldControl);
 
-  @Input({required: true}) formControlPath!: string;
+  auto = contentChild.required(MatAutocomplete);
 
-  @Input() type: InputTypeEnum = InputTypeEnum.TEXT;
+  elementRef = inject(ElementRef);
 
-  @Input() maxErrors = Number.MAX_SAFE_INTEGER;
+  i18nPrefix = '';
 
-  @Input() dropdownOptions: Signal<T[]> = signal([]);
+  ngControl = computed(() => this.matFormField()._control.ngControl as NgControl);
 
-  @Input() displayWith: (option: T) => string = (option) => String(option);
+  labelName = computed(() => this.caseFormatter.camelToSnake([this.i18nPrefix,
+    this.ngControl()?.name ?? ''].join('.')));
 
-  get formControl(): FormControl {
-    return this.formGroup.get(this.formControlPath) as FormControl;
-  }
+  constructor() {
+    effect(() => {
+      console.log(this.matFormFieldControl());
+      console.log(this.auto());
+      const test =
+      // if(test || true){
+        this.matFormField()._control = this.matFormFieldControl();
+      // }
+    });
+    effect(() => {
+      // this.auto().
+    });
 
-  ngOnInit(): void {
-    if (this.type === InputTypeEnum.DROPDOWN && this.dropdownOptions.length === 0) {
-      this.formControl.disable();
-    }
+    this.i18nPrefix = this.elementRef.nativeElement.closest('form')?.name;
   }
 
   getErrorMessages(): string[] {
-    const control = this.formControl;
+    const control = this.ngControl();
     if (!control || !control.touched || control.valid) {
       return [];
     }
 
     return control.errors ? Object.keys(control.errors)
       .map((key) => `VALIDATION.${key.toUpperCase()}`)
-      .slice(0, this.maxErrors) : [];
+      .slice(0, Number.MAX_SAFE_INTEGER) : [];
   }
 }

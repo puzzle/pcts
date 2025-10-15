@@ -1,23 +1,61 @@
 <div class="w-75 mx-auto mt-5">
   <h1 data-testid="title">Member {{pageTitleKey() | translate}}</h1>
 
-  <p class="fw-bold">{{ "MEMBER.FORM.PERSONAL_DETAILS" | translate }}</p>
+  <p class="fw-bold">
+    {{ "MEMBER.FORM.PERSONAL_DETAILS" | translate }}
+  </p>
 
-  <form [formGroup]="memberForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="memberForm" (ngSubmit)="onSubmit()" name="member">
 
-    <app-input-field formControlPath="name" labelKey="MEMBER.FIRSTNAME" [formGroup]="memberForm" />
+    <mat-form-field>
+      <app-form-field-label />
+      <input
+        type="text"
+        matInput
+        formControlName="name"
+      >
+      <app-form-field-error />
+    </mat-form-field>
 
-    <app-input-field formControlPath="lastName" labelKey="MEMBER.LASTNAME" [formGroup]="memberForm" />
+    <!--    <app-input-field>-->
+    <!--      <input type="text" formControlName="name" matInput>-->
+    <!--    </app-input-field>-->
 
-    <app-input-field formControlPath="abbreviation" labelKey="MEMBER.ABBREVIATION" [formGroup]="memberForm" />
+    <!--    <app-input-field>-->
+    <!--      <input type="text" formControlName="lastName" matInput>-->
+    <!--    </app-input-field>-->
 
-    <app-input-field formControlPath="birthday" labelKey="MEMBER.BIRTHDAY" [formGroup]="memberForm" [type]="InputTypeEnum.DATE" />
+    <!--    <app-input-field>-->
+    <!--      <input type="text" formControlName="abbreviation" matInput>-->
+    <!--    </app-input-field>-->f
 
-    <app-input-field formControlPath="dateOfHire" labelKey="MEMBER.DATE_OF_HIRE" [formGroup]="memberForm" [type]="InputTypeEnum.DATE" />
+    <!--    <app-input-field>-->
+    <!--      <input type="text" formControlName="birthDate" matInput>-->
+    <!--    </app-input-field>-->
 
-    <app-input-field formControlPath="employmentState" labelKey="MEMBER.EMPLOYMENT_STATUS" [formGroup]="memberForm" [type]="InputTypeEnum.DROPDOWN" [dropdownOptions]="employmentStateFilteredOptions" [displayWith]="displayEmploymentState.bind(this)" />
+    <!--    <app-input-field>-->
+    <!--      <input type="text" formControlName="dateOfHire" matInput>-->
+    <!--    </app-input-field>-->
 
-    <app-input-field formControlPath="organisationUnit" labelKey="MEMBER.ORGANISATION_UNIT" [formGroup]="memberForm" [type]="InputTypeEnum.DROPDOWN" [dropdownOptions]="organisationUnitFilteredOptions" [displayWith]="displayOrganisationUnit.bind(this)" />
+
+    <!--    <app-input-field>-->
+    <!--      <input type="text" formControlName="employmentState" matInput [matAutocomplete]="auto">-->
+    <!--      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">-->
+    <!--        @for (option of employmentStateFilteredOptions(); track option) {-->
+    <!--          <mat-option [value]="option">{{displayEmploymentState(option)}}</mat-option>-->
+    <!--        }-->
+    <!--      </mat-autocomplete>-->
+    <!--    </app-input-field>-->
+
+
+    <!--    <app-input-field>-->
+    <!--      <input type="text" formControlName="organisationUnit" matInput [matAutocomplete]="auto">-->
+    <!--      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">-->
+    <!--        @for (option of employmentStateFilteredOptions(); track option) {-->
+    <!--          <mat-option [value]="option">{{displayEmploymentState(option)}}</mat-option>-->
+    <!--        }-->
+    <!--      </mat-autocomplete>-->
+    <!--    </app-input-field>-->
 
     <div class="d-flex flex-row gap-3">
       <button mat-stroked-button type="button" [routerLink]="['/']">{{ "GENERAL.CANCEL" | translate }}</button>

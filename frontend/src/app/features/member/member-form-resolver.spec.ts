@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { idResolver } from './member-form-resolver';
+import { memberDataResolver } from './member-form-resolver';
 
 describe('MemberFormResolver', () => {
   let route: ActivatedRouteSnapshot;
@@ -32,7 +32,7 @@ describe('MemberFormResolver', () => {
 
     route = mockRoute(testId);
 
-    const result = idResolver(route, state);
+    const result = memberDataResolver(route, state);
 
     expect(result)
       .toBe(testId);
@@ -41,7 +41,7 @@ describe('MemberFormResolver', () => {
   it('Should throw error when id is missing', () => {
     route = mockRoute(null);
 
-    expect(() => idResolver(route, state))
+    expect(() => memberDataResolver(route, state))
       .toThrow(new Error('ID param is missing'));
   });
 });
