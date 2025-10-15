@@ -142,8 +142,8 @@ describe('MemberFormComponent', () => {
         .toBe(member1.name);
       expect(component['memberForm'].get('lastName')?.value)
         .toBe(member1.lastName);
-      expect(component['memberForm'].get('birthday')?.value)
-        .toBe(member1.birthday);
+      expect(component['memberForm'].get('birthDate')?.value)
+        .toBe(member1.birthDate);
       expect(component['memberForm'].get('abbreviation')?.value)
         .toBe(member1.abbreviation);
       expect(component['memberForm'].get('employmentState')?.value)

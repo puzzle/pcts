@@ -13,18 +13,19 @@
     "REQUIRED": "Muss ausgefühlt sein",
     "DATE_IS_IN_FUTURE": "Datum muss in der Vergangenheit liegen",
     "INVALID_ENTRY": "Ungültige Eingabe",
-    "MATDATEPICKERPARSE": "Ungültiges Datum"
+    "MATDATEPICKERPARSE": "Ungültiges Datum",
+    "NOT_AVAILABLE": "\"{{value}}\" nicht verfügbar"
   },
 
   "MEMBER": {
     "NAME": "Name",
     "FIRSTNAME": "Vorname",
-    "LASTNAME": "Nachname",
+    "LAST_NAME": "Nachname",
     "ABBREVIATION": "Kürzel",
-    "BIRTHDAY": "Geburtsdatum",
+    "BIRTH_DATE": "Geburtsdatum",
     "DATE_OF_HIRE": "Ansellungsdatum",
     "ORGANISATION_UNIT": "Division",
-    "EMPLOYMENT_STATUS": "Anstellungsstatus",
+    "EMPLOYMENT_STATE": "Anstellungsstatus",
 
     "FORM": {
       "PERSONAL_DETAILS": "Personalien"
