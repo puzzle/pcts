@@ -35,10 +35,10 @@ public class Member {
 
     private Member(Builder builder) {
         this.id = builder.id;
-        this.name = builder.name;
-        this.lastName = builder.lastName;
+        this.name = trim(builder.name);
+        this.lastName = trim(builder.lastName);
         this.employmentState = builder.employmentState;
-        this.abbreviation = builder.abbreviation;
+        this.abbreviation = trim(builder.abbreviation);
         this.dateOfHire = builder.dateOfHire;
         this.birthDate = builder.birthDate;
         this.organisationUnit = builder.organisationUnit;
