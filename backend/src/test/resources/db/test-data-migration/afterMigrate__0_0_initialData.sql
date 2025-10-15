@@ -1,11 +1,3 @@
-TRUNCATE TABLE example CASCADE;
-
-INSERT INTO example (text)
-VALUES ('Example 1'),
-       ('Example 2');
-
-SELECT setval('sequence_example', (SELECT MAX(id) FROM example));
-
 TRUNCATE TABLE role CASCADE;
 
 INSERT INTO role (name, deleted_at, is_management)
