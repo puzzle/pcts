@@ -100,13 +100,13 @@ class DegreeTypeBusinessServiceTest {
                                                new BigDecimal("1.0"),
                                                new BigDecimal("2.0"),
                                                new BigDecimal("3.0"));
-        when(persistenceService.create(degreeType)).thenReturn(degreeType);
+        when(persistenceService.save(degreeType)).thenReturn(degreeType);
 
         DegreeType result = businessService.create(degreeType);
 
         assertEquals(degreeType, result);
         verify(validationService).validateOnCreate(degreeType);
-        verify(persistenceService).create(degreeType);
+        verify(persistenceService).save(degreeType);
     }
 
     @DisplayName("Should update degree type")
@@ -118,13 +118,13 @@ class DegreeTypeBusinessServiceTest {
                                                new BigDecimal("1.0"),
                                                new BigDecimal("2.0"),
                                                new BigDecimal("3.0"));
-        when(persistenceService.update(id, degreeType)).thenReturn(degreeType);
+        when(persistenceService.save(degreeType)).thenReturn(degreeType);
 
         DegreeType result = businessService.update(id, degreeType);
 
         assertEquals(degreeType, result);
         verify(validationService).validateOnUpdate(id, degreeType);
-        verify(persistenceService).update(id, degreeType);
+        verify(persistenceService).save(degreeType);
     }
 
     @DisplayName("Should delete role")
