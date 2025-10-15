@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { MemberModel } from './member.model';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { EmploymentState } from '../../shared/enum/employment-state.enum';
+import { Observable } from 'rxjs';
+import { MemberDto } from './dto/member.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -18,32 +18,26 @@ export class MemberService {
   }
 
   getMemberById(id: number): Observable<MemberModel> {
-    return of({
-      id: 1,
-      name: 'Ja',
-      lastName: 'Morant',
-      birthDate: new Date(2000, 0, 1),
-      abbreviation: 'JM',
-      employmentState: EmploymentState.MEMBER,
-      dateOfHire: new Date(2025, 0, 1),
-      organisationUnit: {
-        id: 4,
-        name: '/mem'
-      }
-    });
+    return this.httpClient.get<MemberModel>(`${this.API_URL}/${id}`);
   }
 
-  addMember(member: MemberModel): Observable<MemberModel> {
-    console.log(member);
-    return of({
-      ...member
-    });
+  addMember(member: MemberDto): Observable<MemberModel> {
+    return this.httpClient.post<MemberModel>(this.API_URL, member);
   }
 
-  updateMember(id: number, member: MemberModel): Observable<MemberModel> {
-    console.log(id, member);
-    return of({
-      ...member
-    });
+  updateMember(id: number, member: MemberDto): Observable<MemberModel> {
+    return this.httpClient.put<MemberModel>(`${this.API_URL}/${id}`, member);
+  }
+
+  toDto(model: MemberModel) {
+    return {
+      name: model.name,
+      lastName: model.lastName,
+      birthDate: model.birthDate,
+      abbreviation: model.abbreviation,
+      employmentState: model.employmentState,
+      organisationUnitId: model.organisationUnit.id,
+      dateOfHire: model.dateOfHire
+    };
   }
 }

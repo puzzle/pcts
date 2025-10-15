@@ -1,4 +1,4 @@
-import {Component, computed, inject, OnInit, Signal, signal} from '@angular/core';
+import { Component, computed, inject, Signal, signal, WritableSignal } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -9,24 +9,24 @@ import {
   ValidatorFn,
   Validators
 } from '@angular/forms';
-import {MatInputModule} from '@angular/material/input';
-import {MatSelectModule} from '@angular/material/select';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import {MemberService} from '../member.service';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import {MatButton} from '@angular/material/button';
-import {TranslatePipe, TranslateService} from '@ngx-translate/core';
-import {MatIconModule} from '@angular/material/icon';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { MemberService } from '../member.service';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButton } from '@angular/material/button';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
-import {OrganisationUnitModel} from '../../organisation-unit/organisation-unit.model';
-import {EmploymentState} from '../../../shared/enum/employment-state.enum';
-import {toSignal} from '@angular/core/rxjs-interop';
-import {MemberModel} from '../member.model';
-import {OrganisationUnitService} from '../../organisation-unit/organisation-unit.service';
-import {InputField} from '../../../shared/input-field/input-field';
-import {InputTypeEnum} from '../../../shared/input-field/input-type.enum';
+import { OrganisationUnitModel } from '../../organisation-unit/organisation-unit.model';
+import { EmploymentState } from '../../../shared/enum/employment-state.enum';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { MemberModel } from '../member.model';
+import { OrganisationUnitService } from '../../organisation-unit/organisation-unit.service';
+import { FormFieldLabel } from '../../../shared/form-field-label/form-field-label';
+import { FormFieldError } from '../../../shared/form-field-error/form-field-error';
 
 @Component({
   selector: 'app-member-form',
@@ -37,19 +37,18 @@ import {InputTypeEnum} from '../../../shared/input-field/input-type.enum';
     FormsModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
-    MatFormFieldModule,
-    MatInputModule,
     MatButton,
     TranslatePipe,
     MatIconModule,
     MatDatepickerModule,
     RouterLink,
-    InputField,
+    FormFieldLabel,
+    FormFieldError
   ],
   templateUrl: './member-form.component.html',
   styleUrl: './member-form.component.scss'
 })
-export class MemberFormComponent implements OnInit {
+export class MemberFormComponent {
   private readonly translateService = inject(TranslateService);
 
   private readonly memberService = inject(MemberService);
@@ -62,13 +61,11 @@ export class MemberFormComponent implements OnInit {
 
   private readonly fb = inject(FormBuilder);
 
-  protected readonly InputTypeEnum = InputTypeEnum;
-
   protected isEdit = signal<boolean>(false);
 
-  protected pageTitleKey: Signal<string> = computed(() => (this.isEdit() ? 'GENERAL.EDIT' : 'GENERAL.ADD'));
+  protected pageTitleKey: Signal<string> = computed(() => this.isEdit() ? 'GENERAL.EDIT' : 'GENERAL.ADD');
 
-  protected submitButtonKey: Signal<string> = computed(() => (this.isEdit() ? 'GENERAL.SAVE' : 'GENERAL.ADD'));
+  protected submitButtonKey: Signal<string> = computed(() => this.isEdit() ? 'GENERAL.SAVE' : 'GENERAL.ADD');
 
   protected memberForm: FormGroup = this.fb.group({
     id: [null],
@@ -77,9 +74,9 @@ export class MemberFormComponent implements OnInit {
     lastName: ['',
       Validators.required],
     abbreviation: [''],
-    birthday: ['',
+    birthDate: ['',
       [Validators.required,
-        this.isDateInPast()]],
+        this.isDateInFuture()]],
     dateOfHire: [''],
     employmentState: [null,
       [Validators.required,
@@ -97,7 +94,7 @@ export class MemberFormComponent implements OnInit {
     return this.filterEmploymentState(value);
   });
 
-  private readonly organisationUnitsOptions = toSignal(this.organisationUnitService.getAllOrganisationUnits(), { initialValue: [] });
+  private readonly organisationUnitsOptions: WritableSignal<OrganisationUnitModel[]> = signal([]);
 
   protected organisationUnitControlSignal = toSignal(this.memberForm.get('organisationUnit')!.valueChanges, { initialValue: this.memberForm.get('organisationUnit')!.value });
 
@@ -106,19 +103,25 @@ export class MemberFormComponent implements OnInit {
     return this.filterOrganisationUnit(value);
   });
 
-  ngOnInit(): void {
-    //wait until the i18n translation json is loaded
-    this.translateService.onLangChange.subscribe(() => {
-      this.loadMember();
-    });
+  constructor() {
+    this.organisationUnitService.getAllOrganisationUnits()
+      .subscribe((organisationUnits) => {
+        this.organisationUnitsOptions.set(organisationUnits);
+        this.loadMember();
+      });
   }
 
   loadMember() {
     const member = this.route.snapshot.data['memberData'] as MemberModel;
+
+    this.memberForm.patchValue(member);
+
     if (member?.id) {
       this.isEdit.set(true);
+      this.memberForm.get('organisationUnit')
+        ?.setValue(this.organisationUnitsOptions()
+          .find((orgUnit) => orgUnit.id === member.organisationUnit.id));
     }
-    this.memberForm.patchValue(member);
   }
 
   onSubmit() {
@@ -128,19 +131,20 @@ export class MemberFormComponent implements OnInit {
       return;
     }
 
-    const memberToSave = this.memberForm.getRawValue() as MemberModel;
+    const memberToSave = this.memberService.toDto(this.memberForm.getRawValue() as MemberModel);
 
     if (this.isEdit()) {
-      this.memberService.updateMember(this.memberForm.get('id')?.value, memberToSave);
+      this.memberService.updateMember(this.memberForm.get('id')?.value, memberToSave)
+        .subscribe();
     } else {
-      memberToSave.id = 0;
-      this.memberService.addMember(memberToSave);
+      this.memberService.addMember(memberToSave)
+        .subscribe();
     }
 
     this.router.navigate(['/']);
   }
 
-  isDateInPast(): ValidatorFn {
+  isDateInFuture(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       if (!control.value) {
         return null;
@@ -148,8 +152,6 @@ export class MemberFormComponent implements OnInit {
 
       const date = new Date(control.value);
       const today = new Date();
-
-      console.log(date)
 
       if (date >= today) {
         return { date_is_in_future: true };
@@ -168,13 +170,13 @@ export class MemberFormComponent implements OnInit {
       }
 
       if (typeof value === 'string') {
-        return {invalid_entry: true};
+        return { invalid_entry: true };
       }
 
       const isValidOption = this.organisationUnitsOptions()
         .includes(value);
 
-      return isValidOption ? null : {invalid_entry: true};
+      return isValidOption ? null : { invalid_entry: true };
     };
   }
 
