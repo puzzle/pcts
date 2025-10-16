@@ -41,7 +41,7 @@ class CertificateMapperTest {
                                                   exampleTags);
 
         Certificate result = mapper.fromDto(certificateDto);
-        assertEquals(certificate.toString(), result.toString());
+        assertEquals(certificate, result);
     }
 
     @DisplayName("Should return certificate dto")
@@ -58,7 +58,7 @@ class CertificateMapperTest {
                                                 List.of("Important tag", "One more tag"));
 
         CertificateDto result = mapper.toDto(model);
-        assertEquals(dto.toString(), result.toString());
+        assertEquals(dto, result);
     }
 
     @DisplayName("Should return list of certificates")
@@ -83,7 +83,7 @@ class CertificateMapperTest {
                     new Certificate(2L, "Certificate of Advanced Studies", BigDecimal.ONE, "Test", exampleTags));
 
         List<Certificate> result = mapper.fromDto(dtos);
-        assertEquals(models.toString(), result.toString());
+        assertEquals(models, result);
     }
 
     @DisplayName("Should return list of certificate dtos")
@@ -112,6 +112,6 @@ class CertificateMapperTest {
                                        List.of("Important tag", "One more tag")));
 
         List<CertificateDto> result = mapper.toDto(models);
-        assertEquals(dtos.toString(), result.toString());
+        assertEquals(dtos, result);
     }
 }
