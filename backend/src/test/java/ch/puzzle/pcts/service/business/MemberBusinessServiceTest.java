@@ -2,21 +2,16 @@ package ch.puzzle.pcts.service.business;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
-import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
-import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import ch.puzzle.pcts.service.validation.MemberValidationService;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,40 +27,25 @@ class MemberBusinessServiceTest {
     @Mock
     private MemberPersistenceService persistenceService;
 
+    @Mock
+    private Member member;
+
+    @Mock
+    private List<Member> members;
+
     @InjectMocks
     private MemberBusinessService businessService;
-
-    private OrganisationUnit organisationUnit;
-    private final Date commonDate = new Date(0L);
-
-    @BeforeEach
-    void setUp() {
-        organisationUnit = new OrganisationUnit(1L, "/bbt");
-    }
-
-    @Captor
-    ArgumentCaptor<Member> memberCaptor;
 
     @DisplayName("Should get member by id")
     @Test
     void shouldGetById() {
-        Member member = Member.Builder
-                .builder()
-                .withId(1L)
-                .withName("Member1")
-                .withLastName("Test")
-                .withEmploymentState(EmploymentState.APPLICANT)
-                .withAbbreviation("M1")
-                .withDateOfHire(commonDate)
-                .withBirthDate(commonDate)
-                .withOrganisationUnit(organisationUnit)
-                .build();
         when(persistenceService.getById(1L)).thenReturn(Optional.of(member));
 
         Member result = businessService.getById(1L);
 
         assertEquals(member, result);
         verify(persistenceService).getById(1L);
+        verify(validationService).validateOnGetById(1L);
     }
 
     @DisplayName("Should throw exception")
@@ -78,41 +58,21 @@ class MemberBusinessServiceTest {
         assertEquals("Member with id: " + 1 + " does not exist.", exception.getReason());
         assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
         verify(persistenceService).getById(1L);
+        verify(validationService).validateOnGetById(1L);
     }
 
     @DisplayName("Should get all members")
     @Test
     void shouldGetAll() {
-        List<Member> members = List
-                .of(Member.Builder
-                        .builder()
-                        .withId(1L)
-                        .withName("Member1")
-                        .withLastName("Test")
-                        .withEmploymentState(EmploymentState.APPLICANT)
-                        .withAbbreviation("M1")
-                        .withDateOfHire(commonDate)
-                        .withBirthDate(commonDate)
-                        .withOrganisationUnit(organisationUnit)
-                        .build(),
-                    Member.Builder
-                            .builder()
-                            .withId(1L)
-                            .withName("Member2")
-                            .withLastName("Test")
-                            .withEmploymentState(EmploymentState.APPLICANT)
-                            .withAbbreviation("M2")
-                            .withDateOfHire(commonDate)
-                            .withBirthDate(commonDate)
-                            .withOrganisationUnit(organisationUnit)
-                            .build());
         when(persistenceService.getAll()).thenReturn(members);
+        when(members.size()).thenReturn(2);
 
         List<Member> result = businessService.getAll();
 
-        assertArrayEquals(members.toArray(), result.toArray());
+        assertEquals(members, result);
         assertEquals(2, result.size());
         verify(persistenceService).getAll();
+        verifyNoInteractions(validationService);
     }
 
     @DisplayName("Should get empty list")
@@ -123,22 +83,13 @@ class MemberBusinessServiceTest {
         List<Member> result = businessService.getAll();
 
         assertEquals(0, result.size());
+        verify(persistenceService).getAll();
+        verifyNoInteractions(validationService);
     }
 
     @DisplayName("Should create member")
     @Test
     void shouldCreate() {
-        Member member = Member.Builder
-                .builder()
-                .withId(1L)
-                .withName("Member1")
-                .withLastName("Test")
-                .withEmploymentState(EmploymentState.APPLICANT)
-                .withAbbreviation("M1")
-                .withDateOfHire(commonDate)
-                .withBirthDate(commonDate)
-                .withOrganisationUnit(organisationUnit)
-                .build();
         when(persistenceService.create(member)).thenReturn(member);
 
         Member result = businessService.create(member);
@@ -152,17 +103,6 @@ class MemberBusinessServiceTest {
     @Test
     void shouldUpdate() {
         Long id = 1L;
-        Member member = Member.Builder
-                .builder()
-                .withId(1L)
-                .withName("Member1")
-                .withLastName("Test")
-                .withEmploymentState(EmploymentState.APPLICANT)
-                .withAbbreviation("M1")
-                .withDateOfHire(commonDate)
-                .withBirthDate(commonDate)
-                .withOrganisationUnit(organisationUnit)
-                .build();
         when(persistenceService.update(id, member)).thenReturn(member);
 
         Member result = businessService.update(id, member);
@@ -181,29 +121,5 @@ class MemberBusinessServiceTest {
 
         verify(validationService).validateOnDelete(id);
         verify(persistenceService).delete(id);
-    }
-
-    @DisplayName("Should trim role name")
-    @Test
-    void shouldTrimRoleName() {
-
-        businessService
-                .create(Member.Builder
-                        .builder()
-                        .withId(1L)
-                        .withName("Member1")
-                        .withLastName("Test")
-                        .withEmploymentState(EmploymentState.APPLICANT)
-                        .withAbbreviation("M1")
-                        .withDateOfHire(commonDate)
-                        .withBirthDate(commonDate)
-                        .withOrganisationUnit(organisationUnit)
-                        .build());
-
-        verify(persistenceService).create(memberCaptor.capture());
-        Member savedMember = memberCaptor.getValue();
-
-        assertEquals("Member1", savedMember.getName());
-        assertEquals(1L, savedMember.getId());
     }
 }

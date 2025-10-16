@@ -10,49 +10,20 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
-@SpringBootTest
-@Testcontainers
-@ActiveProfiles("test")
-class MemberPersistenceServiceIT {
-
-    @Container
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17-alpine");
+class MemberPersistenceServiceIT extends PersistenceCoreIT {
 
     private final OrganisationUnit organisationUnit = new OrganisationUnit(2L, "OrganisationUnit 2");
 
     private final Timestamp commonDate = new Timestamp(0L);
 
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgres::getJdbcUrl);
-        registry.add("spring.datasource.username", postgres::getUsername);
-        registry.add("spring.datasource.password", postgres::getPassword);
-    }
-
     @Autowired
     private MemberPersistenceService persistenceService;
 
-    @DisplayName("Should establish DB connection")
-    @Test
-    @Order(0)
-    void shouldEstablishConnection() {
-        assertThat(postgres.isRunning()).isTrue();
-    }
-
     @DisplayName("Should get Member by id")
     @Test
-    @Order(1)
     void shouldGetMemberById() {
         Optional<Member> optionalOrganisationUnit = persistenceService.getById(2L);
 
@@ -62,7 +33,6 @@ class MemberPersistenceServiceIT {
 
     @DisplayName("Should get all members")
     @Test
-    @Order(1)
     void shouldGetAllMembers() {
         List<Member> all = persistenceService.getAll();
 
@@ -73,7 +43,6 @@ class MemberPersistenceServiceIT {
     @DisplayName("Should create members")
     @Transactional
     @Test
-    @Order(3)
     void shouldCreate() {
         Member member = Member.Builder
                 .builder()
@@ -103,9 +72,8 @@ class MemberPersistenceServiceIT {
     @DisplayName("Should update members")
     @Transactional
     @Test
-    @Order(2)
     void shouldUpdate() {
-        long id = 2;
+        Long id = 2L;
         Member member = Member.Builder
                 .builder()
                 .withId(id)
@@ -136,9 +104,8 @@ class MemberPersistenceServiceIT {
     @DisplayName("Should delete members")
     @Transactional
     @Test
-    @Order(3)
     void shouldDelete() {
-        long id = 2;
+        Long id = 2L;
 
         persistenceService.delete(id);
 

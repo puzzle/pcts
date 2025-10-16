@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.model.organisationunit;
 
+import static org.apache.commons.lang3.StringUtils.trim;
+
 import jakarta.persistence.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -16,7 +18,7 @@ public class OrganisationUnit {
 
     public OrganisationUnit(Long id, String name) {
         this.id = id;
-        this.name = name;
+        this.name = trim(name);
     }
 
     public OrganisationUnit() {
@@ -35,7 +37,7 @@ public class OrganisationUnit {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = trim(name);
     }
 
     @Override

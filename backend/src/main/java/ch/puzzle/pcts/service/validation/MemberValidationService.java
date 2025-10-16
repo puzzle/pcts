@@ -25,8 +25,8 @@ public class MemberValidationService {
         throwExceptionWhenIdIsNull(id);
     }
 
-    public void throwExceptionWhenIdIsNull(Long i) {
-        if (i == null) {
+    public void throwExceptionWhenIdIsNull(Long id) {
+        if (id == null) {
             throw new PCTSException(HttpStatus.BAD_REQUEST, ErrorKey.ID_IS_NULL);
         }
     }

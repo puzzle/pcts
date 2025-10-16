@@ -28,7 +28,7 @@ class RoleValidationServiceTest {
     @DisplayName("Should be successful on validateOnGetById() when id valid")
     @Test
     void shouldBeSuccessfulOnValidateOnGetByIdWhenIdIsValid() {
-        long id = 1L;
+        Long id = 1L;
 
         when(persistenceService.getById(id)).thenReturn(Optional.of(new Role()));
         assertDoesNotThrow(() -> validationService.validateOnGetById(id));
@@ -37,7 +37,7 @@ class RoleValidationServiceTest {
     @DisplayName("Should throw exception on validateOnGetById() when id is invalid")
     @Test
     void shouldThrowExceptionOnValidateOnGetByIdWhenIdIsInvalid() {
-        long id = -1;
+        Long id = -1L;
 
         when(persistenceService.getById(id)).thenReturn(Optional.empty());
 
@@ -109,7 +109,7 @@ class RoleValidationServiceTest {
     @DisplayName("Should be successful on validateOnDelete() when id is valid")
     @Test
     void shouldBeSuccessfulOnValidateOnDeleteWhenIdIsValid() {
-        long id = 1L;
+        Long id = 1L;
         when(persistenceService.getById(id)).thenReturn(Optional.of(new Role()));
 
         assertDoesNotThrow(() -> validationService.validateOnDelete(id));
@@ -118,7 +118,7 @@ class RoleValidationServiceTest {
     @DisplayName("Should throw exception on validateOnDelete() when id is invalid")
     @Test
     void shouldThrowExceptionOnValidateOnDeleteIdWhenIdIsInvalid() {
-        long id = -1;
+        Long id = -1L;
         when(persistenceService.getById(id)).thenReturn(Optional.empty());
 
         PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnDelete(id));
@@ -132,7 +132,7 @@ class RoleValidationServiceTest {
     void shouldBeSuccessfulOnValidateOnUpdateWhenIdIsValid() {
         Role role = new Role();
         role.setName("Role");
-        long id = 1L;
+        Long id = 1L;
         when(persistenceService.getById(id)).thenReturn(Optional.of(new Role()));
 
         assertDoesNotThrow(() -> validationService.validateOnUpdate(id, role));
@@ -142,7 +142,7 @@ class RoleValidationServiceTest {
     @Test
     void shouldThrowExceptionOnValidateOnUpdateIdWhenIdIsInvalid() {
         Role role = new Role();
-        long id = -1;
+        Long id = -1L;
         when(persistenceService.getById(id)).thenReturn(Optional.empty());
 
         PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnUpdate(id, role));
@@ -156,7 +156,7 @@ class RoleValidationServiceTest {
     void shouldThrowExceptionOnValidateOnUpdateWhenIdIsNotNull() {
         Role role = new Role();
         role.setId(123L);
-        long id = 1;
+        Long id = 1L;
         when(persistenceService.getById(id)).thenReturn(Optional.of(new Role()));
 
         PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnUpdate(id, role));
@@ -169,7 +169,7 @@ class RoleValidationServiceTest {
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameIsNull() {
         Role role = new Role();
-        long id = 1;
+        Long id = 1L;
         when(persistenceService.getById(id)).thenReturn(Optional.of(new Role()));
 
         PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnUpdate(id, role));
@@ -183,7 +183,7 @@ class RoleValidationServiceTest {
     void shouldThrowExceptionOnValidateOnUpdateWhenNameBlank() {
         Role role = new Role();
         role.setName("");
-        long id = 1;
+        Long id = 1L;
         when(persistenceService.getById(id)).thenReturn(Optional.of(new Role()));
 
         PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnUpdate(id, role));
@@ -195,7 +195,7 @@ class RoleValidationServiceTest {
     @DisplayName("Should Throw Exception on validateOnUpdate() when name already exists for another Role")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExistsForAnotherRole() {
-        long id = 1L;
+        Long id = 1L;
         String name = "Role";
 
         Role role = new Role();
@@ -217,7 +217,7 @@ class RoleValidationServiceTest {
     @DisplayName("Should not Throw Exception on validateOnUpdate() when name stays the same")
     @Test
     void shouldNotThrowExceptionOnValidateOnUpdateWhenNameStaysTheSame() {
-        long id = 1L;
+        Long id = 1L;
         String name = "Role";
 
         Role newRole = new Role();

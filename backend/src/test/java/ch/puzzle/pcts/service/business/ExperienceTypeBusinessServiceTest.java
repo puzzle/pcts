@@ -1,19 +1,16 @@
 package ch.puzzle.pcts.service.business;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.service.persistence.ExperienceTypePersistenceService;
 import ch.puzzle.pcts.service.validation.ExperienceTypeValidationService;
-import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,96 +27,91 @@ class ExperienceTypeBusinessServiceTest {
     @Mock
     private ExperienceTypePersistenceService persistenceService;
 
+    @Mock
+    private ExperienceType experienceType;
+
+    @Mock
+    private List<ExperienceType> experienceTypes;
+
     @InjectMocks
     private ExperienceTypeBusinessService businessService;
-
-    private ExperienceType experienceType1;
-
-    private ExperienceType experienceType2;
-
-    @BeforeEach
-    void setUp() {
-        experienceType1 = new ExperienceType(1L,
-                                             "ExperienceType 1",
-                                             BigDecimal.valueOf(5.3),
-                                             BigDecimal.valueOf(4.7),
-                                             BigDecimal.valueOf(0));
-        experienceType2 = new ExperienceType(2L,
-                                             "ExperienceType 1",
-                                             BigDecimal.valueOf(6),
-                                             BigDecimal.valueOf(10),
-                                             BigDecimal.valueOf(8));
-    }
 
     @DisplayName("Should get experienceType by id")
     @Test
     void shouldGetById() {
-        when(persistenceService.getById(1L)).thenReturn(Optional.of(experienceType1));
+        Long id = 1L;
+        when(persistenceService.getById(id)).thenReturn(Optional.of(experienceType));
 
-        ExperienceType result = businessService.getById(1L);
+        ExperienceType result = businessService.getById(id);
 
-        assertEquals(experienceType1, result);
-        verify(persistenceService).getById(1L);
+        assertEquals(experienceType, result);
+        verify(persistenceService).getById(id);
+        verify(validationService).validateOnGetById(id);
     }
 
     @DisplayName("Should throw exception")
     @Test
     void shouldThrowException() {
-        when(persistenceService.getById(1L)).thenReturn(Optional.empty());
+        Long id = 1L;
+        when(persistenceService.getById(id)).thenReturn(Optional.empty());
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(1L));
+        PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(id));
 
-        assertEquals("ExperienceType with id: " + 1 + " does not exist.", exception.getReason());
+        assertEquals(String.format("ExperienceType with id: %d does not exist.", id), exception.getReason());
         assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
-        verify(persistenceService).getById(1L);
+        verify(persistenceService).getById(id);
+        verify(validationService).validateOnGetById(id);
     }
 
     @DisplayName("Should get all experienceTypes")
     @Test
     void shouldGetAll() {
-        List<ExperienceType> experienceTypes = List.of(experienceType1, experienceType2);
         when(persistenceService.getAll()).thenReturn(experienceTypes);
+        when(experienceTypes.size()).thenReturn(2);
 
         List<ExperienceType> result = businessService.getAll();
 
-        assertArrayEquals(experienceTypes.toArray(), result.toArray());
+        assertEquals(experienceTypes, result);
         assertEquals(2, result.size());
         verify(persistenceService).getAll();
+        verifyNoInteractions(validationService);
     }
 
     @DisplayName("Should get empty list")
     @Test
     void shouldGetEmptyList() {
-        when(persistenceService.getAll()).thenReturn(new ArrayList<>());
+        when(persistenceService.getAll()).thenReturn(Collections.emptyList());
 
         List<ExperienceType> result = businessService.getAll();
 
         assertEquals(0, result.size());
+        verify(persistenceService).getAll();
+        verifyNoInteractions(validationService);
     }
 
     @DisplayName("Should create experienceType")
     @Test
     void shouldCreate() {
-        when(persistenceService.create(experienceType1)).thenReturn(experienceType1);
+        when(persistenceService.create(experienceType)).thenReturn(experienceType);
 
-        ExperienceType result = businessService.create(experienceType1);
+        ExperienceType result = businessService.create(experienceType);
 
-        assertEquals(experienceType1, result);
-        verify(validationService).validateOnCreate(experienceType1);
-        verify(persistenceService).create(experienceType1);
+        assertEquals(experienceType, result);
+        verify(validationService).validateOnCreate(experienceType);
+        verify(persistenceService).create(experienceType);
     }
 
     @DisplayName("Should update experienceType")
     @Test
     void shouldUpdate() {
         Long id = 1L;
-        when(persistenceService.update(id, experienceType2)).thenReturn(experienceType2);
+        when(persistenceService.update(id, experienceType)).thenReturn(experienceType);
 
-        ExperienceType result = businessService.update(id, experienceType2);
+        ExperienceType result = businessService.update(id, experienceType);
 
-        assertEquals(experienceType2, result);
-        verify(validationService).validateOnUpdate(id, experienceType2);
-        verify(persistenceService).update(id, experienceType2);
+        assertEquals(experienceType, result);
+        verify(validationService).validateOnUpdate(id, experienceType);
+        verify(persistenceService).update(id, experienceType);
     }
 
     @DisplayName("Should delete experienceType")

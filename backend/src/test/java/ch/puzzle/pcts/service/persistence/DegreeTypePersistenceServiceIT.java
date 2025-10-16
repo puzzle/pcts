@@ -8,45 +8,16 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
-@SpringBootTest
-@Testcontainers
-@ActiveProfiles("test")
-class DegreeTypePersistenceServiceIT {
-
-    @Container
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17-alpine");
-
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgres::getJdbcUrl);
-        registry.add("spring.datasource.username", postgres::getUsername);
-        registry.add("spring.datasource.password", postgres::getPassword);
-    }
+class DegreeTypePersistenceServiceIT extends PersistenceCoreIT {
 
     @Autowired
     private DegreeTypePersistenceService persistenceService;
 
-    @DisplayName("Should establish DB connection")
-    @Test
-    @Order(0)
-    void shouldEstablishConnection() {
-        assertThat(postgres.isRunning()).isTrue();
-    }
-
     @DisplayName("Should get degreeTypes by id")
     @Test
-    @Order(1)
     void shouldGetDegreeTypeById() {
         Optional<DegreeType> degreeType = persistenceService.getById(2L);
 
@@ -56,7 +27,6 @@ class DegreeTypePersistenceServiceIT {
 
     @DisplayName("Should get all degreeTypes")
     @Test
-    @Order(1)
     void shouldGetAllDegreeTypes() {
         List<DegreeType> all = persistenceService.getAll();
 
@@ -67,7 +37,6 @@ class DegreeTypePersistenceServiceIT {
     @DisplayName("Should create degreeTypes")
     @Transactional
     @Test
-    @Order(2)
     void shouldCreate() {
         DegreeType degreeType = new DegreeType(null,
                                                "DegreeTypes 3",
@@ -87,9 +56,8 @@ class DegreeTypePersistenceServiceIT {
     @DisplayName("Should update degreeType")
     @Transactional
     @Test
-    @Order(2)
     void shouldUpdate() {
-        long id = 2;
+        Long id = 2L;
         DegreeType updated = new DegreeType(null,
                                             "Updated degreeType",
                                             BigDecimal.valueOf(10.055),
@@ -110,9 +78,8 @@ class DegreeTypePersistenceServiceIT {
     @DisplayName("Should delete degreeType")
     @Transactional
     @Test
-    @Order(3)
     void shouldDelete() {
-        long id = 2;
+        Long id = 2L;
 
         persistenceService.delete(id);
 

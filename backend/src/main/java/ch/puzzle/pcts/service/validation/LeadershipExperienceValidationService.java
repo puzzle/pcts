@@ -6,7 +6,6 @@ import ch.puzzle.pcts.model.certificate.CertificateType;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.service.persistence.CertificatePersistenceService;
 import java.math.BigDecimal;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Component;
 public class LeadershipExperienceValidationService {
     private final CertificatePersistenceService persistenceService;
 
-    @Autowired
     public LeadershipExperienceValidationService(CertificatePersistenceService persistenceService) {
         this.persistenceService = persistenceService;
     }
@@ -75,7 +73,7 @@ public class LeadershipExperienceValidationService {
         }
     }
 
-    private void validateIfExists(long id) {
+    private void validateIfExists(Long id) {
         persistenceService
                 .getById(id)
                 .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,

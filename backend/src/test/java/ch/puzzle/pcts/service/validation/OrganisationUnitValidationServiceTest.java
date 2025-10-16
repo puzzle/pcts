@@ -28,7 +28,7 @@ class OrganisationUnitValidationServiceTest {
     @DisplayName("Should be successful on validateOnGetById() when id valid")
     @Test
     void shouldBeSuccessfulOnValidateOnGetByIdWhenIdIsValid() {
-        long id = 1L;
+        Long id = 1L;
 
         when(persistenceService.getById(id)).thenReturn(Optional.of(new OrganisationUnit()));
         assertDoesNotThrow(() -> validationService.validateOnGetById(id));
@@ -37,7 +37,7 @@ class OrganisationUnitValidationServiceTest {
     @DisplayName("Should throw exception on validateOnGetById() when id is invalid")
     @Test
     void shouldThrowExceptionOnValidateOnGetByIdWhenIdIsInvalid() {
-        long id = -1;
+        Long id = -1L;
 
         when(persistenceService.getById(id)).thenReturn(Optional.empty());
 
@@ -114,7 +114,7 @@ class OrganisationUnitValidationServiceTest {
     @DisplayName("Should be successful on validateOnDelete() when id is valid")
     @Test
     void shouldBeSuccessfulOnValidateOnDeleteWhenIdIsValid() {
-        long id = 1L;
+        Long id = 1L;
         when(persistenceService.getById(id)).thenReturn(Optional.of(new OrganisationUnit()));
 
         assertDoesNotThrow(() -> validationService.validateOnDelete(id));
@@ -123,7 +123,7 @@ class OrganisationUnitValidationServiceTest {
     @DisplayName("Should throw exception on validateOnDelete() when id is invalid")
     @Test
     void shouldThrowExceptionOnValidateOnDeleteIdWhenIdIsInvalid() {
-        long id = -1;
+        Long id = -1L;
         when(persistenceService.getById(id)).thenReturn(Optional.empty());
 
         PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnDelete(id));
@@ -137,7 +137,7 @@ class OrganisationUnitValidationServiceTest {
     void shouldBeSuccessfulOnValidateOnUpdateWhenIdIsValid() {
         OrganisationUnit organisationUnit = new OrganisationUnit();
         organisationUnit.setName("OrganisationUnit");
-        long id = 1L;
+        Long id = 1L;
         when(persistenceService.getById(id)).thenReturn(Optional.of(new OrganisationUnit()));
 
         assertDoesNotThrow(() -> validationService.validateOnUpdate(id, organisationUnit));
@@ -147,7 +147,7 @@ class OrganisationUnitValidationServiceTest {
     @Test
     void shouldThrowExceptionOnValidateOnUpdateIdWhenIdIsInvalid() {
         OrganisationUnit organisationUnit = new OrganisationUnit();
-        long id = -1;
+        Long id = -1L;
         when(persistenceService.getById(id)).thenReturn(Optional.empty());
 
         PCTSException exception = assertThrows(PCTSException.class,
@@ -162,7 +162,7 @@ class OrganisationUnitValidationServiceTest {
     void shouldThrowExceptionOnValidateOnUpdateWhenIdIsNotNull() {
         OrganisationUnit organisationUnit = new OrganisationUnit();
         organisationUnit.setId(123L);
-        long id = 1;
+        Long id = 1L;
         when(persistenceService.getById(id)).thenReturn(Optional.of(new OrganisationUnit()));
 
         PCTSException exception = assertThrows(PCTSException.class,
@@ -176,7 +176,7 @@ class OrganisationUnitValidationServiceTest {
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameIsNull() {
         OrganisationUnit organisationUnit = new OrganisationUnit();
-        long id = 1;
+        Long id = 1L;
         when(persistenceService.getById(id)).thenReturn(Optional.of(new OrganisationUnit()));
 
         PCTSException exception = assertThrows(PCTSException.class,
@@ -191,7 +191,7 @@ class OrganisationUnitValidationServiceTest {
     void shouldThrowExceptionOnValidateOnUpdateWhenNameBlank() {
         OrganisationUnit organisationUnit = new OrganisationUnit();
         organisationUnit.setName("");
-        long id = 1;
+        Long id = 1L;
         when(persistenceService.getById(id)).thenReturn(Optional.of(new OrganisationUnit()));
 
         PCTSException exception = assertThrows(PCTSException.class,
@@ -204,7 +204,7 @@ class OrganisationUnitValidationServiceTest {
     @DisplayName("Should Throw Exception on validateOnUpdate() when name already exists for another organisation unit")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExistsForAnotherOrganisationUnit() {
-        long id = 1L;
+        Long id = 1L;
         String name = "Organisation Unit";
 
         OrganisationUnit organisationUnit = new OrganisationUnit();
@@ -227,7 +227,7 @@ class OrganisationUnitValidationServiceTest {
     @DisplayName("Should not Throw Exception on validateOnUpdate() when name stays the same")
     @Test
     void shouldNotThrowExceptionOnValidateOnUpdateWhenNameStaysTheSame() {
-        long id = 1L;
+        Long id = 1L;
         String name = "Organisation Unit";
 
         OrganisationUnit newOrganisationUnit = new OrganisationUnit();

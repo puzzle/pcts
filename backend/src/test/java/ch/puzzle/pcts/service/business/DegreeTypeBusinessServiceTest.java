@@ -9,7 +9,7 @@ import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.service.persistence.DegreeTypePersistenceService;
 import ch.puzzle.pcts.service.validation.DegreeTypeValidationService;
-import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -28,56 +28,51 @@ class DegreeTypeBusinessServiceTest {
     @Mock
     private DegreeTypePersistenceService persistenceService;
 
+    @Mock
+    private DegreeType degreeType;
+
+    @Mock
+    private List<DegreeType> degreeTypes;
+
     @InjectMocks
     private DegreeTypeBusinessService businessService;
 
     @DisplayName("Should get degree type by id")
     @Test
     void shouldGetById() {
-        DegreeType degreeType = new DegreeType(1L,
-                                               "Degree type 1",
-                                               new BigDecimal("1.0"),
-                                               new BigDecimal("2.0"),
-                                               new BigDecimal("3.0"));
-        when(persistenceService.getById(1L)).thenReturn(Optional.of(degreeType));
+        Long id = 1L;
+        when(persistenceService.getById(id)).thenReturn(Optional.of(degreeType));
 
-        DegreeType result = businessService.getById(1L);
+        DegreeType result = businessService.getById(id);
 
         assertEquals(degreeType, result);
-        verify(persistenceService).getById(1L);
+        verify(persistenceService).getById(id);
+        verify(validationService).validateOnGetById(id);
     }
 
     @DisplayName("Should throw exception")
     @Test
     void shouldThrowException() {
-        when(persistenceService.getById(1L)).thenReturn(Optional.empty());
+        Long id = 1L;
+        when(persistenceService.getById(id)).thenReturn(Optional.empty());
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(1L));
+        PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(id));
 
         assertEquals("Degree type with id: " + 1 + " does not exist.", exception.getReason());
         assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
-        verify(persistenceService).getById(1L);
+        verify(persistenceService).getById(id);
+        verify(validationService).validateOnGetById(id);
     }
 
     @DisplayName("Should get all Degree types")
     @Test
     void shouldGetAll() {
-        List<DegreeType> degreeTypes = List
-                .of(new DegreeType(1L,
-                                   "Degree type 1",
-                                   new BigDecimal("1.0"),
-                                   new BigDecimal("2.0"),
-                                   new BigDecimal("3.0")),
-                    new DegreeType(1L,
-                                   "Degree type 1",
-                                   new BigDecimal("1.0"),
-                                   new BigDecimal("2.0"),
-                                   new BigDecimal("3.0")));
         when(persistenceService.getAll()).thenReturn(degreeTypes);
+        when(degreeTypes.size()).thenReturn(2);
 
         List<DegreeType> result = businessService.getAll();
 
-        assertArrayEquals(degreeTypes.toArray(), result.toArray());
+        assertEquals(2, result.size());
         assertEquals(degreeTypes, result);
         verify(persistenceService).getAll();
     }
@@ -85,7 +80,7 @@ class DegreeTypeBusinessServiceTest {
     @DisplayName("Should get empty list")
     @Test
     void shouldGetEmptyList() {
-        when(persistenceService.getAll()).thenReturn(List.of());
+        when(persistenceService.getAll()).thenReturn(Collections.emptyList());
 
         List<DegreeType> result = businessService.getAll();
 
@@ -95,11 +90,6 @@ class DegreeTypeBusinessServiceTest {
     @DisplayName("Should create degree type")
     @Test
     void shouldCreate() {
-        DegreeType degreeType = new DegreeType(1L,
-                                               "Degree type 1",
-                                               new BigDecimal("1.0"),
-                                               new BigDecimal("2.0"),
-                                               new BigDecimal("3.0"));
         when(persistenceService.create(degreeType)).thenReturn(degreeType);
 
         DegreeType result = businessService.create(degreeType);
@@ -113,11 +103,6 @@ class DegreeTypeBusinessServiceTest {
     @Test
     void shouldUpdate() {
         Long id = 1L;
-        DegreeType degreeType = new DegreeType(1L,
-                                               "Degree type 1",
-                                               new BigDecimal("1.0"),
-                                               new BigDecimal("2.0"),
-                                               new BigDecimal("3.0"));
         when(persistenceService.update(id, degreeType)).thenReturn(degreeType);
 
         DegreeType result = businessService.update(id, degreeType);

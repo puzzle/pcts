@@ -5,7 +5,6 @@ import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.persistence.RolePersistenceService;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 public class RoleValidationService {
     private final RolePersistenceService persistenceService;
 
-    @Autowired
     public RoleValidationService(RolePersistenceService persistenceService) {
         this.persistenceService = persistenceService;
     }
@@ -80,7 +78,7 @@ public class RoleValidationService {
         });
     }
 
-    private void validateIfExists(long id) {
+    private void validateIfExists(Long id) {
         persistenceService
                 .getById(id)
                 .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,

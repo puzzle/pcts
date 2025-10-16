@@ -24,7 +24,7 @@ public class ExperienceTypeBusinessService {
         return persistenceService.getAll();
     }
 
-    public ExperienceType getById(long id) {
+    public ExperienceType getById(Long id) {
         validationService.validateOnGetById(id);
         return persistenceService
                 .getById(id)

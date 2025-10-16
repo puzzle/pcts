@@ -8,45 +8,16 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
-@SpringBootTest
-@Testcontainers
-@ActiveProfiles("test")
-class ExperienceTypePersistenceServiceIT {
-
-    @Container
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17-alpine");
-
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgres::getJdbcUrl);
-        registry.add("spring.datasource.username", postgres::getUsername);
-        registry.add("spring.datasource.password", postgres::getPassword);
-    }
+class ExperienceTypePersistenceServiceIT extends PersistenceCoreIT {
 
     @Autowired
     private ExperienceTypePersistenceService persistenceService;
 
-    @DisplayName("Should establish DB connection")
-    @Test
-    @Order(0)
-    void shouldEstablishConnection() {
-        assertThat(postgres.isRunning()).isTrue();
-    }
-
     @DisplayName("Should get experienceType by id")
     @Test
-    @Order(1)
     void shouldGetExperienceTypeById() {
         Optional<ExperienceType> experienceType = persistenceService.getById(2L);
 
@@ -56,7 +27,6 @@ class ExperienceTypePersistenceServiceIT {
 
     @DisplayName("Should get all experienceTypes")
     @Test
-    @Order(1)
     void shouldGetAllExperienceTypes() {
         List<ExperienceType> all = persistenceService.getAll();
 
@@ -69,7 +39,6 @@ class ExperienceTypePersistenceServiceIT {
     @DisplayName("Should create experienceType")
     @Transactional
     @Test
-    @Order(2)
     void shouldCreate() {
         ExperienceType experienceType = new ExperienceType(null,
                                                            "ExperienceType 3",
@@ -89,9 +58,8 @@ class ExperienceTypePersistenceServiceIT {
     @DisplayName("Should update experienceType")
     @Transactional
     @Test
-    @Order(2)
     void shouldUpdate() {
-        long id = 2;
+        Long id = 2L;
         ExperienceType updated = new ExperienceType(null,
                                                     "Updated experienceType",
                                                     BigDecimal.valueOf(10.055),
@@ -112,9 +80,8 @@ class ExperienceTypePersistenceServiceIT {
     @DisplayName("Should delete experienceType")
     @Transactional
     @Test
-    @Order(3)
     void shouldDelete() {
-        long id = 2;
+        Long id = 2L;
 
         persistenceService.delete(id);
 

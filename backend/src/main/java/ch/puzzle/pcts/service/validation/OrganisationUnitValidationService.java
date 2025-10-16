@@ -5,7 +5,6 @@ import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.persistence.OrganisationUnitPersistenceService;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Component;
 public class OrganisationUnitValidationService {
     private final OrganisationUnitPersistenceService persistenceService;
 
-    @Autowired
     public OrganisationUnitValidationService(OrganisationUnitPersistenceService persistenceService) {
         this.persistenceService = persistenceService;
     }
@@ -88,7 +86,7 @@ public class OrganisationUnitValidationService {
         });
     }
 
-    private void validateIfExists(long id) {
+    private void validateIfExists(Long id) {
         persistenceService
                 .getById(id)
                 .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,

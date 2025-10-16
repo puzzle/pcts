@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.service.business;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.model.certificate.Tag;
@@ -11,7 +12,6 @@ import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -25,68 +25,86 @@ class TagBusinessServiceTest {
     @Mock
     private TagValidationService validationService;
 
+    @Mock
+    private Tag tag;
+
+    @Mock
+    private Tag existingTag;
+
     @InjectMocks
     private TagBusinessService businessService;
 
     @DisplayName("Should return existing tag if it is already persisted")
     @Test
     void shouldReturnExistingTagIfFound() {
-        Tag rawTag = new Tag(null, "Test");
-        Tag existingTag = new Tag(1L, "Test");
-
+        when(tag.getName()).thenReturn("Test");
         when(persistenceService.findWithIgnoreCase("Test")).thenReturn(Optional.of(existingTag));
 
-        Set<Tag> result = businessService.resolveTags(Set.of(rawTag));
+        Set<Tag> result = businessService.resolveTags(Set.of(tag));
 
         assertThat(result).containsExactly(existingTag);
         verify(persistenceService, never()).create(any());
+        verify(validationService).validateName(tag);
     }
 
     @DisplayName("Should create a new tag if it does not exist yet")
     @Test
     void shouldCreateTagIfNotFound() {
-        Tag rawTag = new Tag(null, "NewTag");
-        Tag createdTag = new Tag(2L, "NewTag");
+        String notPersistedName = "NotYetPersisted";
 
-        when(persistenceService.findWithIgnoreCase("NewTag")).thenReturn(Optional.empty());
-        when(persistenceService.create(any(Tag.class))).thenReturn(createdTag);
+        when(tag.getName()).thenReturn(notPersistedName);
 
-        Set<Tag> result = businessService.resolveTags(Set.of(rawTag));
+        when(persistenceService.findWithIgnoreCase(notPersistedName)).thenReturn(Optional.empty());
+        // only mock the exact correct case and not any tag, we want to ensure that only
+        // expected stubings happen
+        when(persistenceService.create(argThat(t -> t.getName().equals(notPersistedName)))).thenReturn(existingTag);
 
-        assertThat(result).containsExactly(createdTag);
+        Set<Tag> result = businessService.resolveTags(Set.of(tag));
 
-        ArgumentCaptor<Tag> captor = ArgumentCaptor.forClass(Tag.class);
-        verify(persistenceService).create(captor.capture());
-        assertThat(captor.getValue().getName()).isEqualTo("NewTag");
+        assertThat(result).containsExactly(existingTag);
+
+        // verify that the exact correct tag is created and not any tag here
+        verify(persistenceService).create(argThat(t -> t.getName().equals(notPersistedName)));
+        // verify that no other tag is created than the expected
+        verify(persistenceService, never()).create(argThat(t -> !t.getName().equals(notPersistedName)));
+        assertTrue(result.contains(existingTag));
+        verify(validationService).validateName(tag);
     }
 
     @DisplayName("Should resolve multiple tags by returning existing ones and creating missing ones")
     @Test
     void shouldHandleMultipleTagsWithMixOfExistingAndNew() {
-        Tag tag1 = new Tag(null, "Existing");
-        Tag tag2 = new Tag(null, "Fresh");
+        // arrange
+        String existingName = "Existing";
+        String newName = "New";
+        when(tag.getName()).thenReturn(newName);
+        when(existingTag.getName()).thenReturn(existingName);
+        when(persistenceService.findWithIgnoreCase(existingName)).thenReturn(Optional.of(existingTag));
+        when(persistenceService.findWithIgnoreCase(newName)).thenReturn(Optional.empty());
+        when(persistenceService.create(argThat(t -> t.getName().equals(newName)))).thenReturn(tag);
 
-        Tag existingTag = new Tag(1L, "Existing");
-        Tag createdTag = new Tag(2L, "Fresh");
+        // act
+        Set<Tag> result = businessService.resolveTags(Set.of(tag, existingTag));
 
-        when(persistenceService.findWithIgnoreCase("Existing")).thenReturn(Optional.of(existingTag));
-        when(persistenceService.findWithIgnoreCase("Fresh")).thenReturn(Optional.empty());
-        when(persistenceService.create(any(Tag.class))).thenReturn(createdTag);
-
-        Set<Tag> result = businessService.resolveTags(Set.of(tag1, tag2));
-
-        assertThat(result).containsExactlyInAnyOrder(existingTag, createdTag);
+        // assert
+        assertThat(result).containsExactlyInAnyOrder(existingTag, tag);
+        verify(persistenceService).create(argThat(t -> t.getName().equals(newName)));
+        verify(persistenceService).findWithIgnoreCase(newName);
+        verify(persistenceService, never()).create(argThat(t -> t.getName().equals(existingName)));
+        verify(persistenceService).findWithIgnoreCase(existingName);
+        verify(validationService).validateName(tag);
+        verify(validationService).validateName(existingTag);
     }
 
     @DisplayName("Should delete unused tags")
     @Test
     void shouldDeleteUnusedTags() {
-        Tag unusedTag = new Tag(2L, "Unused Tag");
-
-        when(persistenceService.findAllUnusedTags()).thenReturn(Set.of(unusedTag));
+        when(persistenceService.findAllUnusedTags()).thenReturn(Set.of(tag));
 
         businessService.deleteUnusedTags();
 
-        verify(persistenceService).delete(Set.of(unusedTag));
+        verify(persistenceService).delete(Set.of(tag));
+        verifyNoInteractions(validationService);
+        verify(persistenceService).findAllUnusedTags();
     }
 }
