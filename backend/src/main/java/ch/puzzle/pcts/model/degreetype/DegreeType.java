@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.math.BigDecimal;
+import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -76,6 +77,22 @@ public class DegreeType {
 
     public void setLittleRelevantPoints(BigDecimal littleRelevantPoints) {
         this.littleRelevantPoints = littleRelevantPoints;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof DegreeType))
+            return false;
+        DegreeType that = (DegreeType) o;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name)
+               && Objects.equals(highlyRelevantPoints, that.highlyRelevantPoints)
+               && Objects.equals(limitedRelevantPoints, that.limitedRelevantPoints)
+               && Objects.equals(littleRelevantPoints, that.littleRelevantPoints);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, highlyRelevantPoints, limitedRelevantPoints, littleRelevantPoints);
     }
 
     @Override
