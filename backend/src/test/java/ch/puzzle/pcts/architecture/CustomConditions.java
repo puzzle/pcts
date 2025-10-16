@@ -6,13 +6,13 @@ import com.tngtech.archunit.core.domain.JavaMethod;
 import com.tngtech.archunit.lang.ArchCondition;
 import com.tngtech.archunit.lang.ConditionEvents;
 import com.tngtech.archunit.lang.SimpleConditionEvent;
-import org.apache.commons.lang3.StringUtils;
 import java.util.Optional;
+import org.apache.commons.lang3.StringUtils;
 
 public class CustomConditions {
 
     public static final ArchCondition<JavaClass> overrideEqualsMethod = createMethodOverrideCondition("equals",
-            Object.class);
+                                                                                                      Object.class);
 
     public static final ArchCondition<JavaClass> overrideToStringMethod = createMethodOverrideCondition("toString");
 
