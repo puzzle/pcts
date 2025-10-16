@@ -1,16 +1,15 @@
 package ch.puzzle.pcts.architecture;
 
-import static ch.puzzle.pcts.architecture.CustomConditions.trimAssignedStringFields;
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
 import static ch.puzzle.pcts.architecture.CustomConditions.overrideEqualsMethod;
 import static ch.puzzle.pcts.architecture.CustomConditions.overrideHashCodeMethod;
 import static ch.puzzle.pcts.architecture.CustomConditions.overrideToStringMethod;
+import static ch.puzzle.pcts.architecture.CustomConditions.trimAssignedStringFields;
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAPackage;
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 
-import com.tngtech.archunit.core.domain.*;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
