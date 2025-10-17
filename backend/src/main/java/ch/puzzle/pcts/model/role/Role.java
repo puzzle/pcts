@@ -3,19 +3,26 @@ package ch.puzzle.pcts.model.role;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @SQLDelete(sql = "UPDATE role SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
-public class Role {
+public class Role implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "{attribute.not.blank}")
+    @NotNull(message = "{attribute.notnull}")
+    @Size(min = 2, max = 250, message = "{attribute.size.between}")
     private String name;
 
+    @NotNull(message = "{attribute.notnull}")
     private boolean isManagement;
 
     public Role(Long id, String name, boolean isManagement) {

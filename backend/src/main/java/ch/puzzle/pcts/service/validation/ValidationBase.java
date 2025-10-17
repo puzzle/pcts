@@ -46,7 +46,7 @@ public abstract class ValidationBase<T extends Model> {
     public void validateOnUpdate(Long id, T model) {
         throwExceptionWhenIdIsNull(id);
         throwExceptionWhenModelIsNull(model);
-        throwExceptionWhenIdHasChanged(id, model.getId());
+        throwExceptionWhenIdHasChanged(id, model);
 
         validate(model);
     }
@@ -61,8 +61,8 @@ public abstract class ValidationBase<T extends Model> {
         }
     }
 
-    public void throwExceptionWhenIdHasChanged(Long id, Long modelId) {
-        if (!Objects.equals(id, modelId)) {
+    public void throwExceptionWhenIdHasChanged(Long id, T model) {
+        if (model.getId() != null && !Objects.equals(id, model.getId())) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
                                     "The queried id must match the id in the model.",
                                     ErrorKey.INVALID_ARGUMENT);

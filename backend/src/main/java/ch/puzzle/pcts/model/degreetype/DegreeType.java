@@ -1,11 +1,13 @@
 package ch.puzzle.pcts.model.degreetype;
 
+import ch.puzzle.pcts.model.Model;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -13,17 +15,26 @@ import org.hibernate.annotations.SQLRestriction;
 @Entity
 @SQLDelete(sql = "UPDATE degree_type SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
-public class DegreeType {
+public class DegreeType implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "{attribute.not.blank}")
+    @NotNull(message = "{attribute.not.null}")
+    @Size(min = 2, max = 250, message = "{attribute.size.between}")
     private String name;
 
+    @NotNull(message = "{attribute.not.null}")
+    @PositiveOrZero(message = "{attribute.not.negative}")
     private BigDecimal highlyRelevantPoints;
 
+    @NotNull(message = "{attribute.not.null}")
+    @PositiveOrZero(message = "{attribute.not.negative}")
     private BigDecimal limitedRelevantPoints;
 
+    @NotNull(message = "{attribute.not.null}")
+    @PositiveOrZero(message = "{attribute.not.negative}")
     private BigDecimal littleRelevantPoints;
 
     public DegreeType(Long id, String name, BigDecimal highlyRelevantPoints, BigDecimal limitedRelevantPoints,

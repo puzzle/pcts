@@ -1,17 +1,22 @@
 package ch.puzzle.pcts.model.certificate;
 
+import ch.puzzle.pcts.model.Model;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
-public class Tag {
+public class Tag implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotBlank(message = "{attribute.not.blank}")
+    @NotNull(message = "{attribute.not.null}")
+    @Size(min = 2, max = 250, message = "{attribute.size.between}")
     private String name;
 
     public Tag(Long id, String name) {
