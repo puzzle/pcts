@@ -2,6 +2,7 @@ package ch.puzzle.pcts.model.role;
 
 import static org.apache.commons.lang3.StringUtils.trim;
 
+import ch.puzzle.pcts.model.Model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

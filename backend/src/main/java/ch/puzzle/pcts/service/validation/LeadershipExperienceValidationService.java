@@ -24,7 +24,7 @@ public class LeadershipExperienceValidationService {
         validateCertificateType(leadershipExperience.getCertificateType());
     }
 
-    public void validateOnGetById(Long id) {
+    public void validateOnGet(Long id) {
         validateIfExists(id);
     }
 

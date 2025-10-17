@@ -29,22 +29,22 @@ class LeadershipExperienceValidationServiceTest {
     @InjectMocks
     private LeadershipExperienceValidationService validationService;
 
-    @DisplayName("Should be successful on validateOnGetById() when id valid")
+    @DisplayName("Should be successful on validateOnGet() when id valid")
     @Test
-    void shouldBeSuccessfulOnValidateOnGetByIdWhenIdIsValid() {
+    void shouldBeSuccessfulOnvalidateOnGetWhenIdIsValid() {
         Long id = 1L;
         when(persistenceService.getById(id)).thenReturn(Optional.of(mock(Certificate.class)));
 
-        assertDoesNotThrow(() -> validationService.validateOnGetById(id));
+        assertDoesNotThrow(() -> validationService.validateOnGet(id));
     }
 
-    @DisplayName("Should throw exception on validateOnGetById() when id is invalid")
+    @DisplayName("Should throw exception on validateOnGet() when id is invalid")
     @Test
-    void shouldThrowExceptionOnValidateOnGetByIdWhenIdIsInvalid() {
+    void shouldThrowExceptionOnvalidateOnGetWhenIdIsInvalid() {
         Long id = -1L;
         when(persistenceService.getById(id)).thenReturn(Optional.empty());
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnGetById(id));
+        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnGet(id));
 
         assertEquals("LeadershipExperience with id: " + id + " does not exist.", exception.getReason());
         assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());

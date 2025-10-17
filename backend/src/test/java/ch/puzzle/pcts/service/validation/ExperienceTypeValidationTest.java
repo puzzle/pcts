@@ -31,11 +31,6 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
     }
 
     @Override
-    void validate() {
-
-    }
-
-    @Override
     ExperienceTypeValidationService getService() {
         return service;
     }
@@ -43,8 +38,10 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
     @DisplayName("Should throw exception on validateOnCreate() when points are null")
     @Test
     void shouldThrowExceptionOnValidateOnCreateWhenPointsAreNull() {
-        ExperienceType experienceType = new ExperienceType();
-        experienceType.setName("Valid Experience type");
+        ExperienceType experienceType = getModel();
+        experienceType.setHighlyRelevantPoints(null);
+        experienceType.setLimitedRelevantPoints(null);
+        experienceType.setLittleRelevantPoints(null);
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnCreate(experienceType));
 
@@ -59,8 +56,7 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
     @DisplayName("Should throw exception on validateOnCreate() when points are negative")
     @Test
     void shouldThrowExceptionOnValidateOnCreateWhenPointsAreNegative() {
-        ExperienceType experienceType = new ExperienceType();
-        experienceType.setName("Valid Experience type");
+        ExperienceType experienceType = getModel();
         experienceType.setHighlyRelevantPoints(new BigDecimal("-1.0"));
         experienceType.setLimitedRelevantPoints(new BigDecimal("-1.0"));
         experienceType.setLittleRelevantPoints(new BigDecimal("-1.0"));
@@ -78,8 +74,10 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
     @DisplayName("Should throw exception on validateOnUpdate() when points are null")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenPointsAreNull() {
-        ExperienceType experienceType = new ExperienceType();
-        experienceType.setName("Valid Experience type");
+        ExperienceType experienceType = getModel();
+        experienceType.setHighlyRelevantPoints(null);
+        experienceType.setLimitedRelevantPoints(null);
+        experienceType.setLittleRelevantPoints(null);
         Long id = 1L;
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnUpdate(id, experienceType));
@@ -95,8 +93,7 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
     @DisplayName("Should throw exception on validateOnUpdate() when points are negative")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenPointsAreNegative() {
-        ExperienceType experienceType = new ExperienceType();
-        experienceType.setName("Valid Experience type");
+        ExperienceType experienceType = getModel();
         experienceType.setHighlyRelevantPoints(new BigDecimal("-1.0"));
         experienceType.setLimitedRelevantPoints(new BigDecimal("-1.0"));
         experienceType.setLittleRelevantPoints(new BigDecimal("-1.0"));

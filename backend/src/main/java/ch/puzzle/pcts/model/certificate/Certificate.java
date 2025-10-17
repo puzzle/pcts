@@ -1,8 +1,8 @@
 package ch.puzzle.pcts.model.certificate;
 
-import ch.puzzle.pcts.model.Model;
 import static org.apache.commons.lang3.StringUtils.trim;
 
+import ch.puzzle.pcts.model.Model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
@@ -38,7 +38,7 @@ public class Certificate implements Model {
     private Set<Tag> tags;
 
     @Enumerated(EnumType.STRING)
-    @NotNull
+    @NotNull(message = "{attribute.not.null}")
     private CertificateType certificateType;
 
     public Certificate(Long id, String name, BigDecimal points, String comment, Set<Tag> tags,

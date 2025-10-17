@@ -29,12 +29,6 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
                               BigDecimal.valueOf(4.75),
                               BigDecimal.valueOf(3));
     }
-
-    @Override
-    void validate() {
-
-    }
-
     @Override
     DegreeTypeValidationService getService() {
         return service;
@@ -43,8 +37,10 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
     @DisplayName("Should throw exception on validateOnCreate() when relevant points are null")
     @Test
     void shouldThrowExceptionOnValidateOnCreateWhenRelevantPointsAreNull() {
-        DegreeType degreeType = new DegreeType();
-        degreeType.setName("Valid Degree type");
+        DegreeType degreeType = getModel();
+        degreeType.setHighlyRelevantPoints(null);
+        degreeType.setLimitedRelevantPoints(null);
+        degreeType.setLittleRelevantPoints(null);
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnCreate(degreeType));
 
@@ -59,8 +55,7 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
     @DisplayName("Should throw exception on validateOnCreate() when relevant points are negative")
     @Test
     void shouldThrowExceptionOnValidateOnCreateWhenRelevantPointsAreNegative() {
-        DegreeType degreeType = new DegreeType();
-        degreeType.setName("Valid Degree type");
+        DegreeType degreeType = getModel();
         degreeType.setHighlyRelevantPoints(new BigDecimal("-1.0"));
         degreeType.setLimitedRelevantPoints(new BigDecimal("-1.0"));
         degreeType.setLittleRelevantPoints(new BigDecimal("-1.0"));
@@ -78,8 +73,11 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
     @DisplayName("Should throw exception on validateOnUpdate() when relevant points are null")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenRelevantPointsAreNull() {
-        DegreeType degreeType = new DegreeType();
-        degreeType.setName("Valid Degree type");
+        DegreeType degreeType = getModel();
+        degreeType.setHighlyRelevantPoints(null);
+        degreeType.setLimitedRelevantPoints(null);
+        degreeType.setLittleRelevantPoints(null);
+
         Long id = 1L;
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnUpdate(id, degreeType));
@@ -95,8 +93,7 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
     @DisplayName("Should throw exception on validateOnUpdate() when relevant points are negative")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenRelevantPointsAreNegative() {
-        DegreeType degreeType = new DegreeType();
-        degreeType.setName("Valid Degree type");
+        DegreeType degreeType = getModel();
         degreeType.setHighlyRelevantPoints(new BigDecimal("-1.0"));
         degreeType.setLimitedRelevantPoints(new BigDecimal("-1.0"));
         degreeType.setLittleRelevantPoints(new BigDecimal("-1.0"));

@@ -35,33 +35,36 @@ class OrganisationUnitValidationServiceTest
     }
 
     @Override
-    void validate() {
-
-    }
-
-    @Override
     OrganisationUnitValidationService getService() {
         return validationService;
+    }
+
+    @DisplayName("Should throw exception on validateOnCreate() when name already exists")
+    @Test
+    void shouldThrowExceptionOnValidateOnCreateWhenNameAlreadyExists() {
+        OrganisationUnit organisationUnit = getModel();
+
+        when(persistenceService.getByName(organisationUnit.getName())).thenReturn(Optional.of(new OrganisationUnit()));
+
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> validationService.validateOnCreate(organisationUnit));
+
+        assertEquals("Name already exists", exception.getReason());
+        assertEquals(ErrorKey.ORGANIZATION_UNIT_NAME_ALREADY_EXISTS, exception.getErrorKey());
     }
 
     @DisplayName("Should Throw Exception on validateOnUpdate() when name already exists for another organisation unit")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExistsForAnotherOrganisationUnit() {
-        long id = 1L;
-        String name = "Organisation Unit";
+        Long id = 1L;
+        OrganisationUnit newOrganisationUnit = getModel();
+        OrganisationUnit organisationUnit = getModel();
+        organisationUnit.setId(2L);
 
-        OrganisationUnit organisationUnit = new OrganisationUnit();
-        organisationUnit.setName(name);
-
-        OrganisationUnit anotherOrganisationUnit = new OrganisationUnit();
-        anotherOrganisationUnit.setName(name);
-        anotherOrganisationUnit.setId(2L);
-
-        when(persistenceService.getById(id)).thenReturn(Optional.of(organisationUnit));
-        when(persistenceService.getByName(name)).thenReturn(Optional.of(anotherOrganisationUnit));
+        when(persistenceService.getByName(newOrganisationUnit.getName())).thenReturn(Optional.of(organisationUnit));
 
         PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> validationService.validateOnUpdate(id, organisationUnit));
+                                               () -> validationService.validateOnUpdate(id, newOrganisationUnit));
 
         assertEquals("Name already exists", exception.getReason());
         assertEquals(ErrorKey.ORGANIZATION_UNIT_NAME_ALREADY_EXISTS, exception.getErrorKey());
@@ -71,17 +74,14 @@ class OrganisationUnitValidationServiceTest
     @Test
     void shouldNotThrowExceptionOnValidateOnUpdateWhenNameStaysTheSame() {
         long id = 1L;
-        String name = "Organisation Unit";
 
-        OrganisationUnit newOrganisationUnit = new OrganisationUnit();
-        newOrganisationUnit.setName(name);
+        OrganisationUnit newOrganisationUnit = getModel();
 
-        OrganisationUnit organisationUnit = new OrganisationUnit();
-        organisationUnit.setName(name);
+        OrganisationUnit organisationUnit = getModel();
         organisationUnit.setId(id);
 
         when(persistenceService.getById(id)).thenReturn(Optional.of(newOrganisationUnit));
-        when(persistenceService.getByName(name)).thenReturn(Optional.of(organisationUnit));
+        when(persistenceService.getByName(newOrganisationUnit.getName())).thenReturn(Optional.of(organisationUnit));
 
         assertDoesNotThrow(() -> validationService.validateOnUpdate(id, newOrganisationUnit));
     }

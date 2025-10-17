@@ -17,10 +17,6 @@ class TagValidationServiceTest extends ValidationBaseServiceTest<Tag, TagValidat
     }
 
     @Override
-    void validate() {
-    }
-
-    @Override
     TagValidationService getService() {
         return service;
     }

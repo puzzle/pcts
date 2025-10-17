@@ -33,11 +33,6 @@ class RoleValidationServiceTest extends ValidationBaseServiceTest<Role, RoleVali
     }
 
     @Override
-    void validate() {
-
-    }
-
-    @Override
     RoleValidationService getService() {
         return validationService;
     }
@@ -45,10 +40,9 @@ class RoleValidationServiceTest extends ValidationBaseServiceTest<Role, RoleVali
     @DisplayName("Should throw exception on validateOnCreate() when name already exists")
     @Test
     void shouldThrowExceptionOnValidateOnCreateWhenNameAlreadyExists() {
-        Role role = new Role();
-        role.setName("Existing Role");
+        Role role = getModel();
 
-        when(persistenceService.getByName("Existing Role")).thenReturn(Optional.of(new Role()));
+        when(persistenceService.getByName(role.getName())).thenReturn(Optional.of(new Role()));
 
         PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnCreate(role));
 
@@ -59,20 +53,15 @@ class RoleValidationServiceTest extends ValidationBaseServiceTest<Role, RoleVali
     @DisplayName("Should Throw Exception on validateOnUpdate() when name already exists for another Role")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExistsForAnotherRole() {
-        long id = 1L;
-        String name = "Role";
+        Long id = 1L;
+        Role newRole = getModel();
+        Role role = getModel();
+        role.setId(2L);
 
-        Role role = new Role();
-        role.setName(name);
+        when(persistenceService.getByName(newRole.getName())).thenReturn(Optional.of(role));
 
-        Role anotherRole = new Role();
-        anotherRole.setName(name);
-        anotherRole.setId(2L);
-
-        when(persistenceService.getById(id)).thenReturn(Optional.of(role));
-        when(persistenceService.getByName(name)).thenReturn(Optional.of(anotherRole));
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnUpdate(id, role));
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> validationService.validateOnUpdate(id, newRole));
 
         assertEquals("Name already exists", exception.getReason());
         assertEquals(ErrorKey.ROLE_NAME_ALREADY_EXISTS, exception.getErrorKey());
@@ -82,17 +71,12 @@ class RoleValidationServiceTest extends ValidationBaseServiceTest<Role, RoleVali
     @Test
     void shouldNotThrowExceptionOnValidateOnUpdateWhenNameStaysTheSame() {
         long id = 1L;
-        String name = "Role";
-
-        Role newRole = new Role();
-        newRole.setName(name);
-
-        Role oldRole = new Role();
-        oldRole.setName(name);
-        oldRole.setId(id);
+        Role newRole = getModel();
+        Role role = getModel();
+        role.setId(id);
 
         when(persistenceService.getById(id)).thenReturn(Optional.of(newRole));
-        when(persistenceService.getByName(name)).thenReturn(Optional.of(oldRole));
+        when(persistenceService.getByName(newRole.getName())).thenReturn(Optional.of(role));
 
         assertDoesNotThrow(() -> validationService.validateOnUpdate(id, newRole));
 
