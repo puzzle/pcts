@@ -44,7 +44,7 @@ class LeadershipExperienceBusinessServiceTest {
         Certificate result = businessService.getById(id);
 
         assertEquals(certificate, result);
-        verify(validationService).validateOnGetById(id);
+        verify(validationService).validateOnGet(id);
         verify(persistenceService).getById(id);
         verify(validationService).validateCertificateType(certificate.getCertificateType());
     }

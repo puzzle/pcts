@@ -2,10 +2,13 @@ package ch.puzzle.pcts.model.experiencetype;
 
 import static org.apache.commons.lang3.StringUtils.trim;
 
+import ch.puzzle.pcts.model.Model;
+import ch.puzzle.pcts.validation.basic_string_validation.BasicStringValidation;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -13,17 +16,24 @@ import org.hibernate.annotations.SQLRestriction;
 @Entity
 @SQLDelete(sql = "UPDATE experience_type SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
-public class ExperienceType {
+public class ExperienceType implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @BasicStringValidation
     private String name;
 
+    @NotNull(message = "{attribute.not.null}")
+    @PositiveOrZero(message = "{attribute.not.negative}")
     private BigDecimal highlyRelevantPoints;
 
+    @NotNull(message = "{attribute.not.null}")
+    @PositiveOrZero(message = "{attribute.not.negative}")
     private BigDecimal limitedRelevantPoints;
 
+    @NotNull(message = "{attribute.not.null}")
+    @PositiveOrZero(message = "{attribute.not.negative}")
     private BigDecimal littleRelevantPoints;
 
     public ExperienceType(Long id, String name, BigDecimal highlyRelevantPoints, BigDecimal limitedRelevantPoints,
