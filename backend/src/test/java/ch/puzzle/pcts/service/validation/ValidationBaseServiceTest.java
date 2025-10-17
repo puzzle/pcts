@@ -15,8 +15,6 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
 
     abstract T getModel();
 
-    abstract void validate();
-
     abstract S getService();
 
     @BeforeEach
