@@ -1,8 +1,8 @@
 package ch.puzzle.pcts.model.experiencetype;
 
-import ch.puzzle.pcts.model.Model;
 import static org.apache.commons.lang3.StringUtils.trim;
 
+import ch.puzzle.pcts.model.Model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
