@@ -1,4 +1,4 @@
-package ch.puzzle.pcts.validation.basicStringValidation;
+package ch.puzzle.pcts.validation.basic_string_validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -22,7 +22,7 @@ public class BasicStringValidator implements ConstraintValidator<BasicStringVali
         }
 
         if (name.isBlank()) {
-            return buildViolation(context, "{attribute.not.blank}");
+            return buildViolation(context, "{attribute.notblank}");
         }
 
         if (name.length() < this.min || name.length() > this.max) {

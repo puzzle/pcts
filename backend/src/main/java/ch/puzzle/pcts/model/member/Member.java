@@ -4,7 +4,7 @@ import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
-import ch.puzzle.pcts.validation.basicStringValidation.BasicStringValidation;
+import ch.puzzle.pcts.validation.basic_string_validation.BasicStringValidation;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
 import jakarta.validation.constraints.NotNull;
