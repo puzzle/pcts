@@ -4,6 +4,7 @@ import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
+import ch.puzzle.pcts.validation.basicStringValidation.BasicStringValidation;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
 import jakarta.validation.constraints.NotBlank;
@@ -23,23 +24,17 @@ public class Member implements Model {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "{attribute.not.blank}")
-    @NotNull(message = "{attribute.notnull}")
-    @Size(min = 2, max = 250, message = "{attribute.size.between}")
+    @BasicStringValidation
     private String name;
 
-    @NotBlank(message = "{attribute.not.blank}")
-    @NotNull(message = "{attribute.notnull}")
-    @Size(min = 2, max = 250, message = "{attribute.size.between}")
+    @BasicStringValidation
     private String lastName;
 
     @Enumerated(EnumType.STRING)
     @NotNull(message = "{attribute.notnull}")
     private EmploymentState employmentState;
 
-    @NotBlank(message = "{attribute.not.blank}")
-    @NotNull(message = "{attribute.notnull}")
-    @Size(min = 2, max = 250, message = "{attribute.size.between}")
+    @BasicStringValidation
     private String abbreviation;
 
     private Date dateOfHire;
