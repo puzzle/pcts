@@ -24,7 +24,7 @@ public class Certificate implements Model {
     @Size(min = 2, max = 250, message = "{attribute.size.between}")
     private String name;
 
-    @NotNull(message = "{attribute.notnull}")
+    @NotNull(message = "{attribute.not.null}")
     @PositiveOrZero(message = "{attribute.not.negative}")
     private BigDecimal points;
 

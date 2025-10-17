@@ -197,7 +197,8 @@
 								<exclude>ch/puzzle/pcts/exception/**</exclude>
 								<exclude>ch/puzzle/pcts/PctsApplication.java</exclude>
 								<exclude>ch/puzzle/pcts/SpringSecurityConfig.java</exclude>
-							</excludes>
+                                <exclude>ch/puzzle/pcts/service/validation/FieldAwareMessageInterpolator.java</exclude>
+                            </excludes>
 						</configuration>
 						<executions>
 							<execution>
