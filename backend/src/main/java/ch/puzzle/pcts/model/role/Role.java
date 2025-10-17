@@ -2,6 +2,7 @@ package ch.puzzle.pcts.model.role;
 
 import static org.apache.commons.lang3.StringUtils.trim;
 
+import ch.puzzle.pcts.model.Model;
 import jakarta.persistence.*;
 import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
@@ -10,7 +11,7 @@ import org.hibernate.annotations.SQLRestriction;
 @Entity
 @SQLDelete(sql = "UPDATE role SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
-public class Role {
+public class Role implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

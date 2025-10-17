@@ -54,13 +54,13 @@ class CertificateBusinessServiceTest {
     @DisplayName("Should create certificate")
     @Test
     void shouldCreate() {
-        when(persistenceService.create(certificate)).thenReturn(certificate);
+        when(persistenceService.save(certificate)).thenReturn(certificate);
 
         Certificate result = businessService.create(certificate);
 
         assertEquals(certificate, result);
         verify(validationService).validateOnCreate(certificate);
-        verify(persistenceService).create(certificate);
+        verify(persistenceService).save(certificate);
         verify(tagBusinessService).resolveTags(any());
     }
 
@@ -82,13 +82,13 @@ class CertificateBusinessServiceTest {
     @Test
     void shouldUpdate() {
         Long id = 1L;
-        when(persistenceService.update(id, certificate)).thenReturn(certificate);
+        when(persistenceService.save(certificate)).thenReturn(certificate);
 
         Certificate result = businessService.update(id, certificate);
 
         assertEquals(certificate, result);
         verify(validationService).validateOnUpdate(id, certificate);
-        verify(persistenceService).update(id, certificate);
+        verify(persistenceService).save(certificate);
         verify(tagBusinessService).deleteUnusedTags();
     }
 

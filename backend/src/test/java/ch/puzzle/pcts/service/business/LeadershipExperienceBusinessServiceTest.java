@@ -54,11 +54,11 @@ class LeadershipExperienceBusinessServiceTest {
     void shouldCreate() {
         when(persistenceService.create(certificate)).thenReturn(certificate);
 
-        Certificate result = businessService.create(certificate);
+        Certificate result = businessService.save(certificate);
 
         assertEquals(certificate, result);
         verify(validationService).validateOnCreate(certificate);
-        verify(persistenceService).create(certificate);
+        verify(persistenceService).save(certificate);
     }
 
     @DisplayName("Should get all leadershipExperiences")

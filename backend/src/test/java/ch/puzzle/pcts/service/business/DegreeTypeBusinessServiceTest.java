@@ -90,26 +90,26 @@ class DegreeTypeBusinessServiceTest {
     @DisplayName("Should create degree type")
     @Test
     void shouldCreate() {
-        when(persistenceService.create(degreeType)).thenReturn(degreeType);
+        when(persistenceService.save(degreeType)).thenReturn(degreeType);
 
         DegreeType result = businessService.create(degreeType);
 
         assertEquals(degreeType, result);
         verify(validationService).validateOnCreate(degreeType);
-        verify(persistenceService).create(degreeType);
+        verify(persistenceService).save(degreeType);
     }
 
     @DisplayName("Should update degree type")
     @Test
     void shouldUpdate() {
         Long id = 1L;
-        when(persistenceService.update(id, degreeType)).thenReturn(degreeType);
+        when(persistenceService.save(degreeType)).thenReturn(degreeType);
 
         DegreeType result = businessService.update(id, degreeType);
 
         assertEquals(degreeType, result);
         verify(validationService).validateOnUpdate(id, degreeType);
-        verify(persistenceService).update(id, degreeType);
+        verify(persistenceService).save(degreeType);
     }
 
     @DisplayName("Should delete role")

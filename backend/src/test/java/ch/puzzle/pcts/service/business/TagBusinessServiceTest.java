@@ -43,7 +43,7 @@ class TagBusinessServiceTest {
         Set<Tag> result = businessService.resolveTags(Set.of(tag));
 
         assertThat(result).containsExactly(existingTag);
-        verify(persistenceService, never()).create(any());
+        verify(persistenceService, never()).save(any());
         verify(validationService).validateName(tag);
     }
 
@@ -64,7 +64,7 @@ class TagBusinessServiceTest {
         assertThat(result).containsExactly(existingTag);
 
         // verify that the exact correct tag is created and not any tag here
-        verify(persistenceService).create(argThat(t -> t.getName().equals(notPersistedName)));
+        verify(persistenceService).save(argThat(t -> t.getName().equals(notPersistedName)));
         // verify that no other tag is created than the expected
         verify(persistenceService, never()).create(argThat(t -> !t.getName().equals(notPersistedName)));
         assertTrue(result.contains(existingTag));
@@ -103,7 +103,7 @@ class TagBusinessServiceTest {
 
         businessService.deleteUnusedTags();
 
-        verify(persistenceService).delete(Set.of(tag));
+        verify(persistenceService).deleteAll(Set.of(tag));
         verifyNoInteractions(validationService);
         verify(persistenceService).findAllUnusedTags();
     }

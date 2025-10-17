@@ -2,6 +2,7 @@ package ch.puzzle.pcts.model.experiencetype;
 
 import static org.apache.commons.lang3.StringUtils.trim;
 
+import ch.puzzle.pcts.model.Model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,7 +15,7 @@ import org.hibernate.annotations.SQLRestriction;
 @Entity
 @SQLDelete(sql = "UPDATE experience_type SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
-public class ExperienceType {
+public class ExperienceType implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

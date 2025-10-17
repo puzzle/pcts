@@ -4,24 +4,15 @@ import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificate.CertificateType;
 import ch.puzzle.pcts.repository.CertificateRepository;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CertificatePersistenceService {
-
+public class CertificatePersistenceService extends PersistenceBase<Certificate, CertificateRepository> {
     private final CertificateRepository repository;
 
     public CertificatePersistenceService(CertificateRepository certificateRepository) {
+        super(certificateRepository);
         this.repository = certificateRepository;
-    }
-
-    public Certificate create(Certificate certificate) {
-        return repository.save(certificate);
-    }
-
-    public Optional<Certificate> getById(Long id) {
-        return repository.findById(id);
     }
 
     public List<Certificate> getAllCertificates() {
@@ -30,14 +21,5 @@ public class CertificatePersistenceService {
 
     public List<Certificate> getAllLeadershipExperiences() {
         return repository.findByCertificateTypeNot(CertificateType.CERTIFICATE);
-    }
-
-    public Certificate update(Long id, Certificate certificate) {
-        certificate.setId(id);
-        return repository.save(certificate);
-    }
-
-    public void delete(Long id) {
-        repository.deleteById(id);
     }
 }

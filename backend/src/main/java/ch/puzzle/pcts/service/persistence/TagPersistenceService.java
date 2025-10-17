@@ -7,31 +7,24 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TagPersistenceService {
+public class TagPersistenceService extends PersistenceBase<Tag, TagRepository> {
 
     private final TagRepository repository;
 
     public TagPersistenceService(TagRepository repository) {
+        super(repository);
         this.repository = repository;
-    }
-
-    public Tag create(Tag tag) {
-        return repository.save(tag);
     }
 
     public Optional<Tag> findWithIgnoreCase(String tagName) {
         return repository.findByNameIgnoreCase(tagName);
     }
 
-    public Optional<Tag> getById(Long id) {
-        return repository.findById(id);
-    }
-
     public Set<Tag> findAllUnusedTags() {
         return repository.findAllUnusedTags();
     }
 
-    public void delete(Set<Tag> tags) {
+    public void deleteAll(Set<Tag> tags) {
         repository.deleteAll(tags);
     }
 }

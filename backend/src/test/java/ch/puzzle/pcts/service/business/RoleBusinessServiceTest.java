@@ -93,26 +93,26 @@ class RoleBusinessServiceTest {
     @DisplayName("Should create role")
     @Test
     void shouldCreate() {
-        when(persistenceService.create(role)).thenReturn(role);
+        when(persistenceService.save(role)).thenReturn(role);
 
         Role result = businessService.create(role);
 
         assertEquals(role, result);
         verify(validationService).validateOnCreate(role);
-        verify(persistenceService).create(role);
+        verify(persistenceService).save(role);
     }
 
     @DisplayName("Should update role")
     @Test
     void shouldUpdate() {
         Long id = 1L;
-        when(persistenceService.update(id, role)).thenReturn(role);
+        when(persistenceService.save(role)).thenReturn(role);
 
         Role result = businessService.update(id, role);
 
         assertEquals(role, result);
         verify(validationService).validateOnUpdate(id, role);
-        verify(persistenceService).update(id, role);
+        verify(persistenceService).save(role);
     }
 
     @DisplayName("Should delete role")
