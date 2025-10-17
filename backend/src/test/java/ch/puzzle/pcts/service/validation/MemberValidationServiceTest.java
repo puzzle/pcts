@@ -67,9 +67,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(model));
 
         assertNotNull(exception.getReason());
-        assertTrue(exception.getReason().contains("Member.name must not be blank"));
-        assertTrue(exception.getReason().contains("Member.name must not be null"));
-
+        assertEquals("Member.name must not be null", exception.getReason());
     }
 
     @DisplayName("Should throw exception when name is too short")
@@ -100,7 +98,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
     @Test
     void validateBeanValidationWhenLastnameIsBlank() {
         Member model = getModel();
-        model.setLastName("  ");
+        model.setLastName("   ");
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(model));
 
@@ -117,8 +115,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(model));
 
         assertNotNull(exception.getReason());
-        assertTrue(exception.getReason().contains("Member.lastName must not be blank"));
-        assertTrue(exception.getReason().contains("Member.lastName must not be null"));
+        assertEquals("Member.lastName must not be null", exception.getReason());
     }
 
     @DisplayName("Should throw exception when lastname is too short")
@@ -178,9 +175,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(model));
 
         assertNotNull(exception.getReason());
-        assertTrue(exception.getReason().contains("Member.abbreviation must not be blank"));
-        assertTrue(exception.getReason().contains("Member.abbreviation must not be null"));
-
+        assertEquals("Member.abbreviation must not be null", exception.getReason());
     }
 
     @DisplayName("Should throw exception when abbreviation is too short")
