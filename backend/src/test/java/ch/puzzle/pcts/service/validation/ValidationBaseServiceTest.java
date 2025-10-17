@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBase<T>> {
 
-    protected S service;
+    S service;
 
     abstract T getModel();
 
