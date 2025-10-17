@@ -3,6 +3,7 @@ package ch.puzzle.pcts.model.organisationunit;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 import jakarta.persistence.*;
+import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -38,6 +39,19 @@ public class OrganisationUnit {
 
     public void setName(String name) {
         this.name = trim(name);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof OrganisationUnit))
+            return false;
+        OrganisationUnit that = (OrganisationUnit) o;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 
     @Override
