@@ -3,6 +3,7 @@ package ch.puzzle.pcts.model.degreetype;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
+import ch.puzzle.pcts.validation.basic_string_validation.BasicStringValidation;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,9 +21,7 @@ public class DegreeType implements Model {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "{attribute.not.blank}")
-    @NotNull(message = "{attribute.not.null}")
-    @Size(min = 2, max = 250, message = "{attribute.size.between}")
+    @BasicStringValidation
     private String name;
 
     @NotNull(message = "{attribute.not.null}")

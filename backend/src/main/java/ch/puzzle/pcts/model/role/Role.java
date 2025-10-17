@@ -3,10 +3,9 @@ package ch.puzzle.pcts.model.role;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
+import ch.puzzle.pcts.validation.basic_string_validation.BasicStringValidation;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -18,9 +17,7 @@ public class Role implements Model {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "{attribute.not.blank}")
-    @NotNull(message = "{attribute.notnull}")
-    @Size(min = 2, max = 250, message = "{attribute.size.between}")
+    @BasicStringValidation
     private String name;
 
     @NotNull(message = "{attribute.notnull}")

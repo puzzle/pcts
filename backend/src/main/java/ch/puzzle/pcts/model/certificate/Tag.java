@@ -3,10 +3,8 @@ package ch.puzzle.pcts.model.certificate;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
+import ch.puzzle.pcts.validation.basic_string_validation.BasicStringValidation;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 @Entity
 public class Tag implements Model {
@@ -14,9 +12,7 @@ public class Tag implements Model {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "{attribute.not.blank}")
-    @NotNull(message = "{attribute.not.null}")
-    @Size(min = 2, max = 250, message = "{attribute.size.between}")
+    @BasicStringValidation
     private String name;
 
     public Tag(Long id, String name) {

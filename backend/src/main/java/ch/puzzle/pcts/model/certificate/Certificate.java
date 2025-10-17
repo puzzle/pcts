@@ -3,6 +3,7 @@ package ch.puzzle.pcts.model.certificate;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
+import ch.puzzle.pcts.validation.basic_string_validation.BasicStringValidation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
@@ -19,18 +20,14 @@ public class Certificate implements Model {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "{attribute.not.blank}")
-    @NotNull(message = "{attribute.not.null}")
-    @Size(min = 2, max = 250, message = "{attribute.size.between}")
+    @BasicStringValidation
     private String name;
 
     @NotNull(message = "{attribute.not.null}")
     @PositiveOrZero(message = "{attribute.not.negative}")
     private BigDecimal points;
 
-    @NotBlank(message = "{attribute.not.blank}")
-    @NotNull(message = "{attribute.not.null}")
-    @Size(min = 2, max = 250, message = "{attribute.size.between}")
+    @BasicStringValidation
     private String comment;
 
     @ManyToMany(cascade = { CascadeType.MERGE })
