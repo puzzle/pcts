@@ -21,8 +21,6 @@ public class FieldAwareMessageInterpolator implements MessageInterpolator {
 
     @Override
     public String interpolate(String messageTemplate, Context context, Locale locale) {
-        // we first apply the default only afterwards we add the additional fields so
-        // this delegate needs to be on top!
         String resolvedTemplate = delegate.interpolate(messageTemplate, context, locale);
 
         String className = null;
@@ -42,24 +40,16 @@ public class FieldAwareMessageInterpolator implements MessageInterpolator {
             }
         }
 
-        // option to add the name of the class --> might help later on we can define a
-        // custom format
-        // we then could parse the format in the frontend as we want and show errors any
-        // way we like
         if (resolvedTemplate.contains("{class}") && className != null) {
             resolvedTemplate = resolvedTemplate.replace("{class}", className);
         }
 
-        // sometimes it is useful to have the given value but not always so we do it
-        // conditionally
         Object actualValue = context.getValidatedValue();
         if (resolvedTemplate.contains("{value}")) {
             String givenValue = actualValue != null ? actualValue.toString() : "null";
             resolvedTemplate = resolvedTemplate.replace("{value}", givenValue);
         }
 
-        // maybe we do not want the field in some messages therefore we make it
-        // conditional
         if (resolvedTemplate.contains("{field}") && fieldName != null) {
             resolvedTemplate = resolvedTemplate.replace("{field}", fieldName);
         }
