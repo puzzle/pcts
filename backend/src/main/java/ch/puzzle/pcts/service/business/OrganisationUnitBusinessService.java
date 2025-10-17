@@ -36,13 +36,13 @@ public class OrganisationUnitBusinessService {
     public OrganisationUnit create(OrganisationUnit organisationUnit) {
         organisationUnit.setName(organisationUnit.getName().trim());
         validationService.validateOnCreate(organisationUnit);
-        return persistenceService.create(organisationUnit);
+        return persistenceService.save(organisationUnit);
     }
 
     public OrganisationUnit update(Long id, OrganisationUnit organisationUnit) {
         organisationUnit.setName(organisationUnit.getName().trim());
         validationService.validateOnUpdate(id, organisationUnit);
-        return persistenceService.update(id, organisationUnit);
+        return persistenceService.save(organisationUnit);
     }
 
     public void delete(Long id) {
