@@ -65,7 +65,7 @@ public class ArchitectureTest {
                 .resideInAPackage("..service.business..")
                 .should()
                 .onlyBeAccessed()
-                .byAnyPackage("..controller..", "..mapper..", "..business");
+                .byAnyPackage("..controller..", "..mapper..", "..service.business..");
 
         rule.check(importedClasses);
     }
