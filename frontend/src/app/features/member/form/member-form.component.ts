@@ -25,8 +25,9 @@ import { EmploymentState } from '../../../shared/enum/employment-state.enum';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MemberModel } from '../member.model';
 import { OrganisationUnitService } from '../../organisation-unit/organisation-unit.service';
-import { FormFieldLabel } from '../../../shared/form-field-label/form-field-label';
-import { FormFieldError } from '../../../shared/form-field-error/form-field-error';
+import { PctsFormError } from '../../../shared/pcts-form-error/pcts-form-error';
+import { PctsFormLabel } from '../../../shared/pcts-form-label/pcts-form-label';
+import { InputFieldComponent } from '../../../shared/input-field/input-field.component';
 
 @Component({
   selector: 'app-member-form',
@@ -42,8 +43,9 @@ import { FormFieldError } from '../../../shared/form-field-error/form-field-erro
     MatIconModule,
     MatDatepickerModule,
     RouterLink,
-    FormFieldLabel,
-    FormFieldError
+    PctsFormError,
+    PctsFormLabel,
+    InputFieldComponent
   ],
   templateUrl: './member-form.component.html',
   styleUrl: './member-form.component.scss'
@@ -63,9 +65,13 @@ export class MemberFormComponent {
 
   protected isEdit = signal<boolean>(false);
 
-  protected pageTitleKey: Signal<string> = computed(() => this.isEdit() ? 'GENERAL.EDIT' : 'GENERAL.ADD');
+  protected pageTitleKey: Signal<string> = computed(() => {
+    return this.isEdit() ? 'GENERAL.EDIT' : 'GENERAL.ADD';
+  });
 
-  protected submitButtonKey: Signal<string> = computed(() => this.isEdit() ? 'GENERAL.SAVE' : 'GENERAL.ADD');
+  protected submitButtonKey: Signal<string> = computed(() => {
+    return this.isEdit() ? 'GENERAL.SAVE' : 'GENERAL.ADD';
+  });
 
   protected memberForm: FormGroup = this.fb.group({
     id: [null],

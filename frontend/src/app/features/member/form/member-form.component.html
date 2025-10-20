@@ -7,55 +7,50 @@
 
   <form [formGroup]="memberForm" (ngSubmit)="onSubmit()" name="member">
 
-    <mat-form-field>
-      <app-form-field-label />
-      <input
-        type="text"
-        matInput
-        formControlName="name"
-      >
-      <app-form-field-error />
-    </mat-form-field>
 
-    <!--    <app-input-field>-->
-    <!--      <input type="text" formControlName="name" matInput>-->
-    <!--    </app-input-field>-->
+        <app-input-field>
+          <input type="text" formControlName="name" matInput>
+        </app-input-field>
 
-    <!--    <app-input-field>-->
-    <!--      <input type="text" formControlName="lastName" matInput>-->
-    <!--    </app-input-field>-->
+        <app-input-field>
+          <input type="text" formControlName="lastName" matInput>
+        </app-input-field>
 
-    <!--    <app-input-field>-->
-    <!--      <input type="text" formControlName="abbreviation" matInput>-->
-    <!--    </app-input-field>-->f
+        <app-input-field>
+          <input type="text" formControlName="abbreviation" matInput>
+        </app-input-field>
 
-    <!--    <app-input-field>-->
-    <!--      <input type="text" formControlName="birthDate" matInput>-->
-    <!--    </app-input-field>-->
+        <app-input-field>
+          <input type="text" formControlName="birthDate" matInput>
+        </app-input-field>
 
-    <!--    <app-input-field>-->
-    <!--      <input type="text" formControlName="dateOfHire" matInput>-->
-    <!--    </app-input-field>-->
+        <app-input-field>
+          <input type="text" formControlName="dateOfHire" matInput>
+        </app-input-field>
 
 
-    <!--    <app-input-field>-->
-    <!--      <input type="text" formControlName="employmentState" matInput [matAutocomplete]="auto">-->
-    <!--      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">-->
-    <!--        @for (option of employmentStateFilteredOptions(); track option) {-->
-    <!--          <mat-option [value]="option">{{displayEmploymentState(option)}}</mat-option>-->
-    <!--        }-->
-    <!--      </mat-autocomplete>-->
-    <!--    </app-input-field>-->
+        <mat-form-field>
+          <mat-label appPctsFormLabel/>
+          <input type="text" formControlName="employmentState" matInput [matAutocomplete]="auto">
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+            @for (option of employmentStateFilteredOptions(); track option) {
+              <mat-option [value]="option">{{displayEmploymentState(option)}}</mat-option>
+            }
+          </mat-autocomplete>
+          <mat-error appPctsFormError/>
+        </mat-form-field>
 
 
-    <!--    <app-input-field>-->
-    <!--      <input type="text" formControlName="organisationUnit" matInput [matAutocomplete]="auto">-->
-    <!--      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">-->
-    <!--        @for (option of employmentStateFilteredOptions(); track option) {-->
-    <!--          <mat-option [value]="option">{{displayEmploymentState(option)}}</mat-option>-->
-    <!--        }-->
-    <!--      </mat-autocomplete>-->
-    <!--    </app-input-field>-->
+        <mat-form-field>
+          <mat-label appPctsFormLabel/>
+          <input type="text" formControlName="organisationUnit" matInput [matAutocomplete]="auto">
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+            @for (option of employmentStateFilteredOptions(); track option) {
+              <mat-option [value]="option">{{displayEmploymentState(option)}}</mat-option>
+            }
+          </mat-autocomplete>
+          <mat-error appPctsFormError/>
+        </mat-form-field>
 
     <div class="d-flex flex-row gap-3">
       <button mat-stroked-button type="button" [routerLink]="['/']">{{ "GENERAL.CANCEL" | translate }}</button>
