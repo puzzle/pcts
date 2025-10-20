@@ -114,9 +114,9 @@ public class Member {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Member))
+        if (!(o instanceof Member member)) {
             return false;
-        Member member = (Member) o;
+        }
         return Objects.equals(id, member.id) && Objects.equals(name, member.name)
                && Objects.equals(lastName, member.lastName) && employmentState == member.employmentState
                && Objects.equals(abbreviation, member.abbreviation) && Objects.equals(dateOfHire, member.dateOfHire)

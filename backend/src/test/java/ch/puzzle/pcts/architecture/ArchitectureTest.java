@@ -137,7 +137,7 @@ public class ArchitectureTest {
         rule.check(importedClasses);
     }
 
-    @DisplayName("Controller classes should be annotated with @RestController or @Controller")
+    @DisplayName("Controller classes should be annotated with @RestController")
     @Test
     void controllersShouldBeAnnotatedWithRestController() {
         JavaClasses importedClasses = getMainSourceClasses();
@@ -149,8 +149,6 @@ public class ArchitectureTest {
                 .resideInAPackage("ch.puzzle.pcts.controller..")
                 .should()
                 .beAnnotatedWith(RestController.class)
-                .orShould()
-                .beAnnotatedWith(Controller.class)
                 .andShould()
                 .notBeInterfaces();
 

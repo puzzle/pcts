@@ -81,13 +81,13 @@ public class ExperienceType {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof ExperienceType))
+        if (!(o instanceof ExperienceType experienceType)) {
             return false;
-        ExperienceType that = (ExperienceType) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name)
-               && Objects.equals(highlyRelevantPoints, that.highlyRelevantPoints)
-               && Objects.equals(limitedRelevantPoints, that.limitedRelevantPoints)
-               && Objects.equals(littleRelevantPoints, that.littleRelevantPoints);
+        }
+        return Objects.equals(id, experienceType.id) && Objects.equals(name, experienceType.name)
+               && Objects.equals(highlyRelevantPoints, experienceType.highlyRelevantPoints)
+               && Objects.equals(limitedRelevantPoints, experienceType.limitedRelevantPoints)
+               && Objects.equals(littleRelevantPoints, experienceType.littleRelevantPoints);
     }
 
     @Override

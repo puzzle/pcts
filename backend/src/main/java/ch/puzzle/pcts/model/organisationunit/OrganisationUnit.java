@@ -43,10 +43,9 @@ public class OrganisationUnit {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof OrganisationUnit))
+        if (!(o instanceof OrganisationUnit organisationUnit))
             return false;
-        OrganisationUnit that = (OrganisationUnit) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name);
+        return Objects.equals(id, organisationUnit.id) && Objects.equals(name, organisationUnit.name);
     }
 
     @Override

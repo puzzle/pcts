@@ -41,9 +41,9 @@ public class Tag {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Tag))
+        if (!(o instanceof Tag tag)) {
             return false;
-        Tag tag = (Tag) o;
+        }
         return Objects.equals(id, tag.id) && Objects.equals(name, tag.name);
     }
 

@@ -81,13 +81,13 @@ public class DegreeType {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof DegreeType))
+        if (!(o instanceof DegreeType degreeType)) {
             return false;
-        DegreeType that = (DegreeType) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name)
-               && Objects.equals(highlyRelevantPoints, that.highlyRelevantPoints)
-               && Objects.equals(limitedRelevantPoints, that.limitedRelevantPoints)
-               && Objects.equals(littleRelevantPoints, that.littleRelevantPoints);
+        }
+        return Objects.equals(id, degreeType.id) && Objects.equals(name, degreeType.name)
+               && Objects.equals(highlyRelevantPoints, degreeType.highlyRelevantPoints)
+               && Objects.equals(limitedRelevantPoints, degreeType.limitedRelevantPoints)
+               && Objects.equals(littleRelevantPoints, degreeType.littleRelevantPoints);
     }
 
     @Override

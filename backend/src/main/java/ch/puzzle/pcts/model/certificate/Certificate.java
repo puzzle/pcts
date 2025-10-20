@@ -111,12 +111,12 @@ public class Certificate {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass())
+        if (!(o instanceof Certificate certificate)) {
             return false;
-        Certificate that = (Certificate) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(points, that.points)
-               && Objects.equals(comment, that.comment) && Objects.equals(tags, that.tags)
-               && certificateType == that.certificateType;
+        }
+        return Objects.equals(id, certificate.id) && Objects.equals(name, certificate.name)
+               && Objects.equals(points, certificate.points) && Objects.equals(comment, certificate.comment)
+               && Objects.equals(tags, certificate.tags) && certificateType == certificate.certificateType;
     }
 
     @Override

@@ -54,9 +54,9 @@ public class Role {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Role))
+        if (!(o instanceof Role role)) {
             return false;
-        Role role = (Role) o;
+        }
         return isManagement == role.isManagement && Objects.equals(id, role.id) && Objects.equals(name, role.name);
     }
 
