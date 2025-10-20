@@ -54,7 +54,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(model));
 
-        assertNotNull(exception.getReason());
         assertEquals("Member.name must not be blank", exception.getReason());
     }
 
@@ -66,7 +65,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(model));
 
-        assertNotNull(exception.getReason());
         assertEquals("Member.name must not be null", exception.getReason());
     }
 
@@ -78,7 +76,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(model));
 
-        assertNotNull(exception.getReason());
         assertEquals("Member.name size must be between 2 and 250, given " + shortName, exception.getReason());
     }
 
@@ -90,7 +87,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(model));
 
-        assertNotNull(exception.getReason());
         assertEquals("Member.name size must be between 2 and 250, given " + longName, exception.getReason());
     }
 
@@ -102,7 +98,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(model));
 
-        assertNotNull(exception.getReason());
         assertEquals("Member.lastName must not be blank", exception.getReason());
     }
 
@@ -114,7 +109,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(model));
 
-        assertNotNull(exception.getReason());
         assertEquals("Member.lastName must not be null", exception.getReason());
     }
 
@@ -126,7 +120,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(model));
 
-        assertNotNull(exception.getReason());
         assertEquals("Member.lastName size must be between 2 and 250, given " + shortName, exception.getReason());
     }
 
@@ -138,7 +131,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(model));
 
-        assertNotNull(exception.getReason());
         assertEquals("Member.lastName size must be between 2 and 250, given " + longName, exception.getReason());
     }
 
@@ -150,7 +142,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(model));
 
-        assertNotNull(exception.getReason());
         assertEquals("Member.employmentState must not be null", exception.getReason());
     }
 
@@ -162,7 +153,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(model));
 
-        assertNotNull(exception.getReason());
         assertEquals("Member.abbreviation must not be blank", exception.getReason());
     }
 
@@ -174,7 +164,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(model));
 
-        assertNotNull(exception.getReason());
         assertEquals("Member.abbreviation must not be null", exception.getReason());
     }
 
@@ -186,7 +175,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(model));
 
-        assertNotNull(exception.getReason());
         assertEquals("Member.abbreviation size must be between 2 and 250, given " + shortName, exception.getReason());
     }
 
@@ -198,7 +186,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(model));
 
-        assertNotNull(exception.getReason());
         assertEquals("Member.abbreviation size must be between 2 and 250, given " + longName, exception.getReason());
     }
 
@@ -210,7 +197,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(model));
 
-        assertNotNull(exception.getReason());
         assertEquals("Member.birthDate must not be null", exception.getReason());
     }
 
@@ -223,7 +209,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(model));
 
-        assertNotNull(exception.getReason());
         assertEquals("Member.birthDate must be in the past, given " + futureDate, exception.getReason());
     }
 
