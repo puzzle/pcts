@@ -198,4 +198,21 @@ public class Member implements Model {
             return new Member(this);
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Member member = (Member) o;
+        return Objects.equals(id, member.id) && Objects.equals(name, member.name)
+               && Objects.equals(lastName, member.lastName) && employmentState == member.employmentState
+               && Objects.equals(abbreviation, member.abbreviation) && Objects.equals(dateOfHire, member.dateOfHire)
+               && Objects.equals(birthDate, member.birthDate)
+               && Objects.equals(organisationUnit.getId(), member.organisationUnit.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, lastName, employmentState, abbreviation, dateOfHire, birthDate, organisationUnit);
+    }
 }

@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 class MemberPersistenceServiceIT extends PersistenceBaseIT<Member, MemberRepository, MemberPersistenceService> {
+
     @Autowired
     MemberPersistenceServiceIT(MemberPersistenceService service) {
         super(service);
@@ -41,13 +42,25 @@ class MemberPersistenceServiceIT extends PersistenceBaseIT<Member, MemberReposit
         return List
                 .of(Member.Builder
                         .builder()
-                        .withId(null)
-                        .withName("Member 2")
-                        .withLastName("'M1'")
+                        .withId(1L)
+                        .withName("Member 1")
+                        .withLastName("Test")
                         .withEmploymentState(EmploymentState.MEMBER)
-                        .withDateOfHire(new Timestamp(0L))
-                        .withBirthDate(new Timestamp(0L))
-                        .withOrganisationUnit(new OrganisationUnit(2L, "OrganisationUnit 2"))
-                        .build());
+                        .withAbbreviation("M1")
+                        .withDateOfHire(Timestamp.valueOf("2021-07-15 00:00:00"))
+                        .withBirthDate(Timestamp.valueOf("1999-08-10 00:00:00"))
+                        .withOrganisationUnit(new OrganisationUnit(1L, "OrganisationUnit 1"))
+                        .build(),
+                    Member.Builder
+                            .builder()
+                            .withId(2L)
+                            .withName("Member 2")
+                            .withLastName("Test")
+                            .withEmploymentState(EmploymentState.MEMBER)
+                            .withAbbreviation("M2")
+                            .withDateOfHire(Timestamp.valueOf("2020-06-01 00:00:00"))
+                            .withBirthDate(Timestamp.valueOf("1998-03-03 00:00:00"))
+                            .withOrganisationUnit(new OrganisationUnit(2L, "OrganisationUnit 2"))
+                            .build());
     }
 }

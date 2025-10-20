@@ -4,18 +4,20 @@ import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
 import jakarta.persistence.*;
+import java.sql.Timestamp;
 import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
 
 @Entity
 @SQLDelete(sql = "UPDATE organisation_unit SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
-// @SQLRestriction("deleted_at IS NULL")
 public class OrganisationUnit implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
+
+    private Timestamp deletedAt;
 
     public OrganisationUnit(Long id, String name) {
         this.id = id;
@@ -51,6 +53,14 @@ public class OrganisationUnit implements Model {
     @Override
     public int hashCode() {
         return Objects.hash(id, name);
+    }
+
+    public Timestamp getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Timestamp deletedAt) {
+        this.deletedAt = deletedAt;
     }
 
     @Override

@@ -73,7 +73,8 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
         List<T> all = service.getAll();
 
         assertThat(all).hasSize(getAll().size());
-        assertThat(all).usingRecursiveComparison().isEqualTo(getAll());
+        assertThat(all.equals(getModel()));
+
     }
 
     @DisplayName("Should create entity")
@@ -102,7 +103,7 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
         Optional<T> result = service.getById(id);
 
         assertThat(result).isPresent();
-        assertThat(result.get()).usingRecursiveComparison().isEqualTo(entity);
+        assertThat(result.get().equals(entity));
     }
 
     @DisplayName("Should delete entity")
