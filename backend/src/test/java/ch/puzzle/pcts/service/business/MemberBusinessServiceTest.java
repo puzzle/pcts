@@ -90,26 +90,26 @@ class MemberBusinessServiceTest {
     @DisplayName("Should create member")
     @Test
     void shouldCreate() {
-        when(persistenceService.create(member)).thenReturn(member);
+        when(persistenceService.save(member)).thenReturn(member);
 
         Member result = businessService.create(member);
 
         assertEquals(member, result);
         verify(validationService).validateOnCreate(member);
-        verify(persistenceService).create(member);
+        verify(persistenceService).save(member);
     }
 
     @DisplayName("Should update member")
     @Test
     void shouldUpdate() {
         Long id = 1L;
-        when(persistenceService.update(id, member)).thenReturn(member);
+        when(persistenceService.save(member)).thenReturn(member);
 
         Member result = businessService.update(id, member);
 
         assertEquals(member, result);
         verify(validationService).validateOnUpdate(id);
-        verify(persistenceService).update(id, member);
+        verify(persistenceService).save(member);
     }
 
     @DisplayName("Should delete member")

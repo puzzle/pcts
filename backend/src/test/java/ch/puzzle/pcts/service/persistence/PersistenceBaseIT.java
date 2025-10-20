@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.service.persistence;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ch.puzzle.pcts.model.Model;
 import jakarta.transaction.Transactional;
@@ -73,8 +74,7 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
         List<T> all = service.getAll();
 
         assertThat(all).hasSize(getAll().size());
-        assertThat(all.equals(getModel()));
-
+        assertEquals(all, getAll());
     }
 
     @DisplayName("Should create entity")
@@ -103,7 +103,7 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
         Optional<T> result = service.getById(id);
 
         assertThat(result).isPresent();
-        assertThat(result.get().equals(entity));
+        assertEquals(result.get(), entity);
     }
 
     @DisplayName("Should delete entity")

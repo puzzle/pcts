@@ -36,12 +36,12 @@ public class MemberBusinessService {
 
     public Member create(Member member) {
         validationService.validateOnCreate(member);
-        return persistenceService.create(member);
+        return persistenceService.save(member);
     }
 
     public Member update(Long id, Member member) {
         validationService.validateOnUpdate(id);
-        return persistenceService.update(id, member);
+        return persistenceService.save(member);
     }
 
     public void delete(Long id) {
