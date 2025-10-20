@@ -16,16 +16,16 @@ public class BasicStringValidator implements ConstraintValidator<BasicStringVali
     }
 
     @Override
-    public boolean isValid(String name, ConstraintValidatorContext context) {
-        if (name == null) {
+    public boolean isValid(String string, ConstraintValidatorContext context) {
+        if (string == null) {
             return buildViolation(context, "{attribute.notnull}");
         }
 
-        if (name.isBlank()) {
+        if (string.isBlank()) {
             return buildViolation(context, "{attribute.notblank}");
         }
 
-        if (name.trim().length() < this.min || name.trim().length() > this.max) {
+        if (string.trim().length() < this.min || string.trim().length() > this.max) {
             return buildViolation(context, "{attribute.size.between}");
         }
         return true;
