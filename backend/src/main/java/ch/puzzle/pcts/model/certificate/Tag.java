@@ -4,6 +4,7 @@ import static org.apache.commons.lang3.StringUtils.trim;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Entity
 public class Tag {
@@ -36,6 +37,19 @@ public class Tag {
 
     public void setName(String name) {
         this.name = trim(name);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Tag tag)) {
+            return false;
+        }
+        return Objects.equals(id, tag.id) && Objects.equals(name, tag.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 
     @Override

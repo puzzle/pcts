@@ -5,6 +5,7 @@ import static org.apache.commons.lang3.StringUtils.trim;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import jakarta.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -109,6 +110,23 @@ public class Member {
 
     public void setOrganisationUnit(OrganisationUnit organisationUnit) {
         this.organisationUnit = organisationUnit;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Member member)) {
+            return false;
+        }
+        return Objects.equals(id, member.id) && Objects.equals(name, member.name)
+               && Objects.equals(lastName, member.lastName) && employmentState == member.employmentState
+               && Objects.equals(abbreviation, member.abbreviation) && Objects.equals(dateOfHire, member.dateOfHire)
+               && Objects.equals(birthDate, member.birthDate)
+               && Objects.equals(organisationUnit, member.organisationUnit);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, lastName, employmentState, abbreviation, dateOfHire, birthDate, organisationUnit);
     }
 
     @Override
