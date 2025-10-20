@@ -72,14 +72,12 @@ class CertificatePersistenceServiceIT
                                     CertificateType.LEADERSHIP_TRAINING));
     }
 
-    @Override
     @DisplayName("Should update certificate")
     @Transactional
     @Test
     @Order(2)
-    void shouldUpdate() {
+    void shouldUpdateCertificate() {
         long cId = 4;
-        long lId = 5;
 
         Certificate certificate = new Certificate(null,
                                                   "Updated certificate",
@@ -88,18 +86,10 @@ class CertificatePersistenceServiceIT
                                                   Set
                                                           .of(new Tag(null, "Important tag"),
                                                               new Tag(null, "Way more important tag")));
-
-        Certificate leadershipExperience = new Certificate(null,
-                                                           "Updated leadership experience",
-                                                           BigDecimal.valueOf(5),
-                                                           "This is a updated leadership experience",
-                                                           CertificateType.YOUTH_AND_SPORT);
         certificate.setId(cId);
-        leadershipExperience.setId(lId);
         service.save(certificate);
-        service.save(leadershipExperience);
+
         Optional<Certificate> certificateResult = service.getById(cId);
-        Optional<Certificate> leadershipResult = service.getById(lId);
 
         assertThat(certificateResult).isPresent();
         Certificate updatedCertificate = certificateResult.get();
@@ -111,7 +101,26 @@ class CertificatePersistenceServiceIT
         assertThat(updatedCertificate.getTags())
                 .extracting(Tag::getName)
                 .containsExactlyInAnyOrder("Important tag", "Way more important tag");
-        assertThat(certificate.getCertificateType()).isEqualTo(CertificateType.CERTIFICATE);
+
+        assertThat(updatedCertificate.getCertificateType()).isEqualTo(CertificateType.CERTIFICATE);
+    }
+
+    @DisplayName("Should update leadership experience")
+    @Transactional
+    @Test
+    @Order(2)
+    void shouldUpdateLeadershipExperience() {
+        long lId = 5;
+
+        Certificate leadershipExperience = new Certificate(null,
+                                                           "Updated leadership experience",
+                                                           BigDecimal.valueOf(5),
+                                                           "This is a updated leadership experience",
+                                                           CertificateType.YOUTH_AND_SPORT);
+        leadershipExperience.setId(lId);
+        service.save(leadershipExperience);
+
+        Optional<Certificate> leadershipResult = service.getById(lId);
 
         assertThat(leadershipResult).isPresent();
         Certificate updatedLeadership = leadershipResult.get();
@@ -120,7 +129,7 @@ class CertificatePersistenceServiceIT
         assertThat(updatedLeadership.getName()).isEqualTo("Updated leadership experience");
         assertThat(updatedLeadership.getPoints()).isEqualByComparingTo(BigDecimal.valueOf(5));
         assertThat(updatedLeadership.getComment()).isEqualTo("This is a updated leadership experience");
-        assertThat(leadershipExperience.getCertificateType()).isEqualTo(CertificateType.YOUTH_AND_SPORT);
+        assertThat(updatedLeadership.getCertificateType()).isEqualTo(CertificateType.YOUTH_AND_SPORT);
     }
 
     @DisplayName("Should get all certificates")
