@@ -9,7 +9,9 @@ describe('MemberFormResolver', () => {
   const mockRoute = (id: string | null) => {
     return {
       paramMap: {
-        get: (key: string) => (key === 'id' ? id : null),
+        get: (key: string) => {
+          return key === 'id' ? id : null;
+        }
       }
     } as unknown as ActivatedRouteSnapshot;
   };
