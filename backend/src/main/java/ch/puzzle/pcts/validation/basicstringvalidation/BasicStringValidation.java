@@ -1,4 +1,4 @@
-package ch.puzzle.pcts.validation.basic_string_validation;
+package ch.puzzle.pcts.validation.basicstringvalidation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
