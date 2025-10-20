@@ -24,13 +24,8 @@ class OrganisationUnitPersistenceServiceIT
     }
 
     @Override
-    OrganisationUnit getCreateEntity() {
+    OrganisationUnit getModel() {
         return new OrganisationUnit(null, "OrganisationUnit 3");
-    }
-
-    @Override
-    OrganisationUnit getUpdateEntity() {
-        return new OrganisationUnit(null, "Updated organisationUnit");
     }
 
     @Override

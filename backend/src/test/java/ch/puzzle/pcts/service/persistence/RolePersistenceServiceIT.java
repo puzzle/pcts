@@ -10,7 +10,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
 class RolePersistenceServiceIT extends PersistenceBaseIT<Role, RoleRepository, RolePersistenceService> {
 
     private final RolePersistenceService service;
@@ -22,13 +24,8 @@ class RolePersistenceServiceIT extends PersistenceBaseIT<Role, RoleRepository, R
     }
 
     @Override
-    Role getCreateEntity() {
+    Role getModel() {
         return new Role(null, "Role 3", false);
-    }
-
-    @Override
-    Role getUpdateEntity() {
-        return new Role(null, "Updated role", true);
     }
 
     List<Role> getAll() {

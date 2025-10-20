@@ -16,18 +16,9 @@ class ExperienceTypePersistenceServiceIT
     }
 
     @Override
-    ExperienceType getCreateEntity() {
+    ExperienceType getModel() {
         return new ExperienceType(null,
                                   "ExperienceType 3",
-                                  BigDecimal.valueOf(10.055),
-                                  BigDecimal.valueOf(5.603),
-                                  BigDecimal.valueOf(2.005));
-    }
-
-    @Override
-    ExperienceType getUpdateEntity() {
-        return new ExperienceType(null,
-                                  "Updated experienceType",
                                   BigDecimal.valueOf(10.055),
                                   BigDecimal.valueOf(5.603),
                                   BigDecimal.valueOf(2.005));

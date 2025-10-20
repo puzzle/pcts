@@ -41,13 +41,7 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
     /**
      * Returns an object of the entity used to save it in the database
      */
-    abstract T getCreateEntity();
-
-    /**
-     * Returns an object of the Entity used to update an object in the database
-     */
-    abstract T getUpdateEntity();
-
+    abstract T getModel();
     /**
      * A list of all the objects with this datatype stored in the database shouldn't
      * contain soft deleted ones
@@ -87,7 +81,7 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
     @Test
     @Order(2)
     void shouldCreate() {
-        T entity = getCreateEntity();
+        T entity = getModel();
 
         T result = service.save(entity);
 
@@ -101,7 +95,7 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
     @Order(2)
     void shouldUpdate() {
         long id = 2;
-        T entity = getUpdateEntity();
+        T entity = this.getModel();
         entity.setId(id);
         service.save(entity);
 

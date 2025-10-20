@@ -29,21 +29,12 @@ class CertificatePersistenceServiceIT
     }
 
     @Override
-    Certificate getCreateEntity() {
+    Certificate getModel() {
         return new Certificate(null,
                                "Created certificate",
                                BigDecimal.valueOf(3),
                                "This is a newly created certificate",
                                Set.of(new Tag(1L, "Important tag"), new Tag(2L, "Way more important tag")));
-    }
-
-    @Override
-    Certificate getUpdateEntity() {
-        return new Certificate(null,
-                               "Updated certificate",
-                               BigDecimal.valueOf(3),
-                               "This is a updated certificate",
-                               Set.of(new Tag(null, "Important tag"), new Tag(null, "Way more important tag")));
     }
 
     @Override

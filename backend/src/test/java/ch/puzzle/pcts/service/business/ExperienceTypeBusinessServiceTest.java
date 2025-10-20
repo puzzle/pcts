@@ -105,13 +105,13 @@ class ExperienceTypeBusinessServiceTest {
     @Test
     void shouldUpdate() {
         Long id = 1L;
-        when(persistenceService.update(id, experienceType2)).thenReturn(experienceType2);
+        when(persistenceService.save(experienceType)).thenReturn(experienceType);
 
         ExperienceType result = businessService.update(id, experienceType);
 
-        assertEquals(experienceType2, result);
-        verify(validationService).validateOnUpdate(id, experienceType2);
-        verify(persistenceService).update(id, experienceType2);
+        assertEquals(experienceType, result);
+        verify(validationService).validateOnUpdate(id, experienceType);
+        verify(persistenceService).save(experienceType);
     }
 
     @DisplayName("Should delete experienceType")

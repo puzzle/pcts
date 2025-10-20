@@ -16,18 +16,9 @@ class DegreeTypePersistenceServiceIT
     }
 
     @Override
-    DegreeType getCreateEntity() {
+    DegreeType getModel() {
         return new DegreeType(null,
                               "DegreeTypes 3",
-                              BigDecimal.valueOf(10.055),
-                              BigDecimal.valueOf(5.603),
-                              BigDecimal.valueOf(2.005));
-    }
-
-    @Override
-    DegreeType getUpdateEntity() {
-        return new DegreeType(null,
-                              "Updated degreeType",
                               BigDecimal.valueOf(10.055),
                               BigDecimal.valueOf(5.603),
                               BigDecimal.valueOf(2.005));

@@ -27,13 +27,8 @@ class TagPersistenceServiceIT extends PersistenceBaseIT<Tag, TagRepository, TagP
     }
 
     @Override
-    Tag getCreateEntity() {
+    Tag getModel() {
         return new Tag(null, "Very important tag");
-    }
-
-    @Override
-    Tag getUpdateEntity() {
-        return new Tag(null, "Updated tag");
     }
 
     List<Tag> getAll() {
