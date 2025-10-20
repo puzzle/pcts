@@ -11,7 +11,6 @@ public class FieldAwareMessageInterpolator implements MessageInterpolator {
 
     public FieldAwareMessageInterpolator(MessageInterpolator delegate) {
         this.delegate = delegate;
-
     }
 
     @Override
