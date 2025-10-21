@@ -5,9 +5,9 @@ import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificate.CertificateType;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class LeadershipExperienceValidationService extends ValidationBase<Certificate> {
     @Override
     public void validateOnCreate(Certificate leadershipExperience) {
