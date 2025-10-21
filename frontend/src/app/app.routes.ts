@@ -6,8 +6,7 @@ import { MemberOverviewResolver } from './features/member/overview/member-overvi
 
 export const routes: Routes = [{ path: '',
   component: MemberOverviewComponent,
-  resolve: { filters: MemberOverviewResolver }
-},
+  resolve: { filters: MemberOverviewResolver } },
 {
   path: 'member',
   children: [{ path: 'add',

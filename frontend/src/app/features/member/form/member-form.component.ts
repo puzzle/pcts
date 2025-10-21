@@ -135,17 +135,18 @@ export class MemberFormComponent implements OnInit {
     if (this.memberForm.invalid) {
       return;
     }
-
     const memberToSave = this.memberService.toDto(this.memberForm.getRawValue() as MemberModel);
     if (this.isEdit()) {
       this.memberService.updateMember(this.memberForm.get('id')?.value, memberToSave)
-        .subscribe();
+        .subscribe(() => {
+          this.router.navigate(['/']);
+        });
     } else {
       this.memberService.addMember(memberToSave)
-        .subscribe();
+        .subscribe(() => {
+          this.router.navigate(['/']);
+        });
     }
-
-    this.router.navigate(['/']);
   }
 
   isDateInFuture(): ValidatorFn {

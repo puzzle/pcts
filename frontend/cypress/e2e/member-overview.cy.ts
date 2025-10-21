@@ -1,6 +1,7 @@
 import HomePage from '../pages/homePage';
 import translations from '../../public/i18n/de.json';
 import { EmploymentState } from '../../src/app/shared/enum/employment-state.enum';
+import FormPage from '../pages/formPage';
 
 describe('MemberOverviewComponent', () => {
   beforeEach(() => {
@@ -56,6 +57,13 @@ describe('MemberOverviewComponent', () => {
     HomePage.fillSearchInput('Jane');
     cy.url()
       .should('include', 'q=Jane');
+  });
+
+  it('should load add member page', () => {
+    HomePage.createMemberButton()
+      .click();
+
+    FormPage.shouldHaveTitle(translations.GENERAL.ADD);
   });
 
   it('should keep query params in the URL when filtering', () => {

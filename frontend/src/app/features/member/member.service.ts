@@ -36,7 +36,7 @@ export class MemberService {
       birthDate: model.birthDate,
       abbreviation: model.abbreviation,
       employmentState: model.employmentState,
-      organisationUnitId: model.organisationUnit.id,
+      organisationUnitId: model.organisationUnit?.id,
       dateOfHire: model.dateOfHire
     };
   }
