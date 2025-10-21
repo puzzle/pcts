@@ -1,6 +1,5 @@
 package ch.puzzle.pcts.service.persistence;
 
-import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,7 +26,6 @@ public abstract class PersistenceBase<T, R extends JpaRepository<T, Long>> {
         return repository.findAll();
     }
 
-    @Transactional
     public T save(T model) {
         return repository.save(model);
     }

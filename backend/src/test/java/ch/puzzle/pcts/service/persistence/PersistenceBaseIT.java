@@ -93,10 +93,10 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
     @DisplayName("Should update entity")
     @Transactional
     @Test
-    @Order(2)
+    @Order(3)
     void shouldUpdate() {
         long id = 2;
-        T entity = this.getModel();
+        T entity = this.getAll().getFirst();
         entity.setId(id);
         service.save(entity);
 
@@ -109,7 +109,7 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
     @DisplayName("Should delete entity")
     @Transactional
     @Test
-    @Order(3)
+    @Order(4)
     void shouldDelete() {
         long id = 2;
 

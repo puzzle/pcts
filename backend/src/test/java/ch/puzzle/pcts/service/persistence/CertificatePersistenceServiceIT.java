@@ -72,7 +72,7 @@ class CertificatePersistenceServiceIT
                                     CertificateType.LEADERSHIP_TRAINING));
     }
 
-    @DisplayName("Should update certificate")
+    @DisplayName("Should update certificates")
     @Transactional
     @Test
     @Order(2)
@@ -105,7 +105,7 @@ class CertificatePersistenceServiceIT
         assertThat(updatedCertificate.getCertificateType()).isEqualTo(CertificateType.CERTIFICATE);
     }
 
-    @DisplayName("Should update leadership experience")
+    @DisplayName("Should update leadership experiences")
     @Transactional
     @Test
     @Order(2)
