@@ -3,6 +3,7 @@ package ch.puzzle.pcts.service.persistence;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
 
 /**
  * @param <T>
@@ -10,6 +11,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @param <R>
  *            the Repository of the entity
  */
+@Service
 public abstract class PersistenceBase<T, R extends JpaRepository<T, Long>> {
 
     private final R repository;

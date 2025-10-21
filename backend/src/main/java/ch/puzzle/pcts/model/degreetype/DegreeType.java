@@ -102,20 +102,4 @@ public class DegreeType implements Model {
                + ", limitedRelevantPoints=" + limitedRelevantPoints + ", littleRelevantPoints=" + littleRelevantPoints
                + '}';
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass())
-            return false;
-        DegreeType that = (DegreeType) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name)
-               && Objects.equals(highlyRelevantPoints, that.highlyRelevantPoints)
-               && Objects.equals(limitedRelevantPoints, that.limitedRelevantPoints)
-               && Objects.equals(littleRelevantPoints, that.littleRelevantPoints);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, highlyRelevantPoints, limitedRelevantPoints, littleRelevantPoints);
-    }
 }
