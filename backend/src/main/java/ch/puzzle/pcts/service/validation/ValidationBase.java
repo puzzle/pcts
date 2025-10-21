@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.validation;
 
+import ch.puzzle.pcts.FieldAwareMessageInterpolator;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.error.ErrorKey;
@@ -11,11 +12,13 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 /**
  * @param <T>
  *            the Type or entity of the repository
  */
+@Service
 public abstract class ValidationBase<T extends Model> {
     private final Validator validator;
 
