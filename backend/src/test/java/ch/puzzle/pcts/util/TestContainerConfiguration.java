@@ -1,4 +1,4 @@
-package ch.puzzle.pcts.service.persistence;
+package ch.puzzle.pcts.util;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;

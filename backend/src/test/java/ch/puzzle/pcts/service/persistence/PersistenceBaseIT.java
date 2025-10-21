@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ch.puzzle.pcts.model.Model;
+import ch.puzzle.pcts.util.IT;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -11,10 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 /**
@@ -25,9 +23,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
  * @param <S>
  *            the persistence service of the entity
  */
-@SpringBootTest
-@ActiveProfiles("test")
-@Import(TestContainerConfiguration.class)
+@IT
 abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Long>, S extends PersistenceBase<T, R>> {
 
     private final S service;
