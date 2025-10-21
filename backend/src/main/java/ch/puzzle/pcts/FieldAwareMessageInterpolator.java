@@ -1,4 +1,4 @@
-package ch.puzzle.pcts.service.validation;
+package ch.puzzle.pcts;
 
 import jakarta.validation.MessageInterpolator;
 import jakarta.validation.Path;
