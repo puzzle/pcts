@@ -1,6 +1,7 @@
 import { MemberModel } from '../../features/member/member.model';
 import { EmploymentState } from '../enum/employment-state.enum';
 import { OrganisationUnitModel } from '../../features/organisation-unit/organisation-unit.model';
+import { MemberDto } from '../../features/member/dto/member.dto';
 
 export const organisationUnit1: OrganisationUnitModel = {
   id: 1,
@@ -24,10 +25,10 @@ export const organisationUnit4: OrganisationUnitModel = {
 
 export const member1: MemberModel = {
   id: 1,
-  name: 'Ja',
-  lastName: 'Morant',
+  name: 'Lena',
+  lastName: 'Müller',
   birthDate: new Date(2000, 12, 1),
-  abbreviation: 'JM',
+  abbreviation: 'LM',
   employmentState: EmploymentState.MEMBER,
   dateOfHire: new Date(2018, 12, 1),
   organisationUnit: organisationUnit1
@@ -35,10 +36,10 @@ export const member1: MemberModel = {
 
 export const member2: MemberModel = {
   id: 2,
-  name: 'Jaren',
-  lastName: 'Jackson Jr',
+  name: 'Sophie',
+  lastName: 'Keller',
   birthDate: new Date(2000, 12, 1),
-  abbreviation: 'JJJ',
+  abbreviation: 'SK',
   employmentState: EmploymentState.MEMBER,
   dateOfHire: new Date(2018, 12, 1),
   organisationUnit: organisationUnit2
@@ -46,8 +47,8 @@ export const member2: MemberModel = {
 
 export const member3: MemberModel = {
   id: 3,
-  name: 'Bane',
-  lastName: 'Desmond',
+  name: 'Mara',
+  lastName: 'Becker',
   birthDate: new Date(2000, 12, 1),
   abbreviation: 'BD',
   employmentState: EmploymentState.EX_MEMBER,
@@ -57,11 +58,21 @@ export const member3: MemberModel = {
 
 export const member4: MemberModel = {
   id: 4,
-  name: 'Jaylan',
-  lastName: 'Williams',
+  name: 'John',
+  lastName: 'Doe',
   birthDate: new Date(2000, 12, 1),
-  abbreviation: 'JW',
+  abbreviation: 'JD',
   employmentState: EmploymentState.APPLICANT,
   dateOfHire: new Date(2018, 12, 1),
   organisationUnit: organisationUnit4
+};
+
+export const memberDto1: MemberDto = {
+  name: 'Lena',
+  lastName: 'Müller',
+  birthDate: new Date(2000, 12, 1),
+  abbreviation: 'LM',
+  employmentState: EmploymentState.MEMBER,
+  dateOfHire: new Date(2018, 12, 1),
+  organisationUnitId: 1
 };

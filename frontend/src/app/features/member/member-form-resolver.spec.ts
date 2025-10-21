@@ -1,49 +1,67 @@
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { memberDataResolver } from './member-form-resolver';
+import { MemberService } from './member.service';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { MemberModel } from './member.model';
+import { member1 } from '../../shared/test/test-data';
 
-describe('MemberFormResolver', () => {
-  let route: ActivatedRouteSnapshot;
+const mockRoute = (id: string | null) => ({
+  paramMap: {
+    get: (key: string) => {
+      return key === 'id' ? id : null;
+    }
+  }
+} as unknown as ActivatedRouteSnapshot);
+
+describe('memberDataResolver', () => {
+  let mockMemberService: jest.Mocked<MemberService>;
   let state: RouterStateSnapshot;
 
-  const mockRoute = (id: string | null) => {
-    return {
-      paramMap: {
-        get: (key: string) => {
-          return key === 'id' ? id : null;
-        }
-      }
-    } as unknown as ActivatedRouteSnapshot;
-  };
-
   beforeEach(() => {
+    mockMemberService = {
+      getMemberById: jest.fn()
+    } as unknown as jest.Mocked<MemberService>;
+
     TestBed.configureTestingModule({
-      providers: []
+      providers: [{ provide: MemberService,
+        useValue: mockMemberService }]
     });
-    route = new ActivatedRouteSnapshot();
+
     state = {} as RouterStateSnapshot;
   });
 
-  it('Should create', () => {
-    expect(route)
-      .toBeTruthy();
+  it('should return an empty member object when id is null', (done) => {
+    const route = mockRoute(null);
+
+    const result$ = TestBed.runInInjectionContext(() => memberDataResolver(route, state)) as Observable<MemberModel>;
+
+    result$.subscribe((member) => {
+      expect(member)
+        .toEqual({});
+      expect(mockMemberService.getMemberById).not.toHaveBeenCalled();
+
+      done();
+    });
   });
 
-  it('should return id', () => {
+  it('should call getMemberById and return a member when id is present', (done) => {
     const testId = '1';
+    const route = mockRoute(testId);
+    mockMemberService.getMemberById.mockReturnValue(of(member1));
 
-    route = mockRoute(testId);
+    const result$ = TestBed.runInInjectionContext(() => memberDataResolver(route, state)) as Observable<MemberModel>;
 
-    const result = memberDataResolver(route, state);
+    result$.subscribe((member) => {
+      expect(mockMemberService.getMemberById)
+        .toHaveBeenCalledWith(+testId);
+      expect(mockMemberService.getMemberById)
+        .toHaveBeenCalledTimes(1);
 
-    expect(result)
-      .toBe(testId);
-  });
+      expect(member)
+        .toEqual(member1);
 
-  it('Should throw error when id is missing', () => {
-    route = mockRoute(null);
-
-    expect(() => memberDataResolver(route, state))
-      .toThrow(new Error('ID param is missing'));
+      done();
+    });
   });
 });
