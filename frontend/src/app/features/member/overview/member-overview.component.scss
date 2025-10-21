@@ -17,3 +17,7 @@
 button.active {
   background-color: variables.$table-primary-color;
 }
+
+.table-max-height {
+  max-height: 70vh;
+}

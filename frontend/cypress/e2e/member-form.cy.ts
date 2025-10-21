@@ -1,5 +1,6 @@
 import FormPage from '../pages/formPage';
 import translations from '../../public/i18n/de.json';
+import HomePage from '../pages/homePage';
 
 
 describe('MemberFormComponent', () => {
@@ -14,91 +15,120 @@ describe('MemberFormComponent', () => {
     'employmentState'
   ].forEach((fieldName) => {
     it(`should show required error for field ${fieldName}`, () => {
-      cy.getByTestId(fieldName)
-        .focus()
-        .blur();
+      FormPage.clearAndBlur(fieldName);
 
-      cy.getByTestId('validation-error')
-        .should('include.text', translations.VALIDATION.REQUIRED);
+      FormPage.shouldShowValidationError(translations.VALIDATION.REQUIRED);
     });
   });
 
   ['employmentState',
     'organisationUnit'].forEach((fieldName) => {
     it(`should show invalid entry error for field ${fieldName}`, () => {
-      cy.getByTestId(fieldName)
-        .type('invalid entry')
-        .blur();
+      FormPage.typeAndBlur(fieldName, 'invalid entry');
 
-      cy.getByTestId('validation-error')
-        .should('include.text', translations.VALIDATION.INVALID_ENTRY);
+      FormPage.shouldShowValidationError(translations.VALIDATION.INVALID_ENTRY);
     });
   });
 
   ['birthDate',
     'dateOfHire'].forEach((fieldName) => {
     it(`should show invalid date error for field ${fieldName}`, () => {
-      cy.getByTestId(fieldName)
-        .type('invalid entry')
-        .blur();
+      FormPage.typeAndBlur(fieldName, 'invalid entry');
 
-      cy.getByTestId('validation-error')
-        .should('include.text', translations.VALIDATION.MATDATEPICKERPARSE);
+      FormPage.shouldShowValidationError(translations.VALIDATION.MATDATEPICKERPARSE);
     });
   });
 
   it('should activate submit button when everything is filled out', () => {
-    FormPage.isSaveDisabled();
-    FormPage.addTextToFieldAndCheckButtonState('name', 'John');
-    FormPage.addTextToFieldAndCheckButtonState('lastName', 'Doe');
-    FormPage.addTextToFieldAndCheckButtonState('birthDate', '1.1.2000');
-    FormPage.addTextToFieldAndCheckButtonState('employmentState', 'Bewerber');
+    FormPage.submitButtonShouldBe('disabled');
+    FormPage.typeAndBlur('name', 'John')
+      .submitButtonShouldBe('disabled');
+    FormPage.typeAndBlur('lastName', 'Doe')
+      .submitButtonShouldBe('disabled');
+    FormPage.typeAndBlur('birthDate', '10.10.2000')
+      .submitButtonShouldBe('disabled');
+    FormPage.typeAndBlur('employmentState', 'B')
+      .submitButtonShouldBe('disabled');
 
     cy.get('mat-option')
       .contains('Bewerber')
       .click();
 
-
-    cy.getByTestId('submit-button')
-      .should('be.enabled');
+    FormPage.submitButtonShouldBe('enabled');
   });
 });
 
-describe('Member form', () => {
+describe('add member form', () => {
   beforeEach(() => {
     FormPage.visitAdd();
   });
 
   it('should be the add member site', () => {
-    cy.getByTestId('title')
-      .should('have.text', 'Member ' + translations.GENERAL.ADD);
+    FormPage.shouldHaveTitle(translations.GENERAL.ADD);
+  });
+
+  it('should submit member and show him in list', () => {
+    HomePage.visit();
+    FormPage.visitAdd();
+
+    FormPage.submitButtonShouldBe('disabled');
+    FormPage.typeAndBlur('name', 'John');
+    FormPage.typeAndBlur('lastName', 'Doe');
+    FormPage.typeAndBlur('abbreviation', 'JD');
+    FormPage.typeAndBlur('birthDate', '10.10.2000');
+    FormPage.typeAndBlur('dateOfHire', '10.10.2000');
+    FormPage.typeAndBlur('employmentState', 'B');
+
+    cy.get('mat-option')
+      .contains('Bewerber')
+      .click();
+
+    FormPage.typeAndBlur('organisationUnit', '/zh');
+
+    cy.get('mat-option')
+      .contains('/zh')
+      .click();
+
+    FormPage.save();
+
+    HomePage.memberRows()
+      .contains('John Doe', { matchCase: false });
   });
 });
 
-describe('edit member', () => {
-  beforeEach(() => {
-    FormPage.visitEdit();
-  });
-
+describe('edit member form', () => {
   it('should be the edit member site', () => {
-    cy.getByTestId('title')
-      .should('have.text', 'Member ' + translations.GENERAL.EDIT);
+    FormPage.visitEdit(1);
+    FormPage.shouldHaveTitle(translations.GENERAL.EDIT);
   });
 
   it('should get all member data', () => {
-    cy.getByTestId('name')
-      .should('have.value', 'Ja');
-    cy.getByTestId('lastName')
-      .should('have.value', 'Morant');
-    cy.getByTestId('abbreviation')
-      .should('have.value', 'JM');
-    cy.getByTestId('birthDate')
-      .should('have.value', '1.1.2000');
-    cy.getByTestId('dateOfHire')
-      .should('have.value', '1.1.2025');
-    cy.getByTestId('employmentState')
-      .should('have.value', 'Member');
-    cy.getByTestId('organisationUnit')
-      .should('have.value', '/mem');
+    FormPage.visitEdit(1);
+    const expectedMemberData = {
+      name: 'Lena',
+      lastName: 'Müller',
+      abbreviation: 'LM',
+      birthDate: '10.08.1999',
+      dateOfHire: '15.07.2021',
+      employmentState: 'Member',
+      organisationUnit: '/zh'
+    };
+
+    Object.entries(expectedMemberData)
+      .forEach(([field,
+        value]) => {
+        FormPage.shouldHaveFieldValue(field, value);
+      });
+  });
+
+  it('should save changes to member', () => {
+    FormPage.visitEdit(2);
+    FormPage.clearAndBlur('name');
+    FormPage.typeAndBlur('name', 'Leon');
+
+    FormPage.save();
+
+    HomePage.memberRows()
+      .contains('Leon Schmidt', { matchCase: false });
   });
 });

@@ -36,6 +36,10 @@ class HomePage extends Page {
   filterByState(state: EmploymentState) {
     return cy.getByTestId(state);
   }
+
+  createMemberButton() {
+    return cy.getByTestId('add-member-button');
+  }
 }
 
 export default new HomePage();
