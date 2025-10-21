@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.validation;
 
+import ch.puzzle.pcts.FieldAwareMessageInterpolator;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.error.ErrorKey;
