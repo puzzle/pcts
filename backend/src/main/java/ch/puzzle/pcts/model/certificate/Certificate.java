@@ -2,8 +2,10 @@ package ch.puzzle.pcts.model.certificate;
 
 import static org.apache.commons.lang3.StringUtils.trim;
 
+import ch.puzzle.pcts.model.Model;
+import ch.puzzle.pcts.validation.basicstringvalidation.BasicStringValidation;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.Set;
@@ -13,17 +15,19 @@ import org.hibernate.annotations.SQLRestriction;
 @Entity
 @SQLDelete(sql = "UPDATE certificate SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
-public class Certificate {
+public class Certificate implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @BasicStringValidation
     private String name;
 
-    @NotNull
+    @NotNull(message = "{attribute.not.null}")
+    @PositiveOrZero(message = "{attribute.not.negative}")
     private BigDecimal points;
 
+    @BasicStringValidation
     private String comment;
 
     @ManyToMany(cascade = { CascadeType.MERGE })
@@ -31,7 +35,7 @@ public class Certificate {
     private Set<Tag> tags;
 
     @Enumerated(EnumType.STRING)
-    @NotNull
+    @NotNull(message = "{attribute.not.null}")
     private CertificateType certificateType;
 
     public Certificate(Long id, String name, BigDecimal points, String comment, Set<Tag> tags,

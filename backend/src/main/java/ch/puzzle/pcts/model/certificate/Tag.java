@@ -2,17 +2,18 @@ package ch.puzzle.pcts.model.certificate;
 
 import static org.apache.commons.lang3.StringUtils.trim;
 
+import ch.puzzle.pcts.model.Model;
+import ch.puzzle.pcts.validation.basicstringvalidation.BasicStringValidation;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity
-public class Tag {
+public class Tag implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @BasicStringValidation
     private String name;
 
     public Tag(Long id, String name) {

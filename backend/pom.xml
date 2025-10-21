@@ -104,6 +104,12 @@
           <version>4.13.2</version>
           <scope>test</scope>
       </dependency>
+      <dependency>
+          <groupId>com.tngtech.archunit</groupId>
+          <artifactId>archunit-junit5</artifactId>
+          <version>1.4.1</version>
+          <scope>test</scope>
+      </dependency>
     <dependency>
       <groupId>com.tngtech.archunit</groupId>
       <artifactId>archunit-junit5</artifactId>
@@ -198,7 +204,7 @@
 								<exclude>ch/puzzle/pcts/exception/**</exclude>
 								<exclude>ch/puzzle/pcts/PctsApplication.java</exclude>
 								<exclude>ch/puzzle/pcts/SpringSecurityConfig.java</exclude>
-							</excludes>
+                            </excludes>
 						</configuration>
 						<executions>
 							<execution>

@@ -27,7 +27,7 @@ public class Member implements Model {
     private String lastName;
 
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "{attribute.notnull}")
+    @NotNull(message = "{attribute.not.null}")
     private EmploymentState employmentState;
 
     @BasicStringValidation
@@ -35,8 +35,8 @@ public class Member implements Model {
 
     private Date dateOfHire;
 
-    @NotNull(message = "{attribute.notnull}")
-    @Past(message = "{attribute.no.past}")
+    @NotNull(message = "{attribute.not.null}")
+    @Past(message = "{attribute.date.past}")
     private Date birthDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
