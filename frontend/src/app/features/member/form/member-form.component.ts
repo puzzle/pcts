@@ -1,4 +1,4 @@
-import { Component, computed, inject, Signal, signal, WritableSignal } from '@angular/core';
+import { Component, computed, inject, OnInit, Signal, signal, WritableSignal } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -25,8 +25,8 @@ import { EmploymentState } from '../../../shared/enum/employment-state.enum';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MemberModel } from '../member.model';
 import { OrganisationUnitService } from '../../organisation-unit/organisation-unit.service';
-import { PctsFormError } from '../../../shared/pcts-form-error/pcts-form-error';
-import { PctsFormLabel } from '../../../shared/pcts-form-label/pcts-form-label';
+import { PctsFormErrorDirective } from '../../../shared/pcts-form-error/pcts-form-error.directive';
+import { PctsFormLabelDirective } from '../../../shared/pcts-form-label/pcts-form-label.directive';
 import { InputFieldComponent } from '../../../shared/input-field/input-field.component';
 
 @Component({
@@ -43,14 +43,14 @@ import { InputFieldComponent } from '../../../shared/input-field/input-field.com
     MatIconModule,
     MatDatepickerModule,
     RouterLink,
-    PctsFormError,
-    PctsFormLabel,
+    PctsFormErrorDirective,
+    PctsFormLabelDirective,
     InputFieldComponent
   ],
   templateUrl: './member-form.component.html',
   styleUrl: './member-form.component.scss'
 })
-export class MemberFormComponent {
+export class MemberFormComponent implements OnInit {
   private readonly translateService = inject(TranslateService);
 
   private readonly memberService = inject(MemberService);
@@ -109,7 +109,7 @@ export class MemberFormComponent {
     return this.filterOrganisationUnit(value);
   });
 
-  constructor() {
+  ngOnInit() {
     this.organisationUnitService.getAllOrganisationUnits()
       .subscribe((organisationUnits) => {
         this.organisationUnitsOptions.set(organisationUnits);
@@ -119,7 +119,6 @@ export class MemberFormComponent {
 
   loadMember() {
     const member = this.route.snapshot.data['memberData'] as MemberModel;
-
     this.memberForm.patchValue(member);
 
     if (member?.id) {
@@ -138,7 +137,6 @@ export class MemberFormComponent {
     }
 
     const memberToSave = this.memberService.toDto(this.memberForm.getRawValue() as MemberModel);
-
     if (this.isEdit()) {
       this.memberService.updateMember(this.memberForm.get('id')?.value, memberToSave)
         .subscribe();
@@ -201,19 +199,18 @@ export class MemberFormComponent {
     };
   }
 
-  protected displayEmploymentState(employmentState: EmploymentState | string): string {
+  protected displayEmploymentState = (employmentState: EmploymentState | string): string => {
     if (!employmentState) {
       return '';
     }
     const translationKey = 'MEMBER.EMPLOYMENT_STATUS_VALUES.' + employmentState;
     return this.translateService.instant(translationKey);
-  }
+  };
 
   protected displayOrganisationUnit(organisationUnit: OrganisationUnitModel): string {
     if (!organisationUnit) {
       return '';
     }
-
     return organisationUnit.name;
   }
 
@@ -239,7 +236,6 @@ export class MemberFormComponent {
     if (filterValue === '') {
       return this.organisationUnitsOptions();
     }
-
     return this.organisationUnitsOptions()
       .filter((option) => option.name.toLowerCase()
         .includes(filterValue));

@@ -6,10 +6,16 @@ import {
   viewChild
 } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MAT_FORM_FIELD, MatError, MatFormField, MatFormFieldControl, MatLabel } from '@angular/material/form-field';
+import {
+  MAT_FORM_FIELD,
+  MatError,
+  MatFormField,
+  MatFormFieldControl,
+  MatLabel
+} from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { PctsFormError } from '../pcts-form-error/pcts-form-error';
-import { PctsFormLabel } from '../pcts-form-label/pcts-form-label';
+import { PctsFormErrorDirective } from '../pcts-form-error/pcts-form-error.directive';
+import { PctsFormLabelDirective } from '../pcts-form-label/pcts-form-label.directive';
 
 @Component({
   selector: 'app-input-field',
@@ -20,8 +26,8 @@ import { PctsFormLabel } from '../pcts-form-label/pcts-form-label';
     MatDatepickerModule,
     MatIconModule,
     MatError,
-    PctsFormError,
-    PctsFormLabel
+    PctsFormErrorDirective,
+    PctsFormLabelDirective
   ],
   templateUrl: './input-field.component.html',
   styleUrl: './input-field.component.scss',

@@ -20,21 +20,30 @@
           <input type="text" formControlName="abbreviation" matInput>
         </app-input-field>
 
-        <app-input-field>
-          <input type="text" formControlName="birthDate" matInput>
-        </app-input-field>
+    <mat-form-field>
+      <mat-label appPctsFormLabel/>
+      <input matInput [matDatepicker]="birthDatePicker" formControlName="birthDate">
+      <mat-datepicker-toggle matIconSuffix [for]="birthDatePicker"/>
+      <mat-datepicker #birthDatePicker />
+      <mat-error appPctsFormError/>
+    </mat-form-field>
 
-        <app-input-field>
-          <input type="text" formControlName="dateOfHire" matInput>
-        </app-input-field>
+
+    <mat-form-field>
+      <mat-label appPctsFormLabel/>
+      <input matInput [matDatepicker]="dateOfHirePicker" formControlName="dateOfHire">
+      <mat-datepicker-toggle matIconSuffix [for]="dateOfHirePicker"/>
+      <mat-datepicker #dateOfHirePicker />
+      <mat-error appPctsFormError/>
+    </mat-form-field>
 
 
-        <mat-form-field>
+    <mat-form-field>
           <mat-label appPctsFormLabel/>
-          <input type="text" formControlName="employmentState" matInput [matAutocomplete]="auto">
-          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-            @for (option of employmentStateFilteredOptions(); track option) {
-              <mat-option [value]="option">{{displayEmploymentState(option)}}</mat-option>
+      <input type="text" formControlName="employmentState" matInput [matAutocomplete]="employmentStateAutoComplete">
+      <mat-autocomplete autoActiveFirstOption #employmentStateAutoComplete="matAutocomplete" [displayWith]="displayEmploymentState">
+        @for (employmentState of employmentStateFilteredOptions(); track employmentState) {
+          <mat-option [value]="employmentState">{{ displayEmploymentState(employmentState) }}</mat-option>
             }
           </mat-autocomplete>
           <mat-error appPctsFormError/>
@@ -43,10 +52,11 @@
 
         <mat-form-field>
           <mat-label appPctsFormLabel/>
-          <input type="text" formControlName="organisationUnit" matInput [matAutocomplete]="auto">
-          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-            @for (option of employmentStateFilteredOptions(); track option) {
-              <mat-option [value]="option">{{displayEmploymentState(option)}}</mat-option>
+          <input type="text" formControlName="organisationUnit" matInput
+                 [matAutocomplete]="organisationUnitAutoComplete" >
+          <mat-autocomplete autoActiveFirstOption #organisationUnitAutoComplete="matAutocomplete" [displayWith]="displayOrganisationUnit">
+            @for (organisationUnit of organisationUnitFilteredOptions(); track organisationUnit) {
+              <mat-option [value]="organisationUnit">{{ displayOrganisationUnit(organisationUnit) }}</mat-option>
             }
           </mat-autocomplete>
           <mat-error appPctsFormError/>

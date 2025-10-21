@@ -4,8 +4,7 @@ import { MemberService } from './member.service';
 import { inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
-export const memberDataResolver: ResolveFn<MemberModel> = (route,
-  state): Observable<MemberModel> => {
+export const memberDataResolver: ResolveFn<MemberModel> = (route): Observable<MemberModel> => {
   const id: string | null = route.paramMap.get('id');
 
   const memberService = inject(MemberService);

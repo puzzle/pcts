@@ -95,13 +95,13 @@ describe('MemberOverviewComponent', () => {
 
   describe('createFilterPredicate', () => {
     const testCases = [
-      { searchText: 'ja',
+      { searchText: 'lena',
         status: EmploymentState.EX_MEMBER,
         expected: false },
-      { searchText: 'Morant',
+      { searchText: 'Müller',
         status: '',
         expected: true },
-      { searchText: 'Bane',
+      { searchText: 'Keller',
         status: EmploymentState.MEMBER,
         expected: false },
       { searchText: 'NoMember',
@@ -121,8 +121,8 @@ describe('MemberOverviewComponent', () => {
   });
 
   describe('applyCombinedFilter', () => {
-    it.each([['Bane'],
-      ['ja Morant'],
+    it.each([['Keller'],
+      ['Lena Müller'],
       ['']])('should update searchControl to "%s" and apply filter', (searchText) => {
       const spy = jest.spyOn(component as any, 'applyCombinedFilter');
       component.searchControl.setValue(searchText);

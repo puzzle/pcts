@@ -6,9 +6,12 @@ import { NgControl } from '@angular/forms';
 
 @Directive({
   selector: '[appPctsFormError]',
-  standalone: true
+  standalone: true,
+  host: {
+    'data-testid': 'validation-error'
+  }
 })
-export class PctsFormError implements AfterViewInit {
+export class PctsFormErrorDirective implements AfterViewInit {
   public matFormField = inject(MatFormField);
 
   public renderer2 = inject(Renderer2);
@@ -23,7 +26,7 @@ export class PctsFormError implements AfterViewInit {
       .subscribe(() => this.updateError());
   }
 
-  private updateError(): void {
+  updateError(): void {
     const messages = this.getErrorMessages() ?? [];
     const translatedMessages = messages.map((msg) => this.translateService.instant(msg));
     const html = translatedMessages.join('<br>');
@@ -32,11 +35,9 @@ export class PctsFormError implements AfterViewInit {
 
   getErrorMessages(): string[] {
     const control = this.matFormField?._control?.ngControl;
-    console.log(control);
-    if (!control || !control.touched || control.valid) {
+    if (!control || control.valid) {
       return [];
     }
-    console.log('Hallo');
 
     return control.errors ? Object.keys(control.errors)
       .map((key) => `VALIDATION.${key.toUpperCase()}`)

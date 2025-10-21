@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
   selector: '[appPctsFormLabel]',
   standalone: true
 })
-export class PctsFormLabel implements AfterViewInit {
+export class PctsFormLabelDirective implements AfterViewInit {
   private readonly caseFormatter = inject(CaseFormatter);
 
   public matFormField = inject(MatFormField);
@@ -29,11 +29,15 @@ export class PctsFormLabel implements AfterViewInit {
   ngAfterViewInit(): void {
     this.i18nPrefix = this.elementRef.nativeElement.closest('form')?.name;
 
-    const label = this.caseFormatter.camelToSnake([this.i18nPrefix,
+    const labelKey = this.caseFormatter.camelToSnake([this.i18nPrefix,
       this.matFormFieldControl?.name ?? ''].join('.'));
-    const translatedLabel = this.translateService.instant(label);
-    this.renderer2.setProperty(this.elementRef.nativeElement, 'innerHTML', translatedLabel);
+
+    this.translateService.get(labelKey)
+      .subscribe((translatedLabel) => {
+        this.renderer2.setProperty(this.elementRef.nativeElement, 'innerHTML', translatedLabel);
+      });
   }
+
 
   get matFormFieldControl(): NgControl {
     return this.matFormField._control.ngControl as NgControl;

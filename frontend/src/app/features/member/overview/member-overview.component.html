@@ -80,10 +80,10 @@
 
     <ng-container matColumnDef="birthDate">
       <th mat-header-cell *matHeaderCellDef mat-sort-header="birthDate">
-        {{ 'MEMBER.BIRTHDATE' | translate }}
+        {{ 'MEMBER.BIRTH_DATE' | translate }}
       </th>
       <td mat-cell *matCellDef="let member" data-testid="member-birthDate">
-        {{ member.birthDate | date:'dd.MM.yyyy' }}
+        {{ member.birthDate | date: GLOBAL_DATE_FORMAT }}
       </td>
     </ng-container>
 
@@ -98,7 +98,7 @@
 
     <ng-container matColumnDef="status">
       <th mat-header-cell *matHeaderCellDef mat-sort-header="employment_state">
-        {{ 'MEMBER.EMPLOYMENT_STATUS' | translate }}
+        {{ 'MEMBER.EMPLOYMENT_STATE' | translate }}
       </th>
       <td mat-cell *matCellDef="let member" data-testid="member-status">
         {{ "MEMBER.EMPLOYMENT_STATUS_VALUES." + member.employmentState | translate }}

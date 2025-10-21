@@ -1,32 +1,27 @@
 import { MemberFormComponent } from './member-form.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BehaviorSubject, of } from 'rxjs';
+import { of } from 'rxjs';
 import { MemberService } from '../member.service';
 import { OrganisationUnitService } from '../../organisation-unit/organisation-unit.service';
 import {
-  member1,
+  member1, memberDto1,
   organisationUnit1,
   organisationUnit2,
   organisationUnit3,
   organisationUnit4
 } from '../../../shared/test/test-data';
 import { TranslateModule } from '@ngx-translate/core';
-import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/router';
+import { ActivatedRoute, provideRouter } from '@angular/router';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { MemberModel } from '../member.model';
 
 class MockActivatedRoute {
-  private paramsSubject = new BehaviorSubject(convertToParamMap({ id: null }));
-
   public snapshot = {
-    paramMap: convertToParamMap({ id: null })
+    data: {} as any
   };
 
-  public setRouteId(id: string | null): void {
-    const params = { id };
-
-    this.snapshot.paramMap = convertToParamMap(params);
-
-    this.paramsSubject.next(convertToParamMap(params));
+  public setData(memberData: MemberModel | null) {
+    this.snapshot.data['memberData'] = memberData;
   }
 }
 
@@ -50,7 +45,9 @@ describe('MemberFormComponent', () => {
       addMember: jest.fn()
         .mockReturnValue(of(member1)),
       updateMember: jest.fn()
-        .mockReturnValue(of(member1))
+        .mockReturnValue(of(member1)),
+      toDto: jest.fn()
+        .mockReturnValue(memberDto1)
     };
 
     organisationUnitServiceMock = {
@@ -85,13 +82,13 @@ describe('MemberFormComponent', () => {
   });
 
   it('should load organisationUnits', () => {
-    expect(component['organisationUnitsOptions'])
+    expect(component['organisationUnitsOptions']())
       .toStrictEqual(organisationUnits);
   });
 
   describe('addMember', () => {
     beforeEach(() => {
-      mockActivatedRoute.setRouteId(null);
+      mockActivatedRoute.setData(null);
       fixture.detectChanges();
     });
 
@@ -107,21 +104,19 @@ describe('MemberFormComponent', () => {
         id: 0
       };
 
-      component['memberForm'].get('id')
-        ?.setValue(1);
-
-      component.loadMember();
+      component['memberForm'].setValue(memberWithoutId);
 
       component.onSubmit();
 
       expect(addSpy)
-        .toHaveBeenCalledWith(memberWithoutId);
+        .toHaveBeenCalledWith(memberDto1);
     });
   });
 
   describe('updateMember', () => {
     beforeEach(() => {
-      mockActivatedRoute.setRouteId('1');
+      mockActivatedRoute.setData(member1);
+      component.ngOnInit();
       fixture.detectChanges();
     });
 
@@ -157,15 +152,12 @@ describe('MemberFormComponent', () => {
     it('should call updateMember', () => {
       const updateSpy = jest.spyOn(memberServiceMock, 'updateMember');
 
-      const memberWithoutId = {
-        ...member1,
-        id: 0
-      };
-
       component.onSubmit();
 
+      component.loadMember();
+
       expect(updateSpy)
-        .toHaveBeenCalledWith(1, memberWithoutId);
+        .toHaveBeenCalledWith(1, memberDto1);
 
       updateSpy.mockRestore();
     });
