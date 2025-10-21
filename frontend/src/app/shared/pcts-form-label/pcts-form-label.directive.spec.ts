@@ -52,7 +52,6 @@ describe('PctsFormLabelDirective', () => {
 
     fixture = TestBed.createComponent(TestComponent);
     translateService = TestBed.inject(TranslateService);
-    caseFormatter = TestBed.inject(CaseFormatter);
 
     jest.spyOn(translateService, 'get')
       .mockImplementation((key) => of(`translated-${key}`));
