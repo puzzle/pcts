@@ -77,7 +77,7 @@ class CertificatePersistenceServiceIT
     @Test
     @Order(2)
     void shouldUpdateCertificate() {
-        long cId = 4;
+        Long cId = 4L;
 
         Certificate certificate = new Certificate(null,
                                                   "Updated certificate",
@@ -110,7 +110,7 @@ class CertificatePersistenceServiceIT
     @Test
     @Order(2)
     void shouldUpdateLeadershipExperience() {
-        long lId = 5;
+        Long lId = 5L;
 
         Certificate leadershipExperience = new Certificate(null,
                                                            "Updated leadership experience",

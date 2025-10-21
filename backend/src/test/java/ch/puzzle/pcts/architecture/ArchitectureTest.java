@@ -35,9 +35,23 @@ class ArchitectureTest {
                 .resideInAPackage("..repository..")
                 .should()
                 .onlyBeAccessed()
-                .byAnyPackage("..service.persistence..")
+                .byAnyPackage("..service.persistence..", "..repository")
                 .andShould()
                 .beInterfaces();
+
+        rule.check(importedClasses);
+    }
+
+    @DisplayName("Repositories should not access other repositories")
+    @Test
+    void repositoriesShouldNotAccessEachOther() {
+        JavaClasses importedClasses = getMainSourceClasses();
+        ArchRule rule = noClasses()
+                .that()
+                .resideInAnyPackage("ch.puzzle.pcts.repository..")
+                .should()
+                .dependOnClassesThat()
+                .resideInAnyPackage("ch.puzzle.pcts.repository");
 
         rule.check(importedClasses);
     }

@@ -91,7 +91,7 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
     @Test
     @Order(3)
     void shouldUpdate() {
-        long id = 2;
+        Long id = 2L;
         T entity = this.getAll().getFirst();
         entity.setId(id);
         service.save(entity);
@@ -107,7 +107,7 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
     @Test
     @Order(4)
     void shouldDelete() {
-        long id = 2;
+        Long id = 2L;
 
         service.delete(id);
 
