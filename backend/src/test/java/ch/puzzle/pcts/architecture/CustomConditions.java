@@ -35,7 +35,7 @@ public class CustomConditions {
                 }
             }
         };
-    };
+    }
 
     static ArchCondition<JavaCodeUnit> trimAssignedStringFields() {
         return new ArchCondition<>("use StringUtils.trim() before assigning to String fields") {
