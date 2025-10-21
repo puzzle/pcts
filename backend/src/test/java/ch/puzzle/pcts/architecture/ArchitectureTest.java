@@ -24,7 +24,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.stereotype.*;
 import org.springframework.web.bind.annotation.RestController;
 
-public class ArchitectureTest {
+class ArchitectureTest {
 
     @DisplayName("Repositories should only be accessed by persistence services")
     @Test
