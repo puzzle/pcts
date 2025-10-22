@@ -35,12 +35,6 @@ public abstract class ValidationBase<T extends Model> {
         }
     }
 
-    /*
-     * Has to be overridden if Model has any UniqueConstraints
-     */
-    public void throwExceptionWhenFieldIsNotUnique() {
-    }
-
     public void validateOnGet(Long id) {
         throwExceptionWhenIdIsNull(id);
     }
@@ -48,7 +42,6 @@ public abstract class ValidationBase<T extends Model> {
     public void validateOnCreate(T model) {
         throwExceptionWhenModelIsNull(model);
         throwExceptionWhenIdIsNotNull(model.getId());
-        throwExceptionWhenFieldIsNotUnique();
 
         validate(model);
     }
@@ -57,7 +50,6 @@ public abstract class ValidationBase<T extends Model> {
         throwExceptionWhenIdIsNull(id);
         throwExceptionWhenModelIsNull(model);
         throwExceptionWhenIdHasChanged(id, model.getId());
-        throwExceptionWhenFieldIsNotUnique();
 
         validate(model);
     }
