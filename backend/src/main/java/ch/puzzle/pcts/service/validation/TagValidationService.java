@@ -5,7 +5,4 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TagValidationService extends ValidationBase<Tag> {
-    @Override
-    public void throwExceptionWhenFieldIsNotUnique() {
-    }
 }
