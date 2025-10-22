@@ -28,6 +28,7 @@ import { OrganisationUnitService } from '../../organisation-unit/organisation-un
 import { PctsFormErrorDirective } from '../../../shared/pcts-form-error/pcts-form-error.directive';
 import { PctsFormLabelDirective } from '../../../shared/pcts-form-label/pcts-form-label.directive';
 import { InputFieldComponent } from '../../../shared/input-field/input-field.component';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-member-form',
@@ -93,7 +94,9 @@ export class MemberFormComponent implements OnInit {
 
   private readonly employmentStateOptions: EmploymentState[] = Object.values(EmploymentState);
 
-  protected employmentStateControlSignal = toSignal(this.memberForm.get('employmentState')!.valueChanges, { initialValue: this.memberForm.get('employmentState')!.value });
+  protected employmentStateControlSignal = toSignal(this.memberForm.get('employmentState')!.valueChanges.pipe(map((value) => value ?? '')), {
+    initialValue: this.memberForm.get('employmentState')!.value ?? ''
+  });
 
   protected employmentStateFilteredOptions = computed(() => {
     const value = this.employmentStateControlSignal() || '';
