@@ -111,6 +111,7 @@ class ExperienceTypeBusinessServiceTest {
 
         assertEquals(experienceType, result);
         verify(validationService).validateOnUpdate(id, experienceType);
+        verify(experienceType).setId(id);
         verify(persistenceService).save(experienceType);
     }
 

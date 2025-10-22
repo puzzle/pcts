@@ -88,6 +88,7 @@ class CertificateBusinessServiceTest {
 
         assertEquals(certificate, result);
         verify(validationService).validateOnUpdate(id, certificate);
+        verify(certificate).setId(id);
         verify(persistenceService).save(certificate);
         verify(tagBusinessService).deleteUnusedTags();
     }

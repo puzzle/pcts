@@ -110,6 +110,7 @@ class OrganisationUnitBusinessServiceTest {
 
         assertEquals(organisationUnit, result);
         verify(validationService).validateOnUpdate(id, organisationUnit);
+        verify(organisationUnit).setId(id);
         verify(persistenceService).save(organisationUnit);
     }
 

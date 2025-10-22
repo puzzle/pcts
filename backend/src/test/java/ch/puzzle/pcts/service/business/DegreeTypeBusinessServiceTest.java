@@ -109,6 +109,7 @@ class DegreeTypeBusinessServiceTest {
 
         assertEquals(degreeType, result);
         verify(validationService).validateOnUpdate(id, degreeType);
+        verify(degreeType).setId(id);
         verify(persistenceService).save(degreeType);
     }
 

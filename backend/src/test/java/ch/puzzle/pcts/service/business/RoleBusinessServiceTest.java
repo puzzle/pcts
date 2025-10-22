@@ -112,6 +112,7 @@ class RoleBusinessServiceTest {
 
         assertEquals(role, result);
         verify(validationService).validateOnUpdate(id, role);
+        verify(role).setId(id);
         verify(persistenceService).save(role);
     }
 

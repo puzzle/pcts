@@ -109,6 +109,7 @@ class MemberBusinessServiceTest {
 
         assertEquals(member, result);
         verify(validationService).validateOnUpdate(id);
+        verify(member).setId(id);
         verify(persistenceService).save(member);
     }
 
