@@ -21,15 +21,15 @@ export class MemberService {
     return this.httpClient.get<MemberModel>(`${this.API_URL}/${id}`);
   }
 
-  addMember(member: MemberDto): Observable<MemberModel> {
-    return this.httpClient.post<MemberModel>(this.API_URL, member);
+  addMember(member: MemberModel): Observable<MemberModel> {
+    return this.httpClient.post<MemberModel>(this.API_URL, this.toDto(member));
   }
 
-  updateMember(id: number, member: MemberDto): Observable<MemberModel> {
-    return this.httpClient.put<MemberModel>(`${this.API_URL}/${id}`, member);
+  updateMember(id: number, member: MemberModel): Observable<MemberModel> {
+    return this.httpClient.put<MemberModel>(`${this.API_URL}/${id}`, this.toDto(member));
   }
 
-  toDto(model: MemberModel): MemberDto {
+  private toDto(model: MemberModel): MemberDto {
     return {
       name: model.name,
       lastName: model.lastName,

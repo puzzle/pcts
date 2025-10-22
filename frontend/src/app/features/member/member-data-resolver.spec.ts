@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { memberDataResolver } from './member-form-resolver';
+import { memberDataResolver } from './member-data-resolver';
 import { MemberService } from './member.service';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable, of } from 'rxjs';
