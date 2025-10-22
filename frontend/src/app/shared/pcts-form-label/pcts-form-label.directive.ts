@@ -15,16 +15,11 @@ export class PctsFormLabelDirective implements AfterViewInit {
 
   public translateService = inject(TranslateService);
 
-
   i18nPrefix = '';
 
   public renderer2 = inject(Renderer2);
 
   public elementRef = inject(ElementRef);
-
-  constructor() {
-
-  }
 
   ngAfterViewInit(): void {
     this.i18nPrefix = this.elementRef.nativeElement.closest('form')?.name;

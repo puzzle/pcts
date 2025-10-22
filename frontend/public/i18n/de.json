@@ -43,5 +43,10 @@
       "APPLICANT": "Bewerber",
       "EX_MEMBER": "Ex-Member"
     }
+  },
+  "FORM": {
+    "MEMBER": {
+      "TITLE": "Member"
+    }
   }
 }

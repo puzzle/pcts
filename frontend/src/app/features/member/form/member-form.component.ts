@@ -1,12 +1,9 @@
-import { Component, computed, inject, OnInit, Signal, signal, WritableSignal } from '@angular/core';
+import {Component, computed, effect, inject, input, OnInit, Signal, signal, WritableSignal} from '@angular/core';
 import {
-  AbstractControl,
   FormBuilder,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  ValidationErrors,
-  ValidatorFn,
   Validators
 } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -29,6 +26,9 @@ import { PctsFormErrorDirective } from '../../../shared/pcts-form-error/pcts-for
 import { PctsFormLabelDirective } from '../../../shared/pcts-form-label/pcts-form-label.directive';
 import { InputFieldComponent } from '../../../shared/input-field/input-field.component';
 import { map } from 'rxjs';
+import {isDateInFuture, isInstanceOfClass, isAEmploymentState} from './form-validators';
+import {Form} from '../../../shared/form/form';
+// import {Form} from '../../../shared/form/form';
 
 @Component({
   selector: 'app-member-form',
@@ -46,7 +46,9 @@ import { map } from 'rxjs';
     RouterLink,
     PctsFormErrorDirective,
     PctsFormLabelDirective,
-    InputFieldComponent
+    InputFieldComponent,
+    Form,
+    // Form
   ],
   templateUrl: './member-form.component.html',
   styleUrl: './member-form.component.scss'
@@ -58,13 +60,20 @@ export class MemberFormComponent implements OnInit {
 
   private readonly organisationUnitService = inject(OrganisationUnitService);
 
-  private readonly route = inject(ActivatedRoute);
-
   private readonly router = inject(Router);
 
   private readonly fb = inject(FormBuilder);
 
-  protected isEdit = signal<boolean>(false);
+  //input
+  readonly member = input.required<MemberModel>();
+
+  protected isEdit = computed(() => {
+    if (this.member()) {
+      return true;
+    } else {
+      return false;
+    }
+  })
 
   protected pageTitleKey: Signal<string> = computed(() => {
     return this.isEdit() ? 'GENERAL.EDIT' : 'GENERAL.ADD';
@@ -73,6 +82,10 @@ export class MemberFormComponent implements OnInit {
   protected submitButtonKey: Signal<string> = computed(() => {
     return this.isEdit() ? 'GENERAL.SAVE' : 'GENERAL.ADD';
   });
+
+  private readonly employmentStateOptions: EmploymentState[] = Object.values(EmploymentState);
+
+  private readonly organisationUnitsOptions: WritableSignal<OrganisationUnitModel[]> = signal([]);
 
   protected memberForm: FormGroup = this.fb.group({
     id: [null],
@@ -83,16 +96,14 @@ export class MemberFormComponent implements OnInit {
     abbreviation: [''],
     birthDate: ['',
       [Validators.required,
-        this.isDateInFuture()]],
+        isDateInFuture()]],
     dateOfHire: [''],
     employmentState: [null,
       [Validators.required,
-        this.isAEmploymentState()]],
+        isAEmploymentState()]],
     organisationUnit: [null,
-      this.isAOrganisationUnit()]
+      isInstanceOfClass(this.organisationUnitsOptions())]
   });
-
-  private readonly employmentStateOptions: EmploymentState[] = Object.values(EmploymentState);
 
   protected employmentStateControlSignal = toSignal(this.memberForm.get('employmentState')!.valueChanges.pipe(map((value) => value ?? '')), {
     initialValue: this.memberForm.get('employmentState')!.value ?? ''
@@ -102,8 +113,6 @@ export class MemberFormComponent implements OnInit {
     const value = this.employmentStateControlSignal() || '';
     return this.filterEmploymentState(value);
   });
-
-  private readonly organisationUnitsOptions: WritableSignal<OrganisationUnitModel[]> = signal([]);
 
   protected organisationUnitControlSignal = toSignal(this.memberForm.get('organisationUnit')!.valueChanges, { initialValue: this.memberForm.get('organisationUnit')!.value });
 
@@ -116,20 +125,20 @@ export class MemberFormComponent implements OnInit {
     this.organisationUnitService.getAllOrganisationUnits()
       .subscribe((organisationUnits) => {
         this.organisationUnitsOptions.set(organisationUnits);
-        this.loadMember();
       });
   }
 
-  loadMember() {
-    const member = this.route.snapshot.data['memberData'] as MemberModel;
-    this.memberForm.patchValue(member);
+  constructor() {
+    effect(() => {
+      if (!this.member()) {
+        return;
+      }
+      this.memberForm.patchValue(this.member());
 
-    if (member?.id) {
-      this.isEdit.set(true);
       this.memberForm.get('organisationUnit')
         ?.setValue(this.organisationUnitsOptions()
-          .find((orgUnit) => orgUnit.id === member.organisationUnit.id));
-    }
+          .find((orgUnit) => orgUnit.id === this.member().organisationUnit.id));
+    });
   }
 
   onSubmit() {
@@ -138,7 +147,7 @@ export class MemberFormComponent implements OnInit {
     if (this.memberForm.invalid) {
       return;
     }
-    const memberToSave = this.memberService.toDto(this.memberForm.getRawValue() as MemberModel);
+    const memberToSave = this.memberForm.getRawValue() as MemberModel;
     if (this.isEdit()) {
       this.memberService.updateMember(this.memberForm.get('id')?.value, memberToSave)
         .subscribe(() => {
@@ -152,55 +161,8 @@ export class MemberFormComponent implements OnInit {
     }
   }
 
-  isDateInFuture(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      if (!control.value) {
-        return null;
-      }
-
-      const date = new Date(control.value);
-      const today = new Date();
-
-      if (date >= today) {
-        return { date_is_in_future: true };
-      }
-
-      return null;
-    };
-  }
-
-  isAOrganisationUnit(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const value = control.value;
-
-      if (!value) {
-        return null;
-      }
-
-      if (typeof value === 'string') {
-        return { invalid_entry: true };
-      }
-
-      const isValidOption = this.organisationUnitsOptions()
-        .includes(value);
-
-      return isValidOption ? null : { invalid_entry: true };
-    };
-  }
-
-  isAEmploymentState(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const value = control.value;
-
-      if (!value) {
-        return null;
-      }
-
-      if (value === EmploymentState.EX_MEMBER || value === EmploymentState.APPLICANT || value === EmploymentState.MEMBER) {
-        return null;
-      }
-      return { invalid_entry: true };
-    };
+  onCancel() {
+    this.router.navigate(['/']);
   }
 
   protected displayEmploymentState = (employmentState: EmploymentState | string): string => {

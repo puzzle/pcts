@@ -46,8 +46,6 @@ describe('MemberFormComponent', () => {
         .mockReturnValue(of(member1)),
       updateMember: jest.fn()
         .mockReturnValue(of(member1)),
-      toDto: jest.fn()
-        .mockReturnValue(memberDto1)
     };
 
     organisationUnitServiceMock = {
@@ -153,9 +151,7 @@ describe('MemberFormComponent', () => {
       const updateSpy = jest.spyOn(memberServiceMock, 'updateMember');
 
       component.onSubmit();
-
-      component.loadMember();
-
+      
       expect(updateSpy)
         .toHaveBeenCalledWith(1, memberDto1);
 
