@@ -40,6 +40,7 @@ public class DegreeTypeBusinessService {
 
     public DegreeType update(Long id, DegreeType degreeType) {
         validationService.validateOnUpdate(id, degreeType);
+        degreeType.setId(id);
         return persistenceService.save(degreeType);
     }
 

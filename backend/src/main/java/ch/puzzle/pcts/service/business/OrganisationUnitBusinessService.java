@@ -40,6 +40,7 @@ public class OrganisationUnitBusinessService {
 
     public OrganisationUnit update(Long id, OrganisationUnit organisationUnit) {
         validationService.validateOnUpdate(id, organisationUnit);
+        organisationUnit.setId(id);
         return persistenceService.save(organisationUnit);
     }
 

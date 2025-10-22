@@ -39,6 +39,7 @@ public class RoleBusinessService {
 
     public Role update(Long id, Role role) {
         validationService.validateOnUpdate(id, role);
+        role.setId(id);
         return persistenceService.save(role);
     }
 

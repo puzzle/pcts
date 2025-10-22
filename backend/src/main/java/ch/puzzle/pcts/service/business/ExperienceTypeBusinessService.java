@@ -40,6 +40,7 @@ public class ExperienceTypeBusinessService {
 
     public ExperienceType update(Long id, ExperienceType experienceType) {
         validationService.validateOnUpdate(id, experienceType);
+        experienceType.setId(id);
         return persistenceService.save(experienceType);
     }
 

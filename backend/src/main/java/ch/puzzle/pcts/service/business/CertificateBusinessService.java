@@ -56,9 +56,9 @@ public class CertificateBusinessService {
         validationService.validateOnUpdate(id, certificate);
 
         certificate.setTags(tagBusinessService.resolveTags(certificate.getTags()));
+        certificate.setId(id);
 
         Certificate result = persistenceService.save(certificate);
-
         tagBusinessService.deleteUnusedTags();
 
         return result;

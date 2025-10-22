@@ -41,6 +41,7 @@ public class MemberBusinessService {
 
     public Member update(Long id, Member member) {
         validationService.validateOnUpdate(id);
+        member.setId(id);
         return persistenceService.save(member);
     }
 
