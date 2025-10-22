@@ -3,20 +3,27 @@ package ch.puzzle.pcts.service.validation;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
+import ch.puzzle.pcts.service.persistence.ExperienceTypePersistenceService;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceType, ExperienceTypeValidationService> {
+
+    @Mock
+    private ExperienceTypePersistenceService persistenceService;
 
     @InjectMocks
     ExperienceTypeValidationService service;
@@ -106,6 +113,36 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
                         .of("ExperienceType.highlyRelevantPoints must not be negative.",
                             "ExperienceType.limitedRelevantPoints must not be negative.",
                             "ExperienceType.littleRelevantPoints must not be negative."));
+        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+    }
+
+    @DisplayName("Should throw exception on validateOnCreate() when name already exists")
+    @Test
+    void shouldThrowExceptionOnValidateOnCreateWhenNameAlreadyExists() {
+        ExperienceType experienceType = getModel();
+
+        when(persistenceService.getByName(experienceType.getName())).thenReturn(Optional.of(new ExperienceType()));
+
+        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnCreate(experienceType));
+
+        assertEquals("Name already exists", exception.getReason());
+        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+    }
+
+    @DisplayName("Should Throw Exception on validateOnUpdate() when name already exists")
+    @Test
+    void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExists() {
+        Long id = 1L;
+        ExperienceType experienceType = getModel();
+        ExperienceType newExperienceType = getModel();
+        experienceType.setId(2L);
+
+        when(persistenceService.getByName(newExperienceType.getName())).thenReturn(Optional.of(experienceType));
+
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> service.validateOnUpdate(id, newExperienceType));
+
+        assertEquals("Name already exists", exception.getReason());
         assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
     }
 }

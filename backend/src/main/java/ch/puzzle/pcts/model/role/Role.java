@@ -18,6 +18,7 @@ public class Role implements Model {
     private Long id;
 
     @BasicStringValidation
+    @Column(unique = true)
     private String name;
 
     private boolean isManagement;

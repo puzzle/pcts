@@ -30,7 +30,7 @@ public class RoleValidationService extends ValidationBase<Role> {
 
     private void validateNameUniqueness(String name) {
         persistenceService.getByName(name).ifPresent(role -> {
-            throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.ROLE_NAME_ALREADY_EXISTS);
+            throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.INVALID_ARGUMENT);
         });
     }
 
@@ -38,9 +38,7 @@ public class RoleValidationService extends ValidationBase<Role> {
         Optional<Role> existingRole = persistenceService.getByName(name);
         existingRole.ifPresent(role -> {
             if (!role.getId().equals(id)) {
-                throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                        "Name already exists",
-                                        ErrorKey.ROLE_NAME_ALREADY_EXISTS);
+                throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.INVALID_ARGUMENT);
             }
         });
     }

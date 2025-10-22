@@ -20,6 +20,10 @@ public class CertificatePersistenceService {
         return repository.save(certificate);
     }
 
+    public Optional<Certificate> getByName(String name) {
+        return repository.findByName(name);
+    }
+
     public Optional<Certificate> getById(Long id) {
         return repository.findById(id);
     }

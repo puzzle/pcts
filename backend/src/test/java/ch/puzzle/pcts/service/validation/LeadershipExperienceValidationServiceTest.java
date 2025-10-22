@@ -7,17 +7,23 @@ import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificate.CertificateType;
 import ch.puzzle.pcts.model.error.ErrorKey;
+import ch.puzzle.pcts.service.persistence.CertificatePersistenceService;
 import java.math.BigDecimal;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class LeadershipExperienceValidationServiceTest
         extends
             ValidationBaseServiceTest<Certificate, LeadershipExperienceValidationService> {
+
+    @Mock
+    private CertificatePersistenceService persistenceService;
 
     @InjectMocks
     LeadershipExperienceValidationService service;
@@ -97,6 +103,38 @@ class LeadershipExperienceValidationServiceTest
                                                () -> service.validateCertificateType(CertificateType.CERTIFICATE));
 
         assertEquals("Certificate.CertificateType is not leadership experience.", exception.getReason());
+        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+    }
+
+    @DisplayName("Should throw exception on validateOnCreate() when name already exists")
+    @Test
+    void shouldThrowExceptionOnValidateOnCreateWhenNameAlreadyExists() {
+        Certificate leadershipExperience = getModel();
+
+        when(persistenceService.getByName(leadershipExperience.getName())).thenReturn(Optional.of(new Certificate()));
+
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> service.validateOnCreate(leadershipExperience));
+
+        assertEquals("Name already exists", exception.getReason());
+        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+    }
+
+    @DisplayName("Should Throw Exception on validateOnUpdate() when name already exists")
+    @Test
+    void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExists() {
+        Long id = 1L;
+        Certificate newLeadershipExperience = getModel();
+        Certificate leadershipExperience = getModel();
+        leadershipExperience.setId(2L);
+
+        when(persistenceService.getByName(newLeadershipExperience.getName()))
+                .thenReturn(Optional.of(leadershipExperience));
+
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> service.validateOnUpdate(id, newLeadershipExperience));
+
+        assertEquals("Name already exists", exception.getReason());
         assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
     }
 }

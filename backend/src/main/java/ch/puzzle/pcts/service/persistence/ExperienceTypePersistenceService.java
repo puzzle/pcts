@@ -23,6 +23,10 @@ public class ExperienceTypePersistenceService {
         return repository.findById(id);
     }
 
+    public Optional<ExperienceType> getByName(String name) {
+        return repository.findByName(name);
+    }
+
     public List<ExperienceType> getAll() {
         return repository.findAll();
     }

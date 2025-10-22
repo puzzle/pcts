@@ -27,7 +27,6 @@ public class Certificate implements Model {
     @PositiveOrZero(message = "{attribute.not.negative}")
     private BigDecimal points;
 
-    @BasicStringValidation
     private String comment;
 
     @ManyToMany(cascade = { CascadeType.MERGE })

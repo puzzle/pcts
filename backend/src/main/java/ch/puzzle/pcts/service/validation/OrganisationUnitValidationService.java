@@ -30,9 +30,7 @@ public class OrganisationUnitValidationService extends ValidationBase<Organisati
 
     private void validateNameUniqueness(String name) {
         persistenceService.getByName(name).ifPresent(organisationUnit -> {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "Name already exists",
-                                    ErrorKey.ORGANIZATION_UNIT_NAME_ALREADY_EXISTS);
+            throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.INVALID_ARGUMENT);
         });
     }
 
@@ -40,9 +38,7 @@ public class OrganisationUnitValidationService extends ValidationBase<Organisati
         Optional<OrganisationUnit> existingOrganisationUnit = persistenceService.getByName(name);
         existingOrganisationUnit.ifPresent(organisationUnit -> {
             if (!organisationUnit.getId().equals(id)) {
-                throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                        "Name already exists",
-                                        ErrorKey.ORGANIZATION_UNIT_NAME_ALREADY_EXISTS);
+                throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.INVALID_ARGUMENT);
             }
         });
     }

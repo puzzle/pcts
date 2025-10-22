@@ -22,6 +22,10 @@ public class DegreeTypePersistenceService {
         return repository.save(degreeType);
     }
 
+    public Optional<DegreeType> getByName(String name) {
+        return repository.findByName(name);
+    }
+
     public Optional<DegreeType> getById(Long id) {
         return repository.findById(id);
     }

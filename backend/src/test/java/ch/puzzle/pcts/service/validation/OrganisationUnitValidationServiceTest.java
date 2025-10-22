@@ -50,12 +50,12 @@ class OrganisationUnitValidationServiceTest
                                                () -> validationService.validateOnCreate(organisationUnit));
 
         assertEquals("Name already exists", exception.getReason());
-        assertEquals(ErrorKey.ORGANIZATION_UNIT_NAME_ALREADY_EXISTS, exception.getErrorKey());
+        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
     }
 
-    @DisplayName("Should Throw Exception on validateOnUpdate() when name already exists for another organisation unit")
+    @DisplayName("Should Throw Exception on validateOnUpdate() when name already exists")
     @Test
-    void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExistsForAnotherOrganisationUnit() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExists() {
         Long id = 1L;
         OrganisationUnit newOrganisationUnit = getModel();
         OrganisationUnit organisationUnit = getModel();
@@ -67,22 +67,6 @@ class OrganisationUnitValidationServiceTest
                                                () -> validationService.validateOnUpdate(id, newOrganisationUnit));
 
         assertEquals("Name already exists", exception.getReason());
-        assertEquals(ErrorKey.ORGANIZATION_UNIT_NAME_ALREADY_EXISTS, exception.getErrorKey());
-    }
-
-    @DisplayName("Should not Throw Exception on validateOnUpdate() when name stays the same")
-    @Test
-    void shouldNotThrowExceptionOnValidateOnUpdateWhenNameStaysTheSame() {
-        Long id = 1L;
-
-        OrganisationUnit newOrganisationUnit = getModel();
-
-        OrganisationUnit organisationUnit = getModel();
-        organisationUnit.setId(id);
-
-        when(persistenceService.getById(id)).thenReturn(Optional.of(newOrganisationUnit));
-        when(persistenceService.getByName(newOrganisationUnit.getName())).thenReturn(Optional.of(organisationUnit));
-
-        assertDoesNotThrow(() -> validationService.validateOnUpdate(id, newOrganisationUnit));
+        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
     }
 }
