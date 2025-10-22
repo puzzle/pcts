@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Dev-Up" type="CompoundRunConfigurationType">
+    <toRun name="start" type="js.build_tools.npm" />
+    <toRun name="PctsApplication" type="SpringBootApplicationConfigurationType" />
+    <method v="2" />
+  </configuration>
+</component>
