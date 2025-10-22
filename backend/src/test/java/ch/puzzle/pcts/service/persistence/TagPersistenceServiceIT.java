@@ -7,7 +7,6 @@ import ch.puzzle.pcts.repository.TagRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +34,6 @@ class TagPersistenceServiceIT extends PersistenceBaseIT<Tag, TagRepository, TagP
     @Transactional
     @ParameterizedTest
     @ValueSource(strings = { "Longer tag name", "longer tag name", "LONGER TAG NAME", "loNGER tAg NAme" })
-    @Order(2)
     void shouldFindTagWithDifferentCases(String tagName) {
         Tag result = service.findWithIgnoreCase(tagName).get();
 

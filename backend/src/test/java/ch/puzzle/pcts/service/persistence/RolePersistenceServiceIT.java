@@ -7,7 +7,6 @@ import ch.puzzle.pcts.repository.RoleRepository;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,7 +33,6 @@ class RolePersistenceServiceIT extends PersistenceBaseIT<Role, RoleRepository, R
 
     @DisplayName("Should get role by name")
     @Test
-    @Order(1)
     void shouldGetRoleByName() {
         Optional<Role> result = service.getByName("Role 2");
 

@@ -9,7 +9,6 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -47,14 +46,12 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
 
     @DisplayName("Should establish DB connection")
     @Test
-    @Order(0)
     void shouldEstablishConnection() {
         assertThat(postgres.isRunning()).isTrue();
     }
 
     @DisplayName("Should get entity by id")
     @Test
-    @Order(1)
     void shouldGetEntityById() {
         Optional<T> entity = service.getById(2L);
 
@@ -65,7 +62,6 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
     @DisplayName("Should get all entities")
     @Test
     @Transactional
-    @Order(1)
     void shouldGetAllEntities() {
         List<T> all = service.getAll();
 
@@ -76,7 +72,6 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
     @DisplayName("Should create entity")
     @Transactional
     @Test
-    @Order(2)
     void shouldCreate() {
         T entity = getModel();
 
@@ -89,7 +84,6 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
     @DisplayName("Should update entity")
     @Transactional
     @Test
-    @Order(3)
     void shouldUpdate() {
         Long id = 2L;
         T entity = this.getAll().getFirst();
@@ -105,7 +99,6 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
     @DisplayName("Should delete entity")
     @Transactional
     @Test
-    @Order(4)
     void shouldDelete() {
         Long id = 2L;
 

@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,7 +74,6 @@ class CertificatePersistenceServiceIT
     @DisplayName("Should update certificates")
     @Transactional
     @Test
-    @Order(2)
     void shouldUpdateCertificate() {
         Long cId = 4L;
 
@@ -108,7 +106,6 @@ class CertificatePersistenceServiceIT
     @DisplayName("Should update leadership experiences")
     @Transactional
     @Test
-    @Order(2)
     void shouldUpdateLeadershipExperience() {
         Long lId = 5L;
 
@@ -134,7 +131,6 @@ class CertificatePersistenceServiceIT
 
     @DisplayName("Should get all certificates")
     @Test
-    @Order(1)
     void shouldGetAllCertificates() {
         List<Certificate> all = service.getAllCertificates();
 
@@ -146,7 +142,6 @@ class CertificatePersistenceServiceIT
 
     @DisplayName("Should get all leadership experiences")
     @Test
-    @Order(1)
     void shouldGetAllLeadershipExperiences() {
         List<Certificate> all = service.getAllLeadershipExperiences();
 

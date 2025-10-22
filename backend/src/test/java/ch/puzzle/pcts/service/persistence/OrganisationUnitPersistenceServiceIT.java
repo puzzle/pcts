@@ -7,7 +7,6 @@ import ch.puzzle.pcts.repository.OrganisationUnitRepository;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -35,7 +34,6 @@ class OrganisationUnitPersistenceServiceIT
 
     @DisplayName("Should get organisationUnit by name")
     @Test
-    @Order(1)
     void shouldGetRoleByName() {
         Optional<OrganisationUnit> result = service.getByName("OrganisationUnit 2");
 
