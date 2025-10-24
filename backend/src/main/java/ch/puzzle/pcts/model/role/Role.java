@@ -4,6 +4,7 @@ import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
 import jakarta.persistence.*;
+import java.sql.Timestamp;
 import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -19,6 +20,9 @@ public class Role implements Model {
     private String name;
 
     private boolean isManagement;
+
+    @Column(name = "deleted_at", insertable = false, updatable = false)
+    private Timestamp deletedAt;
 
     public Role(Long id, String name, boolean isManagement) {
         this.id = id;
@@ -51,6 +55,14 @@ public class Role implements Model {
 
     public void setIsManagement(boolean isManagement) {
         this.isManagement = isManagement;
+    }
+
+    public Timestamp getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Timestamp deletedAt) {
+        this.deletedAt = deletedAt;
     }
 
     @Override

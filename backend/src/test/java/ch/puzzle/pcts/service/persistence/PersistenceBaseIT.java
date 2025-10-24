@@ -4,15 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ch.puzzle.pcts.model.Model;
-import ch.puzzle.pcts.util.IT;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.testcontainers.containers.PostgreSQLContainer;
 
 /**
  * @param <T>
@@ -22,13 +19,11 @@ import org.testcontainers.containers.PostgreSQLContainer;
  * @param <S>
  *            the persistence service of the entity
  */
-@IT
-abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Long>, S extends PersistenceBase<T, R>> {
+abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Long>, S extends PersistenceBase<T, R>>
+        extends
+            PersistenceCoreIT {
 
     private final S service;
-
-    @Autowired
-    private PostgreSQLContainer<?> postgres;
 
     PersistenceBaseIT(S service) {
         this.service = service;
@@ -43,12 +38,6 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
      * contain soft deleted ones
      */
     abstract List<T> getAll();
-
-    @DisplayName("Should establish DB connection")
-    @Test
-    void shouldEstablishConnection() {
-        assertThat(postgres.isRunning()).isTrue();
-    }
 
     @DisplayName("Should get entity by id")
     @Test

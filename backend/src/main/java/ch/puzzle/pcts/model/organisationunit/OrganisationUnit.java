@@ -17,6 +17,7 @@ public class OrganisationUnit implements Model {
 
     private String name;
 
+    @Column(name = "deleted_at", insertable = false, updatable = false)
     private Timestamp deletedAt;
 
     public OrganisationUnit(Long id, String name) {
@@ -43,6 +44,14 @@ public class OrganisationUnit implements Model {
         this.name = trim(name);
     }
 
+    public Timestamp getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Timestamp deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof OrganisationUnit organisationUnit))
@@ -53,14 +62,6 @@ public class OrganisationUnit implements Model {
     @Override
     public int hashCode() {
         return Objects.hash(id, name);
-    }
-
-    public Timestamp getDeletedAt() {
-        return deletedAt;
-    }
-
-    public void setDeletedAt(Timestamp deletedAt) {
-        this.deletedAt = deletedAt;
     }
 
     @Override

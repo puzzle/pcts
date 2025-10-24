@@ -5,6 +5,7 @@ import static org.apache.commons.lang3.StringUtils.trim;
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import jakarta.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
@@ -30,6 +31,9 @@ public class Member implements Model {
     private Date dateOfHire;
 
     private Date birthDate;
+
+    @Column(name = "deleted_at", insertable = false, updatable = false)
+    private Timestamp deletedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organisation_unit")
@@ -111,6 +115,14 @@ public class Member implements Model {
 
     public void setOrganisationUnit(OrganisationUnit organisationUnit) {
         this.organisationUnit = organisationUnit;
+    }
+
+    public Timestamp getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Timestamp deletedAt) {
+        this.deletedAt = deletedAt;
     }
 
     @Override

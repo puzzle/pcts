@@ -11,9 +11,9 @@ import org.springframework.stereotype.Repository;
 public interface OrganisationUnitRepository extends JpaRepository<OrganisationUnit, Long> {
     Optional<OrganisationUnit> findByName(String name);
 
-    @Query("SELECT o FROM OrganisationUnit o WHERE o.deletedAt IS NULL")
-    List<OrganisationUnit> findAll();
-
-    @Query("SELECT o FROM OrganisationUnit o WHERE o.deletedAt IS NULL AND o.id = :id")
+    @Query(value = "SELECT * FROM organisation_unit WHERE deleted_at IS NULL AND id = :id", nativeQuery = true)
     Optional<OrganisationUnit> findById(Long id);
+
+    @Query(value = "SELECT * FROM organisation_unit WHERE deleted_at IS NULL", nativeQuery = true)
+    List<OrganisationUnit> findAll();
 }

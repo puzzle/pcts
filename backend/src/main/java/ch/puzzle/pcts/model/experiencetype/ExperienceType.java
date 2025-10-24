@@ -3,11 +3,9 @@ package ch.puzzle.pcts.model.experiencetype;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -27,6 +25,9 @@ public class ExperienceType implements Model {
     private BigDecimal limitedRelevantPoints;
 
     private BigDecimal littleRelevantPoints;
+
+    @Column(name = "deleted_at", insertable = false, updatable = false)
+    private Timestamp deletedAt;
 
     public ExperienceType(Long id, String name, BigDecimal highlyRelevantPoints, BigDecimal limitedRelevantPoints,
                           BigDecimal littleRelevantPoints) {
@@ -74,6 +75,14 @@ public class ExperienceType implements Model {
 
     public BigDecimal getLittleRelevantPoints() {
         return littleRelevantPoints;
+    }
+
+    public Timestamp getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Timestamp deletedAt) {
+        this.deletedAt = deletedAt;
     }
 
     public void setLittleRelevantPoints(BigDecimal littleRelevantPoints) {
