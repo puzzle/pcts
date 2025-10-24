@@ -1,40 +1,67 @@
-import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { MemberOverviewResolver } from './member-overview-resolver';
+import { MemberOverviewParams, memberOverviewResolver } from './member-overview-resolver';
 
-describe('MemberOverviewResolver', () => {
-  let resolver: MemberOverviewResolver;
+describe('memberOverviewResolver', () => {
   let route: ActivatedRouteSnapshot;
   let state: RouterStateSnapshot;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [MemberOverviewResolver]
-    });
-    resolver = TestBed.inject(MemberOverviewResolver);
-    route = new ActivatedRouteSnapshot();
+    route = {} as ActivatedRouteSnapshot;
     state = {} as RouterStateSnapshot;
   });
 
-  it('should create', () => {
-    expect(resolver)
-      .toBeTruthy();
-  });
-
-  it('should return empty params when none are given', () => {
+  it('should return empty searchText and statuses when no query params', () => {
     route.queryParams = {};
-    expect(resolver.resolve(route, state))
-      .toEqual({ searchText: '',
-        statuses: [] });
+    const result = memberOverviewResolver(route, state);
+    expect(result)
+      .toEqual<MemberOverviewParams>({
+        searchText: '',
+        statuses: []
+      });
   });
 
-  it('should resolve q and status params', () => {
-    route.queryParams = { q: encodeURIComponent('ja'),
-      status: encodeURIComponent('MEMBER+EX_MEMBER') };
-    const result = resolver.resolve(route, state);
+  it('should decode and return the q query param as searchText', () => {
+    route.queryParams = { q: encodeURIComponent('test search') };
+    const result = memberOverviewResolver(route, state);
     expect(result)
-      .toEqual({ searchText: 'ja',
-        statuses: ['MEMBER',
-          'EX_MEMBER'] });
+      .toEqual<MemberOverviewParams>({
+        searchText: 'test search',
+        statuses: []
+      });
+  });
+
+  it('should decode and split status query param into statuses array', () => {
+    route.queryParams = { status: encodeURIComponent('active+inactive') };
+    const result = memberOverviewResolver(route, state);
+    expect(result)
+      .toEqual<MemberOverviewParams>({
+        searchText: '',
+        statuses: ['active',
+          'inactive']
+      });
+  });
+
+  it('should handle both q and status query params', () => {
+    route.queryParams = {
+      q: encodeURIComponent('search term'),
+      status: encodeURIComponent('pending+active')
+    };
+    const result = memberOverviewResolver(route, state);
+    expect(result)
+      .toEqual<MemberOverviewParams>({
+        searchText: 'search term',
+        statuses: ['pending',
+          'active']
+      });
+  });
+
+  it('should return empty array for status if it is an empty string', () => {
+    route.queryParams = { status: '' };
+    const result = memberOverviewResolver(route, state);
+    expect(result)
+      .toEqual<MemberOverviewParams>({
+        searchText: '',
+        statuses: []
+      });
   });
 });

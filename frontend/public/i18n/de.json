@@ -28,7 +28,8 @@
     "EMPLOYMENT_STATE": "Anstellungsstatus",
 
     "FORM": {
-      "PERSONAL_DETAILS": "Personalien"
+      "PERSONAL_DETAILS": "Personalien",
+      "TITLE": "Member"
     },
 
     "OVERVIEW": {
@@ -42,11 +43,6 @@
       "MEMBER": "Member",
       "APPLICANT": "Bewerber",
       "EX_MEMBER": "Ex-Member"
-    }
-  },
-  "FORM": {
-    "MEMBER": {
-      "TITLE": "Member"
     }
   }
 }

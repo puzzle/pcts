@@ -25,7 +25,7 @@ import { PctsFormErrorDirective } from '../../../shared/pcts-form-error/pcts-for
 import { PctsFormLabelDirective } from '../../../shared/pcts-form-label/pcts-form-label.directive';
 import { InputFieldComponent } from '../../../shared/input-field/input-field.component';
 import { map } from 'rxjs';
-import { isDateInFuture, isAEmploymentState, isInstanceOfClassSignal } from './form-validators';
+import { isDateInFuture, isValueInList, isValueInListSignal } from './form-validators';
 import { BaseFormComponent } from '../../../shared/form/base-form.component';
 
 @Component({
@@ -82,9 +82,9 @@ export class MemberFormComponent implements OnInit {
     dateOfHire: [''],
     employmentState: [null,
       [Validators.required,
-        isAEmploymentState()]],
+        isValueInList(this.employmentStateOptions)]],
     organisationUnit: [null,
-      isInstanceOfClassSignal(this.organisationUnitsOptions)]
+      isValueInListSignal(this.organisationUnitsOptions)]
   });
 
   protected employmentStateControlSignal = toSignal(this.memberForm.get('employmentState')!.valueChanges.pipe(map((value) => value ?? '')), {
@@ -126,8 +126,6 @@ export class MemberFormComponent implements OnInit {
   }
 
   onSubmit() {
-    this.memberForm.markAllAsTouched();
-    this.memberForm.markAllAsDirty();
     if (this.memberForm.invalid) {
       return;
     }
@@ -161,7 +159,7 @@ export class MemberFormComponent implements OnInit {
     if (!organisationUnit) {
       return '';
     }
-    return organisationUnit.name;
+    return organisationUnit?.name ?? '';
   }
 
   protected filterEmploymentState(value: string): EmploymentState[] {

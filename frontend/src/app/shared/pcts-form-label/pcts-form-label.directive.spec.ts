@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PctsFormLabelDirective } from './pcts-form-label.directive';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { CaseFormatter } from '../format/case-formatter';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -37,25 +37,25 @@ class TestComponent {
 
 describe('PctsFormLabelDirective', () => {
   let fixture: ComponentFixture<TestComponent>;
-  let translateService: TranslateService;
 
   beforeEach(async() => {
     const caseFormatterMock = { camelToSnake: jest.fn((key) => `formatted_${key}`) };
 
     await TestBed.configureTestingModule({
-      imports: [TestComponent,
-        TranslateModule.forRoot()],
+      imports: [TestComponent],
       providers: [{ provide: CaseFormatter,
-        useValue: caseFormatterMock }]
+        useValue: caseFormatterMock },
+      {
+        provide: TranslateService,
+        useValue: {
+          instant: jest.fn((key) => `translated-${key}`),
+          get: jest.fn((key) => of(`translated-${key}`))
+        }
+      }]
     })
       .compileComponents();
 
     fixture = TestBed.createComponent(TestComponent);
-    translateService = TestBed.inject(TranslateService);
-
-    jest.spyOn(translateService, 'get')
-      .mockImplementation((key) => of(`translated-${key}`));
-
     fixture.detectChanges();
   });
 

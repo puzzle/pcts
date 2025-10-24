@@ -5,7 +5,7 @@ import HomePage from '../pages/homePage';
 
 describe('MemberFormComponent', () => {
   beforeEach(() => {
-    FormPage.visitAdd();
+    FormPage.visitAdd('member');
   });
 
   [
@@ -17,7 +17,7 @@ describe('MemberFormComponent', () => {
     it(`should show required error for field ${fieldName}`, () => {
       FormPage.clearAndBlur(fieldName);
 
-      FormPage.shouldShowValidationError(translations.VALIDATION.REQUIRED);
+      FormPage.shouldShowValidationError(translations.VALIDATION.REQUIRED, fieldName);
     });
   });
 
@@ -26,7 +26,7 @@ describe('MemberFormComponent', () => {
     it(`should show invalid entry error for field ${fieldName}`, () => {
       FormPage.typeAndBlur(fieldName, 'invalid entry');
 
-      FormPage.shouldShowValidationError(translations.VALIDATION.INVALID_ENTRY);
+      FormPage.shouldShowValidationError(translations.VALIDATION.INVALID_ENTRY, fieldName);
     });
   });
 
@@ -35,7 +35,7 @@ describe('MemberFormComponent', () => {
     it(`should show invalid date error for field ${fieldName}`, () => {
       FormPage.typeAndBlur(fieldName, 'invalid entry');
 
-      FormPage.shouldShowValidationError(translations.VALIDATION.MATDATEPICKERPARSE);
+      FormPage.shouldShowValidationError(translations.VALIDATION.MATDATEPICKERPARSE, fieldName);
     });
   });
 
@@ -60,16 +60,16 @@ describe('MemberFormComponent', () => {
 
 describe('add member form', () => {
   beforeEach(() => {
-    FormPage.visitAdd();
+    FormPage.visitAdd('member');
   });
 
   it('should be the add member site', () => {
-    FormPage.shouldHaveTitle(translations.GENERAL.ADD);
+    FormPage.shouldHaveTitle(translations.GENERAL.ADD, 'Member');
   });
 
   it('should submit member and show him in list', () => {
     HomePage.visit();
-    FormPage.visitAdd();
+    FormPage.visitAdd('member');
 
     FormPage.submitButtonShouldBe('disabled');
     FormPage.typeAndBlur('name', 'John');
@@ -98,12 +98,12 @@ describe('add member form', () => {
 
 describe('edit member form', () => {
   it('should be the edit member site', () => {
-    FormPage.visitEdit(1);
-    FormPage.shouldHaveTitle(translations.GENERAL.EDIT);
+    FormPage.visitEdit(1, 'member');
+    FormPage.shouldHaveTitle(translations.GENERAL.EDIT, 'Member');
   });
 
   it('should get all member data', () => {
-    FormPage.visitEdit(1);
+    FormPage.visitEdit(1, 'member');
     const expectedMemberData = {
       name: 'Lena',
       lastName: 'Müller',
@@ -122,7 +122,7 @@ describe('edit member form', () => {
   });
 
   it('should save changes to member', () => {
-    FormPage.visitEdit(2);
+    FormPage.visitEdit(2, 'member');
     FormPage.clearAndBlur('name');
     FormPage.typeAndBlur('name', 'Leon');
 

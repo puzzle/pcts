@@ -1,15 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideRouter } from '@angular/router';
+import { provideTranslateService } from '@ngx-translate/core';
 jest.mock('@puzzleitc/puzzle-shell', () => jest.fn());
 
 describe('AppComponent', () => {
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent,
-        TranslateModule.forRoot(),
-        RouterModule.forRoot([])]
+      imports: [AppComponent],
+      providers: [provideTranslateService(),
+        provideRouter([])]
     })
       .compileComponents();
   });

@@ -22,7 +22,7 @@ export class BaseFormComponent {
 
   isEdit = input<boolean>(false);
 
-  i18nPrefix = computed(() => `FORM.${this.caseFormatter.camelToSnake(this.formName())}`);
+  i18nPrefix = computed(() => `${this.caseFormatter.camelToSnake(this.formName())}.FORM`);
 
   submitted = output();
 

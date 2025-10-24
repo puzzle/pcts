@@ -1,5 +1,4 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { EmploymentState } from '../../../shared/enum/employment-state.enum';
 import { Signal } from '@angular/core';
 
 export function isDateInFuture(): ValidatorFn {
@@ -19,17 +18,12 @@ export function isDateInFuture(): ValidatorFn {
   };
 }
 
-export function isInstanceOfClassSignal<T>(validOptionsSignal: Signal<T[]>): ValidatorFn {
+export function isValueInList<T>(validOptions: T[]): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const value: any = control.value;
-    const validOptions: T[] = validOptionsSignal();
 
     if (!value) {
       return null;
-    }
-
-    if (typeof value === 'string') {
-      return { invalid_entry: true };
     }
 
     const isValidOption: boolean = validOptions.includes(value);
@@ -38,19 +32,17 @@ export function isInstanceOfClassSignal<T>(validOptionsSignal: Signal<T[]>): Val
   };
 }
 
-
-export function isAEmploymentState(): ValidatorFn {
+export function isValueInListSignal<T>(validOptionsSignal: Signal<T[]>): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    const value = control.value;
+    const value: any = control.value;
+    const validOptions: T[] = validOptionsSignal();
 
     if (!value) {
       return null;
     }
 
-    if (Object.values(EmploymentState)
-      .includes(value)) {
-      return null;
-    }
-    return { invalid_entry: true };
+    const isValidOption: boolean = validOptions.includes(value);
+
+    return isValidOption ? null : { invalid_entry: true };
   };
 }
