@@ -45,7 +45,7 @@ class MemberBusinessServiceTest {
 
         assertEquals(member, result);
         verify(persistenceService).getById(1L);
-        verify(validationService).validateOnGetById(1L);
+        verify(validationService).validateOnGet(1L);
     }
 
     @DisplayName("Should throw exception")
@@ -58,7 +58,7 @@ class MemberBusinessServiceTest {
         assertEquals("Member with id: " + 1 + " does not exist.", exception.getReason());
         assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
         verify(persistenceService).getById(1L);
-        verify(validationService).validateOnGetById(1L);
+        verify(validationService).validateOnGet(1L);
     }
 
     @DisplayName("Should get all members")
@@ -91,6 +91,7 @@ class MemberBusinessServiceTest {
     @Test
     void shouldCreate() {
         when(persistenceService.create(member)).thenReturn(member);
+        when(member.getName()).thenReturn("A");
 
         Member result = businessService.create(member);
 
@@ -104,11 +105,12 @@ class MemberBusinessServiceTest {
     void shouldUpdate() {
         Long id = 1L;
         when(persistenceService.update(id, member)).thenReturn(member);
+        when(member.getName()).thenReturn("A");
 
         Member result = businessService.update(id, member);
 
         assertEquals(member, result);
-        verify(validationService).validateOnUpdate(id);
+        verify(validationService).validateOnUpdate(id, member);
         verify(persistenceService).update(id, member);
     }
 
