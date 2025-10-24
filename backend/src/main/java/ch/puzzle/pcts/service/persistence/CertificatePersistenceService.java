@@ -16,10 +16,10 @@ public class CertificatePersistenceService extends PersistenceBase<Certificate, 
     }
 
     public List<Certificate> getAllCertificates() {
-        return repository.findByCertificateType(CertificateType.CERTIFICATE);
+        return repository.findByCertificateTypeAndDeletedAtIsNull(CertificateType.CERTIFICATE);
     }
 
     public List<Certificate> getAllLeadershipExperiences() {
-        return repository.findByCertificateTypeNot(CertificateType.CERTIFICATE);
+        return repository.findByCertificateTypeNotAndDeletedAtIsNull(CertificateType.CERTIFICATE);
     }
 }

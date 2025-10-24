@@ -1,6 +1,5 @@
 package ch.puzzle.pcts.architecture;
 
-import static ch.puzzle.pcts.architecture.CustomConditions.overrideEqualsMethod;
 import static ch.puzzle.pcts.architecture.CustomConditions.overrideHashCodeMethod;
 import static ch.puzzle.pcts.architecture.CustomConditions.overrideToStringMethod;
 import static ch.puzzle.pcts.architecture.CustomConditions.trimAssignedStringFields;
@@ -10,6 +9,7 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 
+import ch.puzzle.pcts.model.Model;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
@@ -228,7 +228,8 @@ class ArchitectureTest {
                 .areNotNestedClasses()
                 .should()
                 .beAnnotatedWith(Entity.class)
-                .andShould(overrideEqualsMethod)
+                .andShould()
+                .implement(Model.class)
                 .andShould(overrideHashCodeMethod)
                 .andShould(overrideToStringMethod);
 
