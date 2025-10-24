@@ -19,9 +19,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, MemberValidationService> {
 
-    private final String shortName = "A";
-    private final String longName = "A".repeat(251);
-
     @InjectMocks
     MemberValidationService service;
 
