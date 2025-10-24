@@ -59,6 +59,13 @@ class BasicStringValidationTest {
                      exception.getReason());
     }
 
+    @DisplayName("Should not throw error when string is valid")
+    @Test
+    void shouldNotThrowErrorWhenStringIsValid() {
+        DummyClass valid = new DummyClass("This is composed of valid characters");
+        service.validate(valid);
+    }
+
     private static class DummyClass implements Model {
         @BasicStringValidation
         String string;
