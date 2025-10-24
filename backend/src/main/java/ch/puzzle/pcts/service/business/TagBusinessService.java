@@ -24,7 +24,7 @@ public class TagBusinessService {
         }
 
         return rawTags.stream().map(tag -> {
-            validationService.validateName(tag);
+            validationService.validate(tag);
             return persistenceService
                     .findWithIgnoreCase(tag.getName())
                     .orElseGet(() -> persistenceService.create(new Tag(null, tag.getName())));

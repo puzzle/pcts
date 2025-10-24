@@ -4,77 +4,42 @@ import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.service.persistence.ExperienceTypePersistenceService;
+import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ExperienceTypeValidationService {
+public class ExperienceTypeValidationService extends ValidationBase<ExperienceType> {
     private final ExperienceTypePersistenceService persistenceService;
 
     public ExperienceTypeValidationService(ExperienceTypePersistenceService persistenceService) {
         this.persistenceService = persistenceService;
     }
 
-    public void validateOnGetById(Long id) {
-        validateIfExists(id);
-    }
-
+    @Override
     public void validateOnCreate(ExperienceType experienceType) {
-        validateIfIdIsNull(experienceType.getId());
-        validateName(experienceType.getName());
-        validateExperienceTypePoints(experienceType);
+        super.validateOnCreate(experienceType);
+        validateNameUniqueness(experienceType.getName());
     }
 
-    public void validateOnDelete(Long id) {
-        validateIfExists(id);
-    }
-
+    @Override
     public void validateOnUpdate(Long id, ExperienceType experienceType) {
-        validateIfExists(id);
-        validateOnCreate(experienceType);
+        super.validateOnUpdate(id, experienceType);
+        validateNameUniqueExcludingSelf(id, experienceType.getName());
     }
 
-    private void validateIfIdIsNull(Long id) {
-        if (id != null) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST, "Id needs to be undefined", ErrorKey.ID_IS_NOT_NULL);
-        }
+    private void validateNameUniqueness(String name) {
+        persistenceService.getByName(name).ifPresent(experienceType -> {
+            throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.INVALID_ARGUMENT);
+        });
     }
 
-    private void validateName(String name) {
-        if (name == null) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "Name must not be null",
-                                    ErrorKey.EXPERIENCE_TYPE_NAME_IS_NULL);
-        }
-
-        if (name.isBlank()) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "Name must not be empty",
-                                    ErrorKey.EXPERIENCE_TYPE_NAME_IS_EMPTY);
-        }
-    }
-
-    private void validateIfExists(Long id) {
-        persistenceService
-                .getById(id)
-                .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,
-                                                     "ExperienceType with id: " + id + " does not exist.",
-                                                     ErrorKey.NOT_FOUND));
-    }
-
-    private void validateExperienceTypePoints(ExperienceType experienceType) {
-        if (experienceType.getHighlyRelevantPoints() == null || experienceType.getLimitedRelevantPoints() == null
-            || experienceType.getLittleRelevantPoints() == null) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "ExperienceType has points with null as value",
-                                    ErrorKey.EXPERIENCE_TYPE_POINTS_ARE_NULL);
-        }
-        if (experienceType.getHighlyRelevantPoints().signum() < 0
-            || experienceType.getLimitedRelevantPoints().signum() < 0
-            || experienceType.getLittleRelevantPoints().signum() < 0) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "ExperienceType has negative points",
-                                    ErrorKey.EXPERIENCE_TYPE_POINTS_ARE_NEGATIVE);
-        }
+    private void validateNameUniqueExcludingSelf(Long id, String name) {
+        Optional<ExperienceType> existingOrganisationUnit = persistenceService.getByName(name);
+        existingOrganisationUnit.ifPresent(experienceType -> {
+            if (!experienceType.getId().equals(id)) {
+                throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.INVALID_ARGUMENT);
+            }
+        });
     }
 }

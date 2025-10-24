@@ -4,77 +4,42 @@ import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.service.persistence.DegreeTypePersistenceService;
+import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DegreeTypeValidationService {
+public class DegreeTypeValidationService extends ValidationBase<DegreeType> {
     private final DegreeTypePersistenceService persistenceService;
 
     public DegreeTypeValidationService(DegreeTypePersistenceService persistenceService) {
         this.persistenceService = persistenceService;
     }
 
+    @Override
     public void validateOnCreate(DegreeType degreeType) {
-        validateIfIdIsNull(degreeType.getId());
-        validateName(degreeType.getName());
-        validatePoints(degreeType);
+        super.validateOnCreate(degreeType);
+        validateNameUniqueness(degreeType.getName());
     }
 
-    public void validateOnGetById(Long id) {
-        validateIfExists(id);
-    }
-
+    @Override
     public void validateOnUpdate(Long id, DegreeType degreeType) {
-        validateIfExists(id);
-        validateIfIdIsNull(degreeType.getId());
-        validateName(degreeType.getName());
-        validatePoints(degreeType);
+        super.validateOnUpdate(id, degreeType);
+        validateNameUniqueExcludingSelf(id, degreeType.getName());
     }
 
-    public void validateOnDelete(Long id) {
-        validateIfExists(id);
+    private void validateNameUniqueness(String name) {
+        persistenceService.getByName(name).ifPresent(degreeType -> {
+            throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.INVALID_ARGUMENT);
+        });
     }
 
-    private void validateIfExists(Long id) {
-        persistenceService
-                .getById(id)
-                .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,
-                                                     "Degree type with id: " + id + " does not exist.",
-                                                     ErrorKey.NOT_FOUND));
-    }
-
-    private void validateIfIdIsNull(Long id) {
-        if (id != null) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST, "Id needs to be undefined", ErrorKey.ID_IS_NOT_NULL);
-        }
-    }
-
-    private void validateName(String name) {
-        if (name == null) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST, "Name must not be null", ErrorKey.DEGREE_TYPE_NAME_IS_NULL);
-        }
-
-        if (name.isBlank()) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "Name must not be empty",
-                                    ErrorKey.DEGREE_TYPE_NAME_IS_EMPTY);
-        }
-    }
-
-    private void validatePoints(DegreeType degreeType) {
-        if (degreeType.getHighlyRelevantPoints() == null || degreeType.getLimitedRelevantPoints() == null
-            || degreeType.getLittleRelevantPoints() == null) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "points must not be null",
-                                    ErrorKey.DEGREE_TYPE_POINTS_ARE_NULL);
-        }
-
-        if (degreeType.getHighlyRelevantPoints().signum() < 0 || degreeType.getLimitedRelevantPoints().signum() < 0
-            || degreeType.getLittleRelevantPoints().signum() < 0) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "points must not be negative",
-                                    ErrorKey.DEGREE_TYPE_POINTS_ARE_NEGATIVE);
-        }
+    private void validateNameUniqueExcludingSelf(Long id, String name) {
+        Optional<DegreeType> existingOrganisationUnit = persistenceService.getByName(name);
+        existingOrganisationUnit.ifPresent(degreeType -> {
+            if (!degreeType.getId().equals(id)) {
+                throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.INVALID_ARGUMENT);
+            }
+        });
     }
 }
