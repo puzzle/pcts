@@ -1,4 +1,4 @@
-import {Component, computed, effect, inject, input, OnInit, Signal, signal, WritableSignal} from '@angular/core';
+import { Component, computed, effect, inject, input, OnInit, signal, WritableSignal } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -9,10 +9,9 @@ import {
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { MemberService } from '../member.service';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatButton } from '@angular/material/button';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -26,9 +25,8 @@ import { PctsFormErrorDirective } from '../../../shared/pcts-form-error/pcts-for
 import { PctsFormLabelDirective } from '../../../shared/pcts-form-label/pcts-form-label.directive';
 import { InputFieldComponent } from '../../../shared/input-field/input-field.component';
 import { map } from 'rxjs';
-import {isDateInFuture, isInstanceOfClass, isAEmploymentState} from './form-validators';
-import {Form} from '../../../shared/form/form';
-// import {Form} from '../../../shared/form/form';
+import { isDateInFuture, isAEmploymentState, isInstanceOfClassSignal } from './form-validators';
+import { BaseFormComponent } from '../../../shared/form/base-form.component';
 
 @Component({
   selector: 'app-member-form',
@@ -39,16 +37,13 @@ import {Form} from '../../../shared/form/form';
     FormsModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
-    MatButton,
     TranslatePipe,
     MatIconModule,
     MatDatepickerModule,
-    RouterLink,
     PctsFormErrorDirective,
     PctsFormLabelDirective,
     InputFieldComponent,
-    Form,
-    // Form
+    BaseFormComponent
   ],
   templateUrl: './member-form.component.html',
   styleUrl: './member-form.component.scss'
@@ -64,23 +59,10 @@ export class MemberFormComponent implements OnInit {
 
   private readonly fb = inject(FormBuilder);
 
-  //input
   readonly member = input.required<MemberModel>();
 
   protected isEdit = computed(() => {
-    if (this.member()) {
-      return true;
-    } else {
-      return false;
-    }
-  })
-
-  protected pageTitleKey: Signal<string> = computed(() => {
-    return this.isEdit() ? 'GENERAL.EDIT' : 'GENERAL.ADD';
-  });
-
-  protected submitButtonKey: Signal<string> = computed(() => {
-    return this.isEdit() ? 'GENERAL.SAVE' : 'GENERAL.ADD';
+    return !!this.member();
   });
 
   private readonly employmentStateOptions: EmploymentState[] = Object.values(EmploymentState);
@@ -102,7 +84,7 @@ export class MemberFormComponent implements OnInit {
       [Validators.required,
         isAEmploymentState()]],
     organisationUnit: [null,
-      isInstanceOfClass(this.organisationUnitsOptions())]
+      isInstanceOfClassSignal(this.organisationUnitsOptions)]
   });
 
   protected employmentStateControlSignal = toSignal(this.memberForm.get('employmentState')!.valueChanges.pipe(map((value) => value ?? '')), {
@@ -125,6 +107,8 @@ export class MemberFormComponent implements OnInit {
     this.organisationUnitService.getAllOrganisationUnits()
       .subscribe((organisationUnits) => {
         this.organisationUnitsOptions.set(organisationUnits);
+        this.memberForm.get('organisationUnit')
+          ?.updateValueAndValidity();
       });
   }
 

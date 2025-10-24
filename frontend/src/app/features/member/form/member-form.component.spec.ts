@@ -1,28 +1,23 @@
-import { MemberFormComponent } from './member-form.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { MemberService } from '../member.service';
 import { OrganisationUnitService } from '../../organisation-unit/organisation-unit.service';
 import {
-  member1, memberDto1,
+  member1,
   organisationUnit1,
   organisationUnit2,
   organisationUnit3,
   organisationUnit4
 } from '../../../shared/test/test-data';
 import { TranslateModule } from '@ngx-translate/core';
-import { ActivatedRoute, provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import { MemberModel } from '../member.model';
+import { MemberFormComponent } from './member-form.component';
 
-class MockActivatedRoute {
-  public snapshot = {
-    data: {} as any
-  };
+class MockRouter {
+  navigate = jest.fn();
 
-  public setData(memberData: MemberModel | null) {
-    this.snapshot.data['memberData'] = memberData;
-  }
+  navigateByUrl = jest.fn();
 }
 
 describe('MemberFormComponent', () => {
@@ -30,7 +25,6 @@ describe('MemberFormComponent', () => {
   let fixture: ComponentFixture<MemberFormComponent>;
   let memberServiceMock: Partial<MemberService>;
   let organisationUnitServiceMock: Partial<OrganisationUnitService>;
-  const mockActivatedRoute = new MockActivatedRoute();
   const organisationUnits = [
     organisationUnit1,
     organisationUnit2,
@@ -45,7 +39,7 @@ describe('MemberFormComponent', () => {
       addMember: jest.fn()
         .mockReturnValue(of(member1)),
       updateMember: jest.fn()
-        .mockReturnValue(of(member1)),
+        .mockReturnValue(of(member1))
     };
 
     organisationUnitServiceMock = {
@@ -59,34 +53,37 @@ describe('MemberFormComponent', () => {
       providers: [
         provideRouter([]),
         provideNativeDateAdapter(),
-        { provide: ActivatedRoute,
-          useValue: mockActivatedRoute },
         { provide: MemberService,
           useValue: memberServiceMock },
         { provide: OrganisationUnitService,
-          useValue: organisationUnitServiceMock }
+          useValue: organisationUnitServiceMock },
+        { provide: Router,
+          useClass: MockRouter }
       ]
     })
       .compileComponents();
 
     fixture = TestBed.createComponent(MemberFormComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
+    fixture.componentRef.setInput('member', null as any);
+    fixture.detectChanges();
     expect(component)
       .toBeTruthy();
   });
 
   it('should load organisationUnits', () => {
+    fixture.componentRef.setInput('member', null as any);
+    fixture.detectChanges();
     expect(component['organisationUnitsOptions']())
       .toStrictEqual(organisationUnits);
   });
 
   describe('addMember', () => {
     beforeEach(() => {
-      mockActivatedRoute.setData(null);
+      fixture.componentRef.setInput('member', null as any);
       fixture.detectChanges();
     });
 
@@ -107,14 +104,28 @@ describe('MemberFormComponent', () => {
       component.onSubmit();
 
       expect(addSpy)
-        .toHaveBeenCalledWith(memberDto1);
+        .toHaveBeenCalledWith(memberWithoutId);
+    });
+
+    it('should navigate after adding a member', () => {
+      const memberWithoutId = {
+        ...member1,
+        id: 0
+      };
+      const router = TestBed.inject(Router);
+
+      component['memberForm'].setValue(memberWithoutId);
+
+      component.onSubmit();
+
+      expect(router.navigate)
+        .toHaveBeenCalledWith(['/']);
     });
   });
 
   describe('updateMember', () => {
     beforeEach(() => {
-      mockActivatedRoute.setData(member1);
-      component.ngOnInit();
+      fixture.componentRef.setInput('member', member1);
       fixture.detectChanges();
     });
 
@@ -151,12 +162,11 @@ describe('MemberFormComponent', () => {
       const updateSpy = jest.spyOn(memberServiceMock, 'updateMember');
 
       component.onSubmit();
-      
+
       expect(updateSpy)
-        .toHaveBeenCalledWith(1, memberDto1);
+        .toHaveBeenCalledWith(1, member1);
 
       updateSpy.mockRestore();
     });
   });
 });
-

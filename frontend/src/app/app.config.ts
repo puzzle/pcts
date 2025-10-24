@@ -1,5 +1,5 @@
 import {
-  ApplicationConfig,
+  ApplicationConfig, inject, provideAppInitializer,
   provideBrowserGlobalErrorListeners,
   provideZonelessChangeDetection
 } from '@angular/core';
@@ -7,12 +7,13 @@ import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
-import { provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService, TranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { CUSTOM_LUXON_DATE_FORMATS } from './shared/format/date-format';
 import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
+import { lastValueFrom } from 'rxjs';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,7 +22,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(),
     provideTranslateService({
-      lang: 'de',
       fallbackLang: 'de',
       loader: provideTranslateHttpLoader({
         prefix: '/i18n/',
@@ -29,6 +29,11 @@ export const appConfig: ApplicationConfig = {
       })
     }),
     provideLuxonDateAdapter(),
+    provideAppInitializer(() => {
+      const translate = inject(TranslateService);
+      const lang = 'de';
+      return lastValueFrom(translate.use(lang));
+    }),
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'outline' }
