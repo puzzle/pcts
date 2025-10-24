@@ -1,10 +1,36 @@
 {
   "PCTS_LOGO_ALT": "Puzzle PCTS Logo",
   "LOGOUT": "Abmelden",
+
+  "GENERAL": {
+    "ADD": "Hinzufügen",
+    "EDIT": "Ändern",
+    "CANCEL": "Abbrechen",
+    "SAVE": "Speichern"
+  },
+
+  "VALIDATION": {
+    "REQUIRED": "Muss ausgefühlt sein",
+    "DATE_IS_IN_FUTURE": "Datum muss in der Vergangenheit liegen",
+    "INVALID_ENTRY": "Ungültige Eingabe",
+    "MATDATEPICKERPARSE": "Ungültiges Datum",
+    "NOT_AVAILABLE": "\"{{value}}\" nicht verfügbar"
+  },
+
   "MEMBER": {
     "NAME": "Name",
-    "BIRTHDATE": " Geburtsdatum",
+    "FIRSTNAME": "Vorname",
+    "LAST_NAME": "Nachname",
+    "ABBREVIATION": "Kürzel",
+    "BIRTH_DATE": "Geburtsdatum",
+    "DATE_OF_HIRE": "Ansellungsdatum",
     "ORGANISATION_UNIT": "Division",
+    "EMPLOYMENT_STATE": "Anstellungsstatus",
+
+    "FORM": {
+      "PERSONAL_DETAILS": "Personalien",
+      "TITLE": "Member"
+    },
 
     "OVERVIEW": {
       "MEMBERS": "Members",
@@ -13,7 +39,6 @@
       "ADD_MEMBER": "Member hinzufügen",
       "NO_SEARCH_RESULT": "Kein Member mit den Attributen \"{{searchValue}}\" gefunden."
     },
-    "EMPLOYMENT_STATUS": "Anstellungsstatus",
     "EMPLOYMENT_STATUS_VALUES": {
       "MEMBER": "Member",
       "APPLICANT": "Bewerber",

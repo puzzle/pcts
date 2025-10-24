@@ -6,7 +6,7 @@ cd "$git_base_path"/docker
 
 echo "**Merging and running the docker-compose file**"
 echo "----------------------------------------------------------------"
-docker compose -f docker-compose.yml -f docker-compose.e2e.yml up
+docker compose -f docker-compose.yml -f docker-compose.e2e.yml --profile backend up --build
 
 echo "**Stopping the docker containers**"
-trap 'docker compose down' EXIT
+trap 'docker compose down -v' EXIT

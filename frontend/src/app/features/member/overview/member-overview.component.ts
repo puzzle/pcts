@@ -1,7 +1,7 @@
-import { Component, effect, inject, Signal, signal, viewChild, WritableSignal } from '@angular/core';
+import { Component, effect, inject, OnInit, Signal, signal, viewChild, WritableSignal } from '@angular/core';
 import { MemberService } from '../member.service';
 import { MemberModel } from '../member.model';
-import { ReactiveFormsModule, FormControl } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,6 +13,8 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { EmploymentState } from '../../../shared/enum/employment-state.enum';
 import { debounceTime } from 'rxjs/operators';
+import { MatLuxonDateModule } from '@angular/material-luxon-adapter';
+import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
 
 
 @Component({
@@ -34,7 +36,7 @@ import { debounceTime } from 'rxjs/operators';
   templateUrl: './member-overview.component.html',
   styleUrl: './member-overview.component.scss'
 })
-export class MemberOverviewComponent {
+export class MemberOverviewComponent implements OnInit {
   private readonly service: MemberService = inject(MemberService);
 
   private readonly datePipe: DatePipe = inject(DatePipe);
@@ -65,13 +67,6 @@ export class MemberOverviewComponent {
   employmentStateValues: EmploymentState[] = Object.values(EmploymentState);
 
   constructor() {
-    this.service.getAllMembers()
-      .subscribe((members: MemberModel[]): void => {
-        this.members.set(members);
-      });
-
-    this.dataSource.filterPredicate = this.createFilterPredicate();
-
     effect((): void => {
       this.dataSource.data = this.members();
       this.dataSource.sort = this.sort();
@@ -89,6 +84,15 @@ export class MemberOverviewComponent {
       .subscribe(() => {
         this.applyCombinedFilter();
       });
+  }
+
+  ngOnInit() {
+    this.service.getAllMembers()
+      .subscribe((members: MemberModel[]): void => {
+        this.members.set(members);
+      });
+
+    this.dataSource.filterPredicate = this.createFilterPredicate();
   }
 
   createFilterPredicate(): (data: MemberModel, filter: string) => boolean {
@@ -157,4 +161,12 @@ export class MemberOverviewComponent {
     }
     return all;
   }
+
+  handleAddMemberClick(): void {
+    this.router.navigate(['/member/add']);
+  }
+
+  protected readonly MatLuxonDateModule = MatLuxonDateModule;
+
+  protected readonly GLOBAL_DATE_FORMAT = GLOBAL_DATE_FORMAT;
 }

@@ -1,36 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MemberOverviewComponent } from './member-overview.component';
 import { provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
 import { MemberModel } from '../member.model';
 import { EmploymentState } from '../../../shared/enum/employment-state.enum';
 import { of } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { MemberService } from '../member.service';
+import { member1, member2 } from '../../../shared/test/test-data';
+import { provideTranslateService } from '@ngx-translate/core';
 
 describe('MemberOverviewComponent', () => {
   let component: MemberOverviewComponent;
   let fixture: ComponentFixture<MemberOverviewComponent>;
   let memberServiceMock: Partial<MemberService>;
 
-  const membersMock: MemberModel[] = [{ id: 1,
-    name: 'Ja',
-    lastName: 'Morant',
-    birthDate: new Date(2018, 0, 1),
-    abbreviation: 'JM',
-    employmentState: EmploymentState.MEMBER,
-    organisationUnit: { id: 1,
-      name: '/mem' },
-    dateOfHire: new Date(2019, 0, 1) },
-  { id: 2,
-    name: 'Bane',
-    lastName: 'Desmond',
-    birthDate: new Date(2016, 5, 15),
-    abbreviation: 'BD',
-    employmentState: EmploymentState.EX_MEMBER,
-    organisationUnit: { id: 2,
-      name: '/ww' },
-    dateOfHire: new Date(2017, 3, 1) }];
+  const membersMock: MemberModel[] = [member1,
+    member2];
 
   beforeEach(async() => {
     memberServiceMock = {
@@ -39,12 +24,14 @@ describe('MemberOverviewComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [MemberOverviewComponent,
-        TranslateModule.forRoot()],
-      providers: [provideRouter([]),
+      imports: [MemberOverviewComponent],
+      providers: [
+        provideRouter([]),
+        provideTranslateService(),
         { provide: MemberService,
           useValue: memberServiceMock },
-        DatePipe]
+        DatePipe
+      ]
     })
       .compileComponents();
 
@@ -110,13 +97,13 @@ describe('MemberOverviewComponent', () => {
 
   describe('createFilterPredicate', () => {
     const testCases = [
-      { searchText: 'ja',
+      { searchText: 'lena',
         status: EmploymentState.EX_MEMBER,
         expected: false },
-      { searchText: 'Morant',
+      { searchText: 'Müller',
         status: '',
         expected: true },
-      { searchText: 'Bane',
+      { searchText: 'Keller',
         status: EmploymentState.MEMBER,
         expected: false },
       { searchText: 'NoMember',
@@ -136,8 +123,8 @@ describe('MemberOverviewComponent', () => {
   });
 
   describe('applyCombinedFilter', () => {
-    it.each([['Bane'],
-      ['ja Morant'],
+    it.each([['Keller'],
+      ['Lena Müller'],
       ['']])('should update searchControl to "%s" and apply filter', (searchText) => {
       const spy = jest.spyOn(component as any, 'applyCombinedFilter');
       component.searchControl.setValue(searchText);
