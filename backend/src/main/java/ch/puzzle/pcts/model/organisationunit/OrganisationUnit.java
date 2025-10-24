@@ -54,8 +54,10 @@ public class OrganisationUnit implements Model {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof OrganisationUnit that)) return false;
-        return Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName()) && Objects.equals(getDeletedAt(), that.getDeletedAt());
+        if (!(o instanceof OrganisationUnit that))
+            return false;
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName())
+               && Objects.equals(getDeletedAt(), that.getDeletedAt());
     }
 
     @Override

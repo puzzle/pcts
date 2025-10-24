@@ -89,13 +89,24 @@ public class ExperienceType implements Model {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof ExperienceType that)) return false;
-        return Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName()) && Objects.equals(getHighlyRelevantPoints(), that.getHighlyRelevantPoints()) && Objects.equals(getLimitedRelevantPoints(), that.getLimitedRelevantPoints()) && Objects.equals(getLittleRelevantPoints(), that.getLittleRelevantPoints()) && Objects.equals(getDeletedAt(), that.getDeletedAt());
+        if (!(o instanceof ExperienceType that))
+            return false;
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName())
+               && Objects.equals(getHighlyRelevantPoints(), that.getHighlyRelevantPoints())
+               && Objects.equals(getLimitedRelevantPoints(), that.getLimitedRelevantPoints())
+               && Objects.equals(getLittleRelevantPoints(), that.getLittleRelevantPoints())
+               && Objects.equals(getDeletedAt(), that.getDeletedAt());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getHighlyRelevantPoints(), getLimitedRelevantPoints(), getLittleRelevantPoints(), getDeletedAt());
+        return Objects
+                .hash(getId(),
+                      getName(),
+                      getHighlyRelevantPoints(),
+                      getLimitedRelevantPoints(),
+                      getLittleRelevantPoints(),
+                      getDeletedAt());
     }
 
     @Override

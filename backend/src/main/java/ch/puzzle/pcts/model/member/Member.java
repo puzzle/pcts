@@ -126,13 +126,30 @@ public class Member implements Model {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Member member)) return false;
-        return Objects.equals(getId(), member.getId()) && Objects.equals(getName(), member.getName()) && Objects.equals(getLastName(), member.getLastName()) && getEmploymentState() == member.getEmploymentState() && Objects.equals(getAbbreviation(), member.getAbbreviation()) && Objects.equals(getDateOfHire(), member.getDateOfHire()) && Objects.equals(getBirthDate(), member.getBirthDate()) && Objects.equals(getDeletedAt(), member.getDeletedAt()) && Objects.equals(getOrganisationUnit(), member.getOrganisationUnit());
+        if (!(o instanceof Member member))
+            return false;
+        return Objects.equals(getId(), member.getId()) && Objects.equals(getName(), member.getName())
+               && Objects.equals(getLastName(), member.getLastName())
+               && getEmploymentState() == member.getEmploymentState()
+               && Objects.equals(getAbbreviation(), member.getAbbreviation())
+               && Objects.equals(getDateOfHire(), member.getDateOfHire())
+               && Objects.equals(getBirthDate(), member.getBirthDate())
+               && Objects.equals(getDeletedAt(), member.getDeletedAt())
+               && Objects.equals(getOrganisationUnit(), member.getOrganisationUnit());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getLastName(), getEmploymentState(), getAbbreviation(), getDateOfHire(), getBirthDate(), getDeletedAt(), getOrganisationUnit());
+        return Objects
+                .hash(getId(),
+                      getName(),
+                      getLastName(),
+                      getEmploymentState(),
+                      getAbbreviation(),
+                      getDateOfHire(),
+                      getBirthDate(),
+                      getDeletedAt(),
+                      getOrganisationUnit());
     }
 
     @Override

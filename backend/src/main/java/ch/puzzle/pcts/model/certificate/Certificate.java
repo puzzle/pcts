@@ -116,13 +116,18 @@ public class Certificate implements Model {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Certificate that)) return false;
-        return Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName()) && Objects.equals(getPoints(), that.getPoints()) && Objects.equals(getComment(), that.getComment()) && Objects.equals(getTags(), that.getTags()) && getCertificateType() == that.getCertificateType() && Objects.equals(getDeletedAt(), that.getDeletedAt());
+        if (!(o instanceof Certificate that))
+            return false;
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName())
+               && Objects.equals(getPoints(), that.getPoints()) && Objects.equals(getComment(), that.getComment())
+               && Objects.equals(getTags(), that.getTags()) && getCertificateType() == that.getCertificateType()
+               && Objects.equals(getDeletedAt(), that.getDeletedAt());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getPoints(), getComment(), getTags(), getCertificateType(), getDeletedAt());
+        return Objects
+                .hash(getId(), getName(), getPoints(), getComment(), getTags(), getCertificateType(), getDeletedAt());
     }
 
     @Override
