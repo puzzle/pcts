@@ -7,11 +7,9 @@ import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @SQLDelete(sql = "UPDATE role SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
-@SQLRestriction("deleted_at IS NULL")
 public class Role implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

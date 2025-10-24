@@ -21,7 +21,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.stereotype.*;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -47,14 +47,15 @@ class ArchitectureTest {
     @Test
     void repositoriesShouldNotAccessEachOther() {
         JavaClasses importedClasses = getMainSourceClasses();
-        ArchRule rule = classes()
+        ArchRule rule = noClasses()
                 .that()
                 .resideInAnyPackage("ch.puzzle.pcts.repository..")
                 .should()
                 .onlyDependOnClassesThat()
-                .doNotImplement(JpaRepository.class)
-                .orShould()
-                .resideOutsideOfPackage("ch.puzzle.pcts.repository");
+                .resideInAPackage("ch.puzzle.pcts.repository..")
+                .andShould()
+                .onlyDependOnClassesThat()
+                .areAnnotatedWith(NoRepositoryBean.class);
 
         rule.check(importedClasses);
     }
@@ -200,6 +201,8 @@ class ArchitectureTest {
                 .resideInAPackage("ch.puzzle.pcts.repository..")
                 .should()
                 .beAnnotatedWith(Repository.class)
+                .orShould()
+                .beAnnotatedWith(NoRepositoryBean.class)
                 .andShould()
                 .beInterfaces();
 

@@ -9,11 +9,9 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @SQLDelete(sql = "UPDATE member SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
-@SQLRestriction("deleted_at IS NULL")
 public class Member implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,6 +46,7 @@ public class Member implements Model {
         this.dateOfHire = builder.dateOfHire;
         this.birthDate = builder.birthDate;
         this.organisationUnit = builder.organisationUnit;
+        this.deletedAt = null;
     }
 
     public Member() {

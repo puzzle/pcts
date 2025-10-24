@@ -1,12 +1,8 @@
 package ch.puzzle.pcts.repository;
 
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ExperienceTypeRepository
-        extends
-            JpaRepository<ExperienceType, Long>,
-            SoftDeleteRepository<ExperienceType> {
+public interface ExperienceTypeRepository extends SoftDeleteRepository<ExperienceType, Long> {
 }

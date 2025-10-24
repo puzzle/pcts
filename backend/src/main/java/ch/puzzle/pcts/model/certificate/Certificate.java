@@ -10,11 +10,9 @@ import java.sql.Timestamp;
 import java.util.Objects;
 import java.util.Set;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @SQLDelete(sql = "UPDATE certificate SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
-@SQLRestriction("deleted_at IS NULL")
 public class Certificate implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
