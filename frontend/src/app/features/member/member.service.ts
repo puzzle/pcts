@@ -29,7 +29,7 @@ export class MemberService {
     return this.httpClient.put<MemberModel>(`${this.API_URL}/${id}`, this.toDto(member));
   }
 
-  private toDto(model: MemberModel): MemberDto {
+  toDto(model: MemberModel): MemberDto {
     return {
       name: model.name,
       lastName: model.lastName,

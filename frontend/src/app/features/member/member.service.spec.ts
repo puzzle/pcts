@@ -68,7 +68,7 @@ describe('MemberService', () => {
 
   describe('addMember', () => {
     it('should call httpClient.post with the correct URL and member data', () => {
-      service.addMember(memberDto1)
+      service.addMember(member1)
         .subscribe((newMember) => {
           expect(newMember)
             .toEqual(member1);
@@ -87,7 +87,7 @@ describe('MemberService', () => {
     it('should call httpClient.put with the correct URL and member data', () => {
       const memberId = 1;
 
-      service.updateMember(memberId, memberDto1)
+      service.updateMember(memberId, member1)
         .subscribe((updatedMember) => {
           expect(updatedMember)
             .toEqual(member1);
