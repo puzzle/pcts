@@ -30,10 +30,10 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
         return Member.Builder
                 .builder()
                 .withId(null)
-                .withName("Member 3")
+                .withName("Member")
                 .withLastName("Test")
                 .withEmploymentState(EmploymentState.APPLICANT)
-                .withAbbreviation("M1")
+                .withAbbreviation("MT")
                 .withDateOfHire(new Timestamp(0L))
                 .withBirthDate(new Timestamp(0L))
                 .withOrganisationUnit(new OrganisationUnit(1L, "Organisation Unit"))

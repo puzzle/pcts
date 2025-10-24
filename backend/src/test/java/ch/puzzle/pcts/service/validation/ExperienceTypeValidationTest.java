@@ -1,8 +1,7 @@
 package ch.puzzle.pcts.service.validation;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 import ch.puzzle.pcts.exception.PCTSException;
@@ -22,11 +21,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceType, ExperienceTypeValidationService> {
 
-    @Mock
-    private ExperienceTypePersistenceService persistenceService;
-
     @InjectMocks
     ExperienceTypeValidationService service;
+
+    @Mock
+    private ExperienceTypePersistenceService persistenceService;
 
     @Override
     ExperienceType getModel() {
@@ -129,7 +128,7 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
         assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
     }
 
-    @DisplayName("Should Throw Exception on validateOnUpdate() when name already exists")
+    @DisplayName("Should throw Exception on validateOnUpdate() when name already exists")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExists() {
         Long id = 1L;
@@ -144,5 +143,18 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
 
         assertEquals("Name already exists", exception.getReason());
         assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+    }
+
+    @DisplayName("Should be successful validateOnUpdate() when name stays the same")
+    @Test
+    void shouldNotThrowExceptionOnValidateOnUpdateWhenNameStaysTheSame() {
+        Long id = 1L;
+        ExperienceType experienceType = getModel();
+        ExperienceType newExperienceType = getModel();
+        experienceType.setId(1L);
+
+        when(persistenceService.getByName(newExperienceType.getName())).thenReturn(Optional.of(experienceType));
+
+        assertDoesNotThrow(() -> service.validateOnUpdate(id, newExperienceType));
     }
 }

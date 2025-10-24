@@ -1,8 +1,7 @@
 package ch.puzzle.pcts.service.validation;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 import ch.puzzle.pcts.exception.PCTSException;
@@ -22,11 +21,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeType, DegreeTypeValidationService> {
 
-    @Mock
-    private DegreeTypePersistenceService persistenceService;
-
     @InjectMocks
     DegreeTypeValidationService service;
+
+    @Mock
+    private DegreeTypePersistenceService persistenceService;
 
     @Override
     DegreeType getModel() {
@@ -129,7 +128,7 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
         assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
     }
 
-    @DisplayName("Should Throw Exception on validateOnUpdate() when name already exists")
+    @DisplayName("Should throw Exception on validateOnUpdate() when name already exists")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExists() {
         Long id = 1L;
@@ -143,5 +142,18 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
 
         assertEquals("Name already exists", exception.getReason());
         assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+    }
+
+    @DisplayName("Should be successful validateOnUpdate() when name stays the same")
+    @Test
+    void shouldNotThrowExceptionOnValidateOnUpdateWhenNameStaysTheSame() {
+        Long id = 1L;
+        DegreeType degreeType = getModel();
+        DegreeType newDegreeType = getModel();
+        degreeType.setId(1L);
+
+        when(persistenceService.getByName(newDegreeType.getName())).thenReturn(Optional.of(degreeType));
+
+        assertDoesNotThrow(() -> service.validateOnUpdate(id, newDegreeType));
     }
 }

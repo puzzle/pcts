@@ -22,16 +22,16 @@ class LeadershipExperienceValidationServiceTest
         extends
             ValidationBaseServiceTest<Certificate, LeadershipExperienceValidationService> {
 
-    @Mock
-    private CertificatePersistenceService persistenceService;
-
     @InjectMocks
     LeadershipExperienceValidationService service;
+
+    @Mock
+    private CertificatePersistenceService persistenceService;
 
     @Override
     Certificate getModel() {
         return new Certificate(null,
-                               "Valid Leadership Experience",
+                               "Leadership Experience",
                                BigDecimal.valueOf(10),
                                "Comment",
                                CertificateType.YOUTH_AND_SPORT);
@@ -120,7 +120,7 @@ class LeadershipExperienceValidationServiceTest
         assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
     }
 
-    @DisplayName("Should Throw Exception on validateOnUpdate() when name already exists")
+    @DisplayName("Should throw Exception on validateOnUpdate() when name already exists")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExists() {
         Long id = 1L;
@@ -136,5 +136,19 @@ class LeadershipExperienceValidationServiceTest
 
         assertEquals("Name already exists", exception.getReason());
         assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+    }
+
+    @DisplayName("Should be successful validateOnUpdate() when name stays the same")
+    @Test
+    void shouldNotThrowExceptionOnValidateOnUpdateWhenNameStaysTheSame() {
+        Long id = 1L;
+        Certificate newLeadershipExperience = getModel();
+        Certificate leadershipExperience = getModel();
+        leadershipExperience.setId(1L);
+
+        when(persistenceService.getByName(newLeadershipExperience.getName()))
+                .thenReturn(Optional.of(leadershipExperience));
+
+        assertDoesNotThrow(() -> service.validateOnUpdate(id, newLeadershipExperience));
     }
 }

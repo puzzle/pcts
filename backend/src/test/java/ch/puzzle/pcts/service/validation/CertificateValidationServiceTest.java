@@ -1,7 +1,6 @@
 package ch.puzzle.pcts.service.validation;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 import ch.puzzle.pcts.exception.PCTSException;
@@ -23,16 +22,16 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certificate, CertificateValidationService> {
 
-    @Mock
-    private CertificatePersistenceService persistenceService;
-
     @InjectMocks
     CertificateValidationService service;
+
+    @Mock
+    private CertificatePersistenceService persistenceService;
 
     @Override
     Certificate getModel() {
         return new Certificate(null,
-                               "Valid Certificate",
+                               "Certificate",
                                BigDecimal.valueOf(10),
                                "Comment",
                                Set.of(new Tag(null, "Tag")),
@@ -119,7 +118,7 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
         assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
     }
 
-    @DisplayName("Should Throw Exception on validateOnUpdate() when name already exists")
+    @DisplayName("Should throw Exception on validateOnUpdate() when name already exists")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExists() {
         Long id = 1L;
@@ -133,5 +132,18 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
 
         assertEquals("Name already exists", exception.getReason());
         assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+    }
+
+    @DisplayName("Should be successful validateOnUpdate() when name stays the same")
+    @Test
+    void shouldNotThrowExceptionOnValidateOnUpdateWhenNameStaysTheSame() {
+        Long id = 1L;
+        Certificate certificate = getModel();
+        Certificate newCertificate = getModel();
+        certificate.setId(1L);
+
+        when(persistenceService.getByName(newCertificate.getName())).thenReturn(Optional.of(certificate));
+
+        assertDoesNotThrow(() -> service.validateOnUpdate(id, certificate));
     }
 }
