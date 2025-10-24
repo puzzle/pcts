@@ -1,5 +1,6 @@
-import {AbstractControl, ValidationErrors, ValidatorFn} from '@angular/forms';
-import {EmploymentState} from '../../../shared/enum/employment-state.enum';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { EmploymentState } from '../../../shared/enum/employment-state.enum';
+import { Signal } from '@angular/core';
 
 export function isDateInFuture(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -18,9 +19,10 @@ export function isDateInFuture(): ValidatorFn {
   };
 }
 
-export function isInstanceOfClass(validOptions: any[]): ValidatorFn {
+export function isInstanceOfClassSignal<T>(validOptionsSignal: Signal<T[]>): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    const value = control.value;
+    const value: any = control.value;
+    const validOptions: T[] = validOptionsSignal();
 
     if (!value) {
       return null;
@@ -30,12 +32,12 @@ export function isInstanceOfClass(validOptions: any[]): ValidatorFn {
       return { invalid_entry: true };
     }
 
-    const isValidOption = validOptions
-      .includes(value);
+    const isValidOption: boolean = validOptions.includes(value);
 
     return isValidOption ? null : { invalid_entry: true };
   };
 }
+
 
 export function isAEmploymentState(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -45,7 +47,8 @@ export function isAEmploymentState(): ValidatorFn {
       return null;
     }
 
-    if (value === EmploymentState.EX_MEMBER || value === EmploymentState.APPLICANT || value === EmploymentState.MEMBER) {
+    if (Object.values(EmploymentState)
+      .includes(value)) {
       return null;
     }
     return { invalid_entry: true };
