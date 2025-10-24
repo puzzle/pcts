@@ -37,12 +37,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                 .build();
     }
 
-    @DisplayName("Should be successful when member is valid")
-    @Test
-    void validateBeanValidationWhenModelIsValid() {
-        assertDoesNotThrow(() -> service.validate(getModel()));
-    }
-
     @DisplayName("Should throw exception when employment state is null")
     @Test
     void validateBeanValidationWhenEmploymentStateIsNull() {
