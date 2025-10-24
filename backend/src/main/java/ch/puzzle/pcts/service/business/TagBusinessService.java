@@ -27,13 +27,13 @@ public class TagBusinessService {
             validationService.validateName(tag);
             return persistenceService
                     .findWithIgnoreCase(tag.getName())
-                    .orElseGet(() -> persistenceService.create(new Tag(null, tag.getName())));
+                    .orElseGet(() -> persistenceService.save(new Tag(null, tag.getName())));
         }).collect(Collectors.toSet());
     }
 
     public void deleteUnusedTags() {
         Set<Tag> unusedTags = persistenceService.findAllUnusedTags();
 
-        persistenceService.delete(unusedTags);
+        persistenceService.deleteAll(unusedTags);
     }
 }

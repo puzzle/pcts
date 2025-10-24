@@ -29,7 +29,7 @@ public class CertificateBusinessService {
 
         certificate.setTags(tagBusinessService.resolveTags(certificate.getTags()));
 
-        return persistenceService.create(certificate);
+        return persistenceService.save(certificate);
     }
 
     public Certificate getById(Long id) {
@@ -56,9 +56,9 @@ public class CertificateBusinessService {
         validationService.validateOnUpdate(id, certificate);
 
         certificate.setTags(tagBusinessService.resolveTags(certificate.getTags()));
+        certificate.setId(id);
 
-        Certificate result = persistenceService.update(id, certificate);
-
+        Certificate result = persistenceService.save(certificate);
         tagBusinessService.deleteUnusedTags();
 
         return result;

@@ -2,18 +2,18 @@ package ch.puzzle.pcts.model.certificate;
 
 import static org.apache.commons.lang3.StringUtils.trim;
 
+import ch.puzzle.pcts.model.Model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Objects;
 import java.util.Set;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @SQLDelete(sql = "UPDATE certificate SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
-@SQLRestriction("deleted_at IS NULL")
-public class Certificate {
+public class Certificate implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,6 +33,9 @@ public class Certificate {
     @Enumerated(EnumType.STRING)
     @NotNull
     private CertificateType certificateType;
+
+    @Column(name = "deleted_at", insertable = false, updatable = false)
+    private Timestamp deletedAt;
 
     public Certificate(Long id, String name, BigDecimal points, String comment, Set<Tag> tags,
                        CertificateType certificateType) {
@@ -103,24 +106,33 @@ public class Certificate {
         this.certificateType = certificateType;
     }
 
-    @Override
-    public String toString() {
-        return "Certificate{" + "id=" + id + ", name='" + name + '\'' + ", points=" + points + ", comment='" + comment
-               + '\'' + ", tags=" + tags + ", certificateType=" + certificateType + '}';
+    public Timestamp getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Timestamp deletedAt) {
+        this.deletedAt = deletedAt;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Certificate certificate)) {
+        if (!(o instanceof Certificate that))
             return false;
-        }
-        return Objects.equals(id, certificate.id) && Objects.equals(name, certificate.name)
-               && Objects.equals(points, certificate.points) && Objects.equals(comment, certificate.comment)
-               && Objects.equals(tags, certificate.tags) && certificateType == certificate.certificateType;
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName())
+               && Objects.equals(getPoints(), that.getPoints()) && Objects.equals(getComment(), that.getComment())
+               && Objects.equals(getTags(), that.getTags()) && getCertificateType() == that.getCertificateType()
+               && Objects.equals(getDeletedAt(), that.getDeletedAt());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, points, comment, tags, certificateType);
+        return Objects
+                .hash(getId(), getName(), getPoints(), getComment(), getTags(), getCertificateType(), getDeletedAt());
+    }
+
+    @Override
+    public String toString() {
+        return "Certificate{" + "id=" + id + ", name='" + name + '\'' + ", points=" + points + ", comment='" + comment
+               + '\'' + ", tags=" + tags + ", certificateType=" + certificateType + ", deletedAt=" + deletedAt + '}';
     }
 }

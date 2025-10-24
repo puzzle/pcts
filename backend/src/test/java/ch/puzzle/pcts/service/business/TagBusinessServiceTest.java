@@ -43,7 +43,7 @@ class TagBusinessServiceTest {
         Set<Tag> result = businessService.resolveTags(Set.of(tag));
 
         assertThat(result).containsExactly(existingTag);
-        verify(persistenceService, never()).create(any());
+        verify(persistenceService, never()).save(any());
         verify(validationService).validateName(tag);
     }
 
@@ -57,16 +57,16 @@ class TagBusinessServiceTest {
         when(persistenceService.findWithIgnoreCase(notPersistedName)).thenReturn(Optional.empty());
         // only mock the exact correct case and not any tag, we want to ensure that only
         // expected stubings happen
-        when(persistenceService.create(argThat(t -> t.getName().equals(notPersistedName)))).thenReturn(existingTag);
+        when(persistenceService.save(argThat(t -> t.getName().equals(notPersistedName)))).thenReturn(existingTag);
 
         Set<Tag> result = businessService.resolveTags(Set.of(tag));
 
         assertThat(result).containsExactly(existingTag);
 
         // verify that the exact correct tag is created and not any tag here
-        verify(persistenceService).create(argThat(t -> t.getName().equals(notPersistedName)));
+        verify(persistenceService).save(argThat(t -> t.getName().equals(notPersistedName)));
         // verify that no other tag is created than the expected
-        verify(persistenceService, never()).create(argThat(t -> !t.getName().equals(notPersistedName)));
+        verify(persistenceService, never()).save(argThat(t -> !t.getName().equals(notPersistedName)));
         assertTrue(result.contains(existingTag));
         verify(validationService).validateName(tag);
     }
@@ -81,16 +81,16 @@ class TagBusinessServiceTest {
         when(existingTag.getName()).thenReturn(existingName);
         when(persistenceService.findWithIgnoreCase(existingName)).thenReturn(Optional.of(existingTag));
         when(persistenceService.findWithIgnoreCase(newName)).thenReturn(Optional.empty());
-        when(persistenceService.create(argThat(t -> t.getName().equals(newName)))).thenReturn(tag);
+        when(persistenceService.save(argThat(t -> t.getName().equals(newName)))).thenReturn(tag);
 
         // act
         Set<Tag> result = businessService.resolveTags(Set.of(tag, existingTag));
 
         // assert
         assertThat(result).containsExactlyInAnyOrder(existingTag, tag);
-        verify(persistenceService).create(argThat(t -> t.getName().equals(newName)));
+        verify(persistenceService).save(argThat(t -> t.getName().equals(newName)));
         verify(persistenceService).findWithIgnoreCase(newName);
-        verify(persistenceService, never()).create(argThat(t -> t.getName().equals(existingName)));
+        verify(persistenceService, never()).save(argThat(t -> t.getName().equals(existingName)));
         verify(persistenceService).findWithIgnoreCase(existingName);
         verify(validationService).validateName(tag);
         verify(validationService).validateName(existingTag);
@@ -103,7 +103,7 @@ class TagBusinessServiceTest {
 
         businessService.deleteUnusedTags();
 
-        verify(persistenceService).delete(Set.of(tag));
+        verify(persistenceService).deleteAll(Set.of(tag));
         verifyNoInteractions(validationService);
         verify(persistenceService).findAllUnusedTags();
     }

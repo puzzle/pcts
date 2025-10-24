@@ -2,19 +2,16 @@ package ch.puzzle.pcts.model.degreetype;
 
 import static org.apache.commons.lang3.StringUtils.trim;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import ch.puzzle.pcts.model.Model;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @SQLDelete(sql = "UPDATE degree_type SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
-@SQLRestriction("deleted_at IS NULL")
-public class DegreeType {
+public class DegreeType implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,6 +23,9 @@ public class DegreeType {
     private BigDecimal limitedRelevantPoints;
 
     private BigDecimal littleRelevantPoints;
+
+    @Column(name = "deleted_at", insertable = false, updatable = false)
+    private Timestamp deletedAt;
 
     public DegreeType(Long id, String name, BigDecimal highlyRelevantPoints, BigDecimal limitedRelevantPoints,
                       BigDecimal littleRelevantPoints) {
@@ -79,26 +79,40 @@ public class DegreeType {
         this.littleRelevantPoints = littleRelevantPoints;
     }
 
+    public Timestamp getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Timestamp deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof DegreeType degreeType)) {
+        if (!(o instanceof DegreeType that))
             return false;
-        }
-        return Objects.equals(id, degreeType.id) && Objects.equals(name, degreeType.name)
-               && Objects.equals(highlyRelevantPoints, degreeType.highlyRelevantPoints)
-               && Objects.equals(limitedRelevantPoints, degreeType.limitedRelevantPoints)
-               && Objects.equals(littleRelevantPoints, degreeType.littleRelevantPoints);
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName())
+               && Objects.equals(getHighlyRelevantPoints(), that.getHighlyRelevantPoints())
+               && Objects.equals(getLimitedRelevantPoints(), that.getLimitedRelevantPoints())
+               && Objects.equals(getLittleRelevantPoints(), that.getLittleRelevantPoints())
+               && Objects.equals(getDeletedAt(), that.getDeletedAt());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, highlyRelevantPoints, limitedRelevantPoints, littleRelevantPoints);
+        return Objects
+                .hash(getId(),
+                      getName(),
+                      getHighlyRelevantPoints(),
+                      getLimitedRelevantPoints(),
+                      getLittleRelevantPoints(),
+                      getDeletedAt());
     }
 
     @Override
     public String toString() {
         return "DegreeType{" + "id=" + id + ", name='" + name + '\'' + ", highlyRelevantPoints=" + highlyRelevantPoints
                + ", limitedRelevantPoints=" + limitedRelevantPoints + ", littleRelevantPoints=" + littleRelevantPoints
-               + '}';
+               + ", deletedAt=" + deletedAt + '}';
     }
 }

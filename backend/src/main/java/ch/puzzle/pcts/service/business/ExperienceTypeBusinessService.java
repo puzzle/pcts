@@ -35,12 +35,13 @@ public class ExperienceTypeBusinessService {
 
     public ExperienceType create(ExperienceType experienceType) {
         validationService.validateOnCreate(experienceType);
-        return persistenceService.create(experienceType);
+        return persistenceService.save(experienceType);
     }
 
     public ExperienceType update(Long id, ExperienceType experienceType) {
         validationService.validateOnUpdate(id, experienceType);
-        return persistenceService.update(id, experienceType);
+        experienceType.setId(id);
+        return persistenceService.save(experienceType);
     }
 
     public void delete(Long id) {

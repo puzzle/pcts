@@ -2,15 +2,15 @@ package ch.puzzle.pcts.model.role;
 
 import static org.apache.commons.lang3.StringUtils.trim;
 
+import ch.puzzle.pcts.model.Model;
 import jakarta.persistence.*;
+import java.sql.Timestamp;
 import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @SQLDelete(sql = "UPDATE role SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
-@SQLRestriction("deleted_at IS NULL")
-public class Role {
+public class Role implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,6 +18,9 @@ public class Role {
     private String name;
 
     private boolean isManagement;
+
+    @Column(name = "deleted_at", insertable = false, updatable = false)
+    private Timestamp deletedAt;
 
     public Role(Long id, String name, boolean isManagement) {
         this.id = id;
@@ -52,21 +55,30 @@ public class Role {
         this.isManagement = isManagement;
     }
 
+    public Timestamp getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Timestamp deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Role role)) {
+        if (!(o instanceof Role role))
             return false;
-        }
-        return isManagement == role.isManagement && Objects.equals(id, role.id) && Objects.equals(name, role.name);
+        return isManagement == role.isManagement && Objects.equals(getId(), role.getId())
+               && Objects.equals(getName(), role.getName()) && Objects.equals(getDeletedAt(), role.getDeletedAt());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, isManagement);
+        return Objects.hash(getId(), getName(), isManagement, getDeletedAt());
     }
 
     @Override
     public String toString() {
-        return "Role{" + "id=" + id + ", name='" + name + '\'' + ", isManagement=" + isManagement + '}';
+        return "Role{" + "id=" + id + ", name='" + name + '\'' + ", isManagement=" + isManagement + ", deletedAt="
+               + deletedAt + '}';
     }
 }

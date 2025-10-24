@@ -3,27 +3,31 @@ package ch.puzzle.pcts.service.persistence;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.puzzle.pcts.model.certificate.Tag;
+import ch.puzzle.pcts.repository.TagRepository;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class TagPersistenceServiceIT extends PersistenceCoreIT {
+class TagPersistenceServiceIT extends PersistenceBaseIT<Tag, TagRepository, TagPersistenceService> {
+
+    private final TagPersistenceService service;
 
     @Autowired
-    private TagPersistenceService persistenceService;
+    TagPersistenceServiceIT(TagPersistenceService service) {
+        super(service);
+        this.service = service;
+    }
 
-    @DisplayName("Should create tag")
-    @Test
-    void shouldCreate() {
-        Tag tag = new Tag(null, "Very important tag");
+    @Override
+    Tag getModel() {
+        return new Tag(null, "Very important tag");
+    }
 
-        Tag result = persistenceService.create(tag);
-
-        assertThat(result.getId()).isEqualTo(3L);
-        assertThat(result.getName()).isEqualTo(tag.getName());
+    List<Tag> getAll() {
+        return List.of(new Tag(1L, "Tag 1"), new Tag(2L, "Longer tag name"));
     }
 
     @DisplayName("Should find tag by name written in different cases")
@@ -31,7 +35,7 @@ class TagPersistenceServiceIT extends PersistenceCoreIT {
     @ParameterizedTest
     @ValueSource(strings = { "Longer tag name", "longer tag name", "LONGER TAG NAME", "loNGER tAg NAme" })
     void shouldFindTagWithDifferentCases(String tagName) {
-        Tag result = persistenceService.findWithIgnoreCase(tagName).get();
+        Tag result = service.findWithIgnoreCase(tagName).get();
 
         assertThat(result.getName()).isEqualTo("Longer tag name");
         assertThat(result.getId()).isEqualTo(2L);

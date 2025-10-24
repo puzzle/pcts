@@ -1,115 +1,69 @@
 package ch.puzzle.pcts.service.persistence;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
-import jakarta.transaction.Transactional;
+import ch.puzzle.pcts.repository.MemberRepository;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Optional;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class MemberPersistenceServiceIT extends PersistenceCoreIT {
-
-    private final OrganisationUnit organisationUnit = new OrganisationUnit(2L, "OrganisationUnit 2");
-
-    private final Timestamp commonDate = new Timestamp(0L);
+class MemberPersistenceServiceIT extends PersistenceBaseIT<Member, MemberRepository, MemberPersistenceService> {
 
     @Autowired
-    private MemberPersistenceService persistenceService;
-
-    @DisplayName("Should get Member by id")
-    @Test
-    void shouldGetMemberById() {
-        Optional<Member> optionalOrganisationUnit = persistenceService.getById(2L);
-
-        assertThat(optionalOrganisationUnit).isPresent();
-        assertThat(optionalOrganisationUnit.get().getId()).isEqualTo(2L);
+    MemberPersistenceServiceIT(MemberPersistenceService service) {
+        super(service);
     }
 
-    @DisplayName("Should get all members")
-    @Test
-    void shouldGetAllMembers() {
-        List<Member> all = persistenceService.getAll();
-
-        assertThat(all).hasSize(2);
-        assertThat(all).extracting(Member::getName).containsExactlyInAnyOrder("Member 1", "Member 2");
-    }
-
-    @DisplayName("Should create members")
-    @Transactional
-    @Test
-    void shouldCreate() {
-        Member member = Member.Builder
+    /**
+     * Returns an object of the entity used to save it in the database
+     */
+    @Override
+    Member getModel() {
+        return Member.Builder
                 .builder()
                 .withId(null)
                 .withName("Member 3")
                 .withLastName("Test")
                 .withEmploymentState(EmploymentState.APPLICANT)
                 .withAbbreviation("M1")
-                .withDateOfHire(commonDate)
-                .withBirthDate(commonDate)
-                .withOrganisationUnit(organisationUnit)
+                .withDateOfHire(new Timestamp(0L))
+                .withBirthDate(new Timestamp(0L))
+                .withOrganisationUnit(new OrganisationUnit(2L, "OrganisationUnit 2"))
                 .build();
-
-        Member result = persistenceService.create(member);
-
-        assertThat(result.getId()).isEqualTo(3L);
-        assertThat(result.getName()).isEqualTo(member.getName());
-        assertThat(result.getLastName()).isEqualTo(member.getLastName());
-        assertThat(result.getEmploymentState()).isEqualTo(member.getEmploymentState());
-        assertThat(result.getAbbreviation()).isEqualTo(member.getAbbreviation());
-        assertThat(result.getDateOfHire()).isEqualTo(member.getDateOfHire());
-        assertThat(result.getBirthDate()).isEqualTo(member.getBirthDate());
-        assertThat(result.getOrganisationUnit().getId()).isEqualTo(member.getOrganisationUnit().getId());
-        assertThat(result.getOrganisationUnit().getName()).isEqualTo(member.getOrganisationUnit().getName());
     }
 
-    @DisplayName("Should update members")
-    @Transactional
-    @Test
-    void shouldUpdate() {
-        Long id = 2L;
-        Member member = Member.Builder
-                .builder()
-                .withId(id)
-                .withName("Updated member")
-                .withLastName("Test")
-                .withEmploymentState(EmploymentState.APPLICANT)
-                .withAbbreviation("M1")
-                .withDateOfHire(commonDate)
-                .withBirthDate(commonDate)
-                .withOrganisationUnit(organisationUnit)
-                .build();
+    /**
+     * A list of all the objects with this datatype stored in the database shouldn't
+     * contain soft deleted ones
+     */
+    @Override
+    List<Member> getAll() {
+        OrganisationUnit deletedOrganisationUnit = new OrganisationUnit(1L, "OrganisationUnit 1");
+        deletedOrganisationUnit.setDeletedAt(new Timestamp(0L));
 
-        persistenceService.update(id, member);
-        Optional<Member> result = persistenceService.getById(id);
-
-        assertThat(result).isPresent();
-        assertThat(result.get().getId()).isEqualTo(id);
-        assertThat(result.get().getName()).isEqualTo(member.getName());
-        assertThat(result.get().getLastName()).isEqualTo(member.getLastName());
-        assertThat(result.get().getEmploymentState()).isEqualTo(member.getEmploymentState());
-        assertThat(result.get().getAbbreviation()).isEqualTo(member.getAbbreviation());
-        assertThat(result.get().getDateOfHire()).isEqualTo(member.getDateOfHire());
-        assertThat(result.get().getBirthDate()).isEqualTo(member.getBirthDate());
-        assertThat(result.get().getOrganisationUnit().getId()).isEqualTo(member.getOrganisationUnit().getId());
-        assertThat(result.get().getOrganisationUnit().getName()).isEqualTo(member.getOrganisationUnit().getName());
-    }
-
-    @DisplayName("Should delete members")
-    @Transactional
-    @Test
-    void shouldDelete() {
-        Long id = 2L;
-
-        persistenceService.delete(id);
-
-        Optional<Member> result = persistenceService.getById(id);
-        assertThat(result).isNotPresent();
+        return List
+                .of(Member.Builder
+                        .builder()
+                        .withId(1L)
+                        .withName("Member 1")
+                        .withLastName("Test")
+                        .withEmploymentState(EmploymentState.MEMBER)
+                        .withAbbreviation("M1")
+                        .withDateOfHire(Timestamp.valueOf("2021-07-15 00:00:00"))
+                        .withBirthDate(Timestamp.valueOf("1999-08-10 00:00:00"))
+                        .withOrganisationUnit(deletedOrganisationUnit)
+                        .build(),
+                    Member.Builder
+                            .builder()
+                            .withId(2L)
+                            .withName("Member 2")
+                            .withLastName("Test")
+                            .withEmploymentState(EmploymentState.MEMBER)
+                            .withAbbreviation("M2")
+                            .withDateOfHire(Timestamp.valueOf("2020-06-01 00:00:00"))
+                            .withBirthDate(Timestamp.valueOf("1998-03-03 00:00:00"))
+                            .withOrganisationUnit(new OrganisationUnit(2L, "OrganisationUnit 2"))
+                            .build());
     }
 }

@@ -24,4 +24,5 @@ CREATE TABLE certificate_tag
         REFERENCES certificate (id),
     CONSTRAINT fk_tag FOREIGN KEY (tag_id)
         REFERENCES tag (id)
+        ON DELETE CASCADE
 );

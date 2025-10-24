@@ -2,20 +2,23 @@ package ch.puzzle.pcts.model.organisationunit;
 
 import static org.apache.commons.lang3.StringUtils.trim;
 
+import ch.puzzle.pcts.model.Model;
 import jakarta.persistence.*;
+import java.sql.Timestamp;
 import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @SQLDelete(sql = "UPDATE organisation_unit SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
-@SQLRestriction("deleted_at IS NULL")
-public class OrganisationUnit {
+public class OrganisationUnit implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
+
+    @Column(name = "deleted_at", insertable = false, updatable = false)
+    private Timestamp deletedAt;
 
     public OrganisationUnit(Long id, String name) {
         this.id = id;
@@ -41,20 +44,29 @@ public class OrganisationUnit {
         this.name = trim(name);
     }
 
+    public Timestamp getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Timestamp deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof OrganisationUnit organisationUnit))
+        if (!(o instanceof OrganisationUnit that))
             return false;
-        return Objects.equals(id, organisationUnit.id) && Objects.equals(name, organisationUnit.name);
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName())
+               && Objects.equals(getDeletedAt(), that.getDeletedAt());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(getId(), getName(), getDeletedAt());
     }
 
     @Override
     public String toString() {
-        return "OrganisationUnit{" + "id=" + id + ", name='" + name + '\'' + '}';
+        return "OrganisationUnit{" + "id=" + id + ", name='" + name + '\'' + ", deletedAt=" + deletedAt + '}';
     }
 }

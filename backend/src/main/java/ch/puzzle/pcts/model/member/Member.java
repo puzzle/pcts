@@ -2,17 +2,17 @@ package ch.puzzle.pcts.model.member;
 
 import static org.apache.commons.lang3.StringUtils.trim;
 
+import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import jakarta.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @SQLDelete(sql = "UPDATE member SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
-@SQLRestriction("deleted_at IS NULL")
-public class Member {
+public class Member implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,6 +30,9 @@ public class Member {
 
     private Date birthDate;
 
+    @Column(name = "deleted_at", insertable = false, updatable = false)
+    private Timestamp deletedAt;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organisation_unit")
     private OrganisationUnit organisationUnit;
@@ -43,6 +46,7 @@ public class Member {
         this.dateOfHire = builder.dateOfHire;
         this.birthDate = builder.birthDate;
         this.organisationUnit = builder.organisationUnit;
+        this.deletedAt = null;
     }
 
     public Member() {
@@ -112,28 +116,48 @@ public class Member {
         this.organisationUnit = organisationUnit;
     }
 
+    public Timestamp getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Timestamp deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Member member)) {
+        if (!(o instanceof Member member))
             return false;
-        }
-        return Objects.equals(id, member.id) && Objects.equals(name, member.name)
-               && Objects.equals(lastName, member.lastName) && employmentState == member.employmentState
-               && Objects.equals(abbreviation, member.abbreviation) && Objects.equals(dateOfHire, member.dateOfHire)
-               && Objects.equals(birthDate, member.birthDate)
-               && Objects.equals(organisationUnit, member.organisationUnit);
+        return Objects.equals(getId(), member.getId()) && Objects.equals(getName(), member.getName())
+               && Objects.equals(getLastName(), member.getLastName())
+               && getEmploymentState() == member.getEmploymentState()
+               && Objects.equals(getAbbreviation(), member.getAbbreviation())
+               && Objects.equals(getDateOfHire(), member.getDateOfHire())
+               && Objects.equals(getBirthDate(), member.getBirthDate())
+               && Objects.equals(getDeletedAt(), member.getDeletedAt())
+               && Objects.equals(getOrganisationUnit(), member.getOrganisationUnit());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, lastName, employmentState, abbreviation, dateOfHire, birthDate, organisationUnit);
+        return Objects
+                .hash(getId(),
+                      getName(),
+                      getLastName(),
+                      getEmploymentState(),
+                      getAbbreviation(),
+                      getDateOfHire(),
+                      getBirthDate(),
+                      getDeletedAt(),
+                      getOrganisationUnit());
     }
 
     @Override
     public String toString() {
         return "Member{" + "id=" + id + ", name='" + name + '\'' + ", lastName='" + lastName + '\''
                + ", employmentState=" + employmentState + ", abbreviation='" + abbreviation + '\'' + ", dateOfHire="
-               + dateOfHire + ", birthDate=" + birthDate + ", organisationUnit=" + organisationUnit + '}';
+               + dateOfHire + ", birthDate=" + birthDate + ", deletedAt=" + deletedAt + ", organisationUnit="
+               + organisationUnit + '}';
     }
 
     public static final class Builder {

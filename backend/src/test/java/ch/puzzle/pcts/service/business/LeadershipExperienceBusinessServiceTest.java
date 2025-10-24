@@ -52,13 +52,13 @@ class LeadershipExperienceBusinessServiceTest {
     @DisplayName("Should create leadershipExperience")
     @Test
     void shouldCreate() {
-        when(persistenceService.create(certificate)).thenReturn(certificate);
+        when(persistenceService.save(certificate)).thenReturn(certificate);
 
         Certificate result = businessService.create(certificate);
 
         assertEquals(certificate, result);
         verify(validationService).validateOnCreate(certificate);
-        verify(persistenceService).create(certificate);
+        verify(persistenceService).save(certificate);
     }
 
     @DisplayName("Should get all leadershipExperiences")
@@ -80,13 +80,14 @@ class LeadershipExperienceBusinessServiceTest {
     void shouldUpdate() {
         Long id = 1L;
 
-        when(persistenceService.update(id, certificate)).thenReturn(certificate);
+        when(persistenceService.save(certificate)).thenReturn(certificate);
 
         Certificate result = businessService.update(id, certificate);
 
         assertEquals(certificate, result);
         verify(validationService).validateOnUpdate(id, certificate);
-        verify(persistenceService).update(id, certificate);
+        verify(certificate).setId(id);
+        verify(persistenceService).save(certificate);
     }
 
     @DisplayName("Should delete leadershipExperience")

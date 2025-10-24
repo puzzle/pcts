@@ -1,6 +1,5 @@
 package ch.puzzle.pcts.architecture;
 
-import static ch.puzzle.pcts.architecture.CustomConditions.overrideEqualsMethod;
 import static ch.puzzle.pcts.architecture.CustomConditions.overrideHashCodeMethod;
 import static ch.puzzle.pcts.architecture.CustomConditions.overrideToStringMethod;
 import static ch.puzzle.pcts.architecture.CustomConditions.trimAssignedStringFields;
@@ -10,6 +9,7 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 
+import ch.puzzle.pcts.model.Model;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
@@ -21,6 +21,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.stereotype.*;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,9 +36,26 @@ class ArchitectureTest {
                 .resideInAPackage("..repository..")
                 .should()
                 .onlyBeAccessed()
-                .byAnyPackage("..service.persistence..")
+                .byAnyPackage("..service.persistence..", "..repository")
                 .andShould()
                 .beInterfaces();
+
+        rule.check(importedClasses);
+    }
+
+    @DisplayName("Repositories should not access other repositories")
+    @Test
+    void repositoriesShouldNotAccessEachOther() {
+        JavaClasses importedClasses = getMainSourceClasses();
+        ArchRule rule = noClasses()
+                .that()
+                .resideInAnyPackage("ch.puzzle.pcts.repository..")
+                .should()
+                .onlyDependOnClassesThat()
+                .resideInAPackage("ch.puzzle.pcts.repository..")
+                .andShould()
+                .onlyDependOnClassesThat()
+                .areAnnotatedWith(NoRepositoryBean.class);
 
         rule.check(importedClasses);
     }
@@ -183,6 +201,8 @@ class ArchitectureTest {
                 .resideInAPackage("ch.puzzle.pcts.repository..")
                 .should()
                 .beAnnotatedWith(Repository.class)
+                .orShould()
+                .beAnnotatedWith(NoRepositoryBean.class)
                 .andShould()
                 .beInterfaces();
 
@@ -214,7 +234,8 @@ class ArchitectureTest {
                 .areNotNestedClasses()
                 .should()
                 .beAnnotatedWith(Entity.class)
-                .andShould(overrideEqualsMethod)
+                .andShould()
+                .implement(Model.class)
                 .andShould(overrideHashCodeMethod)
                 .andShould(overrideToStringMethod);
 

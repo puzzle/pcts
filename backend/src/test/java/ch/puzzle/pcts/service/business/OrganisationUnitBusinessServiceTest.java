@@ -91,26 +91,27 @@ class OrganisationUnitBusinessServiceTest {
     @DisplayName("Should create organisationUnit")
     @Test
     void shouldCreate() {
-        when(persistenceService.create(organisationUnit)).thenReturn(organisationUnit);
+        when(persistenceService.save(organisationUnit)).thenReturn(organisationUnit);
 
         OrganisationUnit result = businessService.create(organisationUnit);
 
         assertEquals(organisationUnit, result);
         verify(validationService).validateOnCreate(organisationUnit);
-        verify(persistenceService).create(organisationUnit);
+        verify(persistenceService).save(organisationUnit);
     }
 
     @DisplayName("Should update organisationUnit")
     @Test
     void shouldUpdate() {
         Long id = 1L;
-        when(persistenceService.update(id, organisationUnit)).thenReturn(organisationUnit);
+        when(persistenceService.save(organisationUnit)).thenReturn(organisationUnit);
 
         OrganisationUnit result = businessService.update(id, organisationUnit);
 
         assertEquals(organisationUnit, result);
         verify(validationService).validateOnUpdate(id, organisationUnit);
-        verify(persistenceService).update(id, organisationUnit);
+        verify(organisationUnit).setId(id);
+        verify(persistenceService).save(organisationUnit);
     }
 
     @DisplayName("Should delete organisationUnit")

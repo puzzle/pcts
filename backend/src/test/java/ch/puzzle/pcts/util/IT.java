@@ -14,6 +14,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @Testcontainers
 @ActiveProfiles("test")
-@Import(TestcontainersConfig.class)
+@Import(TestContainerConfiguration.class)
 public @interface IT {
 }

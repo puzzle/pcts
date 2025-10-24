@@ -26,7 +26,7 @@ public class DegreeTypeBusinessService {
 
     public DegreeType create(DegreeType degreeType) {
         validationService.validateOnCreate(degreeType);
-        return persistenceService.create(degreeType);
+        return persistenceService.save(degreeType);
     }
 
     public DegreeType getById(Long id) {
@@ -40,7 +40,8 @@ public class DegreeTypeBusinessService {
 
     public DegreeType update(Long id, DegreeType degreeType) {
         validationService.validateOnUpdate(id, degreeType);
-        return persistenceService.update(id, degreeType);
+        degreeType.setId(id);
+        return persistenceService.save(degreeType);
     }
 
     public void delete(Long id) {
