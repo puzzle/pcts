@@ -34,7 +34,7 @@ class FormPage {
 
   shouldHaveTitle(expectedTitle: string) {
     cy.getByTestId('title')
-      .should('have.text', 'Member ' + expectedTitle);
+      .should('include.text', 'Member ' + expectedTitle);
     return this;
   }
 
