@@ -117,23 +117,22 @@ public class Certificate implements Model {
     }
 
     @Override
-    public String toString() {
-        return "Certificate{" + "id=" + id + ", name='" + name + '\'' + ", points=" + points + ", comment='" + comment
-               + '\'' + ", tags=" + tags + ", certificateType=" + certificateType + '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Certificate certificate)) {
+        if (!(o instanceof Certificate that))
             return false;
-        }
-        return Objects.equals(id, certificate.id) && Objects.equals(name, certificate.name)
-               && Objects.equals(points, certificate.points) && Objects.equals(comment, certificate.comment)
-               && Objects.equals(tags, certificate.tags) && certificateType == certificate.certificateType;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(points, that.points)
+               && Objects.equals(comment, that.comment) && Objects.equals(tags, that.tags)
+               && certificateType == that.certificateType && Objects.equals(deletedAt, that.deletedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, points, comment, tags, certificateType);
+        return Objects.hash(id, name, points, comment, tags, certificateType, deletedAt);
+    }
+
+    @Override
+    public String toString() {
+        return "Certificate{" + "id=" + id + ", name='" + name + '\'' + ", points=" + points + ", comment='" + comment
+               + '\'' + ", tags=" + tags + ", certificateType=" + certificateType + ", deletedAt=" + deletedAt + '}';
     }
 }

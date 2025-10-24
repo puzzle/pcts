@@ -67,19 +67,20 @@ public class Role implements Model {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Role role)) {
+        if (!(o instanceof Role role))
             return false;
-        }
-        return isManagement == role.isManagement && Objects.equals(id, role.id) && Objects.equals(name, role.name);
+        return isManagement == role.isManagement && Objects.equals(id, role.id) && Objects.equals(name, role.name)
+               && Objects.equals(deletedAt, role.deletedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, isManagement);
+        return Objects.hash(id, name, isManagement, deletedAt);
     }
 
     @Override
     public String toString() {
-        return "Role{" + "id=" + id + ", name='" + name + '\'' + ", isManagement=" + isManagement + '}';
+        return "Role{" + "id=" + id + ", name='" + name + '\'' + ", isManagement=" + isManagement + ", deletedAt="
+               + deletedAt + '}';
     }
 }

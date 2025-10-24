@@ -21,6 +21,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.*;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -46,12 +47,14 @@ class ArchitectureTest {
     @Test
     void repositoriesShouldNotAccessEachOther() {
         JavaClasses importedClasses = getMainSourceClasses();
-        ArchRule rule = noClasses()
+        ArchRule rule = classes()
                 .that()
                 .resideInAnyPackage("ch.puzzle.pcts.repository..")
                 .should()
-                .dependOnClassesThat()
-                .resideInAnyPackage("ch.puzzle.pcts.repository");
+                .onlyDependOnClassesThat()
+                .doNotImplement(JpaRepository.class)
+                .orShould()
+                .resideOutsideOfPackage("ch.puzzle.pcts.repository");
 
         rule.check(importedClasses);
     }

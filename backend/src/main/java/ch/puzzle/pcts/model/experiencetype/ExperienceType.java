@@ -91,18 +91,18 @@ public class ExperienceType implements Model {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof ExperienceType experienceType)) {
+        if (!(o instanceof ExperienceType that))
             return false;
-        }
-        return Objects.equals(id, experienceType.id) && Objects.equals(name, experienceType.name)
-               && Objects.equals(highlyRelevantPoints, experienceType.highlyRelevantPoints)
-               && Objects.equals(limitedRelevantPoints, experienceType.limitedRelevantPoints)
-               && Objects.equals(littleRelevantPoints, experienceType.littleRelevantPoints);
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name)
+               && Objects.equals(highlyRelevantPoints, that.highlyRelevantPoints)
+               && Objects.equals(limitedRelevantPoints, that.limitedRelevantPoints)
+               && Objects.equals(littleRelevantPoints, that.littleRelevantPoints)
+               && Objects.equals(deletedAt, that.deletedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, highlyRelevantPoints, limitedRelevantPoints, littleRelevantPoints);
+        return Objects.hash(id, name, highlyRelevantPoints, limitedRelevantPoints, littleRelevantPoints, deletedAt);
     }
 
     @Override

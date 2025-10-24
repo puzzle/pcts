@@ -91,24 +91,24 @@ public class DegreeType implements Model {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof DegreeType degreeType)) {
+        if (!(o instanceof DegreeType that))
             return false;
-        }
-        return Objects.equals(id, degreeType.id) && Objects.equals(name, degreeType.name)
-               && Objects.equals(highlyRelevantPoints, degreeType.highlyRelevantPoints)
-               && Objects.equals(limitedRelevantPoints, degreeType.limitedRelevantPoints)
-               && Objects.equals(littleRelevantPoints, degreeType.littleRelevantPoints);
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name)
+               && Objects.equals(highlyRelevantPoints, that.highlyRelevantPoints)
+               && Objects.equals(limitedRelevantPoints, that.limitedRelevantPoints)
+               && Objects.equals(littleRelevantPoints, that.littleRelevantPoints)
+               && Objects.equals(deletedAt, that.deletedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, highlyRelevantPoints, limitedRelevantPoints, littleRelevantPoints);
+        return Objects.hash(id, name, highlyRelevantPoints, limitedRelevantPoints, littleRelevantPoints, deletedAt);
     }
 
     @Override
     public String toString() {
         return "DegreeType{" + "id=" + id + ", name='" + name + '\'' + ", highlyRelevantPoints=" + highlyRelevantPoints
                + ", limitedRelevantPoints=" + limitedRelevantPoints + ", littleRelevantPoints=" + littleRelevantPoints
-               + '}';
+               + ", deletedAt=" + deletedAt + '}';
     }
 }
