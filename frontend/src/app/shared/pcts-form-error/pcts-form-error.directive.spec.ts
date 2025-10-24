@@ -3,10 +3,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PctsFormErrorDirective } from './pcts-form-error.directive';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { PctsFormLabelDirective } from '../pcts-form-label/pcts-form-label.directive';
+import { of } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -32,22 +33,22 @@ class TestComponent {
 describe('PctsFormErrorDirective', () => {
   let fixture: ComponentFixture<TestComponent>;
   let component: TestComponent;
-  let translateService: TranslateService;
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      imports: [TestComponent,
-        TranslateModule.forRoot()]
+      imports: [TestComponent],
+      providers: [{
+        provide: TranslateService,
+        useValue: {
+          instant: jest.fn((key) => `translated-${key}`),
+          get: jest.fn((key) => of(`translated-${key}`))
+        }
+      }]
     })
       .compileComponents();
 
     fixture = TestBed.createComponent(TestComponent);
     component = fixture.componentInstance;
-    translateService = TestBed.inject(TranslateService);
-
-    jest.spyOn(translateService, 'instant')
-      .mockImplementation((key) => `translated-${key}`);
-
     fixture.detectChanges();
   });
 

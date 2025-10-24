@@ -1,63 +1,60 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { BaseFormComponent } from './base-form.component';
 import { CaseFormatter } from '../format/case-formatter';
-import { TranslateModule } from '@ngx-translate/core';
-
+import { provideTranslateService } from '@ngx-translate/core';
 
 describe('BaseFormComponent', () => {
   let component: BaseFormComponent;
   let fixture: ComponentFixture<BaseFormComponent>;
+  let caseFormatterMock: any;
 
   beforeEach(async() => {
-    const caseFormatterMock = { camelToSnake: jest.fn(() => 'TEST_FORM_NAME') };
+    caseFormatterMock = { camelToSnake: jest.fn((value: string) => 'TEST_FORM_NAME') };
 
     await TestBed.configureTestingModule({
-      imports: [BaseFormComponent,
-        TranslateModule.forRoot()],
+      imports: [BaseFormComponent],
       providers: [{ provide: CaseFormatter,
-        useValue: caseFormatterMock }]
+        useValue: caseFormatterMock },
+      provideTranslateService()]
     })
       .compileComponents();
-
-    fixture = TestBed.createComponent(BaseFormComponent);
-    component = fixture.componentInstance;
   });
 
-  it('should create', () => {
+  beforeEach(() => {
+    fixture = TestBed.createComponent(BaseFormComponent);
+    component = fixture.componentInstance;
+
     fixture.componentRef.setInput('formGroup', new FormGroup({}));
     fixture.componentRef.setInput('formName', 'testForm');
+  });
+
+  it('should create the component', () => {
     fixture.detectChanges();
+
     expect(component)
       .toBeTruthy();
   });
 
-  it('should throw an error if required inputs are not set before detectChanges', () => {
-    expect(() => fixture.detectChanges())
-      .toThrow();
-  });
-
   it('should compute i18nPrefix correctly from formName', () => {
-    fixture.componentRef.setInput('formGroup', new FormGroup({}));
-    fixture.componentRef.setInput('formName', 'testFormName');
-
     fixture.detectChanges();
 
     expect(component.i18nPrefix())
-      .toBe('FORM.TEST_FORM_NAME');
+      .toBe('TEST_FORM_NAME.FORM');
+    expect(caseFormatterMock.camelToSnake)
+      .toHaveBeenCalledWith('testForm');
   });
 
   it('should update i18nPrefix when formName input changes', () => {
-    fixture.componentRef.setInput('formGroup', new FormGroup({}));
-    fixture.componentRef.setInput('formName', 'testFormName');
     fixture.detectChanges();
+
     expect(component.i18nPrefix())
-      .toBe('FORM.TEST_FORM_NAME');
+      .toBe('TEST_FORM_NAME.FORM');
+    expect(caseFormatterMock.camelToSnake)
+      .toHaveBeenCalledWith('testForm');
   });
 
   it('should have default isEdit value of false', () => {
-    fixture.componentRef.setInput('formGroup', new FormGroup({}));
-    fixture.componentRef.setInput('formName', 'testForm');
     fixture.detectChanges();
 
     expect(component.isEdit())
@@ -65,8 +62,6 @@ describe('BaseFormComponent', () => {
   });
 
   it('should accept a true value for isEdit input', () => {
-    fixture.componentRef.setInput('formGroup', new FormGroup({}));
-    fixture.componentRef.setInput('formName', 'testForm');
     fixture.componentRef.setInput('isEdit', true);
     fixture.detectChanges();
 
@@ -74,29 +69,69 @@ describe('BaseFormComponent', () => {
       .toBe(true);
   });
 
-  it('should emit submitted event', () => {
+  it('should mark form as invalid if required fields are missing', () => {
+    const baseFixture = TestBed.createComponent(BaseFormComponent);
+    const form = new FormGroup({
+      firstName: new FormControl('', Validators.required),
+      lastName: new FormControl('Doe')
+    });
+    baseFixture.componentRef.setInput('formGroup', form);
+    baseFixture.componentRef.setInput('formName', 'userForm');
+    baseFixture.detectChanges();
+
+    expect(form.valid)
+      .toBe(false);
+  });
+
+  it('should mark form as valid if all required fields are filled', () => {
+    const baseFixture = TestBed.createComponent(BaseFormComponent);
+    const form = new FormGroup({
+      firstName: new FormControl('John', Validators.required),
+      lastName: new FormControl('Doe')
+    });
+    baseFixture.componentRef.setInput('formGroup', form);
+    baseFixture.componentRef.setInput('formName', 'userForm');
+    baseFixture.detectChanges();
+
+    expect(form.valid)
+      .toBe(true);
+  });
+
+  it('should emit submitted event when called', () => {
+    const baseFixture = TestBed.createComponent(BaseFormComponent);
+    const form = new FormGroup({
+      firstName: new FormControl('John')
+    });
+    baseFixture.componentRef.setInput('formGroup', form);
+    baseFixture.componentRef.setInput('formName', 'userForm');
+    baseFixture.detectChanges();
+
     jest.spyOn(component.submitted, 'emit');
-
-    fixture.componentRef.setInput('formGroup', new FormGroup({}));
-    fixture.componentRef.setInput('formName', 'testForm');
-    fixture.detectChanges();
-
     component.submitted.emit();
 
     expect(component.submitted.emit)
       .toHaveBeenCalledTimes(1);
   });
 
-  it('should emit canceled event', () => {
+  it('should emit canceled event when called', () => {
+    const baseFixture = TestBed.createComponent(BaseFormComponent);
+    const form = new FormGroup({
+      firstName: new FormControl('John')
+    });
+    baseFixture.componentRef.setInput('formGroup', form);
+    baseFixture.componentRef.setInput('formName', 'userForm');
+    baseFixture.detectChanges();
+
     jest.spyOn(component.canceled, 'emit');
-
-    fixture.componentRef.setInput('formGroup', new FormGroup({}));
-    fixture.componentRef.setInput('formName', 'testForm');
-    fixture.detectChanges();
-
     component.canceled.emit();
 
     expect(component.canceled.emit)
       .toHaveBeenCalledTimes(1);
+  });
+
+  it('should throw an error if required inputs are not set before detectChanges', () => {
+    const emptyFixture = TestBed.createComponent(BaseFormComponent);
+    expect(() => emptyFixture.detectChanges())
+      .toThrow();
   });
 });

@@ -9,16 +9,10 @@ import {
   organisationUnit3,
   organisationUnit4
 } from '../../../shared/test/test-data';
-import { TranslateModule } from '@ngx-translate/core';
 import { provideRouter, Router } from '@angular/router';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MemberFormComponent } from './member-form.component';
-
-class MockRouter {
-  navigate = jest.fn();
-
-  navigateByUrl = jest.fn();
-}
+import { provideTranslateService } from '@ngx-translate/core';
 
 describe('MemberFormComponent', () => {
   let component: MemberFormComponent;
@@ -48,34 +42,32 @@ describe('MemberFormComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [MemberFormComponent,
-        TranslateModule.forRoot({})],
+      imports: [MemberFormComponent],
       providers: [
         provideRouter([]),
         provideNativeDateAdapter(),
+        provideTranslateService(),
         { provide: MemberService,
           useValue: memberServiceMock },
         { provide: OrganisationUnitService,
-          useValue: organisationUnitServiceMock },
-        { provide: Router,
-          useClass: MockRouter }
+          useValue: organisationUnitServiceMock }
       ]
     })
       .compileComponents();
 
     fixture = TestBed.createComponent(MemberFormComponent);
     component = fixture.componentInstance;
+
+    fixture.componentRef.setInput('member', null as any);
   });
 
   it('should create', () => {
-    fixture.componentRef.setInput('member', null as any);
     fixture.detectChanges();
     expect(component)
       .toBeTruthy();
   });
 
   it('should load organisationUnits', () => {
-    fixture.componentRef.setInput('member', null as any);
     fixture.detectChanges();
     expect(component['organisationUnitsOptions']())
       .toStrictEqual(organisationUnits);
@@ -83,7 +75,6 @@ describe('MemberFormComponent', () => {
 
   describe('addMember', () => {
     beforeEach(() => {
-      fixture.componentRef.setInput('member', null as any);
       fixture.detectChanges();
     });
 
@@ -113,12 +104,12 @@ describe('MemberFormComponent', () => {
         id: 0
       };
       const router = TestBed.inject(Router);
-
+      const navigateSpy = jest.spyOn(router, 'navigate');
       component['memberForm'].setValue(memberWithoutId);
 
       component.onSubmit();
 
-      expect(router.navigate)
+      expect(navigateSpy)
         .toHaveBeenCalledWith(['/']);
     });
   });
@@ -140,33 +131,15 @@ describe('MemberFormComponent', () => {
     });
 
     it('should load member data', () => {
-      expect(component['memberForm'].get('id')?.value)
-        .toBe(1);
-      expect(component['memberForm'].get('name')?.value)
-        .toBe(member1.name);
-      expect(component['memberForm'].get('lastName')?.value)
-        .toBe(member1.lastName);
-      expect(component['memberForm'].get('birthDate')?.value)
-        .toBe(member1.birthDate);
-      expect(component['memberForm'].get('abbreviation')?.value)
-        .toBe(member1.abbreviation);
-      expect(component['memberForm'].get('employmentState')?.value)
-        .toBe(member1.employmentState);
-      expect(component['memberForm'].get('dateOfHire')?.value)
-        .toBe(member1.dateOfHire);
-      expect(component['memberForm'].get('organisationUnit')?.value)
-        .toBe(member1.organisationUnit);
+      expect(component['memberForm'].getRawValue())
+        .toEqual(member1);
     });
 
     it('should call updateMember', () => {
-      const updateSpy = jest.spyOn(memberServiceMock, 'updateMember');
-
       component.onSubmit();
 
-      expect(updateSpy)
+      expect(memberServiceMock.updateMember)
         .toHaveBeenCalledWith(1, member1);
-
-      updateSpy.mockRestore();
     });
   });
 });

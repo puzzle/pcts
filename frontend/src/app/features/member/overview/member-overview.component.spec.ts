@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MemberOverviewComponent } from './member-overview.component';
 import { provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
 import { MemberModel } from '../member.model';
 import { EmploymentState } from '../../../shared/enum/employment-state.enum';
 import { of } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { MemberService } from '../member.service';
 import { member1, member2 } from '../../../shared/test/test-data';
+import { provideTranslateService } from '@ngx-translate/core';
 
 describe('MemberOverviewComponent', () => {
   let component: MemberOverviewComponent;
@@ -24,12 +24,14 @@ describe('MemberOverviewComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [MemberOverviewComponent,
-        TranslateModule.forRoot()],
-      providers: [provideRouter([]),
+      imports: [MemberOverviewComponent],
+      providers: [
+        provideRouter([]),
+        provideTranslateService(),
         { provide: MemberService,
           useValue: memberServiceMock },
-        DatePipe]
+        DatePipe
+      ]
     })
       .compileComponents();
 

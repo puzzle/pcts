@@ -1,11 +1,11 @@
 class FormPage {
-  visitAdd() {
-    cy.visit('/member/add');
+  visitAdd(modelPathName: string) {
+    cy.visit(`/${modelPathName}/add`);
     return this;
   }
 
-  visitEdit(memberId: number | string) {
-    cy.visit(`/member/${memberId}/edit`);
+  visitEdit(memberId: number | string, modelPathName: string) {
+    cy.visit(`/${modelPathName}/${memberId}/edit`);
     return this;
   }
 
@@ -32,9 +32,9 @@ class FormPage {
     return this;
   }
 
-  shouldHaveTitle(expectedTitle: string) {
+  shouldHaveTitle(expectedTitle: string, modelName: string) {
     cy.getByTestId('title')
-      .should('include.text', 'Member ' + expectedTitle);
+      .should('include.text', modelName + ' ' + expectedTitle);
     return this;
   }
 
@@ -42,11 +42,16 @@ class FormPage {
     this.submitButton.should(`be.${state}`);
   }
 
-  shouldShowValidationError(message: string) {
+  shouldShowValidationError(message: string, fieldName: string) {
     cy.getByTestId('validation-error')
-      .should('include.text', message);
+      .should('include.text', message)
+      .parents('mat-form-field')
+      .find('input')
+      .invoke('attr', 'data-testid')
+      .should('eq', fieldName);
     return this;
   }
+
 
   shouldHaveFieldValue(fieldName: string, value: string) {
     cy.getByTestId(fieldName)

@@ -1,60 +1,99 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInput, MatInputModule } from '@angular/material/input';
 import { InputFieldComponent } from './input-field.component';
-import { MatFormField } from '@angular/material/form-field';
+import { PctsFormErrorDirective } from '../pcts-form-error/pcts-form-error.directive';
+import { PctsFormLabelDirective } from '../pcts-form-label/pcts-form-label.directive';
 import { provideTranslateService } from '@ngx-translate/core';
 
+@Component({
+  standalone: true,
+  imports: [InputFieldComponent,
+    ReactiveFormsModule,
+    MatInput],
+  template: `
+    <app-input-field>
+      <input matInput [formControl]="control"/>
+    </app-input-field>
+  `
+})
+class TestHostComponent {
+  control = new FormControl('', Validators.required);
+}
+
 describe('InputFieldComponent', () => {
-  let component: InputFieldComponent;
-  let fixture: ComponentFixture<InputFieldComponent>;
+  let fixture: ComponentFixture<TestHostComponent>;
+  let hostComponent: TestHostComponent;
+  let inputFieldDe: DebugElement;
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      imports: [InputFieldComponent],
-      providers: [provideTranslateService()]
+      imports: [
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatDatepickerModule,
+        MatIconModule,
+        MatInputModule,
+        InputFieldComponent
+      ],
+      providers: [
+        provideTranslateService(),
+        TestHostComponent,
+        PctsFormErrorDirective,
+        PctsFormLabelDirective
+      ]
     })
-      .overrideComponent(InputFieldComponent, {
-        set: { template: '<div></div>' }
-      })
       .compileComponents();
 
-    fixture = TestBed.createComponent(InputFieldComponent);
-    component = fixture.componentInstance;
-
-    (component as any).matFormField = () => ({} as MatFormField);
-    (component as any).matFormFieldControl = () => ({});
-
+    fixture = TestBed.createComponent(TestHostComponent);
+    hostComponent = fixture.componentInstance;
     fixture.detectChanges();
+
+    inputFieldDe = fixture.debugElement.query(By.directive(InputFieldComponent));
   });
 
-
-  it('should create', () => {
-    expect(component)
+  it('should create the component', () => {
+    expect(inputFieldDe)
       .toBeTruthy();
   });
 
-  it('should have a MatFormField viewChild defined', () => {
-    const mockFormField = {} as MatFormField;
-    (component as any).matFormField = () => mockFormField;
-    expect(component.matFormField())
-      .toBe(mockFormField);
+  it('should render mat-form-field', () => {
+    const matFormField = inputFieldDe.query(By.css('mat-form-field'));
+    expect(matFormField)
+      .toBeTruthy();
   });
 
-  it('should have a MatFormFieldControl contentChild defined', () => {
-    const mockControl = { value: 'test' };
-    (component as any).matFormFieldControl = () => mockControl;
-    expect(component.matFormFieldControl().value)
-      .toBe('test');
+  it('should render the label with PctsFormLabelDirective', () => {
+    const label = inputFieldDe.query(By.directive(PctsFormLabelDirective));
+    expect(label)
+      .toBeTruthy();
   });
 
-  it('should connect form field control in effect', () => {
-    const mockFormField = { _control: null } as unknown as MatFormField;
-    const mockControl = { id: 'ctrl1' } as any;
+  it('should render mat-error with PctsFormErrorDirective', () => {
+    hostComponent.control.setValue('');
+    hostComponent.control.markAsTouched();
+    hostComponent.control.updateValueAndValidity();
+    fixture.detectChanges();
 
-    (component as any).matFormField = () => mockFormField;
-    (component as any).matFormFieldControl = () => mockControl;
+    const error = inputFieldDe.query(By.directive(PctsFormErrorDirective));
+    expect(error)
+      .toBeTruthy();
+  });
 
-    mockFormField._control = mockControl;
-    expect(mockFormField._control)
-      .toBe(mockControl);
+  it('should bind form control to mat-form-field control', () => {
+    const component = inputFieldDe.componentInstance as InputFieldComponent;
+
+    hostComponent.control.setValue('test value');
+    fixture.detectChanges();
+
+    expect(hostComponent.control.value)
+      .toBe('test value');
+    expect(component.matFormFieldControl())
+      .toBeTruthy();
   });
 });

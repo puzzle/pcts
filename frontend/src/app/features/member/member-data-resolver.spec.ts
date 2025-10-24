@@ -1,18 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { memberDataResolver } from './member-data-resolver';
 import { MemberService } from './member.service';
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { MemberModel } from './member.model';
 import { member1 } from '../../shared/test/test-data';
 
-const mockRoute = (id: string | null) => ({
-  paramMap: {
-    get: (key: string) => {
-      return key === 'id' ? id : null;
-    }
-  }
-} as unknown as ActivatedRouteSnapshot);
+const mockRoute = (id: string | null): ActivatedRouteSnapshot => ({ paramMap: convertToParamMap(id ? { id } : {}) } as ActivatedRouteSnapshot);
 
 describe('memberDataResolver', () => {
   let mockMemberService: jest.Mocked<MemberService>;
@@ -25,7 +19,9 @@ describe('memberDataResolver', () => {
 
     TestBed.configureTestingModule({
       providers: [{ provide: MemberService,
-        useValue: mockMemberService }]
+        useValue: mockMemberService },
+      { provide: ActivatedRoute,
+        useValue: { paramMap: of(convertToParamMap({ id: '1' })) } }]
     });
 
     state = {} as RouterStateSnapshot;
