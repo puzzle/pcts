@@ -3,7 +3,7 @@ package ch.puzzle.pcts.model.role;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
-import ch.puzzle.pcts.validation.basicstringvalidation.BasicStringValidation;
+import ch.puzzle.pcts.validation.string.BasicStringValidation;
 import jakarta.persistence.*;
 import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;

@@ -3,7 +3,8 @@ package ch.puzzle.pcts.model.certificate;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
-import ch.puzzle.pcts.validation.basicstringvalidation.BasicStringValidation;
+import ch.puzzle.pcts.validation.points.PointsValidation;
+import ch.puzzle.pcts.validation.string.BasicStringValidation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
@@ -23,8 +24,7 @@ public class Certificate implements Model {
     @BasicStringValidation
     private String name;
 
-    @NotNull(message = "{attribute.not.null}")
-    @PositiveOrZero(message = "{attribute.not.negative}")
+    @PointsValidation
     private BigDecimal points;
 
     private String comment;

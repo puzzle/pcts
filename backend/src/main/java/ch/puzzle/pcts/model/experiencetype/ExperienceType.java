@@ -3,12 +3,12 @@ package ch.puzzle.pcts.model.experiencetype;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
-import ch.puzzle.pcts.validation.basicstringvalidation.BasicStringValidation;
+import ch.puzzle.pcts.validation.points.PointsValidation;
+import ch.puzzle.pcts.validation.string.BasicStringValidation;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
@@ -25,16 +25,13 @@ public class ExperienceType implements Model {
     @BasicStringValidation
     private String name;
 
-    @NotNull(message = "{attribute.not.null}")
-    @PositiveOrZero(message = "{attribute.not.negative}")
+    @PointsValidation
     private BigDecimal highlyRelevantPoints;
 
-    @NotNull(message = "{attribute.not.null}")
-    @PositiveOrZero(message = "{attribute.not.negative}")
+    @PointsValidation
     private BigDecimal limitedRelevantPoints;
 
-    @NotNull(message = "{attribute.not.null}")
-    @PositiveOrZero(message = "{attribute.not.negative}")
+    @PointsValidation
     private BigDecimal littleRelevantPoints;
 
     public ExperienceType(Long id, String name, BigDecimal highlyRelevantPoints, BigDecimal limitedRelevantPoints,
