@@ -9,7 +9,7 @@ TRUNCATE TABLE organisation_unit CASCADE;
 
 INSERT INTO organisation_unit (name, deleted_at)
 VALUES
-    ('OrganisationUnit 1', '1970-01-01 01:00:00'),
+    ('OrganisationUnit 1', '1970-01-01 00:00:00'),
     ('OrganisationUnit 2', null);
 
 TRUNCATE TABLE certificate CASCADE;

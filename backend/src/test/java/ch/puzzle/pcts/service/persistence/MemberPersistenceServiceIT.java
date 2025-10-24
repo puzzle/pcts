@@ -5,7 +5,6 @@ import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.repository.MemberRepository;
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -41,7 +40,8 @@ class MemberPersistenceServiceIT extends PersistenceBaseIT<Member, MemberReposit
     @Override
     List<Member> getAll() {
         OrganisationUnit deletedOrganisationUnit = new OrganisationUnit(1L, "OrganisationUnit 1");
-        deletedOrganisationUnit.setDeletedAt(Timestamp.from(Instant.ofEpochSecond(0)));
+        deletedOrganisationUnit.setDeletedAt(new Timestamp(0L));
+
         return List
                 .of(Member.Builder
                         .builder()
