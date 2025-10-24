@@ -89,18 +89,13 @@ public class DegreeType implements Model {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof DegreeType that))
-            return false;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name)
-               && Objects.equals(highlyRelevantPoints, that.highlyRelevantPoints)
-               && Objects.equals(limitedRelevantPoints, that.limitedRelevantPoints)
-               && Objects.equals(littleRelevantPoints, that.littleRelevantPoints)
-               && Objects.equals(deletedAt, that.deletedAt);
+        if (!(o instanceof DegreeType that)) return false;
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName()) && Objects.equals(getHighlyRelevantPoints(), that.getHighlyRelevantPoints()) && Objects.equals(getLimitedRelevantPoints(), that.getLimitedRelevantPoints()) && Objects.equals(getLittleRelevantPoints(), that.getLittleRelevantPoints()) && Objects.equals(getDeletedAt(), that.getDeletedAt());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, highlyRelevantPoints, limitedRelevantPoints, littleRelevantPoints, deletedAt);
+        return Objects.hash(getId(), getName(), getHighlyRelevantPoints(), getLimitedRelevantPoints(), getLittleRelevantPoints(), getDeletedAt());
     }
 
     @Override

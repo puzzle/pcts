@@ -42,15 +42,13 @@ public class Tag implements Model {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Tag tag)) {
-            return false;
-        }
-        return Objects.equals(id, tag.id) && Objects.equals(name, tag.name);
+        if (!(o instanceof Tag tag)) return false;
+        return Objects.equals(getId(), tag.getId()) && Objects.equals(getName(), tag.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(getId(), getName());
     }
 
     @Override

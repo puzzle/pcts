@@ -54,15 +54,13 @@ public class OrganisationUnit implements Model {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof OrganisationUnit that))
-            return false;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name)
-               && Objects.equals(deletedAt, that.deletedAt);
+        if (!(o instanceof OrganisationUnit that)) return false;
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName()) && Objects.equals(getDeletedAt(), that.getDeletedAt());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, deletedAt);
+        return Objects.hash(getId(), getName(), getDeletedAt());
     }
 
     @Override
