@@ -36,10 +36,10 @@ export class BaseFormComponent {
   titleKey = computed(() => getI18nTitle(this.i18nPrefix()));
 
   addOrEditTitle = computed(() => {
-    this.isEdit() ? getI18nEditTitle() : getI18nAddTitle();
+    return this.isEdit() ? getI18nEditTitle() : getI18nAddTitle();
   });
 
   addOrEditButton = computed(() => {
-    this.isEdit() ? getI18nEditButton() : getI18nAddButton();
+    return this.isEdit() ? getI18nEditButton() : getI18nAddButton();
   });
 }
