@@ -2,11 +2,19 @@ export function getI18nTitle(prefix: string): string {
   return `${prefix}.TITLE`;
 }
 
-export function getI18nAddOrEditTitle(isEdit: boolean): string {
-  return isEdit ? 'GENERAL.EDIT_TITLE' : 'GENERAL.ADD_TITLE';
+export function getI18nAddTitle(): string {
+  return 'GENERAL.ADD_TITLE';
 }
 
-export function getI18nAddOrEditButton(isEdit: boolean): string {
-  return isEdit ? 'GENERAL.SAVE' : 'GENERAL.ADD';
+export function getI18nEditTitle(): string {
+  return 'GENERAL.EDIT_TITLE';
+}
+
+export function getI18nAddButton(): string {
+  return 'GENERAL.ADD_BUTTON';
+}
+
+export function getI18nEditButton(): string {
+  return 'GENERAL.EDIT_BUTTON';
 }
 

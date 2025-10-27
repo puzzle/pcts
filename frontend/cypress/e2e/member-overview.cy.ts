@@ -63,7 +63,7 @@ describe('MemberOverviewComponent', () => {
     HomePage.createMemberButton()
       .click();
 
-    FormPage.shouldHaveTitle(translations.GENERAL.ADD, 'Member');
+    FormPage.shouldHaveTitle(translations.GENERAL.ADD_TITLE, 'Member');
   });
 
   it('should keep query params in the URL when filtering', () => {

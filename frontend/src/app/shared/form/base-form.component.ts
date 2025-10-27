@@ -3,7 +3,12 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatButton } from '@angular/material/button';
 import { CaseFormatter } from '../format/case-formatter';
-import { getI18nAddOrEditButton, getI18nAddOrEditTitle, getI18nTitle } from '../utils/i18n.helper';
+import {
+  getI18nAddButton,
+  getI18nAddTitle, getI18nEditButton,
+  getI18nEditTitle,
+  getI18nTitle
+} from '../utils/i18n.helper';
 
 @Component({
   standalone: true,
@@ -30,7 +35,11 @@ export class BaseFormComponent {
 
   titleKey = computed(() => getI18nTitle(this.i18nPrefix()));
 
-  addOrEditTitle = computed(() => getI18nAddOrEditTitle(this.isEdit()));
+  addOrEditTitle = computed(() => {
+    this.isEdit() ? getI18nEditTitle() : getI18nAddTitle();
+  });
 
-  addOrEditButton = computed(() => getI18nAddOrEditButton(this.isEdit()));
+  addOrEditButton = computed(() => {
+    this.isEdit() ? getI18nEditButton() : getI18nAddButton();
+  });
 }
