@@ -39,23 +39,16 @@ public class FieldAwareMessageInterpolator implements MessageInterpolator {
             }
         }
 
-        if (resolvedTemplate.contains("{class}") && className != null) {
-            resolvedTemplate = resolvedTemplate.replace("{class}", className);
-        }
-
         Object actualValue = context.getValidatedValue();
-        if (resolvedTemplate.contains("{value}")) {
-            String givenValue = actualValue != null ? actualValue.toString() : "null";
-            resolvedTemplate = resolvedTemplate.replace("{value}", givenValue);
-        }
 
         String classNameStr = (className != null) ? className : "null";
         String fieldNameStr = (fieldName != null) ? fieldName : "null";
         String valueStr = (actualValue != null) ? actualValue.toString() : "null";
 
-        resolvedTemplate = resolvedTemplate.replace("{class}", classNameStr);
-        resolvedTemplate = resolvedTemplate.replace("{field}", fieldNameStr);
-        resolvedTemplate = resolvedTemplate.replace("{value}", valueStr);
+        resolvedTemplate = resolvedTemplate
+                .replace("{class}", classNameStr)
+                .replace("{field}", fieldNameStr)
+                .replace("{value}", valueStr);
 
         return resolvedTemplate;
 
