@@ -72,7 +72,7 @@ describe('BaseFormComponent', () => {
   it('should mark form as invalid if required fields are missing', () => {
     const baseFixture = TestBed.createComponent(BaseFormComponent);
     const form = new FormGroup({
-      firstName: new FormControl('', Validators.required),
+      name: new FormControl('', Validators.required),
       lastName: new FormControl('Doe')
     });
     baseFixture.componentRef.setInput('formGroup', form);
@@ -86,7 +86,7 @@ describe('BaseFormComponent', () => {
   it('should mark form as valid if all required fields are filled', () => {
     const baseFixture = TestBed.createComponent(BaseFormComponent);
     const form = new FormGroup({
-      firstName: new FormControl('John', Validators.required),
+      name: new FormControl('John', Validators.required),
       lastName: new FormControl('Doe')
     });
     baseFixture.componentRef.setInput('formGroup', form);
@@ -100,7 +100,7 @@ describe('BaseFormComponent', () => {
   it('should emit submitted event when called', () => {
     const baseFixture = TestBed.createComponent(BaseFormComponent);
     const form = new FormGroup({
-      firstName: new FormControl('John')
+      name: new FormControl('John')
     });
     baseFixture.componentRef.setInput('formGroup', form);
     baseFixture.componentRef.setInput('formName', 'userForm');
@@ -116,7 +116,7 @@ describe('BaseFormComponent', () => {
   it('should emit canceled event when called', () => {
     const baseFixture = TestBed.createComponent(BaseFormComponent);
     const form = new FormGroup({
-      firstName: new FormControl('John')
+      name: new FormControl('John')
     });
     baseFixture.componentRef.setInput('formGroup', form);
     baseFixture.componentRef.setInput('formName', 'userForm');

@@ -4,8 +4,8 @@ class FormPage {
     return this;
   }
 
-  visitEdit(memberId: number | string, modelPathName: string) {
-    cy.visit(`/${modelPathName}/${memberId}/edit`);
+  visitEdit(modelId: number | string, modelPathName: string) {
+    cy.visit(`/${modelPathName}/${modelId}/edit`);
     return this;
   }
 

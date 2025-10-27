@@ -13,7 +13,6 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { EmploymentState } from '../../../shared/enum/employment-state.enum';
 import { debounceTime } from 'rxjs/operators';
-import { MatLuxonDateModule } from '@angular/material-luxon-adapter';
 import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
 
 
@@ -46,6 +45,8 @@ export class MemberOverviewComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
 
   private readonly translate = inject(TranslateService);
+
+  protected readonly GLOBAL_DATE_FORMAT = GLOBAL_DATE_FORMAT;
 
   displayedColumns: string[] = [
     'name',
@@ -105,7 +106,7 @@ export class MemberOverviewComponent implements OnInit {
         .includes(member.employmentState);
 
       const memberDataString: string = (
-        member.name +
+        member.firstName +
         member.lastName +
         this.datePipe.transform(member.birthDate, 'dd.MM.yyyy') +
         member.organisationUnit.name +
@@ -165,8 +166,4 @@ export class MemberOverviewComponent implements OnInit {
   handleAddMemberClick(): void {
     this.router.navigate(['/member/add']);
   }
-
-  protected readonly MatLuxonDateModule = MatLuxonDateModule;
-
-  protected readonly GLOBAL_DATE_FORMAT = GLOBAL_DATE_FORMAT;
 }

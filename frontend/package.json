@@ -15,7 +15,7 @@
     "prettier:lint:format:specific": "prettier --write ",
     "prettier:lint:format": "prettier --write .",
     "prettier:lint": "prettier --check .",
-    "cy:open": "cypress open",
+    "cypress:open": "cypress open",
     "cypress:run": "cypress run"
   },
   "private": true,

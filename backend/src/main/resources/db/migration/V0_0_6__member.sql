@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS member
 (
     id                  BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY NOT NULL,
-    name                TEXT NOT NULL,
+    first_name          TEXT NOT NULL,
     last_name           TEXT NOT NULL,
     abbreviation        TEXT NOT NULL,
     employment_state    TEXT NOT NULL,

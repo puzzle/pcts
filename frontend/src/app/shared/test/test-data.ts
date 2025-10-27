@@ -25,7 +25,7 @@ export const organisationUnit4: OrganisationUnitModel = {
 
 export const member1: MemberModel = {
   id: 1,
-  name: 'Lena',
+  firstName: 'Lena',
   lastName: 'Müller',
   birthDate: new Date(2000, 12, 1),
   abbreviation: 'LM',
@@ -36,7 +36,7 @@ export const member1: MemberModel = {
 
 export const member2: MemberModel = {
   id: 2,
-  name: 'Sophie',
+  firstName: 'Sophie',
   lastName: 'Keller',
   birthDate: new Date(2000, 12, 1),
   abbreviation: 'SK',
@@ -47,7 +47,7 @@ export const member2: MemberModel = {
 
 export const member3: MemberModel = {
   id: 3,
-  name: 'Mara',
+  firstName: 'Mara',
   lastName: 'Becker',
   birthDate: new Date(2000, 12, 1),
   abbreviation: 'BD',
@@ -58,7 +58,7 @@ export const member3: MemberModel = {
 
 export const member4: MemberModel = {
   id: 4,
-  name: 'John',
+  firstName: 'John',
   lastName: 'Doe',
   birthDate: new Date(2000, 12, 1),
   abbreviation: 'JD',
@@ -68,7 +68,7 @@ export const member4: MemberModel = {
 };
 
 export const memberDto1: MemberDto = {
-  name: 'Lena',
+  firstName: 'Lena',
   lastName: 'Müller',
   birthDate: new Date(2000, 12, 1),
   abbreviation: 'LM',

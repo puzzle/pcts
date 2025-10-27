@@ -71,7 +71,7 @@ export class MemberFormComponent implements OnInit {
 
   protected memberForm: FormGroup = this.fb.group({
     id: [null],
-    name: ['',
+    firstName: ['',
       Validators.required],
     lastName: ['',
       Validators.required],

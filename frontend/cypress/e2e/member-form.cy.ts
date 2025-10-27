@@ -9,7 +9,7 @@ describe('MemberFormComponent', () => {
   });
 
   [
-    'name',
+    'firstName',
     'lastName',
     'birthDate',
     'employmentState'
@@ -41,7 +41,7 @@ describe('MemberFormComponent', () => {
 
   it('should activate submit button when everything is filled out', () => {
     FormPage.submitButtonShouldBe('disabled');
-    FormPage.typeAndBlur('name', 'John')
+    FormPage.typeAndBlur('firstName', 'John')
       .submitButtonShouldBe('disabled');
     FormPage.typeAndBlur('lastName', 'Doe')
       .submitButtonShouldBe('disabled');
@@ -72,7 +72,7 @@ describe('add member form', () => {
     FormPage.visitAdd('member');
 
     FormPage.submitButtonShouldBe('disabled');
-    FormPage.typeAndBlur('name', 'John');
+    FormPage.typeAndBlur('firstName', 'John');
     FormPage.typeAndBlur('lastName', 'Doe');
     FormPage.typeAndBlur('abbreviation', 'JD');
     FormPage.typeAndBlur('birthDate', '10.10.2000');
@@ -105,7 +105,7 @@ describe('edit member form', () => {
   it('should get all member data', () => {
     FormPage.visitEdit(1, 'member');
     const expectedMemberData = {
-      name: 'Lena',
+      firstName: 'Lena',
       lastName: 'Müller',
       abbreviation: 'LM',
       birthDate: '10.08.1999',
@@ -123,8 +123,8 @@ describe('edit member form', () => {
 
   it('should save changes to member', () => {
     FormPage.visitEdit(2, 'member');
-    FormPage.clearAndBlur('name');
-    FormPage.typeAndBlur('name', 'Leon');
+    FormPage.clearAndBlur('firstName');
+    FormPage.typeAndBlur('firstName', 'Leon');
 
     FormPage.save();
 

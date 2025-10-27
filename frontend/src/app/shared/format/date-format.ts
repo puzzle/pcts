@@ -9,9 +9,9 @@ export const CUSTOM_LUXON_DATE_FORMATS: MatDateFormats = {
   display: {
     dateInput: GLOBAL_DATE_FORMAT,
 
-    monthYearLabel: 'MM yyyy',
+    monthYearLabel: 'MMMM yyyy',
 
     dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MM yyyy'
+    monthYearA11yLabel: 'MMMM yyyy'
   }
 };

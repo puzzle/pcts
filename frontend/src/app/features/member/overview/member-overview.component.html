@@ -74,7 +74,7 @@
       </th>
       <td mat-cell *matCellDef="let member" data-testid="member-name">
         <a [routerLink]="['/member', member.id]" class="fw-bold">
-          {{ member.name }} {{ member.lastName }}
+          {{ member.firstName }} {{ member.lastName }}
         </a>
       </td>
     </ng-container>

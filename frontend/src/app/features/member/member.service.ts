@@ -31,7 +31,7 @@ export class MemberService {
 
   toDto(model: MemberModel): MemberDto {
     return {
-      name: model.name,
+      firstName: model.firstName,
       lastName: model.lastName,
       birthDate: model.birthDate,
       abbreviation: model.abbreviation,

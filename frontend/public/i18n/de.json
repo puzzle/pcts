@@ -3,8 +3,8 @@
   "LOGOUT": "Abmelden",
 
   "GENERAL": {
-    "ADD": "Hinzufügen",
-    "EDIT": "Ändern",
+    "ADD": "hinzufügen",
+    "EDIT": "ändern",
     "CANCEL": "Abbrechen",
     "SAVE": "Speichern"
   },
@@ -18,12 +18,12 @@
   },
 
   "MEMBER": {
+    "FIRST_NAME": "Vorname",
     "NAME": "Name",
-    "FIRSTNAME": "Vorname",
     "LAST_NAME": "Nachname",
     "ABBREVIATION": "Kürzel",
     "BIRTH_DATE": "Geburtsdatum",
-    "DATE_OF_HIRE": "Ansellungsdatum",
+    "DATE_OF_HIRE": "Anstellungsdatum",
     "ORGANISATION_UNIT": "Division",
     "EMPLOYMENT_STATE": "Anstellungsstatus",
 
