@@ -1,0 +1,36 @@
+name: reusable__upload-to-ghcr.yaml
+on:
+  workflow_call:
+
+env:
+  REGISTRY: ghcr.io
+  COMMIT_HASH: ${{ github.sha }}
+
+jobs:
+  upload-to-ghrc:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        id: push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ env.COMMIT_HASH }}:latest
