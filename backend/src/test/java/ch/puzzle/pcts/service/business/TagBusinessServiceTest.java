@@ -44,7 +44,7 @@ class TagBusinessServiceTest {
 
         assertThat(result).containsExactly(existingTag);
         verify(persistenceService, never()).save(any());
-        verify(validationService).validateName(tag);
+        verify(validationService).validate(tag);
     }
 
     @DisplayName("Should create a new tag if it does not exist yet")
@@ -68,7 +68,7 @@ class TagBusinessServiceTest {
         // verify that no other tag is created than the expected
         verify(persistenceService, never()).save(argThat(t -> !t.getName().equals(notPersistedName)));
         assertTrue(result.contains(existingTag));
-        verify(validationService).validateName(tag);
+        verify(validationService).validate(tag);
     }
 
     @DisplayName("Should resolve multiple tags by returning existing ones and creating missing ones")
@@ -92,8 +92,8 @@ class TagBusinessServiceTest {
         verify(persistenceService).findWithIgnoreCase(newName);
         verify(persistenceService, never()).save(argThat(t -> t.getName().equals(existingName)));
         verify(persistenceService).findWithIgnoreCase(existingName);
-        verify(validationService).validateName(tag);
-        verify(validationService).validateName(existingTag);
+        verify(validationService).validate(tag);
+        verify(validationService).validate(existingTag);
     }
 
     @DisplayName("Should delete unused tags")

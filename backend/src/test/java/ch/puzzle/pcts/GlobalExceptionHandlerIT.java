@@ -48,7 +48,7 @@ class GlobalExceptionHandlerIT {
     @DisplayName("Should return pcts exception")
     @Test
     void shouldReturnPctsException() {
-        PCTSException ex = new PCTSException(HttpStatus.BAD_REQUEST, "Test Pcts exception", ErrorKey.ID_IS_NOT_NULL);
+        PCTSException ex = new PCTSException(HttpStatus.BAD_REQUEST, "Test Pcts exception", ErrorKey.INVALID_ARGUMENT);
 
         ResponseEntity<GenericErrorDto> response = handler.handlePCTSException(ex);
 
@@ -56,7 +56,7 @@ class GlobalExceptionHandlerIT {
 
         GenericErrorDto body = response.getBody();
         assertThat(body).isNotNull();
-        assertThat(body.key()).isEqualTo(ErrorKey.ID_IS_NOT_NULL);
+        assertThat(body.key()).isEqualTo(ErrorKey.INVALID_ARGUMENT);
         assertThat(body.reasons()).containsExactly("Test Pcts exception");
     }
 }

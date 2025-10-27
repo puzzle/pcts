@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS certificate
 (
     id              BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY NOT NULL,
-    name            TEXT NOT NULL,
+    name            TEXT NOT NULL UNIQUE,
     points          NUMERIC NOT NULL,
     deleted_at      TIMESTAMP DEFAULT NULL,
     comment         TEXT,

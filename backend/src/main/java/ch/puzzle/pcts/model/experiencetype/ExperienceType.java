@@ -3,6 +3,9 @@ package ch.puzzle.pcts.model.experiencetype;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
+import ch.puzzle.pcts.validation.points.PointsValidation;
+import ch.puzzle.pcts.validation.string.BasicStringValidation;
+import ch.puzzle.pcts.model.Model;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -16,12 +19,16 @@ public class ExperienceType implements Model {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @BasicStringValidation
     private String name;
 
+    @PointsValidation
     private BigDecimal highlyRelevantPoints;
 
+    @PointsValidation
     private BigDecimal limitedRelevantPoints;
 
+    @PointsValidation
     private BigDecimal littleRelevantPoints;
 
     @Column(name = "deleted_at", insertable = false, updatable = false)

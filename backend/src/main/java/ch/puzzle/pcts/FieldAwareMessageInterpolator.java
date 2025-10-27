@@ -5,7 +5,13 @@ import jakarta.validation.Path;
 import java.util.Locale;
 import org.hibernate.validator.messageinterpolation.HibernateMessageInterpolatorContext;
 
-public record FieldAwareMessageInterpolator(MessageInterpolator delegate) implements MessageInterpolator {
+public class FieldAwareMessageInterpolator implements MessageInterpolator {
+
+    private final MessageInterpolator delegate;
+
+    public FieldAwareMessageInterpolator(MessageInterpolator delegate) {
+        this.delegate = delegate;
+    }
 
     @Override
     public String interpolate(String messageTemplate, Context context) {
@@ -33,7 +39,15 @@ public record FieldAwareMessageInterpolator(MessageInterpolator delegate) implem
             }
         }
 
+        if (resolvedTemplate.contains("{class}") && className != null) {
+            resolvedTemplate = resolvedTemplate.replace("{class}", className);
+        }
+
         Object actualValue = context.getValidatedValue();
+        if (resolvedTemplate.contains("{value}")) {
+            String givenValue = actualValue != null ? actualValue.toString() : "null";
+            resolvedTemplate = resolvedTemplate.replace("{value}", givenValue);
+        }
 
         String classNameStr = (className != null) ? className : "null";
         String fieldNameStr = (fieldName != null) ? fieldName : "null";
@@ -44,5 +58,6 @@ public record FieldAwareMessageInterpolator(MessageInterpolator delegate) implem
         resolvedTemplate = resolvedTemplate.replace("{value}", valueStr);
 
         return resolvedTemplate;
+
     }
 }

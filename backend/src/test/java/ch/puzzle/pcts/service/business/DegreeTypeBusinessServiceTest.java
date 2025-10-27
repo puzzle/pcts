@@ -47,7 +47,7 @@ class DegreeTypeBusinessServiceTest {
 
         assertEquals(degreeType, result);
         verify(persistenceService).getById(id);
-        verify(validationService).validateOnGetById(id);
+        verify(validationService).validateOnGet(id);
     }
 
     @DisplayName("Should throw exception")
@@ -61,7 +61,7 @@ class DegreeTypeBusinessServiceTest {
         assertEquals("Degree type with id: " + 1 + " does not exist.", exception.getReason());
         assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
         verify(persistenceService).getById(id);
-        verify(validationService).validateOnGetById(id);
+        verify(validationService).validateOnGet(id);
     }
 
     @DisplayName("Should get all Degree types")
