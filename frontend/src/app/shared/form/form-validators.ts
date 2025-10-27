@@ -8,6 +8,11 @@ export function isDateInFuture(): ValidatorFn {
     }
 
     const date = new Date(control.value);
+
+    if (isNaN(date.getTime())) {
+      return { invalid_date: true };
+    }
+
     const today = new Date();
 
     if (date >= today) {
@@ -17,6 +22,7 @@ export function isDateInFuture(): ValidatorFn {
     return null;
   };
 }
+
 
 export function isValueInList<T>(validOptions: T[]): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
