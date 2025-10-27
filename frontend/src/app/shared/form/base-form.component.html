@@ -1,6 +1,6 @@
 <h1 data-testid="title">
-  {{ i18nPrefix() + '.TITLE' | translate }}
-  {{ (isEdit() ? 'GENERAL.EDIT' : 'GENERAL.ADD') | translate }}
+  {{ titleKey() | translate }}
+  {{ addOrEditTitle() | translate }}
 </h1>
 
 <form class="d-flex flex-column gap-4" [formGroup]="formGroup()" (ngSubmit)="submitted.emit()" name="{{formName()}}">
@@ -9,7 +9,7 @@
   <div class="d-flex flex-row gap-3">
     <button mat-stroked-button type="button" (click)="canceled.emit()">{{ "GENERAL.CANCEL" | translate }}</button>
     <button mat-flat-button color="primary" type="submit" data-testid="submit-button" [disabled]="!formGroup().valid">
-      {{ (isEdit() ? 'GENERAL.SAVE' : 'GENERAL.ADD') | translate}}
+      {{ addOrEditButton() | translate}}
     </button>
   </div>
 </form>

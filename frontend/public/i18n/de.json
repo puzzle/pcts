@@ -3,8 +3,9 @@
   "LOGOUT": "Abmelden",
 
   "GENERAL": {
-    "ADD": "hinzufügen",
-    "EDIT": "ändern",
+    "ADD_TITLE": "hinzufügen",
+    "ADD": "Hinzufügen",
+    "EDIT_TITLE": "ändern",
     "CANCEL": "Abbrechen",
     "SAVE": "Speichern"
   },
