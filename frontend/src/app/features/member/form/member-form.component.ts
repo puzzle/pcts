@@ -45,8 +45,7 @@ import { BaseFormComponent } from '../../../shared/form/base-form.component';
     InputFieldComponent,
     BaseFormComponent
   ],
-  templateUrl: './member-form.component.html',
-  styleUrl: './member-form.component.scss'
+  templateUrl: './member-form.component.html'
 })
 export class MemberFormComponent implements OnInit {
   private readonly translateService = inject(TranslateService);

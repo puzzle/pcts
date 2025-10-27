@@ -30,7 +30,6 @@ import { PctsFormLabelDirective } from '../pcts-form-label/pcts-form-label.direc
     PctsFormLabelDirective
   ],
   templateUrl: './input-field.component.html',
-  styleUrl: './input-field.component.scss',
   standalone: true,
   providers: [{ provide: MAT_FORM_FIELD,
     useValue: InputFieldComponent }],

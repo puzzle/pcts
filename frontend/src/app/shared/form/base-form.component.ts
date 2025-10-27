@@ -10,8 +10,7 @@ import { CaseFormatter } from '../format/case-formatter';
   imports: [ReactiveFormsModule,
     TranslatePipe,
     MatButton],
-  templateUrl: './base-form.component.html',
-  styleUrl: './base-form.component.scss'
+  templateUrl: './base-form.component.html'
 })
 export class BaseFormComponent {
   private readonly caseFormatter = inject(CaseFormatter);
