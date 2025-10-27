@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --hmr",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "jest --silent --runInBand",
@@ -15,7 +15,7 @@
     "prettier:lint:format:specific": "prettier --write ",
     "prettier:lint:format": "prettier --write .",
     "prettier:lint": "prettier --check .",
-    "cy:open": "cypress open",
+    "cypress:open": "cypress open",
     "cypress:run": "cypress run"
   },
   "private": true,
@@ -25,6 +25,7 @@
     "@angular/compiler": "^20.2.1",
     "@angular/core": "^20.2.1",
     "@angular/forms": "^20.2.1",
+    "@angular/material-moment-adapter": "^20.2.5",
     "@angular/material": "^20.2.8",
     "@angular/platform-browser": "^20.2.1",
     "@angular/router": "^20.2.1",
@@ -33,6 +34,8 @@
     "@puzzleitc/puzzle-shell": "^5.1.0",
     "bootstrap": "^5.3.7",
     "cypress": "^15.2.0",
+    "luxon": "^3.7.2",
+    "@angular/material-luxon-adapter": "^20.2.8",
     "material-icons": "^1.13.14",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
@@ -42,7 +45,7 @@
     "@angular-eslint/eslint-plugin-template": "^20.2.0",
     "@angular-eslint/schematics": "^20.1.1",
     "@angular-eslint/template-parser": "^20.1.1",
-    "@angular/build": "^20.0.0",
+    "@angular/build": "^20.2.2",
     "@angular/cli": "^20.0.0",
     "@angular/compiler-cli": "^20.2.1",
     "@html-eslint/eslint-plugin": "^0.47.0",

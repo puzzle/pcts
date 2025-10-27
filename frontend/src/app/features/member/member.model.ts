@@ -3,7 +3,7 @@ import { EmploymentState } from '../../shared/enum/employment-state.enum';
 
 export interface MemberModel {
   id: number;
-  name: string;
+  firstName: string;
   lastName: string;
   birthDate: Date;
   abbreviation: string;

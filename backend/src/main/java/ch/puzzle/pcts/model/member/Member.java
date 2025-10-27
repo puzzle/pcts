@@ -17,7 +17,7 @@ public class Member implements Model {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String firstName;
 
     private String lastName;
 
@@ -39,7 +39,7 @@ public class Member implements Model {
 
     private Member(Builder builder) {
         this.id = builder.id;
-        this.name = trim(builder.name);
+        this.firstName = trim(builder.firstName);
         this.lastName = trim(builder.lastName);
         this.employmentState = builder.employmentState;
         this.abbreviation = trim(builder.abbreviation);
@@ -60,12 +60,12 @@ public class Member implements Model {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
     public void setName(String name) {
-        this.name = trim(name);
+        this.firstName = trim(name);
     }
 
     public String getLastName() {
@@ -128,7 +128,7 @@ public class Member implements Model {
     public boolean equals(Object o) {
         if (!(o instanceof Member member))
             return false;
-        return Objects.equals(getId(), member.getId()) && Objects.equals(getName(), member.getName())
+        return Objects.equals(getId(), member.getId()) && Objects.equals(getFirstName(), member.getFirstName())
                && Objects.equals(getLastName(), member.getLastName())
                && getEmploymentState() == member.getEmploymentState()
                && Objects.equals(getAbbreviation(), member.getAbbreviation())
@@ -142,7 +142,7 @@ public class Member implements Model {
     public int hashCode() {
         return Objects
                 .hash(getId(),
-                      getName(),
+                      getFirstName(),
                       getLastName(),
                       getEmploymentState(),
                       getAbbreviation(),
@@ -154,7 +154,7 @@ public class Member implements Model {
 
     @Override
     public String toString() {
-        return "Member{" + "id=" + id + ", name='" + name + '\'' + ", lastName='" + lastName + '\''
+        return "Member{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\''
                + ", employmentState=" + employmentState + ", abbreviation='" + abbreviation + '\'' + ", dateOfHire="
                + dateOfHire + ", birthDate=" + birthDate + ", deletedAt=" + deletedAt + ", organisationUnit="
                + organisationUnit + '}';
@@ -162,7 +162,7 @@ public class Member implements Model {
 
     public static final class Builder {
         private Long id;
-        private String name;
+        private String firstName;
         private String lastName;
         private EmploymentState employmentState;
         private String abbreviation;
@@ -182,8 +182,8 @@ public class Member implements Model {
             return this;
         }
 
-        public Builder withName(String name) {
-            this.name = trim(name);
+        public Builder withFirstName(String firstName) {
+            this.firstName = trim(firstName);
             return this;
         }
 

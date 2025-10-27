@@ -31,3 +31,8 @@ $pz-dark-blue-palette: (
     900: white,
   ),
 );
+
+form {
+  // Keeps with of every form generalized
+  max-width: 600px;
+}

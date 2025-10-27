@@ -23,7 +23,7 @@ class MemberPersistenceServiceIT extends PersistenceBaseIT<Member, MemberReposit
         return Member.Builder
                 .builder()
                 .withId(null)
-                .withName("Member 3")
+                .withFirstName("Member 3")
                 .withLastName("Test")
                 .withEmploymentState(EmploymentState.APPLICANT)
                 .withAbbreviation("M1")
@@ -32,7 +32,6 @@ class MemberPersistenceServiceIT extends PersistenceBaseIT<Member, MemberReposit
                 .withOrganisationUnit(new OrganisationUnit(2L, "OrganisationUnit 2"))
                 .build();
     }
-
     /**
      * A list of all the objects with this datatype stored in the database shouldn't
      * contain soft deleted ones
@@ -46,7 +45,7 @@ class MemberPersistenceServiceIT extends PersistenceBaseIT<Member, MemberReposit
                 .of(Member.Builder
                         .builder()
                         .withId(1L)
-                        .withName("Member 1")
+                        .withFirstName("Member 1")
                         .withLastName("Test")
                         .withEmploymentState(EmploymentState.MEMBER)
                         .withAbbreviation("M1")
@@ -57,7 +56,7 @@ class MemberPersistenceServiceIT extends PersistenceBaseIT<Member, MemberReposit
                     Member.Builder
                             .builder()
                             .withId(2L)
-                            .withName("Member 2")
+                            .withFirstName("Member 2")
                             .withLastName("Test")
                             .withEmploymentState(EmploymentState.MEMBER)
                             .withAbbreviation("M2")

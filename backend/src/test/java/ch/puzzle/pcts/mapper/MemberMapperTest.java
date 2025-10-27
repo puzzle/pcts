@@ -41,7 +41,7 @@ class MemberMapperTest {
         member1 = Member.Builder
                 .builder()
                 .withId(1L)
-                .withName("Susi")
+                .withFirstName("Susi")
                 .withLastName("Miller")
                 .withEmploymentState(EmploymentState.APPLICANT)
                 .withAbbreviation("SM")
@@ -60,7 +60,7 @@ class MemberMapperTest {
         Member modelWithApplicantState = Member.Builder
                 .builder()
                 .withId(1L)
-                .withName("Susi")
+                .withFirstName("Susi")
                 .withLastName("Miller")
                 .withEmploymentState(EmploymentState.APPLICANT)
                 .withAbbreviation("SM")
@@ -72,7 +72,7 @@ class MemberMapperTest {
         MemberDto result = mapper.toDto(modelWithApplicantState);
 
         assertEquals(modelWithApplicantState.getId(), result.id());
-        assertEquals(modelWithApplicantState.getName(), result.name());
+        assertEquals(modelWithApplicantState.getFirstName(), result.firstName());
         assertEquals(modelWithApplicantState.getLastName(), result.lastName());
         assertEquals(modelWithApplicantState.getEmploymentState(), result.employmentState());
         assertEquals(modelWithApplicantState.getAbbreviation(), result.abbreviation());
@@ -94,7 +94,7 @@ class MemberMapperTest {
 
         Member result = mapper.fromDto(dtoWithExMemberState);
 
-        assertEquals(dtoWithExMemberState.name(), result.getName());
+        assertEquals(dtoWithExMemberState.firstName(), result.getFirstName());
         assertEquals(dtoWithExMemberState.lastName(), result.getLastName());
         assertEquals(dtoWithExMemberState.employmentState(), result.getEmploymentState());
         assertEquals(dtoWithExMemberState.abbreviation(), result.getAbbreviation());
@@ -109,7 +109,7 @@ class MemberMapperTest {
         Member member2 = Member.Builder
                 .builder()
                 .withId(1L)
-                .withName("Susi")
+                .withFirstName("Susi")
                 .withLastName("Miller")
                 .withEmploymentState(EmploymentState.APPLICANT)
                 .withAbbreviation("SM")
@@ -124,7 +124,7 @@ class MemberMapperTest {
         assertEquals(2, result.size());
         MemberDto resultDto1 = result.get(0);
         assertEquals(member1.getId(), resultDto1.id());
-        assertEquals(member1.getName(), resultDto1.name());
+        assertEquals(member1.getFirstName(), resultDto1.firstName());
         assertEquals(member1.getEmploymentState(), resultDto1.employmentState());
         assertEquals(organisationUnitDto, resultDto1.organisationUnit());
 
@@ -135,7 +135,7 @@ class MemberMapperTest {
     @DisplayName("Should map list of MemberInputDtos to list of Member models")
     @Test
     void shouldReturnListOfMembers() {
-        MemberInputDto dto1 = new MemberInputDto(member1.getName(),
+        MemberInputDto dto1 = new MemberInputDto(member1.getFirstName(),
                                                  member1.getLastName(),
                                                  member1.getEmploymentState(),
                                                  member1.getAbbreviation(),
@@ -155,7 +155,7 @@ class MemberMapperTest {
 
         assertEquals(2, result.size());
         Member resultModel1 = result.get(0);
-        assertEquals(dto1.name(), resultModel1.getName());
+        assertEquals(dto1.firstName(), resultModel1.getFirstName());
         assertEquals(dto1.employmentState(), resultModel1.getEmploymentState());
         assertEquals(organisationUnit, resultModel1.getOrganisationUnit());
 

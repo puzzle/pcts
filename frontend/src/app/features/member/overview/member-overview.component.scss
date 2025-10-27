@@ -17,3 +17,8 @@
 button.active {
   background-color: variables.$table-primary-color;
 }
+
+.table-max-height {
+  // Max height to define when it gets scrollable
+  max-height: 70vh;
+}

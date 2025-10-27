@@ -82,7 +82,7 @@ VALUES
     (10, 4),
     (10, 5);
 
-INSERT INTO member (name, last_name, abbreviation, employment_state, date_of_hire, birth_date, organisation_unit)
+INSERT INTO member (first_name, last_name, abbreviation, employment_state, date_of_hire, birth_date, organisation_unit)
 VALUES
     ('Lena', 'Müller', 'LM', 'MEMBER', '2021-07-15', '1999-08-10', 1),
     ('Jonas', 'Schmidt', 'JS', 'MEMBER', '2020-06-01', '1998-03-03', 2),

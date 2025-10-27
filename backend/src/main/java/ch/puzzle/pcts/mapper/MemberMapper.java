@@ -27,7 +27,7 @@ public class MemberMapper {
 
     public MemberDto toDto(Member model) {
         return new MemberDto(model.getId(),
-                             model.getName(),
+                             model.getFirstName(),
                              model.getLastName(),
                              model.getEmploymentState(),
                              model.getAbbreviation(),
@@ -39,7 +39,7 @@ public class MemberMapper {
     public Member fromDto(MemberInputDto dto) {
         return Member.Builder
                 .builder()
-                .withName(dto.name())
+                .withFirstName(dto.firstName())
                 .withLastName(dto.lastName())
                 .withEmploymentState(dto.employmentState())
                 .withAbbreviation(dto.abbreviation())
