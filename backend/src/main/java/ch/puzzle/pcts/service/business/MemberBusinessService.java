@@ -26,7 +26,7 @@ public class MemberBusinessService {
     }
 
     public Member getById(Long id) {
-        validationService.validateOnGetById(id);
+        validationService.validateOnGet(id);
         return persistenceService
                 .getById(id)
                 .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,
@@ -40,7 +40,7 @@ public class MemberBusinessService {
     }
 
     public Member update(Long id, Member member) {
-        validationService.validateOnUpdate(id);
+        validationService.validateOnUpdate(id, member);
         member.setId(id);
         return persistenceService.save(member);
     }
