@@ -6,6 +6,7 @@ TRUNCATE TABLE degree_type CASCADE;
 TRUNCATE TABLE tag CASCADE;
 TRUNCATE TABLE CERTIFICATE_TAG CASCADE;
 TRUNCATE TABLE member CASCADE;
+TRUNCATE TABLE degree CASCADE;
 
 INSERT INTO role (name, is_management)
 VALUES
@@ -97,3 +98,28 @@ VALUES
     (2, 'Marketing Intern', null, 80, 2, 'Assisted in content strategy and social media analytics.', '2021-06-01', null),
     (1, 'Web Developer (Freelance)', 'Freelance', 50, 3, null, '2020-02-15', '2020-12-15'),
     (3, 'Data Analyst',  null, 100, 1, null, '2018-01-10', null);
+INSERT INTO degree (member, name, institution, completed, type, start_date, end_date, comment)
+VALUES (1,
+        'Bachelor of Science in Mathematics',
+        'ETH Zürich',
+        TRUE,
+        1,
+        '2015-09-01',
+        '2018-06-30',
+        'Strong focus on applied and pure mathematics.'),
+       (2,
+        'Bachelor of Arts in English Language and Literature',
+        'University of Geneva',
+        TRUE,
+        1,
+        '2016-09-01',
+        '2019-06-30',
+        'Focused on linguistics, literature, and academic writing.'),
+       (3,
+        'Bachelor of Science in Computer Science',
+        'EPFL',
+        TRUE,
+        1,
+        '2017-09-01',
+        '2020-06-30',
+        'Specialized in software engineering and AI.');
