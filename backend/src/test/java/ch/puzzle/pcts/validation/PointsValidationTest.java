@@ -14,7 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class PointsValidationTest {
+class PointsValidationTest {
     DummyValidationService service = new DummyValidationService();
 
     @DisplayName("Should throw error when points are null")
