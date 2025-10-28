@@ -91,7 +91,7 @@ export class MemberFormComponent implements OnInit {
   });
 
   protected employmentStateFilteredOptions = computed(() => {
-    const value = this.employmentStateControlSignal() || '';
+    const value = this.employmentStateControlSignal() ?? '';
     return this.filterEmploymentState(value);
   });
 

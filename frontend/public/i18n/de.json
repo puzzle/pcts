@@ -4,10 +4,10 @@
 
   "GENERAL": {
     "ADD_TITLE": "hinzufügen",
-    "ADD": "Hinzufügen",
+    "ADD_BUTTON": "Hinzufügen",
     "EDIT_TITLE": "ändern",
     "CANCEL": "Abbrechen",
-    "SAVE": "Speichern"
+    "EDIT_BUTTON": "Speichern"
   },
 
   "VALIDATION": {
