@@ -1,0 +1,10 @@
+name: on-push-to-main.yaml
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  push-to-ghcr:
+    uses: .github/workflows/reusable__upload-to-ghcr.yaml

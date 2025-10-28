@@ -1,4 +1,6 @@
+---
 name: reusable__upload-to-ghcr.yaml
+
 on:
   workflow_call:
 
