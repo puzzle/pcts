@@ -28,7 +28,7 @@ public class DegreeTypeValidationService extends ValidationBase<DegreeType> {
     public void validateOnUpdate(Long id, DegreeType degreeType) {
         super.validateOnUpdate(id, degreeType);
         if (UniqueNameValidationUtil
-                .nameExcludingSelfAlredyUsed(id, degreeType.getName(), persistenceService::getByName)) {
+                .nameExcludingSelfAlreadyUsed(id, degreeType.getName(), persistenceService::getByName)) {
             throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.INVALID_ARGUMENT);
         }
     }

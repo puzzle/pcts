@@ -32,7 +32,7 @@ public class LeadershipExperienceValidationService extends ValidationBase<Certif
         super.validateOnUpdate(id, leadershipExperience);
         validateCertificateType(leadershipExperience.getCertificateType());
         if (UniqueNameValidationUtil
-                .nameExcludingSelfAlredyUsed(id, leadershipExperience.getName(), persistenceService::getByName)) {
+                .nameExcludingSelfAlreadyUsed(id, leadershipExperience.getName(), persistenceService::getByName)) {
             throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.INVALID_ARGUMENT);
         }
     }

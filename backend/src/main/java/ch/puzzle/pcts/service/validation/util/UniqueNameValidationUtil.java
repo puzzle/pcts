@@ -13,8 +13,8 @@ public class UniqueNameValidationUtil {
         return finder.apply(valueToFind).isPresent();
     }
 
-    public static <T extends Model> boolean nameExcludingSelfAlredyUsed(Long id, String valueToFind,
-                                                                        Function<String, Optional<T>> finder) {
+    public static <T extends Model> boolean nameExcludingSelfAlreadyUsed(Long id, String valueToFind,
+                                                                         Function<String, Optional<T>> finder) {
         return finder.apply(valueToFind).map(entity -> !entity.getId().equals(id)).orElse(false);
     }
 }

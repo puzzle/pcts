@@ -23,7 +23,7 @@ public class CertificateValidationService extends ValidationBase<Certificate> {
         super.validateOnUpdate(id, certificate);
         validateCertificateType(certificate.getCertificateType());
         if (UniqueNameValidationUtil
-                .nameExcludingSelfAlredyUsed(id, certificate.getName(), persistenceService::getByName)) {
+                .nameExcludingSelfAlreadyUsed(id, certificate.getName(), persistenceService::getByName)) {
             throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.INVALID_ARGUMENT);
         }
     }
