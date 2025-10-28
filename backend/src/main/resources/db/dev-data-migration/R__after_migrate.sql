@@ -90,3 +90,10 @@ VALUES
     ( 'Tobias', 'Weber', 'TW', 'APPLICANT', '2022-02-14', '2000-07-06', 4),
     ( 'Mara', 'Becker', 'MB', 'EX_MEMBER', '2023-01-09', '2001-08-05', 1),
     ( 'Felix', 'Hofmann', 'FH', 'EX_MEMBER', '2021-09-17', '2000-02-29', 1);
+
+INSERT INTO experience (member, name, employer, percent, experience_type, comment, start_date, end_date)
+VALUES
+    (1, 'Software Engineer', 'TechNova Solutions', 100, 1, 'Worked on backend APIs and DevOps tasks.', '2019-03-01', '2022-07-31'),
+    (2, 'Marketing Intern', 'BrightMedia Group', 80, 2, 'Assisted in content strategy and social media analytics.', '2021-06-01', '2021-08-31'),
+    (1, 'Web Developer (Freelance)', 'Freelance', 50, 3, 'Developed landing pages and optimized SEO.', '2020-02-15', '2020-12-15'),
+    (3, 'Data Analyst', 'Insight Analytics Co.', 100, 1, 'Built dashboards and performed statistical analysis.', '2018-01-10', '2021-10-05');
