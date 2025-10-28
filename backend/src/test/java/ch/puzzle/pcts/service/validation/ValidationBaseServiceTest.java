@@ -57,7 +57,7 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
         assertDoesNotThrow(() -> service.validateOnGetById(id));
     }
 
-    @DisplayName("Should throw exception validateOnGet() when Id is null")
+    @DisplayName("Should throw exception when Id is null")
     @Test
     void validateOnGetByIdShouldThrowExceptionWhenIdIsNull() {
         Long id = null;
@@ -68,7 +68,7 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
         assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
     }
 
-    @DisplayName("Should be successful when validateOnCreate() model is Valid")
+    @DisplayName("Should be successful when model is Valid")
     @Test
     void validateOnCreateShouldBeSuccessfulWhenModelIsValid() {
         T model = getValidModel();
