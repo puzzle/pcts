@@ -3,8 +3,10 @@ package ch.puzzle.pcts.service.business;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificate.CertificateType;
+import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.service.persistence.CertificatePersistenceService;
 import ch.puzzle.pcts.service.validation.LeadershipExperienceValidationService;
 import java.util.List;
@@ -44,9 +46,23 @@ class LeadershipExperienceBusinessServiceTest {
         Certificate result = businessService.getById(id);
 
         assertEquals(certificate, result);
-        verify(validationService).validateOnGetById(id);
+        verify(validationService).validateOnGet(id);
         verify(persistenceService).getById(id);
         verify(validationService).validateCertificateType(certificate.getCertificateType());
+    }
+
+    @DisplayName("Should throw error when leadership experience with id does not exist")
+    @Test
+    void shouldNotGetByIdAndThrowError() {
+        Long id = 1L;
+        when(persistenceService.getById(id)).thenReturn(Optional.empty());
+
+        PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(id));
+
+        assertEquals("LeadershipExperience with id: " + id + " does not exist.", exception.getReason());
+        assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
+        verify(validationService).validateOnGet(id);
+        verify(persistenceService).getById(id);
     }
 
     @DisplayName("Should create leadershipExperience")

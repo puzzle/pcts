@@ -91,6 +91,7 @@ class MemberBusinessServiceTest {
     @Test
     void shouldCreate() {
         when(persistenceService.save(member)).thenReturn(member);
+        when(member.getName()).thenReturn("A");
 
         Member result = businessService.create(member);
 
@@ -104,6 +105,7 @@ class MemberBusinessServiceTest {
     void shouldUpdate() {
         Long id = 1L;
         when(persistenceService.save(member)).thenReturn(member);
+        when(member.getName()).thenReturn("A");
 
         Member result = businessService.update(id, member);
 

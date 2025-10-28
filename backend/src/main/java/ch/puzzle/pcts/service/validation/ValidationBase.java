@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 public abstract class ValidationBase<T extends Model> {
     private final Validator validator;
 
-    ValidationBase() {
+    public ValidationBase() {
         try (ValidatorFactory factory = Validation
                 .byDefaultProvider()
                 .configure()
@@ -65,7 +65,7 @@ public abstract class ValidationBase<T extends Model> {
     }
 
     public void throwExceptionWhenIdHasChanged(Long id, Long modelId) {
-        if (!Objects.equals(id, modelId)) {
+        if (modelId != null && !Objects.equals(id, modelId)) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
                                     "The queried id must match the id in the model.",
                                     ErrorKey.INVALID_ARGUMENT);

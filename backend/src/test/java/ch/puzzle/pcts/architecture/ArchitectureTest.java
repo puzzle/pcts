@@ -3,6 +3,7 @@ package ch.puzzle.pcts.architecture;
 import static ch.puzzle.pcts.architecture.CustomConditions.overrideHashCodeMethod;
 import static ch.puzzle.pcts.architecture.CustomConditions.overrideToStringMethod;
 import static ch.puzzle.pcts.architecture.CustomConditions.trimAssignedStringFields;
+import static com.tngtech.archunit.base.DescribedPredicate.not;
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAPackage;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
@@ -10,7 +11,7 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 
 import ch.puzzle.pcts.model.Model;
-import com.tngtech.archunit.core.domain.JavaClasses;
+import com.tngtech.archunit.core.domain.*;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.lang.ArchRule;
@@ -147,6 +148,7 @@ class ArchitectureTest {
                 .areNotAnonymousClasses()
                 .and()
                 .resideInAPackage("ch.puzzle.pcts.service..")
+                .and(not(resideInAPackage("ch.puzzle.pcts.service.validation.util..")))
                 .should()
                 .beAnnotatedWith(Service.class)
                 .andShould()
