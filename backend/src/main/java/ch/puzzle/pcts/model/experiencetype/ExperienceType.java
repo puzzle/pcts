@@ -3,8 +3,8 @@ package ch.puzzle.pcts.model.experiencetype;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
-import ch.puzzle.pcts.validation.points.PointsValidation;
-import ch.puzzle.pcts.validation.string.BasicStringValidation;
+import ch.puzzle.pcts.util.BasicStringValidation;
+import ch.puzzle.pcts.util.PointsValidation;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;

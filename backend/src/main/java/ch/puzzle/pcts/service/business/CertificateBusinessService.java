@@ -33,7 +33,7 @@ public class CertificateBusinessService {
     }
 
     public Certificate getById(Long id) {
-        validationService.validateOnGet(id);
+        validationService.validateOnGetById(id);
 
         Optional<Certificate> optionalCertificate = persistenceService.getById(id);
 

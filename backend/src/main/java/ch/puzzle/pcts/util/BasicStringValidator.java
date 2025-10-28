@@ -1,31 +1,29 @@
-package ch.puzzle.pcts.validation.string;
+package ch.puzzle.pcts.util;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
 public class BasicStringValidator implements ConstraintValidator<BasicStringValidation, String> {
-    int min;
-    int max;
-    String message;
+    private BasicStringValidation annotation;
 
     @Override
     public void initialize(BasicStringValidation constraintAnnotation) {
-        this.min = constraintAnnotation.min();
-        this.max = constraintAnnotation.max();
-        this.message = constraintAnnotation.message();
+        annotation = constraintAnnotation;
     }
 
     @Override
-    public boolean isValid(String string, ConstraintValidatorContext context) {
-        if (string == null) {
+    public boolean isValid(String value, ConstraintValidatorContext context) {
+        if (value == null) {
             return buildViolation(context, "{attribute.not.null}");
         }
 
-        if (string.isBlank()) {
+        if (value.isBlank()) {
             return buildViolation(context, "{attribute.not.blank}");
         }
 
-        if (string.trim().length() < this.min || string.trim().length() > this.max) {
+        if (value.length() < annotation.min() || value.length() > annotation.max()) {
             return buildViolation(context, "{attribute.size.between}");
         }
         return true;

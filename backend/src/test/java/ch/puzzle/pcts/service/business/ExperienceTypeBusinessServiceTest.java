@@ -46,7 +46,7 @@ class ExperienceTypeBusinessServiceTest {
 
         assertEquals(experienceType, result);
         verify(persistenceService).getById(id);
-        verify(validationService).validateOnGet(id);
+        verify(validationService).validateOnGetById(id);
     }
 
     @DisplayName("Should throw exception")
@@ -60,7 +60,7 @@ class ExperienceTypeBusinessServiceTest {
         assertEquals(String.format("ExperienceType with id: %d does not exist.", id), exception.getReason());
         assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
         verify(persistenceService).getById(id);
-        verify(validationService).validateOnGet(id);
+        verify(validationService).validateOnGetById(id);
     }
 
     @DisplayName("Should get all experienceTypes")

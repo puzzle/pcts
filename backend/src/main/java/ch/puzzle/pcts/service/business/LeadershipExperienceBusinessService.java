@@ -28,7 +28,7 @@ public class LeadershipExperienceBusinessService {
     }
 
     public Certificate getById(Long id) {
-        validationService.validateOnGet(id);
+        validationService.validateOnGetById(id);
 
         Optional<Certificate> optionalLeadershipExperience = persistenceService.getById(id);
 

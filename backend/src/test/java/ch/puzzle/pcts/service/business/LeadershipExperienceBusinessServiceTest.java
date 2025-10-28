@@ -46,7 +46,7 @@ class LeadershipExperienceBusinessServiceTest {
         Certificate result = businessService.getById(id);
 
         assertEquals(certificate, result);
-        verify(validationService).validateOnGet(id);
+        verify(validationService).validateOnGetById(id);
         verify(persistenceService).getById(id);
         verify(validationService).validateCertificateType(certificate.getCertificateType());
     }
@@ -61,7 +61,7 @@ class LeadershipExperienceBusinessServiceTest {
 
         assertEquals("LeadershipExperience with id: " + id + " does not exist.", exception.getReason());
         assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
-        verify(validationService).validateOnGet(id);
+        verify(validationService).validateOnGetById(id);
         verify(persistenceService).getById(id);
     }
 

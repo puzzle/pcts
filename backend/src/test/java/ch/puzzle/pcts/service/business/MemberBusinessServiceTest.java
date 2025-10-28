@@ -45,7 +45,7 @@ class MemberBusinessServiceTest {
 
         assertEquals(member, result);
         verify(persistenceService).getById(1L);
-        verify(validationService).validateOnGet(1L);
+        verify(validationService).validateOnGetById(1L);
     }
 
     @DisplayName("Should throw exception")
@@ -58,7 +58,7 @@ class MemberBusinessServiceTest {
         assertEquals("Member with id: " + 1 + " does not exist.", exception.getReason());
         assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
         verify(persistenceService).getById(1L);
-        verify(validationService).validateOnGet(1L);
+        verify(validationService).validateOnGetById(1L);
     }
 
     @DisplayName("Should get all members")
