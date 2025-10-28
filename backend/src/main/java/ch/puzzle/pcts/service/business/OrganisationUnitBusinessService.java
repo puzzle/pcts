@@ -25,7 +25,7 @@ public class OrganisationUnitBusinessService {
     }
 
     public OrganisationUnit getById(Long id) {
-        validationService.validateOnGet(id);
+        validationService.validateOnGetById(id);
         return persistenceService
                 .getById(id)
                 .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,

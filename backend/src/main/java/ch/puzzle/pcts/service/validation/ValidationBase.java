@@ -1,6 +1,5 @@
 package ch.puzzle.pcts.service.validation;
 
-import ch.puzzle.pcts.FieldAwareMessageInterpolator;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.error.ErrorKey;
@@ -37,7 +36,7 @@ public abstract class ValidationBase<T extends Model> {
         }
     }
 
-    public void validateOnGet(Long id) {
+    public void validateOnGetById(Long id) {
         throwExceptionWhenIdIsNull(id);
     }
 

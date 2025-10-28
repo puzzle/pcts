@@ -52,17 +52,17 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
 
     @DisplayName("Should be successful validateOnGet() when Id is valid")
     @Test
-    void validateOnGetByIdShouldBeSuccessfulWhenIdIsValid() {
+    void validateOnGetShouldBeSuccessfulWhenIdIsValid() {
         Long id = 1L;
-        assertDoesNotThrow(() -> service.validateOnGetById(id));
+        assertDoesNotThrow(() -> service.validateOnGet(id));
     }
 
     @DisplayName("Should throw exception when Id is null")
     @Test
-    void validateOnGetByIdShouldThrowExceptionWhenIdIsNull() {
+    void validateOnGetShouldThrowExceptionWhenIdIsNull() {
         Long id = null;
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnGetById(id));
+        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnGet(id));
 
         assertEquals("Id must not be null.", exception.getReason());
         assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
