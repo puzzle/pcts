@@ -18,11 +18,11 @@ public class BasicStringValidator implements ConstraintValidator<BasicStringVali
     @Override
     public boolean isValid(String string, ConstraintValidatorContext context) {
         if (string == null) {
-            return buildViolation(context, "{attribute.notnull}");
+            return buildViolation(context, "{attribute.not.null}");
         }
 
         if (string.isBlank()) {
-            return buildViolation(context, "{attribute.notblank}");
+            return buildViolation(context, "{attribute.not.blank}");
         }
 
         if (string.trim().length() < this.min || string.trim().length() > this.max) {

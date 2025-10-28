@@ -1,8 +1,7 @@
 package ch.puzzle.pcts.service.validation;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
@@ -17,229 +16,53 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class OrganisationUnitValidationServiceTest {
+class OrganisationUnitValidationServiceTest
+        extends
+            ValidationBaseServiceTest<OrganisationUnit, OrganisationUnitValidationService> {
+
+    @InjectMocks
+    private OrganisationUnitValidationService service;
 
     @Mock
     private OrganisationUnitPersistenceService persistenceService;
 
-    @InjectMocks
-    private OrganisationUnitValidationService validationService;
-
-    @DisplayName("Should be successful on validateOnGetById() when id valid")
-    @Test
-    void shouldBeSuccessfulOnValidateOnGetByIdWhenIdIsValid() {
-        Long id = 1L;
-
-        when(persistenceService.getById(id)).thenReturn(Optional.of(new OrganisationUnit()));
-        assertDoesNotThrow(() -> validationService.validateOnGetById(id));
+    @Override
+    OrganisationUnit getModel() {
+        return new OrganisationUnit(null, "Organisation Unit");
     }
 
-    @DisplayName("Should throw exception on validateOnGetById() when id is invalid")
-    @Test
-    void shouldThrowExceptionOnValidateOnGetByIdWhenIdIsInvalid() {
-        Long id = -1L;
-
-        when(persistenceService.getById(id)).thenReturn(Optional.empty());
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnGetById(id));
-
-        assertEquals("Organisation Unit with id: " + id + " does not exist.", exception.getReason());
-        assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
-    }
-
-    @DisplayName("Should be successful on validateOnCreate() when organisationUnit is valid")
-    @Test
-    void shouldBeSuccessfulOnValidateOnCreateWhenOrganisationUnitIsValid() {
-        OrganisationUnit organisationUnit = new OrganisationUnit();
-        organisationUnit.setName("New Organisation Unit");
-
-        assertDoesNotThrow(() -> validationService.validateOnCreate(organisationUnit));
-    }
-
-    @DisplayName("Should throw exception on validateOnCreate() when id is not null")
-    @Test
-    void shouldThrowExceptionOnValidateOnCreateWhenIdIsNotNull() {
-        OrganisationUnit organisationUnit = new OrganisationUnit();
-        organisationUnit.setName("OrganisationUnit");
-        organisationUnit.setId(123L);
-
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> validationService.validateOnCreate(organisationUnit));
-
-        assertEquals("Id needs to be undefined", exception.getReason());
-        assertEquals(ErrorKey.ID_IS_NOT_NULL, exception.getErrorKey());
-    }
-
-    @DisplayName("Should throw exception on validateOnCreate() when name is null")
-    @Test
-    void shouldThrowExceptionOnValidateOnCreateWhenNameIsNull() {
-        OrganisationUnit organisationUnit = new OrganisationUnit();
-
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> validationService.validateOnCreate(organisationUnit));
-
-        assertEquals("Name must not be null", exception.getReason());
-        assertEquals(ErrorKey.ORGANIZATION_UNIT_NAME_IS_NULL, exception.getErrorKey());
-    }
-
-    @DisplayName("Should throw exception on validateOnCreate() when name is blank")
-    @Test
-    void shouldThrowExceptionOnValidateOnCreateWhenNameBlank() {
-        OrganisationUnit organisationUnit = new OrganisationUnit();
-        organisationUnit.setName("");
-
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> validationService.validateOnCreate(organisationUnit));
-
-        assertEquals("Name must not be empty", exception.getReason());
-        assertEquals(ErrorKey.ORGANIZATION_UNIT_NAME_IS_EMPTY, exception.getErrorKey());
+    @Override
+    OrganisationUnitValidationService getService() {
+        return service;
     }
 
     @DisplayName("Should throw exception on validateOnCreate() when name already exists")
     @Test
     void shouldThrowExceptionOnValidateOnCreateWhenNameAlreadyExists() {
-        OrganisationUnit organisationUnit = new OrganisationUnit();
-        organisationUnit.setName("Existing Organisation unit");
+        OrganisationUnit organisationUnit = getModel();
 
-        when(persistenceService.getByName("Existing Organisation unit"))
-                .thenReturn(Optional.of(new OrganisationUnit()));
+        when(persistenceService.getByName(organisationUnit.getName())).thenReturn(Optional.of(new OrganisationUnit()));
 
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> validationService.validateOnCreate(organisationUnit));
+        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnCreate(organisationUnit));
 
         assertEquals("Name already exists", exception.getReason());
-        assertEquals(ErrorKey.ORGANIZATION_UNIT_NAME_ALREADY_EXISTS, exception.getErrorKey());
+        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
     }
 
-    @DisplayName("Should be successful on validateOnDelete() when id is valid")
+    @DisplayName("Should throw Exception on validateOnUpdate() when name already exists")
     @Test
-    void shouldBeSuccessfulOnValidateOnDeleteWhenIdIsValid() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExists() {
         Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(new OrganisationUnit()));
+        OrganisationUnit newOrganisationUnit = getModel();
+        OrganisationUnit organisationUnit = getModel();
+        organisationUnit.setId(2L);
 
-        assertDoesNotThrow(() -> validationService.validateOnDelete(id));
-    }
-
-    @DisplayName("Should throw exception on validateOnDelete() when id is invalid")
-    @Test
-    void shouldThrowExceptionOnValidateOnDeleteIdWhenIdIsInvalid() {
-        Long id = -1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.empty());
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnDelete(id));
-
-        assertEquals("Organisation Unit with id: " + id + " does not exist.", exception.getReason());
-        assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
-    }
-
-    @DisplayName("Should be successful on validateOnUpdate() when id is valid")
-    @Test
-    void shouldBeSuccessfulOnValidateOnUpdateWhenIdIsValid() {
-        OrganisationUnit organisationUnit = new OrganisationUnit();
-        organisationUnit.setName("OrganisationUnit");
-        Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(new OrganisationUnit()));
-
-        assertDoesNotThrow(() -> validationService.validateOnUpdate(id, organisationUnit));
-    }
-
-    @DisplayName("Should throw exception on validateOnUpdate() when id is invalid")
-    @Test
-    void shouldThrowExceptionOnValidateOnUpdateIdWhenIdIsInvalid() {
-        OrganisationUnit organisationUnit = new OrganisationUnit();
-        Long id = -1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.empty());
+        when(persistenceService.getByName(newOrganisationUnit.getName())).thenReturn(Optional.of(organisationUnit));
 
         PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> validationService.validateOnUpdate(id, organisationUnit));
-
-        assertEquals("Organisation Unit with id: " + id + " does not exist.", exception.getReason());
-        assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
-    }
-
-    @DisplayName("Should throw exception on validateOnUpdate() when id is not null")
-    @Test
-    void shouldThrowExceptionOnValidateOnUpdateWhenIdIsNotNull() {
-        OrganisationUnit organisationUnit = new OrganisationUnit();
-        organisationUnit.setId(123L);
-        Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(new OrganisationUnit()));
-
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> validationService.validateOnUpdate(id, organisationUnit));
-
-        assertEquals("Id needs to be undefined", exception.getReason());
-        assertEquals(ErrorKey.ID_IS_NOT_NULL, exception.getErrorKey());
-    }
-
-    @DisplayName("Should throw exception on validateOnUpdate() when name is null")
-    @Test
-    void shouldThrowExceptionOnValidateOnUpdateWhenNameIsNull() {
-        OrganisationUnit organisationUnit = new OrganisationUnit();
-        Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(new OrganisationUnit()));
-
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> validationService.validateOnUpdate(id, organisationUnit));
-
-        assertEquals("Name must not be null", exception.getReason());
-        assertEquals(ErrorKey.ORGANIZATION_UNIT_NAME_IS_NULL, exception.getErrorKey());
-    }
-
-    @DisplayName("Should throw exception on validateOnUpdate() when name is blank")
-    @Test
-    void shouldThrowExceptionOnValidateOnUpdateWhenNameBlank() {
-        OrganisationUnit organisationUnit = new OrganisationUnit();
-        organisationUnit.setName("");
-        Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(new OrganisationUnit()));
-
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> validationService.validateOnUpdate(id, organisationUnit));
-
-        assertEquals("Name must not be empty", exception.getReason());
-        assertEquals(ErrorKey.ORGANIZATION_UNIT_NAME_IS_EMPTY, exception.getErrorKey());
-    }
-
-    @DisplayName("Should Throw Exception on validateOnUpdate() when name already exists for another organisation unit")
-    @Test
-    void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExistsForAnotherOrganisationUnit() {
-        Long id = 1L;
-        String name = "Organisation Unit";
-
-        OrganisationUnit organisationUnit = new OrganisationUnit();
-        organisationUnit.setName(name);
-
-        OrganisationUnit anotherOrganisationUnit = new OrganisationUnit();
-        anotherOrganisationUnit.setName(name);
-        anotherOrganisationUnit.setId(2L);
-
-        when(persistenceService.getById(id)).thenReturn(Optional.of(organisationUnit));
-        when(persistenceService.getByName(name)).thenReturn(Optional.of(anotherOrganisationUnit));
-
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> validationService.validateOnUpdate(id, organisationUnit));
+                                               () -> service.validateOnUpdate(id, newOrganisationUnit));
 
         assertEquals("Name already exists", exception.getReason());
-        assertEquals(ErrorKey.ORGANIZATION_UNIT_NAME_ALREADY_EXISTS, exception.getErrorKey());
-    }
-
-    @DisplayName("Should not Throw Exception on validateOnUpdate() when name stays the same")
-    @Test
-    void shouldNotThrowExceptionOnValidateOnUpdateWhenNameStaysTheSame() {
-        Long id = 1L;
-        String name = "Organisation Unit";
-
-        OrganisationUnit newOrganisationUnit = new OrganisationUnit();
-        newOrganisationUnit.setName(name);
-
-        OrganisationUnit organisationUnit = new OrganisationUnit();
-        organisationUnit.setName(name);
-        organisationUnit.setId(id);
-
-        when(persistenceService.getById(id)).thenReturn(Optional.of(newOrganisationUnit));
-        when(persistenceService.getByName(name)).thenReturn(Optional.of(organisationUnit));
-
-        assertDoesNotThrow(() -> validationService.validateOnUpdate(id, newOrganisationUnit));
+        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
     }
 }

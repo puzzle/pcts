@@ -48,7 +48,7 @@ class RoleBusinessServiceTest {
 
         assertEquals(role, result);
         verify(persistenceService).getById(id);
-        verify(validationService).validateOnGetById(id);
+        verify(validationService).validateOnGet(id);
     }
 
     @DisplayName("Should throw exception")
@@ -62,7 +62,7 @@ class RoleBusinessServiceTest {
         assertEquals(String.format("Role with id: %d does not exist.", id), exception.getReason());
         assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
         verify(persistenceService).getById(id);
-        verify(validationService).validateOnGetById(id);
+        verify(validationService).validateOnGet(id);
     }
 
     @DisplayName("Should get all roles")

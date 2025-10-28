@@ -6,9 +6,9 @@ import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.validation.string.BasicStringValidation;
 import jakarta.persistence.*;
-import java.sql.Timestamp;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
@@ -29,7 +29,7 @@ public class Member implements Model {
     private String lastName;
 
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "{attribute.notnull}")
+    @NotNull(message = "{attribute.not.null}")
     private EmploymentState employmentState;
 
     @BasicStringValidation
@@ -37,8 +37,8 @@ public class Member implements Model {
 
     private Date dateOfHire;
 
-    @NotNull(message = "{attribute.notnull}")
-    @Past(message = "{attribute.no.past}")
+    @NotNull(message = "{attribute.not.null}")
+    @Past(message = "{attribute.date.past}")
     private Date birthDate;
 
     @Column(name = "deleted_at", insertable = false, updatable = false)
