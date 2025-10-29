@@ -28,7 +28,7 @@ jobs:
     needs: [e2e-tests, format, tests]
     strategy:
       matrix:
-        dockerfilePath: ["/backend/Dockerfile", "/frontend/Dockerfile"]
+        dockerfilePath: ["backend/Dockerfile", "frontend/Dockerfile"]
     uses: ./.github/workflows/reusable__upload-to-ghcr.yaml
     with:
       dockerfilePath: ${{ matrix.dockerfilePath }}
