@@ -10,7 +10,7 @@ import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.OrganisationUnitBusinessService;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +26,7 @@ class MemberMapperTest {
     private OrganisationUnit organisationUnit;
     private OrganisationUnitDto organisationUnitDto;
     private Member member1;
-    private final Date commonDate = new Date(0L);
+    private final LocalDate commonDate = LocalDate.of(2019, 8, 4);
     private final Long orgUnitId = 1L;
 
     @BeforeEach
@@ -34,7 +34,6 @@ class MemberMapperTest {
         organisationUnitBusinessService = Mockito.mock(OrganisationUnitBusinessService.class);
         organisationUnitMapper = Mockito.mock(OrganisationUnitMapper.class);
         mapper = new MemberMapper(organisationUnitBusinessService, organisationUnitMapper);
-
         organisationUnit = new OrganisationUnit(orgUnitId, "/bbt");
         organisationUnitDto = new OrganisationUnitDto(orgUnitId, "/bbt");
 

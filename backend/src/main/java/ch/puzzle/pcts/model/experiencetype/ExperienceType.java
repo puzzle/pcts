@@ -5,7 +5,7 @@ import static org.apache.commons.lang3.StringUtils.trim;
 import ch.puzzle.pcts.model.Model;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
 
@@ -25,7 +25,7 @@ public class ExperienceType implements Model {
     private BigDecimal littleRelevantPoints;
 
     @Column(name = "deleted_at", insertable = false, updatable = false)
-    private Timestamp deletedAt;
+    private LocalDateTime deletedAt;
 
     public ExperienceType(Long id, String name, BigDecimal highlyRelevantPoints, BigDecimal limitedRelevantPoints,
                           BigDecimal littleRelevantPoints) {
@@ -75,11 +75,11 @@ public class ExperienceType implements Model {
         return littleRelevantPoints;
     }
 
-    public Timestamp getDeletedAt() {
+    public LocalDateTime getDeletedAt() {
         return deletedAt;
     }
 
-    public void setDeletedAt(Timestamp deletedAt) {
+    public void setDeletedAt(LocalDateTime deletedAt) {
         this.deletedAt = deletedAt;
     }
 

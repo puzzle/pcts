@@ -15,7 +15,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 @NoRepositoryBean
 public interface SoftDeleteRepository<T, I> extends JpaRepository<T, I> {
     @Query("SELECT m FROM #{#entityName} m WHERE m.deletedAt IS NULL AND m.id = :id")
-    Optional<T> findById(Long id);
+    Optional<T> findById(I id);
 
     @Query("SELECT m FROM #{#entityName} m WHERE m.deletedAt IS NULL")
     List<T> findAll();

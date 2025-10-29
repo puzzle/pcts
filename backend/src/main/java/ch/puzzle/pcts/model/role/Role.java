@@ -4,7 +4,7 @@ import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
 import jakarta.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
 
@@ -20,7 +20,7 @@ public class Role implements Model {
     private boolean isManagement;
 
     @Column(name = "deleted_at", insertable = false, updatable = false)
-    private Timestamp deletedAt;
+    private LocalDateTime deletedAt;
 
     public Role(Long id, String name, boolean isManagement) {
         this.id = id;
@@ -55,11 +55,11 @@ public class Role implements Model {
         this.isManagement = isManagement;
     }
 
-    public Timestamp getDeletedAt() {
+    public LocalDateTime getDeletedAt() {
         return deletedAt;
     }
 
-    public void setDeletedAt(Timestamp deletedAt) {
+    public void setDeletedAt(LocalDateTime deletedAt) {
         this.deletedAt = deletedAt;
     }
 

@@ -1,7 +1,7 @@
 package ch.puzzle.pcts.dto.experience;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.Date;
+import java.time.LocalDate;
 
 public record ExperienceInputDto(
         @Schema(description = "The id of the member associated with this experience.", example = "1", requiredMode = Schema.RequiredMode.REQUIRED, nullable = false) Long memberId,
@@ -10,6 +10,6 @@ public record ExperienceInputDto(
         @Schema(description = "The percentage of workload or effort associated with this experience.", example = "100", requiredMode = Schema.RequiredMode.REQUIRED, nullable = false, minimum = "0", maximum = "100") int percent,
         @Schema(description = "The id of the type of the experience.", example = "1", requiredMode = Schema.RequiredMode.REQUIRED, nullable = false) Long experienceTypeId,
         @Schema(description = "Additional comments about the experience.", example = "Worked on backend API development using Spring Boot.", requiredMode = Schema.RequiredMode.NOT_REQUIRED, nullable = true) String comment,
-        @Schema(description = "The start date of the experience.", example = "2021-06-01", requiredMode = Schema.RequiredMode.REQUIRED, nullable = false) Date startDate,
-        @Schema(description = "The end date of the experience.", example = "2021-12-31", requiredMode = Schema.RequiredMode.NOT_REQUIRED, nullable = true) Date endDate) {
+        @Schema(description = "The start date of the experience.", example = "2021-06-01", requiredMode = Schema.RequiredMode.REQUIRED, nullable = false) LocalDate startDate,
+        @Schema(description = "The end date of the experience.", example = "2021-12-31", requiredMode = Schema.RequiredMode.NOT_REQUIRED, nullable = true) LocalDate endDate) {
 }

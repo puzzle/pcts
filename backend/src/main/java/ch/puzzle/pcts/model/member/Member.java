@@ -5,8 +5,8 @@ import static org.apache.commons.lang3.StringUtils.trim;
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import jakarta.persistence.*;
-import java.sql.Timestamp;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
 
@@ -26,12 +26,12 @@ public class Member implements Model {
 
     private String abbreviation;
 
-    private Date dateOfHire;
+    private LocalDate dateOfHire;
 
-    private Date birthDate;
+    private LocalDate birthDate;
 
     @Column(name = "deleted_at", insertable = false, updatable = false)
-    private Timestamp deletedAt;
+    private LocalDateTime deletedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organisation_unit")
@@ -92,19 +92,19 @@ public class Member implements Model {
         this.abbreviation = trim(abbreviation);
     }
 
-    public Date getDateOfHire() {
+    public LocalDate getDateOfHire() {
         return dateOfHire;
     }
 
-    public void setDateOfHire(Date dateOfHire) {
+    public void setDateOfHire(LocalDate dateOfHire) {
         this.dateOfHire = dateOfHire;
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -116,11 +116,11 @@ public class Member implements Model {
         this.organisationUnit = organisationUnit;
     }
 
-    public Timestamp getDeletedAt() {
+    public LocalDateTime getDeletedAt() {
         return deletedAt;
     }
 
-    public void setDeletedAt(Timestamp deletedAt) {
+    public void setDeletedAt(LocalDateTime deletedAt) {
         this.deletedAt = deletedAt;
     }
 
@@ -166,8 +166,8 @@ public class Member implements Model {
         private String lastName;
         private EmploymentState employmentState;
         private String abbreviation;
-        private Date dateOfHire;
-        private Date birthDate;
+        private LocalDate dateOfHire;
+        private LocalDate birthDate;
         private OrganisationUnit organisationUnit;
 
         private Builder() {
@@ -202,12 +202,12 @@ public class Member implements Model {
             return this;
         }
 
-        public Builder withDateOfHire(Date dateOfHire) {
+        public Builder withDateOfHire(LocalDate dateOfHire) {
             this.dateOfHire = dateOfHire;
             return this;
         }
 
-        public Builder withBirthDate(Date birthDate) {
+        public Builder withBirthDate(LocalDate birthDate) {
             this.birthDate = birthDate;
             return this;
         }
