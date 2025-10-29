@@ -5,7 +5,7 @@ on:
   workflow_call:
     inputs:
       context:
-        description: "Path to the workdir from the Root"
+        description: "Path to the workdir from the Root. Note that this is also used for setting the image name"
         required: true
         type: string
 
@@ -38,7 +38,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ github.repository }}
+          images: ${{ env.REGISTRY }}/${{ github.repository }}/${{ inputs.context }}
           tags: |
             type=sha,format=long,prefix=
             type=raw,value=latest
