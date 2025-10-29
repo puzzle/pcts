@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.model.degree;
 
+import static org.apache.commons.lang3.StringUtils.trim;
+
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.model.member.Member;
@@ -48,13 +50,13 @@ public class Degree implements Model {
     private Degree(Builder builder) {
         this.id = builder.id;
         this.member = builder.member;
-        this.name = builder.name;
-        this.institution = builder.institution;
+        this.name = trim(builder.name);
+        this.institution = trim(builder.institution);
         this.completed = builder.completed;
         this.type = builder.type;
         this.startDate = builder.startDate;
         this.endDate = builder.endDate;
-        this.comment = builder.comment;
+        this.comment = trim(builder.comment);
         this.deletedAt = null;
     }
 
@@ -84,7 +86,7 @@ public class Degree implements Model {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = trim(name);
     }
 
     public String getInstitution() {
@@ -92,7 +94,7 @@ public class Degree implements Model {
     }
 
     public void setInstitution(String institution) {
-        this.institution = institution;
+        this.institution = trim(institution);
     }
 
     public Boolean getCompleted() {
@@ -140,7 +142,7 @@ public class Degree implements Model {
     }
 
     public void setComment(String comment) {
-        this.comment = comment;
+        this.comment = trim(comment);
     }
 
     @Override
@@ -209,12 +211,12 @@ public class Degree implements Model {
         }
 
         public Builder withName(String name) {
-            this.name = name;
+            this.name = trim(name);
             return this;
         }
 
         public Builder withInstitution(String institution) {
-            this.institution = institution;
+            this.institution = trim(institution);
             return this;
         }
 
@@ -239,7 +241,7 @@ public class Degree implements Model {
         }
 
         public Builder withComment(String comment) {
-            this.comment = comment;
+            this.comment = trim(comment);
             return this;
         }
 
