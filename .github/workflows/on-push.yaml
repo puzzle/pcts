@@ -31,5 +31,5 @@ jobs:
         context: ["backend", "frontend"]
     uses: ./.github/workflows/reusable__upload-to-ghcr.yaml
     with:
-      context:  ${{ matrix.context }}
+      context: ${{ matrix.context }}
     secrets: inherit
