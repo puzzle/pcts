@@ -23,14 +23,13 @@ jobs:
     with:
       COMMIT_HASH: ${{ github.sha }}
 
-  deploy-to-ghrc:
-    if: github.ref == 'refs/heads/feature/5-upload-docker-images-to-GHCR'
-    needs: [e2e-tests, format, tests]
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        dockerfilePath: ["/backend/Dockerfile", "/frontend/Dockerfile"]
-    steps:
-      - uses: ./.github/workflows/reusable__upload-to-ghcr.yaml
-        with:
-          dockerfilePath: ${{ matrix.dockerfilePath }}
+deploy-to-ghrc:
+  if: github.ref == 'refs/heads/feature/5-upload-docker-images-to-GHCR'
+  needs: [e2e-tests, format, tests]
+  strategy:
+    matrix:
+      dockerfilePath: ["/backend/Dockerfile", "/frontend/Dockerfile"]
+  uses: ./.github/workflows/reusable__upload-to-ghcr.yaml
+  with:
+    dockerfilePath: ${{ matrix.dockerfilePath }}
+  secrets: inherit
