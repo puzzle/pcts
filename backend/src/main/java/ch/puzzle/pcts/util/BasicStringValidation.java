@@ -50,8 +50,18 @@ public @interface BasicStringValidation {
      */
     String message() default "{validation.basicString.default}";
 
+    /**
+     * Allows specification of validation groups, to which this constraint belongs.
+     *
+     * @return an array of group classes
+     */
     Class<?>[] groups() default {};
 
+    /**
+     * Can be used by clients to assign custom payload objects to a constraint.
+     *
+     * @return an array of payload classes
+     */
     Class<? extends Payload>[] payload() default {};
 
     /**
