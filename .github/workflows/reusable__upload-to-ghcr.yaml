@@ -48,6 +48,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ${{ inputs.context }}
-          file: /Dockerfile
+          file: ./${{ inputs.context }}/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
