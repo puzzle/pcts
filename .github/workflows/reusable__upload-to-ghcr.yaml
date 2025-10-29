@@ -55,5 +55,3 @@ jobs:
           file: ./${{ inputs.context }}/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
-          build-args:
-            SPRING_PROFILE=dev
