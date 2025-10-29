@@ -1,8 +1,13 @@
 ---
-name: Upload to image ot ghcr
+name: Upload image to GHRC
 
 on:
   workflow_call:
+    inputs:
+      dockerfilePath:
+        description: "Path to the Dockerfile from the Root"
+        required: true
+        type: string
 
 env:
   REGISTRY: ghcr.io
@@ -42,7 +47,7 @@ jobs:
         id: push
         uses: docker/build-push-action@v5
         with:
-          context: ./Docker
-          file: ./Dockerfile
+          context: .
+          file: ${{ inputs.dockerfilePath }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
