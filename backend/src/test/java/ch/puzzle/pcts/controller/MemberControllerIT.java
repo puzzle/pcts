@@ -18,7 +18,9 @@ import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Date;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -39,28 +41,23 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(MemberController.class)
 class MemberControllerIT {
 
+    private static final String BASEURL = "/api/v1/members";
+    private final ObjectMapper objectMapper = new ObjectMapper()
+            .registerModule(new JavaTimeModule())
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    private final LocalDate commonDate = LocalDate.of(2019, 8, 4);
     @MockitoBean
     private MemberBusinessService service;
-
     @MockitoBean
     private MemberMapper mapper;
-
     @Autowired
     private MockMvc mvc;
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    private static final String BASEURL = "/api/v1/members";
-
     private Member member;
     private MemberInputDto requestDto;
     private MemberDto expectedDto;
     private Long id;
-
     private OrganisationUnit organisationUnit;
     private OrganisationUnitDto organisationUnitDto;
-
-    private final Date commonDate = new Date(0L);
 
     @BeforeEach
     void setUp() {
@@ -80,7 +77,13 @@ class MemberControllerIT {
                 .withOrganisationUnit(organisationUnit)
                 .build();
 
-        requestDto = new MemberInputDto("Susi", "Miller", EmploymentState.APPLICANT, "SM", commonDate, commonDate, 1L);
+        requestDto = new MemberInputDto("Susi",
+                                        "Miller",
+                                        EmploymentState.APPLICANT,
+                                        "SM",
+                                        LocalDate.MIN,
+                                        commonDate,
+                                        1L);
 
         expectedDto = new MemberDto(id,
                                     "Susi",

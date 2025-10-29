@@ -1,12 +1,14 @@
 package ch.puzzle.pcts.model.experience;
 
+import static org.apache.commons.lang3.StringUtils.trim;
+
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.model.member.Member;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import java.sql.Timestamp;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
 
@@ -38,15 +40,15 @@ public class Experience implements Model {
     private String comment;
 
     @NotNull
-    private Date startDate;
+    private LocalDate startDate;
 
-    private Date endDate;
+    private LocalDate endDate;
 
     @Column(name = "deleted_at", insertable = false, updatable = false)
-    private Timestamp deletedAt;
+    private LocalDateTime deletedAt;
 
     private Experience(Long id, Member member, String name, String employer, int percent, ExperienceType type,
-                       String comment, Date startDate, Date endDate) {
+                       String comment, LocalDate startDate, LocalDate endDate) {
         this.id = id;
         this.member = member;
         this.name = trim(name);
@@ -59,10 +61,6 @@ public class Experience implements Model {
     }
 
     public Experience() {
-    }
-
-    private static String trim(String value) {
-        return value == null ? null : value.trim();
     }
 
     @Override
@@ -123,27 +121,27 @@ public class Experience implements Model {
         this.comment = trim(comment);
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
-    public Timestamp getDeletedAt() {
+    public LocalDateTime getDeletedAt() {
         return deletedAt;
     }
 
-    public void setDeletedAt(Timestamp deletedAt) {
+    public void setDeletedAt(LocalDateTime deletedAt) {
         this.deletedAt = deletedAt;
     }
 
@@ -189,8 +187,8 @@ public class Experience implements Model {
         private int percent;
         private ExperienceType type;
         private String comment;
-        private Date startDate;
-        private Date endDate;
+        private LocalDate startDate;
+        private LocalDate endDate;
 
         public Builder withId(Long id) {
             this.id = id;
@@ -203,12 +201,12 @@ public class Experience implements Model {
         }
 
         public Builder withName(String name) {
-            this.name = name;
+            this.name = trim(name);
             return this;
         }
 
         public Builder withEmployer(String employer) {
-            this.employer = employer;
+            this.employer = trim(employer);
             return this;
         }
 
@@ -223,16 +221,16 @@ public class Experience implements Model {
         }
 
         public Builder withComment(String comment) {
-            this.comment = comment;
+            this.comment = trim(comment);
             return this;
         }
 
-        public Builder withStartDate(Date startDate) {
+        public Builder withStartDate(LocalDate startDate) {
             this.startDate = startDate;
             return this;
         }
 
-        public Builder withEndDate(Date endDate) {
+        public Builder withEndDate(LocalDate endDate) {
             this.endDate = endDate;
             return this;
         }
