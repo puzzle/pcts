@@ -1,7 +1,9 @@
 package ch.puzzle.pcts.service.validation;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
@@ -93,5 +95,34 @@ class OrganisationUnitValidationServiceTest
 
         assertEquals("Name already exists", exception.getReason());
         assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+    }
+
+    @DisplayName("Should call correct validate method on validateOnCreate()")
+    @Test
+    void shouldCallAllMethodsOnValidateOnCreateWhenValid() {
+        OrganisationUnit organisationUnit = getModel();
+
+        OrganisationUnitValidationService spyService = spy(service);
+        doNothing().when((ValidationBase<OrganisationUnit>) spyService).validateOnCreate(any());
+
+        spyService.validateOnCreate(organisationUnit);
+
+        verify(spyService).validateOnCreate(organisationUnit);
+        verifyNoMoreInteractions(persistenceService);
+    }
+
+    @DisplayName("Should call correct validate method on validateOnUpdate()")
+    @Test
+    void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
+        Long id = 1L;
+        OrganisationUnit organisationUnit = getModel();
+
+        OrganisationUnitValidationService spyService = spy(service);
+        doNothing().when((ValidationBase<OrganisationUnit>) spyService).validateOnUpdate(anyLong(), any());
+
+        spyService.validateOnUpdate(id, organisationUnit);
+
+        verify(spyService).validateOnUpdate(id, organisationUnit);
+        verifyNoMoreInteractions(persistenceService);
     }
 }

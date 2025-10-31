@@ -1,15 +1,24 @@
 package ch.puzzle.pcts.service.validation;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+
 import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
+import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.provider.Arguments;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -17,6 +26,9 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
 
     @InjectMocks
     MemberValidationService service;
+
+    @Mock
+    MemberPersistenceService persistenceService;
 
     @Override
     Member getModel() {
@@ -117,5 +129,34 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                 Arguments
                                         .of(createMember(EmploymentState.MEMBER, futureDate, "Member", "Test", "MT"),
                                             "Member.birthDate must be in the past, given " + futureDate + ".")));
+    }
+
+    @DisplayName("Should call correct validate method on validateOnCreate()")
+    @Test
+    void shouldCallAllMethodsOnValidateOnCreateWhenValid() {
+        Member member = getModel();
+
+        MemberValidationService spyService = spy(service);
+        doNothing().when((ValidationBase<Member>) spyService).validateOnCreate(any());
+
+        spyService.validateOnCreate(member);
+
+        verify(spyService).validateOnCreate(member);
+        verifyNoMoreInteractions(persistenceService);
+    }
+
+    @DisplayName("Should call correct validate method on validateOnUpdate()")
+    @Test
+    void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
+        Long id = 1L;
+        Member member = getModel();
+
+        MemberValidationService spyService = spy(service);
+        doNothing().when((ValidationBase<Member>) spyService).validateOnUpdate(anyLong(), any());
+
+        spyService.validateOnUpdate(id, member);
+
+        verify(spyService).validateOnUpdate(id, member);
+        verifyNoMoreInteractions(persistenceService);
     }
 }

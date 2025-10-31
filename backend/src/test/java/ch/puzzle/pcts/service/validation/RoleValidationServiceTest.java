@@ -2,7 +2,9 @@ package ch.puzzle.pcts.service.validation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
@@ -85,5 +87,34 @@ class RoleValidationServiceTest extends ValidationBaseServiceTest<Role, RoleVali
 
         assertEquals("Name already exists", exception.getReason());
         assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+    }
+
+    @DisplayName("Should call correct validate method on validateOnCreate()")
+    @Test
+    void shouldCallAllMethodsOnValidateOnCreateWhenValid() {
+        Role role = getModel();
+
+        RoleValidationService spyService = spy(service);
+        doNothing().when((ValidationBase<Role>) spyService).validateOnCreate(any());
+
+        spyService.validateOnCreate(role);
+
+        verify(spyService).validateOnCreate(role);
+        verifyNoMoreInteractions(persistenceService);
+    }
+
+    @DisplayName("Should call correct validate method on validateOnUpdate()")
+    @Test
+    void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
+        Long id = 1L;
+        Role role = getModel();
+
+        RoleValidationService spyService = spy(service);
+        doNothing().when((ValidationBase<Role>) spyService).validateOnUpdate(anyLong(), any());
+
+        spyService.validateOnUpdate(id, role);
+
+        verify(spyService).validateOnUpdate(id, role);
+        verifyNoMoreInteractions(persistenceService);
     }
 }
