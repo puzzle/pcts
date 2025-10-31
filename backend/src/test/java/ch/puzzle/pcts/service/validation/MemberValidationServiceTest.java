@@ -1,18 +1,14 @@
 package ch.puzzle.pcts.service.validation;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.provider.Arguments;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -24,55 +20,49 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
 
     @Override
     Member getModel() {
-        return Member.Builder
-                .builder()
-                .withId(null)
-                .withName("Member")
-                .withLastName("Test")
-                .withEmploymentState(EmploymentState.APPLICANT)
-                .withAbbreviation("MT")
-                .withDateOfHire(new Timestamp(0L))
-                .withBirthDate(new Timestamp(0L))
-                .withOrganisationUnit(new OrganisationUnit(1L, "Organisation Unit"))
-                .build();
-    }
-
-    @DisplayName("Should throw exception when employment state is null")
-    @Test
-    void validateBeanValidationWhenEmploymentStateIsNull() {
-        Member model = getModel();
-        model.setEmploymentState(null);
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(model));
-
-        assertEquals("Member.employmentState must not be null.", exception.getReason());
-    }
-
-    @DisplayName("Should throw exception when birth date is null")
-    @Test
-    void validateBeanValidationWhenBirthDateIsNull() {
-        Member model = getModel();
-        model.setBirthDate(null);
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(model));
-
-        assertEquals("Member.birthDate must not be null.", exception.getReason());
-    }
-
-    @DisplayName("Should throw exception when birth date is in the future")
-    @Test
-    void validateBeanValidationWhenBirthDateIsInTheFuture() {
-        Date futureDate = Date.valueOf(LocalDate.now().plusDays(1));
-        Member model = getModel();
-        model.setBirthDate(futureDate);
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(model));
-
-        assertEquals("Member.birthDate must be in the past, given " + futureDate + ".", exception.getReason());
+        return createMember(EmploymentState.MEMBER, Date.valueOf(LocalDate.of(1990, 1, 1)), "Member", "Test", "MT");
     }
 
     @Override
     MemberValidationService getService() {
         return service;
+    }
+
+    private static Member createMember(EmploymentState employmentState, java.util.Date birthDate, String name,
+                                       String lastName, String abbreviation) {
+        Member m = new Member();
+        m.setEmploymentState(employmentState);
+        m.setBirthDate(birthDate);
+        m.setName(name);
+        m.setLastName(lastName);
+        m.setAbbreviation(abbreviation);
+        m.setDateOfHire(new Timestamp(0L));
+        m.setOrganisationUnit(new OrganisationUnit(1L, "Organisation Unit"));
+        return m;
+    }
+
+    static Stream<Arguments> invalidModelProvider() {
+        Date futureDate = Date.valueOf(LocalDate.now().plusDays(1));
+        Date validPastDate = Date.valueOf(LocalDate.of(1990, 1, 1));
+
+        return Stream
+                .of(Arguments
+                        .of(createMember(null, validPastDate, "Member", "Test", "MT"),
+                            "Member.employmentState must not be null."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, null, "Member", "Test", "MT"),
+                                "Member.birthDate must not be null."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, futureDate, "Member", "Test", "MT"),
+                                "Member.birthDate must be in the past, given " + futureDate + "."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, null, "Test", "MT"),
+                                "Member.name must not be null."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", null, "MT"),
+                                "Member.lastName must not be null."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "Test", null),
+                                "Member.abbreviation must not be null."));
     }
 }

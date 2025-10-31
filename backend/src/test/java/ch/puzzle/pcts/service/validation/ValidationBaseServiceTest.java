@@ -5,9 +5,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.error.ErrorKey;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBase<T>> {
 
@@ -16,6 +20,22 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
     abstract T getModel();
 
     abstract S getService();
+
+    // The method source 'invalidModelProvider' needs to be overridden by subclasses
+    // at all times.
+    // If it is not overridden, the "PreconditionViolationException" will be
+    // thrown."
+    static Stream<Arguments> invalidModelProvider() {
+        return Stream.empty();
+    }
+
+    @ParameterizedTest(name = "{index}: {1}")
+    @MethodSource("invalidModelProvider")
+    @DisplayName("Should throw validation exception for invalid model configurations")
+    void validateInvalidModel(T model, String expectedMessage) {
+        PCTSException exception = assertThrows(PCTSException.class, () -> getService().validate(model));
+        assertEquals(expectedMessage, exception.getReason());
+    }
 
     @BeforeEach
     void setUp() {
