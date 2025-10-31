@@ -12,9 +12,11 @@ import ch.puzzle.pcts.service.persistence.CertificatePersistenceService;
 import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.provider.Arguments;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -43,64 +45,36 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
         return service;
     }
 
-    private static Certificate createCertificates(String name, BigDecimal points) {
+    private static Certificate createCertificate(String name, BigDecimal points) {
         Certificate c = new Certificate();
         c.setName(name);
         c.setPoints(points);
         c.setComment("Comment");
         c.setTags(Set.of(new Tag(null, "Tag")));
+        c.setCertificateType(CertificateType.CERTIFICATE);
 
         return c;
     }
 
-    @DisplayName("Should throw exception on validateOnCreate() when points are null")
-    @Test
-    void shouldThrowExceptionOnValidateOnCreateWhenPointsAreNull() {
-        Certificate certificate = getModel();
-        certificate.setPoints(null);
+    static Stream<Arguments> invalidModelProvider() {
+        BigDecimal validBigDecimal = BigDecimal.valueOf(1);
+        String tooLongName = new String(new char[251]).replace("\0", "s");
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnCreate(certificate));
-
-        assertEquals("Certificate.points must not be null.", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
-    }
-
-    @DisplayName("Should throw exception on validateOnCreate() when points are negative")
-    @Test
-    void shouldThrowExceptionOnValidateOnCreateWhenPointsAreNegative() {
-        Certificate certificate = getModel();
-        certificate.setPoints(new BigDecimal("-1"));
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnCreate(certificate));
-
-        assertEquals("Certificate.points must not be negative.", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
-    }
-
-    @DisplayName("Should throw exception on validateOnUpdate() when points are null")
-    @Test
-    void shouldThrowExceptionOnValidateOnUpdateWhenPointsAreNull() {
-        Certificate certificate = getModel();
-        certificate.setPoints(null);
-        Long id = 1L;
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnUpdate(id, certificate));
-
-        assertEquals("Certificate.points must not be null.", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
-    }
-
-    @DisplayName("Should throw exception on validateOnUpdate() when points are negative")
-    @Test
-    void shouldThrowExceptionOnValidateOnUpdateWhenPointsAreNegative() {
-        Certificate certificate = getModel();
-        certificate.setPoints(new BigDecimal("-1"));
-        Long id = 1L;
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnUpdate(id, certificate));
-
-        assertEquals("Certificate.points must not be negative.", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+        return Stream
+                .of(Arguments.of(createCertificate(null, validBigDecimal), "Certificate.name must not be null."),
+                    Arguments.of(createCertificate("", validBigDecimal), "Certificate.name must not be blank."),
+                    Arguments
+                            .of(createCertificate("h", validBigDecimal),
+                                "Certificate.name size must be between 2 and 250, given h."),
+                    Arguments
+                            .of(createCertificate(tooLongName, validBigDecimal),
+                                String
+                                        .format("Certificate.name size must be between 2 and 250, given %s.",
+                                                tooLongName)),
+                    Arguments.of(createCertificate("Name", null), "Certificate.points must not be null."),
+                    Arguments
+                            .of(createCertificate("Name", BigDecimal.valueOf(-1)),
+                                "Certificate.points must not be negative."));
     }
 
     @DisplayName("Should throw exception on validateOnGetById() when certificate type is not certificate")
