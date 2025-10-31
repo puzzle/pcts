@@ -1,5 +1,8 @@
 package ch.puzzle.pcts.util;
 
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 import java.lang.annotation.*;
@@ -53,4 +56,17 @@ public @interface PointsValidation {
      * @return an array of payload classes
      */
     Class<? extends Payload>[] payload() default {};
+
+    /**
+     * Defines several {@link PointsValidation} annotations on the same element.
+     * This enables the annotation to be repeatable.
+     *
+     * @see PointsValidation
+     */
+    @Target(FIELD)
+    @Retention(RUNTIME)
+    @Documented
+    @interface List {
+        PointsValidation[] value();
+    }
 }
