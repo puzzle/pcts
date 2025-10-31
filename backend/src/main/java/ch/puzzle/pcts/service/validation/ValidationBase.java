@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 public abstract class ValidationBase<T extends Model> {
     private final Validator validator;
 
-    public ValidationBase() {
+    protected ValidationBase() {
         try (ValidatorFactory factory = Validation
                 .byDefaultProvider()
                 .configure()
