@@ -59,6 +59,7 @@ public class DegreeControllerIT {
 
     private Degree degree;
     private DegreeDto degreeDto;
+    private DegreeInputDto degreeInputDto;
 
     private final Date commonDate = new Date(0L);
     @Autowired
@@ -101,14 +102,14 @@ public class DegreeControllerIT {
                                             commonDate,
                                             organisationUnitDto);
 
-        DegreeInputDto degreeInputDto = new DegreeInputDto(id,
-                                                           "Degree 1",
-                                                           "Institution 1",
-                                                           true,
-                                                           id,
-                                                           commonDate,
-                                                           commonDate,
-                                                           "Comment 1");
+        degreeInputDto = new DegreeInputDto(id,
+                                            "Degree 1",
+                                            "Institution 1",
+                                            true,
+                                            id,
+                                            commonDate,
+                                            commonDate,
+                                            "Comment 1");
 
         degree = Degree.Builder
                 .builder()
@@ -160,7 +161,7 @@ public class DegreeControllerIT {
 
         mvc
                 .perform(post(BASEURL)
-                        .content(objectMapper.writeValueAsString(degreeDto))
+                        .content(objectMapper.writeValueAsString(degreeInputDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isCreated())
@@ -180,7 +181,7 @@ public class DegreeControllerIT {
 
         mvc
                 .perform(put(BASEURL + "/" + id)
-                        .content(objectMapper.writeValueAsString(degreeDto))
+                        .content(objectMapper.writeValueAsString(degreeInputDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
