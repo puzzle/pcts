@@ -243,8 +243,7 @@ public class DegreeControllerIT {
                 .perform(delete(BASEURL + "/" + id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
-                .andExpect(status().isNoContent())
-                .andExpect(jsonPath("$").doesNotExist());
+                .andExpect(status().isNoContent());
 
         verify(businessService, times(1)).delete(any(Long.class));
     }

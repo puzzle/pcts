@@ -32,7 +32,7 @@ public class DegreeBusinessServiceTest {
     @Mock
     private Degree degree;
 
-    @DisplayName("Should get member by id")
+    @DisplayName("Should get degree by id")
     @Test
     void shouldGetById() {
         when(persistenceService.getById(1L)).thenReturn(Optional.of(degree));
@@ -57,7 +57,7 @@ public class DegreeBusinessServiceTest {
         verify(validationService).validateOnGetById(1L);
     }
 
-    @DisplayName("Should create member")
+    @DisplayName("Should create degree")
     @Test
     void shouldCreate() {
         when(persistenceService.save(degree)).thenReturn(degree);
@@ -69,7 +69,7 @@ public class DegreeBusinessServiceTest {
         verify(persistenceService).save(degree);
     }
 
-    @DisplayName("Should update member")
+    @DisplayName("Should update degree")
     @Test
     void shouldUpdate() {
         Long id = 1L;
@@ -83,7 +83,7 @@ public class DegreeBusinessServiceTest {
         verify(persistenceService).save(degree);
     }
 
-    @DisplayName("Should delete member")
+    @DisplayName("Should delete degree")
     @Test
     void shouldDelete() {
         Long id = 1L;
