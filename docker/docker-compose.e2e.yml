@@ -3,4 +3,4 @@ services:
   pcts-backend:
     container_name: pcts-e2e-backend
     environment:
-      SPRING_PROFILE: e2e-test
+      SPRING_PROFILES_ACTIVE: e2e-test
