@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.*;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.test.annotation.DirtiesContext;
 
 /**
  * @param <T>
@@ -85,7 +86,14 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
     }
 
     @DisplayName("Should delete entity")
-    @Transactional
+    /*
+     * We avoid using @Transactional here because it causes Hibernate to return
+     * Optional.empty when calling getById, without actually hitting the database.
+     * To ensure isolation between tests, we use @DirtiesContext instead. This
+     * forces the Spring container to reset after this test class, so the tests do
+     * not depend on execution order.
+     */
+    @DirtiesContext
     @Test
     void shouldDelete() {
         Long id = 2L;
