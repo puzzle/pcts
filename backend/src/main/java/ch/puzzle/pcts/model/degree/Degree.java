@@ -27,7 +27,6 @@ public class Degree implements Model {
     @NotNull
     private String name;
 
-    @NotNull
     private String institution;
 
     @NotNull
@@ -35,6 +34,7 @@ public class Degree implements Model {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type")
+    @NotNull
     private DegreeType type;
 
     @NotNull

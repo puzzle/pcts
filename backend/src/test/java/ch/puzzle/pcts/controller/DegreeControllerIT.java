@@ -37,6 +37,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 
 @Import(SpringSecurityConfig.class)
 @ExtendWith(MockitoExtension.class)
@@ -59,13 +60,6 @@ public class DegreeControllerIT {
 
     private Degree degree;
     private DegreeDto degreeDto;
-    private DegreeInputDto degreeInputDto;
-
-    private DegreeTypeDto degreeTypeDto;
-    private DegreeType degreeType;
-
-    private Member member;
-    private MemberDto memberDto;
 
     private final Date commonDate = new Date(0L);
     @Autowired
@@ -74,21 +68,21 @@ public class DegreeControllerIT {
     @BeforeEach
     public void setUp() {
         id = 1L;
-        degreeType = new DegreeType(id,
-                                    "Degree Type 1",
-                                    new BigDecimal("3.0"),
-                                    new BigDecimal("2.0"),
-                                    new BigDecimal("1.0"));
-        degreeTypeDto = new DegreeTypeDto(id,
-                                          "Degree Type 1",
-                                          new BigDecimal("3.0"),
-                                          new BigDecimal("2.0"),
-                                          new BigDecimal("1.0"));
+        DegreeType degreeType = new DegreeType(id,
+                                               "Degree Type 1",
+                                               new BigDecimal("3.0"),
+                                               new BigDecimal("2.0"),
+                                               new BigDecimal("1.0"));
+        DegreeTypeDto degreeTypeDto = new DegreeTypeDto(id,
+                                                        "Degree Type 1",
+                                                        new BigDecimal("3.0"),
+                                                        new BigDecimal("2.0"),
+                                                        new BigDecimal("1.0"));
 
         OrganisationUnit organisationUnit = new OrganisationUnit(id, "/bbt");
         OrganisationUnitDto organisationUnitDto = new OrganisationUnitDto(id, "/bbt");
 
-        member = Member.Builder
+        Member member = Member.Builder
                 .builder()
                 .withId(id)
                 .withFirstName("Susi")
@@ -99,23 +93,23 @@ public class DegreeControllerIT {
                 .withBirthDate(commonDate)
                 .withOrganisationUnit(organisationUnit)
                 .build();
-        memberDto = new MemberDto(id,
-                                  "Susi",
-                                  "Miller",
-                                  EmploymentState.APPLICANT,
-                                  "SM",
-                                  commonDate,
-                                  commonDate,
-                                  organisationUnitDto);
+        MemberDto memberDto = new MemberDto(id,
+                                            "Susi",
+                                            "Miller",
+                                            EmploymentState.APPLICANT,
+                                            "SM",
+                                            commonDate,
+                                            commonDate,
+                                            organisationUnitDto);
 
-        degreeInputDto = new DegreeInputDto(id,
-                                            "Degree 1",
-                                            "Institution 1",
-                                            true,
-                                            id,
-                                            commonDate,
-                                            commonDate,
-                                            "Comment 1");
+        DegreeInputDto degreeInputDto = new DegreeInputDto(id,
+                                                           "Degree 1",
+                                                           "Institution 1",
+                                                           true,
+                                                           id,
+                                                           commonDate,
+                                                           commonDate,
+                                                           "Comment 1");
 
         degree = Degree.Builder
                 .builder()
@@ -152,19 +146,7 @@ public class DegreeControllerIT {
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(id))
-                .andExpect(jsonPath("$.name").value("Degree 1"))
-                .andExpect(jsonPath("$.institution").value("Institution 1"))
-                .andExpect(jsonPath("$.completed").value(true))
-                .andExpect(jsonPath("$.comment").value("Comment 1"))
-                // nested member fields
-                .andExpect(jsonPath("$.member.id").value(id))
-                .andExpect(jsonPath("$.member.firstName").value("Susi"))
-                .andExpect(jsonPath("$.member.lastName").value("Miller"))
-                .andExpect(jsonPath("$.member.employmentState").value("APPLICANT"))
-                // nested type fields
-                .andExpect(jsonPath("$.type.id").value(id))
-                .andExpect(jsonPath("$.type.name").value("Degree Type 1"));
+                .andExpect(matchesDegreeDto(degreeDto, "$"));
 
         verify(businessService, times(1)).getById(id);
         verify(mapper, times(1)).toDto(any(Degree.class));
@@ -183,19 +165,7 @@ public class DegreeControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(id))
-                .andExpect(jsonPath("$.name").value("Degree 1"))
-                .andExpect(jsonPath("$.institution").value("Institution 1"))
-                .andExpect(jsonPath("$.completed").value(true))
-                .andExpect(jsonPath("$.comment").value("Comment 1"))
-                // nested member fields
-                .andExpect(jsonPath("$.member.id").value(id))
-                .andExpect(jsonPath("$.member.firstName").value("Susi"))
-                .andExpect(jsonPath("$.member.lastName").value("Miller"))
-                .andExpect(jsonPath("$.member.employmentState").value("APPLICANT"))
-                // nested type fields
-                .andExpect(jsonPath("$.type.id").value(id))
-                .andExpect(jsonPath("$.type.name").value("Degree Type 1"));
+                .andExpect(matchesDegreeDto(degreeDto, "$"));
 
         verify(mapper, times(1)).fromDto(any(DegreeInputDto.class));
         verify(businessService, times(1)).create(any(Degree.class));
@@ -215,19 +185,7 @@ public class DegreeControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(id))
-                .andExpect(jsonPath("$.name").value("Degree 1"))
-                .andExpect(jsonPath("$.institution").value("Institution 1"))
-                .andExpect(jsonPath("$.completed").value(true))
-                .andExpect(jsonPath("$.comment").value("Comment 1"))
-                // nested member fields
-                .andExpect(jsonPath("$.member.id").value(id))
-                .andExpect(jsonPath("$.member.firstName").value("Susi"))
-                .andExpect(jsonPath("$.member.lastName").value("Miller"))
-                .andExpect(jsonPath("$.member.employmentState").value("APPLICANT"))
-                // nested type fields
-                .andExpect(jsonPath("$.type.id").value(id))
-                .andExpect(jsonPath("$.type.name").value("Degree Type 1"));
+                .andExpect(matchesDegreeDto(degreeDto, "$"));
 
         verify(mapper, times(1)).fromDto(any(DegreeInputDto.class));
         verify(businessService, times(1)).update(any(Long.class), any(Degree.class));
@@ -246,6 +204,24 @@ public class DegreeControllerIT {
                 .andExpect(status().isNoContent());
 
         verify(businessService, times(1)).delete(any(Long.class));
+    }
+
+    public static ResultMatcher matchesDegreeDto(DegreeDto dto, String jsonPrefix) {
+        return result -> {
+            jsonPath(jsonPrefix + ".id").value(dto.id()).match(result);
+            jsonPath(jsonPrefix + ".name").value(dto.name()).match(result);
+            jsonPath(jsonPrefix + ".institution").value(dto.institution()).match(result);
+            jsonPath(jsonPrefix + ".completed").value(dto.completed()).match(result);
+            jsonPath(jsonPrefix + ".comment").value(dto.comment()).match(result);
+            jsonPath(jsonPrefix + ".member.id").value(dto.member().id()).match(result);
+            jsonPath(jsonPrefix + ".member.firstName").value(dto.member().firstName()).match(result);
+            jsonPath(jsonPrefix + ".member.lastName").value(dto.member().lastName()).match(result);
+            jsonPath(jsonPrefix + ".member.employmentState")
+                    .value(dto.member().employmentState().toString())
+                    .match(result);
+            jsonPath(jsonPrefix + ".type.id").value(dto.type().id()).match(result);
+            jsonPath(jsonPrefix + ".type.name").value(dto.type().name()).match(result);
+        };
     }
 
 }
