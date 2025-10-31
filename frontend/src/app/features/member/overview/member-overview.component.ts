@@ -108,7 +108,7 @@ export class MemberOverviewComponent implements OnInit {
       const memberDataString: string = (
         member.firstName +
         member.lastName +
-        this.datePipe.transform(member.birthDate, 'dd.MM.yyyy') +
+        member.birthDate +
         member.organisationUnit.name +
         this.translate.instant('MEMBER.EMPLOYMENT_STATUS_VALUES.' + member.employmentState)
       ).toLowerCase();
