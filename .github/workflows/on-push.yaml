@@ -24,7 +24,7 @@ jobs:
       COMMIT_HASH: ${{ github.sha }}
 
   deploy-to-ghrc:
-    if: github.ref == 'refs/heads/feature/main'
+    #    if: github.ref == 'refs/heads/feature/main'
     needs:
       - e2e-tests
       - format
