@@ -12,6 +12,7 @@ import ch.puzzle.pcts.dto.role.RoleDto;
 import ch.puzzle.pcts.mapper.RoleMapper;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.business.RoleBusinessService;
+import ch.puzzle.pcts.util.JsonDtoMatcher;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -71,9 +72,7 @@ class RoleControllerIT {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].id").value(expectedDto.id()))
-                .andExpect(jsonPath("$[0].name").value(expectedDto.name()))
-                .andExpect(jsonPath("$[0].isManagement").value(expectedDto.isManagement()));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$[0]"));
 
         verify(service, times(1)).getAll();
         verify(mapper, times(1)).toDto(any(List.class));
@@ -88,9 +87,7 @@ class RoleControllerIT {
         mvc
                 .perform(get(BASEURL + "/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.isManagement").value(false))
-                .andExpect(jsonPath("$.name").value("Role 1"));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
         verify(service, times(1)).getById((1L));
         verify(mapper, times(1)).toDto(any(Role.class));
@@ -109,9 +106,7 @@ class RoleControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.isManagement").value(false))
-                .andExpect(jsonPath("$.name").value("Role 1"));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
         verify(mapper, times(1)).fromDto(any(RoleDto.class));
         verify(service, times(1)).create(any(Role.class));
@@ -131,9 +126,7 @@ class RoleControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.isManagement").value(false))
-                .andExpect(jsonPath("$.name").value("Role 1"));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
         verify(mapper, times(1)).fromDto(any(RoleDto.class));
         verify(service, times(1)).update(any(Long.class), any(Role.class));

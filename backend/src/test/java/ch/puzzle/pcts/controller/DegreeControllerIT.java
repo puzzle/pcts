@@ -5,7 +5,6 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.puzzle.pcts.SpringSecurityConfig;
@@ -21,6 +20,7 @@ import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.DegreeBusinessService;
+import ch.puzzle.pcts.util.JsonDtoMatcher;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -37,7 +37,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 
 @Import(SpringSecurityConfig.class)
 @ExtendWith(MockitoExtension.class)
@@ -146,7 +145,7 @@ public class DegreeControllerIT {
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(matchesDegreeDto(degreeDto, "$"));
+                .andExpect(JsonDtoMatcher.matchesDto(degreeDto, "$"));
 
         verify(businessService, times(1)).getById(id);
         verify(mapper, times(1)).toDto(any(Degree.class));
@@ -165,7 +164,7 @@ public class DegreeControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isCreated())
-                .andExpect(matchesDegreeDto(degreeDto, "$"));
+                .andExpect(JsonDtoMatcher.matchesDto(degreeDto, "$"));
 
         verify(mapper, times(1)).fromDto(any(DegreeInputDto.class));
         verify(businessService, times(1)).create(any(Degree.class));
@@ -185,7 +184,7 @@ public class DegreeControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
-                .andExpect(matchesDegreeDto(degreeDto, "$"));
+                .andExpect(JsonDtoMatcher.matchesDto(degreeDto, "$"));
 
         verify(mapper, times(1)).fromDto(any(DegreeInputDto.class));
         verify(businessService, times(1)).update(any(Long.class), any(Degree.class));
@@ -205,23 +204,4 @@ public class DegreeControllerIT {
 
         verify(businessService, times(1)).delete(any(Long.class));
     }
-
-    public static ResultMatcher matchesDegreeDto(DegreeDto dto, String jsonPrefix) {
-        return result -> {
-            jsonPath(jsonPrefix + ".id").value(dto.id()).match(result);
-            jsonPath(jsonPrefix + ".name").value(dto.name()).match(result);
-            jsonPath(jsonPrefix + ".institution").value(dto.institution()).match(result);
-            jsonPath(jsonPrefix + ".completed").value(dto.completed()).match(result);
-            jsonPath(jsonPrefix + ".comment").value(dto.comment()).match(result);
-            jsonPath(jsonPrefix + ".member.id").value(dto.member().id()).match(result);
-            jsonPath(jsonPrefix + ".member.firstName").value(dto.member().firstName()).match(result);
-            jsonPath(jsonPrefix + ".member.lastName").value(dto.member().lastName()).match(result);
-            jsonPath(jsonPrefix + ".member.employmentState")
-                    .value(dto.member().employmentState().toString())
-                    .match(result);
-            jsonPath(jsonPrefix + ".type.id").value(dto.type().id()).match(result);
-            jsonPath(jsonPrefix + ".type.name").value(dto.type().name()).match(result);
-        };
-    }
-
 }
