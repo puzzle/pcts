@@ -71,9 +71,11 @@ export const member4: MemberModel = {
 export const memberDto1: MemberDto = {
   firstName: 'Lena',
   lastName: 'Müller',
-  birthDate: new Date(2000, 12, 1),
+  birthDate: DateTime.utc(2000, 12, 1)
+    .toJSDate(),
   abbreviation: 'LM',
   employmentState: EmploymentState.MEMBER,
-  dateOfHire: new Date(2018, 12, 1),
+  dateOfHire: DateTime.utc(2018, 12, 1)
+    .toJSDate(),
   organisationUnitId: 1
 };

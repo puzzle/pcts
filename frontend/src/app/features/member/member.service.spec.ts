@@ -75,6 +75,8 @@ describe('MemberService', () => {
         });
 
       const req = httpMock.expectOne(API_URL);
+      console.log(req);
+      console.log(memberDto1);
       expect(req.request.method)
         .toBe('POST');
       expect(req.request.body)

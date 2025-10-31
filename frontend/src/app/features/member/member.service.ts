@@ -30,6 +30,8 @@ export class MemberService {
   }
 
   toDto(model: MemberModel): MemberDto {
+    console.log(model.dateOfHire);
+    console.log(model.dateOfHire.toJSDate());
     return {
       firstName: model.firstName,
       lastName: model.lastName,
