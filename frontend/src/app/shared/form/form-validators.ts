@@ -1,5 +1,6 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Signal } from '@angular/core';
+import { DateTime } from 'luxon';
 
 export function isDateInFuture(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -7,15 +8,14 @@ export function isDateInFuture(): ValidatorFn {
       return null;
     }
 
-    const date = new Date(control.value);
+    const date: DateTime = control.value;
 
-    if (isNaN(date.getTime())) {
+    if (!date.isValid) {
       return { invalid_date: true };
     }
 
-    const today = new Date();
-
-    if (date >= today) {
+    if (date.diffNow()
+      .toMillis() >= 0) {
       return { date_is_in_future: true };
     }
 

@@ -6,7 +6,7 @@ import ch.puzzle.pcts.model.Model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 import org.hibernate.annotations.SQLDelete;
@@ -35,7 +35,7 @@ public class Certificate implements Model {
     private CertificateType certificateType;
 
     @Column(name = "deleted_at", insertable = false, updatable = false)
-    private Timestamp deletedAt;
+    private LocalDateTime deletedAt;
 
     public Certificate(Long id, String name, BigDecimal points, String comment, Set<Tag> tags,
                        CertificateType certificateType) {
@@ -106,11 +106,11 @@ public class Certificate implements Model {
         this.certificateType = certificateType;
     }
 
-    public Timestamp getDeletedAt() {
+    public LocalDateTime getDeletedAt() {
         return deletedAt;
     }
 
-    public void setDeletedAt(Timestamp deletedAt) {
+    public void setDeletedAt(LocalDateTime deletedAt) {
         this.deletedAt = deletedAt;
     }
 

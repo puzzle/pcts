@@ -4,7 +4,10 @@ import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.repository.MemberRepository;
-import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,9 +18,6 @@ class MemberPersistenceServiceIT extends PersistenceBaseIT<Member, MemberReposit
         super(service);
     }
 
-    /**
-     * Returns an object of the entity used to save it in the database
-     */
     @Override
     Member getModel() {
         return Member.Builder
@@ -27,19 +27,16 @@ class MemberPersistenceServiceIT extends PersistenceBaseIT<Member, MemberReposit
                 .withLastName("Test")
                 .withEmploymentState(EmploymentState.APPLICANT)
                 .withAbbreviation("M1")
-                .withDateOfHire(new Timestamp(0L))
-                .withBirthDate(new Timestamp(0L))
+                .withDateOfHire(LocalDate.of(2019, 8, 4))
+                .withBirthDate(LocalDate.of(1970, 1, 1))
                 .withOrganisationUnit(new OrganisationUnit(2L, "OrganisationUnit 2"))
                 .build();
     }
-    /**
-     * A list of all the objects with this datatype stored in the database shouldn't
-     * contain soft deleted ones
-     */
+
     @Override
     List<Member> getAll() {
         OrganisationUnit deletedOrganisationUnit = new OrganisationUnit(1L, "OrganisationUnit 1");
-        deletedOrganisationUnit.setDeletedAt(new Timestamp(0L));
+        deletedOrganisationUnit.setDeletedAt(LocalDateTime.ofInstant(Instant.EPOCH, ZoneOffset.UTC));
 
         return List
                 .of(Member.Builder
@@ -49,8 +46,8 @@ class MemberPersistenceServiceIT extends PersistenceBaseIT<Member, MemberReposit
                         .withLastName("Test")
                         .withEmploymentState(EmploymentState.MEMBER)
                         .withAbbreviation("M1")
-                        .withDateOfHire(Timestamp.valueOf("2021-07-15 00:00:00"))
-                        .withBirthDate(Timestamp.valueOf("1999-08-10 00:00:00"))
+                        .withDateOfHire(LocalDate.of(2021, 7, 15))
+                        .withBirthDate(LocalDate.of(1999, 8, 10))
                         .withOrganisationUnit(deletedOrganisationUnit)
                         .build(),
                     Member.Builder
@@ -60,8 +57,8 @@ class MemberPersistenceServiceIT extends PersistenceBaseIT<Member, MemberReposit
                             .withLastName("Test")
                             .withEmploymentState(EmploymentState.MEMBER)
                             .withAbbreviation("M2")
-                            .withDateOfHire(Timestamp.valueOf("2020-06-01 00:00:00"))
-                            .withBirthDate(Timestamp.valueOf("1998-03-03 00:00:00"))
+                            .withDateOfHire(LocalDate.of(2020, 6, 1))
+                            .withBirthDate(LocalDate.of(1998, 3, 3))
                             .withOrganisationUnit(new OrganisationUnit(2L, "OrganisationUnit 2"))
                             .build());
     }
