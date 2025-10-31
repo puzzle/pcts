@@ -9,4 +9,4 @@ RUN apk update && apk add --upgrade curl && apk --no-cache add openjdk21
 WORKDIR /app
 EXPOSE 8080
 COPY --from=builder /app/target/*.jar app.jar
-ENTRYPOINT ["java", "-Dspring.profiles.active=${SPRING_PROFILE}","-jar","app.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]

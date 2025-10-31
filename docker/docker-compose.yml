@@ -20,7 +20,7 @@ services:
       - pcts-db
     environment:
       PCTS_SPRING_DATASOURCE_URL: pcts-db
-      SPRING_PROFILE: dev
+      SPRING_PROFILES_ACTIVE: dev
     profiles: ['', backend]
 
   pcts-frontend:

@@ -22,3 +22,18 @@ jobs:
     uses: ./.github/workflows/reusable__e2e-testing.yaml
     with:
       COMMIT_HASH: ${{ github.sha }}
+
+  push-to-ghrc:
+    if: github.ref == 'refs/heads/feature/main'
+    needs:
+      - e2e-tests
+      - format
+      - tests
+    strategy:
+      matrix:
+        context: ["backend", "frontend"]
+    uses: ./.github/workflows/reusable__upload-to-ghcr.yaml
+    with:
+      context: ${{ matrix.context }}
+      image_name: ${{ matrix.context }}
+    secrets: inherit
