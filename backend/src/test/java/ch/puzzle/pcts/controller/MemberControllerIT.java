@@ -17,6 +17,7 @@ import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
+import ch.puzzle.pcts.util.JsonDtoMatcher;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Date;
 import java.util.List;
@@ -57,16 +58,13 @@ class MemberControllerIT {
     private MemberDto expectedDto;
     private Long id;
 
-    private OrganisationUnit organisationUnit;
-    private OrganisationUnitDto organisationUnitDto;
-
     private final Date commonDate = new Date(0L);
 
     @BeforeEach
     void setUp() {
         id = 1L;
-        organisationUnitDto = new OrganisationUnitDto(1L, "/bbt");
-        organisationUnit = new OrganisationUnit(1L, "/bbt");
+        OrganisationUnitDto organisationUnitDto = new OrganisationUnitDto(1L, "/bbt");
+        OrganisationUnit organisationUnit = new OrganisationUnit(1L, "/bbt");
 
         member = Member.Builder
                 .builder()
@@ -104,13 +102,7 @@ class MemberControllerIT {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].id").value(expectedDto.id()))
-                .andExpect(jsonPath("$[0].firstName").value(expectedDto.firstName()))
-                .andExpect(jsonPath("$[0].lastName").value(expectedDto.lastName()))
-                .andExpect(jsonPath("$[0].employmentState").value(expectedDto.employmentState().toString()))
-                .andExpect(jsonPath("$[0].abbreviation").value(expectedDto.abbreviation()))
-                .andExpect(jsonPath("$[0].organisationUnit.id").value(expectedDto.organisationUnit().id()))
-                .andExpect(jsonPath("$[0].organisationUnit.name").value(expectedDto.organisationUnit().name()));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$[0]"));
 
         verify(service, times(1)).getAll();
         verify(mapper, times(1)).toDto(any(List.class));
@@ -125,13 +117,7 @@ class MemberControllerIT {
         mvc
                 .perform(get(BASEURL + "/" + id).with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(id))
-                .andExpect(jsonPath("$.firstName").value("Susi"))
-                .andExpect(jsonPath("$.lastName").value("Miller"))
-                .andExpect(jsonPath("$.employmentState").value("APPLICANT"))
-                .andExpect(jsonPath("$.abbreviation").value("SM"))
-                .andExpect(jsonPath("$.organisationUnit.id").value(1))
-                .andExpect(jsonPath("$.organisationUnit.name").value("/bbt"));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
         verify(service, times(1)).getById(id);
         verify(mapper, times(1)).toDto(any(Member.class));
@@ -150,13 +136,7 @@ class MemberControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.firstName").value("Susi"))
-                .andExpect(jsonPath("$.lastName").value("Miller"))
-                .andExpect(jsonPath("$.employmentState").value("APPLICANT"))
-                .andExpect(jsonPath("$.abbreviation").value("SM"))
-                .andExpect(jsonPath("$.organisationUnit.id").value(1))
-                .andExpect(jsonPath("$.organisationUnit.name").value("/bbt"));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
         verify(mapper, times(1)).fromDto(any(MemberInputDto.class));
         verify(service, times(1)).create(any(Member.class));
@@ -176,13 +156,7 @@ class MemberControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.firstName").value("Susi"))
-                .andExpect(jsonPath("$.lastName").value("Miller"))
-                .andExpect(jsonPath("$.employmentState").value("APPLICANT"))
-                .andExpect(jsonPath("$.abbreviation").value("SM"))
-                .andExpect(jsonPath("$.organisationUnit.id").value(1))
-                .andExpect(jsonPath("$.organisationUnit.name").value("/bbt"));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
         verify(mapper, times(1)).fromDto(any(MemberInputDto.class));
         verify(service, times(1)).update(any(Long.class), any(Member.class));

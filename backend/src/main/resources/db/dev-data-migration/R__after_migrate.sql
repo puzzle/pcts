@@ -6,6 +6,7 @@ TRUNCATE TABLE degree_type CASCADE;
 TRUNCATE TABLE tag CASCADE;
 TRUNCATE TABLE CERTIFICATE_TAG CASCADE;
 TRUNCATE TABLE member CASCADE;
+TRUNCATE TABLE degree CASCADE;
 
 INSERT INTO role (name, is_management)
 VALUES
@@ -90,3 +91,29 @@ VALUES
     ( 'Tobias', 'Weber', 'TW', 'APPLICANT', '2022-02-14', '2000-07-06', 4),
     ( 'Mara', 'Becker', 'MB', 'EX_MEMBER', '2023-01-09', '2001-08-05', 1),
     ( 'Felix', 'Hofmann', 'FH', 'EX_MEMBER', '2021-09-17', '2000-02-29', 1);
+
+INSERT INTO degree (member, name, institution, completed, type, start_date, end_date, comment)
+VALUES (1,
+        'Bachelor of Science in Mathematics',
+        'ETH Zürich',
+        TRUE,
+        1,
+        '2015-09-01',
+        '2018-06-30',
+        'Strong focus on applied and pure mathematics.'),
+       (2,
+        'Bachelor of Arts in English Language and Literature',
+        'University of Geneva',
+        TRUE,
+        1,
+        '2016-09-01',
+        '2019-06-30',
+        'Focused on linguistics, literature, and academic writing.'),
+       (3,
+        'Bachelor of Science in Computer Science',
+        'EPFL',
+        TRUE,
+        1,
+        '2017-09-01',
+        '2020-06-30',
+        'Specialized in software engineering and AI.');
