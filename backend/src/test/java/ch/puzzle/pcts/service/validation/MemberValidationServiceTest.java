@@ -44,25 +44,78 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
     static Stream<Arguments> invalidModelProvider() {
         Date futureDate = Date.valueOf(LocalDate.now().plusDays(1));
         Date validPastDate = Date.valueOf(LocalDate.of(1990, 1, 1));
+        String tooLongString = new String(new char[251]).replace("\0", "s");
 
         return Stream
                 .of(Arguments
-                        .of(createMember(null, validPastDate, "Member", "Test", "MT"),
-                            "Member.employmentState must not be null."),
+                        .of(createMember(EmploymentState.MEMBER, validPastDate, null, "Test", "MT"),
+                            "Member.name must not be null."),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, null, "Member", "Test", "MT"),
-                                "Member.birthDate must not be null."),
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "", "Test", "MT"),
+                                "Member.name must not be blank."),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, futureDate, "Member", "Test", "MT"),
-                                "Member.birthDate must be in the past, given " + futureDate + "."),
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "  ", "Test", "MT"),
+                                "Member.name must not be blank."),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, validPastDate, null, "Test", "MT"),
-                                "Member.name must not be null."),
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "S", "Test", "MT"),
+                                "Member.name size must be between 2 and 250, given S."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "  S ", "Test", "MT"),
+                                "Member.name size must be between 2 and 250, given S."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, tooLongString, "Test", "MT"),
+                                String.format("Member.name size must be between 2 and 250, given %s.", tooLongString)),
                     Arguments
                             .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", null, "MT"),
                                 "Member.lastName must not be null."),
                     Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "", "MT"),
+                                "Member.lastName must not be blank."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "  ", "MT"),
+                                "Member.lastName must not be blank."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "S", "MT"),
+                                "Member.lastName size must be between 2 and 250, given S."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "  S ", "MT"),
+                                "Member.lastName size must be between 2 and 250, given S."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", tooLongString, "MT"),
+                                String
+                                        .format("Member.lastName size must be between 2 and 250, given %s.",
+                                                tooLongString)),
+                    Arguments
+                            .of(createMember(null, validPastDate, "Member", "Test", "MT"),
+                                "Member.employmentState must not be null."),
+                    Arguments
                             .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "Test", null),
-                                "Member.abbreviation must not be null."));
+                                "Member.abbreviation must not be null."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "Test", ""),
+                                "Member.abbreviation must not be blank."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "Test", "  "),
+                                "Member.abbreviation must not be blank."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "Test", "S"),
+                                "Member.abbreviation size must be between 2 and 250, given S."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "Test", "  S "),
+                                "Member.abbreviation size must be between 2 and 250, given S."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "Test", tooLongString),
+                                String
+                                        .format("Member.abbreviation size must be between 2 and 250, given %s.",
+                                                tooLongString),
+                                Arguments
+                                        .of(createMember(EmploymentState.MEMBER, null, "Member", "Test", "MT"),
+                                            "Member.birthDate must not be null."),
+                                Arguments
+                                        .of(createMember(EmploymentState.MEMBER, futureDate, "Member", "Test", "MT"),
+                                            "Member.birthDate must be in the past, given " + futureDate + "."),
+                                Arguments
+                                        .of(createMember(EmploymentState.MEMBER, futureDate, "Member", "Test", "MT"),
+                                            "Member.birthDate must be in the past, given " + futureDate + ".")));
     }
 }

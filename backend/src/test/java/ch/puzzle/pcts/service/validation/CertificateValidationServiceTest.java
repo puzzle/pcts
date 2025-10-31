@@ -45,13 +45,13 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
         return service;
     }
 
-    private static Certificate createCertificate(String name, BigDecimal points) {
+    private static Certificate createCertificate(String name, BigDecimal points, CertificateType certificateType) {
         Certificate c = new Certificate();
         c.setName(name);
         c.setPoints(points);
         c.setComment("Comment");
         c.setTags(Set.of(new Tag(null, "Tag")));
-        c.setCertificateType(CertificateType.CERTIFICATE);
+        c.setCertificateType(certificateType);
 
         return c;
     }
@@ -61,19 +61,25 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
         String tooLongName = new String(new char[251]).replace("\0", "s");
 
         return Stream
-                .of(Arguments.of(createCertificate(null, validBigDecimal), "Certificate.name must not be null."),
-                    Arguments.of(createCertificate("", validBigDecimal), "Certificate.name must not be blank."),
+                .of(Arguments
+                        .of(createCertificate(null, validBigDecimal, CertificateType.CERTIFICATE),
+                            "Certificate.name must not be null."),
                     Arguments
-                            .of(createCertificate("h", validBigDecimal),
+                            .of(createCertificate("", validBigDecimal, CertificateType.CERTIFICATE),
+                                "Certificate.name must not be blank."),
+                    Arguments
+                            .of(createCertificate("h", validBigDecimal, CertificateType.CERTIFICATE),
                                 "Certificate.name size must be between 2 and 250, given h."),
                     Arguments
-                            .of(createCertificate(tooLongName, validBigDecimal),
+                            .of(createCertificate(tooLongName, validBigDecimal, CertificateType.CERTIFICATE),
                                 String
                                         .format("Certificate.name size must be between 2 and 250, given %s.",
                                                 tooLongName)),
-                    Arguments.of(createCertificate("Name", null), "Certificate.points must not be null."),
                     Arguments
-                            .of(createCertificate("Name", BigDecimal.valueOf(-1)),
+                            .of(createCertificate("Name", null, CertificateType.CERTIFICATE),
+                                "Certificate.points must not be null."),
+                    Arguments
+                            .of(createCertificate("Name", BigDecimal.valueOf(-1), CertificateType.CERTIFICATE),
                                 "Certificate.points must not be negative."));
     }
 

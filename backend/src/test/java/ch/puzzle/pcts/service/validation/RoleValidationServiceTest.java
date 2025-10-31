@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.service.validation;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import ch.puzzle.pcts.exception.PCTSException;
@@ -8,29 +9,53 @@ import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.persistence.RolePersistenceService;
 import java.util.Optional;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.provider.Arguments;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class RoleValidationServiceTest extends ValidationBaseServiceTest<Role, RoleValidationService> {
+
     @InjectMocks
-    private RoleValidationService service;
+    RoleValidationService validationService;
 
     @Mock
-    private RolePersistenceService persistenceService;
+    RolePersistenceService persistenceService;
 
     @Override
     Role getModel() {
-        return new Role(null, "Role", false);
+        return createRole("Role");
     }
 
     @Override
     RoleValidationService getService() {
-        return service;
+        return validationService;
+    }
+
+    private static Role createRole(String name) {
+        Role r = new Role();
+        r.setName(name);
+        return r;
+    }
+
+    static Stream<Arguments> invalidModelProvider() {
+        String tooLongName = new String(new char[251]).replace("\0", "s");
+
+        return Stream
+                .of(Arguments.of(createRole(null), "Role.name must not be null."),
+                    Arguments.of(createRole(""), "Role.name must not be blank."),
+                    Arguments.of(createRole("  "), "Role.name must not be blank."),
+                    Arguments.of(createRole("S"), "Role.name size must be between 2 and 250, given S."),
+                    Arguments.of(createRole("  S "), "Role.name size must be between 2 and 250, given S."),
+                    Arguments
+                            .of(createRole(tooLongName),
+                                String.format("Role.name size must be between 2 and 250, given %s.", tooLongName)));
+
     }
 
     @DisplayName("Should throw exception on validateOnCreate() when name already exists")
