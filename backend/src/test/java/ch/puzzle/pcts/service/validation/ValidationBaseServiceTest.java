@@ -33,7 +33,8 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
     @MethodSource("invalidModelProvider")
     @DisplayName("Should throw validation exception for invalid model configurations")
     void validateInvalidModel(T model, String expectedMessage) {
-        PCTSException exception = assertThrows(PCTSException.class, () -> getService().validate(model));
+        var validationService = getService();
+        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validate(model));
         assertEquals(expectedMessage, exception.getReason());
     }
 
