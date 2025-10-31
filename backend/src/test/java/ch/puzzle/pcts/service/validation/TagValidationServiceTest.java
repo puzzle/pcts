@@ -21,7 +21,7 @@ class TagValidationServiceTest extends ValidationBaseServiceTest<Tag, TagValidat
     TagPersistenceService persistenceService;
 
     @InjectMocks
-    TagValidationService validationService;
+    TagValidationService service;
 
     @Override
     Tag getValidModel() {
