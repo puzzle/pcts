@@ -43,6 +43,16 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
         return service;
     }
 
+    private static Certificate createCertificates(String name, BigDecimal points) {
+        Certificate c = new Certificate();
+        c.setName(name);
+        c.setPoints(points);
+        c.setComment("Comment");
+        c.setTags(Set.of(new Tag(null, "Tag")));
+
+        return c;
+    }
+
     @DisplayName("Should throw exception on validateOnCreate() when points are null")
     @Test
     void shouldThrowExceptionOnValidateOnCreateWhenPointsAreNull() {
