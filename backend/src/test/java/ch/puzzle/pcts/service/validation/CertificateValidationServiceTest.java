@@ -1,7 +1,7 @@
 package ch.puzzle.pcts.service.validation;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificate.Certificate;
@@ -122,5 +122,34 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
 
         assertEquals("Name already exists", exception.getReason());
         assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+    }
+
+    @DisplayName("Should call correct validate method on validateOnCreate()")
+    @Test
+    void shouldCallAllMethodsOnValidateOnCreateWhenValid() {
+        Certificate certificate = getModel();
+
+        CertificateValidationService spyService = spy(service);
+        doNothing().when((ValidationBase<Certificate>) spyService).validateOnCreate(any());
+
+        spyService.validateOnCreate(certificate);
+
+        verify(spyService).validateOnCreate(certificate);
+        verifyNoMoreInteractions(persistenceService);
+    }
+
+    @DisplayName("Should call correct validate method on validateOnUpdate()")
+    @Test
+    void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
+        Long id = 1L;
+        Certificate certificate = getModel();
+
+        CertificateValidationService spyService = spy(service);
+        doNothing().when((ValidationBase<Certificate>) spyService).validateOnUpdate(anyLong(), any());
+
+        spyService.validateOnUpdate(id, certificate);
+
+        verify(spyService).validateOnUpdate(id, certificate);
+        verifyNoMoreInteractions(persistenceService);
     }
 }

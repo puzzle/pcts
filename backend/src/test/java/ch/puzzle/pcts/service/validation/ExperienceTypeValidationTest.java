@@ -1,7 +1,9 @@
 package ch.puzzle.pcts.service.validation;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
@@ -122,5 +124,34 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
 
         assertEquals("Name already exists", exception.getReason());
         assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+    }
+
+    @DisplayName("Should call correct validate method on validateOnCreate()")
+    @Test
+    void shouldCallAllMethodsOnValidateOnCreateWhenValid() {
+        ExperienceType experienceType = getModel();
+
+        ExperienceTypeValidationService spyService = spy(service);
+        doNothing().when((ValidationBase<ExperienceType>) spyService).validateOnCreate(any());
+
+        spyService.validateOnCreate(experienceType);
+
+        verify(spyService).validateOnCreate(experienceType);
+        verifyNoMoreInteractions(persistenceService);
+    }
+
+    @DisplayName("Should call correct validate method on validateOnUpdate()")
+    @Test
+    void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
+        Long id = 1L;
+        ExperienceType experienceType = getModel();
+
+        ExperienceTypeValidationService spyService = spy(service);
+        doNothing().when((ValidationBase<ExperienceType>) spyService).validateOnUpdate(anyLong(), any());
+
+        spyService.validateOnUpdate(id, experienceType);
+
+        verify(spyService).validateOnUpdate(id, experienceType);
+        verifyNoMoreInteractions(persistenceService);
     }
 }
