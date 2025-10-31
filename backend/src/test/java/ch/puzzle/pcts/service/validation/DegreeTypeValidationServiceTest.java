@@ -1,6 +1,5 @@
 package ch.puzzle.pcts.service.validation;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -9,11 +8,12 @@ import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.service.persistence.DegreeTypePersistenceService;
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.provider.Arguments;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -40,79 +40,56 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
         return service;
     }
 
-    @DisplayName("Should throw exception on validateOnCreate() when relevant points are null")
-    @Test
-    void shouldThrowExceptionOnValidateOnCreateWhenRelevantPointsAreNull() {
-        DegreeType degreeType = getModel();
-        degreeType.setHighlyRelevantPoints(null);
-        degreeType.setLimitedRelevantPoints(null);
-        degreeType.setLittleRelevantPoints(null);
+    private static DegreeType createDegreeType(String name, BigDecimal highlyRelevantPoints,
+                                               BigDecimal limitedRelevantPoints, BigDecimal littleRelevantPoints) {
+        DegreeType d = new DegreeType();
+        d.setName(name);
+        d.setHighlyRelevantPoints(highlyRelevantPoints);
+        d.setLimitedRelevantPoints(limitedRelevantPoints);
+        d.setLittleRelevantPoints(littleRelevantPoints);
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnCreate(degreeType));
-
-        assertThat(exception.getReason())
-                .contains(List
-                        .of("DegreeType.highlyRelevantPoints must not be null.",
-                            "DegreeType.limitedRelevantPoints must not be null.",
-                            "DegreeType.littleRelevantPoints must not be null."));
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+        return d;
     }
 
-    @DisplayName("Should throw exception on validateOnCreate() when relevant points are negative")
-    @Test
-    void shouldThrowExceptionOnValidateOnCreateWhenRelevantPointsAreNegative() {
-        DegreeType degreeType = getModel();
-        degreeType.setHighlyRelevantPoints(new BigDecimal("-1.0"));
-        degreeType.setLimitedRelevantPoints(new BigDecimal("-1.0"));
-        degreeType.setLittleRelevantPoints(new BigDecimal("-1.0"));
+    static Stream<Arguments> invalidModelProvider() {
+        String validName = "Valid Name";
+        String tooLongName = new String(new char[251]).replace("\0", "s");
+        BigDecimal validBigDecimal = BigDecimal.valueOf(1);
+        BigDecimal negativeBigDecimal = BigDecimal.valueOf(-1);
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnCreate(degreeType));
-
-        assertThat(exception.getReason())
-                .contains(List
-                        .of("DegreeType.highlyRelevantPoints must not be negative.",
-                            "DegreeType.limitedRelevantPoints must not be negative.",
-                            "DegreeType.littleRelevantPoints must not be negative."));
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
-    }
-
-    @DisplayName("Should throw exception on validateOnUpdate() when relevant points are null")
-    @Test
-    void shouldThrowExceptionOnValidateOnUpdateWhenRelevantPointsAreNull() {
-        DegreeType degreeType = getModel();
-        degreeType.setHighlyRelevantPoints(null);
-        degreeType.setLimitedRelevantPoints(null);
-        degreeType.setLittleRelevantPoints(null);
-
-        Long id = 1L;
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnUpdate(id, degreeType));
-
-        assertThat(exception.getReason())
-                .contains(List
-                        .of("DegreeType.highlyRelevantPoints must not be null.",
-                            "DegreeType.limitedRelevantPoints must not be null.",
-                            "DegreeType.littleRelevantPoints must not be null."));
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
-    }
-
-    @DisplayName("Should throw exception on validateOnUpdate() when relevant points are negative")
-    @Test
-    void shouldThrowExceptionOnValidateOnUpdateWhenRelevantPointsAreNegative() {
-        DegreeType degreeType = getModel();
-        degreeType.setHighlyRelevantPoints(new BigDecimal("-1.0"));
-        degreeType.setLimitedRelevantPoints(new BigDecimal("-1.0"));
-        degreeType.setLittleRelevantPoints(new BigDecimal("-1.0"));
-        Long id = 1L;
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnUpdate(id, degreeType));
-
-        assertThat(exception.getReason())
-                .contains(List
-                        .of("DegreeType.highlyRelevantPoints must not be negative.",
-                            "DegreeType.limitedRelevantPoints must not be negative.",
-                            "DegreeType.littleRelevantPoints must not be negative."));
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+        return Stream
+                .of(Arguments
+                        .of(createDegreeType(null, validBigDecimal, validBigDecimal, validBigDecimal),
+                            "DegreeType.name must not be null."),
+                    Arguments
+                            .of(createDegreeType("", validBigDecimal, validBigDecimal, validBigDecimal),
+                                "DegreeType.name must not be blank."),
+                    Arguments
+                            .of(createDegreeType("h", validBigDecimal, validBigDecimal, validBigDecimal),
+                                "DegreeType.name size must be between 2 and 250, given h."),
+                    Arguments
+                            .of(createDegreeType(tooLongName, validBigDecimal, validBigDecimal, validBigDecimal),
+                                String
+                                        .format("DegreeType.name size must be between 2 and 250, given %s.",
+                                                tooLongName)),
+                    Arguments
+                            .of(createDegreeType(validName, null, validBigDecimal, validBigDecimal),
+                                "DegreeType.highlyRelevantPoints must not be null."),
+                    Arguments
+                            .of(createDegreeType(validName, negativeBigDecimal, validBigDecimal, validBigDecimal),
+                                "DegreeType.highlyRelevantPoints must not be negative."),
+                    Arguments
+                            .of(createDegreeType(validName, validBigDecimal, null, validBigDecimal),
+                                "DegreeType.limitedRelevantPoints must not be null."),
+                    Arguments
+                            .of(createDegreeType(validName, validBigDecimal, negativeBigDecimal, validBigDecimal),
+                                "DegreeType.limitedRelevantPoints must not be negative."),
+                    Arguments
+                            .of(createDegreeType(validName, validBigDecimal, validBigDecimal, null),
+                                "DegreeType.littleRelevantPoints must not be null."),
+                    Arguments
+                            .of(createDegreeType(validName, validBigDecimal, validBigDecimal, negativeBigDecimal),
+                                "DegreeType.littleRelevantPoints must not be negative."));
     }
 
     @DisplayName("Should throw exception on validateOnCreate() when name already exists")
