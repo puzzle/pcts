@@ -5,7 +5,6 @@ import ch.puzzle.pcts.dto.experience.ExperienceInputDto;
 import ch.puzzle.pcts.model.experience.Experience;
 import ch.puzzle.pcts.service.business.ExperienceTypeBusinessService;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
-import java.util.Collections;
 import java.util.List;
 import org.springframework.stereotype.Component;
 
@@ -26,23 +25,14 @@ public class ExperienceMapper {
     }
 
     public List<ExperienceDto> toDto(List<Experience> models) {
-        if (models == null || models.isEmpty()) {
-            return Collections.emptyList();
-        }
         return models.stream().map(this::toDto).toList();
     }
 
     public List<Experience> fromDto(List<ExperienceInputDto> dtos) {
-        if (dtos == null || dtos.isEmpty()) {
-            return Collections.emptyList();
-        }
         return dtos.stream().map(this::fromDto).toList();
     }
 
     public ExperienceDto toDto(Experience model) {
-        if (model == null) {
-            return null;
-        }
         return new ExperienceDto(model.getId(),
                                  memberMapper.toDto(model.getMember()),
                                  model.getName(),
@@ -55,10 +45,6 @@ public class ExperienceMapper {
     }
 
     public Experience fromDto(ExperienceInputDto dto) {
-        if (dto == null) {
-            return null;
-        }
-
         return new Experience.Builder()
                 .withMember(memberBusinessService.getById(dto.memberId()))
                 .withName(dto.name())
