@@ -12,6 +12,7 @@ import ch.puzzle.pcts.dto.experiencetype.ExperienceTypeDto;
 import ch.puzzle.pcts.mapper.ExperienceTypeMapper;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.service.business.ExperienceTypeBusinessService;
+import ch.puzzle.pcts.util.JsonDtoMatcher;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.util.List;
@@ -78,11 +79,7 @@ class ExperienceTypeControllerIT {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].id").value(expectedDto.id()))
-                .andExpect(jsonPath("$[0].name").value(expectedDto.name()))
-                .andExpect(jsonPath("$[0].highlyRelevantPoints").value(expectedDto.highlyRelevantPoints()))
-                .andExpect(jsonPath("$[0].limitedRelevantPoints").value(expectedDto.limitedRelevantPoints()))
-                .andExpect(jsonPath("$[0].littleRelevantPoints").value(expectedDto.littleRelevantPoints()));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$[0]"));
         verify(service, times(1)).getAll();
         verify(mapper, times(1)).toDto(any(List.class));
     }
@@ -98,11 +95,7 @@ class ExperienceTypeControllerIT {
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.name").value(expectedDto.name()))
-                .andExpect(jsonPath("$.highlyRelevantPoints").value(expectedDto.highlyRelevantPoints()))
-                .andExpect(jsonPath("$.limitedRelevantPoints").value(expectedDto.limitedRelevantPoints()))
-                .andExpect(jsonPath("$.littleRelevantPoints").value(expectedDto.littleRelevantPoints()));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
         verify(service, times(1)).getById(1L);
         verify(mapper, times(1)).toDto(any(ExperienceType.class));
@@ -121,11 +114,7 @@ class ExperienceTypeControllerIT {
                         .content(objectMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.name").value(expectedDto.name()))
-                .andExpect(jsonPath("$.highlyRelevantPoints").value(expectedDto.highlyRelevantPoints()))
-                .andExpect(jsonPath("$.limitedRelevantPoints").value(expectedDto.limitedRelevantPoints()))
-                .andExpect(jsonPath("$.littleRelevantPoints").value(expectedDto.littleRelevantPoints()));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
         verify(mapper, times(1)).fromDto(any(ExperienceTypeDto.class));
         verify(service, times(1)).create(any(ExperienceType.class));
@@ -145,11 +134,7 @@ class ExperienceTypeControllerIT {
                         .content(objectMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.name").value(expectedDto.name()))
-                .andExpect(jsonPath("$.highlyRelevantPoints").value(expectedDto.highlyRelevantPoints()))
-                .andExpect(jsonPath("$.limitedRelevantPoints").value(expectedDto.limitedRelevantPoints()))
-                .andExpect(jsonPath("$.littleRelevantPoints").value(expectedDto.littleRelevantPoints()));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
         verify(mapper, times(1)).fromDto(any(ExperienceTypeDto.class));
         verify(service, times(1)).update(any(Long.class), any(ExperienceType.class));
