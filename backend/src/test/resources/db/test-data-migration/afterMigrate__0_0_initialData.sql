@@ -67,6 +67,9 @@ VALUES
     (1, 'Experience 1', 'Employer 1', 100, 1, 'Comment test 1', '2021-07-15', '2022-07-15', '1970-01-01 00:00:00'),
     (1, 'Experience 2', 'Employer 2', 80, 2, 'Comment test 2', '2022-07-16', '2023-07-15', NULL),
     (2, 'Experience 3', 'Employer 3', 60, 1, 'Comment test 3', '2023-07-16', '2024-07-15', NULL);
+
+TRUNCATE TABLE degree CASCADE;
+
 INSERT INTO degree (member, name, institution, completed, type, start_date, end_date, comment)
 VALUES (1,
         'Degree 1',

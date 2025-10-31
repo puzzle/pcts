@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.controller;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -20,6 +21,7 @@ import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.DegreeBusinessService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.util.Date;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,6 +52,8 @@ public class DegreeControllerIT {
     private MockMvc mvc;
 
     private static final String BASEURL = "/api/v1/degree";
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     private Long id;
 
@@ -136,6 +140,7 @@ public class DegreeControllerIT {
                                   commonDate,
                                   "Comment 1");
     }
+
     @DisplayName("Should successfully get degree by id")
     @Test
     void shouldSuccessfullyGetDegreeById() throws Exception {
@@ -163,6 +168,85 @@ public class DegreeControllerIT {
 
         verify(businessService, times(1)).getById(id);
         verify(mapper, times(1)).toDto(any(Degree.class));
+    }
+
+    @DisplayName("Should successfully create degree")
+    @Test
+    void shouldSuccessfullyCreateDegree() throws Exception {
+        BDDMockito.given(degreeMapper.toDto(any(Degree.class))).willReturn(degreeDto);
+        BDDMockito.given(businessService.create(any(Degree.class))).willReturn(degree);
+        BDDMockito.given(degreeMapper.fromDto(any(DegreeInputDto.class))).willReturn(degree);
+
+        mvc
+                .perform(post(BASEURL)
+                        .content(objectMapper.writeValueAsString(degreeDto))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(id))
+                .andExpect(jsonPath("$.name").value("Degree 1"))
+                .andExpect(jsonPath("$.institution").value("Institution 1"))
+                .andExpect(jsonPath("$.completed").value(true))
+                .andExpect(jsonPath("$.comment").value("Comment 1"))
+                // nested member fields
+                .andExpect(jsonPath("$.member.id").value(id))
+                .andExpect(jsonPath("$.member.firstName").value("Susi"))
+                .andExpect(jsonPath("$.member.lastName").value("Miller"))
+                .andExpect(jsonPath("$.member.employmentState").value("APPLICANT"))
+                // nested type fields
+                .andExpect(jsonPath("$.type.id").value(id))
+                .andExpect(jsonPath("$.type.name").value("Degree Type 1"));
+
+        verify(mapper, times(1)).fromDto(any(DegreeInputDto.class));
+        verify(businessService, times(1)).create(any(Degree.class));
+        verify(mapper, times(1)).toDto(any(Degree.class));
+    }
+
+    @DisplayName("Should successfully update degree")
+    @Test
+    void shouldSuccessfullyUpdateDegree() throws Exception {
+        BDDMockito.given(degreeMapper.toDto(any(Degree.class))).willReturn(degreeDto);
+        BDDMockito.given(businessService.update(any(Long.class), any(Degree.class))).willReturn(degree);
+        BDDMockito.given(degreeMapper.fromDto(any(DegreeInputDto.class))).willReturn(degree);
+
+        mvc
+                .perform(put(BASEURL + "/" + id)
+                        .content(objectMapper.writeValueAsString(degreeDto))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(id))
+                .andExpect(jsonPath("$.name").value("Degree 1"))
+                .andExpect(jsonPath("$.institution").value("Institution 1"))
+                .andExpect(jsonPath("$.completed").value(true))
+                .andExpect(jsonPath("$.comment").value("Comment 1"))
+                // nested member fields
+                .andExpect(jsonPath("$.member.id").value(id))
+                .andExpect(jsonPath("$.member.firstName").value("Susi"))
+                .andExpect(jsonPath("$.member.lastName").value("Miller"))
+                .andExpect(jsonPath("$.member.employmentState").value("APPLICANT"))
+                // nested type fields
+                .andExpect(jsonPath("$.type.id").value(id))
+                .andExpect(jsonPath("$.type.name").value("Degree Type 1"));
+
+        verify(mapper, times(1)).fromDto(any(DegreeInputDto.class));
+        verify(businessService, times(1)).update(any(Long.class), any(Degree.class));
+        verify(mapper, times(1)).toDto(any(Degree.class));
+    }
+
+    @DisplayName("Should successfully delete degree")
+    @Test
+    void shouldSuccessfullyDeleteDegree() throws Exception {
+        BDDMockito.willDoNothing().given(businessService).delete(anyLong());
+
+        mvc
+                .perform(delete(BASEURL + "/" + id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().isNoContent())
+                .andExpect(jsonPath("$").doesNotExist());
+
+        verify(businessService, times(1)).delete(any(Long.class));
     }
 
 }

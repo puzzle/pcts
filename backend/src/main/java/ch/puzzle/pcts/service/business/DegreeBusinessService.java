@@ -25,7 +25,7 @@ public class DegreeBusinessService {
         return persistenceService
                 .getById(id)
                 .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,
-                                                     "Member with id: " + id + " does not exist.",
+                                                     "Degree with id: " + id + " does not exist.",
                                                      ErrorKey.NOT_FOUND));
     }
 
