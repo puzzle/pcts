@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.validation;
 
+import static org.apache.commons.lang3.StringUtils.trim;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -44,7 +45,7 @@ class BasicStringValidationTest {
         DummyClass invalid = new DummyClass(shortString);
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(invalid));
 
-        assertEquals("DummyClass.string size must be between 2 and 250, given " + shortString + ".",
+        assertEquals("DummyClass.string size must be between 2 and 250, given " + invalid.string + ".",
                      exception.getReason());
     }
 
@@ -55,7 +56,7 @@ class BasicStringValidationTest {
         DummyClass invalid = new DummyClass(longString);
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(invalid));
 
-        assertEquals("DummyClass.string size must be between 2 and 250, given " + longString + ".",
+        assertEquals("DummyClass.string size must be between 2 and 250, given " + invalid.string + ".",
                      exception.getReason());
     }
 
@@ -71,7 +72,7 @@ class BasicStringValidationTest {
         String string;
 
         public DummyClass(String string) {
-            this.string = string;
+            this.string = trim(string);
         }
 
         @Override
