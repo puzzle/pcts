@@ -1,6 +1,5 @@
 package ch.puzzle.pcts.service.validation;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -9,11 +8,12 @@ import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.service.persistence.ExperienceTypePersistenceService;
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.provider.Arguments;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -41,78 +41,57 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
         return service;
     }
 
-    @DisplayName("Should throw exception on validateOnCreate() when points are null")
-    @Test
-    void shouldThrowExceptionOnValidateOnCreateWhenPointsAreNull() {
-        ExperienceType experienceType = getModel();
-        experienceType.setHighlyRelevantPoints(null);
-        experienceType.setLimitedRelevantPoints(null);
-        experienceType.setLittleRelevantPoints(null);
+    private static ExperienceType createExperienceType(String name, BigDecimal highlyRelevantPoints,
+                                                       BigDecimal limitedRelevantPoints,
+                                                       BigDecimal littleRelevantPoints) {
+        ExperienceType e = new ExperienceType();
+        e.setName(name);
+        e.setHighlyRelevantPoints(highlyRelevantPoints);
+        e.setLimitedRelevantPoints(limitedRelevantPoints);
+        e.setLittleRelevantPoints(littleRelevantPoints);
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnCreate(experienceType));
-
-        assertThat(exception.getReason())
-                .contains(List
-                        .of("ExperienceType.highlyRelevantPoints must not be null.",
-                            "ExperienceType.limitedRelevantPoints must not be null.",
-                            "ExperienceType.littleRelevantPoints must not be null."));
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+        return e;
     }
 
-    @DisplayName("Should throw exception on validateOnCreate() when points are negative")
-    @Test
-    void shouldThrowExceptionOnValidateOnCreateWhenPointsAreNegative() {
-        ExperienceType experienceType = getModel();
-        experienceType.setHighlyRelevantPoints(new BigDecimal("-1.0"));
-        experienceType.setLimitedRelevantPoints(new BigDecimal("-1.0"));
-        experienceType.setLittleRelevantPoints(new BigDecimal("-1.0"));
+    static Stream<Arguments> invalidModelProvider() {
+        String validName = "Valid Name";
+        String tooLongName = new String(new char[251]).replace("\0", "s");
+        BigDecimal validBigDecimal = BigDecimal.valueOf(1);
+        BigDecimal negativeBigDecimal = BigDecimal.valueOf(-1);
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnCreate(experienceType));
-
-        assertThat(exception.getReason())
-                .contains(List
-                        .of("ExperienceType.highlyRelevantPoints must not be negative.",
-                            "ExperienceType.limitedRelevantPoints must not be negative.",
-                            "ExperienceType.littleRelevantPoints must not be negative."));
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
-    }
-
-    @DisplayName("Should throw exception on validateOnUpdate() when points are null")
-    @Test
-    void shouldThrowExceptionOnValidateOnUpdateWhenPointsAreNull() {
-        ExperienceType experienceType = getModel();
-        experienceType.setHighlyRelevantPoints(null);
-        experienceType.setLimitedRelevantPoints(null);
-        experienceType.setLittleRelevantPoints(null);
-        Long id = 1L;
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnUpdate(id, experienceType));
-
-        assertThat(exception.getReason())
-                .contains(List
-                        .of("ExperienceType.highlyRelevantPoints must not be null.",
-                            "ExperienceType.limitedRelevantPoints must not be null.",
-                            "ExperienceType.littleRelevantPoints must not be null."));
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
-    }
-
-    @DisplayName("Should throw exception on validateOnUpdate() when points are negative")
-    @Test
-    void shouldThrowExceptionOnValidateOnUpdateWhenPointsAreNegative() {
-        ExperienceType experienceType = getModel();
-        experienceType.setHighlyRelevantPoints(new BigDecimal("-1.0"));
-        experienceType.setLimitedRelevantPoints(new BigDecimal("-1.0"));
-        experienceType.setLittleRelevantPoints(new BigDecimal("-1.0"));
-        Long id = 1L;
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnUpdate(id, experienceType));
-
-        assertThat(exception.getReason())
-                .contains(List
-                        .of("ExperienceType.highlyRelevantPoints must not be negative.",
-                            "ExperienceType.limitedRelevantPoints must not be negative.",
-                            "ExperienceType.littleRelevantPoints must not be negative."));
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+        return Stream
+                .of(Arguments
+                        .of(createExperienceType(null, validBigDecimal, validBigDecimal, validBigDecimal),
+                            "ExperienceType.name must not be null."),
+                    Arguments
+                            .of(createExperienceType("", validBigDecimal, validBigDecimal, validBigDecimal),
+                                "ExperienceType.name must not be blank."),
+                    Arguments
+                            .of(createExperienceType("h", validBigDecimal, validBigDecimal, validBigDecimal),
+                                "ExperienceType.name size must be between 2 and 250, given h."),
+                    Arguments
+                            .of(createExperienceType(tooLongName, validBigDecimal, validBigDecimal, validBigDecimal),
+                                String
+                                        .format("ExperienceType.name size must be between 2 and 250, given %s.",
+                                                tooLongName)),
+                    Arguments
+                            .of(createExperienceType(validName, null, validBigDecimal, validBigDecimal),
+                                "ExperienceType.highlyRelevantPoints must not be null."),
+                    Arguments
+                            .of(createExperienceType(validName, negativeBigDecimal, validBigDecimal, validBigDecimal),
+                                "ExperienceType.highlyRelevantPoints must not be negative."),
+                    Arguments
+                            .of(createExperienceType(validName, validBigDecimal, null, validBigDecimal),
+                                "ExperienceType.limitedRelevantPoints must not be null."),
+                    Arguments
+                            .of(createExperienceType(validName, validBigDecimal, negativeBigDecimal, validBigDecimal),
+                                "ExperienceType.limitedRelevantPoints must not be negative."),
+                    Arguments
+                            .of(createExperienceType(validName, validBigDecimal, validBigDecimal, null),
+                                "ExperienceType.littleRelevantPoints must not be null."),
+                    Arguments
+                            .of(createExperienceType(validName, validBigDecimal, validBigDecimal, negativeBigDecimal),
+                                "ExperienceType.littleRelevantPoints must not be negative."));
     }
 
     @DisplayName("Should throw exception on validateOnCreate() when name already exists")
