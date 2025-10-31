@@ -2,9 +2,7 @@
 
 ## Packages
 
-You can find the PCTS Docker images on the Packages page of our GitHub repository:
-[Link to Docker images](https://github.com/puzzle/pcts/packages)
-
+You can find the PCTS Docker images on the [Packages page of our GitHub repository](https://github.com/puzzle/pcts/packages).
 There are separate images for the frontend and backend components.
 
 Note: When running the backend image, make sure to specify a Spring Profile to configure the application correctly.
