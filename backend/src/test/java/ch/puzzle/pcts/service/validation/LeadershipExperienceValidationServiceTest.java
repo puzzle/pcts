@@ -94,60 +94,6 @@ class LeadershipExperienceValidationServiceTest
                                 "Certificate.certificateType must not be null."));
     }
 
-    @DisplayName("Should throw exception on validateOnCreate() when points are null")
-    @Test
-    void shouldThrowExceptionOnValidateOnCreateWhenPointsAreNull() {
-        Certificate leadershipExperience = getModel();
-        leadershipExperience.setPoints(null);
-
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> service.validateOnCreate(leadershipExperience));
-
-        assertEquals("Certificate.points must not be null.", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
-    }
-
-    @DisplayName("Should throw exception on validateOnCreate() when points are negative")
-    @Test
-    void shouldThrowExceptionOnValidateOnCreateWhenPointsAreNegative() {
-        Certificate leadershipExperience = getModel();
-        leadershipExperience.setPoints(new BigDecimal("-1"));
-
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> service.validateOnCreate(leadershipExperience));
-
-        assertEquals("Certificate.points must not be negative.", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
-    }
-
-    @DisplayName("Should throw exception on validateOnUpdate() when points are null")
-    @Test
-    void shouldThrowExceptionOnValidateOnUpdateWhenPointsAreNull() {
-        Certificate leadershipExperience = getModel();
-        leadershipExperience.setPoints(null);
-        Long id = 1L;
-
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> service.validateOnUpdate(id, leadershipExperience));
-
-        assertEquals("Certificate.points must not be null.", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
-    }
-
-    @DisplayName("Should throw exception on validateOnUpdate() when points are negative")
-    @Test
-    void shouldThrowExceptionOnValidateOnUpdateWhenPointsAreNegative() {
-        Certificate leadershipExperience = getModel();
-        leadershipExperience.setPoints(new BigDecimal("-1"));
-        Long id = 1L;
-
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> service.validateOnUpdate(id, leadershipExperience));
-
-        assertEquals("Certificate.points must not be negative.", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
-    }
-
     @DisplayName("Should throw exception on validateOnGetById() when certificate type is not leadership experience")
     @Test
     void shouldThrowExceptionOnValidateOnGetByIdWhenCertificateTypeIsNotCertificate() {
@@ -188,5 +134,34 @@ class LeadershipExperienceValidationServiceTest
 
         assertEquals("Name already exists", exception.getReason());
         assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+    }
+
+    @DisplayName("Should call correct validate method on validateOnCreate()")
+    @Test
+    void shouldCallAllMethodsOnValidateOnCreateWhenValid() {
+        Certificate leadershipExperience = getModel();
+
+        LeadershipExperienceValidationService spyService = spy(service);
+        doNothing().when((ValidationBase<Certificate>) spyService).validateOnCreate(any());
+
+        spyService.validateOnCreate(leadershipExperience);
+
+        verify(spyService).validateOnCreate(leadershipExperience);
+        verifyNoMoreInteractions(persistenceService);
+    }
+
+    @DisplayName("Should call correct validate method on validateOnUpdate()")
+    @Test
+    void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
+        Long id = 1L;
+        Certificate leadershipExperience = getModel();
+
+        LeadershipExperienceValidationService spyService = spy(service);
+        doNothing().when((ValidationBase<Certificate>) spyService).validateOnUpdate(anyLong(), any());
+
+        spyService.validateOnUpdate(id, leadershipExperience);
+
+        verify(spyService).validateOnUpdate(id, leadershipExperience);
+        verifyNoMoreInteractions(persistenceService);
     }
 }

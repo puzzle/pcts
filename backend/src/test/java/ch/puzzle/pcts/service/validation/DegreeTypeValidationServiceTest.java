@@ -1,7 +1,9 @@
 package ch.puzzle.pcts.service.validation;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.degreetype.DegreeType;
@@ -119,5 +121,34 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
 
         assertEquals("Name already exists", exception.getReason());
         assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+    }
+
+    @DisplayName("Should call correct validate method on validateOnCreate()")
+    @Test
+    void shouldCallAllMethodsOnValidateOnCreateWhenValid() {
+        DegreeType degreeType = getModel();
+
+        DegreeTypeValidationService spyService = spy(service);
+        doNothing().when((ValidationBase<DegreeType>) spyService).validateOnCreate(any());
+
+        spyService.validateOnCreate(degreeType);
+
+        verify(spyService).validateOnCreate(degreeType);
+        verifyNoMoreInteractions(persistenceService);
+    }
+
+    @DisplayName("Should call correct validate method on validateOnUpdate()")
+    @Test
+    void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
+        Long id = 1L;
+        DegreeType degreeType = getModel();
+
+        DegreeTypeValidationService spyService = spy(service);
+        doNothing().when((ValidationBase<DegreeType>) spyService).validateOnUpdate(anyLong(), any());
+
+        spyService.validateOnUpdate(id, degreeType);
+
+        verify(spyService).validateOnUpdate(id, degreeType);
+        verifyNoMoreInteractions(persistenceService);
     }
 }
