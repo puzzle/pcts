@@ -33,11 +33,11 @@ export class MemberService {
     return {
       firstName: model.firstName,
       lastName: model.lastName,
-      birthDate: model.birthDate,
+      birthDate: model.birthDate.toJSDate(),
       abbreviation: model.abbreviation,
       employmentState: model.employmentState,
       organisationUnitId: model.organisationUnit?.id,
-      dateOfHire: model.dateOfHire
+      dateOfHire: model.dateOfHire.toJSDate()
     };
   }
 }

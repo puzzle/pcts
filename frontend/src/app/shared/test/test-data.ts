@@ -2,6 +2,7 @@ import { MemberModel } from '../../features/member/member.model';
 import { EmploymentState } from '../enum/employment-state.enum';
 import { OrganisationUnitModel } from '../../features/organisation-unit/organisation-unit.model';
 import { MemberDto } from '../../features/member/dto/member.dto';
+import { DateTime } from 'luxon';
 
 export const organisationUnit1: OrganisationUnitModel = {
   id: 1,
@@ -27,10 +28,10 @@ export const member1: MemberModel = {
   id: 1,
   firstName: 'Lena',
   lastName: 'Müller',
-  birthDate: new Date(2000, 12, 1),
+  birthDate: DateTime.utc(2000, 12, 1),
   abbreviation: 'LM',
   employmentState: EmploymentState.MEMBER,
-  dateOfHire: new Date(2018, 12, 1),
+  dateOfHire: DateTime.utc(2018, 12, 1),
   organisationUnit: organisationUnit1
 };
 
@@ -38,10 +39,10 @@ export const member2: MemberModel = {
   id: 2,
   firstName: 'Sophie',
   lastName: 'Keller',
-  birthDate: new Date(2000, 12, 1),
+  birthDate: DateTime.utc(2000, 12, 1),
   abbreviation: 'SK',
   employmentState: EmploymentState.MEMBER,
-  dateOfHire: new Date(2018, 12, 1),
+  dateOfHire: DateTime.utc(2018, 12, 1),
   organisationUnit: organisationUnit2
 };
 
@@ -49,10 +50,10 @@ export const member3: MemberModel = {
   id: 3,
   firstName: 'Mara',
   lastName: 'Becker',
-  birthDate: new Date(2000, 12, 1),
+  birthDate: DateTime.utc(2000, 12, 1),
   abbreviation: 'BD',
   employmentState: EmploymentState.EX_MEMBER,
-  dateOfHire: new Date(2018, 12, 1),
+  dateOfHire: DateTime.utc(2018, 12, 1),
   organisationUnit: organisationUnit3
 };
 
@@ -60,10 +61,10 @@ export const member4: MemberModel = {
   id: 4,
   firstName: 'John',
   lastName: 'Doe',
-  birthDate: new Date(2000, 12, 1),
+  birthDate: DateTime.utc(2000, 12, 1),
   abbreviation: 'JD',
   employmentState: EmploymentState.APPLICANT,
-  dateOfHire: new Date(2018, 12, 1),
+  dateOfHire: DateTime.utc(2018, 12, 1),
   organisationUnit: organisationUnit4
 };
 
