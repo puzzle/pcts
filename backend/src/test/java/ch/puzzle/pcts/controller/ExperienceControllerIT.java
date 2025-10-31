@@ -4,11 +4,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.experience.ExperienceDto;
@@ -39,6 +37,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 
 @Import(SpringSecurityConfig.class)
 @ExtendWith(MockitoExtension.class)
@@ -49,28 +48,22 @@ class ExperienceControllerIT {
     private final ObjectMapper objectMapper = new ObjectMapper()
             .registerModule(new JavaTimeModule())
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-
+    private final LocalDate startDate = LocalDate.of(2020, 1, 1);
+    private final LocalDate endDate = startDate.plusDays(30);
     @MockitoBean
     private ExperienceBusinessService service;
     @MockitoBean
     private ExperienceMapper mapper;
-
     @Autowired
     private MockMvc mvc;
-
     private Experience experience;
     private ExperienceInputDto requestDto;
     private ExperienceDto expectedDto;
-
     private Member member;
     private MemberDto memberDto;
-
     private ExperienceType type;
     private ExperienceTypeDto typeDto;
-
     private Long id;
-    private final LocalDate startDate = LocalDate.of(2020, 1, 1);
-    private final LocalDate endDate = startDate.plusDays(30);
 
     @BeforeEach
     void setUp() {
@@ -123,10 +116,7 @@ class ExperienceControllerIT {
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].id").value(expectedDto.id()))
-                .andExpect(jsonPath("$[0].name").value("Developer"))
-                .andExpect(jsonPath("$[0].type.name").value("Management"));
+                .andExpect(matchesExperienceDto(expectedDto, "$[0]"));
 
         verify(service, times(1)).getAll();
         verify(mapper, times(1)).toDto(any(List.class));
@@ -141,9 +131,7 @@ class ExperienceControllerIT {
         mvc
                 .perform(get(BASEURL + "/" + id).with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(id))
-                .andExpect(jsonPath("$.name").value("Developer"))
-                .andExpect(jsonPath("$.type.name").value("Management"));
+                .andExpect(matchesExperienceDto(expectedDto, "$"));
 
         verify(service, times(1)).getById(id);
         verify(mapper, times(1)).toDto(any(Experience.class));
@@ -162,9 +150,7 @@ class ExperienceControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.name").value("Developer"))
-                .andExpect(jsonPath("$.type.name").value("Management"));
+                .andExpect(matchesExperienceDto(expectedDto, "$"));
 
         verify(mapper, times(1)).fromDto(any(ExperienceInputDto.class));
         verify(service, times(1)).create(any(Experience.class));
@@ -184,8 +170,7 @@ class ExperienceControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.name").value("Developer"));
+                .andExpect(matchesExperienceDto(expectedDto, "$"));
 
         verify(mapper, times(1)).fromDto(any(ExperienceInputDto.class));
         verify(service, times(1)).update(anyLong(), any(Experience.class));
@@ -202,5 +187,23 @@ class ExperienceControllerIT {
                 .andExpect(status().isNoContent());
 
         verify(service, times(1)).delete(anyLong());
+    }
+
+    public static ResultMatcher matchesExperienceDto(ExperienceDto dto, String jsonPrefix) {
+        return result -> {
+            jsonPath(jsonPrefix + ".id").value(dto.id()).match(result);
+            jsonPath(jsonPrefix + ".name").value(dto.name()).match(result);
+            jsonPath(jsonPrefix + ".employer").value(dto.employer()).match(result);
+            jsonPath(jsonPrefix + ".percent").value(dto.percent()).match(result);
+            jsonPath(jsonPrefix + ".comment").value(dto.comment()).match(result);
+            jsonPath(jsonPrefix + ".startDate").value(dto.startDate().toString()).match(result);
+            jsonPath(jsonPrefix + ".endDate").value(dto.endDate().toString()).match(result);
+            jsonPath(jsonPrefix + ".member.id").value(dto.member().id()).match(result);
+            jsonPath(jsonPrefix + ".member.firstName").value(dto.member().firstName()).match(result);
+            jsonPath(jsonPrefix + ".member.lastName").value(dto.member().lastName()).match(result);
+            jsonPath(jsonPrefix + ".member.employmentState").value(dto.member().employmentState()).match(result);
+            jsonPath(jsonPrefix + ".type.id").value(dto.type().id()).match(result);
+            jsonPath(jsonPrefix + ".type.name").value(dto.type().name()).match(result);
+        };
     }
 }

@@ -27,7 +27,6 @@ public class Experience implements Model {
     @NotNull
     private String name;
 
-    @NotNull
     private String employer;
 
     private int percent;
