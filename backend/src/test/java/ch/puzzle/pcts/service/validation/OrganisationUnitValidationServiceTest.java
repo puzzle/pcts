@@ -8,9 +8,11 @@ import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.persistence.OrganisationUnitPersistenceService;
 import java.util.Optional;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.provider.Arguments;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -34,6 +36,33 @@ class OrganisationUnitValidationServiceTest
     @Override
     OrganisationUnitValidationService getService() {
         return service;
+    }
+
+    private static OrganisationUnit createOrganisationUnit(String name) {
+        OrganisationUnit o = new OrganisationUnit();
+        o.setName(name);
+        return o;
+    }
+
+    static Stream<Arguments> invalidModelProvider() {
+        String tooLongName = new String(new char[251]).replace("\0", "s");
+
+        return Stream
+                .of(Arguments.of(createOrganisationUnit(null), "OrganisationUnit.name must not be null."),
+                    Arguments.of(createOrganisationUnit(""), "OrganisationUnit.name must not be blank."),
+                    Arguments.of(createOrganisationUnit("  "), "OrganisationUnit.name must not be blank."),
+                    Arguments
+                            .of(createOrganisationUnit("S"),
+                                "OrganisationUnit.name size must be between 2 and 250, given S."),
+                    Arguments
+                            .of(createOrganisationUnit("  S "),
+                                "OrganisationUnit.name size must be between 2 and 250, given S."),
+                    Arguments
+                            .of(createOrganisationUnit(tooLongName),
+                                String
+                                        .format("OrganisationUnit.name size must be between 2 and 250, given %s.",
+                                                tooLongName)));
+
     }
 
     @DisplayName("Should throw exception on validateOnCreate() when name already exists")
