@@ -90,7 +90,10 @@ public class FieldAwareMessageInterpolator implements MessageInterpolator {
             className = hibernateContext.getRootBeanType().getSimpleName();
         }
 
-        return resolvedTemplate.replace("{class}", className).replace("{field}", fieldName);
+        return resolvedTemplate
+                .replace("{class}", className)
+                .replace("{field}", fieldName)
+                .replace("{validatedValue}", String.valueOf(context.getValidatedValue()));
     }
 
     private String getLeafNodeName(Path path) {
