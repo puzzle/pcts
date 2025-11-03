@@ -33,7 +33,7 @@ class CertificatePersistenceServiceIT
                                "Created certificate",
                                BigDecimal.valueOf(3),
                                "This is a newly created certificate",
-                               Set.of(new Tag(1L, "Important tag"), new Tag(2L, "Way more important tag")));
+                               Set.of(new Tag(1L, "Important tag")));
     }
 
     @Override

@@ -61,22 +61,24 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
         return Stream
                 .of(Arguments
                         .of(createMember(EmploymentState.MEMBER, validPastDate, null, "Test", "MT"),
-                            "Member.name must not be null."),
+                            "Member.firstName must not be null."),
                     Arguments
                             .of(createMember(EmploymentState.MEMBER, validPastDate, "", "Test", "MT"),
-                                "Member.name must not be blank."),
+                                "Member.firstName must not be blank."),
                     Arguments
                             .of(createMember(EmploymentState.MEMBER, validPastDate, "  ", "Test", "MT"),
-                                "Member.name must not be blank."),
+                                "Member.firstName must not be blank."),
                     Arguments
                             .of(createMember(EmploymentState.MEMBER, validPastDate, "S", "Test", "MT"),
-                                "Member.name size must be between 2 and 250, given S."),
+                                "Member.firstName size must be between 2 and 250, given S."),
                     Arguments
                             .of(createMember(EmploymentState.MEMBER, validPastDate, "  S ", "Test", "MT"),
-                                "Member.name size must be between 2 and 250, given S."),
+                                "Member.firstName size must be between 2 and 250, given S."),
                     Arguments
                             .of(createMember(EmploymentState.MEMBER, validPastDate, tooLongString, "Test", "MT"),
-                                String.format("Member.name size must be between 2 and 250, given %s.", tooLongString)),
+                                String
+                                        .format("Member.firstName size must be between 2 and 250, given %s.",
+                                                tooLongString)),
                     Arguments
                             .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", null, "MT"),
                                 "Member.lastName must not be null."),
