@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * @param <T>
- *            the Type or entity of the repository
+ *            the type or entity of the repository
  */
 @Service
 public abstract class ValidationBase<T extends Model> {
@@ -58,8 +58,8 @@ public abstract class ValidationBase<T extends Model> {
         throwExceptionWhenIdIsNull(id);
     }
 
-    public void throwExceptionWhenIdIsNull(Long i) {
-        if (i == null) {
+    public void throwExceptionWhenIdIsNull(Long id) {
+        if (id == null) {
             throw new PCTSException(HttpStatus.BAD_REQUEST, "Id must not be null.", ErrorKey.INVALID_ARGUMENT);
         }
     }

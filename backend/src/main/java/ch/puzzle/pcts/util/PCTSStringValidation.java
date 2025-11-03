@@ -30,7 +30,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Constraint(validatedBy = { BasicStringValidator.class })
-public @interface BasicStringValidation {
+public @interface PCTSStringValidation {
 
     /**
      * @return The minimum allowed length for the string (inclusive).
@@ -65,15 +65,15 @@ public @interface BasicStringValidation {
     Class<? extends Payload>[] payload() default {};
 
     /**
-     * Defines several {@link BasicStringValidation} annotations on the same
-     * element. This enables the annotation to be repeatable.
+     * Defines several {@link PCTSStringValidation} annotations on the same element.
+     * This enables the annotation to be repeatable.
      *
-     * @see BasicStringValidation
+     * @see PCTSStringValidation
      */
     @Target(FIELD)
     @Retention(RUNTIME)
     @Documented
     @interface List {
-        BasicStringValidation[] value();
+        PCTSStringValidation[] value();
     }
 }

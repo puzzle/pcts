@@ -42,7 +42,7 @@ class PointsValidationTest {
     }
 
     private static class DummyClass implements Model {
-        @PointsValidation
+        @PCTSPointsValidation
         BigDecimal bigDecimal;
 
         public DummyClass(BigDecimal bigDecimal) {

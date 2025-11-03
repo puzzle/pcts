@@ -3,9 +3,9 @@ package ch.puzzle.pcts.util;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class PointsValidator implements ConstraintValidator<PointsValidation, Number> {
+public class PointsValidator implements ConstraintValidator<PCTSPointsValidation, Number> {
     @Override
-    public void initialize(PointsValidation constraintAnnotation) {
+    public void initialize(PCTSPointsValidation constraintAnnotation) {
         ConstraintValidator.super.initialize(constraintAnnotation);
     }
 
@@ -13,16 +13,16 @@ public class PointsValidator implements ConstraintValidator<PointsValidation, Nu
     public boolean isValid(Number number, ConstraintValidatorContext context) {
 
         if (number == null) {
-            return buildViolation(context, "{attribute.not.null}");
+            return buildValidationFailure(context, "{attribute.not.null}");
         }
 
         if (number.doubleValue() < 0) {
-            return buildViolation(context, "{attribute.not.negative}");
+            return buildValidationFailure(context, "{attribute.not.negative}");
         }
         return true;
     }
 
-    private boolean buildViolation(ConstraintValidatorContext context, String messageTemplate) {
+    private boolean buildValidationFailure(ConstraintValidatorContext context, String messageTemplate) {
         context.disableDefaultConstraintViolation();
         context.buildConstraintViolationWithTemplate(messageTemplate).addConstraintViolation();
         return false;

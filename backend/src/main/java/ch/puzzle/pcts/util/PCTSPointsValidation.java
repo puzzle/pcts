@@ -34,7 +34,7 @@ import java.lang.annotation.*;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = PointsValidator.class)
-public @interface PointsValidation {
+public @interface PCTSPointsValidation {
 
     /**
      * The message that will be shown when the validation fails.
@@ -58,15 +58,15 @@ public @interface PointsValidation {
     Class<? extends Payload>[] payload() default {};
 
     /**
-     * Defines several {@link PointsValidation} annotations on the same element.
+     * Defines several {@link PCTSPointsValidation} annotations on the same element.
      * This enables the annotation to be repeatable.
      *
-     * @see PointsValidation
+     * @see PCTSPointsValidation
      */
     @Target(FIELD)
     @Retention(RUNTIME)
     @Documented
     @interface List {
-        PointsValidation[] value();
+        PCTSPointsValidation[] value();
     }
 }

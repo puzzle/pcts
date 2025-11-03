@@ -5,31 +5,31 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class BasicStringValidator implements ConstraintValidator<BasicStringValidation, String> {
-    private BasicStringValidation annotation;
+public class BasicStringValidator implements ConstraintValidator<PCTSStringValidation, String> {
+    private PCTSStringValidation annotation;
 
     @Override
-    public void initialize(BasicStringValidation constraintAnnotation) {
+    public void initialize(PCTSStringValidation constraintAnnotation) {
         annotation = constraintAnnotation;
     }
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
         if (value == null) {
-            return buildViolation(context, "{attribute.not.null}");
+            return buildValidationFailure(context, "{attribute.not.null}");
         }
 
         if (value.isBlank()) {
-            return buildViolation(context, "{attribute.not.blank}");
+            return buildValidationFailure(context, "{attribute.not.blank}");
         }
 
         if (value.length() < annotation.min() || value.length() > annotation.max()) {
-            return buildViolation(context, "{attribute.size.between}");
+            return buildValidationFailure(context, "{attribute.size.between}");
         }
         return true;
     }
 
-    private boolean buildViolation(ConstraintValidatorContext context, String messageTemplate) {
+    private boolean buildValidationFailure(ConstraintValidatorContext context, String messageTemplate) {
         context.disableDefaultConstraintViolation();
         context.buildConstraintViolationWithTemplate(messageTemplate).addConstraintViolation();
         return false;

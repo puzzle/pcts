@@ -67,7 +67,7 @@ class BasicStringValidationTest {
     }
 
     private static class DummyClass implements Model {
-        @BasicStringValidation
+        @PCTSStringValidation
         String string;
 
         public DummyClass(String string) {
