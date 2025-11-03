@@ -19,6 +19,7 @@ describe('MemberFormComponent', () => {
   let fixture: ComponentFixture<MemberFormComponent>;
   let memberServiceMock: Partial<MemberService>;
   let organisationUnitServiceMock: Partial<OrganisationUnitService>;
+
   const organisationUnits = [
     organisationUnit1,
     organisationUnit2,

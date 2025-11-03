@@ -21,6 +21,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { errorInterceptor } from './core/error-interceptor/error-interceptor';
 import { successInterceptor } from './core/success-interceptor/success-interceptor';
 
+
 registerLocaleData(localeDeCH);
 
 export const appConfig: ApplicationConfig = {
