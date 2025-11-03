@@ -8,7 +8,7 @@ export function isDateInFuture(): ValidatorFn {
       return null;
     }
 
-    const date: DateTime = control.value;
+    const date: DateTime = DateTime.fromISO(control.value);
 
     if (!date.isValid) {
       return { invalid_date: true };
