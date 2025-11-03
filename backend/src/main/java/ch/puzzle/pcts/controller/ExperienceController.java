@@ -59,7 +59,7 @@ public class ExperienceController {
     }
 
     @Operation(summary = "Update an experience")
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The updated experience type data.", required = true)
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The updated experience data.", required = true)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "experience updated successfully.", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = ExperienceDto.class)) }), })

@@ -48,7 +48,6 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
         assertThat(entity.get().getId()).isEqualTo(2L);
     }
 
-    @Order(0)
     @DisplayName("Should get all entities")
     @Test
     @Transactional
