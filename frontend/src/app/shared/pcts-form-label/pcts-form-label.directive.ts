@@ -2,7 +2,7 @@ import { AfterViewInit, Directive, ElementRef, inject, Renderer2 } from '@angula
 import { CaseFormatter } from '../format/case-formatter';
 import { NgControl } from '@angular/forms';
 import { MatFormField } from '@angular/material/form-field';
-import { TranslateService } from '@ngx-translate/core';
+import { ScopedTranslationService } from '../services/scoped-translation.service';
 
 @Directive({
   selector: '[appPctsFormLabel]',
@@ -13,24 +13,20 @@ export class PctsFormLabelDirective implements AfterViewInit {
 
   public matFormField = inject(MatFormField);
 
-  public translateService = inject(TranslateService);
-
-  i18nPrefix = '';
+  public translateService = inject(ScopedTranslationService);
 
   public renderer2 = inject(Renderer2);
 
   public elementRef = inject(ElementRef);
 
   ngAfterViewInit(): void {
-    this.i18nPrefix = this.elementRef.nativeElement.closest('form')?.name;
-
-    const labelKey = this.caseFormatter.camelToSnake([this.i18nPrefix,
-      this.matFormFieldControl?.name ?? ''].join('.'));
-
-    this.translateService.get(labelKey)
-      .subscribe((translatedLabel) => {
-        this.renderer2.setProperty(this.elementRef.nativeElement, 'innerHTML', translatedLabel);
-      });
+    const controlName = this.matFormFieldControl?.name?.toString() ?? '';
+    const labelKey = this.caseFormatter.camelToSnake(controlName);
+    if (labelKey === '') {
+      return;
+    }
+    const translatedLabel = this.translateService.instant(labelKey);
+    this.renderer2.setProperty(this.elementRef.nativeElement, 'innerHTML', translatedLabel);
   }
 
 

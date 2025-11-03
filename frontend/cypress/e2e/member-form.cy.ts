@@ -64,7 +64,7 @@ describe('add member form', () => {
   });
 
   it('should be the add member site', () => {
-    FormPage.shouldHaveTitle(translations.GENERAL.ADD_TITLE, 'Member');
+    FormPage.shouldHaveTitle(translations.FORM.ADD.ACTION, 'Member');
   });
 
   it('should submit member and show him in list', () => {
@@ -99,7 +99,7 @@ describe('add member form', () => {
 describe('edit member form', () => {
   it('should be the edit member site', () => {
     FormPage.visitEdit(1, 'member');
-    FormPage.shouldHaveTitle(translations.GENERAL.EDIT_TITLE, 'Member');
+    FormPage.shouldHaveTitle(translations.FORM.EDIT.ACTION, 'Member');
   });
 
   it('should get all member data', () => {

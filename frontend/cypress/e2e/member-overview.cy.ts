@@ -17,7 +17,7 @@ describe('MemberOverviewComponent', () => {
 
   it('should display the page title and member count', () => {
     HomePage.title()
-      .should('contain.text', translations.MEMBER.OVERVIEW.MEMBERS)
+      .should('contain.text', translations.MEMBER.MODEL_NAME_PLURAL)
       .and('contain.text', '(');
 
     HomePage.memberTable()
@@ -29,7 +29,9 @@ describe('MemberOverviewComponent', () => {
     HomePage.fillSearchInput(searchInput);
     HomePage.noResultsRow()
       .should('exist');
-    const expectedText = translations.MEMBER.OVERVIEW.NO_SEARCH_RESULT.replace('{{searchValue}}', searchInput);
+    const expectedText = translations.TABLE.NO_SEARCH_RESULT
+      .replace('{{searchValue}}', searchInput)
+      .replace('{{model}}', 'Member');
     HomePage.noResultsRow()
       .should('contain.text', expectedText);
   });
@@ -63,7 +65,7 @@ describe('MemberOverviewComponent', () => {
     HomePage.createMemberButton()
       .click();
 
-    FormPage.shouldHaveTitle(translations.GENERAL.ADD_TITLE, 'Member');
+    FormPage.shouldHaveTitle(translations.FORM.ADD.ACTION, 'Member');
   });
 
   it('should keep query params in the URL when filtering', () => {

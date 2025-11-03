@@ -1,8 +1,8 @@
 import { AfterViewInit, Directive, ElementRef, inject, Renderer2 } from '@angular/core';
 import { MatFormField } from '@angular/material/form-field';
 import { filter } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
 import { NgControl } from '@angular/forms';
+import { ScopedTranslationService } from '../services/scoped-translation.service';
 
 @Directive({
   selector: '[appPctsFormError]',
@@ -18,7 +18,7 @@ export class PctsFormErrorDirective implements AfterViewInit {
 
   public elementRef = inject(ElementRef);
 
-  public translateService = inject(TranslateService);
+  public translateService = inject(ScopedTranslationService);
 
   ngAfterViewInit(): void {
     this.matFormFieldControl.control?.statusChanges

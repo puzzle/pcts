@@ -3,6 +3,7 @@ import { MemberFormComponent } from './features/member/form/member-form.componen
 import { memberDataResolver } from './features/member/member-data-resolver';
 import { memberOverviewResolver } from './features/member/overview/member-overview-resolver';
 import { MemberOverviewComponent } from './features/member/overview/member-overview.component';
+import { provideI18nPrefix } from './shared/i18n-prefix.provider';
 
 export const routes: Routes = [{
   path: '',
@@ -14,15 +15,18 @@ export const routes: Routes = [{
   children: [{
     path: '',
     component: MemberOverviewComponent,
-    resolve: { filters: memberOverviewResolver }
+    resolve: { filters: memberOverviewResolver },
+    providers: [provideI18nPrefix('MEMBER.OVERVIEW')]
   },
   {
     path: 'add',
-    component: MemberFormComponent
+    component: MemberFormComponent,
+    providers: [provideI18nPrefix('MEMBER.FORM.ADD')]
   },
   {
     path: ':id/edit',
     component: MemberFormComponent,
-    resolve: { member: memberDataResolver }
+    resolve: { member: memberDataResolver },
+    providers: [provideI18nPrefix('MEMBER.FORM.EDIT')]
   }]
 }];

@@ -2,12 +2,28 @@
   "PCTS_LOGO_ALT": "Puzzle PCTS Logo",
   "LOGOUT": "Abmelden",
 
-  "GENERAL": {
-    "ADD_TITLE": "hinzufügen",
-    "ADD_BUTTON": "Hinzufügen",
-    "EDIT_TITLE": "ändern",
-    "CANCEL": "Abbrechen",
-    "EDIT_BUTTON": "Speichern"
+  "FORM": {
+    "ADD": {
+      "ACTION": "hinzufügen",
+      "BUTTONS": {
+        "ACTION": "Hinzufügen",
+        "CANCEL": "Abbrechen"
+      }
+    },
+    "EDIT": {
+      "ACTION": "ändern",
+      "BUTTONS": {
+        "ACTION": "Ändern",
+        "CANCEL": "Abbrechen"
+      }
+    }
+  },
+  "TABLE": {
+    "NO_SEARCH_RESULT": "Kein {{model}} mit den Attributen \"{{searchValue}}\" gefunden."
+  },
+  "FILTER": {
+    "SEARCH": "Suchen",
+    "ALL": "Alle"
   },
 
   "VALIDATION": {
@@ -19,6 +35,8 @@
   },
 
   "MEMBER": {
+    "MODEL_NAME": "Member",
+    "MODEL_NAME_PLURAL": "Members",
     "FIRST_NAME": "Vorname",
     "NAME": "Name",
     "LAST_NAME": "Nachname",
@@ -29,16 +47,7 @@
     "EMPLOYMENT_STATE": "Anstellungsstatus",
 
     "FORM": {
-      "PERSONAL_DETAILS": "Personalien",
-      "TITLE": "Member"
-    },
-
-    "OVERVIEW": {
-      "MEMBERS": "Members",
-      "SEARCH": "Suchen",
-      "ALL": "Alle",
-      "ADD_MEMBER": "Member hinzufügen",
-      "NO_SEARCH_RESULT": "Kein Member mit den Attributen \"{{searchValue}}\" gefunden."
+      "PERSONAL_DETAILS": "Personalien"
     },
     "EMPLOYMENT_STATUS_VALUES": {
       "MEMBER": "Member",

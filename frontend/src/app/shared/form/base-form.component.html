@@ -1,15 +1,18 @@
 <h1 data-testid="title">
-  {{ titleKey() | translate }}
-  {{ addOrEditTitle() | translate }}
+  {{ "MODEL_NAME" | scopedTranslation  }}
+  {{ "ACTION" | scopedTranslation }}
 </h1>
 
-<form class="d-flex flex-column gap-4" [formGroup]="formGroup()" (ngSubmit)="submitted.emit()" name="{{formName()}}">
+
+<form class="d-flex flex-column gap-4" [formGroup]="formGroup()" (ngSubmit)="submitted.emit()" >
   <ng-content />
 
   <div class="d-flex flex-row gap-3">
-    <button mat-stroked-button type="button" (click)="canceled.emit()">{{ "GENERAL.CANCEL" | translate }}</button>
+    <button mat-stroked-button type="button" (click)="canceled.emit()">
+        {{ "BUTTONS.CANCEL" | scopedTranslation  }}
+    </button>
     <button mat-flat-button color="primary" type="submit" data-testid="submit-button" [disabled]="!formGroup().valid">
-      {{ addOrEditButton() | translate}}
+      {{ "BUTTONS.ACTION" | scopedTranslation }}
     </button>
   </div>
 </form>

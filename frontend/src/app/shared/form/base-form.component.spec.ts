@@ -9,6 +9,7 @@ describe('BaseFormComponent', () => {
   let fixture: ComponentFixture<BaseFormComponent>;
   let caseFormatterMock: any;
 
+
   beforeEach(async() => {
     caseFormatterMock = { camelToSnake: jest.fn((value: string) => 'TEST_FORM_NAME') };
 
@@ -31,42 +32,11 @@ describe('BaseFormComponent', () => {
 
   it('should create the component', () => {
     fixture.detectChanges();
+  });
 
+  it('should create', () => {
     expect(component)
       .toBeTruthy();
-  });
-
-  it('should compute i18nPrefix correctly from formName', () => {
-    fixture.detectChanges();
-
-    expect(component.i18nPrefix())
-      .toBe('TEST_FORM_NAME.FORM');
-    expect(caseFormatterMock.camelToSnake)
-      .toHaveBeenCalledWith('testForm');
-  });
-
-  it('should update i18nPrefix when formName input changes', () => {
-    fixture.detectChanges();
-
-    expect(component.i18nPrefix())
-      .toBe('TEST_FORM_NAME.FORM');
-    expect(caseFormatterMock.camelToSnake)
-      .toHaveBeenCalledWith('testForm');
-  });
-
-  it('should have default isEdit value of false', () => {
-    fixture.detectChanges();
-
-    expect(component.isEdit())
-      .toBe(false);
-  });
-
-  it('should accept a true value for isEdit input', () => {
-    fixture.componentRef.setInput('isEdit', true);
-    fixture.detectChanges();
-
-    expect(component.isEdit())
-      .toBe(true);
   });
 
   it('should mark form as invalid if required fields are missing', () => {
