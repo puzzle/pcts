@@ -1,38 +1,26 @@
 package ch.puzzle.pcts.service.validation.util;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.model.Model;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class UniqueNameValidationUtilTest {
 
-    static class FakeModel implements Model {
-        Long id;
-        String name;
-
-        FakeModel(Long id, String name) {
-            this.id = id;
-            this.name = name;
-        }
-
-        @Override
-        public Long getId() {
-            return id;
-        }
-
-        @Override
-        public void setId(Long id) {
-            this.id = id;
-        }
-    }
+    @Mock
+    private Model mockModel;
 
     @Test
     @DisplayName("Should return true when name already exists")
     void shouldReturnTrueWhenNameAlreadyExists() {
-        boolean result = UniqueNameValidationUtil.nameAlreadyUsed("Test", name -> Optional.of(new FakeModel(1L, name)));
+        boolean result = UniqueNameValidationUtil.nameAlreadyUsed("Test", name -> Optional.of(mockModel));
 
         assertTrue(result, "Expected true when name already exists");
     }
@@ -41,26 +29,29 @@ class UniqueNameValidationUtilTest {
     @DisplayName("Should return false when name is unique")
     void shouldReturnFalseWhenNameIsUnique() {
         boolean result = UniqueNameValidationUtil.nameAlreadyUsed("UniqueName", name -> Optional.empty());
-
-        assertFalse(result, "Expected false when name is unique");
+        assertFalse(result);
     }
 
     @Test
     @DisplayName("Should return true when another entity has the same name")
     void shouldReturnTrueWhenOtherEntityHasSameName() {
-        boolean result = UniqueNameValidationUtil
-                .nameExcludingSelfAlreadyUsed(1L, "Duplicate", name -> Optional.of(new FakeModel(2L, name)));
+        when(mockModel.getId()).thenReturn(2L);
 
-        assertTrue(result, "Expected true when another entity has the same name");
+        boolean result = UniqueNameValidationUtil
+                .nameExcludingSelfAlreadyUsed(1L, "Duplicate", name -> Optional.of(mockModel));
+
+        assertTrue(result);
     }
 
     @Test
     @DisplayName("Should return false when entity with same ID has same name")
     void shouldReturnFalseWhenSameEntityHasSameName() {
-        boolean result = UniqueNameValidationUtil
-                .nameExcludingSelfAlreadyUsed(1L, "SameName", name -> Optional.of(new FakeModel(1L, name)));
+        when(mockModel.getId()).thenReturn(1L);
 
-        assertFalse(result, "Expected false when same entity has same name");
+        boolean result = UniqueNameValidationUtil
+                .nameExcludingSelfAlreadyUsed(1L, "SameName", name -> Optional.of(mockModel));
+
+        assertFalse(result);
     }
 
     @Test
@@ -69,6 +60,6 @@ class UniqueNameValidationUtilTest {
         boolean result = UniqueNameValidationUtil
                 .nameExcludingSelfAlreadyUsed(1L, "NonExistent", name -> Optional.empty());
 
-        assertFalse(result, "Expected false when no entity found");
+        assertFalse(result);
     }
 }

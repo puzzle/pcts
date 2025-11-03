@@ -19,16 +19,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.provider.Arguments;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, MemberValidationService> {
 
-    @InjectMocks
-    MemberValidationService service;
-
     @Mock
     MemberPersistenceService persistenceService;
+
+    @Spy
+    @InjectMocks
+    MemberValidationService service;
 
     @Override
     Member getModel() {
@@ -138,12 +140,11 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
     void shouldCallAllMethodsOnValidateOnCreateWhenValid() {
         Member member = getModel();
 
-        MemberValidationService spyService = spy(service);
-        doNothing().when((ValidationBase<Member>) spyService).validateOnCreate(any());
+        doNothing().when((ValidationBase<Member>) service).validateOnCreate(any());
 
-        spyService.validateOnCreate(member);
+        service.validateOnCreate(member);
 
-        verify(spyService).validateOnCreate(member);
+        verify(service).validateOnCreate(member);
         verifyNoMoreInteractions(persistenceService);
     }
 
@@ -153,12 +154,11 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
         Long id = 1L;
         Member member = getModel();
 
-        MemberValidationService spyService = spy(service);
-        doNothing().when((ValidationBase<Member>) spyService).validateOnUpdate(anyLong(), any());
+        doNothing().when((ValidationBase<Member>) service).validateOnUpdate(anyLong(), any());
 
-        spyService.validateOnUpdate(id, member);
+        service.validateOnUpdate(id, member);
 
-        verify(spyService).validateOnUpdate(id, member);
+        verify(service).validateOnUpdate(id, member);
         verifyNoMoreInteractions(persistenceService);
     }
 }

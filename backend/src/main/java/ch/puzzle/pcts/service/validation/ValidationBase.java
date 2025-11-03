@@ -58,13 +58,13 @@ public abstract class ValidationBase<T extends Model> {
         throwExceptionWhenIdIsNull(id);
     }
 
-    public void throwExceptionWhenIdIsNull(Long id) {
+    private void throwExceptionWhenIdIsNull(Long id) {
         if (id == null) {
             throw new PCTSException(HttpStatus.BAD_REQUEST, "Id must not be null.", ErrorKey.INVALID_ARGUMENT);
         }
     }
 
-    public void throwExceptionWhenIdHasChanged(Long id, Long modelId) {
+    private void throwExceptionWhenIdHasChanged(Long id, Long modelId) {
         if (modelId != null && !Objects.equals(id, modelId)) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
                                     "The queried id must match the id in the model.",
@@ -72,13 +72,13 @@ public abstract class ValidationBase<T extends Model> {
         }
     }
 
-    public void throwExceptionWhenIdIsNotNull(Long id) {
+    private void throwExceptionWhenIdIsNotNull(Long id) {
         if (id != null) {
             throw new PCTSException(HttpStatus.BAD_REQUEST, "Id must be null.", ErrorKey.INVALID_ARGUMENT);
         }
     }
 
-    public void throwExceptionWhenModelIsNull(T model) {
+    private void throwExceptionWhenModelIsNull(T model) {
         if (model == null) {
             throw new PCTSException(HttpStatus.BAD_REQUEST, "Model must not be null.", ErrorKey.INVALID_ARGUMENT);
         }

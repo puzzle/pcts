@@ -26,7 +26,7 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
         extends
             PersistenceCoreIT {
 
-    private final S service;
+    protected final S service;
     private final TimeZone originalTimeZone = TimeZone.getDefault();
 
     PersistenceBaseIT(S service) {

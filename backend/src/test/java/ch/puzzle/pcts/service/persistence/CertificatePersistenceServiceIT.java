@@ -19,12 +19,9 @@ class CertificatePersistenceServiceIT
         extends
             PersistenceBaseIT<Certificate, CertificateRepository, CertificatePersistenceService> {
 
-    private CertificatePersistenceService service;
-
     @Autowired
     CertificatePersistenceServiceIT(CertificatePersistenceService service) {
         super(service);
-        this.service = service;
     }
 
     @Override

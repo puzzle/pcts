@@ -24,11 +24,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certificate, CertificateValidationService> {
 
-    @InjectMocks
-    CertificateValidationService service;
-
     @Mock
     private CertificatePersistenceService persistenceService;
+
+    @InjectMocks
+    private CertificateValidationService service;
 
     @Override
     Certificate getModel() {
