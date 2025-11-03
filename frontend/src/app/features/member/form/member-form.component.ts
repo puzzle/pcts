@@ -1,11 +1,5 @@
 import { Component, computed, effect, inject, input, OnInit, signal, WritableSignal } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -27,6 +21,7 @@ import { InputFieldComponent } from '../../../shared/input-field/input-field.com
 import { map } from 'rxjs';
 import { isDateInFuture, isValueInList, isValueInListSignal } from '../../../shared/form/form-validators';
 import { BaseFormComponent } from '../../../shared/form/base-form.component';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-member-form',
@@ -116,7 +111,11 @@ export class MemberFormComponent implements OnInit {
       if (!this.member()) {
         return;
       }
-      this.memberForm.patchValue(this.member());
+      this.memberForm.patchValue({
+        ...this.member(),
+        birthDate: DateTime.fromISO(this.member().birthDate.toString()),
+        dateOfHire: DateTime.fromISO(this.member().dateOfHire.toString())
+      });
 
       this.memberForm.get('organisationUnit')
         ?.setValue(this.organisationUnitsOptions()
