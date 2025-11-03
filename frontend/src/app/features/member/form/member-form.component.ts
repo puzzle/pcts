@@ -22,6 +22,8 @@ import { map } from 'rxjs';
 import { isDateInFuture, isValueInList, isValueInListSignal } from '../../../shared/form/form-validators';
 import { BaseFormComponent } from '../../../shared/form/base-form.component';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
+import { ScopedTranslationService } from '../../../shared/services/scoped-translation.service';
+import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { Location } from '@angular/common';
 
 @Component({

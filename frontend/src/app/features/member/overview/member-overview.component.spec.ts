@@ -14,6 +14,7 @@ describe('MemberOverviewComponent', () => {
   let fixture: ComponentFixture<MemberOverviewComponent>;
   let memberServiceMock: Partial<MemberService>;
 
+
   const membersMock: MemberModel[] = [member1,
     member2];
 
