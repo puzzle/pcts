@@ -71,7 +71,7 @@ export const member4: MemberModel = {
 export const memberDto1: MemberDto = {
   firstName: 'Lena',
   lastName: 'Müller',
-  birthDate: DateTime.fromISO('2018-12-01')
+  birthDate: DateTime.fromISO('2000-12-01')
     .toJSDate(),
   abbreviation: 'LM',
   employmentState: EmploymentState.MEMBER,
