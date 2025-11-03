@@ -10,6 +10,8 @@ import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -97,7 +99,30 @@ public abstract class ValidationBase<T extends Model> {
                     .map(ConstraintViolation::getMessage)
                     .collect(Collectors.joining(", "));
             // TODO: map her into the new ErrorDtos #145
-            throw new PCTSException(HttpStatus.BAD_REQUEST, errorMessages, ErrorKey.INVALID_ARGUMENT);
+            throw new PCTSException(HttpStatus.BAD_REQUEST,
+                                    errorMessages,
+                                    ErrorKey.valueOf(getAttribute("errorKey", errorMessages)));
         }
+    }
+
+    private static String getAttribute(String searchedAttribute, String errorMessage) {
+
+        if (searchedAttribute == null || searchedAttribute.isEmpty() || errorMessage == null
+            || errorMessage.isEmpty()) {
+            return null;
+        }
+
+        String quotedKey = Pattern.quote(searchedAttribute);
+
+        String regex = String.format("%s\\s*=\\s*(.*?)\\s*(?:,\\s*[\\w\\.]+\\s*=|$)", quotedKey);
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(errorMessage);
+
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+
+        return null;
     }
 }
