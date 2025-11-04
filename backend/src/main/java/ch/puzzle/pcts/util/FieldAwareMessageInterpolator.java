@@ -11,8 +11,9 @@ import org.hibernate.validator.messageinterpolation.HibernateMessageInterpolator
  *
  * <h5>1. Default Interpolation (by the Delegate)</h3> First, it allows the
  * delegate to perform its default interpolation. This resolves all standard
- * Bean Validation placeholders These are enclosed in <code>{...}</code> and map
- * directly to the attributes of the constraint annotation.
+ * Bean Validation placeholders — these are enclosed in <code>{...}</code> and
+ * map directly to the attributes of the constraint annotation.
+ *
  * <h6>The delegate resolves these, including:</h6>
  * <ul>
  * <li><code>{min}</code>, <code>{max}</code> (from <code>@Size</code>)</li>
@@ -25,6 +26,13 @@ import org.hibernate.validator.messageinterpolation.HibernateMessageInterpolator
  * <li><code>{integer}</code>, <code>{fraction}</code> (from
  * <code>@Digits</code>)</li>
  * </ul>
+ *
+ * <p>
+ * <b>Note:</b> Only constraint annotation parameters (e.g., <code>{min}</code>,
+ * <code>{max}</code>) are interpolated by the default message interpolator.
+ * Expression Language (EL) variables or arbitrary expressions are not
+ * automatically resolved unless additional configuration or a custom
+ * interpolator is used.
  *
  * <h5>2. Custom Interpolation (by this Class)</h5> After the delegate resolves
  * all standard placeholders, this class performs a final replacement for the

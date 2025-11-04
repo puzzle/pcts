@@ -5,7 +5,7 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class BasicStringValidator implements ConstraintValidator<PCTSStringValidation, String> {
+public class PCTSStringValidator implements ConstraintValidator<PCTSStringValidation, String> {
     private PCTSStringValidation annotation;
 
     @Override

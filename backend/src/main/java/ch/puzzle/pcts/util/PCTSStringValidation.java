@@ -12,24 +12,36 @@ import java.lang.annotation.*;
  * length falls within a specified range.
  *
  * <p>
- * This constraint is validated by
- * {@link ch.puzzle.pcts.util.BasicStringValidator}.
+ * This constraint is validated by {@link PCTSStringValidator}.
+ * </p>
  *
  * <p>
- * The validation rules applied are:
- * <ul>
- * <li>The value must not be {@code null} (reports message
+ * The validation rules are evaluated in the following order:
+ * <ol>
+ * <li>Check that the value is not {@code null} (reports message
  * <code>{attribute.not.null}</code>).</li>
- * <li>The value must not be blank (i.e., empty or whitespace-only) (reports
- * message <code>{attribute.not.blank}</code>).</li>
- * <li>The length of the value must be between {@link #min()} and {@link #max()}
- * (inclusive) (reports message <code>{attribute.size.between}</code>).</li>
- * </ul>
+ * <li>Check that the value is not blank (i.e., not empty or whitespace-only)
+ * (reports message <code>{attribute.not.blank}</code>).</li>
+ * <li>Check that the length of the value is between {@link #min()} and
+ * {@link #max()} (inclusive) (reports message
+ * <code>{attribute.size.between}</code>).</li>
+ * </ol>
+ *
+ * <p>
+ * Only the <strong>first failing rule</strong> produces a violation. Once a
+ * validation error is detected, subsequent checks are not evaluated.
+ * </p>
+ *
+ * <p>
+ * This behavior ensures that the reported violation message reflects the most
+ * fundamental issue with the provided value.
+ * </p>
  */
+
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Constraint(validatedBy = { BasicStringValidator.class })
+@Constraint(validatedBy = { PCTSStringValidator.class })
 public @interface PCTSStringValidation {
 
     /**
