@@ -18,16 +18,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.provider.Arguments;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class RoleValidationServiceTest extends ValidationBaseServiceTest<Role, RoleValidationService> {
 
-    @InjectMocks
-    RoleValidationService validationService;
-
     @Mock
     RolePersistenceService persistenceService;
+
+    @Spy
+    @InjectMocks
+    RoleValidationService validationService;
 
     @Override
     Role getModel() {
@@ -94,12 +96,11 @@ class RoleValidationServiceTest extends ValidationBaseServiceTest<Role, RoleVali
     void shouldCallAllMethodsOnValidateOnCreateWhenValid() {
         Role role = getModel();
 
-        RoleValidationService spyService = spy(service);
-        doNothing().when((ValidationBase<Role>) spyService).validateOnCreate(any());
+        doNothing().when((ValidationBase<Role>) validationService).validateOnCreate(any());
 
-        spyService.validateOnCreate(role);
+        validationService.validateOnCreate(role);
 
-        verify(spyService).validateOnCreate(role);
+        verify(validationService).validateOnCreate(role);
         verifyNoMoreInteractions(persistenceService);
     }
 
@@ -109,12 +110,11 @@ class RoleValidationServiceTest extends ValidationBaseServiceTest<Role, RoleVali
         Long id = 1L;
         Role role = getModel();
 
-        RoleValidationService spyService = spy(service);
-        doNothing().when((ValidationBase<Role>) spyService).validateOnUpdate(anyLong(), any());
+        doNothing().when((ValidationBase<Role>) validationService).validateOnUpdate(anyLong(), any());
 
-        spyService.validateOnUpdate(id, role);
+        validationService.validateOnUpdate(id, role);
 
-        verify(spyService).validateOnUpdate(id, role);
+        verify(validationService).validateOnUpdate(id, role);
         verifyNoMoreInteractions(persistenceService);
     }
 }

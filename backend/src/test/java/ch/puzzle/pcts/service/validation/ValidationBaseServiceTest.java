@@ -21,15 +21,22 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
 
     abstract S getService();
 
-    // The method source 'invalidModelProvider' needs to be overridden by subclasses
-    // at all times.
-    // If it is not overridden, the "PreconditionViolationException" will be
-    // thrown."
+    /**
+     * Provides invalid model configurations for parameterized tests.
+     * <p>
+     * Subclasses must override this method to supply test arguments. If it is not
+     * overridden, a {@code PreconditionViolationException} will be thrown.
+     * <p>
+     * If you don't have any validations on the model, you may return an empty
+     * stream. Make sure to add a comment in the test class explaining why.
+     *
+     * @return a stream of arguments containing invalid model configurations
+     */
     static Stream<Arguments> invalidModelProvider() {
         return Stream.empty();
     }
 
-    @ParameterizedTest(name = "{index}: {1}")
+    @ParameterizedTest(name = "{index}: {1}") // Displays test index and expected message in the test name
     @MethodSource("invalidModelProvider")
     @DisplayName("Should throw validation exception for invalid model configurations")
     void validateInvalidModel(T model, String expectedMessage) {

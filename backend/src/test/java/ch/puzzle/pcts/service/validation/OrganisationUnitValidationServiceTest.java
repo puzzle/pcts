@@ -24,11 +24,11 @@ class OrganisationUnitValidationServiceTest
         extends
             ValidationBaseServiceTest<OrganisationUnit, OrganisationUnitValidationService> {
 
-    @InjectMocks
-    private OrganisationUnitValidationService service;
-
     @Mock
     private OrganisationUnitPersistenceService persistenceService;
+
+    @InjectMocks
+    private OrganisationUnitValidationService service;
 
     @Override
     OrganisationUnit getModel() {

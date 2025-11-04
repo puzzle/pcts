@@ -17,11 +17,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class TagValidationServiceTest extends ValidationBaseServiceTest<Tag, TagValidationService> {
 
-    @InjectMocks
-    TagValidationService validationService;
-
     @Mock
     TagPersistenceService persistenceService;
+
+    @InjectMocks
+    TagValidationService validationService;
 
     @Override
     Tag getModel() {
