@@ -108,8 +108,7 @@ class MemberBusinessServiceTest {
         Member result = businessService.update(id, member);
 
         assertEquals(member, result);
-        verify(validationService).validateOnUpdate(id);
-        verify(member).setId(id);
+        verify(validationService).validateOnUpdate(id, member);
         verify(persistenceService).save(member);
     }
 

@@ -4,7 +4,10 @@ import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
+import ch.puzzle.pcts.util.PCTSStringValidation;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Objects;
@@ -17,17 +20,23 @@ public class Member implements Model {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @PCTSStringValidation
     private String firstName;
 
+    @PCTSStringValidation
     private String lastName;
 
     @Enumerated(EnumType.STRING)
+    @NotNull(message = "{attribute.not.null}")
     private EmploymentState employmentState;
 
+    @PCTSStringValidation
     private String abbreviation;
 
     private Date dateOfHire;
 
+    @NotNull(message = "{attribute.not.null}")
+    @Past(message = "{attribute.date.past}")
     private Date birthDate;
 
     @Column(name = "deleted_at", insertable = false, updatable = false)

@@ -3,6 +3,8 @@ package ch.puzzle.pcts.model.degreetype;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
+import ch.puzzle.pcts.util.PCTSPointsValidation;
+import ch.puzzle.pcts.util.PCTSStringValidation;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -16,12 +18,16 @@ public class DegreeType implements Model {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @PCTSStringValidation
     private String name;
 
+    @PCTSPointsValidation
     private BigDecimal highlyRelevantPoints;
 
+    @PCTSPointsValidation
     private BigDecimal limitedRelevantPoints;
 
+    @PCTSPointsValidation
     private BigDecimal littleRelevantPoints;
 
     @Column(name = "deleted_at", insertable = false, updatable = false)

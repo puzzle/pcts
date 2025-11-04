@@ -1,7 +1,9 @@
 package ch.puzzle.pcts.service.validation;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.exception.PCTSException;
@@ -9,228 +11,110 @@ import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.persistence.RolePersistenceService;
 import java.util.Optional;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.provider.Arguments;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class RoleValidationServiceTest {
+class RoleValidationServiceTest extends ValidationBaseServiceTest<Role, RoleValidationService> {
 
     @Mock
-    private RolePersistenceService persistenceService;
+    RolePersistenceService persistenceService;
 
+    @Spy
     @InjectMocks
-    private RoleValidationService validationService;
+    RoleValidationService validationService;
 
-    @DisplayName("Should be successful on validateOnGetById() when id valid")
-    @Test
-    void shouldBeSuccessfulOnValidateOnGetByIdWhenIdIsValid() {
-        Long id = 1L;
-
-        when(persistenceService.getById(id)).thenReturn(Optional.of(new Role()));
-        assertDoesNotThrow(() -> validationService.validateOnGetById(id));
+    @Override
+    Role getValidModel() {
+        return createRole("Role");
     }
 
-    @DisplayName("Should throw exception on validateOnGetById() when id is invalid")
-    @Test
-    void shouldThrowExceptionOnValidateOnGetByIdWhenIdIsInvalid() {
-        Long id = -1L;
-
-        when(persistenceService.getById(id)).thenReturn(Optional.empty());
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnGetById(id));
-
-        assertEquals("Role with id: " + id + " does not exist.", exception.getReason());
-        assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
+    @Override
+    RoleValidationService getService() {
+        return validationService;
     }
 
-    @DisplayName("Should be successful on validateOnCreate() when role is valid")
-    @Test
-    void shouldBeSuccessfulOnValidateOnCreateWhenRoleIsValid() {
-        Role role = new Role();
-        role.setName("New role");
-
-        assertDoesNotThrow(() -> validationService.validateOnCreate(role));
+    private static Role createRole(String name) {
+        Role r = new Role();
+        r.setName(name);
+        return r;
     }
 
-    @DisplayName("Should throw exception on validateOnCreate() when id is not null")
-    @Test
-    void shouldThrowExceptionOnValidateOnCreateWhenIdIsNotNull() {
-        Role role = new Role();
-        role.setName("Role");
-        role.setId(123L);
+    static Stream<Arguments> invalidModelProvider() {
+        String tooLongName = new String(new char[251]).replace("\0", "s");
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnCreate(role));
+        return Stream
+                .of(Arguments.of(createRole(null), "Role.name must not be null."),
+                    Arguments.of(createRole(""), "Role.name must not be blank."),
+                    Arguments.of(createRole("  "), "Role.name must not be blank."),
+                    Arguments.of(createRole("S"), "Role.name size must be between 2 and 250, given S."),
+                    Arguments.of(createRole("  S "), "Role.name size must be between 2 and 250, given S."),
+                    Arguments
+                            .of(createRole(tooLongName),
+                                String.format("Role.name size must be between 2 and 250, given %s.", tooLongName)));
 
-        assertEquals("Id needs to be undefined", exception.getReason());
-        assertEquals(ErrorKey.ID_IS_NOT_NULL, exception.getErrorKey());
-    }
-
-    @DisplayName("Should throw exception on validateOnCreate() when name is null")
-    @Test
-    void shouldThrowExceptionOnValidateOnCreateWhenNameIsNull() {
-        Role role = new Role();
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnCreate(role));
-
-        assertEquals("Name must not be null", exception.getReason());
-        assertEquals(ErrorKey.ROLE_NAME_IS_NULL, exception.getErrorKey());
-    }
-
-    @DisplayName("Should throw exception on validateOnCreate() when name is blank")
-    @Test
-    void shouldThrowExceptionOnValidateOnCreateWhenNameBlank() {
-        Role role = new Role();
-        role.setName("");
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnCreate(role));
-
-        assertEquals("Name must not be empty", exception.getReason());
-        assertEquals(ErrorKey.ROLE_NAME_IS_EMPTY, exception.getErrorKey());
     }
 
     @DisplayName("Should throw exception on validateOnCreate() when name already exists")
     @Test
     void shouldThrowExceptionOnValidateOnCreateWhenNameAlreadyExists() {
-        Role role = new Role();
-        role.setName("Existing Role");
+        Role role = getValidModel();
 
-        when(persistenceService.getByName("Existing Role")).thenReturn(Optional.of(new Role()));
+        when(persistenceService.getByName(role.getName())).thenReturn(Optional.of(new Role()));
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnCreate(role));
-
-        assertEquals("Name already exists", exception.getReason());
-        assertEquals(ErrorKey.ROLE_NAME_ALREADY_EXISTS, exception.getErrorKey());
-    }
-
-    @DisplayName("Should be successful on validateOnDelete() when id is valid")
-    @Test
-    void shouldBeSuccessfulOnValidateOnDeleteWhenIdIsValid() {
-        Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(new Role()));
-
-        assertDoesNotThrow(() -> validationService.validateOnDelete(id));
-    }
-
-    @DisplayName("Should throw exception on validateOnDelete() when id is invalid")
-    @Test
-    void shouldThrowExceptionOnValidateOnDeleteIdWhenIdIsInvalid() {
-        Long id = -1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.empty());
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnDelete(id));
-
-        assertEquals("Role with id: " + id + " does not exist.", exception.getReason());
-        assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
-    }
-
-    @DisplayName("Should be successful on validateOnUpdate() when id is valid")
-    @Test
-    void shouldBeSuccessfulOnValidateOnUpdateWhenIdIsValid() {
-        Role role = new Role();
-        role.setName("Role");
-        Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(new Role()));
-
-        assertDoesNotThrow(() -> validationService.validateOnUpdate(id, role));
-    }
-
-    @DisplayName("Should throw exception on validateOnUpdate() when id is invalid")
-    @Test
-    void shouldThrowExceptionOnValidateOnUpdateIdWhenIdIsInvalid() {
-        Role role = new Role();
-        Long id = -1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.empty());
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnUpdate(id, role));
-
-        assertEquals("Role with id: " + id + " does not exist.", exception.getReason());
-        assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
-    }
-
-    @DisplayName("Should throw exception on validateOnUpdate() when id is not null")
-    @Test
-    void shouldThrowExceptionOnValidateOnUpdateWhenIdIsNotNull() {
-        Role role = new Role();
-        role.setId(123L);
-        Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(new Role()));
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnUpdate(id, role));
-
-        assertEquals("Id needs to be undefined", exception.getReason());
-        assertEquals(ErrorKey.ID_IS_NOT_NULL, exception.getErrorKey());
-    }
-
-    @DisplayName("Should throw exception on validateOnUpdate() when name is null")
-    @Test
-    void shouldThrowExceptionOnValidateOnUpdateWhenNameIsNull() {
-        Role role = new Role();
-        Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(new Role()));
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnUpdate(id, role));
-
-        assertEquals("Name must not be null", exception.getReason());
-        assertEquals(ErrorKey.ROLE_NAME_IS_NULL, exception.getErrorKey());
-    }
-
-    @DisplayName("Should throw exception on validateOnUpdate() when name is blank")
-    @Test
-    void shouldThrowExceptionOnValidateOnUpdateWhenNameBlank() {
-        Role role = new Role();
-        role.setName("");
-        Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(new Role()));
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnUpdate(id, role));
-
-        assertEquals("Name must not be empty", exception.getReason());
-        assertEquals(ErrorKey.ROLE_NAME_IS_EMPTY, exception.getErrorKey());
-    }
-
-    @DisplayName("Should Throw Exception on validateOnUpdate() when name already exists for another Role")
-    @Test
-    void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExistsForAnotherRole() {
-        Long id = 1L;
-        String name = "Role";
-
-        Role role = new Role();
-        role.setName(name);
-
-        Role anotherRole = new Role();
-        anotherRole.setName(name);
-        anotherRole.setId(2L);
-
-        when(persistenceService.getById(id)).thenReturn(Optional.of(role));
-        when(persistenceService.getByName(name)).thenReturn(Optional.of(anotherRole));
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnUpdate(id, role));
+        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnCreate(role));
 
         assertEquals("Name already exists", exception.getReason());
-        assertEquals(ErrorKey.ROLE_NAME_ALREADY_EXISTS, exception.getErrorKey());
+        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
     }
 
-    @DisplayName("Should not Throw Exception on validateOnUpdate() when name stays the same")
+    @DisplayName("Should throw exception on validateOnUpdate() when name already exists")
     @Test
-    void shouldNotThrowExceptionOnValidateOnUpdateWhenNameStaysTheSame() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExists() {
         Long id = 1L;
-        String name = "Role";
+        Role newRole = getValidModel();
+        Role role = getValidModel();
+        role.setId(2L);
 
-        Role newRole = new Role();
-        newRole.setName(name);
+        when(persistenceService.getByName(newRole.getName())).thenReturn(Optional.of(role));
 
-        Role oldRole = new Role();
-        oldRole.setName(name);
-        oldRole.setId(id);
+        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnUpdate(id, newRole));
 
-        when(persistenceService.getById(id)).thenReturn(Optional.of(newRole));
-        when(persistenceService.getByName(name)).thenReturn(Optional.of(oldRole));
+        assertEquals("Name already exists", exception.getReason());
+        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+    }
 
-        assertDoesNotThrow(() -> validationService.validateOnUpdate(id, newRole));
+    @DisplayName("Should call correct validate method on validateOnCreate()")
+    @Test
+    void shouldCallAllMethodsOnValidateOnCreateWhenValid() {
+        Role role = getValidModel();
 
+        doNothing().when((ValidationBase<Role>) validationService).validateOnCreate(any());
+
+        validationService.validateOnCreate(role);
+
+        verify(validationService).validateOnCreate(role);
+        verifyNoMoreInteractions(persistenceService);
+    }
+
+    @DisplayName("Should call correct validate method on validateOnUpdate()")
+    @Test
+    void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
+        Long id = 1L;
+        Role role = getValidModel();
+
+        doNothing().when((ValidationBase<Role>) validationService).validateOnUpdate(anyLong(), any());
+
+        validationService.validateOnUpdate(id, role);
+
+        verify(validationService).validateOnUpdate(id, role);
+        verifyNoMoreInteractions(persistenceService);
     }
 }

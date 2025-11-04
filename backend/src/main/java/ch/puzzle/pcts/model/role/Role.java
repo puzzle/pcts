@@ -3,6 +3,7 @@ package ch.puzzle.pcts.model.role;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
+import ch.puzzle.pcts.util.PCTSStringValidation;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -15,6 +16,8 @@ public class Role implements Model {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @PCTSStringValidation
+    @Column(unique = true)
     private String name;
 
     private boolean isManagement;

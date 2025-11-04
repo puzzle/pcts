@@ -3,6 +3,7 @@ package ch.puzzle.pcts.model.organisationunit;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
+import ch.puzzle.pcts.util.PCTSStringValidation;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -15,6 +16,7 @@ public class OrganisationUnit implements Model {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @PCTSStringValidation
     private String name;
 
     @Column(name = "deleted_at", insertable = false, updatable = false)

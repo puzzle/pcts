@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS degree_type
 (
     id                        BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY NOT NULL,
-    name                      TEXT    NOT NULL,
+    name                      TEXT NOT NULL UNIQUE,
     deleted_at                TIMESTAMP DEFAULT NULL,
     highly_relevant_points    NUMERIC,
     limited_relevant_points   NUMERIC,

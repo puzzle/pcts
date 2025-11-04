@@ -26,7 +26,7 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
         extends
             PersistenceCoreIT {
 
-    private final S service;
+    protected final S service;
     private final TimeZone originalTimeZone = TimeZone.getDefault();
 
     PersistenceBaseIT(S service) {
@@ -94,7 +94,7 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
     @Test
     void shouldUpdate() {
         Long id = 2L;
-        T entity = this.getAll().getFirst();
+        T entity = getModel();
         entity.setId(id);
         service.save(entity);
 

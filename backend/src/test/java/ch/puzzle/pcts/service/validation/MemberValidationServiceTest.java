@@ -1,74 +1,164 @@
 package ch.puzzle.pcts.service.validation;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-import ch.puzzle.pcts.exception.PCTSException;
-import ch.puzzle.pcts.model.error.ErrorKey;
+import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
+import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.provider.Arguments;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class MemberValidationServiceTest {
+class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, MemberValidationService> {
 
+    @Mock
+    MemberPersistenceService persistenceService;
+
+    @Spy
     @InjectMocks
-    private MemberValidationService validationService;
+    MemberValidationService service;
 
-    @DisplayName("Should be successful on validateOnGetById() when id is not null")
+    @Override
+    Member getValidModel() {
+        return createMember(EmploymentState.MEMBER, Date.valueOf(LocalDate.of(1990, 1, 1)), "Member", "Test", "MT");
+    }
+
+    @Override
+    MemberValidationService getService() {
+        return service;
+    }
+
+    private static Member createMember(EmploymentState employmentState, java.util.Date birthDate, String name,
+                                       String lastName, String abbreviation) {
+        Member m = new Member();
+        m.setEmploymentState(employmentState);
+        m.setBirthDate(birthDate);
+        m.setName(name);
+        m.setLastName(lastName);
+        m.setAbbreviation(abbreviation);
+        m.setDateOfHire(new Timestamp(0L));
+        m.setOrganisationUnit(new OrganisationUnit(1L, "Organisation Unit"));
+        return m;
+    }
+
+    static Stream<Arguments> invalidModelProvider() {
+        Date futureDate = Date.valueOf(LocalDate.now().plusDays(1));
+        Date validPastDate = Date.valueOf(LocalDate.of(1990, 1, 1));
+        String tooLongString = new String(new char[251]).replace("\0", "s");
+
+        return Stream
+                .of(Arguments
+                        .of(createMember(EmploymentState.MEMBER, validPastDate, null, "Test", "MT"),
+                            "Member.firstName must not be null."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "", "Test", "MT"),
+                                "Member.firstName must not be blank."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "  ", "Test", "MT"),
+                                "Member.firstName must not be blank."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "S", "Test", "MT"),
+                                "Member.firstName size must be between 2 and 250, given S."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "  S ", "Test", "MT"),
+                                "Member.firstName size must be between 2 and 250, given S."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, tooLongString, "Test", "MT"),
+                                String
+                                        .format("Member.firstName size must be between 2 and 250, given %s.",
+                                                tooLongString)),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", null, "MT"),
+                                "Member.lastName must not be null."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "", "MT"),
+                                "Member.lastName must not be blank."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "  ", "MT"),
+                                "Member.lastName must not be blank."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "S", "MT"),
+                                "Member.lastName size must be between 2 and 250, given S."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "  S ", "MT"),
+                                "Member.lastName size must be between 2 and 250, given S."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", tooLongString, "MT"),
+                                String
+                                        .format("Member.lastName size must be between 2 and 250, given %s.",
+                                                tooLongString)),
+                    Arguments
+                            .of(createMember(null, validPastDate, "Member", "Test", "MT"),
+                                "Member.employmentState must not be null."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "Test", null),
+                                "Member.abbreviation must not be null."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "Test", ""),
+                                "Member.abbreviation must not be blank."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "Test", "  "),
+                                "Member.abbreviation must not be blank."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "Test", "S"),
+                                "Member.abbreviation size must be between 2 and 250, given S."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "Test", "  S "),
+                                "Member.abbreviation size must be between 2 and 250, given S."),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "Test", tooLongString),
+                                String
+                                        .format("Member.abbreviation size must be between 2 and 250, given %s.",
+                                                tooLongString),
+                                Arguments
+                                        .of(createMember(EmploymentState.MEMBER, null, "Member", "Test", "MT"),
+                                            "Member.birthDate must not be null."),
+                                Arguments
+                                        .of(createMember(EmploymentState.MEMBER, futureDate, "Member", "Test", "MT"),
+                                            "Member.birthDate must be in the past, given " + futureDate + "."),
+                                Arguments
+                                        .of(createMember(EmploymentState.MEMBER, futureDate, "Member", "Test", "MT"),
+                                            "Member.birthDate must be in the past, given " + futureDate + ".")));
+    }
+
+    @DisplayName("Should call correct validate method on validateOnCreate()")
     @Test
-    void shouldBeSuccessfulOnValidateOnGetByIdWhenIdIsNotNull() {
+    void shouldCallAllMethodsOnValidateOnCreateWhenValid() {
+        Member member = getValidModel();
+
+        doNothing().when((ValidationBase<Member>) service).validateOnCreate(any());
+
+        service.validateOnCreate(member);
+
+        verify(service).validateOnCreate(member);
+        verifyNoMoreInteractions(persistenceService);
+    }
+
+    @DisplayName("Should call correct validate method on validateOnUpdate()")
+    @Test
+    void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
         Long id = 1L;
-        assertDoesNotThrow(() -> validationService.validateOnGetById(id));
-    }
+        Member member = getValidModel();
 
-    @DisplayName("Should throw exception on validateOnGetById() when id is null")
-    @Test
-    void shouldThrowExceptionOnValidateOnGetByIdWhenIdIsNull() {
-        Long id = null;
+        doNothing().when((ValidationBase<Member>) service).validateOnUpdate(anyLong(), any());
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnGetById(id));
+        service.validateOnUpdate(id, member);
 
-        assertEquals(ErrorKey.ID_IS_NULL, exception.getErrorKey());
-    }
-
-    @DisplayName("Should be successful on validateOnDelete() when id is not null")
-    @Test
-    void shouldBeSuccessfulOnValidateOnDeleteWhenIdIsNotNull() {
-        Long id = 1L;
-        assertDoesNotThrow(() -> validationService.validateOnDelete(id));
-    }
-
-    @DisplayName("Should throw exception on validateOnDelete() when id is null")
-    @Test
-    void shouldThrowExceptionOnValidateOnDeleteWhenIdIsNull() {
-        Long id = null;
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnDelete(id));
-
-        assertEquals(ErrorKey.ID_IS_NULL, exception.getErrorKey());
-    }
-
-    @DisplayName("Should be successful on validateOnUpdate() when member id is not null")
-    @Test
-    void shouldBeSuccessfulOnValidateOnUpdateWhenMemberIdIsNotNull() {
-        assertDoesNotThrow(() -> validationService.validateOnUpdate(1L));
-    }
-
-    @DisplayName("Should throw exception on validateOnUpdate() when id is null")
-    @Test
-    void shouldThrowExceptionOnValidateOnUpdateWhenIdIsNull() {
-        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validateOnUpdate(null));
-
-        assertEquals(ErrorKey.ID_IS_NULL, exception.getErrorKey());
-    }
-
-    @DisplayName("Should be successful on validateOnCreate() when member is valid")
-    @Test
-    void shouldBeSuccessfulOnValidateOnCreateWhenMemberIsValid() {
-        Member member = new Member();
-        assertDoesNotThrow(() -> validationService.validateOnCreate(member));
+        verify(service).validateOnUpdate(id, member);
+        verifyNoMoreInteractions(persistenceService);
     }
 }
