@@ -18,8 +18,7 @@ export class ScopedTranslationService {
 
   public instant(key: string, params?: InterpolationParameters) {
     const variations = this.getStringVariations(this.i18nPrefix, key);
-    const keyList = variations.map((v) => this.getKeyList(v.prefix, v.key))
-      .flat();
+    const keyList = variations.flatMap((v) => this.getKeyList(v.prefix, v.key));
     return this.getTranslation(keyList, params);
   }
 

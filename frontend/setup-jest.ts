@@ -11,7 +11,6 @@ export const translationMock : Partial<jest.Mocked<ScopedTranslationService>> ={
     instant: jest.fn().mockImplementation((key:string)=> key)
 }
 
-
 beforeEach(() => {
     TestBed.configureTestingModule({
         imports: [],

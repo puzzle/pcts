@@ -18,7 +18,6 @@ import { lastValueFrom } from 'rxjs';
 import { registerLocaleData } from '@angular/common';
 import { provideI18nPrefix } from './shared/i18n-prefix.provider';
 
-
 registerLocaleData(localeDeCH);
 export const appConfig: ApplicationConfig = {
   providers: [
