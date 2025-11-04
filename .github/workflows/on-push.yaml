@@ -24,7 +24,7 @@ jobs:
       COMMIT_HASH: ${{ github.sha }}
 
   push-to-ghrc:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref_name == 'bug/203-fix-ghcr-deploy-workflow'
     needs:
       - e2e-tests
       - format
