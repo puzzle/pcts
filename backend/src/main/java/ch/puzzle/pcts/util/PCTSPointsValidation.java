@@ -7,13 +7,6 @@ import jakarta.validation.constraints.PositiveOrZero;
 import java.lang.annotation.*;
 
 /**
- * Validates that a numeric field representing points is not {@code null} and
- * not negative.
- * <p>
- * This composed constraint combines {@link NotNull} and {@link PositiveOrZero}
- * to ensure that a value is present and non-negative.
- * </p>
- *
  * <h3>Validation rules:</h3>
  * <ul>
  * <li>The value must not be {@code null} (reports message
@@ -21,6 +14,11 @@ import java.lang.annotation.*;
  * <li>The value must be greater than or equal to zero (reports message
  * <code>{attribute.not.negative}</code>).</li>
  * </ul>
+ *
+ * <p>
+ * This composed constraint combines {@link NotNull} and {@link PositiveOrZero}
+ * to ensure that a value is present and non-negative.
+ * </p>
  */
 @Documented
 @Constraint(validatedBy = {})
@@ -30,18 +28,9 @@ import java.lang.annotation.*;
 @PositiveOrZero(message = "{attribute.not.negative}")
 public @interface PCTSPointsValidation {
 
-    /**
-     * The default message template if validation fails.
-     */
     String message() default "{class}.{field} is not valid";
 
-    /**
-     * Allows grouping of constraints.
-     */
     Class<?>[] groups() default {};
 
-    /**
-     * Can carry metadata information about the validation.
-     */
     Class<? extends Payload>[] payload() default {};
 }
