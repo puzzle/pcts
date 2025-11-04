@@ -28,15 +28,6 @@ jobs:
       id-token: write
 
     steps:
-      - name: Verify branch
-        run: |
-          echo "Current ref: ${GITHUB_REF}"
-          echo "Current ref name: ${GITHUB_REF_NAME}"
-          if [[ "${GITHUB_REF_NAME}" != "bug/203-fix-ghcr-deploy-workflow" ]]; then
-            echo "❌ Not on bug/203-fix-ghcr-deploy-workflow branch – aborting upload."
-            exit 1
-          fi
-
       - name: Checkout repository
         uses: actions/checkout@v5
 
