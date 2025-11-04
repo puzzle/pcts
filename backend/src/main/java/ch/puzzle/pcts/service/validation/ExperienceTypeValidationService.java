@@ -28,7 +28,7 @@ public class ExperienceTypeValidationService extends ValidationBase<ExperienceTy
     public void validateOnUpdate(Long id, ExperienceType experienceType) {
         super.validateOnUpdate(id, experienceType);
         if (UniqueNameValidationUtil
-                .nameExcludingSelfAlreadyUsed(id, experienceType.getName(), persistenceService::getByName)) {
+                .nameExcludingIdAlreadyUsed(id, experienceType.getName(), persistenceService::getByName)) {
             throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.INVALID_ARGUMENT);
         }
     }

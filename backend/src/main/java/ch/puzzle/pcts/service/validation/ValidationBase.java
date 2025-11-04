@@ -23,14 +23,15 @@ public abstract class ValidationBase<T extends Model> {
     private final Validator validator;
 
     protected ValidationBase() {
-        try (ValidatorFactory factory = Validation
+        final ValidatorFactory factory = Validation
                 .byDefaultProvider()
                 .configure()
                 .messageInterpolator(new FieldAwareMessageInterpolator(Validation
                         .byDefaultProvider()
                         .configure()
                         .getDefaultMessageInterpolator()))
-                .buildValidatorFactory()) {
+                .buildValidatorFactory();
+        try (factory) {
             validator = factory.getValidator();
         }
     }

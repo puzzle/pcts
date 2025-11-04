@@ -27,7 +27,7 @@ public class RoleValidationService extends ValidationBase<Role> {
     @Override
     public void validateOnUpdate(Long id, Role role) {
         super.validateOnUpdate(id, role);
-        if (UniqueNameValidationUtil.nameExcludingSelfAlreadyUsed(id, role.getName(), persistenceService::getByName)) {
+        if (UniqueNameValidationUtil.nameExcludingIdAlreadyUsed(id, role.getName(), persistenceService::getByName)) {
             throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.INVALID_ARGUMENT);
         }
     }

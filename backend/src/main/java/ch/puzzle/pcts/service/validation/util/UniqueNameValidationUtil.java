@@ -54,8 +54,8 @@ public final class UniqueNameValidationUtil {
      * @return {@code true} if another entity (with a different ID) already uses the
      *         specified name; {@code false} otherwise
      */
-    public static <T extends Model> boolean nameExcludingSelfAlreadyUsed(Long id, String valueToFind,
-                                                                         Function<String, Optional<T>> finder) {
+    public static <T extends Model> boolean nameExcludingIdAlreadyUsed(Long id, String valueToFind,
+                                                                       Function<String, Optional<T>> finder) {
         return finder.apply(valueToFind).map(entity -> !entity.getId().equals(id)).orElse(false);
     }
 }

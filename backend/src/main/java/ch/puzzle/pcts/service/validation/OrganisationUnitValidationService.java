@@ -28,7 +28,7 @@ public class OrganisationUnitValidationService extends ValidationBase<Organisati
     public void validateOnUpdate(Long id, OrganisationUnit organisationUnit) {
         super.validateOnUpdate(id, organisationUnit);
         if (UniqueNameValidationUtil
-                .nameExcludingSelfAlreadyUsed(id, organisationUnit.getName(), persistenceService::getByName)) {
+                .nameExcludingIdAlreadyUsed(id, organisationUnit.getName(), persistenceService::getByName)) {
             throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.INVALID_ARGUMENT);
         }
     }
