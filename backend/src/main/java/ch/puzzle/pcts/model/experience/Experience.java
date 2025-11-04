@@ -5,8 +5,10 @@ import static org.apache.commons.lang3.StringUtils.trim;
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.util.PCTSStringValidation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -24,7 +26,7 @@ public class Experience implements Model {
     @JoinColumn(name = "member")
     private Member member;
 
-    @NotNull
+    @PCTSStringValidation
     private String name;
 
     private String employer;
@@ -39,6 +41,7 @@ public class Experience implements Model {
     private String comment;
 
     @NotNull
+    @PastOrPresent(message = "{attribute.date.past.present}")
     private LocalDate startDate;
 
     private LocalDate endDate;

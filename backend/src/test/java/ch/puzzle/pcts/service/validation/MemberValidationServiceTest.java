@@ -9,8 +9,6 @@ import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
-import java.sql.Date;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
@@ -34,7 +32,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
 
     @Override
     Member getValidModel() {
-        return createMember(EmploymentState.MEMBER, Date.valueOf(LocalDate.of(1990, 1, 1)), "Member", "Test", "MT");
+        return createMember(EmploymentState.MEMBER, LocalDate.EPOCH, "Member", "Test", "MT");
     }
 
     @Override
@@ -42,22 +40,22 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
         return service;
     }
 
-    private static Member createMember(EmploymentState employmentState, java.util.Date birthDate, String name,
-                                       String lastName, String abbreviation) {
+    protected static Member createMember(EmploymentState employmentState, LocalDate birthDate, String name,
+                                         String lastName, String abbreviation) {
         Member m = new Member();
         m.setEmploymentState(employmentState);
         m.setBirthDate(birthDate);
         m.setName(name);
         m.setLastName(lastName);
         m.setAbbreviation(abbreviation);
-        m.setDateOfHire(new Timestamp(0L));
+        m.setDateOfHire(LocalDate.EPOCH);
         m.setOrganisationUnit(new OrganisationUnit(1L, "Organisation Unit"));
         return m;
     }
 
     static Stream<Arguments> invalidModelProvider() {
-        Date futureDate = Date.valueOf(LocalDate.now().plusDays(1));
-        Date validPastDate = Date.valueOf(LocalDate.of(1990, 1, 1));
+        LocalDate futureDate = LocalDate.now().plusDays(1);
+        LocalDate validPastDate = LocalDate.of(1990, 1, 1);
         String tooLongString = new String(new char[251]).replace("\0", "s");
 
         return Stream

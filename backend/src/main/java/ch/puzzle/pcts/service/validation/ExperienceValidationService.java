@@ -1,28 +1,33 @@
 package ch.puzzle.pcts.service.validation;
 
+import ch.puzzle.pcts.exception.PCTSException;
+import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.experience.Experience;
-import ch.puzzle.pcts.service.persistence.ExperiencePersistenceService;
+import java.time.LocalDate;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ExperienceValidationService {
-    private final ExperiencePersistenceService persistenceService;
+public class ExperienceValidationService extends ValidationBase<Experience> {
 
-    public ExperienceValidationService(ExperiencePersistenceService persistenceService) {
-        this.persistenceService = persistenceService;
-    }
-
-    public void validateOnGetById(Long id) {
-    }
-
+    @Override
     public void validateOnCreate(Experience experience) {
-
+        super.validateOnCreate(experience);
+        validateStartDateIsBeforeEndDate(experience.getStartDate(), experience.getEndDate());
     }
 
-    public void validateOnDelete(Long id) {
-    }
-
+    @Override
     public void validateOnUpdate(Long id, Experience experience) {
+        super.validateOnUpdate(id, experience);
+        validateStartDateIsBeforeEndDate(experience.getStartDate(), experience.getEndDate());
+    }
 
+    public void validateStartDateIsBeforeEndDate(LocalDate startDate, LocalDate endDate) {
+        if (endDate != null && startDate.isAfter(endDate)) {
+            throw new PCTSException(HttpStatus.BAD_REQUEST,
+                                    "Experience.endDate must be after the startDate, given endDate: " + endDate
+                                                            + " and startDate :" + startDate + ".",
+                                    ErrorKey.INVALID_ARGUMENT);
+        }
     }
 }
