@@ -11,11 +11,11 @@ public record DegreeInputDto(
 
         @Schema(description = "The institution granting the degree.", example = "Harvard University") String institution,
 
-        @Schema(description = "Indicates whether the degree has been completed.", example = "true") Boolean completed,
+        @Schema(description = "Indicates whether the degree has been completed.", example = "true", requiredMode = Schema.RequiredMode.REQUIRED) Boolean completed,
 
-        @Schema(description = "The unique identifier of the type of degree.", example = "3") Long typeId,
+        @Schema(description = "The unique identifier of the type of degree.", example = "3", requiredMode = Schema.RequiredMode.REQUIRED) Long typeId,
 
-        @Schema(description = "The start date of the degree program.", example = "2019-09-01") Date startDate,
+        @Schema(description = "The start date of the degree program.", example = "2019-09-01", requiredMode = Schema.RequiredMode.REQUIRED) Date startDate,
 
         @Schema(description = "The end date of the degree program.", example = "2021-06-30") Date endDate,
 

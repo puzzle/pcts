@@ -5,6 +5,7 @@ import static org.apache.commons.lang3.StringUtils.trim;
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.util.PCTSStringValidation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.sql.Timestamp;
@@ -21,23 +22,25 @@ public class Degree implements Model {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member")
-    @NotNull
+    @NotNull(message = "{attribute.not.null}")
     private Member member;
 
-    @NotNull
+    @NotNull(message = "{attribute.not.null}")
+    @PCTSStringValidation
     private String name;
 
+    @PCTSStringValidation
     private String institution;
 
-    @NotNull
+    @NotNull(message = "{attribute.not.null}")
     private Boolean completed;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type")
-    @NotNull
+    @NotNull(message = "{attribute.not.null}")
     private DegreeType type;
 
-    @NotNull
+    @NotNull(message = "{attribute.not.null}")
     private Date startDate;
 
     private Date endDate;
