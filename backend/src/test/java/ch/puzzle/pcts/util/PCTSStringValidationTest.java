@@ -15,7 +15,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class BasicStringValidationTest {
+class PCTSStringValidationTest {
     DummyValidationService service = new DummyValidationService();
 
     @DisplayName("Should throw error when string is null")
