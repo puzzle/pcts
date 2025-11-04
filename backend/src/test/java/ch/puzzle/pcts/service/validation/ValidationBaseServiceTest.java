@@ -17,9 +17,14 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
 
     S service;
 
-    abstract T getModel();
+    abstract T getValidModel();
 
     abstract S getService();
+
+    @BeforeEach
+    void setUp() {
+        service = getService();
+    }
 
     /**
      * Provides invalid model configurations for parameterized tests.
@@ -45,11 +50,6 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
         assertEquals(expectedMessage, exception.getReason());
     }
 
-    @BeforeEach
-    void setUp() {
-        service = getService();
-    }
-
     @DisplayName("Should be successful validateOnGet() when Id is valid")
     @Test
     void validateOnGetByIdShouldBeSuccessfulWhenIdIsValid() {
@@ -71,7 +71,7 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
     @DisplayName("Should be successful when validateOnCreate() model is Valid")
     @Test
     void validateOnCreateShouldBeSuccessfulWhenModelIsValid() {
-        T model = getModel();
+        T model = getValidModel();
 
         assertDoesNotThrow(() -> service.validateOnCreate(model));
     }
@@ -79,7 +79,7 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
     @DisplayName("Should throw exception validateOnCreate() when Id is not null")
     @Test
     void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
-        T model = getModel();
+        T model = getValidModel();
         model.setId(1L);
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnCreate(model));
@@ -101,7 +101,7 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
     @Test
     void validateOnUpdateShouldBeSuccessfulWhenIdAndModelIsValid() {
         Long id = 1L;
-        T model = getModel();
+        T model = getValidModel();
         model.setId(1L);
 
         assertDoesNotThrow(() -> service.validateOnUpdate(id, model));
@@ -111,7 +111,7 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
     @Test
     void validateOnUpdateShouldThrowExceptionWhenIdIsNull() {
         Long id = null;
-        T model = getModel();
+        T model = getValidModel();
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnUpdate(id, model));
 
@@ -134,7 +134,7 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
     @Test
     void validateOnUpdateShouldThrowExceptionWhenIdHasChanged() {
         Long id = 1L;
-        T model = getModel();
+        T model = getValidModel();
         model.setId(2L);
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnUpdate(id, model));

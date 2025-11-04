@@ -30,7 +30,7 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
     private ExperienceTypePersistenceService persistenceService;
 
     @Override
-    ExperienceType getModel() {
+    ExperienceType getValidModel() {
         return new ExperienceType(null,
                                   "Experience Type",
                                   BigDecimal.valueOf(7.5),
@@ -99,7 +99,7 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
     @DisplayName("Should throw exception on validateOnCreate() when name already exists")
     @Test
     void shouldThrowExceptionOnValidateOnCreateWhenNameAlreadyExists() {
-        ExperienceType experienceType = getModel();
+        ExperienceType experienceType = getValidModel();
 
         when(persistenceService.getByName(experienceType.getName())).thenReturn(Optional.of(new ExperienceType()));
 
@@ -113,8 +113,8 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExists() {
         Long id = 1L;
-        ExperienceType experienceType = getModel();
-        ExperienceType newExperienceType = getModel();
+        ExperienceType experienceType = getValidModel();
+        ExperienceType newExperienceType = getValidModel();
         experienceType.setId(2L);
 
         when(persistenceService.getByName(newExperienceType.getName())).thenReturn(Optional.of(experienceType));
@@ -129,7 +129,7 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
     @DisplayName("Should call correct validate method on validateOnCreate()")
     @Test
     void shouldCallAllMethodsOnValidateOnCreateWhenValid() {
-        ExperienceType experienceType = getModel();
+        ExperienceType experienceType = getValidModel();
 
         ExperienceTypeValidationService spyService = spy(service);
         doNothing().when((ValidationBase<ExperienceType>) spyService).validateOnCreate(any());
@@ -144,7 +144,7 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
     @Test
     void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
         Long id = 1L;
-        ExperienceType experienceType = getModel();
+        ExperienceType experienceType = getValidModel();
 
         ExperienceTypeValidationService spyService = spy(service);
         doNothing().when((ValidationBase<ExperienceType>) spyService).validateOnUpdate(anyLong(), any());

@@ -24,7 +24,7 @@ class TagValidationServiceTest extends ValidationBaseServiceTest<Tag, TagValidat
     TagValidationService validationService;
 
     @Override
-    Tag getModel() {
+    Tag getValidModel() {
         return createTag("Tag");
     }
 
@@ -56,7 +56,7 @@ class TagValidationServiceTest extends ValidationBaseServiceTest<Tag, TagValidat
     @DisplayName("Should call correct validate method on validateOnCreate()")
     @Test
     void shouldCallAllMethodsOnValidateOnCreateWhenValid() {
-        Tag tag = getModel();
+        Tag tag = getValidModel();
 
         TagValidationService spyService = spy(service);
         doNothing().when((ValidationBase<Tag>) spyService).validateOnCreate(any());
@@ -71,7 +71,7 @@ class TagValidationServiceTest extends ValidationBaseServiceTest<Tag, TagValidat
     @Test
     void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
         Long id = 1L;
-        Tag tag = getModel();
+        Tag tag = getValidModel();
 
         TagValidationService spyService = spy(service);
         doNothing().when((ValidationBase<Tag>) spyService).validateOnUpdate(anyLong(), any());

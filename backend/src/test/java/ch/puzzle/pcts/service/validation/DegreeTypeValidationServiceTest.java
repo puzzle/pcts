@@ -30,7 +30,7 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
     private DegreeTypePersistenceService persistenceService;
 
     @Override
-    DegreeType getModel() {
+    DegreeType getValidModel() {
         return new DegreeType(null,
                               "Degree Type",
                               BigDecimal.valueOf(7.5),
@@ -97,7 +97,7 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
     @DisplayName("Should throw exception on validateOnCreate() when name already exists")
     @Test
     void shouldThrowExceptionOnValidateOnCreateWhenNameAlreadyExists() {
-        DegreeType degreeType = getModel();
+        DegreeType degreeType = getValidModel();
 
         when(persistenceService.getByName(degreeType.getName())).thenReturn(Optional.of(new DegreeType()));
 
@@ -111,8 +111,8 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExists() {
         Long id = 1L;
-        DegreeType degreeType = getModel();
-        DegreeType newDegreeType = getModel();
+        DegreeType degreeType = getValidModel();
+        DegreeType newDegreeType = getValidModel();
         degreeType.setId(2L);
 
         when(persistenceService.getByName(newDegreeType.getName())).thenReturn(Optional.of(degreeType));
@@ -126,7 +126,7 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
     @DisplayName("Should call correct validate method on validateOnCreate()")
     @Test
     void shouldCallAllMethodsOnValidateOnCreateWhenValid() {
-        DegreeType degreeType = getModel();
+        DegreeType degreeType = getValidModel();
 
         DegreeTypeValidationService spyService = spy(service);
         doNothing().when((ValidationBase<DegreeType>) spyService).validateOnCreate(any());
@@ -141,7 +141,7 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
     @Test
     void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
         Long id = 1L;
-        DegreeType degreeType = getModel();
+        DegreeType degreeType = getValidModel();
 
         DegreeTypeValidationService spyService = spy(service);
         doNothing().when((ValidationBase<DegreeType>) spyService).validateOnUpdate(anyLong(), any());

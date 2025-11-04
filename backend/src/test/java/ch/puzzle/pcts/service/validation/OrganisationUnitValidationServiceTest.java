@@ -31,7 +31,7 @@ class OrganisationUnitValidationServiceTest
     private OrganisationUnitValidationService service;
 
     @Override
-    OrganisationUnit getModel() {
+    OrganisationUnit getValidModel() {
         return new OrganisationUnit(null, "Organisation Unit");
     }
 
@@ -70,7 +70,7 @@ class OrganisationUnitValidationServiceTest
     @DisplayName("Should throw exception on validateOnCreate() when name already exists")
     @Test
     void shouldThrowExceptionOnValidateOnCreateWhenNameAlreadyExists() {
-        OrganisationUnit organisationUnit = getModel();
+        OrganisationUnit organisationUnit = getValidModel();
 
         when(persistenceService.getByName(organisationUnit.getName())).thenReturn(Optional.of(new OrganisationUnit()));
 
@@ -84,8 +84,8 @@ class OrganisationUnitValidationServiceTest
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExists() {
         Long id = 1L;
-        OrganisationUnit newOrganisationUnit = getModel();
-        OrganisationUnit organisationUnit = getModel();
+        OrganisationUnit newOrganisationUnit = getValidModel();
+        OrganisationUnit organisationUnit = getValidModel();
         organisationUnit.setId(2L);
 
         when(persistenceService.getByName(newOrganisationUnit.getName())).thenReturn(Optional.of(organisationUnit));
@@ -100,7 +100,7 @@ class OrganisationUnitValidationServiceTest
     @DisplayName("Should call correct validate method on validateOnCreate()")
     @Test
     void shouldCallAllMethodsOnValidateOnCreateWhenValid() {
-        OrganisationUnit organisationUnit = getModel();
+        OrganisationUnit organisationUnit = getValidModel();
 
         OrganisationUnitValidationService spyService = spy(service);
         doNothing().when((ValidationBase<OrganisationUnit>) spyService).validateOnCreate(any());
@@ -115,7 +115,7 @@ class OrganisationUnitValidationServiceTest
     @Test
     void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
         Long id = 1L;
-        OrganisationUnit organisationUnit = getModel();
+        OrganisationUnit organisationUnit = getValidModel();
 
         OrganisationUnitValidationService spyService = spy(service);
         doNothing().when((ValidationBase<OrganisationUnit>) spyService).validateOnUpdate(anyLong(), any());

@@ -38,7 +38,7 @@ class UniqueNameValidationUtilTest {
         when(mockModel.getId()).thenReturn(2L);
 
         boolean result = UniqueNameValidationUtil
-                .nameExcludingSelfAlreadyUsed(1L, "Duplicate", name -> Optional.of(mockModel));
+                .nameExcludingIdAlreadyUsed(1L, "Duplicate", name -> Optional.of(mockModel));
 
         assertTrue(result);
     }
@@ -49,7 +49,7 @@ class UniqueNameValidationUtilTest {
         when(mockModel.getId()).thenReturn(1L);
 
         boolean result = UniqueNameValidationUtil
-                .nameExcludingSelfAlreadyUsed(1L, "SameName", name -> Optional.of(mockModel));
+                .nameExcludingIdAlreadyUsed(1L, "SameName", name -> Optional.of(mockModel));
 
         assertFalse(result);
     }
@@ -58,7 +58,7 @@ class UniqueNameValidationUtilTest {
     @DisplayName("Should return false when no entity found")
     void shouldReturnFalseWhenNoEntityFound() {
         boolean result = UniqueNameValidationUtil
-                .nameExcludingSelfAlreadyUsed(1L, "NonExistent", name -> Optional.empty());
+                .nameExcludingIdAlreadyUsed(1L, "NonExistent", name -> Optional.empty());
 
         assertFalse(result);
     }

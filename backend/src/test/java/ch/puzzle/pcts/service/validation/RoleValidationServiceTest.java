@@ -32,7 +32,7 @@ class RoleValidationServiceTest extends ValidationBaseServiceTest<Role, RoleVali
     RoleValidationService validationService;
 
     @Override
-    Role getModel() {
+    Role getValidModel() {
         return createRole("Role");
     }
 
@@ -65,7 +65,7 @@ class RoleValidationServiceTest extends ValidationBaseServiceTest<Role, RoleVali
     @DisplayName("Should throw exception on validateOnCreate() when name already exists")
     @Test
     void shouldThrowExceptionOnValidateOnCreateWhenNameAlreadyExists() {
-        Role role = getModel();
+        Role role = getValidModel();
 
         when(persistenceService.getByName(role.getName())).thenReturn(Optional.of(new Role()));
 
@@ -79,8 +79,8 @@ class RoleValidationServiceTest extends ValidationBaseServiceTest<Role, RoleVali
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExists() {
         Long id = 1L;
-        Role newRole = getModel();
-        Role role = getModel();
+        Role newRole = getValidModel();
+        Role role = getValidModel();
         role.setId(2L);
 
         when(persistenceService.getByName(newRole.getName())).thenReturn(Optional.of(role));
@@ -94,7 +94,7 @@ class RoleValidationServiceTest extends ValidationBaseServiceTest<Role, RoleVali
     @DisplayName("Should call correct validate method on validateOnCreate()")
     @Test
     void shouldCallAllMethodsOnValidateOnCreateWhenValid() {
-        Role role = getModel();
+        Role role = getValidModel();
 
         doNothing().when((ValidationBase<Role>) validationService).validateOnCreate(any());
 
@@ -108,7 +108,7 @@ class RoleValidationServiceTest extends ValidationBaseServiceTest<Role, RoleVali
     @Test
     void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
         Long id = 1L;
-        Role role = getModel();
+        Role role = getValidModel();
 
         doNothing().when((ValidationBase<Role>) validationService).validateOnUpdate(anyLong(), any());
 

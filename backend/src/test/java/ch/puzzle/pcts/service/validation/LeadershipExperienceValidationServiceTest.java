@@ -33,7 +33,7 @@ class LeadershipExperienceValidationServiceTest
     private CertificatePersistenceService persistenceService;
 
     @Override
-    Certificate getModel() {
+    Certificate getValidModel() {
         return new Certificate(null,
                                "Leadership Experience",
                                BigDecimal.valueOf(10),
@@ -107,7 +107,7 @@ class LeadershipExperienceValidationServiceTest
     @DisplayName("Should throw exception on validateOnCreate() when name already exists")
     @Test
     void shouldThrowExceptionOnValidateOnCreateWhenNameAlreadyExists() {
-        Certificate leadershipExperience = getModel();
+        Certificate leadershipExperience = getValidModel();
 
         when(persistenceService.getByName(leadershipExperience.getName())).thenReturn(Optional.of(new Certificate()));
 
@@ -122,8 +122,8 @@ class LeadershipExperienceValidationServiceTest
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExists() {
         Long id = 1L;
-        Certificate newLeadershipExperience = getModel();
-        Certificate leadershipExperience = getModel();
+        Certificate newLeadershipExperience = getValidModel();
+        Certificate leadershipExperience = getValidModel();
         leadershipExperience.setId(2L);
 
         when(persistenceService.getByName(newLeadershipExperience.getName()))
@@ -139,7 +139,7 @@ class LeadershipExperienceValidationServiceTest
     @DisplayName("Should call correct validate method on validateOnCreate()")
     @Test
     void shouldCallAllMethodsOnValidateOnCreateWhenValid() {
-        Certificate leadershipExperience = getModel();
+        Certificate leadershipExperience = getValidModel();
 
         LeadershipExperienceValidationService spyService = spy(service);
         doNothing().when((ValidationBase<Certificate>) spyService).validateOnCreate(any());
@@ -154,7 +154,7 @@ class LeadershipExperienceValidationServiceTest
     @Test
     void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
         Long id = 1L;
-        Certificate leadershipExperience = getModel();
+        Certificate leadershipExperience = getValidModel();
 
         LeadershipExperienceValidationService spyService = spy(service);
         doNothing().when((ValidationBase<Certificate>) spyService).validateOnUpdate(anyLong(), any());

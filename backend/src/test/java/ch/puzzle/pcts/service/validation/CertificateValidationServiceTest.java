@@ -31,7 +31,7 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
     private CertificateValidationService service;
 
     @Override
-    Certificate getModel() {
+    Certificate getValidModel() {
         return new Certificate(null,
                                "Certificate",
                                BigDecimal.valueOf(10),
@@ -97,7 +97,7 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
     @DisplayName("Should throw exception on validateOnCreate() when name already exists")
     @Test
     void shouldThrowExceptionOnValidateOnCreateWhenNameAlreadyExists() {
-        Certificate leadershipExperience = getModel();
+        Certificate leadershipExperience = getValidModel();
 
         when(persistenceService.getByName(leadershipExperience.getName())).thenReturn(Optional.of(new Certificate()));
 
@@ -112,8 +112,8 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExists() {
         Long id = 1L;
-        Certificate certificate = getModel();
-        Certificate newCertificate = getModel();
+        Certificate certificate = getValidModel();
+        Certificate newCertificate = getValidModel();
         certificate.setId(2L);
 
         when(persistenceService.getByName(newCertificate.getName())).thenReturn(Optional.of(certificate));
@@ -127,7 +127,7 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
     @DisplayName("Should call correct validate method on validateOnCreate()")
     @Test
     void shouldCallAllMethodsOnValidateOnCreateWhenValid() {
-        Certificate certificate = getModel();
+        Certificate certificate = getValidModel();
 
         CertificateValidationService spyService = spy(service);
         doNothing().when((ValidationBase<Certificate>) spyService).validateOnCreate(any());
@@ -142,7 +142,7 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
     @Test
     void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
         Long id = 1L;
-        Certificate certificate = getModel();
+        Certificate certificate = getValidModel();
 
         CertificateValidationService spyService = spy(service);
         doNothing().when((ValidationBase<Certificate>) spyService).validateOnUpdate(anyLong(), any());

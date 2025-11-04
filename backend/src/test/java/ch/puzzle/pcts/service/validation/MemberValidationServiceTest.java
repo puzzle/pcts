@@ -33,7 +33,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
     MemberValidationService service;
 
     @Override
-    Member getModel() {
+    Member getValidModel() {
         return createMember(EmploymentState.MEMBER, Date.valueOf(LocalDate.of(1990, 1, 1)), "Member", "Test", "MT");
     }
 
@@ -138,7 +138,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
     @DisplayName("Should call correct validate method on validateOnCreate()")
     @Test
     void shouldCallAllMethodsOnValidateOnCreateWhenValid() {
-        Member member = getModel();
+        Member member = getValidModel();
 
         doNothing().when((ValidationBase<Member>) service).validateOnCreate(any());
 
@@ -152,7 +152,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
     @Test
     void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
         Long id = 1L;
-        Member member = getModel();
+        Member member = getValidModel();
 
         doNothing().when((ValidationBase<Member>) service).validateOnUpdate(anyLong(), any());
 
