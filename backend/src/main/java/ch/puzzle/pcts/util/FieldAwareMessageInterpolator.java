@@ -99,11 +99,10 @@ public class FieldAwareMessageInterpolator implements MessageInterpolator {
         }
 
         return resolvedTemplate
-                .replace("{errorKey}",
-                         messageTemplate.replace(".", "_").replace("{", "").replace("}", "").toUpperCase())
+                .replace("{key}", messageTemplate.replace(".", "_").replace("{", "").replace("}", "").toUpperCase())
                 .replace("{class}", className)
                 .replace("{field}", fieldName)
-                .replace("{validatedValue}", String.valueOf(context.getValidatedValue()));
+                .replace("{is}", String.valueOf(context.getValidatedValue()));
     }
 
     private String getLeafNodeName(Path path) {
