@@ -1,16 +1,18 @@
 package ch.puzzle.pcts.service.validation;
 
-import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.Model;
+import ch.puzzle.pcts.model.error.ErrorKey;
+import ch.puzzle.pcts.model.error.GenericError;
 import ch.puzzle.pcts.util.FieldAwareMessageInterpolator;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public abstract class ValidationBase<T extends Model> {
+    private static final Logger log = LoggerFactory.getLogger(ValidationBase.class);
     private final Validator validator;
 
     @Autowired
@@ -66,25 +69,25 @@ public abstract class ValidationBase<T extends Model> {
 
     public void throwExceptionWhenIdIsNull(Long i) {
         if (i == null) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST, buildGenericErrorDto("id can not be null", Map.of()));
+            throw new PCTSException(HttpStatus.BAD_REQUEST, buildGenericErrorDto(ErrorKey.VALIDATION, Map.of()));
         }
     }
 
     private void throwExceptionWhenIdHasChanged(Long id, Long modelId) {
         if (modelId != null && !Objects.equals(id, modelId)) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST, buildGenericErrorDto("id has changed", Map.of()));
+            throw new PCTSException(HttpStatus.BAD_REQUEST, buildGenericErrorDto(ErrorKey.VALIDATION, Map.of()));
         }
     }
 
     private void throwExceptionWhenIdIsNotNull(Long id) {
         if (id != null) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST, buildGenericErrorDto("id has to be null", Map.of()));
+            throw new PCTSException(HttpStatus.BAD_REQUEST, buildGenericErrorDto(ErrorKey.VALIDATION, Map.of()));
         }
     }
 
     private void throwExceptionWhenModelIsNull(T model) {
         if (model == null) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST, buildGenericErrorDto("model can not be null", Map.of()));
+            throw new PCTSException(HttpStatus.BAD_REQUEST, buildGenericErrorDto(ErrorKey.VALIDATION, Map.of()));
         }
     }
 
@@ -95,40 +98,39 @@ public abstract class ValidationBase<T extends Model> {
 
     private void processViolations(Set<ConstraintViolation<T>> violations) {
         if (!violations.isEmpty()) {
-            List<GenericErrorDto> genericErrorDtos = violations
+            List<GenericError> errors = violations
                     .stream()
-                    .map(violation -> new GenericErrorDto(getAttribute("key", violation.getMessage()),
-                                                          Map.of("test", "test")))
+                    .map(violation -> parseViolationMessage(violation.getMessage()))
                     .toList();
-            throw new PCTSException(HttpStatus.BAD_REQUEST, genericErrorDtos);
+            throw new PCTSException(HttpStatus.BAD_REQUEST, errors);
         }
     }
 
-    private static String getAttribute(String searchedAttribute, String errorMessage) {
+    private static GenericError parseViolationMessage(String message) {
+        message = message.replaceAll("\\s", "");
+        Map<String, String> valueMap = Arrays
+                .stream(message.split(","))
+                .map(entry -> entry.split("="))
+                .filter(entry -> entry.length > 1)
+                .collect(Collectors.toMap(entry -> entry[0].toLowerCase(), entry -> entry[1]));
 
-        System.out.println("error message: " + errorMessage);
+        // TODO: improve this?
 
-        if (searchedAttribute == null || searchedAttribute.isEmpty() || errorMessage == null
-            || errorMessage.isEmpty()) {
-            return null;
+        String keyName = valueMap.remove("key");
+        if (keyName == null) {
+            log.error("Validation message is missing 'key=' part: {}", message);
+            return new GenericError(ErrorKey.INTERNAL, Map.of("parseError", "Message missing 'key='"));
         }
-
-        String quotedKey = Pattern.quote(searchedAttribute);
-
-        String regex = String.format("%s\\s*=\\s*(.*?)\\s*(?:,\\s*[\\w\\.]+\\s*=|$)", quotedKey);
-
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(errorMessage);
-
-        if (matcher.find()) {
-            return matcher.group(1);
+        try {
+            ErrorKey key = ErrorKey.valueOf(keyName);
+            return new GenericError(key, valueMap);
+        } catch (IllegalArgumentException e) {
+            log.error("ErrorKey enum does not contain key '{}' from ValidationMessages.properties!", keyName, e);
+            throw new IllegalArgumentException("Invalid ErrorKey configuration: " + keyName, e);
         }
-
-        return null;
-
     }
 
-    public List<GenericErrorDto> buildGenericErrorDto(String key, Map<String, String> errors) {
-        return List.of(new GenericErrorDto(key, errors));
+    public List<GenericError> buildGenericErrorDto(ErrorKey key, Map<String, String> errors) {
+        return List.of(new GenericError(key, errors));
     }
 }

@@ -1,7 +1,6 @@
 package ch.puzzle.pcts.service.business;
 
 import ch.puzzle.pcts.exception.PCTSException;
-import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.persistence.RolePersistenceService;
 import ch.puzzle.pcts.service.validation.RoleValidationService;
@@ -25,11 +24,7 @@ public class RoleBusinessService {
 
     public Role getById(Long id) {
         validationService.validateOnGetById(id);
-        return persistenceService
-                .getById(id)
-                .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,
-                                                     "Role with id: " + id + " does not exist.",
-                                                     ErrorKey.NOT_FOUND));
+        return persistenceService.getById(id).orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND, List.of()));
     }
 
     public Role create(Role role) {
