@@ -17,6 +17,7 @@ import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
 import sortingDataAccessor from '../../../shared/utils/sortingDataAccessor';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
+import {createDefaultTableDef, GenericTableComponent} from "../../../shared/generic-table/generic-table.component";
 
 
 @Component({
@@ -34,6 +35,8 @@ import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.com
     MatButton,
     TranslatePipe,
     RouterLink,
+    ScopedTranslationPipe,
+    GenericTableComponent
     ScopedTranslationPipe,
     CrudButtonComponent
   ],
@@ -63,8 +66,6 @@ export class MemberOverviewComponent implements OnInit {
 
   dataSource: MatTableDataSource<MemberModel> = new MatTableDataSource<MemberModel>();
 
-  sort: Signal<MatSort> = viewChild.required(MatSort);
-
   members: WritableSignal<MemberModel[]> = signal([]);
 
   filteredCount: WritableSignal<number> = signal(0);
@@ -78,7 +79,6 @@ export class MemberOverviewComponent implements OnInit {
   constructor() {
     effect((): void => {
       this.dataSource.data = this.members();
-      this.dataSource.sort = this.sort();
       this.applyCombinedFilter();
     });
 
@@ -178,4 +178,6 @@ export class MemberOverviewComponent implements OnInit {
   handleAddMemberClick(): void {
     this.router.navigate(['/member/add']);
   }
+
+  protected readonly createDefaultTableDef = createDefaultTableDef;
 }

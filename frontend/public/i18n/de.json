@@ -41,6 +41,7 @@
   "MEMBER": {
     "MODEL_NAME": "Member",
     "MODEL_NAME_PLURAL": "Members",
+    "ID": "Id",
     "FIRST_NAME": "Vorname",
     "LAST_NAME": "Nachname",
     "ABBREVIATION": "Kürzel",
