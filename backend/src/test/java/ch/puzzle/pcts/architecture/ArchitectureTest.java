@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.architecture;
 
+import static ch.puzzle.pcts.architecture.CustomConditions.overrideEqualsMethod;
 import static ch.puzzle.pcts.architecture.CustomConditions.overrideHashCodeMethod;
 import static ch.puzzle.pcts.architecture.CustomConditions.overrideToStringMethod;
 import static ch.puzzle.pcts.architecture.CustomConditions.trimAssignedStringFields;
@@ -238,6 +239,7 @@ class ArchitectureTest {
                 .beAnnotatedWith(Entity.class)
                 .andShould()
                 .implement(Model.class)
+                .andShould(overrideEqualsMethod)
                 .andShould(overrideHashCodeMethod)
                 .andShould(overrideToStringMethod);
 
