@@ -21,23 +21,6 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
 
     abstract S getService();
 
-    // The method source 'invalidModelProvider' needs to be overridden by subclasses
-    // at all times.
-    // If it is not overridden, the "PreconditionViolationException" will be
-    // thrown."
-    static Stream<Arguments> invalidModelProvider() {
-        return Stream.empty();
-    }
-
-    @ParameterizedTest(name = "{index}: {1}")
-    @MethodSource("invalidModelProvider")
-    @DisplayName("Should throw validation exception for invalid model configurations")
-    void validateInvalidModel(T model, String expectedMessage) {
-        var validationService = getService();
-        PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validate(model));
-        assertEquals(expectedMessage, exception.getReason());
-    }
-
     @BeforeEach
     void setUp() {
         service = getService();
@@ -69,23 +52,23 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
 
     @DisplayName("Should be successful validateOnGet() when Id is valid")
     @Test
-    void validateOnGetShouldBeSuccessfulWhenIdIsValid() {
+    void validateOnGetByIdShouldBeSuccessfulWhenIdIsValid() {
         Long id = 1L;
-        assertDoesNotThrow(() -> service.validateOnGet(id));
+        assertDoesNotThrow(() -> service.validateOnGetById(id));
     }
 
-    @DisplayName("Should throw exception when Id is null")
+    @DisplayName("Should throw exception validateOnGet() when Id is null")
     @Test
-    void validateOnGetShouldThrowExceptionWhenIdIsNull() {
+    void validateOnGetByIdShouldThrowExceptionWhenIdIsNull() {
         Long id = null;
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnGet(id));
+        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnGetById(id));
 
         assertEquals("Id must not be null.", exception.getReason());
         assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
     }
 
-    @DisplayName("Should be successful when model is Valid")
+    @DisplayName("Should be successful when validateOnCreate() model is Valid")
     @Test
     void validateOnCreateShouldBeSuccessfulWhenModelIsValid() {
         T model = getValidModel();

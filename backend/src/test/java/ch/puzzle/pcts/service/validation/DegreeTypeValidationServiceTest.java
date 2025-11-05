@@ -21,7 +21,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class DegreeTypeValidationServiceTest {
+class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeType, DegreeTypeValidationService> {
+
+    @InjectMocks
+    DegreeTypeValidationService service;
 
     @Mock
     private DegreeTypePersistenceService persistenceService;

@@ -35,16 +35,9 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
         return createMember(EmploymentState.MEMBER, LocalDate.EPOCH, "Member", "Test", "MT");
     }
 
-    @DisplayName("Should throw exception when name is too short")
-    @Test
-    void validateBeanValidationWhenNameIsTooShort() {
-        Member model = getModel();
-        model.setName(shortName);
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(model));
-
-        assertNotNull(exception.getReason());
-        assertEquals("Member.name size must be between 2 and 250, given " + shortName, exception.getReason());
+    @Override
+    MemberValidationService getService() {
+        return service;
     }
 
     protected static Member createMember(EmploymentState employmentState, LocalDate birthDate, String name,

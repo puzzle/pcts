@@ -6,7 +6,7 @@ import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.util.PCTSPointsValidation;
 import ch.puzzle.pcts.util.PCTSStringValidation;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;

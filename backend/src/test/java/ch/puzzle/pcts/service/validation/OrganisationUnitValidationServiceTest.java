@@ -72,11 +72,9 @@ class OrganisationUnitValidationServiceTest
     void shouldThrowExceptionOnValidateOnCreateWhenNameAlreadyExists() {
         OrganisationUnit organisationUnit = getValidModel();
 
-        when(persistenceService.getByName("Existing Organisation unit"))
-                .thenReturn(Optional.of(new OrganisationUnit()));
+        when(persistenceService.getByName(organisationUnit.getName())).thenReturn(Optional.of(new OrganisationUnit()));
 
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> validationService.validateOnCreate(organisationUnit));
+        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnCreate(organisationUnit));
 
         assertEquals("Name already exists", exception.getReason());
         assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
