@@ -2,9 +2,7 @@ package ch.puzzle.pcts.service.validation;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.model.degree.Degree;
 import ch.puzzle.pcts.model.degreetype.DegreeType;
@@ -27,11 +25,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, DegreeValidationService> {
-    @InjectMocks
-    private DegreeValidationService degreeValidationService;
 
     @Mock
     private DegreePersistenceService degreePersistenceService;
+
+    @InjectMocks
+    private DegreeValidationService service;
 
     private Long id;
 
@@ -62,7 +61,7 @@ public class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degre
 
         return Degree.Builder
                 .builder()
-                .withId(id)
+                .withId(null)
                 .withMember(member)
                 .withName("Degree 1")
                 .withInstitution("Institution 1")
@@ -144,11 +143,12 @@ public class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degre
     void shouldCallAllMethodsOnValidateOnCreateWhenValid() {
         Degree degree = getValidModel();
 
-        doNothing().when((ValidationBase<Degree>) service).validateOnCreate(any());
+        DegreeValidationService degreeValidationService = spy(service);
+        doNothing().when((ValidationBase<Degree>) degreeValidationService).validateOnCreate(any());
 
-        service.validateOnCreate(degree);
+        degreeValidationService.validateOnCreate(degree);
 
-        verify(service).validateOnCreate(degree);
+        verify(degreeValidationService).validateOnCreate(degree);
         verifyNoMoreInteractions(degreePersistenceService);
     }
 
@@ -158,11 +158,12 @@ public class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degre
         Long id = 1L;
         Degree degree = getValidModel();
 
-        doNothing().when((ValidationBase<Degree>) service).validateOnUpdate(anyLong(), any());
+        DegreeValidationService degreeValidationService = spy(service);
+        doNothing().when((ValidationBase<Degree>) degreeValidationService).validateOnUpdate(anyLong(), any());
 
-        service.validateOnUpdate(id, degree);
+        degreeValidationService.validateOnUpdate(id, degree);
 
-        verify(service).validateOnUpdate(id, degree);
+        verify(degreeValidationService).validateOnUpdate(id, degree);
         verifyNoMoreInteractions(degreePersistenceService);
     }
 }
