@@ -1,11 +1,11 @@
-import { Component, effect, inject, OnInit, Signal, signal, viewChild, WritableSignal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { MemberService } from '../member.service';
 import { MemberModel } from '../member.model';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatSortModule } from '@angular/material/sort';
 import { DatePipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
@@ -17,13 +17,17 @@ import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
 import sortingDataAccessor from '../../../shared/utils/sortingDataAccessor';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
-import {createDefaultTableDef, GenericTableComponent} from "../../../shared/generic-table/generic-table.component";
+import {
+  GenericTableComponent
+} from '../../../shared/generic-table/generic-table.component';
+import { GenericTableDataSource, TableColumnDef } from '../../../shared/generic-table/GenericTableDataSource';
 
 
 @Component({
   selector: 'app-member-overview',
   standalone: true,
-  providers: [DatePipe],
+  providers: [DatePipe,
+    ScopedTranslationPipe],
   imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -48,6 +52,8 @@ export class MemberOverviewComponent implements OnInit {
 
   private readonly datePipe: DatePipe = inject(DatePipe);
 
+  private readonly translatePIpe: ScopedTranslationPipe = inject(ScopedTranslationPipe);
+
   private readonly router = inject(Router);
 
   private readonly route = inject(ActivatedRoute);
@@ -56,17 +62,26 @@ export class MemberOverviewComponent implements OnInit {
 
   protected readonly GLOBAL_DATE_FORMAT = GLOBAL_DATE_FORMAT;
 
-  displayedColumns: string[] = [
-    'first_name',
-    'last_name',
-    'birth_date',
-    'organisation_unit',
-    'employment_state'
+  members: WritableSignal<MemberModel[]> = signal([]);
+
+  protected columns: TableColumnDef<MemberModel>[] = [
+    { columnName: 'name',
+      getValue: (e) => e.firstName + ' ' + e.lastName,
+      type: 'calculated' },
+    { field: 'birthDate',
+      type: 'field',
+      pipes: [{ pipe: this.datePipe,
+        params: this.GLOBAL_DATE_FORMAT }] },
+    { columnName: 'organisationUnit',
+      type: 'calculated',
+      getValue: (e) => e.organisationUnit.name },
+    { field: 'employmentState',
+      type: 'field',
+      pipes: [{ pipe: this.translatePIpe,
+        params: { prefix: 'EMPLOYMENT_STATUS_VALUES.' } }] }
   ];
 
-  dataSource: MatTableDataSource<MemberModel> = new MatTableDataSource<MemberModel>();
-
-  members: WritableSignal<MemberModel[]> = signal([]);
+  dataSource: GenericTableDataSource<MemberModel> = new GenericTableDataSource<MemberModel>(this.columns, this.members());
 
   filteredCount: WritableSignal<number> = signal(0);
 
@@ -178,6 +193,4 @@ export class MemberOverviewComponent implements OnInit {
   handleAddMemberClick(): void {
     this.router.navigate(['/member/add']);
   }
-
-  protected readonly createDefaultTableDef = createDefaultTableDef;
 }

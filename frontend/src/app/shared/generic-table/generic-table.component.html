@@ -3,27 +3,27 @@
         [dataSource]="this.dataSource()"
         class="table table-striped table-hover member-table m-0"
         matSort
-        [matSortActive]="this.columns()[0]"
+        [matSortActive]="this.columnNames()[0]"
         matSortDirection="asc"
         data-testid="member-table"
 >
 
-    @for (col of tableDefDefault(); track col.field) {
-        <ng-container [matColumnDef]="col.field.toString()">
-            <th mat-header-cell *matHeaderCellDef [mat-sort-header]="col.field.toString()">
-                {{caseFormatter.camelToSnake(col.field.toString()) | scopedTranslation}}
+    @for (col of columns(); track col.columnName) {
+        <ng-container [matColumnDef]="col.columnName">
+            <th mat-header-cell *matHeaderCellDef [mat-sort-header]="col.columnName">
+                {{getFieldI18nKey(col) | scopedTranslation}}
             </th>
             <td mat-cell *matCellDef="let entity" data-testid="member-name">
-                {{col?.getValue(entity)}}
+                {{getDisplayValue(col, entity)}}
             </td>
         </ng-container>
     }
 
 
-    <tr class="h-25" mat-header-row *matHeaderRowDef="this.columns(); sticky: true"></tr>
+    <tr class="h-25" mat-header-row *matHeaderRowDef="this.columnNames(); sticky: true"></tr>
     <tr
             mat-row
-            *matRowDef="let row; columns: this.columns();"
+            *matRowDef="let row; columns: this.columnNames();"
             data-testid="member-row"
     ></tr>
 
