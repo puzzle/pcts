@@ -1,6 +1,8 @@
 package ch.puzzle.pcts.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 import ch.puzzle.pcts.dto.degree.DegreeDto;
@@ -8,8 +10,10 @@ import ch.puzzle.pcts.dto.degree.DegreeInputDto;
 import ch.puzzle.pcts.dto.degreetype.DegreeTypeDto;
 import ch.puzzle.pcts.dto.member.MemberDto;
 import ch.puzzle.pcts.dto.organisationunit.OrganisationUnitDto;
+import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.degree.Degree;
 import ch.puzzle.pcts.model.degreetype.DegreeType;
+import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
@@ -22,6 +26,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.HttpStatus;
 
 public class DegreeMapperTest {
     private DegreeMapper mapper;
@@ -223,6 +228,48 @@ public class DegreeMapperTest {
         assertEquals("Institution 2", second.institution());
         assertEquals(false, second.completed());
         assertEquals("Comment 2", second.comment());
+    }
+
+    @DisplayName("Should throw exception when member id is invalid")
+    @Test
+    void shouldThrowExceptionWhenMemberIdIsInvalid() {
+        DegreeInputDto invalidInput = new DegreeInputDto(999L,
+                                                         "Degree Invalid",
+                                                         "Institution X",
+                                                         true,
+                                                         degreeTypeId,
+                                                         commonDate,
+                                                         commonDate,
+                                                         "Invalid Member");
+
+        // mock the behavior
+        when(mapper.memberBusinessService.getById(anyLong()))
+                .thenThrow(new PCTSException(HttpStatus.NOT_FOUND,
+                                             "Member with id: " + invalidInput.memberId() + " does not exist.",
+                                             ErrorKey.NOT_FOUND));
+
+        assertThrows(PCTSException.class, () -> mapper.fromDto(invalidInput));
+    }
+
+    @DisplayName("Should throw exception when degree type id is invalid")
+    @Test
+    void shouldThrowExceptionWhenDegreeTypeIdIsInvalid() {
+        DegreeInputDto invalidInput = new DegreeInputDto(memberId,
+                                                         "Degree Invalid",
+                                                         "Institution X",
+                                                         true,
+                                                         999L,
+                                                         commonDate,
+                                                         commonDate,
+                                                         "Invalid Degree Type");
+
+        // mock the behavior
+        when(mapper.degreeTypeBusinessService.getById(anyLong()))
+                .thenThrow(new PCTSException(HttpStatus.NOT_FOUND,
+                                             "DegreeType with id: " + invalidInput.typeId() + " does not exist.",
+                                             ErrorKey.NOT_FOUND));
+
+        assertThrows(PCTSException.class, () -> mapper.fromDto(invalidInput));
     }
 
 }
