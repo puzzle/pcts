@@ -7,6 +7,8 @@ import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.util.PCTSStringValidation;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
@@ -21,7 +23,7 @@ public class Experience implements Model {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotNull(message = "{attribute.not.null}")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member")
     private Member member;
@@ -31,16 +33,18 @@ public class Experience implements Model {
 
     private String employer;
 
+    @Min(value = 0, message = "{attribute.min.value}")
+    @Max(value = 110, message = "{attribute.max.value}")
     private int percent;
 
-    @NotNull
+    @NotNull(message = "{attribute.not.null}")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "experience_type")
     private ExperienceType type;
 
     private String comment;
 
-    @NotNull
+    @NotNull(message = "{attribute.not.null}")
     @PastOrPresent(message = "{attribute.date.past.present}")
     private LocalDate startDate;
 

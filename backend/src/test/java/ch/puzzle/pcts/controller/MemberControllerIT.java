@@ -41,17 +41,23 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(MemberController.class)
 class MemberControllerIT {
 
+    @MockitoBean
+    private MemberBusinessService service;
+
+    @MockitoBean
+    private MemberMapper mapper;
+
+    @Autowired
+    private MockMvc mvc;
+
     private static final String BASEURL = "/api/v1/members";
+
     private final ObjectMapper objectMapper = new ObjectMapper()
             .registerModule(new JavaTimeModule())
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
     private final LocalDate commonDate = LocalDate.of(2019, 8, 4);
-    @MockitoBean
-    private MemberBusinessService service;
-    @MockitoBean
-    private MemberMapper mapper;
-    @Autowired
-    private MockMvc mvc;
+
     private Member member;
     private MemberInputDto requestDto;
     private MemberDto expectedDto;

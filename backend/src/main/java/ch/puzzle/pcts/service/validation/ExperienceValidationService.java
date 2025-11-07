@@ -26,7 +26,7 @@ public class ExperienceValidationService extends ValidationBase<Experience> {
         if (endDate != null && startDate.isAfter(endDate)) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
                                     "Experience.endDate must be after the startDate, given endDate: " + endDate
-                                                            + " and startDate :" + startDate + ".",
+                                                            + " and startDate: " + startDate + ".",
                                     ErrorKey.INVALID_ARGUMENT);
         }
     }

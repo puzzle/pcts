@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS experience
 (
     id              BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY NOT NULL,
-    member          BIGINT NOT NULL,
+    member_id          BIGINT NOT NULL,
     name            TEXT NOT NULL,
     employer        TEXT,
     percent         INTEGER NOT NULL,

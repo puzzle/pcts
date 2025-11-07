@@ -62,7 +62,7 @@ VALUES
     ('Member 1', 'Test', 'M1', 'MEMBER', '2021-07-15', '1999-08-10', 1),
     ('Member 2', 'Test', 'M2', 'MEMBER', '2020-06-01', '1998-03-03', 2);
 
-INSERT INTO experience (member, name, employer, percent, experience_type, comment, start_date, end_date, deleted_at)
+INSERT INTO experience (member_id, name, employer, percent, experience_type, comment, start_date, end_date, deleted_at)
 VALUES
     (1, 'Experience 1', 'Employer 1', 100, 1, 'Comment test 1', '2021-07-15', '2022-07-15', '1970-01-01 00:00:00'),
     (1, 'Experience 2', 'Employer 2', 80, 2, 'Comment test 2', '2022-07-16', '2023-07-15', NULL),

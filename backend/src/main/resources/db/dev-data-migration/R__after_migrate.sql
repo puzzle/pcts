@@ -91,7 +91,7 @@ VALUES
     ( 'Mara', 'Becker', 'MB', 'EX_MEMBER', '2023-01-09', '2001-08-05', 1),
     ( 'Felix', 'Hofmann', 'FH', 'EX_MEMBER', '2021-09-17', '2000-02-29', 1);
 
-INSERT INTO experience (member, name, employer, percent, experience_type, comment, start_date, end_date)
+INSERT INTO experience (member_id, name, employer, percent, experience_type, comment, start_date, end_date)
 VALUES
     (1, 'Software Engineer', 'TechNova Solutions', 100, 1, 'Worked on backend APIs and DevOps tasks.', '2019-03-01', '2022-07-31'),
     (2, 'Marketing Intern', 'BrightMedia Group', 80, 2, 'Assisted in content strategy and social media analytics.', '2021-06-01', '2021-08-31'),

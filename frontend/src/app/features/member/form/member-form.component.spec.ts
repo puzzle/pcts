@@ -10,11 +10,8 @@ import {
   organisationUnit4
 } from '../../../shared/test/test-data';
 import { provideRouter, Router } from '@angular/router';
-import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MemberFormComponent } from './member-form.component';
 import { provideTranslateService } from '@ngx-translate/core';
-import { LuxonDateAdapter } from '@angular/material-luxon-adapter';
-import { CUSTOM_LUXON_DATE_FORMATS } from '../../../shared/format/date-format';
 
 describe('MemberFormComponent', () => {
   let component: MemberFormComponent;
@@ -47,15 +44,15 @@ describe('MemberFormComponent', () => {
       imports: [MemberFormComponent],
       providers: [
         provideRouter([]),
-        { provide: DateAdapter,
-          useClass: LuxonDateAdapter },
-        { provide: MAT_DATE_FORMATS,
-          useValue: CUSTOM_LUXON_DATE_FORMATS },
         provideTranslateService(),
-        { provide: MemberService,
-          useValue: memberServiceMock },
-        { provide: OrganisationUnitService,
-          useValue: organisationUnitServiceMock }
+        {
+          provide: MemberService,
+          useValue: memberServiceMock
+        },
+        {
+          provide: OrganisationUnitService,
+          useValue: organisationUnitServiceMock
+        }
       ]
     })
       .compileComponents();
