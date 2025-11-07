@@ -11,6 +11,7 @@ import ch.puzzle.pcts.mapper.LeadershipExperienceMapper;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificate.CertificateType;
 import ch.puzzle.pcts.service.business.LeadershipExperienceBusinessService;
+import ch.puzzle.pcts.util.JsonDtoMatcher;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.util.List;
@@ -83,11 +84,7 @@ class LeadershipExperienceControllerIT {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].id").value(expectedDto.id()))
-                .andExpect(jsonPath("$[0].name").value(expectedDto.name()))
-                .andExpect(jsonPath("$[0].points").value(expectedDto.points()))
-                .andExpect(jsonPath("$[0].comment").value(expectedDto.comment()))
-                .andExpect(jsonPath("$.[0].certificateType").value(expectedDto.certificateType().name()));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$[0]"));
 
         verify(service, times(1)).getAll();
         verify(mapper, times(1)).toDto(any(List.class));
@@ -102,11 +99,7 @@ class LeadershipExperienceControllerIT {
         mvc
                 .perform(get(BASEURL + "/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.name").value("LeadershipExperience 1"))
-                .andExpect(jsonPath("$.points").value(new BigDecimal("5.5")))
-                .andExpect(jsonPath("$.comment").value("This is LeadershipExperience 1"))
-                .andExpect(jsonPath("$.certificateType").value("LEADERSHIP_TRAINING"));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
         verify(service, times(1)).getById((1L));
         verify(mapper, times(1)).toDto(any(Certificate.class));
@@ -125,10 +118,7 @@ class LeadershipExperienceControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.name").value("LeadershipExperience 1"))
-                .andExpect(jsonPath("$.points").value(new BigDecimal("5.5")))
-                .andExpect(jsonPath("$.certificateType").value(expectedDto.certificateType().name()));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
         verify(mapper, times(1)).fromDto(any(LeadershipExperienceDto.class));
         verify(service, times(1)).create(any(Certificate.class));
@@ -148,10 +138,7 @@ class LeadershipExperienceControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.name").value("LeadershipExperience 1"))
-                .andExpect(jsonPath("$.points").value(new BigDecimal("5.5")))
-                .andExpect(jsonPath("$.certificateType").value(expectedDto.certificateType().name()));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
         verify(mapper, times(1)).fromDto(any(LeadershipExperienceDto.class));
         verify(service, times(1)).update(any(Long.class), any(Certificate.class));

@@ -1,14 +1,12 @@
-package ch.puzzle.pcts.model.experience;
+package ch.puzzle.pcts.model.degree;
 
 import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
-import ch.puzzle.pcts.model.experiencetype.ExperienceType;
+import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.util.PCTSStringValidation;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
@@ -17,32 +15,30 @@ import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
 
 @Entity
-@SQLDelete(sql = "UPDATE experience SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
-public class Experience implements Model {
+@SQLDelete(sql = "UPDATE degree SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
+public class Degree implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "{attribute.not.null}")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
+    @NotNull(message = "{attribute.not.null}")
     private Member member;
 
     @PCTSStringValidation
     private String name;
 
-    private String employer;
-
-    @Min(value = 0, message = "{attribute.min.value}")
-    @Max(value = 110, message = "{attribute.max.value}")
-    private int percent;
+    @PCTSStringValidation
+    private String institution;
 
     @NotNull(message = "{attribute.not.null}")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "experience_type")
-    private ExperienceType type;
+    private Boolean completed;
 
-    private String comment;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "type")
+    @NotNull(message = "{attribute.not.null}")
+    private DegreeType type;
 
     @NotNull(message = "{attribute.not.null}")
     @PastOrPresent(message = "{attribute.date.past.present}")
@@ -50,22 +46,25 @@ public class Experience implements Model {
 
     private LocalDate endDate;
 
+    private String comment;
+
     @Column(name = "deleted_at", insertable = false, updatable = false)
     private LocalDateTime deletedAt;
 
-    private Experience(Builder builder) {
+    private Degree(Builder builder) {
         this.id = builder.id;
         this.member = builder.member;
         this.name = trim(builder.name);
-        this.employer = trim(builder.employer);
-        this.percent = builder.percent;
+        this.institution = trim(builder.institution);
+        this.completed = builder.completed;
         this.type = builder.type;
-        this.comment = trim(builder.comment);
         this.startDate = builder.startDate;
         this.endDate = builder.endDate;
+        this.comment = trim(builder.comment);
+        this.deletedAt = null;
     }
 
-    public Experience() {
+    public Degree() {
     }
 
     @Override
@@ -94,36 +93,28 @@ public class Experience implements Model {
         this.name = trim(name);
     }
 
-    public String getEmployer() {
-        return employer;
+    public String getInstitution() {
+        return institution;
     }
 
-    public void setEmployer(String employer) {
-        this.employer = trim(employer);
+    public void setInstitution(String institution) {
+        this.institution = trim(institution);
     }
 
-    public int getPercent() {
-        return percent;
+    public Boolean getCompleted() {
+        return completed;
     }
 
-    public void setPercent(int percent) {
-        this.percent = percent;
+    public void setCompleted(Boolean completed) {
+        this.completed = completed;
     }
 
-    public ExperienceType getType() {
+    public DegreeType getType() {
         return type;
     }
 
-    public void setType(ExperienceType type) {
+    public void setType(DegreeType type) {
         this.type = type;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = trim(comment);
     }
 
     public LocalDate getStartDate() {
@@ -150,16 +141,26 @@ public class Experience implements Model {
         this.deletedAt = deletedAt;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = trim(comment);
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Experience that))
+        if (!(o instanceof Degree degree))
             return false;
-        return getPercent() == that.getPercent() && Objects.equals(getId(), that.getId())
-               && Objects.equals(getMember(), that.getMember()) && Objects.equals(getName(), that.getName())
-               && Objects.equals(getEmployer(), that.getEmployer()) && Objects.equals(getType(), that.getType())
-               && Objects.equals(getComment(), that.getComment()) && Objects.equals(getStartDate(), that.getStartDate())
-               && Objects.equals(getEndDate(), that.getEndDate())
-               && Objects.equals(getDeletedAt(), that.getDeletedAt());
+        return Objects.equals(getId(), degree.getId()) && Objects.equals(getMember(), degree.getMember())
+               && Objects.equals(getName(), degree.getName())
+               && Objects.equals(getInstitution(), degree.getInstitution())
+               && Objects.equals(getCompleted(), degree.getCompleted()) && Objects.equals(getType(), degree.getType())
+               && Objects.equals(getStartDate(), degree.getStartDate())
+               && Objects.equals(getEndDate(), degree.getEndDate())
+               && Objects.equals(getDeletedAt(), degree.getDeletedAt())
+               && Objects.equals(getComment(), degree.getComment());
     }
 
     @Override
@@ -168,32 +169,39 @@ public class Experience implements Model {
                 .hash(getId(),
                       getMember(),
                       getName(),
-                      getEmployer(),
-                      getPercent(),
+                      getInstitution(),
+                      getCompleted(),
                       getType(),
-                      getComment(),
                       getStartDate(),
                       getEndDate(),
-                      getDeletedAt());
+                      getDeletedAt(),
+                      getComment());
     }
 
     @Override
     public String toString() {
-        return "Experience{" + "id=" + id + ", member=" + member + ", name='" + name + '\'' + ", employer='" + employer
-               + '\'' + ", percent=" + percent + ", type=" + type + ", comment='" + comment + '\'' + ", startDate="
-               + startDate + ", endDate=" + endDate + ", deletedAt=" + deletedAt + '}';
+        return "Degree{" + "id=" + id + ", member=" + member + ", name='" + name + '\'' + ", institution='"
+               + institution + '\'' + ", completed=" + completed + ", type=" + type + ", startDate=" + startDate
+               + ", endDate=" + endDate + ", deletedAt=" + deletedAt + ", comment='" + comment + '\'' + '}';
     }
 
-    public static class Builder {
+    public static final class Builder {
         private Long id;
         private Member member;
         private String name;
-        private String employer;
-        private int percent;
-        private ExperienceType type;
-        private String comment;
+        private String institution;
+        private Boolean completed;
+        private DegreeType type;
         private LocalDate startDate;
         private LocalDate endDate;
+        private String comment;
+
+        private Builder() {
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
 
         public Builder withId(Long id) {
             this.id = id;
@@ -210,23 +218,18 @@ public class Experience implements Model {
             return this;
         }
 
-        public Builder withEmployer(String employer) {
-            this.employer = trim(employer);
+        public Builder withInstitution(String institution) {
+            this.institution = trim(institution);
             return this;
         }
 
-        public Builder withPercent(int percent) {
-            this.percent = percent;
+        public Builder withCompleted(Boolean completed) {
+            this.completed = completed;
             return this;
         }
 
-        public Builder withType(ExperienceType type) {
+        public Builder withType(DegreeType type) {
             this.type = type;
-            return this;
-        }
-
-        public Builder withComment(String comment) {
-            this.comment = trim(comment);
             return this;
         }
 
@@ -240,8 +243,14 @@ public class Experience implements Model {
             return this;
         }
 
-        public Experience build() {
-            return new Experience(this);
+        public Builder withComment(String comment) {
+            this.comment = trim(comment);
+            return this;
+        }
+
+        public Degree build() {
+            return new Degree(this);
         }
     }
+
 }

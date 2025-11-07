@@ -14,6 +14,7 @@ import ch.puzzle.pcts.dto.organisationunit.OrganisationUnitDto;
 import ch.puzzle.pcts.mapper.OrganisationUnitMapper;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.OrganisationUnitBusinessService;
+import ch.puzzle.pcts.util.JsonDtoMatcher;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -73,8 +74,7 @@ class OrganisationUnitControllerIT {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].id").value(expectedDto.id()))
-                .andExpect(jsonPath("$[0].name").value(expectedDto.name()));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$[0]"));
 
         verify(service, times(1)).getAll();
         verify(mapper, times(1)).toDto(any(List.class));
@@ -89,8 +89,7 @@ class OrganisationUnitControllerIT {
         mvc
                 .perform(get(BASEURL + "/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.name").value("OrganisationUnit 1"));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
         verify(service, times(1)).getById(1L);
         verify(mapper, times(1)).toDto(any(OrganisationUnit.class));
@@ -109,8 +108,7 @@ class OrganisationUnitControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.name").value("OrganisationUnit 1"));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
         verify(mapper, times(1)).fromDto(any(OrganisationUnitDto.class));
         verify(service, times(1)).create(any(OrganisationUnit.class));
@@ -130,8 +128,7 @@ class OrganisationUnitControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.name").value("OrganisationUnit 1"));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
         verify(mapper, times(1)).fromDto(any(OrganisationUnitDto.class));
         verify(service, times(1)).update(any(Long.class), any(OrganisationUnit.class));

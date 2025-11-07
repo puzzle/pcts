@@ -1,6 +1,5 @@
 package ch.puzzle.pcts.controller;
 
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -12,6 +11,7 @@ import ch.puzzle.pcts.mapper.CertificateMapper;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificate.Tag;
 import ch.puzzle.pcts.service.business.CertificateBusinessService;
+import ch.puzzle.pcts.util.JsonDtoMatcher;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.util.List;
@@ -82,12 +82,7 @@ class CertificateControllerIT {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].id").value(expectedDto.id()))
-                .andExpect(jsonPath("$[0].name").value(expectedDto.name()))
-                .andExpect(jsonPath("$[0].points").value(expectedDto.points()))
-                .andExpect(jsonPath("$[0].comment").value(expectedDto.comment()))
-                .andExpect(jsonPath("$[0].tags.length()").value(expectedDto.tags().size()))
-                .andExpect(jsonPath("$.[0].tags").value(containsInAnyOrder("Tag 1", "Tag 2")));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$[0]"));
 
         verify(service, times(1)).getAll();
         verify(mapper, times(1)).toDto(any(List.class));
@@ -102,12 +97,7 @@ class CertificateControllerIT {
         mvc
                 .perform(get(BASEURL + "/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.name").value("Certificate 1"))
-                .andExpect(jsonPath("$.points").value(new BigDecimal("5.5")))
-                .andExpect(jsonPath("$.comment").value("This is Certificate 1"))
-                .andExpect(jsonPath("$.tags.length()").value(expectedDto.tags().size()))
-                .andExpect(jsonPath("$.tags").value(containsInAnyOrder("Tag 1", "Tag 2")));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
         verify(service, times(1)).getById((1L));
         verify(mapper, times(1)).toDto(any(Certificate.class));
@@ -126,12 +116,7 @@ class CertificateControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.name").value("Certificate 1"))
-                .andExpect(jsonPath("$.points").value(new BigDecimal("5.5")))
-                .andExpect(jsonPath("$.comment").value("This is Certificate 1"))
-                .andExpect(jsonPath("$.tags.length()").value(expectedDto.tags().size()))
-                .andExpect(jsonPath("$.tags").value(containsInAnyOrder("Tag 1", "Tag 2")));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
         verify(mapper, times(1)).fromDto(any(CertificateDto.class));
         verify(service, times(1)).create(any(Certificate.class));
@@ -151,12 +136,7 @@ class CertificateControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.name").value("Certificate 1"))
-                .andExpect(jsonPath("$.points").value(new BigDecimal("5.5")))
-                .andExpect(jsonPath("$.comment").value("This is Certificate 1"))
-                .andExpect(jsonPath("$.tags.length()").value(expectedDto.tags().size()))
-                .andExpect(jsonPath("$.tags").value(containsInAnyOrder("Tag 1", "Tag 2")));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
         verify(mapper, times(1)).fromDto(any(CertificateDto.class));
         verify(service, times(1)).update(any(Long.class), any(Certificate.class));
