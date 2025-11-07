@@ -16,8 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/degree")
-@Tag(name = "degree", description = "Manage the degrees of members, including degree type")
+@RequestMapping("/api/v1/degrees")
+@Tag(name = "degree", description = "Manage the degrees which are associated with any one member")
 public class DegreeController {
     DegreeBusinessService businessService;
     DegreeMapper mapper;
@@ -27,7 +27,7 @@ public class DegreeController {
         this.mapper = mapper;
     }
 
-    @Operation(summary = "Create a degree")
+    @Operation(summary = "Create a degree which is associated with a member")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The degree object to be created.", required = true)
     @ApiResponse(responseCode = "201", description = "Degree created successfully.", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = DegreeDto.class)) })

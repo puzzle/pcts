@@ -51,7 +51,7 @@ public class DegreeControllerIT {
     @Autowired
     private MockMvc mvc;
 
-    private static final String BASEURL = "/api/v1/degree";
+    private static final String BASEURL = "/api/v1/degrees";
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
