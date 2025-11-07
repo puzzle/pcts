@@ -35,6 +35,15 @@ jobs:
       - name: Run unit tests
         run: npm test
 
+      - name: Publish test results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: (!cancelled())
+        with:
+          check_name: "Backend Test Results"
+          comment_mode: 'changes in failures'
+          files: |
+            backend/target/surefire-reports/*.xml
+
   backend-tests:
     runs-on: ubuntu-24.04
     defaults:
@@ -55,11 +64,11 @@ jobs:
       - name: Use Maven to run unit and integration tests
         run: mvn clean verify
 
-      - name: Publish Test Results
+      - name: Publish test results
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: (!cancelled())
         with:
           check_name: "Backend Test Results"
-          comment_mode: 'failures'
+          comment_mode: 'changes in failures'
           files: |
             backend/target/surefire-reports/*.xml
