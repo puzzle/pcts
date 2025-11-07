@@ -21,6 +21,7 @@ public class DegreePersistenceServiceIT extends PersistenceBaseIT<Degree, Degree
     @Override
     Degree getModel() {
         OrganisationUnit organisationUnit = new OrganisationUnit(1L, "OrganisationUnit 1");
+        organisationUnit.setDeletedAt(new Timestamp(0));
 
         DegreeType degreeType = new DegreeType(1L,
                                                "Degree type 1",

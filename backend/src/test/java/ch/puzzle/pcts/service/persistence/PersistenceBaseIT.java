@@ -81,7 +81,7 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
         Optional<T> result = service.getById(id);
 
         assertThat(result).isPresent();
-        assertEquals(result.get(), entity);
+        assertEquals(entity, result.get());
     }
 
     @DisplayName("Should delete entity")
