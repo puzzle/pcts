@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 
-public class DegreeMapperTest {
+class DegreeMapperTest {
     private DegreeMapper mapper;
 
     private Member member;
