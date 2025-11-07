@@ -25,7 +25,6 @@ public class Degree implements Model {
     @NotNull(message = "{attribute.not.null}")
     private Member member;
 
-    @NotNull(message = "{attribute.not.null}")
     @PCTSStringValidation
     private String name;
 
