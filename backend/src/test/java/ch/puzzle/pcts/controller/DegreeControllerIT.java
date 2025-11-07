@@ -70,7 +70,7 @@ class DegreeControllerIT {
     private DegreeMapper degreeMapper;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         id = 1L;
         DegreeType degreeType = new DegreeType(id,
                                                "Degree Type 1",
