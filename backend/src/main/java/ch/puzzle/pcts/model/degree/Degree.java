@@ -8,7 +8,7 @@ import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.util.PCTSStringValidation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
@@ -47,7 +47,7 @@ public class Degree implements Model {
     private String comment;
 
     @Column(name = "deleted_at", insertable = false, updatable = false)
-    private Timestamp deletedAt;
+    private LocalDateTime deletedAt;
 
     private Degree(Builder builder) {
         this.id = builder.id;
@@ -131,11 +131,11 @@ public class Degree implements Model {
         this.endDate = endDate;
     }
 
-    public Timestamp getDeletedAt() {
+    public LocalDateTime getDeletedAt() {
         return deletedAt;
     }
 
-    public void setDeletedAt(Timestamp deletedAt) {
+    public void setDeletedAt(LocalDateTime deletedAt) {
         this.deletedAt = deletedAt;
     }
 
@@ -149,9 +149,8 @@ public class Degree implements Model {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass())
+        if (!(o instanceof Degree degree))
             return false;
-        Degree degree = (Degree) o;
         return Objects.equals(getId(), degree.getId()) && Objects.equals(getMember(), degree.getMember())
                && Objects.equals(getName(), degree.getName())
                && Objects.equals(getInstitution(), degree.getInstitution())

@@ -7,7 +7,7 @@ import java.util.Date;
 public record DegreeInputDto(
         @Schema(description = "The unique identifier of the member associated with the degree.", example = "1", requiredMode = Schema.RequiredMode.REQUIRED) Long memberId,
 
-        @Schema(description = "The name of the degree.", example = "Mathematics Master", requiredMode = Schema.RequiredMode.REQUIRED, minLength = 1) String name,
+        @Schema(description = "The name of the degree.", example = "Master of Science in Mathematics", requiredMode = Schema.RequiredMode.REQUIRED, minLength = 1) String name,
 
         @Schema(description = "The institution granting the degree.", example = "Harvard University") String institution,
 
