@@ -94,6 +94,6 @@ VALUES
 INSERT INTO experience (member_id, name, employer, percent, experience_type, comment, start_date, end_date)
 VALUES
     (1, 'Software Engineer', 'TechNova Solutions', 100, 1, 'Worked on backend APIs and DevOps tasks.', '2019-03-01', '2022-07-31'),
-    (2, 'Marketing Intern', 'BrightMedia Group', 80, 2, 'Assisted in content strategy and social media analytics.', '2021-06-01', '2021-08-31'),
-    (1, 'Web Developer (Freelance)', 'Freelance', 50, 3, 'Developed landing pages and optimized SEO.', '2020-02-15', '2020-12-15'),
-    (3, 'Data Analyst', 'Insight Analytics Co.', 100, 1, 'Built dashboards and performed statistical analysis.', '2018-01-10', '2021-10-05');
+    (2, 'Marketing Intern', null, 80, 2, 'Assisted in content strategy and social media analytics.', '2021-06-01', null),
+    (1, 'Web Developer (Freelance)', 'Freelance', 50, 3, null, '2020-02-15', '2020-12-15'),
+    (3, 'Data Analyst',  null, 100, 1, null, '2018-01-10', null);
