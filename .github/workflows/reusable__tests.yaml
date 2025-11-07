@@ -33,16 +33,16 @@ jobs:
         run: npm ci
 
       - name: Run unit tests
-        run: npm test
+        run: npm run test:ci
 
       - name: Publish test results
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: (!cancelled())
         with:
-          check_name: "Backend Test Results"
+          check_name: "Frontend Test Results"
           comment_mode: 'changes in failures'
           files: |
-            backend/target/surefire-reports/*.xml
+            frontend/junit.xml
 
   backend-tests:
     runs-on: ubuntu-24.04
