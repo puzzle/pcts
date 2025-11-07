@@ -73,19 +73,5 @@ VALUES
 TRUNCATE TABLE degree CASCADE;
 
 INSERT INTO degree (member_id, name, institution, completed, type, start_date, end_date, comment)
-VALUES (1,
-        'Degree 1',
-        'Institution',
-        TRUE,
-        1,
-        '2015-09-01',
-        '2020-06-01',
-        'Comment'),
-       (2,
-        'Degree 2',
-        'Institution',
-        FALSE,
-        2,
-        '2016-09-01',
-        '2019-06-30',
-        'Comment');
+VALUES (1, 'Degree 1','Institution',TRUE,1,'2015-09-01','2020-06-01','Comment'),
+       (2, 'Degree 2','Institution',FALSE,2,'2016-09-01','2019-06-30','Comment');
