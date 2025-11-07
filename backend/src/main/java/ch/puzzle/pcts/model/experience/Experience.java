@@ -25,7 +25,7 @@ public class Experience implements Model {
 
     @NotNull(message = "{attribute.not.null}")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member")
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @PCTSStringValidation
