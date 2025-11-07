@@ -8,6 +8,10 @@ on:
         type: string
         required: false
 
+permissions:
+  checks: write
+  pull-requests: write
+
 jobs:
   frontend-tests:
     runs-on: ubuntu-24.04
@@ -50,3 +54,12 @@ jobs:
 
       - name: Use Maven to run unit and integration tests
         run: mvn clean verify
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: (!cancelled())
+        with:
+          check_name: "Backend Test Results"
+          comment_mode: 'failures'
+          files: |
+            backend/target/surefire-reports/*.xml
