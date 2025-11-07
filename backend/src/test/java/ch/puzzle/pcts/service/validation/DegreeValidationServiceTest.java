@@ -24,7 +24,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, DegreeValidationService> {
+class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, DegreeValidationService> {
 
     @Mock
     private DegreePersistenceService degreePersistenceService;
@@ -155,7 +155,7 @@ public class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degre
     @DisplayName("Should call correct validate method on validateOnUpdate()")
     @Test
     void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
-        Long id = 1L;
+        id = 1L;
         Degree degree = getValidModel();
 
         DegreeValidationService degreeValidationService = spy(service);
