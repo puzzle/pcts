@@ -5,7 +5,6 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.puzzle.pcts.SpringSecurityConfig;
@@ -18,6 +17,7 @@ import ch.puzzle.pcts.model.experience.Experience;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.business.ExperienceBusinessService;
+import ch.puzzle.pcts.util.JsonDtoMatcher;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -37,7 +37,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 
 @Import(SpringSecurityConfig.class)
 @ExtendWith(MockitoExtension.class)
@@ -116,7 +115,7 @@ class ExperienceControllerIT {
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(matchesExperienceDto(expectedDto, "$[0]"));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$[0]"));
 
         verify(service, times(1)).getAll();
         verify(mapper, times(1)).toDto(any(List.class));
@@ -131,7 +130,7 @@ class ExperienceControllerIT {
         mvc
                 .perform(get(BASEURL + "/" + id).with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
-                .andExpect(matchesExperienceDto(expectedDto, "$"));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
         verify(service, times(1)).getById(id);
         verify(mapper, times(1)).toDto(any(Experience.class));
@@ -150,7 +149,7 @@ class ExperienceControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isCreated())
-                .andExpect(matchesExperienceDto(expectedDto, "$"));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
         verify(mapper, times(1)).fromDto(any(ExperienceInputDto.class));
         verify(service, times(1)).create(any(Experience.class));
@@ -170,7 +169,7 @@ class ExperienceControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
-                .andExpect(matchesExperienceDto(expectedDto, "$"));
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
         verify(mapper, times(1)).fromDto(any(ExperienceInputDto.class));
         verify(service, times(1)).update(anyLong(), any(Experience.class));
@@ -187,23 +186,5 @@ class ExperienceControllerIT {
                 .andExpect(status().isNoContent());
 
         verify(service, times(1)).delete(anyLong());
-    }
-
-    public static ResultMatcher matchesExperienceDto(ExperienceDto dto, String jsonPrefix) {
-        return result -> {
-            jsonPath(jsonPrefix + ".id").value(dto.id()).match(result);
-            jsonPath(jsonPrefix + ".name").value(dto.name()).match(result);
-            jsonPath(jsonPrefix + ".employer").value(dto.employer()).match(result);
-            jsonPath(jsonPrefix + ".percent").value(dto.percent()).match(result);
-            jsonPath(jsonPrefix + ".comment").value(dto.comment()).match(result);
-            jsonPath(jsonPrefix + ".startDate").value(dto.startDate().toString()).match(result);
-            jsonPath(jsonPrefix + ".endDate").value(dto.endDate().toString()).match(result);
-            jsonPath(jsonPrefix + ".member.id").value(dto.member().id()).match(result);
-            jsonPath(jsonPrefix + ".member.firstName").value(dto.member().firstName()).match(result);
-            jsonPath(jsonPrefix + ".member.lastName").value(dto.member().lastName()).match(result);
-            jsonPath(jsonPrefix + ".member.employmentState").value(dto.member().employmentState()).match(result);
-            jsonPath(jsonPrefix + ".type.id").value(dto.type().id()).match(result);
-            jsonPath(jsonPrefix + ".type.name").value(dto.type().name()).match(result);
-        };
     }
 }

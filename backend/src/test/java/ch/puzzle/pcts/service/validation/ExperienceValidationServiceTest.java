@@ -123,7 +123,7 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
         return service;
     }
 
-    @DisplayName("Should throw exception ValidateOnUpdate and ValidateOnCreate when endDate is before startDate")
+    @DisplayName("Should throw exception on ValidateOnUpdate and ValidateOnCreate when endDate is before startDate")
     @Test
     void shouldThrowExceptionWhenEndDateIsBeforeStartDate() {
         LocalDate today = LocalDate.now();

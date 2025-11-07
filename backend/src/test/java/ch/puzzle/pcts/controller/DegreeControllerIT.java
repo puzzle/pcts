@@ -43,7 +43,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @Import(SpringSecurityConfig.class)
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(DegreeController.class)
-public class DegreeControllerIT {
+class DegreeControllerIT {
     @MockitoBean
     private DegreeBusinessService businessService;
 
