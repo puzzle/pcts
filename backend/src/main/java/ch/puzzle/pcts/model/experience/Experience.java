@@ -53,17 +53,16 @@ public class Experience implements Model {
     @Column(name = "deleted_at", insertable = false, updatable = false)
     private LocalDateTime deletedAt;
 
-    private Experience(Long id, Member member, String name, String employer, int percent, ExperienceType type,
-                       String comment, LocalDate startDate, LocalDate endDate) {
-        this.id = id;
-        this.member = member;
-        this.name = trim(name);
-        this.employer = trim(employer);
-        this.percent = percent;
-        this.type = type;
-        this.comment = trim(comment);
-        this.startDate = startDate;
-        this.endDate = endDate;
+    private Experience(Builder builder) {
+        this.id = builder.id;
+        this.member = builder.member;
+        this.name = trim(builder.name);
+        this.employer = trim(builder.employer);
+        this.percent = builder.percent;
+        this.type = builder.type;
+        this.comment = trim(builder.comment);
+        this.startDate = builder.startDate;
+        this.endDate = builder.endDate;
     }
 
     public Experience() {
@@ -242,7 +241,7 @@ public class Experience implements Model {
         }
 
         public Experience build() {
-            return new Experience(id, member, name, employer, percent, type, comment, startDate, endDate);
+            return new Experience(this);
         }
     }
 }

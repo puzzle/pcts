@@ -20,7 +20,7 @@ import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.DegreeTypeBusinessService;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -40,7 +40,7 @@ public class DegreeMapperTest {
     private final Long degreeTypeId = 1L;
     private final Long memberId = 1L;
 
-    private final Date commonDate = new Date(0L);
+    private final LocalDate commonDate = LocalDate.EPOCH;
 
     @BeforeEach
     void setUp() {

@@ -1,7 +1,7 @@
 package ch.puzzle.pcts.dto.degree;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Schema(description = "DTO representing a degree input.")
 public record DegreeInputDto(
@@ -15,9 +15,9 @@ public record DegreeInputDto(
 
         @Schema(description = "The unique identifier of the type of degree.", example = "3", requiredMode = Schema.RequiredMode.REQUIRED) Long typeId,
 
-        @Schema(description = "The start date of the degree program.", example = "2019-09-01", requiredMode = Schema.RequiredMode.REQUIRED) Date startDate,
+        @Schema(description = "The start date of the degree program.", example = "2019-09-01", requiredMode = Schema.RequiredMode.REQUIRED) LocalDate startDate,
 
-        @Schema(description = "The end date of the degree program.", example = "2021-06-30") Date endDate,
+        @Schema(description = "The end date of the degree program.", example = "2021-06-30") LocalDate endDate,
 
         @Schema(description = "Additional comments about the degree.", example = "Graduated with honors.") String comment
 

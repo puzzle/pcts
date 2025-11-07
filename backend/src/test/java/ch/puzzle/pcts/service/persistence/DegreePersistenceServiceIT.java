@@ -7,7 +7,10 @@ import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.repository.DegreeRepository;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,7 +24,7 @@ public class DegreePersistenceServiceIT extends PersistenceBaseIT<Degree, Degree
     @Override
     Degree getModel() {
         OrganisationUnit organisationUnit = new OrganisationUnit(1L, "OrganisationUnit 1");
-        organisationUnit.setDeletedAt(new Timestamp(0));
+        organisationUnit.setDeletedAt(LocalDateTime.ofInstant(Instant.EPOCH, ZoneOffset.UTC));
 
         DegreeType degreeType = new DegreeType(1L,
                                                "Degree type 1",
@@ -36,8 +39,8 @@ public class DegreePersistenceServiceIT extends PersistenceBaseIT<Degree, Degree
                 .withLastName("Test")
                 .withEmploymentState(EmploymentState.MEMBER)
                 .withAbbreviation("M1")
-                .withDateOfHire(Timestamp.valueOf("2021-07-15 00:00:00"))
-                .withBirthDate(Timestamp.valueOf("1999-08-10 00:00:00"))
+                .withDateOfHire(LocalDate.of(2021, 7, 15))
+                .withBirthDate(LocalDate.of(1999, 8, 10))
                 .withOrganisationUnit(organisationUnit)
                 .build();
 
@@ -49,8 +52,8 @@ public class DegreePersistenceServiceIT extends PersistenceBaseIT<Degree, Degree
                 .withInstitution("Institution")
                 .withCompleted(true)
                 .withType(degreeType)
-                .withStartDate(Timestamp.valueOf("2015-09-01 00:00:00"))
-                .withEndDate(Timestamp.valueOf("2020-06-01 00:00:00"))
+                .withStartDate(LocalDate.of(2015, 9, 1))
+                .withEndDate(LocalDate.of(2020, 6, 1))
                 .withComment("Comment")
                 .build();
     }
@@ -58,7 +61,7 @@ public class DegreePersistenceServiceIT extends PersistenceBaseIT<Degree, Degree
     @Override
     List<Degree> getAll() {
         OrganisationUnit deletedOrganisationUnit = new OrganisationUnit(1L, "OrganisationUnit 1");
-        deletedOrganisationUnit.setDeletedAt(new Timestamp(0L));
+        deletedOrganisationUnit.setDeletedAt(LocalDateTime.ofInstant(Instant.EPOCH, ZoneOffset.UTC));
 
         OrganisationUnit organisationUnit2 = new OrganisationUnit(2L, "OrganisationUnit 2");
 
@@ -81,8 +84,8 @@ public class DegreePersistenceServiceIT extends PersistenceBaseIT<Degree, Degree
                 .withLastName("Test")
                 .withEmploymentState(EmploymentState.MEMBER)
                 .withAbbreviation("M1")
-                .withDateOfHire(Timestamp.valueOf("2021-07-15 00:00:00"))
-                .withBirthDate(Timestamp.valueOf("1999-08-10 00:00:00"))
+                .withDateOfHire(LocalDate.of(2021, 7, 15))
+                .withBirthDate(LocalDate.of(1999, 8, 10))
                 .withOrganisationUnit(deletedOrganisationUnit)
                 .build();
 
@@ -93,8 +96,8 @@ public class DegreePersistenceServiceIT extends PersistenceBaseIT<Degree, Degree
                 .withLastName("Test")
                 .withEmploymentState(EmploymentState.MEMBER)
                 .withAbbreviation("M2")
-                .withDateOfHire(Timestamp.valueOf("2020-06-01 00:00:00"))
-                .withBirthDate(Timestamp.valueOf("1998-03-03 00:00:00"))
+                .withDateOfHire(LocalDate.of(2020, 6, 1))
+                .withBirthDate(LocalDate.of(1998, 3, 3))
                 .withOrganisationUnit(organisationUnit2)
                 .build();
 
@@ -107,8 +110,8 @@ public class DegreePersistenceServiceIT extends PersistenceBaseIT<Degree, Degree
                         .withInstitution("Institution")
                         .withCompleted(true)
                         .withType(degreeType1)
-                        .withStartDate(Timestamp.valueOf("2015-09-01 00:00:00"))
-                        .withEndDate(Timestamp.valueOf("2020-06-01 00:00:00"))
+                        .withStartDate(LocalDate.of(2015, 9, 1))
+                        .withEndDate(LocalDate.of(2020, 6, 1))
                         .withComment("Comment")
                         .build(),
 
@@ -120,8 +123,8 @@ public class DegreePersistenceServiceIT extends PersistenceBaseIT<Degree, Degree
                             .withInstitution("Institution")
                             .withCompleted(false)
                             .withType(degreeType2)
-                            .withStartDate(Timestamp.valueOf("2016-09-01 00:00:00"))
-                            .withEndDate(Timestamp.valueOf("2019-06-30 00:00:00"))
+                            .withStartDate(LocalDate.of(2016, 9, 1))
+                            .withEndDate(LocalDate.of(2019, 6, 30))
                             .withComment("Comment")
                             .build());
     }

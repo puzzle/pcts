@@ -22,8 +22,10 @@ import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.DegreeBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -53,7 +55,9 @@ public class DegreeControllerIT {
 
     private static final String BASEURL = "/api/v1/degrees";
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper()
+            .registerModule(new JavaTimeModule())
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
     private Long id;
 
@@ -61,7 +65,7 @@ public class DegreeControllerIT {
     private DegreeDto degreeDto;
     private DegreeInputDto degreeInputDto;
 
-    private final Date commonDate = new Date(0L);
+    private final LocalDate commonDate = LocalDate.EPOCH;
     @Autowired
     private DegreeMapper degreeMapper;
 

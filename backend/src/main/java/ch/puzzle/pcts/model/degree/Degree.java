@@ -8,8 +8,9 @@ import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.util.PCTSStringValidation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
 
@@ -21,7 +22,7 @@ public class Degree implements Model {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member")
+    @JoinColumn(name = "member_id")
     @NotNull(message = "{attribute.not.null}")
     private Member member;
 
@@ -40,9 +41,10 @@ public class Degree implements Model {
     private DegreeType type;
 
     @NotNull(message = "{attribute.not.null}")
-    private Date startDate;
+    @PastOrPresent(message = "{attribute.date.past.present}")
+    private LocalDate startDate;
 
-    private Date endDate;
+    private LocalDate endDate;
 
     private String comment;
 
@@ -115,19 +117,19 @@ public class Degree implements Model {
         this.type = type;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
@@ -190,8 +192,8 @@ public class Degree implements Model {
         private String institution;
         private Boolean completed;
         private DegreeType type;
-        private Date startDate;
-        private Date endDate;
+        private LocalDate startDate;
+        private LocalDate endDate;
         private String comment;
 
         private Builder() {
@@ -231,12 +233,12 @@ public class Degree implements Model {
             return this;
         }
 
-        public Builder withStartDate(Date startDate) {
+        public Builder withStartDate(LocalDate startDate) {
             this.startDate = startDate;
             return this;
         }
 
-        public Builder withEndDate(Date endDate) {
+        public Builder withEndDate(LocalDate endDate) {
             this.endDate = endDate;
             return this;
         }
