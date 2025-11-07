@@ -63,8 +63,6 @@ class MemberControllerIT {
     private MemberInputDto requestDto;
     private MemberDto expectedDto;
     private Long id;
-    private OrganisationUnit organisationUnit;
-    private OrganisationUnitDto organisationUnitDto;
 
     @BeforeEach
     void setUp() {
