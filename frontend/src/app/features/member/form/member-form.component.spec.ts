@@ -10,7 +10,6 @@ import {
   organisationUnit4
 } from '../../../shared/test/test-data';
 import { provideRouter, Router } from '@angular/router';
-import { provideNativeDateAdapter } from '@angular/material/core';
 import { MemberFormComponent } from './member-form.component';
 import { provideTranslateService } from '@ngx-translate/core';
 
@@ -45,12 +44,15 @@ describe('MemberFormComponent', () => {
       imports: [MemberFormComponent],
       providers: [
         provideRouter([]),
-        provideNativeDateAdapter(),
         provideTranslateService(),
-        { provide: MemberService,
-          useValue: memberServiceMock },
-        { provide: OrganisationUnitService,
-          useValue: organisationUnitServiceMock }
+        {
+          provide: MemberService,
+          useValue: memberServiceMock
+        },
+        {
+          provide: OrganisationUnitService,
+          useValue: organisationUnitServiceMock
+        }
       ]
     })
       .compileComponents();

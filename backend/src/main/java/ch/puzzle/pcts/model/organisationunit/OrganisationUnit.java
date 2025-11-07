@@ -5,7 +5,7 @@ import static org.apache.commons.lang3.StringUtils.trim;
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.util.PCTSStringValidation;
 import jakarta.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
 
@@ -20,7 +20,7 @@ public class OrganisationUnit implements Model {
     private String name;
 
     @Column(name = "deleted_at", insertable = false, updatable = false)
-    private Timestamp deletedAt;
+    private LocalDateTime deletedAt;
 
     public OrganisationUnit(Long id, String name) {
         this.id = id;
@@ -46,11 +46,11 @@ public class OrganisationUnit implements Model {
         this.name = trim(name);
     }
 
-    public Timestamp getDeletedAt() {
+    public LocalDateTime getDeletedAt() {
         return deletedAt;
     }
 
-    public void setDeletedAt(Timestamp deletedAt) {
+    public void setDeletedAt(LocalDateTime deletedAt) {
         this.deletedAt = deletedAt;
     }
 
