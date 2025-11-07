@@ -167,15 +167,16 @@ class ExperienceMapperTest {
                 "Member with id: 5 does not exist.",
                 ErrorKey.NOT_FOUND));
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> mapper.fromDto(new ExperienceInputDto(
-                5L,
+        ExperienceInputDto experienceInputDto = new ExperienceInputDto(5L,
                 "Consultant",
                 "Acme Corp",
                 100,
                 typeId,
                 "No notes",
                 commonDate,
-                commonDate.plusWeeks(2))));
+                commonDate.plusWeeks(2));
+
+        PCTSException exception = assertThrows(PCTSException.class, () -> mapper.fromDto(experienceInputDto));
 
         assertEquals("Member with id: 5 does not exist.", exception.getReason());
     }
@@ -187,7 +188,7 @@ class ExperienceMapperTest {
                 "ExperienceType with id: 5 does not exist.",
                 ErrorKey.NOT_FOUND));
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> mapper.fromDto(new ExperienceInputDto(
+        ExperienceInputDto experienceInputDto = new ExperienceInputDto(
                 memberId,
                 "Consultant",
                 "Acme Corp",
@@ -195,7 +196,9 @@ class ExperienceMapperTest {
                 5L,
                 "No notes",
                 commonDate,
-                commonDate.plusWeeks(2))));
+                commonDate.plusWeeks(2));
+
+        PCTSException exception = assertThrows(PCTSException.class, () -> mapper.fromDto(experienceInputDto));
 
         assertEquals("ExperienceType with id: 5 does not exist.", exception.getReason());
     }
