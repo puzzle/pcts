@@ -137,7 +137,7 @@ class MemberCertificateControllerIT {
     @DisplayName("Should successfully get member certificate by id")
     @Test
     void shouldGetMemberCertificateById() throws Exception {
-        given(service.getById(eq(ID))).willReturn(memberCertificate);
+        given(service.getById(ID)).willReturn(memberCertificate);
         given(mapper.toDto(any(MemberCertificate.class))).willReturn(expectedDto);
 
         ResultActions result = mvc.perform(get(BASEURL + "/{id}", ID).with(csrf())).andExpect(status().isOk());
