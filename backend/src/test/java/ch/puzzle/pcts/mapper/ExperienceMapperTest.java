@@ -1,12 +1,15 @@
 package ch.puzzle.pcts.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import ch.puzzle.pcts.dto.experience.ExperienceDto;
 import ch.puzzle.pcts.dto.experience.ExperienceInputDto;
 import ch.puzzle.pcts.dto.experiencetype.ExperienceTypeDto;
 import ch.puzzle.pcts.dto.member.MemberDto;
+import ch.puzzle.pcts.exception.PCTSException;
+import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.experience.Experience;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.model.member.Member;
@@ -19,23 +22,22 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.HttpStatus;
 
 class ExperienceMapperTest {
 
+    private final LocalDate commonDate = LocalDate.of(2020, 1, 1);
+    private final Long memberId = 1L;
+    private final Long typeId = 10L;
     private ExperienceMapper mapper;
     private MemberMapper memberMapper;
     private ExperienceTypeMapper experienceTypeMapper;
     private MemberBusinessService memberBusinessService;
     private ExperienceTypeBusinessService experienceTypeBusinessService;
-
     private Member member;
     private MemberDto memberDto;
     private ExperienceType type;
     private ExperienceTypeDto typeDto;
-
-    private final LocalDate commonDate = LocalDate.of(2020, 1, 1);
-    private final Long memberId = 1L;
-    private final Long typeId = 10L;
 
     @BeforeEach
     void setUp() {
@@ -156,5 +158,45 @@ class ExperienceMapperTest {
         assertEquals(2, result.size());
         assertEquals("Role1", result.get(0).getName());
         assertEquals("Role2", result.get(1).getName());
+    }
+
+    @DisplayName("Should throw exception when member with id does not exist")
+    @Test
+    void shouldThrowExceptionWhenMemberWithIdDoesNotExist() {
+        when(memberBusinessService.getById(5L)).thenThrow(new PCTSException(HttpStatus.NOT_FOUND,
+                "Member with id: 5 does not exist.",
+                ErrorKey.NOT_FOUND));
+
+        PCTSException exception = assertThrows(PCTSException.class, () -> mapper.fromDto(new ExperienceInputDto(
+                5L,
+                "Consultant",
+                "Acme Corp",
+                100,
+                typeId,
+                "No notes",
+                commonDate,
+                commonDate.plusWeeks(2))));
+
+        assertEquals("Member with id: 5 does not exist.", exception.getReason());
+    }
+
+    @DisplayName("Should throw exception when experienceType with id does not exist")
+    @Test
+    void shouldThrowExceptionWhenExperienceTypeWithIdDoesNotExist() {
+        when(experienceTypeBusinessService.getById(5L)).thenThrow(new PCTSException(HttpStatus.NOT_FOUND,
+                "ExperienceType with id: 5 does not exist.",
+                ErrorKey.NOT_FOUND));
+
+        PCTSException exception = assertThrows(PCTSException.class, () -> mapper.fromDto(new ExperienceInputDto(
+                memberId,
+                "Consultant",
+                "Acme Corp",
+                100,
+                5L,
+                "No notes",
+                commonDate,
+                commonDate.plusWeeks(2))));
+
+        assertEquals("ExperienceType with id: 5 does not exist.", exception.getReason());
     }
 }
