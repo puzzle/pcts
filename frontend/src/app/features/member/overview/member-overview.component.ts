@@ -9,8 +9,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { DatePipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { EmploymentState } from '../../../shared/enum/employment-state.enum';
 import { debounceTime } from 'rxjs/operators';
 import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
@@ -21,6 +21,8 @@ import {
   GenericTableComponent
 } from '../../../shared/generic-table/generic-table.component';
 import { GenericTableDataSource, TableColumnDef } from '../../../shared/generic-table/GenericTableDataSource';
+import { DateTime } from 'luxon';
+import { ScopedTranslationService } from '../../../shared/services/scoped-translation.service';
 
 
 @Component({
@@ -34,11 +36,8 @@ import { GenericTableDataSource, TableColumnDef } from '../../../shared/generic-
     MatInputModule,
     MatTableModule,
     MatSortModule,
-    DatePipe,
     MatIcon,
     MatButton,
-    TranslatePipe,
-    RouterLink,
     ScopedTranslationPipe,
     GenericTableComponent
     ScopedTranslationPipe,
@@ -52,7 +51,7 @@ export class MemberOverviewComponent implements OnInit {
 
   private readonly datePipe: DatePipe = inject(DatePipe);
 
-  private readonly translatePIpe: ScopedTranslationPipe = inject(ScopedTranslationPipe);
+  private readonly scopedTranslationService: ScopedTranslationService = inject(ScopedTranslationService);
 
   private readonly router = inject(Router);
 
@@ -70,15 +69,15 @@ export class MemberOverviewComponent implements OnInit {
       type: 'calculated' },
     { field: 'birthDate',
       type: 'field',
-      pipes: [{ pipe: this.datePipe,
-        params: this.GLOBAL_DATE_FORMAT }] },
+      formatters: [(d: Date) => DateTime.fromISO(new Date(d)
+        .toISOString())
+        .toFormat(this.GLOBAL_DATE_FORMAT)] },
     { columnName: 'organisationUnit',
       type: 'calculated',
       getValue: (e) => e.organisationUnit.name },
     { field: 'employmentState',
       type: 'field',
-      pipes: [{ pipe: this.translatePIpe,
-        params: { prefix: 'EMPLOYMENT_STATUS_VALUES.' } }] }
+      formatters: [(key) => this.scopedTranslationService.instant('EMPLOYMENT_STATUS_VALUES.' + key)] }
   ];
 
   dataSource: GenericTableDataSource<MemberModel> = new GenericTableDataSource<MemberModel>(this.columns, this.members());

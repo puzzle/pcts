@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, computed, inject, input, signal } from '@angular/core';
+import { AfterViewChecked, Component, computed, effect, inject, input, signal, viewChild } from '@angular/core';
 import {
   MatCell,
   MatCellDef,
@@ -52,7 +52,13 @@ export class GenericTableComponent<T extends object> implements AfterViewChecked
 
   columnNames = computed(() => this.dataSource().processedColumns.map((e) => e.columnName));
 
-  disableDefaultColumns = input<boolean>(false);
+  sort = viewChild(MatSort);
+
+  constructor() {
+    effect(() => {
+      this.dataSource().sort = this.sort();
+    });
+  }
 
   ngAfterViewChecked(): void {
     this.entries.set(this.dataSource().data);
@@ -64,8 +70,8 @@ export class GenericTableComponent<T extends object> implements AfterViewChecked
 
   protected getDisplayValue(col: ProcessedTableColumn<T>, entity: T) {
     let value = col.getValue(entity) ?? '';
-    col.pipes.forEach((pipeData) => {
-      value = pipeData.pipe.transform(value, pipeData.params);
+    col.pipes.forEach((formatter) => {
+      value = formatter(value);
     });
     return value;
   }
