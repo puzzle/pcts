@@ -1,15 +1,11 @@
 import { MatTableDataSource } from '@angular/material/table';
-import { PipeTransform } from '@angular/core';
 
 
 interface BaseColumnDef {
-  pipes?: PipeData[];
+  formatters?: Formatter[];
 }
 
-interface PipeData {
-  pipe: PipeTransform;
-  params?: any;
-}
+type Formatter = (value: any) => any;
 
 export interface FieldColumnDef<T> extends BaseColumnDef {
   type: 'field';
@@ -28,7 +24,7 @@ export type TableColumnDef<T> = FieldColumnDef<T> | CalculatedColumnDef<T>;
 export interface ProcessedTableColumn<T> {
   columnName: string;
   getValue: (model: T) => any;
-  pipes: PipeData[];
+  pipes: Formatter[];
   i18nPrefix: string;
 }
 
@@ -48,7 +44,7 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
   public set columnDefs(definitions: TableColumnDef<T>[]) {
     this._processedColumns = definitions.map((def) => {
       const baseProcessed = {
-        pipes: def.pipes ?? [],
+        pipes: def.formatters ?? [],
         i18nPrefix: ''
       };
 
