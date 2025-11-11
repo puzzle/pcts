@@ -3,7 +3,7 @@ package ch.puzzle.pcts.service.validation;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import ch.puzzle.pcts.model.certificate.Tag;
+import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.service.persistence.TagPersistenceService;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;

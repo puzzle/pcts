@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
-import ch.puzzle.pcts.model.certificate.Tag;
+import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.service.persistence.TagPersistenceService;
 import ch.puzzle.pcts.service.validation.TagValidationService;
 import java.util.Optional;

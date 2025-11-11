@@ -1,6 +1,6 @@
 package ch.puzzle.pcts.service.business;
 
-import ch.puzzle.pcts.model.certificate.Tag;
+import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.service.persistence.TagPersistenceService;
 import ch.puzzle.pcts.service.validation.TagValidationService;
 import java.util.Set;

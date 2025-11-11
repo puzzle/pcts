@@ -12,20 +12,20 @@ VALUES
     ('OrganisationUnit 1', '1970-01-01 00:00:00'),
     ('OrganisationUnit 2', null);
 
-TRUNCATE TABLE certificate CASCADE;
+TRUNCATE TABLE certificate_type CASCADE;
 
-INSERT INTO certificate (name, points, deleted_at, comment, certificate_type)
+INSERT INTO certificate_type (name, points, deleted_at, comment, certificate_kind)
 VALUES
-    ('Certificate 1', 5.5, null, 'This is Certificate 1', 'CERTIFICATE'),
-    ('Certificate 2', 1, null, 'This is Certificate 2', 'CERTIFICATE'),
-    ('Certificate 3', 3, null, 'This is Certificate 3', 'CERTIFICATE'),
-    ('Certificate 4', 0.5, null, 'This is Certificate 4', 'CERTIFICATE');
+    ('Certificate Type 1', 5.5, null, 'This is Certificate 1', 'CERTIFICATE'),
+    ('Certificate Type 2', 1, null, 'This is Certificate 2', 'CERTIFICATE'),
+    ('Certificate Type 3', 3, null, 'This is Certificate 3', 'CERTIFICATE'),
+    ('Certificate Type 4', 0.5, null, 'This is Certificate 4', 'CERTIFICATE');
 
-INSERT INTO certificate (name, points, deleted_at, comment, certificate_type)
+INSERT INTO certificate_type (name, points, deleted_at, comment, certificate_kind)
 VALUES
-    ('LeadershipExperience 1', 5.5, null, 'This is LeadershipExperience 1', 'MILITARY_FUNCTION'),
-    ('LeadershipExperience 2', 1, null, 'This is LeadershipExperience 2', 'YOUTH_AND_SPORT'),
-    ('LeadershipExperience 3', 3, null, 'This is LeadershipExperience 3', 'LEADERSHIP_TRAINING');
+    ('LeadershipExperience Type 1', 5.5, null, 'This is LeadershipExperience 1', 'MILITARY_FUNCTION'),
+    ('LeadershipExperience Type 2', 1, null, 'This is LeadershipExperience 2', 'YOUTH_AND_SPORT'),
+    ('LeadershipExperience Type 3', 3, null, 'This is LeadershipExperience 3', 'LEADERSHIP_TRAINING');
 
 TRUNCATE TABLE experience_type CASCADE;
 
@@ -48,9 +48,9 @@ VALUES
     ('Tag 1'),
     ('Longer tag name');
 
-TRUNCATE TABLE CERTIFICATE_TAG CASCADE;
+TRUNCATE TABLE CERTIFICATE_TYPE_TAG CASCADE;
 
-INSERT INTO CERTIFICATE_TAG (CERTIFICATE_ID, TAG_ID)
+INSERT INTO CERTIFICATE_TYPE_TAG (CERTIFICATE_TYPE_ID, TAG_ID)
 VALUES
     (1, 1),
     (2, 2);

@@ -1,6 +1,6 @@
 package ch.puzzle.pcts.service.validation;
 
-import ch.puzzle.pcts.model.certificate.Tag;
+import ch.puzzle.pcts.model.certificatetype.Tag;
 import org.springframework.stereotype.Service;
 
 @Service

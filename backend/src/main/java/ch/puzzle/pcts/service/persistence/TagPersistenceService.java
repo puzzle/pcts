@@ -1,6 +1,6 @@
 package ch.puzzle.pcts.service.persistence;
 
-import ch.puzzle.pcts.model.certificate.Tag;
+import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.repository.TagRepository;
 import java.util.Optional;
 import java.util.Set;
