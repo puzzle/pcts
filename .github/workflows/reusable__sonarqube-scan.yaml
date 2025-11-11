@@ -1,13 +1,20 @@
 ---
 name: 'SonarQube Analysis'
 
-on: push
+on:
+  workflow_call:
+    inputs:
+      COMMIT_HASH:
+        type: string
+        required: false
 
 jobs:
   quality-gate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.COMMIT_HASH || github.head_ref }}
 
       - name: Set up JDK ${{ vars.JAVA_VERSION }}
         uses: actions/setup-java@v5
