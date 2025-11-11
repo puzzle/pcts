@@ -13,7 +13,7 @@ jobs:
         uses: actions/setup-java@v5
         with:
           java-version: ${{ vars.JAVA_VERSION }}
-          distribution: 'temurin'
+          distribution: ${{ vars.JAVA_DISTRIBUTION }}
           cache: 'maven'
           cache-dependency-path: |
             pom.xml
