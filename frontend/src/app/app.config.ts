@@ -20,6 +20,7 @@ import { registerLocaleData } from '@angular/common';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { errorInterceptor } from './core/error-interceptor/error-interceptor';
 import { successInterceptor } from './core/success-interceptor/success-interceptor';
+import { Settings } from 'luxon';
 
 registerLocaleData(localeDeCH);
 
@@ -56,6 +57,10 @@ export const appConfig: ApplicationConfig = {
     {
       provide: LOCALE_ID,
       useValue: 'de-CH'
-    }
+    },
+    provideAppInitializer(() => {
+      Settings.defaultLocale = inject(LOCALE_ID);
+    })
+
   ]
 };

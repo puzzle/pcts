@@ -16,6 +16,7 @@ import { MatSort, MatSortHeader } from '@angular/material/sort';
 import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
 import { CaseFormatter } from '../format/case-formatter';
 import { GenCol, GenericTableDataSource } from './GenericTableDataSource';
+import { RouterLink } from '@angular/router';
 
 
 @Component({
@@ -34,7 +35,8 @@ import { GenCol, GenericTableDataSource } from './GenericTableDataSource';
     MatTable,
     ScopedTranslationPipe,
     MatHeaderCellDef,
-    MatNoDataRow
+    MatNoDataRow,
+    RouterLink
   ],
   templateUrl: './generic-table.component.html',
   styleUrl: './generic-table.component.scss'
@@ -42,7 +44,9 @@ import { GenCol, GenericTableDataSource } from './GenericTableDataSource';
 export class GenericTableComponent<T extends object> implements AfterViewChecked {
   caseFormatter = inject(CaseFormatter);
 
-  idAttr = input.required<keyof T>();
+  idAttr = input<keyof T>();
+
+  crudBasePath = input<string>('');
 
   dataSource = input.required<GenericTableDataSource<T>>();
 
@@ -90,5 +94,15 @@ export class GenericTableComponent<T extends object> implements AfterViewChecked
       value = formatter(value);
     });
     return value;
+  }
+
+  protected getRouterLink(entity: T) {
+    const idAttr = this.idAttr();
+    if (!idAttr) {
+      return undefined;
+    }
+    return [this.crudBasePath(),
+      entity[idAttr]].filter(Boolean)
+      .join('/');
   }
 }

@@ -12,9 +12,6 @@ import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { EmploymentState } from '../../../shared/enum/employment-state.enum';
-import { debounceTime } from 'rxjs/operators';
-import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
-import sortingDataAccessor from '../../../shared/utils/sortingDataAccessor';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
 import {
@@ -23,6 +20,8 @@ import {
 import { GenCol, GenericTableDataSource } from '../../../shared/generic-table/GenericTableDataSource';
 import { DateTime } from 'luxon';
 import { ScopedTranslationService } from '../../../shared/services/scoped-translation.service';
+import { combineLatest, filter } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 
 @Component({
@@ -59,15 +58,13 @@ export class MemberOverviewComponent implements OnInit {
 
   private readonly translate = inject(TranslateService);
 
-  protected readonly GLOBAL_DATE_FORMAT = GLOBAL_DATE_FORMAT;
-
   members: WritableSignal<MemberModel[]> = signal([]);
 
   protected columns: GenCol<MemberModel>[] = [
     GenCol.fromCalculated('name', (e) => e.firstName + ' ' + e.lastName),
     GenCol.fromAttr('birthDate', [(d: Date) => DateTime.fromISO(new Date(d)
       .toISOString())
-      .toFormat(this.GLOBAL_DATE_FORMAT)]),
+      .toLocaleString(DateTime.DATE_MED)]),
     GenCol.fromCalculated('organisationUnit', (e) => e.organisationUnit.name),
     GenCol.fromAttr('employmentState', [(key) => this.scopedTranslationService.instant('EMPLOYMENT_STATUS_VALUES.' + key)])
   ];
@@ -82,6 +79,10 @@ export class MemberOverviewComponent implements OnInit {
 
   employmentStateValues: EmploymentState[] = Object.values(EmploymentState);
 
+  searchValueChanges$ = this.searchControl.valueChanges.pipe(takeUntilDestroyed(), filter(Boolean));
+
+  trackFilter = combineLatest([this.searchValueChanges$]);
+
   constructor() {
     effect((): void => {
       this.dataSource.data = this.members();
@@ -93,12 +94,6 @@ export class MemberOverviewComponent implements OnInit {
       this.activeFilters = new Set(filters.statuses);
       this.applyCombinedFilter();
     });
-
-    this.searchControl.valueChanges
-      .pipe(debounceTime(300))
-      .subscribe(() => {
-        this.applyCombinedFilter();
-      });
   }
 
   ngOnInit() {

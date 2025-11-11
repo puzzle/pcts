@@ -14,7 +14,10 @@
                 {{getFieldI18nKey(col) | scopedTranslation}}
             </th>
             <td mat-cell *matCellDef="let entity" data-testid="member-name">
-                {{getDisplayValue(col, entity)}}
+                @let hideLinkStyle = $index !== 0;
+                <a [routerLink]="getRouterLink(entity)" [class]="{'text-black': hideLinkStyle, 'text-decoration-none': hideLinkStyle}" >
+                    {{getDisplayValue(col, entity)}}
+                </a>
             </td>
         </ng-container>
     }
