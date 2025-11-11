@@ -96,12 +96,12 @@ describe('MemberOverviewComponent', () => {
     it(`should test sorting on ${sortAttribute}`, () => {
       // Is set as default so no need to sort
       if (sortAttribute != 'last-name') {
-        OverviewPage.sortAttributeAsc(sortAttribute);
+        OverviewPage.sortAttribute(sortAttribute);
       }
       OverviewPage.firstMemberRows()
         .should('contain.text', ascParam);
 
-      OverviewPage.sortAttributeDesc(sortAttribute);
+      OverviewPage.sortAttribute(sortAttribute);
       OverviewPage.firstMemberRows()
         .should('contain.text', descParam);
     });
