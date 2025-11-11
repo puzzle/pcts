@@ -52,10 +52,11 @@ export class MemberOverviewComponent implements OnInit {
   protected readonly GLOBAL_DATE_FORMAT = GLOBAL_DATE_FORMAT;
 
   displayedColumns: string[] = [
-    'name',
-    'birthDate',
+    'first_name',
+    'last_name',
+    'birth_date',
     'organisation_unit',
-    'status'
+    'employment_state'
   ];
 
   dataSource: MatTableDataSource<MemberModel> = new MatTableDataSource<MemberModel>();
