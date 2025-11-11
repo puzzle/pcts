@@ -1,8 +1,11 @@
 package ch.puzzle.pcts.architecture;
 
+import static ch.puzzle.pcts.architecture.CustomConditions.followPattern;
+import static ch.puzzle.pcts.architecture.CustomConditions.overrideEqualsMethod;
 import static ch.puzzle.pcts.architecture.CustomConditions.overrideHashCodeMethod;
 import static ch.puzzle.pcts.architecture.CustomConditions.overrideToStringMethod;
 import static ch.puzzle.pcts.architecture.CustomConditions.trimAssignedStringFields;
+import static ch.puzzle.pcts.architecture.CustomTransformers.packages;
 import static com.tngtech.archunit.base.DescribedPredicate.not;
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAPackage;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
@@ -238,6 +241,7 @@ class ArchitectureTest {
                 .beAnnotatedWith(Entity.class)
                 .andShould()
                 .implement(Model.class)
+                .andShould(overrideEqualsMethod)
                 .andShould(overrideHashCodeMethod)
                 .andShould(overrideToStringMethod);
 
@@ -319,6 +323,18 @@ class ArchitectureTest {
         return new ClassFileImporter()
                 .withImportOption(new ImportOption.DoNotIncludeTests())
                 .importPackages("ch.puzzle.pcts");
+    }
+
+    @DisplayName("All packages must contain only lowercase letters and dots, and cannot end on a dot")
+    @Test
+    void packagesMustFollowPattern() {
+        // Package must only contain a-z and dots, it also cannot end on a dot
+        final String pattern = "^[a-z.]+[a-z]$";
+        JavaClasses importedClasses = getMainSourceClasses();
+
+        ArchRule followsPatternRule = all(packages()).should(followPattern(pattern));
+
+        followsPatternRule.check(importedClasses);
     }
 
 }

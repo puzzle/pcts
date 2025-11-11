@@ -18,6 +18,22 @@ public class CustomConditions {
 
     public static final ArchCondition<JavaClass> overrideHashCodeMethod = createMethodOverrideCondition("hashCode");
 
+    public static ArchCondition<JavaPackage> followPattern(String pattern) {
+        String description = String.format("follow pattern '%s'", pattern);
+        return new ArchCondition<>(description) {
+            @Override
+            public void check(JavaPackage javaPackage, ConditionEvents events) {
+                String packageName = javaPackage.getName();
+
+                if (!packageName.matches(pattern)) {
+                    String message = String
+                            .format("Package '%s' does not follow pattern '%s'", javaPackage.getName(), pattern);
+                    events.add(SimpleConditionEvent.violated(javaPackage, message));
+                }
+            }
+        };
+    }
+
     private static ArchCondition<JavaClass> createMethodOverrideCondition(String methodName, Class<?>... parameters) {
         return new ArchCondition<>("override %s()".formatted(methodName)) {
             @Override
