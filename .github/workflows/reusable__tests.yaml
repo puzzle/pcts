@@ -60,6 +60,10 @@ jobs:
         with:
           java-version: ${{ vars.JAVA_VERSION }}
           distribution: adopt
+          cache: 'maven'
+          cache-dependency-path: |
+            pom.xml
+            backend/pom.xml
 
       - name: Use Maven to run unit and integration tests
         run: mvn clean verify

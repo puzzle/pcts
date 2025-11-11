@@ -27,6 +27,10 @@ jobs:
           distribution: adopt
           server-id: github
           settings-path: ${{ github.workspace }}
+          cache: 'maven'
+          cache-dependency-path: |
+            pom.xml
+            backend/pom.xml
 
       - name: Format backend
         run: mvn spotless:check
