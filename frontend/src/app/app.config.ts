@@ -17,6 +17,7 @@ import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
 import { lastValueFrom } from 'rxjs';
 import { registerLocaleData } from '@angular/common';
 import { provideI18nPrefix } from './shared/i18n-prefix.provider';
+import { Settings } from 'luxon';
 
 registerLocaleData(localeDeCH);
 export const appConfig: ApplicationConfig = {
@@ -48,6 +49,10 @@ export const appConfig: ApplicationConfig = {
     {
       provide: LOCALE_ID,
       useValue: 'de-CH'
-    }
+    },
+    provideAppInitializer(() => {
+      Settings.defaultLocale = inject(LOCALE_ID);
+    })
+
   ]
 };
