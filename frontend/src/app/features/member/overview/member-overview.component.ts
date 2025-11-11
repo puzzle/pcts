@@ -14,6 +14,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { EmploymentState } from '../../../shared/enum/employment-state.enum';
 import { debounceTime } from 'rxjs/operators';
 import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
+import sortingDataAccessor from '../../../shared/utils/sortingDataAccessor';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 
 
@@ -94,6 +95,8 @@ export class MemberOverviewComponent implements OnInit {
       .subscribe((members: MemberModel[]): void => {
         this.members.set(members);
       });
+
+    this.dataSource.sortingDataAccessor = sortingDataAccessor.nestedProperty;
 
     this.dataSource.filterPredicate = this.createFilterPredicate();
   }
