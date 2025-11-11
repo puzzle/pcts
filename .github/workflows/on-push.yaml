@@ -15,6 +15,14 @@ jobs:
     with:
       COMMIT_HASH: ${{ github.sha }}
 
+  sonarcube-analysis:
+    needs:
+      - format
+    uses: ./.github/workflows/reusable__sonarqube-scan.yaml
+    with:
+      COMMIT_HASH: ${{ github.sha }}
+    secrets: inherit
+
   e2e-tests:
     needs:
       - format
