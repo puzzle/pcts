@@ -29,8 +29,8 @@ If applicable, add a stacktrace to help explain your problem.
 
 **System**
  - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 135]
+ - Browser: [e.g. chrome, safari]
+ - Version: [e.g. 135]
 
 **Additional context**
 Add any other context about the problem here.

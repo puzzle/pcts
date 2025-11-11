@@ -1,10 +1,10 @@
 TRUNCATE TABLE role CASCADE;
 TRUNCATE TABLE organisation_unit CASCADE;
-TRUNCATE TABLE certificate CASCADE;
+TRUNCATE TABLE certificate_type CASCADE;
 TRUNCATE TABLE experience_type CASCADE;
 TRUNCATE TABLE degree_type CASCADE;
 TRUNCATE TABLE tag CASCADE;
-TRUNCATE TABLE CERTIFICATE_TAG CASCADE;
+TRUNCATE TABLE CERTIFICATE_TYPE_TAG CASCADE;
 TRUNCATE TABLE member CASCADE;
 TRUNCATE TABLE experience CASCADE;
 TRUNCATE TABLE degree CASCADE;
@@ -28,7 +28,7 @@ VALUES
     ('/mid');
 
 
-INSERT INTO certificate (name, points, deleted_at, comment, certificate_type)
+INSERT INTO certificate_type (name, points, deleted_at, comment, certificate_kind)
 VALUES
     ('CompTIA A+', 5.0, NULL, 'Entry-level IT certification covering hardware, software, and troubleshooting', 'CERTIFICATE'),
     ('Cisco CCNA', 7.5, '2023-06-20 14:21:27.063055', 'Cisco Certified Network Associate – networking fundamentals and routing/switching', 'CERTIFICATE'),
@@ -75,7 +75,7 @@ VALUES
     ('Berufsbildner'),
     ('GitLab 101');
 
-INSERT INTO CERTIFICATE_TAG (CERTIFICATE_ID, TAG_ID)
+INSERT INTO CERTIFICATE_TYPE_TAG (CERTIFICATE_TYPE_ID, TAG_ID)
 VALUES
     (1, 1),
     (3, 2),

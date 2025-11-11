@@ -2,7 +2,7 @@ package ch.puzzle.pcts.service.persistence;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.puzzle.pcts.model.certificate.Tag;
+import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.repository.TagRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;

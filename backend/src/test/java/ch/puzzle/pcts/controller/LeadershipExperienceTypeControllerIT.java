@@ -6,11 +6,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.puzzle.pcts.SpringSecurityConfig;
-import ch.puzzle.pcts.dto.leadership_experience.LeadershipExperienceDto;
-import ch.puzzle.pcts.mapper.LeadershipExperienceMapper;
-import ch.puzzle.pcts.model.certificate.Certificate;
-import ch.puzzle.pcts.model.certificate.CertificateType;
-import ch.puzzle.pcts.service.business.LeadershipExperienceBusinessService;
+import ch.puzzle.pcts.dto.leadershipexperiencetype.LeadershipExperienceTypeDto;
+import ch.puzzle.pcts.mapper.LeadershipExperienceTypeMapper;
+import ch.puzzle.pcts.model.certificatetype.CertificateKind;
+import ch.puzzle.pcts.model.certificatetype.CertificateType;
+import ch.puzzle.pcts.service.business.LeadershipExperienceTypeBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
@@ -31,50 +31,50 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @Import(SpringSecurityConfig.class)
 @ExtendWith(MockitoExtension.class)
-@WebMvcTest(LeadershipExperienceController.class)
-class LeadershipExperienceControllerIT {
+@WebMvcTest(LeadershipExperienceTypeController.class)
+class LeadershipExperienceTypeControllerIT {
 
     @MockitoBean
-    private LeadershipExperienceBusinessService service;
+    private LeadershipExperienceTypeBusinessService service;
 
     @MockitoBean
-    private LeadershipExperienceMapper mapper;
+    private LeadershipExperienceTypeMapper mapper;
 
     @Autowired
     private MockMvc mvc;
 
     ObjectMapper objectMapper = new ObjectMapper();
 
-    private static final String BASEURL = "/api/v1/leadership-experiences";
+    private static final String BASEURL = "/api/v1/leadership-experience-types";
 
-    private Certificate leadershipExperience;
-    private LeadershipExperienceDto requestDto;
-    private LeadershipExperienceDto expectedDto;
+    private CertificateType leadershipExperience;
+    private LeadershipExperienceTypeDto requestDto;
+    private LeadershipExperienceTypeDto expectedDto;
     private Long id;
 
     @BeforeEach
     void setUp() {
-        leadershipExperience = new Certificate(1L,
-                                               "LeadershipExperience 1",
-                                               new BigDecimal("5.5"),
-                                               "This is LeadershipExperience 1",
-                                               CertificateType.LEADERSHIP_TRAINING);
-        requestDto = new LeadershipExperienceDto(null,
-                                                 "LeadershipExperience 1",
-                                                 new BigDecimal("5.5"),
-                                                 "This is LeadershipExperience 1",
-                                                 CertificateType.LEADERSHIP_TRAINING);
-        expectedDto = new LeadershipExperienceDto(1L,
-                                                  "LeadershipExperience 1",
-                                                  new BigDecimal("5.5"),
-                                                  "This is LeadershipExperience 1",
-                                                  CertificateType.LEADERSHIP_TRAINING);
+        leadershipExperience = new CertificateType(1L,
+                                                   "LeadershipExperience Type 1",
+                                                   new BigDecimal("5.5"),
+                                                   "This is LeadershipExperience 1",
+                                                   CertificateKind.LEADERSHIP_TRAINING);
+        requestDto = new LeadershipExperienceTypeDto(null,
+                                                     "LeadershipExperience Type 1",
+                                                     new BigDecimal("5.5"),
+                                                     "This is LeadershipExperience 1",
+                                                     CertificateKind.LEADERSHIP_TRAINING);
+        expectedDto = new LeadershipExperienceTypeDto(1L,
+                                                      "LeadershipExperience Type 1",
+                                                      new BigDecimal("5.5"),
+                                                      "This is LeadershipExperience 1",
+                                                      CertificateKind.LEADERSHIP_TRAINING);
         id = 1L;
     }
 
-    @DisplayName("Should successfully get all leadershipExperiences")
+    @DisplayName("Should successfully get all leadershipExperience types")
     @Test
-    void shouldGetAllLeadershipExperiences() throws Exception {
+    void shouldGetAllLeadershipExperienceTypes() throws Exception {
         BDDMockito.given(service.getAll()).willReturn(List.of(leadershipExperience));
         BDDMockito.given(mapper.toDto(any(List.class))).willReturn(List.of(expectedDto));
 
@@ -90,11 +90,11 @@ class LeadershipExperienceControllerIT {
         verify(mapper, times(1)).toDto(any(List.class));
     }
 
-    @DisplayName("Should successfully get leadershipExperience by id")
+    @DisplayName("Should successfully get leadershipExperience type by id")
     @Test
     void shouldGetLeadershipExperienceById() throws Exception {
         BDDMockito.given(service.getById(anyLong())).willReturn(leadershipExperience);
-        BDDMockito.given(mapper.toDto(any(Certificate.class))).willReturn(expectedDto);
+        BDDMockito.given(mapper.toDto(any(CertificateType.class))).willReturn(expectedDto);
 
         mvc
                 .perform(get(BASEURL + "/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -102,15 +102,15 @@ class LeadershipExperienceControllerIT {
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
         verify(service, times(1)).getById((1L));
-        verify(mapper, times(1)).toDto(any(Certificate.class));
+        verify(mapper, times(1)).toDto(any(CertificateType.class));
     }
 
-    @DisplayName("Should successfully create new leadershipExperience")
+    @DisplayName("Should successfully create new leadershipExperience type")
     @Test
     void shouldCreateNewLeadershipExperience() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(LeadershipExperienceDto.class))).willReturn(leadershipExperience);
-        BDDMockito.given(service.create(any(Certificate.class))).willReturn(leadershipExperience);
-        BDDMockito.given(mapper.toDto(any(Certificate.class))).willReturn(expectedDto);
+        BDDMockito.given(mapper.fromDto(any(LeadershipExperienceTypeDto.class))).willReturn(leadershipExperience);
+        BDDMockito.given(service.create(any(CertificateType.class))).willReturn(leadershipExperience);
+        BDDMockito.given(mapper.toDto(any(CertificateType.class))).willReturn(expectedDto);
 
         mvc
                 .perform(post(BASEURL)
@@ -120,17 +120,17 @@ class LeadershipExperienceControllerIT {
                 .andExpect(status().isCreated())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
-        verify(mapper, times(1)).fromDto(any(LeadershipExperienceDto.class));
-        verify(service, times(1)).create(any(Certificate.class));
-        verify(mapper, times(1)).toDto(any(Certificate.class));
+        verify(mapper, times(1)).fromDto(any(LeadershipExperienceTypeDto.class));
+        verify(service, times(1)).create(any(CertificateType.class));
+        verify(mapper, times(1)).toDto(any(CertificateType.class));
     }
 
-    @DisplayName("Should successfully update leadershipExperience")
+    @DisplayName("Should successfully update leadershipExperience type")
     @Test
     void shouldUpdateLeadershipExperience() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(LeadershipExperienceDto.class))).willReturn(leadershipExperience);
-        BDDMockito.given(service.update(any(Long.class), any(Certificate.class))).willReturn(leadershipExperience);
-        BDDMockito.given(mapper.toDto(any(Certificate.class))).willReturn(expectedDto);
+        BDDMockito.given(mapper.fromDto(any(LeadershipExperienceTypeDto.class))).willReturn(leadershipExperience);
+        BDDMockito.given(service.update(any(Long.class), any(CertificateType.class))).willReturn(leadershipExperience);
+        BDDMockito.given(mapper.toDto(any(CertificateType.class))).willReturn(expectedDto);
 
         mvc
                 .perform(put(BASEURL + "/" + id)
@@ -140,12 +140,12 @@ class LeadershipExperienceControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
-        verify(mapper, times(1)).fromDto(any(LeadershipExperienceDto.class));
-        verify(service, times(1)).update(any(Long.class), any(Certificate.class));
-        verify(mapper, times(1)).toDto(any(Certificate.class));
+        verify(mapper, times(1)).fromDto(any(LeadershipExperienceTypeDto.class));
+        verify(service, times(1)).update(any(Long.class), any(CertificateType.class));
+        verify(mapper, times(1)).toDto(any(CertificateType.class));
     }
 
-    @DisplayName("Should successfully delete leadershipExperience")
+    @DisplayName("Should successfully delete leadershipExperience type")
     @Test
     void shouldDeleteLeadershipExperience() throws Exception {
         BDDMockito.willDoNothing().given(service).delete(anyLong());

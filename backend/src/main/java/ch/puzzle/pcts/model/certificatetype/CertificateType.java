@@ -1,4 +1,4 @@
-package ch.puzzle.pcts.model.certificate;
+package ch.puzzle.pcts.model.certificatetype;
 
 import static org.apache.commons.lang3.StringUtils.trim;
 
@@ -14,8 +14,8 @@ import java.util.Set;
 import org.hibernate.annotations.SQLDelete;
 
 @Entity
-@SQLDelete(sql = "UPDATE certificate SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
-public class Certificate implements Model {
+@SQLDelete(sql = "UPDATE certificate_type SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
+public class CertificateType implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,35 +29,35 @@ public class Certificate implements Model {
     private String comment;
 
     @ManyToMany(cascade = { CascadeType.MERGE })
-    @JoinTable(name = "certificate_tag", joinColumns = @JoinColumn(name = "certificate_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    @JoinTable(name = "certificate_type_tag", joinColumns = @JoinColumn(name = "certificate_type_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags;
 
     @Enumerated(EnumType.STRING)
     @NotNull(message = "{attribute.not.null}")
-    private CertificateType certificateType;
+    private CertificateKind certificateKind;
 
     @Column(name = "deleted_at", insertable = false, updatable = false)
     private LocalDateTime deletedAt;
 
-    public Certificate(Long id, String name, BigDecimal points, String comment, Set<Tag> tags,
-                       CertificateType certificateType) {
+    public CertificateType(Long id, String name, BigDecimal points, String comment, Set<Tag> tags,
+                           CertificateKind certificateKind) {
         this.id = id;
         this.name = trim(name);
         this.points = points;
         this.comment = trim(comment);
         this.tags = tags;
-        this.certificateType = certificateType;
+        this.certificateKind = certificateKind;
     }
 
-    public Certificate(Long id, String name, BigDecimal points, String comment, Set<Tag> tags) {
-        this(id, name, points, comment, tags, CertificateType.CERTIFICATE);
+    public CertificateType(Long id, String name, BigDecimal points, String comment, Set<Tag> tags) {
+        this(id, name, points, comment, tags, CertificateKind.CERTIFICATE);
     }
 
-    public Certificate(Long id, String name, BigDecimal points, String comment, CertificateType certificateType) {
-        this(id, name, points, comment, null, certificateType);
+    public CertificateType(Long id, String name, BigDecimal points, String comment, CertificateKind certificateKind) {
+        this(id, name, points, comment, null, certificateKind);
     }
 
-    public Certificate() {
+    public CertificateType() {
     }
 
     public Long getId() {
@@ -100,12 +100,12 @@ public class Certificate implements Model {
         this.tags = tags;
     }
 
-    public CertificateType getCertificateType() {
-        return certificateType;
+    public CertificateKind getCertificateKind() {
+        return certificateKind;
     }
 
-    public void setCertificateType(CertificateType certificateType) {
-        this.certificateType = certificateType;
+    public void setCertificateKind(CertificateKind certificateKind) {
+        this.certificateKind = certificateKind;
     }
 
     public LocalDateTime getDeletedAt() {
@@ -118,23 +118,23 @@ public class Certificate implements Model {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Certificate that))
+        if (!(o instanceof CertificateType that))
             return false;
         return Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName())
                && Objects.equals(getPoints(), that.getPoints()) && Objects.equals(getComment(), that.getComment())
-               && Objects.equals(getTags(), that.getTags()) && getCertificateType() == that.getCertificateType()
+               && Objects.equals(getTags(), that.getTags()) && getCertificateKind() == that.getCertificateKind()
                && Objects.equals(getDeletedAt(), that.getDeletedAt());
     }
 
     @Override
     public int hashCode() {
         return Objects
-                .hash(getId(), getName(), getPoints(), getComment(), getTags(), getCertificateType(), getDeletedAt());
+                .hash(getId(), getName(), getPoints(), getComment(), getTags(), getCertificateKind(), getDeletedAt());
     }
 
     @Override
     public String toString() {
         return "Certificate{" + "id=" + id + ", name='" + name + '\'' + ", points=" + points + ", comment='" + comment
-               + '\'' + ", tags=" + tags + ", certificateType=" + certificateType + ", deletedAt=" + deletedAt + '}';
+               + '\'' + ", tags=" + tags + ", certificateType=" + certificateKind + ", deletedAt=" + deletedAt + '}';
     }
 }

@@ -1,27 +1,27 @@
 package ch.puzzle.pcts.service.validation;
 
 import ch.puzzle.pcts.exception.PCTSException;
-import ch.puzzle.pcts.model.certificate.Certificate;
-import ch.puzzle.pcts.model.certificate.CertificateType;
+import ch.puzzle.pcts.model.certificatetype.CertificateKind;
+import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.error.ErrorKey;
-import ch.puzzle.pcts.service.persistence.CertificatePersistenceService;
+import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import ch.puzzle.pcts.service.validation.util.UniqueNameValidationUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CertificateValidationService extends ValidationBase<Certificate> {
+public class CertificateTypeValidationService extends ValidationBase<CertificateType> {
 
-    private final CertificatePersistenceService persistenceService;
+    private final CertificateTypePersistenceService persistenceService;
 
-    public CertificateValidationService(CertificatePersistenceService persistenceService) {
+    public CertificateTypeValidationService(CertificateTypePersistenceService persistenceService) {
         this.persistenceService = persistenceService;
     }
 
     @Override
-    public void validateOnUpdate(Long id, Certificate certificate) {
+    public void validateOnUpdate(Long id, CertificateType certificate) {
         super.validateOnUpdate(id, certificate);
-        validateCertificateType(certificate.getCertificateType());
+        validateCertificateKind(certificate.getCertificateKind());
         if (UniqueNameValidationUtil
                 .nameExcludingIdAlreadyUsed(id, certificate.getName(), persistenceService::getByName)) {
             throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.INVALID_ARGUMENT);
@@ -29,16 +29,16 @@ public class CertificateValidationService extends ValidationBase<Certificate> {
     }
 
     @Override
-    public void validateOnCreate(Certificate certificate) {
+    public void validateOnCreate(CertificateType certificate) {
         super.validateOnCreate(certificate);
-        validateCertificateType(certificate.getCertificateType());
+        validateCertificateKind(certificate.getCertificateKind());
         if (UniqueNameValidationUtil.nameAlreadyUsed(certificate.getName(), persistenceService::getByName)) {
             throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.INVALID_ARGUMENT);
         }
     }
 
-    public void validateCertificateType(CertificateType certificateType) {
-        if (certificateType != CertificateType.CERTIFICATE) {
+    public void validateCertificateKind(CertificateKind certificateKind) {
+        if (certificateKind != CertificateKind.CERTIFICATE) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
                                     "Certificate.CertificateType is not certificate.",
                                     ErrorKey.INVALID_ARGUMENT);

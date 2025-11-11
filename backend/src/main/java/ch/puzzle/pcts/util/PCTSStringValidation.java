@@ -37,7 +37,6 @@ import java.lang.annotation.*;
  * fundamental issue with the provided value.
  * </p>
  */
-
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

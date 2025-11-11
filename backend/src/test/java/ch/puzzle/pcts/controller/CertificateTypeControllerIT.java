@@ -6,11 +6,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.puzzle.pcts.SpringSecurityConfig;
-import ch.puzzle.pcts.dto.certificate.CertificateDto;
-import ch.puzzle.pcts.mapper.CertificateMapper;
-import ch.puzzle.pcts.model.certificate.Certificate;
-import ch.puzzle.pcts.model.certificate.Tag;
-import ch.puzzle.pcts.service.business.CertificateBusinessService;
+import ch.puzzle.pcts.dto.certificatetype.CertificateTypeDto;
+import ch.puzzle.pcts.mapper.CertificateTypeMapper;
+import ch.puzzle.pcts.model.certificatetype.CertificateType;
+import ch.puzzle.pcts.model.certificatetype.Tag;
+import ch.puzzle.pcts.service.business.CertificateTypeBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
@@ -32,48 +32,52 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @Import(SpringSecurityConfig.class)
 @ExtendWith(MockitoExtension.class)
-@WebMvcTest(CertificateController.class)
-class CertificateControllerIT {
+@WebMvcTest(CertificateTypeController.class)
+class CertificateTypeControllerIT {
 
     @MockitoBean
-    private CertificateBusinessService service;
+    private CertificateTypeBusinessService service;
 
     @MockitoBean
-    private CertificateMapper mapper;
+    private CertificateTypeMapper mapper;
 
     @Autowired
     private MockMvc mvc;
 
     ObjectMapper objectMapper = new ObjectMapper();
 
-    private static final String BASEURL = "/api/v1/certificates";
+    private static final String BASEURL = "/api/v1/certificate-types";
 
-    private Certificate certificate;
-    private CertificateDto requestDto;
-    private CertificateDto expectedDto;
+    private CertificateType certificateType;
+    private CertificateTypeDto requestDto;
+    private CertificateTypeDto expectedDto;
     private Long id;
 
     @BeforeEach
     void setUp() {
         Set<Tag> tags = Set.of(new Tag(1L, "Tag 1"), new Tag(2L, "Tag 2"));
-        certificate = new Certificate(1L, "Certificate 1", new BigDecimal("5.5"), "This is Certificate 1", tags);
-        requestDto = new CertificateDto(null,
-                                        "Certificate 1",
-                                        new BigDecimal("5.5"),
-                                        "This is Certificate 1",
-                                        tags.stream().map(Tag::getName).toList());
-        expectedDto = new CertificateDto(1L,
-                                         "Certificate 1",
-                                         new BigDecimal("5.5"),
-                                         "This is Certificate 1",
-                                         tags.stream().map(Tag::getName).toList());
+        certificateType = new CertificateType(1L,
+                                              "Certificate Type 1",
+                                              new BigDecimal("5.5"),
+                                              "This is Certificate Type 1",
+                                              tags);
+        requestDto = new CertificateTypeDto(null,
+                                            "Certificate Type 1",
+                                            new BigDecimal("5.5"),
+                                            "This is Certificate Type 1",
+                                            tags.stream().map(Tag::getName).toList());
+        expectedDto = new CertificateTypeDto(1L,
+                                             "Certificate Type 1",
+                                             new BigDecimal("5.5"),
+                                             "This is Certificate Type 1",
+                                             tags.stream().map(Tag::getName).toList());
         id = 1L;
     }
 
-    @DisplayName("Should successfully get all certificates")
+    @DisplayName("Should successfully get all certificate types")
     @Test
-    void shouldGetAllCertificates() throws Exception {
-        BDDMockito.given(service.getAll()).willReturn(List.of(certificate));
+    void shouldGetAllCertificateTypes() throws Exception {
+        BDDMockito.given(service.getAll()).willReturn(List.of(certificateType));
         BDDMockito.given(mapper.toDto(any(List.class))).willReturn(List.of(expectedDto));
 
         mvc
@@ -88,11 +92,11 @@ class CertificateControllerIT {
         verify(mapper, times(1)).toDto(any(List.class));
     }
 
-    @DisplayName("Should successfully get certificate by id")
+    @DisplayName("Should successfully get certificate type by id")
     @Test
-    void shouldGetCertificateById() throws Exception {
-        BDDMockito.given(service.getById(anyLong())).willReturn(certificate);
-        BDDMockito.given(mapper.toDto(any(Certificate.class))).willReturn(expectedDto);
+    void shouldGetCertificateTypeById() throws Exception {
+        BDDMockito.given(service.getById(anyLong())).willReturn(certificateType);
+        BDDMockito.given(mapper.toDto(any(CertificateType.class))).willReturn(expectedDto);
 
         mvc
                 .perform(get(BASEURL + "/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -100,15 +104,15 @@ class CertificateControllerIT {
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
         verify(service, times(1)).getById((1L));
-        verify(mapper, times(1)).toDto(any(Certificate.class));
+        verify(mapper, times(1)).toDto(any(CertificateType.class));
     }
 
-    @DisplayName("Should successfully create new certificate")
+    @DisplayName("Should successfully create new certificate type")
     @Test
-    void shouldCreateNewCertificate() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(CertificateDto.class))).willReturn(certificate);
-        BDDMockito.given(service.create(any(Certificate.class))).willReturn(certificate);
-        BDDMockito.given(mapper.toDto(any(Certificate.class))).willReturn(expectedDto);
+    void shouldCreateNewCertificateType() throws Exception {
+        BDDMockito.given(mapper.fromDto(any(CertificateTypeDto.class))).willReturn(certificateType);
+        BDDMockito.given(service.create(any(CertificateType.class))).willReturn(certificateType);
+        BDDMockito.given(mapper.toDto(any(CertificateType.class))).willReturn(expectedDto);
 
         mvc
                 .perform(post(BASEURL)
@@ -118,17 +122,17 @@ class CertificateControllerIT {
                 .andExpect(status().isCreated())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
-        verify(mapper, times(1)).fromDto(any(CertificateDto.class));
-        verify(service, times(1)).create(any(Certificate.class));
-        verify(mapper, times(1)).toDto(any(Certificate.class));
+        verify(mapper, times(1)).fromDto(any(CertificateTypeDto.class));
+        verify(service, times(1)).create(any(CertificateType.class));
+        verify(mapper, times(1)).toDto(any(CertificateType.class));
     }
 
-    @DisplayName("Should successfully update certificate")
+    @DisplayName("Should successfully update certificate type")
     @Test
-    void shouldUpdateCertificate() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(CertificateDto.class))).willReturn(certificate);
-        BDDMockito.given(service.update(any(Long.class), any(Certificate.class))).willReturn(certificate);
-        BDDMockito.given(mapper.toDto(any(Certificate.class))).willReturn(expectedDto);
+    void shouldUpdateCertificateType() throws Exception {
+        BDDMockito.given(mapper.fromDto(any(CertificateTypeDto.class))).willReturn(certificateType);
+        BDDMockito.given(service.update(any(Long.class), any(CertificateType.class))).willReturn(certificateType);
+        BDDMockito.given(mapper.toDto(any(CertificateType.class))).willReturn(expectedDto);
 
         mvc
                 .perform(put(BASEURL + "/" + id)
@@ -138,14 +142,14 @@ class CertificateControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
-        verify(mapper, times(1)).fromDto(any(CertificateDto.class));
-        verify(service, times(1)).update(any(Long.class), any(Certificate.class));
-        verify(mapper, times(1)).toDto(any(Certificate.class));
+        verify(mapper, times(1)).fromDto(any(CertificateTypeDto.class));
+        verify(service, times(1)).update(any(Long.class), any(CertificateType.class));
+        verify(mapper, times(1)).toDto(any(CertificateType.class));
     }
 
-    @DisplayName("Should successfully delete certificate")
+    @DisplayName("Should successfully delete certificate type")
     @Test
-    void shouldDeleteCertificate() throws Exception {
+    void shouldDeleteCertificateType() throws Exception {
         BDDMockito.willDoNothing().given(service).delete(anyLong());
 
         mvc
