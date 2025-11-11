@@ -20,7 +20,7 @@ import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.com
 import {
   GenericTableComponent
 } from '../../../shared/generic-table/generic-table.component';
-import { GenericTableDataSource, TableColumnDef } from '../../../shared/generic-table/GenericTableDataSource';
+import { GenCol, GenericTableDataSource } from '../../../shared/generic-table/GenericTableDataSource';
 import { DateTime } from 'luxon';
 import { ScopedTranslationService } from '../../../shared/services/scoped-translation.service';
 
@@ -63,21 +63,13 @@ export class MemberOverviewComponent implements OnInit {
 
   members: WritableSignal<MemberModel[]> = signal([]);
 
-  protected columns: TableColumnDef<MemberModel>[] = [
-    { columnName: 'name',
-      getValue: (e) => e.firstName + ' ' + e.lastName,
-      type: 'calculated' },
-    { field: 'birthDate',
-      type: 'field',
-      formatters: [(d: Date) => DateTime.fromISO(new Date(d)
-        .toISOString())
-        .toFormat(this.GLOBAL_DATE_FORMAT)] },
-    { columnName: 'organisationUnit',
-      type: 'calculated',
-      getValue: (e) => e.organisationUnit.name },
-    { field: 'employmentState',
-      type: 'field',
-      formatters: [(key) => this.scopedTranslationService.instant('EMPLOYMENT_STATUS_VALUES.' + key)] }
+  protected columns: GenCol<MemberModel>[] = [
+    GenCol.fromCalculated('name', (e) => e.firstName + ' ' + e.lastName),
+    GenCol.fromAttr('birthDate', [(d: Date) => DateTime.fromISO(new Date(d)
+      .toISOString())
+      .toFormat(this.GLOBAL_DATE_FORMAT)]),
+    GenCol.fromCalculated('organisationUnit', (e) => e.organisationUnit.name),
+    GenCol.fromAttr('employmentState', [(key) => this.scopedTranslationService.instant('EMPLOYMENT_STATUS_VALUES.' + key)])
   ];
 
   dataSource: GenericTableDataSource<MemberModel> = new GenericTableDataSource<MemberModel>(this.columns, this.members());
