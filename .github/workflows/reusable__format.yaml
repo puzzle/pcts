@@ -24,7 +24,7 @@ jobs:
         uses: actions/setup-java@v5
         with:
           java-version: ${{ vars.JAVA_VERSION }}
-          distribution: adopt
+          distribution: ${{ vars.JAVA_DISTRIBUTION }}
           server-id: github
           settings-path: ${{ github.workspace }}
           cache: 'maven'
