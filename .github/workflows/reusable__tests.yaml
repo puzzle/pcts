@@ -8,6 +8,10 @@ on:
         type: string
         required: false
 
+permissions:
+  checks: write
+  pull-requests: write
+
 jobs:
   frontend-tests:
     runs-on: ubuntu-24.04
@@ -29,7 +33,16 @@ jobs:
         run: npm ci
 
       - name: Run unit tests
-        run: npm test
+        run: npm run test:ci
+
+      - name: Publish test results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: (!cancelled())
+        with:
+          check_name: "Frontend Test Results"
+          comment_mode: 'changes in failures'
+          files: |
+            frontend/junit.xml
 
   backend-tests:
     runs-on: ubuntu-24.04
@@ -50,3 +63,12 @@ jobs:
 
       - name: Use Maven to run unit and integration tests
         run: mvn clean verify
+
+      - name: Publish test results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: (!cancelled())
+        with:
+          check_name: "Backend Test Results"
+          comment_mode: 'changes in failures'
+          files: |
+            backend/target/surefire-reports/*.xml
