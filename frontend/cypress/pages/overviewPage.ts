@@ -1,7 +1,7 @@
 import { Page } from './page';
 import { EmploymentState } from '../../src/app/shared/enum/employment-state.enum';
 
-class HomePage extends Page {
+class OverviewPage extends Page {
   visit() {
     cy.visit('/');
   }
@@ -25,6 +25,11 @@ class HomePage extends Page {
     return cy.getByTestId('member-row');
   }
 
+  firstMemberRows() {
+    return cy.getByTestId('member-row')
+      .first();
+  }
+
   noResultsRow() {
     return cy.getByTestId('no-results-row');
   }
@@ -40,6 +45,16 @@ class HomePage extends Page {
   createMemberButton() {
     return cy.getByTestId('add-member-button');
   }
+
+  sortAttributeAsc(sortAttribute: string) {
+    return cy.getByTestId(sortAttribute + '-sort')
+      .click();
+  }
+
+  sortAttributeDesc(sortAttribute: string) {
+    return cy.getByTestId(sortAttribute + '-sort')
+      .click();
+  }
 }
 
-export default new HomePage();
+export default new OverviewPage();
