@@ -52,7 +52,7 @@ public class CertificateTypeValidationService extends ValidationBase<Certificate
                                                 "filed",
                                                 "certificateType",
                                                 "is",
-                                                "" + certificateType));
+                                                "" + certificateKind));
         }
     }
 }

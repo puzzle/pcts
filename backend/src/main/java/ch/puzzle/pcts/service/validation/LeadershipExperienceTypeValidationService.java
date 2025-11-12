@@ -66,7 +66,7 @@ public class LeadershipExperienceTypeValidationService extends ValidationBase<Ce
                                                 "field",
                                                 "certificateKind",
                                                 "is",
-                                                "" + certificateType));
+                                                "" + certificatekind));
         }
     }
 }

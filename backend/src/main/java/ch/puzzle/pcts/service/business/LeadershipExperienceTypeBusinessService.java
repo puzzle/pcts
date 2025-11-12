@@ -6,6 +6,7 @@ import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import ch.puzzle.pcts.service.validation.LeadershipExperienceTypeValidationService;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -38,8 +39,8 @@ public class LeadershipExperienceTypeBusinessService {
             return leadershipExperience;
         } else {
             throw new PCTSException(HttpStatus.NOT_FOUND,
-                                    "LeadershipExperience type with id: " + id + " does not exist.",
-                                    ErrorKey.NOT_FOUND);
+                                    ErrorKey.NOT_FOUND,
+                                    Map.of("entity", "leadershipExperienceType", "field", "id", "is", "" + id));
         }
     }
 
