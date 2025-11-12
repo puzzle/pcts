@@ -1,11 +1,12 @@
 <pzsh-container>
   <pzsh-topbar class="position-sticky top-0 z-1">
-    <img
-      ngSrc="/images/pcts-logo.svg"
-      alt="{{'PCTS_LOGO_ALT' | translate}}"
-      class="pcts-logo"
-      (click)="visitRoot()"
-      height="16" width="16"/>
+    <button class="btn btn-link" (click)="visitRoot()">
+      <img
+        ngSrc="/images/pcts-logo.svg"
+        alt="{{'PCTS_LOGO_ALT' | translate}}"
+        height="32" width="140"/>
+    </button>
+
   </pzsh-topbar>
   <pzsh-menu class="position-fixed z-1">
     <div slot="actions">
