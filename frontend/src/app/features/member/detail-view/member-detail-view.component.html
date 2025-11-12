@@ -1,0 +1,19 @@
+@if (member(); as m) {
+  <div class="p-4">
+    <h2 class="text-xl font-bold mb-2">
+      {{ m.firstName }} {{ m.lastName }}
+    </h2>
+
+    <p><strong>{{ 'MEMBER.ABBREVIATION' | translate }}:</strong> {{ m.abbreviation }}</p>
+    <p>
+      <strong>{{ 'MEMBER.BIRTH_DATE' | translate }}:</strong>
+      {{ m.birthDate.toJSDate() | date: GLOBAL_DATE_FORMAT }}
+    </p>
+    <p>
+      <strong>{{ 'MEMBER.DATE_OF_HIRE' | translate }}:</strong>
+      {{ m.dateOfHire.toJSDate() | date: GLOBAL_DATE_FORMAT }}
+    </p>
+    <p><strong>{{ 'MEMBER.EMPLOYMENT_STATE' | translate }}:</strong> {{ 'MEMBER.EMPLOYMENT_STATUS_VALUES.' + m.employmentState | translate }}</p>
+    <p><strong>{{ 'MEMBER.ORGANISATION_UNIT' | translate }}:</strong> {{ m.organisationUnit.name }}</p>
+  </div>
+}

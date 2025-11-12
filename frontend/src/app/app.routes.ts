@@ -4,6 +4,7 @@ import { memberDataResolver } from './features/member/member-data-resolver';
 import { memberOverviewResolver } from './features/member/overview/member-overview-resolver';
 import { MemberOverviewComponent } from './features/member/overview/member-overview.component';
 import { provideI18nPrefix } from './shared/i18n-prefix.provider';
+import { MemberDetailViewComponent } from './features/member/detail-view/member-detail-view.component';
 
 export const routes: Routes = [{
   path: '',
@@ -12,21 +13,28 @@ export const routes: Routes = [{
 },
 {
   path: 'member',
-  children: [{
-    path: '',
-    component: MemberOverviewComponent,
-    resolve: { filters: memberOverviewResolver },
-    providers: [provideI18nPrefix('MEMBER.OVERVIEW')]
-  },
-  {
-    path: 'add',
-    component: MemberFormComponent,
-    providers: [provideI18nPrefix('MEMBER.FORM.ADD')]
-  },
-  {
-    path: ':id/edit',
-    component: MemberFormComponent,
-    resolve: { member: memberDataResolver },
-    providers: [provideI18nPrefix('MEMBER.FORM.EDIT')]
-  }]
+  children: [
+    {
+      path: '',
+      component: MemberOverviewComponent,
+      resolve: { filters: memberOverviewResolver },
+      providers: [provideI18nPrefix('MEMBER.OVERVIEW')]
+    },
+    {
+      path: 'add',
+      component: MemberFormComponent,
+      providers: [provideI18nPrefix('MEMBER.FORM.ADD')]
+    },
+    {
+      path: ':id/edit',
+      component: MemberFormComponent,
+      resolve: { member: memberDataResolver },
+      providers: [provideI18nPrefix('MEMBER.FORM.EDIT')]
+    },
+    {
+      path: ':id',
+      component: MemberDetailViewComponent,
+      resolve: { member: memberDataResolver }
+    }
+  ]
 }];
