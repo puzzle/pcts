@@ -1,6 +1,22 @@
-const nestedProperty = (data: any, sortHeaderId: string): string | number => {
-  return sortHeaderId.split('.')
-    .reduce((accumulator, key) => accumulator && accumulator[key], data) as string | number;
+const nestedProperty = <T extends object>(data: T, sortHeaderId: string): string | number => {
+  if (!data || typeof data !== 'object') {
+    return '';
+  }
+
+  const value = sortHeaderId
+    .split('.')
+    .reduce<any>((acc, key) => {
+      if (acc && typeof acc === 'object') {
+        return acc[key];
+      }
+      return undefined;
+    }, data);
+
+  if (typeof value === 'string' || typeof value === 'number') {
+    return value;
+  }
+
+  return '';
 };
 
 const sortingDataAccessor = {

@@ -94,19 +94,19 @@ describe('MemberOverviewComponent', () => {
   ];
 
   sortTests.forEach(([sortAttribute,
-    ascParam,
-    descParam]) => {
+    expectedAsc,
+    expectedDesc]) => {
     it(`should test sorting on ${sortAttribute}`, () => {
       // Is set as default so no need to sort
       if (sortAttribute != 'last-name') {
         OverviewPage.sortAttribute(sortAttribute);
       }
       OverviewPage.firstMemberRows()
-        .should('contain.text', ascParam);
+        .should('contain.text', expectedAsc);
 
       OverviewPage.sortAttribute(sortAttribute);
       OverviewPage.firstMemberRows()
-        .should('contain.text', descParam);
+        .should('contain.text', expectedDesc);
     });
   });
 });
