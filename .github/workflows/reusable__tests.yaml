@@ -68,7 +68,7 @@ jobs:
           ref: ${{ inputs.COMMIT_HASH || github.head_ref }}
 
       - name: Set up cache for testing
-        uses: actions/cache@v4.3.0
+        uses: actions/cache@v4
         with:
           path: "~/.m2/repository"
           key: maven-testing-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
