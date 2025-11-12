@@ -63,7 +63,7 @@ To run the backend for Cypress testing, you need to start the application with t
 
 - `npm run cypress:run`
 
-**To only run selected tests headfull use:**
+**To only run selected tests handful use:**
 
 - `npm run cypress:open`
 
@@ -95,11 +95,11 @@ For more information on using the Angular CLI, including detailed
 command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli)
 page.
 
-## 📖 README: Scoped Translation System
+## Scoped Translation System
 
 ### Overview
 
-The Scoped Translation system provides a powerful way to manage i18n keys in reusable components. It allows you to define a "prefix" for a specific route or component (e.g., `MEMBER.FORM.ADD`). Inside that component's template, you can use short, relative keys (e.g., `'TITLE'`).
+The Scoped Translation system provides a way to manage i18n keys in reusable components. It allows you to define a prefix for a specific route or component (e.g., `MEMBER.FORM.ADD`). Inside that component's template, you can use short, relative keys (e.g., `'TITLE'`).
 
 The system automatically combines the prefix and the key (`MEMBER.FORM.ADD.TITLE`) and even provides a sophisticated fallback mechanism, allowing for highly reusable components and cleaner translation files.
 
@@ -172,7 +172,7 @@ In the component that has a prefix provided (like `MemberFormComponent`), you ca
 
 ---
 
-### The Fallback Hierarchy (Key Feature)
+### The Fallback Hierarchy
 
 The true power of this system is its automatic fallback. When you request a key, the service searches for the most specific translation first, then works its way up to the most generic.
 
@@ -184,9 +184,7 @@ If your component has the prefix `MEMBER.FORM.ADD` and you request the key `TITL
 
 This allows you to define common translations at a high level and override them only when necessary.
 
----
-
-### Putting It All Together: Full Example
+### Full Example
 
 1. **Translation File (`en.json`)**
 
