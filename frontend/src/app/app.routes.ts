@@ -13,23 +13,24 @@ export const routes: Routes = [{
 },
 {
   path: 'member',
+  providers: [provideI18nPrefix('MEMBER')],
   children: [
     {
       path: '',
       component: MemberOverviewComponent,
       resolve: { filters: memberOverviewResolver },
-      providers: [provideI18nPrefix('MEMBER.OVERVIEW')]
+      providers: [provideI18nPrefix('OVERVIEW')]
     },
     {
       path: 'add',
       component: MemberFormComponent,
-      providers: [provideI18nPrefix('MEMBER.FORM.ADD')]
+      providers: [provideI18nPrefix('FORM.ADD')]
     },
     {
       path: ':id/edit',
       component: MemberFormComponent,
       resolve: { member: memberDataResolver },
-      providers: [provideI18nPrefix('MEMBER.FORM.EDIT')]
+      providers: [provideI18nPrefix('FORM.EDIT')]
     },
     {
       path: ':id',
