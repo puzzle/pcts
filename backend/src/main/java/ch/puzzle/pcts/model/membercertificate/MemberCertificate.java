@@ -3,13 +3,13 @@ package ch.puzzle.pcts.model.membercertificate;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
-import ch.puzzle.pcts.model.certificate.Certificate;
+import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.member.Member;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import java.sql.Timestamp;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
 
@@ -27,14 +27,14 @@ public class MemberCertificate implements Model {
 
     @NotNull(message = "{attribute.not.null}")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "certificate")
-    private Certificate certificate;
+    @JoinColumn(name = "certificate_type")
+    private CertificateType certificate_type;
 
     @NotNull(message = "{attribute.not.null}")
     @Past(message = "{attribute.date.past}")
-    private Date completed_at;
+    private LocalDate completed_at;
 
-    private Date valid_until;
+    private LocalDate valid_until;
 
     private String comment;
 
@@ -44,7 +44,7 @@ public class MemberCertificate implements Model {
     private MemberCertificate(Builder builder) {
         this.id = builder.id;
         this.member = builder.member;
-        this.certificate = builder.certificate;
+        this.certificate_type = builder.certificate_type;
         this.completed_at = builder.completed_at;
         this.valid_until = builder.valid_until;
         this.comment = trim(builder.comment);
@@ -72,27 +72,27 @@ public class MemberCertificate implements Model {
         this.member = member;
     }
 
-    public Certificate getCertificate() {
-        return certificate;
+    public CertificateType getCertificate_type() {
+        return certificate_type;
     }
 
-    public void setCertificate(Certificate certificate) {
-        this.certificate = certificate;
+    public void setCertificate_type(CertificateType certificate_type) {
+        this.certificate_type = certificate_type;
     }
 
-    public Date getCompleted_at() {
+    public LocalDate getCompleted_at() {
         return completed_at;
     }
 
-    public void setCompleted_at(Date completed_at) {
+    public void setCompleted_at(LocalDate completed_at) {
         this.completed_at = completed_at;
     }
 
-    public Date getValid_until() {
+    public LocalDate getValid_until() {
         return valid_until;
     }
 
-    public void setValid_until(Date valid_until) {
+    public void setValid_until(LocalDate valid_until) {
         this.valid_until = valid_until;
     }
 
@@ -118,7 +118,7 @@ public class MemberCertificate implements Model {
             return false;
         MemberCertificate that = (MemberCertificate) object;
         return Objects.equals(getId(), that.getId()) && Objects.equals(getMember(), that.getMember())
-               && Objects.equals(getCertificate(), that.getCertificate())
+               && Objects.equals(getCertificate_type(), that.getCertificate_type())
                && Objects.equals(getCompleted_at(), that.getCompleted_at())
                && Objects.equals(getValid_until(), that.getValid_until())
                && Objects.equals(getComment(), that.getComment())
@@ -130,7 +130,7 @@ public class MemberCertificate implements Model {
         return Objects
                 .hash(getId(),
                       getMember(),
-                      getCertificate(),
+                      getCertificate_type(),
                       getCompleted_at(),
                       getValid_until(),
                       getComment(),
@@ -139,7 +139,7 @@ public class MemberCertificate implements Model {
 
     @Override
     public String toString() {
-        return "MemberCertificates{" + "id=" + id + ", member=" + member + ", certificate=" + certificate
+        return "MemberCertificates{" + "id=" + id + ", member=" + member + ", certificate_type=" + certificate_type
                + ", completed_at=" + completed_at + ", valid_until=" + valid_until + ", comment='" + comment + '\''
                + ", deletedAt=" + deletedAt + '}';
     }
@@ -147,9 +147,9 @@ public class MemberCertificate implements Model {
     public static class Builder {
         private Long id;
         private Member member;
-        private Certificate certificate;
-        private Date completed_at;
-        private Date valid_until;
+        private CertificateType certificate_type;
+        private LocalDate completed_at;
+        private LocalDate valid_until;
         private String comment;
 
         private Builder() {
@@ -170,17 +170,17 @@ public class MemberCertificate implements Model {
             return this;
         }
 
-        public Builder withCertificate(Certificate certificate) {
-            this.certificate = certificate;
+        public Builder withCertificate(CertificateType certificate_type) {
+            this.certificate_type = certificate_type;
             return this;
         }
 
-        public Builder withCompleted_at(Date completed_at) {
+        public Builder withCompleted_at(LocalDate completed_at) {
             this.completed_at = completed_at;
             return this;
         }
 
-        public Builder withValid_until(Date valid_until) {
+        public Builder withValid_until(LocalDate valid_until) {
             this.valid_until = valid_until;
             return this;
         }

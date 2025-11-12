@@ -3,7 +3,7 @@ package ch.puzzle.pcts.mapper;
 import ch.puzzle.pcts.dto.membercertificate.MemberCertificateDto;
 import ch.puzzle.pcts.dto.membercertificate.MemberCertificateInputDto;
 import ch.puzzle.pcts.model.membercertificate.MemberCertificate;
-import ch.puzzle.pcts.service.business.CertificateBusinessService;
+import ch.puzzle.pcts.service.business.CertificateTypeBusinessService;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import java.util.List;
 import org.springframework.stereotype.Component;
@@ -12,16 +12,16 @@ import org.springframework.stereotype.Component;
 public class MemberCertificateMapper {
     MemberMapper memberMapper;
     MemberBusinessService memberBusinessService;
-    CertificateMapper certificateMapper;
-    CertificateBusinessService certificateBusinessService;
+    CertificateTypeMapper certificateTypeMapper;
+    CertificateTypeBusinessService certificateTypeBusinessService;
 
-    MemberCertificateMapper(MemberMapper memberMapper, CertificateMapper certificateMapper,
+    MemberCertificateMapper(MemberMapper memberMapper, CertificateTypeMapper certificateTypeMapper,
                             MemberBusinessService memberBusinessService,
-                            CertificateBusinessService certificateBusinessService) {
+                            CertificateTypeBusinessService certificateTypeBusinessService) {
         this.memberMapper = memberMapper;
         this.memberBusinessService = memberBusinessService;
-        this.certificateMapper = certificateMapper;
-        this.certificateBusinessService = certificateBusinessService;
+        this.certificateTypeMapper = certificateTypeMapper;
+        this.certificateTypeBusinessService = certificateTypeBusinessService;
     }
 
     public List<MemberCertificateDto> toDto(List<MemberCertificate> models) {
@@ -35,7 +35,7 @@ public class MemberCertificateMapper {
     public MemberCertificateDto toDto(MemberCertificate model) {
         return new MemberCertificateDto(model.getId(),
                                         memberMapper.toDto(model.getMember()),
-                                        certificateMapper.toDto(model.getCertificate()),
+                                        certificateTypeMapper.toDto(model.getCertificate_type()),
                                         model.getCompleted_at(),
                                         model.getValid_until(),
                                         model.getComment());
@@ -46,7 +46,7 @@ public class MemberCertificateMapper {
         return MemberCertificate.Builder
                 .builder()
                 .withMember(memberBusinessService.getById(dto.memberId()))
-                .withCertificate(certificateBusinessService.getById(dto.certificateId()))
+                .withCertificate(certificateTypeBusinessService.getById(dto.certificate_typeId()))
                 .withCompleted_at(dto.completed_at())
                 .withValid_until(dto.valid_until())
                 .withComment(dto.comment())
