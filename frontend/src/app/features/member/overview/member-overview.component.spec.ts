@@ -66,7 +66,7 @@ describe('MemberOverviewComponent', () => {
       component.toggleFilter(EmploymentState.APPLICANT);
 
       component.activeFilters.clear();
-      component.applyCombinedFilter();
+      component.writeFormToUrl();
 
       expect(component.activeFilters.size)
         .toBe(0);
@@ -128,7 +128,7 @@ describe('MemberOverviewComponent', () => {
       ['']])('should update searchControl to "%s" and apply filter', (searchText) => {
       const spy = jest.spyOn(component, 'applyCombinedFilter');
       component.searchControl.setValue(searchText);
-      component.applyCombinedFilter();
+      component.writeFormToUrl();
 
       expect(component.searchControl.value)
         .toBe(searchText);

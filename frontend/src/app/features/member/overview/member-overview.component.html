@@ -4,7 +4,7 @@
   </h1>
 
   <div class="d-flex flex-row justify-content-between">
-    <div class="w-25 d-flex flex-row align-items-start">
+    <div class="w-25 d-flex flex-row align-items-start" [formGroup]="filterFormGroup">
       <mat-form-field
         color="primary"
         appearance="outline"
@@ -14,7 +14,7 @@
         <mat-icon matPrefix>search</mat-icon>
         <input
           matInput
-          [formControl]="searchControl"
+          [formControl]="filterFormGroup.controls['searchControl']"
           [placeholder]="'FILTER.SEARCH' | scopedTranslation"
           data-testid="search-input"
         />
@@ -26,8 +26,7 @@
         type="button"
         mat-stroked-button
         class="rounded-0"
-        [class.active]="isAllFilterActive()"
-        (click)="activeFilters.clear(); applyCombinedFilter();"
+        [class.active]="areAllFiltersActive()"
         data-testid="all"
       >
         {{ 'FILTER.ALL' | scopedTranslation }}
@@ -60,6 +59,6 @@
   </div>
 
   <div class="overflow-y-scroll mat-elevation-z8 table-max-height">
-      <app-generic-table [dataSource]="this.dataSource" idAttr="id"></app-generic-table>
+      <app-generic-table [dataSource]="this.dataSource" idAttr="id" />
   </div>
 </div>

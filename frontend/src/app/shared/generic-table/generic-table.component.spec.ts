@@ -6,11 +6,11 @@ describe('GenericTableComponent', () => {
   let component: GenericTableComponent;
   let fixture: ComponentFixture<GenericTableComponent>;
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     await TestBed.configureTestingModule({
       imports: [GenericTableComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(GenericTableComponent);
     component = fixture.componentInstance;
@@ -18,6 +18,7 @@ describe('GenericTableComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 });

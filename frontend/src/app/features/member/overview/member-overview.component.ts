@@ -1,7 +1,7 @@
-import { Component, effect, inject, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, computed, effect, inject, input, OnInit, Signal, signal, WritableSignal } from '@angular/core';
 import { MemberService } from '../member.service';
 import { MemberModel } from '../member.model';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,15 +14,19 @@ import { TranslateService } from '@ngx-translate/core';
 import { EmploymentState } from '../../../shared/enum/employment-state.enum';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
-import {
-  GenericTableComponent
-} from '../../../shared/generic-table/generic-table.component';
+import { GenericTableComponent } from '../../../shared/generic-table/generic-table.component';
 import { GenCol, GenericTableDataSource } from '../../../shared/generic-table/GenericTableDataSource';
 import { DateTime } from 'luxon';
 import { ScopedTranslationService } from '../../../shared/services/scoped-translation.service';
-import { combineLatest, filter } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { map, startWith } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { MemberOverviewParams } from './member-overview-resolver';
 
+
+type TypedAbstractControl = AbstractControl & { getRawValue: () => object };
+
+export type RequiredFormRawValue<T extends TypedAbstractControl> =
+  Required<ReturnType<T['getRawValue']>>;
 
 @Component({
   selector: 'app-member-overview',
@@ -46,22 +50,31 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   styleUrl: './member-overview.component.scss'
 })
 export class MemberOverviewComponent implements OnInit {
+  readonly filters = input.required<MemberOverviewParams>();
+
+  members: WritableSignal<MemberModel[]> = signal([]);
+
+  filterFormGroup = new FormGroup({
+    searchControl: new FormControl('', { nonNullable: true }),
+    employmentStateFilter: new FormControl<Set<EmploymentState>>(new Set([]), { nonNullable: true })
+  });
+
+  employmentStateValues: EmploymentState[] = Object.values(EmploymentState);
+
+  // debounceTime(300),
+  filterFromGroupValue: Signal<RequiredFormRawValue<typeof this.filterFormGroup>> = toSignal(this.filterFormGroup.valueChanges.pipe(startWith(this.filterFormGroup.getRawValue()), map(() => this.filterFormGroup.getRawValue())), { initialValue: this.filterFormGroup.getRawValue() });
+
+  areAllFiltersActive = computed(() => Array.from(this.filterFromGroupValue().employmentStateFilter).length == 0);
+
   private readonly service: MemberService = inject(MemberService);
 
   private readonly datePipe: DatePipe = inject(DatePipe);
 
   private readonly scopedTranslationService: ScopedTranslationService = inject(ScopedTranslationService);
 
-  private readonly router = inject(Router);
-
-  private readonly route = inject(ActivatedRoute);
-
-  private readonly translate = inject(TranslateService);
-
-  members: WritableSignal<MemberModel[]> = signal([]);
-
   protected columns: GenCol<MemberModel>[] = [
-    GenCol.fromCalculated('name', (e) => e.firstName + ' ' + e.lastName),
+    GenCol.fromAttr('firstName'),
+    GenCol.fromAttr('lastName'),
     GenCol.fromAttr('birthDate', [(d: Date) => DateTime.fromISO(new Date(d)
       .toISOString())
       .toLocaleString(DateTime.DATE_MED)]),
@@ -71,28 +84,33 @@ export class MemberOverviewComponent implements OnInit {
 
   dataSource: GenericTableDataSource<MemberModel> = new GenericTableDataSource<MemberModel>(this.columns, this.members());
 
-  filteredCount: WritableSignal<number> = signal(0);
+  private readonly router = inject(Router);
 
-  activeFilters = new Set<EmploymentState>();
+  private readonly route = inject(ActivatedRoute);
 
-  searchControl = new FormControl('');
-
-  employmentStateValues: EmploymentState[] = Object.values(EmploymentState);
-
-  searchValueChanges$ = this.searchControl.valueChanges.pipe(takeUntilDestroyed(), filter(Boolean));
-
-  trackFilter = combineLatest([this.searchValueChanges$]);
+  private readonly translate = inject(TranslateService);
 
   constructor() {
     effect((): void => {
       this.dataSource.data = this.members();
-      this.applyCombinedFilter();
     });
 
-    this.route.data.subscribe(({ filters }) => {
-      this.searchControl.setValue(filters.searchText, { emitEvent: false });
-      this.activeFilters = new Set(filters.statuses);
-      this.applyCombinedFilter();
+    effect((): void => {
+      this.writeFormToUrl(this.filterFromGroupValue());
+    });
+
+    effect(() => {
+      if (this.filterFromGroupValue().employmentStateFilter.size == this.employmentStateValues.length) {
+        this.filterFormGroup.patchValue({ employmentStateFilter: new Set() });
+      }
+    });
+
+    effect(() => {
+      const filters = this.filters();
+      this.filterFormGroup.patchValue({
+        employmentStateFilter: filters.statuses,
+        searchControl: filters.searchText
+      });
     });
   }
 
@@ -109,12 +127,11 @@ export class MemberOverviewComponent implements OnInit {
 
   createFilterPredicate(): (data: MemberModel, filter: string) => boolean {
     return (member: MemberModel, filter: string): boolean => {
-      const filterValues = JSON.parse(filter);
-      const searchTxt: string = filterValues.text.toLowerCase();
-      const status: string = filterValues.status;
+      const filterValues = JSON.parse(filter) as RequiredFormRawValue<typeof this.filterFormGroup>;
+      const searchTxt: string = filterValues.searchControl.toLowerCase();
+      const statuses = Array.from(filterValues.employmentStateFilter);
 
-      const statusMatch: boolean = status === '' || status.split('+')
-        .includes(member.employmentState);
+      const statusMatch: boolean = statuses.length == 0 || statuses.includes(member.employmentState);
 
       const memberDataString: string = (
         member.firstName +
@@ -133,22 +150,17 @@ export class MemberOverviewComponent implements OnInit {
     };
   }
 
-  applyCombinedFilter(): void {
-    const selected: string[] = Array.from(this.activeFilters);
-    const statusFilterValue: string = selected.length ? selected.join('+') : '';
+  writeFormToUrl(form: RequiredFormRawValue<typeof this.filterFormGroup>): void {
+    const selected: string[] = Array.from(form.employmentStateFilter);
+    const formValue = { ...form,
+      employmentStateFilter: selected };
 
-    this.dataSource.filter = JSON.stringify({
-      text: this.searchControl.value ?? '',
-      status: statusFilterValue
-    });
-
-    this.filteredCount.set(this.dataSource.filteredData.length);
-
+    this.dataSource.filter = JSON.stringify(formValue);
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        q: this.searchControl.value ? encodeURIComponent(this.searchControl.value) : null,
-        status: statusFilterValue !== '' ? statusFilterValue : null
+        q: formValue.searchControl.trim() || null,
+        status: selected.length !== 0 ? selected : null
       },
       queryParamsHandling: 'merge',
       replaceUrl: true
@@ -156,24 +168,18 @@ export class MemberOverviewComponent implements OnInit {
   }
 
   toggleFilter(statusFilterValue: EmploymentState): void {
-    if (this.activeFilters.has(statusFilterValue)) {
-      this.activeFilters.delete(statusFilterValue);
+    const newFilters = new Set(this.filterFormGroup.getRawValue().employmentStateFilter);
+    if (newFilters.has(statusFilterValue)) {
+      newFilters.delete(statusFilterValue);
     } else {
-      this.activeFilters.add(statusFilterValue);
+      newFilters.add(statusFilterValue);
     }
-    this.applyCombinedFilter();
+    this.filterFormGroup.patchValue({ employmentStateFilter: newFilters });
   }
 
   isFilterActive(status: EmploymentState): boolean {
-    return this.activeFilters.has(status);
-  }
-
-  isAllFilterActive(): boolean {
-    const all = this.activeFilters.size === 0 || this.activeFilters.size === this.employmentStateValues.length;
-    if (all) {
-      this.employmentStateValues.forEach((s) => this.activeFilters.delete(s));
-    }
-    return all;
+    return new Set(this.filterFormGroup.getRawValue().employmentStateFilter)
+      .has(status);
   }
 
   handleAddMemberClick(): void {
