@@ -13,8 +13,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +24,6 @@ import org.springframework.stereotype.Service;
 public abstract class ValidationBase<T extends Model> {
     private static final Logger log = LoggerFactory.getLogger(ValidationBase.class);
     private final Validator validator;
-
-    @Autowired
-    private Environment environment;
 
     protected ValidationBase() {
         final ValidatorFactory factory = Validation
@@ -119,18 +114,18 @@ public abstract class ValidationBase<T extends Model> {
         String keyName = valueMap.remove("key");
         if (keyName == null) {
             log.error("Validation message is missing 'key=' part: {}", message);
-            return new GenericError(ErrorKey.INTERNAL, Map.of("parseError", "Message missing 'key='"));
+            return new GenericError(ErrorKey.MESSAGE_MISSING_KEY, Map.of("is", message));
         }
         try {
             ErrorKey key = ErrorKey.valueOf(keyName);
             return new GenericError(key, valueMap);
         } catch (IllegalArgumentException e) {
             log.error("ErrorKey enum does not contain key '{}' from ValidationMessages.properties!", keyName, e);
-            throw new IllegalArgumentException("Invalid ErrorKey configuration: " + keyName, e);
+            return new GenericError(ErrorKey.MESSAGE_INVALID_KEY, Map.of("is", keyName));
         }
     }
 
-    public List<GenericError> buildGenericErrorDto(ErrorKey key, Map<String, String> errors) {
+    public static List<GenericError> buildGenericErrorDto(ErrorKey key, Map<String, String> errors) {
         return List.of(new GenericError(key, errors));
     }
 }

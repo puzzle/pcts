@@ -6,6 +6,7 @@ import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.persistence.OrganisationUnitPersistenceService;
 import ch.puzzle.pcts.service.validation.OrganisationUnitValidationService;
 import java.util.List;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +30,14 @@ public class OrganisationUnitBusinessService {
         return persistenceService
                 .getById(id)
                 .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,
-                                                     "Organisation unit with id: " + id + " does not exist.",
-                                                     ErrorKey.NOT_FOUND));
+                                                     ErrorKey.NOT_FOUND,
+                                                     Map
+                                                             .of("entity",
+                                                                 "OrganisationUnit",
+                                                                 "field",
+                                                                 "id",
+                                                                 "is",
+                                                                 "" + id)));
     }
 
     public OrganisationUnit create(OrganisationUnit organisationUnit) {

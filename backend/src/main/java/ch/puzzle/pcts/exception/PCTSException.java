@@ -3,6 +3,7 @@ package ch.puzzle.pcts.exception;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.error.GenericError;
 import java.util.List;
+import java.util.Map;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -14,10 +15,9 @@ public class PCTSException extends ResponseStatusException {
         this.errors = errors;
     }
 
-    // TODO: replace all these
-    public PCTSException(HttpStatusCode status, String errorKey, ErrorKey key) {
+    public PCTSException(HttpStatusCode status, ErrorKey errorKey, Map<String, String> error) {
         super(status);
-        this.errors = List.of();
+        this.errors = List.of(new GenericError(errorKey, error));
     }
 
     public List<GenericError> getErrors() {

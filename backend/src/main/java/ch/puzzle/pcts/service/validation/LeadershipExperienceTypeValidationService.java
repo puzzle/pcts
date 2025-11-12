@@ -6,6 +6,7 @@ import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import ch.puzzle.pcts.service.validation.util.UniqueNameValidationUtil;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,16 @@ public class LeadershipExperienceTypeValidationService extends ValidationBase<Ce
         super.validateOnCreate(leadershipExperience);
         validateCertificateKind(leadershipExperience.getCertificateKind());
         if (UniqueNameValidationUtil.nameAlreadyUsed(leadershipExperience.getName(), persistenceService::getByName)) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.INVALID_ARGUMENT);
+            throw new PCTSException(HttpStatus.BAD_REQUEST,
+                                    ErrorKey.ATTRIBUTE_UNIQUE,
+                                    Map
+                                            .of("entity",
+                                                "degreeType",
+                                                "field",
+                                                "name",
+                                                "is",
+                                                leadershipExperience.getName()));
+
         }
     }
 
@@ -33,15 +43,30 @@ public class LeadershipExperienceTypeValidationService extends ValidationBase<Ce
         validateCertificateKind(leadershipExperience.getCertificateKind());
         if (UniqueNameValidationUtil
                 .nameExcludingIdAlreadyUsed(id, leadershipExperience.getName(), persistenceService::getByName)) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.INVALID_ARGUMENT);
+            throw new PCTSException(HttpStatus.BAD_REQUEST,
+                                    ErrorKey.ATTRIBUTE_UNIQUE,
+                                    Map
+                                            .of("entity",
+                                                "degreeType",
+                                                "field",
+                                                "name",
+                                                "is",
+                                                leadershipExperience.getName()));
+
         }
     }
 
     public void validateCertificateKind(CertificateKind certificatekind) {
         if (!certificatekind.isLeadershipExperienceType()) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "CertificateType.certificateKind is not leadership experience.",
-                                    ErrorKey.INVALID_ARGUMENT);
+                                    ErrorKey.INVALID_ARGUMENT,
+                                    Map
+                                            .of("entity",
+                                                "leadershipExperience",
+                                                "field",
+                                                "certificateKind",
+                                                "is",
+                                                "" + certificateType));
         }
     }
 }
