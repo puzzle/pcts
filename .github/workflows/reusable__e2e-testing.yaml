@@ -65,6 +65,8 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ vars.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
 
       - name: Cypress run e2e tests
         uses: cypress-io/github-action@v6
