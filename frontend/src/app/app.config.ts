@@ -16,7 +16,6 @@ import { CUSTOM_LUXON_DATE_FORMATS } from './shared/format/date-format';
 import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
 import { lastValueFrom } from 'rxjs';
 import { registerLocaleData } from '@angular/common';
-import { provideI18nPrefix } from './shared/i18n-prefix.provider';
 import { Settings } from 'luxon';
 
 registerLocaleData(localeDeCH);
@@ -39,7 +38,6 @@ export const appConfig: ApplicationConfig = {
       const lang = 'de';
       return lastValueFrom(translate.use(lang));
     }),
-    provideI18nPrefix(''),
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'outline' }
