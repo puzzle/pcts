@@ -35,7 +35,7 @@ jobs:
         run: npm ci
 
       - name: Run unit tests
-        run: npm run test:ci --coverage
+        run: npm run test:ci
 
       - name: Upload frontend reports
         uses: actions/upload-artifact@v5
