@@ -38,7 +38,7 @@ jobs:
         run: mvn spotless:check
 
   frontend:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: frontend
@@ -62,7 +62,7 @@ jobs:
         run: npm run check-linting:all
 
   markdownlint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: .
@@ -88,7 +88,7 @@ jobs:
             -not -path "./.github/ISSUE_TEMPLATE/*" \
             -print0 | xargs -0 -r mdl
   yamllint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: .
