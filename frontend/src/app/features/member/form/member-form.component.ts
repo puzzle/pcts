@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { Router } from '@angular/router';
 import { MemberService } from '../member.service';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 
@@ -22,6 +22,8 @@ import { map } from 'rxjs';
 import { isDateInFuture, isValueInList, isValueInListSignal } from '../../../shared/form/form-validators';
 import { BaseFormComponent } from '../../../shared/form/base-form.component';
 import { DateTime } from 'luxon';
+import { ScopedTranslationService } from '../../../shared/services/scoped-translation.service';
+import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 
 @Component({
   selector: 'app-member-form',
@@ -32,15 +34,16 @@ import { DateTime } from 'luxon';
     FormsModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
-    TranslatePipe,
     MatIconModule,
     MatDatepickerModule,
     PctsFormErrorDirective,
     PctsFormLabelDirective,
     InputFieldComponent,
-    BaseFormComponent
+    BaseFormComponent,
+    ScopedTranslationPipe
   ],
-  templateUrl: './member-form.component.html'
+  templateUrl: './member-form.component.html',
+  providers: [ScopedTranslationService]
 })
 export class MemberFormComponent implements OnInit {
   private readonly translateService = inject(TranslateService);

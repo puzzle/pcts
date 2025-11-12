@@ -14,6 +14,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { EmploymentState } from '../../../shared/enum/employment-state.enum';
 import { debounceTime } from 'rxjs/operators';
 import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
+import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 
 
 @Component({
@@ -30,7 +31,8 @@ import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
     MatIcon,
     MatButton,
     TranslatePipe,
-    RouterLink
+    RouterLink,
+    ScopedTranslationPipe
   ],
   templateUrl: './member-overview.component.html',
   styleUrl: './member-overview.component.scss'
