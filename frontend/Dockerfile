@@ -1,3 +1,16 @@
+#FROM node:24.11-alpine AS builder
+#WORKDIR /app
+#COPY package.json package-lock.json ./
+#RUN npm ci
+#COPY . .
+#RUN npm run build -- --output-path=./dist/ --configuration=production
+#
+#FROM nginx:1.29.3-alpine AS runner
+#RUN rm /etc/nginx/conf.d/default.conf
+#COPY nginx.conf /etc/nginx/conf.d
+#COPY --from=builder /app/dist/browser /usr/share/nginx/html
+#EXPOSE 80
+#CMD ["nginx", "-g", "daemon off;"]
 FROM node:24.11-alpine AS builder
 WORKDIR /app
 COPY package.json package-lock.json ./
@@ -6,8 +19,7 @@ COPY . .
 RUN npm run build -- --output-path=./dist/ --configuration=production
 
 FROM nginx:1.29.3-alpine AS runner
-RUN rm /etc/nginx/conf.d/default.conf
-COPY nginx.conf /etc/nginx/conf.d
+COPY nginx.conf /etc/nginx/
 COPY --from=builder /app/dist/browser /usr/share/nginx/html
-EXPOSE 80
+EXPOSE 4200
 CMD ["nginx", "-g", "daemon off;"]
