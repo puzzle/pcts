@@ -32,21 +32,32 @@ jobs:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
 
-      - name: Set up node ${{ vars.NODE_VERSION }}
-        uses: actions/setup-node@v6
+      - name: Create report directories
+        run: |
+          mkdir -p frontend/coverage
+          mkdir -p backend/target/surefire-reports
+
+      - name: Download frontend reports
+        uses: actions/download-artifact@v5
         with:
-          node-version: ${{ vars.NODE_VERSION }}
+          name: frontend-test-reports
+          path: frontend/
 
-      - name: Install frontend dependencies
-        run: cd frontend && npm ci
-
-      - name: Generate frontend test coverage
-        run: cd frontend && npm run test -- --coverage
+      - name: Download backend reports
+        uses: actions/download-artifact@v5
+        with:
+          name: backend-test-reports
+          path: backend/target/
 
       - name: Build and analyze
-        run: mvn clean verify sonar:sonar
-          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-          -Dsonar.host.url=${{ vars.SONAR_HOST_URL }}
+        run: |
+          mvn clean package sonar:sonar \
+          -DskipTests \
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+          -Dsonar.host.url=${{ vars.SONAR_HOST_URL }} \
+          -Dsonar.jacoco.reportPaths=backend/target/jacoco.exec \
+          -Dsonar.javascript.lcov.reportPaths=frontend/coverage/lcov.info \
+          -Dsonar.junit.reportPaths=frontend/junit.xml,backend/target/surefire-reports
 
       - name: SonarQube Quality Gate check
         id: sonarqube-quality-gate-check
