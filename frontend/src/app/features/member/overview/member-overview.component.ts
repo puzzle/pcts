@@ -6,7 +6,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSortModule } from '@angular/material/sort';
-import { DatePipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -31,8 +30,6 @@ export type RequiredFormRawValue<T extends TypedAbstractControl> =
 @Component({
   selector: 'app-member-overview',
   standalone: true,
-  providers: [DatePipe,
-    ScopedTranslationPipe],
   imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -68,16 +65,12 @@ export class MemberOverviewComponent implements OnInit {
 
   private readonly service: MemberService = inject(MemberService);
 
-  private readonly datePipe: DatePipe = inject(DatePipe);
-
   private readonly scopedTranslationService: ScopedTranslationService = inject(ScopedTranslationService);
 
   protected columns: GenCol<MemberModel>[] = [
     GenCol.fromAttr('firstName'),
     GenCol.fromAttr('lastName'),
-    GenCol.fromAttr('birthDate', [(d: Date) => DateTime.fromISO(new Date(d)
-      .toISOString())
-      .toLocaleString(DateTime.DATE_MED)]),
+    GenCol.fromAttr('birthDate', [(d: DateTime) => d.toLocaleString(DateTime.DATE_MED)]),
     GenCol.fromCalculated('organisationUnit', (e) => e.organisationUnit.name),
     GenCol.fromAttr('employmentState', [(key) => this.scopedTranslationService.instant('EMPLOYMENT_STATUS_VALUES.' + key)])
   ];

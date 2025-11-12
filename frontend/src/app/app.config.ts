@@ -49,7 +49,6 @@ export const appConfig: ApplicationConfig = {
       const lang = 'de';
       return lastValueFrom(translate.use(lang));
     }),
-    provideI18nPrefix(''),
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'outline' }
