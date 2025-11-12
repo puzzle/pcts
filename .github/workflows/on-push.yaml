@@ -18,6 +18,7 @@ jobs:
   sonarcube-analysis:
     needs:
       - format
+      - tests
     uses: ./.github/workflows/reusable__sonarqube-scan.yaml
     with:
       COMMIT_HASH: ${{ github.sha }}
