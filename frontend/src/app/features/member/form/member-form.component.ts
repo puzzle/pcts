@@ -22,8 +22,8 @@ import { map } from 'rxjs';
 import { isDateInFuture, isValueInList, isValueInListSignal } from '../../../shared/form/form-validators';
 import { BaseFormComponent } from '../../../shared/form/base-form.component';
 import { DateTime } from 'luxon';
-import { ScopedTranslationService } from '../../../shared/services/scoped-translation.service';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-member-form',
@@ -42,8 +42,7 @@ import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-
     BaseFormComponent,
     ScopedTranslationPipe
   ],
-  templateUrl: './member-form.component.html',
-  providers: [ScopedTranslationService]
+  templateUrl: './member-form.component.html'
 })
 export class MemberFormComponent implements OnInit {
   private readonly translateService = inject(TranslateService);
@@ -55,6 +54,8 @@ export class MemberFormComponent implements OnInit {
   private readonly router = inject(Router);
 
   private readonly fb = inject(FormBuilder);
+
+  private readonly location = inject(Location);
 
   readonly member = input.required<MemberModel>();
 
@@ -134,7 +135,8 @@ export class MemberFormComponent implements OnInit {
     if (this.isEdit()) {
       this.memberService.updateMember(this.memberForm.get('id')?.value, memberToSave)
         .subscribe(() => {
-          this.router.navigate(['/']);
+          this.router.navigate(['/member',
+            this.memberForm.getRawValue().id]);
         });
     } else {
       this.memberService.addMember(memberToSave)
@@ -145,8 +147,9 @@ export class MemberFormComponent implements OnInit {
   }
 
   onCancel() {
-    this.router.navigate(['/']);
+    this.location.back();
   }
+
 
   protected displayEmploymentState = (employmentState: EmploymentState | string): string => {
     if (!employmentState) {

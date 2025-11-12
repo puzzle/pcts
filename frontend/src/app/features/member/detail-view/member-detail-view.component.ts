@@ -53,10 +53,6 @@ export class MemberDetailViewComponent implements OnInit {
       });
   }
 
-  handleBackClick(): void {
-    this.router.navigate(['/member']);
-  }
-
   handleEditClick(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {

@@ -14,7 +14,8 @@
         <button
           type="button"
           mat-stroked-button
-          data-testid="add-member-button"
+          data-testid="edit-member-button"
+          (click)="handleEditClick()"
         >
           <mat-icon>edit</mat-icon>
           {{ 'MODEL_NAME' | scopedTranslation }}
