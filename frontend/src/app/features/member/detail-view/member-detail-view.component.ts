@@ -5,14 +5,22 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MemberService } from '../member.service';
 import { MemberModel } from '../member.model';
 import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
+import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-member-detail-view',
   standalone: true,
   providers: [DatePipe],
-  imports: [CommonModule,
+  imports: [
+    CommonModule,
     TranslatePipe,
-    DatePipe],
+    DatePipe,
+    ScopedTranslationPipe,
+    MatButton,
+    MatIcon
+  ],
   templateUrl: './member-detail-view.component.html',
   styleUrls: ['./member-detail-view.component.scss']
 })
