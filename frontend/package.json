@@ -1,6 +1,7 @@
 {
   "name": "pcts",
   "version": "0.4.0",
+  "packageManager": "npm",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --hmr",
