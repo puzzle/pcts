@@ -1,5 +1,6 @@
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { MemberOverviewParams, memberOverviewResolver } from './member-overview-resolver';
+import { EmploymentState } from '../../../shared/enum/employment-state.enum';
 
 describe('memberOverviewResolver', () => {
   let route: ActivatedRouteSnapshot;
@@ -16,7 +17,7 @@ describe('memberOverviewResolver', () => {
     expect(result)
       .toEqual<MemberOverviewParams>({
         searchText: '',
-        statuses: []
+        statuses: new Set()
       });
   });
 
@@ -26,32 +27,32 @@ describe('memberOverviewResolver', () => {
     expect(result)
       .toEqual<MemberOverviewParams>({
         searchText: 'test search',
-        statuses: []
+        statuses: new Set()
       });
   });
 
   it('should decode and split status query param into statuses array', () => {
-    route.queryParams = { status: encodeURIComponent('active+inactive') };
+    route.queryParams = { status: encodeURIComponent('status=applicant&status=member') };
     const result = memberOverviewResolver(route, state);
     expect(result)
       .toEqual<MemberOverviewParams>({
         searchText: '',
-        statuses: ['active',
-          'inactive']
+        statuses: new Set([EmploymentState.APPLICANT,
+          EmploymentState.MEMBER])
       });
   });
 
   it('should handle both q and status query params', () => {
     route.queryParams = {
       q: encodeURIComponent('search term'),
-      status: encodeURIComponent('pending+active')
+      status: 'status=applicant&status=member'
     };
     const result = memberOverviewResolver(route, state);
     expect(result)
       .toEqual<MemberOverviewParams>({
         searchText: 'search term',
-        statuses: ['pending',
-          'active']
+        statuses: new Set([EmploymentState.APPLICANT,
+          EmploymentState.MEMBER])
       });
   });
 
@@ -61,7 +62,7 @@ describe('memberOverviewResolver', () => {
     expect(result)
       .toEqual<MemberOverviewParams>({
         searchText: '',
-        statuses: []
+        statuses: new Set()
       });
   });
 });
