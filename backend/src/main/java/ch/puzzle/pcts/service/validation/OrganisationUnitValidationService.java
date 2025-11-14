@@ -5,6 +5,7 @@ import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.persistence.OrganisationUnitPersistenceService;
 import ch.puzzle.pcts.service.validation.util.UniqueNameValidationUtil;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,9 @@ public class OrganisationUnitValidationService extends ValidationBase<Organisati
     public void validateOnCreate(OrganisationUnit organisationUnit) {
         super.validateOnCreate(organisationUnit);
         if (UniqueNameValidationUtil.nameAlreadyUsed(organisationUnit.getName(), persistenceService::getByName)) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.INVALID_ARGUMENT);
+            throw new PCTSException(HttpStatus.BAD_REQUEST,
+                                    ErrorKey.ATTRIBUTE_UNIQUE,
+                                    Map.of("entity", "degreeType", "field", "name", "is", organisationUnit.getName()));
         }
     }
 
@@ -29,7 +32,10 @@ public class OrganisationUnitValidationService extends ValidationBase<Organisati
         super.validateOnUpdate(id, organisationUnit);
         if (UniqueNameValidationUtil
                 .nameExcludingIdAlreadyUsed(id, organisationUnit.getName(), persistenceService::getByName)) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.INVALID_ARGUMENT);
+            throw new PCTSException(HttpStatus.BAD_REQUEST,
+                                    ErrorKey.ATTRIBUTE_UNIQUE,
+                                    Map.of("entity", "degreeType", "field", "name", "is", organisationUnit.getName()));
+
         }
     }
 }

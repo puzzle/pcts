@@ -5,6 +5,7 @@ import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.service.persistence.ExperienceTypePersistenceService;
 import ch.puzzle.pcts.service.validation.util.UniqueNameValidationUtil;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,9 @@ public class ExperienceTypeValidationService extends ValidationBase<ExperienceTy
     public void validateOnCreate(ExperienceType experienceType) {
         super.validateOnCreate(experienceType);
         if (UniqueNameValidationUtil.nameAlreadyUsed(experienceType.getName(), persistenceService::getByName)) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.INVALID_ARGUMENT);
+            throw new PCTSException(HttpStatus.BAD_REQUEST,
+                                    ErrorKey.ATTRIBUTE_UNIQUE,
+                                    Map.of("entity", "degreeType", "field", "name", "is", experienceType.getName()));
         }
     }
 
@@ -29,7 +32,10 @@ public class ExperienceTypeValidationService extends ValidationBase<ExperienceTy
         super.validateOnUpdate(id, experienceType);
         if (UniqueNameValidationUtil
                 .nameExcludingIdAlreadyUsed(id, experienceType.getName(), persistenceService::getByName)) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.INVALID_ARGUMENT);
+            throw new PCTSException(HttpStatus.BAD_REQUEST,
+                                    ErrorKey.ATTRIBUTE_UNIQUE,
+                                    Map.of("entity", "degreeType", "field", "name", "is", experienceType.getName()));
+
         }
     }
 }

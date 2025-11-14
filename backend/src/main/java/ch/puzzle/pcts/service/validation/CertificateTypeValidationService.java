@@ -6,6 +6,7 @@ import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import ch.puzzle.pcts.service.validation.util.UniqueNameValidationUtil;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,9 @@ public class CertificateTypeValidationService extends ValidationBase<Certificate
         validateCertificateKind(certificate.getCertificateKind());
         if (UniqueNameValidationUtil
                 .nameExcludingIdAlreadyUsed(id, certificate.getName(), persistenceService::getByName)) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.INVALID_ARGUMENT);
+            throw new PCTSException(HttpStatus.BAD_REQUEST,
+                                    ErrorKey.INVALID_ARGUMENT,
+                                    Map.of("entity", "certificate", "filed", "name", "is", certificate.getName()));
         }
     }
 
@@ -33,15 +36,23 @@ public class CertificateTypeValidationService extends ValidationBase<Certificate
         super.validateOnCreate(certificate);
         validateCertificateKind(certificate.getCertificateKind());
         if (UniqueNameValidationUtil.nameAlreadyUsed(certificate.getName(), persistenceService::getByName)) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST, "Name already exists", ErrorKey.INVALID_ARGUMENT);
+            throw new PCTSException(HttpStatus.BAD_REQUEST,
+                                    ErrorKey.ATTRIBUTE_UNIQUE,
+                                    Map.of("entity", "certificate", "filed", "name", "is", certificate.getName()));
         }
     }
 
     public void validateCertificateKind(CertificateKind certificateKind) {
         if (certificateKind != CertificateKind.CERTIFICATE) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "Certificate.CertificateType is not certificate.",
-                                    ErrorKey.INVALID_ARGUMENT);
+                                    ErrorKey.INVALID_ARGUMENT,
+                                    Map
+                                            .of("entity",
+                                                "certificate",
+                                                "filed",
+                                                "certificateType",
+                                                "is",
+                                                "" + certificateKind));
         }
     }
 }

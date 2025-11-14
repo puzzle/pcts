@@ -4,6 +4,7 @@ import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.experience.Experience;
 import java.time.LocalDate;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -25,9 +26,8 @@ public class ExperienceValidationService extends ValidationBase<Experience> {
     public void validateStartDateIsBeforeEndDate(LocalDate startDate, LocalDate endDate) {
         if (endDate != null && startDate.isAfter(endDate)) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "Experience.endDate must be after the startDate, given endDate: " + endDate
-                                                            + " and startDate: " + startDate + ".",
-                                    ErrorKey.INVALID_ARGUMENT);
+                                    ErrorKey.INVALID_ARGUMENT,
+                                    Map.of("entity", "Experience", "field", "endDate", "is", "" + endDate));
         }
     }
 }

@@ -6,6 +6,7 @@ import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import ch.puzzle.pcts.service.validation.MemberValidationService;
 import java.util.List;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +31,8 @@ public class MemberBusinessService {
         return persistenceService
                 .getById(id)
                 .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,
-                                                     "Member with id: " + id + " does not exist.",
-                                                     ErrorKey.NOT_FOUND));
+                                                     ErrorKey.NOT_FOUND,
+                                                     Map.of("entity", "Member", "field", "id", "is", "" + id)));
     }
 
     public Member create(Member member) {

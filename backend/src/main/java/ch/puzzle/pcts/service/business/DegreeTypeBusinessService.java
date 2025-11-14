@@ -6,6 +6,7 @@ import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.service.persistence.DegreeTypePersistenceService;
 import ch.puzzle.pcts.service.validation.DegreeTypeValidationService;
 import java.util.List;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +35,8 @@ public class DegreeTypeBusinessService {
         return persistenceService
                 .getById(id)
                 .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,
-                                                     "Degree type with id: " + id + " does not exist.",
-                                                     ErrorKey.NOT_FOUND));
+                                                     ErrorKey.NOT_FOUND,
+                                                     Map.of("entity", "DegreeType", "field", "id", "is", "" + id)));
     }
 
     public DegreeType update(Long id, DegreeType degreeType) {

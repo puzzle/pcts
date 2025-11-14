@@ -1,23 +1,31 @@
 package ch.puzzle.pcts.exception;
 
 import ch.puzzle.pcts.model.error.ErrorKey;
+import ch.puzzle.pcts.model.error.GenericError;
+import java.util.List;
+import java.util.Map;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.server.ResponseStatusException;
 
 public class PCTSException extends ResponseStatusException {
-    private final ErrorKey errorKey;
+    private final List<GenericError> errors;
 
-    public PCTSException(HttpStatusCode status, ErrorKey key) {
+    public PCTSException(HttpStatusCode status, List<GenericError> errors) {
         super(status);
-        this.errorKey = key;
+        this.errors = errors;
     }
 
-    public PCTSException(HttpStatusCode status, String reason, ErrorKey key) {
-        super(status, reason);
-        this.errorKey = key;
+    public PCTSException(HttpStatusCode status, ErrorKey errorKey, Map<String, String> error) {
+        super(status);
+        this.errors = List.of(new GenericError(errorKey, error));
     }
 
+    public List<GenericError> getErrors() {
+        return errors;
+    }
+
+    // TODO: remove me
     public ErrorKey getErrorKey() {
-        return errorKey;
+        return ErrorKey.ATTRIBUTE_DATE_PAST;
     }
 }

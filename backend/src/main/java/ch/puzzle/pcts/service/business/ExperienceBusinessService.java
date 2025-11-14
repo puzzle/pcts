@@ -6,6 +6,7 @@ import ch.puzzle.pcts.model.experience.Experience;
 import ch.puzzle.pcts.service.persistence.ExperiencePersistenceService;
 import ch.puzzle.pcts.service.validation.ExperienceValidationService;
 import java.util.List;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +30,8 @@ public class ExperienceBusinessService {
         return persistenceService
                 .getById(id)
                 .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,
-                                                     "Experience with id: " + id + " does not exist.",
-                                                     ErrorKey.NOT_FOUND));
+                                                     ErrorKey.NOT_FOUND,
+                                                     Map.of("entity", "experience", "field", "id", "is", "" + id)));
     }
 
     public Experience create(Experience experience) {
