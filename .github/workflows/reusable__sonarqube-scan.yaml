@@ -1,0 +1,71 @@
+---
+name: 'SonarQube Analysis'
+
+on:
+  workflow_call:
+    inputs:
+      COMMIT_HASH:
+        type: string
+        required: false
+
+jobs:
+  quality-gate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.COMMIT_HASH || github.head_ref }}
+
+      - name: Set up Maven cache
+        uses: actions/cache@v4
+        with:
+          path: "~/.m2/repository"
+          key: maven-testing-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
+
+      - name: Set up JDK ${{ vars.JAVA_VERSION }}
+        uses: actions/setup-java@v5
+        with:
+          java-version: ${{ vars.JAVA_VERSION }}
+          distribution: ${{ vars.JAVA_DISTRIBUTION }}
+
+      - name: Cache SonarQube packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+
+      - name: Create report directories
+        run: |
+          mkdir -p frontend/coverage
+          mkdir -p backend/target/surefire-reports
+
+      - name: Download frontend reports
+        uses: actions/download-artifact@v5
+        with:
+          name: frontend-test-reports
+          path: frontend/
+
+      - name: Download backend reports
+        uses: actions/download-artifact@v5
+        with:
+          name: backend-test-reports
+          path: backend/target/
+
+      - name: Build and analyze
+        run: |
+          mvn clean package sonar:sonar \
+          -DskipTests \
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+          -Dsonar.host.url=${{ vars.SONAR_HOST_URL }} \
+          -Dsonar.jacoco.reportPaths=backend/target/jacoco.exec \
+          -Dsonar.javascript.lcov.reportPaths=frontend/coverage/lcov.info \
+          -Dsonar.junit.reportPaths=frontend/junit.xml,backend/target/surefire-reports
+
+      - name: SonarQube Quality Gate check
+        id: sonarqube-quality-gate-check
+        uses: SonarSource/sonarqube-quality-gate-action@v1.2.0
+        with:
+          scanMetadataReportFile: target/sonar/report-task.txt
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
