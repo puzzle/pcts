@@ -65,23 +65,43 @@
     [dataSource]="this.dataSource"
     class="table table-striped table-hover member-table m-0"
     matSort
-    matSortActive="name"
+    matSortActive="lastName"
     matSortDirection="asc"
     data-testid="member-table"
   >
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="name">
-        {{ 'NAME' | scopedTranslation }}
+    <ng-container matColumnDef="first_name">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header="firstName"
+        data-testid="first-name-sort"
+        class="col-range"  >
+        {{ 'MEMBER.FIRST_NAME' | translate }}
       </th>
-      <td mat-cell *matCellDef="let member" data-testid="member-name">
+      <td
+        mat-cell
+        *matCellDef="let member"
+        data-testid="member-first-name"
+        class="col-range"  >
         <a [routerLink]="['/member', member.id]" class="fw-bold">
-          {{ member.firstName }} {{ member.lastName }}
+          {{ member.firstName }}
         </a>
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="birthDate">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="birthDate">
+    <ng-container matColumnDef="last_name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="lastName" data-testid="last-name-sort">
+        {{ 'LAST_NAME' | scopedTranslation }}
+      </th>
+      <td mat-cell *matCellDef="let member" data-testid="member-last-name">
+        <a [routerLink]="['/member', member.id]" class="fw-bold">
+          {{ member.lastName }}
+        </a>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="birth_date">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="birthDate" data-testid="birth-date-sort">
         {{ 'BIRTH_DATE' | scopedTranslation }}
       </th>
       <td mat-cell *matCellDef="let member" data-testid="member-birthDate">
@@ -90,7 +110,7 @@
     </ng-container>
 
     <ng-container matColumnDef="organisation_unit">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="organisation_unit">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="organisationUnit.name" data-testid="organisation-unit-name-sort">
         {{ 'ORGANISATION_UNIT' | scopedTranslation }}
       </th>
       <td mat-cell *matCellDef="let member" data-testid="member-organisation">
@@ -98,8 +118,8 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="employment_state">
+    <ng-container matColumnDef="employment_state">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="employmentState" data-testid="employment-state-sort">
         {{ 'EMPLOYMENT_STATE' | scopedTranslation }}
       </th>
       <td mat-cell *matCellDef="let member" data-testid="member-status">

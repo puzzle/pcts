@@ -6,7 +6,7 @@ export function provideI18nPrefix(suffix: string, separator = '.'): Provider {
     provide: I18N_PREFIX,
     useFactory: (parentPrefix: string | null): string => {
       if (!suffix) {
-        return parentPrefix || '';
+        return parentPrefix ?? '';
       }
       return parentPrefix
         ? parentPrefix + separator + suffix

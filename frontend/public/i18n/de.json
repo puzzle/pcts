@@ -38,7 +38,6 @@
     "MODEL_NAME": "Member",
     "MODEL_NAME_PLURAL": "Members",
     "FIRST_NAME": "Vorname",
-    "NAME": "Name",
     "LAST_NAME": "Nachname",
     "ABBREVIATION": "Kürzel",
     "BIRTH_DATE": "Geburtsdatum",

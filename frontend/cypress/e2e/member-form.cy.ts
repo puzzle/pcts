@@ -1,6 +1,6 @@
 import FormPage from '../pages/formPage';
 import translations from '../../public/i18n/de.json';
-import HomePage from '../pages/homePage';
+import OverviewPage from '../pages/overviewPage';
 
 
 describe('MemberFormComponent', () => {
@@ -68,7 +68,7 @@ describe('add member form', () => {
   });
 
   it('should submit member and show him in list', () => {
-    HomePage.visit();
+    OverviewPage.visit();
     FormPage.visitAdd('member');
 
     FormPage.submitButtonShouldBe('disabled');
@@ -91,7 +91,7 @@ describe('add member form', () => {
 
     FormPage.save();
 
-    HomePage.memberRows()
+    OverviewPage.memberRows()
       .contains('John Doe', { matchCase: false });
   });
 });
@@ -128,7 +128,7 @@ describe('edit member form', () => {
 
     FormPage.save();
 
-    HomePage.memberRows()
+    OverviewPage.memberRows()
       .contains('Leon Schmidt', { matchCase: false });
   });
 });
