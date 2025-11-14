@@ -1,50 +1,119 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { TestBed } from '@angular/core/testing';
 import { MemberDetailViewComponent } from './member-detail-view.component';
 import { MemberService } from '../member.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { of, throwError } from 'rxjs';
 import { MemberModel } from '../member.model';
-import { member1, member2 } from '../../../shared/test/test-data';
-import { of } from 'rxjs';
-import { provideRouter } from '@angular/router';
+import { OrganisationUnitModel } from '../../organisation-unit/organisation-unit.model';
+import { DateTime } from 'luxon';
 import { provideTranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
+import { EmploymentState } from '../../../shared/enum/employment-state.enum';
 
-describe('MemberDetailViewComponent', () => {
-  let component: MemberDetailViewComponent;
-  let fixture: ComponentFixture<MemberDetailViewComponent>;
-  let memberServiceMock: Partial<MemberService>;
+describe('MemberDetailViewComponent (Jest)', () => {
+  const mockOrganisationUnit: OrganisationUnitModel = {
+    id: 1,
+    name: '/mem'
+  };
 
-  const membersMock: MemberModel[] = [member1,
-    member2];
+  const mockMember: MemberModel = {
+    id: 1,
+    firstName: 'John',
+    lastName: 'Doe',
+    birthDate: DateTime.now(),
+    abbreviation: 'JD',
+    employmentState: EmploymentState.EX_MEMBER,
+    organisationUnit: mockOrganisationUnit,
+    dateOfHire: DateTime.now()
+  };
 
-  beforeEach(async() => {
+  let memberServiceMock: jest.Mocked<MemberService>;
+  let routerMock: jest.Mocked<Router>;
+  let routeMock: ActivatedRoute;
+
+  function setupTestBed(id: string | null) {
     memberServiceMock = {
-      getAllMembers: jest.fn()
-        .mockReturnValue(of(membersMock))
-    };
+      getMemberById: jest.fn()
+    } as unknown as jest.Mocked<MemberService>;
 
-    await TestBed.configureTestingModule({
+    routerMock = {
+      navigate: jest.fn()
+    } as unknown as jest.Mocked<Router>;
+
+    routeMock = {
+      snapshot: {
+        paramMap: {
+          get: jest.fn()
+            .mockReturnValue(id)
+        }
+      }
+    } as unknown as ActivatedRoute;
+
+    TestBed.configureTestingModule({
       imports: [MemberDetailViewComponent],
       providers: [
-        provideRouter([{ path: 'member',
-          component: MemberDetailViewComponent },
-        { path: 'member/:id',
-          component: MemberDetailViewComponent }]),
+        { provide: ActivatedRoute,
+          useValue: routeMock },
+        { provide: Router,
+          useValue: routerMock },
+        { provide: MemberService,
+          useValue: memberServiceMock },
         provideTranslateService(),
         { provide: MemberService,
           useValue: memberServiceMock },
         DatePipe
       ]
-    })
-      .compileComponents();
+    });
 
-    fixture = TestBed.createComponent(MemberDetailViewComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    const fixture = TestBed.createComponent(MemberDetailViewComponent);
+    return {
+      fixture,
+      component: fixture.componentInstance
+    };
+  }
+
+  it('loads the member when id exists', () => {
+    const { fixture, component } = setupTestBed('1');
+    memberServiceMock.getMemberById.mockReturnValue(of(mockMember));
+
+    fixture.detectChanges(); // triggers ngOnInit
+
+    expect(memberServiceMock.getMemberById)
+      .toHaveBeenCalledWith(1);
+    expect(component.member())
+      .toEqual(mockMember);
+    expect(routerMock.navigate).not.toHaveBeenCalled();
   });
 
-  it('should create', () => {
-    expect(component)
-      .toBeTruthy();
+  it('redirects when no id is provided', () => {
+    const { fixture } = setupTestBed(null);
+    fixture.detectChanges();
+
+    expect(routerMock.navigate)
+      .toHaveBeenCalledWith(['/member']);
+  });
+
+  it('redirects when service throws an error', () => {
+    const { fixture } = setupTestBed('1');
+    memberServiceMock.getMemberById.mockReturnValue(throwError(() => new Error('fail')));
+
+    fixture.detectChanges();
+
+    expect(routerMock.navigate)
+      .toHaveBeenCalledWith(['/member']);
+  });
+
+  it('handleEditClick navigates to /member/:id/edit', () => {
+    const { fixture, component } = setupTestBed('1');
+    memberServiceMock.getMemberById.mockReturnValue(of(mockMember));
+
+    fixture.detectChanges();
+    component.handleEditClick();
+
+    // NOTE: router receives "1", not 1
+    expect(routerMock.navigate)
+      .toHaveBeenCalledWith(['/member',
+        '1',
+        'edit']);
   });
 });
