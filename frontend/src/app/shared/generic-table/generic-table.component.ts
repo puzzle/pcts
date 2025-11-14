@@ -60,25 +60,24 @@ export class GenericTableComponent<T extends object> implements AfterViewChecked
 
   constructor() {
     effect(() => {
-      this.dataSource().sortingDataAccessor = (data: T, sortHeaderId: string) => {
-        const find = this.columns()
-          .find((e) => e.columnName == sortHeaderId);
-        if (!find) {
-          return (data[sortHeaderId as keyof T] + '').toLowerCase();
-        }
-
-        const date = new Date(find.getValue(data));
-        const isDate = !isNaN(date?.getTime());
-        if (isDate) {
-          return date.getTime();
-        }
-        return this.getDisplayValue(find, data)
-          .toLowerCase();
-      };
+      this.dataSource().sortingDataAccessor = this.createSortingAccessor(this.columns());
       this.dataSource().sort = this.sort();
     });
   }
 
+  createSortingAccessor(columns: GenCol<T>[]) {
+    return (data: T, sortHeaderId: string) => {
+      const find = columns
+        .find((e) => e.columnName == sortHeaderId)!;
+
+      const date = new Date(find.getValue(data));
+      if (date?.getTime()) {
+        return date.getTime();
+      }
+      return this.getDisplayValue(find, data)
+        .toLowerCase();
+    };
+  }
 
   ngAfterViewChecked(): void {
     this.entries.set(this.dataSource().data);

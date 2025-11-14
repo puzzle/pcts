@@ -11,6 +11,8 @@ export class GenCol<T> {
 
   pipes: Formatter[] = [];
 
+  shouldLink = false;
+
   protected constructor() {}
 
   public static fromAttr<T>(field: keyof T, pipes: Formatter[] = []): GenCol<T> {
@@ -27,6 +29,11 @@ export class GenCol<T> {
     genCol.columnName = columnName;
     genCol.pipes = pipes;
     return genCol;
+  }
+
+  public withLink(shouldLink = true) {
+    this.shouldLink = shouldLink;
+    return this;
   }
 }
 

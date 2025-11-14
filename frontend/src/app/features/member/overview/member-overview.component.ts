@@ -68,8 +68,10 @@ export class MemberOverviewComponent implements OnInit {
   private readonly scopedTranslationService: ScopedTranslationService = inject(ScopedTranslationService);
 
   protected columns: GenCol<MemberModel>[] = [
-    GenCol.fromAttr('firstName'),
-    GenCol.fromAttr('lastName'),
+    GenCol.fromAttr('firstName')
+      .withLink(),
+    GenCol.fromAttr('lastName')
+      .withLink(),
     GenCol.fromAttr('birthDate', [(d: DateTime) => d.toLocaleString(DateTime.DATE_MED)]),
     GenCol.fromCalculated('organisationUnit', (e) => e.organisationUnit.name),
     GenCol.fromAttr('employmentState', [(key) => this.scopedTranslationService.instant('EMPLOYMENT_STATUS_VALUES.' + key)])
