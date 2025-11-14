@@ -74,4 +74,12 @@ describe('MemberOverviewComponent', () => {
     cy.url()
       .should('include', 'status=APPLICANT');
   });
+
+  it('should visit detail page of member', () => {
+    HomePage.getMemberByName('Lena Müller')
+      .click();
+
+    cy.url()
+      .should('include', '/member/1');
+  });
 });

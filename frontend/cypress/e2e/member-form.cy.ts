@@ -128,6 +128,8 @@ describe('edit member form', () => {
 
     FormPage.save();
 
+    HomePage.visit();
+
     HomePage.memberRows()
       .contains('Leon Schmidt', { matchCase: false });
   });

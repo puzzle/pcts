@@ -40,6 +40,11 @@ class HomePage extends Page {
   createMemberButton() {
     return cy.getByTestId('add-member-button');
   }
+
+  getMemberByName(name: string) {
+    return cy.getByTestId('member-row')
+      .contains(name);
+  }
 }
 
 export default new HomePage();
