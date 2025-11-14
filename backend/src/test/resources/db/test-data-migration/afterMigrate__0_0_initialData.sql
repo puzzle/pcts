@@ -76,9 +76,9 @@ INSERT INTO degree (member_id, name, institution, completed, type, start_date, e
 VALUES (1, 'Degree 1','Institution',TRUE,1,'2015-09-01','2020-06-01','Comment'),
        (2, 'Degree 2','Institution',FALSE,2,'2016-09-01','2019-06-30','Comment');
 
-TRUNCATE TABLE member_certificate CASCADE;
+TRUNCATE TABLE certificate CASCADE;
 
-INSERT INTO member_certificate
+INSERT INTO certificate
 (member, certificate_type, completed_at, valid_until, comment)
 VALUES
     (1, 1, '2023-01-15', '2025-01-14', 'Completed first aid training.'),

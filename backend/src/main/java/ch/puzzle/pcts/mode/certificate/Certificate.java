@@ -1,4 +1,4 @@
-package ch.puzzle.pcts.model.membercertificate;
+package ch.puzzle.pcts.mode.certificate;
 
 import static org.apache.commons.lang3.StringUtils.trim;
 
@@ -14,8 +14,8 @@ import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
 
 @Entity
-@SQLDelete(sql = "UPDATE member_certificate SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
-public class MemberCertificate implements Model {
+@SQLDelete(sql = "UPDATE certificate SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
+public class Certificate implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,7 +41,7 @@ public class MemberCertificate implements Model {
     @Column(name = "deleted_at", insertable = false, updatable = false)
     private Timestamp deletedAt;
 
-    private MemberCertificate(Builder builder) {
+    private Certificate(Builder builder) {
         this.id = builder.id;
         this.member = builder.member;
         this.certificate_type = builder.certificate_type;
@@ -51,7 +51,7 @@ public class MemberCertificate implements Model {
         this.deletedAt = null;
     }
 
-    public MemberCertificate() {
+    public Certificate() {
     }
 
     @Override
@@ -116,7 +116,7 @@ public class MemberCertificate implements Model {
     public boolean equals(Object object) {
         if (object == null || getClass() != object.getClass())
             return false;
-        MemberCertificate that = (MemberCertificate) object;
+        Certificate that = (Certificate) object;
         return Objects.equals(getId(), that.getId()) && Objects.equals(getMember(), that.getMember())
                && Objects.equals(getCertificate_type(), that.getCertificate_type())
                && Objects.equals(getCompleted_at(), that.getCompleted_at())
@@ -190,8 +190,8 @@ public class MemberCertificate implements Model {
             return this;
         }
 
-        public MemberCertificate build() {
-            return new MemberCertificate(this);
+        public Certificate build() {
+            return new Certificate(this);
         }
     }
 }

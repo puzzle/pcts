@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS member_certificate
+CREATE TABLE IF NOT EXISTS certificate
 (
     id              BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY NOT NULL,
     member          BIGINT NOT NULL,

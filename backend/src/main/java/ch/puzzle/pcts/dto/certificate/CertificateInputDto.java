@@ -1,9 +1,9 @@
-package ch.puzzle.pcts.dto.membercertificate;
+package ch.puzzle.pcts.dto.certificate;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 
-public record MemberCertificateInputDto(
+public record CertificateInputDto(
         @Schema(description = "The member id that associated with this certificate.", example = "1", requiredMode = Schema.RequiredMode.REQUIRED, nullable = false) Long memberId,
 
         @Schema(description = "The type of certificate awarded to the member.", example = "1", requiredMode = Schema.RequiredMode.REQUIRED, nullable = false) Long certificate_typeId,
