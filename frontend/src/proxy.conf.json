@@ -1,10 +1,9 @@
 {
   "/api": {
-    "target": "http://pcts-backend:8080",
+    "target": "http://localhost:8080",
     "secure": false,
     "router": {
-      "http://localhost:4200": "http://pcts-backend:8080",
-      "https://pitc-pcts-stag-frontend.ocp-internal.cloudscale.puzzle.ch": "https://pitc-pcts-stag-backend.ocp-internal.cloudscale.puzzle.ch"
+      "https://pitc-pcts-stag-frontend.ocp-internal.cloudscale.puzzle.ch": "http://pcts-backend:8080"
     }
   }
 }
