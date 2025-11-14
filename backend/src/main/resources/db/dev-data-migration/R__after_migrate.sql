@@ -126,11 +126,43 @@ VALUES (1,
         '2020-06-30',
         null);
 
-INSERT INTO member_certificate
-(member, certificate, completed_at, valid_until, comment, deleted_at)
+INSERT INTO certificate
+(member, certificate_type, completed_at, valid_until, comment, deleted_at)
 VALUES
     (1, 1, '2023-01-15', '2025-01-14', 'Completed first aid training.', NULL),
     (2, 2, '2022-11-01', NULL, 'Lifetime certification.', NULL),
     (3, 3, '2020-03-22', '2022-03-21', 'Needs renewal.', NULL),
     (4, 1, '2021-06-10', '2023-06-09', 'Left organization.', '2023-07-01 10:00:00'),
     (5, 4, '2024-02-01', '2026-02-01', NULL, NULL);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

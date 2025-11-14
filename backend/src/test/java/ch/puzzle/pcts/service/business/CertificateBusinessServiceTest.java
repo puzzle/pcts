@@ -5,10 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.exception.PCTSException;
+import ch.puzzle.pcts.mode.certificate.Certificate;
 import ch.puzzle.pcts.model.error.ErrorKey;
-import ch.puzzle.pcts.model.membercertificate.MemberCertificate;
-import ch.puzzle.pcts.service.persistence.MemberCertificatePersistenceService;
-import ch.puzzle.pcts.service.validation.MemberCertificateValidationService;
+import ch.puzzle.pcts.service.persistence.CertificatePersistenceService;
+import ch.puzzle.pcts.service.validation.CertificateValidationService;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -20,30 +20,30 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class MemberCertificateBusinessServiceTest {
+class CertificateBusinessServiceTest {
 
     private static final Long ID = 1L;
 
     @Mock
-    private MemberCertificateValidationService validationService;
+    private CertificateValidationService validationService;
 
     @Mock
-    private MemberCertificatePersistenceService persistenceService;
+    private CertificatePersistenceService persistenceService;
 
     @Mock
-    private MemberCertificate memberCertificate;
+    private Certificate certificate;
 
     @InjectMocks
-    private MemberCertificateBusinessService businessService;
+    private CertificateBusinessService businessService;
 
     @DisplayName("Should get member certificate by id")
     @Test
     void shouldGetById() {
-        when(persistenceService.getById(ID)).thenReturn(Optional.of(memberCertificate));
+        when(persistenceService.getById(ID)).thenReturn(Optional.of(certificate));
 
-        MemberCertificate result = businessService.getById(ID);
+        Certificate result = businessService.getById(ID);
 
-        assertEquals(memberCertificate, result);
+        assertEquals(certificate, result);
         verify(validationService).validateOnGetById(ID);
         verify(persistenceService).getById(ID);
     }
@@ -64,10 +64,10 @@ class MemberCertificateBusinessServiceTest {
     @DisplayName("Should get all member certificates")
     @Test
     void shouldGetAll() {
-        List<MemberCertificate> expectedList = List.of(memberCertificate, memberCertificate);
+        List<Certificate> expectedList = List.of(certificate, certificate);
         when(persistenceService.getAll()).thenReturn(expectedList);
 
-        List<MemberCertificate> result = businessService.getAll();
+        List<Certificate> result = businessService.getAll();
 
         assertEquals(expectedList.size(), result.size());
         assertEquals(expectedList, result);
@@ -80,7 +80,7 @@ class MemberCertificateBusinessServiceTest {
     void shouldGetEmptyList() {
         when(persistenceService.getAll()).thenReturn(Collections.emptyList());
 
-        List<MemberCertificate> result = businessService.getAll();
+        List<Certificate> result = businessService.getAll();
 
         assertEquals(0, result.size());
         verify(persistenceService).getAll();
@@ -90,26 +90,26 @@ class MemberCertificateBusinessServiceTest {
     @DisplayName("Should create member certificate")
     @Test
     void shouldCreate() {
-        when(persistenceService.save(memberCertificate)).thenReturn(memberCertificate);
+        when(persistenceService.save(certificate)).thenReturn(certificate);
 
-        MemberCertificate result = businessService.create(memberCertificate);
+        Certificate result = businessService.create(certificate);
 
-        assertEquals(memberCertificate, result);
-        verify(validationService).validateOnCreate(memberCertificate);
-        verify(persistenceService).save(memberCertificate);
+        assertEquals(certificate, result);
+        verify(validationService).validateOnCreate(certificate);
+        verify(persistenceService).save(certificate);
     }
 
     @DisplayName("Should update member certificate")
     @Test
     void shouldUpdate() {
-        when(persistenceService.save(memberCertificate)).thenReturn(memberCertificate);
+        when(persistenceService.save(certificate)).thenReturn(certificate);
 
-        MemberCertificate result = businessService.update(ID, memberCertificate);
+        Certificate result = businessService.update(ID, certificate);
 
-        assertEquals(memberCertificate, result);
-        verify(memberCertificate).setId(ID);
-        verify(validationService).validateOnUpdate(ID, memberCertificate);
-        verify(persistenceService).save(memberCertificate);
+        assertEquals(certificate, result);
+        verify(certificate).setId(ID);
+        verify(validationService).validateOnUpdate(ID, certificate);
+        verify(persistenceService).save(certificate);
     }
 
     @DisplayName("Should delete member certificate")

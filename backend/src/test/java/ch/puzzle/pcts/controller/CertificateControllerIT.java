@@ -12,19 +12,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.puzzle.pcts.SpringSecurityConfig;
+import ch.puzzle.pcts.dto.certificate.CertificateDto;
+import ch.puzzle.pcts.dto.certificate.CertificateInputDto;
 import ch.puzzle.pcts.dto.certificatetype.CertificateTypeDto;
 import ch.puzzle.pcts.dto.member.MemberDto;
-import ch.puzzle.pcts.dto.membercertificate.MemberCertificateDto;
-import ch.puzzle.pcts.dto.membercertificate.MemberCertificateInputDto;
 import ch.puzzle.pcts.dto.organisationunit.OrganisationUnitDto;
-import ch.puzzle.pcts.mapper.MemberCertificateMapper;
+import ch.puzzle.pcts.mapper.CertificateMapper;
+import ch.puzzle.pcts.mode.certificate.Certificate;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
-import ch.puzzle.pcts.model.membercertificate.MemberCertificate;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
-import ch.puzzle.pcts.service.business.MemberCertificateBusinessService;
+import ch.puzzle.pcts.service.business.CertificateBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
@@ -46,14 +46,14 @@ import org.springframework.test.web.servlet.ResultActions;
 
 @Import(SpringSecurityConfig.class)
 @ExtendWith(MockitoExtension.class)
-@WebMvcTest(MemberCertificateController.class)
-class MemberCertificateControllerIT {
+@WebMvcTest(CertificateController.class)
+class CertificateControllerIT {
 
     @MockitoBean
-    private MemberCertificateBusinessService service;
+    private CertificateBusinessService service;
 
     @MockitoBean
-    private MemberCertificateMapper mapper;
+    private CertificateMapper mapper;
 
     @Autowired
     private MockMvc mvc;
@@ -61,13 +61,13 @@ class MemberCertificateControllerIT {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private static final String BASEURL = "/api/v1/member_certificates";
+    private static final String BASEURL = "/api/v1/certificates";
     private static final Long ID = 1L;
     private final LocalDate commonDate = LocalDate.of(2019, 8, 4);
 
-    private MemberCertificate memberCertificate;
-    private MemberCertificateInputDto requestDto;
-    private MemberCertificateDto expectedDto;
+    private Certificate certificate;
+    private CertificateInputDto requestDto;
+    private CertificateDto expectedDto;
 
     @BeforeEach
     void setUp() {
@@ -92,7 +92,7 @@ class MemberCertificateControllerIT {
                 .withOrganisationUnit(organisationUnit)
                 .build();
 
-        memberCertificate = MemberCertificate.Builder
+        certificate = Certificate.Builder
                 .builder()
                 .withId(ID)
                 .withMember(member)
@@ -101,7 +101,7 @@ class MemberCertificateControllerIT {
                 .withComment("Comment")
                 .build();
 
-        requestDto = new MemberCertificateInputDto(ID, ID, commonDate, commonDate, "Comment");
+        requestDto = new CertificateInputDto(ID, ID, commonDate, commonDate, "Comment");
 
         OrganisationUnitDto organisationUnitDto = new OrganisationUnitDto(1L, "/bbt");
         MemberDto memberDto = new MemberDto(ID,
@@ -118,13 +118,13 @@ class MemberCertificateControllerIT {
                                                                    "Comment",
                                                                    tags.stream().map(Tag::getName).toList());
 
-        expectedDto = new MemberCertificateDto(ID, memberDto, certificateDto, commonDate, commonDate, "Comment");
+        expectedDto = new CertificateDto(ID, memberDto, certificateDto, commonDate, commonDate, "Comment");
     }
 
     @DisplayName("Should successfully get all member certificate")
     @Test
     void shouldGetAllMemberCertificate() throws Exception {
-        given(service.getAll()).willReturn(List.of(memberCertificate));
+        given(service.getAll()).willReturn(List.of(certificate));
         given(mapper.toDto(any(List.class))).willReturn(List.of(expectedDto));
 
         mvc
@@ -139,9 +139,9 @@ class MemberCertificateControllerIT {
 
     @DisplayName("Should successfully get member certificate by id")
     @Test
-    void shouldGetMemberCertificateById() throws Exception {
-        given(service.getById(ID)).willReturn(memberCertificate);
-        given(mapper.toDto(any(MemberCertificate.class))).willReturn(expectedDto);
+    void shouldGetCertificateById() throws Exception {
+        given(service.getById(ID)).willReturn(certificate);
+        given(mapper.toDto(any(Certificate.class))).willReturn(expectedDto);
 
         mvc
                 .perform(get(BASEURL + "/{id}", ID).with(csrf()))
@@ -149,15 +149,15 @@ class MemberCertificateControllerIT {
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
         verify(service, times(1)).getById(ID);
-        verify(mapper, times(1)).toDto(any(MemberCertificate.class));
+        verify(mapper, times(1)).toDto(any(Certificate.class));
     }
 
     @DisplayName("Should successfully create new member certificate")
     @Test
     void shouldCreateNewMemberCertificate() throws Exception {
-        given(mapper.fromDto(any(MemberCertificateInputDto.class))).willReturn(memberCertificate);
-        given(service.create(any(MemberCertificate.class))).willReturn(memberCertificate);
-        given(mapper.toDto(any(MemberCertificate.class))).willReturn(expectedDto);
+        given(mapper.fromDto(any(CertificateInputDto.class))).willReturn(certificate);
+        given(service.create(any(Certificate.class))).willReturn(certificate);
+        given(mapper.toDto(any(Certificate.class))).willReturn(expectedDto);
 
         ResultActions result = mvc
                 .perform(post(BASEURL)
@@ -167,17 +167,17 @@ class MemberCertificateControllerIT {
                 .andExpect(status().isCreated())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
-        verify(mapper, times(1)).fromDto(any(MemberCertificateInputDto.class));
-        verify(service, times(1)).create(any(MemberCertificate.class));
-        verify(mapper, times(1)).toDto(any(MemberCertificate.class));
+        verify(mapper, times(1)).fromDto(any(CertificateInputDto.class));
+        verify(service, times(1)).create(any(Certificate.class));
+        verify(mapper, times(1)).toDto(any(Certificate.class));
     }
 
     @DisplayName("Should successfully update member certificate")
     @Test
-    void shouldUpdateMemberCertificate() throws Exception {
-        given(mapper.fromDto(any(MemberCertificateInputDto.class))).willReturn(memberCertificate);
-        given(service.update(eq(ID), any(MemberCertificate.class))).willReturn(memberCertificate);
-        given(mapper.toDto(any(MemberCertificate.class))).willReturn(expectedDto);
+    void shouldUpdateCertificate() throws Exception {
+        given(mapper.fromDto(any(CertificateInputDto.class))).willReturn(certificate);
+        given(service.update(eq(ID), any(Certificate.class))).willReturn(certificate);
+        given(mapper.toDto(any(Certificate.class))).willReturn(expectedDto);
 
         ResultActions result = mvc
                 .perform(put(BASEURL + "/{id}", ID)
@@ -187,14 +187,14 @@ class MemberCertificateControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
-        verify(mapper, times(1)).fromDto(any(MemberCertificateInputDto.class));
-        verify(service, times(1)).update(eq(ID), any(MemberCertificate.class));
-        verify(mapper, times(1)).toDto(any(MemberCertificate.class));
+        verify(mapper, times(1)).fromDto(any(CertificateInputDto.class));
+        verify(service, times(1)).update(eq(ID), any(Certificate.class));
+        verify(mapper, times(1)).toDto(any(Certificate.class));
     }
 
     @DisplayName("Should successfully delete member certificate")
     @Test
-    void shouldDeleteMemberCertificate() throws Exception {
+    void shouldDeleteCertificate() throws Exception {
         willDoNothing().given(service).delete(ID);
 
         mvc
