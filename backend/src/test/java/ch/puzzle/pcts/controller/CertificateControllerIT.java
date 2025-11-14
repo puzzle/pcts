@@ -96,8 +96,8 @@ class CertificateControllerIT {
                 .builder()
                 .withId(ID)
                 .withMember(member)
-                .withCertificate(certificateType)
-                .withCompleted_at(commonDate)
+                .withCertificateType(certificateType)
+                .withCompletedAt(commonDate)
                 .withComment("Comment")
                 .build();
 
@@ -121,7 +121,7 @@ class CertificateControllerIT {
         expectedDto = new CertificateDto(ID, memberDto, certificateDto, commonDate, commonDate, "Comment");
     }
 
-    @DisplayName("Should successfully get all member certificate")
+    @DisplayName("Should successfully get all certificate")
     @Test
     void shouldGetAllMemberCertificate() throws Exception {
         given(service.getAll()).willReturn(List.of(certificate));
@@ -137,7 +137,7 @@ class CertificateControllerIT {
         verify(mapper, times(1)).toDto(any(List.class));
     }
 
-    @DisplayName("Should successfully get member certificate by id")
+    @DisplayName("Should successfully get certificate by id")
     @Test
     void shouldGetCertificateById() throws Exception {
         given(service.getById(ID)).willReturn(certificate);
@@ -152,7 +152,7 @@ class CertificateControllerIT {
         verify(mapper, times(1)).toDto(any(Certificate.class));
     }
 
-    @DisplayName("Should successfully create new member certificate")
+    @DisplayName("Should successfully create new certificate")
     @Test
     void shouldCreateNewMemberCertificate() throws Exception {
         given(mapper.fromDto(any(CertificateInputDto.class))).willReturn(certificate);
@@ -172,7 +172,7 @@ class CertificateControllerIT {
         verify(mapper, times(1)).toDto(any(Certificate.class));
     }
 
-    @DisplayName("Should successfully update member certificate")
+    @DisplayName("Should successfully update certificate")
     @Test
     void shouldUpdateCertificate() throws Exception {
         given(mapper.fromDto(any(CertificateInputDto.class))).willReturn(certificate);
@@ -192,7 +192,7 @@ class CertificateControllerIT {
         verify(mapper, times(1)).toDto(any(Certificate.class));
     }
 
-    @DisplayName("Should successfully delete member certificate")
+    @DisplayName("Should successfully delete certificate")
     @Test
     void shouldDeleteCertificate() throws Exception {
         willDoNothing().given(service).delete(ID);

@@ -35,9 +35,9 @@ public class CertificateMapper {
     public CertificateDto toDto(Certificate model) {
         return new CertificateDto(model.getId(),
                                   memberMapper.toDto(model.getMember()),
-                                  certificateTypeMapper.toDto(model.getCertificate_type()),
-                                  model.getCompleted_at(),
-                                  model.getValid_until(),
+                                  certificateTypeMapper.toDto(model.getCertificateType()),
+                                  model.getCompletedAt(),
+                                  model.getValidUntil(),
                                   model.getComment());
 
     }
@@ -46,9 +46,9 @@ public class CertificateMapper {
         return Certificate.Builder
                 .builder()
                 .withMember(memberBusinessService.getById(dto.memberId()))
-                .withCertificate(certificateTypeBusinessService.getById(dto.certificate_typeId()))
-                .withCompleted_at(dto.completed_at())
-                .withValid_until(dto.valid_until())
+                .withCertificateType(certificateTypeBusinessService.getById(dto.certificateTypeId()))
+                .withCompletedAt(dto.completedAt())
+                .withValidUntil(dto.validUntil())
                 .withComment(dto.comment())
                 .build();
     }

@@ -36,7 +36,7 @@ class CertificateBusinessServiceTest {
     @InjectMocks
     private CertificateBusinessService businessService;
 
-    @DisplayName("Should get member certificate by id")
+    @DisplayName("Should get certificate by id")
     @Test
     void shouldGetById() {
         when(persistenceService.getById(ID)).thenReturn(Optional.of(certificate));
@@ -48,7 +48,7 @@ class CertificateBusinessServiceTest {
         verify(persistenceService).getById(ID);
     }
 
-    @DisplayName("Should throw exception when member certificate not found by id")
+    @DisplayName("Should throw exception when certificate not found by id")
     @Test
     void shouldThrowExceptionWhenNotFound() {
         when(persistenceService.getById(ID)).thenReturn(Optional.empty());
@@ -61,7 +61,7 @@ class CertificateBusinessServiceTest {
         verify(persistenceService).getById(ID);
     }
 
-    @DisplayName("Should get all member certificates")
+    @DisplayName("Should get all certificates")
     @Test
     void shouldGetAll() {
         List<Certificate> expectedList = List.of(certificate, certificate);
@@ -75,7 +75,7 @@ class CertificateBusinessServiceTest {
         verifyNoInteractions(validationService);
     }
 
-    @DisplayName("Should get empty list when no member certificates exist")
+    @DisplayName("Should get empty list when no certificates exist")
     @Test
     void shouldGetEmptyList() {
         when(persistenceService.getAll()).thenReturn(Collections.emptyList());
@@ -87,7 +87,7 @@ class CertificateBusinessServiceTest {
         verifyNoInteractions(validationService);
     }
 
-    @DisplayName("Should create member certificate")
+    @DisplayName("Should create certificate")
     @Test
     void shouldCreate() {
         when(persistenceService.save(certificate)).thenReturn(certificate);
@@ -99,7 +99,7 @@ class CertificateBusinessServiceTest {
         verify(persistenceService).save(certificate);
     }
 
-    @DisplayName("Should update member certificate")
+    @DisplayName("Should update certificate")
     @Test
     void shouldUpdate() {
         when(persistenceService.save(certificate)).thenReturn(certificate);
@@ -112,7 +112,7 @@ class CertificateBusinessServiceTest {
         verify(persistenceService).save(certificate);
     }
 
-    @DisplayName("Should delete member certificate")
+    @DisplayName("Should delete certificate")
     @Test
     void shouldDelete() {
         businessService.delete(ID);
