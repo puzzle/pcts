@@ -134,9 +134,9 @@ public class CertificatePersistenceServiceIT
                 .builder()
                 .withId(id)
                 .withMember(member)
-                .withCertificate(certificateType)
-                .withCompleted_at(completedAt)
-                .withValid_until(validUntil)
+                .withCertificateType(certificateType)
+                .withCompletedAt(completedAt)
+                .withValidUntil(validUntil)
                 .withComment(comment)
                 .build();
     }
