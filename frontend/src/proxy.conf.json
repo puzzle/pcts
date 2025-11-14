@@ -3,7 +3,7 @@
     "target": "http://localhost:8080",
     "secure": false,
     "router": {
-      "https://pitc-pcts-stag-frontend.ocp-internal.cloudscale.puzzle.ch": "http://pcts-backend:8080"
+      "https://pitc-pcts-stag.ocp-internal.cloudscale.puzzle.ch": "http://pcts-backend:8080"
     }
   }
 }
