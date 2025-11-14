@@ -12,6 +12,7 @@ import {
 import { provideRouter, Router } from '@angular/router';
 import { MemberFormComponent } from './member-form.component';
 import { provideTranslateService } from '@ngx-translate/core';
+import { MemberDetailViewComponent } from '../detail-view/member-detail-view.component';
 
 describe('MemberFormComponent', () => {
   let component: MemberFormComponent;
@@ -43,7 +44,10 @@ describe('MemberFormComponent', () => {
     TestBed.configureTestingModule({
       imports: [MemberFormComponent],
       providers: [
-        provideRouter([]),
+        provideRouter([{ path: 'member',
+          component: MemberDetailViewComponent },
+        { path: 'member/:id',
+          component: MemberDetailViewComponent }]),
         provideTranslateService(),
         {
           provide: MemberService,
