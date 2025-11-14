@@ -37,7 +37,7 @@ export class MemberDetailViewComponent implements OnInit {
 
   protected readonly GLOBAL_DATE_FORMAT = GLOBAL_DATE_FORMAT;
 
-  protected readonly member: WritableSignal<MemberModel | null> = signal<MemberModel | null>(null);
+  readonly member: WritableSignal<MemberModel | null> = signal<MemberModel | null>(null);
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
