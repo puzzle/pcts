@@ -1,3 +1,5 @@
+import { DateTime } from 'luxon';
+
 const nestedProperty = <T extends object>(data: T, sortHeaderId: string): string | number => {
   if (!data || typeof data !== 'object') {
     return '';
@@ -6,11 +8,17 @@ const nestedProperty = <T extends object>(data: T, sortHeaderId: string): string
   const value = sortHeaderId
     .split('.')
     .reduce<any>((acc, key) => {
-      if (acc && typeof acc === 'object') {
-        return acc[key];
-      }
-      return undefined;
+      return acc && typeof acc === 'object' ? acc[key] : undefined;
     }, data);
+
+
+  if (DateTime.isDateTime(value)) {
+    return value.toMillis();
+  }
+
+  if (value instanceof Date) {
+    return value.getTime();
+  }
 
   if (typeof value === 'string' || typeof value === 'number') {
     return value;
@@ -19,8 +27,5 @@ const nestedProperty = <T extends object>(data: T, sortHeaderId: string): string
   return '';
 };
 
-const sortingDataAccessor = {
-  nestedProperty
-};
-
+const sortingDataAccessor = { nestedProperty };
 export default sortingDataAccessor;
