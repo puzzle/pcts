@@ -75,6 +75,14 @@ describe('MemberOverviewComponent', () => {
       .should('include', 'status=APPLICANT');
   });
 
+  it('should visit detail page of member', () => {
+    OverviewPage.getMemberByName('Lena Müller')
+      .click();
+
+    cy.url()
+      .should('include', '/member/1');
+  });
+
   const sortTests: [string, string, string][] = [
     ['employment-state',
       'Bewerber',

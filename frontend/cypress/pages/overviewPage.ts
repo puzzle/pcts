@@ -46,6 +46,11 @@ class OverviewPage extends Page {
     return cy.getByTestId('add-member-button');
   }
 
+  getMemberByName(name: string) {
+    return cy.getByTestId('member-row')
+      .contains(name);
+  }
+
   sortAttribute(sortAttribute: string) {
     return cy.getByTestId(sortAttribute + '-sort')
       .click();
