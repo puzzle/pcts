@@ -36,7 +36,13 @@
 
         <span>
           <p class="mb-0">{{ 'MEMBER.DATE_OF_HIRE' | scopedTranslation }}:</p>
-          <p class="fw-bold">{{ m.dateOfHire.toJSDate() | date: GLOBAL_DATE_FORMAT }}</p>
+          <p class="fw-bold">
+            {{ m.dateOfHire
+            ? (m.dateOfHire.toJSDate() | date: GLOBAL_DATE_FORMAT)
+            : ('DATE_OF_HIRE_NULL' | scopedTranslation)
+            }}
+          </p>
+
         </span>
 
         <span>

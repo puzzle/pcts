@@ -40,7 +40,9 @@ export class MemberService {
   formatDate() {
     return tap((member: MemberModel) => {
       member.birthDate = DateTime.fromISO(member.birthDate.toString());
-      member.dateOfHire = DateTime.fromISO(member.dateOfHire.toString());
+      if (member.dateOfHire) {
+        member.dateOfHire = DateTime.fromISO(member.dateOfHire.toString());
+      }
     });
   }
 
