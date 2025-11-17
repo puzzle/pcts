@@ -3,30 +3,12 @@ import { MemberDetailViewComponent } from './member-detail-view.component';
 import { MemberService } from '../member.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
-import { MemberModel } from '../member.model';
-import { OrganisationUnitModel } from '../../organisation-unit/organisation-unit.model';
-import { DateTime } from 'luxon';
 import { provideTranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
-import { EmploymentState } from '../../../shared/enum/employment-state.enum';
+import { member1 } from '../../../shared/test/test-data';
+
 
 describe('MemberDetailViewComponent (Jest)', () => {
-  const mockOrganisationUnit: OrganisationUnitModel = {
-    id: 1,
-    name: '/mem'
-  };
-
-  const mockMember: MemberModel = {
-    id: 1,
-    firstName: 'John',
-    lastName: 'Doe',
-    birthDate: DateTime.now(),
-    abbreviation: 'JD',
-    employmentState: EmploymentState.EX_MEMBER,
-    organisationUnit: mockOrganisationUnit,
-    dateOfHire: DateTime.now()
-  };
-
   let memberServiceMock: jest.Mocked<MemberService>;
   let routerMock: jest.Mocked<Router>;
   let routeMock: ActivatedRoute;
@@ -74,14 +56,14 @@ describe('MemberDetailViewComponent (Jest)', () => {
 
   it('loads the member when id exists', () => {
     const { fixture, component } = setupTestBed('1');
-    memberServiceMock.getMemberById.mockReturnValue(of(mockMember));
+    memberServiceMock.getMemberById.mockReturnValue(of(member1));
 
     fixture.detectChanges();
 
     expect(memberServiceMock.getMemberById)
       .toHaveBeenCalledWith(1);
     expect(component.member())
-      .toEqual(mockMember);
+      .toEqual(member1);
     expect(routerMock.navigate).not.toHaveBeenCalled();
   });
 
@@ -105,7 +87,7 @@ describe('MemberDetailViewComponent (Jest)', () => {
 
   it('handleEditClick navigates to /member/:id/edit', () => {
     const { fixture, component } = setupTestBed('1');
-    memberServiceMock.getMemberById.mockReturnValue(of(mockMember));
+    memberServiceMock.getMemberById.mockReturnValue(of(member1));
 
     fixture.detectChanges();
     component.handleEditClick();
