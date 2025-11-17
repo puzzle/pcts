@@ -76,7 +76,7 @@ describe('MemberDetailViewComponent (Jest)', () => {
     const { fixture, component } = setupTestBed('1');
     memberServiceMock.getMemberById.mockReturnValue(of(mockMember));
 
-    fixture.detectChanges(); // triggers ngOnInit
+    fixture.detectChanges();
 
     expect(memberServiceMock.getMemberById)
       .toHaveBeenCalledWith(1);
@@ -110,7 +110,6 @@ describe('MemberDetailViewComponent (Jest)', () => {
     fixture.detectChanges();
     component.handleEditClick();
 
-    // NOTE: router receives "1", not 1
     expect(routerMock.navigate)
       .toHaveBeenCalledWith(['/member',
         '1',
