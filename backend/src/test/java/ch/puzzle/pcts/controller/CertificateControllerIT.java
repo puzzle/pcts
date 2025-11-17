@@ -42,7 +42,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 
 @Import(SpringSecurityConfig.class)
 @ExtendWith(MockitoExtension.class)
@@ -159,7 +158,7 @@ class CertificateControllerIT {
         given(service.create(any(Certificate.class))).willReturn(certificate);
         given(mapper.toDto(any(Certificate.class))).willReturn(expectedDto);
 
-        ResultActions result = mvc
+        mvc
                 .perform(post(BASEURL)
                         .content(objectMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -179,7 +178,7 @@ class CertificateControllerIT {
         given(service.update(eq(ID), any(Certificate.class))).willReturn(certificate);
         given(mapper.toDto(any(Certificate.class))).willReturn(expectedDto);
 
-        ResultActions result = mvc
+        mvc
                 .perform(put(BASEURL + "/{id}", ID)
                         .content(objectMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON)
