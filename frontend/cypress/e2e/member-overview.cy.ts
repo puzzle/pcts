@@ -76,7 +76,7 @@ describe('MemberOverviewComponent', () => {
   });
 
   it('should visit detail page of member', () => {
-    OverviewPage.getMemberByName('Lena Müller')
+    OverviewPage.getMemberByFullName('Lena', 'Müller')
       .click();
 
     cy.url()

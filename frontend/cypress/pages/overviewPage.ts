@@ -46,9 +46,18 @@ class OverviewPage extends Page {
     return cy.getByTestId('add-member-button');
   }
 
-  getMemberByName(name: string) {
+  getMember(firstName: string, lastName: string) {
     return cy.getByTestId('member-row')
-      .contains(name);
+      .filter((_, row) => {
+        const text = row.innerText;
+        return text.includes(firstName) && text.includes(lastName);
+      });
+  }
+
+  getMemberByFullName(firstName: string, lastName: string) {
+    return this.getMember(firstName, lastName)
+      .find('[data-testid="member-first-name"]')
+      .find('a');
   }
 
   sortAttribute(sortAttribute: string) {
