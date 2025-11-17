@@ -29,7 +29,7 @@ public class CertificateBusinessService {
         return persistenceService
                 .getById(id)
                 .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,
-                                                     "Member certificate with id: " + id + " does not exist.",
+                                                     "Certificate with id: " + id + " does not exist.",
                                                      ErrorKey.NOT_FOUND));
     }
 

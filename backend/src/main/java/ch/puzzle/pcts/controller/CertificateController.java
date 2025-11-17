@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/certificates")
-@Tag(name = "member certificate", description = "Manage the certificates of members, including type and tag of the certificate")
+@Tag(name = "certificate", description = "Manage the certificates-type, including tag and organisation-unit from the member")
 public class CertificateController {
     private final CertificateBusinessService businessService;
     private final CertificateMapper mapper;
@@ -28,27 +28,27 @@ public class CertificateController {
         this.mapper = mapper;
     }
 
-    @Operation(summary = "List all member certificates")
-    @ApiResponse(responseCode = "200", description = "A list of member certificates.", content = {
+    @Operation(summary = "List all certificates")
+    @ApiResponse(responseCode = "200", description = "A list of certificates.", content = {
             @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = CertificateDto.class))) })
     @GetMapping
     public ResponseEntity<List<CertificateDto>> getCertificate() {
         return ResponseEntity.ok(mapper.toDto(businessService.getAll()));
     }
 
-    @Operation(summary = "Get a member certificate by ID")
-    @ApiResponse(responseCode = "200", description = "Successfully retrieved the member certificates.", content = {
+    @Operation(summary = "Get a certificate by ID")
+    @ApiResponse(responseCode = "200", description = "Successfully retrieved the certificates.", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = CertificateDto.class)) })
-    @GetMapping("{memberCertificateId}")
-    public ResponseEntity<CertificateDto> getCertificate(@Parameter(description = "ID of the member certificate to retrieve.", required = true)
-    @PathVariable Long memberCertificateId) {
-        Certificate certificate = businessService.getById(memberCertificateId);
+    @GetMapping("{certificateId}")
+    public ResponseEntity<CertificateDto> getCertificate(@Parameter(description = "ID of the certificate to retrieve.", required = true)
+    @PathVariable Long certificateId) {
+        Certificate certificate = businessService.getById(certificateId);
         return ResponseEntity.ok(mapper.toDto(certificate));
     }
 
-    @Operation(summary = "Create a new member certificate")
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The member certificate object to be created.", required = true)
-    @ApiResponse(responseCode = "201", description = "member certificate created successfully.", content = {
+    @Operation(summary = "Create a new certificate")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The certificate object to be created.", required = true)
+    @ApiResponse(responseCode = "201", description = "certificate created successfully.", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = CertificateDto.class)) })
     @PostMapping
     public ResponseEntity<CertificateDto> createCertificate(@RequestBody CertificateInputDto dto) {
@@ -56,23 +56,23 @@ public class CertificateController {
         return ResponseEntity.status(201).body(mapper.toDto(newCertificate));
     }
 
-    @Operation(summary = "Update a member certificate")
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The updated member certificate data.", required = true)
-    @ApiResponse(responseCode = "200", description = "member certificate updated successfully.", content = {
+    @Operation(summary = "Update a certificate")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The updated certificate data.", required = true)
+    @ApiResponse(responseCode = "200", description = "certificate updated successfully.", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = CertificateInputDto.class)) })
-    @PutMapping("{memberCertificateId}")
-    public ResponseEntity<CertificateDto> updateCertificate(@Parameter(description = "ID of the member to update.", required = true)
-    @PathVariable Long memberCertificateId, @RequestBody CertificateInputDto dto) {
-        Certificate updatedCertificate = businessService.update(memberCertificateId, mapper.fromDto(dto));
+    @PutMapping("{certificateId}")
+    public ResponseEntity<CertificateDto> updateCertificate(@Parameter(description = "ID of the certificate to update.", required = true)
+    @PathVariable Long certificateId, @RequestBody CertificateInputDto dto) {
+        Certificate updatedCertificate = businessService.update(certificateId, mapper.fromDto(dto));
         return ResponseEntity.ok(mapper.toDto(updatedCertificate));
     }
 
-    @Operation(summary = "Delete a member certificate")
-    @ApiResponse(responseCode = "204", description = "member certificate deleted successfully", content = @Content)
-    @DeleteMapping("{memberCertificateId}")
-    public ResponseEntity<Void> deleteCertificate(@Parameter(description = "ID of the member certificate to delete.", required = true)
-    @PathVariable Long memberCertificateId) {
-        businessService.delete(memberCertificateId);
+    @Operation(summary = "Delete a certificate")
+    @ApiResponse(responseCode = "204", description = "certificate deleted successfully", content = @Content)
+    @DeleteMapping("{certificateId}")
+    public ResponseEntity<Void> deleteCertificate(@Parameter(description = "ID of the certificate to delete.", required = true)
+    @PathVariable Long certificateId) {
+        businessService.delete(certificateId);
         return ResponseEntity.status(204).build();
     }
 

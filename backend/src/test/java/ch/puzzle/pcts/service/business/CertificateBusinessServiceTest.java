@@ -55,7 +55,7 @@ class CertificateBusinessServiceTest {
 
         PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(ID));
 
-        assertEquals("Member certificate with id: " + ID + " does not exist.", exception.getReason());
+        assertEquals("Certificate with id: " + ID + " does not exist.", exception.getReason());
         assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
         verify(validationService).validateOnGetById(ID);
         verify(persistenceService).getById(ID);
