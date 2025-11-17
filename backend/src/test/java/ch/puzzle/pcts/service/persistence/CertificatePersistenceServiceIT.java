@@ -28,69 +28,69 @@ public class CertificatePersistenceServiceIT
 
     @Override
     Certificate getModel() {
-        return createMemberCertificate(null,
-                                       createMember(1L,
-                                                    "Member 1",
-                                                    "M1",
-                                                    LocalDate.of(2021, 7, 15),
-                                                    LocalDate.of(1999, 8, 10),
-                                                    createOrganisationUnit(1L,
-                                                                           "OrganisationUnit 1",
-                                                                           LocalDateTime
-                                                                                   .ofInstant(Instant.EPOCH,
-                                                                                              ZoneOffset.UTC))),
-                                       createCertificate(1L,
-                                                         "Certificate Type 1",
-                                                         new BigDecimal("5.5"),
-                                                         "This is Certificate 1",
-                                                         Set.of(new Tag(1L, "Tag 1"))),
-                                       LocalDate.of(2021, 7, 15),
-                                       LocalDate.of(2021, 7, 15),
-                                       "Comment");
+        return createCertificate(null,
+                                 createMember(1L,
+                                              "Member 1",
+                                              "M1",
+                                              LocalDate.of(2021, 7, 15),
+                                              LocalDate.of(1999, 8, 10),
+                                              createOrganisationUnit(1L,
+                                                                     "OrganisationUnit 1",
+                                                                     LocalDateTime
+                                                                             .ofInstant(Instant.EPOCH,
+                                                                                        ZoneOffset.UTC))),
+                                 createCertificateType(1L,
+                                                       "Certificate Type 1",
+                                                       new BigDecimal("5.5"),
+                                                       "This is Certificate 1",
+                                                       Set.of(new Tag(1L, "Tag 1"))),
+                                 LocalDate.of(2021, 7, 15),
+                                 LocalDate.of(2021, 7, 15),
+                                 "Comment");
     }
 
     @Override
     List<Certificate> getAll() {
-        Certificate certificate1 = createMemberCertificate(1L,
-                                                           createMember(1L,
-                                                                        "Member 1",
-                                                                        "M1",
-                                                                        LocalDate.of(2021, 7, 15),
-                                                                        LocalDate.of(1999, 8, 10),
-                                                                        createOrganisationUnit(1L,
-                                                                                               "OrganisationUnit 1",
-                                                                                               LocalDateTime
-                                                                                                       .of(1970,
-                                                                                                           1,
-                                                                                                           1,
-                                                                                                           0,
-                                                                                                           0))),
-                                                           createCertificate(1L,
-                                                                             "Certificate Type 1",
-                                                                             new BigDecimal("5.5"),
-                                                                             "This is Certificate 1",
-                                                                             Set.of(new Tag(1L, "Tag 1"))),
-                                                           LocalDate.of(2023, 1, 15),
-                                                           LocalDate.of(2025, 1, 14),
-                                                           "Completed first aid training.");
+        Certificate certificate1 = createCertificate(1L,
+                                                     createMember(1L,
+                                                                  "Member 1",
+                                                                  "M1",
+                                                                  LocalDate.of(2021, 7, 15),
+                                                                  LocalDate.of(1999, 8, 10),
+                                                                  createOrganisationUnit(1L,
+                                                                                         "OrganisationUnit 1",
+                                                                                         LocalDateTime
+                                                                                                 .of(1970,
+                                                                                                     1,
+                                                                                                     1,
+                                                                                                     0,
+                                                                                                     0))),
+                                                     createCertificateType(1L,
+                                                                           "Certificate Type 1",
+                                                                           new BigDecimal("5.5"),
+                                                                           "This is Certificate 1",
+                                                                           Set.of(new Tag(1L, "Tag 1"))),
+                                                     LocalDate.of(2023, 1, 15),
+                                                     LocalDate.of(2025, 1, 14),
+                                                     "Completed first aid training.");
 
-        Certificate certificate2 = createMemberCertificate(2L,
-                                                           createMember(2L,
-                                                                        "Member 2",
-                                                                        "M2",
-                                                                        LocalDate.of(2020, 6, 1),
-                                                                        LocalDate.of(1998, 3, 3),
-                                                                        createOrganisationUnit(2L,
-                                                                                               "OrganisationUnit 2",
-                                                                                               null)),
-                                                           createCertificate(2L,
-                                                                             "Certificate Type 2",
-                                                                             new BigDecimal("1"),
-                                                                             "This is Certificate 2",
-                                                                             Set.of(new Tag(2L, "Longer tag name"))),
-                                                           LocalDate.of(2022, 11, 1),
-                                                           null,
-                                                           "Lifetime certification.");
+        Certificate certificate2 = createCertificate(2L,
+                                                     createMember(2L,
+                                                                  "Member 2",
+                                                                  "M2",
+                                                                  LocalDate.of(2020, 6, 1),
+                                                                  LocalDate.of(1998, 3, 3),
+                                                                  createOrganisationUnit(2L,
+                                                                                         "OrganisationUnit 2",
+                                                                                         null)),
+                                                     createCertificateType(2L,
+                                                                           "Certificate Type 2",
+                                                                           new BigDecimal("1"),
+                                                                           "This is Certificate 2",
+                                                                           Set.of(new Tag(2L, "Longer tag name"))),
+                                                     LocalDate.of(2022, 11, 1),
+                                                     null,
+                                                     "Lifetime certification.");
 
         return List.of(certificate1, certificate2);
     }
@@ -116,7 +116,8 @@ public class CertificatePersistenceServiceIT
         return organisationUnit;
     }
 
-    private CertificateType createCertificate(Long id, String name, BigDecimal points, String comment, Set<Tag> tags) {
+    private CertificateType createCertificateType(Long id, String name, BigDecimal points, String comment,
+                                                  Set<Tag> tags) {
         CertificateType certificateType = new CertificateType();
         certificateType.setId(id);
         certificateType.setName(name);
@@ -128,8 +129,8 @@ public class CertificatePersistenceServiceIT
         return certificateType;
     }
 
-    private Certificate createMemberCertificate(Long id, Member member, CertificateType certificateType,
-                                                LocalDate completedAt, LocalDate validUntil, String comment) {
+    private Certificate createCertificate(Long id, Member member, CertificateType certificateType,
+                                          LocalDate completedAt, LocalDate validUntil, String comment) {
         return Certificate.Builder
                 .builder()
                 .withId(id)
