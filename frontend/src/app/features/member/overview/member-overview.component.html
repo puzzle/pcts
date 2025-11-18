@@ -47,16 +47,7 @@
       }
     </div>
 
-    <button
-      type="button"
-      mat-stroked-button
-      data-testid="add-member-button"
-      (click)="handleAddMemberClick()"
-    >
-      <mat-icon>add</mat-icon>
-        {{ 'MODEL_NAME' | scopedTranslation }}
-        {{ 'FORM.ADD.ACTION' | scopedTranslation }}
-    </button>
+    <app-crud-button mode="add"/>
   </div>
 
   <div class="overflow-y-scroll mat-elevation-z8 table-max-height">
