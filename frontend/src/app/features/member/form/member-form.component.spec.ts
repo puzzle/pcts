@@ -44,9 +44,7 @@ describe('MemberFormComponent', () => {
     TestBed.configureTestingModule({
       imports: [MemberFormComponent],
       providers: [
-        provideRouter([{ path: 'member',
-          component: MemberDetailViewComponent },
-        { path: 'member/:id',
+        provideRouter([{ path: 'member/:id',
           component: MemberDetailViewComponent }]),
         provideTranslateService(),
         {
