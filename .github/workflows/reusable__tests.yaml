@@ -28,12 +28,24 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ vars.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
 
       - name: Npm install
         run: npm ci
 
       - name: Run unit tests
         run: npm run test:ci
+
+      - name: Upload frontend reports
+        uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: frontend-test-reports
+          path: |
+            frontend/coverage/lcov.info
+            frontend/junit.xml
+          retention-days: 1
 
       - name: Publish test results
         uses: EnricoMi/publish-unit-test-result-action@v2
@@ -55,14 +67,30 @@ jobs:
         with:
           ref: ${{ inputs.COMMIT_HASH || github.head_ref }}
 
+      - name: Set up Maven cache
+        uses: actions/cache@v4
+        with:
+          path: "~/.m2/repository"
+          key: maven-testing-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
+
       - name: Set up JDK ${{ vars.JAVA_VERSION }}
         uses: actions/setup-java@v5
         with:
           java-version: ${{ vars.JAVA_VERSION }}
-          distribution: adopt
+          distribution: ${{ vars.JAVA_DISTRIBUTION }}
 
       - name: Use Maven to run unit and integration tests
         run: mvn clean verify
+
+      - name: Upload backend reports
+        uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: backend-test-reports
+          path: |
+            backend/target/jacoco.exec
+            backend/target/surefire-reports/
+          retention-days: 1
 
       - name: Publish test results
         uses: EnricoMi/publish-unit-test-result-action@v2
