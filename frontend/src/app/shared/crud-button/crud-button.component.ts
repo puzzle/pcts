@@ -9,8 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   imports: [MatButton,
     MatIcon,
     ScopedTranslationPipe],
-  templateUrl: './crud-button.component.html',
-  styleUrl: './crud-button.component.scss'
+  templateUrl: './crud-button.component.html'
 })
 export class CrudButtonComponent {
   private readonly router = inject(Router);
