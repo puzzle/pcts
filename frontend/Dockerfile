@@ -5,7 +5,7 @@ RUN npm ci
 COPY . .
 RUN npm run build -- --output-path=./dist/ --configuration=production
 
-FROM nginxinc/nginx-unprivileged:alpine3.22-perl AS runner
+FROM nginxinc/nginx-unprivileged:1.29-alpine AS runner
 COPY nginx.conf /etc/nginx/
 COPY --from=builder /app/dist/browser /usr/share/nginx/html
 EXPOSE 4200
