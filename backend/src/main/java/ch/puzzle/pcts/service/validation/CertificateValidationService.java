@@ -14,6 +14,7 @@ public class CertificateValidationService extends ValidationBase<Certificate> {
         super.validateOnCreate(certificate);
         validateCompletedAtIsBeforeValidUntil(certificate.getCompletedAt(), certificate.getValidUntil());
     }
+
     @Override
     public void validateOnUpdate(Long id, Certificate certificate) {
         super.validateOnUpdate(id, certificate);
@@ -21,9 +22,9 @@ public class CertificateValidationService extends ValidationBase<Certificate> {
     }
 
     public void validateCompletedAtIsBeforeValidUntil(LocalDate completedAt, LocalDate validUntil) {
-        if (validUntil != null && completedAt.isAfter(validUntil)) {
+        if (validUntil != null && completedAt != null && completedAt.isAfter(validUntil)) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "Certificate.completedAT must be after the validUntil date, given validUntil: "
+                                    "Certificate.completedAT must be before the validUntil date, given validUntil: "
                                                             + validUntil + " and completedAt: " + completedAt + ".",
                                     ErrorKey.INVALID_ARGUMENT);
         }
