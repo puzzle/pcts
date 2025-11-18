@@ -8,6 +8,10 @@ class MemberDetailPage extends Page {
   editMemberButton() {
     return cy.getByTestId('edit-member-button');
   }
+
+  memberDetailView() {
+    return cy.getByTestId('member-detail-view');
+  }
 }
 
 export default new MemberDetailPage();
