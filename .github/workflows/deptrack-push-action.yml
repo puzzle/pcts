@@ -11,7 +11,7 @@ on:
 jobs:
   generate-and-push-sbom:
     if: github.event.pull_request.merged == true
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     environment: STAGING
     steps:
       - name: Checkout Repository

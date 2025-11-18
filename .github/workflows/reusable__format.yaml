@@ -20,17 +20,11 @@ jobs:
         with:
           ref: ${{ inputs.COMMIT_HASH }}
 
-      - name: Set up Maven cache
-        uses: actions/cache@v4
-        with:
-          path: "~/.m2/repository"
-          key: maven-formatting-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
-
       - name: Set up JDK ${{ vars.JAVA_VERSION }}
         uses: actions/setup-java@v5
         with:
           java-version: ${{ vars.JAVA_VERSION }}
-          distribution: ${{ vars.JAVA_DISTRIBUTION }}
+          distribution: adopt
           server-id: github
           settings-path: ${{ github.workspace }}
 
@@ -38,7 +32,7 @@ jobs:
         run: mvn spotless:check
 
   frontend:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: frontend
@@ -52,8 +46,6 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ vars.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
 
       - name: Npm install
         run: npm ci
@@ -62,7 +54,7 @@ jobs:
         run: npm run check-linting:all
 
   markdownlint:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: .
@@ -73,10 +65,7 @@ jobs:
           ref: ${{ inputs.COMMIT_HASH }}
 
       - name: Install Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.4'
-          bundler-cache: true
+        run: sudo apt-get install ruby-full
 
       - name: Install markdownlint
         run: sudo gem install mdl
@@ -87,7 +76,7 @@ jobs:
           -not -path "./.github/ISSUE_TEMPLATE/*" | xargs mdl
 
   yamllint:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: .
