@@ -24,7 +24,6 @@ jobs:
       COMMIT_HASH: ${{ github.sha }}
 
   push-to-ghrc:
-    if: github.ref_name == 'main'
     needs:
       - e2e-tests
       - format
