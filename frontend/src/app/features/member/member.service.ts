@@ -50,11 +50,16 @@ export class MemberService {
     return {
       firstName: model.firstName,
       lastName: model.lastName,
-      birthDate: model.birthDate.toJSDate(),
+      birthDate: this.removeTimeZone(model.birthDate.toJSDate()),
       abbreviation: model.abbreviation,
       employmentState: model.employmentState,
       organisationUnitId: model.organisationUnit?.id,
-      dateOfHire: model.dateOfHire ? model.dateOfHire?.toJSDate() : null
+      dateOfHire: model.dateOfHire ? this.removeTimeZone(model.dateOfHire.toJSDate()) : null
     };
+  }
+
+  removeTimeZone(date: Date): Date {
+    // force the date to be in UTC so the backend can read it
+    return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
   }
 }

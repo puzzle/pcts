@@ -147,7 +147,6 @@ export class MemberFormComponent implements OnInit {
     this.location.back();
   }
 
-
   protected displayEmploymentState = (employmentState: EmploymentState | string): string => {
     if (!employmentState) {
       return '';
