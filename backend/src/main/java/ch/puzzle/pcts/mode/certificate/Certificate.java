@@ -7,7 +7,6 @@ import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.member.Member;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -31,7 +30,6 @@ public class Certificate implements Model {
     private CertificateType certificateType;
 
     @NotNull(message = "{attribute.not.null}")
-    @Past(message = "{attribute.date.past}")
     private LocalDate completedAt;
 
     private LocalDate validUntil;

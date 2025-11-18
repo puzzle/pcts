@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/certificates")
-@Tag(name = "certificate", description = "Manage the certificates-type, including tag and organisation-unit from the member")
+@Tag(name = "certificates", description = "Manage the certificates-type, including tag and organisation-unit from the member")
 public class CertificateController {
     private final CertificateBusinessService businessService;
     private final CertificateMapper mapper;
@@ -68,12 +68,11 @@ public class CertificateController {
     }
 
     @Operation(summary = "Delete a certificate")
-    @ApiResponse(responseCode = "204", description = "certificate deleted successfully", content = @Content)
+    @ApiResponse(responseCode = "204", description = "certificate deleted successfully.", content = @Content)
     @DeleteMapping("{certificateId}")
     public ResponseEntity<Void> deleteCertificate(@Parameter(description = "ID of the certificate to delete.", required = true)
     @PathVariable Long certificateId) {
         businessService.delete(certificateId);
         return ResponseEntity.status(204).build();
     }
-
 }
