@@ -55,9 +55,8 @@ class OverviewPage extends Page {
   }
 
   getMemberByFullName(firstName: string, lastName: string) {
-    return this.getMember(firstName, lastName)
-      .find('[data-testid="member-first-name"]')
-      .find('a');
+    return this.memberTable()
+      .findByTestId('member-row', firstName + ' ' + lastName);
   }
 
   sortAttribute(sortAttribute: string) {
