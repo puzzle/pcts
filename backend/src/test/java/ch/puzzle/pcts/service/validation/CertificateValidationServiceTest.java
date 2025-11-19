@@ -163,6 +163,14 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
         assertDoesNotThrow(() -> service.validateOnUpdate(1L, certificate));
     }
 
+    @DisplayName("Should not throw when completedAt is null")
+    @Test
+    void shouldNotThrowWhenCompletedAtIsNull() {
+        LocalDate validUntil = LocalDate.now();
+
+        assertDoesNotThrow(() -> service.validateCompletedAtIsBeforeValidUntil(null, validUntil));
+    }
+
     @DisplayName("Should call correct validate method on validateOnCreate()")
     @Test
     void shouldCallAllMethodsOnValidateOnCreateWhenValid() {
