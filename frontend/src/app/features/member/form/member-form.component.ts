@@ -21,7 +21,6 @@ import { InputFieldComponent } from '../../../shared/input-field/input-field.com
 import { map } from 'rxjs';
 import { isDateInFuture, isValueInList, isValueInListSignal } from '../../../shared/form/form-validators';
 import { BaseFormComponent } from '../../../shared/form/base-form.component';
-import { DateTime } from 'luxon';
 import { ScopedTranslationService } from '../../../shared/services/scoped-translation.service';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 
@@ -115,9 +114,7 @@ export class MemberFormComponent implements OnInit {
         return;
       }
       this.memberForm.patchValue({
-        ...this.member(),
-        birthDate: DateTime.fromISO(this.member().birthDate.toString()),
-        dateOfHire: DateTime.fromISO(this.member().dateOfHire.toString())
+        ...this.member()
       });
 
       this.memberForm.get('organisationUnit')
