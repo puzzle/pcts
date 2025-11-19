@@ -73,7 +73,6 @@ public class CertificatePersistenceServiceIT
                                                      LocalDate.of(2023, 1, 15),
                                                      LocalDate.of(2025, 1, 14),
                                                      "Completed first aid training.");
-
         Certificate certificate2 = createCertificate(2L,
                                                      createMember(2L,
                                                                   "Member 2",
@@ -90,9 +89,48 @@ public class CertificatePersistenceServiceIT
                                                                            Set.of(new Tag(2L, "Longer tag name"))),
                                                      LocalDate.of(2022, 11, 1),
                                                      null,
-                                                     "Lifetime certification.");
+                                                     "Completed first aid training.");
+        Certificate certificate3 = createCertificate(3L,
+                                                     createMember(2L,
+                                                                  "Member 2",
+                                                                  "M2",
+                                                                  LocalDate.of(2020, 6, 1),
+                                                                  LocalDate.of(1998, 3, 3),
+                                                                  createOrganisationUnit(2L,
+                                                                                         "OrganisationUnit 2",
+                                                                                         null)),
+                                                     createCertificateType(1L,
+                                                                           "Certificate Type 1",
+                                                                           new BigDecimal("5.5"),
+                                                                           "This is Certificate 1",
+                                                                           Set.of(new Tag(1L, "Tag 1"))),
+                                                     LocalDate.of(2023, 1, 15),
+                                                     LocalDate.of(2025, 1, 14),
+                                                     null);
+        Certificate certificate4 = createCertificate(4L,
+                                                     createMember(1L,
+                                                                  "Member 1",
+                                                                  "M1",
+                                                                  LocalDate.of(2021, 7, 15),
+                                                                  LocalDate.of(1999, 8, 10),
+                                                                  createOrganisationUnit(1L,
+                                                                                         "OrganisationUnit 1",
+                                                                                         LocalDateTime
+                                                                                                 .of(1970,
+                                                                                                     1,
+                                                                                                     1,
+                                                                                                     0,
+                                                                                                     0))),
+                                                     createCertificateType(2L,
+                                                                           "Certificate Type 2",
+                                                                           new BigDecimal("1"),
+                                                                           "This is Certificate 2",
+                                                                           Set.of(new Tag(2L, "Longer tag name"))),
+                                                     LocalDate.of(2010, 8, 12),
+                                                     LocalDate.of(2023, 3, 25),
+                                                     "Left organization.");
 
-        return List.of(certificate1, certificate2);
+        return List.of(certificate1, certificate2, certificate3, certificate4);
     }
 
     private Member createMember(Long id, String firstName, String abbreviation, LocalDate dateOfHire,
