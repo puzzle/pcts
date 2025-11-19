@@ -15,6 +15,7 @@ jobs:
       - uses: actions/checkout@v6
         with:
           ref: ${{ inputs.COMMIT_HASH || github.head_ref }}
+          fetch-depth: 0
 
       - name: Set up Maven cache
         uses: actions/cache@v4
