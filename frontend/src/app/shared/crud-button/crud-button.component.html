@@ -1,4 +1,5 @@
 <button
+  [attr.data-testid]=`${mode}-${this.modelName}-button`
   type="button"
   mat-stroked-button
   (click)="handleClick()">
