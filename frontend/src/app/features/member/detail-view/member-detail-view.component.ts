@@ -1,7 +1,7 @@
 import { Component, OnInit, WritableSignal, signal, inject } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { MemberService } from '../member.service';
 import { MemberModel } from '../member.model';
 import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
@@ -31,10 +31,6 @@ export class MemberDetailViewComponent implements OnInit {
 
   private readonly router = inject(Router);
 
-  private readonly translate = inject(TranslateService);
-
-  private readonly datePipe: DatePipe = inject(DatePipe);
-
   protected readonly GLOBAL_DATE_FORMAT = GLOBAL_DATE_FORMAT;
 
   readonly member: WritableSignal<MemberModel | null> = signal<MemberModel | null>(null);
@@ -48,8 +44,7 @@ export class MemberDetailViewComponent implements OnInit {
 
     this.service.getMemberById(Number(id))
       .subscribe({
-        next: (member) => this.member.set(member),
-        error: () => this.router.navigate(['/member'])
+        next: (member) => this.member.set(member)
       });
   }
 

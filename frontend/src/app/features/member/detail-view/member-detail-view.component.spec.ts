@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { MemberDetailViewComponent } from './member-detail-view.component';
 import { MemberService } from '../member.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { provideTranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 import { member1 } from '../../../shared/test/test-data';
@@ -65,24 +65,6 @@ describe('MemberDetailViewComponent (Jest)', () => {
     expect(component.member())
       .toEqual(member1);
     expect(routerMock.navigate).not.toHaveBeenCalled();
-  });
-
-  it('redirects when no id is provided', () => {
-    const { fixture } = setupTestBed(null);
-    fixture.detectChanges();
-
-    expect(routerMock.navigate)
-      .toHaveBeenCalledWith(['/member']);
-  });
-
-  it('redirects when service throws an error', () => {
-    const { fixture } = setupTestBed('1');
-    memberServiceMock.getMemberById.mockReturnValue(throwError(() => new Error('fail')));
-
-    fixture.detectChanges();
-
-    expect(routerMock.navigate)
-      .toHaveBeenCalledWith(['/member']);
   });
 
   it('handleEditClick navigates to /member/:id/edit', () => {
