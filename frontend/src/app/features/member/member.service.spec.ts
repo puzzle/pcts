@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { MemberService } from './member.service';
 import { MemberModel } from './member.model';
-import { member1, member2, memberDto1 } from '../../shared/test/test-data';
+import { member1, member2, member4, memberDto1, memberDto2 } from '../../shared/test/test-data';
 import { provideHttpClient } from '@angular/common/http';
 
 describe('MemberService', () => {
@@ -99,6 +99,23 @@ describe('MemberService', () => {
       expect(req.request.body)
         .toEqual(memberDto1);
       req.flush(member1);
+    });
+
+    it('should call httpClient.put with the correct URL and with member data that contains valid null attributes', () => {
+      const memberId = 4;
+
+      service.updateMember(memberId, member4)
+        .subscribe((updatedMember) => {
+          expect(updatedMember)
+            .toEqual(member4);
+        });
+
+      const req = httpMock.expectOne(`${API_URL}/${memberId}`);
+      expect(req.request.method)
+        .toBe('PUT');
+      expect(req.request.body)
+        .toEqual(memberDto2);
+      req.flush(member4);
     });
   });
 

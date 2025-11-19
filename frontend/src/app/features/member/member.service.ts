@@ -40,7 +40,9 @@ export class MemberService {
   formatDate() {
     return tap((member: MemberModel) => {
       member.birthDate = DateTime.fromISO(member.birthDate.toString());
-      member.dateOfHire = DateTime.fromISO(member.dateOfHire.toString());
+      if (member.dateOfHire) {
+        member.dateOfHire = DateTime.fromISO(member.dateOfHire.toString());
+      }
     });
   }
 
@@ -52,7 +54,7 @@ export class MemberService {
       abbreviation: model.abbreviation,
       employmentState: model.employmentState,
       organisationUnitId: model.organisationUnit?.id,
-      dateOfHire: model.dateOfHire.toJSDate()
+      dateOfHire: model.dateOfHire ? model.dateOfHire?.toJSDate() : null
     };
   }
 }

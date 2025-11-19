@@ -11,7 +11,7 @@
       }
     },
     "EDIT": {
-      "ACTION": "ändern",
+      "ACTION": "bearbeiten",
       "BUTTONS": {
         "ACTION": "Speichern",
         "CANCEL": "Abbrechen"
@@ -44,6 +44,7 @@
     "DATE_OF_HIRE": "Anstellungsdatum",
     "ORGANISATION_UNIT": "Division",
     "EMPLOYMENT_STATE": "Anstellungsstatus",
+    "ATTRIBUTE_NULL": "-",
 
     "FORM": {
       "PERSONAL_DETAILS": "Personalien"

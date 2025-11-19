@@ -62,9 +62,9 @@ export const member4: MemberModel = {
   firstName: 'John',
   lastName: 'Doe',
   birthDate: DateTime.fromISO('2000-12-01'),
-  abbreviation: 'JD',
+  abbreviation: null,
   employmentState: EmploymentState.APPLICANT,
-  dateOfHire: DateTime.fromISO('2018-12-01'),
+  dateOfHire: null,
   organisationUnit: organisationUnit4
 };
 
@@ -78,4 +78,15 @@ export const memberDto1: MemberDto = {
   dateOfHire: DateTime.fromISO('2018-12-01')
     .toJSDate(),
   organisationUnitId: 1
+};
+
+export const memberDto2: MemberDto = {
+  firstName: 'John',
+  lastName: 'Doe',
+  birthDate: DateTime.fromISO('2000-12-01')
+    .toJSDate(),
+  abbreviation: null,
+  employmentState: EmploymentState.APPLICANT,
+  dateOfHire: null,
+  organisationUnitId: 4
 };

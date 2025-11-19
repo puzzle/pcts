@@ -4,8 +4,8 @@ export interface MemberDto {
   firstName: string;
   lastName: string;
   birthDate: Date;
-  abbreviation: string;
+  abbreviation: string | null;
   employmentState: EmploymentState;
   organisationUnitId: number;
-  dateOfHire: Date;
+  dateOfHire: Date | null;
 }
