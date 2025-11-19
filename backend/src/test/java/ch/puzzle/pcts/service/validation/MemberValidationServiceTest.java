@@ -103,21 +103,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                             .of(createMember(null, validPastDate, "Member", "Test", "MT"),
                                 "Member.employmentState must not be null."),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "Test", null),
-                                "Member.abbreviation must not be null."),
-                    Arguments
-                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "Test", ""),
-                                "Member.abbreviation must not be blank."),
-                    Arguments
-                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "Test", "  "),
-                                "Member.abbreviation must not be blank."),
-                    Arguments
-                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "Test", "S"),
-                                "Member.abbreviation size must be between 2 and 250, given S."),
-                    Arguments
-                            .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "Test", "  S "),
-                                "Member.abbreviation size must be between 2 and 250, given S."),
-                    Arguments
                             .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "Test", tooLongString),
                                 String
                                         .format("Member.abbreviation size must be between 2 and 250, given %s.",

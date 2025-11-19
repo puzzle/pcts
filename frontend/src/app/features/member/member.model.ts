@@ -7,9 +7,8 @@ export interface MemberModel {
   firstName: string;
   lastName: string;
   birthDate: DateTime;
-  abbreviation: string;
+  abbreviation: string | null;
   employmentState: EmploymentState;
   organisationUnit: OrganisationUnitModel;
-  dateOfHire: DateTime;
+  dateOfHire: DateTime | null;
 }
-

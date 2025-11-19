@@ -26,7 +26,9 @@
       <div class="d-flex justify-content-between flex-wrap">
         <span>
           <p class="mb-0">{{ 'MEMBER.ABBREVIATION' | translate }}:</p>
-          <p class="fw-bold">{{ m.abbreviation }}</p>
+          <p class="fw-bold">
+            {{ m.abbreviation ? (m.abbreviation) : ('ATTRIBUTE_NULL' | scopedTranslation)}}
+          </p>
         </span>
 
         <span>
@@ -39,7 +41,7 @@
           <p class="fw-bold">
             {{ m.dateOfHire
             ? (m.dateOfHire.toJSDate() | date: GLOBAL_DATE_FORMAT)
-            : ('DATE_OF_HIRE_NULL' | scopedTranslation)
+            : ('ATTRIBUTE_NULL' | scopedTranslation)
             }}
           </p>
 

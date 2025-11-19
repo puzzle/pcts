@@ -10,7 +10,7 @@ describe('MemberOverviewComponent', () => {
     memberDetailPage.memberDetailView()
       .should('include.text', 'Lena Müller')
       .should('include.text', 'Personalien')
-      .should('include.text', 'Kürzel:LM')
+      .should('include.text', 'Kürzel: LM')
       .should('include.text', 'Geburtsdatum:10.08.1999')
       .should('include.text', 'Anstellungsdatum: 15.07.2021')
       .should('include.text', 'Anstellungsstatus:Member')
@@ -25,12 +25,13 @@ describe('MemberOverviewComponent', () => {
       .should('include', '/member/1/edit');
   });
 
-  it('should display alternative message when dateOfHire is not set', () => {
+  it('should display alternative message when dateOfHire and abbreviation is not set', () => {
     // Equals to 'Sophie Keller'
     memberDetailPage.visit(3);
 
     memberDetailPage.memberDetailView()
       .should('include.text', 'Sophie Keller')
-      .should('include.text', 'Anstellungsdatum: Nicht angegeben');
+      .should('include.text', 'Anstellungsdatum: -')
+      .should('include.text', 'Kürzel: -');
   });
 });

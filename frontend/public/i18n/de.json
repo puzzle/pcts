@@ -44,7 +44,7 @@
     "DATE_OF_HIRE": "Anstellungsdatum",
     "ORGANISATION_UNIT": "Division",
     "EMPLOYMENT_STATE": "Anstellungsstatus",
-    "DATE_OF_HIRE_NULL": "Nicht angegeben",
+    "ATTRIBUTE_NULL": "-",
 
     "FORM": {
       "PERSONAL_DETAILS": "Personalien"
