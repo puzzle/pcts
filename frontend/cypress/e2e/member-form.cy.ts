@@ -122,15 +122,53 @@ describe('edit member form', () => {
   });
 
   it('should save changes to member', () => {
-    FormPage.visitEdit(2, 'member');
+    FormPage.visitEdit(1, 'member');
+
     FormPage.clearAndBlur('firstName');
-    FormPage.typeAndBlur('firstName', 'Leon');
+    FormPage.typeAndBlur('firstName', 'Lena');
+
+    FormPage.clearAndBlur('lastName');
+    FormPage.typeAndBlur('lastName', 'Müller');
+
+    FormPage.clearAndBlur('abbreviation');
+    FormPage.typeAndBlur('abbreviation', 'LM');
+
+    FormPage.clearAndBlur('birthDate');
+    FormPage.typeAndBlur('birthDate', '10.08.1999');
+
+    FormPage.clearAndBlur('dateOfHire');
+    FormPage.typeAndBlur('dateOfHire', '15.07.2021');
+
+    FormPage.clearAndBlur('employmentState');
+    FormPage.typeAndBlur('employmentState', 'Member');
+    cy.get('mat-option')
+      .contains('Member')
+      .click();
+
+    FormPage.clearAndBlur('organisationUnit');
+    FormPage.typeAndBlur('organisationUnit', '/zh');
+    cy.get('mat-option')
+      .contains('/zh')
+      .click();
 
     FormPage.save();
-
     OverviewPage.visit();
 
-    OverviewPage.memberRows()
-      .contains('Leon Schmidt', { matchCase: false });
+    FormPage.visitEdit(1, 'member');
+    const expectedMemberData = {
+      firstName: 'Lena',
+      lastName: 'Müller',
+      abbreviation: 'LM',
+      birthDate: '10.08.1999',
+      dateOfHire: '15.07.2021',
+      employmentState: 'Member',
+      organisationUnit: '/zh'
+    };
+
+    Object.entries(expectedMemberData)
+      .forEach(([field,
+        value]) => {
+        FormPage.shouldHaveFieldValue(field, value);
+      });
   });
 });
