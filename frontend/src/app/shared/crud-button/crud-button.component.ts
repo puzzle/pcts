@@ -18,9 +18,9 @@ export class CrudButtonComponent {
 
   private readonly id = this.idFromRoute;
 
-  private modelName: string = this.router.url.split('/')[1] ?? '';
+  protected modelName: string = this.router.url.split('/')[1] ?? '';
 
-  @Input() private mode: 'add' | 'edit' | 'delete' = 'add';
+  @Input() mode: 'add' | 'edit' | 'delete' = 'add';
 
   handleClick() {
     switch (this.mode) {
