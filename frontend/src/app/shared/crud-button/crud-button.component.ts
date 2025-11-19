@@ -21,19 +21,30 @@ export class CrudButtonComponent {
   @Input() mode: 'add' | 'edit' | 'delete' = 'add';
 
   handleClick() {
-    if (this.mode === 'add') {
-      this.router.navigate([this.router.url,
-        'add']);
-    }
-    if (this.mode === 'edit') {
-      this.router.navigate([this.router.url,
-        'edit',
-        this.id]);
-    }
-    if (this.mode === 'delete') {
-      this.router.navigate([this.router.url,
-        'delete',
-        this.id]);
+    switch (this.mode) {
+      case 'edit':
+        if (this.id) {
+          this.router.navigate([this.router.url,
+            'edit',
+            this.id]);
+        }
+        break;
+
+      case 'delete':
+        if (this.id) {
+          this.router.navigate([this.router.url,
+            'delete',
+            this.id]);
+        }
+        break;
+
+      case 'add':
+        this.router.navigate([this.router.url,
+          'add']);
+        break;
+
+      default:
+        break;
     }
   }
 
