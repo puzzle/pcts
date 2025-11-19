@@ -63,7 +63,7 @@ jobs:
           -Dsonar.host.url=${{ vars.SONAR_HOST_URL }} \
           -Dsonar.jacoco.reportPaths=backend/target/jacoco.exec \
           -Dsonar.javascript.lcov.reportPaths=frontend/coverage/lcov.info \
-          -Dsonar.junit.reportPaths=frontend/junit.xml,backend/target/surefire-reports
+          -Dsonar.junit.reportPaths=frontend/junit.xml,backend/target/surefire-reports/
 
       - name: SonarQube Quality Gate check
         id: sonarqube-quality-gate-check
