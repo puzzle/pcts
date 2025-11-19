@@ -82,4 +82,6 @@ INSERT INTO certificate
 (member, certificate_type, completed_at, valid_until, comment)
 VALUES
     (1, 1, '2023-01-15', '2025-01-14', 'Completed first aid training.'),
-    (2, 2, '2022-11-01', NULL, 'Lifetime certification.');
+    (2, 2, '2022-11-01', NULL, 'Completed first aid training.'),
+    (2, 1, '2023-01-15', '2025-01-14', 'Lifetime certification.'),
+    (1, 2, '2010-08-12', '2023-03-25', 'Left organization.');
