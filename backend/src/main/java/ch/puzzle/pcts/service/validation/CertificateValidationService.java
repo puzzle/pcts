@@ -1,7 +1,7 @@
 package ch.puzzle.pcts.service.validation;
 
 import ch.puzzle.pcts.exception.PCTSException;
-import ch.puzzle.pcts.mode.certificate.Certificate;
+import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import java.time.LocalDate;
 import org.springframework.http.HttpStatus;

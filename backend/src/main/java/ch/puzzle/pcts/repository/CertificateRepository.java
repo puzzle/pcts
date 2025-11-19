@@ -1,6 +1,6 @@
 package ch.puzzle.pcts.repository;
 
-import ch.puzzle.pcts.mode.certificate.Certificate;
+import ch.puzzle.pcts.model.certificate.Certificate;
 import org.springframework.stereotype.Repository;
 
 @Repository

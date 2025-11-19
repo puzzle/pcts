@@ -6,7 +6,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import ch.puzzle.pcts.exception.PCTSException;
-import ch.puzzle.pcts.mode.certificate.Certificate;
+import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.certificatetype.Tag;

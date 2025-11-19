@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.exception.PCTSException;
-import ch.puzzle.pcts.mode.certificate.Certificate;
+import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.service.persistence.CertificatePersistenceService;
 import ch.puzzle.pcts.service.validation.CertificateValidationService;

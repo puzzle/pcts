@@ -8,7 +8,7 @@ import ch.puzzle.pcts.dto.certificate.CertificateDto;
 import ch.puzzle.pcts.dto.certificate.CertificateInputDto;
 import ch.puzzle.pcts.dto.certificatetype.CertificateTypeDto;
 import ch.puzzle.pcts.dto.member.MemberDto;
-import ch.puzzle.pcts.mode.certificate.Certificate;
+import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.business.CertificateTypeBusinessService;

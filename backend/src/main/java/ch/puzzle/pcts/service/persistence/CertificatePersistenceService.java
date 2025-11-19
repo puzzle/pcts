@@ -1,6 +1,6 @@
 package ch.puzzle.pcts.service.persistence;
 
-import ch.puzzle.pcts.mode.certificate.Certificate;
+import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.repository.CertificateRepository;
 import org.springframework.stereotype.Service;
 

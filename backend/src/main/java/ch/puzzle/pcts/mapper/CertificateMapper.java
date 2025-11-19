@@ -2,7 +2,7 @@ package ch.puzzle.pcts.mapper;
 
 import ch.puzzle.pcts.dto.certificate.CertificateDto;
 import ch.puzzle.pcts.dto.certificate.CertificateInputDto;
-import ch.puzzle.pcts.mode.certificate.Certificate;
+import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.service.business.CertificateTypeBusinessService;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import java.util.List;

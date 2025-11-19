@@ -18,7 +18,7 @@ import ch.puzzle.pcts.dto.certificatetype.CertificateTypeDto;
 import ch.puzzle.pcts.dto.member.MemberDto;
 import ch.puzzle.pcts.dto.organisationunit.OrganisationUnitDto;
 import ch.puzzle.pcts.mapper.CertificateMapper;
-import ch.puzzle.pcts.mode.certificate.Certificate;
+import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.model.member.EmploymentState;

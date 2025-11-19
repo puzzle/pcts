@@ -3,7 +3,7 @@ package ch.puzzle.pcts.controller;
 import ch.puzzle.pcts.dto.certificate.CertificateDto;
 import ch.puzzle.pcts.dto.certificate.CertificateInputDto;
 import ch.puzzle.pcts.mapper.CertificateMapper;
-import ch.puzzle.pcts.mode.certificate.Certificate;
+import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.service.business.CertificateBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

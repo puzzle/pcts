@@ -1,4 +1,4 @@
-package ch.puzzle.pcts.mode.certificate;
+package ch.puzzle.pcts.model.certificate;
 
 import static org.apache.commons.lang3.StringUtils.trim;
 
