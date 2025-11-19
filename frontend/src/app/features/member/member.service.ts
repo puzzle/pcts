@@ -54,7 +54,7 @@ export class MemberService {
       abbreviation: model.abbreviation,
       employmentState: model.employmentState,
       organisationUnitId: model.organisationUnit?.id,
-      dateOfHire: model.dateOfHire?.toJSDate() ?? null
+      dateOfHire: model.dateOfHire ? model.dateOfHire?.toJSDate() : null
     };
   }
 }
