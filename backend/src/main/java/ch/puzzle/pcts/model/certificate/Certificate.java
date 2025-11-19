@@ -21,12 +21,12 @@ public class Certificate implements Model {
 
     @NotNull(message = "{attribute.not.null}")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member")
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @NotNull(message = "{attribute.not.null}")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "certificate_type")
+    @JoinColumn(name = "certificate_type_id")
     private CertificateType certificateType;
 
     @NotNull(message = "{attribute.not.null}")
@@ -111,10 +111,9 @@ public class Certificate implements Model {
     }
 
     @Override
-    public boolean equals(Object object) {
-        if (object == null || getClass() != object.getClass())
+    public boolean equals(Object o) {
+        if (!(o instanceof Certificate that))
             return false;
-        Certificate that = (Certificate) object;
         return Objects.equals(getId(), that.getId()) && Objects.equals(getMember(), that.getMember())
                && Objects.equals(getCertificateType(), that.getCertificateType())
                && Objects.equals(getCompletedAt(), that.getCompletedAt())

@@ -36,7 +36,7 @@ public class Degree implements Model {
     private Boolean completed;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "type")
+    @JoinColumn(name = "degree_type_id")
     @NotNull(message = "{attribute.not.null}")
     private DegreeType type;
 

@@ -123,7 +123,7 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
         assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
     }
 
-    @DisplayName("Should pass validateOnCreate() when validUnit is null")
+    @DisplayName("Should pass validateOnCreate() when validUntil is null")
     @Test
     void shouldPassValidateOnCreateWhenValidUntilIsNull() {
         Certificate certificate = getValidModel();
@@ -133,7 +133,7 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
         assertDoesNotThrow(() -> service.validateOnCreate(certificate));
     }
 
-    @DisplayName("Should pass validateOnUpdate() when validUnit is null")
+    @DisplayName("Should pass validateOnUpdate() when validUntil is null")
     @Test
     void shouldPassValidateOnUpdateWhenValidUntilIsNull() {
         Certificate certificate = getValidModel();

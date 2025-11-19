@@ -8,6 +8,7 @@ TRUNCATE TABLE CERTIFICATE_TYPE_TAG CASCADE;
 TRUNCATE TABLE member CASCADE;
 TRUNCATE TABLE experience CASCADE;
 TRUNCATE TABLE degree CASCADE;
+TRUNCATE TABLE certificate CASCADE;
 
 INSERT INTO role (name, is_management)
 VALUES
@@ -93,14 +94,14 @@ VALUES
     ( 'Mara', 'Becker', 'MB', 'EX_MEMBER', '2023-01-09', '2001-08-05', 1),
     ( 'Felix', 'Hofmann', 'FH', 'EX_MEMBER', '2021-09-17', '2000-02-29', 1);
 
-INSERT INTO experience (member_id, name, employer, percent, experience_type, comment, start_date, end_date)
+INSERT INTO experience (member_id, name, employer, percent, experience_type_id, comment, start_date, end_date)
 VALUES
     (1, 'Software Engineer', 'TechNova Solutions', 100, 1, 'Worked on backend APIs and DevOps tasks.', '2019-03-01', '2022-07-31'),
     (2, 'Marketing Intern', null, 80, 2, 'Assisted in content strategy and social media analytics.', '2021-06-01', null),
     (1, 'Web Developer (Freelance)', 'Freelance', 50, 3, null, '2020-02-15', '2020-12-15'),
     (3, 'Data Analyst',  null, 100, 1, null, '2018-01-10', null);
 
-INSERT INTO degree (member_id, name, institution, completed, type, start_date, end_date, comment)
+INSERT INTO degree (member_id, name, institution, completed, degree_type_id, start_date, end_date, comment)
 VALUES (1,
         'Bachelor of Science in Mathematics',
         'ETH Zürich',
@@ -127,7 +128,7 @@ VALUES (1,
         null);
 
 INSERT INTO certificate
-(member, certificate_type, completed_at, valid_until, comment, deleted_at)
+(member_id, certificate_type_id, completed_at, valid_until, comment, deleted_at)
 VALUES
     (1, 1, '2023-01-15', '2025-01-14', 'Completed first aid training.', NULL),
     (2, 2, '2022-11-01', NULL, 'Lifetime certification.', NULL),

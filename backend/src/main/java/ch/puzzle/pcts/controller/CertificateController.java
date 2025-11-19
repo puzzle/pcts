@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/certificates")
-@Tag(name = "certificates", description = "Manage the certificates-type, including tag and organisation-unit from the member")
+@Tag(name = "certificates", description = "Manage the certificates of members which are associated with one member")
 public class CertificateController {
     private final CertificateBusinessService businessService;
     private final CertificateMapper mapper;
@@ -48,7 +48,7 @@ public class CertificateController {
 
     @Operation(summary = "Create a new certificate")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The certificate object to be created.", required = true)
-    @ApiResponse(responseCode = "201", description = "certificate created successfully.", content = {
+    @ApiResponse(responseCode = "201", description = "Certificate created successfully.", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = CertificateDto.class)) })
     @PostMapping
     public ResponseEntity<CertificateDto> createCertificate(@RequestBody CertificateInputDto dto) {
@@ -58,7 +58,7 @@ public class CertificateController {
 
     @Operation(summary = "Update a certificate")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The updated certificate data.", required = true)
-    @ApiResponse(responseCode = "200", description = "certificate updated successfully.", content = {
+    @ApiResponse(responseCode = "200", description = "Certificate updated successfully.", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = CertificateInputDto.class)) })
     @PutMapping("{certificateId}")
     public ResponseEntity<CertificateDto> updateCertificate(@Parameter(description = "ID of the certificate to update.", required = true)
@@ -68,7 +68,7 @@ public class CertificateController {
     }
 
     @Operation(summary = "Delete a certificate")
-    @ApiResponse(responseCode = "204", description = "certificate deleted successfully.", content = @Content)
+    @ApiResponse(responseCode = "204", description = "Certificate deleted successfully.", content = @Content)
     @DeleteMapping("{certificateId}")
     public ResponseEntity<Void> deleteCertificate(@Parameter(description = "ID of the certificate to delete.", required = true)
     @PathVariable Long certificateId) {
