@@ -49,18 +49,18 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.production.ts"
+                }
+              ]
             },
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.development.ts"
-                }
-              ]
+              "sourceMap": true
             }
           },
           "defaultConfiguration": "production"
@@ -69,14 +69,14 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "pcts:build:production"
+              "buildTarget": "pcts:build:production",
             },
             "development": {
               "buildTarget": "pcts:build:development"
             }
           },
           "options": {
-            "proxyConfig": "src/proxy.conf.json"
+            "proxyConfig": "src/proxy.conf.js"
           },
           "defaultConfiguration": "development"
         },
