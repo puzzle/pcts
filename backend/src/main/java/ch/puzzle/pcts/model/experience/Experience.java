@@ -39,7 +39,7 @@ public class Experience implements Model {
 
     @NotNull(message = "{attribute.not.null}")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "experience_type")
+    @JoinColumn(name = "experience_type_id")
     private ExperienceType type;
 
     private String comment;

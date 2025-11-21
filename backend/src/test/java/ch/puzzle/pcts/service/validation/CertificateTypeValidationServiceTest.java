@@ -47,7 +47,8 @@ class CertificateTypeValidationServiceTest
         return service;
     }
 
-    private static CertificateType createCertificate(String name, BigDecimal points, CertificateKind certificateKind) {
+    private static CertificateType createCertificateType(String name, BigDecimal points,
+                                                         CertificateKind certificateKind) {
         CertificateType c = new CertificateType();
         c.setName(name);
         c.setPoints(points);
@@ -64,24 +65,24 @@ class CertificateTypeValidationServiceTest
 
         return Stream
                 .of(Arguments
-                        .of(createCertificate(null, validBigDecimal, CertificateKind.CERTIFICATE),
+                        .of(createCertificateType(null, validBigDecimal, CertificateKind.CERTIFICATE),
                             "CertificateType.name must not be null."),
                     Arguments
-                            .of(createCertificate("", validBigDecimal, CertificateKind.CERTIFICATE),
+                            .of(createCertificateType("", validBigDecimal, CertificateKind.CERTIFICATE),
                                 "CertificateType.name must not be blank."),
                     Arguments
-                            .of(createCertificate("h", validBigDecimal, CertificateKind.CERTIFICATE),
+                            .of(createCertificateType("h", validBigDecimal, CertificateKind.CERTIFICATE),
                                 "CertificateType.name size must be between 2 and 250, given h."),
                     Arguments
-                            .of(createCertificate(tooLongName, validBigDecimal, CertificateKind.CERTIFICATE),
+                            .of(createCertificateType(tooLongName, validBigDecimal, CertificateKind.CERTIFICATE),
                                 String
                                         .format("CertificateType.name size must be between 2 and 250, given %s.",
                                                 tooLongName)),
                     Arguments
-                            .of(createCertificate("Name", null, CertificateKind.CERTIFICATE),
+                            .of(createCertificateType("Name", null, CertificateKind.CERTIFICATE),
                                 "CertificateType.points must not be null."),
                     Arguments
-                            .of(createCertificate("Name", BigDecimal.valueOf(-1), CertificateKind.CERTIFICATE),
+                            .of(createCertificateType("Name", BigDecimal.valueOf(-1), CertificateKind.CERTIFICATE),
                                 "CertificateType.points must not be negative."));
     }
 
