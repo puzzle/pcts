@@ -1,47 +1,25 @@
 package ch.puzzle.pcts.service.business;
 
-import ch.puzzle.pcts.exception.PCTSException;
+import static ch.puzzle.pcts.Constants.DEGREE;
+
 import ch.puzzle.pcts.model.degree.Degree;
-import ch.puzzle.pcts.model.error.ErrorKey;
+import ch.puzzle.pcts.repository.DegreeRepository;
 import ch.puzzle.pcts.service.persistence.DegreePersistenceService;
 import ch.puzzle.pcts.service.validation.DegreeValidationService;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DegreeBusinessService {
-
-    private final DegreeValidationService validationService;
-    private final DegreePersistenceService persistenceService;
+public class DegreeBusinessService
+        extends
+            BusinessBase<Degree, DegreeRepository, DegreeValidationService, DegreePersistenceService> {
 
     public DegreeBusinessService(DegreeValidationService validationService,
                                  DegreePersistenceService persistenceService) {
-        this.validationService = validationService;
-        this.persistenceService = persistenceService;
+        super(validationService, persistenceService);
     }
 
-    public Degree getById(Long id) {
-        validationService.validateOnGetById(id);
-        return persistenceService
-                .getById(id)
-                .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,
-                                                     "Degree with id: " + id + " does not exist.",
-                                                     ErrorKey.NOT_FOUND));
-    }
-
-    public Degree create(Degree degree) {
-        validationService.validateOnCreate(degree);
-        return persistenceService.save(degree);
-    }
-
-    public Degree update(Long id, Degree degree) {
-        validationService.validateOnUpdate(id, degree);
-        degree.setId(id);
-        return persistenceService.save(degree);
-    }
-
-    public void delete(Long id) {
-        validationService.validateOnDelete(id);
-        persistenceService.delete(id);
+    @Override
+    protected String entityName() {
+        return DEGREE;
     }
 }

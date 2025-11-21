@@ -4,7 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
+import ch.puzzle.pcts.mapper.ErrorMapper;
 import ch.puzzle.pcts.model.error.ErrorKey;
+import ch.puzzle.pcts.model.error.FieldKey;
+import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -13,7 +17,9 @@ import org.springframework.validation.BindException;
 
 class GlobalExceptionHandlerIT {
 
-    private final GlobalExceptionHandler handler = new GlobalExceptionHandler();
+    private final ErrorMapper errorMapper = new ErrorMapper();
+
+    private final GlobalExceptionHandler handler = new GlobalExceptionHandler(errorMapper);
 
     @DisplayName("Should return internal server error")
     @Test
@@ -27,7 +33,7 @@ class GlobalExceptionHandlerIT {
         GenericErrorDto body = response.getBody();
         assertThat(body).isNotNull();
         assertThat(body.key()).isEqualTo(ErrorKey.INTERNAL);
-        assertThat(body.reasons()).containsExactly("Something has gone wrong on the server, please check the logs");
+        assertThat(body.values().values()).containsExactly();
     }
 
     @DisplayName("Should handle bind exception")
@@ -42,21 +48,23 @@ class GlobalExceptionHandlerIT {
         GenericErrorDto body = response.getBody();
         assertThat(body).isNotNull();
         assertThat(body.key()).isEqualTo(ErrorKey.VALIDATION);
-        assertThat(body.reasons()).containsExactly();
+        assertThat(body.values().values()).containsExactly();
     }
 
     @DisplayName("Should return pcts exception")
     @Test
     void shouldReturnPctsException() {
-        PCTSException ex = new PCTSException(HttpStatus.BAD_REQUEST, "Test Pcts exception", ErrorKey.INVALID_ARGUMENT);
+        PCTSException ex = new PCTSException(HttpStatus.BAD_REQUEST,
+                                             ErrorKey.INVALID_ARGUMENT,
+                                             Map.of(FieldKey.IS, "Test Pcts exception"));
 
-        ResponseEntity<GenericErrorDto> response = handler.handlePCTSException(ex);
+        ResponseEntity<List<GenericErrorDto>> response = handler.handlePCTSException(ex);
 
         assertThat(response.getStatusCode().value()).isEqualTo(400);
 
-        GenericErrorDto body = response.getBody();
+        GenericErrorDto body = response.getBody().get(0);
         assertThat(body).isNotNull();
         assertThat(body.key()).isEqualTo(ErrorKey.INVALID_ARGUMENT);
-        assertThat(body.reasons()).containsExactly("Test Pcts exception");
+        assertThat(body.values().values()).containsExactly("Test Pcts exception");
     }
 }

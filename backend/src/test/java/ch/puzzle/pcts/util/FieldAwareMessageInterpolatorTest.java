@@ -56,7 +56,7 @@ class FieldAwareMessageInterpolatorTest {
     void shouldInterpolateSizeBetweenMessage() {
         // given
         String template = "{attribute.size.between}";
-        String resolvedTemplate = "{class}.{field} size must be between {min} and {max}, given {validatedValue}.";
+        String resolvedTemplate = "{class}.{field} size must be between {min} and {max}, given {is}.";
 
         when(delegate.interpolate(eq(template), any(), any())).thenReturn(resolvedTemplate);
 

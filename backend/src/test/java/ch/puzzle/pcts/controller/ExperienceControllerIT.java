@@ -12,6 +12,7 @@ import ch.puzzle.pcts.dto.experience.ExperienceDto;
 import ch.puzzle.pcts.dto.experience.ExperienceInputDto;
 import ch.puzzle.pcts.dto.experiencetype.ExperienceTypeDto;
 import ch.puzzle.pcts.dto.member.MemberDto;
+import ch.puzzle.pcts.mapper.ErrorMapper;
 import ch.puzzle.pcts.mapper.ExperienceMapper;
 import ch.puzzle.pcts.model.experience.Experience;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
@@ -51,6 +52,10 @@ class ExperienceControllerIT {
     private final LocalDate endDate = startDate.plusDays(30);
     @MockitoBean
     private ExperienceBusinessService service;
+
+    @MockitoBean
+    private ErrorMapper errorMapper;
+
     @MockitoBean
     private ExperienceMapper mapper;
     @Autowired

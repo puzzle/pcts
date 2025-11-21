@@ -4,7 +4,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.model.certificatetype.Tag;
+import ch.puzzle.pcts.model.error.FieldKey;
 import ch.puzzle.pcts.service.persistence.TagPersistenceService;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,14 +46,51 @@ class TagValidationServiceTest extends ValidationBaseServiceTest<Tag, TagValidat
         String tooLongName = new String(new char[251]).replace("\0", "s");
 
         return Stream
-                .of(Arguments.of(createTag(null), "Tag.name must not be null."),
-                    Arguments.of(createTag(""), "Tag.name must not be blank."),
-                    Arguments.of(createTag("  "), "Tag.name must not be blank."),
-                    Arguments.of(createTag("S"), "Tag.name size must be between 2 and 250, given S."),
-                    Arguments.of(createTag("  S "), "Tag.name size must be between 2 and 250, given S."),
+                .of(Arguments.of(createTag(null), List.of(Map.of(FieldKey.CLASS, "Tag", FieldKey.FIELD, "name"))),
+                    Arguments.of(createTag(""), List.of(Map.of(FieldKey.CLASS, "Tag", FieldKey.FIELD, "name"))),
+                    Arguments.of(createTag("  "), List.of(Map.of(FieldKey.CLASS, "Tag", FieldKey.FIELD, "name"))),
+                    Arguments
+                            .of(createTag("S"),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "Tag",
+                                                    FieldKey.FIELD,
+                                                    "name",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.IS,
+                                                    "S"))),
+                    Arguments
+                            .of(createTag("  S "),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "Tag",
+                                                    FieldKey.FIELD,
+                                                    "name",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.IS,
+                                                    "S"))),
                     Arguments
                             .of(createTag(tooLongName),
-                                String.format("Tag.name size must be between 2 and 250, given %s.", tooLongName)));
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "Tag",
+                                                    FieldKey.FIELD,
+                                                    "name",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.IS,
+                                                    tooLongName))));
     }
 
     @DisplayName("Should call correct validate method on validateOnCreate()")

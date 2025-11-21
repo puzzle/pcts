@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.organisationunit.OrganisationUnitDto;
+import ch.puzzle.pcts.mapper.ErrorMapper;
 import ch.puzzle.pcts.mapper.OrganisationUnitMapper;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.OrganisationUnitBusinessService;
@@ -41,6 +42,9 @@ class OrganisationUnitControllerIT {
 
     @MockitoBean
     private OrganisationUnitMapper mapper;
+
+    @MockitoBean
+    private ErrorMapper errorMapper;
 
     @Autowired
     private MockMvc mvc;
