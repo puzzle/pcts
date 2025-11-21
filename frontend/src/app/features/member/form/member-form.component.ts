@@ -81,6 +81,7 @@ export class MemberFormComponent implements OnInit {
       [Validators.required,
         isValueInList(this.employmentStateOptions)]],
     organisationUnit: [null,
+      Validators.required,
       isValueInListSignal(this.organisationUnitsOptions)]
   });
 
