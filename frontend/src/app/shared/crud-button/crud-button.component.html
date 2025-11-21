@@ -1,0 +1,10 @@
+<button
+  [attr.data-testid]=`${mode}-${this.modelName}-button`
+  type="button"
+  mat-stroked-button
+  (click)="handleClick()">
+
+  <mat-icon>{{ mode }}</mat-icon>
+    {{ 'MODEL_NAME' | scopedTranslation }}
+    {{ ('FORM.' + mode.toUpperCase() + '.ACTION') | scopedTranslation }}
+</button>

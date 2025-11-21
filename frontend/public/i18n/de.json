@@ -16,6 +16,9 @@
         "ACTION": "Speichern",
         "CANCEL": "Abbrechen"
       }
+    },
+    "DELETE": {
+      "ACTION": "löschen"
     }
   },
   "TABLE": {

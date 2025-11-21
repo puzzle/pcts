@@ -16,6 +16,7 @@ import { debounceTime } from 'rxjs/operators';
 import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
 import sortingDataAccessor from '../../../shared/utils/sortingDataAccessor';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
+import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
 
 
 @Component({
@@ -33,7 +34,8 @@ import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-
     MatButton,
     TranslatePipe,
     RouterLink,
-    ScopedTranslationPipe
+    ScopedTranslationPipe,
+    CrudButtonComponent
   ],
   templateUrl: './member-overview.component.html',
   styleUrl: './member-overview.component.scss'
