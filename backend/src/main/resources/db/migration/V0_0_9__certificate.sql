@@ -6,5 +6,13 @@ CREATE TABLE IF NOT EXISTS certificate
     completed_at            DATE NOT NULL ,
     valid_until             DATE,
     comment                 TEXT,
-    deleted_at              TIMESTAMP DEFAULT NULL
+    deleted_at              TIMESTAMP DEFAULT NULL,
+
+    CONSTRAINT fk_certificate_member
+        FOREIGN KEY (member_id)
+        REFERENCES member (id),
+
+    CONSTRAINT fk_certificate_certificate_type
+        FOREIGN KEY (certificate_type_id)
+        REFERENCES certificate_type (id)
 );

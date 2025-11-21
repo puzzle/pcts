@@ -9,5 +9,13 @@ CREATE TABLE IF NOT EXISTS experience
     comment             TEXT,
     start_date          DATE NOT NULL,
     end_date            DATE,
-    deleted_at          TIMESTAMP DEFAULT NULL
+    deleted_at          TIMESTAMP DEFAULT NULL,
+
+    CONSTRAINT fk_experience_member
+        FOREIGN KEY (member_id)
+            REFERENCES member (id),
+
+    CONSTRAINT fk_experience_experience_type
+        FOREIGN KEY (experience_type_id)
+        REFERENCES experience_type (id)
 );
