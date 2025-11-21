@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.error.ErrorKey;
+import ch.puzzle.pcts.model.error.FieldKey;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -44,10 +47,10 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
     @ParameterizedTest(name = "{index}: {1}") // Displays test index and expected message in the test name
     @MethodSource("invalidModelProvider")
     @DisplayName("Should throw validation exception for invalid model configurations")
-    void validateInvalidModel(T model, String expectedMessage) {
+    void validateInvalidModel(T model, List<Map<FieldKey, String>> expectedAttributes) {
         S validationService = getService();
         PCTSException exception = assertThrows(PCTSException.class, () -> validationService.validate(model));
-        assertEquals(expectedMessage, exception.getReason());
+        assertEquals(expectedAttributes, exception.getErrorAttributes());
     }
 
     @DisplayName("Should be successful validateOnGet() when Id is valid")
@@ -64,8 +67,8 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnGetById(id));
 
-        assertEquals("Id must not be null.", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+        assertEquals(List.of(ErrorKey.VALIDATION), exception.getErrorKeys());
+        assertEquals(List.of(Map.of(FieldKey.FIELD, "id")), exception.getErrorAttributes());
     }
 
     @DisplayName("Should be successful when validateOnCreate() model is Valid")
@@ -84,8 +87,8 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnCreate(model));
 
-        assertEquals("Id must be null.", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+        assertEquals(List.of(ErrorKey.VALIDATION), exception.getErrorKeys());
+        assertEquals(List.of(Map.of(FieldKey.FIELD, "id")), exception.getErrorAttributes());
     }
 
     @DisplayName("Should throw exception validateOnCreate() when model is null")
@@ -93,8 +96,8 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
     void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnCreate(null));
 
-        assertEquals("Model must not be null.", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+        assertEquals(List.of(ErrorKey.VALIDATION), exception.getErrorKeys());
+        assertEquals(List.of(Map.of(FieldKey.FIELD, "id")), exception.getErrorAttributes());
     }
 
     @DisplayName("Should be successful validateOnUpdate() when model is Valid")
@@ -115,8 +118,8 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnUpdate(id, model));
 
-        assertEquals("Id must not be null.", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+        assertEquals(List.of(ErrorKey.VALIDATION), exception.getErrorKeys());
+        assertEquals(List.of(Map.of(FieldKey.FIELD, "id")), exception.getErrorAttributes());
     }
 
     @DisplayName("Should throw exception validateOnUpdate() when model is null")
@@ -126,8 +129,8 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnUpdate(id, null));
 
-        assertEquals("Model must not be null.", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+        assertEquals(List.of(ErrorKey.VALIDATION), exception.getErrorKeys());
+        assertEquals(List.of(Map.of(FieldKey.FIELD, "id")), exception.getErrorAttributes());
     }
 
     @DisplayName("Should throw exception validateOnUpdate() when id has changed")
@@ -139,8 +142,8 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnUpdate(id, model));
 
-        assertEquals("The queried id must match the id in the model.", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+        assertEquals(List.of(ErrorKey.VALIDATION), exception.getErrorKeys());
+        assertEquals(List.of(Map.of(FieldKey.FIELD, "id")), exception.getErrorAttributes());
     }
 
     @DisplayName("Should be successful validateOnDelete() when Id is valid")
@@ -157,7 +160,7 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnDelete(id));
 
-        assertEquals("Id must not be null.", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+        assertEquals(List.of(ErrorKey.VALIDATION), exception.getErrorKeys());
+        assertEquals(List.of(Map.of(FieldKey.FIELD, "id")), exception.getErrorAttributes());
     }
 }

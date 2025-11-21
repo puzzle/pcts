@@ -5,11 +5,13 @@ import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
+import ch.puzzle.pcts.model.error.FieldKey;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.service.persistence.ExperienceTypePersistenceService;
 import ch.puzzle.pcts.service.validation.ExperienceTypeValidationService;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -57,8 +59,10 @@ class ExperienceTypeBusinessServiceTest {
 
         PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(id));
 
-        assertEquals(String.format("ExperienceType with id: %d does not exist.", id), exception.getReason());
-        assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
+        assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
+        assertEquals(List
+                .of(Map.of(FieldKey.FIELD, "id", FieldKey.IS, id.toString(), FieldKey.ENTITY, "experienceType")),
+                     exception.getErrorAttributes());
         verify(persistenceService).getById(id);
         verify(validationService).validateOnGetById(id);
     }
@@ -106,6 +110,7 @@ class ExperienceTypeBusinessServiceTest {
     void shouldUpdate() {
         Long id = 1L;
         when(persistenceService.save(experienceType)).thenReturn(experienceType);
+        when(persistenceService.getById(id)).thenReturn(Optional.of(experienceType));
 
         ExperienceType result = businessService.update(id, experienceType);
 
@@ -115,14 +120,41 @@ class ExperienceTypeBusinessServiceTest {
         verify(persistenceService).save(experienceType);
     }
 
+    @DisplayName("Should throw exception when updating non-existing experience type")
+    @Test
+    void shouldThrowExceptionWhenUpdatingNotFound() {
+        Long id = 1L;
+
+        when(persistenceService.getById(id)).thenReturn(Optional.empty());
+
+        assertThrows(PCTSException.class, () -> businessService.update(id, experienceType));
+
+        verify(persistenceService).getById(id);
+        verify(validationService, never()).validateOnUpdate(any(), any());
+        verify(persistenceService, never()).save(any());
+    }
+
     @DisplayName("Should delete experienceType")
     @Test
     void shouldDelete() {
         Long id = 1L;
+        when(persistenceService.getById(id)).thenReturn(Optional.of(experienceType));
 
         businessService.delete(id);
 
         verify(validationService).validateOnDelete(id);
         verify(persistenceService).delete(id);
+    }
+
+    @DisplayName("Should throw exception when deleting non-existing experience type")
+    @Test
+    void shouldThrowExceptionWhenNotFound() {
+        Long id = 1L;
+        when(persistenceService.getById(id)).thenReturn(Optional.empty());
+
+        assertThrows(PCTSException.class, () -> businessService.delete(id));
+
+        verify(persistenceService).getById(id);
+        verify(persistenceService, never()).delete(id);
     }
 }

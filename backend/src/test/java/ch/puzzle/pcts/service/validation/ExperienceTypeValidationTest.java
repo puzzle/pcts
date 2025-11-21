@@ -7,9 +7,12 @@ import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
+import ch.puzzle.pcts.model.error.FieldKey;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.service.persistence.ExperienceTypePersistenceService;
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
@@ -64,36 +67,92 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
         return Stream
                 .of(Arguments
                         .of(createExperienceType(null, validBigDecimal, validBigDecimal, validBigDecimal),
-                            "ExperienceType.name must not be null."),
+                            List.of(Map.of(FieldKey.CLASS, "ExperienceType", FieldKey.FIELD, "name"))),
                     Arguments
                             .of(createExperienceType("", validBigDecimal, validBigDecimal, validBigDecimal),
-                                "ExperienceType.name must not be blank."),
+                                List.of(Map.of(FieldKey.CLASS, "ExperienceType", FieldKey.FIELD, "name"))),
                     Arguments
                             .of(createExperienceType("h", validBigDecimal, validBigDecimal, validBigDecimal),
-                                "ExperienceType.name size must be between 2 and 250, given h."),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "ExperienceType",
+                                                    FieldKey.FIELD,
+                                                    "name",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.IS,
+                                                    "h"))),
                     Arguments
                             .of(createExperienceType(tooLongName, validBigDecimal, validBigDecimal, validBigDecimal),
-                                String
-                                        .format("ExperienceType.name size must be between 2 and 250, given %s.",
-                                                tooLongName)),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "ExperienceType",
+                                                    FieldKey.FIELD,
+                                                    "name",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.IS,
+                                                    tooLongName))),
                     Arguments
                             .of(createExperienceType(validName, null, validBigDecimal, validBigDecimal),
-                                "ExperienceType.highlyRelevantPoints must not be null."),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "ExperienceType",
+                                                    FieldKey.FIELD,
+                                                    "highlyRelevantPoints"))),
                     Arguments
                             .of(createExperienceType(validName, negativeBigDecimal, validBigDecimal, validBigDecimal),
-                                "ExperienceType.highlyRelevantPoints must not be negative."),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "ExperienceType",
+                                                    FieldKey.FIELD,
+                                                    "highlyRelevantPoints",
+                                                    FieldKey.IS,
+                                                    "-1"))),
                     Arguments
                             .of(createExperienceType(validName, validBigDecimal, null, validBigDecimal),
-                                "ExperienceType.limitedRelevantPoints must not be null."),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "ExperienceType",
+                                                    FieldKey.FIELD,
+                                                    "limitedRelevantPoints"))),
                     Arguments
                             .of(createExperienceType(validName, validBigDecimal, negativeBigDecimal, validBigDecimal),
-                                "ExperienceType.limitedRelevantPoints must not be negative."),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "ExperienceType",
+                                                    FieldKey.FIELD,
+                                                    "limitedRelevantPoints",
+                                                    FieldKey.IS,
+                                                    "-1"))),
                     Arguments
                             .of(createExperienceType(validName, validBigDecimal, validBigDecimal, null),
-                                "ExperienceType.littleRelevantPoints must not be null."),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "ExperienceType",
+                                                    FieldKey.FIELD,
+                                                    "littleRelevantPoints"))),
                     Arguments
                             .of(createExperienceType(validName, validBigDecimal, validBigDecimal, negativeBigDecimal),
-                                "ExperienceType.littleRelevantPoints must not be negative."));
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "ExperienceType",
+                                                    FieldKey.FIELD,
+                                                    "littleRelevantPoints",
+                                                    FieldKey.IS,
+                                                    "-1"))));
     }
 
     @DisplayName("Should throw exception on validateOnCreate() when name already exists")
@@ -105,8 +164,10 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnCreate(experienceType));
 
-        assertEquals("Name already exists", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+        assertEquals(List.of(ErrorKey.ATTRIBUTE_UNIQUE), exception.getErrorKeys());
+        assertEquals(List
+                .of(Map.of(FieldKey.FIELD, "name", FieldKey.IS, "Experience Type", FieldKey.ENTITY, "experienceType")),
+                     exception.getErrorAttributes());
     }
 
     @DisplayName("Should throw Exception on validateOnUpdate() when name already exists")
@@ -122,8 +183,10 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> service.validateOnUpdate(id, newExperienceType));
 
-        assertEquals("Name already exists", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+        assertEquals(List.of(ErrorKey.ATTRIBUTE_UNIQUE), exception.getErrorKeys());
+        assertEquals(List
+                .of(Map.of(FieldKey.FIELD, "name", FieldKey.IS, "Experience Type", FieldKey.ENTITY, "experienceType")),
+                     exception.getErrorAttributes());
     }
 
     @DisplayName("Should call correct validate method on validateOnCreate()")

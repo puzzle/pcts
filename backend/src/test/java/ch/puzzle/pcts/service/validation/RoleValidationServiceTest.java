@@ -8,8 +8,11 @@ import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
+import ch.puzzle.pcts.model.error.FieldKey;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.persistence.RolePersistenceService;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
@@ -51,14 +54,51 @@ class RoleValidationServiceTest extends ValidationBaseServiceTest<Role, RoleVali
         String tooLongName = new String(new char[251]).replace("\0", "s");
 
         return Stream
-                .of(Arguments.of(createRole(null), "Role.name must not be null."),
-                    Arguments.of(createRole(""), "Role.name must not be blank."),
-                    Arguments.of(createRole("  "), "Role.name must not be blank."),
-                    Arguments.of(createRole("S"), "Role.name size must be between 2 and 250, given S."),
-                    Arguments.of(createRole("  S "), "Role.name size must be between 2 and 250, given S."),
+                .of(Arguments.of(createRole(null), List.of(Map.of(FieldKey.CLASS, "Role", FieldKey.FIELD, "name"))),
+                    Arguments.of(createRole(""), List.of(Map.of(FieldKey.CLASS, "Role", FieldKey.FIELD, "name"))),
+                    Arguments.of(createRole("  "), List.of(Map.of(FieldKey.CLASS, "Role", FieldKey.FIELD, "name"))),
+                    Arguments
+                            .of(createRole("S"),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "Role",
+                                                    FieldKey.FIELD,
+                                                    "name",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.IS,
+                                                    "S"))),
+                    Arguments
+                            .of(createRole("  S "),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "Role",
+                                                    FieldKey.FIELD,
+                                                    "name",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.IS,
+                                                    "S"))),
                     Arguments
                             .of(createRole(tooLongName),
-                                String.format("Role.name size must be between 2 and 250, given %s.", tooLongName)));
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "Role",
+                                                    FieldKey.FIELD,
+                                                    "name",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.IS,
+                                                    tooLongName))));
 
     }
 
@@ -71,8 +111,9 @@ class RoleValidationServiceTest extends ValidationBaseServiceTest<Role, RoleVali
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnCreate(role));
 
-        assertEquals("Name already exists", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+        assertEquals(List.of(ErrorKey.ATTRIBUTE_UNIQUE), exception.getErrorKeys());
+        assertEquals(List.of(Map.of(FieldKey.FIELD, "name", FieldKey.IS, "Role", FieldKey.ENTITY, "role")),
+                     exception.getErrorAttributes());
     }
 
     @DisplayName("Should throw exception on validateOnUpdate() when name already exists")
@@ -87,8 +128,9 @@ class RoleValidationServiceTest extends ValidationBaseServiceTest<Role, RoleVali
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnUpdate(id, newRole));
 
-        assertEquals("Name already exists", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+        assertEquals(List.of(ErrorKey.ATTRIBUTE_UNIQUE), exception.getErrorKeys());
+        assertEquals(List.of(Map.of(FieldKey.FIELD, "name", FieldKey.IS, "Role", FieldKey.ENTITY, "role")),
+                     exception.getErrorAttributes());
     }
 
     @DisplayName("Should call correct validate method on validateOnCreate()")

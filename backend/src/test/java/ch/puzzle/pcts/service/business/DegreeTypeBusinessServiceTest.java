@@ -1,16 +1,17 @@
 package ch.puzzle.pcts.service.business;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.model.error.ErrorKey;
+import ch.puzzle.pcts.model.error.FieldKey;
 import ch.puzzle.pcts.service.persistence.DegreeTypePersistenceService;
 import ch.puzzle.pcts.service.validation.DegreeTypeValidationService;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -58,8 +59,9 @@ class DegreeTypeBusinessServiceTest {
 
         PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(id));
 
-        assertEquals("Degree type with id: " + 1 + " does not exist.", exception.getReason());
-        assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
+        assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
+        assertEquals(List.of(Map.of(FieldKey.FIELD, "id", FieldKey.IS, id.toString(), FieldKey.ENTITY, "degreeType")),
+                     exception.getErrorAttributes());
         verify(persistenceService).getById(id);
         verify(validationService).validateOnGetById(id);
     }
@@ -104,6 +106,7 @@ class DegreeTypeBusinessServiceTest {
     void shouldUpdate() {
         Long id = 1L;
         when(persistenceService.save(degreeType)).thenReturn(degreeType);
+        when(persistenceService.getById(id)).thenReturn(Optional.of(degreeType));
 
         DegreeType result = businessService.update(id, degreeType);
 
@@ -113,14 +116,41 @@ class DegreeTypeBusinessServiceTest {
         verify(persistenceService).save(degreeType);
     }
 
+    @DisplayName("Should throw exception when updating non-existing degree type")
+    @Test
+    void shouldThrowExceptionWhenUpdatingNotFound() {
+        Long id = 1L;
+
+        when(persistenceService.getById(id)).thenReturn(Optional.empty());
+
+        assertThrows(PCTSException.class, () -> businessService.update(id, degreeType));
+
+        verify(persistenceService).getById(id);
+        verify(validationService, never()).validateOnUpdate(any(), any());
+        verify(persistenceService, never()).save(any());
+    }
+
     @DisplayName("Should delete role")
     @Test
     void shouldDelete() {
         Long id = 1L;
+        when(persistenceService.getById(id)).thenReturn(Optional.of(degreeType));
 
         businessService.delete(id);
 
         verify(validationService).validateOnDelete(id);
         verify(persistenceService).delete(id);
+    }
+
+    @DisplayName("Should throw exception when deleting non-existing degree type")
+    @Test
+    void shouldThrowExceptionWhenNotFound() {
+        Long id = 1L;
+        when(persistenceService.getById(id)).thenReturn(Optional.empty());
+
+        assertThrows(PCTSException.class, () -> businessService.delete(id));
+
+        verify(persistenceService).getById(id);
+        verify(persistenceService, never()).delete(id);
     }
 }

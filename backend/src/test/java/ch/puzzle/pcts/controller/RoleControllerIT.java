@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.role.RoleDto;
+import ch.puzzle.pcts.mapper.ErrorMapper;
 import ch.puzzle.pcts.mapper.RoleMapper;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.business.RoleBusinessService;
@@ -39,6 +40,9 @@ class RoleControllerIT {
 
     @MockitoBean
     private RoleMapper mapper;
+
+    @MockitoBean
+    private ErrorMapper errorMapper;
 
     @Autowired
     private MockMvc mvc;

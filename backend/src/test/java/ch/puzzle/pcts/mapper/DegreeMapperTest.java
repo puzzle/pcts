@@ -14,6 +14,7 @@ import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.degree.Degree;
 import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.model.error.ErrorKey;
+import ch.puzzle.pcts.model.error.FieldKey;
 import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
@@ -22,6 +23,7 @@ import ch.puzzle.pcts.service.business.MemberBusinessService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -245,8 +247,14 @@ class DegreeMapperTest {
         // mock the behavior
         when(mapper.memberBusinessService.getById(anyLong()))
                 .thenThrow(new PCTSException(HttpStatus.NOT_FOUND,
-                                             "Member with id: " + invalidInput.memberId() + " does not exist.",
-                                             ErrorKey.NOT_FOUND));
+                                             ErrorKey.NOT_FOUND,
+                                             Map
+                                                     .of(FieldKey.ENTITY,
+                                                         "member",
+                                                         FieldKey.FIELD,
+                                                         "id",
+                                                         FieldKey.IS,
+                                                         "" + invalidInput.memberId())));
 
         assertThrows(PCTSException.class, () -> mapper.fromDto(invalidInput));
     }
@@ -266,8 +274,14 @@ class DegreeMapperTest {
         // mock the behavior
         when(mapper.degreeTypeBusinessService.getById(anyLong()))
                 .thenThrow(new PCTSException(HttpStatus.NOT_FOUND,
-                                             "DegreeType with id: " + invalidInput.typeId() + " does not exist.",
-                                             ErrorKey.NOT_FOUND));
+                                             ErrorKey.NOT_FOUND,
+                                             Map
+                                                     .of(FieldKey.ENTITY,
+                                                         "degreeType",
+                                                         FieldKey.FIELD,
+                                                         "id",
+                                                         FieldKey.IS,
+                                                         "" + invalidInput.typeId())));
 
         assertThrows(PCTSException.class, () -> mapper.fromDto(invalidInput));
     }
