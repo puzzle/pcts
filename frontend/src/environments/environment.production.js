@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  staging: false
-};
+  apiUrl: 'http://pcts-backend:8080',
+}
