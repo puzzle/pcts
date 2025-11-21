@@ -1,10 +1,10 @@
 const { environment } = require('./environments/environment')
 
-const target = environment.apiUrl || "http://localhost:8080";
+const target = environment.apiUrl || 'http://localhost:8080'
 
 module.exports = {
-  "/api": {
+  '/api': {
     target,
     secure: false,
-  }
-};
+  },
+}

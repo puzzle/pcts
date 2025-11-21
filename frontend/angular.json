@@ -69,7 +69,7 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "pcts:build:production",
+              "buildTarget": "pcts:build:production"
             },
             "development": {
               "buildTarget": "pcts:build:development"
