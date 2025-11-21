@@ -11,16 +11,7 @@
           {{ 'FORM.PERSONAL_DETAILS' | scopedTranslation }}
         </h2>
 
-        <button
-          type="button"
-          mat-stroked-button
-          data-testid="edit-member-button"
-          (click)="handleEditClick()"
-        >
-          <mat-icon>edit</mat-icon>
-          {{ 'MODEL_NAME' | scopedTranslation }}
-          {{ 'FORM.EDIT.ACTION' | scopedTranslation }}
-        </button>
+        <app-crud-button mode="edit"/>
       </div>
 
       <div class="d-flex justify-content-between flex-wrap">

@@ -6,8 +6,7 @@ import { MemberService } from '../member.service';
 import { MemberModel } from '../member.model';
 import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
-import { MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
+import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -18,8 +17,7 @@ import { MatIcon } from '@angular/material/icon';
     TranslatePipe,
     DatePipe,
     ScopedTranslationPipe,
-    MatButton,
-    MatIcon
+    CrudButtonComponent
   ],
   templateUrl: './member-detail-view.component.html'
 })
@@ -45,14 +43,5 @@ export class MemberDetailViewComponent implements OnInit {
       .subscribe({
         next: (member) => this.member.set(member)
       });
-  }
-
-  handleEditClick(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.router.navigate(['/member',
-        id,
-        'edit']);
-    }
   }
 }

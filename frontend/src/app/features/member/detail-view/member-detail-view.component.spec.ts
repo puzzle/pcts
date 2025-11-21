@@ -6,6 +6,7 @@ import { of } from 'rxjs';
 import { provideTranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 import { member1 } from '../../../shared/test/test-data';
+import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
 
 
 describe('MemberDetailViewComponent (Jest)', () => {
@@ -19,8 +20,9 @@ describe('MemberDetailViewComponent (Jest)', () => {
     } as unknown as jest.Mocked<MemberService>;
 
     routerMock = {
-      navigate: jest.fn()
-    } as unknown as jest.Mocked<Router>;
+      navigate: jest.fn(),
+      url: '/member/1'
+    } as any;
 
     routeMock = {
       snapshot: {
@@ -32,7 +34,8 @@ describe('MemberDetailViewComponent (Jest)', () => {
     } as unknown as ActivatedRoute;
 
     TestBed.configureTestingModule({
-      imports: [MemberDetailViewComponent],
+      imports: [MemberDetailViewComponent,
+        CrudButtonComponent],
       providers: [
         { provide: ActivatedRoute,
           useValue: routeMock },
@@ -65,18 +68,5 @@ describe('MemberDetailViewComponent (Jest)', () => {
     expect(component.member())
       .toEqual(member1);
     expect(routerMock.navigate).not.toHaveBeenCalled();
-  });
-
-  it('handleEditClick navigates to /member/:id/edit', () => {
-    const { fixture, component } = setupTestBed('1');
-    memberServiceMock.getMemberById.mockReturnValue(of(member1));
-
-    fixture.detectChanges();
-    component.handleEditClick();
-
-    expect(routerMock.navigate)
-      .toHaveBeenCalledWith(['/member',
-        '1',
-        'edit']);
   });
 });
