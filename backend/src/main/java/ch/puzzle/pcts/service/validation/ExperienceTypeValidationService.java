@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.service.validation;
 
+import static ch.puzzle.pcts.Constants.EXPERIENCE_TYPE;
+
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.error.FieldKey;
@@ -26,7 +28,7 @@ public class ExperienceTypeValidationService extends ValidationBase<ExperienceTy
                                     ErrorKey.ATTRIBUTE_UNIQUE,
                                     Map
                                             .of(FieldKey.ENTITY,
-                                                "experienceType",
+                                                EXPERIENCE_TYPE,
                                                 FieldKey.FIELD,
                                                 "name",
                                                 FieldKey.IS,
@@ -43,7 +45,7 @@ public class ExperienceTypeValidationService extends ValidationBase<ExperienceTy
                                     ErrorKey.ATTRIBUTE_UNIQUE,
                                     Map
                                             .of(FieldKey.ENTITY,
-                                                "experienceType",
+                                                EXPERIENCE_TYPE,
                                                 FieldKey.FIELD,
                                                 "name",
                                                 FieldKey.IS,

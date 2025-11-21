@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.service.validation;
 
+import static ch.puzzle.pcts.Constants.CERTIFICATE_TYPE;
+
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
@@ -30,7 +32,7 @@ public class CertificateTypeValidationService extends ValidationBase<Certificate
                                     ErrorKey.INVALID_ARGUMENT,
                                     Map
                                             .of(FieldKey.ENTITY,
-                                                "certificateType",
+                                                CERTIFICATE_TYPE,
                                                 FieldKey.FIELD,
                                                 "name",
                                                 FieldKey.IS,
@@ -47,7 +49,7 @@ public class CertificateTypeValidationService extends ValidationBase<Certificate
                                     ErrorKey.ATTRIBUTE_UNIQUE,
                                     Map
                                             .of(FieldKey.ENTITY,
-                                                "certificateType",
+                                                CERTIFICATE_TYPE,
                                                 FieldKey.FIELD,
                                                 "name",
                                                 FieldKey.IS,
@@ -61,7 +63,7 @@ public class CertificateTypeValidationService extends ValidationBase<Certificate
                                     ErrorKey.INVALID_ARGUMENT,
                                     Map
                                             .of(FieldKey.ENTITY,
-                                                "certificateType",
+                                                CERTIFICATE_TYPE,
                                                 FieldKey.FIELD,
                                                 "certificateKind",
                                                 FieldKey.IS,

@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.service.validation;
 
+import static ch.puzzle.pcts.Constants.LEADERSHIP_EXPERIENCE_TYPE;
+
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
@@ -29,7 +31,7 @@ public class LeadershipExperienceTypeValidationService extends ValidationBase<Ce
                                     ErrorKey.ATTRIBUTE_UNIQUE,
                                     Map
                                             .of(FieldKey.ENTITY,
-                                                "leadershipExperience",
+                                                LEADERSHIP_EXPERIENCE_TYPE,
                                                 FieldKey.FIELD,
                                                 "name",
                                                 FieldKey.IS,
@@ -48,7 +50,7 @@ public class LeadershipExperienceTypeValidationService extends ValidationBase<Ce
                                     ErrorKey.ATTRIBUTE_UNIQUE,
                                     Map
                                             .of(FieldKey.ENTITY,
-                                                "leadershipExperience",
+                                                LEADERSHIP_EXPERIENCE_TYPE,
                                                 FieldKey.FIELD,
                                                 "name",
                                                 FieldKey.IS,
@@ -63,7 +65,7 @@ public class LeadershipExperienceTypeValidationService extends ValidationBase<Ce
                                     ErrorKey.INVALID_ARGUMENT,
                                     Map
                                             .of(FieldKey.ENTITY,
-                                                "leadershipExperience",
+                                                LEADERSHIP_EXPERIENCE_TYPE,
                                                 FieldKey.FIELD,
                                                 "certificateKind",
                                                 FieldKey.IS,

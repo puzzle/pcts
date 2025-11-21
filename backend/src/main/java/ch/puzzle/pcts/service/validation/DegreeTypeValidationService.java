@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.service.validation;
 
+import static ch.puzzle.pcts.Constants.DEGREE_TYPE;
+
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.model.error.ErrorKey;
@@ -26,7 +28,7 @@ public class DegreeTypeValidationService extends ValidationBase<DegreeType> {
                                     ErrorKey.ATTRIBUTE_UNIQUE,
                                     Map
                                             .of(FieldKey.ENTITY,
-                                                "degreeType",
+                                                DEGREE_TYPE,
                                                 FieldKey.FIELD,
                                                 "name",
                                                 FieldKey.IS,
@@ -43,7 +45,7 @@ public class DegreeTypeValidationService extends ValidationBase<DegreeType> {
                                     ErrorKey.ATTRIBUTE_UNIQUE,
                                     Map
                                             .of(FieldKey.ENTITY,
-                                                "degreeType",
+                                                DEGREE_TYPE,
                                                 FieldKey.FIELD,
                                                 "name",
                                                 FieldKey.IS,
