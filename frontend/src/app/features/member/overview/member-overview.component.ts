@@ -117,7 +117,7 @@ export class MemberOverviewComponent implements OnInit {
         member.firstName +
         member.lastName +
         member.birthDate +
-        member.organisationUnit.name +
+        (member.organisationUnit ? member.organisationUnit.name : this.translate.instant('MEMBER.NO_DIVISION')) +
         this.translate.instant('MEMBER.EMPLOYMENT_STATUS_VALUES.' + member.employmentState)
       ).toLowerCase();
 

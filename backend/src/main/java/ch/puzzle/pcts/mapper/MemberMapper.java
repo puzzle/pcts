@@ -2,7 +2,9 @@ package ch.puzzle.pcts.mapper;
 
 import ch.puzzle.pcts.dto.member.MemberDto;
 import ch.puzzle.pcts.dto.member.MemberInputDto;
+import ch.puzzle.pcts.dto.organisationunit.OrganisationUnitDto;
 import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.OrganisationUnitBusinessService;
 import java.util.List;
 import org.springframework.stereotype.Component;
@@ -26,6 +28,7 @@ public class MemberMapper {
     }
 
     public MemberDto toDto(Member model) {
+
         return new MemberDto(model.getId(),
                              model.getFirstName(),
                              model.getLastName(),
@@ -33,7 +36,8 @@ public class MemberMapper {
                              model.getAbbreviation(),
                              model.getDateOfHire(),
                              model.getBirthDate(),
-                             organisationUnitMapper.toDto(model.getOrganisationUnit()));
+                             organisationUnitDtoFromOrganisationUnit(model.getOrganisationUnit())
+                            );
     }
 
     public Member fromDto(MemberInputDto dto) {
@@ -45,7 +49,15 @@ public class MemberMapper {
                 .withAbbreviation(dto.abbreviation())
                 .withDateOfHire(dto.dateOfHire())
                 .withBirthDate(dto.birthDate())
-                .withOrganisationUnit(organisationUnitBusinessService.getById(dto.organisationUnitId()))
+                .withOrganisationUnit(organisationUnitFromId(dto.organisationUnitId()))
                 .build();
+    }
+
+    public OrganisationUnit organisationUnitFromId(Long organisationUnitId){
+        return organisationUnitId == null ? null : organisationUnitBusinessService.getById(organisationUnitId);
+    }
+
+    public OrganisationUnitDto organisationUnitDtoFromOrganisationUnit(OrganisationUnit organisationUnit){
+        return organisationUnit == null ? null : organisationUnitMapper.toDto(organisationUnit);
     }
 }

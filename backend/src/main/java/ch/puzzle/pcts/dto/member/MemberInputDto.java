@@ -8,8 +8,8 @@ public record MemberInputDto(
         @Schema(description = "The first name of member.", example = "Susi", requiredMode = Schema.RequiredMode.REQUIRED, minLength = 1) String firstName,
         @Schema(description = "The last name of the member.", example = "Miller", requiredMode = Schema.RequiredMode.REQUIRED, minLength = 1) String lastName,
         @Schema(description = "The employment state of the member.", example = "APPLICANT", requiredMode = Schema.RequiredMode.REQUIRED, minLength = 1) EmploymentState employmentState,
-        @Schema(description = "The abbreviation of the member.", example = "SM", requiredMode = Schema.RequiredMode.REQUIRED, minLength = 1, maxLength = 3) String abbreviation,
-        @Schema(description = "The date of hire of the member.", example = "2025-09-24", requiredMode = Schema.RequiredMode.REQUIRED) LocalDate dateOfHire,
+        @Schema(description = "The abbreviation of the member.", example = "SM", requiredMode = Schema.RequiredMode.NOT_REQUIRED) String abbreviation,
+        @Schema(description = "The date of hire of the member.", example = "2025-09-24", requiredMode = Schema.RequiredMode.NOT_REQUIRED) LocalDate dateOfHire,
         @Schema(description = "The birth date of the member", example = "1995-02-19", requiredMode = Schema.RequiredMode.REQUIRED) LocalDate birthDate,
-        @Schema(description = "The Organisation unit id of the member.", example = "1", requiredMode = Schema.RequiredMode.REQUIRED, minLength = 1) Long organisationUnitId) {
+        @Schema(description = "The Organisation unit id of the member.", example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED) Long organisationUnitId) {
 }
