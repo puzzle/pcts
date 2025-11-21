@@ -25,6 +25,7 @@ export class MemberService {
   }
 
   addMember(member: MemberModel): Observable<MemberModel> {
+    console.log(123);
     return this.httpClient.post<MemberModel>(this.API_URL, this.toDto(member))
       .pipe(this.formatDate());
   }
