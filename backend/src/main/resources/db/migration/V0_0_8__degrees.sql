@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS degree
     name                TEXT NOT NULL,
     institution         TEXT,
     completed           BOOLEAN NOT NULL,
-    type      BIGINT NOT NULL,
+    type                BIGINT NOT NULL,
     start_date          DATE NOT NULL,
     end_date            DATE,
     deleted_at          TIMESTAMP DEFAULT NULL,
