@@ -112,8 +112,9 @@ public class Certificate implements Model {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Certificate that))
+        if (!(o instanceof Certificate that)) {
             return false;
+        }
         return Objects.equals(getId(), that.getId()) && Objects.equals(getMember(), that.getMember())
                && Objects.equals(getCertificateType(), that.getCertificateType())
                && Objects.equals(getCompletedAt(), that.getCompletedAt())

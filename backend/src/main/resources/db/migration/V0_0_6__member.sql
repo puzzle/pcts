@@ -8,9 +8,5 @@ CREATE TABLE IF NOT EXISTS member
     date_of_hire        DATE,
     birth_date          DATE NOT NULL,
     organisation_unit   BIGINT,
-    deleted_at          TIMESTAMP DEFAULT NULL,
-
-    CONSTRAINT fk_member_organisation_unit
-        FOREIGN KEY (organisation_unit)
-        REFERENCES organisation_unit (id)
+    deleted_at          TIMESTAMP DEFAULT NULL
 );
