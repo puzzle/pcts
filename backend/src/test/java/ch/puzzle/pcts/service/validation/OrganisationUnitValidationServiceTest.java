@@ -7,8 +7,11 @@ import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
+import ch.puzzle.pcts.model.error.FieldKey;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.persistence.OrganisationUnitPersistenceService;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
@@ -50,20 +53,58 @@ class OrganisationUnitValidationServiceTest
         String tooLongName = new String(new char[251]).replace("\0", "s");
 
         return Stream
-                .of(Arguments.of(createOrganisationUnit(null), "OrganisationUnit.name must not be null."),
-                    Arguments.of(createOrganisationUnit(""), "OrganisationUnit.name must not be blank."),
-                    Arguments.of(createOrganisationUnit("  "), "OrganisationUnit.name must not be blank."),
+                .of(Arguments
+                        .of(createOrganisationUnit(null),
+                            List.of(Map.of(FieldKey.CLASS, "OrganisationUnit", FieldKey.FIELD, "name"))),
+                    Arguments
+                            .of(createOrganisationUnit(""),
+                                List.of(Map.of(FieldKey.CLASS, "OrganisationUnit", FieldKey.FIELD, "name"))),
+                    Arguments
+                            .of(createOrganisationUnit("  "),
+                                List.of(Map.of(FieldKey.CLASS, "OrganisationUnit", FieldKey.FIELD, "name"))),
                     Arguments
                             .of(createOrganisationUnit("S"),
-                                "OrganisationUnit.name size must be between 2 and 250, given S."),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "OrganisationUnit",
+                                                    FieldKey.FIELD,
+                                                    "name",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.IS,
+                                                    "S"))),
+
                     Arguments
                             .of(createOrganisationUnit("  S "),
-                                "OrganisationUnit.name size must be between 2 and 250, given S."),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "OrganisationUnit",
+                                                    FieldKey.FIELD,
+                                                    "name",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.IS,
+                                                    "S"))),
                     Arguments
                             .of(createOrganisationUnit(tooLongName),
-                                String
-                                        .format("OrganisationUnit.name size must be between 2 and 250, given %s.",
-                                                tooLongName)));
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "OrganisationUnit",
+                                                    FieldKey.FIELD,
+                                                    "name",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.IS,
+                                                    tooLongName))));
 
     }
 
@@ -76,8 +117,16 @@ class OrganisationUnitValidationServiceTest
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnCreate(organisationUnit));
 
-        assertEquals("Name already exists", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+        assertEquals(List.of(ErrorKey.ATTRIBUTE_UNIQUE), exception.getErrorKeys());
+        assertEquals(List
+                .of(Map
+                        .of(FieldKey.FIELD,
+                            "name",
+                            FieldKey.IS,
+                            "Organisation Unit",
+                            FieldKey.ENTITY,
+                            "organisationUnit")),
+                     exception.getErrorAttributes());
     }
 
     @DisplayName("Should throw Exception on validateOnUpdate() when name already exists")
@@ -93,8 +142,16 @@ class OrganisationUnitValidationServiceTest
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> service.validateOnUpdate(id, newOrganisationUnit));
 
-        assertEquals("Name already exists", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+        assertEquals(List.of(ErrorKey.ATTRIBUTE_UNIQUE), exception.getErrorKeys());
+        assertEquals(List
+                .of(Map
+                        .of(FieldKey.FIELD,
+                            "name",
+                            FieldKey.IS,
+                            "Organisation Unit",
+                            FieldKey.ENTITY,
+                            "organisationUnit")),
+                     exception.getErrorAttributes());
     }
 
     @DisplayName("Should call correct validate method on validateOnCreate()")

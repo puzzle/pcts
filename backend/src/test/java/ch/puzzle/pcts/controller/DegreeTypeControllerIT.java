@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.degreetype.DegreeTypeDto;
 import ch.puzzle.pcts.mapper.DegreeTypeMapper;
+import ch.puzzle.pcts.mapper.ErrorMapper;
 import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.service.business.DegreeTypeBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
@@ -40,6 +41,9 @@ class DegreeTypeControllerIT {
 
     @MockitoBean
     private DegreeTypeMapper mapper;
+
+    @MockitoBean
+    private ErrorMapper errorMapper;
 
     @Autowired
     private MockMvc mvc;

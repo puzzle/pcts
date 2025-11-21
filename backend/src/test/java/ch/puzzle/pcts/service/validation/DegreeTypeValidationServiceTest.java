@@ -8,8 +8,11 @@ import static org.mockito.Mockito.*;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.model.error.ErrorKey;
+import ch.puzzle.pcts.model.error.FieldKey;
 import ch.puzzle.pcts.service.persistence.DegreeTypePersistenceService;
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
@@ -62,36 +65,77 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
         return Stream
                 .of(Arguments
                         .of(createDegreeType(null, validBigDecimal, validBigDecimal, validBigDecimal),
-                            "DegreeType.name must not be null."),
+                            List.of(Map.of(FieldKey.CLASS, "DegreeType", FieldKey.FIELD, "name"))),
                     Arguments
                             .of(createDegreeType("", validBigDecimal, validBigDecimal, validBigDecimal),
-                                "DegreeType.name must not be blank."),
+                                List.of(Map.of(FieldKey.CLASS, "DegreeType", FieldKey.FIELD, "name"))),
                     Arguments
                             .of(createDegreeType("h", validBigDecimal, validBigDecimal, validBigDecimal),
-                                "DegreeType.name size must be between 2 and 250, given h."),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "DegreeType",
+                                                    FieldKey.FIELD,
+                                                    "name",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.IS,
+                                                    "h"))),
                     Arguments
                             .of(createDegreeType(tooLongName, validBigDecimal, validBigDecimal, validBigDecimal),
-                                String
-                                        .format("DegreeType.name size must be between 2 and 250, given %s.",
-                                                tooLongName)),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "DegreeType",
+                                                    FieldKey.FIELD,
+                                                    "name",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.IS,
+                                                    tooLongName))),
                     Arguments
                             .of(createDegreeType(validName, null, validBigDecimal, validBigDecimal),
-                                "DegreeType.highlyRelevantPoints must not be null."),
+                                List.of(Map.of(FieldKey.CLASS, "DegreeType", FieldKey.FIELD, "highlyRelevantPoints"))),
                     Arguments
                             .of(createDegreeType(validName, negativeBigDecimal, validBigDecimal, validBigDecimal),
-                                "DegreeType.highlyRelevantPoints must not be negative."),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "DegreeType",
+                                                    FieldKey.FIELD,
+                                                    "highlyRelevantPoints",
+                                                    FieldKey.IS,
+                                                    "-1"))),
                     Arguments
                             .of(createDegreeType(validName, validBigDecimal, null, validBigDecimal),
-                                "DegreeType.limitedRelevantPoints must not be null."),
+                                List.of(Map.of(FieldKey.CLASS, "DegreeType", FieldKey.FIELD, "limitedRelevantPoints"))),
                     Arguments
                             .of(createDegreeType(validName, validBigDecimal, negativeBigDecimal, validBigDecimal),
-                                "DegreeType.limitedRelevantPoints must not be negative."),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "DegreeType",
+                                                    FieldKey.FIELD,
+                                                    "limitedRelevantPoints",
+                                                    FieldKey.IS,
+                                                    "-1"))),
                     Arguments
                             .of(createDegreeType(validName, validBigDecimal, validBigDecimal, null),
-                                "DegreeType.littleRelevantPoints must not be null."),
+                                List.of(Map.of(FieldKey.CLASS, "DegreeType", FieldKey.FIELD, "littleRelevantPoints"))),
                     Arguments
                             .of(createDegreeType(validName, validBigDecimal, validBigDecimal, negativeBigDecimal),
-                                "DegreeType.littleRelevantPoints must not be negative."));
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "DegreeType",
+                                                    FieldKey.FIELD,
+                                                    "littleRelevantPoints",
+                                                    FieldKey.IS,
+                                                    "-1"))));
     }
 
     @DisplayName("Should throw exception on validateOnCreate() when name already exists")
@@ -103,8 +147,9 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnCreate(degreeType));
 
-        assertEquals("Name already exists", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+        assertEquals(List.of(ErrorKey.ATTRIBUTE_UNIQUE), exception.getErrorKeys());
+        assertEquals(List.of(Map.of(FieldKey.FIELD, "name", FieldKey.IS, "Degree Type", FieldKey.ENTITY, "degreeType")),
+                     exception.getErrorAttributes());
     }
 
     @DisplayName("Should throw Exception on validateOnUpdate() when name already exists")
@@ -119,8 +164,9 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnUpdate(id, newDegreeType));
 
-        assertEquals("Name already exists", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+        assertEquals(List.of(ErrorKey.ATTRIBUTE_UNIQUE), exception.getErrorKeys());
+        assertEquals(List.of(Map.of(FieldKey.FIELD, "name", FieldKey.IS, "Degree Type", FieldKey.ENTITY, "degreeType")),
+                     exception.getErrorAttributes());
     }
 
     @DisplayName("Should call correct validate method on validateOnCreate()")

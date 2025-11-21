@@ -5,11 +5,13 @@ import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
+import ch.puzzle.pcts.model.error.FieldKey;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.persistence.RolePersistenceService;
 import ch.puzzle.pcts.service.validation.RoleValidationService;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -59,8 +61,9 @@ class RoleBusinessServiceTest {
 
         PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(id));
 
-        assertEquals(String.format("Role with id: %d does not exist.", id), exception.getReason());
-        assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
+        assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
+        assertIterableEquals(List.of(Map.of(FieldKey.FIELD, "id", FieldKey.IS, id.toString(), FieldKey.ENTITY, "role")),
+                             exception.getErrorAttributes());
         verify(persistenceService).getById(id);
         verify(validationService).validateOnGetById(id);
     }
@@ -107,6 +110,7 @@ class RoleBusinessServiceTest {
     void shouldUpdate() {
         Long id = 1L;
         when(persistenceService.save(role)).thenReturn(role);
+        when(persistenceService.getById(id)).thenReturn(Optional.of(role));
 
         Role result = businessService.update(id, role);
 
@@ -116,15 +120,42 @@ class RoleBusinessServiceTest {
         verify(persistenceService).save(role);
     }
 
+    @DisplayName("Should throw exception when updating non-existing role")
+    @Test
+    void shouldThrowExceptionWhenUpdatingNotFound() {
+        Long id = 1L;
+
+        when(persistenceService.getById(id)).thenReturn(Optional.empty());
+
+        assertThrows(PCTSException.class, () -> businessService.update(id, role));
+
+        verify(persistenceService).getById(id);
+        verify(validationService, never()).validateOnUpdate(any(), any());
+        verify(persistenceService, never()).save(any());
+    }
+
     @DisplayName("Should delete role")
     @Test
     void shouldDelete() {
         Long id = 1L;
+        when(persistenceService.getById(id)).thenReturn(Optional.of(role));
 
         businessService.delete(id);
 
         verify(validationService).validateOnDelete(id);
         verify(persistenceService).delete(id);
+    }
+
+    @DisplayName("Should throw exception when deleting non-existing role")
+    @Test
+    void shouldThrowExceptionWhenNotFound() {
+        Long id = 1L;
+        when(persistenceService.getById(id)).thenReturn(Optional.empty());
+
+        assertThrows(PCTSException.class, () -> businessService.delete(id));
+
+        verify(persistenceService).getById(id);
+        verify(persistenceService, never()).delete(id);
     }
 
 }

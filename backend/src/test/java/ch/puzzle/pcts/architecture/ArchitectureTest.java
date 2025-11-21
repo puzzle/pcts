@@ -8,6 +8,7 @@ import static ch.puzzle.pcts.architecture.CustomConditions.trimAssignedStringFie
 import static ch.puzzle.pcts.architecture.CustomTransformers.packages;
 import static com.tngtech.archunit.base.DescribedPredicate.not;
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAPackage;
+import static com.tngtech.archunit.core.domain.JavaClass.Predicates.type;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
@@ -73,7 +74,9 @@ class ArchitectureTest {
                 .resideInAPackage("..mapper..")
                 .should()
                 .onlyBeAccessed()
-                .byAnyPackage("..controller..", "..mapper..");
+                .byClassesThat(resideInAPackage("..controller..")
+                        .or(resideInAPackage("..mapper.."))
+                        .or(type(ch.puzzle.pcts.GlobalExceptionHandler.class)));
 
         rule.check(importedClasses);
     }
@@ -231,6 +234,7 @@ class ArchitectureTest {
 
         ArchRule rule = classes()
                 .that(resideInAPackage("ch.puzzle.pcts.model.."))
+                .and(not(resideInAPackage("ch.puzzle.pcts.model.error..")))
                 .and()
                 .areNotInterfaces()
                 .and()
@@ -293,7 +297,7 @@ class ArchitectureTest {
                 .whereLayer("PersistenceService")
                 .mayOnlyBeAccessedByLayers("BusinessService", "PersistenceService", "ValidationService") //
                 .whereLayer("Repository")
-                .mayOnlyBeAccessedByLayers("PersistenceService"); //
+                .mayOnlyBeAccessedByLayers("PersistenceService", "BusinessService"); //
 
         layeredArchitecture.check(importedClasses);
     }

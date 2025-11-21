@@ -9,6 +9,7 @@ import static org.mockito.Mockito.*;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.degree.Degree;
 import ch.puzzle.pcts.model.degreetype.DegreeType;
+import ch.puzzle.pcts.model.error.FieldKey;
 import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
@@ -16,6 +17,7 @@ import ch.puzzle.pcts.service.persistence.DegreePersistenceService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -121,34 +123,56 @@ class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, Degr
         return Stream
                 .of(Arguments
                         .of(createDegree(null, "Computer Science", type, true, pastDate, today),
-                            "Degree.member must not be null."),
+                            List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "member"))),
                     Arguments
                             .of(createDegree(member, null, type, true, pastDate, today),
-                                "Degree.name must not be null."),
+                                List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "name"))),
                     Arguments
                             .of(createDegree(member, "", type, true, pastDate, today),
-                                "Degree.name must not be blank."),
+                                List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "name"))),
                     Arguments
                             .of(createDegree(member, "  ", type, true, pastDate, today),
-                                "Degree.name must not be blank."),
+                                List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "name"))),
                     Arguments
                             .of(createDegree(member, "A", type, true, pastDate, today),
-                                "Degree.name size must be between 2 and 250, given A."),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "Degree",
+                                                    FieldKey.FIELD,
+                                                    "name",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.IS,
+                                                    "A"))),
                     Arguments
                             .of(createDegree(member, tooLongString, type, true, pastDate, today),
-                                String.format("Degree.name size must be between 2 and 250, given %s.", tooLongString)),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "Degree",
+                                                    FieldKey.FIELD,
+                                                    "name",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.IS,
+                                                    tooLongString))),
                     Arguments
                             .of(createDegree(member, "Computer Science", null, true, pastDate, today),
-                                "Degree.type must not be null."),
+                                List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "type"))),
                     Arguments
                             .of(createDegree(member, "Computer Science", type, null, pastDate, today),
-                                "Degree.completed must not be null."),
+                                List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "completed"))),
                     Arguments
                             .of(createDegree(member, "Computer Science", type, true, null, today),
-                                "Degree.startDate must not be null."),
+                                List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "startDate"))),
                     Arguments
                             .of(createDegree(member, "Computer Science", type, true, futureDate, null),
-                                "Degree.startDate must be in the past or present, given " + futureDate + "."));
+                                List.of(Map.of(FieldKey.IS, "{attribute.date.past.present}"))));
     }
 
     @DisplayName("Should call correct validate method on validateOnCreate()")
@@ -210,9 +234,17 @@ class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, Degr
                     assertThrows(PCTSException.class, () -> service.validateOnCreate(degree)));
 
         exceptions
-                .forEach(exception -> assertEquals(String
-                        .format("Degree.endDate must be after the startDate, given endDate: %s and startDate: %s.",
-                                pastDate,
-                                today), exception.getReason()));
+                .forEach(exception -> assertEquals(List
+                        .of(Map
+                                .of(FieldKey.ENTITY,
+                                    "degree",
+                                    FieldKey.FIELD,
+                                    "startDate",
+                                    FieldKey.IS,
+                                    today.toString(),
+                                    FieldKey.CONDITION_FIELD,
+                                    "endDate",
+                                    FieldKey.MAX,
+                                    pastDate.toString())), exception.getErrorAttributes()));
     }
 }

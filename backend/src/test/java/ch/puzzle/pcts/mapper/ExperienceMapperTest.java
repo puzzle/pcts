@@ -10,6 +10,7 @@ import ch.puzzle.pcts.dto.experiencetype.ExperienceTypeDto;
 import ch.puzzle.pcts.dto.member.MemberDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
+import ch.puzzle.pcts.model.error.FieldKey;
 import ch.puzzle.pcts.model.experience.Experience;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.model.member.Member;
@@ -18,6 +19,7 @@ import ch.puzzle.pcts.service.business.MemberBusinessService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -163,9 +165,7 @@ class ExperienceMapperTest {
     @DisplayName("Should throw exception when member with id does not exist")
     @Test
     void shouldThrowExceptionWhenMemberWithIdDoesNotExist() {
-        when(memberBusinessService.getById(5L)).thenThrow(new PCTSException(HttpStatus.NOT_FOUND,
-                "Member with id: 5 does not exist.",
-                ErrorKey.NOT_FOUND));
+        when(memberBusinessService.getById(5L)).thenThrow(new PCTSException(HttpStatus.NOT_FOUND, ErrorKey.NOT_FOUND, Map.of(FieldKey.ENTITY, "member", FieldKey.FIELD, "id",  FieldKey.IS, "5")));
 
         ExperienceInputDto experienceInputDto = new ExperienceInputDto(5L,
                 "Consultant",
@@ -178,15 +178,14 @@ class ExperienceMapperTest {
 
         PCTSException exception = assertThrows(PCTSException.class, () -> mapper.fromDto(experienceInputDto));
 
-        assertEquals("Member with id: 5 does not exist.", exception.getReason());
+        assertEquals(Map.of(FieldKey.ENTITY, "member", FieldKey.FIELD, "id",  FieldKey.IS, "5"), exception.getErrors().get(0).getValues());
+        assertEquals(ErrorKey.NOT_FOUND, exception.getErrors().get(0).getKey());
     }
 
     @DisplayName("Should throw exception when experienceType with id does not exist")
     @Test
     void shouldThrowExceptionWhenExperienceTypeWithIdDoesNotExist() {
-        when(experienceTypeBusinessService.getById(5L)).thenThrow(new PCTSException(HttpStatus.NOT_FOUND,
-                "ExperienceType with id: 5 does not exist.",
-                ErrorKey.NOT_FOUND));
+        when(experienceTypeBusinessService.getById(5L)).thenThrow(new PCTSException(HttpStatus.NOT_FOUND, ErrorKey.NOT_FOUND, Map.of(FieldKey.ENTITY, "ExperienceType", FieldKey.FIELD, "id",  FieldKey.IS, "5")));
 
         ExperienceInputDto experienceInputDto = new ExperienceInputDto(
                 memberId,
@@ -200,6 +199,7 @@ class ExperienceMapperTest {
 
         PCTSException exception = assertThrows(PCTSException.class, () -> mapper.fromDto(experienceInputDto));
 
-        assertEquals("ExperienceType with id: 5 does not exist.", exception.getReason());
+        assertEquals(Map.of(FieldKey.ENTITY, "ExperienceType", FieldKey.FIELD, "id",  FieldKey.IS, "5"), exception.getErrors().get(0).getValues());
+        assertEquals(ErrorKey.NOT_FOUND, exception.getErrors().get(0).getKey());
     }
 }

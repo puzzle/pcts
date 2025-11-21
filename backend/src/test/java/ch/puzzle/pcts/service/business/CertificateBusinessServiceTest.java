@@ -7,10 +7,12 @@ import static org.mockito.Mockito.*;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.error.ErrorKey;
+import ch.puzzle.pcts.model.error.FieldKey;
 import ch.puzzle.pcts.service.persistence.CertificatePersistenceService;
 import ch.puzzle.pcts.service.validation.CertificateValidationService;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -48,17 +50,19 @@ class CertificateBusinessServiceTest {
         verify(persistenceService).getById(ID);
     }
 
-    @DisplayName("Should throw exception when certificate not found by id")
+    @DisplayName("Should throw error when certificate type with id does not exist")
     @Test
-    void shouldThrowExceptionWhenNotFound() {
-        when(persistenceService.getById(ID)).thenReturn(Optional.empty());
+    void shouldNotGetByIdAndThrowError() {
+        Long id = 1L;
+        when(persistenceService.getById(id)).thenReturn(Optional.empty());
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(ID));
+        PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(id));
 
-        assertEquals("Certificate with id: " + ID + " does not exist.", exception.getReason());
-        assertEquals(ErrorKey.NOT_FOUND, exception.getErrorKey());
-        verify(validationService).validateOnGetById(ID);
-        verify(persistenceService).getById(ID);
+        assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
+        assertEquals(List.of(Map.of(FieldKey.FIELD, "id", FieldKey.IS, id.toString(), FieldKey.ENTITY, "certificate")),
+                     exception.getErrorAttributes());
+        verify(validationService).validateOnGetById(id);
+        verify(persistenceService).getById(id);
     }
 
     @DisplayName("Should get all certificates")
@@ -103,6 +107,7 @@ class CertificateBusinessServiceTest {
     @Test
     void shouldUpdate() {
         when(persistenceService.save(certificate)).thenReturn(certificate);
+        when(persistenceService.getById(ID)).thenReturn(Optional.of(certificate));
 
         Certificate result = businessService.update(ID, certificate);
 
@@ -112,12 +117,39 @@ class CertificateBusinessServiceTest {
         verify(persistenceService).save(certificate);
     }
 
+    @DisplayName("Should throw exception when updating non-existing certificate type")
+    @Test
+    void shouldThrowExceptionWhenUpdatingNotFound() {
+        Long id = 1L;
+
+        when(persistenceService.getById(id)).thenReturn(Optional.empty());
+
+        assertThrows(PCTSException.class, () -> businessService.update(id, certificate));
+
+        verify(persistenceService).getById(id);
+        verify(persistenceService, never()).save(any());
+    }
+
     @DisplayName("Should delete certificate")
     @Test
     void shouldDelete() {
+        when(persistenceService.getById(ID)).thenReturn(Optional.of(certificate));
         businessService.delete(ID);
+
 
         verify(validationService).validateOnDelete(ID);
         verify(persistenceService).delete(ID);
+    }
+
+    @DisplayName("Should throw exception when deleting non-existing certificate type")
+    @Test
+    void shouldThrowExceptionWhenDeletingNotFoundCertificate() {
+        Long id = 1L;
+        when(persistenceService.getById(id)).thenReturn(Optional.empty());
+
+        assertThrows(PCTSException.class, () -> businessService.delete(id));
+
+        verify(persistenceService).getById(id);
+        verify(persistenceService, never()).delete(id);
     }
 }
