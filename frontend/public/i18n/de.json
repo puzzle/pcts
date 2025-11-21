@@ -48,7 +48,7 @@
     "ORGANISATION_UNIT": "Division",
     "EMPLOYMENT_STATE": "Anstellungsstatus",
     "ATTRIBUTE_NULL": "-",
-
+    "NO_DIVISION": "Keine Division",
     "FORM": {
       "PERSONAL_DETAILS": "Personalien"
     },
