@@ -36,8 +36,7 @@ public class MemberMapper {
                              model.getAbbreviation(),
                              model.getDateOfHire(),
                              model.getBirthDate(),
-                             organisationUnitDtoFromOrganisationUnit(model.getOrganisationUnit())
-                            );
+                             organisationUnitDtoFromOrganisationUnit(model.getOrganisationUnit()));
     }
 
     public Member fromDto(MemberInputDto dto) {
@@ -53,11 +52,11 @@ public class MemberMapper {
                 .build();
     }
 
-    public OrganisationUnit organisationUnitFromId(Long organisationUnitId){
+    public OrganisationUnit organisationUnitFromId(Long organisationUnitId) {
         return organisationUnitId == null ? null : organisationUnitBusinessService.getById(organisationUnitId);
     }
 
-    public OrganisationUnitDto organisationUnitDtoFromOrganisationUnit(OrganisationUnit organisationUnit){
+    public OrganisationUnitDto organisationUnitDtoFromOrganisationUnit(OrganisationUnit organisationUnit) {
         return organisationUnit == null ? null : organisationUnitMapper.toDto(organisationUnit);
     }
 }
