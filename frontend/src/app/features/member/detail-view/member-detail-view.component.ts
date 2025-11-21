@@ -21,8 +21,7 @@ import { MatIcon } from '@angular/material/icon';
     MatButton,
     MatIcon
   ],
-  templateUrl: './member-detail-view.component.html',
-  styleUrls: ['./member-detail-view.component.scss']
+  templateUrl: './member-detail-view.component.html'
 })
 export class MemberDetailViewComponent implements OnInit {
   private readonly service = inject(MemberService);
