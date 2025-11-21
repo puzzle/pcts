@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.service.validation;
 
+import static ch.puzzle.pcts.Constants.EXPERIENCE;
+
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.error.FieldKey;
@@ -30,7 +32,7 @@ public class ExperienceValidationService extends ValidationBase<Experience> {
                                     ErrorKey.ATTRIBUTE_NOT_BEFORE,
                                     Map
                                             .of(FieldKey.ENTITY,
-                                                "experience",
+                                                EXPERIENCE,
                                                 FieldKey.FIELD,
                                                 "startDate",
                                                 FieldKey.IS,

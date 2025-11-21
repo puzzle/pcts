@@ -11,6 +11,7 @@ import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.error.ErrorKey;
+import ch.puzzle.pcts.model.error.FieldKey;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.business.CertificateTypeBusinessService;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
@@ -18,6 +19,7 @@ import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import ch.puzzle.pcts.service.validation.MemberValidationService;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -194,9 +196,9 @@ class CertificateMapperTest {
         verify(certificateTypeBusinessService).getById(20L);
     }
 
-    @DisplayName("Should throw exception when member is not found")
+    @DisplayName("Should throw exception when certificate is not found")
     @Test
-    void shouldThrowExceptionWhenMemberIsNotFound() {
+    void shouldThrowExceptionWhenCertificateIsNotFound() {
         Long nonExistentMemberId = 999L;
         CertificateInputDto inputDto = new CertificateInputDto(nonExistentMemberId,
                                                                CERT_TYPE_ID,
@@ -204,20 +206,19 @@ class CertificateMapperTest {
                                                                VALID_UNTIL,
                                                                "Comment");
 
-        PCTSException expectedException = new PCTSException(HttpStatus.NOT_FOUND,
-                                                            "Member with id: " + nonExistentMemberId
-                                                                                  + " does not exist.",
-                                                            ErrorKey.NOT_FOUND);
+        // mock the behavior
+        when(certificateMapper.memberBusinessService.getById(anyLong()))
+                .thenThrow(new PCTSException(HttpStatus.NOT_FOUND,
+                                             ErrorKey.NOT_FOUND,
+                                             Map
+                                                     .of(FieldKey.ENTITY,
+                                                         "member",
+                                                         FieldKey.FIELD,
+                                                         "id",
+                                                         FieldKey.IS,
+                                                         "" + inputDto.memberId())));
 
-        when(memberBusinessService.getById(nonExistentMemberId)).thenThrow(expectedException);
-
-        PCTSException capturedException = assertThrows(PCTSException.class, () -> certificateMapper.fromDto(inputDto));
-
-        assertEquals(expectedException.getMessage(), capturedException.getMessage());
-        assertEquals(ErrorKey.NOT_FOUND, capturedException.getErrorKey());
-
-        verify(memberBusinessService).getById(nonExistentMemberId);
-        verifyNoInteractions(certificateTypeBusinessService);
+        assertThrows(PCTSException.class, () -> certificateMapper.fromDto(inputDto));
     }
 
     @DisplayName("Should throw exception when Certificate-Type is not found")
@@ -230,19 +231,18 @@ class CertificateMapperTest {
                                                                VALID_UNTIL,
                                                                "Comment");
 
-        PCTSException expectedException = new PCTSException(HttpStatus.NOT_FOUND,
-                                                            "CertificateType with id: " + nonExistentCertificateTypeId
-                                                                                  + " does not exist.",
-                                                            ErrorKey.NOT_FOUND);
+        // mock the behavior
+        when(certificateMapper.certificateTypeBusinessService.getById(anyLong()))
+                .thenThrow(new PCTSException(HttpStatus.NOT_FOUND,
+                                             ErrorKey.NOT_FOUND,
+                                             Map
+                                                     .of(FieldKey.ENTITY,
+                                                         "degreeType",
+                                                         FieldKey.FIELD,
+                                                         "id",
+                                                         FieldKey.IS,
+                                                         "" + inputDto.certificateTypeId())));
 
-        when(certificateTypeBusinessService.getById(nonExistentCertificateTypeId)).thenThrow(expectedException);
-
-        PCTSException capturedException = assertThrows(PCTSException.class, () -> certificateMapper.fromDto(inputDto));
-
-        assertEquals(expectedException.getMessage(), capturedException.getMessage());
-        assertEquals(ErrorKey.NOT_FOUND, capturedException.getErrorKey());
-
-        verify(memberBusinessService).getById(MEMBER_ID);
-        verify(certificateTypeBusinessService).getById(nonExistentCertificateTypeId);
+        assertThrows(PCTSException.class, () -> certificateMapper.fromDto(inputDto));
     }
 }

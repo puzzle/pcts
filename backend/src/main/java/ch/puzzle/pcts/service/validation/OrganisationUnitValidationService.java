@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.service.validation;
 
+import static ch.puzzle.pcts.Constants.ORGANISATION_UNIT;
+
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.error.FieldKey;
@@ -26,7 +28,7 @@ public class OrganisationUnitValidationService extends ValidationBase<Organisati
                                     ErrorKey.ATTRIBUTE_UNIQUE,
                                     Map
                                             .of(FieldKey.ENTITY,
-                                                "organisationUnit",
+                                                ORGANISATION_UNIT,
                                                 FieldKey.FIELD,
                                                 "name",
                                                 FieldKey.IS,
@@ -43,7 +45,7 @@ public class OrganisationUnitValidationService extends ValidationBase<Organisati
                                     ErrorKey.ATTRIBUTE_UNIQUE,
                                     Map
                                             .of(FieldKey.ENTITY,
-                                                "organisationUnit",
+                                                ORGANISATION_UNIT,
                                                 FieldKey.FIELD,
                                                 "name",
                                                 FieldKey.IS,

@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.service.validation;
 
+import static ch.puzzle.pcts.Constants.ROLE;
+
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.error.FieldKey;
@@ -24,13 +26,7 @@ public class RoleValidationService extends ValidationBase<Role> {
         if (UniqueNameValidationUtil.nameAlreadyUsed(role.getName(), persistenceService::getByName)) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
                                     ErrorKey.ATTRIBUTE_UNIQUE,
-                                    Map
-                                            .of(FieldKey.ENTITY,
-                                                "role",
-                                                FieldKey.FIELD,
-                                                "name",
-                                                FieldKey.IS,
-                                                role.getName()));
+                                    Map.of(FieldKey.ENTITY, ROLE, FieldKey.FIELD, "name", FieldKey.IS, role.getName()));
 
         }
     }
@@ -41,13 +37,7 @@ public class RoleValidationService extends ValidationBase<Role> {
         if (UniqueNameValidationUtil.nameExcludingIdAlreadyUsed(id, role.getName(), persistenceService::getByName)) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
                                     ErrorKey.ATTRIBUTE_UNIQUE,
-                                    Map
-                                            .of(FieldKey.ENTITY,
-                                                "role",
-                                                FieldKey.FIELD,
-                                                "name",
-                                                FieldKey.IS,
-                                                role.getName()));
+                                    Map.of(FieldKey.ENTITY, ROLE, FieldKey.FIELD, "name", FieldKey.IS, role.getName()));
 
         }
     }

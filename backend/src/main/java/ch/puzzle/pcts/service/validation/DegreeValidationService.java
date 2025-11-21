@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.service.validation;
 
+import static ch.puzzle.pcts.Constants.DEGREE;
+
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.degree.Degree;
 import ch.puzzle.pcts.model.error.ErrorKey;
@@ -29,7 +31,7 @@ public class DegreeValidationService extends ValidationBase<Degree> {
                                     ErrorKey.ATTRIBUTE_NOT_BEFORE,
                                     Map
                                             .of(FieldKey.ENTITY,
-                                                "degree",
+                                                DEGREE,
                                                 FieldKey.FIELD,
                                                 "startDate",
                                                 FieldKey.IS,
