@@ -16,8 +16,7 @@ export class CrudButtonComponent {
 
   private readonly route = inject(ActivatedRoute);
 
-  private readonly id = this.idFromRoute;
-
+  // This logic gets the model name from the URL. It assumes that the URL structure is 'root/modelName/'
   protected modelName: string = this.router.url.split('/')[1] ?? '';
 
   @Input() mode: 'add' | 'edit' | 'delete' = 'add';
@@ -25,18 +24,16 @@ export class CrudButtonComponent {
   handleClick() {
     switch (this.mode) {
       case 'edit':
-        if (this.id) {
+        if (this.idFromRoute) {
           this.router.navigate([this.router.url,
-            'edit',
-            this.id]);
+            'edit']);
         }
         break;
 
       case 'delete':
-        if (this.id) {
+        if (this.idFromRoute) {
           this.router.navigate([this.router.url,
-            'delete',
-            this.id]);
+            'delete']);
         }
         break;
 
@@ -50,7 +47,7 @@ export class CrudButtonComponent {
     }
   }
 
-  get idFromRoute() {
+  get idFromRoute(): string | null {
     return this.route.snapshot.paramMap.get('id');
   }
 }

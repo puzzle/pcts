@@ -9,14 +9,22 @@ describe('CrudButtonComponent', () => {
   let routerMock: Partial<Router>;
   let activatedRouteMock: any;
 
-  const MOCK_CURRENT_URL = '/members/list';
   const MOCK_ID = '12345';
+  const MOCK_DEFAULT_URL = '/members';
+  const MOCK_DEFAULT_URL_WITH_ID = `${MOCK_DEFAULT_URL}/${MOCK_ID}`;
+
+  let currentUrlState = MOCK_DEFAULT_URL;
 
   beforeEach(async() => {
+    currentUrlState = MOCK_DEFAULT_URL;
+
     routerMock = {
-      navigate: jest.fn(),
-      url: MOCK_CURRENT_URL
+      navigate: jest.fn()
     };
+
+    Object.defineProperty(routerMock, 'url', {
+      get: () => currentUrlState
+    });
 
     activatedRouteMock = {
       snapshot: {
@@ -49,28 +57,30 @@ describe('CrudButtonComponent', () => {
     component.handleClick();
 
     expect(routerMock.navigate)
-      .toHaveBeenCalledWith([MOCK_CURRENT_URL,
+      .toHaveBeenCalledWith([MOCK_DEFAULT_URL,
         'add']);
   });
 
-  it('should navigate to the edit path with ID when mode is edit', () => {
+  it('should navigate to the edit path when mode is edit', () => {
+    currentUrlState = MOCK_DEFAULT_URL_WITH_ID;
+
     component.mode = 'edit';
     component.handleClick();
 
     expect(routerMock.navigate)
-      .toHaveBeenCalledWith([MOCK_CURRENT_URL,
-        'edit',
-        MOCK_ID]);
+      .toHaveBeenCalledWith([MOCK_DEFAULT_URL_WITH_ID,
+        'edit']);
   });
 
-  it('should navigate to the delete path with ID when mode is delete', () => {
+  it('should navigate to the delete path when mode is delete', () => {
+    currentUrlState = MOCK_DEFAULT_URL_WITH_ID;
+
     component.mode = 'delete';
     component.handleClick();
 
     expect(routerMock.navigate)
-      .toHaveBeenCalledWith([MOCK_CURRENT_URL,
-        'delete',
-        MOCK_ID]);
+      .toHaveBeenCalledWith([MOCK_DEFAULT_URL_WITH_ID,
+        'delete']);
   });
 
   it('should correctly grab the ID from the route snapshot', () => {
