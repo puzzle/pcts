@@ -4,9 +4,9 @@ import static org.apache.commons.lang3.StringUtils.trim;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.Model;
-import ch.puzzle.pcts.model.error.FieldKey;
 import ch.puzzle.pcts.service.validation.ValidationBase;
 import java.util.List;
 import java.util.Map;

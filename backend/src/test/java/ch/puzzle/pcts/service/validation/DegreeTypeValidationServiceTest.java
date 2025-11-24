@@ -6,10 +6,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
+import ch.puzzle.pcts.dto.error.ErrorKey;
+import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.degreetype.DegreeType;
-import ch.puzzle.pcts.model.error.ErrorKey;
-import ch.puzzle.pcts.model.error.FieldKey;
 import ch.puzzle.pcts.service.persistence.DegreeTypePersistenceService;
 import java.math.BigDecimal;
 import java.util.List;

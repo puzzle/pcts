@@ -1,10 +1,10 @@
 package ch.puzzle.pcts.service.validation;
 
+import ch.puzzle.pcts.dto.error.ErrorKey;
+import ch.puzzle.pcts.dto.error.FieldKey;
+import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.Model;
-import ch.puzzle.pcts.model.error.ErrorKey;
-import ch.puzzle.pcts.model.error.FieldKey;
-import ch.puzzle.pcts.model.error.GenericError;
 import ch.puzzle.pcts.util.FieldAwareMessageInterpolator;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -98,7 +98,7 @@ public abstract class ValidationBase<T extends Model> {
 
     private void processViolations(Set<ConstraintViolation<T>> violations) {
         if (!violations.isEmpty()) {
-            List<GenericError> errors = violations
+            List<GenericErrorDto> errors = violations
                     .stream()
                     .map(violation -> parseViolationMessage(violation.getMessage()))
                     .toList();
@@ -106,18 +106,18 @@ public abstract class ValidationBase<T extends Model> {
         }
     }
 
-    private static GenericError parseViolationMessage(String message) {
+    private static GenericErrorDto parseViolationMessage(String message) {
         Map<String, String> valueMap = parseToMap(message);
 
         String keyName = valueMap.remove("key");
         if (keyName == null) {
             log.error("Validation message is missing 'key=' part: {}", message);
-            return new GenericError(ErrorKey.ERROR_MESSAGE_MISSING_KEY, Map.of(FieldKey.IS, message));
+            return new GenericErrorDto(ErrorKey.ERROR_MESSAGE_MISSING_KEY, Map.of(FieldKey.IS, message));
         }
 
         ErrorKey errorKey = parseErrorKey(keyName);
         if (errorKey == null) {
-            return new GenericError(ErrorKey.ERROR_MESSAGE_INVALID_KEY, Map.of(FieldKey.IS, keyName));
+            return new GenericErrorDto(ErrorKey.ERROR_MESSAGE_INVALID_KEY, Map.of(FieldKey.IS, keyName));
         }
 
         Map<FieldKey, String> fieldMap = new EnumMap<>(FieldKey.class);
@@ -125,12 +125,12 @@ public abstract class ValidationBase<T extends Model> {
         for (Map.Entry<String, String> entry : valueMap.entrySet()) {
             FieldKey fieldKey = parseFieldKey(entry.getKey());
             if (fieldKey == null) {
-                return new GenericError(ErrorKey.ERROR_MESSAGE_INVALID_KEY, Map.of(FieldKey.IS, entry.getKey()));
+                return new GenericErrorDto(ErrorKey.ERROR_MESSAGE_INVALID_KEY, Map.of(FieldKey.IS, entry.getKey()));
             }
             fieldMap.put(fieldKey, entry.getValue());
         }
 
-        return new GenericError(errorKey, fieldMap);
+        return new GenericErrorDto(errorKey, fieldMap);
     }
 
     private static ErrorKey parseErrorKey(String key) {
@@ -160,7 +160,7 @@ public abstract class ValidationBase<T extends Model> {
                 .collect(Collectors.toMap(entry -> entry[0].toLowerCase(), entry -> entry[1]));
     }
 
-    public static List<GenericError> buildGenericErrorDto(ErrorKey key, Map<FieldKey, String> errors) {
-        return List.of(new GenericError(key, errors));
+    public static List<GenericErrorDto> buildGenericErrorDto(ErrorKey key, Map<FieldKey, String> errors) {
+        return List.of(new GenericErrorDto(key, errors));
     }
 }

@@ -2,11 +2,13 @@ package ch.puzzle.pcts.service.validation;
 
 import static ch.puzzle.pcts.Constants.CERTIFICATE;
 
+import ch.puzzle.pcts.dto.error.ErrorKey;
+import ch.puzzle.pcts.dto.error.FieldKey;
+import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificate.Certificate;
-import ch.puzzle.pcts.model.error.ErrorKey;
-import ch.puzzle.pcts.model.error.FieldKey;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -28,18 +30,19 @@ public class CertificateValidationService extends ValidationBase<Certificate> {
     public void validateCompletedAtIsBeforeValidUntil(LocalDate completedAt, LocalDate validUntil) {
         if (validUntil != null && completedAt != null && completedAt.isAfter(validUntil)) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    ErrorKey.ATTRIBUTE_NOT_BEFORE,
-                                    Map
-                                            .of(FieldKey.ENTITY,
-                                                CERTIFICATE,
-                                                FieldKey.FIELD,
-                                                "completedAt",
-                                                FieldKey.IS,
-                                                completedAt.toString(),
-                                                FieldKey.CONDITION_FIELD,
-                                                "validUntil",
-                                                FieldKey.MAX,
-                                                validUntil.toString()));
+                                    List
+                                            .of(new GenericErrorDto(ErrorKey.ATTRIBUTE_NOT_BEFORE,
+                                                                    Map
+                                                                            .of(FieldKey.ENTITY,
+                                                                                CERTIFICATE,
+                                                                                FieldKey.FIELD,
+                                                                                "completedAt",
+                                                                                FieldKey.IS,
+                                                                                completedAt.toString(),
+                                                                                FieldKey.CONDITION_FIELD,
+                                                                                "validUntil",
+                                                                                FieldKey.MAX,
+                                                                                validUntil.toString()))));
         }
     }
 }

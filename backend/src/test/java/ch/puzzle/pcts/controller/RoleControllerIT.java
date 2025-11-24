@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.controller;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -9,7 +10,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.role.RoleDto;
-import ch.puzzle.pcts.mapper.ErrorMapper;
 import ch.puzzle.pcts.mapper.RoleMapper;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.business.RoleBusinessService;
@@ -40,9 +40,6 @@ class RoleControllerIT {
 
     @MockitoBean
     private RoleMapper mapper;
-
-    @MockitoBean
-    private ErrorMapper errorMapper;
 
     @Autowired
     private MockMvc mvc;

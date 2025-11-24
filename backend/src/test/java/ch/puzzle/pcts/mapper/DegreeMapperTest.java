@@ -10,13 +10,14 @@ import static org.mockito.Mockito.when;
 import ch.puzzle.pcts.dto.degree.DegreeDto;
 import ch.puzzle.pcts.dto.degree.DegreeInputDto;
 import ch.puzzle.pcts.dto.degreetype.DegreeTypeDto;
+import ch.puzzle.pcts.dto.error.ErrorKey;
+import ch.puzzle.pcts.dto.error.FieldKey;
+import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.dto.member.MemberDto;
 import ch.puzzle.pcts.dto.organisationunit.OrganisationUnitDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.degree.Degree;
 import ch.puzzle.pcts.model.degreetype.DegreeType;
-import ch.puzzle.pcts.model.error.ErrorKey;
-import ch.puzzle.pcts.model.error.FieldKey;
 import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
@@ -249,14 +250,16 @@ class DegreeMapperTest {
         // mock the behavior
         when(mapper.memberBusinessService.getById(anyLong()))
                 .thenThrow(new PCTSException(HttpStatus.NOT_FOUND,
-                                             ErrorKey.NOT_FOUND,
-                                             Map
-                                                     .of(FieldKey.ENTITY,
-                                                         MEMBER,
-                                                         FieldKey.FIELD,
-                                                         "id",
-                                                         FieldKey.IS,
-                                                         "" + invalidInput.memberId())));
+                                             List
+                                                     .of(new GenericErrorDto(ErrorKey.NOT_FOUND,
+                                                                             Map
+                                                                                     .of(FieldKey.ENTITY,
+                                                                                         MEMBER,
+                                                                                         FieldKey.FIELD,
+                                                                                         "id",
+                                                                                         FieldKey.IS,
+                                                                                         "" + invalidInput
+                                                                                                 .memberId())))));
 
         assertThrows(PCTSException.class, () -> mapper.fromDto(invalidInput));
     }
@@ -276,14 +279,16 @@ class DegreeMapperTest {
         // mock the behavior
         when(mapper.degreeTypeBusinessService.getById(anyLong()))
                 .thenThrow(new PCTSException(HttpStatus.NOT_FOUND,
-                                             ErrorKey.NOT_FOUND,
-                                             Map
-                                                     .of(FieldKey.ENTITY,
-                                                         DEGREE_TYPE,
-                                                         FieldKey.FIELD,
-                                                         "id",
-                                                         FieldKey.IS,
-                                                         "" + invalidInput.typeId())));
+                                             List
+                                                     .of(new GenericErrorDto(ErrorKey.NOT_FOUND,
+                                                                             Map
+                                                                                     .of(FieldKey.ENTITY,
+                                                                                         DEGREE_TYPE,
+                                                                                         FieldKey.FIELD,
+                                                                                         "id",
+                                                                                         FieldKey.IS,
+                                                                                         "" + invalidInput
+                                                                                                 .typeId())))));
 
         assertThrows(PCTSException.class, () -> mapper.fromDto(invalidInput));
     }

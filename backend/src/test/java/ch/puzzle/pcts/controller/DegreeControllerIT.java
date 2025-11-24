@@ -14,7 +14,6 @@ import ch.puzzle.pcts.dto.degreetype.DegreeTypeDto;
 import ch.puzzle.pcts.dto.member.MemberDto;
 import ch.puzzle.pcts.dto.organisationunit.OrganisationUnitDto;
 import ch.puzzle.pcts.mapper.DegreeMapper;
-import ch.puzzle.pcts.mapper.ErrorMapper;
 import ch.puzzle.pcts.model.degree.Degree;
 import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.model.member.EmploymentState;
@@ -50,9 +49,6 @@ class DegreeControllerIT {
 
     @MockitoBean
     private DegreeMapper mapper;
-
-    @MockitoBean
-    private ErrorMapper errorMapper;
 
     @Autowired
     private MockMvc mvc;

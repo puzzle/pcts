@@ -2,13 +2,15 @@ package ch.puzzle.pcts.service.validation;
 
 import static ch.puzzle.pcts.Constants.CERTIFICATE_TYPE;
 
+import ch.puzzle.pcts.dto.error.ErrorKey;
+import ch.puzzle.pcts.dto.error.FieldKey;
+import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
-import ch.puzzle.pcts.model.error.ErrorKey;
-import ch.puzzle.pcts.model.error.FieldKey;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import ch.puzzle.pcts.service.validation.util.UniqueNameValidationUtil;
+import java.util.List;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -29,14 +31,15 @@ public class CertificateTypeValidationService extends ValidationBase<Certificate
         if (UniqueNameValidationUtil
                 .nameExcludingIdAlreadyUsed(id, certificate.getName(), persistenceService::getByName)) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    ErrorKey.INVALID_ARGUMENT,
-                                    Map
-                                            .of(FieldKey.ENTITY,
-                                                CERTIFICATE_TYPE,
-                                                FieldKey.FIELD,
-                                                "name",
-                                                FieldKey.IS,
-                                                certificate.getName()));
+                                    List
+                                            .of(new GenericErrorDto(ErrorKey.INVALID_ARGUMENT,
+                                                                    Map
+                                                                            .of(FieldKey.ENTITY,
+                                                                                CERTIFICATE_TYPE,
+                                                                                FieldKey.FIELD,
+                                                                                "name",
+                                                                                FieldKey.IS,
+                                                                                certificate.getName()))));
         }
     }
 
@@ -46,28 +49,30 @@ public class CertificateTypeValidationService extends ValidationBase<Certificate
         validateCertificateKind(certificateType.getCertificateKind());
         if (UniqueNameValidationUtil.nameAlreadyUsed(certificateType.getName(), persistenceService::getByName)) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    ErrorKey.ATTRIBUTE_UNIQUE,
-                                    Map
-                                            .of(FieldKey.ENTITY,
-                                                CERTIFICATE_TYPE,
-                                                FieldKey.FIELD,
-                                                "name",
-                                                FieldKey.IS,
-                                                certificateType.getName()));
+                                    List
+                                            .of(new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE,
+                                                                    Map
+                                                                            .of(FieldKey.ENTITY,
+                                                                                CERTIFICATE_TYPE,
+                                                                                FieldKey.FIELD,
+                                                                                "name",
+                                                                                FieldKey.IS,
+                                                                                certificateType.getName()))));
         }
     }
 
     public void validateCertificateKind(CertificateKind certificateKind) {
         if (certificateKind != CertificateKind.CERTIFICATE) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    ErrorKey.INVALID_ARGUMENT,
-                                    Map
-                                            .of(FieldKey.ENTITY,
-                                                CERTIFICATE_TYPE,
-                                                FieldKey.FIELD,
-                                                "certificateKind",
-                                                FieldKey.IS,
-                                                certificateKind.toString()));
+                                    List
+                                            .of(new GenericErrorDto(ErrorKey.INVALID_ARGUMENT,
+                                                                    Map
+                                                                            .of(FieldKey.ENTITY,
+                                                                                CERTIFICATE_TYPE,
+                                                                                FieldKey.FIELD,
+                                                                                "certificateKind",
+                                                                                FieldKey.IS,
+                                                                                certificateKind.toString()))));
         }
     }
 }

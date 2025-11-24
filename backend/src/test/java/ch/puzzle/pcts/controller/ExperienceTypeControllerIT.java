@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.controller;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -9,7 +10,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.experiencetype.ExperienceTypeDto;
-import ch.puzzle.pcts.mapper.ErrorMapper;
 import ch.puzzle.pcts.mapper.ExperienceTypeMapper;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.service.business.ExperienceTypeBusinessService;
@@ -42,8 +42,6 @@ class ExperienceTypeControllerIT {
     private ExperienceTypeBusinessService service;
     @MockitoBean
     private ExperienceTypeMapper mapper;
-    @MockitoBean
-    private ErrorMapper errorMapper;
     @Autowired
     private MockMvc mvc;
     private ExperienceType experienceType;

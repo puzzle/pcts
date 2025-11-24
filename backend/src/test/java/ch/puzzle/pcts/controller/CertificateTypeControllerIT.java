@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.certificatetype.CertificateTypeDto;
 import ch.puzzle.pcts.mapper.CertificateTypeMapper;
-import ch.puzzle.pcts.mapper.ErrorMapper;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.service.business.CertificateTypeBusinessService;
@@ -41,9 +40,6 @@ class CertificateTypeControllerIT {
 
     @MockitoBean
     private CertificateTypeMapper mapper;
-
-    @MockitoBean
-    private ErrorMapper errorMapper;
 
     @Autowired
     private MockMvc mvc;

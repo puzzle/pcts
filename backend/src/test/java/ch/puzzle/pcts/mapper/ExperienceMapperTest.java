@@ -6,13 +6,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
+import ch.puzzle.pcts.dto.error.ErrorKey;
+import ch.puzzle.pcts.dto.error.FieldKey;
+import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.dto.experience.ExperienceDto;
 import ch.puzzle.pcts.dto.experience.ExperienceInputDto;
 import ch.puzzle.pcts.dto.experiencetype.ExperienceTypeDto;
 import ch.puzzle.pcts.dto.member.MemberDto;
 import ch.puzzle.pcts.exception.PCTSException;
-import ch.puzzle.pcts.model.error.ErrorKey;
-import ch.puzzle.pcts.model.error.FieldKey;
 import ch.puzzle.pcts.model.experience.Experience;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.model.member.Member;
@@ -167,7 +168,7 @@ class ExperienceMapperTest {
     @DisplayName("Should throw exception when member with id does not exist")
     @Test
     void shouldThrowExceptionWhenMemberWithIdDoesNotExist() {
-        when(memberBusinessService.getById(5L)).thenThrow(new PCTSException(HttpStatus.NOT_FOUND, ErrorKey.NOT_FOUND, Map.of(FieldKey.ENTITY, MEMBER, FieldKey.FIELD, "id",  FieldKey.IS, "5")));
+        when(memberBusinessService.getById(5L)).thenThrow(new PCTSException(HttpStatus.NOT_FOUND, List.of(new GenericErrorDto(ErrorKey.NOT_FOUND, Map.of(FieldKey.ENTITY, MEMBER, FieldKey.FIELD, "id",  FieldKey.IS, "5")))));
 
         ExperienceInputDto experienceInputDto = new ExperienceInputDto(5L,
                 "Consultant",
@@ -187,7 +188,7 @@ class ExperienceMapperTest {
     @DisplayName("Should throw exception when experienceType with id does not exist")
     @Test
     void shouldThrowExceptionWhenExperienceTypeWithIdDoesNotExist() {
-        when(experienceTypeBusinessService.getById(5L)).thenThrow(new PCTSException(HttpStatus.NOT_FOUND, ErrorKey.NOT_FOUND, Map.of(FieldKey.ENTITY, EXPERIENCE_TYPE, FieldKey.FIELD, "id",  FieldKey.IS, "5")));
+        when(experienceTypeBusinessService.getById(5L)).thenThrow(new PCTSException(HttpStatus.NOT_FOUND, List.of(new GenericErrorDto(ErrorKey.NOT_FOUND, Map.of(FieldKey.ENTITY, EXPERIENCE_TYPE, FieldKey.FIELD, "id",  FieldKey.IS, "5")))));
 
         ExperienceInputDto experienceInputDto = new ExperienceInputDto(
                 memberId,

@@ -2,12 +2,14 @@ package ch.puzzle.pcts.service.validation;
 
 import static ch.puzzle.pcts.Constants.EXPERIENCE_TYPE;
 
+import ch.puzzle.pcts.dto.error.ErrorKey;
+import ch.puzzle.pcts.dto.error.FieldKey;
+import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
-import ch.puzzle.pcts.model.error.ErrorKey;
-import ch.puzzle.pcts.model.error.FieldKey;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.service.persistence.ExperienceTypePersistenceService;
 import ch.puzzle.pcts.service.validation.util.UniqueNameValidationUtil;
+import java.util.List;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -25,14 +27,15 @@ public class ExperienceTypeValidationService extends ValidationBase<ExperienceTy
         super.validateOnCreate(experienceType);
         if (UniqueNameValidationUtil.nameAlreadyUsed(experienceType.getName(), persistenceService::getByName)) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    ErrorKey.ATTRIBUTE_UNIQUE,
-                                    Map
-                                            .of(FieldKey.ENTITY,
-                                                EXPERIENCE_TYPE,
-                                                FieldKey.FIELD,
-                                                "name",
-                                                FieldKey.IS,
-                                                experienceType.getName()));
+                                    List
+                                            .of(new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE,
+                                                                    Map
+                                                                            .of(FieldKey.ENTITY,
+                                                                                EXPERIENCE_TYPE,
+                                                                                FieldKey.FIELD,
+                                                                                "name",
+                                                                                FieldKey.IS,
+                                                                                experienceType.getName()))));
         }
     }
 
@@ -42,15 +45,15 @@ public class ExperienceTypeValidationService extends ValidationBase<ExperienceTy
         if (UniqueNameValidationUtil
                 .nameExcludingIdAlreadyUsed(id, experienceType.getName(), persistenceService::getByName)) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    ErrorKey.ATTRIBUTE_UNIQUE,
-                                    Map
-                                            .of(FieldKey.ENTITY,
-                                                EXPERIENCE_TYPE,
-                                                FieldKey.FIELD,
-                                                "name",
-                                                FieldKey.IS,
-                                                experienceType.getName()));
-
+                                    List
+                                            .of(new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE,
+                                                                    Map
+                                                                            .of(FieldKey.ENTITY,
+                                                                                EXPERIENCE_TYPE,
+                                                                                FieldKey.FIELD,
+                                                                                "name",
+                                                                                FieldKey.IS,
+                                                                                experienceType.getName()))));
         }
     }
 }

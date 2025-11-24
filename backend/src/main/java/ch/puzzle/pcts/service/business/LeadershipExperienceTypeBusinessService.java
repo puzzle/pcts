@@ -2,10 +2,11 @@ package ch.puzzle.pcts.service.business;
 
 import static ch.puzzle.pcts.Constants.LEADERSHIP_EXPERIENCE_TYPE;
 
+import ch.puzzle.pcts.dto.error.ErrorKey;
+import ch.puzzle.pcts.dto.error.FieldKey;
+import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
-import ch.puzzle.pcts.model.error.ErrorKey;
-import ch.puzzle.pcts.model.error.FieldKey;
 import ch.puzzle.pcts.repository.CertificateTypeRepository;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import ch.puzzle.pcts.service.validation.LeadershipExperienceTypeValidationService;
@@ -36,14 +37,15 @@ public class LeadershipExperienceTypeBusinessService
             return leadershipExperience;
         } else {
             throw new PCTSException(HttpStatus.NOT_FOUND,
-                                    ErrorKey.NOT_FOUND,
-                                    Map
-                                            .of(FieldKey.ENTITY,
-                                                LEADERSHIP_EXPERIENCE_TYPE,
-                                                FieldKey.FIELD,
-                                                "id",
-                                                FieldKey.IS,
-                                                id.toString()));
+                                    List
+                                            .of(new GenericErrorDto(ErrorKey.NOT_FOUND,
+                                                                    Map
+                                                                            .of(FieldKey.ENTITY,
+                                                                                LEADERSHIP_EXPERIENCE_TYPE,
+                                                                                FieldKey.FIELD,
+                                                                                "id",
+                                                                                FieldKey.IS,
+                                                                                id.toString()))));
         }
     }
 

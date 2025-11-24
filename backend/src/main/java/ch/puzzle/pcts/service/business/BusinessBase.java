@@ -1,11 +1,13 @@
 package ch.puzzle.pcts.service.business;
 
+import ch.puzzle.pcts.dto.error.ErrorKey;
+import ch.puzzle.pcts.dto.error.FieldKey;
+import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.Model;
-import ch.puzzle.pcts.model.error.ErrorKey;
-import ch.puzzle.pcts.model.error.FieldKey;
 import ch.puzzle.pcts.service.persistence.PersistenceBase;
 import ch.puzzle.pcts.service.validation.ValidationBase;
+import java.util.List;
 import java.util.Map;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
@@ -41,14 +43,15 @@ public abstract class BusinessBase<T extends Model, R extends JpaRepository<T, L
         return persistenceService
                 .getById(id)
                 .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,
-                                                     ErrorKey.NOT_FOUND,
-                                                     Map
-                                                             .of(FieldKey.ENTITY,
-                                                                 entityName(),
-                                                                 FieldKey.FIELD,
-                                                                 "id",
-                                                                 FieldKey.IS,
-                                                                 id.toString())));
+                                                     List
+                                                             .of(new GenericErrorDto(ErrorKey.NOT_FOUND,
+                                                                                     Map
+                                                                                             .of(FieldKey.ENTITY,
+                                                                                                 entityName(),
+                                                                                                 FieldKey.FIELD,
+                                                                                                 "id",
+                                                                                                 FieldKey.IS,
+                                                                                                 id.toString())))));
     }
 
     public T update(Long id, T model) {
@@ -58,14 +61,15 @@ public abstract class BusinessBase<T extends Model, R extends JpaRepository<T, L
             return persistenceService.save(model);
         } else {
             throw new PCTSException(HttpStatus.NOT_FOUND,
-                                    ErrorKey.NOT_FOUND,
-                                    Map
-                                            .of(FieldKey.ENTITY,
-                                                entityName(),
-                                                FieldKey.FIELD,
-                                                "id",
-                                                FieldKey.IS,
-                                                id.toString()));
+                                    List
+                                            .of(new GenericErrorDto(ErrorKey.NOT_FOUND,
+                                                                    Map
+                                                                            .of(FieldKey.ENTITY,
+                                                                                entityName(),
+                                                                                FieldKey.FIELD,
+                                                                                "id",
+                                                                                FieldKey.IS,
+                                                                                id.toString()))));
         }
     }
 
@@ -75,14 +79,15 @@ public abstract class BusinessBase<T extends Model, R extends JpaRepository<T, L
             persistenceService.delete(id);
         } else {
             throw new PCTSException(HttpStatus.NOT_FOUND,
-                                    ErrorKey.NOT_FOUND,
-                                    Map
-                                            .of(FieldKey.ENTITY,
-                                                entityName(),
-                                                FieldKey.FIELD,
-                                                "id",
-                                                FieldKey.IS,
-                                                id.toString()));
+                                    List
+                                            .of(new GenericErrorDto(ErrorKey.NOT_FOUND,
+                                                                    Map
+                                                                            .of(FieldKey.ENTITY,
+                                                                                entityName(),
+                                                                                FieldKey.FIELD,
+                                                                                "id",
+                                                                                FieldKey.IS,
+                                                                                id.toString()))));
         }
     }
 

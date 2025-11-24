@@ -1,4 +1,4 @@
-package ch.puzzle.pcts.model.error;
+package ch.puzzle.pcts.dto.error;
 
 public enum ErrorKey {
     VALIDATION,

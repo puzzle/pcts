@@ -2,10 +2,11 @@ package ch.puzzle.pcts.service.business;
 
 import static ch.puzzle.pcts.Constants.CERTIFICATE_TYPE;
 
+import ch.puzzle.pcts.dto.error.ErrorKey;
+import ch.puzzle.pcts.dto.error.FieldKey;
+import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
-import ch.puzzle.pcts.model.error.ErrorKey;
-import ch.puzzle.pcts.model.error.FieldKey;
 import ch.puzzle.pcts.repository.CertificateTypeRepository;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import ch.puzzle.pcts.service.validation.CertificateTypeValidationService;
@@ -49,14 +50,15 @@ public class CertificateTypeBusinessService
             return certificateType;
         } else {
             throw new PCTSException(HttpStatus.NOT_FOUND,
-                                    ErrorKey.NOT_FOUND,
-                                    Map
-                                            .of(FieldKey.ENTITY,
-                                                entityName(),
-                                                FieldKey.FIELD,
-                                                "id",
-                                                FieldKey.IS,
-                                                id.toString()));
+                                    List
+                                            .of(new GenericErrorDto(ErrorKey.NOT_FOUND,
+                                                                    Map
+                                                                            .of(FieldKey.ENTITY,
+                                                                                entityName(),
+                                                                                FieldKey.FIELD,
+                                                                                "id",
+                                                                                FieldKey.IS,
+                                                                                id.toString()))));
         }
     }
 
@@ -79,14 +81,15 @@ public class CertificateTypeBusinessService
             return result;
         } else {
             throw new PCTSException(HttpStatus.NOT_FOUND,
-                                    ErrorKey.NOT_FOUND,
-                                    Map
-                                            .of(FieldKey.ENTITY,
-                                                entityName(),
-                                                FieldKey.FIELD,
-                                                "id",
-                                                FieldKey.IS,
-                                                id.toString()));
+                                    List
+                                            .of(new GenericErrorDto(ErrorKey.NOT_FOUND,
+                                                                    Map
+                                                                            .of(FieldKey.ENTITY,
+                                                                                entityName(),
+                                                                                FieldKey.FIELD,
+                                                                                "id",
+                                                                                FieldKey.IS,
+                                                                                id.toString()))));
         }
     }
 
@@ -100,14 +103,15 @@ public class CertificateTypeBusinessService
             tagBusinessService.deleteUnusedTags();
         } else {
             throw new PCTSException(HttpStatus.NOT_FOUND,
-                                    ErrorKey.NOT_FOUND,
-                                    Map
-                                            .of(FieldKey.ENTITY,
-                                                entityName(),
-                                                FieldKey.FIELD,
-                                                "id",
-                                                FieldKey.IS,
-                                                id.toString()));
+                                    List
+                                            .of(new GenericErrorDto(ErrorKey.NOT_FOUND,
+                                                                    Map
+                                                                            .of(FieldKey.ENTITY,
+                                                                                entityName(),
+                                                                                FieldKey.FIELD,
+                                                                                "id",
+                                                                                FieldKey.IS,
+                                                                                id.toString()))));
         }
     }
 

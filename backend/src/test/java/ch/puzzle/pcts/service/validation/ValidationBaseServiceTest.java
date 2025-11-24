@@ -2,10 +2,10 @@ package ch.puzzle.pcts.service.validation;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import ch.puzzle.pcts.dto.error.ErrorKey;
+import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.Model;
-import ch.puzzle.pcts.model.error.ErrorKey;
-import ch.puzzle.pcts.model.error.FieldKey;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;

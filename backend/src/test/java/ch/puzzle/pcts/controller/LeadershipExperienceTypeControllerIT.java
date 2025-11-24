@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.leadershipexperiencetype.LeadershipExperienceTypeDto;
-import ch.puzzle.pcts.mapper.ErrorMapper;
 import ch.puzzle.pcts.mapper.LeadershipExperienceTypeMapper;
 import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
@@ -40,9 +39,6 @@ class LeadershipExperienceTypeControllerIT {
 
     @MockitoBean
     private LeadershipExperienceTypeMapper mapper;
-
-    @MockitoBean
-    private ErrorMapper errorMapper;
 
     @Autowired
     private MockMvc mvc;

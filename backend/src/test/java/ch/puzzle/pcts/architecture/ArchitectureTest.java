@@ -222,7 +222,12 @@ class ArchitectureTest {
     void dtoShouldBeRecord() {
         JavaClasses importedClasses = getMainSourceClasses();
 
-        ArchRule rule = classes().that().resideInAPackage("ch.puzzle.pcts.dto..").should().beRecords();
+        ArchRule rule = classes()
+                .that()
+                .resideInAPackage("ch.puzzle.pcts.dto..")
+                .and(not(resideInAPackage("ch.puzzle.pcts.dto.error..")))
+                .should()
+                .beRecords();
 
         rule.check(importedClasses);
     }
@@ -234,7 +239,6 @@ class ArchitectureTest {
 
         ArchRule rule = classes()
                 .that(resideInAPackage("ch.puzzle.pcts.model.."))
-                .and(not(resideInAPackage("ch.puzzle.pcts.model.error..")))
                 .and()
                 .areNotInterfaces()
                 .and()

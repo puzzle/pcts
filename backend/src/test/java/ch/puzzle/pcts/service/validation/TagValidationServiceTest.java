@@ -3,8 +3,8 @@ package ch.puzzle.pcts.service.validation;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.model.certificatetype.Tag;
-import ch.puzzle.pcts.model.error.FieldKey;
 import ch.puzzle.pcts.service.persistence.TagPersistenceService;
 import java.util.List;
 import java.util.Map;

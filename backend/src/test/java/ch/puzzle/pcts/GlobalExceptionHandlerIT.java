@@ -2,11 +2,10 @@ package ch.puzzle.pcts;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.puzzle.pcts.dto.error.ErrorKey;
+import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
-import ch.puzzle.pcts.mapper.ErrorMapper;
-import ch.puzzle.pcts.model.error.ErrorKey;
-import ch.puzzle.pcts.model.error.FieldKey;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
@@ -17,9 +16,7 @@ import org.springframework.validation.BindException;
 
 class GlobalExceptionHandlerIT {
 
-    private final ErrorMapper errorMapper = new ErrorMapper();
-
-    private final GlobalExceptionHandler handler = new GlobalExceptionHandler(errorMapper);
+    private final GlobalExceptionHandler handler = new GlobalExceptionHandler();
 
     @DisplayName("Should return internal server error")
     @Test
@@ -55,8 +52,11 @@ class GlobalExceptionHandlerIT {
     @Test
     void shouldReturnPctsException() {
         PCTSException ex = new PCTSException(HttpStatus.BAD_REQUEST,
-                                             ErrorKey.INVALID_ARGUMENT,
-                                             Map.of(FieldKey.IS, "Test Pcts exception"));
+                                             List
+                                                     .of(new GenericErrorDto(ErrorKey.INVALID_ARGUMENT,
+                                                                             Map
+                                                                                     .of(FieldKey.IS,
+                                                                                         "Test Pcts exception"))));
 
         ResponseEntity<List<GenericErrorDto>> response = handler.handlePCTSException(ex);
 
