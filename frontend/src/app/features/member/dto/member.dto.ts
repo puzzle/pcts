@@ -6,6 +6,6 @@ export interface MemberDto {
   birthDate: Date;
   abbreviation: string | null;
   employmentState: EmploymentState;
-  organisationUnitId: number;
+  organisationUnitId: number | undefined;
   dateOfHire: Date | null;
 }
