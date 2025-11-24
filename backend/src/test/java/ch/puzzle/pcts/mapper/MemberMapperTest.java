@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
 
 import ch.puzzle.pcts.dto.member.MemberDto;
@@ -160,5 +161,19 @@ class MemberMapperTest {
 
         Member resultModel2 = result.get(1);
         assertEquals(dto2.abbreviation(), resultModel2.getAbbreviation());
+    }
+
+    @DisplayName("Should return null if OrganisationUnitId is null")
+    @Test
+    void shouldReturnNullIfOrganisationUnitIsNull(){
+        OrganisationUnit result = mapper.organisationUnitFromId(null);
+        assertNull(result);
+    }
+
+    @DisplayName("Should return OrganisationUnit if OrganisationUnit exists")
+    @Test
+    void shouldReturnOrganisationUnitIfOrganisationUnitExists(){
+        OrganisationUnit result = mapper.organisationUnitFromId(organisationUnit.getId());
+        assertEquals(organisationUnit, result);
     }
 }

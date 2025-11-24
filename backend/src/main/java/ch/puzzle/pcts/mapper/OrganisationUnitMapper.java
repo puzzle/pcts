@@ -17,6 +17,7 @@ public class OrganisationUnitMapper {
     }
 
     public OrganisationUnitDto toDto(OrganisationUnit model) {
+        if (model == null) return null;
         return new OrganisationUnitDto(model.getId(), model.getName());
     }
 
