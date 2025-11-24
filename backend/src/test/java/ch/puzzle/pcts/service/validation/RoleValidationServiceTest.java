@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.validation;
 
+import static ch.puzzle.pcts.Constants.ROLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -112,7 +113,7 @@ class RoleValidationServiceTest extends ValidationBaseServiceTest<Role, RoleVali
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnCreate(role));
 
         assertEquals(List.of(ErrorKey.ATTRIBUTE_UNIQUE), exception.getErrorKeys());
-        assertEquals(List.of(Map.of(FieldKey.FIELD, "name", FieldKey.IS, "Role", FieldKey.ENTITY, "role")),
+        assertEquals(List.of(Map.of(FieldKey.FIELD, "name", FieldKey.IS, "Role", FieldKey.ENTITY, ROLE)),
                      exception.getErrorAttributes());
     }
 
@@ -129,7 +130,7 @@ class RoleValidationServiceTest extends ValidationBaseServiceTest<Role, RoleVali
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnUpdate(id, newRole));
 
         assertEquals(List.of(ErrorKey.ATTRIBUTE_UNIQUE), exception.getErrorKeys());
-        assertEquals(List.of(Map.of(FieldKey.FIELD, "name", FieldKey.IS, "Role", FieldKey.ENTITY, "role")),
+        assertEquals(List.of(Map.of(FieldKey.FIELD, "name", FieldKey.IS, "Role", FieldKey.ENTITY, ROLE)),
                      exception.getErrorAttributes());
     }
 

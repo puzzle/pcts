@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.validation;
 
+import static ch.puzzle.pcts.Constants.CERTIFICATE_TYPE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -130,7 +131,7 @@ class CertificateTypeValidationServiceTest
                             FieldKey.IS,
                             "LEADERSHIP_TRAINING",
                             FieldKey.ENTITY,
-                            "certificateType")),
+                            CERTIFICATE_TYPE)),
                      exception.getErrorAttributes());
     }
 
@@ -147,7 +148,7 @@ class CertificateTypeValidationServiceTest
 
         assertEquals(List.of(ErrorKey.ATTRIBUTE_UNIQUE), exception.getErrorKeys());
         assertEquals(List
-                .of(Map.of(FieldKey.FIELD, "name", FieldKey.IS, "CertificateType", FieldKey.ENTITY, "certificateType")),
+                .of(Map.of(FieldKey.FIELD, "name", FieldKey.IS, "CertificateType", FieldKey.ENTITY, CERTIFICATE_TYPE)),
                      exception.getErrorAttributes());
     }
 
@@ -166,7 +167,7 @@ class CertificateTypeValidationServiceTest
 
         assertEquals(List.of(ErrorKey.INVALID_ARGUMENT), exception.getErrorKeys());
         assertEquals(List
-                .of(Map.of(FieldKey.FIELD, "name", FieldKey.IS, "CertificateType", FieldKey.ENTITY, "certificateType")),
+                .of(Map.of(FieldKey.FIELD, "name", FieldKey.IS, "CertificateType", FieldKey.ENTITY, CERTIFICATE_TYPE)),
                      exception.getErrorAttributes());
     }
 

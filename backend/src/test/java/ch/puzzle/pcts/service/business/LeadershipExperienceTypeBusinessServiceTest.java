@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.business;
 
+import static ch.puzzle.pcts.Constants.LEADERSHIP_EXPERIENCE_TYPE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -69,7 +70,7 @@ class LeadershipExperienceTypeBusinessServiceTest {
                             FieldKey.IS,
                             id.toString(),
                             FieldKey.ENTITY,
-                            "leadershipExperienceType")),
+                            LEADERSHIP_EXPERIENCE_TYPE)),
                      exception.getErrorAttributes());
         verify(validationService).validateOnGetById(id);
         verify(persistenceService).getById(id);

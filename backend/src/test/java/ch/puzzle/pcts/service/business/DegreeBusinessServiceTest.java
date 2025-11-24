@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.business;
 
+import static ch.puzzle.pcts.Constants.DEGREE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -56,7 +57,7 @@ class DegreeBusinessServiceTest {
         PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(id));
 
         assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
-        assertEquals(List.of(Map.of(FieldKey.FIELD, "id", FieldKey.IS, id.toString(), FieldKey.ENTITY, "degree")),
+        assertEquals(List.of(Map.of(FieldKey.FIELD, "id", FieldKey.IS, id.toString(), FieldKey.ENTITY, DEGREE)),
                      exception.getErrorAttributes());
         verify(persistenceService).getById(1L);
         verify(validationService).validateOnGetById(1L);

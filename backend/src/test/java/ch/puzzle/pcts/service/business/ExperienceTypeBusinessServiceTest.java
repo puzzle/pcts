@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.business;
 
+import static ch.puzzle.pcts.Constants.EXPERIENCE_TYPE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -61,7 +62,7 @@ class ExperienceTypeBusinessServiceTest {
 
         assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
         assertEquals(List
-                .of(Map.of(FieldKey.FIELD, "id", FieldKey.IS, id.toString(), FieldKey.ENTITY, "experienceType")),
+                .of(Map.of(FieldKey.FIELD, "id", FieldKey.IS, id.toString(), FieldKey.ENTITY, EXPERIENCE_TYPE)),
                      exception.getErrorAttributes());
         verify(persistenceService).getById(id);
         verify(validationService).validateOnGetById(id);

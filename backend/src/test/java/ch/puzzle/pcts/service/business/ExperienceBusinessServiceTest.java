@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.business;
 
+import static ch.puzzle.pcts.Constants.EXPERIENCE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -60,7 +61,7 @@ class ExperienceBusinessServiceTest {
         PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(id));
 
         assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
-        assertEquals(List.of(Map.of(FieldKey.FIELD, "id", FieldKey.IS, id.toString(), FieldKey.ENTITY, "experience")),
+        assertEquals(List.of(Map.of(FieldKey.FIELD, "id", FieldKey.IS, id.toString(), FieldKey.ENTITY, EXPERIENCE)),
                      exception.getErrorAttributes());
         verify(persistenceService).getById(id);
         verify(validationService).validateOnGetById(id);

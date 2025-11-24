@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.business;
 
+import static ch.puzzle.pcts.Constants.ORGANISATION_UNIT;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -60,7 +61,7 @@ class OrganisationUnitBusinessServiceTest {
 
         assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
         assertEquals(List
-                .of(Map.of(FieldKey.FIELD, "id", FieldKey.IS, id.toString(), FieldKey.ENTITY, "organisationUnit")),
+                .of(Map.of(FieldKey.FIELD, "id", FieldKey.IS, id.toString(), FieldKey.ENTITY, ORGANISATION_UNIT)),
                      exception.getErrorAttributes());
         verify(persistenceService).getById(id);
         verify(validationService).validateOnGetById(id);

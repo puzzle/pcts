@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.mapper;
 
+import static ch.puzzle.pcts.Constants.CERTIFICATE_TYPE;
+import static ch.puzzle.pcts.Constants.MEMBER;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -15,8 +17,6 @@ import ch.puzzle.pcts.model.error.FieldKey;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.business.CertificateTypeBusinessService;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
-import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
-import ch.puzzle.pcts.service.validation.MemberValidationService;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -46,10 +46,6 @@ class CertificateMapperTest {
     private CertificateTypeMapper certificateTypeMapper;
     @Mock
     private CertificateTypeBusinessService certificateTypeBusinessService;
-    @Mock
-    private MemberPersistenceService memberPersistenceService;
-    @Mock
-    private MemberValidationService memberValidationService;
 
     private CertificateMapper certificateMapper;
 
@@ -196,9 +192,9 @@ class CertificateMapperTest {
         verify(certificateTypeBusinessService).getById(20L);
     }
 
-    @DisplayName("Should throw exception when certificate is not found")
+    @DisplayName("Should throw exception when member is not found")
     @Test
-    void shouldThrowExceptionWhenCertificateIsNotFound() {
+    void shouldThrowExceptionWhenMemberIsNotFound() {
         Long nonExistentMemberId = 999L;
         CertificateInputDto inputDto = new CertificateInputDto(nonExistentMemberId,
                                                                CERT_TYPE_ID,
@@ -212,7 +208,7 @@ class CertificateMapperTest {
                                              ErrorKey.NOT_FOUND,
                                              Map
                                                      .of(FieldKey.ENTITY,
-                                                         "member",
+                                                         MEMBER,
                                                          FieldKey.FIELD,
                                                          "id",
                                                          FieldKey.IS,
@@ -237,7 +233,7 @@ class CertificateMapperTest {
                                              ErrorKey.NOT_FOUND,
                                              Map
                                                      .of(FieldKey.ENTITY,
-                                                         "degreeType",
+                                                         CERTIFICATE_TYPE,
                                                          FieldKey.FIELD,
                                                          "id",
                                                          FieldKey.IS,

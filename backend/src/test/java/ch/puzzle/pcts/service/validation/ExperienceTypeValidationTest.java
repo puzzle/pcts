@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.validation;
 
+import static ch.puzzle.pcts.Constants.EXPERIENCE_TYPE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -166,7 +167,7 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
 
         assertEquals(List.of(ErrorKey.ATTRIBUTE_UNIQUE), exception.getErrorKeys());
         assertEquals(List
-                .of(Map.of(FieldKey.FIELD, "name", FieldKey.IS, "Experience Type", FieldKey.ENTITY, "experienceType")),
+                .of(Map.of(FieldKey.FIELD, "name", FieldKey.IS, "Experience Type", FieldKey.ENTITY, EXPERIENCE_TYPE)),
                      exception.getErrorAttributes());
     }
 
@@ -185,7 +186,7 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
 
         assertEquals(List.of(ErrorKey.ATTRIBUTE_UNIQUE), exception.getErrorKeys());
         assertEquals(List
-                .of(Map.of(FieldKey.FIELD, "name", FieldKey.IS, "Experience Type", FieldKey.ENTITY, "experienceType")),
+                .of(Map.of(FieldKey.FIELD, "name", FieldKey.IS, "Experience Type", FieldKey.ENTITY, EXPERIENCE_TYPE)),
                      exception.getErrorAttributes());
     }
 

@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.validation;
 
+import static ch.puzzle.pcts.Constants.DEGREE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -237,7 +238,7 @@ class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, Degr
                 .forEach(exception -> assertEquals(List
                         .of(Map
                                 .of(FieldKey.ENTITY,
-                                    "degree",
+                                    DEGREE,
                                     FieldKey.FIELD,
                                     "startDate",
                                     FieldKey.IS,

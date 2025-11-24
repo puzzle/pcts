@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.mapper;
 
+import static ch.puzzle.pcts.Constants.EXPERIENCE_TYPE;
+import static ch.puzzle.pcts.Constants.MEMBER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
@@ -165,7 +167,7 @@ class ExperienceMapperTest {
     @DisplayName("Should throw exception when member with id does not exist")
     @Test
     void shouldThrowExceptionWhenMemberWithIdDoesNotExist() {
-        when(memberBusinessService.getById(5L)).thenThrow(new PCTSException(HttpStatus.NOT_FOUND, ErrorKey.NOT_FOUND, Map.of(FieldKey.ENTITY, "member", FieldKey.FIELD, "id",  FieldKey.IS, "5")));
+        when(memberBusinessService.getById(5L)).thenThrow(new PCTSException(HttpStatus.NOT_FOUND, ErrorKey.NOT_FOUND, Map.of(FieldKey.ENTITY, MEMBER, FieldKey.FIELD, "id",  FieldKey.IS, "5")));
 
         ExperienceInputDto experienceInputDto = new ExperienceInputDto(5L,
                 "Consultant",
@@ -178,14 +180,14 @@ class ExperienceMapperTest {
 
         PCTSException exception = assertThrows(PCTSException.class, () -> mapper.fromDto(experienceInputDto));
 
-        assertEquals(Map.of(FieldKey.ENTITY, "member", FieldKey.FIELD, "id",  FieldKey.IS, "5"), exception.getErrors().get(0).getValues());
+        assertEquals(Map.of(FieldKey.ENTITY, MEMBER, FieldKey.FIELD, "id",  FieldKey.IS, "5"), exception.getErrors().get(0).getValues());
         assertEquals(ErrorKey.NOT_FOUND, exception.getErrors().get(0).getKey());
     }
 
     @DisplayName("Should throw exception when experienceType with id does not exist")
     @Test
     void shouldThrowExceptionWhenExperienceTypeWithIdDoesNotExist() {
-        when(experienceTypeBusinessService.getById(5L)).thenThrow(new PCTSException(HttpStatus.NOT_FOUND, ErrorKey.NOT_FOUND, Map.of(FieldKey.ENTITY, "ExperienceType", FieldKey.FIELD, "id",  FieldKey.IS, "5")));
+        when(experienceTypeBusinessService.getById(5L)).thenThrow(new PCTSException(HttpStatus.NOT_FOUND, ErrorKey.NOT_FOUND, Map.of(FieldKey.ENTITY, EXPERIENCE_TYPE, FieldKey.FIELD, "id",  FieldKey.IS, "5")));
 
         ExperienceInputDto experienceInputDto = new ExperienceInputDto(
                 memberId,
@@ -199,7 +201,7 @@ class ExperienceMapperTest {
 
         PCTSException exception = assertThrows(PCTSException.class, () -> mapper.fromDto(experienceInputDto));
 
-        assertEquals(Map.of(FieldKey.ENTITY, "ExperienceType", FieldKey.FIELD, "id",  FieldKey.IS, "5"), exception.getErrors().get(0).getValues());
+        assertEquals(Map.of(FieldKey.ENTITY, EXPERIENCE_TYPE, FieldKey.FIELD, "id",  FieldKey.IS, "5"), exception.getErrors().get(0).getValues());
         assertEquals(ErrorKey.NOT_FOUND, exception.getErrors().get(0).getKey());
     }
 }

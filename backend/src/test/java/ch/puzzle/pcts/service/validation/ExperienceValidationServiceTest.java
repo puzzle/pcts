@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.validation;
 
+import static ch.puzzle.pcts.Constants.EXPERIENCE;
 import static ch.puzzle.pcts.service.validation.MemberValidationServiceTest.createMember;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -174,7 +175,7 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
                 .forEach(exception -> assertEquals(List
                         .of(Map
                                 .of(FieldKey.ENTITY,
-                                    "experience",
+                                    EXPERIENCE,
                                     FieldKey.FIELD,
                                     "startDate",
                                     FieldKey.IS,

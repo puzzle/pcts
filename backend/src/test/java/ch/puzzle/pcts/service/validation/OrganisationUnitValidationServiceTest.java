@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.validation;
 
+import static ch.puzzle.pcts.Constants.ORGANISATION_UNIT;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -125,7 +126,7 @@ class OrganisationUnitValidationServiceTest
                             FieldKey.IS,
                             "Organisation Unit",
                             FieldKey.ENTITY,
-                            "organisationUnit")),
+                            ORGANISATION_UNIT)),
                      exception.getErrorAttributes());
     }
 
@@ -150,7 +151,7 @@ class OrganisationUnitValidationServiceTest
                             FieldKey.IS,
                             "Organisation Unit",
                             FieldKey.ENTITY,
-                            "organisationUnit")),
+                            ORGANISATION_UNIT)),
                      exception.getErrorAttributes());
     }
 

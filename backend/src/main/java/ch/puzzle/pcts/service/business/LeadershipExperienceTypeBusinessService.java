@@ -39,7 +39,7 @@ public class LeadershipExperienceTypeBusinessService
                                     ErrorKey.NOT_FOUND,
                                     Map
                                             .of(FieldKey.ENTITY,
-                                                "leadershipExperienceType",
+                                                LEADERSHIP_EXPERIENCE_TYPE,
                                                 FieldKey.FIELD,
                                                 "id",
                                                 FieldKey.IS,

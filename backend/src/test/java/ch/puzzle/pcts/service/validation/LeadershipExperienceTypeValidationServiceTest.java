@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.validation;
 
+import static ch.puzzle.pcts.Constants.LEADERSHIP_EXPERIENCE_TYPE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -153,7 +154,7 @@ class LeadershipExperienceTypeValidationServiceTest
                             FieldKey.IS,
                             "CERTIFICATE",
                             FieldKey.ENTITY,
-                            "leadershipExperienceType")),
+                            LEADERSHIP_EXPERIENCE_TYPE)),
                      exception.getErrorAttributes());
     }
 
@@ -176,7 +177,7 @@ class LeadershipExperienceTypeValidationServiceTest
                             FieldKey.IS,
                             "Leadership Experience Type",
                             FieldKey.ENTITY,
-                            "leadershipExperienceType")),
+                            LEADERSHIP_EXPERIENCE_TYPE)),
                      exception.getErrorAttributes());
     }
 
@@ -202,7 +203,7 @@ class LeadershipExperienceTypeValidationServiceTest
                             FieldKey.IS,
                             "Leadership Experience Type",
                             FieldKey.ENTITY,
-                            "leadershipExperienceType")),
+                            LEADERSHIP_EXPERIENCE_TYPE)),
                      exception.getErrorAttributes());
     }
 

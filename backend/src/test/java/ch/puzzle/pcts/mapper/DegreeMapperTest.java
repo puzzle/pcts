@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.mapper;
 
+import static ch.puzzle.pcts.Constants.DEGREE_TYPE;
+import static ch.puzzle.pcts.Constants.MEMBER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -250,7 +252,7 @@ class DegreeMapperTest {
                                              ErrorKey.NOT_FOUND,
                                              Map
                                                      .of(FieldKey.ENTITY,
-                                                         "member",
+                                                         MEMBER,
                                                          FieldKey.FIELD,
                                                          "id",
                                                          FieldKey.IS,
@@ -277,7 +279,7 @@ class DegreeMapperTest {
                                              ErrorKey.NOT_FOUND,
                                              Map
                                                      .of(FieldKey.ENTITY,
-                                                         "degreeType",
+                                                         DEGREE_TYPE,
                                                          FieldKey.FIELD,
                                                          "id",
                                                          FieldKey.IS,

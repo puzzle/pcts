@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.validation;
 
+import static ch.puzzle.pcts.Constants.DEGREE_TYPE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -148,7 +149,7 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnCreate(degreeType));
 
         assertEquals(List.of(ErrorKey.ATTRIBUTE_UNIQUE), exception.getErrorKeys());
-        assertEquals(List.of(Map.of(FieldKey.FIELD, "name", FieldKey.IS, "Degree Type", FieldKey.ENTITY, "degreeType")),
+        assertEquals(List.of(Map.of(FieldKey.FIELD, "name", FieldKey.IS, "Degree Type", FieldKey.ENTITY, DEGREE_TYPE)),
                      exception.getErrorAttributes());
     }
 
@@ -165,7 +166,7 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnUpdate(id, newDegreeType));
 
         assertEquals(List.of(ErrorKey.ATTRIBUTE_UNIQUE), exception.getErrorKeys());
-        assertEquals(List.of(Map.of(FieldKey.FIELD, "name", FieldKey.IS, "Degree Type", FieldKey.ENTITY, "degreeType")),
+        assertEquals(List.of(Map.of(FieldKey.FIELD, "name", FieldKey.IS, "Degree Type", FieldKey.ENTITY, DEGREE_TYPE)),
                      exception.getErrorAttributes());
     }
 

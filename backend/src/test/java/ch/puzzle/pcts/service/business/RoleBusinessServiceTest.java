@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.business;
 
+import static ch.puzzle.pcts.Constants.ROLE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -62,7 +63,7 @@ class RoleBusinessServiceTest {
         PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(id));
 
         assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
-        assertIterableEquals(List.of(Map.of(FieldKey.FIELD, "id", FieldKey.IS, id.toString(), FieldKey.ENTITY, "role")),
+        assertIterableEquals(List.of(Map.of(FieldKey.FIELD, "id", FieldKey.IS, id.toString(), FieldKey.ENTITY, ROLE)),
                              exception.getErrorAttributes());
         verify(persistenceService).getById(id);
         verify(validationService).validateOnGetById(id);

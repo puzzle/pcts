@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.business;
 
+import static ch.puzzle.pcts.Constants.MEMBER;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -59,8 +60,7 @@ class MemberBusinessServiceTest {
         PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(id));
 
         assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
-        assertIterableEquals(List
-                .of(Map.of(FieldKey.FIELD, "id", FieldKey.IS, id.toString(), FieldKey.ENTITY, "member")),
+        assertIterableEquals(List.of(Map.of(FieldKey.FIELD, "id", FieldKey.IS, id.toString(), FieldKey.ENTITY, MEMBER)),
                              exception.getErrorAttributes());
         verify(persistenceService).getById(1L);
         verify(validationService).validateOnGetById(1L);
