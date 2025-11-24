@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { memberDataResolver } from './member-data-resolver';
 import { MemberService } from './member.service';
-import { ActivatedRoute, ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, convertToParamMap, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable, of, throwError } from 'rxjs';
 import { MemberModel } from './member.model';
 import { member1 } from '../../shared/test/test-data';
@@ -25,6 +25,8 @@ describe('memberDataResolver', () => {
     TestBed.configureTestingModule({
       providers: [{ provide: MemberService,
         useValue: mockMemberService },
+      { provide: Router,
+        useValue: mockRouter },
       { provide: ActivatedRoute,
         useValue: { paramMap: of(convertToParamMap({ id: '1' })) } }]
     });
