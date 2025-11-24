@@ -39,8 +39,7 @@ export type RequiredFormRawValue<T extends TypedAbstractControl> =
     MatIcon,
     MatButton,
     ScopedTranslationPipe,
-    GenericTableComponent
-    ScopedTranslationPipe,
+    GenericTableComponent,
     CrudButtonComponent
   ],
   templateUrl: './member-overview.component.html',
@@ -114,9 +113,6 @@ export class MemberOverviewComponent implements OnInit {
       .subscribe((members: MemberModel[]): void => {
         this.members.set(members);
       });
-
-    this.dataSource.sortingDataAccessor = sortingDataAccessor.nestedProperty;
-
     this.dataSource.filterPredicate = this.createFilterPredicate();
   }
 
