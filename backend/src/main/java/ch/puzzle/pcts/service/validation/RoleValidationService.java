@@ -26,16 +26,12 @@ public class RoleValidationService extends ValidationBase<Role> {
     public void validateOnCreate(Role role) {
         super.validateOnCreate(role);
         if (UniqueNameValidationUtil.nameAlreadyUsed(role.getName(), persistenceService::getByName)) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    List
-                                            .of(new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE,
-                                                                    Map
-                                                                            .of(FieldKey.ENTITY,
-                                                                                ROLE,
-                                                                                FieldKey.FIELD,
-                                                                                "name",
-                                                                                FieldKey.IS,
-                                                                                role.getName()))));
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY, ROLE, FieldKey.FIELD, "name", FieldKey.IS, role.getName());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE, attributes);
+
+            throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
 
         }
     }
@@ -44,16 +40,12 @@ public class RoleValidationService extends ValidationBase<Role> {
     public void validateOnUpdate(Long id, Role role) {
         super.validateOnUpdate(id, role);
         if (UniqueNameValidationUtil.nameExcludingIdAlreadyUsed(id, role.getName(), persistenceService::getByName)) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    List
-                                            .of(new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE,
-                                                                    Map
-                                                                            .of(FieldKey.ENTITY,
-                                                                                ROLE,
-                                                                                FieldKey.FIELD,
-                                                                                "name",
-                                                                                FieldKey.IS,
-                                                                                role.getName()))));
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY, ROLE, FieldKey.FIELD, "name", FieldKey.IS, role.getName());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE, attributes);
+
+            throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
         }
     }
 }

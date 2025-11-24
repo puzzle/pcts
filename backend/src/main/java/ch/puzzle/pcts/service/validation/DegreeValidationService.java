@@ -29,20 +29,22 @@ public class DegreeValidationService extends ValidationBase<Degree> {
 
     public void validateStartDateIsBeforeEndDate(LocalDate startDate, LocalDate endDate) {
         if (endDate != null && startDate.isAfter(endDate)) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    List
-                                            .of(new GenericErrorDto(ErrorKey.ATTRIBUTE_NOT_BEFORE,
-                                                                    Map
-                                                                            .of(FieldKey.ENTITY,
-                                                                                DEGREE,
-                                                                                FieldKey.FIELD,
-                                                                                "startDate",
-                                                                                FieldKey.IS,
-                                                                                startDate.toString(),
-                                                                                FieldKey.CONDITION_FIELD,
-                                                                                "endDate",
-                                                                                FieldKey.MAX,
-                                                                                endDate.toString()))));
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY,
+                        DEGREE,
+                        FieldKey.FIELD,
+                        "startDate",
+                        FieldKey.IS,
+                        startDate.toString(),
+                        FieldKey.CONDITION_FIELD,
+                        "endDate",
+                        FieldKey.MAX,
+                        endDate.toString());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_NOT_BEFORE, attributes);
+
+            throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
+
         }
     }
 }

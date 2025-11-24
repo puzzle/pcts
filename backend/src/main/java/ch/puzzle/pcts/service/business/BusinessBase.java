@@ -40,18 +40,14 @@ public abstract class BusinessBase<T extends Model, R extends JpaRepository<T, L
 
     public T getById(Long id) {
         validationService.validateOnGetById(id);
-        return persistenceService
-                .getById(id)
-                .orElseThrow(() -> new PCTSException(HttpStatus.NOT_FOUND,
-                                                     List
-                                                             .of(new GenericErrorDto(ErrorKey.NOT_FOUND,
-                                                                                     Map
-                                                                                             .of(FieldKey.ENTITY,
-                                                                                                 entityName(),
-                                                                                                 FieldKey.FIELD,
-                                                                                                 "id",
-                                                                                                 FieldKey.IS,
-                                                                                                 id.toString())))));
+        return persistenceService.getById(id).orElseThrow(() -> {
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, id.toString());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
+
+            return new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
+        });
     }
 
     public T update(Long id, T model) {
@@ -60,16 +56,13 @@ public abstract class BusinessBase<T extends Model, R extends JpaRepository<T, L
             model.setId(id);
             return persistenceService.save(model);
         } else {
-            throw new PCTSException(HttpStatus.NOT_FOUND,
-                                    List
-                                            .of(new GenericErrorDto(ErrorKey.NOT_FOUND,
-                                                                    Map
-                                                                            .of(FieldKey.ENTITY,
-                                                                                entityName(),
-                                                                                FieldKey.FIELD,
-                                                                                "id",
-                                                                                FieldKey.IS,
-                                                                                id.toString()))));
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, id.toString());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
+
+            throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
+
         }
     }
 
@@ -78,16 +71,12 @@ public abstract class BusinessBase<T extends Model, R extends JpaRepository<T, L
         if (persistenceService.getById(id).isPresent()) {
             persistenceService.delete(id);
         } else {
-            throw new PCTSException(HttpStatus.NOT_FOUND,
-                                    List
-                                            .of(new GenericErrorDto(ErrorKey.NOT_FOUND,
-                                                                    Map
-                                                                            .of(FieldKey.ENTITY,
-                                                                                entityName(),
-                                                                                FieldKey.FIELD,
-                                                                                "id",
-                                                                                FieldKey.IS,
-                                                                                id.toString()))));
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, id.toString());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
+
+            throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
         }
     }
 

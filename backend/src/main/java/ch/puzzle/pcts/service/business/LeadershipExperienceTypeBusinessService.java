@@ -36,16 +36,13 @@ public class LeadershipExperienceTypeBusinessService
             validationService.validateCertificateKind(leadershipExperience.getCertificateKind());
             return leadershipExperience;
         } else {
-            throw new PCTSException(HttpStatus.NOT_FOUND,
-                                    List
-                                            .of(new GenericErrorDto(ErrorKey.NOT_FOUND,
-                                                                    Map
-                                                                            .of(FieldKey.ENTITY,
-                                                                                LEADERSHIP_EXPERIENCE_TYPE,
-                                                                                FieldKey.FIELD,
-                                                                                "id",
-                                                                                FieldKey.IS,
-                                                                                id.toString()))));
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY, LEADERSHIP_EXPERIENCE_TYPE, FieldKey.FIELD, "id", FieldKey.IS, id.toString());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
+
+            throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
+
         }
     }
 

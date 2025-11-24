@@ -26,16 +26,17 @@ public class ExperienceTypeValidationService extends ValidationBase<ExperienceTy
     public void validateOnCreate(ExperienceType experienceType) {
         super.validateOnCreate(experienceType);
         if (UniqueNameValidationUtil.nameAlreadyUsed(experienceType.getName(), persistenceService::getByName)) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    List
-                                            .of(new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE,
-                                                                    Map
-                                                                            .of(FieldKey.ENTITY,
-                                                                                EXPERIENCE_TYPE,
-                                                                                FieldKey.FIELD,
-                                                                                "name",
-                                                                                FieldKey.IS,
-                                                                                experienceType.getName()))));
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY,
+                        EXPERIENCE_TYPE,
+                        FieldKey.FIELD,
+                        "name",
+                        FieldKey.IS,
+                        experienceType.getName());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE, attributes);
+
+            throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
         }
     }
 
@@ -44,16 +45,18 @@ public class ExperienceTypeValidationService extends ValidationBase<ExperienceTy
         super.validateOnUpdate(id, experienceType);
         if (UniqueNameValidationUtil
                 .nameExcludingIdAlreadyUsed(id, experienceType.getName(), persistenceService::getByName)) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    List
-                                            .of(new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE,
-                                                                    Map
-                                                                            .of(FieldKey.ENTITY,
-                                                                                EXPERIENCE_TYPE,
-                                                                                FieldKey.FIELD,
-                                                                                "name",
-                                                                                FieldKey.IS,
-                                                                                experienceType.getName()))));
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY,
+                        EXPERIENCE_TYPE,
+                        FieldKey.FIELD,
+                        "name",
+                        FieldKey.IS,
+                        experienceType.getName());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE, attributes);
+
+            throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
+
         }
     }
 }

@@ -26,16 +26,18 @@ public class OrganisationUnitValidationService extends ValidationBase<Organisati
     public void validateOnCreate(OrganisationUnit organisationUnit) {
         super.validateOnCreate(organisationUnit);
         if (UniqueNameValidationUtil.nameAlreadyUsed(organisationUnit.getName(), persistenceService::getByName)) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    List
-                                            .of(new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE,
-                                                                    Map
-                                                                            .of(FieldKey.ENTITY,
-                                                                                ORGANISATION_UNIT,
-                                                                                FieldKey.FIELD,
-                                                                                "name",
-                                                                                FieldKey.IS,
-                                                                                organisationUnit.getName()))));
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY,
+                        ORGANISATION_UNIT,
+                        FieldKey.FIELD,
+                        "name",
+                        FieldKey.IS,
+                        organisationUnit.getName());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE, attributes);
+
+            throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
+
         }
     }
 
@@ -44,16 +46,17 @@ public class OrganisationUnitValidationService extends ValidationBase<Organisati
         super.validateOnUpdate(id, organisationUnit);
         if (UniqueNameValidationUtil
                 .nameExcludingIdAlreadyUsed(id, organisationUnit.getName(), persistenceService::getByName)) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    List
-                                            .of(new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE,
-                                                                    Map
-                                                                            .of(FieldKey.ENTITY,
-                                                                                ORGANISATION_UNIT,
-                                                                                FieldKey.FIELD,
-                                                                                "name",
-                                                                                FieldKey.IS,
-                                                                                organisationUnit.getName()))));
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY,
+                        ORGANISATION_UNIT,
+                        FieldKey.FIELD,
+                        "name",
+                        FieldKey.IS,
+                        organisationUnit.getName());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE, attributes);
+
+            throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
         }
     }
 }

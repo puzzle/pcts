@@ -29,16 +29,17 @@ public class LeadershipExperienceTypeValidationService extends ValidationBase<Ce
         super.validateOnCreate(leadershipExperience);
         validateCertificateKind(leadershipExperience.getCertificateKind());
         if (UniqueNameValidationUtil.nameAlreadyUsed(leadershipExperience.getName(), persistenceService::getByName)) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    List
-                                            .of(new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE,
-                                                                    Map
-                                                                            .of(FieldKey.ENTITY,
-                                                                                LEADERSHIP_EXPERIENCE_TYPE,
-                                                                                FieldKey.FIELD,
-                                                                                "name",
-                                                                                FieldKey.IS,
-                                                                                leadershipExperience.getName()))));
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY,
+                        LEADERSHIP_EXPERIENCE_TYPE,
+                        FieldKey.FIELD,
+                        "name",
+                        FieldKey.IS,
+                        leadershipExperience.getName());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE, attributes);
+
+            throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
         }
     }
 
@@ -48,31 +49,33 @@ public class LeadershipExperienceTypeValidationService extends ValidationBase<Ce
         validateCertificateKind(leadershipExperience.getCertificateKind());
         if (UniqueNameValidationUtil
                 .nameExcludingIdAlreadyUsed(id, leadershipExperience.getName(), persistenceService::getByName)) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    List
-                                            .of(new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE,
-                                                                    Map
-                                                                            .of(FieldKey.ENTITY,
-                                                                                LEADERSHIP_EXPERIENCE_TYPE,
-                                                                                FieldKey.FIELD,
-                                                                                "name",
-                                                                                FieldKey.IS,
-                                                                                leadershipExperience.getName()))));
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY,
+                        LEADERSHIP_EXPERIENCE_TYPE,
+                        FieldKey.FIELD,
+                        "name",
+                        FieldKey.IS,
+                        leadershipExperience.getName());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE, attributes);
+
+            throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
         }
     }
 
     public void validateCertificateKind(CertificateKind certificatekind) {
         if (!certificatekind.isLeadershipExperienceType()) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    List
-                                            .of(new GenericErrorDto(ErrorKey.INVALID_ARGUMENT,
-                                                                    Map
-                                                                            .of(FieldKey.ENTITY,
-                                                                                LEADERSHIP_EXPERIENCE_TYPE,
-                                                                                FieldKey.FIELD,
-                                                                                "certificateKind",
-                                                                                FieldKey.IS,
-                                                                                certificatekind.toString()))));
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY,
+                        LEADERSHIP_EXPERIENCE_TYPE,
+                        FieldKey.FIELD,
+                        "certificateKind",
+                        FieldKey.IS,
+                        certificatekind.toString());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.INVALID_ARGUMENT, attributes);
+
+            throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
         }
     }
 }

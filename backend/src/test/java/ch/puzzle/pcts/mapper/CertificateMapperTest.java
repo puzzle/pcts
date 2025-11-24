@@ -203,18 +203,13 @@ class CertificateMapperTest {
                                                                VALID_UNTIL,
                                                                "Comment");
 
+        Map<FieldKey, String> attributes = Map
+                .of(FieldKey.ENTITY, MEMBER, FieldKey.FIELD, "id", FieldKey.IS, "" + inputDto.memberId());
+
         // mock the behavior
         when(certificateMapper.memberBusinessService.getById(anyLong()))
                 .thenThrow(new PCTSException(HttpStatus.NOT_FOUND,
-                                             List
-                                                     .of(new GenericErrorDto(ErrorKey.NOT_FOUND,
-                                                                             Map
-                                                                                     .of(FieldKey.ENTITY,
-                                                                                         MEMBER,
-                                                                                         FieldKey.FIELD,
-                                                                                         "id",
-                                                                                         FieldKey.IS,
-                                                                                         "" + inputDto.memberId())))));
+                                             List.of(new GenericErrorDto(ErrorKey.NOT_FOUND, attributes))));
 
         assertThrows(PCTSException.class, () -> certificateMapper.fromDto(inputDto));
     }
@@ -229,19 +224,18 @@ class CertificateMapperTest {
                                                                VALID_UNTIL,
                                                                "Comment");
 
+        Map<FieldKey, String> attributes = Map
+                .of(FieldKey.ENTITY,
+                    CERTIFICATE_TYPE,
+                    FieldKey.FIELD,
+                    "id",
+                    FieldKey.IS,
+                    String.valueOf(inputDto.certificateTypeId()));
+
         // mock the behavior
         when(certificateMapper.certificateTypeBusinessService.getById(anyLong()))
                 .thenThrow(new PCTSException(HttpStatus.NOT_FOUND,
-                                             List
-                                                     .of(new GenericErrorDto(ErrorKey.NOT_FOUND,
-                                                                             Map
-                                                                                     .of(FieldKey.ENTITY,
-                                                                                         CERTIFICATE_TYPE,
-                                                                                         FieldKey.FIELD,
-                                                                                         "id",
-                                                                                         FieldKey.IS,
-                                                                                         "" + inputDto
-                                                                                                 .certificateTypeId())))));
+                                             List.of(new GenericErrorDto(ErrorKey.NOT_FOUND, attributes))));
 
         assertThrows(PCTSException.class, () -> certificateMapper.fromDto(inputDto));
     }

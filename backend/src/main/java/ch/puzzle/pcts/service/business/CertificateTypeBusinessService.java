@@ -49,16 +49,13 @@ public class CertificateTypeBusinessService
             validationService.validateCertificateKind(certificateType.getCertificateKind());
             return certificateType;
         } else {
-            throw new PCTSException(HttpStatus.NOT_FOUND,
-                                    List
-                                            .of(new GenericErrorDto(ErrorKey.NOT_FOUND,
-                                                                    Map
-                                                                            .of(FieldKey.ENTITY,
-                                                                                entityName(),
-                                                                                FieldKey.FIELD,
-                                                                                "id",
-                                                                                FieldKey.IS,
-                                                                                id.toString()))));
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, id.toString());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
+
+            throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
+
         }
     }
 
@@ -80,16 +77,13 @@ public class CertificateTypeBusinessService
 
             return result;
         } else {
-            throw new PCTSException(HttpStatus.NOT_FOUND,
-                                    List
-                                            .of(new GenericErrorDto(ErrorKey.NOT_FOUND,
-                                                                    Map
-                                                                            .of(FieldKey.ENTITY,
-                                                                                entityName(),
-                                                                                FieldKey.FIELD,
-                                                                                "id",
-                                                                                FieldKey.IS,
-                                                                                id.toString()))));
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, id.toString());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
+
+            throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
+
         }
     }
 
@@ -102,16 +96,13 @@ public class CertificateTypeBusinessService
 
             tagBusinessService.deleteUnusedTags();
         } else {
-            throw new PCTSException(HttpStatus.NOT_FOUND,
-                                    List
-                                            .of(new GenericErrorDto(ErrorKey.NOT_FOUND,
-                                                                    Map
-                                                                            .of(FieldKey.ENTITY,
-                                                                                entityName(),
-                                                                                FieldKey.FIELD,
-                                                                                "id",
-                                                                                FieldKey.IS,
-                                                                                id.toString()))));
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, id.toString());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
+
+            throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
+
         }
     }
 

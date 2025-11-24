@@ -29,20 +29,21 @@ public class CertificateValidationService extends ValidationBase<Certificate> {
 
     public void validateCompletedAtIsBeforeValidUntil(LocalDate completedAt, LocalDate validUntil) {
         if (validUntil != null && completedAt != null && completedAt.isAfter(validUntil)) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    List
-                                            .of(new GenericErrorDto(ErrorKey.ATTRIBUTE_NOT_BEFORE,
-                                                                    Map
-                                                                            .of(FieldKey.ENTITY,
-                                                                                CERTIFICATE,
-                                                                                FieldKey.FIELD,
-                                                                                "completedAt",
-                                                                                FieldKey.IS,
-                                                                                completedAt.toString(),
-                                                                                FieldKey.CONDITION_FIELD,
-                                                                                "validUntil",
-                                                                                FieldKey.MAX,
-                                                                                validUntil.toString()))));
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY,
+                        CERTIFICATE,
+                        FieldKey.FIELD,
+                        "completedAt",
+                        FieldKey.IS,
+                        completedAt.toString(),
+                        FieldKey.CONDITION_FIELD,
+                        "validUntil",
+                        FieldKey.MAX,
+                        validUntil.toString());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_NOT_BEFORE, attributes);
+
+            throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
         }
     }
 }

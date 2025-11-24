@@ -30,16 +30,13 @@ public class CertificateTypeValidationService extends ValidationBase<Certificate
         validateCertificateKind(certificate.getCertificateKind());
         if (UniqueNameValidationUtil
                 .nameExcludingIdAlreadyUsed(id, certificate.getName(), persistenceService::getByName)) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    List
-                                            .of(new GenericErrorDto(ErrorKey.INVALID_ARGUMENT,
-                                                                    Map
-                                                                            .of(FieldKey.ENTITY,
-                                                                                CERTIFICATE_TYPE,
-                                                                                FieldKey.FIELD,
-                                                                                "name",
-                                                                                FieldKey.IS,
-                                                                                certificate.getName()))));
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY, CERTIFICATE_TYPE, FieldKey.FIELD, "name", FieldKey.IS, certificate.getName());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.INVALID_ARGUMENT, attributes);
+
+            throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
+
         }
     }
 
@@ -48,31 +45,34 @@ public class CertificateTypeValidationService extends ValidationBase<Certificate
         super.validateOnCreate(certificateType);
         validateCertificateKind(certificateType.getCertificateKind());
         if (UniqueNameValidationUtil.nameAlreadyUsed(certificateType.getName(), persistenceService::getByName)) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    List
-                                            .of(new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE,
-                                                                    Map
-                                                                            .of(FieldKey.ENTITY,
-                                                                                CERTIFICATE_TYPE,
-                                                                                FieldKey.FIELD,
-                                                                                "name",
-                                                                                FieldKey.IS,
-                                                                                certificateType.getName()))));
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY,
+                        CERTIFICATE_TYPE,
+                        FieldKey.FIELD,
+                        "name",
+                        FieldKey.IS,
+                        certificateType.getName());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE, attributes);
+
+            throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
         }
     }
 
     public void validateCertificateKind(CertificateKind certificateKind) {
         if (certificateKind != CertificateKind.CERTIFICATE) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    List
-                                            .of(new GenericErrorDto(ErrorKey.INVALID_ARGUMENT,
-                                                                    Map
-                                                                            .of(FieldKey.ENTITY,
-                                                                                CERTIFICATE_TYPE,
-                                                                                FieldKey.FIELD,
-                                                                                "certificateKind",
-                                                                                FieldKey.IS,
-                                                                                certificateKind.toString()))));
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY,
+                        CERTIFICATE_TYPE,
+                        FieldKey.FIELD,
+                        "certificateKind",
+                        FieldKey.IS,
+                        certificateKind.toString());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.INVALID_ARGUMENT, attributes);
+
+            throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
+
         }
     }
 }

@@ -247,19 +247,18 @@ class DegreeMapperTest {
                                                          commonDate,
                                                          "Invalid Member");
 
+        Map<FieldKey, String> attributes = Map
+                .of(FieldKey.ENTITY,
+                    MEMBER,
+                    FieldKey.FIELD,
+                    "id",
+                    FieldKey.IS,
+                    String.valueOf(invalidInput.memberId()));
+
         // mock the behavior
         when(mapper.memberBusinessService.getById(anyLong()))
                 .thenThrow(new PCTSException(HttpStatus.NOT_FOUND,
-                                             List
-                                                     .of(new GenericErrorDto(ErrorKey.NOT_FOUND,
-                                                                             Map
-                                                                                     .of(FieldKey.ENTITY,
-                                                                                         MEMBER,
-                                                                                         FieldKey.FIELD,
-                                                                                         "id",
-                                                                                         FieldKey.IS,
-                                                                                         "" + invalidInput
-                                                                                                 .memberId())))));
+                                             List.of(new GenericErrorDto(ErrorKey.NOT_FOUND, attributes))));
 
         assertThrows(PCTSException.class, () -> mapper.fromDto(invalidInput));
     }
@@ -276,19 +275,18 @@ class DegreeMapperTest {
                                                          commonDate,
                                                          "Invalid Degree Type");
 
+        Map<FieldKey, String> attributes = Map
+                .of(FieldKey.ENTITY,
+                    DEGREE_TYPE,
+                    FieldKey.FIELD,
+                    "id",
+                    FieldKey.IS,
+                    String.valueOf(invalidInput.typeId()));
+
         // mock the behavior
         when(mapper.degreeTypeBusinessService.getById(anyLong()))
                 .thenThrow(new PCTSException(HttpStatus.NOT_FOUND,
-                                             List
-                                                     .of(new GenericErrorDto(ErrorKey.NOT_FOUND,
-                                                                             Map
-                                                                                     .of(FieldKey.ENTITY,
-                                                                                         DEGREE_TYPE,
-                                                                                         FieldKey.FIELD,
-                                                                                         "id",
-                                                                                         FieldKey.IS,
-                                                                                         "" + invalidInput
-                                                                                                 .typeId())))));
+                                             List.of(new GenericErrorDto(ErrorKey.NOT_FOUND, attributes))));
 
         assertThrows(PCTSException.class, () -> mapper.fromDto(invalidInput));
     }

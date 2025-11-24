@@ -26,16 +26,13 @@ public class DegreeTypeValidationService extends ValidationBase<DegreeType> {
     public void validateOnCreate(DegreeType degreeType) {
         super.validateOnCreate(degreeType);
         if (UniqueNameValidationUtil.nameAlreadyUsed(degreeType.getName(), persistenceService::getByName)) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    List
-                                            .of(new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE,
-                                                                    Map
-                                                                            .of(FieldKey.ENTITY,
-                                                                                DEGREE_TYPE,
-                                                                                FieldKey.FIELD,
-                                                                                "name",
-                                                                                FieldKey.IS,
-                                                                                degreeType.getName()))));
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY, DEGREE_TYPE, FieldKey.FIELD, "name", FieldKey.IS, degreeType.getName());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE, attributes);
+
+            throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
+
         }
     }
 
@@ -44,16 +41,13 @@ public class DegreeTypeValidationService extends ValidationBase<DegreeType> {
         super.validateOnUpdate(id, degreeType);
         if (UniqueNameValidationUtil
                 .nameExcludingIdAlreadyUsed(id, degreeType.getName(), persistenceService::getByName)) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    List
-                                            .of(new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE,
-                                                                    Map
-                                                                            .of(FieldKey.ENTITY,
-                                                                                DEGREE_TYPE,
-                                                                                FieldKey.FIELD,
-                                                                                "name",
-                                                                                FieldKey.IS,
-                                                                                degreeType.getName()))));
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY, DEGREE_TYPE, FieldKey.FIELD, "name", FieldKey.IS, degreeType.getName());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE, attributes);
+
+            throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
+
         }
     }
 }
