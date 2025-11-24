@@ -52,11 +52,11 @@ public class MemberMapper {
                 .build();
     }
 
-    public OrganisationUnit organisationUnitFromId(Long organisationUnitId) {
+    private OrganisationUnit organisationUnitFromId(Long organisationUnitId) {
         return organisationUnitId == null ? null : organisationUnitBusinessService.getById(organisationUnitId);
     }
 
-    public OrganisationUnitDto organisationUnitDtoFromOrganisationUnit(OrganisationUnit organisationUnit) {
+    private OrganisationUnitDto organisationUnitDtoFromOrganisationUnit(OrganisationUnit organisationUnit) {
         return organisationUnit == null ? null : organisationUnitMapper.toDto(organisationUnit);
     }
 }
