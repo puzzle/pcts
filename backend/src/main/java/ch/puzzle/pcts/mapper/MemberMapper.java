@@ -2,7 +2,6 @@ package ch.puzzle.pcts.mapper;
 
 import ch.puzzle.pcts.dto.member.MemberDto;
 import ch.puzzle.pcts.dto.member.MemberInputDto;
-import ch.puzzle.pcts.dto.organisationunit.OrganisationUnitDto;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.OrganisationUnitBusinessService;

@@ -165,14 +165,14 @@ class MemberMapperTest {
 
     @DisplayName("Should return null if OrganisationUnitId is null")
     @Test
-    void shouldReturnNullIfOrganisationUnitIsNull(){
+    void shouldReturnNullIfOrganisationUnitIsNull() {
         OrganisationUnit result = mapper.organisationUnitFromId(null);
         assertNull(result);
     }
 
     @DisplayName("Should return OrganisationUnit if OrganisationUnit exists")
     @Test
-    void shouldReturnOrganisationUnitIfOrganisationUnitExists(){
+    void shouldReturnOrganisationUnitIfOrganisationUnitExists() {
         OrganisationUnit result = mapper.organisationUnitFromId(organisationUnit.getId());
         assertEquals(organisationUnit, result);
     }
