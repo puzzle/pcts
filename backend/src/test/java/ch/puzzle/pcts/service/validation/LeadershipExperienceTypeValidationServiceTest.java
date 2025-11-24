@@ -153,7 +153,7 @@ class LeadershipExperienceTypeValidationServiceTest
                             FieldKey.IS,
                             "CERTIFICATE",
                             FieldKey.ENTITY,
-                            "leadershipExperience")),
+                            "leadershipExperienceType")),
                      exception.getErrorAttributes());
     }
 
@@ -176,7 +176,7 @@ class LeadershipExperienceTypeValidationServiceTest
                             FieldKey.IS,
                             "Leadership Experience Type",
                             FieldKey.ENTITY,
-                            "leadershipExperience")),
+                            "leadershipExperienceType")),
                      exception.getErrorAttributes());
     }
 
@@ -202,7 +202,7 @@ class LeadershipExperienceTypeValidationServiceTest
                             FieldKey.IS,
                             "Leadership Experience Type",
                             FieldKey.ENTITY,
-                            "leadershipExperience")),
+                            "leadershipExperienceType")),
                      exception.getErrorAttributes());
     }
 

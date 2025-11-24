@@ -18,6 +18,7 @@ import ch.puzzle.pcts.dto.certificatetype.CertificateTypeDto;
 import ch.puzzle.pcts.dto.member.MemberDto;
 import ch.puzzle.pcts.dto.organisationunit.OrganisationUnitDto;
 import ch.puzzle.pcts.mapper.CertificateMapper;
+import ch.puzzle.pcts.mapper.ErrorMapper;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.certificatetype.Tag;
@@ -47,6 +48,9 @@ import org.springframework.test.web.servlet.MockMvc;
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(CertificateController.class)
 class CertificateControllerIT {
+
+    @MockitoBean
+    private ErrorMapper errorMapper;
 
     @MockitoBean
     private CertificateBusinessService service;
