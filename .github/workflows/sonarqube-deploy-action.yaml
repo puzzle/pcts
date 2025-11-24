@@ -30,7 +30,6 @@ jobs:
         run: mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
           -Dsonar.host.url=${{ vars.SONAR_HOST_URL }}
-          -Dsonar.projectSettings=sonar-project.properties
 
       - name: SonarQube Quality Gate check
         id: sonarqube-quality-gate-check
