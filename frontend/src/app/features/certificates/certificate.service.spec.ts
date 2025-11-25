@@ -3,6 +3,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { CertificateService } from './certificate.service';
 import { provideHttpClient } from '@angular/common/http';
 import { CertificateModel } from './certificate.model';
+import { certificate1 } from '../../shared/test/test-data';
 
 
 describe('OrganisationUnitService', () => {
@@ -33,8 +34,8 @@ describe('OrganisationUnitService', () => {
 
 
   describe('getCertificateById', () => {
-    it('should call httpClient.get with the correct URL and return organisationUnits', () => {
-      const mockCertificate: CertificateModel[] = certificate;
+    it('should call httpClient.get with the correct URL and return the certificate with the correct id', () => {
+      const mockCertificate: CertificateModel = certificate1;
 
       service.getCertificateById(1)
         .subscribe((certificate) => {
