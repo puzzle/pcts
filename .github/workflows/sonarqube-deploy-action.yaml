@@ -34,7 +34,6 @@ jobs:
           -Dsonar.token=${{ secrets.SONAR_TOKEN }}
           -Dsonar.host.url=${{ vars.SONAR_HOST_URL }}
           -Dsonar.projectBaseDir=.
-          -Dsonar.sonar.projectKey=pcts
 
       - name: SonarQube Quality Gate check
         id: sonarqube-quality-gate-check
