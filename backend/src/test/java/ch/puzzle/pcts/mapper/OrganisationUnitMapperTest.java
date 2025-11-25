@@ -82,7 +82,6 @@ class OrganisationUnitMapperTest {
         OrganisationUnit resultModel2 = result.get(1);
         assertEquals(dto2.id(), resultModel2.getId());
         assertEquals(dto2.name(), resultModel2.getName());
-
     }
 
     @DisplayName("Should return null when mapping null model to dto")
