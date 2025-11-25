@@ -25,13 +25,14 @@ describe('MemberOverviewComponent', () => {
       .should('include', '/member/1/edit');
   });
 
-  it('should display alternative message when dateOfHire and abbreviation is not set', () => {
+  it('should display alternative message when dateOfHire, abbreviation and division is not set', () => {
     // Equals to 'Sophie Keller'
     memberDetailPage.visit(3);
 
     memberDetailPage.memberDetailView()
       .should('include.text', 'Sophie Keller')
       .should('include.text', 'Anstellungsdatum: -')
-      .should('include.text', 'Kürzel: -');
+      .should('include.text', 'Kürzel: -')
+      .should('include.text', 'Division: -');
   });
 });
