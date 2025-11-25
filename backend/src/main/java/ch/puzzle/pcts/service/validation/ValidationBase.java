@@ -10,7 +10,12 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import java.util.*;
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +27,7 @@ import org.springframework.stereotype.Service;
  *            the type or entity of the repository
  */
 @Service
-public abstract class ValidationBase<T extends Model> {
+public abstract class ValidationBase<T extends Model> implements ValidationService<T> {
     private static final Logger log = LoggerFactory.getLogger(ValidationBase.class);
     private final Validator validator;
 
