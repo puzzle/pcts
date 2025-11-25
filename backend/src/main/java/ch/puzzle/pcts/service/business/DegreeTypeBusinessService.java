@@ -3,16 +3,13 @@ package ch.puzzle.pcts.service.business;
 import static ch.puzzle.pcts.Constants.DEGREE_TYPE;
 
 import ch.puzzle.pcts.model.degreetype.DegreeType;
-import ch.puzzle.pcts.repository.DegreeTypeRepository;
 import ch.puzzle.pcts.service.persistence.DegreeTypePersistenceService;
 import ch.puzzle.pcts.service.validation.DegreeTypeValidationService;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DegreeTypeBusinessService
-        extends
-            BusinessBase<DegreeType, DegreeTypeRepository, DegreeTypeValidationService, DegreeTypePersistenceService> {
+public class DegreeTypeBusinessService extends BusinessBase<DegreeType> {
 
     public DegreeTypeBusinessService(DegreeTypeValidationService validationService,
                                      DegreeTypePersistenceService persistenceService) {

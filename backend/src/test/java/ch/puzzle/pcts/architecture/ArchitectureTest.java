@@ -151,6 +151,8 @@ class ArchitectureTest {
 
         ArchRule rule = classes()
                 .that()
+                .areNotInterfaces()
+                .and()
                 .areNotAnonymousClasses()
                 .and()
                 .resideInAPackage("ch.puzzle.pcts.service..")

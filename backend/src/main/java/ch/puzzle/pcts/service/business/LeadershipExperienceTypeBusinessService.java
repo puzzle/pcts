@@ -7,7 +7,6 @@ import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
-import ch.puzzle.pcts.repository.CertificateTypeRepository;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import ch.puzzle.pcts.service.validation.LeadershipExperienceTypeValidationService;
 import java.util.List;
@@ -17,12 +16,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LeadershipExperienceTypeBusinessService
-        extends
-            BusinessBase<CertificateType, CertificateTypeRepository, LeadershipExperienceTypeValidationService, CertificateTypePersistenceService> {
+public class LeadershipExperienceTypeBusinessService extends BusinessBase<CertificateType> {
+
+    private final CertificateTypePersistenceService certificateTypePersistenceService;
+    private final LeadershipExperienceTypeValidationService leadershipExperienceTypeValidationService;
+
     public LeadershipExperienceTypeBusinessService(LeadershipExperienceTypeValidationService leadershipExperienceTypeValidationService,
                                                    CertificateTypePersistenceService certificateTypePersistenceService) {
         super(leadershipExperienceTypeValidationService, certificateTypePersistenceService);
+        this.certificateTypePersistenceService = certificateTypePersistenceService;
+        this.leadershipExperienceTypeValidationService = leadershipExperienceTypeValidationService;
     }
 
     @Override
@@ -33,7 +36,8 @@ public class LeadershipExperienceTypeBusinessService
 
         if (optionalLeadershipExperienceType.isPresent()) {
             CertificateType leadershipExperience = optionalLeadershipExperienceType.get();
-            validationService.validateCertificateKind(leadershipExperience.getCertificateKind());
+            leadershipExperienceTypeValidationService
+                    .validateCertificateKind(leadershipExperience.getCertificateKind());
             return leadershipExperience;
         } else {
             Map<FieldKey, String> attributes = Map
@@ -47,7 +51,7 @@ public class LeadershipExperienceTypeBusinessService
     }
 
     public List<CertificateType> getAll() {
-        return persistenceService.getAllLeadershipExperienceTypes();
+        return certificateTypePersistenceService.getAllLeadershipExperienceTypes();
     }
 
     @Override
