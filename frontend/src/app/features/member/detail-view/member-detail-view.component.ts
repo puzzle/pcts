@@ -1,7 +1,6 @@
 import { Component, OnInit, WritableSignal, signal, inject } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
 import { MemberService } from '../member.service';
 import { MemberModel } from '../member.model';
 import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
@@ -14,7 +13,6 @@ import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.com
   providers: [DatePipe],
   imports: [
     CommonModule,
-    TranslatePipe,
     DatePipe,
     ScopedTranslationPipe,
     CrudButtonComponent

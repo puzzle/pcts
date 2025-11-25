@@ -103,7 +103,11 @@
         {{ 'ORGANISATION_UNIT' | scopedTranslation }}
       </th>
       <td mat-cell *matCellDef="let member" data-testid="member-organisation">
-        {{ member.organisationUnit.name }}
+        @if (member.organisationUnit) {
+          {{ member.organisationUnit.name }}
+        } @else {
+          {{ 'MEMBER.ATTRIBUTE_NULL' | translate }}
+        }
       </td>
     </ng-container>
 

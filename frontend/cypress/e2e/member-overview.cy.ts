@@ -97,7 +97,7 @@ describe('MemberOverviewComponent', () => {
       '03.03.1998',
       '05.08.2001'],
     ['organisation-unit-name',
-      '/bbt',
+      '-',
       '/zh']
   ];
 
