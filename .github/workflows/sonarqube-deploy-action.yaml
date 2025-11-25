@@ -27,7 +27,8 @@ jobs:
         run: cd frontend && npm run test -- --coverage
 
       - name: Build and analyze
-        run: mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+        run: cd backend
+          mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
           -Dsonar.host.url=${{ vars.SONAR_HOST_URL }}
           -Dsonar.projectBaseDir=.
