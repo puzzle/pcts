@@ -21,11 +21,10 @@ public class PCTSException extends ResponseStatusException {
     }
 
     public List<ErrorKey> getErrorKeys() {
-        return getErrors().stream().map(GenericErrorDto::getKey).toList();
+        return getErrors().stream().map(GenericErrorDto::key).toList();
     }
 
     public List<Map<FieldKey, String>> getErrorAttributes() {
-        return getErrors().stream().map(GenericErrorDto::getValues).toList();
+        return getErrors().stream().map(GenericErrorDto::values).toList();
     }
-
 }

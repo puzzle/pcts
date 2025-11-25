@@ -32,7 +32,6 @@ public class DegreeTypeValidationService extends ValidationBase<DegreeType> {
             GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE, attributes);
 
             throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
-
         }
     }
 

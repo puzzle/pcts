@@ -10,12 +10,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +63,7 @@ public abstract class ValidationBase<T extends Model> implements ValidationServi
         throwExceptionWhenIdIsNull(id);
     }
 
-    public void throwExceptionWhenIdIsNull(Long id) {
+    private void throwExceptionWhenIdIsNull(Long id) {
         if (id == null) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
                                     buildGenericErrorDto(ErrorKey.VALIDATION, Map.of(FieldKey.FIELD, "id")));
@@ -114,36 +109,39 @@ public abstract class ValidationBase<T extends Model> implements ValidationServi
     private static GenericErrorDto parseViolationMessage(String message) {
         Map<String, String> valueMap = parseToMap(message);
 
-        String keyName = valueMap.remove("key");
-        if (keyName == null) {
+        Optional<String> keyNameOpt = Optional.ofNullable(valueMap.remove("key"));
+
+        if (keyNameOpt.isEmpty()) {
             log.error("Validation message is missing 'key=' part: {}", message);
             return new GenericErrorDto(ErrorKey.ERROR_MESSAGE_MISSING_KEY, Map.of(FieldKey.IS, message));
         }
 
-        ErrorKey errorKey = parseErrorKey(keyName);
-        if (errorKey == null) {
-            return new GenericErrorDto(ErrorKey.ERROR_MESSAGE_INVALID_KEY, Map.of(FieldKey.IS, keyName));
+        Optional<ErrorKey> errorKeyOpt = parseErrorKey(keyNameOpt.get());
+
+        if (errorKeyOpt.isEmpty()) {
+            return new GenericErrorDto(ErrorKey.ERROR_MESSAGE_INVALID_KEY, Map.of(FieldKey.IS, keyNameOpt.get()));
         }
 
         Map<FieldKey, String> fieldMap = new EnumMap<>(FieldKey.class);
 
         for (Map.Entry<String, String> entry : valueMap.entrySet()) {
-            FieldKey fieldKey = parseFieldKey(entry.getKey());
-            if (fieldKey == null) {
+            Optional<FieldKey> fieldKeyOpt = Optional.ofNullable(parseFieldKey(entry.getKey()));
+
+            if (fieldKeyOpt.isEmpty()) {
                 return new GenericErrorDto(ErrorKey.ERROR_MESSAGE_INVALID_KEY, Map.of(FieldKey.IS, entry.getKey()));
             }
-            fieldMap.put(fieldKey, entry.getValue());
+            fieldMap.put(fieldKeyOpt.get(), entry.getValue());
         }
 
-        return new GenericErrorDto(errorKey, fieldMap);
+        return new GenericErrorDto(errorKeyOpt.get(), fieldMap);
     }
 
-    private static ErrorKey parseErrorKey(String key) {
+    private static Optional<ErrorKey> parseErrorKey(String key) {
         try {
-            return ErrorKey.valueOf(key);
+            return Optional.of(ErrorKey.valueOf(key));
         } catch (IllegalArgumentException e) {
             log.error("ErrorKey enum does not contain key '{}' from ValidationMessages.properties!", key, e);
-            return null;
+            return Optional.empty();
         }
     }
 
