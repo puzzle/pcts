@@ -14,7 +14,7 @@ describe('MemberOverviewComponent', () => {
       .should('include.text', 'Geburtsdatum:10.08.1999')
       .should('include.text', 'Anstellungsdatum: 15.07.2021')
       .should('include.text', 'Anstellungsstatus:Member')
-      .should('include.text', 'Division:/zh');
+      .should('include.text', 'Division: /zh');
   });
 
   it('should navigate to edit page', () => {

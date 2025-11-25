@@ -14,7 +14,6 @@ import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.com
   providers: [DatePipe],
   imports: [
     CommonModule,
-    TranslatePipe,
     DatePipe,
     ScopedTranslationPipe,
     CrudButtonComponent

@@ -16,7 +16,7 @@
 
       <div class="d-flex justify-content-between flex-wrap">
         <span>
-          <p class="mb-0">{{ 'MEMBER.ABBREVIATION' | translate }}:</p>
+          <p class="mb-0">{{ 'ABBREVIATION' | scopedTranslation }}:</p>
           <p class="fw-bold">
             {{ m.abbreviation ? (m.abbreviation) : ('ATTRIBUTE_NULL' | scopedTranslation)}}
           </p>
@@ -47,9 +47,9 @@
           <p class="mb-0">{{ 'MEMBER.ORGANISATION_UNIT' | scopedTranslation }}:</p>
           <p class="fw-bold">
             @if (m.organisationUnit) {
-              {{ m.organisationUnit.name }}
+              {{m.organisationUnit.name}}
             } @else {
-              {{ 'MEMBER.ATTRIBUTE_NULL' | translate }}
+              {{'ATTRIBUTE_NULL' | scopedTranslation}}
             }
           </p>
         </span>
