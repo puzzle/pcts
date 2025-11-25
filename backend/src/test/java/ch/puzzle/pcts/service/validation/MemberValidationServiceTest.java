@@ -5,11 +5,14 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
+import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,12 +43,12 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
         return service;
     }
 
-    protected static Member createMember(EmploymentState employmentState, LocalDate birthDate, String name,
+    protected static Member createMember(EmploymentState employmentState, LocalDate birthDate, String firstName,
                                          String lastName, String abbreviation) {
         Member m = new Member();
         m.setEmploymentState(employmentState);
         m.setBirthDate(birthDate);
-        m.setName(name);
+        m.setFirstName(firstName);
         m.setLastName(lastName);
         m.setAbbreviation(abbreviation);
         m.setDateOfHire(LocalDate.EPOCH);
@@ -61,56 +64,118 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
         return Stream
                 .of(Arguments
                         .of(createMember(EmploymentState.MEMBER, validPastDate, null, "Test", "MT"),
-                            "Member.firstName must not be null."),
+                            List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "firstName"))),
                     Arguments
                             .of(createMember(EmploymentState.MEMBER, validPastDate, "", "Test", "MT"),
-                                "Member.firstName must not be blank."),
+                                List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "firstName"))),
                     Arguments
                             .of(createMember(EmploymentState.MEMBER, validPastDate, "  ", "Test", "MT"),
-                                "Member.firstName must not be blank."),
+                                List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "firstName"))),
                     Arguments
                             .of(createMember(EmploymentState.MEMBER, validPastDate, "S", "Test", "MT"),
-                                "Member.firstName size must be between 2 and 250, given S."),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "Member",
+                                                    FieldKey.FIELD,
+                                                    "firstName",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.IS,
+                                                    "S"))),
                     Arguments
                             .of(createMember(EmploymentState.MEMBER, validPastDate, "  S ", "Test", "MT"),
-                                "Member.firstName size must be between 2 and 250, given S."),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "Member",
+                                                    FieldKey.FIELD,
+                                                    "firstName",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.IS,
+                                                    "S"))),
                     Arguments
                             .of(createMember(EmploymentState.MEMBER, validPastDate, tooLongString, "Test", "MT"),
-                                String
-                                        .format("Member.firstName size must be between 2 and 250, given %s.",
-                                                tooLongString)),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "Member",
+                                                    FieldKey.FIELD,
+                                                    "firstName",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.IS,
+                                                    tooLongString))),
                     Arguments
                             .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", null, "MT"),
-                                "Member.lastName must not be null."),
+                                List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "lastName"))),
                     Arguments
                             .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "", "MT"),
-                                "Member.lastName must not be blank."),
+                                List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "lastName"))),
                     Arguments
                             .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "  ", "MT"),
-                                "Member.lastName must not be blank."),
+                                List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "lastName"))),
                     Arguments
                             .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "S", "MT"),
-                                "Member.lastName size must be between 2 and 250, given S."),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "Member",
+                                                    FieldKey.FIELD,
+                                                    "lastName",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.IS,
+                                                    "S"))),
                     Arguments
                             .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", "  S ", "MT"),
-                                "Member.lastName size must be between 2 and 250, given S."),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "Member",
+                                                    FieldKey.FIELD,
+                                                    "lastName",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.IS,
+                                                    "S"))),
                     Arguments
                             .of(createMember(EmploymentState.MEMBER, validPastDate, "Member", tooLongString, "MT"),
-                                String
-                                        .format("Member.lastName size must be between 2 and 250, given %s.",
-                                                tooLongString)),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "Member",
+                                                    FieldKey.FIELD,
+                                                    "lastName",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.IS,
+                                                    tooLongString))),
                     Arguments
                             .of(createMember(null, validPastDate, "Member", "Test", "MT"),
-                                "Member.employmentState must not be null."),
+                                List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "employmentState"))),
                     Arguments
                             .of(createMember(EmploymentState.MEMBER, null, "Member", "Test", "MT"),
-                                "Member.birthDate must not be null."),
+                                List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "birthDate"))),
                     Arguments
                             .of(createMember(EmploymentState.MEMBER, futureDate, "Member", "Test", "MT"),
-                                "Member.birthDate must be in the past, given " + futureDate + "."),
+                                List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "birthDate"))),
                     Arguments
                             .of(createMember(EmploymentState.MEMBER, futureDate, "Member", "Test", "MT"),
-                                "Member.birthDate must be in the past, given " + futureDate + "."));
+                                List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "birthDate"))));
     }
 
     @DisplayName("Should call correct validate method on validateOnCreate()")

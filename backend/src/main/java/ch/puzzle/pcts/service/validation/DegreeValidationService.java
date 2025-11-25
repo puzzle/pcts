@@ -1,9 +1,15 @@
 package ch.puzzle.pcts.service.validation;
 
+import static ch.puzzle.pcts.Constants.DEGREE;
+
+import ch.puzzle.pcts.dto.error.ErrorKey;
+import ch.puzzle.pcts.dto.error.FieldKey;
+import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.degree.Degree;
-import ch.puzzle.pcts.model.error.ErrorKey;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +29,22 @@ public class DegreeValidationService extends ValidationBase<Degree> {
 
     public void validateStartDateIsBeforeEndDate(LocalDate startDate, LocalDate endDate) {
         if (endDate != null && startDate.isAfter(endDate)) {
-            throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    "Degree.endDate must be after the startDate, given endDate: " + endDate
-                                                            + " and startDate: " + startDate + ".",
-                                    ErrorKey.INVALID_ARGUMENT);
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY,
+                        DEGREE,
+                        FieldKey.FIELD,
+                        "startDate",
+                        FieldKey.IS,
+                        startDate.toString(),
+                        FieldKey.CONDITION_FIELD,
+                        "endDate",
+                        FieldKey.MAX,
+                        endDate.toString());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_NOT_BEFORE, attributes);
+
+            throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
+
         }
     }
 }

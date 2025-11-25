@@ -1,11 +1,13 @@
 package ch.puzzle.pcts.service.validation;
 
+import static ch.puzzle.pcts.Constants.EXPERIENCE;
 import static ch.puzzle.pcts.service.validation.MemberValidationServiceTest.createMember;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.experience.Experience;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
@@ -15,6 +17,7 @@ import ch.puzzle.pcts.service.persistence.ExperiencePersistenceService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -66,30 +69,61 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
         return Stream
                 .of(Arguments
                         .of(createExperience(null, today, futureDate, validPercentage),
-                            "Experience.name must not be null."),
+                            List.of(Map.of(FieldKey.CLASS, "Experience", FieldKey.FIELD, "name"))),
                     Arguments
                             .of(createExperience("", today, futureDate, validPercentage),
-                                "Experience.name must not be blank."),
+                                List.of(Map.of(FieldKey.CLASS, "Experience", FieldKey.FIELD, "name"))),
                     Arguments
                             .of(createExperience("  ", today, futureDate, validPercentage),
-                                "Experience.name must not be blank."),
+                                List.of(Map.of(FieldKey.CLASS, "Experience", FieldKey.FIELD, "name"))),
                     Arguments
                             .of(createExperience("S", today, futureDate, validPercentage),
-                                "Experience.name size must be between 2 and 250, given S."),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "Experience",
+                                                    FieldKey.FIELD,
+                                                    "name",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.IS,
+                                                    "S"))),
                     Arguments
                             .of(createExperience("  S ", today, futureDate, validPercentage),
-                                "Experience.name size must be between 2 and 250, given S."),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "Experience",
+                                                    FieldKey.FIELD,
+                                                    "name",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.IS,
+                                                    "S"))),
                     Arguments
                             .of(createExperience(tooLongString, today, futureDate, validPercentage),
-                                String
-                                        .format("Experience.name size must be between 2 and 250, given %s.",
-                                                tooLongString)),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "Experience",
+                                                    FieldKey.FIELD,
+                                                    "name",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.IS,
+                                                    tooLongString))),
                     Arguments
                             .of(createExperience("Experience", futureDate, futureDate, validPercentage),
-                                "Experience.startDate must be in the past or present, given " + futureDate + "."),
+                                List.of(Map.of(FieldKey.IS, "{attribute.date.past.present}"))),
                     Arguments
                             .of(createExperience("Experience", null, today, validPercentage),
-                                "Experience.startDate must not be null."),
+                                List.of(Map.of(FieldKey.CLASS, "Experience", FieldKey.FIELD, "startDate"))),
                     Arguments
                             .of(new Experience.Builder()
                                     .withMember(createMember(EmploymentState.MEMBER,
@@ -104,13 +138,13 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
                                     .withStartDate(today)
                                     .withEndDate(today)
                                     .build(),
-                                "Experience.type must not be null."),
+                                List.of(Map.of(FieldKey.CLASS, "Experience", FieldKey.FIELD, "type"))),
                     Arguments
                             .of(createExperience("Experience", pastDate, today, -1),
-                                String.format("Experience.percent must be greater than or equal to 0, given %s.", -1)),
+                                List.of(Map.of(FieldKey.CLASS, "Experience", FieldKey.FIELD, "percent"))),
                     Arguments
                             .of(createExperience("Experience", pastDate, today, 115),
-                                String.format("Experience.percent must be less than or equal to 110, given %s.", 115)));
+                                List.of(Map.of(FieldKey.CLASS, "Experience", FieldKey.FIELD, "percent"))));
     }
 
     @Override
@@ -138,10 +172,18 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
 
         exceptions
                 .stream()
-                .forEach(exception -> assertEquals(String
-                        .format("Experience.endDate must be after the startDate, given endDate: %s and startDate: %s.",
-                                pastDate,
-                                today), exception.getReason()));
+                .forEach(exception -> assertEquals(List
+                        .of(Map
+                                .of(FieldKey.ENTITY,
+                                    EXPERIENCE,
+                                    FieldKey.FIELD,
+                                    "startDate",
+                                    FieldKey.IS,
+                                    today.toString(),
+                                    FieldKey.CONDITION_FIELD,
+                                    "endDate",
+                                    FieldKey.MAX,
+                                    pastDate.toString())), exception.getErrorAttributes()));
     }
 
     @DisplayName("Should call correct validate method on validateOnCreate()")

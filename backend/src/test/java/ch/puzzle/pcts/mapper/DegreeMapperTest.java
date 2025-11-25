@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.mapper;
 
+import static ch.puzzle.pcts.Constants.DEGREE_TYPE;
+import static ch.puzzle.pcts.Constants.MEMBER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -8,12 +10,14 @@ import static org.mockito.Mockito.when;
 import ch.puzzle.pcts.dto.degree.DegreeDto;
 import ch.puzzle.pcts.dto.degree.DegreeInputDto;
 import ch.puzzle.pcts.dto.degreetype.DegreeTypeDto;
+import ch.puzzle.pcts.dto.error.ErrorKey;
+import ch.puzzle.pcts.dto.error.FieldKey;
+import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.dto.member.MemberDto;
 import ch.puzzle.pcts.dto.organisationunit.OrganisationUnitDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.degree.Degree;
 import ch.puzzle.pcts.model.degreetype.DegreeType;
-import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
@@ -22,6 +26,7 @@ import ch.puzzle.pcts.service.business.MemberBusinessService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -242,11 +247,18 @@ class DegreeMapperTest {
                                                          commonDate,
                                                          "Invalid Member");
 
+        Map<FieldKey, String> attributes = Map
+                .of(FieldKey.ENTITY,
+                    MEMBER,
+                    FieldKey.FIELD,
+                    "id",
+                    FieldKey.IS,
+                    String.valueOf(invalidInput.memberId()));
+
         // mock the behavior
         when(mapper.memberBusinessService.getById(anyLong()))
                 .thenThrow(new PCTSException(HttpStatus.NOT_FOUND,
-                                             "Member with id: " + invalidInput.memberId() + " does not exist.",
-                                             ErrorKey.NOT_FOUND));
+                                             List.of(new GenericErrorDto(ErrorKey.NOT_FOUND, attributes))));
 
         assertThrows(PCTSException.class, () -> mapper.fromDto(invalidInput));
     }
@@ -263,11 +275,18 @@ class DegreeMapperTest {
                                                          commonDate,
                                                          "Invalid Degree Type");
 
+        Map<FieldKey, String> attributes = Map
+                .of(FieldKey.ENTITY,
+                    DEGREE_TYPE,
+                    FieldKey.FIELD,
+                    "id",
+                    FieldKey.IS,
+                    String.valueOf(invalidInput.typeId()));
+
         // mock the behavior
         when(mapper.degreeTypeBusinessService.getById(anyLong()))
                 .thenThrow(new PCTSException(HttpStatus.NOT_FOUND,
-                                             "DegreeType with id: " + invalidInput.typeId() + " does not exist.",
-                                             ErrorKey.NOT_FOUND));
+                                             List.of(new GenericErrorDto(ErrorKey.NOT_FOUND, attributes))));
 
         assertThrows(PCTSException.class, () -> mapper.fromDto(invalidInput));
     }

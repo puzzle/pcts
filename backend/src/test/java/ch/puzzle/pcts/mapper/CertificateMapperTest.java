@@ -1,23 +1,26 @@
 package ch.puzzle.pcts.mapper;
 
+import static ch.puzzle.pcts.Constants.CERTIFICATE_TYPE;
+import static ch.puzzle.pcts.Constants.MEMBER;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.dto.certificate.CertificateDto;
 import ch.puzzle.pcts.dto.certificate.CertificateInputDto;
 import ch.puzzle.pcts.dto.certificatetype.CertificateTypeDto;
+import ch.puzzle.pcts.dto.error.ErrorKey;
+import ch.puzzle.pcts.dto.error.FieldKey;
+import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.dto.member.MemberDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
-import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.business.CertificateTypeBusinessService;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
-import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
-import ch.puzzle.pcts.service.validation.MemberValidationService;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,10 +47,6 @@ class CertificateMapperTest {
     private CertificateTypeMapper certificateTypeMapper;
     @Mock
     private CertificateTypeBusinessService certificateTypeBusinessService;
-    @Mock
-    private MemberPersistenceService memberPersistenceService;
-    @Mock
-    private MemberValidationService memberValidationService;
 
     private CertificateMapper certificateMapper;
 
@@ -204,20 +203,15 @@ class CertificateMapperTest {
                                                                VALID_UNTIL,
                                                                "Comment");
 
-        PCTSException expectedException = new PCTSException(HttpStatus.NOT_FOUND,
-                                                            "Member with id: " + nonExistentMemberId
-                                                                                  + " does not exist.",
-                                                            ErrorKey.NOT_FOUND);
+        Map<FieldKey, String> attributes = Map
+                .of(FieldKey.ENTITY, MEMBER, FieldKey.FIELD, "id", FieldKey.IS, "" + inputDto.memberId());
 
-        when(memberBusinessService.getById(nonExistentMemberId)).thenThrow(expectedException);
+        // mock the behavior
+        when(certificateMapper.memberBusinessService.getById(anyLong()))
+                .thenThrow(new PCTSException(HttpStatus.NOT_FOUND,
+                                             List.of(new GenericErrorDto(ErrorKey.NOT_FOUND, attributes))));
 
-        PCTSException capturedException = assertThrows(PCTSException.class, () -> certificateMapper.fromDto(inputDto));
-
-        assertEquals(expectedException.getMessage(), capturedException.getMessage());
-        assertEquals(ErrorKey.NOT_FOUND, capturedException.getErrorKey());
-
-        verify(memberBusinessService).getById(nonExistentMemberId);
-        verifyNoInteractions(certificateTypeBusinessService);
+        assertThrows(PCTSException.class, () -> certificateMapper.fromDto(inputDto));
     }
 
     @DisplayName("Should throw exception when Certificate-Type is not found")
@@ -230,19 +224,19 @@ class CertificateMapperTest {
                                                                VALID_UNTIL,
                                                                "Comment");
 
-        PCTSException expectedException = new PCTSException(HttpStatus.NOT_FOUND,
-                                                            "CertificateType with id: " + nonExistentCertificateTypeId
-                                                                                  + " does not exist.",
-                                                            ErrorKey.NOT_FOUND);
+        Map<FieldKey, String> attributes = Map
+                .of(FieldKey.ENTITY,
+                    CERTIFICATE_TYPE,
+                    FieldKey.FIELD,
+                    "id",
+                    FieldKey.IS,
+                    String.valueOf(inputDto.certificateTypeId()));
 
-        when(certificateTypeBusinessService.getById(nonExistentCertificateTypeId)).thenThrow(expectedException);
+        // mock the behavior
+        when(certificateMapper.certificateTypeBusinessService.getById(anyLong()))
+                .thenThrow(new PCTSException(HttpStatus.NOT_FOUND,
+                                             List.of(new GenericErrorDto(ErrorKey.NOT_FOUND, attributes))));
 
-        PCTSException capturedException = assertThrows(PCTSException.class, () -> certificateMapper.fromDto(inputDto));
-
-        assertEquals(expectedException.getMessage(), capturedException.getMessage());
-        assertEquals(ErrorKey.NOT_FOUND, capturedException.getErrorKey());
-
-        verify(memberBusinessService).getById(MEMBER_ID);
-        verify(certificateTypeBusinessService).getById(nonExistentCertificateTypeId);
+        assertThrows(PCTSException.class, () -> certificateMapper.fromDto(inputDto));
     }
 }

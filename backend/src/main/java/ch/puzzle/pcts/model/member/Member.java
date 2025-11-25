@@ -72,8 +72,8 @@ public class Member implements Model {
         return firstName;
     }
 
-    public void setName(String name) {
-        this.firstName = trim(name);
+    public void setFirstName(String firstName) {
+        this.firstName = trim(firstName);
     }
 
     public String getLastName() {

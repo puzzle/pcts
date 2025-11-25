@@ -4,9 +4,12 @@ import static org.apache.commons.lang3.StringUtils.trim;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.service.validation.ValidationBase;
+import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,8 +26,8 @@ class PCTSStringValidationTest {
     void shouldThrowErrorWhenStringIsNull() {
         DummyClass invalid = new DummyClass(null);
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(invalid));
-
-        assertEquals("DummyClass.string must not be null.", exception.getReason());
+        assertEquals(List.of(Map.of(FieldKey.FIELD, "string", FieldKey.CLASS, "DummyClass")),
+                     exception.getErrorAttributes());
     }
 
     @DisplayName("Should throw error when string is blank")
@@ -34,7 +37,8 @@ class PCTSStringValidationTest {
         DummyClass invalid = new DummyClass(blank);
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(invalid));
 
-        assertEquals("DummyClass.string must not be blank.", exception.getReason());
+        assertEquals(List.of(Map.of(FieldKey.FIELD, "string", FieldKey.CLASS, "DummyClass")),
+                     exception.getErrorAttributes());
     }
 
     @DisplayName("Should throw error when string is too short")
@@ -44,8 +48,19 @@ class PCTSStringValidationTest {
         DummyClass invalid = new DummyClass(shortString);
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(invalid));
 
-        assertEquals("DummyClass.string size must be between 2 and 250, given " + invalid.string + ".",
-                     exception.getReason());
+        assertEquals(List
+                .of(Map
+                        .of(FieldKey.FIELD,
+                            "string",
+                            FieldKey.CLASS,
+                            "DummyClass",
+                            FieldKey.MIN,
+                            "2",
+                            FieldKey.MAX,
+                            "250",
+                            FieldKey.IS,
+                            invalid.string)),
+                     exception.getErrorAttributes());
     }
 
     @DisplayName("Should throw error when string is too long")
@@ -55,8 +70,19 @@ class PCTSStringValidationTest {
         DummyClass invalid = new DummyClass(longString);
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(invalid));
 
-        assertEquals("DummyClass.string size must be between 2 and 250, given " + invalid.string + ".",
-                     exception.getReason());
+        assertEquals(List
+                .of(Map
+                        .of(FieldKey.FIELD,
+                            "string",
+                            FieldKey.CLASS,
+                            "DummyClass",
+                            FieldKey.MIN,
+                            "2",
+                            FieldKey.MAX,
+                            "250",
+                            FieldKey.IS,
+                            invalid.string)),
+                     exception.getErrorAttributes());
     }
 
     @DisplayName("Should not throw error when string is valid")

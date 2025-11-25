@@ -1,15 +1,19 @@
 package ch.puzzle.pcts.service.validation;
 
+import static ch.puzzle.pcts.Constants.CERTIFICATE_TYPE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import ch.puzzle.pcts.dto.error.ErrorKey;
+import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.certificatetype.Tag;
-import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -35,7 +39,7 @@ class CertificateTypeValidationServiceTest
     @Override
     CertificateType getValidModel() {
         return new CertificateType(null,
-                                   "Certificate",
+                                   "CertificateType",
                                    BigDecimal.valueOf(10),
                                    "Comment",
                                    Set.of(new Tag(null, "Tag")),
@@ -66,35 +70,69 @@ class CertificateTypeValidationServiceTest
         return Stream
                 .of(Arguments
                         .of(createCertificateType(null, validBigDecimal, CertificateKind.CERTIFICATE),
-                            "CertificateType.name must not be null."),
+                            List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "name"))),
                     Arguments
                             .of(createCertificateType("", validBigDecimal, CertificateKind.CERTIFICATE),
-                                "CertificateType.name must not be blank."),
+                                List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "name"))),
                     Arguments
                             .of(createCertificateType("h", validBigDecimal, CertificateKind.CERTIFICATE),
-                                "CertificateType.name size must be between 2 and 250, given h."),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "CertificateType",
+                                                    FieldKey.FIELD,
+                                                    "name",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.IS,
+                                                    "h"))),
                     Arguments
                             .of(createCertificateType(tooLongName, validBigDecimal, CertificateKind.CERTIFICATE),
-                                String
-                                        .format("CertificateType.name size must be between 2 and 250, given %s.",
-                                                tooLongName)),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "CertificateType",
+                                                    FieldKey.FIELD,
+                                                    "name",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.IS,
+                                                    tooLongName))),
                     Arguments
                             .of(createCertificateType("Name", null, CertificateKind.CERTIFICATE),
-                                "CertificateType.points must not be null."),
+                                List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "points"))),
                     Arguments
                             .of(createCertificateType("Name", BigDecimal.valueOf(-1), CertificateKind.CERTIFICATE),
-                                "CertificateType.points must not be negative."));
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "CertificateType",
+                                                    FieldKey.FIELD,
+                                                    "points",
+                                                    FieldKey.IS,
+                                                    "-1"))));
     }
 
-    @DisplayName("Should throw exception on validateOnGetById() when certificate type is not certificate")
+    @DisplayName("Should throw exception on validateOnGetById() when certificate kind is not certificate")
     @Test
-    void shouldThrowExceptionOnValidateOnGetByIdWhenCertificateTypeIsNotCertificate() {
+    void shouldThrowExceptionOnValidateOnGetByIdWhenCertificateKindIsNotCertificate() {
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> service
                                                        .validateCertificateKind(CertificateKind.LEADERSHIP_TRAINING));
-
-        assertEquals("Certificate.CertificateType is not certificate.", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+        assertEquals(List.of(ErrorKey.INVALID_ARGUMENT), exception.getErrorKeys());
+        assertEquals(List
+                .of(Map
+                        .of(FieldKey.FIELD,
+                            "certificateKind",
+                            FieldKey.IS,
+                            "LEADERSHIP_TRAINING",
+                            FieldKey.ENTITY,
+                            CERTIFICATE_TYPE)),
+                     exception.getErrorAttributes());
     }
 
     @DisplayName("Should throw exception on validateOnCreate() when name already exists")
@@ -108,8 +146,10 @@ class CertificateTypeValidationServiceTest
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> service.validateOnCreate(leadershipExperience));
 
-        assertEquals("Name already exists", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+        assertEquals(List.of(ErrorKey.ATTRIBUTE_UNIQUE), exception.getErrorKeys());
+        assertEquals(List
+                .of(Map.of(FieldKey.FIELD, "name", FieldKey.IS, "CertificateType", FieldKey.ENTITY, CERTIFICATE_TYPE)),
+                     exception.getErrorAttributes());
     }
 
     @DisplayName("Should throw Exception on validateOnUpdate() when name already exists")
@@ -125,8 +165,10 @@ class CertificateTypeValidationServiceTest
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> service.validateOnUpdate(id, newCertificateType));
 
-        assertEquals("Name already exists", exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+        assertEquals(List.of(ErrorKey.INVALID_ARGUMENT), exception.getErrorKeys());
+        assertEquals(List
+                .of(Map.of(FieldKey.FIELD, "name", FieldKey.IS, "CertificateType", FieldKey.ENTITY, CERTIFICATE_TYPE)),
+                     exception.getErrorAttributes());
     }
 
     @DisplayName("Should call correct validate method on validateOnCreate()")

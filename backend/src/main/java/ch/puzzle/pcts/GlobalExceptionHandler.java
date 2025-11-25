@@ -1,12 +1,11 @@
 package ch.puzzle.pcts;
 
+import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
-import ch.puzzle.pcts.model.error.ErrorKey;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -20,25 +19,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<GenericErrorDto> handleGenericException(Exception ex) {
         logger.error("Unhandled exception: ", ex);
-        List<String> message = List.of("Something has gone wrong on the server, please check the logs");
-        return ResponseEntity.internalServerError().body(new GenericErrorDto(ErrorKey.INTERNAL, message));
+        return ResponseEntity.internalServerError().body(new GenericErrorDto(ErrorKey.INTERNAL));
     }
 
     @ExceptionHandler(BindException.class)
     public ResponseEntity<GenericErrorDto> handle(BindException ex) {
         logger.error("Bind exception: ", ex);
-        List<String> reasons = ex
-                .getAllErrors()
-                .stream()
-                .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                .toList();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new GenericErrorDto(ErrorKey.VALIDATION, reasons));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new GenericErrorDto(ErrorKey.VALIDATION));
     }
 
     @ExceptionHandler(PCTSException.class)
-    public ResponseEntity<GenericErrorDto> handlePCTSException(PCTSException ex) {
-        return ResponseEntity
-                .status(ex.getStatusCode())
-                .body(new GenericErrorDto(ex.getErrorKey(), List.of(ex.getReason())));
+    public ResponseEntity<List<GenericErrorDto>> handlePCTSException(PCTSException ex) {
+        return ResponseEntity.status(ex.getStatusCode()).body(ex.getErrors());
     }
 }

@@ -1,22 +1,25 @@
 package ch.puzzle.pcts.service.validation;
 
+import static ch.puzzle.pcts.Constants.CERTIFICATE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
+import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.certificatetype.Tag;
-import ch.puzzle.pcts.model.error.ErrorKey;
 import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.persistence.CertificatePersistenceService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
@@ -49,7 +52,7 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
         Member m = new Member();
         m.setEmploymentState(EmploymentState.MEMBER);
         m.setBirthDate(LocalDate.EPOCH);
-        m.setName("Member");
+        m.setFirstName("Member");
         m.setLastName("Test");
         m.setAbbreviation("MT");
         m.setDateOfHire(LocalDate.EPOCH);
@@ -86,41 +89,65 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
         return Stream
                 .of(Arguments
                         .of(createCertificate(null, validCertificateType, validPastDate),
-                            "Certificate.member must not be null."),
+                            List.of(Map.of(FieldKey.CLASS, "Certificate", FieldKey.FIELD, "member"))),
+
                     Arguments
                             .of(createCertificate(validMember, null, validPastDate),
-                                "Certificate.certificateType must not be null."),
+                                List.of(Map.of(FieldKey.CLASS, "Certificate", FieldKey.FIELD, "certificateType"))),
                     Arguments
                             .of(createCertificate(validMember, validCertificateType, null),
-                                "Certificate.completedAt must not be null."));
+                                List.of(Map.of(FieldKey.CLASS, "Certificate", FieldKey.FIELD, "completedAt"))));
+
     }
 
     @DisplayName("Should throw exception on validateOnCreate() when competedAt is after validUntil")
     @Test
-    void shouldThrowExceptionOnValidateOnCreateWhenNameCompletedAtIsAfterValidUntil() {
+    void shouldThrowExceptionOnValidateOnCreateWhenCompletedAtIsAfterValidUntil() {
         Certificate certificate = getValidModel();
         certificate.setCompletedAt(LocalDate.now().plusDays(1));
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnCreate(certificate));
+        List<PCTSException> exceptions = List
+                .of(assertThrows(PCTSException.class, () -> service.validateOnUpdate(1L, certificate)),
+                    assertThrows(PCTSException.class, () -> service.validateOnCreate(certificate)));
 
-        assertEquals("Certificate.completedAT must be before the validUntil date, given validUntil: "
-                     + certificate.getValidUntil() + " and completedAt: " + certificate.getCompletedAt() + ".",
-                     exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+        exceptions
+                .forEach(exception -> assertEquals(List
+                        .of(Map
+                                .of(FieldKey.ENTITY,
+                                    CERTIFICATE,
+                                    FieldKey.FIELD,
+                                    "completedAt",
+                                    FieldKey.IS,
+                                    certificate.getCompletedAt().toString(),
+                                    FieldKey.CONDITION_FIELD,
+                                    "validUntil",
+                                    FieldKey.MAX,
+                                    certificate.getValidUntil().toString())), exception.getErrorAttributes()));
     }
 
-    @DisplayName("Should throw exception on validateOnUpdate() when competedAt is before validUntil")
+    @DisplayName("Should throw exception on validateOnUpdate() when completedAt is before validUntil")
     @Test
-    void shouldThrowExceptionOnValidateOnUpdateWhenNameCompletedAtIsAfterValidUntil() {
+    void shouldThrowExceptionOnValidateOnUpdateWhenCompletedAtIsAfterValidUntil() {
         Certificate certificate = getValidModel();
         certificate.setCompletedAt(LocalDate.now().plusDays(1));
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnUpdate(1L, certificate));
+        List<PCTSException> exceptions = List
+                .of(assertThrows(PCTSException.class, () -> service.validateOnUpdate(1L, certificate)),
+                    assertThrows(PCTSException.class, () -> service.validateOnCreate(certificate)));
 
-        assertEquals("Certificate.completedAT must be before the validUntil date, given validUntil: "
-                     + certificate.getValidUntil() + " and completedAt: " + certificate.getCompletedAt() + ".",
-                     exception.getReason());
-        assertEquals(ErrorKey.INVALID_ARGUMENT, exception.getErrorKey());
+        exceptions
+                .forEach(exception -> assertEquals(List
+                        .of(Map
+                                .of(FieldKey.ENTITY,
+                                    CERTIFICATE,
+                                    FieldKey.FIELD,
+                                    "completedAt",
+                                    FieldKey.IS,
+                                    certificate.getCompletedAt().toString(),
+                                    FieldKey.CONDITION_FIELD,
+                                    "validUntil",
+                                    FieldKey.MAX,
+                                    certificate.getValidUntil().toString())), exception.getErrorAttributes()));
     }
 
     @DisplayName("Should pass validateOnCreate() when validUntil is null")

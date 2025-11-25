@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.persistence;
 
+import ch.puzzle.pcts.model.Model;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Service;
  *            the Repository of the entity
  */
 @Service
-public abstract class PersistenceBase<T, R extends JpaRepository<T, Long>> {
+public abstract class PersistenceBase<T extends Model, R extends JpaRepository<T, Long>>
+        implements
+            PersistenceService<T> {
 
     private final R repository;
 

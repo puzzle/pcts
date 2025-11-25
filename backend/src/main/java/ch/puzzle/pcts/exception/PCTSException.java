@@ -1,23 +1,30 @@
 package ch.puzzle.pcts.exception;
 
-import ch.puzzle.pcts.model.error.ErrorKey;
+import ch.puzzle.pcts.dto.error.ErrorKey;
+import ch.puzzle.pcts.dto.error.FieldKey;
+import ch.puzzle.pcts.dto.error.GenericErrorDto;
+import java.util.List;
+import java.util.Map;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.server.ResponseStatusException;
 
 public class PCTSException extends ResponseStatusException {
-    private final ErrorKey errorKey;
+    private final List<GenericErrorDto> errors;
 
-    public PCTSException(HttpStatusCode status, ErrorKey key) {
+    public PCTSException(HttpStatusCode status, List<GenericErrorDto> errors) {
         super(status);
-        this.errorKey = key;
+        this.errors = errors;
     }
 
-    public PCTSException(HttpStatusCode status, String reason, ErrorKey key) {
-        super(status, reason);
-        this.errorKey = key;
+    public List<GenericErrorDto> getErrors() {
+        return errors;
     }
 
-    public ErrorKey getErrorKey() {
-        return errorKey;
+    public List<ErrorKey> getErrorKeys() {
+        return getErrors().stream().map(GenericErrorDto::key).toList();
+    }
+
+    public List<Map<FieldKey, String>> getErrorAttributes() {
+        return getErrors().stream().map(GenericErrorDto::values).toList();
     }
 }
