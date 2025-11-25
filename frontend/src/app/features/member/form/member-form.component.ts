@@ -62,7 +62,7 @@ export class MemberFormComponent implements OnInit {
     return !!this.member();
   });
 
-  private readonly employmentStateOptions: EmploymentState[] = Object.values(EmploymentState);
+  private readonly employmentStateOptions: string[] = Object.values(EmploymentState);
 
   private readonly organisationUnitsOptions: WritableSignal<OrganisationUnitModel[]> = signal([]);
 
@@ -147,7 +147,6 @@ export class MemberFormComponent implements OnInit {
     this.location.back();
   }
 
-
   protected displayEmploymentState = (employmentState: EmploymentState | string): string => {
     if (!employmentState) {
       return '';
@@ -163,7 +162,7 @@ export class MemberFormComponent implements OnInit {
     return organisationUnit?.name ?? '';
   }
 
-  protected filterEmploymentState(value: string): EmploymentState[] {
+  protected filterEmploymentState(value: string): string[] {
     const filterValue = value?.toLowerCase() || '';
 
     return this.employmentStateOptions.filter((option) => {

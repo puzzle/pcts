@@ -3,6 +3,7 @@ import { EmploymentState } from '../enum/employment-state.enum';
 import { OrganisationUnitModel } from '../../features/organisation-unit/organisation-unit.model';
 import { MemberDto } from '../../features/member/dto/member.dto';
 import { DateTime } from 'luxon';
+import { removeTimeZone } from '../utils/DateHandler';
 
 export const organisationUnit1: OrganisationUnitModel = {
   id: 1,
@@ -71,20 +72,18 @@ export const member4: MemberModel = {
 export const memberDto1: MemberDto = {
   firstName: 'Lena',
   lastName: 'Müller',
-  birthDate: DateTime.fromISO('2000-12-01')
-    .toJSDate(),
+
+  birthDate: removeTimeZone(new Date('2000-12-01')),
   abbreviation: 'LM',
   employmentState: EmploymentState.MEMBER,
-  dateOfHire: DateTime.fromISO('2018-12-01')
-    .toJSDate(),
+  dateOfHire: removeTimeZone(new Date('2018-12-01')),
   organisationUnitId: 1
 };
 
 export const memberDto2: MemberDto = {
   firstName: 'John',
   lastName: 'Doe',
-  birthDate: DateTime.fromISO('2000-12-01')
-    .toJSDate(),
+  birthDate: removeTimeZone(new Date('2000-12-01')),
   abbreviation: null,
   employmentState: EmploymentState.APPLICANT,
   dateOfHire: null,
