@@ -4,6 +4,10 @@ import { OrganisationUnitModel } from '../../features/organisation-unit/organisa
 import { MemberDto } from '../../features/member/dto/member.dto';
 import { DateTime } from 'luxon';
 import { removeTimeZone } from '../utils/DateHandler';
+import { TagModel } from '../../features/certificates/certificate-type/tag.model';
+import { CertificateTypeModel } from '../../features/certificates/certificate-type/certificate-type.model';
+import { CertificateKind } from '../../features/certificates/certificate-type/certificate-kind.enum';
+import { CertificateModel } from '../../features/certificates/certificate.model';
 
 export const organisationUnit1: OrganisationUnitModel = {
   id: 1,
@@ -88,4 +92,98 @@ export const memberDto2: MemberDto = {
   employmentState: EmploymentState.APPLICANT,
   dateOfHire: null,
   organisationUnitId: 4
+};
+
+export const tag1: TagModel = {
+  id: 1,
+  name: 'GitLab'
+};
+
+export const tag2: TagModel = {
+  id: 2,
+  name: 'AWS'
+};
+
+export const tag3: TagModel = {
+  id: 3,
+  name: 'Ruby'
+};
+
+export const tag4: TagModel = {
+  id: 4,
+  name: 'PHP'
+};
+
+export const certificateType1: CertificateTypeModel = {
+  id: 1,
+  name: 'GitLab & AWS Certificate',
+  points: 10,
+  comment: null,
+  tags: [tag1,
+    tag2],
+  certificateKind: CertificateKind.CERTIFICATE
+};
+
+export const certificateType2: CertificateTypeModel = {
+  id: 2,
+  name: 'Ruby & PHP Certificate',
+  points: 15,
+  comment: null,
+  tags: [tag3,
+    tag4],
+  certificateKind: CertificateKind.CERTIFICATE
+};
+
+export const certificateType3: CertificateTypeModel = {
+  id: 2,
+  name: 'Advanced Military Function',
+  points: 25,
+  comment: 'Requires prior experience',
+  tags: [],
+  certificateKind: CertificateKind.MILITARY_FUNCTION
+};
+
+export const certificateType4: CertificateTypeModel = {
+  id: 3,
+  name: 'Youth Sports Training',
+  points: 15,
+  comment: null,
+  tags: [],
+  certificateKind: CertificateKind.YOUTH_AND_SPORT
+};
+
+export const certificate1: CertificateModel = {
+  id: 1,
+  member: member1,
+  certificateType: certificateType1,
+  completedAt: DateTime.fromISO('2022-03-15'),
+  validUntil: DateTime.fromISO('2024-03-15'),
+  comment: null
+};
+
+export const certificate2: CertificateModel = {
+  id: 2,
+  member: member2,
+  certificateType: certificateType2,
+  completedAt: DateTime.fromISO('2021-10-10'),
+  validUntil: DateTime.fromISO('2023-10-10'),
+  comment: 'Completed with distinction'
+};
+
+export const certificate3: CertificateModel = {
+  id: 3,
+  member: member3,
+  certificateType: certificateType3,
+  completedAt: DateTime.fromISO('2020-06-01'),
+  validUntil: DateTime.fromISO('2023-01-01'),
+  comment: null
+};
+
+export const certificate4: CertificateModel = {
+  id: 4,
+  member: member4,
+  certificateType: certificateType4,
+  completedAt: DateTime.fromISO('2019-09-20'),
+  validUntil: DateTime.fromISO('2024-09-20'),
+  comment: 'Leadership excellence'
 };

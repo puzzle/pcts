@@ -1,25 +1,24 @@
 import { TestBed } from '@angular/core/testing';
-
-import { OrganisationUnitService } from './organisation-unit.service';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { CertificateService } from './certificate.service';
 import { provideHttpClient } from '@angular/common/http';
-import { OrganisationUnitModel } from './organisation-unit.model';
-import { organisationUnit1, organisationUnit2 } from '../../shared/test/test-data';
+import { CertificateModel } from './certificate.model';
+
 
 describe('OrganisationUnitService', () => {
   let httpMock: HttpTestingController;
-  const API_URL = '/api/v1/organisation-units';
-  let service: OrganisationUnitService;
+  let service: CertificateService;
+  const API_URL = '/api/v1/certificates';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [OrganisationUnitService,
+      providers: [CertificateService,
         provideHttpClient(),
         provideHttpClientTesting()]
     })
       .compileComponents();
 
-    service = TestBed.inject(OrganisationUnitService);
+    service = TestBed.inject(CertificateService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -32,21 +31,21 @@ describe('OrganisationUnitService', () => {
       .toBeTruthy();
   });
 
-  describe('getAllOrganisationUnits', () => {
-    it('should call httpClient.get with the correct URL and return organisationUnits', () => {
-      const mockOrganisationUnits: OrganisationUnitModel[] = [organisationUnit1,
-        organisationUnit2];
 
-      service.getAllOrganisationUnits()
-        .subscribe((organisationUnits) => {
-          expect(organisationUnits)
-            .toEqual(mockOrganisationUnits);
+  describe('getCertificateById', () => {
+    it('should call httpClient.get with the correct URL and return organisationUnits', () => {
+      const mockCertificate: CertificateModel[] = certificate;
+
+      service.getCertificateById(1)
+        .subscribe((certificate) => {
+          expect(certificate)
+            .toEqual(mockCertificate);
         });
 
-      const req = httpMock.expectOne(API_URL);
+      const req = httpMock.expectOne(`${API_URL}/1`);
       expect(req.request.method)
         .toBe('GET');
-      req.flush(mockOrganisationUnits);
+      req.flush(mockCertificate);
     });
   });
 });
