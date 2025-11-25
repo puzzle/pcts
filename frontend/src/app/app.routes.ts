@@ -38,4 +38,8 @@ export const routes: Routes = [{
       resolve: { member: memberDataResolver }
     }
   ]
+},
+{
+  path: '**',
+  redirectTo: 'member'
 }];
