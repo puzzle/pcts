@@ -125,7 +125,7 @@ public abstract class ValidationBase<T extends Model> implements ValidationServi
         Map<FieldKey, String> fieldMap = new EnumMap<>(FieldKey.class);
 
         for (Map.Entry<String, String> entry : valueMap.entrySet()) {
-            Optional<FieldKey> fieldKeyOpt = Optional.ofNullable(parseFieldKey(entry.getKey()));
+            Optional<FieldKey> fieldKeyOpt = parseFieldKey(entry.getKey());
 
             if (fieldKeyOpt.isEmpty()) {
                 return new GenericErrorDto(ErrorKey.ERROR_MESSAGE_INVALID_KEY, Map.of(FieldKey.IS, entry.getKey()));
@@ -145,12 +145,12 @@ public abstract class ValidationBase<T extends Model> implements ValidationServi
         }
     }
 
-    private static FieldKey parseFieldKey(String key) {
+    private static Optional<FieldKey> parseFieldKey(String key) {
         try {
-            return FieldKey.valueOf(key.toUpperCase());
+            return Optional.of(FieldKey.valueOf(key.toUpperCase()));
         } catch (IllegalArgumentException e) {
             log.error("FieldKey enum does not contain key '{}'", key, e);
-            return null;
+            return Optional.empty();
         }
     }
 
