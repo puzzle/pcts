@@ -56,5 +56,11 @@
       "APPLICANT": "Bewerber",
       "EX_MEMBER": "Ex-Member"
     }
+  },
+
+  "ERROR": {
+    "NOT_FOUND": "{{ENTITY}} mit {{FIELD}} {{IS}} konnte nicht gefunden werden.",
+    "DEFAULT": "Ein unerwarteter Fehler ist aufgetreten.",
+    "CLOSE": "Schliessen"
   }
 }

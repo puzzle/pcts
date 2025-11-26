@@ -1,5 +1,5 @@
 import {
-  ApplicationConfig, inject, LOCALE_ID, provideAppInitializer,
+  ApplicationConfig, importProvidersFrom, inject, LOCALE_ID, provideAppInitializer,
   provideBrowserGlobalErrorListeners,
   provideZonelessChangeDetection
 } from '@angular/core';
@@ -7,7 +7,7 @@ import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import localeDeCH from '@angular/common/locales/de-CH';
 import { routes } from './app.routes';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideTranslateService, TranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
@@ -17,6 +17,8 @@ import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
 import { lastValueFrom } from 'rxjs';
 import { registerLocaleData } from '@angular/common';
 import { provideI18nPrefix } from './shared/i18n-prefix.provider';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { errorInterceptor } from './core/error-interceptor/error-interceptor';
 
 registerLocaleData(localeDeCH);
 export const appConfig: ApplicationConfig = {
@@ -24,7 +26,8 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes, withComponentInputBinding()),
-    provideHttpClient(),
+    importProvidersFrom(MatSnackBarModule),
+    provideHttpClient(withInterceptors([errorInterceptor])),
     provideTranslateService({
       fallbackLang: 'de',
       loader: provideTranslateHttpLoader({

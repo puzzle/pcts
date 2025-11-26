@@ -1,0 +1,17 @@
+@use 'custom_angular';
+
+.toast-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast-component {
+  display: flex;
+  align-items: center;
+  background: darkred;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 6px;
+  animation: fadeIn 150ms ease-out;
+}

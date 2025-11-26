@@ -1,0 +1,15 @@
+<div class="toast-stack">
+  @for (item of data; track item) {
+    @if (!item.closed) {
+      <div class="toast-component">
+        <div class="text">
+          {{ item.message }}
+        </div>
+        <button type="button" matIconButton aria-label="Close error popup" (click)="close(item)">
+          <mat-icon aria-label="Example home icon" fontIcon="close" />
+        </button>
+
+      </div>
+    }
+  }
+</div>

@@ -20,3 +20,8 @@ $pz-theme: mat.m2-define-light-theme(
 );
 
 @include mat.all-component-themes($pz-theme);
+
+.mdc-snackbar__surface {
+  background: transparent !important;
+  box-shadow: none !important;
+}
