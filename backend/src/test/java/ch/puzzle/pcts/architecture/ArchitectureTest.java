@@ -5,6 +5,7 @@ import static ch.puzzle.pcts.architecture.CustomConditions.havePluralEndpointNam
 import static ch.puzzle.pcts.architecture.CustomConditions.overrideEqualsMethod;
 import static ch.puzzle.pcts.architecture.CustomConditions.overrideHashCodeMethod;
 import static ch.puzzle.pcts.architecture.CustomConditions.overrideToStringMethod;
+import static ch.puzzle.pcts.architecture.CustomConditions.startWithApiPrefix;
 import static ch.puzzle.pcts.architecture.CustomConditions.trimAssignedStringFields;
 import static ch.puzzle.pcts.architecture.CustomTransformers.packages;
 import static com.tngtech.archunit.base.DescribedPredicate.not;
@@ -15,7 +16,6 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 
-import ch.puzzle.pcts.controller.CertificateController;
 import ch.puzzle.pcts.model.Model;
 import com.tngtech.archunit.core.domain.*;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
@@ -179,7 +179,8 @@ class ArchitectureTest {
                 .resideInAPackage("ch.puzzle.pcts.controller..")
                 .should()
                 .beAnnotatedWith(RestController.class)
-                .andShould(havePluralEndpointName(CertificateController.class))
+                .andShould(havePluralEndpointName())
+                .andShould(startWithApiPrefix())
                 .andShould()
                 .notBeInterfaces();
 

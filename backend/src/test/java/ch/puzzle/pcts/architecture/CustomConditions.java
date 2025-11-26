@@ -8,6 +8,7 @@ import com.tngtech.archunit.lang.ConditionEvents;
 import com.tngtech.archunit.lang.SimpleConditionEvent;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -55,7 +56,9 @@ public class CustomConditions {
         };
     }
 
-    public static ArchCondition<JavaClass> havePluralEndpointName(Class<?>... exceptions) {
+    private static ArchCondition<JavaClass> createAnnotationCheckMethod(Class<?> annotationClass,
+                                                                        Function<JavaAnnotation<?>, Boolean> isOk,
+                                                                        Class<?>... exceptions) {
         return new ArchCondition<>("should have a @RequestMapping annotation with a value that ends with 's'") {
 
             @Override
@@ -63,7 +66,7 @@ public class CustomConditions {
                 List<JavaAnnotation<JavaClass>> annotations = javaClass
                         .getAnnotations()
                         .stream()
-                        .filter(a -> a.getRawType().isAssignableTo(RequestMapping.class))
+                        .filter(a -> a.getRawType().isAssignableTo(annotationClass))
                         .filter(a -> {
                             for (Class<?> exception : exceptions) {
                                 if (javaClass.isAssignableTo(exception)) {
@@ -75,18 +78,40 @@ public class CustomConditions {
                         .toList();
 
                 for (JavaAnnotation<?> annotation : annotations) {
-                    Optional<Object> property = annotation.get("value");
-                    if (property.isPresent() && property.get() instanceof String[] value && value.length > 0) {
-                        if (!value[0].endsWith("s")) {
-                            String message = String
-                                    .format("The @RequestMapping annotation of '%s' does not end with 's', which means it is possible it is not plural",
-                                            javaClass.getName());
-                            events.add(SimpleConditionEvent.violated(javaClass, message));
-                        }
+                    boolean checkPassed = isOk.apply(annotation);
+                    if (!checkPassed) {
+                        String message = String
+                                .format("The @RequestMapping annotation of '%s' does not end with 's', which means it is possible it is not plural",
+                                        javaClass.getName());
+                        events.add(SimpleConditionEvent.violated(javaClass, message));
                     }
                 }
             }
         };
+    }
+
+    public static ArchCondition<JavaClass> havePluralEndpointName(Class<?>... exceptions) {
+        Function<JavaAnnotation<?>, Boolean> isOk = (annotation) -> {
+            Optional<Object> property = annotation.get("value");
+            if (property.isPresent() && property.get() instanceof String[] value && value.length > 0) {
+                return value[0].endsWith("s");
+            }
+            return true;
+        };
+
+        return createAnnotationCheckMethod(RequestMapping.class, isOk, exceptions);
+    }
+
+    public static ArchCondition<JavaClass> startWithApiPrefix(Class<?>... exceptions) {
+        Function<JavaAnnotation<?>, Boolean> isOk = (annotation) -> {
+            Optional<Object> property = annotation.get("value");
+            if (property.isPresent() && property.get() instanceof String[] value && value.length > 0) {
+                return value[0].startsWith("/api/v1/");
+            }
+            return true;
+        };
+
+        return createAnnotationCheckMethod(RequestMapping.class, isOk, exceptions);
     }
 
     static ArchCondition<JavaCodeUnit> trimAssignedStringFields() {
