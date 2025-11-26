@@ -13,6 +13,8 @@ import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { lastValueFrom } from 'rxjs';
 import { provideI18nPrefix } from './shared/i18n-prefix.provider';
+import { provideOAuthClient } from 'angular-oauth2-oidc';
+import { oAuthInterceptor } from './shared/interceptors/o-auth-interceptor';
 import { registerLocaleData } from '@angular/common';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { errorInterceptor } from './core/error-interceptor/error-interceptor';
@@ -55,8 +57,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withComponentInputBinding()),
     importProvidersFrom(MatSnackBarModule),
     provideHttpClient(withInterceptors([errorInterceptor,
-      successInterceptor,
-      includeBearerTokenInterceptor])),
+      successInterceptor, includeBearerTokenInterceptor])),
     provideTranslateService({
       fallbackLang: 'de',
       loader: provideTranslateHttpLoader({
