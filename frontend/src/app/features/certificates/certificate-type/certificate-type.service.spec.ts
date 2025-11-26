@@ -8,7 +8,7 @@ import { certificateType1, certificateType2 } from '../../../shared/test/test-da
 
 describe('CertificateTypeService', () => {
   let httpMock: HttpTestingController;
-  const API_URL = '/api/v1/organisation-units';
+  const API_URL = '/api/v1/certificate-types';
   let service: CertificateTypeService;
 
   beforeEach(() => {
