@@ -7,6 +7,6 @@ export interface CertificateModel {
   member: MemberModel;
   certificateType: CertificateTypeModel;
   completedAt: DateTime;
-  validUntil: DateTime;
+  validUntil: DateTime | null;
   comment: string | null;
 }

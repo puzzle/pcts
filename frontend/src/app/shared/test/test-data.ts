@@ -8,6 +8,7 @@ import { TagModel } from '../../features/certificates/certificate-type/tag.model
 import { CertificateTypeModel } from '../../features/certificates/certificate-type/certificate-type.model';
 import { CertificateKind } from '../../features/certificates/certificate-type/certificate-kind.enum';
 import { CertificateModel } from '../../features/certificates/certificate.model';
+import { CertificateDto } from '../../features/certificates/dto/certificate.dto';
 
 export const organisationUnit1: OrganisationUnitModel = {
   id: 1,
@@ -170,20 +171,18 @@ export const certificate2: CertificateModel = {
   comment: 'Completed with distinction'
 };
 
-export const certificate3: CertificateModel = {
-  id: 3,
-  member: member3,
-  certificateType: certificateType3,
-  completedAt: DateTime.fromISO('2020-06-01'),
-  validUntil: DateTime.fromISO('2023-01-01'),
+export const certificateDto1: CertificateDto = {
+  memberId: 3,
+  certificateTypeId: 3,
+  completedAt: removeTimeZone(new Date('2020-06-01')),
+  validUntil: removeTimeZone(new Date('2023-01-01')),
   comment: null
 };
 
-export const certificate4: CertificateModel = {
-  id: 4,
-  member: member4,
-  certificateType: certificateType4,
-  completedAt: DateTime.fromISO('2019-09-20'),
-  validUntil: DateTime.fromISO('2024-09-20'),
+export const certificateDto2: CertificateDto = {
+  memberId: 4,
+  certificateTypeId: 4,
+  completedAt: removeTimeZone(new Date('2019-09-20')),
+  validUntil: removeTimeZone(new Date('2024-09-20')),
   comment: 'Leadership excellence'
 };
