@@ -11,6 +11,7 @@ services:
     ports:
       - "5432:5432"
     profiles: ['', backend, db]
+
   pcts-backend:
     container_name: pcts-backend
     build:
@@ -35,3 +36,17 @@ services:
     ports:
       - "4200:4200"
     profiles: ['']
+
+  keycloak-pitc:
+    image: quay.io/keycloak/keycloak:26.3.3
+    environment:
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin26
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=keycloak26
+    volumes:
+      - ./config/realm-export-pitc.json:/opt/keycloak/data/import/realm-pitc.json
+    command:
+      - start-dev
+      - --import-realm
+    ports:
+      - "8544:8080"
+    profiles: ['', backend, db]
