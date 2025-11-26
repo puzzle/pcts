@@ -6,8 +6,10 @@ import com.tngtech.archunit.core.domain.JavaMethod;
 import com.tngtech.archunit.lang.ArchCondition;
 import com.tngtech.archunit.lang.ConditionEvents;
 import com.tngtech.archunit.lang.SimpleConditionEvent;
+import java.util.List;
 import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 public class CustomConditions {
 
@@ -48,6 +50,40 @@ public class CustomConditions {
                                     javaClass.getSourceCodeLocation(),
                                     methodName);
                     events.add(SimpleConditionEvent.violated(javaClass, message));
+                }
+            }
+        };
+    }
+
+    public static ArchCondition<JavaClass> havePluralEndpointName(Class<?>... exceptions) {
+        return new ArchCondition<>("should have a @RequestMapping annotation with a value that ends with 's'") {
+
+            @Override
+            public void check(JavaClass javaClass, ConditionEvents events) {
+                List<JavaAnnotation<JavaClass>> annotations = javaClass
+                        .getAnnotations()
+                        .stream()
+                        .filter(a -> a.getRawType().isAssignableTo(RequestMapping.class))
+                        .filter(a -> {
+                            for (Class<?> exception : exceptions) {
+                                if (javaClass.isAssignableTo(exception)) {
+                                    return false;
+                                }
+                            }
+                            return true;
+                        })
+                        .toList();
+
+                for (JavaAnnotation<?> annotation : annotations) {
+                    Optional<Object> property = annotation.get("value");
+                    if (property.isPresent() && property.get() instanceof String[] value && value.length > 0) {
+                        if (!value[0].endsWith("s")) {
+                            String message = String
+                                    .format("The @RequestMapping annotation of '%s' does not end with 's', which means it is possible it is not plural",
+                                            javaClass.getName());
+                            events.add(SimpleConditionEvent.violated(javaClass, message));
+                        }
+                    }
                 }
             }
         };
