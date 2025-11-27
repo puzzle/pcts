@@ -57,11 +57,11 @@ jobs:
 
       - name: Build and analyze
         run: |
-          mvn clean package sonar:sonar \
+          mvn package sonar:sonar \
           -DskipTests \
           -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
           -Dsonar.host.url=${{ vars.SONAR_HOST_URL }} \
-          -Dsonar.jacoco.reportPaths=backend/target/jacoco-output \
+          -Dsonar.jacoco.reportPaths=backend/target/jacoco-output/merged.exec \
           -Dsonar.javascript.lcov.reportPaths=frontend/coverage/lcov.info \
           -Dsonar.junit.reportPaths=frontend/junit.xml,backend/target/surefire-reports,backend/target/failsafe-reports
 
