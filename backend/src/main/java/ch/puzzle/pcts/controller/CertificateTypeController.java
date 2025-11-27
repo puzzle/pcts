@@ -16,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/v1/certificate-types")
+@RequestMapping("/api/v1/certificate-types")
 @Tag(name = "certificate-types", description = "Manage professional certificate types and qualifications")
 public class CertificateTypeController {
     private final CertificateTypeBusinessService service;
