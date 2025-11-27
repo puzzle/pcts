@@ -1,16 +1,18 @@
 package ch.puzzle.pcts.architecture;
 
 import static ch.puzzle.pcts.architecture.CustomConditions.followPattern;
-import static ch.puzzle.pcts.architecture.CustomConditions.havePluralEndpointName;
+import static ch.puzzle.pcts.architecture.CustomConditions.haveValuePrefix;
+import static ch.puzzle.pcts.architecture.CustomConditions.haveValueSuffix;
 import static ch.puzzle.pcts.architecture.CustomConditions.overrideEqualsMethod;
 import static ch.puzzle.pcts.architecture.CustomConditions.overrideHashCodeMethod;
 import static ch.puzzle.pcts.architecture.CustomConditions.overrideToStringMethod;
-import static ch.puzzle.pcts.architecture.CustomConditions.startWithApiPrefix;
 import static ch.puzzle.pcts.architecture.CustomConditions.trimAssignedStringFields;
+import static ch.puzzle.pcts.architecture.CustomTransformers.annotations;
 import static ch.puzzle.pcts.architecture.CustomTransformers.packages;
 import static com.tngtech.archunit.base.DescribedPredicate.not;
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAPackage;
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.type;
+import static com.tngtech.archunit.lang.conditions.ArchConditions.and;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
@@ -20,6 +22,7 @@ import ch.puzzle.pcts.model.Model;
 import com.tngtech.archunit.core.domain.*;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
+import com.tngtech.archunit.lang.ArchCondition;
 import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.library.Architectures;
 import jakarta.persistence.Entity;
@@ -30,6 +33,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.stereotype.*;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 class ArchitectureTest {
@@ -179,10 +183,21 @@ class ArchitectureTest {
                 .resideInAPackage("ch.puzzle.pcts.controller..")
                 .should()
                 .beAnnotatedWith(RestController.class)
-                .andShould(havePluralEndpointName())
-                .andShould(startWithApiPrefix())
                 .andShould()
                 .notBeInterfaces();
+
+        rule.check(importedClasses);
+    }
+
+    @DisplayName("@RequestMappings should have common pre- and suffix")
+    @Test
+    void controllersShouldDefineCorrectRequestMapping() {
+        JavaClasses importedClasses = getMainSourceClasses();
+
+        ArchCondition<JavaAnnotation<JavaClass>> combinedCondition = and(haveValueSuffix("s"),
+                                                                         haveValuePrefix("/api/v1/"));
+
+        ArchRule rule = all(annotations(RequestMapping.class)).should(combinedCondition);
 
         rule.check(importedClasses);
     }

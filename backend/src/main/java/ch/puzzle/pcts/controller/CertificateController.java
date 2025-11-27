@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/certificates")
+@RequestMapping("/apitest/v1/certificates")
 @Tag(name = "certificates", description = "Manage the certificates of members which are associated with a member")
 public class CertificateController {
     private final CertificateBusinessService businessService;
