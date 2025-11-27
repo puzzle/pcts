@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/experience-types")
-@Tag(name = "experience-type", description = "Manage the types of professional experience")
+@Tag(name = "experience-types", description = "Manage the types of professional experience")
 public class ExperienceTypeController {
     private final ExperienceTypeMapper mapper;
     private final ExperienceTypeBusinessService service;
