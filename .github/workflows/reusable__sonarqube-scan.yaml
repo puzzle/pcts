@@ -57,9 +57,9 @@ jobs:
 
       - name: Build and analyze
         run: |
-          mvn package sonar:sonar \
+          mvn package org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
           -DskipTests \
-          -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+          -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
           -Dsonar.host.url=${{ vars.SONAR_HOST_URL }} \
           -Dsonar.jacoco.reportPaths=backend/target/jacoco-output/merged.exec \
           -Dsonar.javascript.lcov.reportPaths=frontend/coverage/lcov.info \
