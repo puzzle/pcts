@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/degrees")
-@Tag(name = "degree", description = "Manage the degrees which are associated with any one member")
+@Tag(name = "degrees", description = "Manage the degrees which are associated with any one member")
 public class DegreeController {
     DegreeBusinessService businessService;
     DegreeMapper mapper;
