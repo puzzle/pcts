@@ -2,8 +2,9 @@ package ch.puzzle.pcts.architecture;
 
 import static ch.puzzle.pcts.architecture.CustomTransformers.annotations;
 import static ch.puzzle.pcts.architecture.CustomTransformers.packages;
+import static ch.puzzle.pcts.architecture.condition.AnnotationConditions.haveSuffix;
 import static ch.puzzle.pcts.architecture.condition.AnnotationConditions.haveValuePrefix;
-import static ch.puzzle.pcts.architecture.condition.AnnotationConditions.haveValueSuffix;
+import static ch.puzzle.pcts.architecture.condition.AnnotationConditions.shouldBeValidDescription;
 import static ch.puzzle.pcts.architecture.condition.ClassConditions.followPattern;
 import static ch.puzzle.pcts.architecture.condition.ClassConditions.overrideEqualsMethod;
 import static ch.puzzle.pcts.architecture.condition.ClassConditions.overrideHashCodeMethod;
@@ -25,6 +26,7 @@ import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.lang.ArchCondition;
 import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.library.Architectures;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.Entity;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.DisplayName;
@@ -194,10 +196,23 @@ class ArchitectureTest {
     void controllersShouldDefineCorrectRequestMapping() {
         JavaClasses importedClasses = getMainSourceClasses();
 
-        ArchCondition<JavaAnnotation<JavaClass>> combinedCondition = and(haveValueSuffix("s"),
+        ArchCondition<JavaAnnotation<JavaClass>> combinedCondition = and(haveSuffix("value", "s"),
                                                                          haveValuePrefix("/api/v1/"));
 
         ArchRule rule = all(annotations(RequestMapping.class)).should(combinedCondition);
+
+        rule.check(importedClasses);
+    }
+
+    @DisplayName("Controller @Tags should be valid")
+    @Test
+    void controllerTagsShouldBeCompleteSentences() {
+        JavaClasses importedClasses = getMainSourceClasses();
+
+        ArchCondition<JavaAnnotation<JavaClass>> combinedCondition = and(shouldBeValidDescription("description"),
+                                                                         haveSuffix("name", "s"));
+
+        ArchRule rule = all(annotations(Tag.class)).should(combinedCondition);
 
         rule.check(importedClasses);
     }
