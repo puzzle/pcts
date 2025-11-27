@@ -88,7 +88,8 @@ jobs:
         with:
           name: backend-test-reports
           path: |
-            backend/target/jacoco.exec
+            backend/target/site/
+            backend/target/jacoco-output/
             backend/target/surefire-reports/
           retention-days: 1
 
