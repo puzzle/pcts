@@ -1,14 +1,14 @@
 package ch.puzzle.pcts.architecture;
 
-import static ch.puzzle.pcts.architecture.CustomConditions.followPattern;
-import static ch.puzzle.pcts.architecture.CustomConditions.haveValuePrefix;
-import static ch.puzzle.pcts.architecture.CustomConditions.haveValueSuffix;
-import static ch.puzzle.pcts.architecture.CustomConditions.overrideEqualsMethod;
-import static ch.puzzle.pcts.architecture.CustomConditions.overrideHashCodeMethod;
-import static ch.puzzle.pcts.architecture.CustomConditions.overrideToStringMethod;
-import static ch.puzzle.pcts.architecture.CustomConditions.trimAssignedStringFields;
 import static ch.puzzle.pcts.architecture.CustomTransformers.annotations;
 import static ch.puzzle.pcts.architecture.CustomTransformers.packages;
+import static ch.puzzle.pcts.architecture.condition.AnnotationConditions.haveValuePrefix;
+import static ch.puzzle.pcts.architecture.condition.AnnotationConditions.haveValueSuffix;
+import static ch.puzzle.pcts.architecture.condition.ClassConditions.followPattern;
+import static ch.puzzle.pcts.architecture.condition.ClassConditions.overrideEqualsMethod;
+import static ch.puzzle.pcts.architecture.condition.ClassConditions.overrideHashCodeMethod;
+import static ch.puzzle.pcts.architecture.condition.ClassConditions.overrideToStringMethod;
+import static ch.puzzle.pcts.architecture.condition.CodeUnitConditions.trimAssignedStringFields;
 import static com.tngtech.archunit.base.DescribedPredicate.not;
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAPackage;
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.type;
