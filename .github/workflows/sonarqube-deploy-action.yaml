@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - name: Set up JDK ${{ vars.JAVA_VERSION }}
         uses: actions/setup-java@v5
@@ -27,9 +29,11 @@ jobs:
         run: cd frontend && npm run test -- --coverage
 
       - name: Build and analyze
-        run: mvn clean verify sonar:sonar
-          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        run: cd backend &&
+          mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+          -Dsonar.token=${{ secrets.SONAR_TOKEN }}
           -Dsonar.host.url=${{ vars.SONAR_HOST_URL }}
+          -Dsonar.projectBaseDir=.
 
       - name: SonarQube Quality Gate check
         id: sonarqube-quality-gate-check
