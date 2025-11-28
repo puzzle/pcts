@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.model.calculation;
 
+import static org.apache.commons.lang3.StringUtils.trim;
+
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.role.Role;
@@ -7,8 +9,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Objects;
-
-import static org.apache.commons.lang3.StringUtils.trim;
 
 @Entity
 // @SQLDelete(sql = "UPDATE calculations SET state = 'ARCHIVED' WHERE id = ?")
