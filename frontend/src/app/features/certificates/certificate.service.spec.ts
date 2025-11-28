@@ -6,7 +6,7 @@ import { CertificateModel } from './certificate.model';
 import { certificate1, certificate2 } from '../../shared/test/test-data';
 
 
-describe('OrganisationUnitService', () => {
+describe('certificateService', () => {
   let httpMock: HttpTestingController;
   let service: CertificateService;
   const API_URL = '/api/v1/certificates';
