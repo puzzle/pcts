@@ -39,13 +39,10 @@ public class CalculationPersistenceServiceIT
 
     @Override
     List<Calculation> getAll() {
-        Role deletedRole = new Role(1L, "Role 1", true);
-        deletedRole.setDeletedAt(LocalDateTime.ofInstant(Instant.EPOCH, ZoneOffset.UTC));
-
         return List
                 .of(new Calculation(1L,
                                     memberPersistenceServiceIT.getAll().getFirst(),
-                                    deletedRole,
+                                    rolePersistenceServiceIT.getAll().getLast(),
                                     CalculationState.DRAFT,
                                     LocalDate.of(2025, 1, 14),
                                     "Ldap User"),
@@ -57,7 +54,7 @@ public class CalculationPersistenceServiceIT
                                     "Ldap User 2"),
                     new Calculation(3L,
                                     memberPersistenceServiceIT.getAll().getLast(),
-                                    deletedRole,
+                                    rolePersistenceServiceIT.getAll().getLast(),
                                     CalculationState.ACTIVE,
                                     LocalDate.of(2025, 1, 14),
                                     null));

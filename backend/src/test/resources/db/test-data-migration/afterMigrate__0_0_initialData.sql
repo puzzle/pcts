@@ -91,6 +91,6 @@ TRUNCATE TABLE calculation CASCADE;
 INSERT INTO calculation
 (member_id, role_id, state, publication_date, publicized_by)
 VALUES
-    (1, 1, 'DRAFT', '2025-01-14', 'Ldap User'),
+    (1, 2, 'DRAFT', '2025-01-14', 'Ldap User'),
     (2, 2, 'ARCHIVED', NULL, 'Ldap User 2'),
-    (2, 1, 'ACTIVE', '2025-01-14', NULL);
+    (2, 2, 'ACTIVE', '2025-01-14', NULL);
