@@ -47,7 +47,7 @@ public class CalculationMapper {
                                this.memberBusinessService.getById(dto.memberId()),
                                this.roleBusinessService.getById(dto.roleId()),
                                dto.state(),
-                null,
-                null);
+                               null,
+                               null);
     }
 }

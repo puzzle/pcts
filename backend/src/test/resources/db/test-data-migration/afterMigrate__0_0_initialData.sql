@@ -93,4 +93,4 @@ INSERT INTO calculations
 VALUES
     (1, 1, 'DRAFT', '2025-01-14', 'Ldap User'),
     (2, 2, 'ARCHIVED', NULL, 'Ldap User 2'),
-    (3, 3, 'ACTIVE', '2025-01-14', NULL);
+    (2, 1, 'ACTIVE', '2025-01-14', NULL);
