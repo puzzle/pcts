@@ -1,5 +1,14 @@
 package ch.puzzle.pcts.controller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.calculation.CalculationDto;
 import ch.puzzle.pcts.dto.calculation.CalculationInputDto;
@@ -16,6 +25,7 @@ import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.business.CalculationBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,17 +37,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.time.LocalDate;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Import(SpringSecurityConfig.class)
 @ExtendWith(MockitoExtension.class)
@@ -84,34 +83,21 @@ class CalculationControllerIT {
         calculation.setPublicationDate(commonDate);
         calculation.setPublicizedBy("System");
 
-        inputDto = new CalculationInputDto(
-                ID,
-                1L,
-                CalculationState.ACTIVE
-        );
+        inputDto = new CalculationInputDto(ID, 1L, CalculationState.ACTIVE);
 
         RoleDto roleDto = new RoleDto(1L, "Developer", true);
         OrganisationUnitDto ouDto = new OrganisationUnitDto(1L, "/dev");
 
-        MemberDto memberDto = new MemberDto(
-                ID,
-                "Alex",
-                "Miller",
-                EmploymentState.MEMBER,
-                "AM",
-                commonDate,
-                commonDate,
-                ouDto
-        );
+        MemberDto memberDto = new MemberDto(ID,
+                                            "Alex",
+                                            "Miller",
+                                            EmploymentState.MEMBER,
+                                            "AM",
+                                            commonDate,
+                                            commonDate,
+                                            ouDto);
 
-        expectedDto = new CalculationDto(
-                ID,
-                memberDto,
-                roleDto,
-                CalculationState.ACTIVE,
-                commonDate,
-                "System"
-        );
+        expectedDto = new CalculationDto(ID, memberDto, roleDto, CalculationState.ACTIVE, commonDate, "System");
     }
 
     @DisplayName("Should successfully get calculation by ID")
@@ -120,7 +106,8 @@ class CalculationControllerIT {
         given(businessService.getById(ID)).willReturn(calculation);
         given(mapper.toDto(any(Calculation.class))).willReturn(expectedDto);
 
-        mvc.perform(get(BASEURL + "/{id}", ID).with(csrf()))
+        mvc
+                .perform(get(BASEURL + "/{id}", ID).with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
@@ -135,7 +122,8 @@ class CalculationControllerIT {
         given(businessService.create(any(Calculation.class))).willReturn(calculation);
         given(mapper.toDto(any(Calculation.class))).willReturn(expectedDto);
 
-        mvc.perform(post(BASEURL)
+        mvc
+                .perform(post(BASEURL)
                         .content(objectMapper.writeValueAsString(inputDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()))
@@ -154,7 +142,8 @@ class CalculationControllerIT {
         given(businessService.update(eq(ID), any(Calculation.class))).willReturn(calculation);
         given(mapper.toDto(any(Calculation.class))).willReturn(expectedDto);
 
-        mvc.perform(put(BASEURL + "/{id}", ID)
+        mvc
+                .perform(put(BASEURL + "/{id}", ID)
                         .content(objectMapper.writeValueAsString(inputDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()))
