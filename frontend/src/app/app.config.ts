@@ -19,6 +19,7 @@ import { registerLocaleData } from '@angular/common';
 import { provideI18nPrefix } from './shared/i18n-prefix.provider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { errorInterceptor } from './core/error-interceptor/error-interceptor';
+import { successInterceptor } from './core/success-interceptor/success-interceptor';
 
 registerLocaleData(localeDeCH);
 export const appConfig: ApplicationConfig = {
@@ -27,7 +28,8 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(routes, withComponentInputBinding()),
     importProvidersFrom(MatSnackBarModule),
-    provideHttpClient(withInterceptors([errorInterceptor])),
+    provideHttpClient(withInterceptors([errorInterceptor,
+      successInterceptor])),
     provideTranslateService({
       fallbackLang: 'de',
       loader: provideTranslateHttpLoader({

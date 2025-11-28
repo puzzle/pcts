@@ -1,18 +1,18 @@
 import { inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ToastItem, ToastNotificationComponent } from './toast-notification.component';
+import { ToastItem, SnackbarComponent } from './snackbar.component';
 
 @Injectable({ providedIn: 'root' })
 export class ToastService {
   private readonly snackBar = inject(MatSnackBar);
 
-  showToasts(items: ToastItem[]) {
-    this.snackBar.openFromComponent(ToastNotificationComponent, {
+  showToasts(items: ToastItem[], type: 'success' | 'error') {
+    this.snackBar.openFromComponent(SnackbarComponent, {
       data: items,
+      panelClass: type,
       verticalPosition: 'bottom',
       horizontalPosition: 'right',
-      duration: 10000,
-      panelClass: ['toast-wrapper']
+      duration: 5000
     });
   }
 }
