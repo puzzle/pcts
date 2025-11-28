@@ -54,7 +54,7 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
     void shouldGetAllEntities() {
         List<T> all = service.getAll();
         assertThat(all).hasSize(getAll().size());
-        assertEquals(getAll(), all);
+        assertThat(getAll()).containsExactlyElementsOf(all);
     }
 
     @DisplayName("Should create entity")
