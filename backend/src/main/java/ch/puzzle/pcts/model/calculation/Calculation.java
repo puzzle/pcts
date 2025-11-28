@@ -8,6 +8,8 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import static org.apache.commons.lang3.StringUtils.trim;
+
 @Entity
 // @SQLDelete(sql = "UPDATE calculations SET state = 'ARCHIVED' WHERE id = ?")
 public class Calculation implements Model {
@@ -40,7 +42,7 @@ public class Calculation implements Model {
         this.role = role;
         this.state = state;
         this.publicationDate = publicationDate;
-        this.publicizedBy = publicizedBy;
+        this.publicizedBy = trim(publicizedBy);
     }
 
     public Calculation() {
@@ -108,10 +110,10 @@ public class Calculation implements Model {
     }
 
     public String getPublicizedBy() {
-        return publicizedBy;
+        return trim(publicizedBy);
     }
 
     public void setPublicizedBy(String publicizedBy) {
-        this.publicizedBy = publicizedBy;
+        this.publicizedBy = trim(publicizedBy);
     }
 }
