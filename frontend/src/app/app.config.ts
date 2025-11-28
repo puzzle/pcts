@@ -7,7 +7,7 @@ import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import localeDeCH from '@angular/common/locales/de-CH';
 import { routes } from './app.routes';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import {provideHttpClient, withInterceptors} from '@angular/common/http';
 import { provideTranslateService, TranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
