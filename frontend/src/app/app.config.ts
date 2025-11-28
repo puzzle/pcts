@@ -7,7 +7,7 @@ import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import localeDeCH from '@angular/common/locales/de-CH';
 import { routes } from './app.routes';
-import {provideHttpClient, withInterceptors} from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideTranslateService, TranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
@@ -19,17 +19,41 @@ import { registerLocaleData } from '@angular/common';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { errorInterceptor } from './core/error-interceptor/error-interceptor';
 import { successInterceptor } from './core/success-interceptor/success-interceptor';
+import {
+  createInterceptorCondition,
+  INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG, IncludeBearerTokenCondition, includeBearerTokenInterceptor,
+  provideKeycloak
+} from 'keycloak-angular';
 
 registerLocaleData(localeDeCH);
 
+const urlCondition = createInterceptorCondition<IncludeBearerTokenCondition>({
+  urlPattern: /^(\/)?api/,
+  bearerPrefix: 'Bearer'
+});
+
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideKeycloak({
+      config: {
+        url: 'http://localhost:8544',
+        realm: 'pitc',
+        clientId: 'pcts-dev'
+      },
+      initOptions: {
+        onLoad: 'check-sso'
+      }
+    }),
+    {
+      provide: INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG,
+      useValue: [urlCondition] // <-- Note that multiple conditions might be added.
+    },
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes, withComponentInputBinding()),
     importProvidersFrom(MatSnackBarModule),
     provideHttpClient(withInterceptors([errorInterceptor,
-      successInterceptor, oAuthInterceptor])),
+      successInterceptor, oAuthInterceptor,includeBearerTokenInterceptor])),
     provideOAuthClient(),
     provideTranslateService({
       fallbackLang: 'de',
