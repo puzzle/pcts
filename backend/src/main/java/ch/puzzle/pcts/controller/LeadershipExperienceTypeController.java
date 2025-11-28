@@ -16,8 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/v1/leadership-experience-types")
-@Tag(name = "leadership-experience-types")
+@RequestMapping("/api/v1/leadership-experience-types")
+@Tag(name = "leadership-experience-types", description = "Manage leadership experience types")
 public class LeadershipExperienceTypeController {
     private final LeadershipExperienceTypeBusinessService service;
     private final LeadershipExperienceTypeMapper mapper;
