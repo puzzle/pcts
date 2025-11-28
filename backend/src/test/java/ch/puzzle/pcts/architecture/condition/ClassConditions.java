@@ -17,7 +17,7 @@ public class ClassConditions {
 
     public static final ArchCondition<JavaClass> overrideHashCodeMethod = createMethodOverrideCondition("hashCode");
 
-    public ClassConditions() {
+    private ClassConditions() {
     }
 
     public static ArchCondition<JavaPackage> followPattern(String pattern) {
