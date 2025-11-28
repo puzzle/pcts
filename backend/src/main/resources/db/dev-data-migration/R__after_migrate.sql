@@ -9,6 +9,7 @@ TRUNCATE TABLE member CASCADE;
 TRUNCATE TABLE experience CASCADE;
 TRUNCATE TABLE degree CASCADE;
 TRUNCATE TABLE certificate CASCADE;
+TRUNCATE TABLE calculation CASCADE;
 
 INSERT INTO role (name, is_management)
 VALUES
@@ -135,3 +136,11 @@ VALUES
     (3, 3, '2020-03-22', '2022-03-21', 'Needs renewal.', NULL),
     (4, 1, '2021-06-10', '2023-06-09', 'Left organization.', '2023-07-01 10:00:00'),
     (5, 4, '2024-02-01', '2026-02-01', NULL, NULL);
+
+INSERT INTO calculation (member_id, role_id, state, publication_date, publicized_by)
+VALUES
+    (1, 1, 'ACTIVE', NULL, NULL),
+    (2, 2, 'DRAFT', '2025-01-10', 'admin_user'),
+    (3, 3, 'ARCHIVED', NULL, NULL),
+    (4, 4, 'DRAFT', '2025-02-02', 'system'),
+    (5, 5, 'ACTIVE', '2025-01-28', 'admin_user');
