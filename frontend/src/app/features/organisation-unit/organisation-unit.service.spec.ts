@@ -32,21 +32,21 @@ describe('OrganisationUnitService', () => {
       .toBeTruthy();
   });
 
-  describe('getAllMembers', () => {
-    it('should call httpClient.get with the correct URL and return members', () => {
-      const mockMembers: OrganisationUnitModel[] = [organisationUnit1,
+  describe('getAllOrganisationUnits', () => {
+    it('should call httpClient.get with the correct URL and return organisationUnits', () => {
+      const mockOrganisationUnits: OrganisationUnitModel[] = [organisationUnit1,
         organisationUnit2];
 
       service.getAllOrganisationUnits()
-        .subscribe((members) => {
-          expect(members)
-            .toEqual(mockMembers);
+        .subscribe((organisationUnits) => {
+          expect(organisationUnits)
+            .toEqual(mockOrganisationUnits);
         });
 
       const req = httpMock.expectOne(API_URL);
       expect(req.request.method)
         .toBe('GET');
-      req.flush(mockMembers);
+      req.flush(mockOrganisationUnits);
     });
   });
 });
