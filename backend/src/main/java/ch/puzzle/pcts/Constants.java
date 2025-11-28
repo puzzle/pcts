@@ -12,6 +12,8 @@ public class Constants {
     public static final String ROLE = "role";
     public static final String TAG = "tag";
     public static final String LEADERSHIP_EXPERIENCE_TYPE = "leadershipExperienceType";
+    public static final String CALCULATION = "calculation";
+
     private Constants() {
     }
 }
