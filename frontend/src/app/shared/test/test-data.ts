@@ -127,11 +127,10 @@ export const certificateType1: CertificateTypeModel = {
 
 export const certificateType2: CertificateTypeModel = {
   id: 2,
-  name: 'Ruby & PHP Certificate',
+  name: 'Ruby Certificate',
   points: 15,
   comment: null,
-  tags: [tag3,
-    tag4],
+  tags: [tag3],
   certificateKind: CertificateKind.CERTIFICATE
 };
 
@@ -167,7 +166,7 @@ export const certificate2: CertificateModel = {
   member: member2,
   certificateType: certificateType2,
   completedAt: DateTime.fromISO('2021-10-10'),
-  validUntil: DateTime.fromISO('2023-10-10'),
+  validUntil: null,
   comment: 'Completed with distinction'
 };
 
