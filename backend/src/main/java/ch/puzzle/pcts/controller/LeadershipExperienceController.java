@@ -1,7 +1,7 @@
 package ch.puzzle.pcts.controller;
 
-import ch.puzzle.pcts.dto.leadershipExperience.LeadershipExperienceDto;
-import ch.puzzle.pcts.dto.leadershipExperience.LeadershipExperienceInputDto;
+import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceDto;
+import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceInputDto;
 import ch.puzzle.pcts.mapper.LeadershipExperiencesMapper;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.service.business.LeadershipExperiencesBusinessService;
