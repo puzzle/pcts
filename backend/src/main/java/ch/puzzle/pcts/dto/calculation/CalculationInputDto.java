@@ -12,5 +12,5 @@ public record CalculationInputDto(
 
         @Schema(description = "The role id assigned to the member.", exampleClasses = RoleDto.class, example = "1", requiredMode = Schema.RequiredMode.REQUIRED, nullable = false) Long roleId,
 
-        @Schema(description = "The current calculation state for this role assignment.", example = "ACTIVE", requiredMode = Schema.RequiredMode.REQUIRED, nullable = false) CalculationState state
-){}
+        @Schema(description = "The current calculation state for this role assignment.", example = "ACTIVE", requiredMode = Schema.RequiredMode.REQUIRED, nullable = false) CalculationState state) {
+}
