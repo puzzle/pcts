@@ -2,6 +2,7 @@ package ch.puzzle.pcts.mapper;
 
 import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceDto;
 import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceInputDto;
+import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceUpdateDto;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.service.business.LeadershipExperienceTypeBusinessService;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
@@ -34,6 +35,14 @@ public class LeadershipExperiencesMapper {
         return new LeadershipExperienceDto(model.getId(),
                                            leadershipExperienceTypeMapper.toDto(model.getCertificateType()),
                                            model.getComment());
+    }
+
+    public Certificate fromDto(LeadershipExperienceUpdateDto dto) {
+        return Certificate.Builder
+                .builder()
+                .withCertificateType(leadershipExperienceTypeBusinessService.getById(dto.leadershipExperienceTypeId()))
+                .withComment(dto.comment())
+                .build();
     }
 
     public Certificate fromDto(LeadershipExperienceInputDto dto) {
