@@ -1,7 +1,7 @@
 export interface CertificateDto {
   memberId: number;
   certificateTypeId: number;
-  completedAt: Date;
-  validUntil: Date | null;
+  completedAt: string | null;
+  validUntil: string | null;
   comment: string | null;
 }
