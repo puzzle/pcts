@@ -10,7 +10,7 @@ services:
       POSTGRES_DB: pcts
     ports:
       - "5432:5432"
-    profiles: ['', backend, db]
+    profiles: ['', backend, infra, db]
 
   pcts-backend:
     container_name: pcts-backend
@@ -49,4 +49,4 @@ services:
       - --import-realm
     ports:
       - "8544:8080"
-    profiles: ['', backend, db]
+    profiles: ['', backend, infra]
