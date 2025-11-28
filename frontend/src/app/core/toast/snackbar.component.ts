@@ -1,15 +1,7 @@
-import { Component, inject, ViewEncapsulation } from '@angular/core';
-import { MatSnackBar, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
+import { Component, inject, signal, ViewEncapsulation, WritableSignal } from '@angular/core';
+import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
-
-export interface ToastItem {
-  message: string;
-  routerLinkUrl?: string;
-  routerLinkText?: string;
-  icon?: string;
-  closed?: boolean;
-}
 
 @Component({
   selector: 'app-snackbar',
@@ -20,18 +12,19 @@ export interface ToastItem {
     MatIconButton]
 })
 export class SnackbarComponent {
-  count = 0;
+  private readonly snackBarRef = inject(MatSnackBarRef);
 
-  private readonly snackBar = inject(MatSnackBar);
+  private readonly initialData = inject<string[]>(MAT_SNACK_BAR_DATA);
 
-  public readonly data: ToastItem[] = inject(MAT_SNACK_BAR_DATA);
+  public messages: WritableSignal<string[]> = signal(this.initialData);
 
-  close(item: ToastItem) {
-    item.closed = true;
-    this.count--;
+  close(indexToRemove: number) {
+    this.messages.update((currentMessages) => {
+      return currentMessages.filter((_, index) => index !== indexToRemove);
+    });
 
-    if (this.count === 0) {
-      this.snackBar.dismiss();
+    if (this.messages().length === 0) {
+      this.snackBarRef.dismiss();
     }
   }
 }
