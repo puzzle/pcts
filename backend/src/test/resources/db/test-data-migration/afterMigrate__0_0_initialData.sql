@@ -85,3 +85,12 @@ VALUES
     (2, 2, '2022-11-01', NULL, 'Completed first aid training.'),
     (2, 1, '2023-01-15', '2025-01-14', NULL),
     (1, 2, '2010-08-12', '2023-03-25', 'Left organization.');
+
+TRUNCATE TABLE calculations CASCADE;
+
+INSERT INTO calculations
+(member_id, role_id, state, publication_date, publicized_by)
+VALUES
+    (1, 1, 'DRAFT', '2025-01-14', 'Ldap User'),
+    (2, 2, 'ARCHIVED', NULL, 'Ldap User 2'),
+    (3, 3, 'ACTIVE', '2025-01-14', NULL);
