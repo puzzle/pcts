@@ -2,8 +2,14 @@ package ch.puzzle.pcts.service.persistence;
 
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
+import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.repository.CalculationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 public class CalculationPersistenceServiceIT
@@ -13,6 +19,7 @@ public class CalculationPersistenceServiceIT
     MemberPersistenceServiceIT memberPersistenceServiceIT;
     RolePersistenceServiceIT rolePersistenceServiceIT;
 
+    @Autowired
     CalculationPersistenceServiceIT(CalculationPersistenceService service,
                                     MemberPersistenceService memberPersistenceService,
                                     RolePersistenceService rolePersistenceService) {
@@ -33,22 +40,25 @@ public class CalculationPersistenceServiceIT
 
     @Override
     List<Calculation> getAll() {
+        Role deletedRole = new Role(1L, "Role 1", true);
+        deletedRole.setDeletedAt(LocalDateTime.ofInstant(Instant.EPOCH, ZoneOffset.UTC));
+
         return List
                 .of(new Calculation(1L,
-                                    memberPersistenceServiceIT.getAll().get(0),
-                                    rolePersistenceServiceIT.getAll().get(0),
+                                    memberPersistenceServiceIT.getAll().getFirst(),
+                                    deletedRole,
                                     CalculationState.DRAFT,
                                     LocalDate.of(2025, 1, 14),
                                     "Ldap User"),
                     new Calculation(2L,
-                                    memberPersistenceServiceIT.getAll().get(1),
-                                    rolePersistenceServiceIT.getAll().get(1),
+                                    memberPersistenceServiceIT.getAll().getLast(),
+                                    rolePersistenceServiceIT.getAll().getLast(),
                                     CalculationState.ARCHIVED,
                                     null,
                                     "Ldap User 2"),
                     new Calculation(3L,
-                                    memberPersistenceServiceIT.getAll().get(1),
-                                    rolePersistenceServiceIT.getAll().get(0),
+                                    memberPersistenceServiceIT.getAll().getLast(),
+                                    deletedRole,
                                     CalculationState.ACTIVE,
                                     LocalDate.of(2025, 1, 14),
                                     null));

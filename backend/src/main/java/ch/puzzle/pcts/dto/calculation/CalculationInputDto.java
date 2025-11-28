@@ -6,8 +6,6 @@ import ch.puzzle.pcts.model.calculation.CalculationState;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record CalculationInputDto(
-        @Schema(description = "The unique identifier of the member role assignment.", example = "1", requiredMode = Schema.RequiredMode.REQUIRED, accessMode = Schema.AccessMode.READ_ONLY, nullable = false) Long id,
-
         @Schema(description = "The member id associated with this role assignment.", exampleClasses = MemberDto.class, example = "1", requiredMode = Schema.RequiredMode.REQUIRED, nullable = false) Long memberId,
 
         @Schema(description = "The role id assigned to the member.", exampleClasses = RoleDto.class, example = "1", requiredMode = Schema.RequiredMode.REQUIRED, nullable = false) Long roleId,
