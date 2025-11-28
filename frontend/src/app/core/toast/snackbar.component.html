@@ -1,14 +1,12 @@
 <div class="d-flex flex-column gap-3">
-  @for (item of data; track item) {
-    @if (!item.closed) {
-      <div class="toast-component d-flex align-items-center">
-        <div class="text">
-          {{ item.message }}
-        </div>
-        <button type="button" matIconButton aria-label="Close error popup" (click)="close(item)">
-          <mat-icon aria-label="Example home icon" fontIcon="close" />
-        </button>
+  @for (item of messages(); track $index) {
+    <div class="toast-component d-flex align-items-center justify-content-between rounded px-4 py-3">
+      <div class="text">
+        {{ item }}
       </div>
-    }
+      <button type="button" mat-icon-button aria-label="Close error popup" (click)="close($index)">
+        <mat-icon fontIcon="close" />
+      </button>
+    </div>
   }
 </div>

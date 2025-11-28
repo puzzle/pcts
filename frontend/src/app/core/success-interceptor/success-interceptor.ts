@@ -1,4 +1,4 @@
-import { ToastService } from '../toast/snackbar.service';
+import { SnackbarService } from '../toast/snackbar.service';
 import { ScopedTranslationService } from '../../shared/services/scoped-translation.service';
 import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
 import { inject, Injector } from '@angular/core';
@@ -10,7 +10,7 @@ export const successInterceptor: HttpInterceptorFn = (req, next) => {
   }
 
   const injector = inject(Injector);
-  const toastService = injector.get(ToastService);
+  const toastService = injector.get(SnackbarService);
   const translate = injector.get(ScopedTranslationService);
 
   return next(req)
@@ -20,7 +20,7 @@ export const successInterceptor: HttpInterceptorFn = (req, next) => {
         const keyName = capitalize(singularize(objectName));
         const message = translate.instant(req.method, { OBJECT: keyName });
 
-        toastService.showToasts([{ message }], 'success');
+        toastService.showToasts([message], 'success');
       }
     }));
 };
