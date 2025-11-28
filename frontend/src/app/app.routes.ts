@@ -5,7 +5,6 @@ import { memberOverviewResolver } from './features/member/overview/member-overvi
 import { MemberOverviewComponent } from './features/member/overview/member-overview.component';
 import { provideI18nPrefix } from './shared/i18n-prefix.provider';
 import { MemberDetailViewComponent } from './features/member/detail-view/member-detail-view.component';
-import { authGuard } from './shared/guards/auth-guard';
 
 export const routes: Routes = [{
   path: '',
@@ -15,7 +14,6 @@ export const routes: Routes = [{
 {
   path: 'member',
   providers: [provideI18nPrefix('MEMBER')],
-  canActivate: [authGuard],
   children: [
     {
       path: '',
