@@ -3,7 +3,7 @@ import { inject, Injector } from '@angular/core';
 import { ScopedTranslationService } from '../../shared/services/scoped-translation.service';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { ToastService } from '../snackbar.service';
+import { ToastService } from '../toast/snackbar.service';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const injector = inject(Injector);
@@ -12,25 +12,24 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req)
     .pipe(catchError((error: HttpErrorResponse) => {
       const translate = injector.get(ScopedTranslationService);
-
-      if (Array.isArray(error.error)) {
-        const toastItems = error.error.map((err) => {
+      console.log(error.message);
+      const toasts = Array.isArray(error.error)
+        ? error.error.map((err) => {
+          console.log(err.values);
           const key = `ERROR.${err.key}`;
-          const translated = translate.instant(key, err.values || {});
-
+          const message = translate.instant(key, err.values || {});
           return {
-            message: translated === key
-              ? translate.instant('ERROR.DEFAULT')
-              : translated
+            message:
+              message && message !== key
+                ? message
+                : translate.instant('ERROR.DEFAULT')
           };
-        });
-
-        toastService.showToasts(toastItems);
-      } else {
-        toastService.showToasts([{
+        })
+        : [{
           message: translate.instant('ERROR.DEFAULT')
-        }]);
-      }
+        }];
+
+      toastService.showToasts(toasts, 'error');
 
       return throwError(() => error);
     }));
