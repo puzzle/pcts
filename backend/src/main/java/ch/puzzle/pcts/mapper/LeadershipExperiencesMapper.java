@@ -1,9 +1,10 @@
 package ch.puzzle.pcts.mapper;
 
-import ch.puzzle.pcts.dto.leadershipExperience.LeadershipExperienceDto;
-import ch.puzzle.pcts.dto.leadershipExperience.LeadershipExperienceInputDto;
+import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceDto;
+import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceInputDto;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.service.business.LeadershipExperienceTypeBusinessService;
+import ch.puzzle.pcts.service.business.MemberBusinessService;
 import java.util.List;
 import org.springframework.stereotype.Component;
 
@@ -11,11 +12,14 @@ import org.springframework.stereotype.Component;
 public class LeadershipExperiencesMapper {
     private final LeadershipExperienceTypeMapper leadershipExperienceTypeMapper;
     private final LeadershipExperienceTypeBusinessService leadershipExperienceTypeBusinessService;
+    private final MemberBusinessService memberBusinessService;
 
     public LeadershipExperiencesMapper(LeadershipExperienceTypeMapper leadershipExperienceTypeMapper,
-                                       LeadershipExperienceTypeBusinessService leadershipExperiencesBusinessServiceder) {
+                                       LeadershipExperienceTypeBusinessService leadershipExperiencesBusinessService,
+                                       MemberBusinessService memberBusinessService) {
         this.leadershipExperienceTypeMapper = leadershipExperienceTypeMapper;
-        this.leadershipExperienceTypeBusinessService = leadershipExperiencesBusinessServiceder;
+        this.leadershipExperienceTypeBusinessService = leadershipExperiencesBusinessService;
+        this.memberBusinessService = memberBusinessService;
     }
 
     public List<LeadershipExperienceDto> toDto(List<Certificate> models) {
@@ -28,16 +32,15 @@ public class LeadershipExperiencesMapper {
 
     public LeadershipExperienceDto toDto(Certificate model) {
         return new LeadershipExperienceDto(model.getId(),
-                                           model.getComment(),
-                                           leadershipExperienceTypeMapper.toDto(model.getCertificateType()));
+                                           leadershipExperienceTypeMapper.toDto(model.getCertificateType()),
+                                           model.getComment());
     }
 
     public Certificate fromDto(LeadershipExperienceInputDto dto) {
         return Certificate.Builder
                 .builder()
-                .withCertificateType(this.leadershipExperienceTypeBusinessService
-                        .getById(dto.leadershipExperienceTypeId()))
-                .withId(dto.id())
+                .withMember(memberBusinessService.getById(dto.memberId()))
+                .withCertificateType(leadershipExperienceTypeBusinessService.getById(dto.leadershipExperienceTypeId()))
                 .withComment(dto.comment())
                 .build();
     }
