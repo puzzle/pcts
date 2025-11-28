@@ -34,10 +34,10 @@ export const member1: MemberModel = {
   id: 1,
   firstName: 'Lena',
   lastName: 'Müller',
-  birthDate: DateTime.fromISO('2000-12-01'),
+  birthDate: new Date('2000-12-01'),
   abbreviation: 'LM',
   employmentState: EmploymentState.MEMBER,
-  dateOfHire: DateTime.fromISO('2018-12-01'),
+  dateOfHire: new Date('2018-12-01'),
   organisationUnit: organisationUnit1
 };
 
@@ -45,10 +45,10 @@ export const member2: MemberModel = {
   id: 2,
   firstName: 'Sophie',
   lastName: 'Keller',
-  birthDate: DateTime.fromISO('2000-12-01'),
+  birthDate: new Date('2000-12-01'),
   abbreviation: 'SK',
   employmentState: EmploymentState.MEMBER,
-  dateOfHire: DateTime.fromISO('2018-12-01'),
+  dateOfHire: new Date('2018-12-01'),
   organisationUnit: organisationUnit2
 };
 
@@ -56,10 +56,10 @@ export const member3: MemberModel = {
   id: 3,
   firstName: 'Mara',
   lastName: 'Becker',
-  birthDate: DateTime.fromISO('2000-12-01'),
+  birthDate: new Date('2000-12-01'),
   abbreviation: 'BD',
   employmentState: EmploymentState.EX_MEMBER,
-  dateOfHire: DateTime.fromISO('2018-12-01'),
+  dateOfHire: new Date('2018-12-01'),
   organisationUnit: organisationUnit3
 };
 
@@ -67,7 +67,7 @@ export const member4: MemberModel = {
   id: 4,
   firstName: 'John',
   lastName: 'Doe',
-  birthDate: DateTime.fromISO('2000-12-01'),
+  birthDate: new Date('2000-12-01'),
   abbreviation: null,
   employmentState: EmploymentState.APPLICANT,
   dateOfHire: null,
@@ -77,18 +77,17 @@ export const member4: MemberModel = {
 export const memberDto1: MemberDto = {
   firstName: 'Lena',
   lastName: 'Müller',
-
-  birthDate: removeTimeZone(new Date('2000-12-01')),
+  birthDate: '2000-12-01',
   abbreviation: 'LM',
   employmentState: EmploymentState.MEMBER,
-  dateOfHire: removeTimeZone(new Date('2018-12-01')),
+  dateOfHire: '2018-12-01',
   organisationUnitId: 1
 };
 
 export const memberDto2: MemberDto = {
   firstName: 'John',
   lastName: 'Doe',
-  birthDate: removeTimeZone(new Date('2000-12-01')),
+  birthDate: '2000-12-01',
   abbreviation: null,
   employmentState: EmploymentState.APPLICANT,
   dateOfHire: null,

@@ -11,14 +11,15 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideTranslateService, TranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
-import { MAT_DATE_FORMATS } from '@angular/material/core';
-import { CUSTOM_LUXON_DATE_FORMATS } from './shared/format/date-format';
-import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
 import { lastValueFrom } from 'rxjs';
-import { registerLocaleData } from '@angular/common';
 import { provideI18nPrefix } from './shared/i18n-prefix.provider';
+import { provideDateFnsAdapter } from '@angular/material-date-fns-adapter';
+import { de } from 'date-fns/locale';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { registerLocaleData } from '@angular/common';
 
 registerLocaleData(localeDeCH);
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
@@ -32,7 +33,11 @@ export const appConfig: ApplicationConfig = {
         suffix: '.json'
       })
     }),
-    provideLuxonDateAdapter(),
+    provideDateFnsAdapter(),
+    {
+      provide: MAT_DATE_LOCALE,
+      useValue: de
+    },
     provideAppInitializer(() => {
       const translate = inject(TranslateService);
       const lang = 'de';
@@ -43,8 +48,6 @@ export const appConfig: ApplicationConfig = {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'outline' }
     },
-    { provide: MAT_DATE_FORMATS,
-      useValue: CUSTOM_LUXON_DATE_FORMATS },
     {
       provide: LOCALE_ID,
       useValue: 'de-CH'

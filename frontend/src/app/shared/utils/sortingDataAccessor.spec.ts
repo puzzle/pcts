@@ -23,7 +23,7 @@ describe('nestedProperty with MemberModel', () => {
 
   it('should return a top-level DateTime property in milliseconds', () => {
     expect(nestedProperty(member1, 'birthDate'))
-      .toBe(member1.birthDate.toMillis());
+      .toBe(member1.birthDate.getTime());
   });
 
   it('should return empty string for missing property', () => {
