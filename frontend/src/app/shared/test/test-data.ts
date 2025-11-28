@@ -2,8 +2,6 @@ import { MemberModel } from '../../features/member/member.model';
 import { EmploymentState } from '../enum/employment-state.enum';
 import { OrganisationUnitModel } from '../../features/organisation-unit/organisation-unit.model';
 import { MemberDto } from '../../features/member/dto/member.dto';
-import { DateTime } from 'luxon';
-import { removeTimeZone } from '../utils/DateHandler';
 import { TagModel } from '../../features/certificates/certificate-type/tag.model';
 import { CertificateTypeModel } from '../../features/certificates/certificate-type/certificate-type.model';
 import { CertificateKind } from '../../features/certificates/certificate-type/certificate-kind.enum';
@@ -34,10 +32,10 @@ export const member1: MemberModel = {
   id: 1,
   firstName: 'Lena',
   lastName: 'Müller',
-  birthDate: DateTime.fromISO('2000-12-01'),
+  birthDate: new Date('2000-12-01'),
   abbreviation: 'LM',
   employmentState: EmploymentState.MEMBER,
-  dateOfHire: DateTime.fromISO('2018-12-01'),
+  dateOfHire: new Date('2018-12-01'),
   organisationUnit: organisationUnit1
 };
 
@@ -45,10 +43,10 @@ export const member2: MemberModel = {
   id: 2,
   firstName: 'Sophie',
   lastName: 'Keller',
-  birthDate: DateTime.fromISO('2000-12-01'),
+  birthDate: new Date('2000-12-01'),
   abbreviation: 'SK',
   employmentState: EmploymentState.MEMBER,
-  dateOfHire: DateTime.fromISO('2018-12-01'),
+  dateOfHire: new Date('2018-12-01'),
   organisationUnit: organisationUnit2
 };
 
@@ -56,10 +54,10 @@ export const member3: MemberModel = {
   id: 3,
   firstName: 'Mara',
   lastName: 'Becker',
-  birthDate: DateTime.fromISO('2000-12-01'),
+  birthDate: new Date('2000-12-01'),
   abbreviation: 'BD',
   employmentState: EmploymentState.EX_MEMBER,
-  dateOfHire: DateTime.fromISO('2018-12-01'),
+  dateOfHire: new Date('2018-12-01'),
   organisationUnit: organisationUnit3
 };
 
@@ -67,7 +65,7 @@ export const member4: MemberModel = {
   id: 4,
   firstName: 'John',
   lastName: 'Doe',
-  birthDate: DateTime.fromISO('2000-12-01'),
+  birthDate: new Date('2000-12-01'),
   abbreviation: null,
   employmentState: EmploymentState.APPLICANT,
   dateOfHire: null,
@@ -77,18 +75,17 @@ export const member4: MemberModel = {
 export const memberDto1: MemberDto = {
   firstName: 'Lena',
   lastName: 'Müller',
-
-  birthDate: removeTimeZone(new Date('2000-12-01')),
+  birthDate: '2000-12-01',
   abbreviation: 'LM',
   employmentState: EmploymentState.MEMBER,
-  dateOfHire: removeTimeZone(new Date('2018-12-01')),
+  dateOfHire: '2018-12-01',
   organisationUnitId: 1
 };
 
 export const memberDto2: MemberDto = {
   firstName: 'John',
   lastName: 'Doe',
-  birthDate: removeTimeZone(new Date('2000-12-01')),
+  birthDate: '2000-12-01',
   abbreviation: null,
   employmentState: EmploymentState.APPLICANT,
   dateOfHire: null,
@@ -156,8 +153,8 @@ export const certificate1: CertificateModel = {
   id: 1,
   member: member1,
   certificateType: certificateType1,
-  completedAt: DateTime.fromISO('2022-03-15'),
-  validUntil: DateTime.fromISO('2024-03-15'),
+  completedAt: new Date('2022-03-15'),
+  validUntil: new Date('2024-03-15'),
   comment: null
 };
 
@@ -165,7 +162,7 @@ export const certificate2: CertificateModel = {
   id: 2,
   member: member2,
   certificateType: certificateType2,
-  completedAt: DateTime.fromISO('2021-10-10'),
+  completedAt: new Date('2021-10-10'),
   validUntil: null,
   comment: 'Completed with distinction'
 };
@@ -173,15 +170,15 @@ export const certificate2: CertificateModel = {
 export const certificateDto1: CertificateDto = {
   memberId: 3,
   certificateTypeId: 3,
-  completedAt: removeTimeZone(new Date('2020-06-01')),
-  validUntil: removeTimeZone(new Date('2023-01-01')),
+  completedAt: '2020-06-01',
+  validUntil: '2023-01-01',
   comment: null
 };
 
 export const certificateDto2: CertificateDto = {
   memberId: 4,
   certificateTypeId: 4,
-  completedAt: removeTimeZone(new Date('2019-09-20')),
-  validUntil: removeTimeZone(new Date('2024-09-20')),
+  completedAt: '2019-09-20',
+  validUntil: '2024-09-20',
   comment: 'Leadership excellence'
 };

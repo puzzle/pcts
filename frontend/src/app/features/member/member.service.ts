@@ -1,11 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { MemberModel } from './member.model';
 import { HttpClient } from '@angular/common/http';
-import { from, mergeMap, Observable, tap, toArray } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { MemberDto } from './dto/member.dto';
 import { DateTime } from 'luxon';
-import { removeTimeZone } from '../../shared/utils/DateHandler';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -16,46 +14,43 @@ export class MemberService {
 
   getAllMembers(): Observable<MemberModel[]> {
     return this.httpClient.get<MemberModel[]>(this.API_URL)
-      .pipe(mergeMap((members) => from(members)), this.formatDate(), toArray());
+      .pipe(map((dtos) => dtos.map((dto) => this.mapDates(dto))));
   }
-
 
   getMemberById(id: number): Observable<MemberModel> {
     return this.httpClient.get<MemberModel>(`${this.API_URL}/${id}`)
-      .pipe(this.formatDate());
+      .pipe(map((dto) => this.mapDates(dto)));
   }
 
   addMember(member: MemberModel): Observable<MemberModel> {
     return this.httpClient.post<MemberModel>(this.API_URL, this.toDto(member))
-      .pipe(this.formatDate());
+      .pipe(map((dto) => this.mapDates(dto)));
   }
 
   updateMember(id: number, member: MemberModel): Observable<MemberModel> {
     return this.httpClient.put<MemberModel>(`${this.API_URL}/${id}`, this.toDto(member))
-      .pipe(this.formatDate());
+      .pipe(map((dto) => this.mapDates(dto)));
   }
 
-  /*
-   *This is a temporary solution to read the Date we receive from backend
-   */
-  formatDate() {
-    return tap((member: MemberModel) => {
-      member.birthDate = DateTime.fromISO(member.birthDate.toString());
-      if (member.dateOfHire) {
-        member.dateOfHire = DateTime.fromISO(member.dateOfHire.toString());
-      }
-    });
+  private mapDates(dto: MemberModel): MemberModel {
+    return {
+      ...dto,
+      birthDate: dto.birthDate ? new Date(dto.birthDate) : null!,
+      dateOfHire: dto.dateOfHire ? new Date(dto.dateOfHire) : null!
+    };
   }
 
   toDto(model: MemberModel): MemberDto {
     return {
       firstName: model.firstName,
       lastName: model.lastName,
-      birthDate: removeTimeZone(model.birthDate.toJSDate()),
+      birthDate: DateTime.fromJSDate(model.birthDate)
+        .toISODate(),
       abbreviation: model.abbreviation,
       employmentState: model.employmentState,
       organisationUnitId: model.organisationUnit?.id,
-      dateOfHire: model.dateOfHire ? removeTimeZone(model.dateOfHire.toJSDate()) : null
+      dateOfHire: model.dateOfHire ? DateTime.fromJSDate(model.dateOfHire)
+        .toISODate() : null
     };
   }
 }

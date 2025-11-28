@@ -1,7 +1,7 @@
 import { FormControl } from '@angular/forms';
-import { DateTime } from 'luxon';
 import { isDateInFuture, isValueInList, isValueInListSignal } from './form-validators';
 import { signal } from '@angular/core';
+import { add, sub } from 'date-fns';
 
 describe('isDateInFuture', () => {
   it('should return null if value is empty', () => {
@@ -17,16 +17,14 @@ describe('isDateInFuture', () => {
   });
 
   it('should return date_is_in_future if date is in the future', () => {
-    const futureDate = DateTime.now()
-      .plus({ days: 1 });
+    const futureDate = add(Date.now(), { days: 1 });
     const control = new FormControl(futureDate);
     expect(isDateInFuture()(control))
       .toEqual({ date_is_in_future: true });
   });
 
   it('should return null if date is in the past', () => {
-    const pastDate = DateTime.now()
-      .minus({ days: 1 });
+    const pastDate = sub(Date.now(), { days: 1 });
     const control = new FormControl(pastDate);
     expect(isDateInFuture()(control))
       .toBeNull();

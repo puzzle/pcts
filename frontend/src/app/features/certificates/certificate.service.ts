@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { CertificateModel } from './certificate.model';
 import { CertificateDto } from './dto/certificate.dto';
-import { removeTimeZone } from '../../shared/utils/DateHandler';
+import { DateTime } from 'luxon';
 
 @Injectable({
   providedIn: 'root'
@@ -33,8 +33,10 @@ export class CertificateService {
     return {
       memberId: model.member.id,
       certificateTypeId: model.certificateType.id,
-      completedAt: removeTimeZone(model.completedAt.toJSDate()),
-      validUntil: model.validUntil ? removeTimeZone(model.validUntil.toJSDate()) : null,
+      completedAt: DateTime.fromJSDate(model.completedAt)
+        .toISODate(),
+      validUntil: model.validUntil ? DateTime.fromJSDate(model.validUntil)
+        .toISODate() : null,
       comment: model.comment
     };
   }
