@@ -2,22 +2,21 @@ package ch.puzzle.pcts.controller;
 
 import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceDto;
 import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceInputDto;
+import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceUpdateDto;
 import ch.puzzle.pcts.mapper.LeadershipExperiencesMapper;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.service.business.LeadershipExperiencesBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/leadership-experience")
+@RequestMapping("/api/v1/leadership-experiences")
 @Tag(name = "leadership experience", description = "Manage the leadership experience of members which are associated with a member")
 public class LeadershipExperienceController {
 
@@ -28,14 +27,6 @@ public class LeadershipExperienceController {
                                           LeadershipExperiencesMapper mapper) {
         this.businessService = businessService;
         this.mapper = mapper;
-    }
-
-    @Operation(summary = "List all leadership experiences")
-    @ApiResponse(responseCode = "200", description = "A list of leadership experiences.", content = {
-            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = LeadershipExperienceDto.class))) })
-    @GetMapping
-    public ResponseEntity<List<LeadershipExperienceDto>> getLeadershipExperiences() {
-        return ResponseEntity.ok(mapper.toDto(businessService.getAll()));
     }
 
     @Operation(summary = "Get a leadership experience by ID")
@@ -64,7 +55,7 @@ public class LeadershipExperienceController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = LeadershipExperienceDto.class)) })
     @PutMapping("{leadershipExperienceId}")
     public ResponseEntity<LeadershipExperienceDto> updateLeadershipExperience(@Parameter(description = "ID of the leadership experience to update.", required = true)
-    @PathVariable Long leadershipExperienceId, @RequestBody LeadershipExperienceInputDto dto) {
+    @PathVariable Long leadershipExperienceId, @RequestBody LeadershipExperienceUpdateDto dto) {
         Certificate certificate = businessService.update(leadershipExperienceId, mapper.fromDto(dto));
         return ResponseEntity.ok(mapper.toDto(certificate));
     }
