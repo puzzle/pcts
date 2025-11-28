@@ -16,16 +16,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class LeadershipExperiencesBusinessService extends BusinessBase<Certificate> {
-    private final CertificatePersistenceService persistenceService;
+    private final CertificatePersistenceService certificatePersistenceService;
 
-    LeadershipExperiencesBusinessService(CertificatePersistenceService persistenceService,
+    LeadershipExperiencesBusinessService(CertificatePersistenceService certificatePersistenceService,
                                          LeadershipExperienceValidationService validationService) {
-        super(validationService, persistenceService);
-        this.persistenceService = persistenceService;
+        super(validationService, certificatePersistenceService);
+        this.certificatePersistenceService = certificatePersistenceService;
     }
+
     @Override
     public Certificate getById(Long id) {
-        return persistenceService.findLeadershipExperience(id).orElseThrow(() -> {
+        return certificatePersistenceService.findLeadershipExperience(id).orElseThrow(() -> {
             Map<FieldKey, String> attributes = Map
                     .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, id.toString());
 
@@ -33,6 +34,21 @@ public class LeadershipExperiencesBusinessService extends BusinessBase<Certifica
 
             return new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
         });
+    }
+
+    @Override
+    public void delete(Long id) {
+        validationService.validateOnDelete(id);
+        if (certificatePersistenceService.findLeadershipExperience(id).isPresent()) {
+            certificatePersistenceService.delete(id);
+        } else {
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY, "leadershipExperience", FieldKey.FIELD, "id", FieldKey.IS, id.toString());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
+
+            throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
+        }
     }
 
     @Override
