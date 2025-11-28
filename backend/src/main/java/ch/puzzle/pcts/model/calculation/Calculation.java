@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
-// @SQLDelete(sql = "UPDATE calculations SET state = 'ARCHIVED' WHERE id = ?")
 public class Calculation implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
