@@ -73,7 +73,7 @@
     "DEFAULT": "Ein unerwarteter Fehler ist aufgetreten.",
     "CLOSE": "Schliessen"
   },
-  "POST": "{{OBJECT}} wurde erfolgreich erstellt",
-  "PUT": "{{OBJECT}} wurde erforlgreich erneuert",
-  "DELETE": "{{OBJECT}} wurde erfolgreich gelöscht"
+  "POST": "{{OBJECT}} wurde erfolgreich erstellt.",
+  "PUT": "{{OBJECT}} wurde erforlgreich erneuert.",
+  "DELETE": "{{OBJECT}} wurde erfolgreich gelöscht."
 }

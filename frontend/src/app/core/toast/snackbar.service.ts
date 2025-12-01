@@ -4,7 +4,7 @@ import { SnackbarComponent } from './snackbar.component';
 
 @Injectable({ providedIn: 'root' })
 export class SnackbarService {
-  private readonly snackBar = inject(MatSnackBar);
+  private readonly snackBar: MatSnackBar = inject(MatSnackBar);
 
   showToasts(messages: string[], type: 'success' | 'error') {
     this.snackBar.openFromComponent(SnackbarComponent, {

@@ -172,3 +172,39 @@ describe('edit member form', () => {
       });
   });
 });
+
+describe('show toaster message member form (parameterised)', () => {
+  const cases = [{
+    input: 'J',
+    field: 'firstName',
+    expectedMessage: 'Vorname mit dem Wert "J" muss zwischen 2 und 250 liegen.',
+    expectError: true
+  },
+  {
+    input: '12345678901234512345'.repeat(20),
+    field: 'firstName',
+    expectedMessage: 'Vorname mit dem Wert "123456789012345..." muss zwischen 2 und 250 liegen.',
+    expectError: true
+  },
+  {
+    input: 'John',
+    field: 'firstName',
+    expectedMessage: 'Member wurde erforlgreich erneuert.',
+    expectError: false
+  }];
+
+  cases.forEach(({ input, field, expectedMessage, expectError }) => {
+    it(`should show toaster with ${expectedMessage}`, () => {
+      FormPage.visitEdit(2, 'member');
+      FormPage.clearAndBlur(field);
+      FormPage.typeAndBlur(field, input);
+      FormPage.save();
+
+      if (expectError) {
+        FormPage.shouldShowErrorToast(expectedMessage);
+      } else {
+        FormPage.shouldShowSuccessToast(expectedMessage);
+      }
+    });
+  });
+});
