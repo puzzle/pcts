@@ -2,7 +2,7 @@ import { HttpErrorResponse, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from
 import { inject, Injector } from '@angular/core';
 import { ScopedTranslationService } from '../../shared/services/scoped-translation.service';
 import { catchError } from 'rxjs/operators';
-import { EMPTY } from 'rxjs';
+import { throwError } from 'rxjs';
 import { SnackbarService } from '../toast/snackbar.service';
 
 export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>,
@@ -45,7 +45,7 @@ export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>,
 
       toastService.showToasts(toasts, 'error');
 
-      return EMPTY;
+      return throwError(() => error);
     }));
 };
 

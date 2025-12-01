@@ -1,3 +1,5 @@
+import { errorColor, successColor } from '../support/helper/colors';
+
 class FormPage {
   visitAdd(modelPathName: string) {
     cy.visit(`/${modelPathName}/add`);
@@ -61,15 +63,15 @@ class FormPage {
   shouldShowErrorToast(message: string) {
     cy.getByTestId('toaster-message')
       .should('include.text', message)
-      .should('have.css', 'background-color');
-    // .and('eq', 'rgb(242, 228, 125)')
+      .should('have.css', 'background-color')
+      .and('eq', errorColor());
   }
 
   shouldShowSuccessToast(message: string) {
     cy.getByTestId('toaster-message')
       .should('include.text', message)
-      .should('have.css', 'background-color');
-    // .and('eq', 'rgb(242, 228, 125)')
+      .should('have.css', 'background-color')
+      .and('eq', successColor());
   }
 }
 
