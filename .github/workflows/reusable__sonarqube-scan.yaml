@@ -61,9 +61,9 @@ jobs:
           -DskipTests \
           -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
           -Dsonar.host.url=${{ vars.SONAR_HOST_URL }} \
-          -Dsonar.jacoco.reportPaths=backend/target/jacoco-output/merged.exec \
+          -Dsonar.jacoco.reportPaths=target/jacoco-output/merged.exec \
           -Dsonar.javascript.lcov.reportPaths=$GITHUB_WORKSPACE/frontend/coverage/lcov.info \
-          -Dsonar.junit.reportPaths=$GITHUB_WORKSPACE/frontend/junit.xml,backend/target/surefire-reports,backend/target/failsafe-reports
+          -Dsonar.junit.reportPaths=$GITHUB_WORKSPACE/frontend/junit.xml,target/surefire-reports,target/failsafe-reports
 
       - name: SonarQube Quality Gate check
         id: sonarqube-quality-gate-check

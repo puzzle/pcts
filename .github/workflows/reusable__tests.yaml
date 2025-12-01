@@ -101,4 +101,4 @@ jobs:
           check_name: "Backend Test Results"
           comment_mode: 'changes in failures'
           files: |
-            backend/target/surefire-reports/**
+            backend/target/surefire-reports/*.xml
