@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/leadership-experiences")
-@Tag(name = "leadership experience", description = "Manage the leadership experience of members which are associated with a member")
+@Tag(name = "leadership-experience", description = "Manage the leadership experience of members which are associated with a member")
 public class LeadershipExperienceController {
 
     private final LeadershipExperiencesBusinessService businessService;
