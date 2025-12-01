@@ -2,13 +2,13 @@ import { HttpErrorResponse, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from
 import { inject, Injector } from '@angular/core';
 import { ScopedTranslationService } from '../../shared/services/scoped-translation.service';
 import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { EMPTY } from 'rxjs';
 import { SnackbarService } from '../toast/snackbar.service';
 
 export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>,
   next: HttpHandlerFn) => {
-  const injector = inject(Injector);
-  const toastService = injector.get(SnackbarService);
+  const injector: Injector = inject(Injector);
+  const toastService: SnackbarService = injector.get(SnackbarService);
 
   return next(req)
     .pipe(catchError((error: HttpErrorResponse) => {
@@ -18,10 +18,10 @@ export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>,
         ? error.error.map((err) => {
           const key = `ERROR.${err.key}`;
 
-          const values = err.values || {};
+          const values = err.values ?? {};
 
           if (typeof values.IS === 'string') {
-            const original = values.IS;
+            const original: string = values.IS;
             values.IS = original.length > 15
               ? original.slice(0, 15) + '...'
               : original;
@@ -35,7 +35,7 @@ export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>,
             values.CLASS = translate.instant(`${toScreamingSnake(values.CLASS)}.MODEL_NAME`);
           }
 
-          const message = translate.instant(key, values);
+          const message: string = translate.instant(key, values);
 
           return message && message !== key
             ? message
@@ -45,7 +45,7 @@ export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>,
 
       toastService.showToasts(toasts, 'error');
 
-      return throwError(() => error);
+      return EMPTY;
     }));
 };
 
@@ -54,7 +54,7 @@ function toScreamingSnake(text: string): string {
     return '';
   }
   return text
-    .replace(/([a-z])([A-Z])/g, '$1_$2') // separate camelCase
+    .replace(/([a-z])([A-Z])/g, '$1_$2')
     .toUpperCase();
 }
 

@@ -14,13 +14,13 @@ import { MatIconButton } from '@angular/material/button';
 export class SnackbarComponent {
   private readonly snackBarRef = inject(MatSnackBarRef);
 
-  private readonly initialData = inject<string[]>(MAT_SNACK_BAR_DATA);
+  private readonly initialData: string[] = inject<string[]>(MAT_SNACK_BAR_DATA);
 
   public messages: WritableSignal<string[]> = signal(this.initialData);
 
   close(indexToRemove: number) {
-    this.messages.update((currentMessages) => {
-      return currentMessages.filter((_, index) => index !== indexToRemove);
+    this.messages.update((currentMessages: string[]) => {
+      return currentMessages.filter((_: string, index: number) => index !== indexToRemove);
     });
 
     if (this.messages().length === 0) {

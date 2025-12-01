@@ -57,6 +57,20 @@ class FormPage {
     cy.getByTestId(fieldName)
       .should('have.value', value);
   }
+
+  shouldShowErrorToast(message: string) {
+    cy.getByTestId('toaster-message')
+      .should('include.text', message)
+      .should('have.css', 'background-color');
+    // .and('eq', 'rgb(242, 228, 125)')
+  }
+
+  shouldShowSuccessToast(message: string) {
+    cy.getByTestId('toaster-message')
+      .should('include.text', message)
+      .should('have.css', 'background-color');
+    // .and('eq', 'rgb(242, 228, 125)')
+  }
 }
 
 export default new FormPage();
