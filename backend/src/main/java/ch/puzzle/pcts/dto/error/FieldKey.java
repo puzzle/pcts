@@ -4,6 +4,8 @@ public enum FieldKey {
     FIELD,
     CLASS,
     IS,
+    HAS,
+    WITH,
     ENTITY,
     MAX,
     MIN,
