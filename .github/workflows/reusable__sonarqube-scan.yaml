@@ -57,6 +57,7 @@ jobs:
 
       - name: Build and analyze
         run: |
+          pwd
           mvn package org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
           -DskipTests \
           -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
