@@ -91,6 +91,7 @@ jobs:
             backend/target/site/
             backend/target/jacoco-output/
             backend/target/surefire-reports/
+            backend/target/failsafe-reports/
           retention-days: 1
 
       - name: Publish test results
@@ -100,4 +101,4 @@ jobs:
           check_name: "Backend Test Results"
           comment_mode: 'changes in failures'
           files: |
-            backend/target/surefire-reports/*.xml
+            backend/target/surefire-reports/**
