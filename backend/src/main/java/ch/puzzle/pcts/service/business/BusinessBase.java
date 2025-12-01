@@ -5,33 +5,23 @@ import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.Model;
-import ch.puzzle.pcts.service.persistence.PersistenceBase;
-import ch.puzzle.pcts.service.validation.ValidationBase;
+import ch.puzzle.pcts.service.persistence.PersistenceService;
+import ch.puzzle.pcts.service.validation.ValidationService;
 import java.util.List;
 import java.util.Map;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 /**
  * @param <T>
  *            the type of the entity extending {@link Model}
- * @param <V>
- *            the type of the validation service of the entity extending
- *            {@link ValidationBase}
- * @param <R>
- *            the type of the jpa repository of the entity extending
- *            {@link JpaRepository}
- * @param <P>
- *            the type of the persistence service of the entity extending
- *            {@link PersistenceBase}
  */
 @Service
-public abstract class BusinessBase<T extends Model, V extends ValidationBase<T>, R extends JpaRepository<T, Long>, P extends PersistenceBase<T, R>> {
-    protected final V validationService;
-    protected final P persistenceService;
+public abstract class BusinessBase<T extends Model> {
+    protected final ValidationService<T> validationService;
+    protected final PersistenceService<T> persistenceService;
 
-    protected BusinessBase(V validationService, P persistenceService) {
+    protected BusinessBase(ValidationService<T> validationService, PersistenceService<T> persistenceService) {
         this.validationService = validationService;
         this.persistenceService = persistenceService;
     }

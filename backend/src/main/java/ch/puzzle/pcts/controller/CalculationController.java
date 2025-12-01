@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,7 +44,7 @@ public class CalculationController {
     @PostMapping
     public ResponseEntity<CalculationDto> createCalculation(@RequestBody CalculationInputDto dto) {
         Calculation newCalculation = businessService.create(mapper.fromDto(dto));
-        return ResponseEntity.status(201).body(mapper.toDto(newCalculation));
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDto(newCalculation));
     }
 
     @Operation(summary = "Update a calculation")

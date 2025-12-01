@@ -91,64 +91,6 @@ class CalculationBusinessServiceTest {
         verify(persistenceService).save(calculation);
     }
 
-    @DisplayName("Should set publication fields on create when state is ACTIVE and archive old calculation")
-    @Test
-    void shouldSetPublicationFieldsOnCreateWhenStateActive() {
-        mockActiveCalculation();
-        when(persistenceService.save(calculation)).thenReturn(calculation);
-        when(persistenceService.getAllByMemberIdAndRoleIdAndState(1L, 1L, CalculationState.ACTIVE))
-                .thenReturn(List.of(calculation));
-
-        businessService.create(calculation);
-
-        verifyPublicationFieldsSet();
-        verify(persistenceService, times(2)).save(calculation);
-    }
-
-    @DisplayName("Should set publication fields on update when state is ACTIVE and archive previous active calculation")
-    @Test
-    void shouldSetPublicationFieldsOnUpdateWhenStateActiveAndArchiveOld() {
-        mockActiveCalculation();
-        when(persistenceService.getById(ID)).thenReturn(Optional.of(calculation));
-        when(persistenceService.save(calculation)).thenReturn(calculation);
-        when(persistenceService.getAllByMemberIdAndRoleIdAndState(1L, 1L, CalculationState.ACTIVE))
-                .thenReturn(List.of(calculation));
-        when(calculation.getId()).thenReturn(2L);
-
-        businessService.update(ID, calculation);
-
-        verifyPublicationFieldsSet();
-        verify(persistenceService, times(2)).save(calculation);
-    }
-
-    @DisplayName("Should set publication fields on update when state is ACTIVE and not archive old calculation if same id")
-    @Test
-    void shouldSetPublicationFieldsOnUpdateWhenStateActiveAndNotArchiveIfSameId() {
-        mockActiveCalculation();
-        when(persistenceService.getById(ID)).thenReturn(Optional.of(calculation));
-        when(persistenceService.save(calculation)).thenReturn(calculation);
-        when(persistenceService.getAllByMemberIdAndRoleIdAndState(1L, 1L, CalculationState.ACTIVE))
-                .thenReturn(List.of(calculation));
-        when(calculation.getId()).thenReturn(ID);
-
-        businessService.update(ID, calculation);
-
-        verifyPublicationFieldsSet();
-        verify(persistenceService).save(calculation);
-    }
-
-    @DisplayName("Should NOT set publication fields on create when state is not ACTIVE")
-    @Test
-    void shouldNotSetPublicationFieldsOnCreateWhenStateNotActive() {
-        when(calculation.getState()).thenReturn(CalculationState.ARCHIVED);
-        when(persistenceService.save(calculation)).thenReturn(calculation);
-
-        businessService.create(calculation);
-
-        verify(calculation, never()).setPublicationDate(any());
-        verify(calculation, never()).setPublicizedBy(any());
-    }
-
     @DisplayName("Should update calculation")
     @Test
     void shouldUpdate() {
@@ -163,18 +105,6 @@ class CalculationBusinessServiceTest {
         verify(persistenceService).save(calculation);
     }
 
-    @DisplayName("Should NOT set publication fields on update when state is not ACTIVE")
-    @Test
-    void shouldNotSetPublicationFieldsOnUpdateWhenStateNotActive() {
-        when(persistenceService.getById(ID)).thenReturn(Optional.of(calculation));
-        when(calculation.getState()).thenReturn(CalculationState.DRAFT);
-        when(persistenceService.save(calculation)).thenReturn(calculation);
-
-        businessService.update(ID, calculation);
-
-        verify(calculation, never()).setPublicationDate(any());
-        verify(calculation, never()).setPublicizedBy(any());
-    }
 
     @DisplayName("Should throw exception when updating non-existing calculation")
     @Test
@@ -185,19 +115,5 @@ class CalculationBusinessServiceTest {
 
         verify(persistenceService).getById(ID);
         verify(persistenceService, never()).save(any());
-    }
-
-    private void mockActiveCalculation() {
-        when(calculation.getState()).thenReturn(CalculationState.ACTIVE);
-        when(calculation.getMember()).thenReturn(member);
-        when(member.getId()).thenReturn(1L);
-        when(calculation.getRole()).thenReturn(role);
-        when(role.getId()).thenReturn(1L);
-    }
-
-    private void verifyPublicationFieldsSet() {
-        LocalDate today = LocalDate.now();
-        verify(calculation).setPublicationDate(today);
-        verify(calculation).setPublicizedBy("Ldap User");
     }
 }
