@@ -2,7 +2,6 @@ package ch.puzzle.pcts.controller;
 
 import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceDto;
 import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceInputDto;
-import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceUpdateDto;
 import ch.puzzle.pcts.mapper.LeadershipExperiencesMapper;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.service.business.LeadershipExperiencesBusinessService;
@@ -55,7 +54,7 @@ public class LeadershipExperienceController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = LeadershipExperienceDto.class)) })
     @PutMapping("{leadershipExperienceId}")
     public ResponseEntity<LeadershipExperienceDto> updateLeadershipExperience(@Parameter(description = "ID of the leadership experience to update.", required = true)
-    @PathVariable Long leadershipExperienceId, @RequestBody LeadershipExperienceUpdateDto dto) {
+    @PathVariable Long leadershipExperienceId, @RequestBody LeadershipExperienceInputDto dto) {
         Certificate certificate = businessService.update(leadershipExperienceId, mapper.fromDto(dto));
         return ResponseEntity.ok(mapper.toDto(certificate));
     }
