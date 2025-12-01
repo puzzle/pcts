@@ -3,13 +3,16 @@ package ch.puzzle.pcts.service.business;
 import static ch.puzzle.pcts.Constants.*;
 
 import ch.puzzle.pcts.model.experience.Experience;
+import ch.puzzle.pcts.repository.ExperienceRepository;
 import ch.puzzle.pcts.service.persistence.ExperiencePersistenceService;
 import ch.puzzle.pcts.service.validation.ExperienceValidationService;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ExperienceBusinessService extends BusinessBase<Experience> {
+public class ExperienceBusinessService
+        extends
+            BusinessBase<Experience, ExperienceValidationService, ExperienceRepository, ExperiencePersistenceService> {
     public ExperienceBusinessService(ExperienceValidationService validationService,
                                      ExperiencePersistenceService persistenceService) {
         super(validationService, persistenceService);

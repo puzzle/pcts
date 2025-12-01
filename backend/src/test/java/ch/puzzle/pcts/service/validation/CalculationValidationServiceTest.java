@@ -1,14 +1,9 @@
 package ch.puzzle.pcts.service.validation;
 
-import static ch.puzzle.pcts.Constants.CALCULATION;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.FieldKey;
-import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.member.Member;
@@ -86,71 +81,6 @@ class CalculationValidationServiceTest extends ValidationBaseServiceTest<Calcula
                     Arguments
                             .of(createCalculation(validMember, validRole, null),
                                 List.of(Map.of(FieldKey.CLASS, "Calculation", FieldKey.FIELD, "state"))));
-    }
-
-    @DisplayName("Should throw exception on validateUserOnlyHasOneActiveCalculationPerRole() when creating and active calculation exists")
-    @Test
-    void shouldThrowExceptionOnCreateWhenActiveCalculationExists() {
-        Calculation calculation = getValidModel();
-
-        Calculation existingActive = getValidModel();
-        existingActive.setId(10L);
-        existingActive.setState(CalculationState.ACTIVE);
-
-        when(persistenceService
-                .getAllByMemberIdAndRoleIdAndState(calculation.getMember().getId(),
-                                                   calculation.getRole().getId(),
-                                                   CalculationState.ACTIVE))
-                .thenReturn(List.of(existingActive));
-
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> service
-                                                       .validateUserOnlyHasOneActiveCalculationPerRole(calculation,
-                                                                                                       null));
-
-        assertEquals(List.of(ErrorKey.INVALID_ARGUMENT), exception.getErrorKeys());
-        assertEquals(List
-                .of(Map
-                        .of(FieldKey.ENTITY,
-                            CALCULATION,
-                            FieldKey.FIELD,
-                            "member",
-                            FieldKey.IS,
-                            CalculationState.ACTIVE.toString())),
-                     exception.getErrorAttributes());
-    }
-
-    @DisplayName("Should throw exception on validateUserOnlyHasOneActiveCalculationPerRole() when updating and another active calculation exists with the another id")
-    @Test
-    void shouldThrowExceptionOnUpdateWhenActiveCalculationExistsForSameId() {
-        Calculation calculation = getValidModel();
-        calculation.setId(10L);
-
-        Calculation existingActive = getValidModel();
-        existingActive.setId(5L);
-        existingActive.setState(CalculationState.ACTIVE);
-
-        when(persistenceService
-                .getAllByMemberIdAndRoleIdAndState(calculation.getMember().getId(),
-                                                   calculation.getRole().getId(),
-                                                   CalculationState.ACTIVE))
-                .thenReturn(List.of(existingActive));
-
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> service
-                                                       .validateUserOnlyHasOneActiveCalculationPerRole(calculation,
-                                                                                                       10L));
-
-        assertEquals(List.of(ErrorKey.INVALID_ARGUMENT), exception.getErrorKeys());
-        assertEquals(List
-                .of(Map
-                        .of(FieldKey.ENTITY,
-                            CALCULATION,
-                            FieldKey.FIELD,
-                            "member",
-                            FieldKey.IS,
-                            CalculationState.ACTIVE.toString())),
-                     exception.getErrorAttributes());
     }
 
     @DisplayName("Should call correct validate method on validateOnCreate()")

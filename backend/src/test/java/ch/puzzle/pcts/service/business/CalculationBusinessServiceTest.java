@@ -10,6 +10,8 @@ import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
+import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.persistence.CalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.CalculationValidationService;
 import java.time.LocalDate;
@@ -36,6 +38,12 @@ class CalculationBusinessServiceTest {
 
     @Mock
     private Calculation calculation;
+
+    @Mock
+    private Member member;
+
+    @Mock
+    private Role role;
 
     @InjectMocks
     private CalculationBusinessService businessService;
@@ -83,18 +91,50 @@ class CalculationBusinessServiceTest {
         verify(persistenceService).save(calculation);
     }
 
-    @DisplayName("Should set publication fields on create when state is ACTIVE")
+    @DisplayName("Should set publication fields on create when state is ACTIVE and archive old calculation")
     @Test
     void shouldSetPublicationFieldsOnCreateWhenStateActive() {
-        LocalDate today = LocalDate.now();
-
-        when(calculation.getState()).thenReturn(CalculationState.ACTIVE);
+        mockActiveCalculation();
         when(persistenceService.save(calculation)).thenReturn(calculation);
+        when(persistenceService.getAllByMemberIdAndRoleIdAndState(1L, 1L, CalculationState.ACTIVE))
+                .thenReturn(List.of(calculation));
 
         businessService.create(calculation);
 
-        verify(calculation).setPublicationDate(today);
-        verify(calculation).setPublicizedBy("Ldap User");
+        verifyPublicationFieldsSet();
+        verify(persistenceService, times(2)).save(calculation);
+    }
+
+    @DisplayName("Should set publication fields on update when state is ACTIVE and archive previous active calculation")
+    @Test
+    void shouldSetPublicationFieldsOnUpdateWhenStateActiveAndArchiveOld() {
+        mockActiveCalculation();
+        when(persistenceService.getById(ID)).thenReturn(Optional.of(calculation));
+        when(persistenceService.save(calculation)).thenReturn(calculation);
+        when(persistenceService.getAllByMemberIdAndRoleIdAndState(1L, 1L, CalculationState.ACTIVE))
+                .thenReturn(List.of(calculation));
+        when(calculation.getId()).thenReturn(2L);
+
+        businessService.update(ID, calculation);
+
+        verifyPublicationFieldsSet();
+        verify(persistenceService, times(2)).save(calculation);
+    }
+
+    @DisplayName("Should set publication fields on update when state is ACTIVE and not archive old calculation if same id")
+    @Test
+    void shouldSetPublicationFieldsOnUpdateWhenStateActiveAndNotArchiveIfSameId() {
+        mockActiveCalculation();
+        when(persistenceService.getById(ID)).thenReturn(Optional.of(calculation));
+        when(persistenceService.save(calculation)).thenReturn(calculation);
+        when(persistenceService.getAllByMemberIdAndRoleIdAndState(1L, 1L, CalculationState.ACTIVE))
+                .thenReturn(List.of(calculation));
+        when(calculation.getId()).thenReturn(ID);
+
+        businessService.update(ID, calculation);
+
+        verifyPublicationFieldsSet();
+        verify(persistenceService).save(calculation);
     }
 
     @DisplayName("Should NOT set publication fields on create when state is not ACTIVE")
@@ -123,21 +163,6 @@ class CalculationBusinessServiceTest {
         verify(persistenceService).save(calculation);
     }
 
-    @DisplayName("Should set publication fields on update when state is ACTIVE")
-    @Test
-    void shouldSetPublicationFieldsOnUpdateWhenStateActive() {
-        LocalDate today = LocalDate.now();
-
-        when(persistenceService.getById(ID)).thenReturn(Optional.of(calculation));
-        when(calculation.getState()).thenReturn(CalculationState.ACTIVE);
-        when(persistenceService.save(calculation)).thenReturn(calculation);
-
-        businessService.update(ID, calculation);
-
-        verify(calculation).setPublicationDate(today);
-        verify(calculation).setPublicizedBy("Ldap User");
-    }
-
     @DisplayName("Should NOT set publication fields on update when state is not ACTIVE")
     @Test
     void shouldNotSetPublicationFieldsOnUpdateWhenStateNotActive() {
@@ -160,5 +185,19 @@ class CalculationBusinessServiceTest {
 
         verify(persistenceService).getById(ID);
         verify(persistenceService, never()).save(any());
+    }
+
+    private void mockActiveCalculation() {
+        when(calculation.getState()).thenReturn(CalculationState.ACTIVE);
+        when(calculation.getMember()).thenReturn(member);
+        when(member.getId()).thenReturn(1L);
+        when(calculation.getRole()).thenReturn(role);
+        when(role.getId()).thenReturn(1L);
+    }
+
+    private void verifyPublicationFieldsSet() {
+        LocalDate today = LocalDate.now();
+        verify(calculation).setPublicationDate(today);
+        verify(calculation).setPublicizedBy("Ldap User");
     }
 }

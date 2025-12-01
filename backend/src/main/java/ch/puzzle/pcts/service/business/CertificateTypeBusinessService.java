@@ -7,6 +7,7 @@ import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
+import ch.puzzle.pcts.repository.CertificateTypeRepository;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import ch.puzzle.pcts.service.validation.CertificateTypeValidationService;
 import java.util.List;
@@ -16,17 +17,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CertificateTypeBusinessService extends BusinessBase<CertificateType> {
+public class CertificateTypeBusinessService
+        extends
+            BusinessBase<CertificateType, CertificateTypeValidationService, CertificateTypeRepository, CertificateTypePersistenceService> {
     private final TagBusinessService tagBusinessService;
-    private final CertificateTypePersistenceService certificateTypePersistenceService;
-    private final CertificateTypeValidationService certificateTypeValidationService;
 
-    public CertificateTypeBusinessService(CertificateTypeValidationService certificateTypeValidationService,
-                                          CertificateTypePersistenceService certificateTypePersistenceService,
+    public CertificateTypeBusinessService(CertificateTypeValidationService validationService,
+                                          CertificateTypePersistenceService persistenceService,
                                           TagBusinessService tagBusinessService) {
-        super(certificateTypeValidationService, certificateTypePersistenceService);
-        this.certificateTypePersistenceService = certificateTypePersistenceService;
-        this.certificateTypeValidationService = certificateTypeValidationService;
+        super(validationService, persistenceService);
         this.tagBusinessService = tagBusinessService;
     }
 
@@ -47,7 +46,7 @@ public class CertificateTypeBusinessService extends BusinessBase<CertificateType
 
         if (optionalCertificate.isPresent()) {
             CertificateType certificateType = optionalCertificate.get();
-            certificateTypeValidationService.validateCertificateKind(certificateType.getCertificateKind());
+            validationService.validateCertificateKind(certificateType.getCertificateKind());
             return certificateType;
         } else {
             Map<FieldKey, String> attributes = Map
@@ -61,7 +60,7 @@ public class CertificateTypeBusinessService extends BusinessBase<CertificateType
     }
 
     public List<CertificateType> getAll() {
-        return certificateTypePersistenceService.getAllCertificateTypes();
+        return persistenceService.getAllCertificateTypes();
     }
 
     @Override
