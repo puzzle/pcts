@@ -2,7 +2,7 @@ package ch.puzzle.pcts.controller;
 
 import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceDto;
 import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceInputDto;
-import ch.puzzle.pcts.mapper.LeadershipExperiencesMapper;
+import ch.puzzle.pcts.mapper.LeadershipExperienceMapper;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.service.business.LeadershipExperiencesBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.*;
 public class LeadershipExperienceController {
 
     private final LeadershipExperiencesBusinessService businessService;
-    private final LeadershipExperiencesMapper mapper;
+    private final LeadershipExperienceMapper mapper;
 
     public LeadershipExperienceController(LeadershipExperiencesBusinessService businessService,
-                                          LeadershipExperiencesMapper mapper) {
+                                          LeadershipExperienceMapper mapper) {
         this.businessService = businessService;
         this.mapper = mapper;
     }

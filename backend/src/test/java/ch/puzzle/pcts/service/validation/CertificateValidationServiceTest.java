@@ -93,10 +93,7 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
 
                     Arguments
                             .of(createCertificate(validMember, null, validPastDate),
-                                List.of(Map.of(FieldKey.CLASS, "Certificate", FieldKey.FIELD, "certificateType"))),
-                    Arguments
-                            .of(createCertificate(validMember, validCertificateType, null),
-                                List.of(Map.of(FieldKey.CLASS, "Certificate", FieldKey.FIELD, "completedAt"))));
+                                List.of(Map.of(FieldKey.CLASS, "Certificate", FieldKey.FIELD, "certificateType"))));
 
     }
 

@@ -9,16 +9,16 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LeadershipExperiencesMapper {
+public class LeadershipExperienceMapper {
     private final LeadershipExperienceTypeMapper leadershipExperienceTypeMapper;
     private final MemberMapper memberMapper;
     private final LeadershipExperienceTypeBusinessService leadershipExperienceTypeBusinessService;
     private final MemberBusinessService memberBusinessService;
 
-    public LeadershipExperiencesMapper(LeadershipExperienceTypeMapper leadershipExperienceTypeMapper,
-                                       MemberMapper memberMapper,
-                                       LeadershipExperienceTypeBusinessService leadershipExperiencesBusinessService,
-                                       MemberBusinessService memberBusinessService) {
+    public LeadershipExperienceMapper(LeadershipExperienceTypeMapper leadershipExperienceTypeMapper,
+                                      MemberMapper memberMapper,
+                                      LeadershipExperienceTypeBusinessService leadershipExperiencesBusinessService,
+                                      MemberBusinessService memberBusinessService) {
         this.leadershipExperienceTypeMapper = leadershipExperienceTypeMapper;
         this.memberMapper = memberMapper;
         this.leadershipExperienceTypeBusinessService = leadershipExperiencesBusinessService;
