@@ -1,19 +1,18 @@
 package ch.puzzle.pcts.service.persistence;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.repository.CalculationRepository;
+import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CalculationPersistenceServiceIT
         extends
@@ -102,7 +101,11 @@ class CalculationPersistenceServiceIT
         assertThat(getActiveCalculations()).containsExactly(calculation);
     }
 
-    private List<Calculation> getActiveCalculations(){
-        return service.getAll().stream().filter(calculation1 -> calculation1.getState().equals(CalculationState.ACTIVE)).toList();
+    private List<Calculation> getActiveCalculations() {
+        return service
+                .getAll()
+                .stream()
+                .filter(calculation1 -> calculation1.getState().equals(CalculationState.ACTIVE))
+                .toList();
     }
 }

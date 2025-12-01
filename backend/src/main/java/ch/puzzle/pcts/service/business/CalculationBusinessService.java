@@ -8,9 +8,7 @@ import ch.puzzle.pcts.service.validation.CalculationValidationService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CalculationBusinessService
-        extends
-            BusinessBase<Calculation> {
+public class CalculationBusinessService extends BusinessBase<Calculation> {
 
     protected CalculationBusinessService(CalculationValidationService validationService,
                                          CalculationPersistenceService persistenceService) {

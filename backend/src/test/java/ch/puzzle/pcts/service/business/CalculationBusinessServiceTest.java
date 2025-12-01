@@ -9,12 +9,10 @@ import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.Calculation;
-import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.persistence.CalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.CalculationValidationService;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -104,7 +102,6 @@ class CalculationBusinessServiceTest {
         verify(validationService).validateOnUpdate(ID, calculation);
         verify(persistenceService).save(calculation);
     }
-
 
     @DisplayName("Should throw exception when updating non-existing calculation")
     @Test
