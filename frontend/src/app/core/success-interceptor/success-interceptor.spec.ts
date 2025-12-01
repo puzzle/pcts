@@ -6,6 +6,7 @@ import { of } from 'rxjs';
 import { SnackbarService } from '../toast/snackbar.service';
 import { ScopedTranslationService } from '../../shared/services/scoped-translation.service';
 import { successInterceptor } from './success-interceptor';
+import { url } from '../../shared/test/test-data';
 
 describe('successInterceptor', () => {
   let http: HttpClient;
@@ -41,7 +42,7 @@ describe('successInterceptor', () => {
   it('should NOT trigger toast on GET requests', (done) => {
     backend.handle.mockReturnValue(of(new HttpResponse({ status: 200 })));
 
-    http.get('/api/v1/users')
+    http.get(url)
       .subscribe(() => {
         expect(toastService.showToasts).not.toHaveBeenCalled();
         done();
@@ -52,10 +53,10 @@ describe('successInterceptor', () => {
   it('should trigger toast on successful POST request', (done) => {
     backend.handle.mockReturnValue(of(new HttpResponse({ status: 200 })));
 
-    http.post('/api/v1/users', {})
+    http.post(url, {})
       .subscribe(() => {
         expect(translate.instant)
-          .toHaveBeenCalledWith('POST', { OBJECT: 'User' });
+          .toHaveBeenCalledWith('POST', { OBJECT: 'Data' });
         expect(toastService.showToasts)
           .toHaveBeenCalledWith(['Translated Message'], 'success');
         done();
@@ -63,13 +64,13 @@ describe('successInterceptor', () => {
   });
 
 
-  it('should singularize plural object names', (done) => {
+  it('should singularize and capitalize object names', (done) => {
     backend.handle.mockReturnValue(of(new HttpResponse({ status: 200 })));
 
-    http.put('/api/v1/companies', {})
+    http.put('/api/v1/organisations-companies', {})
       .subscribe(() => {
         expect(translate.instant)
-          .toHaveBeenCalledWith('PUT', { OBJECT: 'Company' });
+          .toHaveBeenCalledWith('PUT', { OBJECT: 'Organisation Company' });
         done();
       });
   });
@@ -82,18 +83,6 @@ describe('successInterceptor', () => {
       .subscribe(() => {
         expect(translate.instant)
           .toHaveBeenCalledWith('POST', { OBJECT: 'Object' });
-        done();
-      });
-  });
-
-
-  it('should capitalize object names', (done) => {
-    backend.handle.mockReturnValue(of(new HttpResponse({ status: 200 })));
-
-    http.patch('/api/v1/orders', {})
-      .subscribe(() => {
-        expect(translate.instant)
-          .toHaveBeenCalledWith('PATCH', { OBJECT: 'Order' });
         done();
       });
   });

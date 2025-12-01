@@ -13,18 +13,16 @@ export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>,
   return next(req)
     .pipe(catchError((error: HttpErrorResponse) => {
       const translate: ScopedTranslationService = injector.get(ScopedTranslationService);
+      let toasts: string[];
 
-      const toasts: string[] = Array.isArray(error.error)
-        ? error.error.map((err) => {
+      if (Array.isArray(error.error)) {
+        toasts = error.error.map((err) => {
           const key = `ERROR.${err.key}`;
-
-          const values = err.values ?? {};
+          const values = { ...err.values };
 
           if (typeof values.IS === 'string') {
             const original: string = values.IS;
-            values.IS = original.length > 15
-              ? original.slice(0, 15) + '...'
-              : original;
+            values.IS = original.length > 15 ? original.slice(0, 15) + '...' : original;
           }
 
           if (typeof values.FIELD === 'string') {
@@ -36,18 +34,17 @@ export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>,
           }
 
           const message: string = translate.instant(key, values);
-
-          return message && message !== key
-            ? message
-            : translate.instant('ERROR.DEFAULT');
-        })
-        : [translate.instant('ERROR.DEFAULT')];
+          return message && message !== key ? message : translate.instant('ERROR.DEFAULT');
+        });
+      } else {
+        toasts = [translate.instant('ERROR.DEFAULT')];
+      }
 
       toastService.showToasts(toasts, 'error');
-
       return throwError(() => error);
     }));
 };
+
 
 function toScreamingSnake(text: string): string {
   if (!text) {
@@ -57,5 +54,3 @@ function toScreamingSnake(text: string): string {
     .replace(/([a-z])([A-Z])/g, '$1_$2')
     .toUpperCase();
 }
-
-

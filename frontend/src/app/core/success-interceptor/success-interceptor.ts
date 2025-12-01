@@ -16,9 +16,8 @@ export const successInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req)
     .pipe(tap((event) => {
       if (event instanceof HttpResponse && event.ok) {
-        const objectName = req.url.split('?')[0].split('/')[3] || 'Object';
-        const keyName = capitalize(singularize(objectName));
-        const message = translate.instant(req.method, { OBJECT: keyName });
+        console.log(req.url);
+        const message = translate.instant(req.method, { OBJECT: getObjectKeyFromUrl(req.url) });
 
         toastService.showToasts([message], 'success');
       }
@@ -38,4 +37,13 @@ function singularize(word: string) {
 function capitalize(word: string) {
   return word.charAt(0)
     .toUpperCase() + word.slice(1);
+}
+
+function getObjectKeyFromUrl(url: string): string {
+  console.log(url.split('?')[0].split('/')[3]);
+  const name: string = url.split('?')[0].split('/')[3] ?? 'Object';
+  console.log(name);
+  const splitName: string[] = name.split('-')
+    .map((part) => capitalize(singularize(part)));
+  return splitName.join(' ');
 }

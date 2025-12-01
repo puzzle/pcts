@@ -55,10 +55,7 @@
       "MEMBER": "Member",
       "APPLICANT": "Bewerber",
       "EX_MEMBER": "Ex-Member"
-    },
-    "POST": "Member wurde erfolgreich erstellt",
-    "PUT": "Member wurde erforlgreich erneuert",
-    "DELETE": "Member wurde erfolgreich gelöscht"
+    }
   },
 
   "ERROR": {

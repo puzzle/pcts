@@ -6,6 +6,7 @@ import { throwError } from 'rxjs';
 import { SnackbarService } from '../toast/snackbar.service';
 import { ScopedTranslationService } from '../../shared/services/scoped-translation.service';
 import { errorInterceptor } from './error-interceptor';
+import { url } from '../../shared/test/test-data';
 
 describe('errorInterceptor', () => {
   let http: HttpClient;
@@ -48,7 +49,7 @@ describe('errorInterceptor', () => {
 
     backend.handle.mockReturnValue(throwError(() => error));
 
-    http.get('/api/test')
+    http.get(url)
       .subscribe({
         error: () => {
           expect(translate.instant)
@@ -75,7 +76,7 @@ describe('errorInterceptor', () => {
 
     backend.handle.mockReturnValue(throwError(() => backendError));
 
-    http.post('/api/users', {})
+    http.post(url, {})
       .subscribe({
         error: () => {
           expect(translate.instant)
@@ -104,7 +105,7 @@ describe('errorInterceptor', () => {
 
     backend.handle.mockReturnValue(throwError(() => backendError));
 
-    http.put('/api/resource', {})
+    http.put(url, {})
       .subscribe({
         error: () => {
           expect(toastService.showToasts)
@@ -123,7 +124,7 @@ describe('errorInterceptor', () => {
     translate.instant.mockReturnValue('Translated default');
     backend.handle.mockReturnValue(throwError(() => backendError));
 
-    http.get('/api/test')
+    http.get(url)
       .subscribe({
         next: () => {
           fail('Expected error');
@@ -146,7 +147,7 @@ describe('errorInterceptor', () => {
 
     backend.handle.mockReturnValue(throwError(() => backendError));
 
-    http.post('/api/item', {})
+    http.post(url, {})
       .subscribe({
         error: () => {
           expect(translate.instant)
@@ -169,7 +170,7 @@ describe('errorInterceptor', () => {
     translate.instant.mockReturnValue('Translated Message');
     backend.handle.mockReturnValue(throwError(() => backendError));
 
-    http.post('/api/data', {})
+    http.post(url, {})
       .subscribe({
         error: () => {
           const expectedTruncation = 'ThisIsAVeryLong...';
@@ -193,7 +194,7 @@ describe('errorInterceptor', () => {
       }]
     });
 
-    translate.instant.mockImplementation((key: string | string[]) => {
+    translate.instant.mockImplementation((key: string) => {
       switch (key) {
         case 'USER_PROFILE.MODEL_NAME':
           return 'User Profile Model';
@@ -202,13 +203,13 @@ describe('errorInterceptor', () => {
         case 'ERROR.REQUIRED':
           return 'Final Error Message';
         default:
-          return key as string;
+          return key;
       }
     });
 
     backend.handle.mockReturnValue(throwError(() => backendError));
 
-    http.post('/api/data', {})
+    http.post(url, {})
       .subscribe({
         error: () => {
           expect(translate.instant)

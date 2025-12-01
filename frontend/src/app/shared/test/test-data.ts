@@ -8,6 +8,8 @@ import { CertificateKind } from '../../features/certificates/certificate-type/ce
 import { CertificateModel } from '../../features/certificates/certificate.model';
 import { CertificateDto } from '../../features/certificates/dto/certificate.dto';
 
+export const url = '/api/v1/data';
+
 export const organisationUnit1: OrganisationUnitModel = {
   id: 1,
   name: '/mem'
