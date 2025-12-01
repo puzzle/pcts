@@ -27,7 +27,7 @@ public class CalculationController {
     }
 
     @Operation(summary = "Get a calculation by ID")
-    @ApiResponse(responseCode = "200", description = "Successfully retrieved the calculations.", content = {
+    @ApiResponse(responseCode = "200", description = "A single calculation.", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = CalculationDto.class)) })
     @GetMapping("{calculationId}")
     public ResponseEntity<CalculationDto> getCalculation(@Parameter(description = "ID of the calculation to retrieve.", required = true)

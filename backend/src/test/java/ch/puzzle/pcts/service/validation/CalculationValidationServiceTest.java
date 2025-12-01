@@ -128,11 +128,11 @@ class CalculationValidationServiceTest
     }
 
 
-    @DisplayName("Should throw exception on validateUserOnlyHasOneActiveCalculationPerRole() when updating and another active calculation exists with the same id")
+    @DisplayName("Should throw exception on validateUserOnlyHasOneActiveCalculationPerRole() when updating and another active calculation exists with the another id")
     @Test
     void shouldThrowExceptionOnUpdateWhenActiveCalculationExistsForSameId() {
         Calculation calculation = getValidModel();
-        calculation.setId(5L);
+        calculation.setId(10L);
 
         Calculation existingActive = getValidModel();
         existingActive.setId(5L);
@@ -146,7 +146,7 @@ class CalculationValidationServiceTest
 
         PCTSException exception = assertThrows(
                 PCTSException.class,
-                () -> service.validateUserOnlyHasOneActiveCalculationPerRole(calculation, 5L)
+                () -> service.validateUserOnlyHasOneActiveCalculationPerRole(calculation, 10L)
         );
 
         assertEquals(List.of(ErrorKey.INVALID_ARGUMENT), exception.getErrorKeys());
