@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.web.server.ResponseStatusException;
 
 public class PCTSException extends ResponseStatusException {
-    private final List<GenericErrorDto> errors;
+    private final transient List<GenericErrorDto> errors;
 
     public PCTSException(HttpStatusCode status, List<GenericErrorDto> errors) {
         super(status);

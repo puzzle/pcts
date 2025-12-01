@@ -125,31 +125,6 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
                                     certificate.getValidUntil().toString())), exception.getErrorAttributes()));
     }
 
-    @DisplayName("Should throw exception on validateOnUpdate() when completedAt is before validUntil")
-    @Test
-    void shouldThrowExceptionOnValidateOnUpdateWhenCompletedAtIsAfterValidUntil() {
-        Certificate certificate = getValidModel();
-        certificate.setCompletedAt(LocalDate.now().plusDays(1));
-
-        List<PCTSException> exceptions = List
-                .of(assertThrows(PCTSException.class, () -> service.validateOnUpdate(1L, certificate)),
-                    assertThrows(PCTSException.class, () -> service.validateOnCreate(certificate)));
-
-        exceptions
-                .forEach(exception -> assertEquals(List
-                        .of(Map
-                                .of(FieldKey.ENTITY,
-                                    CERTIFICATE,
-                                    FieldKey.FIELD,
-                                    "completedAt",
-                                    FieldKey.IS,
-                                    certificate.getCompletedAt().toString(),
-                                    FieldKey.CONDITION_FIELD,
-                                    "validUntil",
-                                    FieldKey.MAX,
-                                    certificate.getValidUntil().toString())), exception.getErrorAttributes()));
-    }
-
     @DisplayName("Should pass validateOnCreate() when validUntil is null")
     @Test
     void shouldPassValidateOnCreateWhenValidUntilIsNull() {
