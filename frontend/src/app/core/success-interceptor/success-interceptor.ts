@@ -16,13 +16,19 @@ export const successInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req)
     .pipe(tap((event) => {
       if (event instanceof HttpResponse && event.ok) {
-        console.log(req.url);
-        const message = translate.instant(req.method, { OBJECT: getObjectKeyFromUrl(req.url) });
-
+        const message: string = translate.instant(req.method, { OBJECT: translate.instant(getObjectKeyFromUrl(req.url)) });
         toastService.showToasts([message], 'success');
       }
     }));
 };
+
+function getObjectKeyFromUrl(url: string): string {
+  const name: string = url.split('?')[0].split('/')[3] ?? 'Object';
+  const splitName: string[] = name.split('-')
+    .map((part) => singularize(part));
+  return splitName.join('_')
+    .toUpperCase();
+}
 
 function singularize(word: string) {
   if (word.endsWith('ies')) {
@@ -32,18 +38,4 @@ function singularize(word: string) {
     return word.slice(0, -1);
   }
   return word;
-}
-
-function capitalize(word: string) {
-  return word.charAt(0)
-    .toUpperCase() + word.slice(1);
-}
-
-function getObjectKeyFromUrl(url: string): string {
-  console.log(url.split('?')[0].split('/')[3]);
-  const name: string = url.split('?')[0].split('/')[3] ?? 'Object';
-  console.log(name);
-  const splitName: string[] = name.split('-')
-    .map((part) => capitalize(singularize(part)));
-  return splitName.join(' ');
 }

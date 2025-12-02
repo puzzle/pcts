@@ -72,5 +72,6 @@
   },
   "POST": "{{OBJECT}} wurde erfolgreich erstellt.",
   "PUT": "{{OBJECT}} wurde erforlgreich erneuert.",
-  "DELETE": "{{OBJECT}} wurde erfolgreich gelöscht."
+  "DELETE": "{{OBJECT}} wurde erfolgreich gelöscht.",
+  "Object": "Objekt"
 }

@@ -1,12 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpBackend, provideHttpClient, withInterceptors } from '@angular/common/http';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpBackend, HttpClient, HttpResponse, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { of } from 'rxjs';
 
 import { SnackbarService } from '../toast/snackbar.service';
 import { ScopedTranslationService } from '../../shared/services/scoped-translation.service';
 import { successInterceptor } from './success-interceptor';
-import { url } from '../../shared/test/test-data';
 
 describe('successInterceptor', () => {
   let http: HttpClient;
@@ -19,7 +17,7 @@ describe('successInterceptor', () => {
 
     translate = {
       instant: jest.fn()
-        .mockReturnValue('Translated Message')
+        .mockImplementation((key) => `Translated: ${key}`)
     } as any;
 
     backend = { handle: jest.fn() } as any;
@@ -42,47 +40,50 @@ describe('successInterceptor', () => {
   it('should NOT trigger toast on GET requests', (done) => {
     backend.handle.mockReturnValue(of(new HttpResponse({ status: 200 })));
 
-    http.get(url)
+    http.get('/api/v1/users')
       .subscribe(() => {
         expect(toastService.showToasts).not.toHaveBeenCalled();
         done();
       });
   });
 
-
   it('should trigger toast on successful POST request', (done) => {
     backend.handle.mockReturnValue(of(new HttpResponse({ status: 200 })));
 
-    http.post(url, {})
+    http.post('/api/v1/data-items', {})
       .subscribe(() => {
         expect(translate.instant)
-          .toHaveBeenCalledWith('POST', { OBJECT: 'Data' });
+          .toHaveBeenCalledWith('POST', {
+            OBJECT: 'Translated: DATA_ITEM'
+          });
         expect(toastService.showToasts)
-          .toHaveBeenCalledWith(['Translated Message'], 'success');
+          .toHaveBeenCalledWith(['Translated: POST'], 'success');
         done();
       });
   });
 
-
-  it('should singularize and capitalize object names', (done) => {
+  it('should singularize and join multi-part object names', (done) => {
     backend.handle.mockReturnValue(of(new HttpResponse({ status: 200 })));
 
     http.put('/api/v1/organisations-companies', {})
       .subscribe(() => {
         expect(translate.instant)
-          .toHaveBeenCalledWith('PUT', { OBJECT: 'Organisation Company' });
+          .toHaveBeenCalledWith('PUT', {
+            OBJECT: 'Translated: ORGANISATION_COMPANY'
+          });
         done();
       });
   });
 
-
-  it('should use fallback "Object" if URL does not contain enough segments', (done) => {
+  it('should fallback to "Object" if URL does not have enough segments', (done) => {
     backend.handle.mockReturnValue(of(new HttpResponse({ status: 200 })));
 
     http.post('/api', {})
       .subscribe(() => {
         expect(translate.instant)
-          .toHaveBeenCalledWith('POST', { OBJECT: 'Object' });
+          .toHaveBeenCalledWith('POST', {
+            OBJECT: 'Translated: OBJECT'
+          });
         done();
       });
   });
