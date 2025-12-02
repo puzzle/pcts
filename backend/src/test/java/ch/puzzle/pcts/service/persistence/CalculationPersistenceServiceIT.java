@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.service.persistence;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
@@ -53,13 +54,13 @@ class CalculationPersistenceServiceIT
                                     memberPersistenceServiceIT.getAll().getLast(),
                                     rolePersistenceServiceIT.getAll().getLast(),
                                     CalculationState.ARCHIVED,
-                                    null,
+                                    LocalDate.of(2025, 1, 14),
                                     "Ldap User 2"),
                     new Calculation(3L,
                                     memberPersistenceServiceIT.getAll().getLast(),
                                     rolePersistenceServiceIT.getAll().getLast(),
                                     CalculationState.ACTIVE,
-                                    LocalDate.of(2025, 1, 14),
+                                    null,
                                     null));
     }
 
@@ -69,10 +70,15 @@ class CalculationPersistenceServiceIT
     void shouldOnlyHaveOneActiveCalculationAfterSave() {
         Calculation oldActiveCalculation = getModel();
         Calculation activeCalculation = getModel();
+        activeCalculation.setPublicationDate(null);
+        activeCalculation.setPublicizedBy(null);
 
         service.save(oldActiveCalculation);
-        service.save(activeCalculation);
 
+        Calculation result = service.save(activeCalculation);
+
+        assertEquals(LocalDate.now(), result.getPublicationDate());
+        assertEquals("Ldap User", result.getPublicizedBy());
         assertThat(getActiveCalculations(activeCalculation.getRole(), activeCalculation.getMember()))
                 .containsExactly(activeCalculation);
     }
@@ -83,12 +89,17 @@ class CalculationPersistenceServiceIT
     void shouldOnlyHaveOneActiveCalculationAfterUpdate() {
         Calculation oldActiveCalculation = getModel();
         Calculation activeCalculation = getModel();
+        activeCalculation.setPublicationDate(null);
+        activeCalculation.setPublicizedBy(null);
 
         oldActiveCalculation.setId(2L);
         service.save(oldActiveCalculation);
-        activeCalculation.setId(3L);
-        service.save(activeCalculation);
 
+        activeCalculation.setId(3L);
+        Calculation result = service.save(activeCalculation);
+
+        assertEquals(LocalDate.now(), result.getPublicationDate());
+        assertEquals("Ldap User", result.getPublicizedBy());
         assertThat(getActiveCalculations(activeCalculation.getRole(), activeCalculation.getMember()))
                 .containsExactly(activeCalculation);
     }
