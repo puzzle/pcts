@@ -1,5 +1,9 @@
 package ch.puzzle.pcts.mapper;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
 import ch.puzzle.pcts.dto.calculation.CalculationDto;
 import ch.puzzle.pcts.dto.calculation.CalculationInputDto;
 import ch.puzzle.pcts.dto.member.MemberDto;
@@ -11,6 +15,8 @@ import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import ch.puzzle.pcts.service.business.RoleBusinessService;
+import java.time.LocalDate;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,13 +24,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-
-import java.time.LocalDate;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CalculationMapperTest {
@@ -53,12 +52,7 @@ class CalculationMapperTest {
 
     @BeforeEach
     void setUp() {
-        calculationMapper = new CalculationMapper(
-                memberMapper,
-                roleMapper,
-                memberBusinessService,
-                roleBusinessService
-        );
+        calculationMapper = new CalculationMapper(memberMapper, roleMapper, memberBusinessService, roleBusinessService);
     }
 
     private Member createMember() {
@@ -74,14 +68,7 @@ class CalculationMapperTest {
     }
 
     private Calculation createCalculation(Member member, Role role) {
-        return new Calculation(
-                CALC_ID,
-                member,
-                role,
-                STATE,
-                PUBLICATION_DATE,
-                PUBLICIZED_BY
-        );
+        return new Calculation(CALC_ID, member, role, STATE, PUBLICATION_DATE, PUBLICIZED_BY);
     }
 
     private CalculationInputDto createInput() {
@@ -190,8 +177,7 @@ class CalculationMapperTest {
     void shouldThrowWhenMemberNotFound() {
         CalculationInputDto input = createInput();
 
-        when(memberBusinessService.getById(anyLong()))
-                .thenThrow(new PCTSException(HttpStatus.NOT_FOUND, List.of()));
+        when(memberBusinessService.getById(anyLong())).thenThrow(new PCTSException(HttpStatus.NOT_FOUND, List.of()));
 
         assertThrows(PCTSException.class, () -> calculationMapper.fromDto(input));
     }
@@ -202,8 +188,7 @@ class CalculationMapperTest {
         CalculationInputDto input = createInput();
 
         when(memberBusinessService.getById(MEMBER_ID)).thenReturn(createMember());
-        when(roleBusinessService.getById(anyLong()))
-                .thenThrow(new PCTSException(HttpStatus.NOT_FOUND, List.of()));
+        when(roleBusinessService.getById(anyLong())).thenThrow(new PCTSException(HttpStatus.NOT_FOUND, List.of()));
 
         assertThrows(PCTSException.class, () -> calculationMapper.fromDto(input));
     }
