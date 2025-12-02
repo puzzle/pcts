@@ -137,7 +137,7 @@ VALUES
     (4, 1, '2021-06-10', '2023-06-09', 'Left organization.', '2023-07-01 10:00:00'),
     (5, 4, '2024-02-01', '2026-02-01', NULL, NULL),
 
-    ---     LeadershipExperiences
+    --     LeadershipExperiences
     (6, 11, NULL, NULL, NULL, NULL),
     (2, 12, NULL, NULL, 'This is quite hard', NULL),
     (4, 13, NULL, NULL, NULL, '2025-01-03 10:43:12');
