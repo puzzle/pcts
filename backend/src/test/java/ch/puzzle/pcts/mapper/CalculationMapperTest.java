@@ -75,7 +75,6 @@ class CalculationMapperTest {
         return new CalculationInputDto(MEMBER_ID, ROLE_ID, STATE);
     }
 
-    // --------------------------------------------------------------------------------------------
     @DisplayName("Should map Calculation to CalculationDto")
     @Test
     void shouldReturnCalculationDto() {
@@ -103,7 +102,6 @@ class CalculationMapperTest {
         verify(roleMapper).toDto(role);
     }
 
-    // --------------------------------------------------------------------------------------------
     @DisplayName("Should map CalculationInputDto to Calculation")
     @Test
     void shouldReturnCalculation() {
@@ -127,7 +125,6 @@ class CalculationMapperTest {
         verify(roleBusinessService).getById(ROLE_ID);
     }
 
-    // --------------------------------------------------------------------------------------------
     @DisplayName("Should map list of Calculations to CalculationDto list")
     @Test
     void shouldReturnListOfCalculationDto() {
@@ -148,7 +145,6 @@ class CalculationMapperTest {
         verify(roleMapper, times(2)).toDto(any(Role.class));
     }
 
-    // --------------------------------------------------------------------------------------------
     @DisplayName("Should map list of CalculationInputDto to Calculation list")
     @Test
     void shouldReturnListOfCalculation() {
