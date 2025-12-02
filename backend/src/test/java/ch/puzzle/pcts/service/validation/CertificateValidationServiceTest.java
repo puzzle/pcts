@@ -100,9 +100,9 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
 
     }
 
-    @DisplayName("Should throw exception on validateOnCreate() when competedAt is after validUntil")
+    @DisplayName("Should throw exception on validateOnCreate() and validateOnUpdate() when competedAt is after validUntil")
     @Test
-    void shouldThrowExceptionOnValidateOnCreateWhenCompletedAtIsAfterValidUntil() {
+    void shouldThrowExceptionOnValidateOnCreateAndValidateOnUpdateWhenCompletedAtIsAfterValidUntil() {
         Certificate certificate = getValidModel();
         certificate.setCompletedAt(LocalDate.now().plusDays(1));
 
