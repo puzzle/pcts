@@ -1,32 +1,74 @@
 import { FormControl } from '@angular/forms';
-import { isDateInFuture, isValueInList, isValueInListSignal } from './form-validators';
+import { isDateInPast, isDateInPastOrPresent, isValueInList, isValueInListSignal } from './form-validators';
 import { signal } from '@angular/core';
 import { add, sub } from 'date-fns';
 
-describe('isDateInFuture', () => {
+describe('isDateInPastOrPresent', () => {
   it('should return null if value is empty', () => {
     const control = new FormControl('');
-    expect(isDateInFuture()(control))
+    expect(isDateInPastOrPresent()(control))
       .toBeNull();
   });
 
   it('should return invalid_date if date is not valid', () => {
     const control = new FormControl('not-a-date');
-    expect(isDateInFuture()(control))
+    expect(isDateInPastOrPresent()(control))
       .toEqual({ invalid_date: true });
+  });
+
+  it('should return null if date is today', () => {
+    const today = new Date();
+    const control = new FormControl(today);
+    expect(isDateInPastOrPresent()(control))
+      .toEqual(null);
   });
 
   it('should return date_is_in_future if date is in the future', () => {
     const futureDate = add(Date.now(), { days: 1 });
     const control = new FormControl(futureDate);
-    expect(isDateInFuture()(control))
+    expect(isDateInPastOrPresent()(control))
       .toEqual({ date_is_in_future: true });
   });
 
   it('should return null if date is in the past', () => {
     const pastDate = sub(Date.now(), { days: 1 });
     const control = new FormControl(pastDate);
-    expect(isDateInFuture()(control))
+    expect(isDateInPastOrPresent()(control))
+      .toBeNull();
+  });
+});
+
+describe('isDateInPast', () => {
+  it('should return null if value is empty', () => {
+    const control = new FormControl('');
+    expect(isDateInPast()(control))
+      .toBeNull();
+  });
+
+  it('should return invalid_date if date is not valid', () => {
+    const control = new FormControl('not-a-date');
+    expect(isDateInPast()(control))
+      .toEqual({ invalid_date: true });
+  });
+
+  it('should return date_is_not_in_past if date is today', () => {
+    const today = new Date();
+    const control = new FormControl(today);
+    expect(isDateInPast()(control))
+      .toEqual({ date_is_not_in_past: true });
+  });
+
+  it('should return date_is_not_in_past if date is in the future', () => {
+    const futureDate = add(Date.now(), { days: 1 });
+    const control = new FormControl(futureDate);
+    expect(isDateInPast()(control))
+      .toEqual({ date_is_not_in_past: true });
+  });
+
+  it('should return null if date is truly in the past', () => {
+    const pastDate = sub(Date.now(), { days: 1 });
+    const control = new FormControl(pastDate);
+    expect(isDateInPast()(control))
       .toBeNull();
   });
 });
