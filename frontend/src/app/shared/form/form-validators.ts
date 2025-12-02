@@ -1,6 +1,6 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Signal } from '@angular/core';
-import { isFuture, isPast, isToday, isValid } from 'date-fns';
+import { isFuture, isToday, isValid } from 'date-fns';
 
 export function isDateInPastOrPresent(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
