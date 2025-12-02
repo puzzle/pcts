@@ -62,6 +62,36 @@ describe('successInterceptor', () => {
       });
   });
 
+  it('should trigger toast on successful DELETE request', (done) => {
+    backend.handle.mockReturnValue(of(new HttpResponse({ status: 200 })));
+
+    http.delete('/api/v1/data-items', {})
+      .subscribe(() => {
+        expect(translate.instant)
+          .toHaveBeenCalledWith('DELETE', {
+            OBJECT: 'Translated: DATA_ITEM.MODEL_NAME'
+          });
+        expect(toastService.showToasts)
+          .toHaveBeenCalledWith(['Translated: DELETE'], 'success');
+        done();
+      });
+  });
+
+  it('should trigger toast on successful PUT request', (done) => {
+    backend.handle.mockReturnValue(of(new HttpResponse({ status: 200 })));
+
+    http.put('/api/v1/data-items', {})
+      .subscribe(() => {
+        expect(translate.instant)
+          .toHaveBeenCalledWith('PUT', {
+            OBJECT: 'Translated: DATA_ITEM.MODEL_NAME'
+          });
+        expect(toastService.showToasts)
+          .toHaveBeenCalledWith(['Translated: PUT'], 'success');
+        done();
+      });
+  });
+
   it('should singularize and join multi-part object names', (done) => {
     backend.handle.mockReturnValue(of(new HttpResponse({ status: 200 })));
 
