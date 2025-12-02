@@ -1,15 +1,15 @@
 package ch.puzzle.pcts.service.persistence;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
+import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.repository.CalculationRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,45 +67,38 @@ class CalculationPersistenceServiceIT
     @Transactional
     @Test
     void shouldOnlyHaveOneActiveCalculationAfterSave() {
-        Calculation calculation = getModel();
-        // Setting Member and Role to a already active calculation
-        calculation.setMember(memberPersistenceServiceIT.getAll().getLast());
-        calculation.setRole(rolePersistenceServiceIT.getAll().getLast());
+        Calculation oldActiveCalculation = getModel();
+        Calculation activeCalculation = getModel();
 
-        Calculation result = service.save(calculation);
+        service.save(oldActiveCalculation);
+        service.save(activeCalculation);
 
-        calculation.setId(result.getId());
-        assertThat(result).isEqualTo(calculation);
-
-        assertThat(getActiveCalculations()).containsExactly(calculation);
+        assertThat(getActiveCalculations(activeCalculation.getRole(), activeCalculation.getMember()))
+                .containsExactly(activeCalculation);
     }
 
-    @DisplayName("Should only have one active Calculation after update")
+    @DisplayName("Should only have one active Calculation after save when member already has active Calculation for the same role.")
     @Transactional
     @Test
     void shouldOnlyHaveOneActiveCalculationAfterUpdate() {
-        Long id = 2L;
-        Calculation calculation = getModel();
-        // Setting Member and Role to a already active calculation
-        calculation.setMember(memberPersistenceServiceIT.getAll().getLast());
-        calculation.setRole(rolePersistenceServiceIT.getAll().getLast());
+        Calculation oldActiveCalculation = getModel();
+        Calculation activeCalculation = getModel();
 
-        calculation.setId(id);
-        service.save(calculation);
+        oldActiveCalculation.setId(2L);
+        service.save(oldActiveCalculation);
+        activeCalculation.setId(3L);
+        service.save(activeCalculation);
 
-        Optional<Calculation> result = service.getById(id);
-
-        assertThat(result).isPresent();
-        assertEquals(calculation, result.get());
-
-        assertThat(getActiveCalculations()).containsExactly(calculation);
+        assertThat(getActiveCalculations(activeCalculation.getRole(), activeCalculation.getMember()))
+                .containsExactly(activeCalculation);
     }
 
-    private List<Calculation> getActiveCalculations() {
+    private List<Calculation> getActiveCalculations(Role role, Member member) {
         return service
                 .getAll()
                 .stream()
-                .filter(calculation1 -> calculation1.getState().equals(CalculationState.ACTIVE))
+                .filter(calculation -> calculation.getState().equals(CalculationState.ACTIVE)
+                                       && calculation.getRole().equals(role) && calculation.getMember().equals(member))
                 .toList();
     }
 }
