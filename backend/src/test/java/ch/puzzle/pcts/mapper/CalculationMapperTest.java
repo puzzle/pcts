@@ -171,7 +171,6 @@ class CalculationMapperTest {
         verify(roleBusinessService).getById(20L);
     }
 
-    // --------------------------------------------------------------------------------------------
     @DisplayName("Should throw when Member not found")
     @Test
     void shouldThrowWhenMemberNotFound() {
