@@ -15,17 +15,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LeadershipExperiencesBusinessService extends BusinessBase<Certificate> {
+public class LeadershipExperienceBusinessService extends BusinessBase<Certificate> {
     private final CertificatePersistenceService certificatePersistenceService;
 
-    LeadershipExperiencesBusinessService(CertificatePersistenceService certificatePersistenceService,
-                                         LeadershipExperienceValidationService validationService) {
+    LeadershipExperienceBusinessService(CertificatePersistenceService certificatePersistenceService,
+                                        LeadershipExperienceValidationService validationService) {
         super(validationService, certificatePersistenceService);
         this.certificatePersistenceService = certificatePersistenceService;
     }
 
     @Override
     public Certificate getById(Long id) {
+        validationService.validateOnGetById(id);
         return certificatePersistenceService.findLeadershipExperience(id).orElseThrow(() -> {
             Map<FieldKey, String> attributes = Map
                     .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, id.toString());

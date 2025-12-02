@@ -4,7 +4,7 @@ import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceDto;
 import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceInputDto;
 import ch.puzzle.pcts.mapper.LeadershipExperienceMapper;
 import ch.puzzle.pcts.model.certificate.Certificate;
-import ch.puzzle.pcts.service.business.LeadershipExperiencesBusinessService;
+import ch.puzzle.pcts.service.business.LeadershipExperienceBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "leadership-experience", description = "Manage the leadership experience of members which are associated with a member")
 public class LeadershipExperienceController {
 
-    private final LeadershipExperiencesBusinessService businessService;
+    private final LeadershipExperienceBusinessService businessService;
     private final LeadershipExperienceMapper mapper;
 
-    public LeadershipExperienceController(LeadershipExperiencesBusinessService businessService,
+    public LeadershipExperienceController(LeadershipExperienceBusinessService businessService,
                                           LeadershipExperienceMapper mapper) {
         this.businessService = businessService;
         this.mapper = mapper;

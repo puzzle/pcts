@@ -23,7 +23,7 @@ import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
-import ch.puzzle.pcts.service.business.LeadershipExperiencesBusinessService;
+import ch.puzzle.pcts.service.business.LeadershipExperienceBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
@@ -46,7 +46,7 @@ import org.springframework.test.web.servlet.MockMvc;
 class LeadershipExperienceControllerIT {
 
     @MockitoBean
-    private LeadershipExperiencesBusinessService businessService;
+    private LeadershipExperienceBusinessService businessService;
 
     @MockitoBean
     private LeadershipExperienceMapper mapper;
