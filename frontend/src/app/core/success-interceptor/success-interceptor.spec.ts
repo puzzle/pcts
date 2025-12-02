@@ -54,7 +54,7 @@ describe('successInterceptor', () => {
       .subscribe(() => {
         expect(translate.instant)
           .toHaveBeenCalledWith('POST', {
-            OBJECT: 'Translated: DATA_ITEM'
+            OBJECT: 'Translated: DATA_ITEM.MODEL_NAME'
           });
         expect(toastService.showToasts)
           .toHaveBeenCalledWith(['Translated: POST'], 'success');
@@ -69,7 +69,7 @@ describe('successInterceptor', () => {
       .subscribe(() => {
         expect(translate.instant)
           .toHaveBeenCalledWith('PUT', {
-            OBJECT: 'Translated: ORGANISATION_COMPANY'
+            OBJECT: 'Translated: ORGANISATION_COMPANY.MODEL_NAME'
           });
         done();
       });
@@ -82,7 +82,7 @@ describe('successInterceptor', () => {
       .subscribe(() => {
         expect(translate.instant)
           .toHaveBeenCalledWith('POST', {
-            OBJECT: 'Translated: OBJECT'
+            OBJECT: 'Translated: OBJECT.MODEL_NAME'
           });
         done();
       });
