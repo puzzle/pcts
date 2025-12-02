@@ -30,14 +30,6 @@ public class ExperienceController {
         this.service = service;
     }
 
-    @Operation(summary = "List all experiences")
-    @ApiResponse(responseCode = "200", description = "A list of experiences.", content = {
-            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ExperienceDto.class))) })
-    @GetMapping
-    public ResponseEntity<List<ExperienceDto>> getExperiences() {
-        return ResponseEntity.ok(mapper.toDto(service.getAll()));
-    }
-
     @Operation(summary = "Get an experience by ID")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "A single experience.", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = ExperienceDto.class)) }), })

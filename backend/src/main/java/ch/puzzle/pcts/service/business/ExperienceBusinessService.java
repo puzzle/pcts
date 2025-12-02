@@ -15,10 +15,6 @@ public class ExperienceBusinessService extends BusinessBase<Experience> {
         super(validationService, persistenceService);
     }
 
-    public List<Experience> getAll() {
-        return persistenceService.getAll();
-    }
-
     @Override
     protected String entityName() {
         return EXPERIENCE;
