@@ -19,7 +19,7 @@ import { PctsFormErrorDirective } from '../../../shared/pcts-form-error/pcts-for
 import { PctsFormLabelDirective } from '../../../shared/pcts-form-label/pcts-form-label.directive';
 import { InputFieldComponent } from '../../../shared/input-field/input-field.component';
 import { map } from 'rxjs';
-import { isDateInFuture, isValueInList, isValueInListSignal } from '../../../shared/form/form-validators';
+import { isDateInPast, isValueInList, isValueInListSignal } from '../../../shared/form/form-validators';
 import { BaseFormComponent } from '../../../shared/form/base-form.component';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { Location } from '@angular/common';
@@ -75,7 +75,7 @@ export class MemberFormComponent implements OnInit {
     abbreviation: [''],
     birthDate: ['',
       [Validators.required,
-        isDateInFuture()]],
+        isDateInPast()]],
     dateOfHire: [''],
     employmentState: [null,
       [Validators.required,
