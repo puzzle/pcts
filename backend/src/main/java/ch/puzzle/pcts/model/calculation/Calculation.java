@@ -55,8 +55,9 @@ public class Calculation implements Model {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Calculation that))
+        if (!(o instanceof Calculation that)) {
             return false;
+        }
         return Objects.equals(getId(), that.getId()) && Objects.equals(getMember(), that.getMember())
                && Objects.equals(getRole(), that.getRole()) && getState() == that.getState()
                && Objects.equals(getPublicationDate(), that.getPublicationDate())

@@ -19,7 +19,7 @@ public class CalculationPersistenceService extends PersistenceBase<Calculation, 
 
     @Override
     public Calculation save(Calculation calculation) {
-        if (calculation.getState().equals(CalculationState.ACTIVE)) {
+        if (calculation.getState() == CalculationState.ACTIVE) {
             setPublicationFields(calculation);
             setStateOfOldActiveCalculationsToArchived(calculation);
         }

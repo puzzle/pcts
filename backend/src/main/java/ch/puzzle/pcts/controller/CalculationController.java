@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/calculations")
-@Tag(name = "calculations", description = "Manage the calculations of members which are associated with a member")
+@Tag(name = "calculations", description = "Manage the calculations which are associated with a member")
 public class CalculationController {
     private final CalculationBusinessService businessService;
     private final CalculationMapper mapper;
