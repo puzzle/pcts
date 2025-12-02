@@ -56,5 +56,22 @@
       "APPLICANT": "Bewerber",
       "EX_MEMBER": "Ex-Member"
     }
-  }
+  },
+
+  "ERROR": {
+    "ATTRIBUTE_NOT_NULL": "{{FIELD}} darf nicht leer sein.",
+    "ATTRIBUTE_NOT_NEGATIVE": "{{FIELD}} mit dem Wert {{IS}} darf nicht negativ sein.",
+    "ATTRIBUTE_NOT_BLANK": "{{FIELD}} mit dem Wert {{IS}} darf nicht leer sein.",
+    "ATTRIBUTE_MIN_VALUE": "{{FIELD}} muss mindestens {{MIN}} sein.",
+    "ATTRIBUTE_MAX_VALUE": "{{FIELD}} darf höchstens {{MAX}} sein.",
+    "ATTRIBUTE_DATE_PAST": "{{FIELD}} muss in der Vergangenheit liegen.",
+    "ATTRIBUTE_SIZE_BETWEEN": "{{FIELD}} mit dem Wert \"{{IS}}\" muss zwischen {{MIN}} und {{MAX}} liegen.",
+    "NOT_FOUND": "{{ENTITY}} mit {{FIELD}} {{IS}} konnte nicht gefunden werden.",
+    "DEFAULT": "Ein unerwarteter Fehler ist aufgetreten.",
+    "CLOSE": "Schliessen"
+  },
+  "POST": "{{OBJECT}} wurde erfolgreich erstellt.",
+  "PUT": "{{OBJECT}} wurde erforlgreich aktualisiert.",
+  "DELETE": "{{OBJECT}} wurde erfolgreich gelöscht.",
+  "Object": "Objekt"
 }

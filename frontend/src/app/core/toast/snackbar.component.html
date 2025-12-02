@@ -1,0 +1,12 @@
+<div class="d-flex flex-column gap-3">
+  @for (item of messages(); track $index) {
+    <div class="toast-component d-flex align-items-center justify-content-between rounded px-4 py-3" data-testid="toaster-message">
+      <div class="text">
+        {{ item }}
+      </div>
+      <button type="button" mat-icon-button aria-label="Close error popup" (click)="close($index)">
+        <mat-icon fontIcon="close" />
+      </button>
+    </div>
+  }
+</div>
