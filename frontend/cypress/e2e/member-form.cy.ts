@@ -1,6 +1,7 @@
 import FormPage from '../pages/formPage';
 import translations from '../../public/i18n/de.json';
 import OverviewPage from '../pages/overviewPage';
+import { format } from 'date-fns';
 
 
 describe('MemberFormComponent', () => {
@@ -36,6 +37,14 @@ describe('MemberFormComponent', () => {
       FormPage.typeAndBlur(fieldName, 'invalid entry');
 
       FormPage.shouldShowValidationError(translations.VALIDATION.MATDATEPICKERPARSE, fieldName);
+    });
+  });
+
+  ['birthDate'].forEach((fieldName) => {
+    it(`should show date must be in past for field ${fieldName}`, () => {
+      FormPage.typeAndBlur(fieldName, format(new Date(), 'dd.MM.yyyy'));
+
+      FormPage.shouldShowValidationError(translations.VALIDATION.DATE_IS_NOT_IN_PAST, fieldName);
     });
   });
 
