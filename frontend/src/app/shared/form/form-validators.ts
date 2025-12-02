@@ -1,8 +1,8 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Signal } from '@angular/core';
-import { isPast, isValid } from 'date-fns';
+import { isPast, isToday, isValid } from 'date-fns';
 
-export function isDateInFuture(): ValidatorFn {
+export function isDateNotInPast(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const value = control.value;
 
@@ -24,6 +24,27 @@ export function isDateInFuture(): ValidatorFn {
   };
 }
 
+export function isDateInFuture(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+
+    if (!value) {
+      return null;
+    }
+
+    const date = new Date(value);
+
+    if (!isValid(date)) {
+      return { invalid_date: true };
+    }
+
+    if (!isPast(date) || isToday(date)) {
+      return { date_is_in_future: true };
+    }
+
+    return null;
+  };
+}
 
 export function isValueInList<T>(validOptions: T[]): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
