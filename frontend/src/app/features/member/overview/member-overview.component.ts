@@ -17,8 +17,8 @@ import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
 import sortingDataAccessor from '../../../shared/utils/sortingDataAccessor';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
-import { ExperienceService } from '../../experiences/experience.service'
-import { experience1 } from '../../../shared/test/test-data'
+import { ExperienceService } from '../../experiences/experience.service';
+import { experience1 } from '../../../shared/test/test-data';
 
 
 @Component({
@@ -96,10 +96,14 @@ export class MemberOverviewComponent implements OnInit {
         this.applyCombinedFilter();
       });
 
-    this.experienceService.getExperienceById(1).subscribe();
-    this.experienceService.addExperience(experience1).subscribe();
-    this.experienceService.updateExperience(1, experience1).subscribe();
-    this.experienceService.deleteExperience(2).subscribe();
+    this.experienceService.getExperienceById(1)
+      .subscribe();
+    this.experienceService.addExperience(experience1)
+      .subscribe();
+    this.experienceService.updateExperience(1, experience1)
+      .subscribe();
+    this.experienceService.deleteExperience(2)
+      .subscribe();
   }
 
   ngOnInit() {

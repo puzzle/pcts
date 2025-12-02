@@ -5,7 +5,6 @@ import static ch.puzzle.pcts.Constants.*;
 import ch.puzzle.pcts.model.experience.Experience;
 import ch.puzzle.pcts.service.persistence.ExperiencePersistenceService;
 import ch.puzzle.pcts.service.validation.ExperienceValidationService;
-import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
