@@ -266,3 +266,11 @@ export const leadershipExperienceType2: LeadershipExperiencesTypeModel = {
   comment: 'leadershipExperienceType2',
   experienceKind: CertificateKind.YOUTH_AND_SPORT
 };
+
+export const leadershipExperienceType3: LeadershipExperiencesTypeModel = {
+  id: 3,
+  name: 'leadershipExperienceType3',
+  points: 3,
+  comment: null,
+  experienceKind: CertificateKind.MILITARY_FUNCTION
+};

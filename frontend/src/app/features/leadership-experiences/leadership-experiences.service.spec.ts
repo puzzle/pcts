@@ -32,7 +32,7 @@ describe('LeadershipExperiencesService', () => {
   });
 
   describe('LeadershipExperiences CRUD endpoints', () => {
-    it('should call httpClient.get with the correct URL and return the experience with the correct id', () => {
+    it('should call httpClient.get with the correct URL and return the leadership experience with the correct id', () => {
       const mockLeadershipExperiences: LeadershipExperiencesModel = leadershipExperience1;
 
       service.getLeadershipExperienceById(1)
@@ -47,7 +47,7 @@ describe('LeadershipExperiencesService', () => {
       req.flush(mockLeadershipExperiences);
     });
 
-    it('should call httpClient.post with the correct URL and body and return the created leadership Experience', () => {
+    it('should call httpClient.post with the correct URL and body and return the created leadership experience', () => {
       const mockLeadershipExperiences: LeadershipExperiencesModel = leadershipExperience1;
 
       service.addLeadershipExperience(leadershipExperience1)
@@ -62,7 +62,7 @@ describe('LeadershipExperiencesService', () => {
       req.flush(mockLeadershipExperiences);
     });
 
-    it('should call httpClient.put with the correct URL and body and return the updated leadership Experience', () => {
+    it('should call httpClient.put with the correct URL and body and return the updated leadership experience', () => {
       const mockLeadershipExperiences: LeadershipExperiencesModel = leadershipExperience1;
 
       service.updateLeadershipExperience(2, leadershipExperience1)

@@ -36,7 +36,7 @@ describe('LeadershipExperiencesTypeService', () => {
   });
 
   describe('LeadershipExperiencesType CRUD endpoints', () => {
-    it('should call httpClient.get with the correct URL and return the experience with the correct id', () => {
+    it('should call httpClient.get with the correct URL and return all the leadership-experience-types', () => {
       const mockLeadershipExperiencesType: LeadershipExperiencesTypeModel[] = [leadershipExperienceType1,
         leadershipExperienceType2];
 
