@@ -1,5 +1,8 @@
 package ch.puzzle.pcts.service.persistence;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
@@ -8,16 +11,23 @@ import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.repository.CertificateRepository;
+import ch.puzzle.pcts.repository.CertificateTypeRepository;
+import ch.puzzle.pcts.repository.MemberRepository;
+import ch.puzzle.pcts.repository.OrganisationUnitRepository;
+import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class CertificatePersistenceServiceIT
+class CertificatePersistenceServiceIT
         extends
             PersistenceBaseIT<Certificate, CertificateRepository, CertificatePersistenceService> {
 
@@ -25,6 +35,15 @@ public class CertificatePersistenceServiceIT
     CertificatePersistenceServiceIT(CertificatePersistenceService service) {
         super(service);
     }
+
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private CertificateTypeRepository certificateTypeRepository;
+
+    @Autowired
+    private OrganisationUnitRepository organisationUnitRepository;
 
     @Override
     Certificate getModel() {
@@ -178,5 +197,42 @@ public class CertificatePersistenceServiceIT
                 .withValidUntil(validUntil)
                 .withComment(comment)
                 .build();
+    }
+
+    @Test
+    @DisplayName("Should get leadership experience when kind is not CERTIFICATE")
+    @Transactional
+    void shouldGetLeadershipExperience() {
+        OrganisationUnit organisationUnit = new OrganisationUnit();
+        organisationUnit.setName("OrganisationUnit for testing");
+        organisationUnit = organisationUnitRepository.save(organisationUnit);
+
+        Member member = new Member();
+        member.setFirstName("Member");
+        member.setLastName("Test");
+        member.setEmploymentState(EmploymentState.MEMBER);
+        member.setOrganisationUnit(organisationUnit);
+        member.setBirthDate(LocalDate.of(1999, 8, 10));
+        member = memberRepository.save(member);
+
+        CertificateType certificateType = new CertificateType();
+        certificateType.setName("New certificatetype");
+        certificateType.setCertificateKind(CertificateKind.MILITARY_FUNCTION);
+        certificateType.setPoints(BigDecimal.valueOf(10));
+        certificateType = certificateTypeRepository.save(certificateType); // Save and capture
+
+        Certificate certificate = Certificate.Builder
+                .builder()
+                .withMember(member)
+                .withCertificateType(certificateType)
+                .withCompletedAt(LocalDate.now())
+                .build();
+
+        Certificate savedCertificate = service.save(certificate);
+
+        Optional<Certificate> result = service.findLeadershipExperience(savedCertificate.getId());
+
+        assertTrue(result.isPresent());
+        assertEquals(savedCertificate.getId(), result.get().getId());
     }
 }

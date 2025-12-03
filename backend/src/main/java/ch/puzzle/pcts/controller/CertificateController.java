@@ -7,12 +7,10 @@ import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.service.business.CertificateBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,14 +24,6 @@ public class CertificateController {
     public CertificateController(CertificateBusinessService businessService, CertificateMapper mapper) {
         this.businessService = businessService;
         this.mapper = mapper;
-    }
-
-    @Operation(summary = "List all certificates")
-    @ApiResponse(responseCode = "200", description = "A list of certificates.", content = {
-            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = CertificateDto.class))) })
-    @GetMapping
-    public ResponseEntity<List<CertificateDto>> getCertificate() {
-        return ResponseEntity.ok(mapper.toDto(businessService.getAll()));
     }
 
     @Operation(summary = "Get a certificate by ID")

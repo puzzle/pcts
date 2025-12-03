@@ -11,7 +11,6 @@ import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.service.persistence.CertificatePersistenceService;
 import ch.puzzle.pcts.service.validation.CertificateValidationService;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -64,32 +63,6 @@ class CertificateBusinessServiceTest {
                      exception.getErrorAttributes());
         verify(validationService).validateOnGetById(id);
         verify(persistenceService).getById(id);
-    }
-
-    @DisplayName("Should get all certificates")
-    @Test
-    void shouldGetAll() {
-        List<Certificate> expectedList = List.of(certificate, certificate);
-        when(persistenceService.getAll()).thenReturn(expectedList);
-
-        List<Certificate> result = businessService.getAll();
-
-        assertEquals(expectedList.size(), result.size());
-        assertEquals(expectedList, result);
-        verify(persistenceService).getAll();
-        verifyNoInteractions(validationService);
-    }
-
-    @DisplayName("Should get empty list when no certificates exist")
-    @Test
-    void shouldGetEmptyList() {
-        when(persistenceService.getAll()).thenReturn(Collections.emptyList());
-
-        List<Certificate> result = businessService.getAll();
-
-        assertEquals(0, result.size());
-        verify(persistenceService).getAll();
-        verifyNoInteractions(validationService);
     }
 
     @DisplayName("Should create certificate")

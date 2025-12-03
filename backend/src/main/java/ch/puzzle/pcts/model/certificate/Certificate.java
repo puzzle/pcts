@@ -29,7 +29,6 @@ public class Certificate implements Model {
     @JoinColumn(name = "certificate_type_id")
     private CertificateType certificateType;
 
-    @NotNull(message = "{attribute.not.null}")
     private LocalDate completedAt;
 
     private LocalDate validUntil;

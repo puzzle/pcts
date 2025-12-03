@@ -12,7 +12,7 @@ public record CertificateDto(
 
         @Schema(description = "The type of certificate awarded to the member.", exampleClasses = CertificateTypeDto.class, requiredMode = Schema.RequiredMode.REQUIRED, nullable = false) CertificateTypeDto certificate,
 
-        @Schema(description = "The date when the member completed the certificate.", example = "2025-09-24", requiredMode = Schema.RequiredMode.REQUIRED, nullable = false) LocalDate completedAt,
+        @Schema(description = "The date when the member completed the certificate.", example = "2025-09-24", requiredMode = Schema.RequiredMode.NOT_REQUIRED, nullable = true) LocalDate completedAt,
 
         @Schema(description = "The date until which the certificate is valid.", example = "2028-02-12", requiredMode = Schema.RequiredMode.NOT_REQUIRED, nullable = true) LocalDate validUntil,
 

@@ -13,6 +13,7 @@ public class Constants {
     public static final String TAG = "tag";
     public static final String LEADERSHIP_EXPERIENCE_TYPE = "leadershipExperienceType";
     public static final String CALCULATION = "calculation";
+    public static final String LEADERSHIP_EXPERIENCE = "leadershipExperience";
 
     private Constants() {
     }
