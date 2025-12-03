@@ -5,5 +5,5 @@ export interface LeadershipExperiencesModel {
   id: number;
   member: MemberModel;
   experienceType: ExperienceTypeModel;
-  comment: string;
+  comment: string | null;
 }

@@ -4,6 +4,6 @@ export interface LeadershipExperiencesTypeModel {
   id: number;
   name: string;
   points: number;
-  comment: string;
+  comment: string | null;
   experienceKind: CertificateKind;
 }
