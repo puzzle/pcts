@@ -6,7 +6,7 @@ export interface DegreeModel {
   name: string;
   member: MemberModel;
   degreeType: DegreeTypeModel;
-  institution: string;
+  institution: string | null;
   completed: boolean;
   comment: string | null;
   startDate: Date;

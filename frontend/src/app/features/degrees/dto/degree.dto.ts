@@ -2,7 +2,7 @@ export interface DegreeDto {
   name: string;
   memberId: number;
   degreeTypeId: number;
-  institution: string;
+  institution: string | null;
   completed: boolean;
   comment: string | null;
   startDate: string | null;

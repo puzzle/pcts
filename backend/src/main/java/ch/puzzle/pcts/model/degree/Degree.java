@@ -29,7 +29,6 @@ public class Degree implements Model {
     @PCTSStringValidation
     private String name;
 
-    @PCTSStringValidation
     private String institution;
 
     @NotNull(message = "{attribute.not.null}")
