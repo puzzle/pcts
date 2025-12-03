@@ -18,7 +18,7 @@ describe('MemberOverviewComponent', () => {
   it('should display the page title and member count', () => {
     OverviewPage.title()
       .should('contain.text', translations.MEMBER.MODEL_NAME_PLURAL)
-      .and('contain.text', '(');
+      .and('contain.text', '(6)');
 
     OverviewPage.memberTable()
       .should('exist');
@@ -34,6 +34,7 @@ describe('MemberOverviewComponent', () => {
       .replace('{{model}}', 'Member');
     OverviewPage.noResultsRow()
       .should('contain.text', expectedText);
+    OverviewPage.title().should('contain.text', "(0)")
   });
 
   it('should filter members by employment state', () => {
@@ -46,6 +47,7 @@ describe('MemberOverviewComponent', () => {
           .findByTestId('member-status')
           .should('include.text', translations.MEMBER.EMPLOYMENT_STATUS_VALUES.APPLICANT);
       });
+    OverviewPage.title().should('contain.text', "(2)")
   });
 
   it('should reset filters when "All" is clicked', () => {
