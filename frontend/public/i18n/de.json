@@ -67,6 +67,7 @@
     "ATTRIBUTE_MAX_VALUE": "{{FIELD}} darf höchstens {{MAX}} sein.",
     "ATTRIBUTE_DATE_PAST": "{{FIELD}} muss in der Vergangenheit liegen.",
     "ATTRIBUTE_SIZE_BETWEEN": "{{FIELD}} mit dem Wert \"{{IS}}\" muss zwischen {{MIN}} und {{MAX}} liegen.",
+    "ATTRIBUTE_KIND_WRONG": "Das Feld {{FIELD}} mit dem Wert {{IS}} muss vom Typ {{ENTITY}} sein.",
     "NOT_FOUND": "{{ENTITY}} mit {{FIELD}} {{IS}} konnte nicht gefunden werden.",
     "DEFAULT": "Ein unerwarteter Fehler ist aufgetreten.",
     "CLOSE": "Schliessen"
