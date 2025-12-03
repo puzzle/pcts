@@ -125,7 +125,7 @@ class CertificateTypeValidationServiceTest
                                                () -> service
                                                        .validateCertificateKind(CertificateKind.LEADERSHIP_TRAINING,
                                                                                 HttpStatus.BAD_REQUEST));
-        assertEquals(List.of(ErrorKey.INVALID_ARGUMENT), exception.getErrorKeys());
+        assertEquals(List.of(ErrorKey.ATTRIBUTE_KIND_WRONG), exception.getErrorKeys());
         assertEquals(List
                 .of(Map
                         .of(FieldKey.FIELD,
