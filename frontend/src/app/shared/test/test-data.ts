@@ -10,6 +10,10 @@ import { CertificateDto } from '../../features/certificates/dto/certificate.dto'
 import { ExperienceTypeModel } from '../../features/experiences/experience-type/experience-type.model';
 import { ExperienceModel } from '../../features/experiences/experience.model';
 import { ExperienceDto } from '../../features/experiences/dto/experience.dto';
+import { LeadershipExperiencesModel } from '../../features/leadership-experiences/leadership-experiences.model';
+import {
+  LeadershipExperiencesTypeModel
+} from '../../features/leadership-experiences/leadership-experiences-type/leadership-experiences-type.model';
 
 export const url = '/api/v1/data';
 
@@ -231,4 +235,34 @@ export const experienceDto2: ExperienceDto = {
   percent: 50,
   startDate: '2020-01-10',
   endDate: null
+};
+
+export const leadershipExperience1: LeadershipExperiencesModel = {
+  id: 1,
+  member: member1,
+  experienceType: experienceType1,
+  comment: 'leadershipExperience1'
+};
+
+export const leadershipExperience2: LeadershipExperiencesModel = {
+  id: 2,
+  member: member2,
+  experienceType: experienceType2,
+  comment: 'leadershipExperience2'
+};
+
+export const leadershipExperienceType1: LeadershipExperiencesTypeModel = {
+  id: 1,
+  name: 'leadershipExperienceType1',
+  points: 1,
+  comment: 'leadershipExperienceType1',
+  experienceKind: CertificateKind.LEADERSHIP_TRAINING
+};
+
+export const leadershipExperienceType2: LeadershipExperiencesTypeModel = {
+  id: 2,
+  name: 'leadershipExperienceType2',
+  points: 2,
+  comment: 'leadershipExperienceType2',
+  experienceKind: CertificateKind.YOUTH_AND_SPORT
 };
