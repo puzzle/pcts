@@ -16,6 +16,6 @@ public class CertificatePersistenceService extends PersistenceBase<Certificate, 
     }
 
     public Optional<Certificate> findLeadershipExperience(Long id) {
-        return repository.findByIdAndKindNot(id, CertificateKind.CERTIFICATE);
+        return repository.findByIdAndCertificateType_CertificateKindNot(id, CertificateKind.CERTIFICATE);
     }
 }

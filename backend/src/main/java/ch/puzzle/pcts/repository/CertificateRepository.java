@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface CertificateRepository extends SoftDeleteRepository<Certificate, Long> {
     @Query("SELECT c FROM Certificate c WHERE c.id = :id AND c.deletedAt IS NULL AND c.certificateType.certificateKind <> :kind")
     Optional<Certificate> findByIdAndKindNot(@Param("id") Long id, @Param("kind") CertificateKind kind);
+
+    Optional<Certificate> findByIdAndCertificateType_CertificateKindNot(Long id, CertificateKind kind);
 }

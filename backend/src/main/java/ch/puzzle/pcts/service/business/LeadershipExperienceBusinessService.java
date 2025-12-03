@@ -40,16 +40,16 @@ public class LeadershipExperienceBusinessService extends BusinessBase<Certificat
     @Override
     public void delete(Long id) {
         validationService.validateOnDelete(id);
-        if (certificatePersistenceService.findLeadershipExperience(id).isPresent()) {
-            certificatePersistenceService.delete(id);
-        } else {
+
+        if (certificatePersistenceService.findLeadershipExperience(id).isEmpty()) {
             Map<FieldKey, String> attributes = Map
                     .of(FieldKey.ENTITY, "leadershipExperience", FieldKey.FIELD, "id", FieldKey.IS, id.toString());
 
             GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
-
             throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
         }
+
+        certificatePersistenceService.delete(id);
     }
 
     @Override
