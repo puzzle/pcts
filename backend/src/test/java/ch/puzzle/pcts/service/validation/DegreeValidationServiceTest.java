@@ -116,10 +116,10 @@ class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, Degr
                 .withOrganisationUnit(organisationUnit)
                 .build();
         DegreeType degreeType = new DegreeType(1L,
-                                         "Bachelor",
-                                         new BigDecimal("3.0"),
-                                         new BigDecimal("2.0"),
-                                         new BigDecimal("1.0"));
+                                               "Bachelor",
+                                               new BigDecimal("3.0"),
+                                               new BigDecimal("2.0"),
+                                               new BigDecimal("1.0"));
 
         return Stream
                 .of(Arguments
@@ -223,10 +223,10 @@ class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, Degr
                 .withOrganisationUnit(organisationUnit)
                 .build();
         DegreeType degreeType = new DegreeType(1L,
-                                         "Bachelor",
-                                         new BigDecimal("3.0"),
-                                         new BigDecimal("2.0"),
-                                         new BigDecimal("1.0"));
+                                               "Bachelor",
+                                               new BigDecimal("3.0"),
+                                               new BigDecimal("2.0"),
+                                               new BigDecimal("1.0"));
 
         Degree degree = createDegree(member, "Degree", degreeType, true, today, pastDate);
 
