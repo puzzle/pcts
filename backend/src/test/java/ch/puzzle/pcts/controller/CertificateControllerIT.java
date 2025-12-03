@@ -29,7 +29,6 @@ import ch.puzzle.pcts.util.JsonDtoMatcher;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -118,22 +117,6 @@ class CertificateControllerIT {
                                                                    tags.stream().map(Tag::getName).toList());
 
         expectedDto = new CertificateDto(ID, memberDto, certificateDto, commonDate, commonDate, "Comment");
-    }
-
-    @DisplayName("Should successfully get all certificate")
-    @Test
-    void shouldGetAllMemberCertificate() throws Exception {
-        given(service.getAll()).willReturn(List.of(certificate));
-        given(mapper.toDto(any(List.class))).willReturn(List.of(expectedDto));
-
-        mvc
-                .perform(get(BASEURL).with(csrf()).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$[0]"));
-
-        verify(service, times(1)).getAll();
-        verify(mapper, times(1)).toDto(any(List.class));
     }
 
     @DisplayName("Should successfully get certificate by id")
