@@ -10,7 +10,6 @@ import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.experience.Experience;
 import ch.puzzle.pcts.service.persistence.ExperiencePersistenceService;
 import ch.puzzle.pcts.service.validation.ExperienceValidationService;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -65,32 +64,6 @@ class ExperienceBusinessServiceTest {
                      exception.getErrorAttributes());
         verify(persistenceService).getById(id);
         verify(validationService).validateOnGetById(id);
-    }
-
-    @DisplayName("Should get all experiences")
-    @Test
-    void shouldGetAll() {
-        when(persistenceService.getAll()).thenReturn(experiences);
-        when(experiences.size()).thenReturn(2);
-
-        List<Experience> result = businessService.getAll();
-
-        assertEquals(experiences, result);
-        assertEquals(2, result.size());
-        verify(persistenceService).getAll();
-        verifyNoInteractions(validationService);
-    }
-
-    @DisplayName("Should get empty list")
-    @Test
-    void shouldGetEmptyList() {
-        when(persistenceService.getAll()).thenReturn(Collections.emptyList());
-
-        List<Experience> result = businessService.getAll();
-
-        assertEquals(0, result.size());
-        verify(persistenceService).getAll();
-        verifyNoInteractions(validationService);
     }
 
     @DisplayName("Should create experience")

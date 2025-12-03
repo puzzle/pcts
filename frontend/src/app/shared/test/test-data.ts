@@ -7,6 +7,9 @@ import { CertificateTypeModel } from '../../features/certificates/certificate-ty
 import { CertificateKind } from '../../features/certificates/certificate-type/certificate-kind.enum';
 import { CertificateModel } from '../../features/certificates/certificate.model';
 import { CertificateDto } from '../../features/certificates/dto/certificate.dto';
+import { ExperienceTypeModel } from '../../features/experiences/experience-type/experience-type.model';
+import { ExperienceModel } from '../../features/experiences/experience.model';
+import { ExperienceDto } from '../../features/experiences/dto/experience.dto';
 
 export const url = '/api/v1/data';
 
@@ -133,24 +136,6 @@ export const certificateType2: CertificateTypeModel = {
   certificateKind: CertificateKind.CERTIFICATE
 };
 
-export const certificateType3: CertificateTypeModel = {
-  id: 2,
-  name: 'Advanced Military Function',
-  points: 25,
-  comment: 'Requires prior experience',
-  tags: [],
-  certificateKind: CertificateKind.MILITARY_FUNCTION
-};
-
-export const certificateType4: CertificateTypeModel = {
-  id: 3,
-  name: 'Youth Sports Training',
-  points: 15,
-  comment: null,
-  tags: [],
-  certificateKind: CertificateKind.YOUTH_AND_SPORT
-};
-
 export const certificate1: CertificateModel = {
   id: 1,
   member: member1,
@@ -183,4 +168,67 @@ export const certificateDto2: CertificateDto = {
   completedAt: '2019-09-20',
   validUntil: '2024-09-20',
   comment: 'Leadership excellence'
+};
+
+export const experienceType1: ExperienceTypeModel = {
+  id: 1,
+  name: 'Internship',
+  highlyRelevantPoints: 3,
+  limitedRelevantPoints: 2,
+  littleRelevantPoints: 1
+};
+
+export const experienceType2: ExperienceTypeModel = {
+  id: 2,
+  name: 'Work experience',
+  highlyRelevantPoints: 5,
+  limitedRelevantPoints: 3,
+  littleRelevantPoints: 1
+};
+
+
+export const experience1: ExperienceModel = {
+  id: 1,
+  name: 'Java software developer',
+  member: member1,
+  experienceType: experienceType1,
+  comment: null,
+  employer: 'TechCorp AG',
+  percent: 100,
+  startDate: new Date('2019-02-01'),
+  endDate: new Date('2022-02-01')
+};
+
+export const experience2: ExperienceModel = {
+  id: 2,
+  name: 'Team leader',
+  member: member2,
+  experienceType: experienceType2,
+  comment: 'Managed several cross-functional teams',
+  employer: 'InnovateX GmbH',
+  percent: 80,
+  startDate: new Date('2018-05-15'),
+  endDate: null
+};
+
+export const experienceDto1: ExperienceDto = {
+  name: 'Ruby developer',
+  memberId: 3,
+  experienceTypeId: 3,
+  comment: 'Warehouse shift supervisor',
+  employer: 'LogiTrans AG',
+  percent: 60,
+  startDate: '2016-11-01',
+  endDate: '2019-11-01'
+};
+
+export const experienceDto2: ExperienceDto = {
+  name: 'Secretary',
+  memberId: 4,
+  experienceTypeId: 4,
+  comment: null,
+  employer: 'City School District',
+  percent: 50,
+  startDate: '2020-01-10',
+  endDate: null
 };

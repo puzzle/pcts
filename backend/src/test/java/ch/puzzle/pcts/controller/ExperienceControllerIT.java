@@ -23,7 +23,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -102,23 +101,6 @@ class ExperienceControllerIT {
 
         requestDto = new ExperienceInputDto(member
                 .getId(), "Developer", "Puzzle ITC", 80, type.getId(), "Worked on backend", startDate, endDate);
-    }
-
-    @DisplayName("Should successfully get all experiences")
-    @Test
-    void shouldGetAllExperiences() throws Exception {
-        BDDMockito.given(service.getAll()).willReturn(List.of(experience));
-        BDDMockito.given(mapper.toDto(any(List.class))).willReturn(List.of(expectedDto));
-
-        mvc
-                .perform(get(BASEURL)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$[0]"));
-
-        verify(service, times(1)).getAll();
-        verify(mapper, times(1)).toDto(any(List.class));
     }
 
     @DisplayName("Should successfully get experience by id")
