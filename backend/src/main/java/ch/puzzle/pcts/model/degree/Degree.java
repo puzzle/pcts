@@ -38,7 +38,7 @@ public class Degree implements Model {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "degree_type_id")
     @NotNull(message = "{attribute.not.null}")
-    private DegreeType type;
+    private DegreeType degreeType;
 
     @NotNull(message = "{attribute.not.null}")
     @PastOrPresent(message = "{attribute.date.past.present}")
@@ -57,7 +57,7 @@ public class Degree implements Model {
         this.name = trim(builder.name);
         this.institution = trim(builder.institution);
         this.completed = builder.completed;
-        this.type = builder.type;
+        this.degreeType = builder.degreeType;
         this.startDate = builder.startDate;
         this.endDate = builder.endDate;
         this.comment = trim(builder.comment);
@@ -109,12 +109,12 @@ public class Degree implements Model {
         this.completed = completed;
     }
 
-    public DegreeType getType() {
-        return type;
+    public DegreeType getDegreeType() {
+        return degreeType;
     }
 
-    public void setType(DegreeType type) {
-        this.type = type;
+    public void setDegreeType(DegreeType degreeType) {
+        this.degreeType = degreeType;
     }
 
     public LocalDate getStartDate() {
@@ -156,7 +156,8 @@ public class Degree implements Model {
         return Objects.equals(getId(), degree.getId()) && Objects.equals(getMember(), degree.getMember())
                && Objects.equals(getName(), degree.getName())
                && Objects.equals(getInstitution(), degree.getInstitution())
-               && Objects.equals(getCompleted(), degree.getCompleted()) && Objects.equals(getType(), degree.getType())
+               && Objects.equals(getCompleted(), degree.getCompleted())
+               && Objects.equals(getDegreeType(), degree.getDegreeType())
                && Objects.equals(getStartDate(), degree.getStartDate())
                && Objects.equals(getEndDate(), degree.getEndDate())
                && Objects.equals(getDeletedAt(), degree.getDeletedAt())
@@ -171,7 +172,7 @@ public class Degree implements Model {
                       getName(),
                       getInstitution(),
                       getCompleted(),
-                      getType(),
+                      getDegreeType(),
                       getStartDate(),
                       getEndDate(),
                       getDeletedAt(),
@@ -181,8 +182,8 @@ public class Degree implements Model {
     @Override
     public String toString() {
         return "Degree{" + "id=" + id + ", member=" + member + ", name='" + name + '\'' + ", institution='"
-               + institution + '\'' + ", completed=" + completed + ", type=" + type + ", startDate=" + startDate
-               + ", endDate=" + endDate + ", deletedAt=" + deletedAt + ", comment='" + comment + '\'' + '}';
+               + institution + '\'' + ", completed=" + completed + ", degreeType=" + degreeType + ", startDate="
+               + startDate + ", endDate=" + endDate + ", comment='" + comment + '\'' + ", deletedAt=" + deletedAt + '}';
     }
 
     public static final class Builder {
@@ -191,7 +192,7 @@ public class Degree implements Model {
         private String name;
         private String institution;
         private Boolean completed;
-        private DegreeType type;
+        private DegreeType degreeType;
         private LocalDate startDate;
         private LocalDate endDate;
         private String comment;
@@ -228,8 +229,8 @@ public class Degree implements Model {
             return this;
         }
 
-        public Builder withType(DegreeType type) {
-            this.type = type;
+        public Builder withDegreeType(DegreeType degreeType) {
+            this.degreeType = degreeType;
             return this;
         }
 

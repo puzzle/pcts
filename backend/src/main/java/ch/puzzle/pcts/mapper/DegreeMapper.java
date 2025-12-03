@@ -37,7 +37,7 @@ public class DegreeMapper {
                              model.getName(),
                              model.getInstitution(),
                              model.getCompleted(),
-                             this.degreeTypeMapper.toDto(model.getType()),
+                             this.degreeTypeMapper.toDto(model.getDegreeType()),
                              model.getStartDate(),
                              model.getEndDate(),
                              model.getComment());
@@ -50,7 +50,7 @@ public class DegreeMapper {
                 .withName(dto.name())
                 .withInstitution(dto.institution())
                 .withCompleted(dto.completed())
-                .withType(degreeTypeBusinessService.getById(dto.typeId()))
+                .withDegreeType(degreeTypeBusinessService.getById(dto.degreeTypeId()))
                 .withStartDate(dto.startDate())
                 .withEndDate(dto.endDate())
                 .withComment(dto.comment())

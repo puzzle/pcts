@@ -113,7 +113,7 @@ class DegreeMapperTest {
         assertEquals(degreeInputDto.name(), result.getName());
         assertEquals(degreeInputDto.institution(), result.getInstitution());
         assertEquals(degreeInputDto.completed(), result.getCompleted());
-        assertEquals(degreeType, result.getType());
+        assertEquals(degreeType, result.getDegreeType());
         assertEquals(degreeInputDto.startDate(), result.getStartDate());
         assertEquals(degreeInputDto.endDate(), result.getEndDate());
         assertEquals(degreeInputDto.comment(), result.getComment());
@@ -129,7 +129,7 @@ class DegreeMapperTest {
                 .withName("Degree 1")
                 .withInstitution("Institution 1")
                 .withCompleted(true)
-                .withType(degreeType)
+                .withDegreeType(degreeType)
                 .withStartDate(commonDate)
                 .withEndDate(commonDate)
                 .withComment("Comment 1")
@@ -142,7 +142,7 @@ class DegreeMapperTest {
         assertEquals(degree.getName(), result.name());
         assertEquals(degree.getInstitution(), result.institution());
         assertEquals(degree.getCompleted(), result.completed());
-        assertEquals(degreeTypeDto, result.type());
+        assertEquals(degreeTypeDto, result.degreeType());
         assertEquals(degree.getStartDate(), result.startDate());
         assertEquals(degree.getEndDate(), result.endDate());
         assertEquals(degree.getComment(), result.comment());
@@ -197,7 +197,7 @@ class DegreeMapperTest {
                 .withName("Degree 1")
                 .withInstitution("Institution 1")
                 .withCompleted(true)
-                .withType(degreeType)
+                .withDegreeType(degreeType)
                 .withStartDate(commonDate)
                 .withEndDate(commonDate)
                 .withComment("Comment 1")
@@ -210,7 +210,7 @@ class DegreeMapperTest {
                 .withName("Degree 2")
                 .withInstitution("Institution 2")
                 .withCompleted(false)
-                .withType(degreeType)
+                .withDegreeType(degreeType)
                 .withStartDate(commonDate)
                 .withEndDate(commonDate)
                 .withComment("Comment 2")
@@ -281,7 +281,7 @@ class DegreeMapperTest {
                     FieldKey.FIELD,
                     "id",
                     FieldKey.IS,
-                    String.valueOf(invalidInput.typeId()));
+                    String.valueOf(invalidInput.degreeTypeId()));
 
         // mock the behavior
         when(mapper.degreeTypeBusinessService.getById(anyLong()))

@@ -13,7 +13,7 @@ public record DegreeInputDto(
 
         @Schema(description = "Indicates whether the degree has been completed.", example = "true", requiredMode = Schema.RequiredMode.REQUIRED) Boolean completed,
 
-        @Schema(description = "The unique identifier of the type of degree.", example = "3", requiredMode = Schema.RequiredMode.REQUIRED) Long typeId,
+        @Schema(description = "The unique identifier of the degreeType of degree.", example = "3", requiredMode = Schema.RequiredMode.REQUIRED) Long degreeTypeId,
 
         @Schema(description = "The start date of the degree program.", example = "2019-09-01", requiredMode = Schema.RequiredMode.REQUIRED) LocalDate startDate,
 

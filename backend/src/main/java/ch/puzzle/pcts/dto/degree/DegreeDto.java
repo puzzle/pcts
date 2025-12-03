@@ -5,7 +5,7 @@ import ch.puzzle.pcts.dto.member.MemberDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 
-@Schema(description = "DTO representing a degree, including the associated member and degree type information.")
+@Schema(description = "DTO representing a degree, including the associated member and degree degreeType information.")
 public record DegreeDto(
 
         @Schema(description = "The unique identifier of the degree.", example = "1", accessMode = Schema.AccessMode.READ_ONLY) Long id,
@@ -18,7 +18,7 @@ public record DegreeDto(
 
         @Schema(description = "Indicates whether the degree has been completed.", example = "true", requiredMode = Schema.RequiredMode.REQUIRED) Boolean completed,
 
-        @Schema(description = "The type of the degree", exampleClasses = DegreeTypeDto.class, requiredMode = Schema.RequiredMode.REQUIRED) DegreeTypeDto type,
+        @Schema(description = "The degreeType of the degree", exampleClasses = DegreeTypeDto.class, requiredMode = Schema.RequiredMode.REQUIRED) DegreeTypeDto degreeType,
 
         @Schema(description = "The start date of the degree program.", example = "2018-09-01", requiredMode = Schema.RequiredMode.REQUIRED) LocalDate startDate,
 

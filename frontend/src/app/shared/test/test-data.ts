@@ -14,6 +14,8 @@ import { LeadershipExperienceModel } from '../../features/leadership-experiences
 import {
   LeadershipExperienceTypeModel
 } from '../../features/leadership-experiences/leadership-experiences-type/leadership-experience-type.model';
+import { DegreeTypeModel } from '../../features/degrees/degree-type/degree-type.model';
+import { DegreeModel } from '../../features/degrees/degree.model';
 
 export const url = '/api/v1/data';
 
@@ -267,3 +269,43 @@ export const leadershipExperience2: LeadershipExperienceModel = {
   comment: null
 };
 
+
+export const degreeType1: DegreeTypeModel = {
+  id: 1,
+  name: 'Bachelor',
+  highlyRelevantPoints: 4,
+  limitedRelevantPoints: 2,
+  littleRelevantPoints: 1
+};
+
+export const degreeType2: DegreeTypeModel = {
+  id: 2,
+  name: 'Master',
+  highlyRelevantPoints: 6,
+  limitedRelevantPoints: 3,
+  littleRelevantPoints: 1
+};
+
+export const degree1: DegreeModel = {
+  id: 1,
+  name: 'Bachelor of Computer Science',
+  member: member1,
+  degreeType: degreeType1,
+  institution: 'University of Applied Sciences Zurich',
+  completed: true,
+  comment: null,
+  startDate: new Date('2015-09-01'),
+  endDate: new Date('2018-06-30')
+};
+
+export const degree2: DegreeModel = {
+  id: 2,
+  name: 'Master of Business Administration',
+  member: member2,
+  degreeType: degreeType2,
+  institution: 'St. Gallen Business School',
+  completed: false,
+  comment: 'Thesis still in progress',
+  startDate: new Date('2021-10-01'),
+  endDate: null
+};

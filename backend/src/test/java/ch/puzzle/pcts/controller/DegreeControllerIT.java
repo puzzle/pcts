@@ -122,7 +122,7 @@ class DegreeControllerIT {
                 .withName("Degree 1")
                 .withInstitution("Institution 1")
                 .withCompleted(true)
-                .withType(degreeType)
+                .withDegreeType(degreeType)
                 .withStartDate(commonDate)
                 .withEndDate(commonDate)
                 .withComment("Comment 1")
