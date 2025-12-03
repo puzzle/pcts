@@ -37,6 +37,7 @@
     "bootstrap": "^5.3.7",
     "cypress": "^15.2.0",
     "date-fns": "^4.1.0",
+    "jest-environment-jsdom": "^30.2.0",
     "luxon": "^3.7.2",
     "material-icons": "^1.13.14",
     "rxjs": "~7.8.0",
