@@ -37,7 +37,7 @@ public class LeadershipExperienceTypeBusinessService extends BusinessBase<Certif
         if (optionalLeadershipExperienceType.isPresent()) {
             CertificateType leadershipExperience = optionalLeadershipExperienceType.get();
             leadershipExperienceTypeValidationService
-                    .validateCertificateKind(leadershipExperience.getCertificateKind());
+                    .validateCertificateKind(leadershipExperience.getCertificateKind(), HttpStatus.NOT_FOUND);
             return leadershipExperience;
         } else {
             Map<FieldKey, String> attributes = Map

@@ -27,7 +27,7 @@ public class LeadershipExperienceTypeValidationService extends ValidationBase<Ce
     @Override
     public void validateOnCreate(CertificateType leadershipExperience) {
         super.validateOnCreate(leadershipExperience);
-        validateCertificateKind(leadershipExperience.getCertificateKind());
+        validateCertificateKind(leadershipExperience.getCertificateKind(), HttpStatus.BAD_REQUEST);
         if (UniqueNameValidationUtil.nameAlreadyUsed(leadershipExperience.getName(), persistenceService::getByName)) {
             Map<FieldKey, String> attributes = Map
                     .of(FieldKey.ENTITY,
@@ -46,7 +46,7 @@ public class LeadershipExperienceTypeValidationService extends ValidationBase<Ce
     @Override
     public void validateOnUpdate(Long id, CertificateType leadershipExperience) {
         super.validateOnUpdate(id, leadershipExperience);
-        validateCertificateKind(leadershipExperience.getCertificateKind());
+        validateCertificateKind(leadershipExperience.getCertificateKind(), HttpStatus.BAD_REQUEST);
         if (UniqueNameValidationUtil
                 .nameExcludingIdAlreadyUsed(id, leadershipExperience.getName(), persistenceService::getByName)) {
             Map<FieldKey, String> attributes = Map
@@ -63,7 +63,7 @@ public class LeadershipExperienceTypeValidationService extends ValidationBase<Ce
         }
     }
 
-    public void validateCertificateKind(CertificateKind certificatekind) {
+    public void validateCertificateKind(CertificateKind certificatekind, HttpStatus status) {
         if (!certificatekind.isLeadershipExperienceType()) {
             Map<FieldKey, String> attributes = Map
                     .of(FieldKey.ENTITY,
@@ -73,9 +73,9 @@ public class LeadershipExperienceTypeValidationService extends ValidationBase<Ce
                         FieldKey.IS,
                         certificatekind.toString());
 
-            GenericErrorDto error = new GenericErrorDto(ErrorKey.INVALID_ARGUMENT, attributes);
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_KIND_WRONG, attributes);
 
-            throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
+            throw new PCTSException(status, List.of(error));
         }
     }
 }

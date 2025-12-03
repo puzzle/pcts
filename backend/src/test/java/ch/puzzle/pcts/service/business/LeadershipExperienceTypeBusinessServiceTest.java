@@ -20,6 +20,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 
 @ExtendWith(MockitoExtension.class)
 class LeadershipExperienceTypeBusinessServiceTest {
@@ -51,7 +52,7 @@ class LeadershipExperienceTypeBusinessServiceTest {
         assertEquals(certificate, result);
         verify(validationService).validateOnGetById(id);
         verify(persistenceService).getById(id);
-        verify(validationService).validateCertificateKind(certificate.getCertificateKind());
+        verify(validationService).validateCertificateKind(certificate.getCertificateKind(), HttpStatus.NOT_FOUND);
     }
 
     @DisplayName("Should throw error when leadership experience type with id does not exist")
