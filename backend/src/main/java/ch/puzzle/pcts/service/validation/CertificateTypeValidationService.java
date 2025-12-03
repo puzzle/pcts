@@ -27,7 +27,7 @@ public class CertificateTypeValidationService extends ValidationBase<Certificate
     @Override
     public void validateOnUpdate(Long id, CertificateType certificate) {
         super.validateOnUpdate(id, certificate);
-        validateCertificateKind(certificate.getCertificateKind());
+        validateCertificateKind(certificate.getCertificateKind(), HttpStatus.BAD_REQUEST);
         if (UniqueNameValidationUtil
                 .nameExcludingIdAlreadyUsed(id, certificate.getName(), persistenceService::getByName)) {
             Map<FieldKey, String> attributes = Map
@@ -43,7 +43,7 @@ public class CertificateTypeValidationService extends ValidationBase<Certificate
     @Override
     public void validateOnCreate(CertificateType certificateType) {
         super.validateOnCreate(certificateType);
-        validateCertificateKind(certificateType.getCertificateKind());
+        validateCertificateKind(certificateType.getCertificateKind(), HttpStatus.BAD_REQUEST);
         if (UniqueNameValidationUtil.nameAlreadyUsed(certificateType.getName(), persistenceService::getByName)) {
             Map<FieldKey, String> attributes = Map
                     .of(FieldKey.ENTITY,
@@ -59,7 +59,7 @@ public class CertificateTypeValidationService extends ValidationBase<Certificate
         }
     }
 
-    public void validateCertificateKind(CertificateKind certificateKind) {
+    public void validateCertificateKind(CertificateKind certificateKind, HttpStatus status) {
         if (certificateKind != CertificateKind.CERTIFICATE) {
             Map<FieldKey, String> attributes = Map
                     .of(FieldKey.ENTITY,
@@ -69,9 +69,9 @@ public class CertificateTypeValidationService extends ValidationBase<Certificate
                         FieldKey.IS,
                         certificateKind.toString());
 
-            GenericErrorDto error = new GenericErrorDto(ErrorKey.INVALID_ARGUMENT, attributes);
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_KIND_WRONG, attributes);
 
-            throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
+            throw new PCTSException(status, List.of(error));
 
         }
     }

@@ -20,6 +20,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 
 @ExtendWith(MockitoExtension.class)
 class CertificateTypeBusinessServiceTest {
@@ -53,7 +54,7 @@ class CertificateTypeBusinessServiceTest {
         assertEquals(certificate, result);
         verify(validationService).validateOnGetById(id);
         verify(persistenceService).getById(id);
-        verify(validationService).validateCertificateKind(certificate.getCertificateKind());
+        verify(validationService).validateCertificateKind(certificate.getCertificateKind(), HttpStatus.NOT_FOUND);
     }
 
     @DisplayName("Should throw error when certificate type with id does not exist")
