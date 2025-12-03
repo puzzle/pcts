@@ -34,7 +34,8 @@ describe('MemberOverviewComponent', () => {
       .replace('{{model}}', 'Member');
     OverviewPage.noResultsRow()
       .should('contain.text', expectedText);
-    OverviewPage.title().should('contain.text', "(0)")
+    OverviewPage.title()
+      .should('contain.text', '(0)');
   });
 
   it('should filter members by employment state', () => {
@@ -47,7 +48,8 @@ describe('MemberOverviewComponent', () => {
           .findByTestId('member-status')
           .should('include.text', translations.MEMBER.EMPLOYMENT_STATUS_VALUES.APPLICANT);
       });
-    OverviewPage.title().should('contain.text', "(2)")
+    OverviewPage.title()
+      .should('contain.text', '(2)');
   });
 
   it('should reset filters when "All" is clicked', () => {

@@ -137,31 +137,23 @@ describe('MemberOverviewComponent', () => {
     });
   });
 
-  describe("applyCombinedFilter", () => {
-    const testCases = [
-      {
-        searchText: '',
-        expected: 2
-      },
-      {
-        searchText: 'zzzzzzzzz',
-        expected: 0
-      },
-      {
-        searchText: 'Lena',
-        expected: 1
-      }
-    ];
+  describe('applyCombinedFilter', () => {
+    const testCases = [{ searchText: '',
+      expected: 2 },
+    { searchText: 'zzzzzzzzz',
+      expected: 0 },
+    { searchText: 'Lena',
+      expected: 1 }];
 
     it.each(testCases)('should update filteredCount', ({ searchText, expected }) => {
       const spy = jest.spyOn(component as any, 'applyCombinedFilter');
-      component.searchControl.setValue(searchText)
+      component.searchControl.setValue(searchText);
       component.applyCombinedFilter();
 
       expect(component.filteredCount())
-        .toEqual(expected)
+        .toEqual(expected);
       expect(spy)
-        .toHaveBeenCalled()
-    })
+        .toHaveBeenCalled();
+    });
   });
 });
