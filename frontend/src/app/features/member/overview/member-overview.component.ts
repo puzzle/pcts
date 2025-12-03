@@ -67,6 +67,8 @@ export class MemberOverviewComponent implements OnInit {
 
   members: WritableSignal<MemberModel[]> = signal([]);
 
+  filteredCount: WritableSignal<number> = signal(0);
+
   activeFilters = new Set<EmploymentState>();
 
   searchControl = new FormControl('');
@@ -138,6 +140,8 @@ export class MemberOverviewComponent implements OnInit {
       text: this.searchControl.value ?? '',
       status: statusFilterValue
     });
+
+    this.filteredCount.set(this.dataSource.filteredData.length);
 
     this.router.navigate([], {
       relativeTo: this.route,
