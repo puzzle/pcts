@@ -10,10 +10,10 @@ import { CertificateDto } from '../../features/certificates/dto/certificate.dto'
 import { ExperienceTypeModel } from '../../features/experiences/experience-type/experience-type.model';
 import { ExperienceModel } from '../../features/experiences/experience.model';
 import { ExperienceDto } from '../../features/experiences/dto/experience.dto';
-import { LeadershipExperiencesModel } from '../../features/leadership-experiences/leadership-experiences.model';
+import { LeadershipExperienceModel } from '../../features/leadership-experiences/leadership-experience.model';
 import {
-  LeadershipExperiencesTypeModel
-} from '../../features/leadership-experiences/leadership-experiences-type/leadership-experiences-type.model';
+  LeadershipExperienceTypeModel
+} from '../../features/leadership-experiences/leadership-experiences-type/leadership-experience-type.model';
 
 export const url = '/api/v1/data';
 
@@ -237,40 +237,33 @@ export const experienceDto2: ExperienceDto = {
   endDate: null
 };
 
-export const leadershipExperience1: LeadershipExperiencesModel = {
+export const leadershipExperienceType1: LeadershipExperienceTypeModel = {
+  id: 1,
+  name: 'Expert',
+  points: 1,
+  comment: 'J+S Expert',
+  certificateKind: CertificateKind.YOUTH_AND_SPORT
+};
+
+export const leadershipExperienceType2: LeadershipExperienceTypeModel = {
+  id: 2,
+  name: 'Officer',
+  points: 2,
+  comment: null,
+  certificateKind: CertificateKind.MILITARY_FUNCTION
+};
+
+export const leadershipExperience1: LeadershipExperienceModel = {
   id: 1,
   member: member1,
-  experienceType: experienceType1,
-  comment: 'leadershipExperience1'
+  leadershipExperienceType: leadershipExperienceType1,
+  comment: 'J+S Expert and Leader'
 };
 
-export const leadershipExperience2: LeadershipExperiencesModel = {
+export const leadershipExperience2: LeadershipExperienceModel = {
   id: 2,
   member: member2,
-  experienceType: experienceType2,
-  comment: 'leadershipExperience2'
+  leadershipExperienceType: leadershipExperienceType2,
+  comment: null
 };
 
-export const leadershipExperienceType1: LeadershipExperiencesTypeModel = {
-  id: 1,
-  name: 'leadershipExperienceType1',
-  points: 1,
-  comment: 'leadershipExperienceType1',
-  experienceKind: CertificateKind.LEADERSHIP_TRAINING
-};
-
-export const leadershipExperienceType2: LeadershipExperiencesTypeModel = {
-  id: 2,
-  name: 'leadershipExperienceType2',
-  points: 2,
-  comment: 'leadershipExperienceType2',
-  experienceKind: CertificateKind.YOUTH_AND_SPORT
-};
-
-export const leadershipExperienceType3: LeadershipExperiencesTypeModel = {
-  id: 3,
-  name: 'leadershipExperienceType3',
-  points: 3,
-  comment: null,
-  experienceKind: CertificateKind.MILITARY_FUNCTION
-};

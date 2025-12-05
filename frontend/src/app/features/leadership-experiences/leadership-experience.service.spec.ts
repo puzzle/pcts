@@ -1,24 +1,24 @@
 import { TestBed } from '@angular/core/testing';
 
-import { LeadershipExperiencesService } from './leadership-experiences.service';
+import { LeadershipExperienceService } from './leadership-experience.service';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { LeadershipExperiencesModel } from './leadership-experiences.model';
-import { leadershipExperience1 } from '../../shared/test/test-data';
+import { LeadershipExperienceModel } from './leadership-experience.model';
+import { leadershipExperience1, leadershipExperience2 } from '../../shared/test/test-data';
 
-describe('LeadershipExperiencesService', () => {
+describe('LeadershipExperienceService', () => {
   let httpMock: HttpTestingController;
-  let service: LeadershipExperiencesService;
+  let service: LeadershipExperienceService;
   const API_URL = '/api/v1/leadership-experiences';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [LeadershipExperiencesService,
+      providers: [LeadershipExperienceService,
         provideHttpClient(),
         provideHttpClientTesting()]
     })
       .compileComponents();
-    service = TestBed.inject(LeadershipExperiencesService);
+    service = TestBed.inject(LeadershipExperienceService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -33,7 +33,7 @@ describe('LeadershipExperiencesService', () => {
 
   describe('LeadershipExperiences CRUD endpoints', () => {
     it('should call httpClient.get with the correct URL and return the leadership experience with the correct id', () => {
-      const mockLeadershipExperiences: LeadershipExperiencesModel = leadershipExperience1;
+      const mockLeadershipExperiences: LeadershipExperienceModel = leadershipExperience1;
 
       service.getLeadershipExperienceById(1)
         .subscribe((leadershipExperience) => {
@@ -48,7 +48,7 @@ describe('LeadershipExperiencesService', () => {
     });
 
     it('should call httpClient.post with the correct URL and body and return the created leadership experience', () => {
-      const mockLeadershipExperiences: LeadershipExperiencesModel = leadershipExperience1;
+      const mockLeadershipExperiences: LeadershipExperienceModel = leadershipExperience1;
 
       service.addLeadershipExperience(leadershipExperience1)
         .subscribe((leadershipExperience) => {
@@ -63,9 +63,9 @@ describe('LeadershipExperiencesService', () => {
     });
 
     it('should call httpClient.put with the correct URL and body and return the updated leadership experience', () => {
-      const mockLeadershipExperiences: LeadershipExperiencesModel = leadershipExperience1;
+      const mockLeadershipExperiences: LeadershipExperienceModel = leadershipExperience2;
 
-      service.updateLeadershipExperience(2, leadershipExperience1)
+      service.updateLeadershipExperience(2, leadershipExperience2)
         .subscribe((leadershipExperience) => {
           expect(leadershipExperience)
             .toEqual(mockLeadershipExperiences);

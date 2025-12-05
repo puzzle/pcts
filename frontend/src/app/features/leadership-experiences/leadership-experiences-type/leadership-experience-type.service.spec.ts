@@ -1,28 +1,28 @@
 import { TestBed } from '@angular/core/testing';
 
-import { LeadershipExperiencesTypeService } from './leadership-experiences-type.service';
+import { LeadershipExperienceTypeService } from './leadership-experience-type.service';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { LeadershipExperiencesTypeModel } from './leadership-experiences-type.model';
+import { LeadershipExperienceTypeModel } from './leadership-experience-type.model';
 import {
   leadershipExperienceType1,
   leadershipExperienceType2
 } from '../../../shared/test/test-data';
 
-describe('LeadershipExperiencesTypeService', () => {
-  let service: LeadershipExperiencesTypeService;
+describe('LeadershipExperienceTypeService', () => {
+  let service: LeadershipExperienceTypeService;
   let httpMock: HttpTestingController;
-  const API_URL = '/api/v1/leadership-experiences-types';
+  const API_URL = '/api/v1/leadership-experience-types';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [LeadershipExperiencesTypeService,
+      providers: [LeadershipExperienceTypeService,
         provideHttpClient(),
         provideHttpClientTesting()]
     })
       .compileComponents();
 
-    service = TestBed.inject(LeadershipExperiencesTypeService);
+    service = TestBed.inject(LeadershipExperienceTypeService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -37,7 +37,7 @@ describe('LeadershipExperiencesTypeService', () => {
 
   describe('LeadershipExperiencesType CRUD endpoints', () => {
     it('should call httpClient.get with the correct URL and return all the leadership-experience-types', () => {
-      const mockLeadershipExperiencesType: LeadershipExperiencesTypeModel[] = [leadershipExperienceType1,
+      const mockLeadershipExperiencesType: LeadershipExperienceTypeModel[] = [leadershipExperienceType1,
         leadershipExperienceType2];
 
       service.getAllLeadershipTypes()
