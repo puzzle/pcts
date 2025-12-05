@@ -1,19 +1,22 @@
 package ch.puzzle.pcts.service.business;
 
-import static ch.puzzle.pcts.Constants.CERTIFICATE_TYPE;
-
 import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
+import ch.puzzle.pcts.model.certificate.Certificate;
+import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import ch.puzzle.pcts.service.validation.CertificateTypeValidationService;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
+
+import static ch.puzzle.pcts.Constants.CERTIFICATE_TYPE;
 
 @Service
 public class CertificateTypeBusinessService extends BusinessBase<CertificateType> {
@@ -31,33 +34,19 @@ public class CertificateTypeBusinessService extends BusinessBase<CertificateType
     }
 
     @Override
+    public CertificateType getById(Long id){
+        CertificateType certificateType = super.getById(id);
+        validateCertificateIsPresent(certificateType);
+        return certificateType;
+    }
+
+    @Override
     public CertificateType create(CertificateType certificateType) {
         validationService.validateOnCreate(certificateType);
 
         certificateType.setTags(tagBusinessService.resolveTags(certificateType.getTags()));
 
         return persistenceService.save(certificateType);
-    }
-
-    @Override
-    public CertificateType getById(Long id) {
-        validationService.validateOnGetById(id);
-
-        Optional<CertificateType> optionalCertificate = persistenceService.getById(id);
-
-        if (optionalCertificate.isPresent()) {
-            CertificateType certificateType = optionalCertificate.get();
-            certificateTypeValidationService.validateCertificateKind(certificateType.getCertificateKind());
-            return certificateType;
-        } else {
-            Map<FieldKey, String> attributes = Map
-                    .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, id.toString());
-
-            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
-
-            throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
-
-        }
     }
 
     public List<CertificateType> getAll() {
@@ -67,44 +56,12 @@ public class CertificateTypeBusinessService extends BusinessBase<CertificateType
     @Override
     public CertificateType update(Long id, CertificateType certificateType) {
         validationService.validateOnUpdate(id, certificateType);
-
         certificateType.setTags(tagBusinessService.resolveTags(certificateType.getTags()));
-        if (persistenceService.getById(id).isPresent()) {
-
-            certificateType.setId(id);
-
-            CertificateType result = persistenceService.save(certificateType);
-            tagBusinessService.deleteUnusedTags();
-
-            return result;
-        } else {
-            Map<FieldKey, String> attributes = Map
-                    .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, id.toString());
-
-            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
-
-            throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
-
-        }
-    }
-
-    @Override
-    public void delete(Long id) {
-        validationService.validateOnDelete(id);
-
-        if (persistenceService.getById(id).isPresent()) {
-            persistenceService.delete(id);
-
-            tagBusinessService.deleteUnusedTags();
-        } else {
-            Map<FieldKey, String> attributes = Map
-                    .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, id.toString());
-
-            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
-
-            throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
-
-        }
+        this.getById(id);
+        certificateType.setId(id);
+        CertificateType result = persistenceService.save(certificateType);
+        tagBusinessService.deleteUnusedTags();
+        return result;
     }
 
     @Override
@@ -112,4 +69,13 @@ public class CertificateTypeBusinessService extends BusinessBase<CertificateType
         return CERTIFICATE_TYPE;
     }
 
+    private void validateCertificateIsPresent(CertificateType certificateType) {
+        if (certificateType.getCertificateKind() != CertificateKind.CERTIFICATE){
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, certificateType.getId().toString());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
+            throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
+        }
+    }
 }
