@@ -50,7 +50,7 @@ public class DegreeMapper {
                 .withName(dto.name())
                 .withInstitution(dto.institution())
                 .withCompleted(dto.completed())
-                .withDegreeType(degreeTypeBusinessService.getById(dto.degreeTypeId()))
+                .withDegreeType(degreeTypeBusinessService.getById(dto.typeId()))
                 .withStartDate(dto.startDate())
                 .withEndDate(dto.endDate())
                 .withComment(dto.comment())

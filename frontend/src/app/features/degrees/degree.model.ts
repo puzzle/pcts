@@ -5,7 +5,7 @@ export interface DegreeModel {
   id: number;
   name: string;
   member: MemberModel;
-  degreeType: DegreeTypeModel;
+  type: DegreeTypeModel;
   institution: string | null;
   completed: boolean;
   comment: string | null;

@@ -142,7 +142,7 @@ class DegreeMapperTest {
         assertEquals(degree.getName(), result.name());
         assertEquals(degree.getInstitution(), result.institution());
         assertEquals(degree.getCompleted(), result.completed());
-        assertEquals(degreeTypeDto, result.degreeType());
+        assertEquals(degreeTypeDto, result.type());
         assertEquals(degree.getStartDate(), result.startDate());
         assertEquals(degree.getEndDate(), result.endDate());
         assertEquals(degree.getComment(), result.comment());
@@ -281,7 +281,7 @@ class DegreeMapperTest {
                     FieldKey.FIELD,
                     "id",
                     FieldKey.IS,
-                    String.valueOf(invalidInput.degreeTypeId()));
+                    String.valueOf(invalidInput.typeId()));
 
         // mock the behavior
         when(mapper.degreeTypeBusinessService.getById(anyLong()))

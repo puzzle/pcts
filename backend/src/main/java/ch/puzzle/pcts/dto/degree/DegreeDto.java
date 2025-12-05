@@ -18,7 +18,7 @@ public record DegreeDto(
 
         @Schema(description = "Indicates whether the degree has been completed.", example = "true", requiredMode = Schema.RequiredMode.REQUIRED) Boolean completed,
 
-        @Schema(description = "The degreeType of the degree", exampleClasses = DegreeTypeDto.class, requiredMode = Schema.RequiredMode.REQUIRED) DegreeTypeDto degreeType,
+        @Schema(description = "The type of the degree", exampleClasses = DegreeTypeDto.class, requiredMode = Schema.RequiredMode.REQUIRED) DegreeTypeDto type,
 
         @Schema(description = "The start date of the degree program.", example = "2018-09-01", requiredMode = Schema.RequiredMode.REQUIRED) LocalDate startDate,
 
