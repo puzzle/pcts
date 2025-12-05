@@ -3,9 +3,11 @@ package ch.puzzle.pcts.mapper;
 import ch.puzzle.pcts.dto.calculation.CalculationDto;
 import ch.puzzle.pcts.dto.calculation.CalculationInputDto;
 import ch.puzzle.pcts.model.calculation.Calculation;
+import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import ch.puzzle.pcts.service.business.RoleBusinessService;
 import java.util.List;
+import java.util.stream.Stream;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,14 +17,22 @@ public class CalculationMapper {
     private final MemberBusinessService memberBusinessService;
     private final RoleMapper roleMapper;
     private final RoleBusinessService roleBusinessService;
+    private final ExperienceCalculationMapper experienceCalculationMapper;
+    private final DegreeCalculationMapper degreeCalculationMapper;
+    private final CertificateCalculationMapper certificateCalculationMapper;
 
-    public CalculationMapper(MemberMapper memberMapper, RoleMapper roleMapper,
-                             MemberBusinessService memberBusinessService, RoleBusinessService roleBusinessService) {
-
+    public CalculationMapper(MemberMapper memberMapper, MemberBusinessService memberBusinessService,
+                             RoleMapper roleMapper, RoleBusinessService roleBusinessService,
+                             ExperienceCalculationMapper experienceCalculationMapper,
+                             DegreeCalculationMapper degreeCalculationMapper,
+                             CertificateCalculationMapper certificateCalculationMapper) {
         this.memberMapper = memberMapper;
         this.memberBusinessService = memberBusinessService;
         this.roleMapper = roleMapper;
         this.roleBusinessService = roleBusinessService;
+        this.experienceCalculationMapper = experienceCalculationMapper;
+        this.degreeCalculationMapper = degreeCalculationMapper;
+        this.certificateCalculationMapper = certificateCalculationMapper;
     }
 
     public List<CalculationDto> toDto(List<Calculation> models) {
@@ -48,6 +58,17 @@ public class CalculationMapper {
                                this.roleBusinessService.getById(dto.roleId()),
                                dto.state(),
                                null,
-                               null);
+                               null,
+                               this.degreeCalculationMapper.fromDto(dto.degrees()),
+                               this.experienceCalculationMapper.fromDto(dto.experiences()),
+                               mergedCertificates(dto.leadershipExperiences(), dto.certificates()));
+    }
+
+    private List<CertificateCalculation> mergedCertificates(List<Long> leadershipExperiences, List<Long> certificates) {
+        return Stream
+                .of(certificates, leadershipExperiences)
+                .map(certificateCalculationMapper::fromDto)
+                .flatMap(List::stream)
+                .toList();
     }
 }

@@ -21,7 +21,7 @@ public class ExperienceCalculation implements Model {
 
     @NotNull(message = "{attribute.not.null}")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "calculation_id")
+    @JoinColumn(name = "experience_id")
     private Experience experience;
 
     @Enumerated(EnumType.STRING)
