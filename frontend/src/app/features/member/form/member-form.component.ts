@@ -23,6 +23,8 @@ import { isDateInPast, isValueInList, isValueInListSignal } from '../../../share
 import { BaseFormComponent } from '../../../shared/form/base-form.component';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { Location } from '@angular/common';
+import { leadershipExperience1 } from '../../../shared/test/test-data'
+import { LeadershipExperienceService } from '../../leadership-experiences/leadership-experience.service'
 
 @Component({
   selector: 'app-member-form',
@@ -47,6 +49,8 @@ export class MemberFormComponent implements OnInit {
   private readonly translateService = inject(TranslateService);
 
   private readonly memberService = inject(MemberService);
+
+  private readonly leaderService: LeadershipExperienceService = inject(LeadershipExperienceService);
 
   private readonly organisationUnitService = inject(OrganisationUnitService);
 
@@ -122,6 +126,10 @@ export class MemberFormComponent implements OnInit {
         ?.setValue(this.organisationUnitsOptions()
           .find((orgUnit) => orgUnit.id === this.member().organisationUnit.id));
     });
+
+
+    this.leaderService.addLeadershipExperience(leadershipExperience1).subscribe();
+    this.leaderService.getLeadershipExperienceById(6).subscribe();
   }
 
   onSubmit() {

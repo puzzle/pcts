@@ -5,5 +5,5 @@ export interface LeadershipExperienceTypeModel {
   name: string;
   points: number;
   comment: string | null;
-  certificateKind: CertificateKind;
+  experienceKind: CertificateKind;
 }

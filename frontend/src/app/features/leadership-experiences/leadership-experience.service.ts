@@ -31,7 +31,7 @@ export class LeadershipExperienceService {
   toDto(model: LeadershipExperienceModel): LeadershipExperienceDto {
     return {
       memberId: model.member.id,
-      leadershipExperienceTypeId: model.leadershipExperienceType.id,
+      leadershipExperienceTypeId: model.experience.id,
       comment: model.comment
     };
   }

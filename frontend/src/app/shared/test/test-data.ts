@@ -242,7 +242,7 @@ export const leadershipExperienceType1: LeadershipExperienceTypeModel = {
   name: 'Expert',
   points: 1,
   comment: 'J+S Expert',
-  certificateKind: CertificateKind.YOUTH_AND_SPORT
+  experienceKind: CertificateKind.YOUTH_AND_SPORT
 };
 
 export const leadershipExperienceType2: LeadershipExperienceTypeModel = {
@@ -250,20 +250,20 @@ export const leadershipExperienceType2: LeadershipExperienceTypeModel = {
   name: 'Officer',
   points: 2,
   comment: null,
-  certificateKind: CertificateKind.MILITARY_FUNCTION
+  experienceKind: CertificateKind.MILITARY_FUNCTION
 };
 
 export const leadershipExperience1: LeadershipExperienceModel = {
   id: 1,
   member: member1,
-  leadershipExperienceType: leadershipExperienceType1,
+  experience: leadershipExperienceType1,
   comment: 'J+S Expert and Leader'
 };
 
 export const leadershipExperience2: LeadershipExperienceModel = {
   id: 2,
   member: member2,
-  leadershipExperienceType: leadershipExperienceType2,
+  experience: leadershipExperienceType2,
   comment: null
 };
 
