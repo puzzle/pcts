@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS calculation_degree
+CREATE TABLE IF NOT EXISTS degree_calculation
 (
     id               BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY NOT NULL,
     calculation_id   BIGINT NOT NULL,
@@ -7,12 +7,12 @@ CREATE TABLE IF NOT EXISTS calculation_degree
     relevancy        TEXT NOT NULL
 );
 
-ALTER TABLE calculation_degree
-    ADD CONSTRAINT fk_calculation_degree_calculation
+ALTER TABLE degree_calculation
+    ADD CONSTRAINT fk_degree_calculation_calculation
         FOREIGN KEY (calculation_id)
             REFERENCES calculation (id);
 
-ALTER TABLE calculation_degree
-    ADD CONSTRAINT fk_calculation_degree_degree
+ALTER TABLE degree_calculation
+    ADD CONSTRAINT fk_degree_calculation_degree
         FOREIGN KEY (degree_id)
             REFERENCES degree (id)

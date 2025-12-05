@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS calculation_experience
+CREATE TABLE IF NOT EXISTS experience_calculation
 (
     id               BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY NOT NULL,
     calculation_id   BIGINT NOT NULL,
@@ -6,12 +6,12 @@ CREATE TABLE IF NOT EXISTS calculation_experience
     relevancy        TEXT NOT NULL
 );
 
-ALTER TABLE calculation_experience
-    ADD CONSTRAINT fk_calculation_experience_calculation
+ALTER TABLE experience_calculation
+    ADD CONSTRAINT fk_experience_calculation_calculation
         FOREIGN KEY (calculation_id)
             REFERENCES calculation (id);
 
-ALTER TABLE calculation_experience
-    ADD CONSTRAINT fk_calculation_experience_experience
+ALTER TABLE experience_calculation
+    ADD CONSTRAINT fk_experience_calculation_experience
         FOREIGN KEY (experience_id)
             REFERENCES experience (id)

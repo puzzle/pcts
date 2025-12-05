@@ -9,10 +9,26 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CalculationBusinessService extends BusinessBase<Calculation> {
+    private final ExperienceCalculationBusinessService experienceCalculationBusinessService;
 
     protected CalculationBusinessService(CalculationValidationService validationService,
-                                         CalculationPersistenceService persistenceService) {
+                                         CalculationPersistenceService persistenceService,
+                                         ExperienceCalculationBusinessService experienceCalculationBusinessService) {
         super(validationService, persistenceService);
+        this.experienceCalculationBusinessService = experienceCalculationBusinessService;
+    }
+
+    @Override
+    public Calculation create(Calculation calculation) {
+        validationService.validateOnCreate(calculation);
+        Calculation createdCalculation = persistenceService.save(calculation);
+
+        createdCalculation.getExperiences().forEach(experience -> {
+            experience.setCalculation(createdCalculation);
+            this.experienceCalculationBusinessService.create(experience);
+        });
+
+        return createdCalculation;
     }
 
     @Override

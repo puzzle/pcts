@@ -38,28 +38,37 @@ public class Calculation implements Model {
 
     private String publicizedBy;
 
-    private List<DegreeCalculation> degreeCalculations;
+    @OneToMany(mappedBy = "calculation", fetch = FetchType.LAZY)
+    private List<DegreeCalculation> degrees;
 
-    private List<ExperienceCalculation> experienceCalculations;
+    @OneToMany(mappedBy = "calculation", fetch = FetchType.LAZY)
+    private List<ExperienceCalculation> experiences;
 
-    private List<CertificateCalculation> certificateCalculations;
+    @OneToMany(mappedBy = "calculation", fetch = FetchType.LAZY)
+    private List<CertificateCalculation> certificates;
 
     public Calculation(Long id, Member member, Role role, CalculationState state, LocalDate publicationDate,
-                       String publicizedBy, List<DegreeCalculation> degreeCalculations,
-                       List<ExperienceCalculation> experienceCalculations,
-                       List<CertificateCalculation> certificateCalculations) {
+                       String publicizedBy, List<DegreeCalculation> degrees, List<ExperienceCalculation> experiences,
+                       List<CertificateCalculation> certificates) {
         this.id = id;
         this.member = member;
         this.role = role;
         this.state = state;
         this.publicationDate = publicationDate;
         this.publicizedBy = publicizedBy;
-        this.degreeCalculations = degreeCalculations;
-        this.experienceCalculations = experienceCalculations;
-        this.certificateCalculations = certificateCalculations;
+        this.degrees = degrees;
+        this.experiences = experiences;
+        this.certificates = certificates;
     }
 
     public Calculation() {
+    }
+
+    @Override
+    public String toString() {
+        return "Calculation{" + "id=" + id + ", member=" + member + ", role=" + role + ", state=" + state
+               + ", publicationDate=" + publicationDate + ", publicizedBy='" + publicizedBy + '\'' + ", degrees="
+               + degrees + ", experiences=" + experiences + ", certificates=" + certificates + '}';
     }
 
     @Override
@@ -71,9 +80,9 @@ public class Calculation implements Model {
                && Objects.equals(getRole(), that.getRole()) && getState() == that.getState()
                && Objects.equals(getPublicationDate(), that.getPublicationDate())
                && Objects.equals(getPublicizedBy(), that.getPublicizedBy())
-               && Objects.equals(degreeCalculations, that.degreeCalculations)
-               && Objects.equals(experienceCalculations, that.experienceCalculations)
-               && Objects.equals(certificateCalculations, that.certificateCalculations);
+               && Objects.equals(getDegrees(), that.getDegrees())
+               && Objects.equals(getExperiences(), that.getExperiences())
+               && Objects.equals(getCertificates(), that.getCertificates());
     }
 
     @Override
@@ -85,17 +94,9 @@ public class Calculation implements Model {
                       getState(),
                       getPublicationDate(),
                       getPublicizedBy(),
-                      degreeCalculations,
-                      experienceCalculations,
-                      certificateCalculations);
-    }
-
-    @Override
-    public String toString() {
-        return "Calculation{" + "id=" + id + ", member=" + member + ", role=" + role + ", state=" + state
-               + ", publicationDate=" + publicationDate + ", publicizedBy='" + publicizedBy + '\''
-               + ", degreeCalculations=" + degreeCalculations + ", experienceCalculations=" + experienceCalculations
-               + ", certificateCalculations=" + certificateCalculations + '}';
+                      getDegrees(),
+                      getExperiences(),
+                      getCertificates());
     }
 
     public Long getId() {
@@ -146,27 +147,27 @@ public class Calculation implements Model {
         this.publicizedBy = trim(publicizedBy);
     }
 
-    public List<DegreeCalculation> getDegreeCalculations() {
-        return degreeCalculations;
+    public List<DegreeCalculation> getDegrees() {
+        return degrees;
     }
 
-    public void setDegreeCalculations(List<DegreeCalculation> degreeCalculations) {
-        this.degreeCalculations = degreeCalculations;
+    public void setDegrees(List<DegreeCalculation> degrees) {
+        this.degrees = degrees;
     }
 
-    public List<ExperienceCalculation> getExperienceCalculations() {
-        return experienceCalculations;
+    public List<ExperienceCalculation> getExperiences() {
+        return experiences;
     }
 
-    public void setExperienceCalculations(List<ExperienceCalculation> experienceCalculations) {
-        this.experienceCalculations = experienceCalculations;
+    public void setExperiences(List<ExperienceCalculation> experiences) {
+        this.experiences = experiences;
     }
 
-    public List<CertificateCalculation> getCertificateCalculations() {
-        return certificateCalculations;
+    public List<CertificateCalculation> getCertificates() {
+        return certificates;
     }
 
-    public void setCertificateCalculations(List<CertificateCalculation> certificateCalculations) {
-        this.certificateCalculations = certificateCalculations;
+    public void setCertificates(List<CertificateCalculation> certificates) {
+        this.certificates = certificates;
     }
 }
