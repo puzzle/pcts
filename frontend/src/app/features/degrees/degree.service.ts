@@ -33,7 +33,7 @@ export class DegreeService {
     return {
       name: model.name,
       memberId: model.member.id,
-      degreeTypeId: model.degreeType.id,
+      typeId: model.type.id,
       institution: model.institution,
       completed: model.completed,
       comment: model.comment,
