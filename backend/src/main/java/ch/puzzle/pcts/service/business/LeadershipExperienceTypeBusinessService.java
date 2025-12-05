@@ -12,7 +12,6 @@ import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import ch.puzzle.pcts.service.validation.LeadershipExperienceTypeValidationService;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +29,7 @@ public class LeadershipExperienceTypeBusinessService extends BusinessBase<Certif
     }
 
     @Override
-    public CertificateType getById(Long id){
+    public CertificateType getById(Long id) {
         CertificateType leadershipExperienceType = super.getById(id);
         validateLeadershipExperienceIsPresent(leadershipExperienceType);
         return leadershipExperienceType;
@@ -46,9 +45,14 @@ public class LeadershipExperienceTypeBusinessService extends BusinessBase<Certif
     }
 
     private void validateLeadershipExperienceIsPresent(CertificateType leadershipExperienceType) {
-        if (leadershipExperienceType.getCertificateKind() == CertificateKind.CERTIFICATE){
+        if (leadershipExperienceType.getCertificateKind() == CertificateKind.CERTIFICATE) {
             Map<FieldKey, String> attributes = Map
-                    .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, leadershipExperienceType.getId().toString());
+                    .of(FieldKey.ENTITY,
+                        entityName(),
+                        FieldKey.FIELD,
+                        "id",
+                        FieldKey.IS,
+                        leadershipExperienceType.getId().toString());
 
             GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
             throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
