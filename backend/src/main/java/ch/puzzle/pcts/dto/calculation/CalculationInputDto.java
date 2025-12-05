@@ -10,7 +10,7 @@ public record CalculationInputDto(
 
         @Schema(description = "The member id associated with this calculation.", example = "1", nullable = false) Long memberId,
 
-        @Schema(description = "The current state of the calculation.", example = "active", nullable = false) CalculationState state,
+        @Schema(description = "The current state of the calculation.", example = "ACTIVE", nullable = false) CalculationState state,
 
         @Schema(description = "The role id for this calculation.", example = "1", nullable = false) Long roleId,
 

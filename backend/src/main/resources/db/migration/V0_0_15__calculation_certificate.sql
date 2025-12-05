@@ -1,16 +1,16 @@
-CREATE TABLE IF NOT EXISTS calculation_certificate
+CREATE TABLE IF NOT EXISTS certificate_calculation
 (
     id               BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY NOT NULL,
     calculation_id   BIGINT NOT NULL,
     certificate_id   BIGINT NOT NULL
 );
 
-ALTER TABLE calculation_certificate
-    ADD CONSTRAINT fk_calculation_certificate_calculation
+ALTER TABLE certificate_calculation
+    ADD CONSTRAINT fk_certificate_calculation_calculation
         FOREIGN KEY (calculation_id)
             REFERENCES calculation (id);
 
-ALTER TABLE calculation_certificate
-    ADD CONSTRAINT fk_calculation_certificate_certificate
+ALTER TABLE certificate_calculation
+    ADD CONSTRAINT fk_certificate_calculation_certificate
         FOREIGN KEY (certificate_id)
             REFERENCES certificate (id)

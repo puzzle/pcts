@@ -5,5 +5,5 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 
 public record DegreeCalculationInputDto(@Schema(example = "1") Long degreeId, @Schema(example = "1") BigDecimal weight,
-        @Schema(example = "highly") Relevancy relevancy) {
+        @Schema(example = "HIGHLY") Relevancy relevancy) {
 }
