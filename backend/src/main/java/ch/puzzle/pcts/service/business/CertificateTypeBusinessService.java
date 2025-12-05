@@ -52,9 +52,9 @@ public class CertificateTypeBusinessService extends BusinessBase<CertificateType
 
     @Override
     public CertificateType update(Long id, CertificateType certificateType) {
+        this.getById(id);
         validationService.validateOnUpdate(id, certificateType);
         certificateType.setTags(tagBusinessService.resolveTags(certificateType.getTags()));
-        this.getById(id);
         certificateType.setId(id);
         CertificateType result = persistenceService.save(certificateType);
         tagBusinessService.deleteUnusedTags();

@@ -44,15 +44,15 @@ public abstract class BusinessBase<T extends Model> {
     }
 
     public T update(Long id, T model) {
+        getById(id);
         validationService.validateOnUpdate(id, model);
-        this.getById(id);
         model.setId(id);
         return persistenceService.save(model);
     }
 
     public void delete(Long id) {
+        getById(id);
         validationService.validateOnDelete(id);
-        this.getById(id);
         persistenceService.delete(id);
     }
 
