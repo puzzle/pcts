@@ -73,7 +73,7 @@ public class LeadershipExperienceTypeValidationService extends ValidationBase<Ce
                         FieldKey.IS,
                         certificatekind.toString());
 
-            GenericErrorDto error = new GenericErrorDto(ErrorKey.INVALID_ARGUMENT, attributes);
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_KIND_WRONG, attributes);
 
             throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
         }
