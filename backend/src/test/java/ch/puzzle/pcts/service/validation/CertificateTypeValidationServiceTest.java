@@ -24,7 +24,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
 
 @ExtendWith(MockitoExtension.class)
 class CertificateTypeValidationServiceTest
@@ -123,8 +122,7 @@ class CertificateTypeValidationServiceTest
     void shouldThrowExceptionOnValidateOnGetByIdWhenCertificateKindIsNotCertificate() {
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> service
-                                                       .validateCertificateKind(CertificateKind.LEADERSHIP_TRAINING,
-                                                                                HttpStatus.BAD_REQUEST));
+                                                       .validateCertificateKind(CertificateKind.LEADERSHIP_TRAINING));
         assertEquals(List.of(ErrorKey.ATTRIBUTE_KIND_WRONG), exception.getErrorKeys());
         assertEquals(List
                 .of(Map
