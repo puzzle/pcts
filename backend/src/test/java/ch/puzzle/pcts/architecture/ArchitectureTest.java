@@ -1,14 +1,19 @@
 package ch.puzzle.pcts.architecture;
 
-import static ch.puzzle.pcts.architecture.CustomConditions.followPattern;
-import static ch.puzzle.pcts.architecture.CustomConditions.overrideEqualsMethod;
-import static ch.puzzle.pcts.architecture.CustomConditions.overrideHashCodeMethod;
-import static ch.puzzle.pcts.architecture.CustomConditions.overrideToStringMethod;
-import static ch.puzzle.pcts.architecture.CustomConditions.trimAssignedStringFields;
+import static ch.puzzle.pcts.architecture.CustomTransformers.annotations;
 import static ch.puzzle.pcts.architecture.CustomTransformers.packages;
+import static ch.puzzle.pcts.architecture.condition.AnnotationConditions.haveSuffix;
+import static ch.puzzle.pcts.architecture.condition.AnnotationConditions.haveValuePrefix;
+import static ch.puzzle.pcts.architecture.condition.AnnotationConditions.shouldBeValidDescription;
+import static ch.puzzle.pcts.architecture.condition.ClassConditions.followPattern;
+import static ch.puzzle.pcts.architecture.condition.ClassConditions.overrideEqualsMethod;
+import static ch.puzzle.pcts.architecture.condition.ClassConditions.overrideHashCodeMethod;
+import static ch.puzzle.pcts.architecture.condition.ClassConditions.overrideToStringMethod;
+import static ch.puzzle.pcts.architecture.condition.CodeUnitConditions.trimAssignedStringFields;
 import static com.tngtech.archunit.base.DescribedPredicate.not;
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAPackage;
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.type;
+import static com.tngtech.archunit.lang.conditions.ArchConditions.and;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
@@ -18,8 +23,10 @@ import ch.puzzle.pcts.model.Model;
 import com.tngtech.archunit.core.domain.*;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
+import com.tngtech.archunit.lang.ArchCondition;
 import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.library.Architectures;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.Entity;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.DisplayName;
@@ -28,6 +35,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.stereotype.*;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 class ArchitectureTest {
@@ -179,6 +187,32 @@ class ArchitectureTest {
                 .beAnnotatedWith(RestController.class)
                 .andShould()
                 .notBeInterfaces();
+
+        rule.check(importedClasses);
+    }
+
+    @DisplayName("@RequestMappings should have common pre- and suffix")
+    @Test
+    void controllersShouldDefineCorrectRequestMapping() {
+        JavaClasses importedClasses = getMainSourceClasses();
+
+        ArchCondition<JavaAnnotation<JavaClass>> combinedCondition = and(haveSuffix("value", "s"),
+                                                                         haveValuePrefix("/api/v1/"));
+
+        ArchRule rule = all(annotations(RequestMapping.class)).should(combinedCondition);
+
+        rule.check(importedClasses);
+    }
+
+    @DisplayName("Controller @Tags should be valid")
+    @Test
+    void controllerTagsShouldBeCompleteSentences() {
+        JavaClasses importedClasses = getMainSourceClasses();
+
+        ArchCondition<JavaAnnotation<JavaClass>> combinedCondition = and(shouldBeValidDescription("description"),
+                                                                         haveSuffix("name", "s"));
+
+        ArchRule rule = all(annotations(Tag.class)).should(combinedCondition);
 
         rule.check(importedClasses);
     }
