@@ -10,6 +10,10 @@ import { CertificateDto } from '../../features/certificates/dto/certificate.dto'
 import { ExperienceTypeModel } from '../../features/experiences/experience-type/experience-type.model';
 import { ExperienceModel } from '../../features/experiences/experience.model';
 import { ExperienceDto } from '../../features/experiences/dto/experience.dto';
+import { LeadershipExperienceModel } from '../../features/leadership-experiences/leadership-experience.model';
+import {
+  LeadershipExperienceTypeModel
+} from '../../features/leadership-experiences/leadership-experiences-type/leadership-experience-type.model';
 
 export const url = '/api/v1/data';
 
@@ -232,3 +236,34 @@ export const experienceDto2: ExperienceDto = {
   startDate: '2020-01-10',
   endDate: null
 };
+
+export const leadershipExperienceType1: LeadershipExperienceTypeModel = {
+  id: 1,
+  name: 'Expert',
+  points: 1,
+  comment: 'J+S Expert',
+  experienceKind: CertificateKind.YOUTH_AND_SPORT
+};
+
+export const leadershipExperienceType2: LeadershipExperienceTypeModel = {
+  id: 2,
+  name: 'Officer',
+  points: 2,
+  comment: null,
+  experienceKind: CertificateKind.MILITARY_FUNCTION
+};
+
+export const leadershipExperience1: LeadershipExperienceModel = {
+  id: 1,
+  member: member1,
+  experience: leadershipExperienceType1,
+  comment: 'J+S Expert and Leader'
+};
+
+export const leadershipExperience2: LeadershipExperienceModel = {
+  id: 2,
+  member: member2,
+  experience: leadershipExperienceType2,
+  comment: null
+};
+
