@@ -47,8 +47,7 @@ public class CertificateTypeBusinessService extends BusinessBase<CertificateType
 
         if (optionalCertificate.isPresent()) {
             CertificateType certificateType = optionalCertificate.get();
-            certificateTypeValidationService
-                    .validateCertificateKind(certificateType.getCertificateKind(), HttpStatus.NOT_FOUND);
+            certificateTypeValidationService.validateCertificateKind(certificateType.getCertificateKind());
             return certificateType;
         } else {
             Map<FieldKey, String> attributes = Map

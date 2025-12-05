@@ -44,7 +44,7 @@ public abstract class BusinessBase<T extends Model> {
     }
 
     public T update(Long id, T model) {
-        if (persistenceService.getById(id).isPresent()) {
+        if (this.getById(id) != null) {
             validationService.validateOnUpdate(id, model);
             model.setId(id);
             return persistenceService.save(model);
