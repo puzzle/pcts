@@ -11,7 +11,7 @@ export class LeadershipExperienceTypeService {
 
   private readonly API_URL = '/api/v1/leadership-experience-types';
 
-  getAllLeadershipTypes(): Observable<LeadershipExperienceTypeService[]> {
+  getAllLeadershipExperienceTypes(): Observable<LeadershipExperienceTypeService[]> {
     return this.httpClient.get<LeadershipExperienceTypeService[]>(this.API_URL);
   }
 }

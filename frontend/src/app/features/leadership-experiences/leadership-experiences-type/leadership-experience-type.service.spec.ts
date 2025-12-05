@@ -40,7 +40,7 @@ describe('LeadershipExperienceTypeService', () => {
       const mockLeadershipExperiencesType: LeadershipExperienceTypeModel[] = [leadershipExperienceType1,
         leadershipExperienceType2];
 
-      service.getAllLeadershipTypes()
+      service.getAllLeadershipExperienceTypes()
         .subscribe((leadershipExperiencesTypes) => {
           expect(leadershipExperiencesTypes)
             .toEqual(mockLeadershipExperiencesType);
