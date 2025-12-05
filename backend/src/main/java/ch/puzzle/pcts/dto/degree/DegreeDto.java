@@ -5,7 +5,7 @@ import ch.puzzle.pcts.dto.member.MemberDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 
-@Schema(description = "DTO representing a degree, including the associated member and degree type information.")
+@Schema(description = "DTO representing a degree, including the associated member and degree type.")
 public record DegreeDto(
 
         @Schema(description = "The unique identifier of the degree.", example = "1", accessMode = Schema.AccessMode.READ_ONLY) Long id,

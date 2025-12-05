@@ -113,7 +113,7 @@ class DegreeMapperTest {
         assertEquals(degreeInputDto.name(), result.getName());
         assertEquals(degreeInputDto.institution(), result.getInstitution());
         assertEquals(degreeInputDto.completed(), result.getCompleted());
-        assertEquals(degreeType, result.getType());
+        assertEquals(degreeType, result.getDegreeType());
         assertEquals(degreeInputDto.startDate(), result.getStartDate());
         assertEquals(degreeInputDto.endDate(), result.getEndDate());
         assertEquals(degreeInputDto.comment(), result.getComment());
@@ -129,7 +129,7 @@ class DegreeMapperTest {
                 .withName("Degree 1")
                 .withInstitution("Institution 1")
                 .withCompleted(true)
-                .withType(degreeType)
+                .withDegreeType(degreeType)
                 .withStartDate(commonDate)
                 .withEndDate(commonDate)
                 .withComment("Comment 1")
@@ -197,7 +197,7 @@ class DegreeMapperTest {
                 .withName("Degree 1")
                 .withInstitution("Institution 1")
                 .withCompleted(true)
-                .withType(degreeType)
+                .withDegreeType(degreeType)
                 .withStartDate(commonDate)
                 .withEndDate(commonDate)
                 .withComment("Comment 1")
@@ -210,7 +210,7 @@ class DegreeMapperTest {
                 .withName("Degree 2")
                 .withInstitution("Institution 2")
                 .withCompleted(false)
-                .withType(degreeType)
+                .withDegreeType(degreeType)
                 .withStartDate(commonDate)
                 .withEndDate(commonDate)
                 .withComment("Comment 2")

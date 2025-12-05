@@ -71,7 +71,7 @@ class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, Degr
                 .withName("Degree 1")
                 .withInstitution("Institution 1")
                 .withCompleted(true)
-                .withType(degreeType)
+                .withDegreeType(degreeType)
                 .withStartDate(commonDate)
                 .withEndDate(commonDate)
                 .withComment("Comment 1")
@@ -89,7 +89,7 @@ class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, Degr
         d.setMember(member);
         d.setName(name);
         d.setInstitution("Institution");
-        d.setType(degreeType);
+        d.setDegreeType(degreeType);
         d.setCompleted(completed);
         d.setStartDate(startDate);
         d.setEndDate(endDate);
@@ -115,27 +115,27 @@ class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, Degr
                 .withBirthDate(today)
                 .withOrganisationUnit(organisationUnit)
                 .build();
-        DegreeType type = new DegreeType(1L,
-                                         "Bachelor",
-                                         new BigDecimal("3.0"),
-                                         new BigDecimal("2.0"),
-                                         new BigDecimal("1.0"));
+        DegreeType degreeType = new DegreeType(1L,
+                                               "Bachelor",
+                                               new BigDecimal("3.0"),
+                                               new BigDecimal("2.0"),
+                                               new BigDecimal("1.0"));
 
         return Stream
                 .of(Arguments
-                        .of(createDegree(null, "Computer Science", type, true, pastDate, today),
+                        .of(createDegree(null, "Computer Science", degreeType, true, pastDate, today),
                             List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "member"))),
                     Arguments
-                            .of(createDegree(member, null, type, true, pastDate, today),
+                            .of(createDegree(member, null, degreeType, true, pastDate, today),
                                 List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createDegree(member, "", type, true, pastDate, today),
+                            .of(createDegree(member, "", degreeType, true, pastDate, today),
                                 List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createDegree(member, "  ", type, true, pastDate, today),
+                            .of(createDegree(member, "  ", degreeType, true, pastDate, today),
                                 List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createDegree(member, "A", type, true, pastDate, today),
+                            .of(createDegree(member, "A", degreeType, true, pastDate, today),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -149,7 +149,7 @@ class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, Degr
                                                     FieldKey.IS,
                                                     "A"))),
                     Arguments
-                            .of(createDegree(member, tooLongString, type, true, pastDate, today),
+                            .of(createDegree(member, tooLongString, degreeType, true, pastDate, today),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -164,15 +164,15 @@ class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, Degr
                                                     tooLongString))),
                     Arguments
                             .of(createDegree(member, "Computer Science", null, true, pastDate, today),
-                                List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "type"))),
+                                List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "degreeType"))),
                     Arguments
-                            .of(createDegree(member, "Computer Science", type, null, pastDate, today),
+                            .of(createDegree(member, "Computer Science", degreeType, null, pastDate, today),
                                 List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "completed"))),
                     Arguments
-                            .of(createDegree(member, "Computer Science", type, true, null, today),
+                            .of(createDegree(member, "Computer Science", degreeType, true, null, today),
                                 List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "startDate"))),
                     Arguments
-                            .of(createDegree(member, "Computer Science", type, true, futureDate, null),
+                            .of(createDegree(member, "Computer Science", degreeType, true, futureDate, null),
                                 List.of(Map.of(FieldKey.IS, "{attribute.date.past.present}"))));
     }
 
@@ -222,13 +222,13 @@ class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, Degr
                 .withBirthDate(pastDate)
                 .withOrganisationUnit(organisationUnit)
                 .build();
-        DegreeType type = new DegreeType(1L,
-                                         "Bachelor",
-                                         new BigDecimal("3.0"),
-                                         new BigDecimal("2.0"),
-                                         new BigDecimal("1.0"));
+        DegreeType degreeType = new DegreeType(1L,
+                                               "Bachelor",
+                                               new BigDecimal("3.0"),
+                                               new BigDecimal("2.0"),
+                                               new BigDecimal("1.0"));
 
-        Degree degree = createDegree(member, "Degree", type, true, today, pastDate);
+        Degree degree = createDegree(member, "Degree", degreeType, true, today, pastDate);
 
         List<PCTSException> exceptions = List
                 .of(assertThrows(PCTSException.class, () -> service.validateOnUpdate(1L, degree)),
