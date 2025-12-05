@@ -3,11 +3,15 @@ package ch.puzzle.pcts.model.calculation;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
+import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
+import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
+import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.role.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -34,14 +38,27 @@ public class Calculation implements Model {
 
     private String publicizedBy;
 
+    @OneToMany(mappedBy = "calculation", fetch = FetchType.LAZY)
+    private List<DegreeCalculation> degrees;
+
+    @OneToMany(mappedBy = "calculation", fetch = FetchType.LAZY)
+    private List<ExperienceCalculation> experiences;
+
+    @OneToMany(mappedBy = "calculation", fetch = FetchType.LAZY)
+    private List<CertificateCalculation> certificates;
+
     public Calculation(Long id, Member member, Role role, CalculationState state, LocalDate publicationDate,
-                       String publicizedBy) {
+                       String publicizedBy, List<DegreeCalculation> degrees, List<ExperienceCalculation> experiences,
+                       List<CertificateCalculation> certificates) {
         this.id = id;
         this.member = member;
         this.role = role;
         this.state = state;
         this.publicationDate = publicationDate;
-        this.publicizedBy = trim(publicizedBy);
+        this.publicizedBy = publicizedBy;
+        this.degrees = degrees;
+        this.experiences = experiences;
+        this.certificates = certificates;
     }
 
     public Calculation() {
@@ -50,23 +67,36 @@ public class Calculation implements Model {
     @Override
     public String toString() {
         return "Calculation{" + "id=" + id + ", member=" + member + ", role=" + role + ", state=" + state
-               + ", publicationDate=" + publicationDate + ", publicizedBy='" + publicizedBy + '\'' + '}';
+               + ", publicationDate=" + publicationDate + ", publicizedBy='" + publicizedBy + '\'' + ", degrees="
+               + degrees + ", experiences=" + experiences + ", certificates=" + certificates + '}';
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Calculation that)) {
+    public boolean equals(Object object) {
+        if (object == null || getClass() != object.getClass())
             return false;
-        }
+        Calculation that = (Calculation) object;
         return Objects.equals(getId(), that.getId()) && Objects.equals(getMember(), that.getMember())
                && Objects.equals(getRole(), that.getRole()) && getState() == that.getState()
                && Objects.equals(getPublicationDate(), that.getPublicationDate())
-               && Objects.equals(getPublicizedBy(), that.getPublicizedBy());
+               && Objects.equals(getPublicizedBy(), that.getPublicizedBy())
+               && Objects.equals(getDegrees(), that.getDegrees())
+               && Objects.equals(getExperiences(), that.getExperiences())
+               && Objects.equals(getCertificates(), that.getCertificates());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getMember(), getRole(), getState(), getPublicationDate(), getPublicizedBy());
+        return Objects
+                .hash(getId(),
+                      getMember(),
+                      getRole(),
+                      getState(),
+                      getPublicationDate(),
+                      getPublicizedBy(),
+                      getDegrees(),
+                      getExperiences(),
+                      getCertificates());
     }
 
     public Long getId() {
@@ -115,5 +145,29 @@ public class Calculation implements Model {
 
     public void setPublicizedBy(String publicizedBy) {
         this.publicizedBy = trim(publicizedBy);
+    }
+
+    public List<DegreeCalculation> getDegrees() {
+        return degrees;
+    }
+
+    public void setDegrees(List<DegreeCalculation> degrees) {
+        this.degrees = degrees;
+    }
+
+    public List<ExperienceCalculation> getExperiences() {
+        return experiences;
+    }
+
+    public void setExperiences(List<ExperienceCalculation> experiences) {
+        this.experiences = experiences;
+    }
+
+    public List<CertificateCalculation> getCertificates() {
+        return certificates;
+    }
+
+    public void setCertificates(List<CertificateCalculation> certificates) {
+        this.certificates = certificates;
     }
 }
