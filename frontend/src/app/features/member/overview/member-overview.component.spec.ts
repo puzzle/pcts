@@ -126,12 +126,32 @@ describe('MemberOverviewComponent', () => {
     it.each([['Keller'],
       ['Lena Müller'],
       ['']])('should update searchControl to "%s" and apply filter', (searchText) => {
-      const spy = jest.spyOn(component as any, 'applyCombinedFilter');
+      const spy = jest.spyOn(component, 'applyCombinedFilter');
       component.searchControl.setValue(searchText);
       component.applyCombinedFilter();
 
       expect(component.searchControl.value)
         .toBe(searchText);
+      expect(spy)
+        .toHaveBeenCalled();
+    });
+  });
+
+  describe('applyCombinedFilter', () => {
+    const testCases = [{ searchText: '',
+      expected: 2 },
+    { searchText: 'zzzzzzzzz',
+      expected: 0 },
+    { searchText: 'Lena',
+      expected: 1 }];
+
+    it.each(testCases)('should update filteredCount', ({ searchText, expected }) => {
+      const spy = jest.spyOn(component, 'applyCombinedFilter');
+      component.searchControl.setValue(searchText);
+      component.applyCombinedFilter();
+
+      expect(component.filteredCount())
+        .toEqual(expected);
       expect(spy)
         .toHaveBeenCalled();
     });
