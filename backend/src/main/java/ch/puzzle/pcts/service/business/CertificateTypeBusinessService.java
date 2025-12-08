@@ -12,7 +12,6 @@ import ch.puzzle.pcts.service.validation.CertificateTypeValidationService;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -72,7 +71,7 @@ public class CertificateTypeBusinessService extends BusinessBase<CertificateType
         return CERTIFICATE_TYPE;
     }
 
-    private CertificateType isPresent(Optional<CertificateType> certificateType, Long id){
+    private CertificateType isPresent(Optional<CertificateType> certificateType, Long id) {
         return certificateType.orElseThrow(() -> {
             Map<FieldKey, String> attributes = Map
                     .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, id.toString());
