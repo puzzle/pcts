@@ -8,6 +8,7 @@ import static org.mockito.Mockito.*;
 import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
+import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import ch.puzzle.pcts.service.validation.CertificateTypeValidationService;
@@ -20,6 +21,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 
 @ExtendWith(MockitoExtension.class)
 class CertificateTypeBusinessServiceTest {
@@ -46,6 +48,7 @@ class CertificateTypeBusinessServiceTest {
     @Test
     void shouldGetByIdAndValidateCertificateType() {
         Long id = 1L;
+        when(certificate.getCertificateKind()).thenReturn(CertificateKind.CERTIFICATE);
         when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
 
         CertificateType result = businessService.getById(id);
@@ -53,7 +56,24 @@ class CertificateTypeBusinessServiceTest {
         assertEquals(certificate, result);
         verify(validationService).validateOnGetById(id);
         verify(persistenceService).getById(id);
-        verify(validationService).validateCertificateKind(certificate.getCertificateKind());
+    }
+
+    @DisplayName("Should throw NOT_FOUND when certificate kind is not CERTIFICATE")
+    @Test
+    void shouldThrowWhenCertificateKindIsNotCertificate() {
+        Long id = 1L;
+
+        when(certificate.getCertificateKind()).thenReturn(CertificateKind.LEADERSHIP_TRAINING);
+        when(certificate.getId()).thenReturn(id);
+        when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
+
+        PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(id));
+
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
+        assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
+
+        verify(validationService).validateOnGetById(id);
+        verify(persistenceService).getById(id);
     }
 
     @DisplayName("Should throw error when certificate type with id does not exist")
@@ -104,6 +124,7 @@ class CertificateTypeBusinessServiceTest {
     void shouldUpdate() {
         Long id = 1L;
         when(persistenceService.save(certificate)).thenReturn(certificate);
+        when(certificate.getCertificateKind()).thenReturn(CertificateKind.CERTIFICATE);
         when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
 
         CertificateType result = businessService.update(id, certificate);
@@ -132,6 +153,7 @@ class CertificateTypeBusinessServiceTest {
     @Test
     void shouldDelete() {
         Long id = 1L;
+        when(certificate.getCertificateKind()).thenReturn(CertificateKind.CERTIFICATE);
         when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
 
         businessService.delete(id);
