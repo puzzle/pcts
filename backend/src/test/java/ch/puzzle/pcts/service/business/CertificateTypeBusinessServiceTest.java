@@ -8,7 +8,6 @@ import static org.mockito.Mockito.*;
 import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
-import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import ch.puzzle.pcts.service.validation.CertificateTypeValidationService;
@@ -21,7 +20,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
 
 @ExtendWith(MockitoExtension.class)
 class CertificateTypeBusinessServiceTest {
@@ -44,43 +42,24 @@ class CertificateTypeBusinessServiceTest {
     @InjectMocks
     private CertificateTypeBusinessService businessService;
 
-    @DisplayName("Should get certificate type by id and validate certificate type")
+    @DisplayName("Should get certificate type by id")
     @Test
-    void shouldGetByIdAndValidateCertificateType() {
+    void shouldGetById() {
         Long id = 1L;
-        when(certificate.getCertificateKind()).thenReturn(CertificateKind.CERTIFICATE);
-        when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
+        when(persistenceService.getCertificateType(id)).thenReturn(Optional.of(certificate));
 
         CertificateType result = businessService.getById(id);
 
         assertEquals(certificate, result);
         verify(validationService).validateOnGetById(id);
-        verify(persistenceService).getById(id);
-    }
-
-    @DisplayName("Should throw NOT_FOUND when certificate kind is not CERTIFICATE")
-    @Test
-    void shouldThrowWhenCertificateKindIsNotCertificate() {
-        Long id = 1L;
-
-        when(certificate.getCertificateKind()).thenReturn(CertificateKind.LEADERSHIP_TRAINING);
-        when(certificate.getId()).thenReturn(id);
-        when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(id));
-
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-        assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
-
-        verify(validationService).validateOnGetById(id);
-        verify(persistenceService).getById(id);
+        verify(persistenceService).getCertificateType(id);
     }
 
     @DisplayName("Should throw error when certificate type with id does not exist")
     @Test
     void shouldNotGetByIdAndThrowError() {
         Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.empty());
+        when(persistenceService.getCertificateType(id)).thenReturn(Optional.empty());
 
         PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(id));
 
@@ -89,7 +68,7 @@ class CertificateTypeBusinessServiceTest {
                 .of(Map.of(FieldKey.FIELD, "id", FieldKey.IS, id.toString(), FieldKey.ENTITY, CERTIFICATE_TYPE)),
                      exception.getErrorAttributes());
         verify(validationService).validateOnGetById(id);
-        verify(persistenceService).getById(id);
+        verify(persistenceService).getCertificateType(id);
     }
 
     @DisplayName("Should create certificate type")
@@ -124,8 +103,7 @@ class CertificateTypeBusinessServiceTest {
     void shouldUpdate() {
         Long id = 1L;
         when(persistenceService.save(certificate)).thenReturn(certificate);
-        when(certificate.getCertificateKind()).thenReturn(CertificateKind.CERTIFICATE);
-        when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
+        when(persistenceService.getCertificateType(id)).thenReturn(Optional.of(certificate));
 
         CertificateType result = businessService.update(id, certificate);
 
@@ -141,11 +119,11 @@ class CertificateTypeBusinessServiceTest {
     void shouldThrowExceptionWhenUpdatingNotFound() {
         Long id = 1L;
 
-        when(persistenceService.getById(id)).thenReturn(Optional.empty());
+        when(persistenceService.getCertificateType(id)).thenReturn(Optional.empty());
 
         assertThrows(PCTSException.class, () -> businessService.update(id, certificate));
 
-        verify(persistenceService).getById(id);
+        verify(persistenceService).getCertificateType(id);
         verify(persistenceService, never()).save(any());
     }
 
@@ -153,8 +131,7 @@ class CertificateTypeBusinessServiceTest {
     @Test
     void shouldDelete() {
         Long id = 1L;
-        when(certificate.getCertificateKind()).thenReturn(CertificateKind.CERTIFICATE);
-        when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
+        when(persistenceService.getCertificateType(id)).thenReturn(Optional.of(certificate));
 
         businessService.delete(id);
 
@@ -167,11 +144,11 @@ class CertificateTypeBusinessServiceTest {
     @Test
     void shouldThrowExceptionWhenNotFound() {
         Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.empty());
+        when(persistenceService.getCertificateType(id)).thenReturn(Optional.empty());
 
         assertThrows(PCTSException.class, () -> businessService.delete(id));
 
-        verify(persistenceService).getById(id);
+        verify(persistenceService).getCertificateType(id);
         verify(persistenceService, never()).delete(id);
     }
 }

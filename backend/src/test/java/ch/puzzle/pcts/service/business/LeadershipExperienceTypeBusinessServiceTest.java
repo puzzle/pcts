@@ -7,7 +7,6 @@ import static org.mockito.Mockito.*;
 import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
-import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import ch.puzzle.pcts.service.validation.LeadershipExperienceTypeValidationService;
@@ -43,45 +42,20 @@ class LeadershipExperienceTypeBusinessServiceTest {
     @Test
     void shouldGetByIdAndValidateCertificateType() {
         Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
-        when(certificate.getCertificateKind()).thenReturn(CertificateKind.YOUTH_AND_SPORT);
+        when(persistenceService.getLeadershipExperienceType(id)).thenReturn(Optional.of(certificate));
 
         CertificateType result = businessService.getById(id);
 
         assertEquals(certificate, result);
         verify(validationService).validateOnGetById(id);
-        verify(persistenceService).getById(id);
-    }
-
-    @DisplayName("Should throw error when certificate type with id does not exist")
-    @Test
-    void shouldNotGetByIdAndThrowErrorIfCertificateKindIsCertificate() {
-        Long id = 1L;
-        when(certificate.getCertificateKind()).thenReturn(CertificateKind.CERTIFICATE);
-        when(certificate.getId()).thenReturn(id);
-        when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(id));
-
-        assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
-        assertEquals(List
-                .of(Map
-                        .of(FieldKey.FIELD,
-                            "id",
-                            FieldKey.IS,
-                            id.toString(),
-                            FieldKey.ENTITY,
-                            LEADERSHIP_EXPERIENCE_TYPE)),
-                     exception.getErrorAttributes());
-        verify(validationService).validateOnGetById(id);
-        verify(persistenceService).getById(id);
+        verify(persistenceService).getLeadershipExperienceType(id);
     }
 
     @DisplayName("Should throw error when leadership experience type with id does not exist")
     @Test
     void shouldNotGetByIdAndThrowError() {
         Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.empty());
+        when(persistenceService.getLeadershipExperienceType(id)).thenReturn(Optional.empty());
 
         PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(id));
 
@@ -96,7 +70,7 @@ class LeadershipExperienceTypeBusinessServiceTest {
                             LEADERSHIP_EXPERIENCE_TYPE)),
                      exception.getErrorAttributes());
         verify(validationService).validateOnGetById(id);
-        verify(persistenceService).getById(id);
+        verify(persistenceService).getLeadershipExperienceType(id);
     }
 
     @DisplayName("Should create leadershipExperience type")
@@ -131,7 +105,7 @@ class LeadershipExperienceTypeBusinessServiceTest {
         Long id = 1L;
 
         when(persistenceService.save(certificate)).thenReturn(certificate);
-        when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
+        when(persistenceService.getLeadershipExperienceType(id)).thenReturn(Optional.of(certificate));
 
         CertificateType result = businessService.update(id, certificate);
 
@@ -146,11 +120,11 @@ class LeadershipExperienceTypeBusinessServiceTest {
     void shouldThrowExceptionWhenUpdatingNotFound() {
         Long id = 1L;
 
-        when(persistenceService.getById(id)).thenReturn(Optional.empty());
+        when(persistenceService.getLeadershipExperienceType(id)).thenReturn(Optional.empty());
 
         assertThrows(PCTSException.class, () -> businessService.update(id, certificate));
 
-        verify(persistenceService).getById(id);
+        verify(persistenceService).getLeadershipExperienceType(id);
         verify(validationService, never()).validateOnUpdate(any(), any());
         verify(persistenceService, never()).save(any());
     }
@@ -159,7 +133,7 @@ class LeadershipExperienceTypeBusinessServiceTest {
     @Test
     void shouldDelete() {
         Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
+        when(persistenceService.getLeadershipExperienceType(id)).thenReturn(Optional.of(certificate));
 
         businessService.delete(id);
 
@@ -171,11 +145,11 @@ class LeadershipExperienceTypeBusinessServiceTest {
     @Test
     void shouldThrowExceptionWhenNotFound() {
         Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.empty());
+        when(persistenceService.getLeadershipExperienceType(id)).thenReturn(Optional.empty());
 
         assertThrows(PCTSException.class, () -> businessService.delete(id));
 
-        verify(persistenceService).getById(id);
+        verify(persistenceService).getLeadershipExperienceType(id);
         verify(persistenceService, never()).delete(id);
     }
 }

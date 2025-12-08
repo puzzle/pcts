@@ -160,4 +160,55 @@ class CertificateTypePersistenceServiceIT
                                            "LeadershipExperience Type 2",
                                            "LeadershipExperience Type 3");
     }
+
+    @DisplayName("Should get certificate type by id")
+    @Test
+    void shouldGetCertificateTypeById() {
+        Long certificateId = 1L;
+
+        Optional<CertificateType> result = service.getCertificateType(certificateId);
+
+        assertThat(result).isPresent();
+
+        CertificateType certificate = result.get();
+        assertThat(certificate.getId()).isEqualTo(certificateId);
+        assertThat(certificate.getName()).isEqualTo("Certificate Type 1");
+        assertThat(certificate.getCertificateKind()).isEqualTo(CertificateKind.CERTIFICATE);
+    }
+
+    @DisplayName("Should not get leadership experience with certificate method")
+    @Test
+    void shouldNotGetLeadershipExperienceAsCertificate() {
+        Long leadershipId = 5L;
+
+        Optional<CertificateType> result = service.getCertificateType(leadershipId);
+
+        assertThat(result).isEmpty();
+    }
+
+    @DisplayName("Should get leadership experience type by id")
+    @Test
+    void shouldGetLeadershipExperienceTypeById() {
+        Long leadershipId = 5L;
+
+        Optional<CertificateType> result = service.getLeadershipExperienceType(leadershipId);
+
+        assertThat(result).isPresent();
+
+        CertificateType leadership = result.get();
+        assertThat(leadership.getId()).isEqualTo(leadershipId);
+        assertThat(leadership.getName()).isEqualTo("LeadershipExperience Type 1");
+        assertThat(leadership.getCertificateKind()).isNotEqualTo(CertificateKind.CERTIFICATE);
+    }
+
+    @DisplayName("Should not get certificate with leadership experience method")
+    @Test
+    void shouldNotGetCertificateAsLeadershipExperience() {
+        Long certificateId = 1L;
+
+        Optional<CertificateType> result = service.getLeadershipExperienceType(certificateId);
+
+        assertThat(result).isEmpty();
+    }
+
 }

@@ -6,7 +6,6 @@ import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
-import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import ch.puzzle.pcts.service.validation.LeadershipExperienceTypeValidationService;
@@ -28,9 +27,15 @@ public class LeadershipExperienceTypeBusinessService extends BusinessBase<Certif
 
     @Override
     public CertificateType getById(Long id) {
-        CertificateType leadershipExperienceType = super.getById(id);
-        validateLeadershipExperienceIsPresent(leadershipExperienceType);
-        return leadershipExperienceType;
+        validationService.validateOnGetById(id);
+        return certificateTypePersistenceService.getLeadershipExperienceType(id).orElseThrow(() -> {
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, id.toString());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
+
+            return new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
+        });
     }
 
     public List<CertificateType> getAll() {
@@ -40,20 +45,5 @@ public class LeadershipExperienceTypeBusinessService extends BusinessBase<Certif
     @Override
     protected String entityName() {
         return LEADERSHIP_EXPERIENCE_TYPE;
-    }
-
-    private void validateLeadershipExperienceIsPresent(CertificateType leadershipExperienceType) {
-        if (leadershipExperienceType.getCertificateKind() == CertificateKind.CERTIFICATE) {
-            Map<FieldKey, String> attributes = Map
-                    .of(FieldKey.ENTITY,
-                        entityName(),
-                        FieldKey.FIELD,
-                        "id",
-                        FieldKey.IS,
-                        leadershipExperienceType.getId().toString());
-
-            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
-            throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
-        }
     }
 }

@@ -27,4 +27,12 @@ public class CertificateTypePersistenceService extends PersistenceBase<Certifica
     public List<CertificateType> getAllLeadershipExperienceTypes() {
         return repository.findByCertificateKindNotAndDeletedAtIsNull(CertificateKind.CERTIFICATE);
     }
+
+    public Optional<CertificateType> getCertificateType(Long id) {
+        return repository.findByIdAndCertificateKind(id, CertificateKind.CERTIFICATE);
+    }
+
+    public Optional<CertificateType> getLeadershipExperienceType(Long id) {
+        return repository.findByIdAndCertificateKindNot(id, CertificateKind.CERTIFICATE);
+    }
 }
