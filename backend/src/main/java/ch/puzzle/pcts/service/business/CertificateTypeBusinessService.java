@@ -39,11 +39,11 @@ public class CertificateTypeBusinessService extends BusinessBase<CertificateType
 
     @Override
     public CertificateType create(CertificateType certificateType) {
-        validationService.validateOnCreate(certificateType);
+        certificateTypeValidationService.validateOnCreate(certificateType);
 
         certificateType.setTags(tagBusinessService.resolveTags(certificateType.getTags()));
 
-        return persistenceService.save(certificateType);
+        return certificateTypePersistenceService.save(certificateType);
     }
 
     public List<CertificateType> getAll() {
@@ -52,13 +52,21 @@ public class CertificateTypeBusinessService extends BusinessBase<CertificateType
 
     @Override
     public CertificateType update(Long id, CertificateType certificateType) {
+        certificateTypeValidationService.validateOnUpdate(id, certificateType);
         this.getById(id);
-        validationService.validateOnUpdate(id, certificateType);
         certificateType.setTags(tagBusinessService.resolveTags(certificateType.getTags()));
         certificateType.setId(id);
         CertificateType result = persistenceService.save(certificateType);
         tagBusinessService.deleteUnusedTags();
         return result;
+    }
+
+    @Override
+    public void delete(Long id) {
+        validationService.validateOnDelete(id);
+        this.getById(id);
+        persistenceService.delete(id);
+        tagBusinessService.deleteUnusedTags();
     }
 
     @Override

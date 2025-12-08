@@ -19,13 +19,11 @@ import org.springframework.stereotype.Service;
 public class LeadershipExperienceTypeBusinessService extends BusinessBase<CertificateType> {
 
     private final CertificateTypePersistenceService certificateTypePersistenceService;
-    private final LeadershipExperienceTypeValidationService leadershipExperienceTypeValidationService;
 
     public LeadershipExperienceTypeBusinessService(LeadershipExperienceTypeValidationService leadershipExperienceTypeValidationService,
                                                    CertificateTypePersistenceService certificateTypePersistenceService) {
         super(leadershipExperienceTypeValidationService, certificateTypePersistenceService);
         this.certificateTypePersistenceService = certificateTypePersistenceService;
-        this.leadershipExperienceTypeValidationService = leadershipExperienceTypeValidationService;
     }
 
     @Override
