@@ -1,62 +1,64 @@
-<div class="w-75 mx-auto mt-5">
-  <app-form [formGroup]="memberForm" (canceled)="onCancel()" (submitted)="onSubmit()">
-    <p class="fw-bold">
-      {{ "PERSONAL_DETAILS" | scopedTranslation }}
-    </p>
+<app-base-modal [title]="'member'">
+  <div content class="w-75 mx-auto mt-5">
+    <app-form [formGroup]="memberForm" (canceled)="onCancel()" (submitted)="onSubmit()">
+        <p class="fw-bold">
+          {{ "PERSONAL_DETAILS" | scopedTranslation }}
+        </p>
 
-    <app-input-field>
-      <input type="text" formControlName="firstName" matInput data-testid="firstName">
-    </app-input-field>
+        <app-input-field>
+          <input type="text" formControlName="firstName" matInput data-testid="firstName">
+        </app-input-field>
 
-    <app-input-field>
-      <input type="text" formControlName="lastName" matInput data-testid="lastName">
-    </app-input-field>
+        <app-input-field>
+          <input type="text" formControlName="lastName" matInput data-testid="lastName">
+        </app-input-field>
 
-    <app-input-field>
-      <input type="text" formControlName="abbreviation" matInput data-testid="abbreviation">
-    </app-input-field>
+        <app-input-field>
+          <input type="text" formControlName="abbreviation" matInput data-testid="abbreviation">
+        </app-input-field>
 
-    <mat-form-field>
-      <mat-label appPctsFormLabel/>
-      <input matInput [matDatepicker]="birthDatePicker" formControlName="birthDate" data-testid="birthDate">
-      <mat-datepicker-toggle matIconSuffix [for]="birthDatePicker"/>
-      <mat-datepicker #birthDatePicker/>
-      <mat-error appPctsFormError/>
-    </mat-form-field>
+        <mat-form-field>
+          <mat-label appPctsFormLabel/>
+          <input matInput [matDatepicker]="birthDatePicker" formControlName="birthDate" data-testid="birthDate">
+          <mat-datepicker-toggle matIconSuffix [for]="birthDatePicker"/>
+          <mat-datepicker #birthDatePicker/>
+          <mat-error appPctsFormError/>
+        </mat-form-field>
 
-    <mat-form-field>
-      <mat-label appPctsFormLabel/>
-      <input matInput [matDatepicker]="dateOfHirePicker" formControlName="dateOfHire" data-testid="dateOfHire">
-      <mat-datepicker-toggle matIconSuffix [for]="dateOfHirePicker"/>
-      <mat-datepicker #dateOfHirePicker/>
-      <mat-error appPctsFormError/>
-    </mat-form-field>
+        <mat-form-field>
+          <mat-label appPctsFormLabel/>
+          <input matInput [matDatepicker]="dateOfHirePicker" formControlName="dateOfHire" data-testid="dateOfHire">
+          <mat-datepicker-toggle matIconSuffix [for]="dateOfHirePicker"/>
+          <mat-datepicker #dateOfHirePicker/>
+          <mat-error appPctsFormError/>
+        </mat-form-field>
 
-    <mat-form-field>
-      <mat-label appPctsFormLabel/>
-      <input type="text" formControlName="employmentState" matInput [matAutocomplete]="employmentStateAutoComplete"
-             data-testid="employmentState">
-      <mat-autocomplete autoActiveFirstOption #employmentStateAutoComplete="matAutocomplete"
-                        [displayWith]="displayEmploymentState">
-        @for (employmentState of employmentStateFilteredOptions(); track employmentState) {
-          <mat-option [value]="employmentState">{{ displayEmploymentState(employmentState) }}</mat-option>
-        }
-      </mat-autocomplete>
-      <mat-error appPctsFormError/>
-    </mat-form-field>
+        <mat-form-field>
+          <mat-label appPctsFormLabel/>
+          <input type="text" formControlName="employmentState" matInput [matAutocomplete]="employmentStateAutoComplete"
+                 data-testid="employmentState">
+          <mat-autocomplete autoActiveFirstOption #employmentStateAutoComplete="matAutocomplete"
+                            [displayWith]="displayEmploymentState">
+            @for (employmentState of employmentStateFilteredOptions(); track employmentState) {
+              <mat-option [value]="employmentState">{{ displayEmploymentState(employmentState) }}</mat-option>
+            }
+          </mat-autocomplete>
+          <mat-error appPctsFormError/>
+        </mat-form-field>
 
-    <mat-form-field>
-      <mat-label appPctsFormLabel/>
-      <input type="text" formControlName="organisationUnit" matInput
-             [matAutocomplete]="organisationUnitAutoComplete" data-testid="organisationUnit">
-      <mat-autocomplete autoActiveFirstOption #organisationUnitAutoComplete="matAutocomplete"
-                        [displayWith]="displayOrganisationUnit">
-        @for (organisationUnit of organisationUnitFilteredOptions(); track organisationUnit) {
-          <mat-option [value]="organisationUnit">{{ displayOrganisationUnit(organisationUnit) }}</mat-option>
-        }
-      </mat-autocomplete>
-      <mat-error appPctsFormError/>
-    </mat-form-field>
-  </app-form>
-</div>
+        <mat-form-field>
+          <mat-label appPctsFormLabel/>
+          <input type="text" formControlName="organisationUnit" matInput
+                 [matAutocomplete]="organisationUnitAutoComplete" data-testid="organisationUnit">
+          <mat-autocomplete autoActiveFirstOption #organisationUnitAutoComplete="matAutocomplete"
+                            [displayWith]="displayOrganisationUnit">
+            @for (organisationUnit of organisationUnitFilteredOptions(); track organisationUnit) {
+              <mat-option [value]="organisationUnit">{{ displayOrganisationUnit(organisationUnit) }}</mat-option>
+            }
+          </mat-autocomplete>
+          <mat-error appPctsFormError/>
+        </mat-form-field>
+    </app-form>
+  </div>
+</app-base-modal>
 
