@@ -140,7 +140,7 @@ class LeadershipExperienceTypeValidationServiceTest
                                 List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "certificateKind"))));
     }
 
-    @DisplayName("Should throw exception on validateOnGetById() when certificate type is not leadership experience")
+    @DisplayName("Should throw exception on validateCertificateKind() when certificate type is not leadership experience")
     @Test
     void shouldThrowExceptionOnValidateOnGetByIdWhenCertificateTypeIsNotCertificate() {
         PCTSException exception = assertThrows(PCTSException.class,

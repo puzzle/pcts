@@ -53,6 +53,30 @@ class LeadershipExperienceTypeBusinessServiceTest {
         verify(persistenceService).getById(id);
     }
 
+    @DisplayName("Should throw error when certificate type with id does not exist")
+    @Test
+    void shouldNotGetByIdAndThrowErrorIfCertificateKindIsCertificate() {
+        Long id = 1L;
+        when(certificate.getCertificateKind()).thenReturn(CertificateKind.CERTIFICATE);
+        when(certificate.getId()).thenReturn(id);
+        when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
+
+        PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(id));
+
+        assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
+        assertEquals(List
+                .of(Map
+                        .of(FieldKey.FIELD,
+                            "id",
+                            FieldKey.IS,
+                            id.toString(),
+                            FieldKey.ENTITY,
+                            LEADERSHIP_EXPERIENCE_TYPE)),
+                     exception.getErrorAttributes());
+        verify(validationService).validateOnGetById(id);
+        verify(persistenceService).getById(id);
+    }
+
     @DisplayName("Should throw error when leadership experience type with id does not exist")
     @Test
     void shouldNotGetByIdAndThrowError() {
