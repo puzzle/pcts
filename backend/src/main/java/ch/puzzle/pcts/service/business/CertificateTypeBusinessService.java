@@ -6,7 +6,6 @@ import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
-import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import ch.puzzle.pcts.service.validation.CertificateTypeValidationService;
@@ -32,9 +31,15 @@ public class CertificateTypeBusinessService extends BusinessBase<CertificateType
 
     @Override
     public CertificateType getById(Long id) {
-        CertificateType certificateType = super.getById(id);
-        validateCertificateIsPresent(certificateType);
-        return certificateType;
+        validationService.validateOnGetById(id);
+        return certificateTypePersistenceService.getCertificateType(id).orElseThrow(() -> {
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, id.toString());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
+
+            return new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
+        });
     }
 
     @Override
@@ -53,7 +58,7 @@ public class CertificateTypeBusinessService extends BusinessBase<CertificateType
     @Override
     public CertificateType update(Long id, CertificateType certificateType) {
         certificateTypeValidationService.validateOnUpdate(id, certificateType);
-        this.getById(id);
+        getById(id);
         certificateType.setTags(tagBusinessService.resolveTags(certificateType.getTags()));
         certificateType.setId(id);
         CertificateType result = persistenceService.save(certificateType);
@@ -64,7 +69,7 @@ public class CertificateTypeBusinessService extends BusinessBase<CertificateType
     @Override
     public void delete(Long id) {
         validationService.validateOnDelete(id);
-        this.getById(id);
+        getById(id);
         persistenceService.delete(id);
         tagBusinessService.deleteUnusedTags();
     }
@@ -72,20 +77,5 @@ public class CertificateTypeBusinessService extends BusinessBase<CertificateType
     @Override
     protected String entityName() {
         return CERTIFICATE_TYPE;
-    }
-
-    private void validateCertificateIsPresent(CertificateType certificateType) {
-        if (certificateType.getCertificateKind() != CertificateKind.CERTIFICATE) {
-            Map<FieldKey, String> attributes = Map
-                    .of(FieldKey.ENTITY,
-                        entityName(),
-                        FieldKey.FIELD,
-                        "id",
-                        FieldKey.IS,
-                        certificateType.getId().toString());
-
-            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
-            throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
-        }
     }
 }
