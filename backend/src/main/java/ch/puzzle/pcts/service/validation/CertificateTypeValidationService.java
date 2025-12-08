@@ -69,7 +69,7 @@ public class CertificateTypeValidationService extends ValidationBase<Certificate
                         FieldKey.IS,
                         certificateKind.toString());
 
-            GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_KIND_WRONG, attributes);
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_WRONG_KIND, attributes);
 
             throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
 
