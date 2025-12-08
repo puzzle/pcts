@@ -11,6 +11,8 @@ import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import ch.puzzle.pcts.service.validation.CertificateTypeValidationService;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -18,37 +20,28 @@ import org.springframework.stereotype.Service;
 public class CertificateTypeBusinessService extends BusinessBase<CertificateType> {
     private final TagBusinessService tagBusinessService;
     private final CertificateTypePersistenceService certificateTypePersistenceService;
-    private final CertificateTypeValidationService certificateTypeValidationService;
 
     public CertificateTypeBusinessService(CertificateTypeValidationService certificateTypeValidationService,
                                           CertificateTypePersistenceService certificateTypePersistenceService,
                                           TagBusinessService tagBusinessService) {
         super(certificateTypeValidationService, certificateTypePersistenceService);
         this.certificateTypePersistenceService = certificateTypePersistenceService;
-        this.certificateTypeValidationService = certificateTypeValidationService;
         this.tagBusinessService = tagBusinessService;
     }
 
     @Override
     public CertificateType getById(Long id) {
         validationService.validateOnGetById(id);
-        return certificateTypePersistenceService.getCertificateType(id).orElseThrow(() -> {
-            Map<FieldKey, String> attributes = Map
-                    .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, id.toString());
-
-            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
-
-            return new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
-        });
+        return isPresent(certificateTypePersistenceService.getCertificateType(id), id);
     }
 
     @Override
     public CertificateType create(CertificateType certificateType) {
-        certificateTypeValidationService.validateOnCreate(certificateType);
+        validationService.validateOnCreate(certificateType);
 
         certificateType.setTags(tagBusinessService.resolveTags(certificateType.getTags()));
 
-        return certificateTypePersistenceService.save(certificateType);
+        return persistenceService.save(certificateType);
     }
 
     public List<CertificateType> getAll() {
@@ -57,8 +50,8 @@ public class CertificateTypeBusinessService extends BusinessBase<CertificateType
 
     @Override
     public CertificateType update(Long id, CertificateType certificateType) {
-        certificateTypeValidationService.validateOnUpdate(id, certificateType);
-        getById(id);
+        validationService.validateOnUpdate(id, certificateType);
+        isPresent(certificateTypePersistenceService.getCertificateType(id), id);
         certificateType.setTags(tagBusinessService.resolveTags(certificateType.getTags()));
         certificateType.setId(id);
         CertificateType result = persistenceService.save(certificateType);
@@ -69,7 +62,7 @@ public class CertificateTypeBusinessService extends BusinessBase<CertificateType
     @Override
     public void delete(Long id) {
         validationService.validateOnDelete(id);
-        getById(id);
+        isPresent(certificateTypePersistenceService.getCertificateType(id), id);
         persistenceService.delete(id);
         tagBusinessService.deleteUnusedTags();
     }
@@ -77,5 +70,16 @@ public class CertificateTypeBusinessService extends BusinessBase<CertificateType
     @Override
     protected String entityName() {
         return CERTIFICATE_TYPE;
+    }
+
+    private CertificateType isPresent(Optional<CertificateType> certificateType, Long id){
+        return certificateType.orElseThrow(() -> {
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, id.toString());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
+
+            return new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
+        });
     }
 }

@@ -123,7 +123,7 @@ class CertificateTypeValidationServiceTest
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> service
                                                        .validateCertificateKind(CertificateKind.LEADERSHIP_TRAINING));
-        assertEquals(List.of(ErrorKey.ATTRIBUTE_KIND_WRONG), exception.getErrorKeys());
+        assertEquals(List.of(ErrorKey.ATTRIBUTE_WRONG_KIND), exception.getErrorKeys());
         assertEquals(List
                 .of(Map
                         .of(FieldKey.FIELD,
