@@ -1,19 +1,13 @@
 package ch.puzzle.pcts.service.business;
 
-import static ch.puzzle.pcts.Constants.CERTIFICATE_TYPE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import ch.puzzle.pcts.dto.error.ErrorKey;
-import ch.puzzle.pcts.dto.error.FieldKey;
-import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import ch.puzzle.pcts.service.validation.CertificateTypeValidationService;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,27 +40,11 @@ class CertificateTypeBusinessServiceTest {
     @Test
     void shouldGetById() {
         Long id = 1L;
-        when(persistenceService.getCertificateType(id)).thenReturn(Optional.of(certificate));
+        when(persistenceService.getCertificateType(id)).thenReturn(certificate);
 
         CertificateType result = businessService.getById(id);
 
         assertEquals(certificate, result);
-        verify(validationService).validateOnGetById(id);
-        verify(persistenceService).getCertificateType(id);
-    }
-
-    @DisplayName("Should throw error when certificate type with id does not exist")
-    @Test
-    void shouldNotGetByIdAndThrowError() {
-        Long id = 1L;
-        when(persistenceService.getCertificateType(id)).thenReturn(Optional.empty());
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(id));
-
-        assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
-        assertEquals(List
-                .of(Map.of(FieldKey.FIELD, "id", FieldKey.IS, id.toString(), FieldKey.ENTITY, CERTIFICATE_TYPE)),
-                     exception.getErrorAttributes());
         verify(validationService).validateOnGetById(id);
         verify(persistenceService).getCertificateType(id);
     }
@@ -103,7 +81,7 @@ class CertificateTypeBusinessServiceTest {
     void shouldUpdate() {
         Long id = 1L;
         when(persistenceService.save(certificate)).thenReturn(certificate);
-        when(persistenceService.getCertificateType(id)).thenReturn(Optional.of(certificate));
+        when(persistenceService.getCertificateType(id)).thenReturn(certificate);
 
         CertificateType result = businessService.update(id, certificate);
 
@@ -114,41 +92,16 @@ class CertificateTypeBusinessServiceTest {
         verify(tagBusinessService).deleteUnusedTags();
     }
 
-    @DisplayName("Should throw exception when updating non-existing certificate type")
-    @Test
-    void shouldThrowExceptionWhenUpdatingNotFound() {
-        Long id = 1L;
-
-        when(persistenceService.getCertificateType(id)).thenReturn(Optional.empty());
-
-        assertThrows(PCTSException.class, () -> businessService.update(id, certificate));
-
-        verify(persistenceService).getCertificateType(id);
-        verify(persistenceService, never()).save(any());
-    }
-
     @DisplayName("Should delete certificate type")
     @Test
     void shouldDelete() {
         Long id = 1L;
-        when(persistenceService.getCertificateType(id)).thenReturn(Optional.of(certificate));
+        when(persistenceService.getCertificateType(id)).thenReturn(certificate);
 
         businessService.delete(id);
 
         verify(validationService).validateOnDelete(id);
         verify(persistenceService).delete(id);
         verify(tagBusinessService).deleteUnusedTags();
-    }
-
-    @DisplayName("Should throw exception when deleting non-existing certificate type")
-    @Test
-    void shouldThrowExceptionWhenNotFound() {
-        Long id = 1L;
-        when(persistenceService.getCertificateType(id)).thenReturn(Optional.empty());
-
-        assertThrows(PCTSException.class, () -> businessService.delete(id));
-
-        verify(persistenceService).getCertificateType(id);
-        verify(persistenceService, never()).delete(id);
     }
 }
