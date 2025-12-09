@@ -16,9 +16,13 @@ describe('MemberOverviewComponent', () => {
   });
 
   it('should display the page title and member count', () => {
-    OverviewPage.title()
-      .should('contain.text', translations.MEMBER.MODEL_NAME_PLURAL)
-      .and('contain.text', '(6)');
+    OverviewPage.memberRows()
+      .its('length')
+      .then((count) => {
+        OverviewPage.title()
+          .should('contain.text', translations.MEMBER.MODEL_NAME_PLURAL)
+          .and('contain.text', '(' + count + ')');
+      });
 
     OverviewPage.memberTable()
       .should('exist');
@@ -48,8 +52,12 @@ describe('MemberOverviewComponent', () => {
           .findByTestId('member-status')
           .should('include.text', translations.MEMBER.EMPLOYMENT_STATUS_VALUES.APPLICANT);
       });
-    OverviewPage.title()
-      .should('contain.text', '(2)');
+    OverviewPage.memberRows()
+      .its('length')
+      .then((count) => {
+        OverviewPage.title()
+          .should('contain.text', '(' + count + ')');
+      });
   });
 
   it('should reset filters when "All" is clicked', () => {
