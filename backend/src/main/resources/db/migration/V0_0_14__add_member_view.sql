@@ -8,6 +8,7 @@ WITH base AS (
     FROM member m
     WHERE m.id = p_member_id
 ),
+
      cert AS (
          SELECT jsonb_agg(
                         jsonb_build_object(
@@ -18,18 +19,41 @@ WITH base AS (
                                         'points', ct.points,
                                         'comment', ct.comment
                                                ),
-                                'completion', c.completed_at,
+                                'completedAt', c.completed_at,
                                 'validUntil', c.valid_until,
                                 'comment', c.comment
                         )
                         ORDER BY c.completed_at
                 ) AS certificates
          FROM certificate c
-                  LEFT JOIN certificate_type ct
-                            ON ct.id = c.certificate_type_id
+                  LEFT JOIN certificate_type ct ON ct.id = c.certificate_type_id
          WHERE c.member_id = p_member_id
            AND c.deleted_at IS NULL
+           AND ct.certificate_kind = 'CERTIFICATE'
      ),
+
+     leader AS (
+         SELECT jsonb_agg(
+                        jsonb_build_object(
+                                'id', c.id,
+                                'comment', c.comment,
+                                'experience', jsonb_build_object(
+                                        'id', ct.id,
+                                        'name', ct.name,
+                                        'experienceKind', ct.certificate_kind,
+                                        'points', ct.points,
+                                        'comment', ct.comment
+                                )
+                        )
+                        ORDER BY c.completed_at
+                ) AS leadership_experiences
+         FROM certificate c
+                  LEFT JOIN certificate_type ct ON ct.id = c.certificate_type_id
+         WHERE c.member_id = p_member_id
+           AND c.deleted_at IS NULL
+           AND ct.certificate_kind != 'CERTIFICATE'
+     ),
+
      degrees AS (
          SELECT jsonb_agg(
                         jsonb_build_object(
@@ -53,6 +77,7 @@ WITH base AS (
                   LEFT JOIN degree_type dt ON dt.id = d.degree_type_id
          WHERE d.member_id = p_member_id
      ),
+
      experience AS (
          SELECT jsonb_agg(
                         jsonb_build_object(
@@ -76,7 +101,28 @@ WITH base AS (
          FROM experience e
                   LEFT JOIN experience_type et ON et.id = e.experience_type_id
          WHERE e.member_id = p_member_id
+     ),
+
+     calcs AS (
+         SELECT jsonb_agg(
+                        jsonb_build_object(
+                                'id', c.id,
+                                'state', c.state,
+                                'publicationDate', c.publication_date,
+                                'publicizedBy', c.publicized_by,
+                                'role', jsonb_build_object(
+                                        'id', r.id,
+                                        'name', r.name,
+                                        'isManagement', r.is_management
+                                        )
+                        )
+                        ORDER BY c.id
+                ) AS calculations
+         FROM calculation c
+                  LEFT JOIN role r ON r.id = c.role_id
+         WHERE c.member_id = p_member_id
      )
+
 SELECT jsonb_build_object(
                'member', jsonb_build_object(
                 'id', m.id,
@@ -95,15 +141,17 @@ SELECT jsonb_build_object(
                        'degrees', COALESCE(d.degrees, '[]'::jsonb),
                        'certificates', COALESCE(c.certificates, '[]'::jsonb),
                        'experiences', COALESCE(x.experiences, '[]'::jsonb),
-                       'leadershipExperiences', '[]'::jsonb   -- You will fill these in
+                       'leadershipExperiences', COALESCE(l.leadership_experiences, '[]'::jsonb)
                      ),
-               'calculations', '[]'::jsonb               -- You will fill this in later
+               'calculations', COALESCE(ca.calculations, '[]'::jsonb)
        )
 FROM base m
          LEFT JOIN organisation_unit ou ON ou.id = m.organisation_unit
          LEFT JOIN cert c ON TRUE
+         LEFT JOIN leader l ON TRUE
          LEFT JOIN degrees d ON TRUE
-         LEFT JOIN experience x ON TRUE;
+         LEFT JOIN experience x ON TRUE
+         LEFT JOIN calcs ca ON TRUE;
 $$;
 
 CREATE OR REPLACE VIEW member_overview_view AS

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/member-overviews")
-@Tag(name = "member-overviews", description = "Get the member and everything associated with him")
+@Tag(name = "member-overviews", description = "Get the member and everything associated with the member")
 public class MemberOverviewController {
     private final MemberOverviewMapper mapper;
     private final MemberOverviewBusinessService service;
