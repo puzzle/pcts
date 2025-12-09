@@ -1,7 +1,6 @@
 <ng-content select="[title]"/>
 
 <form class="d-flex flex-column gap-4" [formGroup]="formGroup()" (ngSubmit)="submitted.emit()" >
-  <ng-content select="[title]"/>
   <ng-content select="[content]"/>
   <ng-content select="[actions]"/>
 </form>
