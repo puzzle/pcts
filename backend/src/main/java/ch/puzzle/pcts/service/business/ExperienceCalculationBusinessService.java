@@ -2,8 +2,8 @@ package ch.puzzle.pcts.service.business;
 
 import static ch.puzzle.pcts.Constants.CALCULATION;
 
-import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
+import ch.puzzle.pcts.model.experience.Experience;
 import ch.puzzle.pcts.service.persistence.ExperienceCalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.ExperienceCalculationValidationService;
 import java.util.List;
@@ -19,8 +19,12 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
         this.experienceCalculationPersistenceService = persistenceService;
     }
 
-    public List<ExperienceCalculation> getByCalculationId(Calculation calculation) {
-        return this.experienceCalculationPersistenceService.getByCalculation(calculation);
+    public List<ExperienceCalculation> getByCalculationId(Long calculationId) {
+        return this.experienceCalculationPersistenceService.getByCalculationId(calculationId);
+    }
+
+    public List<ExperienceCalculation> getByExperience(Experience experience) {
+        return this.experienceCalculationPersistenceService.getByExperience(experience);
     }
 
     @Override
