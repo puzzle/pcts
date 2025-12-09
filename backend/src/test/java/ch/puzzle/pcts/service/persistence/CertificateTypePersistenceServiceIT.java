@@ -1,13 +1,21 @@
 package ch.puzzle.pcts.service.persistence;
 
+import static ch.puzzle.pcts.Constants.CERTIFICATE_TYPE;
+import static ch.puzzle.pcts.Constants.LEADERSHIP_EXPERIENCE_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import ch.puzzle.pcts.dto.error.ErrorKey;
+import ch.puzzle.pcts.dto.error.FieldKey;
+import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.repository.CertificateTypeRepository;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
@@ -166,24 +174,24 @@ class CertificateTypePersistenceServiceIT
     void shouldGetCertificateTypeById() {
         Long certificateId = 1L;
 
-        Optional<CertificateType> result = service.getCertificateType(certificateId);
+        CertificateType result = service.getCertificateType(certificateId);
 
-        assertThat(result).isPresent();
-
-        CertificateType certificate = result.get();
-        assertThat(certificate.getId()).isEqualTo(certificateId);
-        assertThat(certificate.getName()).isEqualTo("Certificate Type 1");
-        assertThat(certificate.getCertificateKind()).isEqualTo(CertificateKind.CERTIFICATE);
+        assertThat(result.getId()).isEqualTo(certificateId);
+        assertThat(result.getName()).isEqualTo("Certificate Type 1");
+        assertThat(result.getCertificateKind()).isEqualTo(CertificateKind.CERTIFICATE);
     }
 
     @DisplayName("Should not get leadership experience with certificate method")
     @Test
     void shouldNotGetLeadershipExperienceAsCertificate() {
-        Long leadershipId = 5L;
+        Long id = 5L;
 
-        Optional<CertificateType> result = service.getCertificateType(leadershipId);
+        PCTSException exception = assertThrows(PCTSException.class, () -> service.getCertificateType(id));
 
-        assertThat(result).isEmpty();
+        assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
+        assertEquals(List
+                .of(Map.of(FieldKey.FIELD, "id", FieldKey.IS, id.toString(), FieldKey.ENTITY, CERTIFICATE_TYPE)),
+                     exception.getErrorAttributes());
     }
 
     @DisplayName("Should get leadership experience type by id")
@@ -191,11 +199,9 @@ class CertificateTypePersistenceServiceIT
     void shouldGetLeadershipExperienceTypeById() {
         Long leadershipId = 5L;
 
-        Optional<CertificateType> result = service.getLeadershipExperienceType(leadershipId);
+        CertificateType leadership = service.getLeadershipExperienceType(leadershipId);
 
-        assertThat(result).isPresent();
-
-        CertificateType leadership = result.get();
+        assertThat(leadership).isNotNull();
         assertThat(leadership.getId()).isEqualTo(leadershipId);
         assertThat(leadership.getName()).isEqualTo("LeadershipExperience Type 1");
         assertThat(leadership.getCertificateKind()).isNotEqualTo(CertificateKind.CERTIFICATE);
@@ -204,11 +210,19 @@ class CertificateTypePersistenceServiceIT
     @DisplayName("Should not get certificate with leadership experience method")
     @Test
     void shouldNotGetCertificateAsLeadershipExperience() {
-        Long certificateId = 1L;
+        Long id = 1L;
 
-        Optional<CertificateType> result = service.getLeadershipExperienceType(certificateId);
+        PCTSException exception = assertThrows(PCTSException.class, () -> service.getLeadershipExperienceType(id));
 
-        assertThat(result).isEmpty();
+        assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
+        assertEquals(List
+                .of(Map
+                        .of(FieldKey.FIELD,
+                            "id",
+                            FieldKey.IS,
+                            id.toString(),
+                            FieldKey.ENTITY,
+                            LEADERSHIP_EXPERIENCE_TYPE)),
+                     exception.getErrorAttributes());
     }
-
 }
