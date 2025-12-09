@@ -10,6 +10,7 @@ import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.role.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -47,6 +48,9 @@ public class Calculation implements Model {
     @OneToMany(mappedBy = "calculation", fetch = FetchType.LAZY)
     private List<CertificateCalculation> certificates;
 
+    @Transient
+    private BigDecimal points;
+
     public Calculation(Long id, Member member, Role role, CalculationState state, LocalDate publicationDate,
                        String publicizedBy, List<DegreeCalculation> degrees, List<ExperienceCalculation> experiences,
                        List<CertificateCalculation> certificates) {
@@ -68,7 +72,8 @@ public class Calculation implements Model {
     public String toString() {
         return "Calculation{" + "id=" + id + ", member=" + member + ", role=" + role + ", state=" + state
                + ", publicationDate=" + publicationDate + ", publicizedBy='" + publicizedBy + '\'' + ", degrees="
-               + degrees + ", experiences=" + experiences + ", certificates=" + certificates + '}';
+               + degrees + ", experiences=" + experiences + ", certificates=" + certificates + ", points=" + points
+               + '}';
     }
 
     @Override
@@ -82,7 +87,8 @@ public class Calculation implements Model {
                && Objects.equals(getPublicizedBy(), that.getPublicizedBy())
                && Objects.equals(getDegrees(), that.getDegrees())
                && Objects.equals(getExperiences(), that.getExperiences())
-               && Objects.equals(getCertificates(), that.getCertificates());
+               && Objects.equals(getCertificates(), that.getCertificates())
+               && Objects.equals(getPoints(), that.getPoints());
     }
 
     @Override
@@ -96,7 +102,8 @@ public class Calculation implements Model {
                       getPublicizedBy(),
                       getDegrees(),
                       getExperiences(),
-                      getCertificates());
+                      getCertificates(),
+                      getPoints());
     }
 
     public Long getId() {
@@ -169,5 +176,13 @@ public class Calculation implements Model {
 
     public void setCertificates(List<CertificateCalculation> certificates) {
         this.certificates = certificates;
+    }
+
+    public BigDecimal getPoints() {
+        return points;
+    }
+
+    public void setPoints(BigDecimal points) {
+        this.points = points;
     }
 }

@@ -49,7 +49,12 @@ public class CalculationMapper {
                                   roleMapper.toDto(model.getRole()),
                                   model.getState(),
                                   model.getPublicationDate(),
-                                  model.getPublicizedBy());
+                                  model.getPublicizedBy(),
+                                  model.getPoints(),
+                                  certificateCalculationMapper.toDto(model.getCertificates()),
+                                  null,
+                                  degreeCalculationMapper.toDto(model.getDegrees()),
+                                  experienceCalculationMapper.toDto(model.getExperiences()));
     }
 
     public Calculation fromDto(CalculationInputDto dto) {
