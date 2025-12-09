@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, InputSignal, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, computed, effect, inject, input, OnInit, signal, WritableSignal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -18,12 +18,12 @@ import { OrganisationUnitService } from '../../organisation-unit/organisation-un
 import { PctsFormErrorDirective } from '../../../shared/pcts-form-error/pcts-form-error.directive';
 import { PctsFormLabelDirective } from '../../../shared/pcts-form-label/pcts-form-label.directive';
 import { InputFieldComponent } from '../../../shared/input-field/input-field.component';
-import { map, of } from 'rxjs';
+import { map } from 'rxjs';
 import { isDateInPast, isValueInList, isValueInListSignal } from '../../../shared/form/form-validators';
 import { BaseFormComponent } from '../../../shared/form/base-form.component';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { Location } from '@angular/common';
-import { BaseModalComponent } from '../../../shared/modal/base-modal.component';
+import { BaseFormActionsComponent } from '../../../shared/base-form-actions/base-form-actions.component';
 
 @Component({
   selector: 'app-member-form',
@@ -41,7 +41,7 @@ import { BaseModalComponent } from '../../../shared/modal/base-modal.component';
     InputFieldComponent,
     BaseFormComponent,
     ScopedTranslationPipe,
-    BaseModalComponent
+    BaseFormActionsComponent
   ],
   templateUrl: './member-form.component.html'
 })
@@ -58,7 +58,7 @@ export class MemberFormComponent implements OnInit {
 
   private readonly location = inject(Location);
 
-  readonly member:WritableSignal<MemberModel> = signal({} as MemberModel);
+  readonly member = input.required<MemberModel>();
 
   protected isEdit = computed(() => {
     return !!this.member();

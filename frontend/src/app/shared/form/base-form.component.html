@@ -1,19 +1,7 @@
-<h1 data-testid="title">
-  {{ "MODEL_NAME" | scopedTranslation  }}
-  {{ "ACTION" | scopedTranslation }}
-</h1>
-
+<ng-content select="[title]"/>
 
 <form class="d-flex flex-column gap-4" [formGroup]="formGroup()" (ngSubmit)="submitted.emit()" >
-  <ng-content />
-
-  <div actions class="d-flex flex-row gap-3">
-    <button mat-stroked-button type="button" (click)="canceled.emit()">
-        {{ "BUTTONS.CANCEL" | scopedTranslation  }}
-    </button>
-    <button mat-flat-button color="primary" type="submit" data-testid="submit-button" [disabled]="!formGroup().valid">
-      {{ "BUTTONS.ACTION" | scopedTranslation }}
-    </button>
-  </div>
+  <ng-content select="[title]"/>
+  <ng-content select="[content]"/>
+  <ng-content select="[actions]"/>
 </form>
-

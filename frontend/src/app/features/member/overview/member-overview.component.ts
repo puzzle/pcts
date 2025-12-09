@@ -19,7 +19,9 @@ import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
 import { BaseModalComponent } from '../../../shared/modal/base-modal.component';
 import { MatDialog } from '@angular/material/dialog';
-import { MemberFormComponent } from '../form/member-form.component';
+import {
+  OrganisationUnitFormComponent
+} from '../../organisation-unit/organisation-unit-form/organisation-unit-form.component';
 
 
 @Component({
@@ -60,8 +62,8 @@ export class MemberOverviewComponent implements OnInit {
   readonly dialog: any = inject(MatDialog);
 
   openDialog() {
-    const dialogRef = this.dialog.open(MemberFormComponent);
-    dialogRef.componentInstance.member.set(this.members()[0]);
+    const dialogRef = this.dialog.open(OrganisationUnitFormComponent);
+    dialogRef.componentInstance.organisationUnit.set(null);
   }
 
   displayedColumns: string[] = [

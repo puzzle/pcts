@@ -1,0 +1,10 @@
+<app-base-modal [title]="'ORGANISATION UNIT ERSTELLEN'">
+  <app-form [formGroup]="organisationUnitForm" (submitted)="onSubmit()" content>
+    <ng-container content>
+      <app-input-field>
+        <input type="text" formControlName="name" matInput data-testid="abbreviation">
+      </app-input-field>
+    </ng-container>
+  </app-form>
+  <app-form-actions [formGroup]="organisationUnitForm" (canceled)="onCancel()" actions/>
+</app-base-modal>
