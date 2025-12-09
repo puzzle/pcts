@@ -16,9 +16,13 @@ describe('MemberOverviewComponent', () => {
   });
 
   it('should display the page title and member count', () => {
-    OverviewPage.title()
-      .should('contain.text', translations.MEMBER.MODEL_NAME_PLURAL)
-      .and('contain.text', '(');
+    OverviewPage.memberRows()
+      .its('length')
+      .then((count) => {
+        OverviewPage.title()
+          .should('contain.text', translations.MEMBER.MODEL_NAME_PLURAL)
+          .and('contain.text', '(' + count + ')');
+      });
 
     OverviewPage.memberTable()
       .should('exist');
@@ -34,6 +38,8 @@ describe('MemberOverviewComponent', () => {
       .replace('{{model}}', 'Member');
     OverviewPage.noResultsRow()
       .should('contain.text', expectedText);
+    OverviewPage.title()
+      .should('contain.text', '(0)');
   });
 
   it('should filter members by employment state', () => {
@@ -45,6 +51,12 @@ describe('MemberOverviewComponent', () => {
         cy.wrap($row)
           .findByTestId('member-status')
           .should('include.text', translations.MEMBER.EMPLOYMENT_STATUS_VALUES.APPLICANT);
+      });
+    OverviewPage.memberRows()
+      .its('length')
+      .then((count) => {
+        OverviewPage.title()
+          .should('contain.text', '(' + count + ')');
       });
   });
 
