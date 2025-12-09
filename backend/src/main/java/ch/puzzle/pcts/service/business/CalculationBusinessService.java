@@ -7,17 +7,15 @@ import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.Calculation;
-import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
 import ch.puzzle.pcts.service.persistence.CalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.CalculationValidationService;
 import ch.puzzle.pcts.service.validation.ExperienceCalculationValidationService;
+import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -36,27 +34,35 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
     }
 
     @Override
+    @Transactional
     public Calculation create(Calculation calculation) {
+        calculation.getExperiences().forEach(exp -> exp.setCalculation(calculation));
+
         calculation.getExperiences().forEach(experience -> {
-            List<ExperienceCalculation> experienceCalculationList = this.experienceCalculationBusinessService
-                    .getByExperience(experience.getExperience());
-            experienceCalculationValidationService.validateDuplicateExperienceId(experience, experienceCalculationList);
+            List<ExperienceCalculation> existing = experienceCalculationBusinessService
+                    .getByExperienceId(experience.getExperience().getId());
+
+            experienceCalculationValidationService.validateDuplicateExperienceId(experience, existing);
         });
 
         validationService.validateOnCreate(calculation);
+
         calculation.getExperiences().forEach(experienceCalculationValidationService::validateOnCreate);
 
         Calculation createdCalculation = persistenceService.save(calculation);
 
         List<ExperienceCalculation> createdExperienceCalculations = new ArrayList<>();
-        for (ExperienceCalculation experience : calculation.getExperiences()) {
-            experience.setCalculation(createdCalculation);
-            ExperienceCalculation created = experienceCalculationBusinessService.create(experience);
+
+        for (ExperienceCalculation exp : calculation.getExperiences()) {
+            exp.setCalculation(createdCalculation);
+
+            ExperienceCalculation created = experienceCalculationBusinessService.create(exp);
 
             createdExperienceCalculations.add(created);
         }
 
         createdCalculation.setExperiences(createdExperienceCalculations);
+
         return createdCalculation;
     }
 
@@ -109,44 +115,24 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
 
     @Override
     public Calculation getById(Long id) {
-
-        BigDecimal totalRelevancyPoints = BigDecimal.ZERO;
-        Optional<Calculation> calculation = persistenceService.getById(id);
-
-        if (calculation.isEmpty()) {
+        Calculation calculation = persistenceService.getById(id).orElseThrow(() -> {
             Map<FieldKey, String> attributes = Map
                     .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, id.toString());
             GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
-            throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
+            return new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
+        });
+
+        BigDecimal totalRelevancyPoints = BigDecimal.ZERO;
+
+        List<ExperienceCalculationBusinessService> pointServices = List.of(experienceCalculationBusinessService);
+
+        for (ExperienceCalculationBusinessService service : pointServices) {
+            List<ExperienceCalculation> experienceCalculations = service.getByCalculationId(id);
+            totalRelevancyPoints = totalRelevancyPoints.add(service.getExperiencePoints(experienceCalculations));
         }
 
-        List<ExperienceCalculation> experienceCalculationList = experienceCalculationBusinessService
-                .getByCalculationId(id);
-
-        for (ExperienceCalculation experience : experienceCalculationList) {
-            Relevancy relevancy = experience.getRelevancy();
-            BigDecimal relevancyPoints;
-
-            switch (relevancy) {
-                case HIGHLY -> relevancyPoints = experience.getExperience().getType().getHighlyRelevantPoints();
-                case LIMITED -> relevancyPoints = experience.getExperience().getType().getLimitedRelevantPoints();
-                case LITTLE -> relevancyPoints = experience.getExperience().getType().getLittleRelevantPoints();
-                default -> relevancyPoints = BigDecimal.ZERO;
-            }
-
-            relevancyPoints = relevancyPoints
-                    .multiply(BigDecimal.valueOf(experience.getExperience().getPercent() / 100.0));
-            int years = Period
-                    .between(experience.getExperience().getStartDate(), experience.getExperience().getEndDate())
-                    .getYears();
-            relevancyPoints = relevancyPoints.multiply(BigDecimal.valueOf(years));
-
-            totalRelevancyPoints = totalRelevancyPoints.add(relevancyPoints);
-        }
-
-        calculation.get().setPoints(totalRelevancyPoints);
-
-        return calculation.get();
+        calculation.setPoints(totalRelevancyPoints);
+        return calculation;
     }
 
     @Override
