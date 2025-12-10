@@ -1,4 +1,4 @@
-package ch.puzzle.pcts.dto.calculation.calculationcertificate;
+package ch.puzzle.pcts.dto.calculation.certificatecalculation;
 
 import ch.puzzle.pcts.dto.certificate.CertificateDto;
 

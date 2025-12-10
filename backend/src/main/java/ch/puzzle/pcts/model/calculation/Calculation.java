@@ -51,18 +51,16 @@ public class Calculation implements Model {
     @Transient
     private BigDecimal points;
 
-    public Calculation(Long id, Member member, Role role, CalculationState state, LocalDate publicationDate,
-                       String publicizedBy, List<DegreeCalculation> degrees, List<ExperienceCalculation> experiences,
-                       List<CertificateCalculation> certificates) {
-        this.id = id;
-        this.member = member;
-        this.role = role;
-        this.state = state;
-        this.publicationDate = publicationDate;
-        this.publicizedBy = publicizedBy;
-        this.degrees = degrees;
-        this.experiences = experiences;
-        this.certificates = certificates;
+    public Calculation(Builder builder) {
+        this.id = builder.id;
+        this.member = builder.member;
+        this.role = builder.role;
+        this.state = builder.state;
+        this.publicationDate = builder.publicationDate;
+        this.publicizedBy = trim(builder.publicizedBy);
+        this.degrees = builder.degrees;
+        this.experiences = builder.experiences;
+        this.certificates = builder.certificates;
     }
 
     public Calculation() {
@@ -184,5 +182,74 @@ public class Calculation implements Model {
 
     public void setPoints(BigDecimal points) {
         this.points = points;
+    }
+
+    public static final class Builder {
+        private Long id;
+        private Member member;
+        private Role role;
+        private CalculationState state;
+        private LocalDate publicationDate;
+        private String publicizedBy;
+        private List<DegreeCalculation> degrees;
+        private List<ExperienceCalculation> experiences;
+        private List<CertificateCalculation> certificates;
+
+        private Builder() {
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder withMember(Member member) {
+            this.member = member;
+            return this;
+        }
+
+        public Builder withRole(Role role) {
+            this.role = role;
+            return this;
+        }
+
+        public Builder withState(CalculationState state) {
+            this.state = state;
+            return this;
+        }
+
+        public Builder withPublicationDate(LocalDate publicationDate) {
+            this.publicationDate = publicationDate;
+            return this;
+        }
+
+        public Builder withPublicizedBy(String publicizedBy) {
+            this.publicizedBy = trim(publicizedBy);
+            return this;
+        }
+
+        public Builder withDegrees(List<DegreeCalculation> degrees) {
+            this.degrees = degrees;
+            return this;
+        }
+
+        public Builder withExperiences(List<ExperienceCalculation> experiences) {
+            this.experiences = experiences;
+            return this;
+        }
+
+        public Builder withCertificates(List<CertificateCalculation> certificates) {
+            this.certificates = certificates;
+            return this;
+        }
+
+        public Calculation build() {
+            return new Calculation(this);
+        }
+
     }
 }

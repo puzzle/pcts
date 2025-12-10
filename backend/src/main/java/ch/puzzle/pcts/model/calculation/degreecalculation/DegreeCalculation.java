@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.model.calculation.degreecalculation;
 
+import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.degree.Degree;
@@ -9,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
-public class DegreeCalculation {
+public class DegreeCalculation implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.model.calculation.certificatecalculation;
 
+import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import jakarta.persistence.*;
@@ -7,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity
-public class CertificateCalculation {
+public class CertificateCalculation implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

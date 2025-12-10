@@ -58,15 +58,18 @@ public class CalculationMapper {
     }
 
     public Calculation fromDto(CalculationInputDto dto) {
-        return new Calculation(null,
-                               this.memberBusinessService.getById(dto.memberId()),
-                               this.roleBusinessService.getById(dto.roleId()),
-                               dto.state(),
-                               null,
-                               null,
-                               this.degreeCalculationMapper.fromDto(dto.degrees()),
-                               this.experienceCalculationMapper.fromDto(dto.experiences()),
-                               mergedCertificates(dto.leadershipExperiences(), dto.certificates()));
+        return Calculation.Builder
+                .builder()
+                .withId(null)
+                .withMember(this.memberBusinessService.getById(dto.memberId()))
+                .withRole(this.roleBusinessService.getById(dto.roleId()))
+                .withState(dto.state())
+                .withPublicationDate(null)
+                .withPublicizedBy(null)
+                .withDegrees(this.degreeCalculationMapper.fromDto(dto.degrees()))
+                .withExperiences(this.experienceCalculationMapper.fromDto(dto.experiences()))
+                .withCertificates(mergedCertificates(dto.leadershipExperiences(), dto.certificates()))
+                .build();
     }
 
     private List<CertificateCalculation> mergedCertificates(List<Long> leadershipExperiences, List<Long> certificates) {

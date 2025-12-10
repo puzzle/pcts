@@ -10,6 +10,7 @@ import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.repository.CalculationRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,35 +34,56 @@ class CalculationPersistenceServiceIT
 
     @Override
     Calculation getModel() {
-        return new Calculation(null,
-                               memberPersistenceServiceIT.getAll().getFirst(),
-                               rolePersistenceServiceIT.getAll().getFirst(),
-                               CalculationState.ACTIVE,
-                               LocalDate.of(2021, 12, 9),
-                               "Ldap User");
+        return Calculation.Builder
+                .builder()
+                .withMember(memberPersistenceServiceIT.getAll().getFirst())
+                .withRole(rolePersistenceServiceIT.getAll().getFirst())
+                .withState(CalculationState.ACTIVE)
+                .withPublicationDate(LocalDate.of(2021, 12, 9))
+                .withPublicizedBy("Ldap User")
+                .withDegrees(Collections.emptyList())
+                .withExperiences(Collections.emptyList())
+                .withCertificates(Collections.emptyList())
+                .build();
     }
 
     @Override
     List<Calculation> getAll() {
         return List
-                .of(new Calculation(1L,
-                                    memberPersistenceServiceIT.getAll().getFirst(),
-                                    rolePersistenceServiceIT.getAll().getLast(),
-                                    CalculationState.DRAFT,
-                                    LocalDate.of(2025, 1, 14),
-                                    "Ldap User"),
-                    new Calculation(2L,
-                                    memberPersistenceServiceIT.getAll().getLast(),
-                                    rolePersistenceServiceIT.getAll().getLast(),
-                                    CalculationState.ARCHIVED,
-                                    LocalDate.of(2025, 1, 14),
-                                    "Ldap User 2"),
-                    new Calculation(3L,
-                                    memberPersistenceServiceIT.getAll().getLast(),
-                                    rolePersistenceServiceIT.getAll().getLast(),
-                                    CalculationState.ACTIVE,
-                                    null,
-                                    null));
+                .of(Calculation.Builder
+                        .builder()
+                        .withId(1L)
+                        .withMember(memberPersistenceServiceIT.getAll().getFirst())
+                        .withRole(rolePersistenceServiceIT.getAll().getLast())
+                        .withState(CalculationState.DRAFT)
+                        .withPublicationDate(LocalDate.of(2025, 1, 14))
+                        .withPublicizedBy("Ldap User")
+                        .withDegrees(Collections.emptyList())
+                        .withExperiences(Collections.emptyList())
+                        .withCertificates(Collections.emptyList())
+                        .build(),
+                    Calculation.Builder
+                            .builder()
+                            .withId(2L)
+                            .withMember(memberPersistenceServiceIT.getAll().getLast())
+                            .withRole(rolePersistenceServiceIT.getAll().getLast())
+                            .withState(CalculationState.ARCHIVED)
+                            .withPublicationDate(LocalDate.of(2025, 1, 14))
+                            .withPublicizedBy("Ldap User 2")
+                            .withDegrees(Collections.emptyList())
+                            .withExperiences(Collections.emptyList())
+                            .withCertificates(Collections.emptyList())
+                            .build(),
+                    Calculation.Builder
+                            .builder()
+                            .withId(3L)
+                            .withMember(memberPersistenceServiceIT.getAll().getLast())
+                            .withRole(rolePersistenceServiceIT.getAll().getLast())
+                            .withState(CalculationState.ACTIVE)
+                            .withDegrees(Collections.emptyList())
+                            .withExperiences(Collections.emptyList())
+                            .withCertificates(Collections.emptyList())
+                            .build());
     }
 
     @DisplayName("Should only have one active Calculation after save when member already has active Calculation for the same role.")
@@ -100,8 +122,9 @@ class CalculationPersistenceServiceIT
 
         assertEquals(LocalDate.now(), result.getPublicationDate());
         assertEquals("Ldap User", result.getPublicizedBy());
-        assertThat(getActiveCalculations(activeCalculation.getRole(), activeCalculation.getMember()))
-                .containsExactly(activeCalculation);
+        List<Calculation> activeCalcs = getActiveCalculations(activeCalculation.getRole(),
+                                                              activeCalculation.getMember());
+        assertThat(activeCalcs).containsExactly(result);
     }
 
     private List<Calculation> getActiveCalculations(Role role, Member member) {
