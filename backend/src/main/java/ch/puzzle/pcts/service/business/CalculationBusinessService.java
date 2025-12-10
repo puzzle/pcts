@@ -87,7 +87,12 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
 
             Long expCalcId = experienceCalculationValidationService
                     .findIdByCalculationAndExperience(exp, existingChildren);
-            experienceCalculationValidationService.validateOnUpdate(expCalcId, exp);
+
+            experienceCalculationValidationService.validateMemberForCalculation(exp);
+
+            if (expCalcId != null) {
+                experienceCalculationValidationService.validateOnUpdate(expCalcId, exp);
+            }
         }
 
         Calculation updatedCalculation = persistenceService.save(calculation);
@@ -101,12 +106,18 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
 
             exp.setCalculation(updatedCalculation);
 
-            ExperienceCalculation updated = experienceCalculationBusinessService.update(expCalcId, exp);
+            ExperienceCalculation updated;
+
+            if (expCalcId == null) {
+                updated = experienceCalculationBusinessService.create(exp);
+            } else {
+                updated = experienceCalculationBusinessService.update(expCalcId, exp);
+            }
 
             updatedChildren.add(updated);
         }
-
         updatedCalculation.setExperiences(updatedChildren);
+
         return updatedCalculation;
     }
 
