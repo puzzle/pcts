@@ -17,7 +17,7 @@ import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
 import sortingDataAccessor from '../../../shared/utils/sortingDataAccessor';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
-import { BaseModalComponent } from '../../../shared/modal/base-modal.component';
+import { BaseModalComponent, defaultSize } from '../../../shared/modal/base-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import {
   OrganisationUnitFormComponent
@@ -62,7 +62,7 @@ export class MemberOverviewComponent implements OnInit {
   readonly dialog: any = inject(MatDialog);
 
   openDialog() {
-    const dialogRef = this.dialog.open(OrganisationUnitFormComponent);
+    const dialogRef = this.dialog.open(OrganisationUnitFormComponent, defaultSize);
     dialogRef.componentInstance.organisationUnit.set(null);
   }
 

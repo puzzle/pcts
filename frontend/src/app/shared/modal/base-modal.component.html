@@ -1,35 +1,37 @@
-<div mat-dialog-title>
+<div class="d-flex p-3" mat-dialog-title>
   <div class="container-fluid">
-    <div class="row">
-      <h2 class="col d-flex justify-content-between align-items-center my-2">
+    <div class="d-flex align-items-center justify-content-between flex-row">
+      <h3 class="m-0">
         {{ title() }}
-        <button
-          type="reset"
-          [mat-dialog-close]="true"
-          mat-icon-button
-          [attr.data-testId]="'close-dialog'"
-        >
-          <mat-icon class="text-secondary">close</mat-icon>
-        </button>
-      </h2>
+      </h3>
+      <button
+        type="reset"
+        [mat-dialog-close]="true"
+        mat-icon-button
+        [attr.data-testId]="'close-dialog'"
+        class=""
+      >
+        <mat-icon class="text-secondary">close</mat-icon>
+      </button>
     </div>
   </div>
 </div>
 
 <mat-divider class="mx-4"/>
 
-<mat-dialog-content class="text-black w-100 h-100">
-    <div class="container-fluid">
-      <ng-content select="[content]"/>
-    </div>
+<mat-dialog-content class="text-black">
+  <div class="container-fluid">
+    <ng-content select="[content]"/>
+  </div>
 </mat-dialog-content>
 
 <mat-divider/>
 
-<mat-dialog-actions>
+<mat-dialog-actions align="end">
   <div class="container-fluid">
     <div class="row justify-content-between">
-      <ng-content select="[actions]" />
+      <ng-content select="[actions]"/>
     </div>
   </div>
 </mat-dialog-actions>
+
