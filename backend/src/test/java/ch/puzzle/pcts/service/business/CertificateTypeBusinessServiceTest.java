@@ -8,6 +8,7 @@ import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import ch.puzzle.pcts.service.validation.CertificateTypeValidationService;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,13 +41,13 @@ class CertificateTypeBusinessServiceTest {
     @Test
     void shouldGetById() {
         Long id = 1L;
-        when(persistenceService.getCertificateType(id)).thenReturn(certificate);
+        when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
 
         CertificateType result = businessService.getById(id);
 
         assertEquals(certificate, result);
         verify(validationService).validateOnGetById(id);
-        verify(persistenceService).getCertificateType(id);
+        verify(persistenceService).getById(id);
     }
 
     @DisplayName("Should create certificate type")
@@ -65,14 +66,14 @@ class CertificateTypeBusinessServiceTest {
     @DisplayName("Should get all certificate types")
     @Test
     void shouldGetAll() {
-        when(persistenceService.getAllCertificateTypes()).thenReturn(certificates);
+        when(persistenceService.getAll()).thenReturn(certificates);
         when(certificates.size()).thenReturn(2);
 
         List<CertificateType> result = businessService.getAll();
 
         assertEquals(certificates, result);
         assertEquals(2, result.size());
-        verify(persistenceService).getAllCertificateTypes();
+        verify(persistenceService).getAll();
         verifyNoInteractions(validationService);
     }
 
@@ -81,7 +82,7 @@ class CertificateTypeBusinessServiceTest {
     void shouldUpdate() {
         Long id = 1L;
         when(persistenceService.save(certificate)).thenReturn(certificate);
-        when(persistenceService.getCertificateType(id)).thenReturn(certificate);
+        when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
 
         CertificateType result = businessService.update(id, certificate);
 
@@ -96,7 +97,7 @@ class CertificateTypeBusinessServiceTest {
     @Test
     void shouldDelete() {
         Long id = 1L;
-        when(persistenceService.getCertificateType(id)).thenReturn(certificate);
+        when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
 
         businessService.delete(id);
 

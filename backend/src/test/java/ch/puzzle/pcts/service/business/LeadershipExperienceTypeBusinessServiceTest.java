@@ -7,6 +7,7 @@ import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import ch.puzzle.pcts.service.validation.LeadershipExperienceTypeValidationService;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,13 +37,13 @@ class LeadershipExperienceTypeBusinessServiceTest {
     @Test
     void shouldGetByIdAndValidateCertificateType() {
         Long id = 1L;
-        when(persistenceService.getLeadershipExperienceType(id)).thenReturn(certificate);
+        when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
 
         CertificateType result = businessService.getById(id);
 
         assertEquals(certificate, result);
         verify(validationService).validateOnGetById(id);
-        verify(persistenceService).getLeadershipExperienceType(id);
+        verify(persistenceService).getById(id);
     }
 
     @DisplayName("Should create leadershipExperience type")
@@ -60,14 +61,14 @@ class LeadershipExperienceTypeBusinessServiceTest {
     @DisplayName("Should get all leadershipExperience type")
     @Test
     void shouldGetAll() {
-        when(persistenceService.getAllLeadershipExperienceTypes()).thenReturn(certificates);
+        when(persistenceService.getAll()).thenReturn(certificates);
         when(certificates.size()).thenReturn(2);
 
         List<CertificateType> result = businessService.getAll();
 
         assertEquals(certificates, result);
         assertEquals(2, result.size());
-        verify(persistenceService).getAllLeadershipExperienceTypes();
+        verify(persistenceService).getAll();
         verifyNoInteractions(validationService);
     }
 
@@ -77,7 +78,7 @@ class LeadershipExperienceTypeBusinessServiceTest {
         Long id = 1L;
 
         when(persistenceService.save(certificate)).thenReturn(certificate);
-        when(persistenceService.getLeadershipExperienceType(id)).thenReturn(certificate);
+        when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
 
         CertificateType result = businessService.update(id, certificate);
 
@@ -91,7 +92,7 @@ class LeadershipExperienceTypeBusinessServiceTest {
     @Test
     void shouldDelete() {
         Long id = 1L;
-        when(persistenceService.getLeadershipExperienceType(id)).thenReturn(certificate);
+        when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
 
         businessService.delete(id);
 

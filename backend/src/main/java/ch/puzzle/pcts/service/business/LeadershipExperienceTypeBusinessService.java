@@ -19,14 +19,8 @@ public class LeadershipExperienceTypeBusinessService extends BusinessBase<Certif
         this.certificateTypePersistenceService = certificateTypePersistenceService;
     }
 
-    @Override
-    public CertificateType getById(Long id) {
-        validationService.validateOnGetById(id);
-        return certificateTypePersistenceService.getLeadershipExperienceType(id);
-    }
-
     public List<CertificateType> getAll() {
-        return certificateTypePersistenceService.getAllLeadershipExperienceTypes();
+        return certificateTypePersistenceService.getAll();
     }
 
     @Override
