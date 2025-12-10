@@ -1,6 +1,6 @@
 package ch.puzzle.pcts.service.persistence;
 
-import static ch.puzzle.pcts.Constants.CERTIFICATE_TYPE;
+import static ch.puzzle.pcts.Constants.LEADERSHIP_EXPERIENCE_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -13,18 +13,21 @@ import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.repository.CertificateTypeRepository;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-class CertificateTypePersistenceServiceIT
+public class LeadershipTypePersistenceServiceIT
         extends
-            PersistenceBaseIT<CertificateType, CertificateTypeRepository, CertificateTypePersistenceService> {
+            PersistenceBaseIT<CertificateType, CertificateTypeRepository, LeadershipTypePersistenceService> {
 
     @Autowired
-    CertificateTypePersistenceServiceIT(CertificateTypePersistenceService service) {
+    LeadershipTypePersistenceServiceIT(LeadershipTypePersistenceService service) {
         super(service);
     }
 
@@ -44,26 +47,22 @@ class CertificateTypePersistenceServiceIT
                                         "Certificate Type 1",
                                         BigDecimal.valueOf(5.5),
                                         "This is Certificate 1",
-                                        Set.of(new Tag(1L, "Tag 1")),
-                                        CertificateKind.CERTIFICATE),
+                                        Set.of(new Tag(1L, "Tag 1"))),
                     new CertificateType(2L,
                                         "Certificate Type 2",
                                         BigDecimal.valueOf(1),
                                         "This is Certificate 2",
-                                        Set.of(new Tag(2L, "Longer tag name")),
-                                        CertificateKind.CERTIFICATE),
+                                        Set.of(new Tag(2L, "Longer tag name"))),
                     new CertificateType(3L,
                                         "Certificate Type 3",
                                         BigDecimal.valueOf(3),
                                         "This is Certificate 3",
-                                        Set.of(),
-                                        CertificateKind.CERTIFICATE),
+                                        Set.of()),
                     new CertificateType(4L,
                                         "Certificate Type 4",
                                         BigDecimal.valueOf(0.5),
                                         "This is Certificate 4",
-                                        Set.of(),
-                                        CertificateKind.CERTIFICATE),
+                                        Set.of()),
                     new CertificateType(5L,
                                         "LeadershipExperience Type 1",
                                         BigDecimal.valueOf(5.5),
@@ -85,83 +84,96 @@ class CertificateTypePersistenceServiceIT
     }
 
     @Override
+    @DisplayName("Should delete entity")
+    @Transactional
+    @Test
+    void shouldDelete() {
+        Long id = 5L;
+
+        service.delete(id);
+
+        Optional<CertificateType> result = service.getById(id);
+        assertThat(result).isNotPresent();
+    }
+
+    @Override
     @DisplayName("Should get all entities")
     @Transactional
     @Test
     void shouldGetAllEntities() {
         List<CertificateType> all = service.getAll();
-        assertThat(all).hasSize(4).containsExactlyElementsOf(getAll().subList(0, 4));
+        assertThat(all).hasSize(3).containsExactlyElementsOf(getAll().subList(4, 7));
     }
 
-    @DisplayName("Should update certificate type")
+    @DisplayName("Should update leadership experience type")
     @Transactional
     @Test
-    void shouldUpdateCertificate() {
-        Long cId = 4L;
+    void shouldUpdateLeadershipExperience() {
+        Long lId = 5L;
 
-        CertificateType certificate = new CertificateType(null,
-                                                          "Updated certificate type",
-                                                          BigDecimal.valueOf(3),
-                                                          "This is a updated certificate",
-                                                          Set
-                                                                  .of(new Tag(null, "Important tag"),
-                                                                      new Tag(null, "Way more important tag")));
-        certificate.setId(cId);
-        service.save(certificate);
+        CertificateType leadershipExperience = new CertificateType(null,
+                                                                   "Updated leadership experience type",
+                                                                   BigDecimal.valueOf(5),
+                                                                   "This is a updated leadership experience type",
+                                                                   CertificateKind.YOUTH_AND_SPORT);
+        leadershipExperience.setId(lId);
+        service.save(leadershipExperience);
 
-        Optional<CertificateType> certificateResult = service.getById(cId);
+        Optional<CertificateType> leadershipResult = service.getById(lId);
 
-        assertThat(certificateResult).isPresent();
-        CertificateType updatedCertificate = certificateResult.get();
+        assertThat(leadershipResult).isPresent();
+        CertificateType updatedLeadership = leadershipResult.get();
 
-        assertThat(updatedCertificate.getId()).isEqualTo(cId);
-        assertThat(updatedCertificate.getName()).isEqualTo("Updated certificate type");
-        assertThat(updatedCertificate.getPoints()).isEqualByComparingTo(BigDecimal.valueOf(3));
-        assertThat(updatedCertificate.getComment()).isEqualTo("This is a updated certificate");
-        assertThat(updatedCertificate.getTags())
-                .extracting(Tag::getName)
-                .containsExactlyInAnyOrder("Important tag", "Way more important tag");
-
-        assertThat(updatedCertificate.getCertificateKind()).isEqualTo(CertificateKind.CERTIFICATE);
+        assertThat(updatedLeadership.getId()).isEqualTo(lId);
+        assertThat(updatedLeadership.getName()).isEqualTo("Updated leadership experience type");
+        assertThat(updatedLeadership.getPoints()).isEqualByComparingTo(BigDecimal.valueOf(5));
+        assertThat(updatedLeadership.getComment()).isEqualTo("This is a updated leadership experience type");
+        assertThat(updatedLeadership.getCertificateKind()).isEqualTo(CertificateKind.YOUTH_AND_SPORT);
     }
 
-    @DisplayName("Should get all certificate types")
+    @DisplayName("Should get all leadership experience types")
     @Test
-    void shouldGetAllCertificateTypes() {
+    void shouldGetAllLeadershipExperienceTypes() {
         List<CertificateType> all = service.getAll();
 
-        assertThat(all).hasSize(4);
+        assertThat(all).hasSize(3);
         assertThat(all)
                 .extracting(CertificateType::getName)
-                .containsExactlyInAnyOrder("Certificate Type 1",
-                                           "Certificate Type 2",
-                                           "Certificate Type 3",
-                                           "Certificate Type 4");
+                .containsExactlyInAnyOrder("LeadershipExperience Type 1",
+                                           "LeadershipExperience Type 2",
+                                           "LeadershipExperience Type 3");
     }
 
-    @DisplayName("Should get certificate type by id")
+    @DisplayName("Should get leadership experience type by id")
     @Test
-    void shouldGetCertificateTypeById() {
-        Long certificateId = 1L;
+    void shouldGetLeadershipExperienceTypeById() {
+        Long leadershipId = 5L;
 
-        Optional<CertificateType> result = service.getById(certificateId);
+        Optional<CertificateType> leadership = service.getById(leadershipId);
 
         // todo make this cleaner
-        assertThat(result.get().getId()).isEqualTo(certificateId);
-        assertThat(result.get().getName()).isEqualTo("Certificate Type 1");
-        assertThat(result.get().getCertificateKind()).isEqualTo(CertificateKind.CERTIFICATE);
+        assertThat(leadership).isNotNull();
+        assertThat(leadership.get().getId()).isEqualTo(leadershipId);
+        assertThat(leadership.get().getName()).isEqualTo("LeadershipExperience Type 1");
+        assertThat(leadership.get().getCertificateKind()).isNotEqualTo(CertificateKind.CERTIFICATE);
     }
 
-    @DisplayName("Should not get leadership experience with certificate method")
+    @DisplayName("Should not get certificate with leadership experience method")
     @Test
-    void shouldNotGetLeadershipExperienceAsCertificate() {
-        Long id = 5L;
+    void shouldNotGetCertificateAsLeadershipExperience() {
+        Long id = 1L;
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.getById(id));
 
         assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
         assertEquals(List
-                .of(Map.of(FieldKey.FIELD, "id", FieldKey.IS, id.toString(), FieldKey.ENTITY, CERTIFICATE_TYPE)),
+                .of(Map
+                        .of(FieldKey.FIELD,
+                            "id",
+                            FieldKey.IS,
+                            id.toString(),
+                            FieldKey.ENTITY,
+                            LEADERSHIP_EXPERIENCE_TYPE)),
                      exception.getErrorAttributes());
     }
 }

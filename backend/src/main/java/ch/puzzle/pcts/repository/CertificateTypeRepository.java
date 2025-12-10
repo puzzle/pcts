@@ -9,12 +9,14 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CertificateTypeRepository extends SoftDeleteRepository<CertificateType, Long> {
     List<CertificateType> findByCertificateKindNotAndDeletedAtIsNull(CertificateKind certificatekind);
-
     List<CertificateType> findByCertificateKindAndDeletedAtIsNull(CertificateKind certificatekind);
 
-    Optional<CertificateType> findByIdAndCertificateKind(Long id, CertificateKind certificateKind);
+    Optional<CertificateType> findByCertificateKindAndName(CertificateKind certificateKind, String name);
+    Optional<CertificateType> findByCertificateKindNotAndName(CertificateKind certificateKind, String name);
 
+    Optional<CertificateType> findByIdAndCertificateKind(Long id, CertificateKind certificateKind);
     Optional<CertificateType> findByIdAndCertificateKindNot(Long id, CertificateKind certificateKind);
 
-    Optional<CertificateType> findByName(String name);
+    Optional<CertificateType> deleteCertificateTypeByIdAndCertificateKind(Long id, CertificateKind certificateKind);
+    Optional<CertificateType> deleteCertificateTypeByIdAndCertificateKindNot(Long id, CertificateKind certificateKind);
 }

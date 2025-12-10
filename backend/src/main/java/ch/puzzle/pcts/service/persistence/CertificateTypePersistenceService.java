@@ -25,36 +25,29 @@ public class CertificateTypePersistenceService extends PersistenceBase<Certifica
     }
 
     public Optional<CertificateType> getByName(String name) {
-        return repository.findByName(name);
+        return repository.findByCertificateKindAndName(CertificateKind.CERTIFICATE, name);
     }
 
-    public List<CertificateType> getAllCertificateTypes() {
+    @Override
+    public List<CertificateType> getAll() {
         return repository.findByCertificateKindAndDeletedAtIsNull(CertificateKind.CERTIFICATE);
     }
 
-    public List<CertificateType> getAllLeadershipExperienceTypes() {
-        return repository.findByCertificateKindNotAndDeletedAtIsNull(CertificateKind.CERTIFICATE);
+    @Override
+    public Optional<CertificateType> getById(Long id) {
+        return Optional
+                .ofNullable(repository.findByIdAndCertificateKind(id, CertificateKind.CERTIFICATE).orElseThrow(() -> {
+                    Map<FieldKey, String> attributes = Map
+                            .of(FieldKey.ENTITY, CERTIFICATE_TYPE, FieldKey.FIELD, "id", FieldKey.IS, id.toString());
+
+                    GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
+
+                    return new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
+                }));
     }
 
-    public CertificateType getCertificateType(Long id) {
-        return repository.findByIdAndCertificateKind(id, CertificateKind.CERTIFICATE).orElseThrow(() -> {
-            Map<FieldKey, String> attributes = Map
-                    .of(FieldKey.ENTITY, CERTIFICATE_TYPE, FieldKey.FIELD, "id", FieldKey.IS, id.toString());
-
-            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
-
-            return new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
-        });
-    }
-
-    public CertificateType getLeadershipExperienceType(Long id) {
-        return repository.findByIdAndCertificateKindNot(id, CertificateKind.CERTIFICATE).orElseThrow(() -> {
-            Map<FieldKey, String> attributes = Map
-                    .of(FieldKey.ENTITY, LEADERSHIP_EXPERIENCE_TYPE, FieldKey.FIELD, "id", FieldKey.IS, id.toString());
-
-            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
-
-            return new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
-        });
+    @Override
+    public void delete(Long id) {
+        repository.deleteCertificateTypeByIdAndCertificateKind(id, CertificateKind.CERTIFICATE);
     }
 }
