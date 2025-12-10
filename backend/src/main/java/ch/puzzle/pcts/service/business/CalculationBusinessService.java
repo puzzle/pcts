@@ -121,12 +121,10 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
 
         BigDecimal totalRelevancyPoints = BigDecimal.ZERO;
 
-        List<ExperienceCalculationBusinessService> pointServices = List.of(experienceCalculationBusinessService);
-
-        for (ExperienceCalculationBusinessService service : pointServices) {
-            List<ExperienceCalculation> experienceCalculations = service.getByCalculationId(id);
-            totalRelevancyPoints = totalRelevancyPoints.add(service.getExperiencePoints(experienceCalculations));
-        }
+        List<ExperienceCalculation> experienceCalculations = experienceCalculationBusinessService
+                .getByCalculationId(id);
+        totalRelevancyPoints = totalRelevancyPoints
+                .add(experienceCalculationBusinessService.getExperiencePoints(experienceCalculations));
 
         calculation.setPoints(totalRelevancyPoints);
         return calculation;
