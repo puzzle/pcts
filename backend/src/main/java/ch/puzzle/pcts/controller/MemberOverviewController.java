@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,7 +36,7 @@ public class MemberOverviewController {
     @GetMapping("{memberOverviewId}")
     public ResponseEntity<MemberOverviewDto> getMemberOverviewById(@Parameter(description = "ID of the member-overview to retrieve.", required = true)
     @PathVariable Long memberOverviewId) {
-        MemberOverview memberOverview = service.getById(memberOverviewId);
-        return ResponseEntity.ok(mapper.toDto(memberOverview));
+        List<MemberOverview> memberOverviews = service.getById(memberOverviewId);
+        return ResponseEntity.ok(mapper.toDto(memberOverviews));
     }
 }
