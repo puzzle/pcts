@@ -1,7 +1,7 @@
 package ch.puzzle.pcts.dto.calculation;
 
-import ch.puzzle.pcts.dto.calculation.calculationcertificate.CertificateCalculationDto;
 import ch.puzzle.pcts.dto.calculation.calculationleadershipexperience.LeadershipExperienceCalculationDto;
+import ch.puzzle.pcts.dto.calculation.certificatecalculation.CertificateCalculationDto;
 import ch.puzzle.pcts.dto.calculation.degreecalculation.DegreeCalculationDto;
 import ch.puzzle.pcts.dto.calculation.experiencecalculation.ExperienceCalculationDto;
 import ch.puzzle.pcts.dto.member.MemberDto;

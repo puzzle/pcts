@@ -1,6 +1,6 @@
 package ch.puzzle.pcts.mapper;
 
-import ch.puzzle.pcts.dto.calculation.calculationcertificate.CertificateCalculationDto;
+import ch.puzzle.pcts.dto.calculation.certificatecalculation.CertificateCalculationDto;
 import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
 import ch.puzzle.pcts.service.business.CertificateBusinessService;
 import java.util.List;
