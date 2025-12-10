@@ -2,7 +2,7 @@ package ch.puzzle.pcts.service.persistence;
 
 import ch.puzzle.pcts.model.memberoverview.MemberOverview;
 import ch.puzzle.pcts.repository.MemberOverviewRepository;
-import java.util.Optional;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,7 +14,7 @@ public class MemberOverviewPersistenceService {
         this.repository = repository;
     }
 
-    public Optional<MemberOverview> getById(Long id) {
-        return repository.findOverviewById(id);
+    public List<MemberOverview> getById(Long id) {
+        return repository.findAllByMemberId(id);
     }
 }
