@@ -11,7 +11,6 @@ import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculat
 import ch.puzzle.pcts.service.persistence.CalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.CalculationValidationService;
 import ch.puzzle.pcts.service.validation.ExperienceCalculationValidationService;
-import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,14 +33,13 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
     }
 
     @Override
-    @Transactional
     public Calculation create(Calculation calculation) {
         calculation.getExperiences().forEach(exp -> exp.setCalculation(calculation));
 
         calculation.getExperiences().forEach(experience -> {
             List<ExperienceCalculation> existing = experienceCalculationBusinessService
                     .getByExperienceId(experience.getExperience().getId());
-
+            experienceCalculationValidationService.validateOnCreate(experience);
             experienceCalculationValidationService.validateDuplicateExperienceId(experience, existing);
         });
 
@@ -89,7 +87,6 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
 
             Long expCalcId = experienceCalculationValidationService
                     .findIdByCalculationAndExperience(exp, existingChildren);
-
             experienceCalculationValidationService.validateOnUpdate(expCalcId, exp);
         }
 
