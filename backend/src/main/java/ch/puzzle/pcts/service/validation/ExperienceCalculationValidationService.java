@@ -25,12 +25,6 @@ public class ExperienceCalculationValidationService extends ValidationBase<Exper
         this.validateMemberForCalculation(model);
     }
 
-    @Override
-    public void validateOnUpdate(Long id, ExperienceCalculation model) {
-        super.validateOnUpdate(id, model);
-        this.validateMemberForCalculation(model);
-    }
-
     public Long findIdByCalculationAndExperience(ExperienceCalculation experienceCalculation,
                                                  List<ExperienceCalculation> experienceCalculationList) {
         return experienceCalculationList
@@ -64,12 +58,7 @@ public class ExperienceCalculationValidationService extends ValidationBase<Exper
 
         if (!experienceMember.equals(calculationMember)) {
             Map<FieldKey, String> attributes = Map
-                    .of(FieldKey.ENTITY,
-                        CALCULATION,
-                        FieldKey.FIELD,
-                        "experience",
-                        FieldKey.CONDITION_FIELD,
-                        "experience");
+                    .of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "experience", FieldKey.CONDITION_FIELD, "member");
 
             GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_MATCHES, attributes);
             throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
