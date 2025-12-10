@@ -3,10 +3,13 @@ import { BaseModalComponent } from '../../../shared/modal/base-modal.component';
 import { OrganisationUnitModel } from '../organisation-unit.model';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputFieldComponent } from '../../../shared/input-field/input-field.component';
-import { MatInput } from '@angular/material/input';
+import { MatError, MatFormField, MatInput, MatLabel, MatSuffix } from '@angular/material/input';
 import { BaseFormComponent } from '../../../shared/form/base-form.component';
 import { BaseFormActionsComponent } from '../../../shared/base-form-actions/base-form-actions.component';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MatDatepicker, MatDatepickerInput, MatDatepickerToggle } from '@angular/material/datepicker'
+import { PctsFormErrorDirective } from '../../../shared/pcts-form-error/pcts-form-error.directive'
+import { PctsFormLabelDirective } from '../../../shared/pcts-form-label/pcts-form-label.directive'
 
 @Component({
   selector: 'app-organisation-unit-form',
@@ -16,7 +19,16 @@ import { MatDialogRef } from '@angular/material/dialog';
     MatInput,
     ReactiveFormsModule,
     BaseFormComponent,
-    BaseFormActionsComponent
+    BaseFormActionsComponent,
+    MatDatepicker,
+    MatDatepickerInput,
+    MatDatepickerToggle,
+    MatError,
+    MatFormField,
+    MatLabel,
+    MatSuffix,
+    PctsFormErrorDirective,
+    PctsFormLabelDirective
   ],
   templateUrl: './organisation-unit-form.component.html'
 })

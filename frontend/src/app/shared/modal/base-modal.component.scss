@@ -1,19 +1,10 @@
 @use 'variables';
 @use 'bootstrap';
 
-mat-dialog-content {
-  //scrollbar-gutter: stable both-edges;
-  $dialog-header-height: 48px;
-  $full-dialog-content-height: 100vh;
-  @extend .d-flex;
-  @extend .flex-column;
-  @extend .flex-wrap;
-  @extend .container-fluid;
-  max-height: 800px !important;
+:host{
+  display: flex;
+  flex-direction: column;
 }
-
-mat-dialog-actions {
-  @extend .d-flex;
-  @extend .justify-content-between;
-  height: 24px !important;
+mat-dialog-content{
+  flex: 1 0 1;
 }
