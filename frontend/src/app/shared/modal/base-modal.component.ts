@@ -1,11 +1,11 @@
-import { Component, computed, effect, inject, input, InputSignal, signal } from '@angular/core';
-import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
+import { Component } from '@angular/core';
+import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } from '@angular/material/dialog';
 import { MatDivider } from '@angular/material/divider';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import {
-  OrganisationUnitFormComponent
-} from '../../features/organisation-unit/organisation-unit-form/organisation-unit-form.component'
+
+
+import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
 
 @Component({
   selector: 'app-base-modal',
@@ -16,13 +16,13 @@ import {
     MatDialogActions,
     MatIcon,
     MatDialogClose,
-    MatIconButton
+    MatIconButton,
+    ScopedTranslationPipe
   ],
   templateUrl: './base-modal.component.html',
   styleUrl: './base-modal.component.scss'
 })
 export class BaseModalComponent {
-  title: InputSignal<string | undefined> = input<string>();
 }
 
 export const defaultSize = {

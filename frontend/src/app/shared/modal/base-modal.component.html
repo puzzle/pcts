@@ -1,9 +1,12 @@
 <div class="d-flex p-3" mat-dialog-title>
   <div class="container-fluid">
     <div class="d-flex align-items-center justify-content-between flex-row">
-      <h3 class="m-0">
-        {{ title() }}
-      </h3>
+      <ng-container>
+        <h3 data-testid="title">
+          {{ "MODEL_NAME" | scopedTranslation  }}
+          {{ "ACTION" | scopedTranslation }}
+        </h3>
+      </ng-container>
       <button
         type="reset"
         [mat-dialog-close]="true"

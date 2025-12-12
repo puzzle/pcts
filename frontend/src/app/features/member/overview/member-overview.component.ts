@@ -17,11 +17,6 @@ import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
 import sortingDataAccessor from '../../../shared/utils/sortingDataAccessor';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
-import { BaseModalComponent, defaultSize } from '../../../shared/modal/base-modal.component';
-import { MatDialog } from '@angular/material/dialog';
-import {
-  OrganisationUnitFormComponent
-} from '../../organisation-unit/organisation-unit-form/organisation-unit-form.component';
 
 
 @Component({
@@ -40,8 +35,7 @@ import {
     TranslatePipe,
     RouterLink,
     ScopedTranslationPipe,
-    CrudButtonComponent,
-    BaseModalComponent
+    CrudButtonComponent
   ],
   templateUrl: './member-overview.component.html',
   styleUrl: './member-overview.component.scss'
@@ -58,13 +52,6 @@ export class MemberOverviewComponent implements OnInit {
   private readonly translate = inject(TranslateService);
 
   protected readonly GLOBAL_DATE_FORMAT = GLOBAL_DATE_FORMAT;
-
-  readonly dialog: any = inject(MatDialog);
-
-  openDialog() {
-    const dialogRef = this.dialog.open(OrganisationUnitFormComponent, defaultSize);
-    dialogRef.componentInstance.organisationUnit.set(null);
-  }
 
   displayedColumns: string[] = [
     'first_name',
