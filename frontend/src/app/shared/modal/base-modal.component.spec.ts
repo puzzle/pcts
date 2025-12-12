@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BaseModalComponent } from './base-modal.component';
+import { FormControl, FormGroup } from '@angular/forms';
 
 
 describe('BaseModal', () => {
@@ -13,6 +14,10 @@ describe('BaseModal', () => {
       .compileComponents();
 
     fixture = TestBed.createComponent(BaseModalComponent);
+    const form = new FormGroup({
+      name: new FormControl('John')
+    });
+    fixture.componentRef.setInput('formGroup', form);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

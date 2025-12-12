@@ -1,9 +1,15 @@
-<div class="w-100 h-100">
-  <ng-content select="[title]"/>
+<ng-content select="[title]">
+  <h1 data-testid="title">
+    {{ "MODEL_NAME" | scopedTranslation  }}
+    {{ "ACTION" | scopedTranslation }}
+  </h1>
+</ng-content>
 
-  <form class="flex-grow-1 d-flex flex-column gap-4 w-100 mw-100" [formGroup]="formGroup()" (ngSubmit)="submitted.emit()" >
-    <ng-content select="[content]"/>
-    <ng-content select="[actions]"/>
-  </form>
-</div>
+<form class="d-flex flex-column gap-4" [formGroup]="formGroup()" (ngSubmit)="submitted.emit()" >
+  <ng-content select="[content]"/>
+
+  <ng-content select="[content]">
+    <app-form-actions [formGroup]="formGroup()" (canceled)="canceled.emit()" />
+  </ng-content>
+</form>
 
