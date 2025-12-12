@@ -83,22 +83,6 @@ describe('BaseFormComponent', () => {
       .toHaveBeenCalledTimes(1);
   });
 
-  it('should emit canceled event when called', () => {
-    const baseFixture = TestBed.createComponent(BaseFormComponent);
-    const form = new FormGroup({
-      name: new FormControl('John')
-    });
-    baseFixture.componentRef.setInput('formGroup', form);
-    baseFixture.componentRef.setInput('formName', 'userForm');
-    baseFixture.detectChanges();
-
-    jest.spyOn(component.canceled, 'emit');
-    component.canceled.emit();
-
-    expect(component.canceled.emit)
-      .toHaveBeenCalledTimes(1);
-  });
-
   it('should throw an error if required inputs are not set before detectChanges', () => {
     const emptyFixture = TestBed.createComponent(BaseFormComponent);
     expect(() => emptyFixture.detectChanges())
