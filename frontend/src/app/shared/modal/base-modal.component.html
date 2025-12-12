@@ -33,7 +33,9 @@
 <mat-dialog-actions align="end">
   <div class="container-fluid">
     <div class="row justify-content-between">
-      <ng-content select="[actions]"/>
+      <ng-content select="[actions]">
+        <app-form-actions [formGroup]="formGroup()" (canceled)="canceled.emit()" />
+      </ng-content>
     </div>
   </div>
 </mat-dialog-actions>

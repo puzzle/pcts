@@ -1,11 +1,5 @@
 <div class="w-75 mx-auto mt-5">
-  <app-form [formGroup]="memberForm" (submitted)="onSubmit()">
-    <ng-container title>
-      <h1 data-testid="title">
-        {{ "MODEL_NAME" | scopedTranslation  }}
-        {{ "ACTION" | scopedTranslation }}
-      </h1>
-    </ng-container>
+  <app-form [formGroup]="memberForm" (canceled)="onCancel()" (submitted)="onSubmit()">
     <ng-container content>
       <p class="fw-bold">
         {{ "PERSONAL_DETAILS" | scopedTranslation }}
@@ -65,7 +59,6 @@
         <mat-error appPctsFormError/>
       </mat-form-field>
     </ng-container>
-    <app-form-actions [formGroup]="memberForm" (canceled)="onCancel()" actions/>
   </app-form>
 </div>
 
