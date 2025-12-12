@@ -1,14 +1,24 @@
 package ch.puzzle.pcts.dto.calculation;
 
-import ch.puzzle.pcts.dto.member.MemberDto;
-import ch.puzzle.pcts.dto.role.RoleDto;
+import ch.puzzle.pcts.dto.calculation.degreecalculation.DegreeCalculationInputDto;
+import ch.puzzle.pcts.dto.calculation.experiencecalculation.ExperienceCalculationInputDto;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 
 public record CalculationInputDto(
-        @Schema(description = "The member id associated with this calculation.", exampleClasses = MemberDto.class, example = "1", requiredMode = Schema.RequiredMode.REQUIRED, nullable = false) Long memberId,
 
-        @Schema(description = "The role id of this calculation.", exampleClasses = RoleDto.class, example = "1", requiredMode = Schema.RequiredMode.REQUIRED, nullable = false) Long roleId,
+        @Schema(description = "The member id associated with this calculation.", example = "1", nullable = false) Long memberId,
 
-        @Schema(description = "The current state of the calculation.", example = "ACTIVE", requiredMode = Schema.RequiredMode.REQUIRED, nullable = false) CalculationState state) {
+        @Schema(description = "The current state of the calculation.", example = "ACTIVE", nullable = false) CalculationState state,
+
+        @Schema(description = "The role id for this calculation.", example = "1", nullable = false) Long roleId,
+
+        @Schema(description = "Certificates associated with the calculation.", example = "[1, 2, 3]") List<Long> certificates,
+
+        @Schema(description = "Leadership experiences associated with the calculation.", example = "[5, 6]") List<Long> leadershipExperiences,
+
+        @Schema(description = "Degrees associated with the calculation.") List<DegreeCalculationInputDto> degrees,
+
+        @Schema(description = "Experiences associated with the calculation.") List<ExperienceCalculationInputDto> experiences) {
 }

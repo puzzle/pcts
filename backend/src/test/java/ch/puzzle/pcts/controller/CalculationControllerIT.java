@@ -3,8 +3,7 @@ package ch.puzzle.pcts.controller;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -12,6 +11,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.calculation.CalculationDto;
 import ch.puzzle.pcts.dto.calculation.CalculationInputDto;
+import ch.puzzle.pcts.dto.calculation.calculationleadershipexperience.LeadershipExperienceCalculationDto;
+import ch.puzzle.pcts.dto.calculation.certificatecalculation.CertificateCalculationDto;
+import ch.puzzle.pcts.dto.calculation.degreecalculation.DegreeCalculationDto;
+import ch.puzzle.pcts.dto.calculation.experiencecalculation.ExperienceCalculationDto;
 import ch.puzzle.pcts.dto.member.MemberDto;
 import ch.puzzle.pcts.dto.organisationunit.OrganisationUnitDto;
 import ch.puzzle.pcts.dto.role.RoleDto;
@@ -25,7 +28,9 @@ import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.business.CalculationBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,14 +51,17 @@ class CalculationControllerIT {
     private static final String BASEURL = "/api/v1/calculations";
     private static final Long ID = 1L;
     private final LocalDate commonDate = LocalDate.of(2020, 1, 1);
+
     @MockitoBean
     private CalculationBusinessService businessService;
     @MockitoBean
     private CalculationMapper mapper;
+
     @Autowired
     private MockMvc mvc;
     @Autowired
     private ObjectMapper objectMapper;
+
     private Calculation calculation;
     private CalculationInputDto inputDto;
     private CalculationDto expectedDto;
@@ -75,15 +83,27 @@ class CalculationControllerIT {
                 .withOrganisationUnit(ou)
                 .build();
 
-        calculation = new Calculation();
-        calculation.setId(ID);
-        calculation.setMember(member);
-        calculation.setRole(role);
-        calculation.setState(CalculationState.ACTIVE);
-        calculation.setPublicationDate(commonDate);
-        calculation.setPublicizedBy("System");
+        calculation = Calculation.Builder
+                .builder()
+                .withId(ID)
+                .withMember(member)
+                .withRole(role)
+                .withState(CalculationState.ACTIVE)
+                .withPublicationDate(commonDate)
+                .withPublicizedBy("System")
+                .withDegrees(List.of())
+                .withExperiences(List.of())
+                .withCertificates(List.of())
+                .build();
+        calculation.setPoints(BigDecimal.valueOf(10));
 
-        inputDto = new CalculationInputDto(ID, 1L, CalculationState.ACTIVE);
+        inputDto = new CalculationInputDto(ID,
+                                           CalculationState.ACTIVE,
+                                           1L,
+                                           List.of(1L, 2L),
+                                           List.of(10L),
+                                           List.of(),
+                                           List.of());
 
         RoleDto roleDto = new RoleDto(1L, "Developer", true);
         OrganisationUnitDto ouDto = new OrganisationUnitDto(1L, "/dev");
@@ -97,7 +117,18 @@ class CalculationControllerIT {
                                             commonDate,
                                             ouDto);
 
-        expectedDto = new CalculationDto(ID, memberDto, roleDto, CalculationState.ACTIVE, commonDate, "System");
+        expectedDto = new CalculationDto(ID,
+                                         memberDto,
+                                         roleDto,
+                                         CalculationState.ACTIVE,
+                                         commonDate,
+                                         "System",
+                                         BigDecimal.valueOf(10),
+                                         List.of(mock(CertificateCalculationDto.class)),
+                                         List.of(mock(LeadershipExperienceCalculationDto.class)),
+                                         List.of(mock(DegreeCalculationDto.class)),
+                                         List.of(mock(ExperienceCalculationDto.class)));
+
     }
 
     @DisplayName("Should successfully get calculation by ID")

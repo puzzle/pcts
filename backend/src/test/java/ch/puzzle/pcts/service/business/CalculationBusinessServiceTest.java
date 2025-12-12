@@ -7,12 +7,15 @@ import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.FieldKey;
+import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.Calculation;
-import ch.puzzle.pcts.model.member.Member;
-import ch.puzzle.pcts.model.role.Role;
+import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
+import ch.puzzle.pcts.model.experience.Experience;
 import ch.puzzle.pcts.service.persistence.CalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.CalculationValidationService;
+import ch.puzzle.pcts.service.validation.ExperienceCalculationValidationService;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -35,81 +38,92 @@ class CalculationBusinessServiceTest {
     private CalculationPersistenceService persistenceService;
 
     @Mock
+    private ExperienceCalculationBusinessService experienceBusinessService;
+
+    @Mock
+    private ExperienceCalculationValidationService experienceValidationService;
+
+    @Mock
     private Calculation calculation;
-
-    @Mock
-    private Member member;
-
-    @Mock
-    private Role role;
 
     @InjectMocks
     private CalculationBusinessService businessService;
 
-    @DisplayName("Should get calculation by id")
+    @DisplayName("Should get calculation by id and set total points")
     @Test
     void shouldGetById() {
         when(persistenceService.getById(ID)).thenReturn(Optional.of(calculation));
+        when(experienceBusinessService.getByCalculationId(ID)).thenReturn(List.of());
+        when(experienceBusinessService.getExperiencePoints(anyList())).thenReturn(BigDecimal.ZERO);
 
         Calculation result = businessService.getById(ID);
 
         assertEquals(calculation, result);
-        verify(validationService).validateOnGetById(ID);
         verify(persistenceService).getById(ID);
+        verify(experienceBusinessService).getByCalculationId(ID);
+        verify(experienceBusinessService).getExperiencePoints(List.of());
     }
 
     @DisplayName("Should throw error when calculation with id does not exist")
     @Test
     void shouldNotGetByIdAndThrowError() {
         when(persistenceService.getById(ID)).thenReturn(Optional.empty());
-
         PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(ID));
 
-        assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
-        assertEquals(
-                List.of(Map.of(FieldKey.FIELD, "id",
-                        FieldKey.IS, ID.toString(),
-                        FieldKey.ENTITY, CALCULATION)),
-                exception.getErrorAttributes()
-        );
-
-        verify(validationService).validateOnGetById(ID);
+        GenericErrorDto expectedError = new GenericErrorDto(ErrorKey.NOT_FOUND,
+                Map.of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "id", FieldKey.IS, ID.toString()));
+        assertEquals(List.of(expectedError), exception.getErrors());
         verify(persistenceService).getById(ID);
     }
 
-    @DisplayName("Should create calculation")
+    @DisplayName("Should create calculation with experiences")
     @Test
     void shouldCreate() {
+        Experience experience = mock(Experience.class);
+        when(experience.getId()).thenReturn(10L);
+
+        ExperienceCalculation exp1 = mock(ExperienceCalculation.class);
+        when(exp1.getExperience()).thenReturn(experience);
+
+        when(calculation.getExperiences()).thenReturn(List.of(exp1));
+
         when(persistenceService.save(calculation)).thenReturn(calculation);
+        when(experienceBusinessService.create(exp1)).thenReturn(exp1);
 
         Calculation result = businessService.create(calculation);
 
         assertEquals(calculation, result);
+
         verify(validationService).validateOnCreate(calculation);
+        verify(experienceValidationService, atLeastOnce()).validateOnCreate(exp1);
+        verify(experienceBusinessService).getByExperienceId(experience.getId());
+        verify(experienceBusinessService).create(exp1);
         verify(persistenceService).save(calculation);
     }
 
-    @DisplayName("Should update calculation")
+    @DisplayName("Should update calculation with experiences")
     @Test
     void shouldUpdate() {
+        ExperienceCalculation exp1 = mock(ExperienceCalculation.class);
+        when(calculation.getExperiences()).thenReturn(List.of(exp1));
         when(persistenceService.getById(ID)).thenReturn(Optional.of(calculation));
         when(persistenceService.save(calculation)).thenReturn(calculation);
+        when(experienceBusinessService.update(anyLong(), eq(exp1))).thenReturn(exp1);
 
         Calculation result = businessService.update(ID, calculation);
 
         assertEquals(calculation, result);
-        verify(calculation).setId(ID);
         verify(validationService).validateOnUpdate(ID, calculation);
+        verify(persistenceService).getById(ID);
         verify(persistenceService).save(calculation);
+        verify(experienceValidationService).validateOnUpdate(anyLong(), eq(exp1));
     }
 
     @DisplayName("Should throw exception when updating non-existing calculation")
     @Test
     void shouldThrowExceptionWhenUpdatingNotFound() {
         when(persistenceService.getById(ID)).thenReturn(Optional.empty());
-
         assertThrows(PCTSException.class, () -> businessService.update(ID, calculation));
-
         verify(persistenceService).getById(ID);
         verify(persistenceService, never()).save(any());
     }
