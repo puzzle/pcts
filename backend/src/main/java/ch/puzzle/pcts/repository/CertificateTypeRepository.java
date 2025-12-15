@@ -5,22 +5,42 @@ import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface CertificateTypeRepository extends SoftDeleteRepository<CertificateType, Long> {
-    List<CertificateType> findByCertificateKindNotAndDeletedAtIsNull(CertificateKind certificatekind);
-    List<CertificateType> findByCertificateKindAndDeletedAtIsNull(CertificateKind certificatekind);
+    List<CertificateType> findAllByCertificateKindAndDeletedAtIsNull(CertificateKind kind);
 
-    Optional<CertificateType> findByCertificateKindAndName(CertificateKind certificateKind, String name);
-    Optional<CertificateType> findByCertificateKindNotAndName(CertificateKind certificateKind, String name);
+    List<CertificateType> findAllByCertificateKindNotAndDeletedAtIsNull(CertificateKind kind);
 
-    Optional<CertificateType> findByIdAndCertificateKindAndDeletedAtIsNull(Long id, CertificateKind certificateKind);
-    Optional<CertificateType> findByIdAndCertificateKindNotAndDeletedAtIsNull(Long id, CertificateKind certificateKind);
+    Optional<CertificateType> findByIdAndCertificateKindAndDeletedAtIsNull(Long id, CertificateKind kind);
 
-    @Transactional
-    void deleteCertificateTypeByIdAndCertificateKind(Long id, CertificateKind certificateKind);
+    Optional<CertificateType> findByIdAndCertificateKindNotAndDeletedAtIsNull(Long id, CertificateKind kind);
 
-    @Transactional
-    void deleteCertificateTypeByIdAndCertificateKindNot(Long id, CertificateKind certificateKind);
+    Optional<CertificateType> findByNameAndCertificateKindAndDeletedAtIsNull(String name, CertificateKind kind);
+
+    Optional<CertificateType> findByNameAndCertificateKindNotAndDeletedAtIsNull(String name, CertificateKind kind);
+
+    default List<CertificateType> findAllFromCertificateType() {
+        return findAllByCertificateKindAndDeletedAtIsNull(CertificateKind.CERTIFICATE);
+    }
+
+    default List<CertificateType> findAllFromLeadershipExperienceType() {
+        return findAllByCertificateKindNotAndDeletedAtIsNull(CertificateKind.CERTIFICATE);
+    }
+
+    default Optional<CertificateType> findByIdForCertificateType(Long id) {
+        return findByIdAndCertificateKindAndDeletedAtIsNull(id, CertificateKind.CERTIFICATE);
+    }
+
+    default Optional<CertificateType> findByIdForLeadershipExperienceType(Long id) {
+        return findByIdAndCertificateKindNotAndDeletedAtIsNull(id, CertificateKind.CERTIFICATE);
+    }
+
+    default Optional<CertificateType> findByNameFromCertificateType(String name) {
+        return findByNameAndCertificateKindAndDeletedAtIsNull(name, CertificateKind.CERTIFICATE);
+    }
+
+    default Optional<CertificateType> findByNameFromLeadershipExperienceType(String name) {
+        return findByNameAndCertificateKindNotAndDeletedAtIsNull(name, CertificateKind.CERTIFICATE);
+    }
 }

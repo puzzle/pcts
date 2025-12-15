@@ -6,7 +6,6 @@ import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
-import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.repository.CertificateTypeRepository;
 import java.util.List;
@@ -14,7 +13,6 @@ import java.util.Map;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class LeadershipTypePersistenceService extends PersistenceBase<CertificateType, CertificateTypeRepository> {
@@ -27,37 +25,25 @@ public class LeadershipTypePersistenceService extends PersistenceBase<Certificat
     }
 
     public Optional<CertificateType> getByName(String name) {
-        return repository.findByCertificateKindNotAndName(CertificateKind.CERTIFICATE, name);
+        return repository.findByNameFromLeadershipExperienceType(name);
     }
 
     @Override
     public List<CertificateType> getAll() {
-        return repository.findByCertificateKindNotAndDeletedAtIsNull(CertificateKind.CERTIFICATE);
+        return repository.findAllFromLeadershipExperienceType();
     }
 
+    // This is still optional because you can't change it using just one method. It
+    // will be in #317.
     @Override
     public Optional<CertificateType> getById(Long id) {
-        return Optional
-                .ofNullable(repository
-                        .findByIdAndCertificateKindNotAndDeletedAtIsNull(id, CertificateKind.CERTIFICATE)
-                        .orElseThrow(() -> {
-                            Map<FieldKey, String> attributes = Map
-                                    .of(FieldKey.ENTITY,
-                                        LEADERSHIP_EXPERIENCE_TYPE,
-                                        FieldKey.FIELD,
-                                        "id",
-                                        FieldKey.IS,
-                                        id.toString());
+        return Optional.ofNullable(repository.findByIdForLeadershipExperienceType(id).orElseThrow(() -> {
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY, LEADERSHIP_EXPERIENCE_TYPE, FieldKey.FIELD, "id", FieldKey.IS, id.toString());
 
-                            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
 
-                            return new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
-                        }));
-    }
-
-    @Override
-    @Transactional
-    public void delete(Long id) {
-        repository.deleteCertificateTypeByIdAndCertificateKindNot(id, CertificateKind.CERTIFICATE);
+            return new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
+        }));
     }
 }
