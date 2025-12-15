@@ -1,3 +1,4 @@
 book
 
 src/mdbook-plantuml-img
+.mdbook-plantuml-cache/
