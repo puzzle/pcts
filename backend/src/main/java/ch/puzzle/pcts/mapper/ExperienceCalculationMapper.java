@@ -30,13 +30,14 @@ public class ExperienceCalculationMapper {
         return new ExperienceCalculation(null,
                                          null,
                                          experienceBusinessService.getById(dto.experienceId()),
-                                         dto.relevancy());
+                                         dto.relevancy(),
+                                         dto.comment());
     }
 
     public ExperienceCalculationDto toDto(ExperienceCalculation model) {
         return new ExperienceCalculationDto(model.getId(),
                                             experienceMapper.toDto(model.getExperience()),
-                                            null,
-                                            model.getRelevancy());
+                                            model.getRelevancy(),
+                                            model.getComment());
     }
 }

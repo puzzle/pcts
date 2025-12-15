@@ -36,7 +36,7 @@ class ExperienceCalculationPersistenceServiceIT
         Calculation calculation = calculationServiceIT.getAll().get(0);
         Experience experience = experienceServiceIT.getAll().get(0);
 
-        return new ExperienceCalculation(null, calculation, experience, Relevancy.HIGHLY);
+        return new ExperienceCalculation(null, calculation, experience, Relevancy.HIGHLY, "Comment");
     }
 
     @Override
@@ -46,11 +46,11 @@ class ExperienceCalculationPersistenceServiceIT
 
         List<ExperienceCalculation> list = new ArrayList<>();
 
-        list.add(new ExperienceCalculation(1L, calculations.get(0), experiences.get(0), Relevancy.HIGHLY));
+        list.add(new ExperienceCalculation(1L, calculations.get(0), experiences.get(0), Relevancy.HIGHLY, "Comment"));
 
-        list.add(new ExperienceCalculation(2L, calculations.get(1), experiences.get(0), Relevancy.LITTLE));
+        list.add(new ExperienceCalculation(2L, calculations.get(1), experiences.get(0), Relevancy.LITTLE, "Comment"));
 
-        list.add(new ExperienceCalculation(3L, calculations.get(0), experiences.get(1), Relevancy.LIMITED));
+        list.add(new ExperienceCalculation(3L, calculations.get(0), experiences.get(1), Relevancy.LIMITED, "Comment"));
 
         return list;
     }
@@ -87,6 +87,7 @@ class ExperienceCalculationPersistenceServiceIT
         assertEquals(ec.getCalculation(), saved.getCalculation());
         assertEquals(ec.getExperience(), saved.getExperience());
         assertEquals(ec.getRelevancy(), saved.getRelevancy());
+        assertEquals(ec.getComment(), saved.getComment());
         assertThat(service.getAll()).contains(saved);
     }
 }

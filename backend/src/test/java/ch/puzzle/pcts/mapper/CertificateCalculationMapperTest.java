@@ -58,7 +58,6 @@ class CertificateCalculationMapperTest {
         assertNotNull(result);
         assertEquals(5L, result.id());
         assertEquals(mockedCertificateDto, result.certificate());
-        assertEquals("", result.comment());
 
         verify(certificateMapper).toDto(certificate);
     }

@@ -44,7 +44,7 @@ class DegreeCalculationMapperTest {
     }
 
     private DegreeCalculation createModel(Degree degree) {
-        return new DegreeCalculation(20L, null, degree, Relevancy.HIGHLY, BigDecimal.ONE);
+        return new DegreeCalculation(20L, null, degree, Relevancy.HIGHLY, BigDecimal.ONE, "Comment");
     }
 
     @DisplayName("Should map DegreeCalculation to DegreeCalculationDto")
@@ -64,6 +64,7 @@ class DegreeCalculationMapperTest {
         assertEquals(mockedDegreeDto, result.degree());
         assertEquals(BigDecimal.ONE, result.weight());
         assertEquals(Relevancy.HIGHLY, result.relevancy());
+        assertEquals("Comment", result.comment());
 
         verify(degreeMapper).toDto(degree);
     }
@@ -86,7 +87,10 @@ class DegreeCalculationMapperTest {
     @Test
     void shouldMapFromDto() {
         Degree degree = createDegree();
-        DegreeCalculationInputDto input = new DegreeCalculationInputDto(DEGREE_ID, BigDecimal.ONE, Relevancy.HIGHLY);
+        DegreeCalculationInputDto input = new DegreeCalculationInputDto(DEGREE_ID,
+                                                                        BigDecimal.ONE,
+                                                                        Relevancy.HIGHLY,
+                                                                        "Comment");
 
         when(degreeBusinessService.getById(DEGREE_ID)).thenReturn(degree);
 
@@ -97,6 +101,7 @@ class DegreeCalculationMapperTest {
         assertEquals(Relevancy.HIGHLY, result.getRelevancy());
         assertEquals(BigDecimal.ONE, result.getWeight());
         assertNull(result.getId());
+        assertEquals("Comment", result.getComment());
 
         verify(degreeBusinessService).getById(DEGREE_ID);
     }
@@ -105,7 +110,10 @@ class DegreeCalculationMapperTest {
     @Test
     void shouldMapListFromDto() {
         Degree degree = createDegree();
-        DegreeCalculationInputDto input = new DegreeCalculationInputDto(DEGREE_ID, BigDecimal.ONE, Relevancy.HIGHLY);
+        DegreeCalculationInputDto input = new DegreeCalculationInputDto(DEGREE_ID,
+                                                                        BigDecimal.ONE,
+                                                                        Relevancy.HIGHLY,
+                                                                        "Comment");
 
         when(degreeBusinessService.getById(DEGREE_ID)).thenReturn(degree);
 
@@ -118,7 +126,10 @@ class DegreeCalculationMapperTest {
     @DisplayName("Should throw when Degree not found")
     @Test
     void shouldThrowWhenDegreeNotFound() {
-        DegreeCalculationInputDto input = new DegreeCalculationInputDto(DEGREE_ID, BigDecimal.ONE, Relevancy.HIGHLY);
+        DegreeCalculationInputDto input = new DegreeCalculationInputDto(DEGREE_ID,
+                                                                        BigDecimal.ONE,
+                                                                        Relevancy.HIGHLY,
+                                                                        "Comment");
 
         when(degreeBusinessService.getById(DEGREE_ID)).thenThrow(new RuntimeException("Degree not found"));
 

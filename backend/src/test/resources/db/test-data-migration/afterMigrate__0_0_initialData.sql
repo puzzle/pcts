@@ -98,9 +98,9 @@ VALUES
 TRUNCATE TABLE experience_calculation CASCADE;
 
 INSERT INTO experience_calculation
-(calculation_id, experience_id, relevancy)
+(calculation_id, experience_id, relevancy, comment)
 VALUES
-    (1, 2, 'HIGHLY'),
-    (2, 2, 'LITTLE'),
-    (1, 3, 'LIMITED');
+    (1, 2, 'HIGHLY', 'Comment'),
+    (2, 2, 'LITTLE', 'Comment'),
+    (1, 3, 'LIMITED','Comment');
 

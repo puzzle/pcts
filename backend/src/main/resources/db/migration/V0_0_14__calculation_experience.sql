@@ -3,7 +3,8 @@ CREATE TABLE IF NOT EXISTS experience_calculation
     id               BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY NOT NULL,
     calculation_id   BIGINT NOT NULL,
     experience_id    BIGINT NOT NULL,
-    relevancy        TEXT NOT NULL
+    relevancy        TEXT NOT NULL,
+    comment          TEXT
 );
 
 ALTER TABLE experience_calculation

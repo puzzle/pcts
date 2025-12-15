@@ -32,6 +32,6 @@ public class CertificateCalculationMapper {
     }
 
     public CertificateCalculationDto toDto(CertificateCalculation model) {
-        return new CertificateCalculationDto(model.getId(), certificateMapper.toDto(model.getCertificate()), "");
+        return new CertificateCalculationDto(model.getId(), certificateMapper.toDto(model.getCertificate()));
     }
 }

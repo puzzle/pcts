@@ -31,13 +31,15 @@ public class DegreeCalculationMapper {
                                      null,
                                      degreeBusinessService.getById(dto.degreeId()),
                                      dto.relevancy(),
-                                     dto.weight());
+                                     dto.weight(),
+                                     dto.comment());
     }
 
     public DegreeCalculationDto toDto(DegreeCalculation model) {
         return new DegreeCalculationDto(model.getId(),
                                         degreeMapper.toDto(model.getDegree()),
                                         model.getWeight(),
-                                        model.getRelevancy());
+                                        model.getRelevancy(),
+                                        model.getComment());
     }
 }

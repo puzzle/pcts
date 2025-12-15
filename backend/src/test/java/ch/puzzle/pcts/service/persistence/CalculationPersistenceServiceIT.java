@@ -106,8 +106,8 @@ class CalculationPersistenceServiceIT
                 .withPublicizedBy("Ldap User")
                 .withDegrees(Collections.emptyList())
                 .withExperiences(List
-                        .of(new ExperienceCalculation(1L, null, exp2, Relevancy.HIGHLY),
-                            new ExperienceCalculation(3L, null, exp3, Relevancy.LIMITED)))
+                        .of(new ExperienceCalculation(1L, null, exp2, Relevancy.HIGHLY, "Comment"),
+                            new ExperienceCalculation(3L, null, exp3, Relevancy.LIMITED, "Comment")))
                 .withCertificates(Collections.emptyList())
                 .build();
 
@@ -124,7 +124,7 @@ class CalculationPersistenceServiceIT
                 .withPublicationDate(LocalDate.of(2025, 1, 14))
                 .withPublicizedBy("Ldap User 2")
                 .withDegrees(Collections.emptyList())
-                .withExperiences(List.of(new ExperienceCalculation(2L, null, exp2, Relevancy.LITTLE)))
+                .withExperiences(List.of(new ExperienceCalculation(2L, null, exp2, Relevancy.LITTLE, "Comment")))
                 .withCertificates(Collections.emptyList())
                 .build();
 

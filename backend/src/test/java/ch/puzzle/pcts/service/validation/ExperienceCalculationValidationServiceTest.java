@@ -61,7 +61,7 @@ class ExperienceCalculationValidationServiceTest {
     private ExperienceCalculation createExperienceCalculation(Long id, Member member) {
         Calculation calculation = createCalculation(id, member);
         Experience experience = createExperience(id, member, "Experience " + id);
-        return new ExperienceCalculation(id, calculation, experience, Relevancy.HIGHLY);
+        return new ExperienceCalculation(id, calculation, experience, Relevancy.HIGHLY, "Comment");
     }
 
     @DisplayName("Should throw exception when members do not match")
@@ -130,7 +130,11 @@ class ExperienceCalculationValidationServiceTest {
 
         Calculation calculation = createCalculation(1L, member);
         Experience experience = createExperience(1L, member, "Experience 1");
-        ExperienceCalculation ec = new ExperienceCalculation(null, calculation, experience, Relevancy.HIGHLY);
+        ExperienceCalculation ec = new ExperienceCalculation(null,
+                                                             calculation,
+                                                             experience,
+                                                             Relevancy.HIGHLY,
+                                                             "Comment");
 
         ExperienceCalculationValidationService spyService = spy(service);
         doNothing().when(spyService).validateMemberForCalculation(any());

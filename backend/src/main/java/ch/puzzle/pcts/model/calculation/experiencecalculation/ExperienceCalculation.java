@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.model.calculation.experiencecalculation;
 
+import static org.apache.commons.lang3.StringUtils.trim;
+
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.Relevancy;
@@ -28,11 +30,15 @@ public class ExperienceCalculation implements Model {
     @NotNull(message = "{attribute.not.null}")
     private Relevancy relevancy;
 
-    public ExperienceCalculation(Long id, Calculation calculation, Experience experience, Relevancy relevancy) {
+    private String comment;
+
+    public ExperienceCalculation(Long id, Calculation calculation, Experience experience, Relevancy relevancy,
+                                 String comment) {
         this.id = id;
         this.calculation = calculation;
         this.experience = experience;
         this.relevancy = relevancy;
+        this.comment = trim(comment);
     }
 
     public ExperienceCalculation() {
@@ -72,18 +78,24 @@ public class ExperienceCalculation implements Model {
         this.relevancy = relevancy;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = trim(comment);
+    }
+
     @Override
     public boolean equals(Object object) {
-        if (this == object)
-            return true;
-        if (object == null || getClass() != object.getClass())
+        if (!(object instanceof ExperienceCalculation that))
             return false;
-        ExperienceCalculation that = (ExperienceCalculation) object;
         return Objects.equals(getId(), that.getId())
                && Objects
                        .equals(this.getCalculation() != null ? this.getCalculation().getId() : null,
                                that.getCalculation() != null ? that.getCalculation().getId() : null)
-               && Objects.equals(getExperience(), that.getExperience()) && getRelevancy() == that.getRelevancy();
+               && Objects.equals(getExperience(), that.getExperience()) && getRelevancy() == that.getRelevancy()
+               && Objects.equals(getComment(), that.getComment());
     }
 
     @Override
@@ -92,13 +104,14 @@ public class ExperienceCalculation implements Model {
                 .hash(getId(),
                       getCalculation() != null ? getCalculation().getId() : null,
                       getExperience(),
-                      getRelevancy());
+                      getRelevancy(),
+                      getComment());
     }
 
     @Override
     public String toString() {
         return "ExperienceCalculation{" + "id=" + id + ", calculationId="
                + (calculation != null ? calculation.getId() : null) + ", experience=" + experience + ", relevancy="
-               + relevancy + '}';
+               + relevancy + ", comment='" + comment + '\'' + '}';
     }
 }

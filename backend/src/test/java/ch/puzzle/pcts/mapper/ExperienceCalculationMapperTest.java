@@ -44,7 +44,7 @@ class ExperienceCalculationMapperTest {
     }
 
     private ExperienceCalculation createModel(Experience experience) {
-        return new ExperienceCalculation(22L, null, experience, RELEVANCY);
+        return new ExperienceCalculation(22L, null, experience, RELEVANCY, "Comment");
     }
 
     @DisplayName("Should map ExperienceCalculation to ExperienceCalculationDto")
@@ -62,7 +62,7 @@ class ExperienceCalculationMapperTest {
         assertEquals(22L, result.id());
         assertEquals(expectedExperienceDto, result.experience());
         assertEquals(RELEVANCY, result.relevancy());
-        assertNull(result.comment()); // mapper sets null
+        assertEquals("Comment", result.comment());
 
         verify(experienceMapper).toDto(experience);
     }
@@ -85,7 +85,7 @@ class ExperienceCalculationMapperTest {
     @Test
     void shouldMapFromDto() {
         Experience experience = createExperience();
-        ExperienceCalculationInputDto input = new ExperienceCalculationInputDto(EXPERIENCE_ID, RELEVANCY);
+        ExperienceCalculationInputDto input = new ExperienceCalculationInputDto(EXPERIENCE_ID, RELEVANCY, "Comment");
 
         when(experienceBusinessService.getById(EXPERIENCE_ID)).thenReturn(experience);
 
@@ -95,6 +95,7 @@ class ExperienceCalculationMapperTest {
         assertNull(result.getId());
         assertEquals(experience, result.getExperience());
         assertEquals(RELEVANCY, result.getRelevancy());
+        assertEquals("Comment", result.getComment());
 
         verify(experienceBusinessService).getById(EXPERIENCE_ID);
     }
@@ -103,7 +104,7 @@ class ExperienceCalculationMapperTest {
     @Test
     void shouldMapListFromDto() {
         Experience experience = createExperience();
-        ExperienceCalculationInputDto input = new ExperienceCalculationInputDto(EXPERIENCE_ID, RELEVANCY);
+        ExperienceCalculationInputDto input = new ExperienceCalculationInputDto(EXPERIENCE_ID, RELEVANCY, "Comment");
 
         when(experienceBusinessService.getById(EXPERIENCE_ID)).thenReturn(experience);
 
@@ -116,7 +117,7 @@ class ExperienceCalculationMapperTest {
     @DisplayName("Should throw when Experience not found")
     @Test
     void shouldThrowWhenExperienceNotFound() {
-        ExperienceCalculationInputDto input = new ExperienceCalculationInputDto(EXPERIENCE_ID, RELEVANCY);
+        ExperienceCalculationInputDto input = new ExperienceCalculationInputDto(EXPERIENCE_ID, RELEVANCY, "Comment");
 
         when(experienceBusinessService.getById(EXPERIENCE_ID)).thenThrow(new RuntimeException("Experience not found"));
 

@@ -4,7 +4,9 @@ CREATE TABLE IF NOT EXISTS degree_calculation
     calculation_id   BIGINT NOT NULL,
     degree_id        BIGINT NOT NULL,
     weight           NUMERIC NOT NULL,
-    relevancy        TEXT NOT NULL
+    relevancy        TEXT NOT NULL,
+    comment          TEXT
+
 );
 
 ALTER TABLE degree_calculation
