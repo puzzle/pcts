@@ -15,6 +15,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -33,33 +35,13 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
     }
 
     @Override
+    @Transactional
     public Calculation create(Calculation calculation) {
-        calculation.getExperiences().forEach(exp -> exp.setCalculation(calculation));
-
-        calculation.getExperiences().forEach(experience -> {
-            List<ExperienceCalculation> existing = experienceCalculationBusinessService
-                    .getByExperienceId(experience.getExperience().getId());
-            experienceCalculationValidationService.validateOnCreate(experience);
-            experienceCalculationValidationService.validateDuplicateExperienceId(experience, existing);
-        });
-
         validationService.validateOnCreate(calculation);
-
-        calculation.getExperiences().forEach(experienceCalculationValidationService::validateOnCreate);
 
         Calculation createdCalculation = persistenceService.save(calculation);
 
-        List<ExperienceCalculation> createdExperienceCalculations = new ArrayList<>();
-
-        for (ExperienceCalculation exp : calculation.getExperiences()) {
-            exp.setCalculation(createdCalculation);
-
-            ExperienceCalculation created = experienceCalculationBusinessService.create(exp);
-
-            createdExperienceCalculations.add(created);
-        }
-
-        createdCalculation.setExperiences(createdExperienceCalculations);
+        createdCalculation.setExperiences(experienceCalculationBusinessService.createExperienceCalculations(calculation));
 
         return createdCalculation;
     }

@@ -2,6 +2,7 @@ package ch.puzzle.pcts.service.business;
 
 import static ch.puzzle.pcts.Constants.EXPERIENCE_CALCULATION;
 
+import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
 import ch.puzzle.pcts.model.experience.Experience;
@@ -18,11 +19,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExperienceCalculationBusinessService extends BusinessBase<ExperienceCalculation> {
     private final ExperienceCalculationPersistenceService experienceCalculationPersistenceService;
+    private final ExperienceCalculationValidationService experienceCalculationValidationService;
+
 
     protected ExperienceCalculationBusinessService(ExperienceCalculationValidationService validationService,
                                                    ExperienceCalculationPersistenceService persistenceService) {
         super(validationService, persistenceService);
         this.experienceCalculationPersistenceService = persistenceService;
+        this.experienceCalculationValidationService = validationService;
     }
 
     public List<ExperienceCalculation> getByCalculationId(Long calculationId) {
@@ -35,6 +39,22 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
 
     public BigDecimal getExperiencePoints(List<ExperienceCalculation> experienceCalculations) {
         return experienceCalculations.stream().map(this::calculatePoints).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public ExperienceCalculation create(ExperienceCalculation experienceCalculation){
+        List<ExperienceCalculation> existing = this
+                .getByExperienceId(experienceCalculation.getExperience().getId());
+        experienceCalculationValidationService.validateOnCreate(experienceCalculation);
+        experienceCalculationValidationService.validateDuplicateExperienceId(experienceCalculation, existing);
+        return experienceCalculationPersistenceService.save(experienceCalculation);
+    }
+
+    public List<ExperienceCalculation> createExperienceCalculations(Calculation calculation){
+        return calculation.getExperiences().stream().map(exp -> {
+            exp.setCalculation(calculation);
+            return this.create(exp);
+        }).toList();
     }
 
     private BigDecimal calculatePoints(ExperienceCalculation calculation) {
