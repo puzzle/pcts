@@ -91,7 +91,7 @@ public class MemberOverviewMapper {
 
         Map<Long, List<MemberOverview>> certificateGroups = entities
                 .stream()
-                .filter(e -> e.getCertificateId() != null && "CERTIFICATE".equals(e.getCertificateKind()))
+                .filter(e -> e.getCertificateId() != null)
                 .collect(Collectors.groupingBy(MemberOverview::getCertificateId));
 
         List<CertificateDto> certificates = certificateGroups.values().stream().map(certRows -> {

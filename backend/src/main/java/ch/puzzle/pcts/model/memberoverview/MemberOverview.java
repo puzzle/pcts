@@ -40,8 +40,6 @@ public class MemberOverview implements Model {
     private String certificateTypeName;
     private BigDecimal certificateTypePoints;
     private String certificateTypeComment;
-    @Enumerated(EnumType.STRING)
-    private CertificateKind certificateKind;
 
     private Long tagId;
     private String tagName;
@@ -113,7 +111,6 @@ public class MemberOverview implements Model {
         certificateTypeName = trim(builder.certificateTypeName);
         certificateTypePoints = builder.certificateTypePoints;
         certificateTypeComment = trim(builder.certificateTypeComment);
-        certificateKind = builder.certificateKind;
         tagId = builder.tagId;
         tagName = trim(builder.tagName);
         leadershipId = builder.leadershipId;
@@ -304,14 +301,6 @@ public class MemberOverview implements Model {
 
     public void setCertificateTypeComment(String certificateTypeComment) {
         this.certificateTypeComment = trim(certificateTypeComment);
-    }
-
-    public CertificateKind getCertificateKind() {
-        return certificateKind;
-    }
-
-    public void setCertificateKind(CertificateKind certificateKind) {
-        this.certificateKind = certificateKind;
     }
 
     public Long getTagId() {
@@ -671,7 +660,6 @@ public class MemberOverview implements Model {
         private String certificateTypeName;
         private BigDecimal certificateTypePoints;
         private String certificateTypeComment;
-        private CertificateKind certificateKind;
 
         private Long tagId;
         private String tagName;
@@ -816,11 +804,6 @@ public class MemberOverview implements Model {
 
         public Builder withCertificateTypeComment(String certificateTypeComment) {
             this.certificateTypeComment = trim(certificateTypeComment);
-            return this;
-        }
-
-        public Builder withCertificateKind(CertificateKind certificateKind) {
-            this.certificateKind = certificateKind;
             return this;
         }
 
