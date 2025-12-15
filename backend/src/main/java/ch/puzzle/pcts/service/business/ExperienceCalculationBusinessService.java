@@ -9,7 +9,9 @@ import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.service.persistence.ExperienceCalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.ExperienceCalculationValidationService;
 import java.math.BigDecimal;
-import java.time.Period;
+import java.math.MathContext;
+import java.math.RoundingMode;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -32,28 +34,25 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
     }
 
     public BigDecimal getExperiencePoints(List<ExperienceCalculation> experienceCalculations) {
-        BigDecimal totalExperienceRelevancyPoints = BigDecimal.ZERO;
+        return experienceCalculations.stream().map(this::calculatePoints).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
 
-        for (ExperienceCalculation calculation : experienceCalculations) {
-            Experience experience = calculation.getExperience();
-            ExperienceType type = experience.getType();
-            Relevancy relevancy = calculation.getRelevancy();
+    private BigDecimal calculatePoints(ExperienceCalculation calculation) {
+        Experience experience = calculation.getExperience();
+        ExperienceType type = experience.getType();
+        Relevancy relevancy = calculation.getRelevancy();
 
-            BigDecimal basePoints = switch (relevancy) {
-                case HIGHLY -> type.getHighlyRelevantPoints();
-                case LIMITED -> type.getLimitedRelevantPoints();
-                case LITTLE -> type.getLittleRelevantPoints();
-                default -> BigDecimal.ZERO;
-            };
+        BigDecimal basePoints = type.getPoints(relevancy);
 
-            BigDecimal percentFactor = BigDecimal.valueOf(experience.getPercent()).divide(BigDecimal.valueOf(100));
+        BigDecimal percentFactor = BigDecimal
+                .valueOf(experience.getPercent())
+                .divide(BigDecimal.valueOf(100), MathContext.UNLIMITED);
 
-            int years = Period.between(experience.getStartDate(), experience.getEndDate()).getYears();
-            BigDecimal result = basePoints.multiply(percentFactor).multiply(BigDecimal.valueOf(years));
+        long days = experience.getStartDate().until(experience.getEndDate(), ChronoUnit.DAYS);
+        // We have to round at one point otherwise this can throw a Exception
+        BigDecimal years = BigDecimal.valueOf(days).divide(BigDecimal.valueOf(365), 10, RoundingMode.HALF_UP);
 
-            totalExperienceRelevancyPoints = totalExperienceRelevancyPoints.add(result);
-        }
-        return totalExperienceRelevancyPoints;
+        return basePoints.multiply(percentFactor).multiply(years);
     }
 
     @Override
