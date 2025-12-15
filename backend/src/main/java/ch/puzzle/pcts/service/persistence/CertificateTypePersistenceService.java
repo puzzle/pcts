@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CertificateTypePersistenceService extends PersistenceBase<CertificateType, CertificateTypeRepository> {
@@ -36,17 +37,25 @@ public class CertificateTypePersistenceService extends PersistenceBase<Certifica
     @Override
     public Optional<CertificateType> getById(Long id) {
         return Optional
-                .ofNullable(repository.findByIdAndCertificateKind(id, CertificateKind.CERTIFICATE).orElseThrow(() -> {
-                    Map<FieldKey, String> attributes = Map
-                            .of(FieldKey.ENTITY, CERTIFICATE_TYPE, FieldKey.FIELD, "id", FieldKey.IS, id.toString());
+                .ofNullable(repository
+                        .findByIdAndCertificateKindAndDeletedAtIsNull(id, CertificateKind.CERTIFICATE)
+                        .orElseThrow(() -> {
+                            Map<FieldKey, String> attributes = Map
+                                    .of(FieldKey.ENTITY,
+                                        CERTIFICATE_TYPE,
+                                        FieldKey.FIELD,
+                                        "id",
+                                        FieldKey.IS,
+                                        id.toString());
 
-                    GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
+                            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
 
-                    return new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
-                }));
+                            return new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
+                        }));
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         repository.deleteCertificateTypeByIdAndCertificateKind(id, CertificateKind.CERTIFICATE);
     }

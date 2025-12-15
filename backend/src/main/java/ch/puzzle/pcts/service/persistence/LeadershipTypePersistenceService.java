@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class LeadershipTypePersistenceService extends PersistenceBase<CertificateType, CertificateTypeRepository> {
@@ -38,7 +39,7 @@ public class LeadershipTypePersistenceService extends PersistenceBase<Certificat
     public Optional<CertificateType> getById(Long id) {
         return Optional
                 .ofNullable(repository
-                        .findByIdAndCertificateKindNot(id, CertificateKind.CERTIFICATE)
+                        .findByIdAndCertificateKindNotAndDeletedAtIsNull(id, CertificateKind.CERTIFICATE)
                         .orElseThrow(() -> {
                             Map<FieldKey, String> attributes = Map
                                     .of(FieldKey.ENTITY,
@@ -55,6 +56,7 @@ public class LeadershipTypePersistenceService extends PersistenceBase<Certificat
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         repository.deleteCertificateTypeByIdAndCertificateKindNot(id, CertificateKind.CERTIFICATE);
     }
