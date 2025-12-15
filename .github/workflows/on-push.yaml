@@ -24,7 +24,7 @@ jobs:
       COMMIT_HASH: ${{ github.sha }}
 
   documentation:
-    uses: ./.reusable__documentation.yaml
+    uses: ./.github/workflows/reusable__documentation.yaml
     with:
       COMMIT_HASH: ${{ github.sha }}
 
