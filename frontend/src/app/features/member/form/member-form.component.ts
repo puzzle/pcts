@@ -9,7 +9,6 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { TranslateService } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-
 import { OrganisationUnitModel } from '../../organisation-unit/organisation-unit.model';
 import { EmploymentState } from '../../../shared/enum/employment-state.enum';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -23,7 +22,6 @@ import { isDateInPast, isValueInList, isValueInListSignal } from '../../../share
 import { BaseFormComponent } from '../../../shared/form/base-form.component';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { Location } from '@angular/common';
-import { BaseFormActionsComponent } from '../../../shared/base-form-actions/base-form-actions.component';
 
 @Component({
   selector: 'app-member-form',
@@ -40,8 +38,7 @@ import { BaseFormActionsComponent } from '../../../shared/base-form-actions/base
     PctsFormLabelDirective,
     InputFieldComponent,
     BaseFormComponent,
-    ScopedTranslationPipe,
-    BaseFormActionsComponent
+    ScopedTranslationPipe
   ],
   templateUrl: './member-form.component.html'
 })

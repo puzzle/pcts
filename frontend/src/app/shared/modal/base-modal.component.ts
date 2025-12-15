@@ -22,8 +22,7 @@ import { FormGroup } from '@angular/forms';
     ScopedTranslationPipe,
     BaseFormActionsComponent
   ],
-  templateUrl: './base-modal.component.html',
-  styleUrl: './base-modal.component.scss'
+  templateUrl: './base-modal.component.html'
 })
 export class BaseModalComponent {
   formGroup = input.required<FormGroup>();
@@ -32,7 +31,10 @@ export class BaseModalComponent {
 }
 
 export const defaultSize = {
-  width: '33vw',
+  width: '80%',
   minWidth: '400px',
+  position: {
+    top: '48px'
+  },
   height: 'fit-content'
 };
