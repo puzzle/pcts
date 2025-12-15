@@ -2,9 +2,7 @@
 authors = ["PUZZLE"]
 language = "en"
 src = "src"
-multilingual = false
 title = "PCTS Tool"
-theme = "light"
 
 [output.html]
 default-theme="light"
