@@ -15,27 +15,36 @@ some calls are optional.
 
 ```plantuml
 @startuml
-
 skinparam sequenceMessageAlign center
 
-note left: A request comes through the REST API
+actor User
 
--> Controller
+note left of Controller: A request comes through the REST API
+
+User -> Controller: GET /resource
 
 opt
-    note over Mapper: Sometimes a DTO/Model needs \n to be mapped to something else.
+    note over Mapper
+        Sometimes a DTO/Model needs
+        to be mapped to something else.
+    end note
     Controller -> Mapper: Transform DTO to model
     Mapper -> Controller: Return model
 end
+
 Controller -> Service
 
 Service -> ValidationService: Validate if the request is OK
 
 opt
-    note over ValidationService: Optionally the validation service can check \n
-    certain conditions on the database. ValidationService -> PersistenceService
+    note over ValidationService
+        Optionally the validation service can check
+        certain conditions on the database.
+    end note
+    ValidationService -> PersistenceService
     PersistenceService -> ValidationService
 end
+
 ValidationService -> Service: Request is OK
 Service -> PersistenceService
 PersistenceService -> Repository: Save to DB
@@ -44,7 +53,11 @@ PersistenceService -> Service
 Service -> Controller
 Controller -> Mapper: Transform model to DTO
 Mapper -> Controller: Return DTO
-note left: The answer gets sent back through the REST API
+
+
+
+Controller --> User: 200 OK
+note right of User: The answer gets sent back through the REST API
 
 @enduml
 ```
