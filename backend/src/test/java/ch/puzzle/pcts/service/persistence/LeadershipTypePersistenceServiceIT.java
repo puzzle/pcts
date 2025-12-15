@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,7 +110,7 @@ class LeadershipTypePersistenceServiceIT
         List<CertificateType> expectedLeadershipTypes = getAll()
                 .stream()
                 .filter(ct -> ct.getCertificateKind() != null && ct.getCertificateKind().isLeadershipExperienceType())
-                .collect(Collectors.toList());
+                .toList();
 
         List<CertificateType> all = service.getAll();
 
