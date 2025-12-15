@@ -41,17 +41,18 @@ class ExperienceCalculationPersistenceServiceIT
 
     @Override
     List<ExperienceCalculation> getAll() {
-        Calculation calculation1 = calculationServiceIT.getAll().get(0);
-        Calculation calculation2 = calculationServiceIT.getAll().get(1);
+        List<Calculation> calculations = calculationServiceIT.getAll();
+        List<Experience> experiences = experienceServiceIT.getAll();
 
-        Experience experience1 = experienceServiceIT.getAll().get(0);
-        Experience experience2 = experienceServiceIT.getAll().get(1);
-        List<ExperienceCalculation> experienceCalculationList = new ArrayList<>();
-        experienceCalculationList.add(new ExperienceCalculation(1L, calculation1, experience1, Relevancy.HIGHLY));
-        experienceCalculationList.add(new ExperienceCalculation(1L, calculation2, experience1, Relevancy.LITTLE));
-        experienceCalculationList.add(new ExperienceCalculation(1L, calculation1, experience2, Relevancy.LIMITED));
+        List<ExperienceCalculation> list = new ArrayList<>();
 
-        return experienceCalculationList;
+        list.add(new ExperienceCalculation(1L, calculations.get(0), experiences.get(0), Relevancy.HIGHLY));
+
+        list.add(new ExperienceCalculation(2L, calculations.get(1), experiences.get(0), Relevancy.LITTLE));
+
+        list.add(new ExperienceCalculation(3L, calculations.get(0), experiences.get(1), Relevancy.LIMITED));
+
+        return list;
     }
 
     @DisplayName("Should fetch ExperienceCalculations by calculationId")
@@ -59,6 +60,7 @@ class ExperienceCalculationPersistenceServiceIT
     @Test
     void shouldGetByCalculationId() {
         ExperienceCalculation ec = service.save(getModel());
+
         List<ExperienceCalculation> result = service.getByCalculationId(ec.getCalculation().getId());
 
         assertThat(result).contains(ec);
@@ -69,6 +71,7 @@ class ExperienceCalculationPersistenceServiceIT
     @Test
     void shouldGetByExperienceId() {
         ExperienceCalculation ec = service.save(getModel());
+
         List<ExperienceCalculation> result = service.getByExperienceId(ec.getExperience().getId());
 
         assertThat(result).contains(ec);

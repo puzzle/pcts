@@ -94,3 +94,13 @@ VALUES
     (1, 2, 'DRAFT', '2025-01-14', 'Ldap User'),
     (2, 2, 'ARCHIVED', '2025-01-14', 'Ldap User 2'),
     (2, 2, 'ACTIVE', NULL, NULL);
+
+TRUNCATE TABLE experience_calculation CASCADE;
+
+INSERT INTO experience_calculation
+(calculation_id, experience_id, relevancy)
+VALUES
+    (1, 2, 'HIGHLY'),
+    (2, 2, 'LITTLE'),
+    (1, 3, 'LIMITED');
+

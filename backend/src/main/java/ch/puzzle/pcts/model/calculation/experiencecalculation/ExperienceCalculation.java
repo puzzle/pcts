@@ -74,21 +74,31 @@ public class ExperienceCalculation implements Model {
 
     @Override
     public boolean equals(Object object) {
+        if (this == object)
+            return true;
         if (object == null || getClass() != object.getClass())
             return false;
         ExperienceCalculation that = (ExperienceCalculation) object;
-        return Objects.equals(getId(), that.getId()) && Objects.equals(getCalculation(), that.getCalculation())
+        return Objects.equals(getId(), that.getId())
+               && Objects
+                       .equals(this.getCalculation() != null ? this.getCalculation().getId() : null,
+                               that.getCalculation() != null ? that.getCalculation().getId() : null)
                && Objects.equals(getExperience(), that.getExperience()) && getRelevancy() == that.getRelevancy();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getCalculation(), getExperience(), getRelevancy());
+        return Objects
+                .hash(getId(),
+                      getCalculation() != null ? getCalculation().getId() : null,
+                      getExperience(),
+                      getRelevancy());
     }
 
     @Override
     public String toString() {
-        return "ExperienceCalculation{" + "id=" + id + ", calculation=" + calculation + ", experience=" + experience
-               + ", relevancy=" + relevancy + '}';
+        return "ExperienceCalculation{" + "id=" + id + ", calculationId="
+               + (calculation != null ? calculation.getId() : null) + ", experience=" + experience + ", relevancy="
+               + relevancy + '}';
     }
 }
