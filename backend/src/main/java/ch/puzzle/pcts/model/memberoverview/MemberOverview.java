@@ -13,8 +13,10 @@ import java.time.LocalDate;
 public class MemberOverview implements Model {
 
     @Id
-    private Long memberId;
+    @Column(name = "unique_row_id")
+    private Long uniqueRowId;
 
+    private Long memberId;
     private String firstName;
     private String lastName;
     private String abbreviation;
@@ -90,6 +92,7 @@ public class MemberOverview implements Model {
     private Boolean roleIsManagement;
 
     private MemberOverview(Builder builder) {
+        uniqueRowId = builder.uniqueRowId;
         memberId = builder.memberId;
         firstName = builder.firstName;
         lastName = builder.lastName;
@@ -152,6 +155,24 @@ public class MemberOverview implements Model {
 
     public MemberOverview() {
 
+    }
+
+    @Override
+    public Long getId() {
+        return uniqueRowId;
+    }
+
+    @Override
+    public void setId(Long uniqueRowId) {
+        this.uniqueRowId = uniqueRowId;
+    }
+
+    public Long getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(Long memberId) {
+        this.memberId = memberId;
     }
 
     public String getFirstName() {
@@ -625,17 +646,8 @@ public class MemberOverview implements Model {
         return super.toString();
     }
 
-    @Override
-    public Long getId() {
-        return memberId;
-    }
-
-    @Override
-    public void setId(Long id) {
-
-    }
-
     public static final class Builder {
+        private Long uniqueRowId;
         private Long memberId;
         private String firstName;
         private String lastName;
@@ -712,6 +724,11 @@ public class MemberOverview implements Model {
 
         public static Builder builder() {
             return new Builder();
+        }
+
+        public Builder withUniqueRowId(Long uniqueRowId) {
+            this.uniqueRowId = uniqueRowId;
+            return this;
         }
 
         public Builder withMemberId(Long memberId) {
