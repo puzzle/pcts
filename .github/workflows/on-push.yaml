@@ -23,6 +23,11 @@ jobs:
     with:
       COMMIT_HASH: ${{ github.sha }}
 
+  documentation:
+    uses: ./.reusable__documentation.yaml
+    with:
+      COMMIT_HASH: ${{ github.sha }}
+
   push-to-ghrc:
     if: github.ref_name == 'main'
     needs:

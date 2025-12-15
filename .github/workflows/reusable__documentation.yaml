@@ -2,9 +2,17 @@
 name: Deploy mdBook site to Pages
 
 on:
-  push:
-    branches: ["main"]
-  workflow_dispatch:
+  workflow_call:
+    inputs:
+      COMMIT_HASH:
+        type: string
+        description: 'The commit hash from which to check out the repository'
+        required: false
+      DEPLOY:
+        type: boolean
+        default: false
+        description: 'Wether or not to deploy a new version after the build'
+        required: false
 
 permissions:
   contents: read
@@ -22,22 +30,32 @@ jobs:
       MDBOOK_VERSION: 0.4.49
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.COMMIT_HASH }}
+
       - uses: dtolnay/rust-toolchain@stable
+
       - name: Install mdBook and dependencies
         run: |
           cargo install --version ${MDBOOK_VERSION} mdbook --no-default-features
           cargo install mdbook-plantuml
+
       - name: Build with mdBook
         run: mdbook build
         working-directory: ./docs
+
       - name: Setup Pages
         id: pages
+        if: inputs.DEPLOY
         uses: actions/configure-pages@v5
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
+        if: inputs.DEPLOY
         with:
           path: ./docs/book
+
   deploy:
+    if: inputs.DEPLOY
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
