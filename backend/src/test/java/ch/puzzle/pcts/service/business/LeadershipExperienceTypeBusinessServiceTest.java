@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
-import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
+import ch.puzzle.pcts.service.persistence.LeadershipTypePersistenceService;
 import ch.puzzle.pcts.service.validation.LeadershipExperienceTypeValidationService;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +22,7 @@ class LeadershipExperienceTypeBusinessServiceTest {
     private LeadershipExperienceTypeValidationService validationService;
 
     @Mock
-    private CertificateTypePersistenceService persistenceService;
+    private LeadershipTypePersistenceService persistenceService;
 
     @Mock
     private CertificateType certificate;

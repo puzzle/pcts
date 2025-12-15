@@ -2,8 +2,7 @@ package ch.puzzle.pcts.service.persistence;
 
 import static ch.puzzle.pcts.Constants.CERTIFICATE_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.FieldKey;
@@ -13,12 +12,17 @@ import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.repository.CertificateTypeRepository;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 class CertificateTypePersistenceServiceIT
         extends
             PersistenceBaseIT<CertificateType, CertificateTypeRepository, CertificateTypePersistenceService> {
@@ -86,43 +90,55 @@ class CertificateTypePersistenceServiceIT
 
     @Override
     @DisplayName("Should get all entities")
-    @Transactional
     @Test
     void shouldGetAllEntities() {
+        List<CertificateType> expectedCertificates = getAll()
+                .stream()
+                .filter(ct -> ct.getCertificateKind() == CertificateKind.CERTIFICATE)
+                .collect(Collectors.toList());
+
         List<CertificateType> all = service.getAll();
-        assertThat(all).hasSize(4).containsExactlyElementsOf(getAll().subList(0, 4));
+
+        assertThat(all).hasSize(4).usingRecursiveComparison().ignoringFields("tags").isEqualTo(expectedCertificates);
+    }
+
+    @Override
+    @DisplayName("Should delete entity")
+    @Test
+    void shouldDelete() {
+        Long id = 2L;
+
+        service.delete(id);
+
+        assertThatThrownBy(() -> service.getById(id)).isInstanceOf(PCTSException.class);
     }
 
     @DisplayName("Should update certificate type")
-    @Transactional
     @Test
     void shouldUpdateCertificate() {
         Long cId = 4L;
+        CertificateType updatePayload = new CertificateType(cId,
+                                                            "Updated certificate type",
+                                                            BigDecimal.valueOf(3),
+                                                            "This is a updated certificate",
+                                                            Set
+                                                                    .of(new Tag(null, "Important tag"),
+                                                                        new Tag(null, "Way more important tag")));
 
-        CertificateType certificate = new CertificateType(null,
-                                                          "Updated certificate type",
-                                                          BigDecimal.valueOf(3),
-                                                          "This is a updated certificate",
-                                                          Set
-                                                                  .of(new Tag(null, "Important tag"),
-                                                                      new Tag(null, "Way more important tag")));
-        certificate.setId(cId);
-        service.save(certificate);
+        service.save(updatePayload);
 
         Optional<CertificateType> certificateResult = service.getById(cId);
 
-        assertThat(certificateResult).isPresent();
-        CertificateType updatedCertificate = certificateResult.get();
-
-        assertThat(updatedCertificate.getId()).isEqualTo(cId);
-        assertThat(updatedCertificate.getName()).isEqualTo("Updated certificate type");
-        assertThat(updatedCertificate.getPoints()).isEqualByComparingTo(BigDecimal.valueOf(3));
-        assertThat(updatedCertificate.getComment()).isEqualTo("This is a updated certificate");
-        assertThat(updatedCertificate.getTags())
-                .extracting(Tag::getName)
-                .containsExactlyInAnyOrder("Important tag", "Way more important tag");
-
-        assertThat(updatedCertificate.getCertificateKind()).isEqualTo(CertificateKind.CERTIFICATE);
+        assertThat(certificateResult).isPresent().hasValueSatisfying(updated -> {
+            assertThat(updated.getId()).isEqualTo(cId);
+            assertThat(updated.getName()).isEqualTo("Updated certificate type");
+            assertThat(updated.getPoints()).isEqualByComparingTo(BigDecimal.valueOf(3));
+            assertThat(updated.getComment()).isEqualTo("This is a updated certificate");
+            assertThat(updated.getCertificateKind()).isEqualTo(CertificateKind.CERTIFICATE);
+            assertThat(updated.getTags())
+                    .extracting(Tag::getName)
+                    .containsExactlyInAnyOrder("Important tag", "Way more important tag");
+        });
     }
 
     @DisplayName("Should get all certificate types")
@@ -146,10 +162,11 @@ class CertificateTypePersistenceServiceIT
 
         Optional<CertificateType> result = service.getById(certificateId);
 
-        // todo make this cleaner
-        assertThat(result.get().getId()).isEqualTo(certificateId);
-        assertThat(result.get().getName()).isEqualTo("Certificate Type 1");
-        assertThat(result.get().getCertificateKind()).isEqualTo(CertificateKind.CERTIFICATE);
+        assertThat(result).isPresent().hasValueSatisfying(c -> {
+            assertThat(c.getId()).isEqualTo(certificateId);
+            assertThat(c.getName()).isEqualTo("Certificate Type 1");
+            assertThat(c.getCertificateKind()).isEqualTo(CertificateKind.CERTIFICATE);
+        });
     }
 
     @DisplayName("Should not get leadership experience with certificate method")
@@ -157,11 +174,17 @@ class CertificateTypePersistenceServiceIT
     void shouldNotGetLeadershipExperienceAsCertificate() {
         Long id = 5L;
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.getById(id));
-
-        assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
-        assertEquals(List
-                .of(Map.of(FieldKey.FIELD, "id", FieldKey.IS, id.toString(), FieldKey.ENTITY, CERTIFICATE_TYPE)),
-                     exception.getErrorAttributes());
+        assertThatThrownBy(() -> service.getById(id))
+                .isInstanceOf(PCTSException.class)
+                .extracting("errorKeys", "errorAttributes")
+                .containsExactly(List.of(ErrorKey.NOT_FOUND),
+                                 List
+                                         .of(Map
+                                                 .of(FieldKey.FIELD,
+                                                     "id",
+                                                     FieldKey.IS,
+                                                     id.toString(),
+                                                     FieldKey.ENTITY,
+                                                     CERTIFICATE_TYPE)));
     }
 }
