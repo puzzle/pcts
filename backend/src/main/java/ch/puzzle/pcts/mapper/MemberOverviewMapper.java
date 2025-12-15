@@ -27,7 +27,7 @@ public class MemberOverviewMapper {
 
     public MemberOverviewDto toDto(List<MemberOverview> entities) {
 
-        MemberOverview first = entities.get(0);
+        MemberOverview first = entities.getFirst();
 
         MemberDto memberDto = new MemberDto(first.getId(),
                                             first.getFirstName(),
