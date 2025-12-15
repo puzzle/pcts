@@ -168,6 +168,6 @@ WITH base_data AS (
         ) calc_row ON TRUE
 )
 SELECT
-            ROW_NUMBER() OVER (ORDER BY member_id) AS unique_row_id,
-            base_data.*
+    ROW_NUMBER() OVER (ORDER BY member_id) AS unique_row_id,
+    base_data.*
 FROM base_data;

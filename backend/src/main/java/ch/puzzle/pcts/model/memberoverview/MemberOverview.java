@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.model.memberoverview;
 
+import static org.apache.commons.lang3.StringUtils.trim;
+
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.certificatetype.CertificateKind;
@@ -38,7 +40,8 @@ public class MemberOverview implements Model {
     private String certificateTypeName;
     private BigDecimal certificateTypePoints;
     private String certificateTypeComment;
-    private String certificateKind;
+    @Enumerated(EnumType.STRING)
+    private CertificateKind certificateKind;
 
     private Long tagId;
     private String tagName;
@@ -94,62 +97,62 @@ public class MemberOverview implements Model {
     private MemberOverview(Builder builder) {
         uniqueRowId = builder.uniqueRowId;
         memberId = builder.memberId;
-        firstName = builder.firstName;
-        lastName = builder.lastName;
-        abbreviation = builder.abbreviation;
+        firstName = trim(builder.firstName);
+        lastName = trim(builder.lastName);
+        abbreviation = trim(builder.abbreviation);
         birthDate = builder.birthDate;
         dateOfHire = builder.dateOfHire;
         employmentState = builder.employmentState;
         organisationUnitId = builder.organisationUnitId;
-        organisationUnitName = builder.organisationUnitName;
+        organisationUnitName = trim(builder.organisationUnitName);
         certificateId = builder.certificateId;
         certificateCompletedAt = builder.certificateCompletedAt;
         certificateValidUntil = builder.certificateValidUntil;
-        certificateComment = builder.certificateComment;
+        certificateComment = trim(builder.certificateComment);
         certificateTypeId = builder.certificateTypeId;
-        certificateTypeName = builder.certificateTypeName;
+        certificateTypeName = trim(builder.certificateTypeName);
         certificateTypePoints = builder.certificateTypePoints;
-        certificateTypeComment = builder.certificateTypeComment;
+        certificateTypeComment = trim(builder.certificateTypeComment);
         certificateKind = builder.certificateKind;
         tagId = builder.tagId;
-        tagName = builder.tagName;
+        tagName = trim(builder.tagName);
         leadershipId = builder.leadershipId;
-        leadershipComment = builder.leadershipComment;
+        leadershipComment = trim(builder.leadershipComment);
         degreeId = builder.degreeId;
-        degreeName = builder.degreeName;
+        degreeName = trim(builder.degreeName);
         degreeStartDate = builder.degreeStartDate;
         degreeEndDate = builder.degreeEndDate;
-        degreeInstitution = builder.degreeInstitution;
+        degreeInstitution = trim(builder.degreeInstitution);
         degreeCompleted = builder.degreeCompleted;
-        degreeComment = builder.degreeComment;
+        degreeComment = trim(builder.degreeComment);
         leadershipTypeId = builder.leadershipTypeId;
-        leadershipTypeName = builder.leadershipTypeName;
+        leadershipTypeName = trim(builder.leadershipTypeName);
         leadershipKind = builder.leadershipKind;
         leadershipTypePoints = builder.leadershipTypePoints;
-        leadershipTypeComment = builder.leadershipTypeComment;
+        leadershipTypeComment = trim(builder.leadershipTypeComment);
         degreeTypeId = builder.degreeTypeId;
-        degreeTypeName = builder.degreeTypeName;
+        degreeTypeName = trim(builder.degreeTypeName);
         degreeHighlyRelevantPoints = builder.degreeHighlyRelevantPoints;
         degreeLimitedRelevantPoints = builder.degreeLimitedRelevantPoints;
         degreeLittleRelevantPoints = builder.degreeLittleRelevantPoints;
         experienceId = builder.experienceId;
-        experienceName = builder.experienceName;
-        experienceEmployer = builder.experienceEmployer;
+        experienceName = trim(builder.experienceName);
+        experienceEmployer = trim(builder.experienceEmployer);
         experienceStartDate = builder.experienceStartDate;
         experienceEndDate = builder.experienceEndDate;
         experiencePercent = builder.experiencePercent;
-        experienceComment = builder.experienceComment;
+        experienceComment = trim(builder.experienceComment);
         experienceTypeId = builder.experienceTypeId;
-        experienceTypeName = builder.experienceTypeName;
+        experienceTypeName = trim(builder.experienceTypeName);
         experienceHighlyRelevantPoints = builder.experienceHighlyRelevantPoints;
         experienceLimitedRelevantPoints = builder.experienceLimitedRelevantPoints;
         experienceLittleRelevantPoints = builder.experienceLittleRelevantPoints;
         calculationId = builder.calculationId;
         calculationState = builder.calculationState;
         calculationPublicationDate = builder.calculationPublicationDate;
-        calculationPublicizedBy = builder.calculationPublicizedBy;
+        calculationPublicizedBy = trim(builder.calculationPublicizedBy);
         roleId = builder.roleId;
-        roleName = builder.roleName;
+        roleName = trim(builder.roleName);
         roleIsManagement = builder.roleIsManagement;
     }
 
@@ -180,7 +183,7 @@ public class MemberOverview implements Model {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.firstName = trim(firstName);
     }
 
     public String getLastName() {
@@ -188,7 +191,7 @@ public class MemberOverview implements Model {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.lastName = trim(lastName);
     }
 
     public String getAbbreviation() {
@@ -196,7 +199,7 @@ public class MemberOverview implements Model {
     }
 
     public void setAbbreviation(String abbreviation) {
-        this.abbreviation = abbreviation;
+        this.abbreviation = trim(abbreviation);
     }
 
     public LocalDate getBirthDate() {
@@ -236,7 +239,7 @@ public class MemberOverview implements Model {
     }
 
     public void setOrganisationUnitName(String organisationUnitName) {
-        this.organisationUnitName = organisationUnitName;
+        this.organisationUnitName = trim(organisationUnitName);
     }
 
     public Long getCertificateId() {
@@ -268,7 +271,7 @@ public class MemberOverview implements Model {
     }
 
     public void setCertificateComment(String certificateComment) {
-        this.certificateComment = certificateComment;
+        this.certificateComment = trim(certificateComment);
     }
 
     public Long getCertificateTypeId() {
@@ -284,7 +287,7 @@ public class MemberOverview implements Model {
     }
 
     public void setCertificateTypeName(String certificateTypeName) {
-        this.certificateTypeName = certificateTypeName;
+        this.certificateTypeName = trim(certificateTypeName);
     }
 
     public BigDecimal getCertificateTypePoints() {
@@ -300,14 +303,14 @@ public class MemberOverview implements Model {
     }
 
     public void setCertificateTypeComment(String certificateTypeComment) {
-        this.certificateTypeComment = certificateTypeComment;
+        this.certificateTypeComment = trim(certificateTypeComment);
     }
 
-    public String getCertificateKind() {
+    public CertificateKind getCertificateKind() {
         return certificateKind;
     }
 
-    public void setCertificateKind(String certificateKind) {
+    public void setCertificateKind(CertificateKind certificateKind) {
         this.certificateKind = certificateKind;
     }
 
@@ -324,7 +327,7 @@ public class MemberOverview implements Model {
     }
 
     public void setTagName(String tagName) {
-        this.tagName = tagName;
+        this.tagName = trim(tagName);
     }
 
     public Long getLeadershipId() {
@@ -340,7 +343,7 @@ public class MemberOverview implements Model {
     }
 
     public void setLeadershipComment(String leadershipComment) {
-        this.leadershipComment = leadershipComment;
+        this.leadershipComment = trim(leadershipComment);
     }
 
     public Long getDegreeId() {
@@ -356,7 +359,7 @@ public class MemberOverview implements Model {
     }
 
     public void setDegreeName(String degreeName) {
-        this.degreeName = degreeName;
+        this.degreeName = trim(degreeName);
     }
 
     public LocalDate getDegreeStartDate() {
@@ -380,7 +383,7 @@ public class MemberOverview implements Model {
     }
 
     public void setDegreeInstitution(String degreeInstitution) {
-        this.degreeInstitution = degreeInstitution;
+        this.degreeInstitution = trim(degreeInstitution);
     }
 
     public Boolean getDegreeCompleted() {
@@ -396,7 +399,7 @@ public class MemberOverview implements Model {
     }
 
     public void setDegreeComment(String degreeComment) {
-        this.degreeComment = degreeComment;
+        this.degreeComment = trim(degreeComment);
     }
 
     public Long getLeadershipTypeId() {
@@ -412,7 +415,7 @@ public class MemberOverview implements Model {
     }
 
     public void setLeadershipTypeName(String leadershipTypeName) {
-        this.leadershipTypeName = leadershipTypeName;
+        this.leadershipTypeName = trim(leadershipTypeName);
     }
 
     public CertificateKind getLeadershipKind() {
@@ -436,7 +439,7 @@ public class MemberOverview implements Model {
     }
 
     public void setLeadershipTypeComment(String leadershipTypeComment) {
-        this.leadershipTypeComment = leadershipTypeComment;
+        this.leadershipTypeComment = trim(leadershipTypeComment);
     }
 
     public Long getDegreeTypeId() {
@@ -452,7 +455,7 @@ public class MemberOverview implements Model {
     }
 
     public void setDegreeTypeName(String degreeTypeName) {
-        this.degreeTypeName = degreeTypeName;
+        this.degreeTypeName = trim(degreeTypeName);
     }
 
     public BigDecimal getDegreeHighlyRelevantPoints() {
@@ -492,7 +495,7 @@ public class MemberOverview implements Model {
     }
 
     public void setExperienceName(String experienceName) {
-        this.experienceName = experienceName;
+        this.experienceName = trim(experienceName);
     }
 
     public String getExperienceEmployer() {
@@ -500,7 +503,7 @@ public class MemberOverview implements Model {
     }
 
     public void setExperienceEmployer(String experienceEmployer) {
-        this.experienceEmployer = experienceEmployer;
+        this.experienceEmployer = trim(experienceEmployer);
     }
 
     public LocalDate getExperienceStartDate() {
@@ -532,7 +535,7 @@ public class MemberOverview implements Model {
     }
 
     public void setExperienceComment(String experienceComment) {
-        this.experienceComment = experienceComment;
+        this.experienceComment = trim(experienceComment);
     }
 
     public Long getExperienceTypeId() {
@@ -548,7 +551,7 @@ public class MemberOverview implements Model {
     }
 
     public void setExperienceTypeName(String experienceTypeName) {
-        this.experienceTypeName = experienceTypeName;
+        this.experienceTypeName = trim(experienceTypeName);
     }
 
     public BigDecimal getExperienceHighlyRelevantPoints() {
@@ -604,7 +607,7 @@ public class MemberOverview implements Model {
     }
 
     public void setCalculationPublicizedBy(String calculationPublicizedBy) {
-        this.calculationPublicizedBy = calculationPublicizedBy;
+        this.calculationPublicizedBy = trim(calculationPublicizedBy);
     }
 
     public Long getRoleId() {
@@ -620,7 +623,7 @@ public class MemberOverview implements Model {
     }
 
     public void setRoleName(String roleName) {
-        this.roleName = roleName;
+        this.roleName = trim(roleName);
     }
 
     public Boolean getRoleIsManagement() {
@@ -668,7 +671,7 @@ public class MemberOverview implements Model {
         private String certificateTypeName;
         private BigDecimal certificateTypePoints;
         private String certificateTypeComment;
-        private String certificateKind;
+        private CertificateKind certificateKind;
 
         private Long tagId;
         private String tagName;
@@ -737,17 +740,17 @@ public class MemberOverview implements Model {
         }
 
         public Builder withFirstName(String firstName) {
-            this.firstName = firstName;
+            this.firstName = trim(firstName);
             return this;
         }
 
         public Builder withLastName(String lastName) {
-            this.lastName = lastName;
+            this.lastName = trim(lastName);
             return this;
         }
 
         public Builder withAbbreviation(String abbreviation) {
-            this.abbreviation = abbreviation;
+            this.abbreviation = trim(abbreviation);
             return this;
         }
 
@@ -772,7 +775,7 @@ public class MemberOverview implements Model {
         }
 
         public Builder withOrganisationUnitName(String organisationUnitName) {
-            this.organisationUnitName = organisationUnitName;
+            this.organisationUnitName = trim(organisationUnitName);
             return this;
         }
 
@@ -792,7 +795,7 @@ public class MemberOverview implements Model {
         }
 
         public Builder withCertificateComment(String certificateComment) {
-            this.certificateComment = certificateComment;
+            this.certificateComment = trim(certificateComment);
             return this;
         }
 
@@ -802,7 +805,7 @@ public class MemberOverview implements Model {
         }
 
         public Builder withCertificateTypeName(String certificateTypeName) {
-            this.certificateTypeName = certificateTypeName;
+            this.certificateTypeName = trim(certificateTypeName);
             return this;
         }
 
@@ -812,11 +815,11 @@ public class MemberOverview implements Model {
         }
 
         public Builder withCertificateTypeComment(String certificateTypeComment) {
-            this.certificateTypeComment = certificateTypeComment;
+            this.certificateTypeComment = trim(certificateTypeComment);
             return this;
         }
 
-        public Builder withCertificateKind(String certificateKind) {
+        public Builder withCertificateKind(CertificateKind certificateKind) {
             this.certificateKind = certificateKind;
             return this;
         }
@@ -827,7 +830,7 @@ public class MemberOverview implements Model {
         }
 
         public Builder withTagName(String tagName) {
-            this.tagName = tagName;
+            this.tagName = trim(tagName);
             return this;
         }
 
@@ -837,7 +840,7 @@ public class MemberOverview implements Model {
         }
 
         public Builder withLeadershipComment(String leadershipComment) {
-            this.leadershipComment = leadershipComment;
+            this.leadershipComment = trim(leadershipComment);
             return this;
         }
 
@@ -847,7 +850,7 @@ public class MemberOverview implements Model {
         }
 
         public Builder withLeadershipTypeName(String leadershipTypeName) {
-            this.leadershipTypeName = leadershipTypeName;
+            this.leadershipTypeName = trim(leadershipTypeName);
             return this;
         }
 
@@ -862,7 +865,7 @@ public class MemberOverview implements Model {
         }
 
         public Builder withLeadershipTypeComment(String leadershipTypeComment) {
-            this.leadershipTypeComment = leadershipTypeComment;
+            this.leadershipTypeComment = trim(leadershipTypeComment);
             return this;
         }
 
@@ -872,7 +875,7 @@ public class MemberOverview implements Model {
         }
 
         public Builder withDegreeName(String degreeName) {
-            this.degreeName = degreeName;
+            this.degreeName = trim(degreeName);
             return this;
         }
 
@@ -887,7 +890,7 @@ public class MemberOverview implements Model {
         }
 
         public Builder withDegreeInstitution(String degreeInstitution) {
-            this.degreeInstitution = degreeInstitution;
+            this.degreeInstitution = trim(degreeInstitution);
             return this;
         }
 
@@ -897,7 +900,7 @@ public class MemberOverview implements Model {
         }
 
         public Builder withDegreeComment(String degreeComment) {
-            this.degreeComment = degreeComment;
+            this.degreeComment = trim(degreeComment);
             return this;
         }
 
@@ -907,7 +910,7 @@ public class MemberOverview implements Model {
         }
 
         public Builder withDegreeTypeName(String degreeTypeName) {
-            this.degreeTypeName = degreeTypeName;
+            this.degreeTypeName = trim(degreeTypeName);
             return this;
         }
 
@@ -932,12 +935,12 @@ public class MemberOverview implements Model {
         }
 
         public Builder withExperienceName(String experienceName) {
-            this.experienceName = experienceName;
+            this.experienceName = trim(experienceName);
             return this;
         }
 
         public Builder withExperienceEmployer(String experienceEmployer) {
-            this.experienceEmployer = experienceEmployer;
+            this.experienceEmployer = trim(experienceEmployer);
             return this;
         }
 
@@ -957,7 +960,7 @@ public class MemberOverview implements Model {
         }
 
         public Builder withExperienceComment(String experienceComment) {
-            this.experienceComment = experienceComment;
+            this.experienceComment = trim(experienceComment);
             return this;
         }
 
@@ -967,7 +970,7 @@ public class MemberOverview implements Model {
         }
 
         public Builder withExperienceTypeName(String experienceTypeName) {
-            this.experienceTypeName = experienceTypeName;
+            this.experienceTypeName = trim(experienceTypeName);
             return this;
         }
 
@@ -1002,7 +1005,7 @@ public class MemberOverview implements Model {
         }
 
         public Builder withCalculationPublicizedBy(String calculationPublicizedBy) {
-            this.calculationPublicizedBy = calculationPublicizedBy;
+            this.calculationPublicizedBy = trim(calculationPublicizedBy);
             return this;
         }
 
@@ -1012,7 +1015,7 @@ public class MemberOverview implements Model {
         }
 
         public Builder withRoleName(String roleName) {
-            this.roleName = roleName;
+            this.roleName = trim(roleName);
             return this;
         }
 
