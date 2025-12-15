@@ -27,6 +27,7 @@ jobs:
     uses: ./.github/workflows/reusable__documentation.yaml
     with:
       COMMIT_HASH: ${{ github.sha }}
+      DEPLOY: ${{ github.ref_name == 'main' }}
 
   push-to-ghrc:
     if: github.ref_name == 'main'
