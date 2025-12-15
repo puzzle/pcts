@@ -10,6 +10,7 @@ import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.service.persistence.ExperienceCalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.ExperienceCalculationValidationService;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -61,12 +62,12 @@ class ExperienceCalculationBusinessServiceTest {
     @Test
     void shouldCalculateExperiencePoints() {
         ExperienceType type = mock(ExperienceType.class);
-        when(type.getHighlyRelevantPoints()).thenReturn(BigDecimal.valueOf(10));
+        when(type.getPoints(Relevancy.HIGHLY)).thenReturn(BigDecimal.TEN);
 
         Experience exp = mock(Experience.class);
         when(exp.getType()).thenReturn(type);
         when(exp.getPercent()).thenReturn(50);
-        when(exp.getStartDate()).thenReturn(LocalDate.now().minusYears(4));
+        when(exp.getStartDate()).thenReturn(LocalDate.now().minusYears(4).minusMonths(6));
         when(exp.getEndDate()).thenReturn(LocalDate.now());
 
         ExperienceCalculation calculation = mock(ExperienceCalculation.class);
@@ -74,8 +75,7 @@ class ExperienceCalculationBusinessServiceTest {
         when(calculation.getRelevancy()).thenReturn(Relevancy.HIGHLY);
 
         BigDecimal result = businessService.getExperiencePoints(List.of(calculation));
-
-        assertEquals(0, result.compareTo(BigDecimal.valueOf(20)));
+        assertEquals(BigDecimal.valueOf(22.52), result.setScale(2, RoundingMode.HALF_UP));
     }
 
     @DisplayName("Should calculate zero points if list is empty")
@@ -89,9 +89,9 @@ class ExperienceCalculationBusinessServiceTest {
     @Test
     void shouldCalculateDifferentRelevancies() {
         ExperienceType type = mock(ExperienceType.class);
-        when(type.getHighlyRelevantPoints()).thenReturn(BigDecimal.TEN);
-        when(type.getLimitedRelevantPoints()).thenReturn(BigDecimal.valueOf(4));
-        when(type.getLittleRelevantPoints()).thenReturn(BigDecimal.ONE);
+        when(type.getPoints(Relevancy.HIGHLY)).thenReturn(BigDecimal.TEN);
+        when(type.getPoints(Relevancy.LIMITED)).thenReturn(BigDecimal.valueOf(4));
+        when(type.getPoints(Relevancy.LITTLE)).thenReturn(BigDecimal.ONE);
 
         Experience exp = mock(Experience.class);
         when(exp.getType()).thenReturn(type);
@@ -113,7 +113,7 @@ class ExperienceCalculationBusinessServiceTest {
 
         BigDecimal result = businessService.getExperiencePoints(List.of(high, limited, little));
 
-        assertEquals(BigDecimal.valueOf(45), result);
+        assertEquals(BigDecimal.valueOf(45.04), result.setScale(2, RoundingMode.HALF_UP));
     }
 
     @DisplayName("Should validate and create experience calculation")

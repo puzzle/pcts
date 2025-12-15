@@ -1,7 +1,5 @@
 package ch.puzzle.pcts.service.business;
 
-import static ch.puzzle.pcts.Constants.CALCULATION;
-
 import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
 import ch.puzzle.pcts.model.experience.Experience;
@@ -14,6 +12,8 @@ import java.math.RoundingMode;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import org.springframework.stereotype.Service;
+
+import static ch.puzzle.pcts.Constants.EXPERIENCE_CALCULATION;
 
 @Service
 public class ExperienceCalculationBusinessService extends BusinessBase<ExperienceCalculation> {
@@ -49,7 +49,10 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
                 .divide(BigDecimal.valueOf(100), MathContext.UNLIMITED);
 
         long days = experience.getStartDate().until(experience.getEndDate(), ChronoUnit.DAYS);
-        // We have to round at one point otherwise this can throw a Exception
+
+        /*
+         This is rounded because we have to round at some point otherwise this can cause a exception
+         */
         BigDecimal years = BigDecimal.valueOf(days).divide(BigDecimal.valueOf(365), 10, RoundingMode.HALF_UP);
 
         return basePoints.multiply(percentFactor).multiply(years);
@@ -57,6 +60,6 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
 
     @Override
     protected String entityName() {
-        return CALCULATION;
+        return EXPERIENCE_CALCULATION;
     }
 }
