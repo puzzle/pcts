@@ -42,12 +42,12 @@ export const appConfig: ApplicationConfig = {
         clientId: 'pcts-dev'
       },
       initOptions: {
-        onLoad: 'check-sso'
+        onLoad: 'login-required'
       }
     }),
     {
       provide: INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG,
-      useValue: [urlCondition] // <-- Note that multiple conditions might be added.
+      useValue: [urlCondition]
     },
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),

@@ -8,6 +8,7 @@ import { MemberCvOverviewModel } from './member-cv-overview.model';
 import { CalculationModel } from '../calculations/calculation.model';
 import { RolePointsModel } from './detail-view/RolePointsModel';
 
+
 @Injectable({
   providedIn: 'root'
 })
