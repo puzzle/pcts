@@ -3,11 +3,9 @@ package ch.puzzle.pcts.model.memberoverview;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
-import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.member.EmploymentState;
 import jakarta.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -15,7 +13,6 @@ import java.time.LocalDate;
 public class MemberOverview implements Model {
 
     @Id
-    @Column(name = "unique_row_id")
     private Long uniqueRowId;
 
     private Long memberId;
@@ -27,8 +24,6 @@ public class MemberOverview implements Model {
     private LocalDate dateOfHire;
     @Enumerated(EnumType.STRING)
     private EmploymentState employmentState;
-
-    private Long organisationUnitId;
     private String organisationUnitName;
 
     private Long certificateId;
@@ -36,61 +31,32 @@ public class MemberOverview implements Model {
     private LocalDate certificateValidUntil;
     private String certificateComment;
 
-    private Long certificateTypeId;
     private String certificateTypeName;
-    private BigDecimal certificateTypePoints;
     private String certificateTypeComment;
-
-    private Long tagId;
-    private String tagName;
 
     private Long leadershipId;
     private String leadershipComment;
+
+    private String leadershipTypeName;
+    private String leadershipTypeComment;
+    @Enumerated(EnumType.STRING)
+    private CertificateKind leadershipTypeKind;
 
     private Long degreeId;
     private String degreeName;
     private LocalDate degreeStartDate;
     private LocalDate degreeEndDate;
-    private String degreeInstitution;
-    private Boolean degreeCompleted;
-    private String degreeComment;
-    private Long leadershipTypeId;
-    private String leadershipTypeName;
 
-    @Enumerated(EnumType.STRING)
-    private CertificateKind leadershipKind;
-    private BigDecimal leadershipTypePoints;
-    private String leadershipTypeComment;
-
-    private Long degreeTypeId;
     private String degreeTypeName;
-    private BigDecimal degreeHighlyRelevantPoints;
-    private BigDecimal degreeLimitedRelevantPoints;
-    private BigDecimal degreeLittleRelevantPoints;
 
     private Long experienceId;
     private String experienceName;
     private String experienceEmployer;
     private LocalDate experienceStartDate;
     private LocalDate experienceEndDate;
-    private Integer experiencePercent;
     private String experienceComment;
 
-    private Long experienceTypeId;
     private String experienceTypeName;
-    private BigDecimal experienceHighlyRelevantPoints;
-    private BigDecimal experienceLimitedRelevantPoints;
-    private BigDecimal experienceLittleRelevantPoints;
-
-    private Long calculationId;
-    @Enumerated(EnumType.STRING)
-    private CalculationState calculationState;
-    private LocalDate calculationPublicationDate;
-    private String calculationPublicizedBy;
-
-    private Long roleId;
-    private String roleName;
-    private Boolean roleIsManagement;
 
     private MemberOverview(Builder builder) {
         uniqueRowId = builder.uniqueRowId;
@@ -101,56 +67,30 @@ public class MemberOverview implements Model {
         birthDate = builder.birthDate;
         dateOfHire = builder.dateOfHire;
         employmentState = builder.employmentState;
-        organisationUnitId = builder.organisationUnitId;
         organisationUnitName = trim(builder.organisationUnitName);
         certificateId = builder.certificateId;
         certificateCompletedAt = builder.certificateCompletedAt;
         certificateValidUntil = builder.certificateValidUntil;
         certificateComment = trim(builder.certificateComment);
-        certificateTypeId = builder.certificateTypeId;
         certificateTypeName = trim(builder.certificateTypeName);
-        certificateTypePoints = builder.certificateTypePoints;
         certificateTypeComment = trim(builder.certificateTypeComment);
-        tagId = builder.tagId;
-        tagName = trim(builder.tagName);
         leadershipId = builder.leadershipId;
         leadershipComment = trim(builder.leadershipComment);
         degreeId = builder.degreeId;
         degreeName = trim(builder.degreeName);
         degreeStartDate = builder.degreeStartDate;
         degreeEndDate = builder.degreeEndDate;
-        degreeInstitution = trim(builder.degreeInstitution);
-        degreeCompleted = builder.degreeCompleted;
-        degreeComment = trim(builder.degreeComment);
-        leadershipTypeId = builder.leadershipTypeId;
         leadershipTypeName = trim(builder.leadershipTypeName);
-        leadershipKind = builder.leadershipKind;
-        leadershipTypePoints = builder.leadershipTypePoints;
+        leadershipTypeKind = builder.leadershipTypeKind;
         leadershipTypeComment = trim(builder.leadershipTypeComment);
-        degreeTypeId = builder.degreeTypeId;
         degreeTypeName = trim(builder.degreeTypeName);
-        degreeHighlyRelevantPoints = builder.degreeHighlyRelevantPoints;
-        degreeLimitedRelevantPoints = builder.degreeLimitedRelevantPoints;
-        degreeLittleRelevantPoints = builder.degreeLittleRelevantPoints;
         experienceId = builder.experienceId;
         experienceName = trim(builder.experienceName);
         experienceEmployer = trim(builder.experienceEmployer);
         experienceStartDate = builder.experienceStartDate;
         experienceEndDate = builder.experienceEndDate;
-        experiencePercent = builder.experiencePercent;
         experienceComment = trim(builder.experienceComment);
-        experienceTypeId = builder.experienceTypeId;
         experienceTypeName = trim(builder.experienceTypeName);
-        experienceHighlyRelevantPoints = builder.experienceHighlyRelevantPoints;
-        experienceLimitedRelevantPoints = builder.experienceLimitedRelevantPoints;
-        experienceLittleRelevantPoints = builder.experienceLittleRelevantPoints;
-        calculationId = builder.calculationId;
-        calculationState = builder.calculationState;
-        calculationPublicationDate = builder.calculationPublicationDate;
-        calculationPublicizedBy = trim(builder.calculationPublicizedBy);
-        roleId = builder.roleId;
-        roleName = trim(builder.roleName);
-        roleIsManagement = builder.roleIsManagement;
     }
 
     public MemberOverview() {
@@ -223,14 +163,6 @@ public class MemberOverview implements Model {
         this.employmentState = employmentState;
     }
 
-    public Long getOrganisationUnitId() {
-        return organisationUnitId;
-    }
-
-    public void setOrganisationUnitId(Long organisationUnitId) {
-        this.organisationUnitId = organisationUnitId;
-    }
-
     public String getOrganisationUnitName() {
         return organisationUnitName;
     }
@@ -271,14 +203,6 @@ public class MemberOverview implements Model {
         this.certificateComment = trim(certificateComment);
     }
 
-    public Long getCertificateTypeId() {
-        return certificateTypeId;
-    }
-
-    public void setCertificateTypeId(Long certificateTypeId) {
-        this.certificateTypeId = certificateTypeId;
-    }
-
     public String getCertificateTypeName() {
         return certificateTypeName;
     }
@@ -287,36 +211,12 @@ public class MemberOverview implements Model {
         this.certificateTypeName = trim(certificateTypeName);
     }
 
-    public BigDecimal getCertificateTypePoints() {
-        return certificateTypePoints;
-    }
-
-    public void setCertificateTypePoints(BigDecimal certificateTypePoints) {
-        this.certificateTypePoints = certificateTypePoints;
-    }
-
     public String getCertificateTypeComment() {
         return certificateTypeComment;
     }
 
     public void setCertificateTypeComment(String certificateTypeComment) {
         this.certificateTypeComment = trim(certificateTypeComment);
-    }
-
-    public Long getTagId() {
-        return tagId;
-    }
-
-    public void setTagId(Long tagId) {
-        this.tagId = tagId;
-    }
-
-    public String getTagName() {
-        return tagName;
-    }
-
-    public void setTagName(String tagName) {
-        this.tagName = trim(tagName);
     }
 
     public Long getLeadershipId() {
@@ -367,38 +267,6 @@ public class MemberOverview implements Model {
         this.degreeEndDate = degreeEndDate;
     }
 
-    public String getDegreeInstitution() {
-        return degreeInstitution;
-    }
-
-    public void setDegreeInstitution(String degreeInstitution) {
-        this.degreeInstitution = trim(degreeInstitution);
-    }
-
-    public Boolean getDegreeCompleted() {
-        return degreeCompleted;
-    }
-
-    public void setDegreeCompleted(Boolean degreeCompleted) {
-        this.degreeCompleted = degreeCompleted;
-    }
-
-    public String getDegreeComment() {
-        return degreeComment;
-    }
-
-    public void setDegreeComment(String degreeComment) {
-        this.degreeComment = trim(degreeComment);
-    }
-
-    public Long getLeadershipTypeId() {
-        return leadershipTypeId;
-    }
-
-    public void setLeadershipTypeId(Long leadershipTypeId) {
-        this.leadershipTypeId = leadershipTypeId;
-    }
-
     public String getLeadershipTypeName() {
         return leadershipTypeName;
     }
@@ -407,20 +275,12 @@ public class MemberOverview implements Model {
         this.leadershipTypeName = trim(leadershipTypeName);
     }
 
-    public CertificateKind getLeadershipKind() {
-        return leadershipKind;
+    public CertificateKind getleadershipTypeKind() {
+        return leadershipTypeKind;
     }
 
-    public void setLeadershipKind(CertificateKind leadershipKind) {
-        this.leadershipKind = leadershipKind;
-    }
-
-    public BigDecimal getLeadershipTypePoints() {
-        return leadershipTypePoints;
-    }
-
-    public void setLeadershipTypePoints(BigDecimal leadershipTypePoints) {
-        this.leadershipTypePoints = leadershipTypePoints;
+    public void setleadershipTypeKind(CertificateKind leadershipKind) {
+        this.leadershipTypeKind = leadershipKind;
     }
 
     public String getLeadershipTypeComment() {
@@ -431,44 +291,12 @@ public class MemberOverview implements Model {
         this.leadershipTypeComment = trim(leadershipTypeComment);
     }
 
-    public Long getDegreeTypeId() {
-        return degreeTypeId;
-    }
-
-    public void setDegreeTypeId(Long degreeTypeId) {
-        this.degreeTypeId = degreeTypeId;
-    }
-
     public String getDegreeTypeName() {
         return degreeTypeName;
     }
 
     public void setDegreeTypeName(String degreeTypeName) {
         this.degreeTypeName = trim(degreeTypeName);
-    }
-
-    public BigDecimal getDegreeHighlyRelevantPoints() {
-        return degreeHighlyRelevantPoints;
-    }
-
-    public void setDegreeHighlyRelevantPoints(BigDecimal degreeHighlyRelevantPoints) {
-        this.degreeHighlyRelevantPoints = degreeHighlyRelevantPoints;
-    }
-
-    public BigDecimal getDegreeLimitedRelevantPoints() {
-        return degreeLimitedRelevantPoints;
-    }
-
-    public void setDegreeLimitedRelevantPoints(BigDecimal degreeLimitedRelevantPoints) {
-        this.degreeLimitedRelevantPoints = degreeLimitedRelevantPoints;
-    }
-
-    public BigDecimal getDegreeLittleRelevantPoints() {
-        return degreeLittleRelevantPoints;
-    }
-
-    public void setDegreeLittleRelevantPoints(BigDecimal degreeLittleRelevantPoints) {
-        this.degreeLittleRelevantPoints = degreeLittleRelevantPoints;
     }
 
     public Long getExperienceId() {
@@ -511,14 +339,6 @@ public class MemberOverview implements Model {
         this.experienceEndDate = experienceEndDate;
     }
 
-    public Integer getExperiencePercent() {
-        return experiencePercent;
-    }
-
-    public void setExperiencePercent(Integer experiencePercent) {
-        this.experiencePercent = experiencePercent;
-    }
-
     public String getExperienceComment() {
         return experienceComment;
     }
@@ -527,100 +347,12 @@ public class MemberOverview implements Model {
         this.experienceComment = trim(experienceComment);
     }
 
-    public Long getExperienceTypeId() {
-        return experienceTypeId;
-    }
-
-    public void setExperienceTypeId(Long experienceTypeId) {
-        this.experienceTypeId = experienceTypeId;
-    }
-
     public String getExperienceTypeName() {
         return experienceTypeName;
     }
 
     public void setExperienceTypeName(String experienceTypeName) {
         this.experienceTypeName = trim(experienceTypeName);
-    }
-
-    public BigDecimal getExperienceHighlyRelevantPoints() {
-        return experienceHighlyRelevantPoints;
-    }
-
-    public void setExperienceHighlyRelevantPoints(BigDecimal experienceHighlyRelevantPoints) {
-        this.experienceHighlyRelevantPoints = experienceHighlyRelevantPoints;
-    }
-
-    public BigDecimal getExperienceLimitedRelevantPoints() {
-        return experienceLimitedRelevantPoints;
-    }
-
-    public void setExperienceLimitedRelevantPoints(BigDecimal experienceLimitedRelevantPoints) {
-        this.experienceLimitedRelevantPoints = experienceLimitedRelevantPoints;
-    }
-
-    public BigDecimal getExperienceLittleRelevantPoints() {
-        return experienceLittleRelevantPoints;
-    }
-
-    public void setExperienceLittleRelevantPoints(BigDecimal experienceLittleRelevantPoints) {
-        this.experienceLittleRelevantPoints = experienceLittleRelevantPoints;
-    }
-
-    public Long getCalculationId() {
-        return calculationId;
-    }
-
-    public void setCalculationId(Long calculationId) {
-        this.calculationId = calculationId;
-    }
-
-    public CalculationState getCalculationState() {
-        return calculationState;
-    }
-
-    public void setCalculationState(CalculationState calculationState) {
-        this.calculationState = calculationState;
-    }
-
-    public LocalDate getCalculationPublicationDate() {
-        return calculationPublicationDate;
-    }
-
-    public void setCalculationPublicationDate(LocalDate calculationPublicationDate) {
-        this.calculationPublicationDate = calculationPublicationDate;
-    }
-
-    public String getCalculationPublicizedBy() {
-        return calculationPublicizedBy;
-    }
-
-    public void setCalculationPublicizedBy(String calculationPublicizedBy) {
-        this.calculationPublicizedBy = trim(calculationPublicizedBy);
-    }
-
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = trim(roleName);
-    }
-
-    public Boolean getRoleIsManagement() {
-        return roleIsManagement;
-    }
-
-    public void setRoleIsManagement(Boolean roleIsManagement) {
-        this.roleIsManagement = roleIsManagement;
     }
 
     @Override
@@ -648,7 +380,6 @@ public class MemberOverview implements Model {
         private LocalDate dateOfHire;
         private EmploymentState employmentState;
 
-        private Long organisationUnitId;
         private String organisationUnitName;
 
         private Long certificateId;
@@ -656,13 +387,8 @@ public class MemberOverview implements Model {
         private LocalDate certificateValidUntil;
         private String certificateComment;
 
-        private Long certificateTypeId;
         private String certificateTypeName;
-        private BigDecimal certificateTypePoints;
         private String certificateTypeComment;
-
-        private Long tagId;
-        private String tagName;
 
         private Long leadershipId;
         private String leadershipComment;
@@ -671,44 +397,21 @@ public class MemberOverview implements Model {
         private String degreeName;
         private LocalDate degreeStartDate;
         private LocalDate degreeEndDate;
-        private String degreeInstitution;
-        private Boolean degreeCompleted;
-        private String degreeComment;
 
-        private Long leadershipTypeId;
         private String leadershipTypeName;
-        private CertificateKind leadershipKind;
-        private BigDecimal leadershipTypePoints;
+        private CertificateKind leadershipTypeKind;
         private String leadershipTypeComment;
 
-        private Long degreeTypeId;
         private String degreeTypeName;
-        private BigDecimal degreeHighlyRelevantPoints;
-        private BigDecimal degreeLimitedRelevantPoints;
-        private BigDecimal degreeLittleRelevantPoints;
 
         private Long experienceId;
         private String experienceName;
         private String experienceEmployer;
         private LocalDate experienceStartDate;
         private LocalDate experienceEndDate;
-        private Integer experiencePercent;
         private String experienceComment;
 
-        private Long experienceTypeId;
         private String experienceTypeName;
-        private BigDecimal experienceHighlyRelevantPoints;
-        private BigDecimal experienceLimitedRelevantPoints;
-        private BigDecimal experienceLittleRelevantPoints;
-
-        private Long calculationId;
-        private CalculationState calculationState;
-        private LocalDate calculationPublicationDate;
-        private String calculationPublicizedBy;
-
-        private Long roleId;
-        private String roleName;
-        private Boolean roleIsManagement;
 
         private Builder() {
         }
@@ -757,11 +460,6 @@ public class MemberOverview implements Model {
             return this;
         }
 
-        public Builder withOrganisationUnitId(Long organisationUnitId) {
-            this.organisationUnitId = organisationUnitId;
-            return this;
-        }
-
         public Builder withOrganisationUnitName(String organisationUnitName) {
             this.organisationUnitName = trim(organisationUnitName);
             return this;
@@ -787,33 +485,13 @@ public class MemberOverview implements Model {
             return this;
         }
 
-        public Builder withCertificateTypeId(Long certificateTypeId) {
-            this.certificateTypeId = certificateTypeId;
-            return this;
-        }
-
         public Builder withCertificateTypeName(String certificateTypeName) {
             this.certificateTypeName = trim(certificateTypeName);
             return this;
         }
 
-        public Builder withCertificateTypePoints(BigDecimal certificateTypePoints) {
-            this.certificateTypePoints = certificateTypePoints;
-            return this;
-        }
-
         public Builder withCertificateTypeComment(String certificateTypeComment) {
             this.certificateTypeComment = trim(certificateTypeComment);
-            return this;
-        }
-
-        public Builder withTagId(Long tagId) {
-            this.tagId = tagId;
-            return this;
-        }
-
-        public Builder withTagName(String tagName) {
-            this.tagName = trim(tagName);
             return this;
         }
 
@@ -827,23 +505,13 @@ public class MemberOverview implements Model {
             return this;
         }
 
-        public Builder withLeadershipTypeId(Long leadershipTypeId) {
-            this.leadershipTypeId = leadershipTypeId;
-            return this;
-        }
-
         public Builder withLeadershipTypeName(String leadershipTypeName) {
             this.leadershipTypeName = trim(leadershipTypeName);
             return this;
         }
 
-        public Builder withLeadershipKind(CertificateKind leadershipKind) {
-            this.leadershipKind = leadershipKind;
-            return this;
-        }
-
-        public Builder withLeadershipTypePoints(BigDecimal leadershipTypePoints) {
-            this.leadershipTypePoints = leadershipTypePoints;
+        public Builder withleadershipTypeKind(CertificateKind leadershipTypeKind) {
+            this.leadershipTypeKind = leadershipTypeKind;
             return this;
         }
 
@@ -872,43 +540,8 @@ public class MemberOverview implements Model {
             return this;
         }
 
-        public Builder withDegreeInstitution(String degreeInstitution) {
-            this.degreeInstitution = trim(degreeInstitution);
-            return this;
-        }
-
-        public Builder withDegreeCompleted(Boolean degreeCompleted) {
-            this.degreeCompleted = degreeCompleted;
-            return this;
-        }
-
-        public Builder withDegreeComment(String degreeComment) {
-            this.degreeComment = trim(degreeComment);
-            return this;
-        }
-
-        public Builder withDegreeTypeId(Long degreeTypeId) {
-            this.degreeTypeId = degreeTypeId;
-            return this;
-        }
-
         public Builder withDegreeTypeName(String degreeTypeName) {
             this.degreeTypeName = trim(degreeTypeName);
-            return this;
-        }
-
-        public Builder withDegreeHighlyRelevantPoints(BigDecimal degreeHighlyRelevantPoints) {
-            this.degreeHighlyRelevantPoints = degreeHighlyRelevantPoints;
-            return this;
-        }
-
-        public Builder withDegreeLimitedRelevantPoints(BigDecimal degreeLimitedRelevantPoints) {
-            this.degreeLimitedRelevantPoints = degreeLimitedRelevantPoints;
-            return this;
-        }
-
-        public Builder withDegreeLittleRelevantPoints(BigDecimal degreeLittleRelevantPoints) {
-            this.degreeLittleRelevantPoints = degreeLittleRelevantPoints;
             return this;
         }
 
@@ -937,73 +570,13 @@ public class MemberOverview implements Model {
             return this;
         }
 
-        public Builder withExperiencePercent(Integer experiencePercent) {
-            this.experiencePercent = experiencePercent;
-            return this;
-        }
-
         public Builder withExperienceComment(String experienceComment) {
             this.experienceComment = trim(experienceComment);
             return this;
         }
 
-        public Builder withExperienceTypeId(Long experienceTypeId) {
-            this.experienceTypeId = experienceTypeId;
-            return this;
-        }
-
         public Builder withExperienceTypeName(String experienceTypeName) {
             this.experienceTypeName = trim(experienceTypeName);
-            return this;
-        }
-
-        public Builder withExperienceHighlyRelevantPoints(BigDecimal experienceHighlyRelevantPoints) {
-            this.experienceHighlyRelevantPoints = experienceHighlyRelevantPoints;
-            return this;
-        }
-
-        public Builder withExperienceLimitedRelevantPoints(BigDecimal experienceLimitedRelevantPoints) {
-            this.experienceLimitedRelevantPoints = experienceLimitedRelevantPoints;
-            return this;
-        }
-
-        public Builder withExperienceLittleRelevantPoints(BigDecimal experienceLittleRelevantPoints) {
-            this.experienceLittleRelevantPoints = experienceLittleRelevantPoints;
-            return this;
-        }
-
-        public Builder withCalculationId(Long calculationId) {
-            this.calculationId = calculationId;
-            return this;
-        }
-
-        public Builder withCalculationState(CalculationState calculationState) {
-            this.calculationState = calculationState;
-            return this;
-        }
-
-        public Builder withCalculationPublicationDate(LocalDate calculationPublicationDate) {
-            this.calculationPublicationDate = calculationPublicationDate;
-            return this;
-        }
-
-        public Builder withCalculationPublicizedBy(String calculationPublicizedBy) {
-            this.calculationPublicizedBy = trim(calculationPublicizedBy);
-            return this;
-        }
-
-        public Builder withRoleId(Long roleId) {
-            this.roleId = roleId;
-            return this;
-        }
-
-        public Builder withRoleName(String roleName) {
-            this.roleName = trim(roleName);
-            return this;
-        }
-
-        public Builder withRoleIsManagement(Boolean roleIsManagement) {
-            this.roleIsManagement = roleIsManagement;
             return this;
         }
     }
