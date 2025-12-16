@@ -3,6 +3,7 @@ import { Router, RouterOutlet } from '@angular/router';
 import '@puzzleitc/puzzle-shell';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgOptimizedImage } from '@angular/common';
+import { UserService } from './core/auth/user.service';
 
 @Component({
   selector: 'app-root',
@@ -18,8 +19,20 @@ export class AppComponent {
 
   private readonly router = inject(Router);
 
+  private readonly userService = inject(UserService);
+
+  protected userName: string | null;
+
+  constructor() {
+    this.userName = this.userService.getName();
+  }
+
   protected visitRoot(): void {
     this.router.navigate(['/member']);
+  }
+
+  protected handleLogout() {
+    this.userService.logout();
   }
 }
 
