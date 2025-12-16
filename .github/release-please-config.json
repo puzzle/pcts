@@ -1,11 +1,10 @@
 {
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
-  "pull-request-header": "",
+  "pull-request-header": "chore: release",
   "draft-pull-request": true,
   "versioning": "default",
   "changelog-sections": [
     { "type": "feat", "hidden": false, "section": "Features" },
-    { "type": "feature", "hidden": false, "section": "Features" },
     { "type": "fix", "hidden": false, "section": "Bug Fixes" },
     { "type": "chore", "hidden": false, "section": "Miscellaneous Chores" },
     { "type": "build", "hidden": false, "section": "Miscellaneous Chores" },
@@ -15,7 +14,11 @@
   "packages": {
     ".": {
       "release-type": "simple",
-      "include-v-in-tag": false
+      "include-v-in-tag": false,
+      "extra-files": [
+        "frontend/package.json",
+        "backend/pom.xml"
+      ]
     }
   }
 }
