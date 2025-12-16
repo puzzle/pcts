@@ -15,10 +15,7 @@
   "packages": {
     ".": {
       "release-type": "simple",
-      "include-v-in-tag": false,
-      "extra-files": [
-        ""
-      ]
+      "include-v-in-tag": false
     }
   }
 }
