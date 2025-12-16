@@ -15,10 +15,10 @@
       <pzsh-menu-dropdown href="#">
         <div slot="toggle">
           <pzsh-icon name="user"></pzsh-icon>
-          Susi Sommer
+          {{ userName }}
         </div>
         <div slot="items">
-          <pzsh-menu-dropdown-item href="#">
+          <pzsh-menu-dropdown-item href="#" (click)="handleLogout()">
             <pzsh-icon name="sign-out-alt"></pzsh-icon>
             {{ "LOGOUT" | translate }}
           </pzsh-menu-dropdown-item>
