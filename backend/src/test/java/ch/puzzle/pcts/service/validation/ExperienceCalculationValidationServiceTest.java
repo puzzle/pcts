@@ -97,32 +97,6 @@ class ExperienceCalculationValidationServiceTest {
                      exception.getErrorAttributes().get(0));
     }
 
-    @DisplayName("Should return correct ID if experience calculation exists")
-    @Test
-    void shouldReturnIdByCalculationAndExperience() {
-        Member member = createMember(1L, "Alice", "Smith");
-        ExperienceCalculation ec1 = createExperienceCalculation(1L, member);
-        ExperienceCalculation ec2 = createExperienceCalculation(2L, member);
-
-        List<ExperienceCalculation> list = List.of(ec1, ec2);
-
-        Long id = service.findIdByCalculationAndExperience(ec2, list);
-        assertEquals(ec2.getId(), id);
-    }
-
-    @DisplayName("Should return null if experience calculation does not exist")
-    @Test
-    void shouldReturnNullIfNotFound() {
-        Member member = createMember(1L, "Alice", "Smith");
-        ExperienceCalculation ec1 = createExperienceCalculation(1L, member);
-        ExperienceCalculation ec2 = createExperienceCalculation(2L, member);
-
-        List<ExperienceCalculation> list = List.of(ec1);
-
-        Long id = service.findIdByCalculationAndExperience(ec2, list);
-        assertNull(id);
-    }
-
     @DisplayName("Should call validateMemberForCalculation on validateOnCreate")
     @Test
     void shouldCallValidateMemberForCalculationOnCreate() {

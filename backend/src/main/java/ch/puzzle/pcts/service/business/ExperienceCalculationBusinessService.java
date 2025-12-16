@@ -81,19 +81,32 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
         List<ExperienceCalculation> experienceCalculations = calculation.getExperiences().stream().map(exp -> {
             exp.setCalculation(calculation);
 
-            Long expCalcId = experienceCalculationValidationService.findIdByCalculationAndExperience(exp, existing);
+            Long expCalcId = findIdByCalculationAndExperience(exp, existing);
 
             exp.setId(expCalcId);
 
             return exp.getId() == null ? this.create(exp) : this.update(expCalcId, exp);
         }).toList();
 
-        // Removing all created or updated experience calculations to later delete the
-        // unused experience calculations
+        /*
+         * Removing all created or updated experience calculations to later delete the
+         * unused experience calculations
+         */
         existing.removeAll(experienceCalculations);
         existing.stream().map(ExperienceCalculation::getId).forEach(this::delete);
 
         return experienceCalculations;
+    }
+
+    private Long findIdByCalculationAndExperience(ExperienceCalculation experienceCalculation,
+                                                  List<ExperienceCalculation> experienceCalculationList) {
+        return experienceCalculationList
+                .stream()
+                .filter(ec -> ec.getCalculation().getId().equals(experienceCalculation.getCalculation().getId())
+                              && ec.getExperience().getId().equals(experienceCalculation.getExperience().getId()))
+                .map(ExperienceCalculation::getId)
+                .findFirst()
+                .orElse(null);
     }
 
     private BigDecimal calculatePoints(ExperienceCalculation calculation) {

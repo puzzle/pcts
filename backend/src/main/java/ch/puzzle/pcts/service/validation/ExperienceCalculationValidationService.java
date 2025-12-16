@@ -25,17 +25,6 @@ public class ExperienceCalculationValidationService extends ValidationBase<Exper
         this.validateMemberForCalculation(model);
     }
 
-    public Long findIdByCalculationAndExperience(ExperienceCalculation experienceCalculation,
-                                                 List<ExperienceCalculation> experienceCalculationList) {
-        return experienceCalculationList
-                .stream()
-                .filter(ec -> ec.getCalculation().getId().equals(experienceCalculation.getCalculation().getId())
-                              && ec.getExperience().getId().equals(experienceCalculation.getExperience().getId()))
-                .map(ExperienceCalculation::getId)
-                .findFirst()
-                .orElse(null);
-    }
-
     public void validateDuplicateExperienceId(ExperienceCalculation experienceCalculation,
                                               List<ExperienceCalculation> experienceCalculationList) {
         if (!experienceCalculationList.isEmpty()) {
