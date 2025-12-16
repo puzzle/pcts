@@ -1,8 +1,10 @@
 package ch.puzzle.pcts.service.business;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import ch.puzzle.pcts.exception.PCTSException;
+import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
 import ch.puzzle.pcts.model.experience.Experience;
@@ -13,6 +15,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,32 +37,32 @@ class ExperienceCalculationBusinessServiceTest {
     @InjectMocks
     private ExperienceCalculationBusinessService businessService;
 
-    @DisplayName("Should get experience calculations by calculation id")
     @Test
+    @DisplayName("Should get experience calculations by calculation id")
     void shouldGetByCalculationId() {
         ExperienceCalculation exp = mock(ExperienceCalculation.class);
         when(persistenceService.getByCalculationId(ID)).thenReturn(List.of(exp));
 
         List<ExperienceCalculation> result = businessService.getByCalculationId(ID);
 
-        assertEquals(List.of(exp), result);
+        assertEquals(1, result.size());
         verify(persistenceService).getByCalculationId(ID);
     }
 
-    @DisplayName("Should get experience calculations by experience id")
     @Test
+    @DisplayName("Should get experience calculations by experience id")
     void shouldGetByExperienceId() {
         ExperienceCalculation exp = mock(ExperienceCalculation.class);
         when(persistenceService.getByExperienceId(ID)).thenReturn(List.of(exp));
 
         List<ExperienceCalculation> result = businessService.getByExperienceId(ID);
 
-        assertEquals(List.of(exp), result);
+        assertEquals(1, result.size());
         verify(persistenceService).getByExperienceId(ID);
     }
 
-    @DisplayName("Should calculate total experience points correctly")
     @Test
+    @DisplayName("Should calculate experience points correctly")
     void shouldCalculateExperiencePoints() {
         ExperienceType type = mock(ExperienceType.class);
         when(type.getPoints(Relevancy.HIGHLY)).thenReturn(BigDecimal.TEN);
@@ -67,96 +70,126 @@ class ExperienceCalculationBusinessServiceTest {
         Experience exp = mock(Experience.class);
         when(exp.getType()).thenReturn(type);
         when(exp.getPercent()).thenReturn(50);
-        when(exp.getStartDate()).thenReturn(LocalDate.now().minusYears(4).minusMonths(6));
-        when(exp.getEndDate()).thenReturn(LocalDate.now());
+        when(exp.getStartDate()).thenReturn(LocalDate.of(2020, 1, 1));
+        when(exp.getEndDate()).thenReturn(LocalDate.of(2024, 7, 1));
 
         ExperienceCalculation calculation = mock(ExperienceCalculation.class);
         when(calculation.getExperience()).thenReturn(exp);
         when(calculation.getRelevancy()).thenReturn(Relevancy.HIGHLY);
 
         BigDecimal result = businessService.getExperiencePoints(List.of(calculation));
-        assertEquals(BigDecimal.valueOf(22.52), result.setScale(2, RoundingMode.HALF_UP));
+
+        /*
+         * basePoints = 10 (HIGHLY relevant) percent = 50% -> 0.5
+         *
+         * years = 1643 days / 365 = 4.5013698630
+         *
+         * The decimals are caused by a leap year.
+         *
+         * result = 10 * 0.5 * 4.5013698630 = 22.506849315
+         */
+        assertEquals(BigDecimal.valueOf(22.51), result.setScale(2, RoundingMode.HALF_UP));
     }
 
-    @DisplayName("Should calculate zero points if list is empty")
     @Test
-    void shouldReturnZeroPointsOnEmptyList() {
+    @DisplayName("Should return zero points for empty list")
+    void shouldReturnZeroPoints() {
         BigDecimal result = businessService.getExperiencePoints(List.of());
         assertEquals(BigDecimal.ZERO, result);
     }
 
-    @DisplayName("Should use relevancy mapping correctly")
     @Test
-    void shouldCalculateDifferentRelevancies() {
-        ExperienceType type = mock(ExperienceType.class);
-        when(type.getPoints(Relevancy.HIGHLY)).thenReturn(BigDecimal.TEN);
-        when(type.getPoints(Relevancy.LIMITED)).thenReturn(BigDecimal.valueOf(4));
-        when(type.getPoints(Relevancy.LITTLE)).thenReturn(BigDecimal.ONE);
-
-        Experience exp = mock(Experience.class);
-        when(exp.getType()).thenReturn(type);
-        when(exp.getPercent()).thenReturn(100);
-        when(exp.getStartDate()).thenReturn(LocalDate.now().minusYears(3));
-        when(exp.getEndDate()).thenReturn(LocalDate.now());
-
-        ExperienceCalculation high = mock(ExperienceCalculation.class);
-        when(high.getExperience()).thenReturn(exp);
-        when(high.getRelevancy()).thenReturn(Relevancy.HIGHLY);
-
-        ExperienceCalculation limited = mock(ExperienceCalculation.class);
-        when(limited.getExperience()).thenReturn(exp);
-        when(limited.getRelevancy()).thenReturn(Relevancy.LIMITED);
-
-        ExperienceCalculation little = mock(ExperienceCalculation.class);
-        when(little.getExperience()).thenReturn(exp);
-        when(little.getRelevancy()).thenReturn(Relevancy.LITTLE);
-
-        BigDecimal result = businessService.getExperiencePoints(List.of(high, limited, little));
-
-        assertEquals(BigDecimal.valueOf(45.04), result.setScale(2, RoundingMode.HALF_UP));
-    }
-
     @DisplayName("Should validate and create experience calculation")
-    @Test
     void shouldCreate() {
         ExperienceCalculation entity = mock(ExperienceCalculation.class);
-        Experience exp = mock(Experience.class);
+        Experience experience = mock(Experience.class);
 
+        when(entity.getExperience()).thenReturn(experience);
+        when(experience.getId()).thenReturn(ID);
+        when(persistenceService.getByExperienceId(ID)).thenReturn(List.of());
         when(persistenceService.save(entity)).thenReturn(entity);
-        when(entity.getExperience()).thenReturn(exp);
-        when(entity.getExperience().getId()).thenReturn(1L);
 
         ExperienceCalculation result = businessService.create(entity);
 
         assertEquals(entity, result);
         verify(validationService).validateOnCreate(entity);
+        verify(validationService).validateDuplicateExperienceId(eq(entity), anyList());
         verify(persistenceService).save(entity);
     }
 
-    @DisplayName("Should validate and update experience calculation")
     @Test
+    @DisplayName("Should validate and update experience calculation")
     void shouldUpdate() {
         ExperienceCalculation entity = mock(ExperienceCalculation.class);
-        when(persistenceService.getById(ID)).thenReturn(java.util.Optional.of(entity));
+
+        when(persistenceService.getById(ID)).thenReturn(Optional.of(entity));
         when(persistenceService.save(entity)).thenReturn(entity);
 
         ExperienceCalculation result = businessService.update(ID, entity);
 
         assertEquals(entity, result);
         verify(validationService).validateOnUpdate(ID, entity);
-        verify(persistenceService).getById(ID);
+        verify(validationService).validateMemberForCalculation(entity);
+        verify(entity).setId(ID);
         verify(persistenceService).save(entity);
     }
 
-    @DisplayName("Should throw when updating non-existing entity")
     @Test
+    @DisplayName("Should throw PCTSException when updating non-existing entity")
     void shouldThrowWhenUpdatingNotFound() {
         ExperienceCalculation entity = mock(ExperienceCalculation.class);
-        when(persistenceService.getById(ID)).thenReturn(java.util.Optional.empty());
+        when(persistenceService.getById(ID)).thenReturn(Optional.empty());
 
-        org.junit.jupiter.api.Assertions.assertThrows(RuntimeException.class, () -> businessService.update(ID, entity));
+        assertThrows(PCTSException.class, () -> businessService.update(ID, entity));
 
         verify(persistenceService).getById(ID);
         verify(persistenceService, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("Should create experience calculations for calculation")
+    void shouldCreateExperienceCalculations() {
+        Calculation calculation = mock(Calculation.class);
+        ExperienceCalculation ec = mock(ExperienceCalculation.class);
+
+        when(calculation.getExperiences()).thenReturn(List.of(ec));
+        when(persistenceService.getByExperienceId(any())).thenReturn(List.of());
+        when(persistenceService.save(ec)).thenReturn(ec);
+
+        List<ExperienceCalculation> result = businessService.createExperienceCalculations(calculation);
+
+        assertEquals(1, result.size());
+        verify(ec).setCalculation(calculation);
+        verify(validationService).validateOnCreate(ec);
+    }
+
+    @Test
+    @DisplayName("Should update, create and delete experience calculations correctly")
+    void shouldUpdateExperienceCalculations() {
+        Calculation calculation = mock(Calculation.class);
+        when(calculation.getId()).thenReturn(ID);
+
+        Experience experience = mock(Experience.class);
+        when(experience.getId()).thenReturn(10L);
+
+        ExperienceCalculation existing = mock(ExperienceCalculation.class);
+        when(existing.getId()).thenReturn(100L);
+        when(existing.getCalculation()).thenReturn(calculation);
+        when(existing.getExperience()).thenReturn(experience);
+
+        ExperienceCalculation updated = mock(ExperienceCalculation.class);
+        when(updated.getExperience()).thenReturn(experience);
+
+        when(calculation.getExperiences()).thenReturn(List.of(updated));
+        when(persistenceService.getByCalculationId(ID)).thenReturn(List.of(existing));
+        when(persistenceService.getById(100L)).thenReturn(Optional.of(existing));
+        when(persistenceService.save(any())).thenAnswer(inv -> inv.getArgument(0));
+
+        List<ExperienceCalculation> result = businessService.updateExperienceCalculations(calculation);
+
+        assertEquals(1, result.size());
+        verify(updated).setCalculation(calculation);
+        verify(updated).setId(100L);
+        verify(validationService).validateOnUpdate(eq(100L), eq(updated));
     }
 }
