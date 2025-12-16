@@ -1,0 +1,24 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "pull-request-header": "",
+  "draft-pull-request": true,
+  "versioning": "default",
+  "changelog-sections": [
+    { "type": "feat", "hidden": false, "section": "Features" },
+    { "type": "feature", "hidden": false, "section": "Features" },
+    { "type": "fix", "hidden": false, "section": "Bug Fixes" },
+    { "type": "chore", "hidden": false, "section": "Miscellaneous Chores" },
+    { "type": "build", "hidden": false, "section": "Miscellaneous Chores" },
+    { "type": "ci", "hidden": false, "section": "CI Infrastructure" },
+    { "type": "docs", "hidden": false, "section": "Docs" }
+  ],
+  "packages": {
+    ".": {
+      "release-type": "simple",
+      "include-v-in-tag": false,
+      "extra-files": [
+        "script.py"
+      ]
+    }
+  }
+}
