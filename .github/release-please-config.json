@@ -13,20 +13,11 @@
   ],
   "packages": {
     ".": {
-      "release-type": "simple",
+      "release-type": "maven",
       "include-v-in-tag": false,
       "extra-files": [
         "frontend/package.json",
-        {
-          "type": "xml",
-          "path": "pom.xml",
-          "xpath": "//project/version"
-        },
-        {
-          "type": "xml",
-          "path": "backend/pom.xml",
-          "xpath": "//project/version"
-        }
+        "backend/pom.xml"
       ]
     }
   }
