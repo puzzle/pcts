@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - feature/66-setup-release-please
 permissions:
   contents: write
   pull-requests: write
