@@ -16,7 +16,7 @@
       "release-type": "simple",
       "include-v-in-tag": false,
       "extra-files": [
-        "fontend/package.json",
+        "frontend/package.json",
         {
           "type": "xml",
           "path": "pom.xml",
