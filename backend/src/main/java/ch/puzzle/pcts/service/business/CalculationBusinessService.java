@@ -19,12 +19,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class CalculationBusinessService extends BusinessBase<Calculation> {
     private final ExperienceCalculationBusinessService experienceCalculationBusinessService;
+    private final DegreeCalculationBusinessService degreeCalculationBusinessService;
 
     protected CalculationBusinessService(CalculationValidationService validationService,
                                          CalculationPersistenceService persistenceService,
-                                         ExperienceCalculationBusinessService experienceCalculationBusinessService) {
+                                         ExperienceCalculationBusinessService experienceCalculationBusinessService,
+                                         DegreeCalculationBusinessService degreeCalculationBusinessService) {
         super(validationService, persistenceService);
         this.experienceCalculationBusinessService = experienceCalculationBusinessService;
+        this.degreeCalculationBusinessService = degreeCalculationBusinessService;
     }
 
     @Override
@@ -36,6 +39,7 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
 
         createdCalculation
                 .setExperiences(experienceCalculationBusinessService.createExperienceCalculations(calculation));
+        createdCalculation.setDegrees(degreeCalculationBusinessService.createDegreeCalculations(calculation));
 
         return createdCalculation;
     }
@@ -57,6 +61,7 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
 
         updatedCalculation
                 .setExperiences(experienceCalculationBusinessService.updateExperienceCalculations(calculation));
+        updatedCalculation.setDegrees(degreeCalculationBusinessService.updateDegreeCalculations(calculation));
 
         return updatedCalculation;
     }
@@ -73,6 +78,7 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
         BigDecimal totalRelevancyPoints = BigDecimal.ZERO;
 
         totalRelevancyPoints = totalRelevancyPoints.add(experienceCalculationBusinessService.getExperiencePoints(id));
+        totalRelevancyPoints = totalRelevancyPoints.add(degreeCalculationBusinessService.getDegreePoints(id));
 
         calculation.setPoints(totalRelevancyPoints);
         return calculation;

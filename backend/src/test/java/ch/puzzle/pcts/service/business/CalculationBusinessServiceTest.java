@@ -12,7 +12,6 @@ import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.service.persistence.CalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.CalculationValidationService;
-import ch.puzzle.pcts.service.validation.ExperienceCalculationValidationService;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +38,7 @@ class CalculationBusinessServiceTest {
     private ExperienceCalculationBusinessService experienceBusinessService;
 
     @Mock
-    private ExperienceCalculationValidationService experienceValidationService;
+    private DegreeCalculationBusinessService degreeBusinessService;
 
     @Mock
     private Calculation calculation;
@@ -50,14 +49,19 @@ class CalculationBusinessServiceTest {
     @DisplayName("Should get calculation by id and set total points")
     @Test
     void shouldGetById() {
+        Calculation calculation = new Calculation();
+
         when(persistenceService.getById(ID)).thenReturn(Optional.of(calculation));
-        when(experienceBusinessService.getExperiencePoints(ID)).thenReturn(BigDecimal.ZERO);
+        when(experienceBusinessService.getExperiencePoints(ID)).thenReturn(BigDecimal.ONE);
+        when(degreeBusinessService.getDegreePoints(ID)).thenReturn(BigDecimal.ONE);
 
         Calculation result = businessService.getById(ID);
 
         assertEquals(calculation, result);
+        assertEquals(BigDecimal.TWO, result.getPoints()); // 1 + 1 = 2
         verify(persistenceService).getById(ID);
         verify(experienceBusinessService).getExperiencePoints(ID);
+        verify(degreeBusinessService).getDegreePoints(ID);
     }
 
     @DisplayName("Should throw error when calculation with id does not exist")
@@ -83,6 +87,7 @@ class CalculationBusinessServiceTest {
 
         verify(validationService).validateOnCreate(calculation);
         verify(experienceBusinessService).createExperienceCalculations(calculation);
+        verify(degreeBusinessService).createDegreeCalculations(calculation);
         verify(persistenceService).save(calculation);
     }
 

@@ -87,7 +87,7 @@ public class ExperienceType implements Model {
             case HIGHLY -> getHighlyRelevantPoints();
             case LIMITED -> getLimitedRelevantPoints();
             case LITTLE -> getLittleRelevantPoints();
-            default -> BigDecimal.ZERO;
+            case NONE -> BigDecimal.ZERO;
         };
     }
 

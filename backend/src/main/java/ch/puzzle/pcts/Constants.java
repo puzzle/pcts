@@ -14,6 +14,7 @@ public class Constants {
     public static final String LEADERSHIP_EXPERIENCE_TYPE = "leadershipExperienceType";
     public static final String CALCULATION = "calculation";
     public static final String EXPERIENCE_CALCULATION = "experienceCalculation";
+    public static final String DEGREE_CALCULATION = "degreeCalculation";
     public static final String LEADERSHIP_EXPERIENCE = "leadershipExperience";
 
     private Constants() {
