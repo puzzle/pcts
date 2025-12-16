@@ -109,6 +109,10 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
                 .orElse(null);
     }
 
+    /*
+     * The divisions are rounded to a DECIMAL128 digit because numbers
+     * with a infinite amount of digits could cause a ArithmeticException
+     */
     private BigDecimal calculatePoints(ExperienceCalculation calculation) {
         Experience experience = calculation.getExperience();
         ExperienceType type = experience.getType();
@@ -118,15 +122,12 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
 
         BigDecimal percentFactor = BigDecimal
                 .valueOf(experience.getPercent())
-                .divide(BigDecimal.valueOf(100), MathContext.UNLIMITED);
+                .divide(BigDecimal.valueOf(100), MathContext.DECIMAL128);
 
         long days = experience.getStartDate().until(experience.getEndDate(), ChronoUnit.DAYS);
 
-        /*
-         * This is rounded because we have to round at some point otherwise this can
-         * cause a exception
-         */
-        BigDecimal years = BigDecimal.valueOf(days).divide(BigDecimal.valueOf(365), 10, RoundingMode.HALF_UP);
+
+        BigDecimal years = BigDecimal.valueOf(days).divide(BigDecimal.valueOf(365), MathContext.DECIMAL128);
 
         return basePoints.multiply(percentFactor).multiply(years);
     }
