@@ -13,8 +13,6 @@ import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { lastValueFrom } from 'rxjs';
 import { provideI18nPrefix } from './shared/i18n-prefix.provider';
-import { provideOAuthClient } from 'angular-oauth2-oidc';
-import { oAuthInterceptor } from './shared/interceptors/o-auth-interceptor';
 import { registerLocaleData } from '@angular/common';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { errorInterceptor } from './core/error-interceptor/error-interceptor';
@@ -24,10 +22,10 @@ import {
   INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG, IncludeBearerTokenCondition, includeBearerTokenInterceptor,
   provideKeycloak
 } from 'keycloak-angular';
+import { environment } from '../environments/environment';
 import { provideDateFnsAdapter } from '@angular/material-date-fns-adapter';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { de } from 'date-fns/locale/de';
-import { environment } from '../environments/environment';
 
 registerLocaleData(localeDeCH);
 
