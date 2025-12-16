@@ -1,16 +1,12 @@
 ---
 name: Release
-
 on:
   push:
     branches:
       - main
-      - feature/66-setup-release-please
-
 permissions:
   contents: write
   pull-requests: write
-
 jobs:
   release-please:
     runs-on: ubuntu-latest
@@ -18,5 +14,6 @@ jobs:
       - id: release
         uses: googleapis/release-please-action@v4
         with:
+#          token: ${{ secrets.GH_TOKEN }}
           config-file: .github/release-please-config.json
           manifest-file: .github/.release-please-manifest.json
