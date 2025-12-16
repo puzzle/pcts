@@ -120,7 +120,11 @@ class ExperienceCalculationBusinessServiceTest {
     @Test
     void shouldCreate() {
         ExperienceCalculation entity = mock(ExperienceCalculation.class);
+        Experience exp = mock(Experience.class);
+
         when(persistenceService.save(entity)).thenReturn(entity);
+        when(entity.getExperience()).thenReturn(exp);
+        when(entity.getExperience().getId()).thenReturn(1L);
 
         ExperienceCalculation result = businessService.create(entity);
 

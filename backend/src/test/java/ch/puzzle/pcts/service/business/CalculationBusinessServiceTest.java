@@ -10,8 +10,6 @@ import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.Calculation;
-import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
-import ch.puzzle.pcts.model.experience.Experience;
 import ch.puzzle.pcts.service.persistence.CalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.CalculationValidationService;
 import ch.puzzle.pcts.service.validation.ExperienceCalculationValidationService;
@@ -79,36 +77,22 @@ class CalculationBusinessServiceTest {
     @DisplayName("Should create calculation with experiences")
     @Test
     void shouldCreate() {
-        Experience experience = mock(Experience.class);
-        when(experience.getId()).thenReturn(10L);
-
-        ExperienceCalculation exp1 = mock(ExperienceCalculation.class);
-        when(exp1.getExperience()).thenReturn(experience);
-
-        when(calculation.getExperiences()).thenReturn(List.of(exp1));
-
         when(persistenceService.save(calculation)).thenReturn(calculation);
-        when(experienceBusinessService.create(exp1)).thenReturn(exp1);
 
         Calculation result = businessService.create(calculation);
 
         assertEquals(calculation, result);
 
         verify(validationService).validateOnCreate(calculation);
-        verify(experienceValidationService, atLeastOnce()).validateOnCreate(exp1);
-        verify(experienceBusinessService).getByExperienceId(experience.getId());
-        verify(experienceBusinessService).create(exp1);
+        verify(experienceBusinessService).createExperienceCalculations(calculation);
         verify(persistenceService).save(calculation);
     }
 
     @DisplayName("Should update calculation with experiences")
     @Test
     void shouldUpdate() {
-        ExperienceCalculation exp1 = mock(ExperienceCalculation.class);
-        when(calculation.getExperiences()).thenReturn(List.of(exp1));
         when(persistenceService.getById(ID)).thenReturn(Optional.of(calculation));
         when(persistenceService.save(calculation)).thenReturn(calculation);
-        when(experienceBusinessService.update(anyLong(), eq(exp1))).thenReturn(exp1);
 
         Calculation result = businessService.update(ID, calculation);
 
@@ -116,7 +100,6 @@ class CalculationBusinessServiceTest {
         verify(validationService).validateOnUpdate(ID, calculation);
         verify(persistenceService).getById(ID);
         verify(persistenceService).save(calculation);
-        verify(experienceValidationService).validateOnUpdate(anyLong(), eq(exp1));
     }
 
     @DisplayName("Should throw exception when updating non-existing calculation")

@@ -11,12 +11,10 @@ import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculat
 import ch.puzzle.pcts.service.persistence.CalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.CalculationValidationService;
 import ch.puzzle.pcts.service.validation.ExperienceCalculationValidationService;
+import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -41,12 +39,14 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
 
         Calculation createdCalculation = persistenceService.save(calculation);
 
-        createdCalculation.setExperiences(experienceCalculationBusinessService.createExperienceCalculations(calculation));
+        createdCalculation
+                .setExperiences(experienceCalculationBusinessService.createExperienceCalculations(calculation));
 
         return createdCalculation;
     }
 
     @Override
+    @Transactional
     public Calculation update(Long id, Calculation calculation) {
         if (persistenceService.getById(id).isEmpty()) {
             Map<FieldKey, String> attributes = Map
@@ -56,49 +56,12 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
         }
 
         validationService.validateOnUpdate(id, calculation);
-
         calculation.setId(id);
-
-        for (ExperienceCalculation exp : calculation.getExperiences()) {
-            exp.setCalculation(calculation);
-        }
-
-        List<ExperienceCalculation> existingChildren = experienceCalculationBusinessService.getByCalculationId(id);
-
-        for (ExperienceCalculation exp : calculation.getExperiences()) {
-
-            Long expCalcId = experienceCalculationValidationService
-                    .findIdByCalculationAndExperience(exp, existingChildren);
-
-            experienceCalculationValidationService.validateMemberForCalculation(exp);
-
-            if (expCalcId != null) {
-                experienceCalculationValidationService.validateOnUpdate(expCalcId, exp);
-            }
-        }
 
         Calculation updatedCalculation = persistenceService.save(calculation);
 
-        List<ExperienceCalculation> updatedChildren = new ArrayList<>();
-
-        for (ExperienceCalculation exp : calculation.getExperiences()) {
-
-            Long expCalcId = experienceCalculationValidationService
-                    .findIdByCalculationAndExperience(exp, existingChildren);
-
-            exp.setCalculation(updatedCalculation);
-
-            ExperienceCalculation updated;
-
-            if (expCalcId == null) {
-                updated = experienceCalculationBusinessService.create(exp);
-            } else {
-                updated = experienceCalculationBusinessService.update(expCalcId, exp);
-            }
-
-            updatedChildren.add(updated);
-        }
-        updatedCalculation.setExperiences(updatedChildren);
+        updatedCalculation
+                .setExperiences(experienceCalculationBusinessService.updateExperienceCalculations(calculation));
 
         return updatedCalculation;
     }

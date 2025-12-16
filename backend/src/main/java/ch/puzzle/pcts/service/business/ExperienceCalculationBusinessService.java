@@ -2,6 +2,10 @@ package ch.puzzle.pcts.service.business;
 
 import static ch.puzzle.pcts.Constants.EXPERIENCE_CALCULATION;
 
+import ch.puzzle.pcts.dto.error.ErrorKey;
+import ch.puzzle.pcts.dto.error.FieldKey;
+import ch.puzzle.pcts.dto.error.GenericErrorDto;
+import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
@@ -14,13 +18,14 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Map;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ExperienceCalculationBusinessService extends BusinessBase<ExperienceCalculation> {
     private final ExperienceCalculationPersistenceService experienceCalculationPersistenceService;
     private final ExperienceCalculationValidationService experienceCalculationValidationService;
-
 
     protected ExperienceCalculationBusinessService(ExperienceCalculationValidationService validationService,
                                                    ExperienceCalculationPersistenceService persistenceService) {
@@ -42,19 +47,53 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
     }
 
     @Override
-    public ExperienceCalculation create(ExperienceCalculation experienceCalculation){
-        List<ExperienceCalculation> existing = this
-                .getByExperienceId(experienceCalculation.getExperience().getId());
+    public ExperienceCalculation create(ExperienceCalculation experienceCalculation) {
+        List<ExperienceCalculation> existing = this.getByExperienceId(experienceCalculation.getExperience().getId());
         experienceCalculationValidationService.validateOnCreate(experienceCalculation);
         experienceCalculationValidationService.validateDuplicateExperienceId(experienceCalculation, existing);
         return experienceCalculationPersistenceService.save(experienceCalculation);
     }
 
-    public List<ExperienceCalculation> createExperienceCalculations(Calculation calculation){
+    @Override
+    public ExperienceCalculation update(Long id, ExperienceCalculation experienceCalculation) {
+        if (persistenceService.getById(id).isEmpty()) {
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, id.toString());
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
+            throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
+        }
+        experienceCalculationValidationService.validateOnUpdate(id, experienceCalculation);
+        experienceCalculationValidationService.validateMemberForCalculation(experienceCalculation);
+        experienceCalculation.setId(id);
+        return experienceCalculationPersistenceService.save(experienceCalculation);
+    }
+
+    public List<ExperienceCalculation> createExperienceCalculations(Calculation calculation) {
         return calculation.getExperiences().stream().map(exp -> {
             exp.setCalculation(calculation);
             return this.create(exp);
         }).toList();
+    }
+
+    public List<ExperienceCalculation> updateExperienceCalculations(Calculation calculation) {
+        List<ExperienceCalculation> existing = this.getByCalculationId(calculation.getId());
+
+        List<ExperienceCalculation> experienceCalculations = calculation.getExperiences().stream().map(exp -> {
+            exp.setCalculation(calculation);
+
+            Long expCalcId = experienceCalculationValidationService.findIdByCalculationAndExperience(exp, existing);
+
+            exp.setId(expCalcId);
+
+            return exp.getId() == null ? this.create(exp) : this.update(expCalcId, exp);
+        }).toList();
+
+        // Removing all created or updated experience calculations to later delete the
+        // unused experience calculations
+        existing.removeAll(experienceCalculations);
+        existing.stream().map(ExperienceCalculation::getId).forEach(this::delete);
+
+        return experienceCalculations;
     }
 
     private BigDecimal calculatePoints(ExperienceCalculation calculation) {
