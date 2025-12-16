@@ -21,15 +21,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class CalculationBusinessService extends BusinessBase<Calculation> {
     private final ExperienceCalculationBusinessService experienceCalculationBusinessService;
-    private final ExperienceCalculationValidationService experienceCalculationValidationService;
 
     protected CalculationBusinessService(CalculationValidationService validationService,
                                          CalculationPersistenceService persistenceService,
-                                         ExperienceCalculationBusinessService experienceCalculationBusinessService,
-                                         ExperienceCalculationValidationService experienceCalculationValidationService) {
+                                         ExperienceCalculationBusinessService experienceCalculationBusinessService) {
         super(validationService, persistenceService);
         this.experienceCalculationBusinessService = experienceCalculationBusinessService;
-        this.experienceCalculationValidationService = experienceCalculationValidationService;
     }
 
     @Override
