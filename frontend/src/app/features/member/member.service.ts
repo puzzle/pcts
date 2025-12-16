@@ -6,6 +6,7 @@ import { MemberDto } from './dto/member.dto';
 import { DateTime } from 'luxon';
 import { MemberCvOverviewModel } from './member-cv-overview.model';
 
+
 @Injectable({
   providedIn: 'root'
 })
