@@ -15,7 +15,6 @@ import ch.puzzle.pcts.service.persistence.ExperienceCalculationPersistenceServic
 import ch.puzzle.pcts.service.validation.ExperienceCalculationValidationService;
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.math.RoundingMode;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
@@ -110,8 +109,8 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
     }
 
     /*
-     * The divisions are rounded to a DECIMAL128 digit because numbers
-     * with a infinite amount of digits could cause a ArithmeticException
+     * The divisions are rounded to a DECIMAL128 digit because numbers with a
+     * infinite amount of digits could cause a ArithmeticException
      */
     private BigDecimal calculatePoints(ExperienceCalculation calculation) {
         Experience experience = calculation.getExperience();
@@ -125,7 +124,6 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
                 .divide(BigDecimal.valueOf(100), MathContext.DECIMAL128);
 
         long days = experience.getStartDate().until(experience.getEndDate(), ChronoUnit.DAYS);
-
 
         BigDecimal years = BigDecimal.valueOf(days).divide(BigDecimal.valueOf(365), MathContext.DECIMAL128);
 
