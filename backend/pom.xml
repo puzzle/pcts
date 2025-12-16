@@ -10,7 +10,7 @@
 	<groupId>ch.puzzle</groupId>
 	<artifactId>pcts</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>demo</name>
+	<name>pcts</name>
 	<description>demo</description>
 
 	<properties>

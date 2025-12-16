@@ -16,9 +16,17 @@
       "release-type": "simple",
       "include-v-in-tag": false,
       "extra-files": [
-        "frontend/package.json",
-        "pom.xml",
-        "backend/pom.xml"
+        "fontend/package.json",
+        {
+          "type": "xml",
+          "path": "pom.xml",
+          "xpath": "//project/version"
+        },
+        {
+          "type": "xml",
+          "path": "backend/pom.xml",
+          "xpath": "//project/version"
+        }
       ]
     }
   }
