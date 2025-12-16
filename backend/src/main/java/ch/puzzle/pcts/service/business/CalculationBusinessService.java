@@ -10,7 +10,6 @@ import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
 import ch.puzzle.pcts.service.persistence.CalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.CalculationValidationService;
-import ch.puzzle.pcts.service.validation.ExperienceCalculationValidationService;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
