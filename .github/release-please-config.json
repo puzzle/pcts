@@ -12,13 +12,21 @@
     { "type": "docs", "hidden": false, "section": "Docs" }
   ],
   "packages": {
-    ".": {
+    "backend": {
       "release-type": "maven",
-      "include-v-in-tag": false,
-      "extra-files": [
-        "frontend/package.json",
-        "backend/pom.xml"
-      ]
+      "package-name": "pcts-backend",
+      "skip-snapshot": true
+    },
+    "frontend": {
+      "release-type": "node",
+      "package-name": "pcts-frontend"
     }
-  }
+  },
+  "plugins": [
+    {
+      "type": "linked-versions",
+      "groupName": "pcts-bundle",
+      "components": ["backend", "frontend"]
+    }
+  ]
 }
