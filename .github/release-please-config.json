@@ -17,7 +17,7 @@
       "release-type": "simple",
       "include-v-in-tag": false,
       "extra-files": [
-        "script.py"
+        ""
       ]
     }
   }
