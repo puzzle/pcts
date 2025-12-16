@@ -18,6 +18,7 @@ import java.math.MathContext;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -80,11 +81,9 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
         List<ExperienceCalculation> experienceCalculations = calculation.getExperiences().stream().map(exp -> {
             exp.setCalculation(calculation);
 
-            Long expCalcId = findIdByCalculationAndExperience(exp, existing);
+            Optional<Long> expCalcId = findIdByCalculationAndExperience(exp, existing);
 
-            exp.setId(expCalcId);
-
-            return exp.getId() == null ? this.create(exp) : this.update(expCalcId, exp);
+            return expCalcId.isEmpty() ? this.create(exp) : this.update(expCalcId.get(), exp);
         }).toList();
 
         /*
@@ -97,15 +96,14 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
         return experienceCalculations;
     }
 
-    private Long findIdByCalculationAndExperience(ExperienceCalculation experienceCalculation,
-                                                  List<ExperienceCalculation> experienceCalculationList) {
+    private Optional<Long> findIdByCalculationAndExperience(ExperienceCalculation experienceCalculation,
+                                                            List<ExperienceCalculation> experienceCalculationList) {
         return experienceCalculationList
                 .stream()
                 .filter(ec -> ec.getCalculation().getId().equals(experienceCalculation.getCalculation().getId())
                               && ec.getExperience().getId().equals(experienceCalculation.getExperience().getId()))
                 .map(ExperienceCalculation::getId)
-                .findFirst()
-                .orElse(null);
+                .findFirst();
     }
 
     /*

@@ -14,6 +14,7 @@ import ch.puzzle.pcts.service.validation.ExperienceCalculationValidationService;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -151,8 +152,11 @@ class ExperienceCalculationBusinessServiceTest {
     void shouldCreateExperienceCalculations() {
         Calculation calculation = mock(Calculation.class);
         ExperienceCalculation ec = mock(ExperienceCalculation.class);
+        Experience exp = mock(Experience.class);
 
         when(calculation.getExperiences()).thenReturn(List.of(ec));
+        when(ec.getExperience()).thenReturn(exp);
+        when(exp.getId()).thenReturn(1L);
         when(persistenceService.getByExperienceId(any())).thenReturn(List.of());
         when(persistenceService.save(ec)).thenReturn(ec);
 
@@ -179,15 +183,18 @@ class ExperienceCalculationBusinessServiceTest {
 
         ExperienceCalculation updated = mock(ExperienceCalculation.class);
         when(updated.getExperience()).thenReturn(experience);
+        when(updated.getCalculation()).thenReturn(calculation);
 
-        when(calculation.getExperiences()).thenReturn(List.of(updated));
-        when(persistenceService.getByCalculationId(ID)).thenReturn(List.of(existing));
+        when(calculation.getExperiences()).thenReturn(new ArrayList<>(List.of(updated)));
+
+        when(persistenceService.getByCalculationId(ID)).thenReturn(new ArrayList<>(List.of(existing)));
         when(persistenceService.getById(100L)).thenReturn(Optional.of(existing));
         when(persistenceService.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
         List<ExperienceCalculation> result = businessService.updateExperienceCalculations(calculation);
 
         assertEquals(1, result.size());
+
         verify(updated).setCalculation(calculation);
         verify(updated).setId(100L);
         verify(validationService).validateOnUpdate(eq(100L), eq(updated));
