@@ -194,6 +194,6 @@ class ExperienceCalculationBusinessServiceTest {
 
         verify(updated).setCalculation(calculation);
         verify(updated).setId(100L);
-        verify(validationService).validateOnUpdate(eq(100L), eq(updated));
+        verify(validationService).validateOnUpdate(100L, updated);
     }
 }
