@@ -51,15 +51,13 @@ class CalculationBusinessServiceTest {
     @Test
     void shouldGetById() {
         when(persistenceService.getById(ID)).thenReturn(Optional.of(calculation));
-        when(experienceBusinessService.getByCalculationId(ID)).thenReturn(List.of());
-        when(experienceBusinessService.getExperiencePoints(anyList())).thenReturn(BigDecimal.ZERO);
+        when(experienceBusinessService.getExperiencePoints(ID)).thenReturn(BigDecimal.ZERO);
 
         Calculation result = businessService.getById(ID);
 
         assertEquals(calculation, result);
         verify(persistenceService).getById(ID);
-        verify(experienceBusinessService).getByCalculationId(ID);
-        verify(experienceBusinessService).getExperiencePoints(List.of());
+        verify(experienceBusinessService).getExperiencePoints(ID);
     }
 
     @DisplayName("Should throw error when calculation with id does not exist")

@@ -42,7 +42,8 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
         return this.experienceCalculationPersistenceService.getByExperienceId(experienceId);
     }
 
-    public BigDecimal getExperiencePoints(List<ExperienceCalculation> experienceCalculations) {
+    public BigDecimal getExperiencePoints(Long id) {
+        List<ExperienceCalculation> experienceCalculations = this.getByCalculationId(id);
         return experienceCalculations.stream().map(this::calculatePoints).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 

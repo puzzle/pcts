@@ -7,7 +7,6 @@ import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.Calculation;
-import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
 import ch.puzzle.pcts.service.persistence.CalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.CalculationValidationService;
 import jakarta.transaction.Transactional;
@@ -73,10 +72,7 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
 
         BigDecimal totalRelevancyPoints = BigDecimal.ZERO;
 
-        List<ExperienceCalculation> experienceCalculations = experienceCalculationBusinessService
-                .getByCalculationId(id);
-        totalRelevancyPoints = totalRelevancyPoints
-                .add(experienceCalculationBusinessService.getExperiencePoints(experienceCalculations));
+        totalRelevancyPoints = totalRelevancyPoints.add(experienceCalculationBusinessService.getExperiencePoints(id));
 
         calculation.setPoints(totalRelevancyPoints);
         return calculation;

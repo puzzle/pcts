@@ -78,16 +78,13 @@ class ExperienceCalculationBusinessServiceTest {
         when(calculation.getExperience()).thenReturn(exp);
         when(calculation.getRelevancy()).thenReturn(Relevancy.HIGHLY);
 
-        BigDecimal result = businessService.getExperiencePoints(List.of(calculation));
+        when(persistenceService.getByCalculationId(1L)).thenReturn(List.of(calculation));
+
+        BigDecimal result = businessService.getExperiencePoints(1L);
 
         /*
-         * basePoints = 10 (HIGHLY relevant) percent = 50% -> 0.5
-         *
-         * years = 1643 days / 365 = 4.5013698630
-         *
-         * The decimals are caused by a leap year.
-         *
-         * result = 10 * 0.5 * 4.5013698630 = 22.506849315
+         * basePoints = 10 (HIGHLY relevant) percent = 50% -> 0.5 years = 1643 days /
+         * 365 = 4.5013698630 result = 10 * 0.5 * 4.5013698630 = 22.506849315
          */
         assertEquals(BigDecimal.valueOf(22.51), result.setScale(2, RoundingMode.HALF_UP));
     }
@@ -95,7 +92,7 @@ class ExperienceCalculationBusinessServiceTest {
     @Test
     @DisplayName("Should return zero points for empty list")
     void shouldReturnZeroPoints() {
-        BigDecimal result = businessService.getExperiencePoints(List.of());
+        BigDecimal result = businessService.getExperiencePoints(ID);
         assertEquals(BigDecimal.ZERO, result);
     }
 
