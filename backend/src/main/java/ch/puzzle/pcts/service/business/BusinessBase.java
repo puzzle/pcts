@@ -1,15 +1,8 @@
 package ch.puzzle.pcts.service.business;
 
-import ch.puzzle.pcts.dto.error.ErrorKey;
-import ch.puzzle.pcts.dto.error.FieldKey;
-import ch.puzzle.pcts.dto.error.GenericErrorDto;
-import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.service.persistence.PersistenceService;
 import ch.puzzle.pcts.service.validation.ValidationService;
-import java.util.List;
-import java.util.Map;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,26 +26,19 @@ public abstract class BusinessBase<T extends Model> {
 
     public T getById(Long id) {
         validationService.validateOnGetById(id);
-        return persistenceService.getById(id).orElseThrow(() -> {
-            Map<FieldKey, String> attributes = Map
-                    .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, id.toString());
-
-            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
-
-            return new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
-        });
+        return persistenceService.getById(id);
     }
 
     public T update(Long id, T model) {
-        getById(id);
         validationService.validateOnUpdate(id, model);
+        persistenceService.getById(id);
         model.setId(id);
         return persistenceService.save(model);
     }
 
     public void delete(Long id) {
-        getById(id);
         validationService.validateOnDelete(id);
+        persistenceService.getById(id);
         persistenceService.delete(id);
     }
 
