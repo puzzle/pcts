@@ -67,7 +67,22 @@ class CertificateCalculationMapperTest {
         verify(certificateMapper).toDto(certificate);
     }
 
-    @DisplayName("Should map List<CertificateCalculation> to List<CertificateCalculationDto>")
+    @DisplayName("Should return null when certificate kind is not Certificate")
+    @Test
+    void shouldReturnNull() {
+        Certificate certificate = createCertificate();
+        CertificateType certificateType = new CertificateType();
+        certificateType.setCertificateKind(CertificateKind.LEADERSHIP_TRAINING);
+        certificate.setCertificateType(certificateType);
+        CertificateCalculation model = createModel(certificate);
+
+        CertificateCalculationDto result = mapper.toDto(model);
+
+        assertNull(result);
+        verify(certificateMapper, never()).toDto(any(Certificate.class));
+    }
+
+    @DisplayName("Should map List<CertificateCalculation> to List<CertificateCalculationDto> and remove LeadershipExperiences")
     @Test
     void shouldMapListToDto() {
         Certificate certificate = createCertificate();
@@ -75,12 +90,19 @@ class CertificateCalculationMapperTest {
         certificateType.setCertificateKind(CertificateKind.CERTIFICATE);
         certificate.setCertificateType(certificateType);
 
-        CertificateCalculation model = createModel(certificate);
+        Certificate leadershipExperience = createCertificate();
+        CertificateType leadershipExperienceType = new CertificateType();
+        leadershipExperienceType.setCertificateKind(CertificateKind.LEADERSHIP_TRAINING);
+        leadershipExperience.setCertificateType(leadershipExperienceType);
+
+        CertificateCalculation certificateCalculation = createModel(certificate);
+        CertificateCalculation leadershipExperienceCalculation = createModel(leadershipExperience);
 
         CertificateDto mockedCertificateDto = mock(CertificateDto.class);
         when(certificateMapper.toDto(certificate)).thenReturn(mockedCertificateDto);
 
-        List<CertificateCalculationDto> result = mapper.toDto(List.of(model));
+        List<CertificateCalculationDto> result = mapper
+                .toDto(List.of(certificateCalculation, leadershipExperienceCalculation));
 
         assertEquals(1, result.size());
         assertEquals(mockedCertificateDto, result.get(0).certificate());
