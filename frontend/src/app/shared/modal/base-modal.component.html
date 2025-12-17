@@ -1,0 +1,40 @@
+<div class="d-flex p-3" mat-dialog-title>
+  <div class="container-fluid">
+    <div class="d-flex align-items-center justify-content-between flex-row">
+        <h3 [attr.data-testid]=" ('MODEL_NAME' | scopedTranslation) +'-title'" class="mb-0">
+          {{ "MODEL_NAME" | scopedTranslation  }}
+          {{ "ACTION" | scopedTranslation }}
+        </h3>
+      <button
+        type="reset"
+        [mat-dialog-close]="true"
+        mat-icon-button
+        [attr.data-testId]=" ('MODEL_NAME' | scopedTranslation) + '-close-dialog'"
+        class=""
+      >
+        <mat-icon class="text-secondary">close</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
+
+<mat-divider class="mx-4"/>
+
+<mat-dialog-content class="text-black">
+  <div class="container-fluid">
+    <ng-content select="[content]"/>
+  </div>
+</mat-dialog-content>
+
+<mat-divider class="mx-4"/>
+
+<mat-dialog-actions align="end">
+  <div class="container-fluid">
+    <div class="row justify-content-between">
+      <ng-content select="[actions]">
+        <app-form-actions [formGroup]="formGroup()" (canceled)="canceled.emit()" />
+      </ng-content>
+    </div>
+  </div>
+</mat-dialog-actions>
+
