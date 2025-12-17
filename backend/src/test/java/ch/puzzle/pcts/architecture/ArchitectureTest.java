@@ -19,6 +19,7 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 
 import ch.puzzle.pcts.model.Model;
+import ch.puzzle.pcts.security.annotation.IsAdmin;
 import com.tngtech.archunit.core.domain.*;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
@@ -184,6 +185,24 @@ class ArchitectureTest {
                 .resideInAPackage("ch.puzzle.pcts.controller..")
                 .should()
                 .beAnnotatedWith(RestController.class)
+                .andShould()
+                .notBeInterfaces();
+
+        rule.check(importedClasses);
+    }
+
+    @DisplayName("Controller classes should be annotated with @IsAdmin")
+    @Test
+    void controllersShouldBeAnnotatedWithIsAdmin() {
+        JavaClasses importedClasses = getMainSourceClasses();
+
+        ArchRule rule = classes()
+                .that()
+                .areNotAnonymousClasses()
+                .and()
+                .resideInAPackage("ch.puzzle.pcts.controller..")
+                .should()
+                .beAnnotatedWith(IsAdmin.class)
                 .andShould()
                 .notBeInterfaces();
 

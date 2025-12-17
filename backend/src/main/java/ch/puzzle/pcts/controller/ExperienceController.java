@@ -4,6 +4,7 @@ import ch.puzzle.pcts.dto.experience.ExperienceDto;
 import ch.puzzle.pcts.dto.experience.ExperienceInputDto;
 import ch.puzzle.pcts.mapper.ExperienceMapper;
 import ch.puzzle.pcts.model.experience.Experience;
+import ch.puzzle.pcts.security.annotation.IsAdmin;
 import ch.puzzle.pcts.service.business.ExperienceBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -16,6 +17,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@IsAdmin
 @RestController
 @RequestMapping("/api/v1/experiences")
 @Tag(name = "experiences", description = "Manage the experiences of members which are associated with one member")
