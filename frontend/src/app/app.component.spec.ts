@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DOCUMENT } from '@angular/common';
 
@@ -11,12 +11,14 @@ jest.mock('@puzzleitc/puzzle-shell', () => jest.fn());
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
-  let app: AppComponent;
+  let component: AppComponent;
+  let router: Router;
   let document: Document;
   let translateService: TranslateService;
+  let userServiceMock: Partial<UserService>;
 
   beforeEach(async() => {
-    const userServiceMock = {
+    userServiceMock = {
       getName: jest.fn()
         .mockReturnValue('Test User'),
       logout: jest.fn()
@@ -33,9 +35,15 @@ describe('AppComponent', () => {
       .compileComponents();
 
     fixture = TestBed.createComponent(AppComponent);
-    app = fixture.componentInstance;
+    component = fixture.componentInstance;
     document = TestBed.inject(DOCUMENT);
     translateService = TestBed.inject(TranslateService);
+
+    router = TestBed.inject(Router);
+    jest.spyOn(router, 'navigate')
+      .mockImplementation(() => Promise.resolve(true));
+
+    fixture.detectChanges();
   });
 
   afterEach(() => {
@@ -43,8 +51,22 @@ describe('AppComponent', () => {
   });
 
   it('should create the app', () => {
-    expect(app)
+    expect(component)
       .toBeTruthy();
+  });
+
+  it('should navigate to /member when visitRoot() is called', () => {
+    component.visitRoot();
+
+    expect(router.navigate)
+      .toHaveBeenCalledWith(['/member']);
+  });
+
+  it('should call logout service when handleLogout() is called', () => {
+    component.handleLogout();
+
+    expect(userServiceMock.logout)
+      .toHaveBeenCalled();
   });
 
   it('should set default lang attribute', () => {
