@@ -37,7 +37,8 @@ public class CertificateCalculationBusinessService extends BusinessBase<Certific
         return this.certificateCalculationPersistenceService.getByCertificateId(certificateId);
     }
 
-    public BigDecimal getCertificatePoints(List<CertificateCalculation> certificateCalculations) {
+    public BigDecimal getCertificatePoints(Long id) {
+        List<CertificateCalculation> certificateCalculations = this.getByCalculationId(id);
         return certificateCalculations
                 .stream()
                 .filter(certificateCalculation -> certificateCalculation.getCalculation().getRole().getIsManagement()

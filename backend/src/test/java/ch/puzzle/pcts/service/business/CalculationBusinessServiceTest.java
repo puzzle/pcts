@@ -41,6 +41,9 @@ class CalculationBusinessServiceTest {
     private DegreeCalculationBusinessService degreeBusinessService;
 
     @Mock
+    private CertificateCalculationBusinessService certificateBusinessService;
+
+    @Mock
     private Calculation calculation;
 
     @InjectMocks
@@ -54,11 +57,12 @@ class CalculationBusinessServiceTest {
         when(persistenceService.getById(ID)).thenReturn(Optional.of(calculation));
         when(experienceBusinessService.getExperiencePoints(ID)).thenReturn(BigDecimal.ONE);
         when(degreeBusinessService.getDegreePoints(ID)).thenReturn(BigDecimal.ONE);
+        when(certificateBusinessService.getCertificatePoints(ID)).thenReturn(BigDecimal.ONE);
 
         Calculation result = businessService.getById(ID);
 
         assertEquals(calculation, result);
-        assertEquals(BigDecimal.TWO, result.getPoints()); // 1 + 1 = 2
+        assertEquals(BigDecimal.valueOf(3), result.getPoints()); // 1 + 1 + 1 = 3
         verify(persistenceService).getById(ID);
         verify(experienceBusinessService).getExperiencePoints(ID);
         verify(degreeBusinessService).getDegreePoints(ID);
@@ -87,6 +91,7 @@ class CalculationBusinessServiceTest {
 
         verify(validationService).validateOnCreate(calculation);
         verify(experienceBusinessService).createExperienceCalculations(calculation);
+        verify(certificateBusinessService).createCertificateCalculations(calculation);
         verify(degreeBusinessService).createDegreeCalculations(calculation);
         verify(persistenceService).save(calculation);
     }
