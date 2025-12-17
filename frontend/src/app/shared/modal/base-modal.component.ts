@@ -33,8 +33,5 @@ export class BaseModalComponent {
 export const defaultSize = {
   width: '80%',
   minWidth: '400px',
-  position: {
-    top: '48px'
-  },
   height: 'fit-content'
 };
