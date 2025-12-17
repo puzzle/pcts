@@ -4,6 +4,9 @@ import { provideRouter } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DOCUMENT } from '@angular/common';
 
+import { provideTranslateService } from '@ngx-translate/core';
+import { UserService } from './core/auth/user.service';
+
 jest.mock('@puzzleitc/puzzle-shell', () => jest.fn());
 
 describe('AppComponent', () => {
@@ -13,10 +16,19 @@ describe('AppComponent', () => {
   let translateService: TranslateService;
 
   beforeEach(async() => {
+    const userServiceMock = {
+      getName: jest.fn()
+        .mockReturnValue('Test User'),
+      logout: jest.fn()
+    };
+
     await TestBed.configureTestingModule({
-      imports: [AppComponent,
-        TranslateModule.forRoot()],
-      providers: [provideRouter([])]
+      imports: [AppComponent, TranslateModule.forRoot()],
+      providers: [provideTranslateService(),{
+        provide: UserService,
+        useValue: userServiceMock
+      },
+        provideRouter([])]
     })
       .compileComponents();
 
