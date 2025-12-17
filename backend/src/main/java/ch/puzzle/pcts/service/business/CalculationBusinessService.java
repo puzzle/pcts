@@ -19,14 +19,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class CalculationBusinessService extends BusinessBase<Calculation> {
     private final ExperienceCalculationBusinessService experienceCalculationBusinessService;
+    private final CertificateCalculationBusinessService certificateCalculationBusinessService;
     private final DegreeCalculationBusinessService degreeCalculationBusinessService;
 
     protected CalculationBusinessService(CalculationValidationService validationService,
                                          CalculationPersistenceService persistenceService,
                                          ExperienceCalculationBusinessService experienceCalculationBusinessService,
+                                         CertificateCalculationBusinessService certificateCalculationBusinessService,
                                          DegreeCalculationBusinessService degreeCalculationBusinessService) {
         super(validationService, persistenceService);
         this.experienceCalculationBusinessService = experienceCalculationBusinessService;
+        this.certificateCalculationBusinessService = certificateCalculationBusinessService;
         this.degreeCalculationBusinessService = degreeCalculationBusinessService;
     }
 
@@ -40,6 +43,9 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
         createdCalculation
                 .setExperiences(experienceCalculationBusinessService.createExperienceCalculations(calculation));
         createdCalculation.setDegrees(degreeCalculationBusinessService.createDegreeCalculations(calculation));
+
+        createdCalculation
+                .setCertificates(certificateCalculationBusinessService.createCertificateCalculations(calculation));
 
         return createdCalculation;
     }
@@ -62,6 +68,8 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
         updatedCalculation
                 .setExperiences(experienceCalculationBusinessService.updateExperienceCalculations(calculation));
         updatedCalculation.setDegrees(degreeCalculationBusinessService.updateDegreeCalculations(calculation));
+        updatedCalculation
+                .setCertificates(certificateCalculationBusinessService.updateCertificateCalculations(calculation));
 
         return updatedCalculation;
     }
@@ -78,7 +86,10 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
         BigDecimal totalRelevancyPoints = BigDecimal.ZERO;
 
         totalRelevancyPoints = totalRelevancyPoints.add(experienceCalculationBusinessService.getExperiencePoints(id));
+
         totalRelevancyPoints = totalRelevancyPoints.add(degreeCalculationBusinessService.getDegreePoints(id));
+
+        totalRelevancyPoints = totalRelevancyPoints.add(certificateCalculationBusinessService.getCertificatePoints(certificateCalculationBusinessService.getByCalculationId(id)));
 
         calculation.setPoints(totalRelevancyPoints);
         return calculation;
