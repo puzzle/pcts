@@ -1,24 +1,24 @@
 :host {
   button.cancel-button {
     border: none;
-    color: #1E5A96;
+    color: #1e5a96;
 
     &:hover {
-      background-color: #FAFAFA;
+      background-color: #fafafa;
     }
 
     &:active {
-      background-color: #DEE2E6;
+      background-color: #dee2e6;
     }
   }
 
   button.submit-button {
     &:hover {
-      background-color: #1E5A96E5;
+      background-color: #1e5a96e5;
     }
 
     &:active {
-      background-color: #1E5A96
+      background-color: #1e5a96;
     }
   }
 }
