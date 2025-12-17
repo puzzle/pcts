@@ -84,7 +84,8 @@ VALUES
     (1, 1, '2023-01-15', '2025-01-14', 'Completed first aid training.'),
     (2, 2, '2022-11-01', NULL, 'Completed first aid training.'),
     (2, 1, '2023-01-15', '2025-01-14', NULL),
-    (1, 2, '2010-08-12', '2023-03-25', 'Left organization.');
+    (1, 2, '2010-08-12', '2023-03-25', 'Left organization.'),
+    (1, 5, '2010-08-12', '2023-03-25', 'Left organization.');
 
 TRUNCATE TABLE calculation CASCADE;
 
@@ -113,4 +114,11 @@ VALUES
     (2, 2, 10,'LITTLE', 'Comment'),
     (1, 2, 100,'LIMITED','Comment');
 
+TRUNCATE TABLE certificate_calculation CASCADE;
 
+INSERT INTO certificate_calculation
+(calculation_id, certificate_id)
+VALUES
+    (1, 2),
+    (2, 2),
+    (1, 5);
