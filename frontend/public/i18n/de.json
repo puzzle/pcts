@@ -126,6 +126,7 @@
   },
 
   "ERROR": {
+    "NOT_ALLOWED": "Der angemeldete Benutzer hat keine Berechtigung diese Aktion auszuführen.",
     "ATTRIBUTE_NOT_NULL": "{{FIELD}} darf nicht leer sein.",
     "ATTRIBUTE_NOT_NEGATIVE": "{{FIELD}} mit dem Wert {{IS}} darf nicht negativ sein.",
     "ATTRIBUTE_NOT_BLANK": "{{FIELD}} mit dem Wert {{IS}} darf nicht leer sein.",
