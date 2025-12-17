@@ -8,7 +8,7 @@ interface Variation {
   key: string;
 }
 
-@Injectable({ providedIn: 'any' })
+@Injectable()
 export class ScopedTranslationService {
   private readonly i18nPrefix: string = inject(I18N_PREFIX);
 
