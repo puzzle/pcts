@@ -77,8 +77,9 @@ class CertificateCalculationBusinessServiceTest {
         CertificateCalculation cc = mock(CertificateCalculation.class);
         when(cc.getCalculation()).thenReturn(calculation);
         when(cc.getCertificate()).thenReturn(certificate);
+        when(persistenceService.getByCalculationId(calculation.getId())).thenReturn(List.of(cc));
 
-        BigDecimal result = businessService.getCertificatePoints(List.of(cc));
+        BigDecimal result = businessService.getCertificatePoints(calculation.getId());
 
         assertEquals(BigDecimal.TEN, result);
     }
@@ -86,7 +87,7 @@ class CertificateCalculationBusinessServiceTest {
     @Test
     @DisplayName("Should return zero points for empty list")
     void shouldReturnZeroPoints() {
-        BigDecimal result = businessService.getCertificatePoints(List.of());
+        BigDecimal result = businessService.getCertificatePoints(0L);
         assertEquals(BigDecimal.ZERO, result);
     }
 
