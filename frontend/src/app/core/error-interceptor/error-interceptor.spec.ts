@@ -230,4 +230,29 @@ describe('errorInterceptor', () => {
         }
       });
   });
+
+  it('should show NOT_ALLOWED error if the status code is 403', (done) => {
+    const backendError = new HttpErrorResponse({
+      status: 403
+    });
+
+    translate.instant.mockReturnValue('Translated Default');
+    backend.handle.mockReturnValue(throwError(() => backendError));
+
+    http.post(url, {})
+      .subscribe({
+        error: () => {
+          expect(translate.instant)
+            .toHaveBeenCalledWith('ERROR.NOT_ALLOWED');
+          expect(translate.instant)
+            .toHaveBeenCalledTimes(1);
+
+          expect(toastService.showToasts)
+            .toHaveBeenCalledWith(['Translated Default'], 'error');
+          expect(toastService.showToasts)
+            .toHaveBeenCalledTimes(1);
+          done();
+        }
+      });
+  });
 });
