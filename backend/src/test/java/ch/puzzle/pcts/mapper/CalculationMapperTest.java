@@ -54,6 +54,8 @@ class CalculationMapperTest {
     private DegreeCalculationMapper degreeCalculationMapper;
     @Mock
     private CertificateCalculationMapper certificateCalculationMapper;
+    @Mock
+    private LeadershipExperienceCalculationMapper leadershipExperienceCalculationMapper;
 
     private CalculationMapper calculationMapper;
 
@@ -65,7 +67,8 @@ class CalculationMapperTest {
                                                   roleBusinessService,
                                                   experienceCalculationMapper,
                                                   degreeCalculationMapper,
-                                                  certificateCalculationMapper);
+                                                  certificateCalculationMapper,
+                                                  leadershipExperienceCalculationMapper);
     }
 
     private Member createMember() {

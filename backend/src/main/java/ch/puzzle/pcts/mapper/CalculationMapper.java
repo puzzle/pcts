@@ -20,12 +20,14 @@ public class CalculationMapper {
     private final ExperienceCalculationMapper experienceCalculationMapper;
     private final DegreeCalculationMapper degreeCalculationMapper;
     private final CertificateCalculationMapper certificateCalculationMapper;
+    private final LeadershipExperienceCalculationMapper leadershipExperienceCalculationMapper;
 
     public CalculationMapper(MemberMapper memberMapper, MemberBusinessService memberBusinessService,
                              RoleMapper roleMapper, RoleBusinessService roleBusinessService,
                              ExperienceCalculationMapper experienceCalculationMapper,
                              DegreeCalculationMapper degreeCalculationMapper,
-                             CertificateCalculationMapper certificateCalculationMapper) {
+                             CertificateCalculationMapper certificateCalculationMapper,
+                             LeadershipExperienceCalculationMapper leadershipExperienceCalculationMapper) {
         this.memberMapper = memberMapper;
         this.memberBusinessService = memberBusinessService;
         this.roleMapper = roleMapper;
@@ -33,6 +35,7 @@ public class CalculationMapper {
         this.experienceCalculationMapper = experienceCalculationMapper;
         this.degreeCalculationMapper = degreeCalculationMapper;
         this.certificateCalculationMapper = certificateCalculationMapper;
+        this.leadershipExperienceCalculationMapper = leadershipExperienceCalculationMapper;
     }
 
     public List<CalculationDto> toDto(List<Calculation> models) {
@@ -52,7 +55,7 @@ public class CalculationMapper {
                                   model.getPublicizedBy(),
                                   model.getPoints(),
                                   certificateCalculationMapper.toDto(model.getCertificates()),
-                                  null,
+                                  leadershipExperienceCalculationMapper.toDto(model.getCertificates()),
                                   degreeCalculationMapper.toDto(model.getDegrees()),
                                   experienceCalculationMapper.toDto(model.getExperiences()));
     }

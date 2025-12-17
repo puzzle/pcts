@@ -7,6 +7,8 @@ import ch.puzzle.pcts.dto.calculation.certificatecalculation.CertificateCalculat
 import ch.puzzle.pcts.dto.certificate.CertificateDto;
 import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
 import ch.puzzle.pcts.model.certificate.Certificate;
+import ch.puzzle.pcts.model.certificatetype.CertificateKind;
+import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.service.business.CertificateBusinessService;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,6 +50,9 @@ class CertificateCalculationMapperTest {
     @Test
     void shouldMapToDto() {
         Certificate certificate = createCertificate();
+        CertificateType certificateType = new CertificateType();
+        certificateType.setCertificateKind(CertificateKind.CERTIFICATE);
+        certificate.setCertificateType(certificateType);
         CertificateCalculation model = createModel(certificate);
 
         CertificateDto mockedCertificateDto = mock(CertificateDto.class);
@@ -66,6 +71,10 @@ class CertificateCalculationMapperTest {
     @Test
     void shouldMapListToDto() {
         Certificate certificate = createCertificate();
+        CertificateType certificateType = new CertificateType();
+        certificateType.setCertificateKind(CertificateKind.CERTIFICATE);
+        certificate.setCertificateType(certificateType);
+
         CertificateCalculation model = createModel(certificate);
 
         CertificateDto mockedCertificateDto = mock(CertificateDto.class);

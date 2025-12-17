@@ -34,22 +34,24 @@ public class CertificateCalculation implements Model {
 
     @Override
     public String toString() {
-        return "CertificateCalculation{" + "id=" + id + ", calculation=" + calculation + ", certificate=" + certificate
-               + '}';
+        return "CertificateCalculation{" + "id=" + id + ", calculation="
+               + (getCalculation() != null ? getCalculation().getId() : null) + ", certificate=" + certificate + '}';
     }
 
     @Override
-    public boolean equals(Object object) {
-        if (object == null || getClass() != object.getClass())
+    public boolean equals(Object o) {
+        if (!(o instanceof CertificateCalculation that))
             return false;
-        CertificateCalculation that = (CertificateCalculation) object;
-        return Objects.equals(id, that.id) && Objects.equals(calculation, that.calculation)
-               && Objects.equals(certificate, that.certificate);
+        return Objects.equals(getId(), that.getId())
+               && Objects
+                       .equals(this.getCalculation() != null ? this.getCalculation().getId() : null,
+                               that.getCalculation() != null ? that.getCalculation().getId() : null)
+               && Objects.equals(getCertificate(), that.getCertificate());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, calculation, certificate);
+        return Objects.hash(getId(), getCalculation() != null ? getCalculation().getId() : null, getCertificate());
     }
 
     public Long getId() {
