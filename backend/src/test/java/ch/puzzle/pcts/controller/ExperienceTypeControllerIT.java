@@ -11,10 +11,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.experiencetype.ExperienceTypeDto;
 import ch.puzzle.pcts.mapper.ExperienceTypeMapper;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
+import ch.puzzle.pcts.security.SpringSecurityConfig;
 import ch.puzzle.pcts.service.business.ExperienceTypeBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import java.util.List;

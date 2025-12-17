@@ -5,7 +5,7 @@ import static org.apache.commons.lang3.StringUtils.trim;
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.model.member.Member;
-import ch.puzzle.pcts.util.PCTSStringValidation;
+import ch.puzzle.pcts.util.validation.PCTSStringValidation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
