@@ -89,7 +89,9 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
 
         totalRelevancyPoints = totalRelevancyPoints.add(degreeCalculationBusinessService.getDegreePoints(id));
 
-        totalRelevancyPoints = totalRelevancyPoints.add(certificateCalculationBusinessService.getCertificatePoints(certificateCalculationBusinessService.getByCalculationId(id)));
+        totalRelevancyPoints = totalRelevancyPoints
+                .add(certificateCalculationBusinessService
+                        .getCertificatePoints(certificateCalculationBusinessService.getByCalculationId(id)));
 
         calculation.setPoints(totalRelevancyPoints);
         return calculation;
