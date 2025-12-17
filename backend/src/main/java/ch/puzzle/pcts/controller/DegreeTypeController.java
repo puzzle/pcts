@@ -3,6 +3,7 @@ package ch.puzzle.pcts.controller;
 import ch.puzzle.pcts.dto.degreetype.DegreeTypeDto;
 import ch.puzzle.pcts.mapper.DegreeTypeMapper;
 import ch.puzzle.pcts.model.degreetype.DegreeType;
+import ch.puzzle.pcts.security.annotation.IsAdmin;
 import ch.puzzle.pcts.service.business.DegreeTypeBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -16,6 +17,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@IsAdmin
 @RestController
 @RequestMapping("/api/v1/degree-types")
 @Tag(name = "degree-types", description = "Manage the types of academic degrees")
