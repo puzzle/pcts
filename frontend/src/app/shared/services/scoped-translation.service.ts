@@ -1,5 +1,4 @@
 import { inject, Injectable } from '@angular/core';
-import { I18N_PREFIX } from '../i18n-prefix.token';
 import { InterpolationParameters, TranslateService } from '@ngx-translate/core';
 
 
@@ -8,24 +7,24 @@ interface Variation {
   key: string;
 }
 
-@Injectable()
-export class ScopedTranslationService {
-  private readonly i18nPrefix: string = inject(I18N_PREFIX);
+@Injectable({ providedIn: 'root' })
+export class ScopedTranslationCoreService {
+  // private readonly i18nPrefix: string = inject(I18N_PREFIX);
 
   private readonly I18N_KEY_SEPARATOR = '.';
 
   private readonly translateService = inject(TranslateService);
 
-  public instant(key: string, params?: InterpolationParameters): string {
-    const keyList = this.generateKeyHierarchy(key);
+  public instant(key: string, params?: InterpolationParameters, i18nPrefix = ''): string {
+    const keyList = this.generateKeyHierarchy(key, i18nPrefix);
     return this.getTranslation(keyList, params);
   }
 
   /**
    * Creates a prioritized, unique list of all possible translation keys.
    */
-  private generateKeyHierarchy(key: string): string[] {
-    const variations = this.getStringVariations(this.i18nPrefix, key);
+  private generateKeyHierarchy(key: string, i18nPrefix: string): string[] {
+    const variations = this.getStringVariations(i18nPrefix, key);
     const allKeys = variations.flatMap((v) => this.getKeyList(v.prefix, v.key));
 
     // De-duplicate the list to avoid redundant checks

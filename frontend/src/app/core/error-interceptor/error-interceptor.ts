@@ -1,9 +1,9 @@
 import { HttpErrorResponse, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
 import { inject, Injector } from '@angular/core';
-import { ScopedTranslationService } from '../../shared/services/scoped-translation.service';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { SnackbarService } from '../toast/snackbar.service';
+import { ScopedTranslationService } from '../../shared/i18n-prefix.provider';
 
 export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>,
   next: HttpHandlerFn) => {
@@ -12,7 +12,7 @@ export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>,
 
   return next(req)
     .pipe(catchError((error: HttpErrorResponse) => {
-      const translate: ScopedTranslationService = injector.get(ScopedTranslationService);
+      const translate = injector.get(ScopedTranslationService);
       let toasts: string[];
 
       if (Array.isArray(error.error)) {

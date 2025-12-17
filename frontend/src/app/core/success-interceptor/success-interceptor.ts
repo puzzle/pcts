@@ -1,8 +1,8 @@
 import { SnackbarService } from '../toast/snackbar.service';
-import { ScopedTranslationService } from '../../shared/services/scoped-translation.service';
 import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
 import { inject, Injector } from '@angular/core';
 import { tap } from 'rxjs/operators';
+import { ScopedTranslationService } from '../../shared/i18n-prefix.provider';
 
 export const successInterceptor: HttpInterceptorFn = (req, next) => {
   if (req.method === 'GET') {
