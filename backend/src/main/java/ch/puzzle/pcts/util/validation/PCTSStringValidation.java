@@ -1,4 +1,4 @@
-package ch.puzzle.pcts.util;
+package ch.puzzle.pcts.util.validation;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
