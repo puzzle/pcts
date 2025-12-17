@@ -8,7 +8,6 @@ import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.degree.Degree;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 import java.util.Objects;
 import org.hibernate.validator.constraints.Range;
@@ -34,7 +33,6 @@ public class DegreeCalculation implements Model {
     private Relevancy relevancy;
 
     @NotNull(message = "{attribute.not.null}")
-    @PositiveOrZero(message = "{attribute.not.negative}")
     @Range(min = 1, max = 100, message = "{attribute.range.between}")
     private BigDecimal weight;
 

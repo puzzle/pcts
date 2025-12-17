@@ -15,20 +15,99 @@ import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.params.provider.Arguments;
 
-@ExtendWith(MockitoExtension.class)
-class ExperienceCalculationValidationServiceTest {
+class ExperienceCalculationValidationServiceTest
+        extends
+            ValidationBaseServiceTest<ExperienceCalculation, ExperienceCalculationValidationService> {
 
-    @InjectMocks
-    private ExperienceCalculationValidationService service;
+    @Override
+    ExperienceCalculationValidationService getService() {
+        return new ExperienceCalculationValidationService();
+    }
+
+    @Override
+    ExperienceCalculation getValidModel() {
+        Member member = createMember(1L, "Alice", "Smith");
+        Calculation calculation = createCalculation(1L, member);
+        Experience experience = createExperience(1L, member, "Experience 1");
+
+        return new ExperienceCalculation(null, calculation, experience, Relevancy.HIGHLY, "Comment");
+    }
+
+    static Stream<Arguments> invalidModelProvider() {
+        return Stream
+                .of(Arguments
+                        .of(new ExperienceCalculation(null, null, new Experience(), Relevancy.HIGHLY, "Valid comment"),
+                            List.of(Map.of(FieldKey.CLASS, "ExperienceCalculation", FieldKey.FIELD, "calculation"))),
+
+                    Arguments
+                            .of(new ExperienceCalculation(null,
+                                                          new Calculation(),
+                                                          null,
+                                                          Relevancy.HIGHLY,
+                                                          "Valid comment"),
+                                List.of(Map.of(FieldKey.CLASS, "ExperienceCalculation", FieldKey.FIELD, "experience"))),
+
+                    Arguments
+                            .of(new ExperienceCalculation(null,
+                                                          new Calculation(),
+                                                          new Experience(),
+                                                          null,
+                                                          "Valid comment"),
+                                List.of(Map.of(FieldKey.CLASS, "ExperienceCalculation", FieldKey.FIELD, "relevancy"))));
+    }
+
+    @DisplayName("Should throw exception when members do not match")
+    @Test
+    void shouldThrowExceptionWhenMembersDoNotMatch() {
+        Member member2 = createMember(2L, "Bob", "Johnson");
+
+        ExperienceCalculation ec = getValidModel();
+        ec.getCalculation().setMember(member2);
+
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> getService().validateMemberForCalculation(ec));
+
+        assertEquals(ErrorKey.ATTRIBUTE_MATCHES, exception.getErrorKeys().get(0));
+        assertEquals(Map
+                .of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "experience", FieldKey.CONDITION_FIELD, "member"),
+                     exception.getErrorAttributes().get(0));
+    }
+
+    @DisplayName("Should throw exception on duplicate experience ID")
+    @Test
+    void shouldThrowExceptionOnDuplicateExperienceId() {
+        ExperienceCalculation ec = getValidModel();
+        ec.getExperience().setName("Experience 1");
+
+        List<ExperienceCalculation> existing = List.of(ec);
+
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> getService().validateDuplicateExperienceId(ec, existing));
+
+        assertEquals(ErrorKey.DUPLICATE_CALCULATION, exception.getErrorKeys().get(0));
+        assertEquals(Map.of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "experience", FieldKey.IS, "Experience 1"),
+                     exception.getErrorAttributes().get(0));
+    }
+
+    @DisplayName("Should call validateMemberForCalculation on validateOnCreate")
+    @Test
+    void shouldCallValidateMemberForCalculationOnCreate() {
+        ExperienceCalculationValidationService spyService = spy(getService());
+        ExperienceCalculation ec = getValidModel();
+
+        doNothing().when(spyService).validateMemberForCalculation(any());
+
+        spyService.validateOnCreate(ec);
+
+        verify(spyService).validateMemberForCalculation(ec);
+    }
 
     private Member createMember(Long id, String firstName, String lastName) {
         Member m = new Member();
@@ -57,65 +136,4 @@ class ExperienceCalculationValidationServiceTest {
         exp.setName(name);
         return exp;
     }
-
-    private ExperienceCalculation createExperienceCalculation(Long id, Member member) {
-        Calculation calculation = createCalculation(id, member);
-        Experience experience = createExperience(id, member, "Experience " + id);
-        return new ExperienceCalculation(id, calculation, experience, Relevancy.HIGHLY, "Comment");
-    }
-
-    @DisplayName("Should throw exception when members do not match")
-    @Test
-    void shouldThrowExceptionWhenMembersDoNotMatch() {
-        Member member1 = createMember(1L, "Alice", "Smith");
-        Member member2 = createMember(2L, "Bob", "Johnson");
-
-        ExperienceCalculation ec = createExperienceCalculation(1L, member1);
-        ec.getCalculation().setMember(member2);
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateMemberForCalculation(ec));
-        assertEquals(ErrorKey.ATTRIBUTE_MATCHES, exception.getErrorKeys().get(0));
-        assertEquals(Map
-                .of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "experience", FieldKey.CONDITION_FIELD, "member"),
-                     exception.getErrorAttributes().get(0));
-    }
-
-    @DisplayName("Should throw exception on duplicate experience ID")
-    @Test
-    void shouldThrowExceptionOnDuplicateExperienceId() {
-        Member member = createMember(1L, "Alice", "Smith");
-        ExperienceCalculation ec = createExperienceCalculation(1L, member);
-
-        List<ExperienceCalculation> existing = new ArrayList<>();
-        existing.add(ec);
-
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> service.validateDuplicateExperienceId(ec, existing));
-
-        assertEquals(ErrorKey.DUPLICATE_CALCULATION, exception.getErrorKeys().get(0));
-        assertEquals(Map.of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "experience", FieldKey.IS, "Experience 1"),
-                     exception.getErrorAttributes().get(0));
-    }
-
-    @DisplayName("Should call validateMemberForCalculation on validateOnCreate")
-    @Test
-    void shouldCallValidateMemberForCalculationOnCreate() {
-        Member member = createMember(1L, "Alice", "Smith");
-
-        Calculation calculation = createCalculation(1L, member);
-        Experience experience = createExperience(1L, member, "Experience 1");
-        ExperienceCalculation ec = new ExperienceCalculation(null,
-                                                             calculation,
-                                                             experience,
-                                                             Relevancy.HIGHLY,
-                                                             "Comment");
-
-        ExperienceCalculationValidationService spyService = spy(service);
-        doNothing().when(spyService).validateMemberForCalculation(any());
-
-        spyService.validateOnCreate(ec);
-
-        verify(spyService).validateMemberForCalculation(ec);
-    }
-
 }

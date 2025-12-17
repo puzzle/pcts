@@ -104,3 +104,13 @@ VALUES
     (2, 2, 'LITTLE', 'Comment'),
     (1, 3, 'LIMITED','Comment');
 
+TRUNCATE TABLE degree_calculation CASCADE;
+
+INSERT INTO degree_calculation
+(calculation_id, degree_id, weight, relevancy, comment)
+VALUES
+    (1, 2, 80,'HIGHLY', 'Comment'),
+    (2, 2, 10,'LITTLE', 'Comment'),
+    (1, 2, 100,'LIMITED','Comment');
+
+
