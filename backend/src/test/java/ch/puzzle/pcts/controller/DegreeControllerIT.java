@@ -7,7 +7,6 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.degree.DegreeDto;
 import ch.puzzle.pcts.dto.degree.DegreeInputDto;
 import ch.puzzle.pcts.dto.degreetype.DegreeTypeDto;
@@ -19,6 +18,7 @@ import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
+import ch.puzzle.pcts.security.SpringSecurityConfig;
 import ch.puzzle.pcts.service.business.DegreeBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import java.math.BigDecimal;
