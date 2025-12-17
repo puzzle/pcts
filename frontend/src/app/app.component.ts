@@ -27,11 +27,11 @@ export class AppComponent {
     this.userName = this.userService.getName();
   }
 
-  protected visitRoot(): void {
+  visitRoot(): void {
     this.router.navigate(['/member']);
   }
 
-  protected handleLogout() {
+  handleLogout() {
     this.userService.logout();
   }
 }
