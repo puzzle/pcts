@@ -11,13 +11,13 @@ describe('User', () => {
   beforeEach(() => {
     keycloakMock = {
       tokenParsed: {},
-      logout: jasmine.createSpy('logout')
+      logout: jest.fn()
     };
 
     TestBed.configureTestingModule({ providers: [UserService,
       {
         provide: Keycloak,
-        use: keycloakMock
+        useValue: keycloakMock
       }] });
     service = TestBed.inject(UserService);
   });
