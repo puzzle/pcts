@@ -21,6 +21,7 @@ services:
       - "8080:8080"
     depends_on:
       - pcts-db
+      - pcts-keycloak
     environment:
       PCTS_SPRING_DATASOURCE_URL: pcts-db
       SPRING_PROFILES_ACTIVE: dev
@@ -35,9 +36,11 @@ services:
       dockerfile: ./frontend/Dockerfile
     ports:
       - "4200:4200"
+    depends_on:
+      - pcts-keycloak
     profiles: ['']
 
-  keycloak-pitc:
+  pcts-keycloak:
     container_name: pcts-keycloak
     image: quay.io/keycloak/keycloak:26.3.3
     environment:
