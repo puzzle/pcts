@@ -1072,9 +1072,13 @@
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
         "http://localhost:8080/*",
+        "http://pcts-backend:8080:/*",
         "http://localhost:4200/*",
         "http://localhost:4200:/*",
-        "http://localhost:8080:/*"
+        "http://pcts-frontend:4200/*",
+        "http://pcts-frontend:4200:/*",
+        "http://localhost:8080:/*",
+        "http://pcts-backend:8080/*"
       ],
       "webOrigins": [
         "+"
@@ -1094,8 +1098,10 @@
         "oidc.ciba.grant.enabled": "false",
         "backchannel.logout.session.required": "true",
         "standard.token.exchange.enabled": "false",
-        "post.logout.redirect.uris": "http://localhost:4200/*##http://localhost:4200:/*##http://localhost:8080:/*##http://localhost:8080/*",
+        "post.logout.redirect.uris": "http://localhost:4200/*##http://localhost:4200:/*##http://localhost:8080:/*##http://localhost:8080/*##http://pcts-backend:8080:/*##http://pcts-backend:8080/*##http://pcts-frontend:4200:/*##http://pcts-frontend:4200/*",
+        "frontchannel.logout.session.required": "true",
         "oauth2.device.authorization.grant.enabled": "false",
+        "display.on.consent.screen": "false",
         "pkce.code.challenge.method": "S256",
         "backchannel.logout.revoke.offline.tokens": "false"
       },
@@ -1903,14 +1909,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
-            "oidc-address-mapper",
-            "oidc-full-name-mapper",
-            "saml-user-property-mapper",
-            "oidc-usermodel-attribute-mapper",
-            "saml-user-attribute-mapper",
             "saml-role-list-mapper",
+            "oidc-usermodel-property-mapper",
+            "oidc-usermodel-attribute-mapper",
+            "oidc-address-mapper",
+            "saml-user-property-mapper",
+            "saml-user-attribute-mapper",
             "oidc-sha256-pairwise-sub-mapper",
-            "oidc-usermodel-property-mapper"
+            "oidc-full-name-mapper"
           ]
         }
       },
@@ -1942,14 +1948,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
-            "oidc-usermodel-attribute-mapper",
+            "saml-user-attribute-mapper",
+            "saml-user-property-mapper",
             "oidc-usermodel-property-mapper",
+            "oidc-full-name-mapper",
             "oidc-address-mapper",
             "saml-role-list-mapper",
-            "oidc-full-name-mapper",
-            "oidc-sha256-pairwise-sub-mapper",
-            "saml-user-attribute-mapper",
-            "saml-user-property-mapper"
+            "oidc-usermodel-attribute-mapper",
+            "oidc-sha256-pairwise-sub-mapper"
           ]
         }
       },

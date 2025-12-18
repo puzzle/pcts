@@ -25,6 +25,7 @@ import {
 import { provideDateFnsAdapter } from '@angular/material-date-fns-adapter';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { de } from 'date-fns/locale/de';
+import { environment } from '../environments/environment';
 
 registerLocaleData(localeDeCH);
 
@@ -37,9 +38,9 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideKeycloak({
       config: {
-        url: 'http://localhost:8544',
-        realm: 'pitc',
-        clientId: 'pcts-dev'
+        url: environment.keycloak.url,
+        realm: environment.keycloak.realm,
+        clientId: environment.keycloak.clientId
       },
       initOptions: {
         onLoad: 'login-required'
