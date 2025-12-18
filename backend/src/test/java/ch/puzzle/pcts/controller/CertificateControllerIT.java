@@ -30,6 +30,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,7 +43,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-@Import(SpringSecurityConfig.class)
+@Import({SpringSecurityConfig.class, ObjectMapper.class})
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(CertificateController.class)
 class CertificateControllerIT {
@@ -117,6 +118,8 @@ class CertificateControllerIT {
                                                                    tags.stream().map(Tag::getName).toList());
 
         expectedDto = new CertificateDto(ID, memberDto, certificateDto, commonDate, commonDate, "Comment");
+
+        objectMapper.registerModule(new JavaTimeModule());
     }
 
     @DisplayName("Should successfully get certificate by id")

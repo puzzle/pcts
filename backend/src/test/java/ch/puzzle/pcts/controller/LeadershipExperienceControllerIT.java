@@ -42,7 +42,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(LeadershipExperienceController.class)
 @ExtendWith(MockitoExtension.class)
-@Import(SpringSecurityConfig.class)
+@Import({SpringSecurityConfig.class, ObjectMapper.class})
 class LeadershipExperienceControllerIT {
 
     @MockitoBean
