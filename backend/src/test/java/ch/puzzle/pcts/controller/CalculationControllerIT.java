@@ -38,7 +38,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-@Import({SpringSecurityConfig.class, ObjectMapper.class})
+@Import({ SpringSecurityConfig.class, ObjectMapper.class })
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(CalculationController.class)
 class CalculationControllerIT {
