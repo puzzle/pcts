@@ -15,11 +15,15 @@
     "backend": {
       "release-type": "maven",
       "package-name": "pcts-backend",
-      "skip-snapshot": true
+      "skip-snapshot": true,
+      "changelog-path": "../CHANGELOG.md",
+      "initial-version": "0.1.0"
     },
     "frontend": {
       "release-type": "node",
-      "package-name": "pcts-frontend"
+      "package-name": "pcts-frontend",
+      "changelog-path": "../CHANGELOG.md",
+      "initial-version": "0.1.0"
     }
   },
   "plugins": [
