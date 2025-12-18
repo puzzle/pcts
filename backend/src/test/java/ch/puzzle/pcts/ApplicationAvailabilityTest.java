@@ -37,7 +37,7 @@ class ApplicationAvailabilityTest {
                 .perform(get(BASEURL))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("UP"))
-                .andExpect(content().string("{\"status\":\"UP\",\"groups\":[\"liveness\",\"readiness\"]}"));
+                .andExpect(content().string("{\"groups\":[\"liveness\",\"readiness\"],\"status\":\"UP\"}"));
     }
 
     @DisplayName("Should accept traffic")
