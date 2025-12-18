@@ -7,6 +7,8 @@ import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import ch.puzzle.pcts.service.validation.MemberValidationService;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,6 +22,10 @@ public class MemberBusinessService extends BusinessBase<Member> {
         super(validationService, persistenceService);
         this.roleBusinessService = roleBusinessService;
         this.calculationBusinessService = calculationBusinessService;
+    }
+
+    public Optional<Member> findIfExists(Long id){
+        return persistenceService.getById(id);
     }
 
     public List<Member> getAll() {
