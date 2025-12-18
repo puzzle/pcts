@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.util;
 
+import java.util.Optional;
+import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,30 +14,51 @@ import org.springframework.stereotype.Component;
 public class AuthenticatedUserHelper {
     private static final Logger log = LoggerFactory.getLogger(AuthenticatedUserHelper.class);
     private static String usernameClaim;
+    private static String emailClaim;
 
     @Value("${pcts.authentication.username-claim:name}")
     public void setUsernameClaim(String usernameClaim) {
         AuthenticatedUserHelper.usernameClaim = usernameClaim;
     }
 
+    @Value("${pcts.authentication.email-claim:email}")
+    public static void setEmailClaim(String emailClaim) {
+        AuthenticatedUserHelper.emailClaim = emailClaim;
+    }
+
     public static String getDisplayName() {
+        Function<Jwt, Optional<String>> useSubjectInstead = (jwt) -> Optional.ofNullable(jwt.getSubject());
+        Optional<String> name = getProperty(usernameClaim, useSubjectInstead);
+
+        return name.orElseThrow();
+    }
+
+    public static Optional<String> getEmail() {
+        return AuthenticatedUserHelper.getProperty(emailClaim, (jwt) -> Optional.empty());
+    }
+
+    private static Optional<String> getProperty(String propertyName, Function<Jwt, Optional<String>> backupFunction) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication.getCredentials() instanceof Jwt jwt) {
-            final String username = jwt.getClaimAsString(usernameClaim);
+            final Optional<String> username = Optional.ofNullable(jwt.getClaimAsString(propertyName));
 
-            if (username == null) {
-                String message = "Could not extract name from JWT from the claim '%s', returning subject instead"
-                        .formatted(usernameClaim);
+            if (username.isEmpty()) {
+                final String message = String
+                        .format("Could not extract property '%s' from security context, applying backup function",
+                                propertyName);
                 log.warn(message);
-
-                return jwt.getSubject();
+                return backupFunction.apply(jwt);
             }
 
             return username;
         }
 
-        log
-                .warn("Could not extract name from security context because the authentication object was no JWT, returning authentication name instead");
-        return authentication.getName();
+        final String message = String
+                .format("Could not extract property '%s' from security context because the authentication object was no JWT.",
+                        propertyName);
+        log.warn(message);
+
+        return Optional.empty();
     }
+
 }
