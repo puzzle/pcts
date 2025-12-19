@@ -8,7 +8,7 @@ public record ExperienceCalculationDto(
 
         @Schema(description = "Unique identifier of the experience calculation", example = "42") Long id,
 
-        @Schema(description = "Referenced experience", exampleClasses = ExperienceDto.class) ExperienceDto experience,
+        @Schema(description = "Referenced experience") ExperienceDto experience,
 
         @Schema(description = "Relevancy of the experience for the calculation", example = "HIGHLY") Relevancy relevancy,
 

@@ -15,9 +15,9 @@ import java.util.List;
 public record CalculationDto(
         @Schema(description = "The unique identifier of this calculation.", example = "1", requiredMode = Schema.RequiredMode.REQUIRED, accessMode = Schema.AccessMode.READ_ONLY) Long id,
 
-        @Schema(description = "The member associated with this calculation.", exampleClasses = MemberDto.class, requiredMode = Schema.RequiredMode.REQUIRED) MemberDto member,
+        @Schema(description = "The member associated with this calculation.", requiredMode = Schema.RequiredMode.REQUIRED) MemberDto member,
 
-        @Schema(description = "The role assigned to this calculation.", exampleClasses = RoleDto.class, requiredMode = Schema.RequiredMode.REQUIRED) RoleDto role,
+        @Schema(description = "The role assigned to this calculation.", requiredMode = Schema.RequiredMode.REQUIRED) RoleDto role,
 
         @Schema(description = "The current state of the calculation.", example = "ACTIVE", requiredMode = Schema.RequiredMode.REQUIRED) CalculationState state,
 

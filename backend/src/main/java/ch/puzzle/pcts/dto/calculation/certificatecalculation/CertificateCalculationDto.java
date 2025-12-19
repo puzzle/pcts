@@ -7,5 +7,5 @@ public record CertificateCalculationDto(
 
         @Schema(description = "Unique identifier of the certificate calculation", example = "15") Long id,
 
-        @Schema(description = "Certificate associated with the calculation", implementation = CertificateDto.class) CertificateDto certificate) {
+        @Schema(description = "Certificate associated with the calculation") CertificateDto certificate) {
 }

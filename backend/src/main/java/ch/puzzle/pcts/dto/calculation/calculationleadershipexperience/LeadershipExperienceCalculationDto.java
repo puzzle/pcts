@@ -6,5 +6,5 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public record LeadershipExperienceCalculationDto(
         @Schema(description = "Unique identifier of the leadership experience calculation", example = "42") Long id,
 
-        @Schema(description = "Leadership experience associated with the calculation", implementation = LeadershipExperienceDto.class) LeadershipExperienceDto experience) {
+        @Schema(description = "Leadership experience associated with the calculation") LeadershipExperienceDto experience) {
 }
