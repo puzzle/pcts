@@ -18,6 +18,7 @@ import { DegreeTypeModel } from '../../features/degrees/degree-type/degree-type.
 import { DegreeModel } from '../../features/degrees/degree.model';
 import { DegreeOverviewModel } from '../../features/member/detail-view/cv/degree-overview.model';
 import { MemberCvOverviewModel } from '../../features/member/member-cv-overview.model';
+import { ConfigurationModel } from '../../features/configuration/configuration.model';
 import { CalculationModel } from '../../features/calculations/calculation.model';
 import { RoleModel } from '../../features/roles/role.model';
 import { RolePointsModel } from '../../features/member/detail-view/RolePointsModel';
@@ -532,4 +533,9 @@ export const calculation3: CalculationModel = {
   leadershipExperienceCalculations: [],
   degreeCalculations: [],
   experienceCalculations: []
+};
+
+export const configuration: ConfigurationModel = {
+  adminAuthorities: ['org_hr',
+    'org_gl']
 };
