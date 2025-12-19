@@ -66,7 +66,7 @@ class ExperienceCalculationBusinessServiceTest {
     @DisplayName("Should calculate experience points correctly")
     void shouldCalculateExperiencePoints() {
         ExperienceType type = mock(ExperienceType.class);
-        when(type.getPoints(Relevancy.HIGHLY)).thenReturn(BigDecimal.TEN);
+        when(type.getPointsByRelevancy(Relevancy.HIGHLY)).thenReturn(BigDecimal.TEN);
 
         Experience exp = mock(Experience.class);
         when(exp.getType()).thenReturn(type);

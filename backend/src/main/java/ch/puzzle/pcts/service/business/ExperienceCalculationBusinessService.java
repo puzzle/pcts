@@ -116,7 +116,7 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
         ExperienceType type = experience.getType();
         Relevancy relevancy = calculation.getRelevancy();
 
-        BigDecimal basePoints = type.getPoints(relevancy);
+        BigDecimal basePoints = type.getPointsByRelevancy(relevancy);
 
         BigDecimal percentFactor = BigDecimal
                 .valueOf(experience.getPercent())

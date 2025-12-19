@@ -116,7 +116,7 @@ public class DegreeCalculationBusinessService extends BusinessBase<DegreeCalcula
         Relevancy relevancy = calculation.getRelevancy();
         BigDecimal weight = calculation.getWeight();
 
-        BigDecimal basePoints = type.getPoints(relevancy);
+        BigDecimal basePoints = type.getPointsByRelevancy(relevancy);
 
         return basePoints.divide(BigDecimal.valueOf(100), MathContext.DECIMAL128).multiply(weight);
     }

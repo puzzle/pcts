@@ -64,7 +64,7 @@ class DegreeCalculationBusinessServiceTest {
     @DisplayName("Should calculate degree points correctly")
     void shouldCalculateDegreePoints() {
         DegreeType type = mock(DegreeType.class);
-        when(type.getPoints(Relevancy.HIGHLY)).thenReturn(BigDecimal.valueOf(50));
+        when(type.getPointsByRelevancy(Relevancy.HIGHLY)).thenReturn(BigDecimal.valueOf(50));
 
         Degree degree = mock(Degree.class);
         when(degree.getDegreeType()).thenReturn(type);

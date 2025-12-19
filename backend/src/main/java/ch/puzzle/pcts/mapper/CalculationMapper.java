@@ -63,7 +63,6 @@ public class CalculationMapper {
     public Calculation fromDto(CalculationInputDto dto) {
         return Calculation.Builder
                 .builder()
-                .withId(null)
                 .withMember(this.memberBusinessService.getById(dto.memberId()))
                 .withRole(this.roleBusinessService.getById(dto.roleId()))
                 .withState(dto.state())
@@ -71,11 +70,11 @@ public class CalculationMapper {
                 .withPublicizedBy(null)
                 .withDegrees(this.degreeCalculationMapper.fromDto(dto.degrees()))
                 .withExperiences(this.experienceCalculationMapper.fromDto(dto.experiences()))
-                .withCertificates(mergedCertificates(dto.leadershipExperiences(), dto.certificates()))
+                .withCertificates(mergeCertificates(dto.leadershipExperiences(), dto.certificates()))
                 .build();
     }
 
-    private List<CertificateCalculation> mergedCertificates(List<Long> leadershipExperiences, List<Long> certificates) {
+    private List<CertificateCalculation> mergeCertificates(List<Long> leadershipExperiences, List<Long> certificates) {
         return Stream
                 .of(certificates, leadershipExperiences)
                 .map(certificateCalculationMapper::fromDto)

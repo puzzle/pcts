@@ -8,7 +8,6 @@ import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
-import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.service.persistence.CertificateCalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.CertificateCalculationValidationService;
 import java.math.BigDecimal;
@@ -42,11 +41,11 @@ public class CertificateCalculationBusinessService extends BusinessBase<Certific
         return certificateCalculations
                 .stream()
                 .filter(certificateCalculation -> certificateCalculation.getCalculation().getRole().getIsManagement()
-                                                  || certificateCalculation
+                                                  || !certificateCalculation
                                                           .getCertificate()
                                                           .getCertificateType()
                                                           .getCertificateKind()
-                                                     == CertificateKind.CERTIFICATE)
+                                                          .isLeadershipExperienceType())
                 .map(certificateCalculation -> certificateCalculation.getCertificate().getCertificateType().getPoints())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }

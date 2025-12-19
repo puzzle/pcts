@@ -62,7 +62,7 @@ public class DegreeType implements Model {
         this.name = trim(name);
     }
 
-    public BigDecimal getPoints(Relevancy relevancy) {
+    public BigDecimal getPointsByRelevancy(Relevancy relevancy) {
         return switch (relevancy) {
             case HIGHLY -> getHighlyRelevantPoints();
             case LIMITED -> getLimitedRelevantPoints();
