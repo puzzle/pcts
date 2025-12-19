@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "member_overview_view")
+@Table(name = "member_overview")
 public class MemberOverview implements Model {
 
     @Id
@@ -33,12 +33,6 @@ public class MemberOverview implements Model {
 
     private String certificateTypeName;
     private String certificateTypeComment;
-
-    private Long leadershipId;
-    private String leadershipComment;
-
-    private String leadershipTypeName;
-    private String leadershipTypeComment;
     @Enumerated(EnumType.STRING)
     private CertificateKind leadershipTypeKind;
 
@@ -46,6 +40,7 @@ public class MemberOverview implements Model {
     private String degreeName;
     private LocalDate degreeStartDate;
     private LocalDate degreeEndDate;
+    private String degreeComment;
 
     private String degreeTypeName;
 
@@ -74,15 +69,12 @@ public class MemberOverview implements Model {
         certificateComment = trim(builder.certificateComment);
         certificateTypeName = trim(builder.certificateTypeName);
         certificateTypeComment = trim(builder.certificateTypeComment);
-        leadershipId = builder.leadershipId;
-        leadershipComment = trim(builder.leadershipComment);
         degreeId = builder.degreeId;
         degreeName = trim(builder.degreeName);
         degreeStartDate = builder.degreeStartDate;
         degreeEndDate = builder.degreeEndDate;
-        leadershipTypeName = trim(builder.leadershipTypeName);
+        degreeComment = builder.degreeComment;
         leadershipTypeKind = builder.leadershipTypeKind;
-        leadershipTypeComment = trim(builder.leadershipTypeComment);
         degreeTypeName = trim(builder.degreeTypeName);
         experienceId = builder.experienceId;
         experienceName = trim(builder.experienceName);
@@ -219,22 +211,6 @@ public class MemberOverview implements Model {
         this.certificateTypeComment = trim(certificateTypeComment);
     }
 
-    public Long getLeadershipId() {
-        return leadershipId;
-    }
-
-    public void setLeadershipId(Long leadershipId) {
-        this.leadershipId = leadershipId;
-    }
-
-    public String getLeadershipComment() {
-        return leadershipComment;
-    }
-
-    public void setLeadershipComment(String leadershipComment) {
-        this.leadershipComment = trim(leadershipComment);
-    }
-
     public Long getDegreeId() {
         return degreeId;
     }
@@ -263,32 +239,24 @@ public class MemberOverview implements Model {
         return degreeEndDate;
     }
 
+    public String getDegreeComment() {
+        return degreeComment;
+    }
+
     public void setDegreeEndDate(LocalDate degreeEndDate) {
         this.degreeEndDate = degreeEndDate;
     }
 
-    public String getLeadershipTypeName() {
-        return leadershipTypeName;
+    public void setDegreeComment(String degreeComment) {
+        this.degreeComment = degreeComment;
     }
 
-    public void setLeadershipTypeName(String leadershipTypeName) {
-        this.leadershipTypeName = trim(leadershipTypeName);
-    }
-
-    public CertificateKind getleadershipTypeKind() {
+    public CertificateKind getLeadershipTypeKind() {
         return leadershipTypeKind;
     }
 
-    public void setleadershipTypeKind(CertificateKind leadershipKind) {
-        this.leadershipTypeKind = leadershipKind;
-    }
-
-    public String getLeadershipTypeComment() {
-        return leadershipTypeComment;
-    }
-
-    public void setLeadershipTypeComment(String leadershipTypeComment) {
-        this.leadershipTypeComment = trim(leadershipTypeComment);
+    public void setLeadershipTypeKind(CertificateKind leadershipTypeKind) {
+        this.leadershipTypeKind = leadershipTypeKind;
     }
 
     public String getDegreeTypeName() {
@@ -390,17 +358,13 @@ public class MemberOverview implements Model {
         private String certificateTypeName;
         private String certificateTypeComment;
 
-        private Long leadershipId;
-        private String leadershipComment;
-
         private Long degreeId;
         private String degreeName;
         private LocalDate degreeStartDate;
         private LocalDate degreeEndDate;
+        private String degreeComment;
 
-        private String leadershipTypeName;
         private CertificateKind leadershipTypeKind;
-        private String leadershipTypeComment;
 
         private String degreeTypeName;
 
@@ -495,28 +459,8 @@ public class MemberOverview implements Model {
             return this;
         }
 
-        public Builder withLeadershipId(Long leadershipId) {
-            this.leadershipId = leadershipId;
-            return this;
-        }
-
-        public Builder withLeadershipComment(String leadershipComment) {
-            this.leadershipComment = trim(leadershipComment);
-            return this;
-        }
-
-        public Builder withLeadershipTypeName(String leadershipTypeName) {
-            this.leadershipTypeName = trim(leadershipTypeName);
-            return this;
-        }
-
         public Builder withleadershipTypeKind(CertificateKind leadershipTypeKind) {
             this.leadershipTypeKind = leadershipTypeKind;
-            return this;
-        }
-
-        public Builder withLeadershipTypeComment(String leadershipTypeComment) {
-            this.leadershipTypeComment = trim(leadershipTypeComment);
             return this;
         }
 
@@ -537,6 +481,11 @@ public class MemberOverview implements Model {
 
         public Builder withDegreeEndDate(LocalDate degreeEndDate) {
             this.degreeEndDate = degreeEndDate;
+            return this;
+        }
+
+        public Builder withDegreeComment(String degreeComment) {
+            this.degreeComment = trim(degreeComment);
             return this;
         }
 
