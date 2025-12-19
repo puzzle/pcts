@@ -15,11 +15,13 @@
     "backend": {
       "release-type": "maven",
       "package-name": "pcts-backend",
-      "skip-snapshot": true
+      "skip-snapshot": true,
+      "include-component-in-tag": true
     },
     "frontend": {
       "release-type": "node",
-      "package-name": "pcts-frontend"
+      "package-name": "pcts-frontend",
+      "include-component-in-tag": true
     }
   },
   "plugins": [
