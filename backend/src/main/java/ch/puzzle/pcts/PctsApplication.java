@@ -5,10 +5,12 @@ import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 @OpenAPIDefinition(servers = { @Server(url = "/", description = "Default Server URL") })
 @EnableScheduling
 @SpringBootApplication
+@ConfigurationPropertiesScan
 public class PctsApplication {
 
     public static void main(String[] args) {
