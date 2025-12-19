@@ -8,6 +8,16 @@ import { PuzzleTokenModel } from './puzzle-token.model';
 export class UserService {
   private readonly keycloak = inject(Keycloak);
 
+  getRoles(): string[] {
+    const parsedToken = this.keycloak.tokenParsed as PuzzleTokenModel | undefined;
+
+    if (!parsedToken) {
+      return [];
+    }
+
+    return parsedToken.pitc.roles ? parsedToken.pitc.roles : [];
+  }
+
   getName(): string | null {
     const parsedToken = this.keycloak.tokenParsed as PuzzleTokenModel | undefined;
 

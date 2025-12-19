@@ -1,32 +1,32 @@
-package ch.puzzle.pcts.security;
+package ch.puzzle.pcts.service;
 
+import ch.puzzle.pcts.configuration.AuthorisationConfiguration;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
-import ch.puzzle.pcts.util.AuthenticatedUserHelper;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component("SecurityService")
+@Service("SecurityService")
 public class SecurityService {
+    private final UserService userService;
     private final MemberBusinessService memberService;
+    private final AuthorisationConfiguration authorisationConfiguration;
 
-    @Value("#{'${pcts.authentication.admin-authorities}'.split(',')}")
-    private List<String> adminAuthorities;
-
-    public SecurityService(MemberBusinessService memberService) {
+    public SecurityService(UserService userService, MemberBusinessService memberService,
+                           AuthorisationConfiguration authorisationConfiguration) {
+        this.userService = userService;
         this.memberService = memberService;
+        this.authorisationConfiguration = authorisationConfiguration;
     }
 
     public boolean isAdmin() {
         return getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)
-                .anyMatch(getAdminAuthoritiesAsRoles()::contains);
+                .anyMatch(authorisationConfiguration.adminAuthoritiesAsRoles()::contains);
     }
 
     public boolean isUsersOwnSheet(Long userId) {
@@ -35,16 +35,12 @@ public class SecurityService {
             return false;
         }
 
-        Optional<String> email = AuthenticatedUserHelper.getEmail();
+        Optional<String> email = this.userService.getEmail();
         if (email.isEmpty()) {
             return false;
         }
 
         return false;
-    }
-
-    private List<String> getAdminAuthoritiesAsRoles() {
-        return this.adminAuthorities.stream().map(a -> "SCOPE_" + a).toList();
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities() {
