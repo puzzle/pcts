@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>ch.puzzle</groupId>
 	<artifactId>pcts</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>pcts</name>
 	<description>demo</description>
 
@@ -164,7 +164,7 @@
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>3.5.4</version>
 				<configuration>
-					<excludes></excludes>
+					<excludes/>
 				</configuration>
 				<executions>
 					<execution>
