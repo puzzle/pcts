@@ -18,6 +18,7 @@ import { DegreeTypeModel } from '../../features/degrees/degree-type/degree-type.
 import { DegreeModel } from '../../features/degrees/degree.model';
 import { DegreeOverviewModel } from '../../features/member/detail-view/cv/degree-overview.model';
 import { MemberCvOverviewModel } from '../../features/member/member-cv-overview.model';
+import { ConfigurationModel } from '../../features/configuration/configuration.model';
 
 export const url = '/api/v1/data';
 
@@ -394,3 +395,8 @@ export const degreeOverviewList: DegreeOverviewModel[] = [{
   endDate: null
 }];
 
+
+export const configuration: ConfigurationModel = {
+  adminAuthorities: ['org_hr',
+    'org_gl']
+};
