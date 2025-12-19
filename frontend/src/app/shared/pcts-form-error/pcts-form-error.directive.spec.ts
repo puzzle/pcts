@@ -7,7 +7,7 @@ import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { PctsFormLabelDirective } from '../pcts-form-label/pcts-form-label.directive';
 import { translationMock } from '../../../../setup-jest';
-import { ScopedTranslationService } from '../services/scoped-translation.service';
+import { ScopedTranslationService } from '../services/scoped-translation-core.service';
 
 @Component({
   standalone: true,

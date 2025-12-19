@@ -1,31 +1,28 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ScopedTranslationService } from './scoped-translation.service';
-import { I18N_PREFIX } from '../i18n-prefix.token';
 import { provideTranslateService } from '@ngx-translate/core';
+import { ScopedTranslationCoreService } from './scoped-translation-core.service';
 
 
 describe('ScopedTranslationService', () => {
-  let service: ScopedTranslationService;
+  let service: ScopedTranslationCoreService;
   const i18nPrefixMock = jest.fn()
     .mockReturnValue('DEFAULT.PREFIX');
 
   function setPrefixMock(prefix: string) {
     i18nPrefixMock.mockReturnValue(prefix);
-    service = TestBed.inject(ScopedTranslationService);
+    service = TestBed.inject(ScopedTranslationCoreService);
   }
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [provideTranslateService(),
-        ScopedTranslationService,
-        { provide: I18N_PREFIX,
-          useFactory: () => i18nPrefixMock() }]
+        ScopedTranslationCoreService]
     });
   });
 
   it('should be created', () => {
-    service = TestBed.inject(ScopedTranslationService);
+    service = TestBed.inject(ScopedTranslationCoreService);
     expect(service)
       .toBeTruthy();
   });

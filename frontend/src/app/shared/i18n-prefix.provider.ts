@@ -1,7 +1,7 @@
 import { inject, Injectable, Provider } from '@angular/core';
 import { InterpolationParameters } from '@ngx-translate/core';
 import { I18N_PREFIX } from './i18n-prefix.token';
-import { ScopedTranslationCoreService } from './services/scoped-translation.service';
+import { ScopedTranslationCoreService } from './services/scoped-translation-core.service';
 
 export function provideI18nPrefix(suffix: string, separator = '.'): Provider[] {
   return [{

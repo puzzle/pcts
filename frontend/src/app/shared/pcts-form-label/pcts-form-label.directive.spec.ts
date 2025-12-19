@@ -7,7 +7,7 @@ import { CaseFormatter } from '../format/case-formatter';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { PctsFormErrorDirective } from '../pcts-form-error/pcts-form-error.directive';
-import { ScopedTranslationService } from '../services/scoped-translation.service';
+import { ScopedTranslationService } from '../services/scoped-translation-core.service';
 import { translationMock } from '../../../../setup-jest';
 
 @Component({
