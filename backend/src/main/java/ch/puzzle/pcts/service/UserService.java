@@ -1,43 +1,52 @@
-package ch.puzzle.pcts.util;
+package ch.puzzle.pcts.service;
 
+import ch.puzzle.pcts.configuration.AuthenticationConfiguration;
+import ch.puzzle.pcts.dto.error.ErrorKey;
+import ch.puzzle.pcts.dto.error.GenericErrorDto;
+import ch.puzzle.pcts.exception.PCTSException;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
-public class AuthenticatedUserHelper {
-    private static final Logger log = LoggerFactory.getLogger(AuthenticatedUserHelper.class);
-    private static String usernameClaim;
-    private static String emailClaim;
+@Service
+public class UserService {
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
+    private final AuthenticationConfiguration authConfiguration;
 
-    @Value("${pcts.authentication.username-claim:name}")
-    public void setUsernameClaim(String usernameClaim) {
-        AuthenticatedUserHelper.usernameClaim = usernameClaim;
+    public UserService(AuthenticationConfiguration authConfiguration) {
+        this.authConfiguration = authConfiguration;
     }
 
-    @Value("${pcts.authentication.email-claim:email}")
-    public static void setEmailClaim(String emailClaim) {
-        AuthenticatedUserHelper.emailClaim = emailClaim;
+    public Long getIdFromEmail() {
+        Optional<String> email = getEmail();
+        if (email.isEmpty()) {
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, Map.of());
+            throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
+        }
+
+        return 1L;
     }
 
-    public static String getDisplayName() {
+    public String getDisplayName() {
         Function<Jwt, Optional<String>> useSubjectInstead = (jwt) -> Optional.ofNullable(jwt.getSubject());
-        Optional<String> name = getProperty(usernameClaim, useSubjectInstead);
+        Optional<String> name = this.getProperty(authConfiguration.usernameClaim(), useSubjectInstead);
 
         return name.orElseThrow();
     }
 
-    public static Optional<String> getEmail() {
-        return AuthenticatedUserHelper.getProperty(emailClaim, (jwt) -> Optional.empty());
+    public Optional<String> getEmail() {
+        return this.getProperty(authConfiguration.emailClaim(), (jwt) -> Optional.empty());
     }
 
-    private static Optional<String> getProperty(String propertyName, Function<Jwt, Optional<String>> backupFunction) {
+    private Optional<String> getProperty(String propertyName, Function<Jwt, Optional<String>> backupFunction) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null) {
