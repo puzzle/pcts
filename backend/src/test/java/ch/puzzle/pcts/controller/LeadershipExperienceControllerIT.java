@@ -22,7 +22,6 @@ import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
-import ch.puzzle.pcts.security.SpringSecurityConfig;
 import ch.puzzle.pcts.service.business.LeadershipExperienceBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,19 +30,13 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(LeadershipExperienceController.class)
-@ExtendWith(MockitoExtension.class)
-@Import(SpringSecurityConfig.class)
-class LeadershipExperienceControllerIT {
+@ControllerIT(LeadershipExperienceController.class)
+class LeadershipExperienceControllerIT extends ControllerITBase {
 
     @MockitoBean
     private LeadershipExperienceBusinessService businessService;
@@ -125,7 +118,7 @@ class LeadershipExperienceControllerIT {
         given(mapper.toDto(any(Certificate.class))).willReturn(dto);
 
         mvc
-                .perform(get(BASEURL + "/{id}", ID).with(csrf()).accept(MediaType.APPLICATION_JSON))
+                .perform(get(BASEURL + "/{id}", ID).with(csrf()).with(adminJwt()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(dto, "$"));
 
@@ -144,7 +137,8 @@ class LeadershipExperienceControllerIT {
                 .perform(post(BASEURL)
                         .content(objectMapper.writeValueAsString(inputDto))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isCreated())
                 .andExpect(JsonDtoMatcher.matchesDto(dto, "$"));
 
@@ -164,7 +158,8 @@ class LeadershipExperienceControllerIT {
                 .perform(put(BASEURL + "/{id}", ID)
                         .content(objectMapper.writeValueAsString(inputDto))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(dto, "$"));
 
@@ -179,7 +174,7 @@ class LeadershipExperienceControllerIT {
         willDoNothing().given(businessService).delete(ID);
 
         mvc
-                .perform(delete(BASEURL + "/{id}", ID).with(csrf()))
+                .perform(delete(BASEURL + "/{id}", ID).with(csrf()).with(adminJwt()))
                 .andExpect(status().isNoContent())
                 .andExpect(jsonPath("$").doesNotExist());
 
