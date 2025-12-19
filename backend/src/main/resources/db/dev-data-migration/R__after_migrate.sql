@@ -149,3 +149,38 @@ VALUES
     (3, 3, 'ARCHIVED', '2025-01-10', 'admin_user'),
     (4, 4, 'DRAFT', NULL, NULL),
     (5, 5, 'ACTIVE', '2025-01-28', 'admin_user');
+
+TRUNCATE TABLE experience_calculation CASCADE;
+
+INSERT INTO experience_calculation
+(calculation_id, experience_id, relevancy, comment)
+VALUES
+    (1, 1, 'HIGHLY',  'Core backend and DevOps experience'),
+    (1, 3, 'LIMITED', 'Freelance work partially relevant'),
+    (2, 2, 'LITTLE',  'Marketing internship, low relevance'),
+    (3, 4, 'HIGHLY',  'Full-time data analyst role'),
+    (4, 2, 'LIMITED', 'Internship experience');
+
+TRUNCATE TABLE degree_calculation CASCADE;
+
+INSERT INTO degree_calculation
+(calculation_id, degree_id, weight, relevancy, comment)
+VALUES
+    (1, 1, 100, 'HIGHLY',  'Strong analytical background'),
+    (2, 2, 40,  'LITTLE',  'Low relevance for technical role'),
+    (3, 3, 90,  'HIGHLY',  'Directly relevant degree'),
+    (4, 3, 70,  'LIMITED', 'Relevant but less practical focus');
+
+TRUNCATE TABLE certificate_calculation CASCADE;
+
+INSERT INTO certificate_calculation
+(calculation_id, certificate_id)
+VALUES
+    (1, 1),
+    (2, 2),
+    (3, 3),
+    (4, 4),
+    (5, 5),
+    (1, 6),
+    (2, 7),
+    (4, 8);
