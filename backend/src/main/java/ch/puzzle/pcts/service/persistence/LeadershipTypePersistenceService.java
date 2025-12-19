@@ -25,19 +25,19 @@ public class LeadershipTypePersistenceService extends PersistenceBase<Certificat
     }
 
     public Optional<CertificateType> getByName(String name) {
-        return repository.findByNameFromLeadershipExperienceType(name);
+        return repository.findByNameOfLeadershipExperienceType(name);
     }
 
     @Override
     public List<CertificateType> getAll() {
-        return repository.findAllFromLeadershipExperienceType();
+        return repository.findAllOfLeadershipExperienceType();
     }
 
     // This is still optional because you can't change it using just one method. It
     // will be in #317.
     @Override
     public Optional<CertificateType> getById(Long id) {
-        return Optional.ofNullable(repository.findByIdForLeadershipExperienceType(id).orElseThrow(() -> {
+        return Optional.ofNullable(repository.findByIdOfLeadershipExperienceType(id).orElseThrow(() -> {
             Map<FieldKey, String> attributes = Map
                     .of(FieldKey.ENTITY, LEADERSHIP_EXPERIENCE_TYPE, FieldKey.FIELD, "id", FieldKey.IS, id.toString());
 

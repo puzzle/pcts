@@ -20,27 +20,27 @@ public interface CertificateTypeRepository extends SoftDeleteRepository<Certific
 
     Optional<CertificateType> findByNameAndCertificateKindNotAndDeletedAtIsNull(String name, CertificateKind kind);
 
-    default List<CertificateType> findAllFromCertificateType() {
+    default List<CertificateType> findAllOfCertificateType() {
         return findAllByCertificateKindAndDeletedAtIsNull(CertificateKind.CERTIFICATE);
     }
 
-    default List<CertificateType> findAllFromLeadershipExperienceType() {
+    default List<CertificateType> findAllOfLeadershipExperienceType() {
         return findAllByCertificateKindNotAndDeletedAtIsNull(CertificateKind.CERTIFICATE);
     }
 
-    default Optional<CertificateType> findByIdForCertificateType(Long id) {
+    default Optional<CertificateType> findByIdOfCertificateType(Long id) {
         return findByIdAndCertificateKindAndDeletedAtIsNull(id, CertificateKind.CERTIFICATE);
     }
 
-    default Optional<CertificateType> findByIdForLeadershipExperienceType(Long id) {
+    default Optional<CertificateType> findByIdOfLeadershipExperienceType(Long id) {
         return findByIdAndCertificateKindNotAndDeletedAtIsNull(id, CertificateKind.CERTIFICATE);
     }
 
-    default Optional<CertificateType> findByNameFromCertificateType(String name) {
+    default Optional<CertificateType> findByNameOfCertificateType(String name) {
         return findByNameAndCertificateKindAndDeletedAtIsNull(name, CertificateKind.CERTIFICATE);
     }
 
-    default Optional<CertificateType> findByNameFromLeadershipExperienceType(String name) {
+    default Optional<CertificateType> findByNameOfLeadershipExperienceType(String name) {
         return findByNameAndCertificateKindNotAndDeletedAtIsNull(name, CertificateKind.CERTIFICATE);
     }
 }
