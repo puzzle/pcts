@@ -2,8 +2,8 @@ package ch.puzzle.pcts.controller;
 
 import static org.mockito.BDDMockito.given;
 
-import ch.puzzle.pcts.security.SecurityService;
 import ch.puzzle.pcts.security.SpringSecurityConfig;
+import ch.puzzle.pcts.service.SecurityService;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
