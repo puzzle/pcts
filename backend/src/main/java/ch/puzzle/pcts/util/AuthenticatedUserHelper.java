@@ -39,26 +39,29 @@ public class AuthenticatedUserHelper {
 
     private static Optional<String> getProperty(String propertyName, Function<Jwt, Optional<String>> backupFunction) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null) {
+            log.warn("No authentication found in SecurityContext during extraction of property '{}'", propertyName);
+            return Optional.empty();
+        }
+
         if (authentication.getCredentials() instanceof Jwt jwt) {
             final Optional<String> username = Optional.ofNullable(jwt.getClaimAsString(propertyName));
 
             if (username.isEmpty()) {
-                final String message = String
-                        .format("Could not extract property '%s' from security context, applying backup function",
-                                propertyName);
-                log.warn(message);
+                log
+                        .warn("Could not extract property '{}' from security context, applying backup function",
+                              propertyName);
                 return backupFunction.apply(jwt);
             }
 
             return username;
         }
 
-        final String message = String
-                .format("Could not extract property '%s' from security context because the authentication object was no JWT.",
-                        propertyName);
-        log.warn(message);
-
-        return Optional.empty();
+        log
+                .warn("Could not extract property '{}' from security context because the authentication object was not a JWT, returning standard authentication name instead.",
+                      propertyName);
+        return Optional.ofNullable(authentication.getName());
     }
 
 }
