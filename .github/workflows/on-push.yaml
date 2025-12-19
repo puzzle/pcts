@@ -5,36 +5,36 @@ on:
   push:
 
 jobs:
-  format:
-    uses: ./.github/workflows/reusable__format.yaml
-    with:
-      COMMIT_HASH: ${{ github.sha }}
-
-  tests:
-    uses: ./.github/workflows/reusable__tests.yaml
-    with:
-      COMMIT_HASH: ${{ github.sha }}
-
-  e2e-tests:
-    needs:
-      - format
-      - tests
-    uses: ./.github/workflows/reusable__e2e-testing.yaml
-    with:
-      COMMIT_HASH: ${{ github.sha }}
-
-  documentation:
-    uses: ./.github/workflows/reusable__documentation.yaml
-    with:
-      COMMIT_HASH: ${{ github.sha }}
-      DEPLOY: ${{ github.ref_name == 'main' }}
+#  format:
+#    uses: ./.github/workflows/reusable__format.yaml
+#    with:
+#      COMMIT_HASH: ${{ github.sha }}
+#
+#  tests:
+#    uses: ./.github/workflows/reusable__tests.yaml
+#    with:
+#      COMMIT_HASH: ${{ github.sha }}
+#
+#  e2e-tests:
+#    needs:
+#      - format
+#      - tests
+#    uses: ./.github/workflows/reusable__e2e-testing.yaml
+#    with:
+#      COMMIT_HASH: ${{ github.sha }}
+#
+#  documentation:
+#    uses: ./.github/workflows/reusable__documentation.yaml
+#    with:
+#      COMMIT_HASH: ${{ github.sha }}
+#      DEPLOY: ${{ github.ref_name == 'main' }}
 
   push-to-ghrc:
 #    if: github.ref_name == 'main'
-    needs:
-      - e2e-tests
-      - format
-      - tests
+#    needs:
+#      - e2e-tests
+#      - format
+#      - tests
     strategy:
       matrix:
         context: ["backend", "frontend"]

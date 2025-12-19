@@ -49,9 +49,9 @@ jobs:
             type=raw,value=${{ steps.release.outputs.version }},enable=${{ steps.release.outputs.release_created }}
       - name: Build and push Docker image
         id: push
-        uses: docker/build-push-action@v6
+        uses: googleapis/release-please-action@v4
         with:
           context: ${{ inputs.context }}
           file: ./${{ inputs.context }}/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}
