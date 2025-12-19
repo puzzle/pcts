@@ -8,6 +8,9 @@ export default defineConfig({
     viewportWidth: 1920,
     viewportHeight: 1080
   },
+  env: {
+    LOGIN_URL: 'http://localhost:8544'
+  },
   retries: {
     // Configure retry attempts for `cypress run`
     runMode: 2,

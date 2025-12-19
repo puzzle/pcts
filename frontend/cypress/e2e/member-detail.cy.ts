@@ -1,8 +1,10 @@
 import memberDetailPage from '../pages/memberDetailPage';
+import * as users from '../fixtures/users.json';
 
 describe('MemberOverviewComponent', () => {
   beforeEach(() => {
     // Equals to 'Lena Müller'
+    cy.loginAsUser(users.gl);
     memberDetailPage.visit(1);
   });
 
