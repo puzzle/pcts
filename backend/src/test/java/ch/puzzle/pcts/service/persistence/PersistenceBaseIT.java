@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.*;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 
 /**
@@ -19,6 +20,7 @@ import org.springframework.test.annotation.DirtiesContext;
  * @param <S>
  *            the persistence service of the entity
  */
+@WithMockUser(username = "PersistenceIT User")
 abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Long>, S extends PersistenceBase<T, R>>
         extends
             PersistenceCoreIT {
