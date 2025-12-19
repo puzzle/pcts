@@ -12,7 +12,6 @@
     { "type": "docs", "hidden": false, "section": "Docs" }
   ],
   "packages": {
-    "target-branch": "feature/66-setup-release-please",
     "backend": {
       "release-type": "maven",
       "package-name": "pcts-backend",
