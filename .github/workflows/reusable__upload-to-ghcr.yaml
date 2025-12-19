@@ -43,6 +43,8 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ github.repository }}/pcts-${{ inputs.image_name }}
+          tags: |
+            type=raw,value=latest
 
       - name: Build and push Docker image
         id: push
@@ -51,4 +53,3 @@ jobs:
           context: ${{ inputs.context }}
           file: ./${{ inputs.context }}/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
