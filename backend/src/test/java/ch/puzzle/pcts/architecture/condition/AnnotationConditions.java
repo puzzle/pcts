@@ -39,16 +39,22 @@ public class AnnotationConditions {
         return createCheck(propertyName, description, eventMessage, isOk);
     }
 
-    public static ArchCondition<JavaAnnotation<JavaClass>> haveValuePrefix(String prefix) {
-        final String description = String.format("have value that starts with '%s'", prefix);
+    public static ArchCondition<JavaAnnotation<JavaClass>> havePrefix(String propertyName, String prefix) {
+        final String description = String
+                .format("have value with the name '%s' that starts with '%s'", propertyName, prefix);
         final Predicate<String> isOk = value -> value.startsWith(prefix);
         final Function<JavaAnnotation<?>, String> eventMessage = annotation -> String
-                .format("The '%s' annotation of '%s' does not start with '%s'.",
+                .format("The value of property '%s' of '%s' annotation of class '%s' does not start with '%s'.",
+                        propertyName,
                         annotation.getType().getName(),
                         annotation.getOwner().getDescription(),
                         prefix);
 
-        return createCheck("value", description, eventMessage, isOk);
+        return createCheck(propertyName, description, eventMessage, isOk);
+    }
+
+    public static ArchCondition<JavaAnnotation<JavaClass>> haveValuePrefix(String prefix) {
+        return havePrefix("value", prefix);
     }
 
     private static ArchCondition<JavaAnnotation<JavaClass>> createCheck(String propertyName, String description,
