@@ -1,42 +1,50 @@
 DROP VIEW IF EXISTS member_overview;
 
 CREATE VIEW member_overview AS
-SELECT m.id                AS member_id,
-       m.first_name,
-       m.last_name,
-       m.abbreviation,
-       m.employment_state,
-       m.date_of_hire,
-       m.birth_date,
+SELECT
+            ROW_NUMBER() OVER (
+        ORDER BY
+            m.id,
+            c.id,
+            d.id,
+            e.id
+        )                     AS unique_row_id,
 
-       ou.name             AS organisation_unit_name,
+            m.id                  AS member_id,
+            m.first_name,
+            m.last_name,
+            m.abbreviation,
+            m.employment_state,
+            m.date_of_hire,
+            m.birth_date,
 
-       c.id                AS certificate_id,
-       c.completed_at,
-       c.valid_until,
-       c.comment           AS certificate_comment,
+            ou.name               AS organisation_unit_name,
 
-       ct.name             AS certificate_type_name,
-       ct.comment          AS certificate_type_comment,
-       ct.certificate_kind AS certificate_type_kind,
+            c.id                  AS certificate_id,
+            c.completed_at        AS certificate_completed_at,
+            c.valid_until         AS certificate_valid_until,
+            c.comment             AS certificate_comment,
 
-       d.id                AS degree_id,
-       d.name              AS degree_name,
-       d.start_date        AS degree_start_date,
-       d.end_date          AS degree_end_date,
-       d.comment           AS degree_comment,
-       dt.name             AS degree_type_name,
+            ct.name               AS certificate_type_name,
+            ct.comment            AS certificate_type_comment,
+            ct.certificate_kind   AS leadership_type_kind,
 
-       e.id                AS experience_id,
-       e.name              AS experience_name,
-       e.employer,
-       e.start_date        AS experience_start_date,
-       e.end_date          AS experience_end_date,
-       e.comment           AS experience_comment,
-       et.name             AS experience_type_name
+            d.id                  AS degree_id,
+            d.name                AS degree_name,
+            d.start_date          AS degree_start_date,
+            d.end_date            AS degree_end_date,
+            d.comment             AS degree_comment,
+            dt.name               AS degree_type_name,
+
+            e.id                  AS experience_id,
+            e.name                AS experience_name,
+            e.employer            AS experience_employer,
+            e.start_date          AS experience_start_date,
+            e.end_date            AS experience_end_date,
+            e.comment             AS experience_comment,
+            et.name               AS experience_type_name
 
 FROM member m
-
          LEFT JOIN organisation_unit ou
                    ON ou.id = m.organisation_unit
 
