@@ -7,6 +7,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -14,26 +15,23 @@ import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.degree.DegreeInputDto;
 import ch.puzzle.pcts.mapper.DegreeMapper;
 import ch.puzzle.pcts.model.degree.Degree;
+import ch.puzzle.pcts.model.degreetype.DegreeType;
+import ch.puzzle.pcts.model.member.EmploymentState;
+import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.DegreeBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.json.JsonMapper;
 
-@Import(SpringSecurityConfig.class)
-@ExtendWith(MockitoExtension.class)
-@WebMvcTest(DegreeController.class)
-class DegreeControllerIT {
+@ControllerIT(DegreeController.class)
+class DegreeControllerIT extends ControllerITBase {
     @MockitoBean
     private DegreeBusinessService businessService;
 
@@ -58,9 +56,7 @@ class DegreeControllerIT {
         BDDMockito.given(degreeMapper.toDto(any(Degree.class))).willReturn(DEGREE_1_DTO);
 
         mvc
-                .perform(get(BASEURL + "/" + DEGREE_1_ID)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
-                        .accept(MediaType.APPLICATION_JSON))
+                .perform(get(BASEURL + "/" + DEGREE_1_ID).with(csrf()).with(adminJwt()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(DEGREE_1_DTO, "$"));
 
@@ -79,7 +75,8 @@ class DegreeControllerIT {
                 .perform(post(BASEURL)
                         .content(jsonMapper.writeValueAsString(DEGREE_1_INPUT))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isCreated())
                 .andExpect(JsonDtoMatcher.matchesDto(DEGREE_1_DTO, "$"));
 
@@ -99,7 +96,8 @@ class DegreeControllerIT {
                 .perform(put(BASEURL + "/" + DEGREE_1_ID)
                         .content(jsonMapper.writeValueAsString(DEGREE_1_INPUT))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(DEGREE_1_DTO, "$"));
 
@@ -116,7 +114,8 @@ class DegreeControllerIT {
         mvc
                 .perform(delete(BASEURL + "/" + DEGREE_1_ID)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isNoContent());
 
         verify(businessService, times(1)).delete(any(Long.class));

@@ -16,24 +16,23 @@ import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.calculation.CalculationInputDto;
 import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.model.calculation.Calculation;
+import ch.puzzle.pcts.model.calculation.CalculationState;
+import ch.puzzle.pcts.model.member.EmploymentState;
+import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
+import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.business.CalculationBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.json.JsonMapper;
 
-@Import(SpringSecurityConfig.class)
-@ExtendWith(MockitoExtension.class)
-@WebMvcTest(CalculationController.class)
-class CalculationControllerIT {
+@ControllerIT(CalculationController.class)
+class CalculationControllerIT extends ControllerITBase {
 
     private static final String BASEURL = "/api/v1/calculations";
 
@@ -53,7 +52,7 @@ class CalculationControllerIT {
         given(mapper.toDto(any(Calculation.class))).willReturn(CALCULATION_DTO_1);
 
         mvc
-                .perform(get(BASEURL + "/{id}", CALCULATION_1_ID).with(csrf()))
+                .perform(get(BASEURL + "/{id}", CALCULATION_1_ID).with(csrf()).with(adminJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(CALCULATION_DTO_1, "$"));
 
@@ -72,7 +71,8 @@ class CalculationControllerIT {
                 .perform(post(BASEURL)
                         .content(jsonMapper.writeValueAsString(CALCULATION_INPUT_DTO_1))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isCreated())
                 .andExpect(JsonDtoMatcher.matchesDto(CALCULATION_DTO_1, "$"));
 
@@ -92,7 +92,8 @@ class CalculationControllerIT {
                 .perform(put(BASEURL + "/{id}", CALCULATION_1_ID)
                         .content(jsonMapper.writeValueAsString(CALCULATION_INPUT_DTO_1))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(CALCULATION_DTO_1, "$"));
 
