@@ -1,11 +1,12 @@
 package ch.puzzle.pcts.dto.memberoverview;
 
-import ch.puzzle.pcts.dto.certificate.CertificateDto;
-import ch.puzzle.pcts.dto.degree.DegreeDto;
-import ch.puzzle.pcts.dto.experience.ExperienceDto;
-import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceDto;
+import ch.puzzle.pcts.dto.memberoverview.certificate.MemberOverviewCertificateDto;
+import ch.puzzle.pcts.dto.memberoverview.degree.MemberOverviewDegreeDto;
+import ch.puzzle.pcts.dto.memberoverview.experience.MemberOverviewExperienceDto;
+import ch.puzzle.pcts.dto.memberoverview.leadershipexperience.MemberOverviewLeadershipExperienceDto;
 import java.util.List;
 
-public record MemberCvDto(List<DegreeDto> degrees, List<ExperienceDto> experiences, List<CertificateDto> certificates,
-        List<LeadershipExperienceDto> leadershipExperiences) {
+public record MemberCvDto(List<MemberOverviewDegreeDto> degrees, List<MemberOverviewExperienceDto> experiences,
+        List<MemberOverviewCertificateDto> certificates,
+        List<MemberOverviewLeadershipExperienceDto> leadershipExperiences) {
 }
