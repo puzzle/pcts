@@ -30,7 +30,7 @@ jobs:
       DEPLOY: ${{ github.ref_name == 'main' }}
 
   push-to-ghrc:
-    if: github.ref_name == 'main'
+#    if: github.ref_name == 'main'
     needs:
       - e2e-tests
       - format
