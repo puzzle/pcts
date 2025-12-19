@@ -2,6 +2,7 @@ package ch.puzzle.pcts.architecture;
 
 import static ch.puzzle.pcts.architecture.CustomTransformers.annotations;
 import static ch.puzzle.pcts.architecture.CustomTransformers.packages;
+import static ch.puzzle.pcts.architecture.condition.AnnotationConditions.havePrefix;
 import static ch.puzzle.pcts.architecture.condition.AnnotationConditions.haveSuffix;
 import static ch.puzzle.pcts.architecture.condition.AnnotationConditions.haveValuePrefix;
 import static ch.puzzle.pcts.architecture.condition.AnnotationConditions.shouldBeValidDescription;
@@ -11,13 +12,16 @@ import static ch.puzzle.pcts.architecture.condition.ClassConditions.overrideHash
 import static ch.puzzle.pcts.architecture.condition.ClassConditions.overrideToStringMethod;
 import static ch.puzzle.pcts.architecture.condition.CodeUnitConditions.trimAssignedStringFields;
 import static com.tngtech.archunit.base.DescribedPredicate.not;
-import static com.tngtech.archunit.core.domain.JavaClass.Predicates.*;
+import static com.tngtech.archunit.core.domain.JavaClass.Predicates.equivalentTo;
+import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAPackage;
+import static com.tngtech.archunit.core.domain.JavaClass.Predicates.type;
 import static com.tngtech.archunit.lang.conditions.ArchConditions.and;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 
+import ch.puzzle.pcts.controller.ConfigurationController;
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.security.annotation.IsAdmin;
 import com.tngtech.archunit.core.domain.*;
@@ -33,8 +37,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.stereotype.*;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -201,6 +207,7 @@ class ArchitectureTest {
                 .areNotAnonymousClasses()
                 .and()
                 .resideInAPackage("ch.puzzle.pcts.controller..")
+                .and(not(equivalentTo(ConfigurationController.class)))
                 .should()
                 .beAnnotatedWith(IsAdmin.class)
                 .andShould()
@@ -212,7 +219,7 @@ class ArchitectureTest {
     @DisplayName("@RequestMappings should have common pre- and suffix")
     @Test
     void controllersShouldDefineCorrectRequestMapping() {
-        JavaClasses importedClasses = getMainSourceClasses();
+        JavaClasses importedClasses = getMainSourceClasses().that(not(equivalentTo(ConfigurationController.class)));
 
         ArchCondition<JavaAnnotation<JavaClass>> combinedCondition = and(haveSuffix("value", "s"),
                                                                          haveValuePrefix("/api/v1/"));
@@ -225,7 +232,7 @@ class ArchitectureTest {
     @DisplayName("Controller @Tags should be valid")
     @Test
     void controllerTagsShouldBeCompleteSentences() {
-        JavaClasses importedClasses = getMainSourceClasses();
+        JavaClasses importedClasses = getMainSourceClasses().that(not(equivalentTo(ConfigurationController.class)));;
 
         ArchCondition<JavaAnnotation<JavaClass>> combinedCondition = and(shouldBeValidDescription("description"),
                                                                          haveSuffix("name", "s"));
@@ -418,12 +425,6 @@ class ArchitectureTest {
         constructorRule.check(importedClasses);
     }
 
-    private static JavaClasses getMainSourceClasses() {
-        return new ClassFileImporter()
-                .withImportOption(new ImportOption.DoNotIncludeTests())
-                .importPackages("ch.puzzle.pcts");
-    }
-
     @DisplayName("All packages must contain only lowercase letters and dots, and cannot end on a dot")
     @Test
     void packagesMustFollowPattern() {
@@ -449,5 +450,40 @@ class ArchitectureTest {
                 .haveFullyQualifiedName("org.mockito.BDDMockito");
 
         noBddMockito.check(importedClasses);
+    }
+    @DisplayName("All configurations must be records and correctly annotated")
+    @Test
+    void configurationsMustBeRecordsAndCorrectlyAnnotated() {
+        JavaClasses importedClasses = new ClassFileImporter().importPackages("ch.puzzle.pcts");
+
+        ArchRule rule = classes()
+                .that()
+                .resideInAnyPackage("ch.puzzle.pcts.configuration")
+                .should()
+                .beRecords()
+                .andShould()
+                .beAnnotatedWith(ConfigurationProperties.class)
+                .andShould()
+                .beAnnotatedWith(Validated.class);
+
+        rule.check(importedClasses);
+
+    }
+
+    @DisplayName("Configurations should be prefixed with 'pcts.'")
+    @Test
+    void configurationsShouldBePrefixedCorrectly() {
+        JavaClasses importedClasses = getMainSourceClasses();
+
+        ArchCondition<JavaAnnotation<JavaClass>> combinedCondition = havePrefix("prefix", "pcts.");
+        ArchRule rule = all(annotations(ConfigurationProperties.class)).should(combinedCondition);
+
+        rule.check(importedClasses);
+    }
+
+    private static JavaClasses getMainSourceClasses() {
+        return new ClassFileImporter()
+                .withImportOption(new ImportOption.DoNotIncludeTests())
+                .importPackages("ch.puzzle.pcts");
     }
 }
