@@ -14,7 +14,7 @@ export const routes: Routes = [{
 {
   path: 'member',
   providers: [provideI18nPrefix('MEMBER')],
-  // canActivate: [canActivateAuthRole],
+  // canActivate: [authGuard()],
   children: [
     {
       path: '',
