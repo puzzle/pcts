@@ -46,7 +46,6 @@ jobs:
           tags: |
             type=sha,format=long,prefix=
             type=raw,value=latest
-            type=raw,value=${{ steps.release.outputs.version }},enable=${{ steps.release.outputs.release_created }}
       - name: Build and push Docker image
         id: push
         uses: googleapis/release-please-action@v4
