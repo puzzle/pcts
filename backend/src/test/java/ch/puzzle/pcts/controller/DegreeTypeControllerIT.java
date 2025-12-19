@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -11,7 +12,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.puzzle.pcts.dto.degreetype.DegreeTypeDto;
 import ch.puzzle.pcts.mapper.DegreeTypeMapper;
 import ch.puzzle.pcts.model.degreetype.DegreeType;
-import ch.puzzle.pcts.security.SpringSecurityConfig;
 import ch.puzzle.pcts.service.business.DegreeTypeBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import java.math.BigDecimal;
@@ -19,22 +19,15 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.json.JsonMapper;
 
-@Import(SpringSecurityConfig.class)
-@ExtendWith(MockitoExtension.class)
-@WebMvcTest(DegreeTypeController.class)
-class DegreeTypeControllerIT {
+@ControllerIT(DegreeTypeController.class)
+class DegreeTypeControllerIT extends ControllerITBase {
 
     @MockitoBean
     private DegreeTypeBusinessService service;
@@ -82,9 +75,7 @@ class DegreeTypeControllerIT {
         BDDMockito.given(mapper.toDto(any(List.class))).willReturn(List.of(expectedDto));
 
         mvc
-                .perform(get(BASEURL)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
-                        .accept(MediaType.APPLICATION_JSON))
+                .perform(get(BASEURL).with(csrf()).with(adminJwt()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$[0]"));
@@ -100,7 +91,7 @@ class DegreeTypeControllerIT {
         BDDMockito.given(mapper.toDto(any(DegreeType.class))).willReturn(expectedDto);
 
         mvc
-                .perform(get(BASEURL + "/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .perform(get(BASEURL + "/1").with(csrf()).with(adminJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
@@ -119,7 +110,8 @@ class DegreeTypeControllerIT {
                 .perform(post(BASEURL)
                         .content(jsonMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
@@ -140,7 +132,8 @@ class DegreeTypeControllerIT {
                 .perform(put(BASEURL + "/" + id)
                         .content(jsonMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
@@ -157,7 +150,8 @@ class DegreeTypeControllerIT {
         mvc
                 .perform(delete(BASEURL + "/" + id)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().is(204))
                 .andExpect(jsonPath("$").doesNotExist());
 
