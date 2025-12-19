@@ -44,8 +44,9 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ github.repository }}/pcts-${{ inputs.image_name }}
           tags: |
+            type=sha,format=long,prefix=
             type=raw,value=latest
-
+            type=raw,value=${{ steps.release.outputs.version }},enable=${{ steps.release.outputs.release_created }}
       - name: Build and push Docker image
         id: push
         uses: docker/build-push-action@v6
@@ -53,3 +54,4 @@ jobs:
           context: ${{ inputs.context }}
           file: ./${{ inputs.context }}/Dockerfile
           push: true
+          tags: ${{ steps.meta.outputs.tags }}
