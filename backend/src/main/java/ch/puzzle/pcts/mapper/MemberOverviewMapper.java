@@ -1,45 +1,41 @@
 package ch.puzzle.pcts.mapper;
 
-import ch.puzzle.pcts.dto.calculation.CalculationDto;
-import ch.puzzle.pcts.dto.certificate.CertificateDto;
-import ch.puzzle.pcts.dto.certificatetype.CertificateTypeDto;
-import ch.puzzle.pcts.dto.degree.DegreeDto;
-import ch.puzzle.pcts.dto.degreetype.DegreeTypeDto;
-import ch.puzzle.pcts.dto.experience.ExperienceDto;
-import ch.puzzle.pcts.dto.experiencetype.ExperienceTypeDto;
-import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceDto;
-import ch.puzzle.pcts.dto.leadershipexperiencetype.LeadershipExperienceTypeDto;
-import ch.puzzle.pcts.dto.member.MemberDto;
-import ch.puzzle.pcts.dto.memberoverview.MemberCvDto;
-import ch.puzzle.pcts.dto.memberoverview.MemberOverviewDto;
-import ch.puzzle.pcts.dto.organisationunit.OrganisationUnitDto;
-import ch.puzzle.pcts.dto.role.RoleDto;
+import ch.puzzle.pcts.dto.memberoverview.*;
+import ch.puzzle.pcts.dto.memberoverview.certificate.MemberOverviewCertificateDto;
+import ch.puzzle.pcts.dto.memberoverview.certificate.MemberOverviewCertificateTypeDto;
+import ch.puzzle.pcts.dto.memberoverview.degree.MemberOverviewDegreeDto;
+import ch.puzzle.pcts.dto.memberoverview.degree.MemberOverviewDegreeTypeDto;
+import ch.puzzle.pcts.dto.memberoverview.experience.MemberOverviewExperienceDto;
+import ch.puzzle.pcts.dto.memberoverview.experience.MemberOverviewExperienceTypeDto;
+import ch.puzzle.pcts.dto.memberoverview.leadershipexperience.MemberOverviewLeadershipExperienceDto;
+import ch.puzzle.pcts.dto.memberoverview.leadershipexperience.MemberOverviewLeadershipExperienceTypeDto;
+import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.memberoverview.MemberOverview;
-import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 @Component
 public class MemberOverviewMapper {
 
-    public MemberOverviewMapper() {
-    }
-
     public MemberOverviewDto toDto(List<MemberOverview> entities) {
+
+        if (entities == null || entities.isEmpty()) {
+            return null;
+        }
 
         MemberOverview first = entities.getFirst();
 
-        MemberDto memberDto = new MemberDto(first.getId(),
-                                            first.getFirstName(),
-                                            first.getLastName(),
-                                            first.getEmploymentState(),
-                                            first.getAbbreviation(),
-                                            first.getDateOfHire(),
-                                            first.getBirthDate(),
-                                            new OrganisationUnitDto(first.getOrganisationUnitId(),
-                                                                    first.getOrganisationUnitName()));
+        MemberOverviewMemberDto memberDto = new MemberOverviewMemberDto(first.getMemberId(),
+                                                                        first.getFirstName(),
+                                                                        first.getLastName(),
+                                                                        first.getEmploymentState(),
+                                                                        first.getAbbreviation(),
+                                                                        first.getDateOfHire(),
+                                                                        first.getBirthDate(),
+                                                                        first.getOrganisationUnitName());
 
-        List<DegreeDto> degrees = entities
+        List<MemberOverviewDegreeDto> degrees = entities
                 .stream()
                 .filter(e -> e.getDegreeId() != null)
                 .collect(Collectors.groupingBy(MemberOverview::getDegreeId))
@@ -47,24 +43,16 @@ public class MemberOverviewMapper {
                 .stream()
                 .map(group -> {
                     MemberOverview e = group.getFirst();
-
-                    return new DegreeDto(e.getDegreeId(),
-                                         memberDto,
-                                         e.getDegreeName(),
-                                         e.getDegreeInstitution(),
-                                         e.getDegreeCompleted(),
-                                         new DegreeTypeDto(e.getDegreeTypeId(),
-                                                           e.getDegreeTypeName(),
-                                                           e.getDegreeHighlyRelevantPoints(),
-                                                           e.getDegreeLimitedRelevantPoints(),
-                                                           e.getDegreeLittleRelevantPoints()),
-                                         e.getDegreeStartDate(),
-                                         e.getDegreeEndDate(),
-                                         e.getDegreeComment());
+                    return new MemberOverviewDegreeDto(e.getDegreeId(),
+                                                       e.getDegreeName(),
+                                                       new MemberOverviewDegreeTypeDto(e.getDegreeTypeName()),
+                                                       e.getDegreeStartDate(),
+                                                       e.getDegreeEndDate(),
+                                                       e.getDegreeComment());
                 })
                 .toList();
 
-        List<ExperienceDto> experiences = entities
+        List<MemberOverviewExperienceDto> experiences = entities
                 .stream()
                 .filter(e -> e.getExperienceId() != null)
                 .collect(Collectors.groupingBy(MemberOverview::getExperienceId))
@@ -72,91 +60,59 @@ public class MemberOverviewMapper {
                 .stream()
                 .map(group -> {
                     MemberOverview e = group.getFirst();
-
-                    return new ExperienceDto(e.getExperienceId(),
-                                             memberDto,
-                                             e.getExperienceName(),
-                                             e.getExperienceEmployer(),
-                                             e.getExperiencePercent(),
-                                             new ExperienceTypeDto(e.getExperienceTypeId(),
-                                                                   e.getExperienceTypeName(),
-                                                                   e.getExperienceHighlyRelevantPoints(),
-                                                                   e.getExperienceLimitedRelevantPoints(),
-                                                                   e.getExperienceLittleRelevantPoints()),
-                                             e.getExperienceComment(),
-                                             e.getExperienceStartDate(),
-                                             e.getExperienceEndDate());
+                    return new MemberOverviewExperienceDto(e.getExperienceId(),
+                                                           e.getExperienceName(),
+                                                           e.getExperienceEmployer(),
+                                                           new MemberOverviewExperienceTypeDto(e
+                                                                   .getExperienceTypeName()),
+                                                           e.getExperienceComment(),
+                                                           e.getExperienceStartDate(),
+                                                           e.getExperienceEndDate());
                 })
                 .toList();
 
-        Map<Long, List<MemberOverview>> certificateGroups = entities
+        List<MemberOverviewCertificateDto> certificates = entities
                 .stream()
-                .filter(e -> e.getCertificateId() != null)
-                .collect(Collectors.groupingBy(MemberOverview::getCertificateId));
-
-        List<CertificateDto> certificates = certificateGroups.values().stream().map(certRows -> {
-
-            MemberOverview certData = certRows.get(0);
-
-            List<String> tags = certRows
-                    .stream()
-                    .map(MemberOverview::getTagName)
-                    .filter(Objects::nonNull)
-                    .distinct()
-                    .toList();
-
-            return new CertificateDto(certData.getCertificateId(),
-                                      memberDto,
-                                      new CertificateTypeDto(certData.getCertificateTypeId(),
-                                                             certData.getCertificateTypeName(),
-                                                             certData.getCertificateTypePoints(),
-                                                             certData.getCertificateTypeComment(),
-                                                             tags),
-                                      certData.getCertificateCompletedAt(),
-                                      certData.getCertificateValidUntil(),
-                                      certData.getCertificateComment());
-        }).toList();
-
-        List<LeadershipExperienceDto> leadershipExperiences = entities
-                .stream()
-                .filter(e -> e.getLeadershipId() != null)
-                .collect(Collectors.groupingBy(MemberOverview::getLeadershipId))
+                .filter(e -> e.getCertificateId() != null
+                             && CertificateKind.CERTIFICATE.equals(e.getLeadershipTypeKind()))
+                .collect(Collectors.groupingBy(MemberOverview::getCertificateId))
                 .values()
                 .stream()
                 .map(group -> {
                     MemberOverview e = group.getFirst();
-
-                    return new LeadershipExperienceDto(e.getLeadershipId(),
-                                                       memberDto,
-                                                       new LeadershipExperienceTypeDto(e.getLeadershipTypeId(),
-                                                                                       e.getLeadershipTypeName(),
-                                                                                       e.getLeadershipTypePoints(),
-                                                                                       e.getLeadershipTypeComment(),
-                                                                                       e.getLeadershipKind()),
-                                                       e.getLeadershipComment());
+                    return new MemberOverviewCertificateDto(e.getCertificateId(),
+                                                            new MemberOverviewCertificateTypeDto(e
+                                                                    .getCertificateTypeName(),
+                                                                                                 e
+                                                                                                         .getCertificateTypeComment()),
+                                                            e.getCertificateCompletedAt(),
+                                                            e.getCertificateValidUntil(),
+                                                            e.getCertificateComment());
                 })
                 .toList();
 
-        List<CalculationDto> calculations = entities
+        List<MemberOverviewLeadershipExperienceDto> LeadershipExperiences = entities
                 .stream()
-                .filter(e -> e.getCalculationId() != null)
-                .collect(Collectors.groupingBy(MemberOverview::getCalculationId))
+                .filter(e -> e.getCertificateId() != null
+                             && !CertificateKind.CERTIFICATE.equals(e.getLeadershipTypeKind()))
+                .collect(Collectors.groupingBy(MemberOverview::getCertificateId))
                 .values()
                 .stream()
                 .map(group -> {
                     MemberOverview e = group.getFirst();
-
-                    return new CalculationDto(e.getCalculationId(),
-                                              memberDto,
-                                              new RoleDto(e.getRoleId(), e.getRoleName(), e.getRoleIsManagement()),
-                                              e.getCalculationState(),
-                                              e.getCalculationPublicationDate(),
-                                              e.getCalculationPublicizedBy());
+                    return new MemberOverviewLeadershipExperienceDto(e.getCertificateId(),
+                                                                     new MemberOverviewLeadershipExperienceTypeDto(e
+                                                                             .getCertificateTypeName(),
+                                                                                                                   e
+                                                                                                                           .getCertificateTypeComment(),
+                                                                                                                   e
+                                                                                                                           .getLeadershipTypeKind()),
+                                                                     e.getCertificateComment());
                 })
                 .toList();
 
-        MemberCvDto cvDto = new MemberCvDto(degrees, experiences, certificates, leadershipExperiences);
+        MemberCvDto cvDto = new MemberCvDto(degrees, experiences, certificates, LeadershipExperiences);
 
-        return new MemberOverviewDto(memberDto, cvDto, calculations);
+        return new MemberOverviewDto(memberDto, cvDto);
     }
 }

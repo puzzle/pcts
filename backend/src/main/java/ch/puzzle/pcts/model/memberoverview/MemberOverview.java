@@ -13,6 +13,7 @@ import java.time.LocalDate;
 public class MemberOverview implements Model {
 
     @Id
+    @Column(name = "unique_row_id")
     private Long uniqueRowId;
 
     private Long memberId;
