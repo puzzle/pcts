@@ -23,7 +23,6 @@ import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
-import ch.puzzle.pcts.security.SpringSecurityConfig;
 import ch.puzzle.pcts.service.business.CertificateBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import java.math.BigDecimal;
@@ -32,20 +31,14 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.json.JsonMapper;
 
-@Import(SpringSecurityConfig.class)
-@ExtendWith(MockitoExtension.class)
-@WebMvcTest(CertificateController.class)
-class CertificateControllerIT {
+@ControllerIT(CertificateController.class)
+class CertificateControllerIT extends ControllerITBase {
 
     @MockitoBean
     private CertificateBusinessService service;
@@ -123,11 +116,12 @@ class CertificateControllerIT {
     @DisplayName("Should successfully get certificate by id")
     @Test
     void shouldGetCertificateById() throws Exception {
+        given(securityService.isAdmin()).willReturn(true);
         given(service.getById(ID)).willReturn(certificate);
         given(mapper.toDto(any(Certificate.class))).willReturn(expectedDto);
 
         mvc
-                .perform(get(BASEURL + "/{id}", ID).with(csrf()))
+                .perform(get(BASEURL + "/{id}", ID).with(csrf()).with(adminJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
@@ -146,7 +140,8 @@ class CertificateControllerIT {
                 .perform(post(BASEURL)
                         .content(jsonMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isCreated())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
@@ -166,7 +161,8 @@ class CertificateControllerIT {
                 .perform(put(BASEURL + "/{id}", ID)
                         .content(jsonMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
@@ -181,7 +177,7 @@ class CertificateControllerIT {
         willDoNothing().given(service).delete(ID);
 
         mvc
-                .perform(delete(BASEURL + "/{id}", ID).with(csrf()))
+                .perform(delete(BASEURL + "/{id}", ID).with(csrf()).with(adminJwt()))
                 .andExpect(status().isNoContent())
                 .andExpect(jsonPath("$").doesNotExist());
 
