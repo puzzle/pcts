@@ -38,12 +38,13 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract Docker metadata
+      - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ github.repository }}/pcts-${{ inputs.image_name }}
           tags: |
+            type=ref,event=tag
             type=sha,format=long,prefix=
             type=raw,value=latest
 
@@ -55,3 +56,4 @@ jobs:
           file: ./${{ inputs.context }}/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}

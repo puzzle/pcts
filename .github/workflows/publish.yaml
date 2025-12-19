@@ -1,0 +1,19 @@
+---
+name: 'Publish'
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+jobs:
+  push-to-ghrc:
+    strategy:
+      matrix:
+        context: [ "backend", "frontend" ]
+    uses: ./.github/workflows/reusable__upload-to-ghcr.yaml
+    with:
+      context: ${{ matrix.context }}
+      image_name: ${{ matrix.context }}
+    secrets: inherit
