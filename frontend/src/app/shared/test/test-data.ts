@@ -16,6 +16,7 @@ import {
 } from '../../features/leadership-experiences/leadership-experiences-type/leadership-experience-type.model';
 import { DegreeTypeModel } from '../../features/degrees/degree-type/degree-type.model';
 import { DegreeModel } from '../../features/degrees/degree.model';
+import { ConfigurationModel } from '../../features/configuration/configuration.model';
 
 export const url = '/api/v1/data';
 
@@ -314,4 +315,9 @@ export const degree2: DegreeModel = {
   comment: 'Thesis still in progress',
   startDate: new Date('2021-10-01'),
   endDate: null
+};
+
+export const configuration: ConfigurationModel = {
+  adminAuthorities: ['org_hr',
+    'org_gl']
 };
