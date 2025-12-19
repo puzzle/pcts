@@ -122,6 +122,8 @@ class DegreeCalculationValidationServiceTest
     @DisplayName("Should throw exception when members do not match")
     @Test
     void shouldThrowExceptionWhenMembersDoNotMatch() {
+        DegreeCalculationValidationService spyService = spy(getService());
+
         Member member1 = createMember(1L, "Alice", "Smith");
         Member member2 = createMember(2L, "Bob", "Johnson");
 
@@ -130,8 +132,7 @@ class DegreeCalculationValidationServiceTest
         dc.setCalculation(createCalculationWithMember(member2));
         dc.setDegree(degree);
 
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> getService().validateMemberForCalculation(dc));
+        PCTSException exception = assertThrows(PCTSException.class, () -> spyService.validateMemberForCalculation(dc));
 
         assertEquals(ErrorKey.ATTRIBUTE_MATCHES, exception.getErrorKeys().get(0));
         assertEquals(Map.of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "degree", FieldKey.CONDITION_FIELD, "member"),
@@ -141,11 +142,13 @@ class DegreeCalculationValidationServiceTest
     @DisplayName("Should throw exception on duplicate degree ID")
     @Test
     void shouldThrowExceptionOnDuplicateDegreeId() {
+        DegreeCalculationValidationService spyService = spy(getService());
+
         DegreeCalculation dc = getValidModel();
         List<DegreeCalculation> existing = List.of(dc);
 
         PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> getService().validateDuplicateDegreeId(dc, existing));
+                                               () -> spyService.validateDuplicateDegreeId(dc, existing));
 
         assertEquals(ErrorKey.DUPLICATE_CALCULATION, exception.getErrorKeys().get(0));
         assertEquals(Map.of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "degree", FieldKey.IS, "Degree 1"),

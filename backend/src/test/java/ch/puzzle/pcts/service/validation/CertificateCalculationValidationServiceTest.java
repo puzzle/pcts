@@ -58,13 +58,13 @@ class CertificateCalculationValidationServiceTest
     @DisplayName("Should throw exception when members do not match")
     @Test
     void shouldThrowExceptionWhenMembersDoNotMatch() {
+        CertificateCalculationValidationService spyService = spy(getService());
         Member member2 = createMember(2L, "Bob", "Johnson");
 
         CertificateCalculation cc = getValidModel();
         cc.getCalculation().setMember(member2);
 
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> getService().validateMemberForCalculation(cc));
+        PCTSException exception = assertThrows(PCTSException.class, () -> spyService.validateMemberForCalculation(cc));
 
         assertEquals(ErrorKey.ATTRIBUTE_MATCHES, exception.getErrorKeys().get(0));
         assertEquals(Map
@@ -75,13 +75,14 @@ class CertificateCalculationValidationServiceTest
     @DisplayName("Should throw exception on duplicate certificate ID")
     @Test
     void shouldThrowExceptionOnDuplicateCertificateId() {
+        CertificateCalculationValidationService spyService = spy(getService());
         CertificateCalculation cc = getValidModel();
         cc.getCertificate().getCertificateType().setName("Certificate A");
 
         List<CertificateCalculation> existing = List.of(cc);
 
         PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> getService().validateDuplicateCertificateId(cc, existing));
+                                               () -> spyService.validateDuplicateCertificateId(cc, existing));
 
         assertEquals(ErrorKey.DUPLICATE_CALCULATION, exception.getErrorKeys().get(0));
         assertEquals(Map.of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "certificate", FieldKey.IS, "Certificate A"),

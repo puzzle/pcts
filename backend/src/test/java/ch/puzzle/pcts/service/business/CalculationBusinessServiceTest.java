@@ -52,16 +52,16 @@ class CalculationBusinessServiceTest {
     @DisplayName("Should get calculation by id and set total points")
     @Test
     void shouldGetById() {
-        Calculation calculation = new Calculation();
+        Calculation calc = new Calculation();
 
-        when(persistenceService.getById(ID)).thenReturn(Optional.of(calculation));
+        when(persistenceService.getById(ID)).thenReturn(Optional.of(calc));
         when(experienceBusinessService.getExperiencePoints(ID)).thenReturn(BigDecimal.ONE);
         when(degreeBusinessService.getDegreePoints(ID)).thenReturn(BigDecimal.ONE);
         when(certificateBusinessService.getCertificatePoints(ID)).thenReturn(BigDecimal.ONE);
 
         Calculation result = businessService.getById(ID);
 
-        assertEquals(calculation, result);
+        assertEquals(calc, result);
         assertEquals(BigDecimal.valueOf(3), result.getPoints()); // 1 + 1 + 1 = 3
         verify(persistenceService).getById(ID);
         verify(experienceBusinessService).getExperiencePoints(ID);

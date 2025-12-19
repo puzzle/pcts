@@ -66,13 +66,14 @@ class ExperienceCalculationValidationServiceTest
     @DisplayName("Should throw exception when members do not match")
     @Test
     void shouldThrowExceptionWhenMembersDoNotMatch() {
+        ExperienceCalculationValidationService spyService = spy(getService());
+
         Member member2 = createMember(2L, "Bob", "Johnson");
 
         ExperienceCalculation ec = getValidModel();
         ec.getCalculation().setMember(member2);
 
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> getService().validateMemberForCalculation(ec));
+        PCTSException exception = assertThrows(PCTSException.class, () -> spyService.validateMemberForCalculation(ec));
 
         assertEquals(ErrorKey.ATTRIBUTE_MATCHES, exception.getErrorKeys().get(0));
         assertEquals(Map
@@ -83,13 +84,15 @@ class ExperienceCalculationValidationServiceTest
     @DisplayName("Should throw exception on duplicate experience ID")
     @Test
     void shouldThrowExceptionOnDuplicateExperienceId() {
+        ExperienceCalculationValidationService spyService = spy(getService());
+
         ExperienceCalculation ec = getValidModel();
         ec.getExperience().setName("Experience 1");
 
         List<ExperienceCalculation> existing = List.of(ec);
 
         PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> getService().validateDuplicateExperienceId(ec, existing));
+                                               () -> spyService.validateDuplicateExperienceId(ec, existing));
 
         assertEquals(ErrorKey.DUPLICATE_CALCULATION, exception.getErrorKeys().get(0));
         assertEquals(Map.of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "experience", FieldKey.IS, "Experience 1"),
