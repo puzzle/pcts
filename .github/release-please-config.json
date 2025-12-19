@@ -12,26 +12,24 @@
     { "type": "docs", "hidden": false, "section": "Docs" }
   ],
   "packages": {
-    ".": {
-      "release-type": "simple",
-      "package-name": "pcts",
-      "changelog-path": "CHANGELOG.md",
-      "bump-minor-pre-major": true,
-      "extra-files": [
-        {
-          "type": "json",
-          "path": "frontend/package.json",
-          "jsonpath": "$.version"
-        },
-        {
-          "type": "pom",
-          "path": "backend/pom.xml"
-        },
-        {
-          "type": "pom",
-          "path": "pom.xml"
-        }
-      ]
+    "target-branch": "feature/66-setup-release-please",
+    "backend": {
+      "release-type": "maven",
+      "package-name": "pcts-backend",
+      "skip-snapshot": true,
+      "include-component-in-tag": true
+    },
+    "frontend": {
+      "release-type": "node",
+      "package-name": "pcts-frontend",
+      "include-component-in-tag": true
     }
-  }
+  },
+  "plugins": [
+    {
+      "type": "linked-versions",
+      "groupName": "pcts-bundle",
+      "components": ["backend", "frontend"]
+    }
+  ]
 }
