@@ -6,6 +6,9 @@ import static ch.puzzle.pcts.util.TestDataDTOs.ORG_UNIT_1_INPUT;
 import static ch.puzzle.pcts.util.TestDataModels.ORG_UNIT_1;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -14,27 +17,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.puzzle.pcts.dto.organisationunit.OrganisationUnitDto;
 import ch.puzzle.pcts.mapper.OrganisationUnitMapper;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
-import ch.puzzle.pcts.security.SpringSecurityConfig;
 import ch.puzzle.pcts.service.business.OrganisationUnitBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.json.JsonMapper;
 
-@Import(SpringSecurityConfig.class)
-@ExtendWith(MockitoExtension.class)
-@WebMvcTest(OrganisationUnitController.class)
-class OrganisationUnitControllerIT {
+@ControllerIT(OrganisationUnitController.class)
+class OrganisationUnitControllerIT extends ControllerITBase {
 
     @MockitoBean
     private OrganisationUnitBusinessService service;
@@ -57,9 +55,7 @@ class OrganisationUnitControllerIT {
         when(mapper.toDto(any(List.class))).thenReturn(List.of(ORG_UNIT_1_DTO));
 
         mvc
-                .perform(get(BASEURL)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
-                        .accept(MediaType.APPLICATION_JSON))
+                .perform(get(BASEURL).with(csrf()).with(adminJwt()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(JsonDtoMatcher.matchesDto(ORG_UNIT_1_DTO, "$[0]"));
@@ -75,7 +71,10 @@ class OrganisationUnitControllerIT {
         when(mapper.toDto(any(OrganisationUnit.class))).thenReturn(ORG_UNIT_1_DTO);
 
         mvc
-                .perform(get(BASEURL + "/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .perform(get(BASEURL + "/1")
+                        .with(csrf())
+
+                        .with(adminJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(ORG_UNIT_1_DTO, "$"));
 
@@ -94,7 +93,9 @@ class OrganisationUnitControllerIT {
                 .perform(post(BASEURL)
                         .content(jsonMapper.writeValueAsString(ORG_UNIT_1_INPUT))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                        .with(csrf())
+
+                        .with(adminJwt()))
                 .andExpect(status().isCreated())
                 .andExpect(JsonDtoMatcher.matchesDto(ORG_UNIT_1_DTO, "$"));
 
@@ -114,7 +115,8 @@ class OrganisationUnitControllerIT {
                 .perform(put(BASEURL + "/" + ORG_UNIT_1_ID)
                         .content(jsonMapper.writeValueAsString(ORG_UNIT_1_INPUT))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(ORG_UNIT_1_DTO, "$"));
 
@@ -131,7 +133,8 @@ class OrganisationUnitControllerIT {
         mvc
                 .perform(delete(BASEURL + "/" + ORG_UNIT_1_ID)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().is(204))
                 .andExpect(jsonPath("$").doesNotExist());
 

@@ -5,6 +5,7 @@ import static ch.puzzle.pcts.util.TestDataDTOs.*;
 import static ch.puzzle.pcts.util.TestDataModels.CERTIFICATE_1;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -15,24 +16,23 @@ import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.certificate.CertificateInputDto;
 import ch.puzzle.pcts.mapper.CertificateMapper;
 import ch.puzzle.pcts.model.certificate.Certificate;
+import ch.puzzle.pcts.model.certificatetype.CertificateType;
+import ch.puzzle.pcts.model.certificatetype.Tag;
+import ch.puzzle.pcts.model.member.EmploymentState;
+import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.CertificateBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.json.JsonMapper;
 
-@Import(SpringSecurityConfig.class)
-@ExtendWith(MockitoExtension.class)
-@WebMvcTest(CertificateController.class)
-class CertificateControllerIT {
+@ControllerIT(CertificateController.class)
+class CertificateControllerIT extends ControllerITBase {
 
     @MockitoBean
     private CertificateBusinessService service;
@@ -51,11 +51,12 @@ class CertificateControllerIT {
     @DisplayName("Should successfully get certificate by id")
     @Test
     void shouldGetCertificateById() throws Exception {
+        when(securityService.isAdmin()).willReturn(true);
         when(service.getById(CERTIFICATE_1_ID)).thenReturn(CERTIFICATE_1);
         when(mapper.toDto(any(Certificate.class))).thenReturn(CERTIFICATE_1_DTO);
 
         mvc
-                .perform(get(BASEURL + "/{id}", CERTIFICATE_1_ID).with(csrf()))
+                .perform(get(BASEURL + "/{id}", CERTIFICATE_1_ID).with(csrf()).with(adminJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(CERTIFICATE_1_DTO, "$"));
 
@@ -74,7 +75,8 @@ class CertificateControllerIT {
                 .perform(post(BASEURL)
                         .content(jsonMapper.writeValueAsString(CERTIFICATE_2_INPUT))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isCreated())
                 .andExpect(JsonDtoMatcher.matchesDto(CERTIFICATE_1_DTO, "$"));
 
@@ -94,7 +96,8 @@ class CertificateControllerIT {
                 .perform(put(BASEURL + "/{id}", CERTIFICATE_1_ID)
                         .content(jsonMapper.writeValueAsString(CERTIFICATE_1_INPUT))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(CERTIFICATE_1_DTO, "$"));
 
@@ -109,7 +112,7 @@ class CertificateControllerIT {
         doNothing().when(service).delete(CERTIFICATE_1_ID);
 
         mvc
-                .perform(delete(BASEURL + "/{id}", CERTIFICATE_1_ID).with(csrf()))
+                .perform(delete(BASEURL + "/{id}", CERTIFICATE_1_ID).with(csrf()).with(adminJwt()))
                 .andExpect(status().isNoContent())
                 .andExpect(jsonPath("$").doesNotExist());
 

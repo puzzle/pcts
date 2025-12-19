@@ -65,7 +65,7 @@ class CalculationPersistenceServiceIT
         Calculation result = persistenceService.save(activeCalculation);
 
         assertEquals(LocalDate.now(), result.getPublicationDate());
-        assertEquals("Ldap User", result.getPublicizedBy());
+        assertEquals("PersistenceIT User", result.getPublicizedBy());
         assertThat(getActiveCalculationsOfMember(activeCalculation.getRole(), activeCalculation.getMember()))
                 .containsExactly(activeCalculation);
     }
@@ -86,7 +86,7 @@ class CalculationPersistenceServiceIT
         Calculation result = persistenceService.save(activeCalculation);
 
         assertEquals(LocalDate.now(), result.getPublicationDate());
-        assertEquals("Ldap User", result.getPublicizedBy());
+        assertEquals("PersistenceIT User", result.getPublicizedBy());
         assertThat(getActiveCalculationsOfMember(activeCalculation.getRole(), activeCalculation.getMember()))
                 .containsExactly(result);
     }
