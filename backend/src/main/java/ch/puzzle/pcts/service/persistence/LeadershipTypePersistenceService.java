@@ -1,6 +1,6 @@
 package ch.puzzle.pcts.service.persistence;
 
-import static ch.puzzle.pcts.Constants.*;
+import static ch.puzzle.pcts.Constants.LEADERSHIP_EXPERIENCE_TYPE;
 
 import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.FieldKey;
@@ -15,30 +15,31 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CertificateTypePersistenceService extends PersistenceBase<CertificateType, CertificateTypeRepository> {
+public class LeadershipTypePersistenceService extends PersistenceBase<CertificateType, CertificateTypeRepository> {
+
     private final CertificateTypeRepository repository;
 
-    public CertificateTypePersistenceService(CertificateTypeRepository certificateTypeRepository) {
+    protected LeadershipTypePersistenceService(CertificateTypeRepository certificateTypeRepository) {
         super(certificateTypeRepository);
-        this.repository = certificateTypeRepository;
+        repository = certificateTypeRepository;
     }
 
     public Optional<CertificateType> getByName(String name) {
-        return repository.findByNameOfCertificateType(name);
+        return repository.findByNameOfLeadershipExperienceType(name);
     }
 
     @Override
     public List<CertificateType> getAll() {
-        return repository.findAllOfCertificateType();
+        return repository.findAllOfLeadershipExperienceType();
     }
 
     // This is still optional because you can't change it using just one method. It
     // will be in #317.
     @Override
     public Optional<CertificateType> getById(Long id) {
-        return Optional.ofNullable(repository.findByIdOfCertificateType(id).orElseThrow(() -> {
+        return Optional.ofNullable(repository.findByIdOfLeadershipExperienceType(id).orElseThrow(() -> {
             Map<FieldKey, String> attributes = Map
-                    .of(FieldKey.ENTITY, CERTIFICATE_TYPE, FieldKey.FIELD, "id", FieldKey.IS, id.toString());
+                    .of(FieldKey.ENTITY, LEADERSHIP_EXPERIENCE_TYPE, FieldKey.FIELD, "id", FieldKey.IS, id.toString());
 
             GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
 

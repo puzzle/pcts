@@ -44,33 +44,16 @@ public abstract class BusinessBase<T extends Model> {
     }
 
     public T update(Long id, T model) {
-        if (persistenceService.getById(id).isPresent()) {
-            validationService.validateOnUpdate(id, model);
-            model.setId(id);
-            return persistenceService.save(model);
-        } else {
-            Map<FieldKey, String> attributes = Map
-                    .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, id.toString());
-
-            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
-
-            throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
-
-        }
+        getById(id);
+        validationService.validateOnUpdate(id, model);
+        model.setId(id);
+        return persistenceService.save(model);
     }
 
     public void delete(Long id) {
+        getById(id);
         validationService.validateOnDelete(id);
-        if (persistenceService.getById(id).isPresent()) {
-            persistenceService.delete(id);
-        } else {
-            Map<FieldKey, String> attributes = Map
-                    .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, id.toString());
-
-            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
-
-            throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
-        }
+        persistenceService.delete(id);
     }
 
     protected abstract String entityName();

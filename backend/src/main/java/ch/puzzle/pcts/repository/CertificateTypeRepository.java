@@ -8,9 +8,39 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CertificateTypeRepository extends SoftDeleteRepository<CertificateType, Long> {
-    List<CertificateType> findByCertificateKindNotAndDeletedAtIsNull(CertificateKind certificatekind);
+    List<CertificateType> findAllByCertificateKindAndDeletedAtIsNull(CertificateKind kind);
 
-    List<CertificateType> findByCertificateKindAndDeletedAtIsNull(CertificateKind certificatekind);
+    List<CertificateType> findAllByCertificateKindNotAndDeletedAtIsNull(CertificateKind kind);
 
-    Optional<CertificateType> findByName(String name);
+    Optional<CertificateType> findByIdAndCertificateKindAndDeletedAtIsNull(Long id, CertificateKind kind);
+
+    Optional<CertificateType> findByIdAndCertificateKindNotAndDeletedAtIsNull(Long id, CertificateKind kind);
+
+    Optional<CertificateType> findByNameAndCertificateKindAndDeletedAtIsNull(String name, CertificateKind kind);
+
+    Optional<CertificateType> findByNameAndCertificateKindNotAndDeletedAtIsNull(String name, CertificateKind kind);
+
+    default List<CertificateType> findAllOfCertificateType() {
+        return findAllByCertificateKindAndDeletedAtIsNull(CertificateKind.CERTIFICATE);
+    }
+
+    default List<CertificateType> findAllOfLeadershipExperienceType() {
+        return findAllByCertificateKindNotAndDeletedAtIsNull(CertificateKind.CERTIFICATE);
+    }
+
+    default Optional<CertificateType> findByIdOfCertificateType(Long id) {
+        return findByIdAndCertificateKindAndDeletedAtIsNull(id, CertificateKind.CERTIFICATE);
+    }
+
+    default Optional<CertificateType> findByIdOfLeadershipExperienceType(Long id) {
+        return findByIdAndCertificateKindNotAndDeletedAtIsNull(id, CertificateKind.CERTIFICATE);
+    }
+
+    default Optional<CertificateType> findByNameOfCertificateType(String name) {
+        return findByNameAndCertificateKindAndDeletedAtIsNull(name, CertificateKind.CERTIFICATE);
+    }
+
+    default Optional<CertificateType> findByNameOfLeadershipExperienceType(String name) {
+        return findByNameAndCertificateKindNotAndDeletedAtIsNull(name, CertificateKind.CERTIFICATE);
+    }
 }
