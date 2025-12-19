@@ -6,7 +6,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.calculation.Relevancy;
+import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
+import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
 import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
+import ch.puzzle.pcts.model.certificate.Certificate;
+import ch.puzzle.pcts.model.certificatetype.CertificateKind;
+import ch.puzzle.pcts.model.certificatetype.CertificateType;
+import ch.puzzle.pcts.model.certificatetype.Tag;
+import ch.puzzle.pcts.model.degree.Degree;
+import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.model.experience.Experience;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.model.member.Member;
@@ -18,6 +26,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,6 +103,58 @@ class CalculationPersistenceServiceIT
                 .withEndDate(LocalDate.of(2024, 7, 15))
                 .build();
 
+        DegreeType degreeType2 = new DegreeType(2L,
+                                                "Degree type 2",
+                                                BigDecimal.valueOf(12),
+                                                BigDecimal.valueOf(3.961),
+                                                BigDecimal.valueOf(3));
+
+        Degree degree2 = Degree.Builder
+                .builder()
+                .withId(2L)
+                .withMember(members.get(1))
+                .withName("Degree 2")
+                .withInstitution("Institution")
+                .withCompleted(false)
+                .withDegreeType(degreeType2)
+                .withStartDate(LocalDate.of(2016, 9, 1))
+                .withEndDate(LocalDate.of(2019, 6, 30))
+                .withComment("Comment")
+                .build();
+
+        CertificateType certType2 = new CertificateType(2L,
+                                                        "Certificate Type 2",
+                                                        BigDecimal.valueOf(1),
+                                                        "This is Certificate 2",
+                                                        Set.of(new Tag(2L, "Longer tag name")),
+                                                        CertificateKind.CERTIFICATE);
+
+        CertificateType certType5 = new CertificateType(5L,
+                                                        "LeadershipExperience Type 1",
+                                                        BigDecimal.valueOf(5.5),
+                                                        "This is LeadershipExperience 1",
+                                                        Set.of(),
+                                                        CertificateKind.MILITARY_FUNCTION);
+
+        Certificate cert2 = Certificate.Builder
+                .builder()
+                .withId(2L)
+                .withMember(members.get(1))
+                .withCertificateType(certType2)
+                .withCompletedAt(LocalDate.of(2022, 11, 1))
+                .withComment("Completed first aid training.")
+                .build();
+
+        Certificate cert5 = Certificate.Builder
+                .builder()
+                .withId(5L)
+                .withMember(members.get(0))
+                .withCertificateType(certType5)
+                .withCompletedAt(LocalDate.of(2010, 8, 12))
+                .withValidUntil(LocalDate.of(2023, 3, 25))
+                .withComment("Left organization.")
+                .build();
+
         List<Calculation> calculations = new ArrayList<>();
 
         Calculation calc1 = Calculation.Builder
@@ -104,14 +165,29 @@ class CalculationPersistenceServiceIT
                 .withState(CalculationState.DRAFT)
                 .withPublicationDate(LocalDate.of(2025, 1, 14))
                 .withPublicizedBy("Ldap User")
-                .withDegrees(Collections.emptyList())
+                .withDegrees(List
+                        .of(new DegreeCalculation(1L,
+                                                  null,
+                                                  degree2,
+                                                  Relevancy.HIGHLY,
+                                                  BigDecimal.valueOf(80),
+                                                  "Comment"),
+                            new DegreeCalculation(3L,
+                                                  null,
+                                                  degree2,
+                                                  Relevancy.LIMITED,
+                                                  BigDecimal.valueOf(100),
+                                                  "Comment")))
                 .withExperiences(List
                         .of(new ExperienceCalculation(1L, null, exp2, Relevancy.HIGHLY, "Comment"),
                             new ExperienceCalculation(3L, null, exp3, Relevancy.LIMITED, "Comment")))
-                .withCertificates(Collections.emptyList())
+                .withCertificates(List
+                        .of(new CertificateCalculation(1L, null, cert2), new CertificateCalculation(3L, null, cert5)))
                 .build();
 
-        calc1.getExperiences().forEach(expCalc -> expCalc.setCalculation(calc1));
+        calc1.getExperiences().forEach(e -> e.setCalculation(calc1));
+        calc1.getDegrees().forEach(d -> d.setCalculation(calc1));
+        calc1.getCertificates().forEach(c -> c.setCalculation(calc1));
 
         calculations.add(calc1);
 
@@ -123,12 +199,20 @@ class CalculationPersistenceServiceIT
                 .withState(CalculationState.ARCHIVED)
                 .withPublicationDate(LocalDate.of(2025, 1, 14))
                 .withPublicizedBy("Ldap User 2")
-                .withDegrees(Collections.emptyList())
+                .withDegrees(List
+                        .of(new DegreeCalculation(2L,
+                                                  null,
+                                                  degree2,
+                                                  Relevancy.LITTLE,
+                                                  BigDecimal.valueOf(10),
+                                                  "Comment")))
                 .withExperiences(List.of(new ExperienceCalculation(2L, null, exp2, Relevancy.LITTLE, "Comment")))
-                .withCertificates(Collections.emptyList())
+                .withCertificates(List.of(new CertificateCalculation(2L, null, cert2)))
                 .build();
 
-        calc2.getExperiences().forEach(expCalc -> expCalc.setCalculation(calc2));
+        calc2.getExperiences().forEach(e -> e.setCalculation(calc2));
+        calc2.getDegrees().forEach(d -> d.setCalculation(calc2));
+        calc2.getCertificates().forEach(c -> c.setCalculation(calc2));
 
         calculations.add(calc2);
 
