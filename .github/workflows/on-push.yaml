@@ -32,7 +32,6 @@ jobs:
   push-to-ghrc:
     if: github.ref_name == 'main'
     needs:
-      - release-please
       - e2e-tests
       - format
       - tests
