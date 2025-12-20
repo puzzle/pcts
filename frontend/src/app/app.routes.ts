@@ -5,7 +5,7 @@ import { memberOverviewResolver } from './features/member/overview/member-overvi
 import { MemberOverviewComponent } from './features/member/overview/member-overview.component';
 import { provideI18nPrefix } from './shared/i18n-prefix.provider';
 import { MemberDetailViewComponent } from './features/member/detail-view/member-detail-view.component';
-import { authGuard } from './core/auth/auth.guard';
+import { authGuard } from './core/auth/guard/auth.guard';
 
 export const routes: Routes = [{
   path: '',
