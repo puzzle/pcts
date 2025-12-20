@@ -95,6 +95,7 @@ class CalculationControllerIT {
                                             "AM",
                                             commonDate,
                                             commonDate,
+                                            null,
                                             ouDto);
 
         expectedDto = new CalculationDto(ID, memberDto, roleDto, CalculationState.ACTIVE, commonDate, "System");

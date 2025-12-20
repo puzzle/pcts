@@ -104,6 +104,7 @@ class LeadershipExperienceControllerIT {
                                             "SM",
                                             commonDate,
                                             commonDate,
+                                            null,
                                             orgDto);
 
         LeadershipExperienceTypeDto experienceTypeDto = new LeadershipExperienceTypeDto(ID,

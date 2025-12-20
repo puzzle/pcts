@@ -109,6 +109,7 @@ class CertificateControllerIT {
                                             "SM",
                                             commonDate,
                                             commonDate,
+                                            null,
                                             organisationUnitDto);
         CertificateTypeDto certificateDto = new CertificateTypeDto(ID,
                                                                    "CertificateDto",
