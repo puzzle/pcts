@@ -35,6 +35,11 @@ export class MemberService {
       .pipe(map((dto) => this.mapDates(dto)));
   }
 
+  getMyself() {
+    return this.httpClient.get<MemberModel>(`${this.API_URL}/myself`)
+      .pipe(map((dto) => this.mapDates(dto)));
+  }
+
   private mapDates(dto: MemberModel): MemberModel {
     return {
       ...dto,
