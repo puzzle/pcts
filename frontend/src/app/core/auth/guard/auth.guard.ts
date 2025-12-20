@@ -15,7 +15,6 @@ export const authGuard = (config: { scope: 'admin' | 'user' } = { scope: 'admin'
       return true;
     }
 
-    userService.isAdmin();
     if (userService.isAdmin()) {
       return true;
     }
