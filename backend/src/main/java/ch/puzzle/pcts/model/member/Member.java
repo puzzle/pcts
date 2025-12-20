@@ -6,6 +6,7 @@ import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.util.validation.PCTSStringValidation;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
@@ -40,6 +41,9 @@ public class Member implements Model {
 
     private LocalDate dateOfHire;
 
+    @Email(message = "{attribute.not.email}")
+    private String email;
+
     @NotNull(message = "{attribute.not.null}")
     @Past(message = "{attribute.date.past}")
     private LocalDate birthDate;
@@ -70,6 +74,7 @@ public class Member implements Model {
         this.abbreviation = trim(builder.abbreviation);
         this.dateOfHire = builder.dateOfHire;
         this.birthDate = builder.birthDate;
+        this.email = builder.email;
         this.organisationUnit = builder.organisationUnit;
         this.ptimeId = builder.ptimeId;
         this.lastSuccessfulSync = builder.lastSuccessfulSync;
@@ -191,6 +196,14 @@ public class Member implements Model {
         this.ldapName = trim(ldapName);
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Member member)) {
@@ -201,7 +214,7 @@ public class Member implements Model {
                && getEmploymentState() == member.getEmploymentState()
                && Objects.equals(getAbbreviation(), member.getAbbreviation())
                && Objects.equals(getDateOfHire(), member.getDateOfHire())
-               && Objects.equals(getBirthDate(), member.getBirthDate())
+               && Objects.equals(getEmail(), member.getEmail()) && Objects.equals(getBirthDate(), member.getBirthDate())
                && Objects.equals(getDeletedAt(), member.getDeletedAt())
                && Objects.equals(getOrganisationUnit(), member.getOrganisationUnit())
                && Objects.equals(getPtimeId(), member.getPtimeId())
@@ -219,6 +232,7 @@ public class Member implements Model {
                       getEmploymentState(),
                       getAbbreviation(),
                       getDateOfHire(),
+                      getEmail(),
                       getBirthDate(),
                       getDeletedAt(),
                       getOrganisationUnit(),
@@ -226,15 +240,6 @@ public class Member implements Model {
                       getLastSuccessfulSync(),
                       getSyncErrorCount(),
                       getLdapName());
-    }
-
-    @Override
-    public String toString() {
-        return "Member{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\''
-               + ", ldapName='" + ldapName + '\'' + ", employmentState=" + employmentState + ", abbreviation='"
-               + abbreviation + '\'' + ", dateOfHire=" + dateOfHire + ", birthDate=" + birthDate + ", deletedAt="
-               + deletedAt + ", organisationUnit=" + organisationUnit + ", ptimeId=" + ptimeId + ", lastSuccessfulSync="
-               + lastSuccessfulSync + ", syncErrorCount=" + syncErrorCount + '}';
     }
 
     public static final class Builder {
@@ -246,6 +251,7 @@ public class Member implements Model {
         private String abbreviation;
         private LocalDate dateOfHire;
         private LocalDate birthDate;
+        private String email;
         private OrganisationUnit organisationUnit;
         private Long ptimeId;
         private LocalDateTime lastSuccessfulSync;
@@ -295,6 +301,11 @@ public class Member implements Model {
 
         public Builder withOrganisationUnit(OrganisationUnit organisationUnit) {
             this.organisationUnit = organisationUnit;
+            return this;
+        }
+
+        public Builder withEmail(String email) {
+            this.email = email;
             return this;
         }
 

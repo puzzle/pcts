@@ -16,6 +16,10 @@ public class MemberPersistenceService extends PersistenceBase<Member, MemberRepo
         this.repository = repository;
     }
 
+    public Optional<Member> findByEmail(String email) {
+        return this.repository.findMemberByEmail(email);
+    }
+
     @Override
     public String entityName() {
         return MEMBER;

@@ -6,18 +6,19 @@ import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
+
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
-import java.time.LocalDate;
+import ch.puzzle.pcts.service.validation.util.UniqueNameValidationUtil;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import org.springframework.http.HttpStatus;
+import java.time.LocalDate;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MemberValidationService extends ValidationBase<Member> {
-
     private final MemberPersistenceService persistenceService;
 
     public MemberValidationService(MemberPersistenceService persistenceService) {
@@ -28,6 +29,15 @@ public class MemberValidationService extends ValidationBase<Member> {
     public void validateOnCreate(Member member) {
         super.validateOnCreate(member);
         validateBirthDateIsBeforeDateOfHire(member.getBirthDate(), member.getDateOfHire());
+
+        if (UniqueNameValidationUtil.nameAlreadyUsed(member.getEmail(), persistenceService::findByEmail)) {
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.CLASS, MEMBER, FieldKey.FIELD, "email", FieldKey.IS, member.getEmail());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE, attributes);
+
+            throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
+        }
     }
 
     @Override
@@ -35,6 +45,16 @@ public class MemberValidationService extends ValidationBase<Member> {
         super.validateOnUpdate(id, member);
         validateBirthDateIsBeforeDateOfHire(member.getBirthDate(), member.getDateOfHire());
         validatePtimeIdIsUnique(member.getPtimeId(), id);
+
+        if (UniqueNameValidationUtil
+                .nameExcludingIdAlreadyUsed(id, member.getEmail(), persistenceService::findByEmail)) {
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.CLASS, MEMBER, FieldKey.FIELD, "email", FieldKey.IS, member.getEmail());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE, attributes);
+
+            throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
+        }
     }
 
     private void validateBirthDateIsBeforeDateOfHire(LocalDate birthDate, LocalDate dateOfHire) {
