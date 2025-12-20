@@ -104,7 +104,7 @@ class ArchitectureTest {
                 .resideInAPackage("..service.business..")
                 .should()
                 .onlyBeAccessed()
-                .byAnyPackage("..controller..", "..mapper..", "..service.business..");
+                .byAnyPackage("..controller..", "..mapper..", "..service.business..", "..service");
 
         rule.check(importedClasses);
     }
@@ -375,31 +375,35 @@ class ArchitectureTest {
     @Test
     void serviceLayerCheck() {
         JavaClasses importedClasses = getMainSourceClasses();
-        Architectures.LayeredArchitecture layeredArchitecture = layeredArchitecture()
-                .consideringAllDependencies() //
-                .layer("Controller")
-                .definedBy("..controller..") //
-                .layer("BusinessService")
-                .definedBy("..service.business..") //
-                .layer("ValidationService")
-                .definedBy("..service.validation..") //
-                .layer("PersistenceService")
-                .definedBy("..service.persistence..") //
-                .layer("Repository")
-                .definedBy("..repository..") //
-                .layer("Mapper")
-                .definedBy("..mapper..") //
 
+        Architectures.LayeredArchitecture layeredArchitecture = layeredArchitecture()
+                .consideringAllDependencies()
+                .layer("Controller")
+                .definedBy("..controller..")
+                .layer("ServiceUtils")
+                .definedBy("ch.puzzle.pcts.service")
+                .layer("BusinessService")
+                .definedBy("..service.business..")
+                .layer("ValidationService")
+                .definedBy("..service.validation..")
+                .layer("PersistenceService")
+                .definedBy("..service.persistence..")
+                .layer("Repository")
+                .definedBy("..repository..")
+                .layer("Mapper")
+                .definedBy("..mapper..")
                 .whereLayer("Controller")
-                .mayNotBeAccessedByAnyLayer() //
+                .mayNotBeAccessedByAnyLayer()
                 .whereLayer("BusinessService")
-                .mayOnlyBeAccessedByLayers("Controller", "Mapper", "BusinessService") //
+                .mayOnlyBeAccessedByLayers("Controller", "Mapper", "BusinessService", "ServiceUtils")
                 .whereLayer("ValidationService")
-                .mayOnlyBeAccessedByLayers("BusinessService") //
+                .mayOnlyBeAccessedByLayers("BusinessService")
+                .whereLayer("ServiceUtils")
+                .mayOnlyBeAccessedByLayers("BusinessService", "PersistenceService", "Controller")
                 .whereLayer("PersistenceService")
-                .mayOnlyBeAccessedByLayers("BusinessService", "PersistenceService", "ValidationService") //
+                .mayOnlyBeAccessedByLayers("BusinessService", "PersistenceService", "ValidationService")
                 .whereLayer("Repository")
-                .mayOnlyBeAccessedByLayers("PersistenceService", "BusinessService"); //
+                .mayOnlyBeAccessedByLayers("PersistenceService", "BusinessService");
 
         layeredArchitecture.check(importedClasses);
     }
@@ -454,7 +458,7 @@ class ArchitectureTest {
     @DisplayName("All configurations must be records and correctly annotated")
     @Test
     void configurationsMustBeRecordsAndCorrectlyAnnotated() {
-        JavaClasses importedClasses = new ClassFileImporter().importPackages("ch.puzzle.pcts");
+        JavaClasses importedClasses = getMainSourceClasses();
 
         ArchRule rule = classes()
                 .that()

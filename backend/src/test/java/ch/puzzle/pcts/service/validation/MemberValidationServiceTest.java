@@ -41,7 +41,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
 
     @Override
     Member getValidModel() {
-        return createMember(EmploymentState.MEMBER, LocalDate.EPOCH, "Member", "Test", "MT");
+        return createMember(EmploymentState.MEMBER, LocalDate.EPOCH, "Member", "Test", "MT", "test@puzzle.ch");
     }
 
     @Override
@@ -50,7 +50,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
     }
 
     protected static Member createMember(EmploymentState employmentState, LocalDate birthDate, String firstName,
-                                         String lastName, String abbreviation) {
+                                         String lastName, String abbreviation, String email) {
         Member m = new Member();
         m.setEmploymentState(employmentState);
         m.setBirthDate(birthDate);
@@ -59,6 +59,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
         m.setAbbreviation(abbreviation);
         m.setDateOfHire(LocalDate.EPOCH);
         m.setOrganisationUnit(ORG_UNIT_1);
+        m.setEmail(email);
         return m;
     }
 
@@ -170,7 +171,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                             .of(createMember(null, DATE_YESTERDAY, "Member", "Test", "MT"),
                                 List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "employmentState"))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, null, "Member", "Test", "MT"),
+                            .of(createMember(EmploymentState.MEMBER, null, "Member", "Test", "MT", "test@puzzle.ch"),
                                 List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "birthDate"))),
                     Arguments
                             .of(createMember(EmploymentState.MEMBER, DATE_TOMORROW, "Member", "Test", "MT"),

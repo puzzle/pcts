@@ -48,7 +48,7 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
                 .withLittleRelevantPoints(BigDecimal.valueOf(3))
                 .build();
 
-        Member member = createMember(EmploymentState.MEMBER, LocalDate.EPOCH, "Member", "Test", "MT");
+        Member member = createMember(EmploymentState.MEMBER, LocalDate.EPOCH, "Member", "Test", "MT", "test@puzzle.ch");
 
         return new Experience.Builder()
                 .withMember(member)
@@ -129,7 +129,8 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
                                                              LocalDate.EPOCH,
                                                              "Member",
                                                              "Test",
-                                                             "MT"))
+                                                             "MT",
+                                                             "test@puzzle.ch"))
                                     .withName("Experience")
                                     .withEmployer("Employer")
                                     .withPercent(100)
