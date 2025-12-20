@@ -28,7 +28,9 @@ VALUES
     ('Sophie', 'Keller', null,null, 'APPLICANT', null, '1999-02-28', null),
     ('Tobias', 'Weber', null,'TW', 'APPLICANT', '2022-02-14', '2000-07-06', 4),
     ('Mara', 'Becker', 'becker@puzzle.ch','MB', 'EX_MEMBER', null, '2001-08-05', 1),
-    ('Felix', 'Hofmann', 'hofmann@puzzle.ch','FH', 'EX_MEMBER', '2021-09-17', '2000-02-29', 1);
+    ('Felix', 'Hofmann', 'hofmann@puzzle.ch','FH', 'EX_MEMBER', '2021-09-17', '2000-02-29', 1),
+    ( 'Jaya', 'Norris', 'gl@gl.com','JN', 'MEMBER', '2021-09-17', '2000-02-29', 1),
+    ( 'Abraham', ' Woodard', 'member@member.com','AW', 'MEMBER', '2021-09-17', '2004-02-29', 3);
 
 INSERT INTO role (name, is_management)
 VALUES
