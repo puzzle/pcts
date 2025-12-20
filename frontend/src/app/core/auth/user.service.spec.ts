@@ -1,12 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 import { UserService } from './user.service';
 import Keycloak from 'keycloak-js';
+import { APP_CONFIG } from '../../features/configuration/configuration.token';
 
 type MockKeycloak = Partial<Keycloak> & { tokenParsed?: any };
 
 describe('User', () => {
   let service: UserService;
   let keycloakMock: MockKeycloak;
+  const appConfigMock = {
+    adminAuthorities: ['ADMIN_ROLE',
+      'HR_ROLE']
+  };
 
   beforeEach(() => {
     keycloakMock = {
@@ -18,6 +23,10 @@ describe('User', () => {
       {
         provide: Keycloak,
         useValue: keycloakMock
+      },
+      {
+        provide: APP_CONFIG,
+        useValue: appConfigMock
       }] });
     service = TestBed.inject(UserService);
   });
