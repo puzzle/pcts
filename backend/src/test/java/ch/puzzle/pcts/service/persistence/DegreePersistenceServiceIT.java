@@ -42,6 +42,7 @@ public class DegreePersistenceServiceIT extends PersistenceBaseIT<Degree, Degree
                 .withDateOfHire(LocalDate.of(2021, 7, 15))
                 .withBirthDate(LocalDate.of(1999, 8, 10))
                 .withOrganisationUnit(organisationUnit)
+                .withEmail(null)
                 .build();
 
         return Degree.Builder
@@ -87,6 +88,7 @@ public class DegreePersistenceServiceIT extends PersistenceBaseIT<Degree, Degree
                 .withDateOfHire(LocalDate.of(2021, 7, 15))
                 .withBirthDate(LocalDate.of(1999, 8, 10))
                 .withOrganisationUnit(deletedOrganisationUnit)
+                .withEmail(null)
                 .build();
 
         Member member2 = Member.Builder
@@ -99,6 +101,7 @@ public class DegreePersistenceServiceIT extends PersistenceBaseIT<Degree, Degree
                 .withDateOfHire(LocalDate.of(2020, 6, 1))
                 .withBirthDate(LocalDate.of(1998, 3, 3))
                 .withOrganisationUnit(organisationUnit2)
+                .withEmail("member2@puzzle.ch")
                 .build();
 
         return List
