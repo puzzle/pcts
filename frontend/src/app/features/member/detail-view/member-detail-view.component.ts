@@ -18,6 +18,7 @@ import {
   getLeadershipExperienceTable
 } from './cv/member-detail-cv-table-definition';
 import { MemberOverviewModel } from '../member-overview.model';
+import { UserService } from '../../../core/auth/user.service';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -35,6 +36,8 @@ import { MemberOverviewModel } from '../member-overview.model';
 })
 export class MemberDetailViewComponent implements OnInit {
   private readonly service = inject(MemberService);
+
+  protected readonly userService = inject(UserService);
 
   private readonly route = inject(ActivatedRoute);
 
