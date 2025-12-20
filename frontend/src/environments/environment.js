@@ -11,6 +11,6 @@ export const environment = {
     scope: 'openid profile',
     clientId: '',
     responseType: 'code',
-    showDebugInformation: true
-  }
+    showDebugInformation: true,
+  },
 }
