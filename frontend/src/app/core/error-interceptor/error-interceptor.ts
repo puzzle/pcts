@@ -15,6 +15,12 @@ export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>,
       const translate = injector.get(ScopedTranslationService);
       let toasts: string[];
 
+      if (error.status == 401) {
+        toasts = [translate.instant('ERROR.NOT_AUTHENTICATED')];
+        toastService.showToasts(toasts, 'error');
+        return throwError(() => error);
+      }
+
       if (error.status === 403) {
         toasts = [translate.instant('ERROR.NOT_ALLOWED')];
         toastService.showToasts(toasts, 'error');

@@ -26,6 +26,7 @@ import { environment } from '../environments/environment';
 import { provideDateFnsAdapter } from '@angular/material-date-fns-adapter';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { de } from 'date-fns/locale/de';
+import { provideConfiguration } from './features/configuration/configuration.token';
 
 registerLocaleData(localeDeCH);
 
@@ -55,7 +56,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withComponentInputBinding()),
     importProvidersFrom(MatSnackBarModule),
     provideHttpClient(withInterceptors([errorInterceptor,
-      successInterceptor, includeBearerTokenInterceptor])),
+      successInterceptor,
+      includeBearerTokenInterceptor])),
     provideTranslateService({
       fallbackLang: 'de',
       loader: provideTranslateHttpLoader({
@@ -81,6 +83,7 @@ export const appConfig: ApplicationConfig = {
     {
       provide: LOCALE_ID,
       useValue: 'de-CH'
-    }
+    },
+    provideConfiguration()
   ]
 };

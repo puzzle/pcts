@@ -255,4 +255,29 @@ describe('errorInterceptor', () => {
         }
       });
   });
+
+  it('should show NOT_AUTHENTICATED error if the status code is 401', (done) => {
+    const backendError = new HttpErrorResponse({
+      status: 401
+    });
+
+    translate.instant.mockReturnValue('Translated Default');
+    backend.handle.mockReturnValue(throwError(() => backendError));
+
+    http.post(url, {})
+      .subscribe({
+        error: () => {
+          expect(translate.instant)
+            .toHaveBeenCalledWith('ERROR.NOT_AUTHENTICATED');
+          expect(translate.instant)
+            .toHaveBeenCalledTimes(1);
+
+          expect(toastService.showToasts)
+            .toHaveBeenCalledWith(['Translated Default'], 'error');
+          expect(toastService.showToasts)
+            .toHaveBeenCalledTimes(1);
+          done();
+        }
+      });
+  });
 });
