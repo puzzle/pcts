@@ -2,7 +2,8 @@
   "gl": {
     "username": "gl",
     "password": "gl",
-    "name": "Jaya Norris"
+    "name": "Jaya Norris",
+    "databaseId": 7
   },
   "bl": {
     "username": "bl",
@@ -17,6 +18,7 @@
   "member": {
     "username": "member",
     "password": "member",
-    "name": "Abraham Woodard"
+    "name": "Abraham Woodard",
+    "databaseId": 8
   }
 }
