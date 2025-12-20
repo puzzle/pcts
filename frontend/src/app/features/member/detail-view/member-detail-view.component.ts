@@ -27,6 +27,7 @@ import { PctsModalService } from '../../../shared/modal/pcts-modal.service';
 import { RolePointsModel } from './RolePointsModel';
 import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { UserService } from '../../../core/auth/user.service';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -46,6 +47,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class MemberDetailViewComponent implements OnInit {
   private readonly service = inject(MemberService);
+
+  protected readonly userService = inject(UserService);
 
   private readonly route = inject(ActivatedRoute);
 

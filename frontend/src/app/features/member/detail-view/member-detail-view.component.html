@@ -11,7 +11,9 @@
           {{ 'PERSONAL_DETAILS' | scopedTranslation }}
         </h2>
 
-        <app-crud-button mode="edit"/>
+        @if (userService.isAdmin()) {
+          <app-crud-button mode="edit"/>
+        }
       </div>
 
       <div class="d-flex justify-content-between flex-wrap mb-3" data-testid="member-detail-data">
