@@ -211,7 +211,7 @@ describe('MemberFormComponent', () => {
     {
       input: 'John',
       field: 'firstName',
-      expectedMessage: 'Member wurde erforlgreich aktualisiert.',
+      expectedMessage: 'Member wurde erfolgreich aktualisiert.',
       expectError: false
     }];
 
