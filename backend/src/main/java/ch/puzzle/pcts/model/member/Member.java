@@ -201,7 +201,7 @@ public class Member implements Model {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = trim(email);
     }
 
     @Override
@@ -305,7 +305,7 @@ public class Member implements Model {
         }
 
         public Builder withEmail(String email) {
-            this.email = email;
+            this.email = trim(email);
             return this;
         }
 
