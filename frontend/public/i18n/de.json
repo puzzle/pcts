@@ -145,7 +145,7 @@
     "CLOSE": "Schliessen"
   },
   "POST": "{{OBJECT}} wurde erfolgreich erstellt.",
-  "PUT": "{{OBJECT}} wurde erforlgreich aktualisiert.",
+  "PUT": "{{OBJECT}} wurde erfolgreich aktualisiert.",
   "DELETE": "{{OBJECT}} wurde erfolgreich gelöscht.",
   "Object": "Objekt"
 }
