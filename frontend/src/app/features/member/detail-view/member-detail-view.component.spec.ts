@@ -7,11 +7,15 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 import { certificate1, leadershipExperience1, memberOverview1, rolePointsList1 } from '../../../shared/test/test-data';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
+import { APP_CONFIG } from '../../configuration/configuration.token';
+import Keycloak from 'keycloak-js';
 import { PctsModalService } from '../../../shared/modal/pcts-modal.service';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import { CertificateService } from '../../certificates/certificate.service';
 import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
 import { LeadershipExperienceService } from '../../leadership-experiences/leadership-experience.service';
+
+type MockKeycloak = Partial<Keycloak> & { tokenParsed?: any };
 
 describe('MemberDetailViewComponent (Jest)', () => {
   let memberServiceMock: Partial<jest.Mocked<MemberService>>;
@@ -20,6 +24,11 @@ describe('MemberDetailViewComponent (Jest)', () => {
   let modalService: Partial<jest.Mocked<PctsModalService>>;
   let routerMock: jest.Mocked<Router>;
   let routeMock: ActivatedRoute;
+  let keycloakMock: MockKeycloak;
+  const appConfigMock = {
+    adminAuthorities: ['ADMIN_ROLE',
+      'HR_ROLE']
+  };
 
   function setupTestBed(id: string | null) {
     memberServiceMock = {
@@ -32,6 +41,13 @@ describe('MemberDetailViewComponent (Jest)', () => {
       navigate: jest.fn(),
       url: '/member/1'
     } as any;
+
+    keycloakMock = {
+      tokenParsed: {
+        pitc: { roles: [] }
+      },
+      logout: jest.fn()
+    };
 
     routeMock = {
       snapshot: {
@@ -74,6 +90,16 @@ describe('MemberDetailViewComponent (Jest)', () => {
         { provide: CertificateService,
           useValue: certificateService },
         provideTranslateService(),
+        { provide: MemberService,
+          useValue: memberServiceMock },
+        {
+          provide: APP_CONFIG,
+          useValue: appConfigMock
+        },
+        {
+          provide: Keycloak,
+          useValue: keycloakMock
+        },
         DatePipe
       ]
     });
