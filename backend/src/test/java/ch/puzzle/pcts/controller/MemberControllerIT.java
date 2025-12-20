@@ -69,9 +69,9 @@ class MemberControllerIT extends ControllerITBase {
         verify(mapper, times(1)).toDto(any(List.class));
     }
 
-    @DisplayName("Should successfully get member by id")
+    @DisplayName("Should successfully get member by id as an admin")
     @Test
-    void shouldGetMemberById() throws Exception {
+    void shouldGetMemberByIdAsAnAdmin() throws Exception {
         BDDMockito.given(service.getById(anyLong())).willReturn(MEMBER_1);
         BDDMockito.given(mapper.toDto(any(Member.class))).willReturn(MEMBER_1_DTO);
 
@@ -79,6 +79,21 @@ class MemberControllerIT extends ControllerITBase {
                 .perform(get(BASEURL + "/" + MEMBER_1_ID).with(csrf()).with(adminJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(MEMBER_1_DTO, "$"));
+
+        verify(service, times(1)).getById(id);
+        verify(mapper, times(1)).toDto(any(Member.class));
+    }
+
+    @DisplayName("Should successfully get member by id as the owner")
+    @Test
+    void shouldGetMemberByIdAsOwner() throws Exception {
+        BDDMockito.given(service.getById(anyLong())).willReturn(member);
+        BDDMockito.given(mapper.toDto(any(Member.class))).willReturn(expectedDto);
+
+        mvc
+                .perform(get(BASEURL + "/" + id).with(csrf()).with(ownerJwt()))
+                .andExpect(status().isOk())
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
         verify(service, times(1)).getById(MEMBER_1_ID);
         verify(mapper, times(1)).toDto(any(Member.class));
@@ -192,5 +207,20 @@ class MemberControllerIT extends ControllerITBase {
 
         verify(service, times(1)).getAllCalculationsByMemberIdAndRoleId(memberId, null);
         verify(calculationMapper, times(1)).toDto(anyList());
+    }
+
+    @DisplayName("Should successfully get myself as a member")
+    @Test
+    void shouldSuccessfullyGetMyselfAsAMember() throws Exception {
+        BDDMockito.given(service.getLoggedInMember()).willReturn(member);
+        BDDMockito.given(mapper.toDto(any(Member.class))).willReturn(expectedDto);
+
+        mvc
+                .perform(get(BASEURL + "/myself").with(csrf()).with(ownerJwt()))
+                .andExpect(status().isOk())
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
+
+        verify(service, times(1)).getLoggedInMember();
+        verify(mapper, times(1)).toDto(any(Member.class));
     }
 }

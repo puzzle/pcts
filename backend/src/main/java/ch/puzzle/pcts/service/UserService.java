@@ -1,16 +1,10 @@
 package ch.puzzle.pcts.service;
 
 import ch.puzzle.pcts.configuration.AuthenticationConfiguration;
-import ch.puzzle.pcts.dto.error.ErrorKey;
-import ch.puzzle.pcts.dto.error.GenericErrorDto;
-import ch.puzzle.pcts.exception.PCTSException;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -23,16 +17,6 @@ public class UserService {
 
     public UserService(AuthenticationConfiguration authConfiguration) {
         this.authConfiguration = authConfiguration;
-    }
-
-    public Long getIdFromEmail() {
-        Optional<String> email = getEmail();
-        if (email.isEmpty()) {
-            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, Map.of());
-            throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
-        }
-
-        return 1L;
     }
 
     public String getDisplayName() {
