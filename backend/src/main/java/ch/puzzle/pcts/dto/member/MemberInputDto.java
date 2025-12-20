@@ -11,5 +11,6 @@ public record MemberInputDto(
         @Schema(description = "The abbreviation of the member.", example = "SM", requiredMode = Schema.RequiredMode.NOT_REQUIRED) String abbreviation,
         @Schema(description = "The date of hire of the member.", example = "2025-09-24", requiredMode = Schema.RequiredMode.NOT_REQUIRED) LocalDate dateOfHire,
         @Schema(description = "The birth date of the member", example = "1995-02-19", requiredMode = Schema.RequiredMode.REQUIRED) LocalDate birthDate,
+        @Schema(description = "The member's email address", example = "miller@puzzle.ch", requiredMode = Schema.RequiredMode.NOT_REQUIRED) String email,
         @Schema(description = "The Organisation unit id of the member.", example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED) Long organisationUnitId) {
 }

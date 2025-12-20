@@ -64,7 +64,8 @@
     "DATE_IS_NOT_IN_PAST": "Datum muss in der Vergangenheit liegen",
     "INVALID_ENTRY": "Ungültige Eingabe",
     "MATDATEPICKERPARSE": "Ungültiges Datum",
-    "NOT_AVAILABLE": "\"{{value}}\" nicht verfügbar"
+    "NOT_AVAILABLE": "\"{{value}}\" nicht verfügbar",
+    "EMAIL": "Muss eine gültige Email-Adresse sein"
   },
 
   "MEMBER": {
@@ -73,6 +74,7 @@
     "FIRST_NAME": "Vorname",
     "LAST_NAME": "Nachname",
     "ABBREVIATION": "Kürzel",
+    "EMAIL": "Email",
     "BIRTH_DATE": "Geburtsdatum",
     "DATE_OF_HIRE": "Anstellungsdatum",
     "ORGANISATION_UNIT": "Division",
@@ -133,9 +135,11 @@
     "ATTRIBUTE_MIN_VALUE": "{{FIELD}} muss mindestens {{MIN}} sein.",
     "ATTRIBUTE_MAX_VALUE": "{{FIELD}} darf höchstens {{MAX}} sein.",
     "ATTRIBUTE_DATE_PAST": "{{FIELD}} muss in der Vergangenheit liegen.",
+    "ATTRIBUTE_NOT_EMAIL": "{{FIELD}} mit dem Wert {{IS}} muss eine gültige Email-Addresse sein.",
     "ATTRIBUTE_SIZE_BETWEEN": "{{FIELD}} mit dem Wert \"{{IS}}\" muss zwischen {{MIN}} und {{MAX}} liegen.",
     "ATTRIBUTE_KIND_WRONG": "Das Feld {{FIELD}} mit dem Wert {{IS}} muss vom Typ {{ENTITY}} sein.",
     "ATTRIBUTE_NOT_BEFORE": "{{FIELD}} mit dem Wert {{IS}} muss jünger sein als {{MAX}}.",
+    "ATTRIBUTE_UNIQUE": "Es existiert bereits ein Eintrag bei dem das Feld {{FIELD}} den Wert \"{{IS}}\" hat.",
     "NOT_FOUND": "{{ENTITY}} mit {{FIELD}} {{IS}} konnte nicht gefunden werden.",
     "DEFAULT": "Ein unerwarteter Fehler ist aufgetreten.",
     "CLOSE": "Schliessen"

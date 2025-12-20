@@ -41,6 +41,7 @@ export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>,
           }
 
           const message: string = translate.instant(key, values);
+
           return message && message !== key ? message : translate.instant('ERROR.DEFAULT');
         });
       } else {

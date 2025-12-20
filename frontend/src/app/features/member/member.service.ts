@@ -62,6 +62,7 @@ export class MemberService {
       birthDate: DateTime.fromJSDate(model.birthDate)
         .toISODate(),
       abbreviation: model.abbreviation,
+      email: model.email,
       employmentState: model.employmentState,
       organisationUnitId: model.organisationUnit?.id,
       dateOfHire: model.dateOfHire ? DateTime.fromJSDate(model.dateOfHire)

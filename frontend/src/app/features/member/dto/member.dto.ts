@@ -5,6 +5,7 @@ export interface MemberDto {
   lastName: string;
   birthDate: string | null;
   abbreviation: string | null;
+  email: string | null;
   employmentState: EmploymentState;
   organisationUnitId: number | undefined;
   dateOfHire: string | null;

@@ -62,6 +62,7 @@ export const member1: MemberModel = {
   lastName: 'Müller',
   birthDate: new Date('2000-12-01'),
   abbreviation: 'LM',
+  email: 'muller@puzzle.ch',
   employmentState: EmploymentState.MEMBER,
   dateOfHire: new Date('2018-12-01'),
   organisationUnit: organisationUnit1
@@ -73,6 +74,7 @@ export const member2: MemberModel = {
   lastName: 'Keller',
   birthDate: new Date('2000-12-01'),
   abbreviation: 'SK',
+  email: 'keller@puzzle.ch',
   employmentState: EmploymentState.MEMBER,
   dateOfHire: new Date('2018-12-01'),
   organisationUnit: organisationUnit2
@@ -84,6 +86,7 @@ export const member3: MemberModel = {
   lastName: 'Becker',
   birthDate: new Date('2000-12-01'),
   abbreviation: 'BD',
+  email: 'becker@puzzle.ch',
   employmentState: EmploymentState.EX_MEMBER,
   dateOfHire: new Date('2018-12-01'),
   organisationUnit: organisationUnit3
@@ -95,6 +98,7 @@ export const member4: MemberModel = {
   lastName: 'Doe',
   birthDate: new Date('2000-12-01'),
   abbreviation: null,
+  email: null,
   employmentState: EmploymentState.APPLICANT,
   dateOfHire: null,
   organisationUnit: organisationUnit4
@@ -105,6 +109,7 @@ export const memberDto1: MemberDto = {
   lastName: 'Müller',
   birthDate: '2000-12-01',
   abbreviation: 'LM',
+  email: 'muller@puzzle.ch',
   employmentState: EmploymentState.MEMBER,
   dateOfHire: '2018-12-01',
   organisationUnitId: 1
@@ -115,6 +120,7 @@ export const memberDto2: MemberDto = {
   lastName: 'Doe',
   birthDate: '2000-12-01',
   abbreviation: null,
+  email: null,
   employmentState: EmploymentState.APPLICANT,
   dateOfHire: null,
   organisationUnitId: 4
