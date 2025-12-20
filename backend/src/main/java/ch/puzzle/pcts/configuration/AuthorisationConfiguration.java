@@ -14,4 +14,8 @@ public record AuthorisationConfiguration(@NotBlank @DefaultValue("[pitc][roles]"
     public List<String> adminAuthoritiesAsRoles() {
         return this.adminAuthorities.stream().map(a -> "SCOPE_" + a).toList();
     }
+
+    public List<String> adminAuthorities() {
+        return List.copyOf(this.adminAuthorities);
+    }
 }
