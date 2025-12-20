@@ -7,6 +7,7 @@ import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.util.validation.PCTSStringValidation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
@@ -41,6 +42,7 @@ public class Member implements Model {
 
     private LocalDate dateOfHire;
 
+    @NotBlank(message = "{attribute.not.blank}")
     @Email(message = "{attribute.not.email}")
     private String email;
 
