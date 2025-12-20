@@ -11,7 +11,6 @@ import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,7 +29,7 @@ public class MemberBusinessService extends BusinessBase<Member> {
         this.memberPersistenceService = memberPersistenceService;
     }
 
-    public Optional<Member> findIfExists(Long id){
+    public Optional<Member> findIfExists(Long id) {
         return memberPersistenceService.getById(id);
     }
 
