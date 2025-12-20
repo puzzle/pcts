@@ -32,6 +32,8 @@ public class SpringSecurityConfig {
                         .permitAll()
                         .requestMatchers("/actuator/health/**")
                         .permitAll()
+                        .requestMatchers("/api/v1/configuration")
+                        .permitAll()
                         .anyRequest()
                         .authenticated())
                 .oauth2ResourceServer((oauth2) -> oauth2
