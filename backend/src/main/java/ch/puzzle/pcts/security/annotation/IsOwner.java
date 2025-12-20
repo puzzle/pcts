@@ -7,13 +7,18 @@ import java.lang.annotation.Target;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
- * Checks whether the JWT sent with the request has the same email as the
- * resource trying to be accessed.
+ * Validates that the email in the request's JWT matches the email of the
+ * resource owner.
  * <p>
- * To use this on a controller method the user id parameter needs to be either -
- * named exactly <code>id</code> - be annotated with <code>@P("id")</code> If
- * this is not the case, <code>isOwner()</code> will always be passed
- * <code>null</code>, which then fails the security check.
+ * For this check to function correctly, the controller method must provide a
+ * user ID through one of the following methods:
+ * <ul>
+ * <li>A parameter named exactly <code>id</code></li>
+ * <li>A parameter annotated with <code>@P("id")</code></li>
+ * </ul>
+ * <p>
+ * If neither condition is met, <code>isOwner()</code> receives a
+ * <code>null</code> argument, causing the security check to fail.
  */
 @Target({ ElementType.METHOD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
