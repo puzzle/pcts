@@ -57,7 +57,7 @@ class ExperienceMapperTest {
                                       experienceTypeBusinessService);
 
         member = Member.Builder.builder().withId(memberId).build();
-        memberDto = new MemberDto(memberId, "Susi", "Miller", null, null, null, null, null);
+        memberDto = new MemberDto(memberId, "Susi", "Miller", null, null, null, null, null, null);
 
         type = new ExperienceType(typeId, "Management", new BigDecimal("10"), new BigDecimal("3"), new BigDecimal("8"));
         typeDto = new ExperienceTypeDto(typeId,

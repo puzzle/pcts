@@ -104,6 +104,7 @@ class DegreeControllerIT {
                                             "SM",
                                             commonDate,
                                             commonDate,
+                                            null,
                                             organisationUnitDto);
 
         degreeInputDto = new DegreeInputDto(id,

@@ -68,7 +68,7 @@ class ExperienceControllerIT {
         id = 1L;
 
         member = Member.Builder.builder().withId(2L).build();
-        memberDto = new MemberDto(2L, "Jane", "Doe", null, null, null, null, null);
+        memberDto = new MemberDto(2L, "Jane", "Doe", null, null, null, null, null, null);
 
         type = new ExperienceType(10L, "Management", new BigDecimal("10"), new BigDecimal("3"), new BigDecimal("8"));
         typeDto = new ExperienceTypeDto(10L,

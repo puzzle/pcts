@@ -88,6 +88,7 @@ class MemberControllerIT {
                                         "SM",
                                         LocalDate.MIN,
                                         commonDate,
+                                        null,
                                         1L);
 
         expectedDto = new MemberDto(id,
@@ -97,6 +98,7 @@ class MemberControllerIT {
                                     "SM",
                                     commonDate,
                                     commonDate,
+                                    "miller@puzzle.ch",
                                     organisationUnitDto);
     }
 
