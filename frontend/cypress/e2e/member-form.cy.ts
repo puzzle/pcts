@@ -53,6 +53,14 @@ describe('MemberFormComponent', () => {
       });
     });
 
+    ['email'].forEach((fieldName) => {
+      it(`should show invalid email error for field ${fieldName}`, () => {
+        FormPage.typeAndBlur(fieldName, 'not-an-email');
+
+        FormPage.shouldShowValidationError(translations.VALIDATION.EMAIL, fieldName);
+      });
+    });
+
     it('should activate submit button when everything is filled out', () => {
       FormPage.submitButtonShouldBe('disabled');
       FormPage.typeAndBlur('firstName', 'John')
