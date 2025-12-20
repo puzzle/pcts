@@ -12,6 +12,6 @@ public class MemberPersistenceService extends PersistenceBase<Member, MemberRepo
     }
 
     public Optional<Member> findByEmail(String email) {
-        return this.repository.findMemberByEmail(email);
+        return this.repository.findMemberByEmailAndEmailIsNotNull(email);
     }
 }
