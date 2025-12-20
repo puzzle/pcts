@@ -21,7 +21,8 @@ describe('authGuard', () => {
 
   beforeEach(() => {
     userServiceMock = {
-      getRoles: jest.fn()
+      getRoles: jest.fn(),
+      isAdmin: jest.fn()
     } as any;
 
     memberServiceMock = {
@@ -34,14 +35,22 @@ describe('authGuard', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        { provide: UserService,
-          useValue: userServiceMock },
-        { provide: MemberService,
-          useValue: memberServiceMock },
-        { provide: Router,
-          useValue: routerMock },
-        { provide: APP_CONFIG,
-          useValue: mockConfig }
+        {
+          provide: UserService,
+          useValue: userServiceMock
+        },
+        {
+          provide: MemberService,
+          useValue: memberServiceMock
+        },
+        {
+          provide: Router,
+          useValue: routerMock
+        },
+        {
+          provide: APP_CONFIG,
+          useValue: mockConfig
+        }
       ]
     });
   });
@@ -53,7 +62,7 @@ describe('authGuard', () => {
   });
 
   it('should allow access if scope is "admin" and user has admin role', () => {
-    userServiceMock.getRoles.mockReturnValue(['ADMIN_ROLE']);
+    userServiceMock.isAdmin.mockReturnValue(true);
 
     const result = executeGuard({ scope: 'admin' });
 
@@ -71,13 +80,11 @@ describe('authGuard', () => {
 
       const result$ = executeGuard({ scope: 'admin' });
 
-      if (result$ instanceof typeof of) {
-        (result$ as any).subscribe((_: UrlTree) => {
-          expect(routerMock.parseUrl)
-            .toHaveBeenCalledWith('/member/7');
-          done();
-        });
-      }
+      (result$ as any).subscribe((_: UrlTree) => {
+        expect(routerMock.parseUrl)
+          .toHaveBeenCalledWith('/member/7');
+        done();
+      });
     });
 
     it('should allow access if non-admin is already on their target personal URL', (done) => {
