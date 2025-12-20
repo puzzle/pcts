@@ -49,6 +49,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                             "Test",
                             "mtest",
                             "MT",
+                "test@puzzle.ch",
                             1L,
                             LocalDateTime.of(2000, 6, 1, 3, 20),
                             0);
@@ -60,7 +61,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
     }
 
     protected static Member createMember(EmploymentState employmentState, LocalDate birthDate, String firstName,
-                                         String lastName, String ldapName, String abbreviation, Long ptimeId,
+                                         String lastName, String ldapName, String abbreviation, String email, Long ptimeId,
                                          LocalDateTime lastSuccessfulSync, Integer syncErrorCount) {
         Member m = new Member();
         m.setEmploymentState(employmentState);
@@ -71,6 +72,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
         m.setAbbreviation(abbreviation);
         m.setDateOfHire(LocalDate.EPOCH);
         m.setOrganisationUnit(ORG_UNIT_1);
+        m.setEmail(email);
         m.setPtimeId(ptimeId);
         m.setLastSuccessfulSync(lastSuccessfulSync);
         m.setSyncErrorCount(syncErrorCount);
@@ -295,6 +297,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              "Test",
                                              "mtest",
                                              "MT",
+                                    "test@puzzle.ch",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
                                              0),
