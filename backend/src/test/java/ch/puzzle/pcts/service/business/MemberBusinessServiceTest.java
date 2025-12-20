@@ -9,6 +9,7 @@ import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.service.UserService;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import ch.puzzle.pcts.service.validation.MemberValidationService;
 import java.util.ArrayList;
@@ -23,6 +24,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class MemberBusinessServiceTest {
+    @Mock
+    private UserService userService;
 
     @Mock
     private MemberValidationService validationService;
@@ -177,5 +180,42 @@ class MemberBusinessServiceTest {
 
         assertFalse(result.isPresent());
         verify(persistenceService).getById(1L);
+    }
+
+    @DisplayName("Should throw exception if current user has no email")
+    @Test
+    void shouldThrowExceptionIfCurrentUserHasNoEmail(){
+        when(userService.getEmail()).thenReturn(Optional.empty());
+
+        assertThrows(PCTSException.class, () -> businessService.getLoggedInMember());
+
+        verify(userService).getEmail();
+    }
+
+    @DisplayName("Should throw exception if no user for email can be found")
+    @Test
+    void shouldThrowExceptionIfNoUserForEmailCanBeFound() {
+        String email = "example@puzzle.ch";
+        when(userService.getEmail()).thenReturn(Optional.of(email));
+        when(persistenceService.findByEmail(email)).thenReturn(Optional.empty());
+
+        assertThrows(PCTSException.class, () -> businessService.getLoggedInMember());
+
+        verify(userService).getEmail();
+        verify(persistenceService).findByEmail(email);
+    }
+
+    @DisplayName("Should return current user")
+    @Test
+    void shoudReturnCurrentUser() {
+        String email = "example@puzzle.ch";
+        when(userService.getEmail()).thenReturn(Optional.of(email));
+        when(persistenceService.findByEmail(email)).thenReturn(Optional.of(member));
+
+        Member result = businessService.getLoggedInMember();
+
+        assertEquals(member, result);
+        verify(userService).getEmail();
+        verify(persistenceService).findByEmail(email);
     }
 }

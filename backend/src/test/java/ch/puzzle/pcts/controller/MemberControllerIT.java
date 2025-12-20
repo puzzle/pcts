@@ -111,14 +111,29 @@ class MemberControllerIT extends ControllerITBase {
         verify(mapper, times(1)).toDto(any(List.class));
     }
 
-    @DisplayName("Should successfully get member by id")
+    @DisplayName("Should successfully get member by id as an admin")
     @Test
-    void shouldGetMemberById() throws Exception {
+    void shouldGetMemberByIdAsAnAdmin() throws Exception {
         BDDMockito.given(service.getById(anyLong())).willReturn(member);
         BDDMockito.given(mapper.toDto(any(Member.class))).willReturn(expectedDto);
 
         mvc
                 .perform(get(BASEURL + "/" + id).with(csrf()).with(adminJwt()))
+                .andExpect(status().isOk())
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
+
+        verify(service, times(1)).getById(id);
+        verify(mapper, times(1)).toDto(any(Member.class));
+    }
+
+    @DisplayName("Should successfully get member by id as the owner")
+    @Test
+    void shouldGetMemberByIdAsOwner() throws Exception {
+        BDDMockito.given(service.getById(anyLong())).willReturn(member);
+        BDDMockito.given(mapper.toDto(any(Member.class))).willReturn(expectedDto);
+
+        mvc
+                .perform(get(BASEURL + "/" + id).with(csrf()).with(ownerJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
@@ -182,5 +197,20 @@ class MemberControllerIT extends ControllerITBase {
                 .andExpect(jsonPath("$").doesNotExist());
 
         verify(service, times(1)).delete(any(Long.class));
+    }
+
+    @DisplayName("Should successfully get myself as a member")
+    @Test
+    void shouldSuccessfullyGetMyselfAsAMember() throws Exception {
+        BDDMockito.given(service.getLoggedInMember()).willReturn(member);
+        BDDMockito.given(mapper.toDto(any(Member.class))).willReturn(expectedDto);
+
+        mvc
+                .perform(get(BASEURL + "/myself").with(csrf()).with(ownerJwt()))
+                .andExpect(status().isOk())
+                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
+
+        verify(service, times(1)).getLoggedInMember();
+        verify(mapper, times(1)).toDto(any(Member.class));
     }
 }
