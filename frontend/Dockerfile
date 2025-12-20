@@ -1,7 +1,7 @@
 FROM node:24.12-alpine AS builder
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm ci --force
 COPY . .
 RUN npm run build -- --output-path=./dist/ --configuration=production
 
