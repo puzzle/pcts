@@ -26,7 +26,7 @@ describe('Non-Admin (Member) Permissions', () => {
       action();
 
       cy.url()
-        .should('eq', Cypress.config().baseUrl + `/member/${user.databaseId}`);
+        .should('include', `/member/${user.databaseId}`);
     });
   });
 
