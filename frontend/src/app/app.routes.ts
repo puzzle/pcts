@@ -9,6 +9,7 @@ import { authGuard } from './core/auth/auth.guard';
 import { tabResolver } from './features/member/detail-view/tab-resolver';
 import { authGuard } from './shared/guards/auth-guard';
 import { canActivateAuthRole } from './shared/guards/auth-guard';
+import { authGuard } from './core/auth/guard/auth.guard';
 
 export const routes: Routes = [{
   path: '',
