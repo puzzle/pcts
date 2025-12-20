@@ -35,10 +35,11 @@ public class MemberMapper {
                              model.getAbbreviation(),
                              model.getDateOfHire(),
                              model.getBirthDate(),
-                             organisationUnitMapper.toDto(model.getOrganisationUnit()),
                              model.getPtimeId(),
                              model.getLastSuccessfulSync(),
-                             model.getSyncErrorCount());
+                             model.getSyncErrorCount()),
+                             model.getEmail(),
+                             organisationUnitMapper.toDto(model.getOrganisationUnit()));
     }
 
     public Member fromDto(MemberInputDto dto) {
@@ -50,6 +51,7 @@ public class MemberMapper {
                 .withAbbreviation(dto.abbreviation())
                 .withDateOfHire(dto.dateOfHire())
                 .withBirthDate(dto.birthDate())
+                .withEmail(dto.email())
                 .withOrganisationUnit(organisationUnitFromId(dto.organisationUnitId()))
                 .build();
     }
