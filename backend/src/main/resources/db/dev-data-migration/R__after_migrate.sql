@@ -89,7 +89,8 @@ VALUES
     ( 'Tobias', 'Weber', 'weber@puzzle.ch','TW', 'APPLICANT', '2022-02-14', '2000-07-06', 4),
     ( 'Mara', 'Becker', 'becker@puzzle.ch','MB', 'EX_MEMBER', '2023-01-09', '2001-08-05', null),
     ( 'Felix', 'Hofmann', 'hofmann@puzzle.ch','FH', 'EX_MEMBER', '2021-09-17', '2000-02-29', 1),
-    ( 'Jaya', 'Norris', 'gl@gl.com','JN', 'MEMBER', '2021-09-17', '2000-02-29', 1);
+    ( 'Jaya', 'Norris', 'gl@gl.com','JN', 'MEMBER', '2021-09-17', '2000-02-29', 1),
+    ( 'Abraham', ' Woodard', 'member@member.com','AW', 'MEMBER', '2021-09-17', '2004-02-29', 3);
 
 INSERT INTO experience (member_id, name, employer, percent, experience_type_id, comment, start_date, end_date)
 VALUES
