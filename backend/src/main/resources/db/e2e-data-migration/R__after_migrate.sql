@@ -30,7 +30,9 @@ VALUES
     ('Sophie', 'Keller', null, 'skeller',null, 'APPLICANT', null, '1999-02-28', null),
     ('Tobias', 'Weber', null,'tweber', 'TW', 'APPLICANT', '2022-02-14', '2000-07-06', 4),
     ('Mara', 'Becker', 'becker@puzzle.ch', 'mbecker', 'MB', 'EX_MEMBER', null, '2001-08-05', 1),
-    ('Felix', 'Hofmann', 'hofmann@puzzle.ch', 'fhofmann', 'FH', 'EX_MEMBER', '2021-09-17', '2000-02-29', 1);
+    ('Felix', 'Hofmann', 'hofmann@puzzle.ch', 'fhofmann', 'FH', 'EX_MEMBER', '2021-09-17', '2000-02-29', 1),
+    ( 'Jaya', 'Norris', 'gl@gl.com', 'jnorris', 'JN', 'MEMBER', '2021-09-17', '2000-02-29', 1),
+    ( 'Abraham', 'Woodard', 'member@member.com', 'awoordard', 'AW', 'MEMBER', '2021-09-17', '2004-02-29', 3);
 
 INSERT INTO role (name, is_management)
 VALUES
