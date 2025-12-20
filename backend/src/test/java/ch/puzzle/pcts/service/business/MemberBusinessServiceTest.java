@@ -5,15 +5,24 @@ import static ch.puzzle.pcts.util.TestData.ROLE_2_ID;
 import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import ch.puzzle.pcts.model.calculation.Calculation;
+import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.model.role.Role;
+import ch.puzzle.pcts.service.UserService;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import ch.puzzle.pcts.service.validation.MemberValidationService;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,12 +30,22 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class MemberBusinessServiceTest
         extends
             BaseBusinessTest<Member, MemberPersistenceService, MemberValidationService, MemberBusinessService> {
+
+    @Mock
+    private Member member;
+
+    @Mock
+    private UserService userService;
+
+    @Mock
+    private List<Member> members;
 
     @Mock
     private MemberPersistenceService persistenceService;
@@ -187,4 +206,41 @@ class MemberBusinessServiceTest
                 .getAllByMemberAndState(MEMBER_1, CalculationState.ACTIVE);
     }
 
+
+    @DisplayName("Should throw exception if current user has no email")
+    @Test
+    void shouldThrowExceptionIfCurrentUserHasNoEmail(){
+        when(userService.getEmail()).thenReturn(Optional.empty());
+
+        assertThrows(PCTSException.class, () -> businessService.getLoggedInMember());
+
+        verify(userService).getEmail();
+    }
+
+    @DisplayName("Should throw exception if no user for email can be found")
+    @Test
+    void shouldThrowExceptionIfNoUserForEmailCanBeFound() {
+        String email = "example@puzzle.ch";
+        when(userService.getEmail()).thenReturn(Optional.of(email));
+        when(persistenceService.findByEmail(email)).thenReturn(Optional.empty());
+
+        assertThrows(PCTSException.class, () -> businessService.getLoggedInMember());
+
+        verify(userService).getEmail();
+        verify(persistenceService).findByEmail(email);
+    }
+
+    @DisplayName("Should return current user")
+    @Test
+    void shoudReturnCurrentUser() {
+        String email = "example@puzzle.ch";
+        when(userService.getEmail()).thenReturn(Optional.of(email));
+        when(persistenceService.findByEmail(email)).thenReturn(Optional.of(member));
+
+        Member result = businessService.getLoggedInMember();
+
+        assertEquals(member, result);
+        verify(userService).getEmail();
+        verify(persistenceService).findByEmail(email);
+    }
 }
