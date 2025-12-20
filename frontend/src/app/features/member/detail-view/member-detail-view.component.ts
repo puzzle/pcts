@@ -33,6 +33,7 @@ import {
 } from '../../leadership-experiences/add-leadership-experience/add-leadership-experience.component';
 import { LeadershipExperienceService } from '../../leadership-experiences/leadership-experience.service';
 import { concatMap, filter, Observable } from 'rxjs';
+import { UserService } from '../../../core/auth/user.service';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -52,6 +53,8 @@ import { concatMap, filter, Observable } from 'rxjs';
 })
 export class MemberDetailViewComponent implements OnInit {
   private readonly service = inject(MemberService);
+
+  protected readonly userService = inject(UserService);
 
   private readonly route = inject(ActivatedRoute);
 
