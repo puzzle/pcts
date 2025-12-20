@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.configuration.AuthenticationConfiguration;
-import ch.puzzle.pcts.exception.PCTSException;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -95,34 +94,6 @@ public class UserServiceTest {
             when(jwt.getSubject()).thenReturn("subject-123");
 
             assertEquals("subject-123", userService.getDisplayName());
-        }
-    }
-
-    @Test
-    @DisplayName("Should return 1L if email exists")
-    public void shouldReturnIdIfEmailExists() {
-        try (MockedStatic<SecurityContextHolder> mockedContext = mockStatic(SecurityContextHolder.class)) {
-            setupSecurityContext(mockedContext);
-
-            when(authConfiguration.emailClaim()).thenReturn("email");
-            when(authentication.getCredentials()).thenReturn(jwt);
-            when(jwt.getClaimAsString("email")).thenReturn("info@puzzle.ch");
-
-            assertEquals(1L, userService.getIdFromEmail());
-        }
-    }
-
-    @Test
-    @DisplayName("Should throw PCTSException if email is missing")
-    public void shouldThrowExceptionWhenEmailMissing() {
-        try (MockedStatic<SecurityContextHolder> mockedContext = mockStatic(SecurityContextHolder.class)) {
-            setupSecurityContext(mockedContext);
-
-            when(authConfiguration.emailClaim()).thenReturn("email");
-            when(authentication.getCredentials()).thenReturn(null); // Force standard auth path
-            when(authentication.getName()).thenReturn(null);
-
-            assertThrows(PCTSException.class, () -> userService.getIdFromEmail());
         }
     }
 

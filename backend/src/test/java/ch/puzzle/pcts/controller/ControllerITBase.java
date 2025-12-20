@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.controller;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import ch.puzzle.pcts.security.SpringSecurityConfig;
@@ -22,5 +23,12 @@ public class ControllerITBase {
         given(securityService.isAdmin()).willReturn(true);
 
         return SecurityMockMvcRequestPostProcessors.jwt().authorities(new SimpleGrantedAuthority("org_hr"));
+    }
+
+    protected SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor ownerJwt() {
+        given(securityService.isAdmin()).willReturn(false);
+        given(securityService.isOwner(any())).willReturn(true);
+
+        return SecurityMockMvcRequestPostProcessors.jwt().authorities(new SimpleGrantedAuthority("org_members"));
     }
 }
