@@ -29,7 +29,7 @@ public class SecurityService {
                 .anyMatch(authorisationConfiguration.adminAuthoritiesAsRoles()::contains);
     }
 
-    public boolean isUsersOwnSheet(Long userId) {
+    public boolean isOwner(Long userId) {
         Optional<Member> member = memberService.findIfExists(userId);
         if (member.isEmpty()) {
             return false;
@@ -40,7 +40,11 @@ public class SecurityService {
             return false;
         }
 
-        return false;
+        if (member.get().getEmail() == null) {
+            return false;
+        }
+
+        return member.get().getEmail().equals(email.get());
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities() {
