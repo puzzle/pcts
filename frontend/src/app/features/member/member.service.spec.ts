@@ -208,5 +208,20 @@ describe('MemberService', () => {
       expect(resultDto)
         .toEqual(memberDto1);
     });
+
+    [null,
+      '',
+      '  '].forEach((value) => {
+      it('should set email address to null if string is blank or empty', () => {
+        const member = {
+          ...member1,
+          email: value
+        };
+
+        const resultDto = service.toDto(member);
+        expect(resultDto.email)
+          .toEqual(null);
+      });
+    });
   });
 });
