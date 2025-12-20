@@ -11,5 +11,5 @@ export const environment = {
     clientId: 'pitc_pcts_prod',
     responseType: 'code',
     showDebugInformation: false,
-  }
+  },
 }
