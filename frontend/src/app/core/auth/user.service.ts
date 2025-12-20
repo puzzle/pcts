@@ -24,7 +24,7 @@ export class UserService {
       return [];
     }
 
-    return parsedToken.pitc.roles ? parsedToken.pitc.roles : [];
+    return parsedToken.pitc?.roles ? parsedToken.pitc.roles : [];
   }
 
   getName(): string | null {
