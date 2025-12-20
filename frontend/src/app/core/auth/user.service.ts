@@ -1,12 +1,21 @@
 import { inject, Injectable } from '@angular/core';
 import Keycloak from 'keycloak-js';
 import { PuzzleTokenModel } from './puzzle-token.model';
+import { APP_CONFIG } from '../../features/configuration/configuration.token';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+  private readonly appConfig = inject(APP_CONFIG);
+
   private readonly keycloak = inject(Keycloak);
+
+  isAdmin(): boolean {
+    const roles = this.getRoles();
+    const adminRoles = this.appConfig.adminAuthorities;
+    return roles.some((role) => adminRoles.includes(role));
+  }
 
   getRoles(): string[] {
     const parsedToken = this.keycloak.tokenParsed as PuzzleTokenModel | undefined;
