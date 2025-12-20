@@ -90,6 +90,7 @@ class MemberMapperTest {
                                                                  "JS",
                                                                  commonDate,
                                                                  commonDate,
+                                                                 "smith@puzzle.ch",
                                                                  orgUnitId);
 
         Member result = mapper.fromDto(dtoWithExMemberState);
@@ -100,6 +101,7 @@ class MemberMapperTest {
         assertEquals(dtoWithExMemberState.abbreviation(), result.getAbbreviation());
         assertEquals(dtoWithExMemberState.dateOfHire(), result.getDateOfHire());
         assertEquals(dtoWithExMemberState.birthDate(), result.getBirthDate());
+        assertEquals(dtoWithExMemberState.email(), result.getEmail());
         assertEquals(organisationUnit, result.getOrganisationUnit());
     }
 
@@ -141,6 +143,7 @@ class MemberMapperTest {
                                                  member1.getAbbreviation(),
                                                  member1.getDateOfHire(),
                                                  member1.getBirthDate(),
+                                                 member1.getEmail(),
                                                  orgUnitId);
         MemberInputDto dto2 = new MemberInputDto("Jane",
                                                  "Smith",
@@ -148,6 +151,7 @@ class MemberMapperTest {
                                                  "JS",
                                                  commonDate,
                                                  commonDate,
+                                                 "smith@puzzle.ch",
                                                  orgUnitId);
         List<MemberInputDto> dtos = List.of(dto1, dto2);
 
