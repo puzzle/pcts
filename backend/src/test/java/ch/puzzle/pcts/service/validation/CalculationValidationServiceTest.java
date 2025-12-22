@@ -1,6 +1,5 @@
 package ch.puzzle.pcts.service.validation;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.dto.error.FieldKey;
@@ -22,8 +21,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class CalculationValidationServiceTest
-        extends ValidationBaseServiceTest<Calculation, CalculationValidationService> {
+class CalculationValidationServiceTest extends ValidationBaseServiceTest<Calculation, CalculationValidationService> {
 
     private static final Long MEMBER_ID = 1L;
     private static final Long ROLE_ID = 1L;
@@ -76,20 +74,16 @@ class CalculationValidationServiceTest
         Role validRole = new Role();
         validRole.setId(ROLE_ID);
 
-        return Stream.of(
-                Arguments.of(
-                        createCalculation(null, validRole, CalculationState.ACTIVE),
-                        List.of(Map.of(FieldKey.CLASS, "Calculation", FieldKey.FIELD, "member"))
-                ),
-                Arguments.of(
-                        createCalculation(validMember, null, CalculationState.ACTIVE),
-                        List.of(Map.of(FieldKey.CLASS, "Calculation", FieldKey.FIELD, "role"))
-                ),
-                Arguments.of(
-                        createCalculation(validMember, validRole, null),
-                        List.of(Map.of(FieldKey.CLASS, "Calculation", FieldKey.FIELD, "state"))
-                )
-        );
+        return Stream
+                .of(Arguments
+                        .of(createCalculation(null, validRole, CalculationState.ACTIVE),
+                            List.of(Map.of(FieldKey.CLASS, "Calculation", FieldKey.FIELD, "member"))),
+                    Arguments
+                            .of(createCalculation(validMember, null, CalculationState.ACTIVE),
+                                List.of(Map.of(FieldKey.CLASS, "Calculation", FieldKey.FIELD, "role"))),
+                    Arguments
+                            .of(createCalculation(validMember, validRole, null),
+                                List.of(Map.of(FieldKey.CLASS, "Calculation", FieldKey.FIELD, "state"))));
     }
 
     @DisplayName("Should call correct validate method on validateOnCreate()")
@@ -112,8 +106,7 @@ class CalculationValidationServiceTest
         Calculation calculation = getValidModel();
 
         CalculationValidationService spyService = spy(service);
-        doNothing().when((ValidationBase<Calculation>) spyService)
-                .validateOnUpdate(CALCULATION_ID, calculation);
+        doNothing().when((ValidationBase<Calculation>) spyService).validateOnUpdate(CALCULATION_ID, calculation);
 
         spyService.validateOnUpdate(CALCULATION_ID, calculation);
 

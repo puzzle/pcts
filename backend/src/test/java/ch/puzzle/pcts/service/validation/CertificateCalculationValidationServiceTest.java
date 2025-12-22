@@ -23,9 +23,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.provider.Arguments;
 
 class CertificateCalculationValidationServiceTest
-        extends ValidationBaseServiceTest<
-        CertificateCalculation,
-        CertificateCalculationValidationService> {
+        extends
+            ValidationBaseServiceTest<CertificateCalculation, CertificateCalculationValidationService> {
 
     private static final Long MEMBER_ID_1 = 1L;
     private static final Long MEMBER_ID_2 = 2L;
@@ -55,22 +54,18 @@ class CertificateCalculationValidationServiceTest
     }
 
     static Stream<Arguments> invalidModelProvider() {
-        return Stream.of(
-                Arguments.of(
-                        new CertificateCalculation(null, null, new Certificate()),
-                        List.of(Map.of(
-                                FieldKey.CLASS, "CertificateCalculation",
-                                FieldKey.FIELD, "calculation"
-                        ))
-                ),
-                Arguments.of(
-                        new CertificateCalculation(null, new Calculation(), null),
-                        List.of(Map.of(
-                                FieldKey.CLASS, "CertificateCalculation",
-                                FieldKey.FIELD, "certificate"
-                        ))
-                )
-        );
+        return Stream
+                .of(Arguments
+                        .of(new CertificateCalculation(null, null, new Certificate()),
+                            List.of(Map.of(FieldKey.CLASS, "CertificateCalculation", FieldKey.FIELD, "calculation"))),
+                    Arguments
+                            .of(new CertificateCalculation(null, new Calculation(), null),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "CertificateCalculation",
+                                                    FieldKey.FIELD,
+                                                    "certificate"))));
     }
 
     @DisplayName("Should throw exception when members do not match")
@@ -82,20 +77,12 @@ class CertificateCalculationValidationServiceTest
         CertificateCalculation cc = getValidModel();
         cc.getCalculation().setMember(member2);
 
-        PCTSException exception = assertThrows(
-                PCTSException.class,
-                () -> spyService.validateMemberForCalculation(cc)
-        );
+        PCTSException exception = assertThrows(PCTSException.class, () -> spyService.validateMemberForCalculation(cc));
 
         assertEquals(ErrorKey.ATTRIBUTE_MATCHES, exception.getErrorKeys().get(0));
-        assertEquals(
-                Map.of(
-                        FieldKey.ENTITY, CALCULATION,
-                        FieldKey.FIELD, "certificate",
-                        FieldKey.CONDITION_FIELD, "member"
-                ),
-                exception.getErrorAttributes().get(0)
-        );
+        assertEquals(Map
+                .of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "certificate", FieldKey.CONDITION_FIELD, "member"),
+                     exception.getErrorAttributes().get(0));
     }
 
     @DisplayName("Should throw exception on duplicate certificate ID")
@@ -107,20 +94,12 @@ class CertificateCalculationValidationServiceTest
 
         List<CertificateCalculation> existing = List.of(cc);
 
-        PCTSException exception = assertThrows(
-                PCTSException.class,
-                () -> spyService.validateDuplicateCertificateId(cc, existing)
-        );
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> spyService.validateDuplicateCertificateId(cc, existing));
 
         assertEquals(ErrorKey.DUPLICATE_CALCULATION, exception.getErrorKeys().get(0));
-        assertEquals(
-                Map.of(
-                        FieldKey.ENTITY, CALCULATION,
-                        FieldKey.FIELD, "certificate",
-                        FieldKey.IS, CERTIFICATE_NAME
-                ),
-                exception.getErrorAttributes().get(0)
-        );
+        assertEquals(Map.of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "certificate", FieldKey.IS, CERTIFICATE_NAME),
+                     exception.getErrorAttributes().get(0));
     }
 
     @DisplayName("Should call validateMemberForCalculation on validateOnCreate")
@@ -145,9 +124,7 @@ class CertificateCalculationValidationServiceTest
         member.setLastName(lastName);
         member.setAbbreviation("AA");
         member.setDateOfHire(LocalDate.EPOCH);
-        member.setOrganisationUnit(
-                new OrganisationUnit(ORGANISATION_UNIT_ID, ORGANISATION_UNIT_NAME)
-        );
+        member.setOrganisationUnit(new OrganisationUnit(ORGANISATION_UNIT_ID, ORGANISATION_UNIT_NAME));
         return member;
     }
 

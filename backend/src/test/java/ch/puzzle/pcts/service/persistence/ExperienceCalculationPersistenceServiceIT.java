@@ -50,11 +50,26 @@ class ExperienceCalculationPersistenceServiceIT
 
         List<ExperienceCalculation> list = new ArrayList<>();
 
-        list.add(new ExperienceCalculation(EXPERIENCE_CALC_ID_1, calculations.get(0), experiences.get(0), Relevancy.HIGHLY, "Comment"));
+        list
+                .add(new ExperienceCalculation(EXPERIENCE_CALC_ID_1,
+                                               calculations.get(0),
+                                               experiences.get(0),
+                                               Relevancy.HIGHLY,
+                                               "Comment"));
 
-        list.add(new ExperienceCalculation(EXPERIENCE_CALC_ID_2, calculations.get(1), experiences.get(0), Relevancy.LITTLE, "Comment"));
+        list
+                .add(new ExperienceCalculation(EXPERIENCE_CALC_ID_2,
+                                               calculations.get(1),
+                                               experiences.get(0),
+                                               Relevancy.LITTLE,
+                                               "Comment"));
 
-        list.add(new ExperienceCalculation(EXPERIENCE_CALC_ID_3, calculations.get(0), experiences.get(1), Relevancy.LIMITED, "Comment"));
+        list
+                .add(new ExperienceCalculation(EXPERIENCE_CALC_ID_3,
+                                               calculations.get(0),
+                                               experiences.get(1),
+                                               Relevancy.LIMITED,
+                                               "Comment"));
 
         return list;
     }

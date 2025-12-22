@@ -133,8 +133,7 @@ class DegreeCalculationMapperTest {
     void shouldThrowWhenDegreeNotFound() {
         DegreeCalculationInputDto input = createDegreeCalculationInputDto();
 
-        when(degreeBusinessService.getById(DEGREE_ID))
-                .thenThrow(new RuntimeException("Degree not found"));
+        when(degreeBusinessService.getById(DEGREE_ID)).thenThrow(new RuntimeException("Degree not found"));
 
         assertThrows(RuntimeException.class, () -> mapper.fromDto(input));
     }

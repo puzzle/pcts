@@ -23,9 +23,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.provider.Arguments;
 
 class DegreeCalculationValidationServiceTest
-        extends ValidationBaseServiceTest<
-        DegreeCalculation,
-        DegreeCalculationValidationService> {
+        extends
+            ValidationBaseServiceTest<DegreeCalculation, DegreeCalculationValidationService> {
 
     private static final Long MEMBER_ID_1 = 1L;
     private static final Long MEMBER_ID_2 = 2L;
@@ -60,109 +59,76 @@ class DegreeCalculationValidationServiceTest
         Calculation calculation = createCalculation(CALCULATION_ID, member);
         Degree degree = createDegree(DEGREE_ID, member, DEGREE_NAME);
 
-        return new DegreeCalculation(
-                null,
-                calculation,
-                degree,
-                Relevancy.HIGHLY,
-                VALID_WEIGHT,
-                VALID_COMMENT
-        );
+        return new DegreeCalculation(null, calculation, degree, Relevancy.HIGHLY, VALID_WEIGHT, VALID_COMMENT);
     }
 
     static Stream<Arguments> invalidModelProvider() {
-        return Stream.of(
-                Arguments.of(
-                        new DegreeCalculation(
-                                null,
-                                null,
-                                new Degree(),
-                                Relevancy.HIGHLY,
-                                VALID_WEIGHT,
-                                COMMENT
-                        ),
-                        List.of(Map.of(
-                                FieldKey.CLASS, "DegreeCalculation",
-                                FieldKey.FIELD, "calculation"
-                        ))
-                ),
-                Arguments.of(
-                        new DegreeCalculation(
-                                null,
-                                new Calculation(),
-                                null,
-                                Relevancy.HIGHLY,
-                                VALID_WEIGHT,
-                                COMMENT
-                        ),
-                        List.of(Map.of(
-                                FieldKey.CLASS, "DegreeCalculation",
-                                FieldKey.FIELD, "degree"
-                        ))
-                ),
-                Arguments.of(
-                        new DegreeCalculation(
-                                null,
-                                new Calculation(),
-                                new Degree(),
-                                null,
-                                VALID_WEIGHT,
-                                COMMENT
-                        ),
-                        List.of(Map.of(
-                                FieldKey.CLASS, "DegreeCalculation",
-                                FieldKey.FIELD, "relevancy"
-                        ))
-                ),
-                Arguments.of(
-                        new DegreeCalculation(
-                                null,
-                                new Calculation(),
-                                new Degree(),
-                                Relevancy.HIGHLY,
-                                null,
-                                COMMENT
-                        ),
-                        List.of(Map.of(
-                                FieldKey.CLASS, "DegreeCalculation",
-                                FieldKey.FIELD, "weight"
-                        ))
-                ),
-                Arguments.of(
-                        new DegreeCalculation(
-                                null,
-                                new Calculation(),
-                                new Degree(),
-                                Relevancy.HIGHLY,
-                                NEGATIVE_WEIGHT,
-                                COMMENT
-                        ),
-                        List.of(Map.of(
-                                FieldKey.CLASS, "DegreeCalculation",
-                                FieldKey.FIELD, "weight",
-                                FieldKey.MAX, MAX_WEIGHT,
-                                FieldKey.MIN, MIN_WEIGHT,
-                                FieldKey.IS, NEGATIVE_WEIGHT.toString()
-                        ))
-                ),
-                Arguments.of(
-                        new DegreeCalculation(
-                                null,
-                                new Calculation(),
-                                new Degree(),
-                                Relevancy.HIGHLY,
-                                TOO_HIGH_WEIGHT,
-                                COMMENT
-                        ),
-                        List.of(Map.of(
-                                FieldKey.CLASS, "DegreeCalculation",
-                                FieldKey.FIELD, "weight",
-                                FieldKey.MAX, MAX_WEIGHT,
-                                FieldKey.MIN, MIN_WEIGHT,
-                                FieldKey.IS, TOO_HIGH_WEIGHT.toString()
-                        ))
-                )
-        );
+        return Stream
+                .of(Arguments
+                        .of(new DegreeCalculation(null, null, new Degree(), Relevancy.HIGHLY, VALID_WEIGHT, COMMENT),
+                            List.of(Map.of(FieldKey.CLASS, "DegreeCalculation", FieldKey.FIELD, "calculation"))),
+                    Arguments
+                            .of(new DegreeCalculation(null,
+                                                      new Calculation(),
+                                                      null,
+                                                      Relevancy.HIGHLY,
+                                                      VALID_WEIGHT,
+                                                      COMMENT),
+                                List.of(Map.of(FieldKey.CLASS, "DegreeCalculation", FieldKey.FIELD, "degree"))),
+                    Arguments
+                            .of(new DegreeCalculation(null,
+                                                      new Calculation(),
+                                                      new Degree(),
+                                                      null,
+                                                      VALID_WEIGHT,
+                                                      COMMENT),
+                                List.of(Map.of(FieldKey.CLASS, "DegreeCalculation", FieldKey.FIELD, "relevancy"))),
+                    Arguments
+                            .of(new DegreeCalculation(null,
+                                                      new Calculation(),
+                                                      new Degree(),
+                                                      Relevancy.HIGHLY,
+                                                      null,
+                                                      COMMENT),
+                                List.of(Map.of(FieldKey.CLASS, "DegreeCalculation", FieldKey.FIELD, "weight"))),
+                    Arguments
+                            .of(new DegreeCalculation(null,
+                                                      new Calculation(),
+                                                      new Degree(),
+                                                      Relevancy.HIGHLY,
+                                                      NEGATIVE_WEIGHT,
+                                                      COMMENT),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "DegreeCalculation",
+                                                    FieldKey.FIELD,
+                                                    "weight",
+                                                    FieldKey.MAX,
+                                                    MAX_WEIGHT,
+                                                    FieldKey.MIN,
+                                                    MIN_WEIGHT,
+                                                    FieldKey.IS,
+                                                    NEGATIVE_WEIGHT.toString()))),
+                    Arguments
+                            .of(new DegreeCalculation(null,
+                                                      new Calculation(),
+                                                      new Degree(),
+                                                      Relevancy.HIGHLY,
+                                                      TOO_HIGH_WEIGHT,
+                                                      COMMENT),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "DegreeCalculation",
+                                                    FieldKey.FIELD,
+                                                    "weight",
+                                                    FieldKey.MAX,
+                                                    MAX_WEIGHT,
+                                                    FieldKey.MIN,
+                                                    MIN_WEIGHT,
+                                                    FieldKey.IS,
+                                                    TOO_HIGH_WEIGHT.toString()))));
     }
 
     @DisplayName("Should throw exception when members do not match")
@@ -178,20 +144,11 @@ class DegreeCalculationValidationServiceTest
         dc.setCalculation(createCalculationWithMember(member2));
         dc.setDegree(degree);
 
-        PCTSException exception = assertThrows(
-                PCTSException.class,
-                () -> spyService.validateMemberForCalculation(dc)
-        );
+        PCTSException exception = assertThrows(PCTSException.class, () -> spyService.validateMemberForCalculation(dc));
 
         assertEquals(ErrorKey.ATTRIBUTE_MATCHES, exception.getErrorKeys().get(0));
-        assertEquals(
-                Map.of(
-                        FieldKey.ENTITY, CALCULATION,
-                        FieldKey.FIELD, "degree",
-                        FieldKey.CONDITION_FIELD, "member"
-                ),
-                exception.getErrorAttributes().get(0)
-        );
+        assertEquals(Map.of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "degree", FieldKey.CONDITION_FIELD, "member"),
+                     exception.getErrorAttributes().get(0));
     }
 
     @DisplayName("Should throw exception on duplicate degree ID")
@@ -202,20 +159,12 @@ class DegreeCalculationValidationServiceTest
         DegreeCalculation dc = getValidModel();
         List<DegreeCalculation> existing = List.of(dc);
 
-        PCTSException exception = assertThrows(
-                PCTSException.class,
-                () -> spyService.validateDuplicateDegreeId(dc, existing)
-        );
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> spyService.validateDuplicateDegreeId(dc, existing));
 
         assertEquals(ErrorKey.DUPLICATE_CALCULATION, exception.getErrorKeys().get(0));
-        assertEquals(
-                Map.of(
-                        FieldKey.ENTITY, CALCULATION,
-                        FieldKey.FIELD, "degree",
-                        FieldKey.IS, DEGREE_NAME
-                ),
-                exception.getErrorAttributes().get(0)
-        );
+        assertEquals(Map.of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "degree", FieldKey.IS, DEGREE_NAME),
+                     exception.getErrorAttributes().get(0));
     }
 
     @DisplayName("Should call validateMemberForCalculation on validateOnCreate")
@@ -237,9 +186,7 @@ class DegreeCalculationValidationServiceTest
         member.setFirstName(firstName);
         member.setLastName(lastName);
         member.setBirthDate(LocalDate.of(1980, 1, 1));
-        member.setOrganisationUnit(
-                new OrganisationUnit(ORGANISATION_UNIT_ID, ORG_UNIT_NAME)
-        );
+        member.setOrganisationUnit(new OrganisationUnit(ORGANISATION_UNIT_ID, ORG_UNIT_NAME));
         return member;
     }
 

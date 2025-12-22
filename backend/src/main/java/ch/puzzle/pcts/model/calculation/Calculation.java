@@ -196,7 +196,6 @@ public class Calculation implements Model {
         private List<CertificateCalculation> certificates;
         private BigDecimal points;
 
-
         private Builder() {
         }
 
@@ -249,7 +248,7 @@ public class Calculation implements Model {
             return this;
         }
 
-        public Builder withPoints(BigDecimal points){
+        public Builder withPoints(BigDecimal points) {
             this.points = points;
             return this;
         }

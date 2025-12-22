@@ -57,7 +57,6 @@ class CalculationControllerIT {
     private static final Long CERTIFICATE2_ID = 2L;
     private static final Long LEADERSHIP_EXPERIENCE_ID = 10L;
 
-
     private final LocalDate commonDate = LocalDate.of(2020, 1, 1);
 
     @MockitoBean

@@ -32,7 +32,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 class CalculationPersistenceServiceIT
-        extends PersistenceBaseIT<Calculation, CalculationRepository, CalculationPersistenceService> {
+        extends
+            PersistenceBaseIT<Calculation, CalculationRepository, CalculationPersistenceService> {
 
     MemberPersistenceServiceIT memberPersistenceServiceIT;
     RolePersistenceServiceIT rolePersistenceServiceIT;
@@ -95,21 +96,17 @@ class CalculationPersistenceServiceIT
         List<Member> members = memberPersistenceServiceIT.getAll();
         List<Role> roles = rolePersistenceServiceIT.getAll();
 
-        ExperienceType experienceType1 = new ExperienceType(
-                EXPERIENCE_TYPE_ID_1,
-                "ExperienceType 1",
-                BigDecimal.valueOf(0),
-                BigDecimal.valueOf(12),
-                BigDecimal.valueOf(4.005)
-        );
+        ExperienceType experienceType1 = new ExperienceType(EXPERIENCE_TYPE_ID_1,
+                                                            "ExperienceType 1",
+                                                            BigDecimal.valueOf(0),
+                                                            BigDecimal.valueOf(12),
+                                                            BigDecimal.valueOf(4.005));
 
-        ExperienceType experienceType2 = new ExperienceType(
-                EXPERIENCE_TYPE_ID_2,
-                "ExperienceType 2",
-                BigDecimal.valueOf(12),
-                BigDecimal.valueOf(10.7989),
-                BigDecimal.valueOf(6)
-        );
+        ExperienceType experienceType2 = new ExperienceType(EXPERIENCE_TYPE_ID_2,
+                                                            "ExperienceType 2",
+                                                            BigDecimal.valueOf(12),
+                                                            BigDecimal.valueOf(10.7989),
+                                                            BigDecimal.valueOf(6));
 
         Experience exp2 = new Experience.Builder()
                 .withId(EXPERIENCE_ID_2)
@@ -135,13 +132,11 @@ class CalculationPersistenceServiceIT
                 .withEndDate(LocalDate.of(2024, 7, 15))
                 .build();
 
-        DegreeType degreeType2 = new DegreeType(
-                DEGREE_TYPE_ID_2,
-                "Degree type 2",
-                BigDecimal.valueOf(12),
-                BigDecimal.valueOf(3.961),
-                BigDecimal.valueOf(3)
-        );
+        DegreeType degreeType2 = new DegreeType(DEGREE_TYPE_ID_2,
+                                                "Degree type 2",
+                                                BigDecimal.valueOf(12),
+                                                BigDecimal.valueOf(3.961),
+                                                BigDecimal.valueOf(3));
 
         Degree degree2 = Degree.Builder
                 .builder()
@@ -156,23 +151,19 @@ class CalculationPersistenceServiceIT
                 .withComment("Comment")
                 .build();
 
-        CertificateType certType2 = new CertificateType(
-                CERTIFICATE_TYPE_ID_2,
-                "Certificate Type 2",
-                BigDecimal.valueOf(1),
-                "This is Certificate 2",
-                Set.of(new Tag(2L, "Longer tag name")),
-                CertificateKind.CERTIFICATE
-        );
+        CertificateType certType2 = new CertificateType(CERTIFICATE_TYPE_ID_2,
+                                                        "Certificate Type 2",
+                                                        BigDecimal.valueOf(1),
+                                                        "This is Certificate 2",
+                                                        Set.of(new Tag(2L, "Longer tag name")),
+                                                        CertificateKind.CERTIFICATE);
 
-        CertificateType certType5 = new CertificateType(
-                CERTIFICATE_TYPE_ID_5,
-                "LeadershipExperience Type 1",
-                BigDecimal.valueOf(5.5),
-                "This is LeadershipExperience 1",
-                Set.of(),
-                CertificateKind.MILITARY_FUNCTION
-        );
+        CertificateType certType5 = new CertificateType(CERTIFICATE_TYPE_ID_5,
+                                                        "LeadershipExperience Type 1",
+                                                        BigDecimal.valueOf(5.5),
+                                                        "This is LeadershipExperience 1",
+                                                        Set.of(),
+                                                        CertificateKind.MILITARY_FUNCTION);
 
         Certificate cert2 = Certificate.Builder
                 .builder()
@@ -203,28 +194,25 @@ class CalculationPersistenceServiceIT
                 .withState(CalculationState.DRAFT)
                 .withPublicationDate(LocalDate.of(2025, 1, 14))
                 .withPublicizedBy("Ldap User")
-                .withDegrees(List.of(
-                        new DegreeCalculation(
-                                DEGREE_CALC_ID_1, null, degree2,
-                                Relevancy.HIGHLY, BigDecimal.valueOf(80), "Comment"
-                        ),
-                        new DegreeCalculation(
-                                DEGREE_CALC_ID_3, null, degree2,
-                                Relevancy.LIMITED, BigDecimal.valueOf(100), "Comment"
-                        )
-                ))
-                .withExperiences(List.of(
-                        new ExperienceCalculation(
-                                EXPERIENCE_CALC_ID_1, null, exp2, Relevancy.HIGHLY, "Comment"
-                        ),
-                        new ExperienceCalculation(
-                                EXPERIENCE_CALC_ID_3, null, exp3, Relevancy.LIMITED, "Comment"
-                        )
-                ))
-                .withCertificates(List.of(
-                        new CertificateCalculation(CERTIFICATE_CALC_ID_1, null, cert2),
-                        new CertificateCalculation(CERTIFICATE_CALC_ID_3, null, cert5)
-                ))
+                .withDegrees(List
+                        .of(new DegreeCalculation(DEGREE_CALC_ID_1,
+                                                  null,
+                                                  degree2,
+                                                  Relevancy.HIGHLY,
+                                                  BigDecimal.valueOf(80),
+                                                  "Comment"),
+                            new DegreeCalculation(DEGREE_CALC_ID_3,
+                                                  null,
+                                                  degree2,
+                                                  Relevancy.LIMITED,
+                                                  BigDecimal.valueOf(100),
+                                                  "Comment")))
+                .withExperiences(List
+                        .of(new ExperienceCalculation(EXPERIENCE_CALC_ID_1, null, exp2, Relevancy.HIGHLY, "Comment"),
+                            new ExperienceCalculation(EXPERIENCE_CALC_ID_3, null, exp3, Relevancy.LIMITED, "Comment")))
+                .withCertificates(List
+                        .of(new CertificateCalculation(CERTIFICATE_CALC_ID_1, null, cert2),
+                            new CertificateCalculation(CERTIFICATE_CALC_ID_3, null, cert5)))
                 .build();
 
         calc1.getExperiences().forEach(e -> e.setCalculation(calc1));
@@ -241,20 +229,16 @@ class CalculationPersistenceServiceIT
                 .withState(CalculationState.ARCHIVED)
                 .withPublicationDate(LocalDate.of(2025, 1, 14))
                 .withPublicizedBy("Ldap User 2")
-                .withDegrees(List.of(
-                        new DegreeCalculation(
-                                DEGREE_CALC_ID_2, null, degree2,
-                                Relevancy.LITTLE, BigDecimal.valueOf(10), "Comment"
-                        )
-                ))
-                .withExperiences(List.of(
-                        new ExperienceCalculation(
-                                EXPERIENCE_CALC_ID_2, null, exp2, Relevancy.LITTLE, "Comment"
-                        )
-                ))
-                .withCertificates(List.of(
-                        new CertificateCalculation(CERTIFICATE_CALC_ID_2, null, cert2)
-                ))
+                .withDegrees(List
+                        .of(new DegreeCalculation(DEGREE_CALC_ID_2,
+                                                  null,
+                                                  degree2,
+                                                  Relevancy.LITTLE,
+                                                  BigDecimal.valueOf(10),
+                                                  "Comment")))
+                .withExperiences(List
+                        .of(new ExperienceCalculation(EXPERIENCE_CALC_ID_2, null, exp2, Relevancy.LITTLE, "Comment")))
+                .withCertificates(List.of(new CertificateCalculation(CERTIFICATE_CALC_ID_2, null, cert2)))
                 .build();
 
         calc2.getExperiences().forEach(e -> e.setCalculation(calc2));
@@ -281,7 +265,8 @@ class CalculationPersistenceServiceIT
 
     @Override
     void shouldDelete() {
-        // we don't have a Delete Function because we only update to Archive the calculation
+        // we don't have a Delete Function because we only update to Archive the
+        // calculation
     }
 
     @DisplayName("Should only have one active Calculation after save when member already has active Calculation for the same role.")
@@ -325,12 +310,11 @@ class CalculationPersistenceServiceIT
     }
 
     private List<Calculation> getActiveCalculations(Role role, Member member) {
-        return service.getAll()
+        return service
+                .getAll()
                 .stream()
-                .filter(c ->
-                        c.getState() == CalculationState.ACTIVE
-                                && c.getRole().equals(role)
-                                && c.getMember().equals(member))
+                .filter(c -> c.getState() == CalculationState.ACTIVE && c.getRole().equals(role)
+                             && c.getMember().equals(member))
                 .toList();
     }
 }

@@ -34,7 +34,7 @@ class LeadershipExperienceCalculationMapperTest {
     @BeforeEach
     void setUp() {
         mapper = new LeadershipExperienceCalculationMapper(leadershipExperienceBusinessService,
-                leadershipExperienceMapper);
+                                                           leadershipExperienceMapper);
     }
 
     private Certificate createCertificate(CertificateKind kind, Long id) {
@@ -105,8 +105,7 @@ class LeadershipExperienceCalculationMapperTest {
         LeadershipExperienceDto mockedDto = mockLeadershipExperienceDto();
         when(leadershipExperienceMapper.toDto(leadershipExperience)).thenReturn(mockedDto);
 
-        List<LeadershipExperienceCalculationDto> result =
-                mapper.toDto(List.of(leadershipCalc, certificateCalc));
+        List<LeadershipExperienceCalculationDto> result = mapper.toDto(List.of(leadershipCalc, certificateCalc));
 
         assertEquals(1, result.size());
         assertEquals(mockedDto, result.get(0).experience());

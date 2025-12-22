@@ -23,9 +23,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.provider.Arguments;
 
 class ExperienceCalculationValidationServiceTest
-        extends ValidationBaseServiceTest<
-        ExperienceCalculation,
-        ExperienceCalculationValidationService> {
+        extends
+            ValidationBaseServiceTest<ExperienceCalculation, ExperienceCalculationValidationService> {
 
     private static final Long MEMBER_ID_1 = 1L;
     private static final Long MEMBER_ID_2 = 2L;
@@ -57,57 +56,28 @@ class ExperienceCalculationValidationServiceTest
         Calculation calculation = createCalculation(CALCULATION_ID, member);
         Experience experience = createExperience(EXPERIENCE_ID, member, EXPERIENCE_NAME);
 
-        return new ExperienceCalculation(
-                null,
-                calculation,
-                experience,
-                Relevancy.HIGHLY,
-                COMMENT
-        );
+        return new ExperienceCalculation(null, calculation, experience, Relevancy.HIGHLY, COMMENT);
     }
 
     static Stream<Arguments> invalidModelProvider() {
-        return Stream.of(
-                Arguments.of(
-                        new ExperienceCalculation(
-                                null,
-                                null,
-                                new Experience(),
-                                Relevancy.HIGHLY,
-                                VALID_COMMENT
-                        ),
-                        List.of(Map.of(
-                                FieldKey.CLASS, "ExperienceCalculation",
-                                FieldKey.FIELD, "calculation"
-                        ))
-                ),
-                Arguments.of(
-                        new ExperienceCalculation(
-                                null,
-                                new Calculation(),
-                                null,
-                                Relevancy.HIGHLY,
-                                VALID_COMMENT
-                        ),
-                        List.of(Map.of(
-                                FieldKey.CLASS, "ExperienceCalculation",
-                                FieldKey.FIELD, "experience"
-                        ))
-                ),
-                Arguments.of(
-                        new ExperienceCalculation(
-                                null,
-                                new Calculation(),
-                                new Experience(),
-                                null,
-                                VALID_COMMENT
-                        ),
-                        List.of(Map.of(
-                                FieldKey.CLASS, "ExperienceCalculation",
-                                FieldKey.FIELD, "relevancy"
-                        ))
-                )
-        );
+        return Stream
+                .of(Arguments
+                        .of(new ExperienceCalculation(null, null, new Experience(), Relevancy.HIGHLY, VALID_COMMENT),
+                            List.of(Map.of(FieldKey.CLASS, "ExperienceCalculation", FieldKey.FIELD, "calculation"))),
+                    Arguments
+                            .of(new ExperienceCalculation(null,
+                                                          new Calculation(),
+                                                          null,
+                                                          Relevancy.HIGHLY,
+                                                          VALID_COMMENT),
+                                List.of(Map.of(FieldKey.CLASS, "ExperienceCalculation", FieldKey.FIELD, "experience"))),
+                    Arguments
+                            .of(new ExperienceCalculation(null,
+                                                          new Calculation(),
+                                                          new Experience(),
+                                                          null,
+                                                          VALID_COMMENT),
+                                List.of(Map.of(FieldKey.CLASS, "ExperienceCalculation", FieldKey.FIELD, "relevancy"))));
     }
 
     @DisplayName("Should throw exception when members do not match")
@@ -120,20 +90,12 @@ class ExperienceCalculationValidationServiceTest
         ExperienceCalculation ec = getValidModel();
         ec.getCalculation().setMember(member2);
 
-        PCTSException exception = assertThrows(
-                PCTSException.class,
-                () -> spyService.validateMemberForCalculation(ec)
-        );
+        PCTSException exception = assertThrows(PCTSException.class, () -> spyService.validateMemberForCalculation(ec));
 
         assertEquals(ErrorKey.ATTRIBUTE_MATCHES, exception.getErrorKeys().get(0));
-        assertEquals(
-                Map.of(
-                        FieldKey.ENTITY, CALCULATION,
-                        FieldKey.FIELD, "experience",
-                        FieldKey.CONDITION_FIELD, "member"
-                ),
-                exception.getErrorAttributes().get(0)
-        );
+        assertEquals(Map
+                .of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "experience", FieldKey.CONDITION_FIELD, "member"),
+                     exception.getErrorAttributes().get(0));
     }
 
     @DisplayName("Should throw exception on duplicate experience ID")
@@ -146,20 +108,12 @@ class ExperienceCalculationValidationServiceTest
 
         List<ExperienceCalculation> existing = List.of(ec);
 
-        PCTSException exception = assertThrows(
-                PCTSException.class,
-                () -> spyService.validateDuplicateExperienceId(ec, existing)
-        );
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> spyService.validateDuplicateExperienceId(ec, existing));
 
         assertEquals(ErrorKey.DUPLICATE_CALCULATION, exception.getErrorKeys().get(0));
-        assertEquals(
-                Map.of(
-                        FieldKey.ENTITY, CALCULATION,
-                        FieldKey.FIELD, "experience",
-                        FieldKey.IS, EXPERIENCE_NAME
-                ),
-                exception.getErrorAttributes().get(0)
-        );
+        assertEquals(Map.of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "experience", FieldKey.IS, EXPERIENCE_NAME),
+                     exception.getErrorAttributes().get(0));
     }
 
     @DisplayName("Should call validateMemberForCalculation on validateOnCreate")
@@ -184,9 +138,7 @@ class ExperienceCalculationValidationServiceTest
         member.setLastName(lastName);
         member.setAbbreviation(ABBREVIATION);
         member.setDateOfHire(LocalDate.EPOCH);
-        member.setOrganisationUnit(
-                new OrganisationUnit(ORGANISATION_UNIT_ID, ORG_UNIT_NAME)
-        );
+        member.setOrganisationUnit(new OrganisationUnit(ORGANISATION_UNIT_ID, ORG_UNIT_NAME));
         return member;
     }
 

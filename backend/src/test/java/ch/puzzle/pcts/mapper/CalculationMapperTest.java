@@ -43,16 +43,25 @@ class CalculationMapperTest {
     private static final String PUBLICIZED_BY = "Ldap User";
     private static final BigDecimal POINTS = BigDecimal.TEN;
 
-    @Mock private MemberMapper memberMapper;
-    @Mock private RoleMapper roleMapper;
-    @Mock private MemberBusinessService memberBusinessService;
-    @Mock private RoleBusinessService roleBusinessService;
-    @Mock private ExperienceCalculationMapper experienceCalculationMapper;
-    @Mock private DegreeCalculationMapper degreeCalculationMapper;
-    @Mock private CertificateCalculationMapper certificateCalculationMapper;
-    @Mock private LeadershipExperienceCalculationMapper leadershipExperienceCalculationMapper;
+    @Mock
+    private MemberMapper memberMapper;
+    @Mock
+    private RoleMapper roleMapper;
+    @Mock
+    private MemberBusinessService memberBusinessService;
+    @Mock
+    private RoleBusinessService roleBusinessService;
+    @Mock
+    private ExperienceCalculationMapper experienceCalculationMapper;
+    @Mock
+    private DegreeCalculationMapper degreeCalculationMapper;
+    @Mock
+    private CertificateCalculationMapper certificateCalculationMapper;
+    @Mock
+    private LeadershipExperienceCalculationMapper leadershipExperienceCalculationMapper;
 
-    @InjectMocks private CalculationMapper calculationMapper;
+    @InjectMocks
+    private CalculationMapper calculationMapper;
 
     // ---------------- Helper Methods ----------------
 
@@ -69,7 +78,8 @@ class CalculationMapperTest {
     }
 
     private Calculation createCalculation(Member member, Role role) {
-        Calculation calculation = Calculation.Builder.builder()
+        Calculation calculation = Calculation.Builder
+                .builder()
                 .withId(CALC_ID)
                 .withMember(member)
                 .withRole(role)
@@ -87,19 +97,21 @@ class CalculationMapperTest {
     private CalculationInputDto createCalculationInput() {
         DegreeCalculationInputDto degreeInput = mock(DegreeCalculationInputDto.class);
         ExperienceCalculationInputDto experienceInput = mock(ExperienceCalculationInputDto.class);
-        return new CalculationInputDto(
-                MEMBER_ID,
-                STATE,
-                ROLE_ID,
-                List.of(CERTIFICATE1_ID, CERTIFICATE2_ID),
-                List.of(LEADERSHIP_EXPERIENCE_ID),
-                List.of(degreeInput),
-                List.of(experienceInput)
-        );
+        return new CalculationInputDto(MEMBER_ID,
+                                       STATE,
+                                       ROLE_ID,
+                                       List.of(CERTIFICATE1_ID, CERTIFICATE2_ID),
+                                       List.of(LEADERSHIP_EXPERIENCE_ID),
+                                       List.of(degreeInput),
+                                       List.of(experienceInput));
     }
 
-    private MemberDto mockMemberDto() { return mock(MemberDto.class); }
-    private RoleDto mockRoleDto() { return mock(RoleDto.class); }
+    private MemberDto mockMemberDto() {
+        return mock(MemberDto.class);
+    }
+    private RoleDto mockRoleDto() {
+        return mock(RoleDto.class);
+    }
 
     // ---------------- Tests ----------------
 
@@ -115,14 +127,11 @@ class CalculationMapperTest {
 
         when(memberMapper.toDto(member)).thenReturn(memberDto);
         when(roleMapper.toDto(role)).thenReturn(roleDto);
-        when(certificateCalculationMapper.toDto(anyList()))
-                .thenReturn(List.of(mock(CertificateCalculationDto.class)));
+        when(certificateCalculationMapper.toDto(anyList())).thenReturn(List.of(mock(CertificateCalculationDto.class)));
         when(leadershipExperienceCalculationMapper.toDto(anyList()))
                 .thenReturn(List.of(mock(LeadershipExperienceCalculationDto.class)));
-        when(degreeCalculationMapper.toDto(anyList()))
-                .thenReturn(List.of(mock(DegreeCalculationDto.class)));
-        when(experienceCalculationMapper.toDto(anyList()))
-                .thenReturn(List.of(mock(ExperienceCalculationDto.class)));
+        when(degreeCalculationMapper.toDto(anyList())).thenReturn(List.of(mock(DegreeCalculationDto.class)));
+        when(experienceCalculationMapper.toDto(anyList())).thenReturn(List.of(mock(ExperienceCalculationDto.class)));
 
         CalculationDto result = calculationMapper.toDto(calc);
 

@@ -129,8 +129,7 @@ class ExperienceCalculationMapperTest {
     void shouldThrowWhenExperienceNotFound() {
         ExperienceCalculationInputDto input = createExperienceCalculationInputDto();
 
-        when(experienceBusinessService.getById(EXPERIENCE_ID))
-                .thenThrow(new RuntimeException("Experience not found"));
+        when(experienceBusinessService.getById(EXPERIENCE_ID)).thenThrow(new RuntimeException("Experience not found"));
 
         assertThrows(RuntimeException.class, () -> mapper.fromDto(input));
     }
