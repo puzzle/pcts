@@ -56,22 +56,22 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
     @DisplayName("Should throw exception when id is not found")
     @Test
     void shouldThrowExceptionWhenIdIsNotFound() {
-        Long invalidId = -1L;
+        long invalidId = -1L;
+
+        Map<FieldKey, String> expectedAttributes = Map
+                .of(FieldKey.FIELD,
+                    "id",
+                    FieldKey.IS,
+                    String.valueOf(invalidId),
+                    FieldKey.ENTITY,
+                    service.entityName());
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.getById(invalidId));
+
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
 
-        List<ErrorKey> errorKeys = exception.getErrorKeys();
-        assertEquals(1, errorKeys.size());
-        Assertions.assertTrue(errorKeys.contains(ErrorKey.NOT_FOUND));
-
-        List<Map<FieldKey, String>> errorAttributes = exception.getErrorAttributes();
-        assertEquals(1, errorAttributes.size());
-
-        Map<FieldKey, String> attributes = errorAttributes.getFirst();
-        assertEquals("id", attributes.get(FieldKey.FIELD));
-        assertEquals(invalidId.toString(), attributes.get(FieldKey.IS));
-        assertEquals(service.entityName(), attributes.get(FieldKey.ENTITY));
+        assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
+        assertEquals(List.of(expectedAttributes), exception.getErrorAttributes());
     }
 
     @DisplayName("Should get all entities")
