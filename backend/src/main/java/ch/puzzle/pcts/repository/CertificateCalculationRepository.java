@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CertificateCalculationRepository extends JpaRepository<CertificateCalculation, Long> {
-    List<CertificateCalculation> findByCalculationId(Long calculationId);
+public interface CertificateCalculationRepository extends CalculationRelationRepository<CertificateCalculation, Long> {
     List<CertificateCalculation> findByCertificateId(Long certificateId);
 }

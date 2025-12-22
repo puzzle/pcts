@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DegreeCalculationRepository extends JpaRepository<DegreeCalculation, Long> {
-    List<DegreeCalculation> findByCalculationId(Long calculationId);
+public interface DegreeCalculationRepository extends CalculationRelationRepository<DegreeCalculation, Long> {
     List<DegreeCalculation> findByDegreeId(Long degreeId);
 }

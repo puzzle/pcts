@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ExperienceCalculationRepository extends JpaRepository<ExperienceCalculation, Long> {
-    List<ExperienceCalculation> findByCalculationId(Long calculationId);
+public interface ExperienceCalculationRepository extends CalculationRelationRepository<ExperienceCalculation, Long> {
     List<ExperienceCalculation> findByExperienceId(Long experienceId);
 }
