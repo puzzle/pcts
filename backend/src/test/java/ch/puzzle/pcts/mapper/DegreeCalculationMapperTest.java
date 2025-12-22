@@ -23,8 +23,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class DegreeCalculationMapperTest {
 
     private static final Long DEGREE_ID = 100L;
-
     private static final Long DEGREE_CALCULATION_ID = 20L;
+    private static final Relevancy RELEVANCY = Relevancy.HIGHLY;
+    private static final BigDecimal WEIGHT = BigDecimal.ONE;
+    private static final String COMMENT = "Comment";
 
     @Mock
     private DegreeBusinessService degreeBusinessService;
@@ -45,28 +47,35 @@ class DegreeCalculationMapperTest {
         return degree;
     }
 
-    private DegreeCalculation createModel(Degree degree) {
-        return new DegreeCalculation(DEGREE_CALCULATION_ID, null, degree, Relevancy.HIGHLY, BigDecimal.ONE, "Comment");
+    private DegreeCalculation createDegreeCalculation(Degree degree) {
+        return new DegreeCalculation(DEGREE_CALCULATION_ID, null, degree, RELEVANCY, WEIGHT, COMMENT);
+    }
+
+    private DegreeCalculationInputDto createDegreeCalculationInputDto() {
+        return new DegreeCalculationInputDto(DEGREE_ID, WEIGHT, RELEVANCY, COMMENT);
+    }
+
+    private DegreeDto mockDegreeDto() {
+        return mock(DegreeDto.class);
     }
 
     @DisplayName("Should map DegreeCalculation to DegreeCalculationDto")
     @Test
     void shouldMapToDto() {
         Degree degree = createDegree();
-        DegreeCalculation model = createModel(degree);
+        DegreeCalculation model = createDegreeCalculation(degree);
 
-        DegreeDto mockedDegreeDto = mock(DegreeDto.class);
-
-        when(degreeMapper.toDto(degree)).thenReturn(mockedDegreeDto);
+        DegreeDto mockedDto = mockDegreeDto();
+        when(degreeMapper.toDto(degree)).thenReturn(mockedDto);
 
         DegreeCalculationDto result = mapper.toDto(model);
 
         assertNotNull(result);
         assertEquals(DEGREE_CALCULATION_ID, result.id());
-        assertEquals(mockedDegreeDto, result.degree());
-        assertEquals(BigDecimal.ONE, result.weight());
-        assertEquals(Relevancy.HIGHLY, result.relevancy());
-        assertEquals("Comment", result.comment());
+        assertEquals(mockedDto, result.degree());
+        assertEquals(WEIGHT, result.weight());
+        assertEquals(RELEVANCY, result.relevancy());
+        assertEquals(COMMENT, result.comment());
 
         verify(degreeMapper).toDto(degree);
     }
@@ -75,9 +84,9 @@ class DegreeCalculationMapperTest {
     @Test
     void shouldMapListToDto() {
         Degree degree = createDegree();
-        DegreeCalculation model = createModel(degree);
+        DegreeCalculation model = createDegreeCalculation(degree);
 
-        when(degreeMapper.toDto(degree)).thenReturn(mock(DegreeDto.class));
+        when(degreeMapper.toDto(degree)).thenReturn(mockDegreeDto());
 
         List<DegreeCalculationDto> result = mapper.toDto(List.of(model));
 
@@ -89,21 +98,18 @@ class DegreeCalculationMapperTest {
     @Test
     void shouldMapFromDto() {
         Degree degree = createDegree();
-        DegreeCalculationInputDto input = new DegreeCalculationInputDto(DEGREE_ID,
-                                                                        BigDecimal.ONE,
-                                                                        Relevancy.HIGHLY,
-                                                                        "Comment");
+        DegreeCalculationInputDto input = createDegreeCalculationInputDto();
 
         when(degreeBusinessService.getById(DEGREE_ID)).thenReturn(degree);
 
         DegreeCalculation result = mapper.fromDto(input);
 
         assertNotNull(result);
-        assertEquals(degree, result.getDegree());
-        assertEquals(Relevancy.HIGHLY, result.getRelevancy());
-        assertEquals(BigDecimal.ONE, result.getWeight());
         assertNull(result.getId());
-        assertEquals("Comment", result.getComment());
+        assertEquals(degree, result.getDegree());
+        assertEquals(RELEVANCY, result.getRelevancy());
+        assertEquals(WEIGHT, result.getWeight());
+        assertEquals(COMMENT, result.getComment());
 
         verify(degreeBusinessService).getById(DEGREE_ID);
     }
@@ -112,10 +118,7 @@ class DegreeCalculationMapperTest {
     @Test
     void shouldMapListFromDto() {
         Degree degree = createDegree();
-        DegreeCalculationInputDto input = new DegreeCalculationInputDto(DEGREE_ID,
-                                                                        BigDecimal.ONE,
-                                                                        Relevancy.HIGHLY,
-                                                                        "Comment");
+        DegreeCalculationInputDto input = createDegreeCalculationInputDto();
 
         when(degreeBusinessService.getById(DEGREE_ID)).thenReturn(degree);
 
@@ -128,12 +131,10 @@ class DegreeCalculationMapperTest {
     @DisplayName("Should throw when Degree not found")
     @Test
     void shouldThrowWhenDegreeNotFound() {
-        DegreeCalculationInputDto input = new DegreeCalculationInputDto(DEGREE_ID,
-                                                                        BigDecimal.ONE,
-                                                                        Relevancy.HIGHLY,
-                                                                        "Comment");
+        DegreeCalculationInputDto input = createDegreeCalculationInputDto();
 
-        when(degreeBusinessService.getById(DEGREE_ID)).thenThrow(new RuntimeException("Degree not found"));
+        when(degreeBusinessService.getById(DEGREE_ID))
+                .thenThrow(new RuntimeException("Degree not found"));
 
         assertThrows(RuntimeException.class, () -> mapper.fromDto(input));
     }

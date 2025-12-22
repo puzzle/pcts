@@ -23,8 +23,8 @@ class ExperienceCalculationMapperTest {
 
     private static final Long EXPERIENCE_ID = 11L;
     private static final Long EXPERIENCE_CALCULATION_ID = 22L;
-
     private static final Relevancy RELEVANCY = Relevancy.HIGHLY;
+    private static final String COMMENT = "Comment";
 
     @Mock
     private ExperienceBusinessService experienceBusinessService;
@@ -40,31 +40,39 @@ class ExperienceCalculationMapperTest {
     }
 
     private Experience createExperience() {
-        Experience exp = new Experience();
-        exp.setId(EXPERIENCE_ID);
-        return exp;
+        Experience experience = new Experience();
+        experience.setId(EXPERIENCE_ID);
+        return experience;
     }
 
-    private ExperienceCalculation createModel(Experience experience) {
-        return new ExperienceCalculation(EXPERIENCE_CALCULATION_ID, null, experience, RELEVANCY, "Comment");
+    private ExperienceCalculation createExperienceCalculation(Experience experience) {
+        return new ExperienceCalculation(EXPERIENCE_CALCULATION_ID, null, experience, RELEVANCY, COMMENT);
+    }
+
+    private ExperienceCalculationInputDto createExperienceCalculationInputDto() {
+        return new ExperienceCalculationInputDto(EXPERIENCE_ID, RELEVANCY, COMMENT);
+    }
+
+    private ExperienceDto mockExperienceDto() {
+        return mock(ExperienceDto.class);
     }
 
     @DisplayName("Should map ExperienceCalculation to ExperienceCalculationDto")
     @Test
     void shouldMapToDto() {
         Experience experience = createExperience();
-        ExperienceCalculation model = createModel(experience);
+        ExperienceCalculation model = createExperienceCalculation(experience);
 
-        ExperienceDto expectedExperienceDto = mock(ExperienceDto.class);
-        when(experienceMapper.toDto(experience)).thenReturn(expectedExperienceDto);
+        ExperienceDto expectedDto = mockExperienceDto();
+        when(experienceMapper.toDto(experience)).thenReturn(expectedDto);
 
         ExperienceCalculationDto result = mapper.toDto(model);
 
         assertNotNull(result);
         assertEquals(EXPERIENCE_CALCULATION_ID, result.id());
-        assertEquals(expectedExperienceDto, result.experience());
+        assertEquals(expectedDto, result.experience());
         assertEquals(RELEVANCY, result.relevancy());
-        assertEquals("Comment", result.comment());
+        assertEquals(COMMENT, result.comment());
 
         verify(experienceMapper).toDto(experience);
     }
@@ -73,9 +81,9 @@ class ExperienceCalculationMapperTest {
     @Test
     void shouldMapListToDto() {
         Experience experience = createExperience();
-        ExperienceCalculation model = createModel(experience);
+        ExperienceCalculation model = createExperienceCalculation(experience);
 
-        when(experienceMapper.toDto(experience)).thenReturn(mock(ExperienceDto.class));
+        when(experienceMapper.toDto(experience)).thenReturn(mockExperienceDto());
 
         List<ExperienceCalculationDto> result = mapper.toDto(List.of(model));
 
@@ -87,7 +95,7 @@ class ExperienceCalculationMapperTest {
     @Test
     void shouldMapFromDto() {
         Experience experience = createExperience();
-        ExperienceCalculationInputDto input = new ExperienceCalculationInputDto(EXPERIENCE_ID, RELEVANCY, "Comment");
+        ExperienceCalculationInputDto input = createExperienceCalculationInputDto();
 
         when(experienceBusinessService.getById(EXPERIENCE_ID)).thenReturn(experience);
 
@@ -97,7 +105,7 @@ class ExperienceCalculationMapperTest {
         assertNull(result.getId());
         assertEquals(experience, result.getExperience());
         assertEquals(RELEVANCY, result.getRelevancy());
-        assertEquals("Comment", result.getComment());
+        assertEquals(COMMENT, result.getComment());
 
         verify(experienceBusinessService).getById(EXPERIENCE_ID);
     }
@@ -106,7 +114,7 @@ class ExperienceCalculationMapperTest {
     @Test
     void shouldMapListFromDto() {
         Experience experience = createExperience();
-        ExperienceCalculationInputDto input = new ExperienceCalculationInputDto(EXPERIENCE_ID, RELEVANCY, "Comment");
+        ExperienceCalculationInputDto input = createExperienceCalculationInputDto();
 
         when(experienceBusinessService.getById(EXPERIENCE_ID)).thenReturn(experience);
 
@@ -119,9 +127,10 @@ class ExperienceCalculationMapperTest {
     @DisplayName("Should throw when Experience not found")
     @Test
     void shouldThrowWhenExperienceNotFound() {
-        ExperienceCalculationInputDto input = new ExperienceCalculationInputDto(EXPERIENCE_ID, RELEVANCY, "Comment");
+        ExperienceCalculationInputDto input = createExperienceCalculationInputDto();
 
-        when(experienceBusinessService.getById(EXPERIENCE_ID)).thenThrow(new RuntimeException("Experience not found"));
+        when(experienceBusinessService.getById(EXPERIENCE_ID))
+                .thenThrow(new RuntimeException("Experience not found"));
 
         assertThrows(RuntimeException.class, () -> mapper.fromDto(input));
     }

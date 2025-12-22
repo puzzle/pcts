@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.dto.calculation.CalculationDto;
 import ch.puzzle.pcts.dto.calculation.CalculationInputDto;
+import ch.puzzle.pcts.dto.calculation.calculationleadershipexperience.LeadershipExperienceCalculationDto;
 import ch.puzzle.pcts.dto.calculation.certificatecalculation.CertificateCalculationDto;
 import ch.puzzle.pcts.dto.calculation.degreecalculation.DegreeCalculationDto;
 import ch.puzzle.pcts.dto.calculation.degreecalculation.DegreeCalculationInputDto;
@@ -21,10 +22,10 @@ import ch.puzzle.pcts.service.business.RoleBusinessService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -37,42 +38,23 @@ class CalculationMapperTest {
     private static final Long CERTIFICATE1_ID = 1L;
     private static final Long CERTIFICATE2_ID = 2L;
     private static final Long LEADERSHIP_EXPERIENCE_ID = 10L;
-
     private static final CalculationState STATE = CalculationState.ACTIVE;
     private static final LocalDate PUBLICATION_DATE = LocalDate.now();
     private static final String PUBLICIZED_BY = "Ldap User";
     private static final BigDecimal POINTS = BigDecimal.TEN;
 
-    @Mock
-    private MemberMapper memberMapper;
-    @Mock
-    private RoleMapper roleMapper;
-    @Mock
-    private MemberBusinessService memberBusinessService;
-    @Mock
-    private RoleBusinessService roleBusinessService;
-    @Mock
-    private ExperienceCalculationMapper experienceCalculationMapper;
-    @Mock
-    private DegreeCalculationMapper degreeCalculationMapper;
-    @Mock
-    private CertificateCalculationMapper certificateCalculationMapper;
-    @Mock
-    private LeadershipExperienceCalculationMapper leadershipExperienceCalculationMapper;
+    @Mock private MemberMapper memberMapper;
+    @Mock private RoleMapper roleMapper;
+    @Mock private MemberBusinessService memberBusinessService;
+    @Mock private RoleBusinessService roleBusinessService;
+    @Mock private ExperienceCalculationMapper experienceCalculationMapper;
+    @Mock private DegreeCalculationMapper degreeCalculationMapper;
+    @Mock private CertificateCalculationMapper certificateCalculationMapper;
+    @Mock private LeadershipExperienceCalculationMapper leadershipExperienceCalculationMapper;
 
-    private CalculationMapper calculationMapper;
+    @InjectMocks private CalculationMapper calculationMapper;
 
-    @BeforeEach
-    void setUp() {
-        calculationMapper = new CalculationMapper(memberMapper,
-                                                  memberBusinessService,
-                                                  roleMapper,
-                                                  roleBusinessService,
-                                                  experienceCalculationMapper,
-                                                  degreeCalculationMapper,
-                                                  certificateCalculationMapper,
-                                                  leadershipExperienceCalculationMapper);
-    }
+    // ---------------- Helper Methods ----------------
 
     private Member createMember() {
         Member m = new Member();
@@ -87,8 +69,7 @@ class CalculationMapperTest {
     }
 
     private Calculation createCalculation(Member member, Role role) {
-        Calculation calculation = Calculation.Builder
-                .builder()
+        Calculation calculation = Calculation.Builder.builder()
                 .withId(CALC_ID)
                 .withMember(member)
                 .withRole(role)
@@ -103,15 +84,24 @@ class CalculationMapperTest {
         return calculation;
     }
 
-    private CalculationInputDto createInput() {
-        return new CalculationInputDto(MEMBER_ID,
-                                       STATE,
-                                       ROLE_ID,
-                                       List.of(CERTIFICATE1_ID, CERTIFICATE2_ID),
-                                       List.of(LEADERSHIP_EXPERIENCE_ID),
-                                       List.of(mock(DegreeCalculationInputDto.class)),
-                                       List.of(mock(ExperienceCalculationInputDto.class)));
+    private CalculationInputDto createCalculationInput() {
+        DegreeCalculationInputDto degreeInput = mock(DegreeCalculationInputDto.class);
+        ExperienceCalculationInputDto experienceInput = mock(ExperienceCalculationInputDto.class);
+        return new CalculationInputDto(
+                MEMBER_ID,
+                STATE,
+                ROLE_ID,
+                List.of(CERTIFICATE1_ID, CERTIFICATE2_ID),
+                List.of(LEADERSHIP_EXPERIENCE_ID),
+                List.of(degreeInput),
+                List.of(experienceInput)
+        );
     }
+
+    private MemberDto mockMemberDto() { return mock(MemberDto.class); }
+    private RoleDto mockRoleDto() { return mock(RoleDto.class); }
+
+    // ---------------- Tests ----------------
 
     @DisplayName("Should map Calculation to CalculationDto")
     @Test
@@ -120,14 +110,19 @@ class CalculationMapperTest {
         Role role = createRole();
         Calculation calc = createCalculation(member, role);
 
-        MemberDto expectedMemberDto = mock(MemberDto.class);
-        RoleDto expectedRoleDto = mock(RoleDto.class);
+        MemberDto memberDto = mockMemberDto();
+        RoleDto roleDto = mockRoleDto();
 
-        when(memberMapper.toDto(member)).thenReturn(expectedMemberDto);
-        when(roleMapper.toDto(role)).thenReturn(expectedRoleDto);
-        when(certificateCalculationMapper.toDto(anyList())).thenReturn(List.of(mock(CertificateCalculationDto.class)));
-        when(degreeCalculationMapper.toDto(anyList())).thenReturn(List.of(mock(DegreeCalculationDto.class)));
-        when(experienceCalculationMapper.toDto(anyList())).thenReturn(List.of(mock(ExperienceCalculationDto.class)));
+        when(memberMapper.toDto(member)).thenReturn(memberDto);
+        when(roleMapper.toDto(role)).thenReturn(roleDto);
+        when(certificateCalculationMapper.toDto(anyList()))
+                .thenReturn(List.of(mock(CertificateCalculationDto.class)));
+        when(leadershipExperienceCalculationMapper.toDto(anyList()))
+                .thenReturn(List.of(mock(LeadershipExperienceCalculationDto.class)));
+        when(degreeCalculationMapper.toDto(anyList()))
+                .thenReturn(List.of(mock(DegreeCalculationDto.class)));
+        when(experienceCalculationMapper.toDto(anyList()))
+                .thenReturn(List.of(mock(ExperienceCalculationDto.class)));
 
         CalculationDto result = calculationMapper.toDto(calc);
 
@@ -137,17 +132,17 @@ class CalculationMapperTest {
         assertEquals(PUBLICATION_DATE, result.publicationDate());
         assertEquals(PUBLICIZED_BY, result.publicizedBy());
         assertEquals(POINTS, result.points());
-        assertEquals(expectedMemberDto, result.member());
-        assertEquals(expectedRoleDto, result.role());
+        assertEquals(memberDto, result.member());
+        assertEquals(roleDto, result.role());
         assertNotNull(result.certificates());
         assertNotNull(result.degrees());
         assertNotNull(result.experiences());
-        // assertNotNull(result.leadershipExperiences()); //Is not handled by the Mapper
-        // yet
+        assertNotNull(result.leadershipExperiences());
 
         verify(memberMapper).toDto(member);
         verify(roleMapper).toDto(role);
         verify(certificateCalculationMapper).toDto(anyList());
+        verify(leadershipExperienceCalculationMapper).toDto(anyList());
         verify(degreeCalculationMapper).toDto(anyList());
         verify(experienceCalculationMapper).toDto(anyList());
     }
@@ -155,7 +150,7 @@ class CalculationMapperTest {
     @DisplayName("Should map CalculationInputDto to Calculation")
     @Test
     void shouldReturnCalculation() {
-        CalculationInputDto input = createInput();
+        CalculationInputDto input = createCalculationInput();
         Member member = createMember();
         Role role = createRole();
 
@@ -184,24 +179,55 @@ class CalculationMapperTest {
         verify(certificateCalculationMapper, times(2)).fromDto(anyList());
     }
 
-    @DisplayName("Should throw when Member not found")
+    @DisplayName("Should map list of Calculations to CalculationDto list")
     @Test
-    void shouldThrowWhenMemberNotFound() {
-        CalculationInputDto input = createInput();
+    void shouldReturnListOfCalculationDto() {
+        Calculation c1 = createCalculation(new Member(), new Role());
+        Calculation c2 = createCalculation(new Member(), new Role());
 
-        when(memberBusinessService.getById(anyLong())).thenThrow(new RuntimeException("Member not found"));
+        when(memberMapper.toDto(any(Member.class))).thenReturn(mock(MemberDto.class));
+        when(roleMapper.toDto(any(Role.class))).thenReturn(mock(RoleDto.class));
+        when(degreeCalculationMapper.toDto(anyList())).thenReturn(List.of());
+        when(experienceCalculationMapper.toDto(anyList())).thenReturn(List.of());
+        when(certificateCalculationMapper.toDto(anyList())).thenReturn(List.of());
+        when(leadershipExperienceCalculationMapper.toDto(anyList())).thenReturn(List.of());
 
-        assertThrows(RuntimeException.class, () -> calculationMapper.fromDto(input));
+        List<CalculationDto> result = calculationMapper.toDto(List.of(c1, c2));
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals(CALC_ID, result.get(0).id());
+        assertEquals(CALC_ID, result.get(1).id());
+
+        verify(memberMapper, times(2)).toDto(any(Member.class));
+        verify(roleMapper, times(2)).toDto(any(Role.class));
+        verify(degreeCalculationMapper, times(2)).toDto(anyList());
+        verify(experienceCalculationMapper, times(2)).toDto(anyList());
+        verify(certificateCalculationMapper, times(2)).toDto(anyList());
+        verify(leadershipExperienceCalculationMapper, times(2)).toDto(anyList());
     }
 
-    @DisplayName("Should throw when Role not found")
+    @DisplayName("Should map list of CalculationInputDto to Calculation list")
     @Test
-    void shouldThrowWhenRoleNotFound() {
-        CalculationInputDto input = createInput();
+    void shouldReturnListOfCalculation() {
+        CalculationInputDto i1 = createCalculationInput();
+        CalculationInputDto i2 = createCalculationInput();
 
-        when(memberBusinessService.getById(MEMBER_ID)).thenReturn(createMember());
-        when(roleBusinessService.getById(anyLong())).thenThrow(new RuntimeException("Role not found"));
+        when(memberBusinessService.getById(any(Long.class))).thenReturn(mock(Member.class));
+        when(roleBusinessService.getById(any(Long.class))).thenReturn(mock(Role.class));
+        when(degreeCalculationMapper.fromDto(anyList())).thenReturn(List.of());
+        when(experienceCalculationMapper.fromDto(anyList())).thenReturn(List.of());
+        when(certificateCalculationMapper.fromDto(anyList())).thenReturn(List.of());
 
-        assertThrows(RuntimeException.class, () -> calculationMapper.fromDto(input));
+        List<Calculation> result = calculationMapper.fromDto(List.of(i1, i2));
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+
+        verify(memberBusinessService, times(2)).getById(MEMBER_ID);
+        verify(roleBusinessService, times(2)).getById(ROLE_ID);
+        verify(degreeCalculationMapper, times(2)).fromDto(anyList());
+        verify(experienceCalculationMapper, times(2)).fromDto(anyList());
+        verify(certificateCalculationMapper, times(4)).fromDto(anyList());
     }
 }

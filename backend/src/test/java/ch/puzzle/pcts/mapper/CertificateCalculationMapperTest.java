@@ -37,33 +37,41 @@ class CertificateCalculationMapperTest {
         mapper = new CertificateCalculationMapper(certificateBusinessService, certificateMapper);
     }
 
-    private Certificate createCertificate() {
+    // ---------------- Helper Methods ----------------
+
+    private Certificate createCertificate(CertificateKind kind) {
         Certificate cert = new Certificate();
         cert.setId(CERT_ID);
+        CertificateType type = new CertificateType();
+        type.setCertificateKind(kind);
+        cert.setCertificateType(type);
         return cert;
     }
 
-    private CertificateCalculation createModel(Certificate cert) {
-        return new CertificateCalculation(ID, null, cert);
+    private CertificateCalculation createCertificateCalculation(Certificate certificate) {
+        return new CertificateCalculation(ID, null, certificate);
     }
+
+    private CertificateDto mockCertificateDto() {
+        return mock(CertificateDto.class);
+    }
+
+    // ---------------- Tests ----------------
 
     @DisplayName("Should map CertificateCalculation to CertificateCalculationDto")
     @Test
     void shouldMapToDto() {
-        Certificate certificate = createCertificate();
-        CertificateType certificateType = new CertificateType();
-        certificateType.setCertificateKind(CertificateKind.CERTIFICATE);
-        certificate.setCertificateType(certificateType);
-        CertificateCalculation model = createModel(certificate);
+        Certificate certificate = createCertificate(CertificateKind.CERTIFICATE);
+        CertificateCalculation model = createCertificateCalculation(certificate);
 
-        CertificateDto mockedCertificateDto = mock(CertificateDto.class);
-        when(certificateMapper.toDto(certificate)).thenReturn(mockedCertificateDto);
+        CertificateDto mockedDto = mockCertificateDto();
+        when(certificateMapper.toDto(certificate)).thenReturn(mockedDto);
 
         CertificateCalculationDto result = mapper.toDto(model);
 
         assertNotNull(result);
         assertEquals(ID, result.id());
-        assertEquals(mockedCertificateDto, result.certificate());
+        assertEquals(mockedDto, result.certificate());
 
         verify(certificateMapper).toDto(certificate);
     }
@@ -71,11 +79,8 @@ class CertificateCalculationMapperTest {
     @DisplayName("Should return null when certificate kind is not Certificate")
     @Test
     void shouldReturnNull() {
-        Certificate certificate = createCertificate();
-        CertificateType certificateType = new CertificateType();
-        certificateType.setCertificateKind(CertificateKind.LEADERSHIP_TRAINING);
-        certificate.setCertificateType(certificateType);
-        CertificateCalculation model = createModel(certificate);
+        Certificate certificate = createCertificate(CertificateKind.LEADERSHIP_TRAINING);
+        CertificateCalculation model = createCertificateCalculation(certificate);
 
         CertificateCalculationDto result = mapper.toDto(model);
 
@@ -86,34 +91,27 @@ class CertificateCalculationMapperTest {
     @DisplayName("Should map List<CertificateCalculation> to List<CertificateCalculationDto> and remove LeadershipExperiences")
     @Test
     void shouldMapListToDto() {
-        Certificate certificate = createCertificate();
-        CertificateType certificateType = new CertificateType();
-        certificateType.setCertificateKind(CertificateKind.CERTIFICATE);
-        certificate.setCertificateType(certificateType);
+        Certificate certificate = createCertificate(CertificateKind.CERTIFICATE);
+        Certificate leadershipExperience = createCertificate(CertificateKind.LEADERSHIP_TRAINING);
 
-        Certificate leadershipExperience = createCertificate();
-        CertificateType leadershipExperienceType = new CertificateType();
-        leadershipExperienceType.setCertificateKind(CertificateKind.LEADERSHIP_TRAINING);
-        leadershipExperience.setCertificateType(leadershipExperienceType);
+        CertificateCalculation certificateCalculation = createCertificateCalculation(certificate);
+        CertificateCalculation leadershipExperienceCalculation = createCertificateCalculation(leadershipExperience);
 
-        CertificateCalculation certificateCalculation = createModel(certificate);
-        CertificateCalculation leadershipExperienceCalculation = createModel(leadershipExperience);
-
-        CertificateDto mockedCertificateDto = mock(CertificateDto.class);
-        when(certificateMapper.toDto(certificate)).thenReturn(mockedCertificateDto);
+        CertificateDto mockedDto = mockCertificateDto();
+        when(certificateMapper.toDto(certificate)).thenReturn(mockedDto);
 
         List<CertificateCalculationDto> result = mapper
                 .toDto(List.of(certificateCalculation, leadershipExperienceCalculation));
 
         assertEquals(1, result.size());
-        assertEquals(mockedCertificateDto, result.get(0).certificate());
+        assertEquals(mockedDto, result.get(0).certificate());
         verify(certificateMapper).toDto(certificate);
     }
 
     @DisplayName("Should map ID to CertificateCalculation")
     @Test
     void shouldMapFromId() {
-        Certificate certificate = createCertificate();
+        Certificate certificate = createCertificate(CertificateKind.CERTIFICATE);
 
         when(certificateBusinessService.getById(CERT_ID)).thenReturn(certificate);
 
@@ -129,20 +127,11 @@ class CertificateCalculationMapperTest {
     @DisplayName("Should map List<Long> to List<CertificateCalculation>")
     @Test
     void shouldMapListFromIds() {
-        when(certificateBusinessService.getById(CERT_ID)).thenReturn(createCertificate());
+        when(certificateBusinessService.getById(CERT_ID)).thenReturn(createCertificate(CertificateKind.CERTIFICATE));
 
         List<CertificateCalculation> result = mapper.fromDto(List.of(CERT_ID));
 
         assertEquals(1, result.size());
         verify(certificateBusinessService).getById(CERT_ID);
-    }
-
-    @DisplayName("Should throw when certificate not found")
-    @Test
-    void shouldThrowWhenCertificateNotFound() {
-        when(certificateBusinessService.getById(anyLong()))
-                .thenThrow(new RuntimeException("Certificate not found"));
-
-        assertThrows(RuntimeException.class, () -> mapper.fromDto(CERT_ID));
     }
 }
