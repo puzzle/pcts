@@ -224,7 +224,7 @@ class DegreeCalculationValidationServiceTest
         DegreeCalculationValidationService spyService = spy(getService());
         DegreeCalculation dc = getValidModel();
 
-        doNothing().when(spyService).validateMemberForCalculation(any());
+        doNothing().when(spyService).validateMemberForCalculation(dc);
 
         spyService.validateOnCreate(dc);
 

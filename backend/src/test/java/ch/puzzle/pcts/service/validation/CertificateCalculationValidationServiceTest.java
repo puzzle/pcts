@@ -129,7 +129,7 @@ class CertificateCalculationValidationServiceTest
         CertificateCalculationValidationService spyService = spy(getService());
         CertificateCalculation cc = getValidModel();
 
-        doNothing().when(spyService).validateMemberForCalculation(any());
+        doNothing().when(spyService).validateMemberForCalculation(cc);
 
         spyService.validateOnCreate(cc);
 

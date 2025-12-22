@@ -189,7 +189,7 @@ class ExperienceCalculationBusinessServiceTest {
 
         when(persistenceService.getByCalculationId(ID)).thenReturn(new ArrayList<>(List.of(existing)));
         when(persistenceService.getById(experienceCalculationId)).thenReturn(Optional.of(existing));
-        when(persistenceService.save(any())).thenAnswer(inv -> inv.getArgument(0));
+        when(persistenceService.save(updated)).thenAnswer(inv -> inv.getArgument(0));
 
         List<ExperienceCalculation> result = businessService.updateExperienceCalculations(calculation);
 

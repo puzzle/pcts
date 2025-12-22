@@ -98,7 +98,7 @@ class CalculationValidationServiceTest
         Calculation calculation = getValidModel();
 
         CalculationValidationService spyService = spy(service);
-        doNothing().when((ValidationBase<Calculation>) spyService).validateOnCreate(any());
+        doNothing().when((ValidationBase<Calculation>) spyService).validateOnCreate(calculation);
 
         spyService.validateOnCreate(calculation);
 
@@ -113,7 +113,7 @@ class CalculationValidationServiceTest
 
         CalculationValidationService spyService = spy(service);
         doNothing().when((ValidationBase<Calculation>) spyService)
-                .validateOnUpdate(anyLong(), any());
+                .validateOnUpdate(CALCULATION_ID, calculation);
 
         spyService.validateOnUpdate(CALCULATION_ID, calculation);
 

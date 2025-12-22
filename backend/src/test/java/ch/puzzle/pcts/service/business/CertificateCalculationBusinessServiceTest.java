@@ -184,7 +184,7 @@ class CertificateCalculationBusinessServiceTest {
 
         when(persistenceService.getByCalculationId(ID)).thenReturn(new ArrayList<>(List.of(existing)));
         when(persistenceService.getById(certificateCalculationId)).thenReturn(Optional.of(existing));
-        when(persistenceService.save(any())).thenAnswer(inv -> inv.getArgument(0));
+        when(persistenceService.save(updated)).thenAnswer(inv -> inv.getArgument(0));
 
         List<CertificateCalculation> result = businessService.updateCertificateCalculations(calculation);
 

@@ -168,7 +168,7 @@ class ExperienceCalculationValidationServiceTest
         ExperienceCalculationValidationService spyService = spy(getService());
         ExperienceCalculation ec = getValidModel();
 
-        doNothing().when(spyService).validateMemberForCalculation(any());
+        doNothing().when(spyService).validateMemberForCalculation(ec);
 
         spyService.validateOnCreate(ec);
 

@@ -152,7 +152,7 @@ class DegreeCalculationBusinessServiceTest {
         when(calculation.getDegrees()).thenReturn(List.of(dc));
         when(dc.getDegree()).thenReturn(degree);
         when(degree.getId()).thenReturn(ID);
-        when(persistenceService.getByDegreeId(any())).thenReturn(List.of());
+        when(persistenceService.getByDegreeId(ID)).thenReturn(List.of());
         when(persistenceService.save(dc)).thenReturn(dc);
 
         List<DegreeCalculation> result = businessService.createDegreeCalculations(calculation);
@@ -186,7 +186,7 @@ class DegreeCalculationBusinessServiceTest {
         when(calculation.getDegrees()).thenReturn(new ArrayList<>(List.of(updated)));
         when(persistenceService.getByCalculationId(ID)).thenReturn(new ArrayList<>(List.of(existing)));
         when(persistenceService.getById(degreeCalculationId)).thenReturn(Optional.of(existing));
-        when(persistenceService.save(any())).thenAnswer(inv -> inv.getArgument(0));
+        when(persistenceService.save(updated)).thenAnswer(inv -> inv.getArgument(0));
 
         List<DegreeCalculation> result = businessService.updateDegreeCalculations(calculation);
 
