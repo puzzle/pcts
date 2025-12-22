@@ -1,18 +1,12 @@
 package ch.puzzle.pcts.service.business;
 
-import static ch.puzzle.pcts.Constants.EXPERIENCE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import ch.puzzle.pcts.dto.error.ErrorKey;
-import ch.puzzle.pcts.dto.error.FieldKey;
-import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.experience.Experience;
 import ch.puzzle.pcts.service.persistence.ExperiencePersistenceService;
 import ch.puzzle.pcts.service.validation.ExperienceValidationService;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,26 +36,11 @@ class ExperienceBusinessServiceTest {
     @Test
     void shouldGetById() {
         Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(experience));
+        when(persistenceService.getById(id)).thenReturn(experience);
 
         Experience result = businessService.getById(id);
 
         assertEquals(experience, result);
-        verify(persistenceService).getById(id);
-        verify(validationService).validateOnGetById(id);
-    }
-
-    @DisplayName("Should throw exception")
-    @Test
-    void shouldThrowException() {
-        Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.empty());
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(id));
-
-        assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
-        assertEquals(List.of(Map.of(FieldKey.FIELD, "id", FieldKey.IS, id.toString(), FieldKey.ENTITY, EXPERIENCE)),
-                     exception.getErrorAttributes());
         verify(persistenceService).getById(id);
         verify(validationService).validateOnGetById(id);
     }
@@ -83,7 +62,7 @@ class ExperienceBusinessServiceTest {
     void shouldUpdate() {
         Long id = 1L;
         when(persistenceService.save(experience)).thenReturn(experience);
-        when(persistenceService.getById(id)).thenReturn(Optional.of(experience));
+        when(persistenceService.getById(id)).thenReturn(experience);
 
         Experience result = businessService.update(id, experience);
 
@@ -93,41 +72,15 @@ class ExperienceBusinessServiceTest {
         verify(persistenceService).save(experience);
     }
 
-    @DisplayName("Should throw exception when updating non-existing experience")
-    @Test
-    void shouldThrowExceptionWhenUpdatingNotFound() {
-        Long id = 1L;
-
-        when(persistenceService.getById(id)).thenReturn(Optional.empty());
-
-        assertThrows(PCTSException.class, () -> businessService.update(id, experience));
-
-        verify(persistenceService).getById(id);
-        verify(validationService, never()).validateOnUpdate(any(), any());
-        verify(persistenceService, never()).save(any());
-    }
-
     @DisplayName("Should delete experience")
     @Test
     void shouldDelete() {
         Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(experience));
+        when(persistenceService.getById(id)).thenReturn(experience);
 
         businessService.delete(id);
 
         verify(validationService).validateOnDelete(id);
         verify(persistenceService).delete(id);
-    }
-
-    @DisplayName("Should throw exception when deleting non-existing experience")
-    @Test
-    void shouldThrowExceptionWhenNotFound() {
-        Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.empty());
-
-        assertThrows(PCTSException.class, () -> businessService.delete(id));
-
-        verify(persistenceService).getById(id);
-        verify(persistenceService, never()).delete(id);
     }
 }

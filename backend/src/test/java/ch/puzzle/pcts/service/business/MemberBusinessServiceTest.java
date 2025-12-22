@@ -1,20 +1,13 @@
 package ch.puzzle.pcts.service.business;
 
-import static ch.puzzle.pcts.Constants.MEMBER;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-import ch.puzzle.pcts.dto.error.ErrorKey;
-import ch.puzzle.pcts.dto.error.FieldKey;
-import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import ch.puzzle.pcts.service.validation.MemberValidationService;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,26 +35,11 @@ class MemberBusinessServiceTest {
     @DisplayName("Should get member by id")
     @Test
     void shouldGetById() {
-        when(persistenceService.getById(1L)).thenReturn(Optional.of(member));
+        when(persistenceService.getById(1L)).thenReturn(member);
 
         Member result = businessService.getById(1L);
 
         assertEquals(member, result);
-        verify(persistenceService).getById(1L);
-        verify(validationService).validateOnGetById(1L);
-    }
-
-    @DisplayName("Should throw exception")
-    @Test
-    void shouldThrowException() {
-        Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.empty());
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(id));
-
-        assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
-        assertIterableEquals(List.of(Map.of(FieldKey.FIELD, "id", FieldKey.IS, id.toString(), FieldKey.ENTITY, MEMBER)),
-                             exception.getErrorAttributes());
         verify(persistenceService).getById(1L);
         verify(validationService).validateOnGetById(1L);
     }
@@ -109,7 +87,7 @@ class MemberBusinessServiceTest {
     void shouldUpdate() {
         Long id = 1L;
         when(persistenceService.save(member)).thenReturn(member);
-        when(persistenceService.getById(id)).thenReturn(Optional.of(member));
+        when(persistenceService.getById(id)).thenReturn(member);
 
         Member result = businessService.update(id, member);
 
@@ -118,41 +96,15 @@ class MemberBusinessServiceTest {
         verify(persistenceService).save(member);
     }
 
-    @DisplayName("Should throw exception when updating non-existing member")
-    @Test
-    void shouldThrowExceptionWhenUpdatingNotFound() {
-        Long id = 1L;
-
-        when(persistenceService.getById(id)).thenReturn(Optional.empty());
-
-        assertThrows(PCTSException.class, () -> businessService.update(id, member));
-
-        verify(persistenceService).getById(id);
-        verify(validationService, never()).validateOnUpdate(any(), any());
-        verify(persistenceService, never()).save(any());
-    }
-
     @DisplayName("Should delete member")
     @Test
     void shouldDelete() {
         Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(member));
+        when(persistenceService.getById(id)).thenReturn(member);
 
         businessService.delete(id);
 
         verify(validationService).validateOnDelete(id);
         verify(persistenceService).delete(id);
-    }
-
-    @DisplayName("Should throw exception when deleting non-existing member")
-    @Test
-    void shouldThrowExceptionWhenNotFound() {
-        Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.empty());
-
-        assertThrows(PCTSException.class, () -> businessService.delete(id));
-
-        verify(persistenceService).getById(id);
-        verify(persistenceService, never()).delete(id);
     }
 }

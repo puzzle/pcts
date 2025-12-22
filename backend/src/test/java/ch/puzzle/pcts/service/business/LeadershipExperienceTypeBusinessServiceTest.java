@@ -7,7 +7,6 @@ import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.service.persistence.LeadershipTypePersistenceService;
 import ch.puzzle.pcts.service.validation.LeadershipExperienceTypeValidationService;
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,7 +36,7 @@ class LeadershipExperienceTypeBusinessServiceTest {
     @Test
     void shouldGetByIdAndValidateCertificateType() {
         Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
+        when(persistenceService.getById(id)).thenReturn(certificate);
 
         CertificateType result = businessService.getById(id);
 
@@ -78,7 +77,7 @@ class LeadershipExperienceTypeBusinessServiceTest {
         Long id = 1L;
 
         when(persistenceService.save(certificate)).thenReturn(certificate);
-        when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
+        when(persistenceService.getById(id)).thenReturn(certificate);
 
         CertificateType result = businessService.update(id, certificate);
 
@@ -92,7 +91,7 @@ class LeadershipExperienceTypeBusinessServiceTest {
     @Test
     void shouldDelete() {
         Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
+        when(persistenceService.getById(id)).thenReturn(certificate);
 
         businessService.delete(id);
 

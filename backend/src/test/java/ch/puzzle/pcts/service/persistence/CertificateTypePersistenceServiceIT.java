@@ -14,7 +14,6 @@ import ch.puzzle.pcts.repository.CertificateTypeRepository;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -126,18 +125,15 @@ class CertificateTypePersistenceServiceIT
 
         service.save(updatePayload);
 
-        Optional<CertificateType> certificateResult = service.getById(cId);
-
-        assertThat(certificateResult).isPresent().hasValueSatisfying(updated -> {
-            assertThat(updated.getId()).isEqualTo(cId);
-            assertThat(updated.getName()).isEqualTo("Updated certificate type");
-            assertThat(updated.getPoints()).isEqualByComparingTo(BigDecimal.valueOf(3));
-            assertThat(updated.getComment()).isEqualTo("This is a updated certificate");
-            assertThat(updated.getCertificateKind()).isEqualTo(CertificateKind.CERTIFICATE);
-            assertThat(updated.getTags())
-                    .extracting(Tag::getName)
-                    .containsExactlyInAnyOrder("Important tag", "Way more important tag");
-        });
+        CertificateType certificateResult = service.getById(cId);
+        assertThat(certificateResult.getId()).isEqualTo(cId);
+        assertThat(certificateResult.getName()).isEqualTo("Updated certificate type");
+        assertThat(certificateResult.getPoints()).isEqualByComparingTo(BigDecimal.valueOf(3));
+        assertThat(certificateResult.getComment()).isEqualTo("This is a updated certificate");
+        assertThat(certificateResult.getCertificateKind()).isEqualTo(CertificateKind.CERTIFICATE);
+        assertThat(certificateResult.getTags())
+                .extracting(Tag::getName)
+                .containsExactlyInAnyOrder("Important tag", "Way more important tag");
     }
 
     @DisplayName("Should get all certificate types")
@@ -159,13 +155,11 @@ class CertificateTypePersistenceServiceIT
     void shouldGetCertificateTypeById() {
         Long certificateId = 1L;
 
-        Optional<CertificateType> result = service.getById(certificateId);
+        CertificateType result = service.getById(certificateId);
 
-        assertThat(result).isPresent().hasValueSatisfying(c -> {
-            assertThat(c.getId()).isEqualTo(certificateId);
-            assertThat(c.getName()).isEqualTo("Certificate Type 1");
-            assertThat(c.getCertificateKind()).isEqualTo(CertificateKind.CERTIFICATE);
-        });
+        assertThat(result.getId()).isEqualTo(certificateId);
+        assertThat(result.getName()).isEqualTo("Certificate Type 1");
+        assertThat(result.getCertificateKind()).isEqualTo(CertificateKind.CERTIFICATE);
     }
 
     @DisplayName("Should not get leadership experience with certificate method")

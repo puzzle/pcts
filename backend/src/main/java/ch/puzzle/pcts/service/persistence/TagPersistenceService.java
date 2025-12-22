@@ -4,6 +4,7 @@ import static ch.puzzle.pcts.Constants.TAG;
 
 import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.repository.TagRepository;
+import java.util.Optional;
 import java.util.Set;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +23,8 @@ public class TagPersistenceService extends PersistenceBase<Tag, TagRepository> {
         return TAG;
     }
 
-    public Tag findWithIgnoreCase(String tagName) {
-        return repository.findByNameIgnoreCase(tagName).orElseGet(() -> save(new Tag(null, tagName)));
+    public Optional<Tag> findWithIgnoreCase(String tagName) {
+        return repository.findByNameIgnoreCase(tagName);
     }
 
     public Set<Tag> findAllUnusedTags() {
