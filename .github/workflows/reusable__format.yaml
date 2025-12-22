@@ -72,10 +72,10 @@ jobs:
 
       - name: Markdown linting
         run: |
-          find . -name "*.md" \
-          -not -path "./CHANGELOG.md" \
-          -not -path "./.github/ISSUE_TEMPLATE/*" | xargs mdl
-
+            find . -name "*.md" \
+            -not -path "./CHANGELOG.md" \
+            -not -path "./.github/ISSUE_TEMPLATE/*" \
+            -print0 | xargs -0 -r mdl
   yamllint:
     runs-on: ubuntu-latest
     defaults:

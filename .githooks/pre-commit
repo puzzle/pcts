@@ -23,7 +23,9 @@ get_changed_yaml_files() {
 get_changed_md_files() {
     path=$1
     delimiter=${2:-' '}
-    git diff --cached --name-only --diff-filter=d --line-prefix="$git_base_path"/ -- "$path" ":(exclude).github/ISSUE_TEMPLATE/" \
+    git diff --cached --name-only --diff-filter=d --line-prefix="$git_base_path"/ -- "$path" \
+        ":(exclude).github/ISSUE_TEMPLATE/" \
+        ":(exclude)CHANGELOG.md" \
         | grep -E "\.md$" \
         | tr '\n' "$delimiter"
 }
