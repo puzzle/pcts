@@ -2,6 +2,7 @@ package ch.puzzle.pcts.service.persistence;
 
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.repository.ExperienceTypeRepository;
+import ch.puzzle.pcts.util.TestData;
 import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +27,6 @@ class ExperienceTypePersistenceServiceIT
 
     @Override
     List<ExperienceType> getAll() {
-        return List
-                .of(new ExperienceType(1L,
-                                       "ExperienceType 1",
-                                       BigDecimal.valueOf(0),
-                                       BigDecimal.valueOf(12),
-                                       BigDecimal.valueOf(4.005)),
-                    new ExperienceType(2L,
-                                       "ExperienceType 2",
-                                       BigDecimal.valueOf(12),
-                                       BigDecimal.valueOf(10.7989),
-                                       BigDecimal.valueOf(6)));
+        return TestData.EXPERIENCE_TYPES;
     }
 }
