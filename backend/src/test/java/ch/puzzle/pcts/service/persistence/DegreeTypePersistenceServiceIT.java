@@ -2,6 +2,7 @@ package ch.puzzle.pcts.service.persistence;
 
 import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.repository.DegreeTypeRepository;
+import ch.puzzle.pcts.util.TestData;
 import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +27,6 @@ class DegreeTypePersistenceServiceIT
 
     @Override
     List<DegreeType> getAll() {
-        return List
-                .of(new DegreeType(1L,
-                                   "Degree type 1",
-                                   BigDecimal.valueOf(120.55),
-                                   BigDecimal.valueOf(60),
-                                   BigDecimal.valueOf(15.45)),
-                    new DegreeType(2L,
-                                   "Degree type 2",
-                                   BigDecimal.valueOf(12),
-                                   BigDecimal.valueOf(3.961),
-                                   BigDecimal.valueOf(3)));
+        return TestData.DEGREE_TYPES;
     }
 }

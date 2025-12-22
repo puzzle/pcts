@@ -249,7 +249,7 @@ public class MemberOverview implements Model {
     }
 
     public void setDegreeComment(String degreeComment) {
-        this.degreeComment = degreeComment;
+        this.degreeComment = trim(degreeComment);
     }
 
     public CertificateKind getLeadershipTypeKind() {
