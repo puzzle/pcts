@@ -32,17 +32,20 @@ public class CertificateTypePersistenceService extends PersistenceBase<Certifica
         return repository.findAllOfCertificateType();
     }
 
-    // This is still optional because you can't change it using just one method. It
-    // will be in #317.
     @Override
-    public Optional<CertificateType> getById(Long id) {
-        return Optional.ofNullable(repository.findByIdOfCertificateType(id).orElseThrow(() -> {
+    public String entityName() {
+        return CERTIFICATE_TYPE;
+    }
+
+    @Override
+    public CertificateType getById(Long id) {
+        return repository.findByIdOfCertificateType(id).orElseThrow(() -> {
             Map<FieldKey, String> attributes = Map
                     .of(FieldKey.ENTITY, CERTIFICATE_TYPE, FieldKey.FIELD, "id", FieldKey.IS, id.toString());
 
             GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
 
             return new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
-        }));
+        });
     }
 }
