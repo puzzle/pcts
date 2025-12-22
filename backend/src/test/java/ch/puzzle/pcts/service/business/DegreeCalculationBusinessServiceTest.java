@@ -151,7 +151,7 @@ class DegreeCalculationBusinessServiceTest {
 
         when(calculation.getDegrees()).thenReturn(List.of(dc));
         when(dc.getDegree()).thenReturn(degree);
-        when(degree.getId()).thenReturn(1L);
+        when(degree.getId()).thenReturn(ID);
         when(persistenceService.getByDegreeId(any())).thenReturn(List.of());
         when(persistenceService.save(dc)).thenReturn(dc);
 
@@ -165,14 +165,17 @@ class DegreeCalculationBusinessServiceTest {
     @Test
     @DisplayName("Should update, create and delete degree calculations correctly")
     void shouldUpdateDegreeCalculations() {
+        Long degreeId = 10L;
+        Long degreeCalculationId = 100L;
+
         Calculation calculation = mock(Calculation.class);
         when(calculation.getId()).thenReturn(ID);
 
         Degree degree = mock(Degree.class);
-        when(degree.getId()).thenReturn(10L);
+        when(degree.getId()).thenReturn(degreeId);
 
         DegreeCalculation existing = mock(DegreeCalculation.class);
-        when(existing.getId()).thenReturn(100L);
+        when(existing.getId()).thenReturn(degreeCalculationId);
         when(existing.getCalculation()).thenReturn(calculation);
         when(existing.getDegree()).thenReturn(degree);
 
@@ -182,14 +185,14 @@ class DegreeCalculationBusinessServiceTest {
 
         when(calculation.getDegrees()).thenReturn(new ArrayList<>(List.of(updated)));
         when(persistenceService.getByCalculationId(ID)).thenReturn(new ArrayList<>(List.of(existing)));
-        when(persistenceService.getById(100L)).thenReturn(Optional.of(existing));
+        when(persistenceService.getById(degreeCalculationId)).thenReturn(Optional.of(existing));
         when(persistenceService.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
         List<DegreeCalculation> result = businessService.updateDegreeCalculations(calculation);
 
         assertEquals(1, result.size());
         verify(updated).setCalculation(calculation);
-        verify(updated).setId(100L);
-        verify(validationService).validateOnUpdate(100L, updated);
+        verify(updated).setId(degreeCalculationId);
+        verify(validationService).validateOnUpdate(degreeCalculationId, updated);
     }
 }

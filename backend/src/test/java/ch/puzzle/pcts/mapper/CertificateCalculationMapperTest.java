@@ -21,6 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class CertificateCalculationMapperTest {
 
+    private static final Long ID = 5L;
     private static final Long CERT_ID = 10L;
 
     @Mock
@@ -43,7 +44,7 @@ class CertificateCalculationMapperTest {
     }
 
     private CertificateCalculation createModel(Certificate cert) {
-        return new CertificateCalculation(5L, null, cert);
+        return new CertificateCalculation(ID, null, cert);
     }
 
     @DisplayName("Should map CertificateCalculation to CertificateCalculationDto")
@@ -61,7 +62,7 @@ class CertificateCalculationMapperTest {
         CertificateCalculationDto result = mapper.toDto(model);
 
         assertNotNull(result);
-        assertEquals(5L, result.id());
+        assertEquals(ID, result.id());
         assertEquals(mockedCertificateDto, result.certificate());
 
         verify(certificateMapper).toDto(certificate);

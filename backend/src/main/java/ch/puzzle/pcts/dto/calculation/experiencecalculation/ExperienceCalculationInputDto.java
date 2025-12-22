@@ -9,5 +9,5 @@ public record ExperienceCalculationInputDto(
 
         @Schema(description = "Relevancy of the experience", example = "HIGHLY", requiredMode = Schema.RequiredMode.REQUIRED) Relevancy relevancy,
 
-        @Schema(description = "Optional justification for the selected relevancy", example = "It's highly relevant because it is the same job.") String comment) {
+        @Schema(description = "Optional justification for the selected relevancy", example = "It's highly relevant because it is the same job.", nullable = true) String comment) {
 }

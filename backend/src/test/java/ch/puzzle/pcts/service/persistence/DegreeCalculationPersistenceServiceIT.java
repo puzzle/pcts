@@ -23,6 +23,10 @@ class DegreeCalculationPersistenceServiceIT
     CalculationPersistenceServiceIT calculationServiceIT;
     DegreePersistenceServiceIT degreeServiceIT;
 
+    private static final Long DEGREE_CALC_ID_1 = 1L;
+    private static final Long DEGREE_CALC_ID_2 = 2L;
+    private static final Long DEGREE_CALC_ID_3 = 3L;
+
     @Autowired
     DegreeCalculationPersistenceServiceIT(DegreeCalculationPersistenceService service,
                                           CalculationPersistenceService calculationService,
@@ -34,7 +38,7 @@ class DegreeCalculationPersistenceServiceIT
 
     @Override
     DegreeCalculation getModel() {
-        Calculation calculation = calculationServiceIT.getAll().get(0);
+        Calculation calculation = calculationServiceIT.getAll().getFirst();
         Degree degree = degreeServiceIT.getAll().get(1);
 
         return new DegreeCalculation(null, calculation, degree, Relevancy.HIGHLY, BigDecimal.valueOf(80), "Comment");
@@ -48,7 +52,7 @@ class DegreeCalculationPersistenceServiceIT
         List<DegreeCalculation> list = new ArrayList<>();
 
         list
-                .add(new DegreeCalculation(1L,
+                .add(new DegreeCalculation(DEGREE_CALC_ID_1,
                                            calculations.get(0),
                                            degree,
                                            Relevancy.HIGHLY,
@@ -56,7 +60,7 @@ class DegreeCalculationPersistenceServiceIT
                                            "Comment"));
 
         list
-                .add(new DegreeCalculation(2L,
+                .add(new DegreeCalculation(DEGREE_CALC_ID_2,
                                            calculations.get(1),
                                            degree,
                                            Relevancy.LITTLE,
@@ -64,7 +68,7 @@ class DegreeCalculationPersistenceServiceIT
                                            "Comment"));
 
         list
-                .add(new DegreeCalculation(3L,
+                .add(new DegreeCalculation(DEGREE_CALC_ID_3,
                                            calculations.get(0),
                                            degree,
                                            Relevancy.LIMITED,

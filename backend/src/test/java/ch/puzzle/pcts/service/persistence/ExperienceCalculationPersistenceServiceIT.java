@@ -22,6 +22,10 @@ class ExperienceCalculationPersistenceServiceIT
     CalculationPersistenceServiceIT calculationServiceIT;
     ExperiencePersistenceServiceIT experienceServiceIT;
 
+    private static final Long EXPERIENCE_CALC_ID_1 = 1L;
+    private static final Long EXPERIENCE_CALC_ID_2 = 2L;
+    private static final Long EXPERIENCE_CALC_ID_3 = 3L;
+
     @Autowired
     ExperienceCalculationPersistenceServiceIT(ExperienceCalculationPersistenceService service,
                                               CalculationPersistenceService calculationService,
@@ -46,11 +50,11 @@ class ExperienceCalculationPersistenceServiceIT
 
         List<ExperienceCalculation> list = new ArrayList<>();
 
-        list.add(new ExperienceCalculation(1L, calculations.get(0), experiences.get(0), Relevancy.HIGHLY, "Comment"));
+        list.add(new ExperienceCalculation(EXPERIENCE_CALC_ID_1, calculations.get(0), experiences.get(0), Relevancy.HIGHLY, "Comment"));
 
-        list.add(new ExperienceCalculation(2L, calculations.get(1), experiences.get(0), Relevancy.LITTLE, "Comment"));
+        list.add(new ExperienceCalculation(EXPERIENCE_CALC_ID_2, calculations.get(1), experiences.get(0), Relevancy.LITTLE, "Comment"));
 
-        list.add(new ExperienceCalculation(3L, calculations.get(0), experiences.get(1), Relevancy.LIMITED, "Comment"));
+        list.add(new ExperienceCalculation(EXPERIENCE_CALC_ID_3, calculations.get(0), experiences.get(1), Relevancy.LIMITED, "Comment"));
 
         return list;
     }

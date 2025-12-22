@@ -8,11 +8,11 @@ import java.util.List;
 
 public record CalculationInputDto(
 
-        @Schema(description = "The member id associated with this calculation.", example = "1", nullable = false) Long memberId,
+        @Schema(description = "The member id associated with this calculation.", example = "1") Long memberId,
 
-        @Schema(description = "The current state of the calculation.", example = "ACTIVE", nullable = false) CalculationState state,
+        @Schema(description = "The current state of the calculation.", example = "ACTIVE") CalculationState state,
 
-        @Schema(description = "The role id for this calculation.", example = "1", nullable = false) Long roleId,
+        @Schema(description = "The role id for this calculation.", example = "1") Long roleId,
 
         @Schema(description = "Certificates associated with the calculation.", example = "[1, 2, 3]") List<Long> certificates,
 

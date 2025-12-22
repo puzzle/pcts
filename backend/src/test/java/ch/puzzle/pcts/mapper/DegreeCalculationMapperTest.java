@@ -24,6 +24,8 @@ class DegreeCalculationMapperTest {
 
     private static final Long DEGREE_ID = 100L;
 
+    private static final Long DEGREE_CALCULATION_ID = 20L;
+
     @Mock
     private DegreeBusinessService degreeBusinessService;
 
@@ -44,7 +46,7 @@ class DegreeCalculationMapperTest {
     }
 
     private DegreeCalculation createModel(Degree degree) {
-        return new DegreeCalculation(20L, null, degree, Relevancy.HIGHLY, BigDecimal.ONE, "Comment");
+        return new DegreeCalculation(DEGREE_CALCULATION_ID, null, degree, Relevancy.HIGHLY, BigDecimal.ONE, "Comment");
     }
 
     @DisplayName("Should map DegreeCalculation to DegreeCalculationDto")
@@ -60,7 +62,7 @@ class DegreeCalculationMapperTest {
         DegreeCalculationDto result = mapper.toDto(model);
 
         assertNotNull(result);
-        assertEquals(20L, result.id());
+        assertEquals(DEGREE_CALCULATION_ID, result.id());
         assertEquals(mockedDegreeDto, result.degree());
         assertEquals(BigDecimal.ONE, result.weight());
         assertEquals(Relevancy.HIGHLY, result.relevancy());

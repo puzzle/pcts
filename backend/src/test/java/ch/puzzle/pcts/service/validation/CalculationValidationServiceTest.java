@@ -22,7 +22,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class CalculationValidationServiceTest extends ValidationBaseServiceTest<Calculation, CalculationValidationService> {
+class CalculationValidationServiceTest
+        extends ValidationBaseServiceTest<Calculation, CalculationValidationService> {
+
+    private static final Long MEMBER_ID = 1L;
+    private static final Long ROLE_ID = 1L;
+    private static final Long CALCULATION_ID = 1L;
 
     @Mock
     private CalculationPersistenceService persistenceService;
@@ -34,19 +39,19 @@ class CalculationValidationServiceTest extends ValidationBaseServiceTest<Calcula
     Calculation getValidModel() {
 
         Member member = new Member();
-        member.setId(1L);
+        member.setId(MEMBER_ID);
 
         Role role = new Role();
-        role.setId(1L);
+        role.setId(ROLE_ID);
 
-        Calculation c = new Calculation();
-        c.setMember(member);
-        c.setRole(role);
-        c.setState(CalculationState.ACTIVE);
-        c.setPublicationDate(LocalDate.now());
-        c.setPublicizedBy("Admin");
+        Calculation calculation = new Calculation();
+        calculation.setMember(member);
+        calculation.setRole(role);
+        calculation.setState(CalculationState.ACTIVE);
+        calculation.setPublicationDate(LocalDate.now());
+        calculation.setPublicizedBy("Admin");
 
-        return c;
+        return calculation;
     }
 
     @Override
@@ -55,32 +60,36 @@ class CalculationValidationServiceTest extends ValidationBaseServiceTest<Calcula
     }
 
     private static Calculation createCalculation(Member member, Role role, CalculationState state) {
-        Calculation c = new Calculation();
-        c.setMember(member);
-        c.setRole(role);
-        c.setState(state);
-        c.setPublicationDate(LocalDate.now());
-        c.setPublicizedBy("Admin");
-        return c;
+        Calculation calculation = new Calculation();
+        calculation.setMember(member);
+        calculation.setRole(role);
+        calculation.setState(state);
+        calculation.setPublicationDate(LocalDate.now());
+        calculation.setPublicizedBy("Admin");
+        return calculation;
     }
 
     static Stream<Arguments> invalidModelProvider() {
         Member validMember = new Member();
-        validMember.setId(1L);
+        validMember.setId(MEMBER_ID);
 
         Role validRole = new Role();
-        validRole.setId(1L);
+        validRole.setId(ROLE_ID);
 
-        return Stream
-                .of(Arguments
-                        .of(createCalculation(null, validRole, CalculationState.ACTIVE),
-                            List.of(Map.of(FieldKey.CLASS, "Calculation", FieldKey.FIELD, "member"))),
-                    Arguments
-                            .of(createCalculation(validMember, null, CalculationState.ACTIVE),
-                                List.of(Map.of(FieldKey.CLASS, "Calculation", FieldKey.FIELD, "role"))),
-                    Arguments
-                            .of(createCalculation(validMember, validRole, null),
-                                List.of(Map.of(FieldKey.CLASS, "Calculation", FieldKey.FIELD, "state"))));
+        return Stream.of(
+                Arguments.of(
+                        createCalculation(null, validRole, CalculationState.ACTIVE),
+                        List.of(Map.of(FieldKey.CLASS, "Calculation", FieldKey.FIELD, "member"))
+                ),
+                Arguments.of(
+                        createCalculation(validMember, null, CalculationState.ACTIVE),
+                        List.of(Map.of(FieldKey.CLASS, "Calculation", FieldKey.FIELD, "role"))
+                ),
+                Arguments.of(
+                        createCalculation(validMember, validRole, null),
+                        List.of(Map.of(FieldKey.CLASS, "Calculation", FieldKey.FIELD, "state"))
+                )
+        );
     }
 
     @DisplayName("Should call correct validate method on validateOnCreate()")
@@ -100,15 +109,15 @@ class CalculationValidationServiceTest extends ValidationBaseServiceTest<Calcula
     @DisplayName("Should call correct validate method on validateOnUpdate()")
     @Test
     void shouldCallCorrectMethodOnValidateOnUpdate() {
-        Long id = 1L;
         Calculation calculation = getValidModel();
 
         CalculationValidationService spyService = spy(service);
-        doNothing().when((ValidationBase<Calculation>) spyService).validateOnUpdate(anyLong(), any());
+        doNothing().when((ValidationBase<Calculation>) spyService)
+                .validateOnUpdate(anyLong(), any());
 
-        spyService.validateOnUpdate(id, calculation);
+        spyService.validateOnUpdate(CALCULATION_ID, calculation);
 
-        verify(spyService).validateOnUpdate(id, calculation);
+        verify(spyService).validateOnUpdate(CALCULATION_ID, calculation);
         verifyNoMoreInteractions(persistenceService);
     }
 }

@@ -147,9 +147,9 @@ class CertificateCalculationBusinessServiceTest {
         Certificate certificate = mock(Certificate.class);
 
         when(cc.getCertificate()).thenReturn(certificate);
-        when(certificate.getId()).thenReturn(1L);
+        when(certificate.getId()).thenReturn(ID);
         when(calculation.getCertificates()).thenReturn(List.of(cc));
-        when(persistenceService.getByCertificateId(1L)).thenReturn(List.of());
+        when(persistenceService.getByCertificateId(ID)).thenReturn(List.of());
         when(persistenceService.save(cc)).thenReturn(cc);
 
         List<CertificateCalculation> result = businessService.createCertificateCalculations(calculation);
@@ -162,14 +162,17 @@ class CertificateCalculationBusinessServiceTest {
     @Test
     @DisplayName("Should update, create and delete certificate calculations correctly")
     void shouldUpdateCertificateCalculations() {
+        Long certificateId = 10L;
+        Long certificateCalculationId = 100L;
+
         Calculation calculation = mock(Calculation.class);
         when(calculation.getId()).thenReturn(ID);
 
         Certificate certificate = mock(Certificate.class);
-        when(certificate.getId()).thenReturn(10L);
+        when(certificate.getId()).thenReturn(certificateId);
 
         CertificateCalculation existing = mock(CertificateCalculation.class);
-        when(existing.getId()).thenReturn(100L);
+        when(existing.getId()).thenReturn(certificateCalculationId);
         when(existing.getCalculation()).thenReturn(calculation);
         when(existing.getCertificate()).thenReturn(certificate);
 
@@ -180,14 +183,14 @@ class CertificateCalculationBusinessServiceTest {
         when(calculation.getCertificates()).thenReturn(new ArrayList<>(List.of(updated)));
 
         when(persistenceService.getByCalculationId(ID)).thenReturn(new ArrayList<>(List.of(existing)));
-        when(persistenceService.getById(100L)).thenReturn(Optional.of(existing));
+        when(persistenceService.getById(certificateCalculationId)).thenReturn(Optional.of(existing));
         when(persistenceService.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
         List<CertificateCalculation> result = businessService.updateCertificateCalculations(calculation);
 
         assertEquals(1, result.size());
         verify(updated).setCalculation(calculation);
-        verify(updated, times(2)).setId(100L);
-        verify(validationService).validateOnUpdate(100L, updated);
+        verify(updated, times(2)).setId(certificateCalculationId);
+        verify(validationService).validateOnUpdate(certificateCalculationId, updated);
     }
 }

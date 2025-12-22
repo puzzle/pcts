@@ -22,6 +22,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class ExperienceCalculationMapperTest {
 
     private static final Long EXPERIENCE_ID = 11L;
+    private static final Long EXPERIENCE_CALCULATION_ID = 22L;
+
     private static final Relevancy RELEVANCY = Relevancy.HIGHLY;
 
     @Mock
@@ -44,7 +46,7 @@ class ExperienceCalculationMapperTest {
     }
 
     private ExperienceCalculation createModel(Experience experience) {
-        return new ExperienceCalculation(22L, null, experience, RELEVANCY, "Comment");
+        return new ExperienceCalculation(EXPERIENCE_CALCULATION_ID, null, experience, RELEVANCY, "Comment");
     }
 
     @DisplayName("Should map ExperienceCalculation to ExperienceCalculationDto")
@@ -59,7 +61,7 @@ class ExperienceCalculationMapperTest {
         ExperienceCalculationDto result = mapper.toDto(model);
 
         assertNotNull(result);
-        assertEquals(22L, result.id());
+        assertEquals(EXPERIENCE_CALCULATION_ID, result.id());
         assertEquals(expectedExperienceDto, result.experience());
         assertEquals(RELEVANCY, result.relevancy());
         assertEquals("Comment", result.comment());

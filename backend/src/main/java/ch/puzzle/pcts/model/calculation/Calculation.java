@@ -61,6 +61,7 @@ public class Calculation implements Model {
         this.degrees = builder.degrees;
         this.experiences = builder.experiences;
         this.certificates = builder.certificates;
+        this.points = builder.points;
     }
 
     public Calculation() {
@@ -193,6 +194,8 @@ public class Calculation implements Model {
         private List<DegreeCalculation> degrees;
         private List<ExperienceCalculation> experiences;
         private List<CertificateCalculation> certificates;
+        private BigDecimal points;
+
 
         private Builder() {
         }
@@ -243,6 +246,11 @@ public class Calculation implements Model {
 
         public Builder withCertificates(List<CertificateCalculation> certificates) {
             this.certificates = certificates;
+            return this;
+        }
+
+        public Builder withPoints(BigDecimal points){
+            this.points = points;
             return this;
         }
 

@@ -34,11 +34,14 @@ class CalculationMapperTest {
     private static final Long MEMBER_ID = 1L;
     private static final Long ROLE_ID = 2L;
     private static final Long CALC_ID = 3L;
+    private static final Long CERTIFICATE1_ID = 1L;
+    private static final Long CERTIFICATE2_ID = 2L;
+    private static final Long LEADERSHIP_EXPERIENCE_ID = 10L;
 
     private static final CalculationState STATE = CalculationState.ACTIVE;
     private static final LocalDate PUBLICATION_DATE = LocalDate.now();
     private static final String PUBLICIZED_BY = "Ldap User";
-    private static final BigDecimal POINTS = BigDecimal.valueOf(10);
+    private static final BigDecimal POINTS = BigDecimal.TEN;
 
     @Mock
     private MemberMapper memberMapper;
@@ -104,8 +107,8 @@ class CalculationMapperTest {
         return new CalculationInputDto(MEMBER_ID,
                                        STATE,
                                        ROLE_ID,
-                                       List.of(1L, 2L),
-                                       List.of(10L),
+                                       List.of(CERTIFICATE1_ID, CERTIFICATE2_ID),
+                                       List.of(LEADERSHIP_EXPERIENCE_ID),
                                        List.of(mock(DegreeCalculationInputDto.class)),
                                        List.of(mock(ExperienceCalculationInputDto.class)));
     }

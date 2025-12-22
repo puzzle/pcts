@@ -21,6 +21,10 @@ class CertificateCalculationPersistenceServiceIT
     CalculationPersistenceServiceIT calculationServiceIT;
     CertificatePersistenceServiceIT certificateServiceIT;
 
+    private static final Long CERT_CALC_ID_1 = 1L;
+    private static final Long CERT_CALC_ID_2 = 2L;
+    private static final Long CERT_CALC_ID_3 = 3L;
+
     @Autowired
     CertificateCalculationPersistenceServiceIT(CertificateCalculationPersistenceService service,
                                                CalculationPersistenceService calculationService,
@@ -32,8 +36,8 @@ class CertificateCalculationPersistenceServiceIT
 
     @Override
     CertificateCalculation getModel() {
-        Calculation calculation = calculationServiceIT.getAll().get(0);
-        Certificate certificate = certificateServiceIT.getAll().get(0);
+        Calculation calculation = calculationServiceIT.getAll().getFirst();
+        Certificate certificate = certificateServiceIT.getAll().getFirst();
 
         return new CertificateCalculation(null, calculation, certificate);
     }
@@ -45,10 +49,10 @@ class CertificateCalculationPersistenceServiceIT
 
         List<CertificateCalculation> list = new ArrayList<>();
 
-        list.add(new CertificateCalculation(1L, calculations.get(0), certificates.get(1)));
-        list.add(new CertificateCalculation(2L, calculations.get(1), certificates.get(1)));
+        list.add(new CertificateCalculation(CERT_CALC_ID_1, calculations.getFirst(), certificates.get(1)));
+        list.add(new CertificateCalculation(CERT_CALC_ID_2, calculations.get(1), certificates.get(1)));
 
-        list.add(new CertificateCalculation(3L, calculations.get(0), certificates.get(4)));
+        list.add(new CertificateCalculation(CERT_CALC_ID_3, calculations.getFirst(), certificates.get(4)));
         return list;
     }
 

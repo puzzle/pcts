@@ -153,7 +153,7 @@ class ExperienceCalculationBusinessServiceTest {
 
         when(calculation.getExperiences()).thenReturn(List.of(ec));
         when(ec.getExperience()).thenReturn(exp);
-        when(exp.getId()).thenReturn(1L);
+        when(exp.getId()).thenReturn(ID);
         when(persistenceService.getByExperienceId(any())).thenReturn(List.of());
         when(persistenceService.save(ec)).thenReturn(ec);
 
@@ -167,14 +167,17 @@ class ExperienceCalculationBusinessServiceTest {
     @Test
     @DisplayName("Should update, create and delete experience calculations correctly")
     void shouldUpdateExperienceCalculations() {
+        Long experienceId = 10L;
+        Long experienceCalculationId = 100L;
+
         Calculation calculation = mock(Calculation.class);
         when(calculation.getId()).thenReturn(ID);
 
         Experience experience = mock(Experience.class);
-        when(experience.getId()).thenReturn(10L);
+        when(experience.getId()).thenReturn(experienceId);
 
         ExperienceCalculation existing = mock(ExperienceCalculation.class);
-        when(existing.getId()).thenReturn(100L);
+        when(existing.getId()).thenReturn(experienceCalculationId);
         when(existing.getCalculation()).thenReturn(calculation);
         when(existing.getExperience()).thenReturn(experience);
 
@@ -185,7 +188,7 @@ class ExperienceCalculationBusinessServiceTest {
         when(calculation.getExperiences()).thenReturn(new ArrayList<>(List.of(updated)));
 
         when(persistenceService.getByCalculationId(ID)).thenReturn(new ArrayList<>(List.of(existing)));
-        when(persistenceService.getById(100L)).thenReturn(Optional.of(existing));
+        when(persistenceService.getById(experienceCalculationId)).thenReturn(Optional.of(existing));
         when(persistenceService.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
         List<ExperienceCalculation> result = businessService.updateExperienceCalculations(calculation);
@@ -193,7 +196,7 @@ class ExperienceCalculationBusinessServiceTest {
         assertEquals(1, result.size());
 
         verify(updated).setCalculation(calculation);
-        verify(updated).setId(100L);
-        verify(validationService).validateOnUpdate(100L, updated);
+        verify(updated).setId(experienceCalculationId);
+        verify(validationService).validateOnUpdate(experienceCalculationId, updated);
     }
 }

@@ -51,6 +51,13 @@ class CalculationControllerIT {
 
     private static final String BASEURL = "/api/v1/calculations";
     private static final Long ID = 1L;
+    private static final Long ORGANISATION_UNIT_ID = 1L;
+    private static final Long ROLE_ID = 1L;
+    private static final Long CERTIFICATE1_ID = 1L;
+    private static final Long CERTIFICATE2_ID = 2L;
+    private static final Long LEADERSHIP_EXPERIENCE_ID = 10L;
+
+
     private final LocalDate commonDate = LocalDate.of(2020, 1, 1);
 
     @MockitoBean
@@ -69,8 +76,8 @@ class CalculationControllerIT {
     @BeforeEach
     void setUp() {
 
-        Role role = new Role(1L, "Developer", true);
-        OrganisationUnit ou = new OrganisationUnit(1L, "/dev");
+        Role role = new Role(ROLE_ID, "Developer", true);
+        OrganisationUnit ou = new OrganisationUnit(ORGANISATION_UNIT_ID, "/dev");
         Member member = Member.Builder
                 .builder()
                 .withId(ID)
@@ -94,19 +101,19 @@ class CalculationControllerIT {
                 .withDegrees(List.of())
                 .withExperiences(List.of())
                 .withCertificates(List.of())
+                .withPoints(BigDecimal.TEN)
                 .build();
-        calculation.setPoints(BigDecimal.valueOf(10));
 
         inputDto = new CalculationInputDto(ID,
                                            CalculationState.ACTIVE,
-                                           1L,
-                                           List.of(1L, 2L),
-                                           List.of(10L),
+                                           ROLE_ID,
+                                           List.of(CERTIFICATE1_ID, CERTIFICATE2_ID),
+                                           List.of(LEADERSHIP_EXPERIENCE_ID),
                                            List.of(),
                                            List.of());
 
-        RoleDto roleDto = new RoleDto(1L, "Developer", true);
-        OrganisationUnitDto ouDto = new OrganisationUnitDto(1L, "/dev");
+        RoleDto roleDto = new RoleDto(ROLE_ID, "Developer", true);
+        OrganisationUnitDto ouDto = new OrganisationUnitDto(ORGANISATION_UNIT_ID, "/dev");
 
         MemberDto memberDto = new MemberDto(ID,
                                             "Alex",
@@ -123,7 +130,7 @@ class CalculationControllerIT {
                                          CalculationState.ACTIVE,
                                          commonDate,
                                          "System",
-                                         BigDecimal.valueOf(10),
+                                         BigDecimal.TEN,
                                          List.of(mock(CertificateCalculationDto.class)),
                                          List.of(mock(LeadershipExperienceCalculationDto.class)),
                                          List.of(mock(DegreeCalculationDto.class)),
