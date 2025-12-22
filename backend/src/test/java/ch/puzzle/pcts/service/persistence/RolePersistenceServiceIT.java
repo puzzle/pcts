@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.repository.RoleRepository;
+import ch.puzzle.pcts.util.TestData;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +27,7 @@ class RolePersistenceServiceIT extends PersistenceBaseIT<Role, RoleRepository, R
     }
 
     List<Role> getAll() {
-        return List.of(new Role(2L, "Role 2", false));
+        return TestData.ROLES;
     }
 
     @DisplayName("Should get role by name")
