@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.controller;
 
+import static ch.puzzle.pcts.util.TestData.MEMBER_1_OVERVIEWS;
+import static ch.puzzle.pcts.util.TestData.MEMBER_1_OVERVIEW_DTO;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -12,7 +14,6 @@ import ch.puzzle.pcts.mapper.MemberOverviewMapper;
 import ch.puzzle.pcts.model.memberoverview.MemberOverview;
 import ch.puzzle.pcts.service.business.MemberOverviewBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
-import ch.puzzle.pcts.util.TestData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -55,8 +56,8 @@ class MemberOverviewControllerIT {
     void shouldGetMemberOverviewById() throws Exception {
         Long memberId = 1L;
 
-        List<MemberOverview> memberOverviews = TestData.MEMBER_1_OVERVIEWS;
-        MemberOverviewDto expectedDto = TestData.MEMBER_1_OVERVIEW_DTO;
+        List<MemberOverview> memberOverviews = MEMBER_1_OVERVIEWS;
+        MemberOverviewDto expectedDto = MEMBER_1_OVERVIEW_DTO;
 
         BDDMockito.given(service.getById(anyLong())).willReturn(memberOverviews);
         BDDMockito.given(mapper.toDto(memberOverviews)).willReturn(expectedDto);

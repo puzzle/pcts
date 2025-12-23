@@ -1,8 +1,9 @@
 package ch.puzzle.pcts.service.persistence;
 
+import static ch.puzzle.pcts.util.TestData.DEGREE_TYPES;
+
 import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.repository.DegreeTypeRepository;
-import ch.puzzle.pcts.util.TestData;
 import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,6 @@ class DegreeTypePersistenceServiceIT
 
     @Override
     List<DegreeType> getAll() {
-        return TestData.DEGREE_TYPES;
+        return DEGREE_TYPES;
     }
 }
