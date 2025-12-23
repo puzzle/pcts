@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.0](https://github.com/puzzle/pcts/compare/pcts-v0.2.0...pcts-v0.3.0) (2025-12-23)
+
+
+### Features
+
+* add prod spring profile [#160](https://github.com/puzzle/pcts/issues/160) ([#329](https://github.com/puzzle/pcts/issues/329)) ([a4bf569](https://github.com/puzzle/pcts/commit/a4bf5691a5a9295e9e358e6658cc48955668d0b5))
+* **release-please:** setup release please [#363](https://github.com/puzzle/pcts/issues/363) ([b20b0d7](https://github.com/puzzle/pcts/commit/b20b0d755c7a2131bd937f41cd6ab36480bc1260))
+
 ## [0.2.0](https://github.com/puzzle/pcts/compare/pcts-v0.1.0...pcts-v0.2.0) (2025-12-22)
 
 
