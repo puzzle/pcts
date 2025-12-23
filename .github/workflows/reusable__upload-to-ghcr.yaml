@@ -1,6 +1,5 @@
 ---
 name: Upload image to GHRC
-
 on:
   workflow_call:
     inputs:
@@ -8,11 +7,16 @@ on:
         description: "Path to the workdir from the Root"
         required: true
         type: string
+
       image_name:
         description: "Name for the image. PCTS is the prefix"
         required: true
         type: string
 
+      version:
+        description: "Explicit version tag (e.g. v1.2.0)"
+        required: false
+        type: string
 env:
   REGISTRY: ghcr.io
   COMMIT_HASH: ${{ github.sha }}
@@ -20,34 +24,30 @@ env:
 jobs:
   upload-to-ghrc:
     runs-on: ubuntu-latest
-
     permissions:
       contents: read
       packages: write
       attestations: write
       id-token: write
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-
       - name: Log in to the Container registry
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ github.repository }}/pcts-${{ inputs.image_name }}
           tags: |
+            type=raw,value=${{ inputs.version }},enable=${{ inputs.version != '' }}
             type=ref,event=tag
             type=sha,format=long,prefix=
             type=raw,value=latest
-
       - name: Build and push Docker image
         id: push
         uses: docker/build-push-action@v6

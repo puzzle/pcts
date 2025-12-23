@@ -8,11 +8,6 @@ on:
         type: string
         description: 'The commit hash from which to check out the repository'
         required: false
-      DEPLOY:
-        type: boolean
-        default: false
-        description: 'Wether or not to deploy a new version after the build'
-        required: false
 
 permissions:
   contents: read
@@ -46,16 +41,13 @@ jobs:
 
       - name: Setup Pages
         id: pages
-        if: inputs.DEPLOY
         uses: actions/configure-pages@v5
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
-        if: inputs.DEPLOY
         with:
           path: ./docs/book
 
   deploy:
-    if: inputs.DEPLOY
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
