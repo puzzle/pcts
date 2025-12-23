@@ -8,8 +8,7 @@ import { FormGroup } from '@angular/forms';
   standalone: true,
   imports: [MatButton,
     ScopedTranslationPipe],
-  templateUrl: './base-form-actions.component.html',
-  styleUrl: 'base-form-actions.component.scss'
+  templateUrl: './base-form-actions.component.html'
 })
 export class BaseFormActionsComponent {
   formGroup = input.required<FormGroup>();
