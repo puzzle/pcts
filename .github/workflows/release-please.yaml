@@ -1,0 +1,32 @@
+---
+name: Release
+on:
+  push:
+    branches:
+      - origin/feature/66-setup-release-please
+
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - id: release
+        uses: googleapis/release-please-action@v4
+        with:
+          token: ${{ secrets.RELEASE_PLEASE_GH_TOKEN }}
+          config-file: .github/release-please-config.json
+          manifest-file: .github/.release-please-manifest.json
+
+  build-and-push:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    uses: ./.github/workflows/reusable__upload-to-ghrc.yaml
+    with:
+      context: "."
+      image_name: "service"
+      version: ${{ needs.release-please.outputs.tag_name }}
