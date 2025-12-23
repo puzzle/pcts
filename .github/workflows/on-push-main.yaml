@@ -13,6 +13,7 @@ permissions:
   pull-requests: write
   pages: write
 jobs:
+
   release-please:
     runs-on: ubuntu-latest
     outputs:
@@ -25,13 +26,19 @@ jobs:
           token: ${{ secrets.RELEASE_PLEASE_GH_TOKEN }}
           config-file: .github/release-please-config.json
           manifest-file: .github/.release-please-manifest.json
+
   build-and-push:
     needs: release-please
+    strategy:
+      matrix:
+        context: ["backend", "frontend"]
     uses: ./.github/workflows/reusable__upload-to-ghcr.yaml
     with:
-      context: "."
-      image_name: "service"
+      context: ${{ matrix.context }}
+      image_name: ${{ matrix.context }}
       version: ${{needs.release-please.outputs.tag_name}}
+    secrets: inherit
+
   documentation:
     uses: ./.github/workflows/reusable__documentation.yaml
     with:
