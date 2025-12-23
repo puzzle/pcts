@@ -63,8 +63,6 @@ class CalculationMapperTest {
     @InjectMocks
     private CalculationMapper calculationMapper;
 
-    // ---------------- Helper Methods ----------------
-
     private Member createMember() {
         Member m = new Member();
         m.setId(MEMBER_ID);
@@ -113,8 +111,6 @@ class CalculationMapperTest {
         return mock(RoleDto.class);
     }
 
-    // ---------------- Tests ----------------
-
     @DisplayName("Should map Calculation to CalculationDto")
     @Test
     void shouldReturnCalculationDto() {
@@ -143,10 +139,10 @@ class CalculationMapperTest {
         assertEquals(POINTS, result.points());
         assertEquals(memberDto, result.member());
         assertEquals(roleDto, result.role());
-        assertNotNull(result.certificates());
-        assertNotNull(result.degrees());
-        assertNotNull(result.experiences());
-        assertNotNull(result.leadershipExperiences());
+        assertEquals(1, result.certificates().size());
+        assertEquals(1, result.experiences().size());
+        assertEquals(1, result.leadershipExperiences().size());
+        assertEquals(1, result.degrees().size());
 
         verify(memberMapper).toDto(member);
         verify(roleMapper).toDto(role);
@@ -177,9 +173,9 @@ class CalculationMapperTest {
         assertNull(result.getPublicationDate());
         assertEquals(member, result.getMember());
         assertEquals(role, result.getRole());
-        assertNotNull(result.getDegrees());
-        assertNotNull(result.getExperiences());
-        assertNotNull(result.getCertificates());
+        assertEquals(0, result.getCertificates().size());
+        assertEquals(0, result.getExperiences().size());
+        assertEquals(0, result.getDegrees().size());
 
         verify(memberBusinessService).getById(MEMBER_ID);
         verify(roleBusinessService).getById(ROLE_ID);
@@ -222,8 +218,8 @@ class CalculationMapperTest {
         CalculationInputDto i1 = createCalculationInput();
         CalculationInputDto i2 = createCalculationInput();
 
-        when(memberBusinessService.getById(any(Long.class))).thenReturn(mock(Member.class));
-        when(roleBusinessService.getById(any(Long.class))).thenReturn(mock(Role.class));
+        when(memberBusinessService.getById(anyLong())).thenReturn(mock(Member.class));
+        when(roleBusinessService.getById(anyLong())).thenReturn(mock(Role.class));
         when(degreeCalculationMapper.fromDto(anyList())).thenReturn(List.of());
         when(experienceCalculationMapper.fromDto(anyList())).thenReturn(List.of());
         when(certificateCalculationMapper.fromDto(anyList())).thenReturn(List.of());
