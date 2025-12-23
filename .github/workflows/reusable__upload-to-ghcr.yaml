@@ -18,6 +18,7 @@ on:
 env:
   REGISTRY: ghcr.io
   COMMIT_HASH: ${{ github.sha }}
+
 jobs:
   upload-to-ghrc:
     runs-on: ubuntu-latest
