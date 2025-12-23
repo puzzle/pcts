@@ -1,7 +1,5 @@
 package ch.puzzle.pcts.service.business;
 
-import static ch.puzzle.pcts.Constants.LEADERSHIP_EXPERIENCE;
-
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.service.persistence.CertificatePersistenceService;
 import ch.puzzle.pcts.service.validation.LeadershipExperienceValidationService;
@@ -28,10 +26,5 @@ public class LeadershipExperienceBusinessService extends BusinessBase<Certificat
         validationService.validateOnDelete(id);
         certificatePersistenceService.findLeadershipExperience(id);
         certificatePersistenceService.delete(id);
-    }
-
-    @Override
-    protected String entityName() {
-        return LEADERSHIP_EXPERIENCE;
     }
 }
