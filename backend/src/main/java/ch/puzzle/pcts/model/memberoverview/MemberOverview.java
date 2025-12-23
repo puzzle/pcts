@@ -529,5 +529,9 @@ public class MemberOverview implements Model {
             this.experienceTypeName = trim(experienceTypeName);
             return this;
         }
+
+        public MemberOverview build() {
+            return new MemberOverview(this);
+        }
     }
 }
