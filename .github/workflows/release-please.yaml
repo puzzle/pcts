@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - feature/66-setup-release-please
+  workflow_dispatch:
+    
 
 permissions:
   contents: write
