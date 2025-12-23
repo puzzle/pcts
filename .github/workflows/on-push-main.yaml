@@ -1,12 +1,10 @@
 ---
-name: "Release"
+name: "On-Push-Main"
 on:
   push:
     branches:
       - feature/66-setup-release-please
   workflow_dispatch:
-
-
 permissions:
   contents: read
   packages: write
@@ -35,3 +33,9 @@ jobs:
       context: "."
       image_name: "service"
       version: ${{ needs.release-please.outputs.tag_name }}
+
+  documentation:
+    uses: ./.github/workflows/reusable__documentation.yaml
+    with:
+      COMMIT_HASH: ${{ github.sha }}
+      DEPLOY: ${{ github.ref_name == 'main' }}
