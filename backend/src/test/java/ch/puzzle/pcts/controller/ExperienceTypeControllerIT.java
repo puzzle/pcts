@@ -14,7 +14,6 @@ import ch.puzzle.pcts.mapper.ExperienceTypeMapper;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.service.business.ExperienceTypeBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,6 +29,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import tools.jackson.databind.json.JsonMapper;
 
 @Import(SpringSecurityConfig.class)
 @ExtendWith(MockitoExtension.class)
@@ -37,13 +37,14 @@ import org.springframework.test.web.servlet.MockMvc;
 class ExperienceTypeControllerIT {
 
     private static final String BASEURL = "/api/v1/experience-types";
-    ObjectMapper objectMapper = new ObjectMapper();
     @MockitoBean
     private ExperienceTypeBusinessService service;
     @MockitoBean
     private ExperienceTypeMapper mapper;
     @Autowired
     private MockMvc mvc;
+    @Autowired
+    private JsonMapper jsonMapper;
     private ExperienceType experienceType;
     private ExperienceTypeDto requestDto;
     private ExperienceTypeDto expectedDto;
@@ -112,7 +113,7 @@ class ExperienceTypeControllerIT {
         mvc
                 .perform(post(BASEURL)
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
-                        .content(objectMapper.writeValueAsString(requestDto))
+                        .content(jsonMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
@@ -132,7 +133,7 @@ class ExperienceTypeControllerIT {
         mvc
                 .perform(put(BASEURL + "/" + id)
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
-                        .content(objectMapper.writeValueAsString(requestDto))
+                        .content(jsonMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));

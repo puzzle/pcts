@@ -18,9 +18,6 @@ import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,6 +33,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import tools.jackson.databind.json.JsonMapper;
 
 @Import(SpringSecurityConfig.class)
 @ExtendWith(MockitoExtension.class)
@@ -51,11 +49,10 @@ class MemberControllerIT {
     @Autowired
     private MockMvc mvc;
 
-    private static final String BASEURL = "/api/v1/members";
+    @Autowired
+    private JsonMapper jsonMapper;
 
-    private final ObjectMapper objectMapper = new ObjectMapper()
-            .registerModule(new JavaTimeModule())
-            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    private static final String BASEURL = "/api/v1/members";
 
     private final LocalDate commonDate = LocalDate.of(2019, 8, 4);
 
@@ -142,7 +139,7 @@ class MemberControllerIT {
 
         mvc
                 .perform(post(BASEURL)
-                        .content(objectMapper.writeValueAsString(requestDto))
+                        .content(jsonMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isCreated())
@@ -162,7 +159,7 @@ class MemberControllerIT {
 
         mvc
                 .perform(put(BASEURL + "/" + id)
-                        .content(objectMapper.writeValueAsString(requestDto))
+                        .content(jsonMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())

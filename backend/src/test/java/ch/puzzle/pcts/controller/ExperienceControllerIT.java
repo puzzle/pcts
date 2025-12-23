@@ -18,9 +18,6 @@ import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.business.ExperienceBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,6 +33,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import tools.jackson.databind.json.JsonMapper;
 
 @Import(SpringSecurityConfig.class)
 @ExtendWith(MockitoExtension.class)
@@ -43,9 +41,6 @@ import org.springframework.test.web.servlet.MockMvc;
 class ExperienceControllerIT {
 
     private static final String BASEURL = "/api/v1/experiences";
-    private final ObjectMapper objectMapper = new ObjectMapper()
-            .registerModule(new JavaTimeModule())
-            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     private final LocalDate startDate = LocalDate.of(2020, 1, 1);
     private final LocalDate endDate = startDate.plusDays(30);
     @MockitoBean
@@ -54,6 +49,8 @@ class ExperienceControllerIT {
     private ExperienceMapper mapper;
     @Autowired
     private MockMvc mvc;
+    @Autowired
+    private JsonMapper jsonMapper;
     private Experience experience;
     private ExperienceInputDto requestDto;
     private ExperienceDto expectedDto;
@@ -127,7 +124,7 @@ class ExperienceControllerIT {
 
         mvc
                 .perform(post(BASEURL)
-                        .content(objectMapper.writeValueAsString(requestDto))
+                        .content(jsonMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isCreated())
@@ -147,7 +144,7 @@ class ExperienceControllerIT {
 
         mvc
                 .perform(put(BASEURL + "/" + id)
-                        .content(objectMapper.writeValueAsString(requestDto))
+                        .content(jsonMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
