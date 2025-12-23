@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.service.persistence;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static ch.puzzle.pcts.util.TestData.*;
 
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificatetype.CertificateKind;
@@ -12,7 +13,6 @@ import ch.puzzle.pcts.repository.CertificateRepository;
 import ch.puzzle.pcts.repository.CertificateTypeRepository;
 import ch.puzzle.pcts.repository.MemberRepository;
 import ch.puzzle.pcts.repository.OrganisationUnitRepository;
-import ch.puzzle.pcts.util.TestData;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -44,16 +44,16 @@ class CertificatePersistenceServiceIT
         return Certificate.Builder
                 .builder()
                 .withId(null)
-                .withMember(TestData.MEMBER_1)
+                .withMember(MEMBER_1)
                 .withCompletedAt(LocalDate.of(2021, 7, 15))
                 .withValidUntil(LocalDate.of(2021, 7, 15))
-                .withCertificateType(TestData.CERT_TYPE_1)
+                .withCertificateType(CERT_TYPE_1)
                 .build();
     }
 
     @Override
     List<Certificate> getAll() {
-        return TestData.CERTIFICATES;
+        return CERTIFICATES;
     }
 
     @Test

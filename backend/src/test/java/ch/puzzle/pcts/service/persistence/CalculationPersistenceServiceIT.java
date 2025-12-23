@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.persistence;
 
+import static ch.puzzle.pcts.util.TestData.CALCULATIONS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -8,7 +9,6 @@ import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.repository.CalculationRepository;
-import ch.puzzle.pcts.util.TestData;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
@@ -44,7 +44,7 @@ class CalculationPersistenceServiceIT
 
     @Override
     List<Calculation> getAll() {
-        return TestData.CALCULATIONS;
+        return CALCULATIONS;
     }
 
     @DisplayName("Should only have one active Calculation after save when member already has active Calculation for the same role.")
