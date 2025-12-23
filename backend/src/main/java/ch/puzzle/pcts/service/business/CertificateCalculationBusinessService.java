@@ -40,14 +40,25 @@ public class CertificateCalculationBusinessService extends BusinessBase<Certific
         List<CertificateCalculation> certificateCalculations = this.getByCalculationId(id);
         return certificateCalculations
                 .stream()
-                .filter(certificateCalculation -> certificateCalculation.getCalculation().getRole().getIsManagement()
-                                                  || !certificateCalculation
-                                                          .getCertificate()
-                                                          .getCertificateType()
-                                                          .getCertificateKind()
-                                                          .isLeadershipExperienceType())
-                .map(certificateCalculation -> certificateCalculation.getCertificate().getCertificateType().getPoints())
+                .filter(this::isEligibleForPoints)
+                .map(this::extractPoints)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    private boolean isEligibleForPoints(CertificateCalculation certificateCalculation) {
+        boolean isManagement = certificateCalculation.getCalculation().getRole().getIsManagement();
+
+        boolean isLeadership = certificateCalculation
+                .getCertificate()
+                .getCertificateType()
+                .getCertificateKind()
+                .isLeadershipExperienceType();
+
+        return isManagement || !isLeadership;
+    }
+
+    private BigDecimal extractPoints(CertificateCalculation certificateCalculation) {
+        return certificateCalculation.getCertificate().getCertificateType().getPoints();
     }
 
     @Override

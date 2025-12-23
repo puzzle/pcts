@@ -5,6 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CertificateCalculationRepository extends CalculationRelationRepository<CertificateCalculation, Long> {
+public interface CertificateCalculationRepository extends CalculationChildRepository<CertificateCalculation, Long> {
     List<CertificateCalculation> findByCertificateId(Long certificateId);
 }

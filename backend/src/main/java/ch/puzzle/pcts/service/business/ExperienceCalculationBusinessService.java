@@ -15,6 +15,7 @@ import ch.puzzle.pcts.service.persistence.ExperienceCalculationPersistenceServic
 import ch.puzzle.pcts.service.validation.ExperienceCalculationValidationService;
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
@@ -122,11 +123,20 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
                 .valueOf(experience.getPercent())
                 .divide(BigDecimal.valueOf(100), MathContext.DECIMAL128);
 
-        long days = experience.getStartDate().until(experience.getEndDate(), ChronoUnit.DAYS);
+        long days = experience
+                .getStartDate()
+                .until(getDateOrTodayIfDateIsNull(experience.getEndDate()), ChronoUnit.DAYS);
 
         BigDecimal years = BigDecimal.valueOf(days).divide(BigDecimal.valueOf(365), MathContext.DECIMAL128);
 
         return basePoints.multiply(percentFactor).multiply(years);
+    }
+
+    private LocalDate getDateOrTodayIfDateIsNull(LocalDate date) {
+        if (date == null) {
+            return LocalDate.now();
+        }
+        return date;
     }
 
     @Override

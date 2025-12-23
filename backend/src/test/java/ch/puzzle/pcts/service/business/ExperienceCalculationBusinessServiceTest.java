@@ -199,4 +199,13 @@ class ExperienceCalculationBusinessServiceTest {
         verify(updated).setId(experienceCalculationId);
         verify(validationService).validateOnUpdate(experienceCalculationId, updated);
     }
+
+    @Test
+    @DisplayName("Should receive correct amount of points")
+    void shouldReceiveCorrectAmountOfPoints() {
+        ExperienceType experienceType = new ExperienceType(null, null, BigDecimal.TEN, BigDecimal.TWO, BigDecimal.ONE);
+        assertEquals(BigDecimal.TEN, experienceType.getPointsByRelevancy(Relevancy.HIGHLY));
+        assertEquals(BigDecimal.TWO, experienceType.getPointsByRelevancy(Relevancy.LIMITED));
+        assertEquals(BigDecimal.ONE, experienceType.getPointsByRelevancy(Relevancy.LITTLE));
+    }
 }

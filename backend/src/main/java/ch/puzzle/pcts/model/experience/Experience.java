@@ -135,9 +135,6 @@ public class Experience implements Model {
     }
 
     public LocalDate getEndDate() {
-        if (endDate == null) {
-            return LocalDate.now();
-        }
         return endDate;
     }
 

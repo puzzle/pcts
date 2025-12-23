@@ -195,4 +195,13 @@ class DegreeCalculationBusinessServiceTest {
         verify(updated).setId(degreeCalculationId);
         verify(validationService).validateOnUpdate(degreeCalculationId, updated);
     }
+
+    @Test
+    @DisplayName("Should receive correct amount of points")
+    void shouldReceiveCorrectAmountOfPoints() {
+        DegreeType degreeType = new DegreeType(null, null, BigDecimal.TEN, BigDecimal.TWO, BigDecimal.ONE);
+        assertEquals(BigDecimal.TEN, degreeType.getPointsByRelevancy(Relevancy.HIGHLY));
+        assertEquals(BigDecimal.TWO, degreeType.getPointsByRelevancy(Relevancy.LIMITED));
+        assertEquals(BigDecimal.ONE, degreeType.getPointsByRelevancy(Relevancy.LITTLE));
+    }
 }

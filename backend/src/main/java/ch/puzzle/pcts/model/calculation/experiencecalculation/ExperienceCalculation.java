@@ -2,8 +2,8 @@ package ch.puzzle.pcts.model.calculation.experiencecalculation;
 
 import static org.apache.commons.lang3.StringUtils.trim;
 
-import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.calculation.Calculation;
+import ch.puzzle.pcts.model.calculation.CalculationChild;
 import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.experience.Experience;
 import jakarta.persistence.*;
@@ -11,7 +11,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity
-public class ExperienceCalculation implements Model {
+public class ExperienceCalculation implements CalculationChild {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

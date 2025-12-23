@@ -5,6 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ExperienceCalculationRepository extends CalculationRelationRepository<ExperienceCalculation, Long> {
+public interface ExperienceCalculationRepository extends CalculationChildRepository<ExperienceCalculation, Long> {
     List<ExperienceCalculation> findByExperienceId(Long experienceId);
 }
