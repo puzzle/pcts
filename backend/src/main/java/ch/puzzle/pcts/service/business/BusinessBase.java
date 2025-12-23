@@ -41,6 +41,4 @@ public abstract class BusinessBase<T extends Model> {
         persistenceService.getById(id);
         persistenceService.delete(id);
     }
-
-    protected abstract String entityName();
 }

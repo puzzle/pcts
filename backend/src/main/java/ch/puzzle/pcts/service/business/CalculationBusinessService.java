@@ -1,7 +1,5 @@
 package ch.puzzle.pcts.service.business;
 
-import static ch.puzzle.pcts.Constants.CALCULATION;
-
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.service.persistence.CalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.CalculationValidationService;
@@ -13,10 +11,5 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
     protected CalculationBusinessService(CalculationValidationService validationService,
                                          CalculationPersistenceService persistenceService) {
         super(validationService, persistenceService);
-    }
-
-    @Override
-    protected String entityName() {
-        return CALCULATION;
     }
 }

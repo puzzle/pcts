@@ -1,7 +1,5 @@
 package ch.puzzle.pcts.service.business;
 
-import static ch.puzzle.pcts.Constants.EXPERIENCE_TYPE;
-
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.service.persistence.ExperienceTypePersistenceService;
 import ch.puzzle.pcts.service.validation.ExperienceTypeValidationService;
@@ -18,10 +16,5 @@ public class ExperienceTypeBusinessService extends BusinessBase<ExperienceType> 
 
     public List<ExperienceType> getAll() {
         return persistenceService.getAll();
-    }
-
-    @Override
-    protected String entityName() {
-        return EXPERIENCE_TYPE;
     }
 }
