@@ -14,7 +14,8 @@
   "packages": {
     ".": {
       "release-type": "simple",
-      "package-name": "pcts",
+      "include-v-in-release-name": false,
+      "include-v-in-tag": false,
       "changelog-path": "CHANGELOG.md",
       "bump-minor-pre-major": true,
       "extra-files": [
