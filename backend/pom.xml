@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>ch.puzzle</groupId>
 	<artifactId>pcts</artifactId>
-	<version>0.2.0</version>
+	<version>0.0.1</version>
 	<name>pcts</name>
 	<description>demo</description>
 
