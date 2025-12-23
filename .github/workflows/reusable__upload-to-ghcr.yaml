@@ -1,6 +1,5 @@
 ---
 name: Upload image to GHRC
-
 on:
   workflow_call:
     inputs:
@@ -19,7 +18,6 @@ on:
 env:
   REGISTRY: ghcr.io
   COMMIT_HASH: ${{ github.sha }}
-
 jobs:
   upload-to-ghrc:
     runs-on: ubuntu-latest
@@ -29,18 +27,15 @@ jobs:
       packages: write
       attestations: write
       id-token: write
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-
       - name: Log in to the Container registry
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
@@ -51,7 +46,6 @@ jobs:
             type=ref,event=tag
             type=sha,format=long,prefix=
             type=raw,value=latest
-
       - name: Build and push Docker image
         id: push
         uses: docker/build-push-action@v6

@@ -25,16 +25,16 @@ jobs:
           token: ${{ secrets.RELEASE_PLEASE_GH_TOKEN }}
           config-file: .github/release-please-config.json
           manifest-file: .github/.release-please-manifest.json
-
-  build-and-push:
-    needs: release-please
-    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+  push-to-ghrc:
+    if: ${{needs.release-please.outputs.release_created == 'true'}}
+    strategy:
+      matrix:
+        context: ["backend", "frontend"]
     uses: ./.github/workflows/reusable__upload-to-ghcr.yaml
     with:
-      context: "."
-      image_name: "service"
-      version: ${{ needs.release-please.outputs.tag_name }}
-
+      context: ${{ matrix.context }}
+      image_name: ${{ matrix.context }}
+    secrets: inherit
   documentation:
     uses: ./.github/workflows/reusable__documentation.yaml
     with:
