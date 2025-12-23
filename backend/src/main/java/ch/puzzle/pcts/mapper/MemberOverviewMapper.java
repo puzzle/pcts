@@ -18,24 +18,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class MemberOverviewMapper {
 
-    public MemberOverviewDto toDto(List<MemberOverview> entities) {
+    public MemberOverviewDto toDto(List<MemberOverview> memberOverviews) {
 
-        if (entities == null || entities.isEmpty()) {
+        if (memberOverviews == null || memberOverviews.isEmpty()) {
             return null;
         }
 
-        MemberOverview first = entities.getFirst();
+        MemberOverviewMemberDto memberDto = getMemberDto(memberOverviews);
 
-        MemberOverviewMemberDto memberDto = new MemberOverviewMemberDto(first.getMemberId(),
-                                                                        first.getFirstName(),
-                                                                        first.getLastName(),
-                                                                        first.getEmploymentState(),
-                                                                        first.getAbbreviation(),
-                                                                        first.getDateOfHire(),
-                                                                        first.getBirthDate(),
-                                                                        first.getOrganisationUnitName());
-
-        List<MemberOverviewDegreeDto> degrees = entities
+        List<MemberOverviewDegreeDto> degrees = memberOverviews
                 .stream()
                 .filter(e -> e.getDegreeId() != null)
                 .collect(Collectors.groupingBy(MemberOverview::getDegreeId))
@@ -52,7 +43,7 @@ public class MemberOverviewMapper {
                 })
                 .toList();
 
-        List<MemberOverviewExperienceDto> experiences = entities
+        List<MemberOverviewExperienceDto> experiences = memberOverviews
                 .stream()
                 .filter(e -> e.getExperienceId() != null)
                 .collect(Collectors.groupingBy(MemberOverview::getExperienceId))
@@ -71,10 +62,9 @@ public class MemberOverviewMapper {
                 })
                 .toList();
 
-        List<MemberOverviewCertificateDto> certificates = entities
+        List<MemberOverviewCertificateDto> certificates = memberOverviews
                 .stream()
-                .filter(e -> e.getCertificateId() != null
-                             && CertificateKind.CERTIFICATE.equals(e.getLeadershipTypeKind()))
+                .filter(e -> e.getCertificateId() != null && CertificateKind.CERTIFICATE == e.getLeadershipTypeKind())
                 .collect(Collectors.groupingBy(MemberOverview::getCertificateId))
                 .values()
                 .stream()
@@ -91,10 +81,9 @@ public class MemberOverviewMapper {
                 })
                 .toList();
 
-        List<MemberOverviewLeadershipExperienceDto> leadershipExperiences = entities
+        List<MemberOverviewLeadershipExperienceDto> leadershipExperiences = memberOverviews
                 .stream()
-                .filter(e -> e.getCertificateId() != null
-                             && !CertificateKind.CERTIFICATE.equals(e.getLeadershipTypeKind()))
+                .filter(e -> e.getCertificateId() != null && CertificateKind.CERTIFICATE != e.getLeadershipTypeKind())
                 .collect(Collectors.groupingBy(MemberOverview::getCertificateId))
                 .values()
                 .stream()
@@ -114,5 +103,18 @@ public class MemberOverviewMapper {
         MemberCvDto cvDto = new MemberCvDto(degrees, experiences, certificates, leadershipExperiences);
 
         return new MemberOverviewDto(memberDto, cvDto);
+    }
+
+    public MemberOverviewMemberDto getMemberDto(List<MemberOverview> memberOverviews) {
+        MemberOverview first = memberOverviews.getFirst();
+
+        return new MemberOverviewMemberDto(first.getMemberId(),
+                                           first.getFirstName(),
+                                           first.getLastName(),
+                                           first.getEmploymentState(),
+                                           first.getAbbreviation(),
+                                           first.getDateOfHire(),
+                                           first.getBirthDate(),
+                                           first.getOrganisationUnitName());
     }
 }

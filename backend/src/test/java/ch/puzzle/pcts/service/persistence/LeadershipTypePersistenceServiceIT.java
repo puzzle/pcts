@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.service.persistence;
 
 import static ch.puzzle.pcts.Constants.LEADERSHIP_EXPERIENCE_TYPE;
+import static ch.puzzle.pcts.util.TestData.LEADERSHIP_EXPERIENCE_TYPES;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,7 +13,6 @@ import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.repository.CertificateTypeRepository;
-import ch.puzzle.pcts.util.TestData;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +43,7 @@ class LeadershipTypePersistenceServiceIT
 
     @Override
     List<CertificateType> getAll() {
-        return TestData.LEADERSHIP_EXPERIENCE_TYPES;
+        return LEADERSHIP_EXPERIENCE_TYPES;
     }
 
     @Override

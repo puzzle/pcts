@@ -1,10 +1,10 @@
 package ch.puzzle.pcts.service.persistence;
 
+import static ch.puzzle.pcts.util.TestData.TAGS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.repository.TagRepository;
-import ch.puzzle.pcts.util.TestData;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -28,7 +28,7 @@ class TagPersistenceServiceIT extends PersistenceBaseIT<Tag, TagRepository, TagP
     }
 
     List<Tag> getAll() {
-        return TestData.TAGS;
+        return TAGS;
     }
 
     @DisplayName("Should find tag by name written in different cases")

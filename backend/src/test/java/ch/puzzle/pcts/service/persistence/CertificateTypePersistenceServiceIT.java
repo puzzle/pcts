@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.service.persistence;
 
 import static ch.puzzle.pcts.Constants.CERTIFICATE_TYPE;
+import static ch.puzzle.pcts.util.TestData.CERTIFICATE_TYPES;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -11,7 +12,6 @@ import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.repository.CertificateTypeRepository;
-import ch.puzzle.pcts.util.TestData;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +42,7 @@ class CertificateTypePersistenceServiceIT
 
     @Override
     List<CertificateType> getAll() {
-        return TestData.CERTIFICATE_TYPES;
+        return CERTIFICATE_TYPES;
     }
 
     @Override

@@ -1,9 +1,9 @@
 package ch.puzzle.pcts.service.persistence;
 
+import static ch.puzzle.pcts.util.TestData.MEMBER_1_OVERVIEWS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.puzzle.pcts.model.memberoverview.MemberOverview;
-import ch.puzzle.pcts.util.TestData;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,6 +46,6 @@ class MemberOverviewPersistenceServiceIT extends PersistenceCoreIT {
 
         assertThat(memberOverviews)
                 .usingRecursiveFieldByFieldElementComparator()
-                .containsExactlyElementsOf(TestData.MEMBER_1_OVERVIEWS);
+                .containsExactlyElementsOf(MEMBER_1_OVERVIEWS);
     }
 }

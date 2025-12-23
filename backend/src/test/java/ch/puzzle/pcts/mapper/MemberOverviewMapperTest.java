@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.mapper;
 
+import static ch.puzzle.pcts.util.TestData.MEMBER_1_OVERVIEWS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.puzzle.pcts.dto.memberoverview.MemberCvDto;
@@ -9,7 +10,6 @@ import ch.puzzle.pcts.dto.memberoverview.certificate.MemberOverviewCertificateDt
 import ch.puzzle.pcts.dto.memberoverview.degree.MemberOverviewDegreeDto;
 import ch.puzzle.pcts.dto.memberoverview.experience.MemberOverviewExperienceDto;
 import ch.puzzle.pcts.model.member.EmploymentState;
-import ch.puzzle.pcts.util.TestData;
 import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ class MemberOverviewMapperTest {
     @DisplayName("Should map List<MemberOverview> to MemberOverviewDto")
     @Test
     void shouldReturnMemberOverviewDto() {
-        MemberOverviewDto dto = mapper.toDto(TestData.MEMBER_1_OVERVIEWS);
+        MemberOverviewDto dto = mapper.toDto(MEMBER_1_OVERVIEWS);
 
         assertThat(dto).isNotNull();
         assertThat(dto.member()).isNotNull();

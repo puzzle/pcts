@@ -1,8 +1,9 @@
 package ch.puzzle.pcts.service.persistence;
 
+import static ch.puzzle.pcts.util.TestData.*;
+
 import ch.puzzle.pcts.model.experience.Experience;
 import ch.puzzle.pcts.repository.ExperienceRepository;
-import ch.puzzle.pcts.util.TestData;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,11 @@ public class ExperiencePersistenceServiceIT
     @Override
     Experience getModel() {
         return new Experience.Builder()
-                .withMember(TestData.MEMBER_1)
+                .withMember(MEMBER_1)
                 .withName("Experience 4")
                 .withEmployer("Employer 4")
                 .withPercent(100)
-                .withType(TestData.EXP_TYPE_1)
+                .withType(EXP_TYPE_1)
                 .withComment("Comment test 4")
                 .withStartDate(LocalDate.of(2021, 7, 15))
                 .withEndDate(LocalDate.of(2022, 7, 15))
@@ -31,6 +32,6 @@ public class ExperiencePersistenceServiceIT
     }
 
     List<Experience> getAll() {
-        return TestData.EXPERIENCES;
+        return EXPERIENCES;
     }
 }
