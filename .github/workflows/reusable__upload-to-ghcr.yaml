@@ -12,7 +12,10 @@ on:
         description: "Name for the image. PCTS is the prefix"
         required: true
         type: string
-
+      version:
+        description: "Explicit version tag (e.g. v1.2.0)"
+        required: false
+        type: string
 env:
   REGISTRY: ghcr.io
   COMMIT_HASH: ${{ github.sha }}
@@ -44,6 +47,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ github.repository }}/pcts-${{ inputs.image_name }}
           tags: |
+            type=raw,value=${{ inputs.version }},enable=${{ inputs.version != '' }}
             type=ref,event=tag
             type=sha,format=long,prefix=
             type=raw,value=latest
