@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     branches:
-      - origin/feature/66-setup-release-please
+      - feature/66-setup-release-please
 
 permissions:
   contents: write
