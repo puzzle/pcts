@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.mapper;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.puzzle.pcts.dto.memberoverview.MemberCvDto;
 import ch.puzzle.pcts.dto.memberoverview.MemberOverviewDto;
 import ch.puzzle.pcts.dto.memberoverview.MemberOverviewMemberDto;
@@ -8,16 +10,12 @@ import ch.puzzle.pcts.dto.memberoverview.degree.MemberOverviewDegreeDto;
 import ch.puzzle.pcts.dto.memberoverview.experience.MemberOverviewExperienceDto;
 import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.util.TestData;
+import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.LocalDate;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 
 @ExtendWith(MockitoExtension.class)
 class MemberOverviewMapperTest {
@@ -56,14 +54,10 @@ class MemberOverviewMapperTest {
         assertThat(degree.comment()).isEqualTo("Comment");
 
         assertThat(cv.experiences()).hasSize(2);
-        assertThat(cv.experiences())
-                .extracting(MemberOverviewExperienceDto::id)
-                .containsExactlyInAnyOrder(1L, 2L);
+        assertThat(cv.experiences()).extracting(MemberOverviewExperienceDto::id).containsExactlyInAnyOrder(1L, 2L);
 
         assertThat(cv.certificates()).hasSize(2);
-        assertThat(cv.certificates())
-                .extracting(MemberOverviewCertificateDto::id)
-                .containsExactlyInAnyOrder(1L, 4L);
+        assertThat(cv.certificates()).extracting(MemberOverviewCertificateDto::id).containsExactlyInAnyOrder(1L, 4L);
 
         assertThat(cv.leadershipExperiences()).isEmpty();
     }
