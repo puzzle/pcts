@@ -35,7 +35,7 @@ public class JsonDtoMatcher {
             case BOOLEAN -> jsonPath(pathPrefix).value(expected.booleanValue()).match(result);
             case NUMBER -> jsonPath(pathPrefix).value(expected.decimalValue()).match(result);
             case NULL -> jsonPath(pathPrefix).doesNotExist().match(result);
-            default -> jsonPath(pathPrefix).value(expected.asText()).match(result);
+            default -> jsonPath(pathPrefix).value(expected.asString()).match(result);
         }
     }
 }
