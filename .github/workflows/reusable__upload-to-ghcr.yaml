@@ -7,10 +7,12 @@ on:
         description: "Path to the workdir from the Root"
         required: true
         type: string
+
       image_name:
         description: "Name for the image. PCTS is the prefix"
         required: true
         type: string
+
       version:
         description: "Explicit version tag (e.g. v1.2.0)"
         required: false
@@ -22,7 +24,6 @@ env:
 jobs:
   upload-to-ghrc:
     runs-on: ubuntu-latest
-
     permissions:
       contents: read
       packages: write
