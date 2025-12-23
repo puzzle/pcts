@@ -3,7 +3,7 @@ name: "On-Push-Main"
 on:
   push:
     branches:
-      - feature/66-setup-release-please
+      - main
   workflow_dispatch:
 permissions:
   contents: read
@@ -25,16 +25,13 @@ jobs:
           token: ${{ secrets.RELEASE_PLEASE_GH_TOKEN }}
           config-file: .github/release-please-config.json
           manifest-file: .github/.release-please-manifest.json
-  push-to-ghrc:
-    if: ${{needs.release-please.outputs.release_created == 'true'}}
-    strategy:
-      matrix:
-        context: ["backend", "frontend"]
+  build-and-push:
+    needs: release-please
     uses: ./.github/workflows/reusable__upload-to-ghcr.yaml
     with:
-      context: ${{ matrix.context }}
-      image_name: ${{ matrix.context }}
-    secrets: inherit
+      context: "."
+      image_name: "service"
+      version: ${{needs.release-please.outputs.tag_name}}
   documentation:
     uses: ./.github/workflows/reusable__documentation.yaml
     with:
