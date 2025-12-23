@@ -91,7 +91,7 @@ public class MemberOverviewMapper {
                 })
                 .toList();
 
-        List<MemberOverviewLeadershipExperienceDto> LeadershipExperiences = entities
+        List<MemberOverviewLeadershipExperienceDto> leadershipExperiences = entities
                 .stream()
                 .filter(e -> e.getCertificateId() != null
                              && !CertificateKind.CERTIFICATE.equals(e.getLeadershipTypeKind()))
@@ -111,7 +111,7 @@ public class MemberOverviewMapper {
                 })
                 .toList();
 
-        MemberCvDto cvDto = new MemberCvDto(degrees, experiences, certificates, LeadershipExperiences);
+        MemberCvDto cvDto = new MemberCvDto(degrees, experiences, certificates, leadershipExperiences);
 
         return new MemberOverviewDto(memberDto, cvDto);
     }

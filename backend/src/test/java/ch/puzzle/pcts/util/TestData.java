@@ -1,5 +1,14 @@
 package ch.puzzle.pcts.util;
 
+import ch.puzzle.pcts.dto.memberoverview.MemberCvDto;
+import ch.puzzle.pcts.dto.memberoverview.MemberOverviewDto;
+import ch.puzzle.pcts.dto.memberoverview.MemberOverviewMemberDto;
+import ch.puzzle.pcts.dto.memberoverview.certificate.MemberOverviewCertificateDto;
+import ch.puzzle.pcts.dto.memberoverview.certificate.MemberOverviewCertificateTypeDto;
+import ch.puzzle.pcts.dto.memberoverview.degree.MemberOverviewDegreeDto;
+import ch.puzzle.pcts.dto.memberoverview.degree.MemberOverviewDegreeTypeDto;
+import ch.puzzle.pcts.dto.memberoverview.experience.MemberOverviewExperienceDto;
+import ch.puzzle.pcts.dto.memberoverview.experience.MemberOverviewExperienceTypeDto;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.certificate.Certificate;
@@ -12,6 +21,7 @@ import ch.puzzle.pcts.model.experience.Experience;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.model.memberoverview.MemberOverview;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.model.role.Role;
 import java.math.BigDecimal;
@@ -202,8 +212,23 @@ public class TestData {
                                                                        BigDecimal.valueOf(12),
                                                                        BigDecimal.valueOf(10.7989),
                                                                        BigDecimal.valueOf(6));
+    private static final Experience EXPERIENCE_1;
+    static {
+        EXPERIENCE_1 = new Experience.Builder()
+                .withId(1L)
+                .withMember(MEMBER_1)
+                .withName("Experience 1")
+                .withEmployer("Employer 1")
+                .withPercent(100)
+                .withType(EXP_TYPE_1)
+                .withComment("Comment test 1")
+                .withStartDate(LocalDate.of(2021, 7, 15))
+                .withEndDate(LocalDate.of(2022, 7, 15))
+                .build();
+        EXPERIENCE_1.setDeletedAt(UNIX_EPOCH);
+    }
 
-    public static final Experience EXPERIENCE_1 = new Experience.Builder()
+    public static final Experience EXPERIENCE_2 = new Experience.Builder()
             .withId(2L)
             .withMember(MEMBER_1)
             .withName("Experience 2")
@@ -215,7 +240,7 @@ public class TestData {
             .withEndDate(LocalDate.of(2023, 7, 15))
             .build();
 
-    public static final Experience EXPERIENCE_2 = new Experience.Builder()
+    public static final Experience EXPERIENCE_3 = new Experience.Builder()
             .withId(3L)
             .withMember(MEMBER_2)
             .withName("Experience 3")
@@ -226,6 +251,204 @@ public class TestData {
             .withStartDate(LocalDate.of(2023, 7, 16))
             .withEndDate(LocalDate.of(2024, 7, 15))
             .build();
+
+    public static final List<MemberOverview> MEMBER_1_OVERVIEWS = List.of(
+            MemberOverview.Builder.builder()
+                    .withUniqueRowId(1L)
+                    .withMemberId(TestData.MEMBER_1.getId())
+                    .withFirstName(TestData.MEMBER_1.getFirstName())
+                    .withLastName(TestData.MEMBER_1.getLastName())
+                    .withAbbreviation(TestData.MEMBER_1.getAbbreviation())
+                    .withEmploymentState(TestData.MEMBER_1.getEmploymentState())
+                    .withDateOfHire(TestData.MEMBER_1.getDateOfHire())
+                    .withBirthDate(TestData.MEMBER_1.getBirthDate())
+                    .withOrganisationUnitName(TestData.MEMBER_1.getOrganisationUnit().getName())
+                    .withCertificateId(TestData.CERTIFICATE_1.getId())
+                    .withCertificateCompletedAt(TestData.CERTIFICATE_1.getCompletedAt())
+                    .withCertificateValidUntil(TestData.CERTIFICATE_1.getValidUntil())
+                    .withCertificateComment(TestData.CERTIFICATE_1.getComment())
+                    .withCertificateTypeName(TestData.CERTIFICATE_1.getCertificateType().getName())
+                    .withCertificateTypeComment(TestData.CERTIFICATE_1.getCertificateType().getComment())
+                    .withleadershipTypeKind(CertificateKind.CERTIFICATE)
+                    .withDegreeId(TestData.DEGREE_1.getId())
+                    .withDegreeName(TestData.DEGREE_1.getName())
+                    .withDegreeStartDate(TestData.DEGREE_1.getStartDate())
+                    .withDegreeEndDate(TestData.DEGREE_1.getEndDate())
+                    .withDegreeComment(TestData.DEGREE_1.getComment())
+                    .withDegreeTypeName(TestData.DEGREE_1.getDegreeType().getName())
+                    .withExperienceId(TestData.EXPERIENCE_1.getId())
+                    .withExperienceName(TestData.EXPERIENCE_1.getName())
+                    .withExperienceEmployer(TestData.EXPERIENCE_1.getEmployer())
+                    .withExperienceStartDate(TestData.EXPERIENCE_1.getStartDate())
+                    .withExperienceEndDate(TestData.EXPERIENCE_1.getEndDate())
+                    .withExperienceComment(TestData.EXPERIENCE_1.getComment())
+                    .withExperienceTypeName(TestData.EXPERIENCE_1.getType().getName())
+                    .build(),
+
+            MemberOverview.Builder.builder()
+                    .withUniqueRowId(2L)
+                    .withMemberId(TestData.MEMBER_1.getId())
+                    .withFirstName(TestData.MEMBER_1.getFirstName())
+                    .withLastName(TestData.MEMBER_1.getLastName())
+                    .withAbbreviation(TestData.MEMBER_1.getAbbreviation())
+                    .withEmploymentState(TestData.MEMBER_1.getEmploymentState())
+                    .withDateOfHire(TestData.MEMBER_1.getDateOfHire())
+                    .withBirthDate(TestData.MEMBER_1.getBirthDate())
+                    .withOrganisationUnitName(TestData.MEMBER_1.getOrganisationUnit().getName())
+                    .withCertificateId(TestData.CERTIFICATE_1.getId())
+                    .withCertificateCompletedAt(TestData.CERTIFICATE_1.getCompletedAt())
+                    .withCertificateValidUntil(TestData.CERTIFICATE_1.getValidUntil())
+                    .withCertificateComment(TestData.CERTIFICATE_1.getComment())
+                    .withCertificateTypeName(TestData.CERTIFICATE_1.getCertificateType().getName())
+                    .withCertificateTypeComment(TestData.CERTIFICATE_1.getCertificateType().getComment())
+                    .withleadershipTypeKind(CertificateKind.CERTIFICATE)
+                    .withDegreeId(TestData.DEGREE_1.getId())
+                    .withDegreeName(TestData.DEGREE_1.getName())
+                    .withDegreeStartDate(TestData.DEGREE_1.getStartDate())
+                    .withDegreeEndDate(TestData.DEGREE_1.getEndDate())
+                    .withDegreeComment(TestData.DEGREE_1.getComment())
+                    .withDegreeTypeName(TestData.DEGREE_1.getDegreeType().getName())
+                    .withExperienceId(TestData.EXPERIENCE_2.getId())
+                    .withExperienceName(TestData.EXPERIENCE_2.getName())
+                    .withExperienceEmployer(TestData.EXPERIENCE_2.getEmployer())
+                    .withExperienceStartDate(TestData.EXPERIENCE_2.getStartDate())
+                    .withExperienceEndDate(TestData.EXPERIENCE_2.getEndDate())
+                    .withExperienceComment(TestData.EXPERIENCE_2.getComment())
+                    .withExperienceTypeName(TestData.EXPERIENCE_2.getType().getName())
+                    .build(),
+
+            MemberOverview.Builder.builder()
+                    .withUniqueRowId(3L)
+                    .withMemberId(TestData.MEMBER_1.getId())
+                    .withFirstName(TestData.MEMBER_1.getFirstName())
+                    .withLastName(TestData.MEMBER_1.getLastName())
+                    .withAbbreviation(TestData.MEMBER_1.getAbbreviation())
+                    .withEmploymentState(TestData.MEMBER_1.getEmploymentState())
+                    .withDateOfHire(TestData.MEMBER_1.getDateOfHire())
+                    .withBirthDate(TestData.MEMBER_1.getBirthDate())
+                    .withOrganisationUnitName(TestData.MEMBER_1.getOrganisationUnit().getName())
+                    .withCertificateId(TestData.CERTIFICATE_4.getId())
+                    .withCertificateCompletedAt(TestData.CERTIFICATE_4.getCompletedAt())
+                    .withCertificateValidUntil(TestData.CERTIFICATE_4.getValidUntil())
+                    .withCertificateComment(TestData.CERTIFICATE_4.getComment())
+                    .withCertificateTypeName(TestData.CERTIFICATE_4.getCertificateType().getName())
+                    .withCertificateTypeComment(TestData.CERTIFICATE_4.getCertificateType().getComment())
+                    .withleadershipTypeKind(CertificateKind.CERTIFICATE)
+                    .withDegreeId(TestData.DEGREE_1.getId())
+                    .withDegreeName(TestData.DEGREE_1.getName())
+                    .withDegreeStartDate(TestData.DEGREE_1.getStartDate())
+                    .withDegreeEndDate(TestData.DEGREE_1.getEndDate())
+                    .withDegreeComment(TestData.DEGREE_1.getComment())
+                    .withDegreeTypeName(TestData.DEGREE_1.getDegreeType().getName())
+                    .withExperienceId(TestData.EXPERIENCE_1.getId())
+                    .withExperienceName(TestData.EXPERIENCE_1.getName())
+                    .withExperienceEmployer(TestData.EXPERIENCE_1.getEmployer())
+                    .withExperienceStartDate(TestData.EXPERIENCE_1.getStartDate())
+                    .withExperienceEndDate(TestData.EXPERIENCE_1.getEndDate())
+                    .withExperienceComment(TestData.EXPERIENCE_1.getComment())
+                    .withExperienceTypeName(TestData.EXPERIENCE_1.getType().getName())
+                    .build(),
+
+            MemberOverview.Builder.builder()
+                    .withUniqueRowId(4L)
+                    .withMemberId(TestData.MEMBER_1.getId())
+                    .withFirstName(TestData.MEMBER_1.getFirstName())
+                    .withLastName(TestData.MEMBER_1.getLastName())
+                    .withAbbreviation(TestData.MEMBER_1.getAbbreviation())
+                    .withEmploymentState(TestData.MEMBER_1.getEmploymentState())
+                    .withDateOfHire(TestData.MEMBER_1.getDateOfHire())
+                    .withBirthDate(TestData.MEMBER_1.getBirthDate())
+                    .withOrganisationUnitName(TestData.MEMBER_1.getOrganisationUnit().getName())
+                    .withCertificateId(TestData.CERTIFICATE_4.getId())
+                    .withCertificateCompletedAt(TestData.CERTIFICATE_4.getCompletedAt())
+                    .withCertificateValidUntil(TestData.CERTIFICATE_4.getValidUntil())
+                    .withCertificateComment(TestData.CERTIFICATE_4.getComment())
+                    .withCertificateTypeName(TestData.CERTIFICATE_4.getCertificateType().getName())
+                    .withCertificateTypeComment(TestData.CERTIFICATE_4.getCertificateType().getComment())
+                    .withleadershipTypeKind(CertificateKind.CERTIFICATE)
+                    .withDegreeId(TestData.DEGREE_1.getId())
+                    .withDegreeName(TestData.DEGREE_1.getName())
+                    .withDegreeStartDate(TestData.DEGREE_1.getStartDate())
+                    .withDegreeEndDate(TestData.DEGREE_1.getEndDate())
+                    .withDegreeComment(TestData.DEGREE_1.getComment())
+                    .withDegreeTypeName(TestData.DEGREE_1.getDegreeType().getName())
+                    .withExperienceId(TestData.EXPERIENCE_2.getId())
+                    .withExperienceName(TestData.EXPERIENCE_2.getName())
+                    .withExperienceEmployer(TestData.EXPERIENCE_2.getEmployer())
+                    .withExperienceStartDate(TestData.EXPERIENCE_2.getStartDate())
+                    .withExperienceEndDate(TestData.EXPERIENCE_2.getEndDate())
+                    .withExperienceComment(TestData.EXPERIENCE_2.getComment())
+                    .withExperienceTypeName(TestData.EXPERIENCE_2.getType().getName())
+                    .build()
+    );
+
+    public static final MemberOverviewDto MEMBER_1_OVERVIEW_DTO = new MemberOverviewDto(
+            new MemberOverviewMemberDto(
+                    TestData.MEMBER_1.getId(),
+                    TestData.MEMBER_1.getFirstName(),
+                    TestData.MEMBER_1.getLastName(),
+                    TestData.MEMBER_1.getEmploymentState(),
+                    TestData.MEMBER_1.getAbbreviation(),
+                    TestData.MEMBER_1.getDateOfHire(),
+                    TestData.MEMBER_1.getBirthDate(),
+                    TestData.MEMBER_1.getOrganisationUnit().getName()
+            ),
+            new MemberCvDto(
+                    List.of(
+                            new MemberOverviewDegreeDto(
+                                    TestData.DEGREE_1.getId(),
+                                    TestData.DEGREE_1.getName(),
+                                    new MemberOverviewDegreeTypeDto(TestData.DEGREE_1.getDegreeType().getName()),
+                                    TestData.DEGREE_1.getStartDate(),
+                                    TestData.DEGREE_1.getEndDate(),
+                                    TestData.DEGREE_1.getComment()
+                            )
+                    ),
+                    List.of(
+                            new MemberOverviewExperienceDto(
+                                    TestData.EXPERIENCE_1.getId(),
+                                    TestData.EXPERIENCE_1.getName(),
+                                    TestData.EXPERIENCE_1.getEmployer(),
+                                    new MemberOverviewExperienceTypeDto(TestData.EXPERIENCE_1.getType().getName()),
+                                    TestData.EXPERIENCE_1.getComment(),
+                                    TestData.EXPERIENCE_1.getStartDate(),
+                                    TestData.EXPERIENCE_1.getEndDate()
+                            ),
+                            new MemberOverviewExperienceDto(
+                                    TestData.EXPERIENCE_2.getId(),
+                                    TestData.EXPERIENCE_2.getName(),
+                                    TestData.EXPERIENCE_2.getEmployer(),
+                                    new MemberOverviewExperienceTypeDto(TestData.EXPERIENCE_2.getType().getName()),
+                                    TestData.EXPERIENCE_2.getComment(),
+                                    TestData.EXPERIENCE_2.getStartDate(),
+                                    TestData.EXPERIENCE_2.getEndDate()
+                            )
+                    ),
+                    List.of(
+                            new MemberOverviewCertificateDto(
+                                    TestData.CERTIFICATE_1.getId(),
+                                    new MemberOverviewCertificateTypeDto(
+                                            TestData.CERTIFICATE_1.getCertificateType().getName(),
+                                            TestData.CERTIFICATE_1.getCertificateType().getComment()
+                                    ),
+                                    TestData.CERTIFICATE_1.getCompletedAt(),
+                                    TestData.CERTIFICATE_1.getValidUntil(),
+                                    TestData.CERTIFICATE_1.getComment()
+                            ),
+                            new MemberOverviewCertificateDto(
+                                    TestData.CERTIFICATE_4.getId(),
+                                    new MemberOverviewCertificateTypeDto(
+                                            TestData.CERTIFICATE_4.getCertificateType().getName(),
+                                            TestData.CERTIFICATE_4.getCertificateType().getComment()
+                                    ),
+                                    TestData.CERTIFICATE_4.getCompletedAt(),
+                                    TestData.CERTIFICATE_4.getValidUntil(),
+                                    TestData.CERTIFICATE_4.getComment()
+                            )
+                    ),
+                    List.of()
+            )
+    );
 
     public static final Calculation CALCULATION_1 = new Calculation(1L,
                                                                     MEMBER_1,
@@ -271,7 +494,7 @@ public class TestData {
 
     public static final List<ExperienceType> EXPERIENCE_TYPES = List.of(EXP_TYPE_1, EXP_TYPE_2);
 
-    public static final List<Experience> EXPERIENCES = List.of(EXPERIENCE_1, EXPERIENCE_2);
+    public static final List<Experience> EXPERIENCES = List.of(EXPERIENCE_2, EXPERIENCE_3);
 
     public static final List<Calculation> CALCULATIONS = List.of(CALCULATION_1, CALCULATION_2, CALCULATION_3);
 
