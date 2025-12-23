@@ -1,14 +1,14 @@
 package ch.puzzle.pcts.service.business;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import ch.puzzle.pcts.service.validation.CertificateTypeValidationService;
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,92 +17,76 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class CertificateTypeBusinessServiceTest {
+class CertificateTypeBusinessServiceTest
+        extends
+            BaseBusinessTest<CertificateType, CertificateTypePersistenceService, CertificateTypeValidationService, CertificateTypeBusinessService> {
 
     @Mock
-    private CertificateTypeValidationService validationService;
+    CertificateType certificateType;
 
     @Mock
-    private CertificateTypePersistenceService persistenceService;
+    List<CertificateType> certificateTypes;
 
     @Mock
-    private TagBusinessService tagBusinessService;
+    CertificateTypePersistenceService persistenceService;
 
     @Mock
-    private CertificateType certificate;
+    CertificateTypeValidationService validationService;
 
     @Mock
-    private List<CertificateType> certificates;
+    TagBusinessService tagBusinessService;
 
     @InjectMocks
-    private CertificateTypeBusinessService businessService;
+    CertificateTypeBusinessService businessService;
 
-    @DisplayName("Should get certificate type by id")
-    @Test
-    void shouldGetById() {
-        Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
-
-        CertificateType result = businessService.getById(id);
-
-        assertEquals(certificate, result);
-        verify(validationService).validateOnGetById(id);
-        verify(persistenceService).getById(id);
+    @Override
+    CertificateType getModel() {
+        return certificateType;
     }
 
-    @DisplayName("Should create certificate type")
-    @Test
-    void shouldCreate() {
-        when(persistenceService.save(certificate)).thenReturn(certificate);
-
-        CertificateType result = businessService.create(certificate);
-
-        assertEquals(certificate, result);
-        verify(validationService).validateOnCreate(certificate);
-        verify(persistenceService).save(certificate);
-        verify(tagBusinessService).resolveTags(any());
+    @Override
+    CertificateTypePersistenceService getPersistenceService() {
+        return persistenceService;
     }
 
-    @DisplayName("Should get all certificate types")
+    @Override
+    CertificateTypeValidationService getValidationService() {
+        return validationService;
+    }
+
+    @Override
+    CertificateTypeBusinessService getBusinessService() {
+        return businessService;
+    }
+
+    @Override
+    void shouldNotUpdateAndThrowException() {
+    }
+
+    @Override
+    void shouldNotDeleteAndThrowException() {
+    }
+
+    @DisplayName("Should get all")
     @Test
     void shouldGetAll() {
-        when(persistenceService.getAll()).thenReturn(certificates);
-        when(certificates.size()).thenReturn(2);
+        when(persistenceService.getAll()).thenReturn(certificateTypes);
+        when(certificateTypes.size()).thenReturn(2);
 
         List<CertificateType> result = businessService.getAll();
 
-        assertEquals(certificates, result);
         assertEquals(2, result.size());
+        assertEquals(certificateTypes, result);
         verify(persistenceService).getAll();
-        verifyNoInteractions(validationService);
     }
 
-    @DisplayName("Should update certificate type")
+    @DisplayName("Should get empty list")
     @Test
-    void shouldUpdate() {
-        Long id = 1L;
-        when(persistenceService.save(certificate)).thenReturn(certificate);
-        when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
+    void shouldGetEmptyList() {
+        when(persistenceService.getAll()).thenReturn(Collections.emptyList());
 
-        CertificateType result = businessService.update(id, certificate);
+        List<CertificateType> result = businessService.getAll();
 
-        assertEquals(certificate, result);
-        verify(validationService).validateOnUpdate(id, certificate);
-        verify(certificate).setId(id);
-        verify(persistenceService).save(certificate);
-        verify(tagBusinessService).deleteUnusedTags();
-    }
-
-    @DisplayName("Should delete certificate type")
-    @Test
-    void shouldDelete() {
-        Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
-
-        businessService.delete(id);
-
-        verify(validationService).validateOnDelete(id);
-        verify(persistenceService).delete(id);
-        verify(tagBusinessService).deleteUnusedTags();
+        assertEquals(0, result.size());
     }
 }

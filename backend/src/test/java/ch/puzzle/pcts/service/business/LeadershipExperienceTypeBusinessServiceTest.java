@@ -1,13 +1,14 @@
 package ch.puzzle.pcts.service.business;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.service.persistence.LeadershipTypePersistenceService;
 import ch.puzzle.pcts.service.validation.LeadershipExperienceTypeValidationService;
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,87 +17,69 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class LeadershipExperienceTypeBusinessServiceTest {
+class LeadershipExperienceTypeBusinessServiceTest
+        extends
+            BaseBusinessTest<CertificateType, LeadershipTypePersistenceService, LeadershipExperienceTypeValidationService, LeadershipExperienceTypeBusinessService> {
 
     @Mock
-    private LeadershipExperienceTypeValidationService validationService;
+    CertificateType certificateType;
 
     @Mock
-    private LeadershipTypePersistenceService persistenceService;
+    List<CertificateType> certificateTypes;
 
     @Mock
-    private CertificateType certificate;
+    LeadershipTypePersistenceService persistenceService;
 
     @Mock
-    private List<CertificateType> certificates;
+    LeadershipExperienceTypeValidationService validationService;
 
     @InjectMocks
-    private LeadershipExperienceTypeBusinessService businessService;
+    LeadershipExperienceTypeBusinessService businessService;
 
-    @DisplayName("Should get leadershipExperience by id and validate certificate type")
-    @Test
-    void shouldGetByIdAndValidateCertificateType() {
-        Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
-
-        CertificateType result = businessService.getById(id);
-
-        assertEquals(certificate, result);
-        verify(validationService).validateOnGetById(id);
-        verify(persistenceService).getById(id);
+    @Override
+    CertificateType getModel() {
+        return certificateType;
     }
 
-    @DisplayName("Should create leadershipExperience type")
-    @Test
-    void shouldCreate() {
-        when(persistenceService.save(certificate)).thenReturn(certificate);
-
-        CertificateType result = businessService.create(certificate);
-
-        assertEquals(certificate, result);
-        verify(validationService).validateOnCreate(certificate);
-        verify(persistenceService).save(certificate);
+    @Override
+    LeadershipTypePersistenceService getPersistenceService() {
+        return persistenceService;
     }
 
-    @DisplayName("Should get all leadershipExperience type")
+    @Override
+    LeadershipExperienceTypeValidationService getValidationService() {
+        return validationService;
+    }
+
+    @Override
+    LeadershipExperienceTypeBusinessService getBusinessService() {
+        return businessService;
+    }
+
+    @Override
+    void shouldNotDeleteAndThrowException() {
+    }
+
+    @DisplayName("Should get all")
     @Test
     void shouldGetAll() {
-        when(persistenceService.getAll()).thenReturn(certificates);
-        when(certificates.size()).thenReturn(2);
+        when(persistenceService.getAll()).thenReturn(certificateTypes);
+        when(certificateTypes.size()).thenReturn(2);
 
         List<CertificateType> result = businessService.getAll();
 
-        assertEquals(certificates, result);
         assertEquals(2, result.size());
+        assertEquals(certificateTypes, result);
         verify(persistenceService).getAll();
-        verifyNoInteractions(validationService);
     }
 
-    @DisplayName("Should update leadershipExperience type")
+    @DisplayName("Should get empty list")
     @Test
-    void shouldUpdate() {
-        Long id = 1L;
+    void shouldGetEmptyList() {
+        when(persistenceService.getAll()).thenReturn(Collections.emptyList());
 
-        when(persistenceService.save(certificate)).thenReturn(certificate);
-        when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
+        List<CertificateType> result = businessService.getAll();
 
-        CertificateType result = businessService.update(id, certificate);
-
-        assertEquals(certificate, result);
-        verify(validationService).validateOnUpdate(id, certificate);
-        verify(certificate).setId(id);
-        verify(persistenceService).save(certificate);
-    }
-
-    @DisplayName("Should delete leadershipExperience type")
-    @Test
-    void shouldDelete() {
-        Long id = 1L;
-        when(persistenceService.getById(id)).thenReturn(Optional.of(certificate));
-
-        businessService.delete(id);
-
-        verify(validationService).validateOnDelete(id);
-        verify(persistenceService).delete(id);
+        assertEquals(0, result.size());
     }
 }
