@@ -27,7 +27,6 @@ import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.business.CalculationBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;

@@ -3,7 +3,6 @@ package ch.puzzle.pcts.service.business;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
 import ch.puzzle.pcts.model.certificate.Certificate;
@@ -30,7 +29,9 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
 @ExtendWith(MockitoExtension.class)
-class CertificateCalculationBusinessServiceTest {
+class CertificateCalculationBusinessServiceTest
+        extends
+            BaseBusinessTest<CertificateCalculation, CertificateCalculationPersistenceService, CertificateCalculationValidationService, CertificateCalculationBusinessService> {
 
     private static final Long ID = 1L;
 
@@ -42,6 +43,26 @@ class CertificateCalculationBusinessServiceTest {
 
     @InjectMocks
     private CertificateCalculationBusinessService businessService;
+
+    @Override
+    CertificateCalculation getModel() {
+        return mock(CertificateCalculation.class);
+    }
+
+    @Override
+    CertificateCalculationPersistenceService getPersistenceService() {
+        return persistenceService;
+    }
+
+    @Override
+    CertificateCalculationValidationService getValidationService() {
+        return validationService;
+    }
+
+    @Override
+    CertificateCalculationBusinessService getBusinessService() {
+        return businessService;
+    }
 
     static Stream<Arguments> certificatePointsProvider() {
         return Stream
@@ -75,10 +96,6 @@ class CertificateCalculationBusinessServiceTest {
         verify(persistenceService).getByCertificateId(ID);
     }
 
-    /*
-     * The strictness of Mockito is less here because depending on params some
-     * stubbing's are unnecessary which causes a mockito error
-     */
     @MockitoSettings(strictness = Strictness.LENIENT)
     @DisplayName("Should calculate certificate points correctly")
     @ParameterizedTest
@@ -106,7 +123,7 @@ class CertificateCalculationBusinessServiceTest {
 
         BigDecimal result = businessService.getCertificatePoints(ID);
 
-        assertEquals(expectedResult, result);
+        assertEquals(0, expectedResult.compareTo(result));
 
         verify(persistenceService).getByCalculationId(ID);
     }
@@ -122,56 +139,9 @@ class CertificateCalculationBusinessServiceTest {
     }
 
     @Test
-    @DisplayName("Should validate and create certificate calculation")
-    void shouldCreate() {
-        CertificateCalculation entity = mock(CertificateCalculation.class);
-        Certificate certificate = mock(Certificate.class);
-
-        when(entity.getCertificate()).thenReturn(certificate);
-        when(certificate.getId()).thenReturn(ID);
-        when(persistenceService.getByCertificateId(ID)).thenReturn(List.of());
-        when(persistenceService.save(entity)).thenReturn(entity);
-
-        CertificateCalculation result = businessService.create(entity);
-
-        assertEquals(entity, result);
-        verify(validationService).validateOnCreate(entity);
-        verify(validationService).validateDuplicateCertificateId(eq(entity), anyList());
-        verify(persistenceService).save(entity);
-    }
-
-    @Test
-    @DisplayName("Should validate and update certificate calculation")
-    void shouldUpdate() {
-        CertificateCalculation entity = mock(CertificateCalculation.class);
-
-        when(persistenceService.getById(ID)).thenReturn(Optional.of(entity));
-        when(persistenceService.save(entity)).thenReturn(entity);
-
-        CertificateCalculation result = businessService.update(ID, entity);
-
-        assertEquals(entity, result);
-        verify(validationService).validateOnUpdate(ID, entity);
-        verify(validationService).validateMemberForCalculation(entity);
-        verify(entity).setId(ID);
-        verify(persistenceService).save(entity);
-    }
-
-    @Test
-    @DisplayName("Should throw PCTSException when updating non-existing entity")
-    void shouldThrowWhenUpdatingNotFound() {
-        CertificateCalculation entity = mock(CertificateCalculation.class);
-        when(persistenceService.getById(ID)).thenReturn(Optional.empty());
-
-        assertThrows(PCTSException.class, () -> businessService.update(ID, entity));
-
-        verify(persistenceService).getById(ID);
-        verify(persistenceService, never()).save(any());
-    }
-
-    @Test
+    @Override
     @DisplayName("Should create certificate calculations for calculation")
-    void shouldCreateCertificateCalculations() {
+    void shouldCreate() {
         Calculation calculation = mock(Calculation.class);
         CertificateCalculation cc = mock(CertificateCalculation.class);
         Certificate certificate = mock(Certificate.class);

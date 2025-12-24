@@ -3,7 +3,6 @@ package ch.puzzle.pcts.service.business;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -27,7 +25,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class DegreeCalculationBusinessServiceTest {
+class DegreeCalculationBusinessServiceTest
+        extends
+            BaseBusinessTest<DegreeCalculation, DegreeCalculationPersistenceService, DegreeCalculationValidationService, DegreeCalculationBusinessService> {
 
     private static final Long ID = 1L;
 
@@ -39,6 +39,26 @@ class DegreeCalculationBusinessServiceTest {
 
     @InjectMocks
     private DegreeCalculationBusinessService businessService;
+
+    @Override
+    DegreeCalculation getModel() {
+        return mock(DegreeCalculation.class);
+    }
+
+    @Override
+    DegreeCalculationPersistenceService getPersistenceService() {
+        return persistenceService;
+    }
+
+    @Override
+    DegreeCalculationValidationService getValidationService() {
+        return validationService;
+    }
+
+    @Override
+    DegreeCalculationBusinessService getBusinessService() {
+        return businessService;
+    }
 
     static Stream<Arguments> degreePointsProvider() {
         return Stream
@@ -58,7 +78,6 @@ class DegreeCalculationBusinessServiceTest {
     }
 
     @Test
-    @DisplayName("Should get degree calculations by calculation id")
     void shouldGetByCalculationId() {
         DegreeCalculation dc = mock(DegreeCalculation.class);
         when(persistenceService.getByCalculationId(ID)).thenReturn(List.of(dc));
@@ -70,7 +89,6 @@ class DegreeCalculationBusinessServiceTest {
     }
 
     @Test
-    @DisplayName("Should get degree calculations by degree id")
     void shouldGetByDegreeId() {
         DegreeCalculation dc = mock(DegreeCalculation.class);
         when(persistenceService.getByDegreeId(ID)).thenReturn(List.of(dc));
@@ -81,7 +99,6 @@ class DegreeCalculationBusinessServiceTest {
         verify(persistenceService).getByDegreeId(ID);
     }
 
-    @DisplayName("Should calculate degree points correctly")
     @ParameterizedTest
     @MethodSource("degreePointsProvider")
     void shouldCalculateDegreePoints(Relevancy relevancy, BigDecimal basePoints, BigDecimal weight,
@@ -101,13 +118,11 @@ class DegreeCalculationBusinessServiceTest {
 
         BigDecimal result = businessService.getDegreePoints(ID);
 
-        assertEquals(0, expected.compareTo(result), () -> "Expected: " + expected + " but was: " + result);
-
+        assertEquals(0, expected.compareTo(result));
         verify(persistenceService).getByCalculationId(ID);
     }
 
     @Test
-    @DisplayName("Should return zero points if calculation has no degrees")
     void shouldReturnZeroPoints() {
         when(persistenceService.getByCalculationId(ID)).thenReturn(List.of());
 
@@ -117,56 +132,8 @@ class DegreeCalculationBusinessServiceTest {
     }
 
     @Test
-    @DisplayName("Should validate and create degree calculation")
+    @Override
     void shouldCreate() {
-        DegreeCalculation entity = mock(DegreeCalculation.class);
-        Degree degree = mock(Degree.class);
-
-        when(entity.getDegree()).thenReturn(degree);
-        when(degree.getId()).thenReturn(ID);
-        when(persistenceService.getByDegreeId(ID)).thenReturn(List.of());
-        when(persistenceService.save(entity)).thenReturn(entity);
-
-        DegreeCalculation result = businessService.create(entity);
-
-        assertEquals(entity, result);
-        verify(validationService).validateOnCreate(entity);
-        verify(validationService).validateDuplicateDegreeId(eq(entity), anyList());
-        verify(persistenceService).save(entity);
-    }
-
-    @Test
-    @DisplayName("Should validate and update degree calculation")
-    void shouldUpdate() {
-        DegreeCalculation entity = mock(DegreeCalculation.class);
-
-        when(persistenceService.getById(ID)).thenReturn(Optional.of(entity));
-        when(persistenceService.save(entity)).thenReturn(entity);
-
-        DegreeCalculation result = businessService.update(ID, entity);
-
-        assertEquals(entity, result);
-        verify(validationService).validateOnUpdate(ID, entity);
-        verify(validationService).validateMemberForCalculation(entity);
-        verify(entity).setId(ID);
-        verify(persistenceService).save(entity);
-    }
-
-    @Test
-    @DisplayName("Should throw PCTSException when updating non-existing entity")
-    void shouldThrowWhenUpdatingNotFound() {
-        DegreeCalculation entity = mock(DegreeCalculation.class);
-        when(persistenceService.getById(ID)).thenReturn(Optional.empty());
-
-        assertThrows(PCTSException.class, () -> businessService.update(ID, entity));
-
-        verify(persistenceService).getById(ID);
-        verify(persistenceService, never()).save(any());
-    }
-
-    @Test
-    @DisplayName("Should create degree calculations for calculation")
-    void shouldCreateDegreeCalculations() {
         Calculation calculation = mock(Calculation.class);
         DegreeCalculation dc = mock(DegreeCalculation.class);
         Degree degree = mock(Degree.class);
@@ -185,7 +152,6 @@ class DegreeCalculationBusinessServiceTest {
     }
 
     @Test
-    @DisplayName("Should update, create and delete degree calculations correctly")
     void shouldUpdateDegreeCalculations() {
         Long degreeId = 10L;
         Long degreeCalculationId = 100L;
@@ -219,7 +185,6 @@ class DegreeCalculationBusinessServiceTest {
     }
 
     @Test
-    @DisplayName("Should receive correct amount of points")
     void shouldReceiveCorrectAmountOfPoints() {
         DegreeType degreeType = new DegreeType(null, null, BigDecimal.TEN, BigDecimal.TWO, BigDecimal.ONE);
         assertEquals(BigDecimal.TEN, degreeType.getPointsByRelevancy(Relevancy.HIGHLY));

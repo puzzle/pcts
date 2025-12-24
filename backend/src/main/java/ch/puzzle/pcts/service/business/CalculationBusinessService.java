@@ -17,7 +17,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CalculationBusinessService extends BusinessBase<Calculation> {
+public class CalculationBusinessService {
+    private final CalculationValidationService validationService;
+    private final CalculationPersistenceService persistenceService;
     private final ExperienceCalculationBusinessService experienceCalculationBusinessService;
     private final CertificateCalculationBusinessService certificateCalculationBusinessService;
     private final DegreeCalculationBusinessService degreeCalculationBusinessService;
@@ -27,13 +29,13 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
                                          ExperienceCalculationBusinessService experienceCalculationBusinessService,
                                          CertificateCalculationBusinessService certificateCalculationBusinessService,
                                          DegreeCalculationBusinessService degreeCalculationBusinessService) {
-        super(validationService, persistenceService);
+        this.validationService = validationService;
+        this.persistenceService = persistenceService;
         this.experienceCalculationBusinessService = experienceCalculationBusinessService;
         this.certificateCalculationBusinessService = certificateCalculationBusinessService;
         this.degreeCalculationBusinessService = degreeCalculationBusinessService;
     }
 
-    @Override
     @Transactional
     public Calculation create(Calculation calculation) {
         validationService.validateOnCreate(calculation);
@@ -50,12 +52,11 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
         return createdCalculation;
     }
 
-    @Override
     @Transactional
     public Calculation update(Long id, Calculation calculation) {
         if (persistenceService.getById(id).isEmpty()) {
             Map<FieldKey, String> attributes = Map
-                    .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, id.toString());
+                    .of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "id", FieldKey.IS, id.toString());
             GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
             throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
         }
@@ -74,11 +75,10 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
         return updatedCalculation;
     }
 
-    @Override
     public Calculation getById(Long id) {
         Calculation calculation = persistenceService.getById(id).orElseThrow(() -> {
             Map<FieldKey, String> attributes = Map
-                    .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, id.toString());
+                    .of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "id", FieldKey.IS, id.toString());
             GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
             return new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
         });
@@ -93,10 +93,5 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
 
         calculation.setPoints(totalRelevancyPoints);
         return calculation;
-    }
-
-    @Override
-    protected String entityName() {
-        return CALCULATION;
     }
 }

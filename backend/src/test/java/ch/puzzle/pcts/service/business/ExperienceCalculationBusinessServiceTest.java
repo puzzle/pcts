@@ -1,9 +1,9 @@
 package ch.puzzle.pcts.service.business;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -29,7 +28,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class ExperienceCalculationBusinessServiceTest {
+class ExperienceCalculationBusinessServiceTest
+        extends
+            BaseBusinessTest<ExperienceCalculation, ExperienceCalculationPersistenceService, ExperienceCalculationValidationService, ExperienceCalculationBusinessService> {
 
     private static final Long ID = 1L;
 
@@ -41,6 +42,26 @@ class ExperienceCalculationBusinessServiceTest {
 
     @InjectMocks
     private ExperienceCalculationBusinessService businessService;
+
+    @Override
+    ExperienceCalculation getModel() {
+        return mock(ExperienceCalculation.class);
+    }
+
+    @Override
+    ExperienceCalculationPersistenceService getPersistenceService() {
+        return persistenceService;
+    }
+
+    @Override
+    ExperienceCalculationValidationService getValidationService() {
+        return validationService;
+    }
+
+    @Override
+    ExperienceCalculationBusinessService getBusinessService() {
+        return businessService;
+    }
 
     static Stream<Arguments> experiencePointsProvider() {
         return Stream
@@ -75,7 +96,6 @@ class ExperienceCalculationBusinessServiceTest {
     }
 
     @Test
-    @DisplayName("Should get experience calculations by calculation id")
     void shouldGetByCalculationId() {
         ExperienceCalculation exp = mock(ExperienceCalculation.class);
         when(persistenceService.getByCalculationId(ID)).thenReturn(List.of(exp));
@@ -87,7 +107,6 @@ class ExperienceCalculationBusinessServiceTest {
     }
 
     @Test
-    @DisplayName("Should get experience calculations by experience id")
     void shouldGetByExperienceId() {
         ExperienceCalculation exp = mock(ExperienceCalculation.class);
         when(persistenceService.getByExperienceId(ID)).thenReturn(List.of(exp));
@@ -98,7 +117,6 @@ class ExperienceCalculationBusinessServiceTest {
         verify(persistenceService).getByExperienceId(ID);
     }
 
-    @DisplayName("Should calculate experience points correctly")
     @ParameterizedTest
     @MethodSource("experiencePointsProvider")
     void shouldCalculateExperiencePoints(Relevancy relevancy, BigDecimal basePoints, int percent, LocalDate startDate,
@@ -120,17 +138,10 @@ class ExperienceCalculationBusinessServiceTest {
 
         BigDecimal result = businessService.getExperiencePoints(1L);
 
-        /*
-         * Rounding because some of these calculations can return a number with a lot of
-         * decimal places
-         */
-        assertEquals(0,
-                     expected.compareTo(result.setScale(2, RoundingMode.HALF_UP)),
-                     () -> "Expected: " + expected + " but was: " + result);
+        assertEquals(0, expected.compareTo(result.setScale(2, RoundingMode.HALF_UP)));
     }
 
     @Test
-    @DisplayName("Should return zero points if calculation has no experience")
     void shouldReturnZeroPoints() {
         when(persistenceService.getByCalculationId(ID)).thenReturn(List.of());
 
@@ -140,56 +151,8 @@ class ExperienceCalculationBusinessServiceTest {
     }
 
     @Test
-    @DisplayName("Should validate and create experience calculation")
+    @Override
     void shouldCreate() {
-        ExperienceCalculation entity = mock(ExperienceCalculation.class);
-        Experience experience = mock(Experience.class);
-
-        when(entity.getExperience()).thenReturn(experience);
-        when(experience.getId()).thenReturn(ID);
-        when(persistenceService.getByExperienceId(ID)).thenReturn(List.of());
-        when(persistenceService.save(entity)).thenReturn(entity);
-
-        ExperienceCalculation result = businessService.create(entity);
-
-        assertEquals(entity, result);
-        verify(validationService).validateOnCreate(entity);
-        verify(validationService).validateDuplicateExperienceId(eq(entity), anyList());
-        verify(persistenceService).save(entity);
-    }
-
-    @Test
-    @DisplayName("Should validate and update experience calculation")
-    void shouldUpdate() {
-        ExperienceCalculation entity = mock(ExperienceCalculation.class);
-
-        when(persistenceService.getById(ID)).thenReturn(Optional.of(entity));
-        when(persistenceService.save(entity)).thenReturn(entity);
-
-        ExperienceCalculation result = businessService.update(ID, entity);
-
-        assertEquals(entity, result);
-        verify(validationService).validateOnUpdate(ID, entity);
-        verify(validationService).validateMemberForCalculation(entity);
-        verify(entity).setId(ID);
-        verify(persistenceService).save(entity);
-    }
-
-    @Test
-    @DisplayName("Should throw PCTSException when updating non-existing entity")
-    void shouldThrowWhenUpdatingNotFound() {
-        ExperienceCalculation entity = mock(ExperienceCalculation.class);
-        when(persistenceService.getById(ID)).thenReturn(Optional.empty());
-
-        assertThrows(PCTSException.class, () -> businessService.update(ID, entity));
-
-        verify(persistenceService).getById(ID);
-        verify(persistenceService, never()).save(any());
-    }
-
-    @Test
-    @DisplayName("Should create experience calculations for calculation")
-    void shouldCreateExperienceCalculations() {
         Calculation calculation = mock(Calculation.class);
         ExperienceCalculation ec = mock(ExperienceCalculation.class);
         Experience exp = mock(Experience.class);
@@ -208,7 +171,6 @@ class ExperienceCalculationBusinessServiceTest {
     }
 
     @Test
-    @DisplayName("Should update, create and delete experience calculations correctly")
     void shouldUpdateExperienceCalculations() {
         Long experienceId = 10L;
         Long experienceCalculationId = 100L;
@@ -244,7 +206,6 @@ class ExperienceCalculationBusinessServiceTest {
     }
 
     @Test
-    @DisplayName("Should receive correct amount of points")
     void shouldReceiveCorrectAmountOfPoints() {
         ExperienceType experienceType = new ExperienceType(null, null, BigDecimal.TEN, BigDecimal.TWO, BigDecimal.ONE);
         assertEquals(BigDecimal.TEN, experienceType.getPointsByRelevancy(Relevancy.HIGHLY));
