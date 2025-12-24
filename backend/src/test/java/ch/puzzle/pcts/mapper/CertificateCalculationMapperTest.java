@@ -37,8 +37,6 @@ class CertificateCalculationMapperTest {
         mapper = new CertificateCalculationMapper(certificateBusinessService, certificateMapper);
     }
 
-    // ---------------- Helper Methods ----------------
-
     private Certificate createCertificate(CertificateKind kind) {
         Certificate cert = new Certificate();
         cert.setId(CERT_ID);
@@ -55,8 +53,6 @@ class CertificateCalculationMapperTest {
     private CertificateDto mockCertificateDto() {
         return mock(CertificateDto.class);
     }
-
-    // ---------------- Tests ----------------
 
     @DisplayName("Should map CertificateCalculation to CertificateCalculationDto")
     @Test
@@ -104,7 +100,7 @@ class CertificateCalculationMapperTest {
                 .toDto(List.of(certificateCalculation, leadershipExperienceCalculation));
 
         assertEquals(1, result.size());
-        assertEquals(mockedDto, result.get(0).certificate());
+        assertEquals(mockedDto, result.getFirst().certificate());
         verify(certificateMapper).toDto(certificate);
     }
 

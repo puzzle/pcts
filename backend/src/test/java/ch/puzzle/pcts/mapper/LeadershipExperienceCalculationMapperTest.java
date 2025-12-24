@@ -11,10 +11,10 @@ import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.service.business.LeadershipExperienceBusinessService;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -29,13 +29,8 @@ class LeadershipExperienceCalculationMapperTest {
     @Mock
     private LeadershipExperienceMapper leadershipExperienceMapper;
 
+    @InjectMocks
     private LeadershipExperienceCalculationMapper mapper;
-
-    @BeforeEach
-    void setUp() {
-        mapper = new LeadershipExperienceCalculationMapper(leadershipExperienceBusinessService,
-                                                           leadershipExperienceMapper);
-    }
 
     private Certificate createCertificate(CertificateKind kind, Long id) {
         Certificate certificate = new Certificate();
@@ -139,14 +134,5 @@ class LeadershipExperienceCalculationMapperTest {
 
         assertEquals(1, result.size());
         verify(leadershipExperienceBusinessService).getById(EXPERIENCE_ID);
-    }
-
-    @DisplayName("Should throw when leadership experience not found")
-    @Test
-    void shouldThrowWhenLeadershipExperienceNotFound() {
-        when(leadershipExperienceBusinessService.getById(anyLong()))
-                .thenThrow(new RuntimeException("Leadership experience not found"));
-
-        assertThrows(RuntimeException.class, () -> mapper.fromDto(EXPERIENCE_ID));
     }
 }

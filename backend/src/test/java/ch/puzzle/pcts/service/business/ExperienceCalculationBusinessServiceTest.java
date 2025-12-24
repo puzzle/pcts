@@ -17,9 +17,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -37,6 +41,38 @@ class ExperienceCalculationBusinessServiceTest {
 
     @InjectMocks
     private ExperienceCalculationBusinessService businessService;
+
+    static Stream<Arguments> experiencePointsProvider() {
+        return Stream
+                .of(Arguments
+                        .of(Relevancy.HIGHLY,
+                            BigDecimal.TEN,
+                            50,
+                            LocalDate.of(2020, 1, 1),
+                            LocalDate.of(2024, 7, 1),
+                            BigDecimal.valueOf(22.51)),
+                    Arguments
+                            .of(Relevancy.LIMITED,
+                                BigDecimal.valueOf(5),
+                                100,
+                                LocalDate.of(2021, 1, 1),
+                                LocalDate.of(2022, 1, 1),
+                                BigDecimal.valueOf(5.00)),
+                    Arguments
+                            .of(Relevancy.LITTLE,
+                                BigDecimal.valueOf(2),
+                                25,
+                                LocalDate.of(2020, 1, 1),
+                                LocalDate.of(2020, 7, 1),
+                                BigDecimal.valueOf(0.25)),
+                    Arguments
+                            .of(Relevancy.HIGHLY,
+                                BigDecimal.TEN,
+                                0,
+                                LocalDate.of(2020, 1, 1),
+                                LocalDate.of(2024, 1, 1),
+                                BigDecimal.ZERO));
+    }
 
     @Test
     @DisplayName("Should get experience calculations by calculation id")
@@ -62,37 +98,44 @@ class ExperienceCalculationBusinessServiceTest {
         verify(persistenceService).getByExperienceId(ID);
     }
 
-    @Test
     @DisplayName("Should calculate experience points correctly")
-    void shouldCalculateExperiencePoints() {
+    @ParameterizedTest
+    @MethodSource("experiencePointsProvider")
+    void shouldCalculateExperiencePoints(Relevancy relevancy, BigDecimal basePoints, int percent, LocalDate startDate,
+                                         LocalDate endDate, BigDecimal expected) {
         ExperienceType type = mock(ExperienceType.class);
-        when(type.getPointsByRelevancy(Relevancy.HIGHLY)).thenReturn(BigDecimal.TEN);
+        when(type.getPointsByRelevancy(relevancy)).thenReturn(basePoints);
 
         Experience exp = mock(Experience.class);
         when(exp.getType()).thenReturn(type);
-        when(exp.getPercent()).thenReturn(50);
-        when(exp.getStartDate()).thenReturn(LocalDate.of(2020, 1, 1));
-        when(exp.getEndDate()).thenReturn(LocalDate.of(2024, 7, 1));
+        when(exp.getPercent()).thenReturn(percent);
+        when(exp.getStartDate()).thenReturn(startDate);
+        when(exp.getEndDate()).thenReturn(endDate);
 
         ExperienceCalculation calculation = mock(ExperienceCalculation.class);
         when(calculation.getExperience()).thenReturn(exp);
-        when(calculation.getRelevancy()).thenReturn(Relevancy.HIGHLY);
+        when(calculation.getRelevancy()).thenReturn(relevancy);
 
         when(persistenceService.getByCalculationId(1L)).thenReturn(List.of(calculation));
 
         BigDecimal result = businessService.getExperiencePoints(1L);
 
         /*
-         * basePoints = 10 (HIGHLY relevant) percent = 50% -> 0.5 years = 1643 days /
-         * 365 = 4.5013698630 result = 10 * 0.5 * 4.5013698630 = 22.506849315
-         */
-        assertEquals(BigDecimal.valueOf(22.51), result.setScale(2, RoundingMode.HALF_UP));
+        Rounding because some of these calculations can return a number with a lot of
+        decimal places
+        */
+        assertEquals(0,
+                     expected.compareTo(result.setScale(2, RoundingMode.HALF_UP)),
+                     () -> "Expected: " + expected + " but was: " + result);
     }
 
     @Test
-    @DisplayName("Should return zero points for empty list")
+    @DisplayName("Should return zero points if calculation has no experience")
     void shouldReturnZeroPoints() {
+        when(persistenceService.getByCalculationId(ID)).thenReturn(List.of());
+
         BigDecimal result = businessService.getExperiencePoints(ID);
+
         assertEquals(BigDecimal.ZERO, result);
     }
 

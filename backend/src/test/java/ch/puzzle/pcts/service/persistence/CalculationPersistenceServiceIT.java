@@ -284,7 +284,7 @@ class CalculationPersistenceServiceIT
 
         assertEquals(LocalDate.now(), result.getPublicationDate());
         assertEquals("Ldap User", result.getPublicizedBy());
-        assertThat(getActiveCalculations(activeCalculation.getRole(), activeCalculation.getMember()))
+        assertThat(getActiveCalculationsOfMember(activeCalculation.getRole(), activeCalculation.getMember()))
                 .containsExactly(activeCalculation);
     }
 
@@ -305,11 +305,11 @@ class CalculationPersistenceServiceIT
 
         assertEquals(LocalDate.now(), result.getPublicationDate());
         assertEquals("Ldap User", result.getPublicizedBy());
-        assertThat(getActiveCalculations(activeCalculation.getRole(), activeCalculation.getMember()))
+        assertThat(getActiveCalculationsOfMember(activeCalculation.getRole(), activeCalculation.getMember()))
                 .containsExactly(result);
     }
 
-    private List<Calculation> getActiveCalculations(Role role, Member member) {
+    private List<Calculation> getActiveCalculationsOfMember(Role role, Member member) {
         return service
                 .getAll()
                 .stream()

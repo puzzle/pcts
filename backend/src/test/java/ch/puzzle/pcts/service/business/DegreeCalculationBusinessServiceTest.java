@@ -15,9 +15,13 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -35,6 +39,23 @@ class DegreeCalculationBusinessServiceTest {
 
     @InjectMocks
     private DegreeCalculationBusinessService businessService;
+
+    static Stream<Arguments> degreePointsProvider() {
+        return Stream
+                .of(Arguments
+                        .of(Relevancy.HIGHLY, BigDecimal.valueOf(50), BigDecimal.valueOf(85), BigDecimal.valueOf(42.5)),
+                    Arguments
+                            .of(Relevancy.LIMITED,
+                                BigDecimal.valueOf(30),
+                                BigDecimal.valueOf(100),
+                                BigDecimal.valueOf(30)),
+                    Arguments
+                            .of(Relevancy.LITTLE,
+                                BigDecimal.valueOf(20),
+                                BigDecimal.valueOf(50),
+                                BigDecimal.valueOf(10)),
+                    Arguments.of(Relevancy.HIGHLY, BigDecimal.ZERO, BigDecimal.valueOf(75), BigDecimal.ZERO));
+    }
 
     @Test
     @DisplayName("Should get degree calculations by calculation id")
@@ -60,32 +81,33 @@ class DegreeCalculationBusinessServiceTest {
         verify(persistenceService).getByDegreeId(ID);
     }
 
-    @Test
     @DisplayName("Should calculate degree points correctly")
-    void shouldCalculateDegreePoints() {
+    @ParameterizedTest
+    @MethodSource("degreePointsProvider")
+    void shouldCalculateDegreePoints(Relevancy relevancy, BigDecimal basePoints, BigDecimal weight,
+                                     BigDecimal expected) {
         DegreeType type = mock(DegreeType.class);
-        when(type.getPointsByRelevancy(Relevancy.HIGHLY)).thenReturn(BigDecimal.valueOf(50));
+        when(type.getPointsByRelevancy(relevancy)).thenReturn(basePoints);
 
         Degree degree = mock(Degree.class);
         when(degree.getDegreeType()).thenReturn(type);
 
         DegreeCalculation calculation = mock(DegreeCalculation.class);
         when(calculation.getDegree()).thenReturn(degree);
-        when(calculation.getRelevancy()).thenReturn(Relevancy.HIGHLY);
-        when(calculation.getWeight()).thenReturn(BigDecimal.valueOf(85));
+        when(calculation.getRelevancy()).thenReturn(relevancy);
+        when(calculation.getWeight()).thenReturn(weight);
 
         when(persistenceService.getByCalculationId(ID)).thenReturn(List.of(calculation));
 
         BigDecimal result = businessService.getDegreePoints(ID);
 
-        /*
-         * basePoints = 50 50 / 100 = 0.5 0.5 * 85 = 20
-         */
-        assertEquals(BigDecimal.valueOf(42.5), result);
+        assertEquals(0, expected.compareTo(result), () -> "Expected: " + expected + " but was: " + result);
+
+        verify(persistenceService).getByCalculationId(ID);
     }
 
     @Test
-    @DisplayName("Should return zero points for empty list")
+    @DisplayName("Should return zero points if calculation has no degrees")
     void shouldReturnZeroPoints() {
         when(persistenceService.getByCalculationId(ID)).thenReturn(List.of());
 

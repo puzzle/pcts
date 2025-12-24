@@ -9,18 +9,25 @@ import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalcul
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
+import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.persistence.CertificateCalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.CertificateCalculationValidationService;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 @ExtendWith(MockitoExtension.class)
 class CertificateCalculationBusinessServiceTest {
@@ -35,6 +42,14 @@ class CertificateCalculationBusinessServiceTest {
 
     @InjectMocks
     private CertificateCalculationBusinessService businessService;
+
+    static Stream<Arguments> certificatePointsProvider() {
+        return Stream
+                .of(Arguments.of(false, CertificateKind.CERTIFICATE, BigDecimal.TEN, BigDecimal.TEN),
+                    Arguments.of(false, CertificateKind.CERTIFICATE, BigDecimal.TEN, BigDecimal.TEN),
+                    Arguments.of(true, CertificateKind.MILITARY_FUNCTION, BigDecimal.ONE, BigDecimal.ONE),
+                    Arguments.of(false, CertificateKind.LEADERSHIP_TRAINING, BigDecimal.TWO, BigDecimal.ZERO));
+    }
 
     @Test
     @DisplayName("Should get certificate calculations by calculation id")
@@ -60,16 +75,25 @@ class CertificateCalculationBusinessServiceTest {
         verify(persistenceService).getByCertificateId(ID);
     }
 
-    @Test
+    /*
+     * The strictness of Mockito is less here because depending on params some
+     * stubbing's are unnecessary which causes a mockito error
+     */
+    @MockitoSettings(strictness = Strictness.LENIENT)
     @DisplayName("Should calculate certificate points correctly")
-    void shouldCalculateCertificatePoints() {
+    @ParameterizedTest
+    @MethodSource("certificatePointsProvider")
+    void shouldCalculateCertificatePoints(boolean isManagement, CertificateKind kind, BigDecimal certificatePoints,
+                                          BigDecimal expectedResult) {
         Calculation calculation = mock(Calculation.class);
-        when(calculation.getRole()).thenReturn(mock(ch.puzzle.pcts.model.role.Role.class));
-        when(calculation.getRole().getIsManagement()).thenReturn(false);
+        Role role = mock(Role.class);
+
+        when(calculation.getRole()).thenReturn(role);
+        when(role.getIsManagement()).thenReturn(isManagement);
 
         CertificateType type = mock(CertificateType.class);
-        when(type.getCertificateKind()).thenReturn(CertificateKind.CERTIFICATE);
-        when(type.getPoints()).thenReturn(BigDecimal.TEN);
+        when(type.getCertificateKind()).thenReturn(kind);
+        when(type.getPoints()).thenReturn(certificatePoints);
 
         Certificate certificate = mock(Certificate.class);
         when(certificate.getCertificateType()).thenReturn(type);
@@ -77,17 +101,23 @@ class CertificateCalculationBusinessServiceTest {
         CertificateCalculation cc = mock(CertificateCalculation.class);
         when(cc.getCalculation()).thenReturn(calculation);
         when(cc.getCertificate()).thenReturn(certificate);
-        when(persistenceService.getByCalculationId(calculation.getId())).thenReturn(List.of(cc));
 
-        BigDecimal result = businessService.getCertificatePoints(calculation.getId());
+        when(persistenceService.getByCalculationId(ID)).thenReturn(List.of(cc));
 
-        assertEquals(BigDecimal.TEN, result);
+        BigDecimal result = businessService.getCertificatePoints(ID);
+
+        assertEquals(expectedResult, result);
+
+        verify(persistenceService).getByCalculationId(ID);
     }
 
     @Test
-    @DisplayName("Should return zero points for empty list")
+    @DisplayName("Should return zero points if calculation has no certificates")
     void shouldReturnZeroPoints() {
-        BigDecimal result = businessService.getCertificatePoints(0L);
+        when(persistenceService.getByCalculationId(ID)).thenReturn(List.of());
+
+        BigDecimal result = businessService.getCertificatePoints(ID);
+
         assertEquals(BigDecimal.ZERO, result);
     }
 

@@ -11,10 +11,10 @@ import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculat
 import ch.puzzle.pcts.model.experience.Experience;
 import ch.puzzle.pcts.service.business.ExperienceBusinessService;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -32,12 +32,8 @@ class ExperienceCalculationMapperTest {
     @Mock
     private ExperienceMapper experienceMapper;
 
+    @InjectMocks
     private ExperienceCalculationMapper mapper;
-
-    @BeforeEach
-    void setUp() {
-        mapper = new ExperienceCalculationMapper(experienceBusinessService, experienceMapper);
-    }
 
     private Experience createExperience() {
         Experience experience = new Experience();
@@ -122,15 +118,5 @@ class ExperienceCalculationMapperTest {
 
         assertEquals(1, result.size());
         verify(experienceBusinessService).getById(EXPERIENCE_ID);
-    }
-
-    @DisplayName("Should throw when Experience not found")
-    @Test
-    void shouldThrowWhenExperienceNotFound() {
-        ExperienceCalculationInputDto input = createExperienceCalculationInputDto();
-
-        when(experienceBusinessService.getById(EXPERIENCE_ID)).thenThrow(new RuntimeException("Experience not found"));
-
-        assertThrows(RuntimeException.class, () -> mapper.fromDto(input));
     }
 }

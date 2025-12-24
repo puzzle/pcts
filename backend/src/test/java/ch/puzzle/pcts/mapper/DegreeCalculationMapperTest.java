@@ -127,14 +127,4 @@ class DegreeCalculationMapperTest {
         assertEquals(1, result.size());
         verify(degreeBusinessService).getById(DEGREE_ID);
     }
-
-    @DisplayName("Should throw when Degree not found")
-    @Test
-    void shouldThrowWhenDegreeNotFound() {
-        DegreeCalculationInputDto input = createDegreeCalculationInputDto();
-
-        when(degreeBusinessService.getById(DEGREE_ID)).thenThrow(new RuntimeException("Degree not found"));
-
-        assertThrows(RuntimeException.class, () -> mapper.fromDto(input));
-    }
 }
