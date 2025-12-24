@@ -9,8 +9,6 @@ interface Variation {
 
 @Injectable({ providedIn: 'root' })
 export class ScopedTranslationCoreService {
-  // private readonly i18nPrefix: string = inject(I18N_PREFIX);
-
   private readonly I18N_KEY_SEPARATOR = '.';
 
   private readonly translateService = inject(TranslateService);
