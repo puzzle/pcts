@@ -22,3 +22,11 @@ jobs:
     uses: ./.github/workflows/reusable__e2e-testing.yaml
     with:
       COMMIT_HASH: ${{ github.sha }}
+
+  is-rebase-required:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: badico-cloud-hub/pr-is-rebased@v1
+        with:
+          gh-token: ${{ secrets.GITHUB_TOKEN }}
+          reactive: true
