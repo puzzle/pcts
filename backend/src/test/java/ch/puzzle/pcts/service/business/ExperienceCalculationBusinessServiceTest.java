@@ -121,9 +121,9 @@ class ExperienceCalculationBusinessServiceTest {
         BigDecimal result = businessService.getExperiencePoints(1L);
 
         /*
-        Rounding because some of these calculations can return a number with a lot of
-        decimal places
-        */
+         * Rounding because some of these calculations can return a number with a lot of
+         * decimal places
+         */
         assertEquals(0,
                      expected.compareTo(result.setScale(2, RoundingMode.HALF_UP)),
                      () -> "Expected: " + expected + " but was: " + result);

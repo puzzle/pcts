@@ -11,10 +11,10 @@ import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.service.business.CertificateBusinessService;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -30,12 +30,8 @@ class CertificateCalculationMapperTest {
     @Mock
     private CertificateMapper certificateMapper;
 
+    @InjectMocks
     private CertificateCalculationMapper mapper;
-
-    @BeforeEach
-    void setUp() {
-        mapper = new CertificateCalculationMapper(certificateBusinessService, certificateMapper);
-    }
 
     private Certificate createCertificate(CertificateKind kind) {
         Certificate cert = new Certificate();

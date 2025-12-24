@@ -22,9 +22,13 @@ import ch.puzzle.pcts.service.business.RoleBusinessService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -35,13 +39,26 @@ class CalculationMapperTest {
     private static final Long MEMBER_ID = 1L;
     private static final Long ROLE_ID = 2L;
     private static final Long CALC_ID = 3L;
+    private static final Long CALC_2_ID = 4L;
     private static final Long CERTIFICATE1_ID = 1L;
     private static final Long CERTIFICATE2_ID = 2L;
     private static final Long LEADERSHIP_EXPERIENCE_ID = 10L;
-    private static final CalculationState STATE = CalculationState.ACTIVE;
+    private static final CalculationState STATE_ACTIVE = CalculationState.ACTIVE;
+    private static final CalculationState STATE_DRAFT = CalculationState.DRAFT;
     private static final LocalDate PUBLICATION_DATE = LocalDate.now();
-    private static final String PUBLICIZED_BY = "Ldap User";
-    private static final BigDecimal POINTS = BigDecimal.TEN;
+    private static final String PUBLICIZED_BY_USER = "Ldap User";
+    private static final Calculation calculation1 = createCalculation(CALC_ID,
+                                                                      STATE_ACTIVE,
+                                                                      PUBLICATION_DATE,
+                                                                      PUBLICIZED_BY_USER,
+                                                                      BigDecimal.TEN);
+    private static final Calculation calculation2 = createCalculation(CALC_2_ID,
+                                                                      STATE_DRAFT,
+                                                                      null,
+                                                                      null,
+                                                                      BigDecimal.TWO);
+    private static final CalculationInputDto calculationInputDto1 = createCalculationInput(CalculationState.ACTIVE);
+    private static final CalculationInputDto calculationInputDto2 = createCalculationInput(CalculationState.DRAFT);
 
     @Mock
     private MemberMapper memberMapper;
@@ -75,28 +92,28 @@ class CalculationMapperTest {
         return r;
     }
 
-    private Calculation createCalculation(Member member, Role role) {
-        Calculation calculation = Calculation.Builder
+    private static Calculation createCalculation(Long id, CalculationState state, LocalDate publicationDate,
+                                                 String publicizedBy, BigDecimal points) {
+        return Calculation.Builder
                 .builder()
-                .withId(CALC_ID)
-                .withMember(member)
-                .withRole(role)
-                .withState(STATE)
-                .withPublicationDate(PUBLICATION_DATE)
-                .withPublicizedBy(PUBLICIZED_BY)
+                .withId(id)
+                .withMember(mock(Member.class))
+                .withRole(mock(Role.class))
+                .withState(state)
+                .withPublicationDate(publicationDate)
+                .withPublicizedBy(publicizedBy)
                 .withDegrees(List.of())
                 .withExperiences(List.of())
                 .withCertificates(List.of())
+                .withPoints(points)
                 .build();
-        calculation.setPoints(POINTS);
-        return calculation;
     }
 
-    private CalculationInputDto createCalculationInput() {
+    private static CalculationInputDto createCalculationInput(CalculationState state) {
         DegreeCalculationInputDto degreeInput = mock(DegreeCalculationInputDto.class);
         ExperienceCalculationInputDto experienceInput = mock(ExperienceCalculationInputDto.class);
         return new CalculationInputDto(MEMBER_ID,
-                                       STATE,
+                                       state,
                                        ROLE_ID,
                                        List.of(CERTIFICATE1_ID, CERTIFICATE2_ID),
                                        List.of(LEADERSHIP_EXPERIENCE_ID),
@@ -111,32 +128,39 @@ class CalculationMapperTest {
         return mock(RoleDto.class);
     }
 
-    @DisplayName("Should map Calculation to CalculationDto")
-    @Test
-    void shouldReturnCalculationDto() {
-        Member member = createMember();
-        Role role = createRole();
-        Calculation calc = createCalculation(member, role);
+    static Stream<Arguments> calculationProvider() {
 
+        return Stream.of(Arguments.of(calculation1), Arguments.of(calculation2));
+    }
+
+    static Stream<Arguments> calculationInputDtoProvider() {
+
+        return Stream.of(Arguments.of(calculationInputDto1), Arguments.of(calculationInputDto2));
+    }
+
+    @ParameterizedTest
+    @MethodSource("calculationProvider")
+    @DisplayName("Should map Calculation to CalculationDto")
+    void shouldReturnCalculationDto(Calculation calculation) {
         MemberDto memberDto = mockMemberDto();
         RoleDto roleDto = mockRoleDto();
 
-        when(memberMapper.toDto(member)).thenReturn(memberDto);
-        when(roleMapper.toDto(role)).thenReturn(roleDto);
+        when(memberMapper.toDto(calculation.getMember())).thenReturn(memberDto);
+        when(roleMapper.toDto(calculation.getRole())).thenReturn(roleDto);
         when(certificateCalculationMapper.toDto(anyList())).thenReturn(List.of(mock(CertificateCalculationDto.class)));
         when(leadershipExperienceCalculationMapper.toDto(anyList()))
                 .thenReturn(List.of(mock(LeadershipExperienceCalculationDto.class)));
         when(degreeCalculationMapper.toDto(anyList())).thenReturn(List.of(mock(DegreeCalculationDto.class)));
         when(experienceCalculationMapper.toDto(anyList())).thenReturn(List.of(mock(ExperienceCalculationDto.class)));
 
-        CalculationDto result = calculationMapper.toDto(calc);
+        CalculationDto result = calculationMapper.toDto(calculation);
 
         assertNotNull(result);
-        assertEquals(CALC_ID, result.id());
-        assertEquals(STATE, result.state());
-        assertEquals(PUBLICATION_DATE, result.publicationDate());
-        assertEquals(PUBLICIZED_BY, result.publicizedBy());
-        assertEquals(POINTS, result.points());
+        assertEquals(calculation.getId(), result.id());
+        assertEquals(calculation.getState(), result.state());
+        assertEquals(calculation.getPublicationDate(), result.publicationDate());
+        assertEquals(calculation.getPublicizedBy(), result.publicizedBy());
+        assertEquals(calculation.getPoints(), result.points());
         assertEquals(memberDto, result.member());
         assertEquals(roleDto, result.role());
         assertEquals(1, result.certificates().size());
@@ -144,8 +168,8 @@ class CalculationMapperTest {
         assertEquals(1, result.leadershipExperiences().size());
         assertEquals(1, result.degrees().size());
 
-        verify(memberMapper).toDto(member);
-        verify(roleMapper).toDto(role);
+        verify(memberMapper).toDto(calculation.getMember());
+        verify(roleMapper).toDto(calculation.getRole());
         verify(certificateCalculationMapper).toDto(anyList());
         verify(leadershipExperienceCalculationMapper).toDto(anyList());
         verify(degreeCalculationMapper).toDto(anyList());
@@ -153,9 +177,9 @@ class CalculationMapperTest {
     }
 
     @DisplayName("Should map CalculationInputDto to Calculation")
-    @Test
-    void shouldReturnCalculation() {
-        CalculationInputDto input = createCalculationInput();
+    @ParameterizedTest
+    @MethodSource("calculationInputDtoProvider")
+    void shouldReturnCalculation(CalculationInputDto calculationInputDto) {
         Member member = createMember();
         Role role = createRole();
 
@@ -165,10 +189,10 @@ class CalculationMapperTest {
         when(experienceCalculationMapper.fromDto(anyList())).thenReturn(List.of());
         when(certificateCalculationMapper.fromDto(anyList())).thenReturn(List.of());
 
-        Calculation result = calculationMapper.fromDto(input);
+        Calculation result = calculationMapper.fromDto(calculationInputDto);
 
         assertNotNull(result);
-        assertEquals(STATE, result.getState());
+        assertEquals(calculationInputDto.state(), result.getState());
         assertNull(result.getPublicizedBy());
         assertNull(result.getPublicationDate());
         assertEquals(member, result.getMember());
@@ -187,8 +211,6 @@ class CalculationMapperTest {
     @DisplayName("Should map list of Calculations to CalculationDto list")
     @Test
     void shouldReturnListOfCalculationDto() {
-        Calculation c1 = createCalculation(new Member(), new Role());
-        Calculation c2 = createCalculation(new Member(), new Role());
 
         when(memberMapper.toDto(any(Member.class))).thenReturn(mock(MemberDto.class));
         when(roleMapper.toDto(any(Role.class))).thenReturn(mock(RoleDto.class));
@@ -197,12 +219,12 @@ class CalculationMapperTest {
         when(certificateCalculationMapper.toDto(anyList())).thenReturn(List.of());
         when(leadershipExperienceCalculationMapper.toDto(anyList())).thenReturn(List.of());
 
-        List<CalculationDto> result = calculationMapper.toDto(List.of(c1, c2));
+        List<CalculationDto> result = calculationMapper.toDto(List.of(calculation1, calculation2));
 
         assertNotNull(result);
         assertEquals(2, result.size());
         assertEquals(CALC_ID, result.get(0).id());
-        assertEquals(CALC_ID, result.get(1).id());
+        assertEquals(CALC_2_ID, result.get(1).id());
 
         verify(memberMapper, times(2)).toDto(any(Member.class));
         verify(roleMapper, times(2)).toDto(any(Role.class));
@@ -215,16 +237,13 @@ class CalculationMapperTest {
     @DisplayName("Should map list of CalculationInputDto to Calculation list")
     @Test
     void shouldReturnListOfCalculation() {
-        CalculationInputDto i1 = createCalculationInput();
-        CalculationInputDto i2 = createCalculationInput();
-
         when(memberBusinessService.getById(anyLong())).thenReturn(mock(Member.class));
         when(roleBusinessService.getById(anyLong())).thenReturn(mock(Role.class));
         when(degreeCalculationMapper.fromDto(anyList())).thenReturn(List.of());
         when(experienceCalculationMapper.fromDto(anyList())).thenReturn(List.of());
         when(certificateCalculationMapper.fromDto(anyList())).thenReturn(List.of());
 
-        List<Calculation> result = calculationMapper.fromDto(List.of(i1, i2));
+        List<Calculation> result = calculationMapper.fromDto(List.of(calculationInputDto1, calculationInputDto2));
 
         assertNotNull(result);
         assertEquals(2, result.size());
