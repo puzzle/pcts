@@ -29,14 +29,7 @@ public abstract class PersistenceBase<T extends Model, R extends JpaRepository<T
     }
 
     public T getById(Long id) {
-        return repository.findById(id).orElseThrow(() -> {
-            Map<FieldKey, String> attributes = Map
-                    .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, id.toString());
-
-            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
-
-            return new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
-        });
+        return repository.findById(id).orElseThrow(() -> throwNotFoundError(id.toString()));
     }
 
     public List<T> getAll() {
@@ -54,4 +47,13 @@ public abstract class PersistenceBase<T extends Model, R extends JpaRepository<T
     }
 
     public abstract String entityName();
+
+    public PCTSException throwNotFoundError(String attributeValue) {
+        Map<FieldKey, String> attributes = Map
+                .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, attributeValue);
+
+        GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
+
+        return new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
+    }
 }
