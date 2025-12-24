@@ -7,7 +7,7 @@ import ch.puzzle.pcts.util.IT;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -37,7 +37,7 @@ class ApplicationAvailabilityTest {
                 .perform(get(BASEURL))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("UP"))
-                .andExpect(content().string("{\"status\":\"UP\",\"groups\":[\"liveness\",\"readiness\"]}"));
+                .andExpect(content().string("{\"groups\":[\"liveness\",\"readiness\"],\"status\":\"UP\"}"));
     }
 
     @DisplayName("Should accept traffic")

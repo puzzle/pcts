@@ -24,7 +24,6 @@ import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.business.CalculationBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -32,11 +31,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import tools.jackson.databind.json.JsonMapper;
 
 @Import(SpringSecurityConfig.class)
 @ExtendWith(MockitoExtension.class)
@@ -53,7 +53,7 @@ class CalculationControllerIT {
     @Autowired
     private MockMvc mvc;
     @Autowired
-    private ObjectMapper objectMapper;
+    private JsonMapper jsonMapper;
     private Calculation calculation;
     private CalculationInputDto inputDto;
     private CalculationDto expectedDto;
@@ -124,7 +124,7 @@ class CalculationControllerIT {
 
         mvc
                 .perform(post(BASEURL)
-                        .content(objectMapper.writeValueAsString(inputDto))
+                        .content(jsonMapper.writeValueAsString(inputDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()))
                 .andExpect(status().isCreated())
@@ -144,7 +144,7 @@ class CalculationControllerIT {
 
         mvc
                 .perform(put(BASEURL + "/{id}", ID)
-                        .content(objectMapper.writeValueAsString(inputDto))
+                        .content(jsonMapper.writeValueAsString(inputDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()))
                 .andExpect(status().isOk())
