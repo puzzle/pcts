@@ -28,6 +28,7 @@ import { RolePointsModel } from './RolePointsModel';
 import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UserService } from '../../../core/auth/user.service';
+import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin.directive';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -40,7 +41,8 @@ import { UserService } from '../../../core/auth/user.service';
     MatTabGroup,
     MatTab,
     TranslationScopeDirective,
-    MemberCalculationTableComponent
+    MemberCalculationTableComponent,
+    ShowIfAdminDirective
   ],
   templateUrl: './member-detail-view.component.html',
   styleUrls: ['./member-detail-view.component.scss']
