@@ -34,6 +34,7 @@ import {
 import { LeadershipExperienceService } from '../../leadership-experiences/leadership-experience.service';
 import { concatMap, filter, Observable } from 'rxjs';
 import { UserService } from '../../../core/auth/user.service';
+import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin.directive';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -46,7 +47,8 @@ import { UserService } from '../../../core/auth/user.service';
     MatTabGroup,
     MatTab,
     TranslationScopeDirective,
-    MemberCalculationTableComponent
+    MemberCalculationTableComponent,
+    ShowIfAdminDirective
   ],
   templateUrl: './member-detail-view.component.html',
   styleUrls: ['./member-detail-view.component.scss']

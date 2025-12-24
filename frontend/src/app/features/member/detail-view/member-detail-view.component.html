@@ -10,10 +10,7 @@
         <h2>
           {{ 'PERSONAL_DETAILS' | scopedTranslation }}
         </h2>
-
-        @if (userService.isAdmin()) {
-          <app-crud-button mode="edit"/>
-        }
+          <app-crud-button *appShowIfAdmin mode="edit"/>
       </div>
 
       <div class="d-flex justify-content-between flex-wrap mb-3" data-testid="member-detail-data">
