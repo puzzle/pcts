@@ -48,6 +48,8 @@ public abstract class PersistenceBase<T extends Model, R extends JpaRepository<T
     }
 
     public void delete(Long id) {
+        // This checks if the id is actually an entity in the DB otherwise throws error
+        getById(id);
         repository.deleteById(id);
     }
 
