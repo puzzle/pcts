@@ -20,11 +20,4 @@ public class LeadershipExperienceTypeBusinessService extends BusinessBase<Certif
     public List<CertificateType> getAll() {
         return leadershipTypePersistenceService.getAll();
     }
-
-    @Override
-    public void delete(Long id) {
-        validationService.validateOnDelete(id);
-        leadershipTypePersistenceService.getById(id);
-        leadershipTypePersistenceService.delete(id);
-    }
 }

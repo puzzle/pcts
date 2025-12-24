@@ -20,11 +20,4 @@ public class LeadershipExperienceBusinessService extends BusinessBase<Certificat
         validationService.validateOnGetById(id);
         return certificatePersistenceService.findLeadershipExperience(id);
     }
-
-    @Override
-    public void delete(Long id) {
-        validationService.validateOnDelete(id);
-        certificatePersistenceService.findLeadershipExperience(id);
-        certificatePersistenceService.delete(id);
-    }
 }

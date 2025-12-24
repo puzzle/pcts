@@ -38,7 +38,6 @@ public abstract class BusinessBase<T extends Model> {
 
     public void delete(Long id) {
         validationService.validateOnDelete(id);
-        persistenceService.getById(id);
         persistenceService.delete(id);
     }
 }

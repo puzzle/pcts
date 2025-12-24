@@ -45,9 +45,7 @@ public class CertificateTypeBusinessService extends BusinessBase<CertificateType
 
     @Override
     public void delete(Long id) {
-        validationService.validateOnDelete(id);
-        certificateTypePersistenceService.getById(id);
-        persistenceService.delete(id);
+        super.delete(id);
         tagBusinessService.deleteUnusedTags();
     }
 }
