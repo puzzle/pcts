@@ -6,19 +6,14 @@ import { ScopedTranslationCoreService } from './scoped-translation-core.service'
 
 describe('ScopedTranslationService', () => {
   let service: ScopedTranslationCoreService;
-  const i18nPrefixMock = jest.fn()
-    .mockReturnValue('DEFAULT.PREFIX');
 
-  function setPrefixMock(prefix: string) {
-    i18nPrefixMock.mockReturnValue(prefix);
-    service = TestBed.inject(ScopedTranslationCoreService);
-  }
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [provideTranslateService(),
         ScopedTranslationCoreService]
     });
+    service = TestBed.inject(ScopedTranslationCoreService);
   });
 
   it('should be created', () => {
@@ -35,7 +30,6 @@ describe('ScopedTranslationService', () => {
     const keyListMock = ['THIS',
       'TEST'];
     const translationMock = 'Translation';
-    setPrefixMock(prefix);
 
     const stringVariationsSpy = jest.spyOn(service as any, 'getStringVariations')
       .mockReturnValue([variationMock]);
@@ -44,14 +38,14 @@ describe('ScopedTranslationService', () => {
     const getTranslationSpy = jest.spyOn(service as any, 'getTranslation')
       .mockReturnValue(translationMock);
 
-    service.instant('TEST.KEY');
+    service.instant('TEST.KEY', {}, prefix);
 
     expect(stringVariationsSpy)
       .toHaveBeenCalledWith(prefix, key);
     expect(getKeyListSpy)
       .toHaveBeenCalledWith(prefix, key);
     expect(getTranslationSpy)
-      .toHaveBeenCalledWith(keyListMock, undefined);
+      .toHaveBeenCalledWith(keyListMock, {});
     stringVariationsSpy.mockRestore();
     getKeyListSpy.mockRestore();
     getTranslationSpy.mockRestore();
@@ -119,7 +113,7 @@ describe('ScopedTranslationService', () => {
     }];
 
     it.each(testCases)('should return [$desc] for prefix "$prefix" and suffix "$suffix"', ({ prefix, suffix, expected }) => {
-      const result = (service as any).getKeyList(prefix, suffix);
+      const result = service['getKeyList'](prefix, suffix);
       expect(result)
         .toEqual(expected);
     });

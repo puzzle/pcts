@@ -4,9 +4,9 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { throwError } from 'rxjs';
 
 import { SnackbarService } from '../toast/snackbar.service';
-import { ScopedTranslationService } from '../../shared/services/scoped-translation-core.service';
 import { errorInterceptor } from './error-interceptor';
 import { url } from '../../shared/test/test-data';
+import { ScopedTranslationService } from '../../shared/i18n-prefix.provider';
 
 describe('errorInterceptor', () => {
   let http: HttpClient;
