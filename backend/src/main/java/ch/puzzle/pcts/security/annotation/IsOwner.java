@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.security.annotation;
 
+import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -20,6 +21,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
  * If neither condition is met, <code>isOwner()</code> receives a
  * <code>null</code> argument, causing the security check to fail.
  */
+@Documented
 @Target({ ElementType.METHOD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @PreAuthorize("@SecurityService.isOwner(#id)")
