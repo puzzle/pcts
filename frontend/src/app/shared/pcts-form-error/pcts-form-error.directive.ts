@@ -2,7 +2,7 @@ import { AfterViewInit, Directive, ElementRef, inject, Renderer2 } from '@angula
 import { MatFormField } from '@angular/material/form-field';
 import { filter } from 'rxjs';
 import { NgControl } from '@angular/forms';
-import { ScopedTranslationService } from '../services/scoped-translation.service';
+import { ScopedTranslationService } from '../i18n-prefix.provider';
 
 @Directive({
   selector: '[appPctsFormError]',

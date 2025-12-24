@@ -2,7 +2,7 @@ import { AfterViewInit, Directive, ElementRef, inject, Renderer2 } from '@angula
 import { CaseFormatter } from '../format/case-formatter';
 import { NgControl } from '@angular/forms';
 import { MatFormField } from '@angular/material/form-field';
-import { ScopedTranslationService } from '../services/scoped-translation.service';
+import { ScopedTranslationService } from '../i18n-prefix.provider';
 
 @Directive({
   selector: '[appPctsFormLabel]',

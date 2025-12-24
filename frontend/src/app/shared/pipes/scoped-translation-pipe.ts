@@ -1,6 +1,6 @@
 import { inject, Pipe, PipeTransform } from '@angular/core';
-import { ScopedTranslationService } from '../services/scoped-translation.service';
 import { InterpolationParameters } from '@ngx-translate/core';
+import { ScopedTranslationService } from '../i18n-prefix.provider';
 
 @Pipe({
   name: 'scopedTranslation'

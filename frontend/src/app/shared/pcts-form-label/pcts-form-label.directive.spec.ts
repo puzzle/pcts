@@ -7,8 +7,8 @@ import { CaseFormatter } from '../format/case-formatter';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { PctsFormErrorDirective } from '../pcts-form-error/pcts-form-error.directive';
-import { ScopedTranslationService } from '../services/scoped-translation.service';
 import { translationMock } from '../../../../setup-jest';
+import { ScopedTranslationService } from '../i18n-prefix.provider';
 
 @Component({
   standalone: true,
