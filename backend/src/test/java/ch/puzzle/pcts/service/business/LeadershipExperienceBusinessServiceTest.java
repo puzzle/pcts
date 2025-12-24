@@ -1,18 +1,13 @@
 package ch.puzzle.pcts.service.business;
 
-import static ch.puzzle.pcts.Constants.LEADERSHIP_EXPERIENCE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-import ch.puzzle.pcts.dto.error.ErrorKey;
-import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.service.persistence.CertificatePersistenceService;
 import ch.puzzle.pcts.service.validation.LeadershipExperienceValidationService;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,68 +17,119 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class LeadershipExperienceBusinessServiceTest {
+class LeadershipExperienceBusinessServiceTest
+        extends
+            BaseBusinessTest<Certificate, CertificatePersistenceService, LeadershipExperienceValidationService, LeadershipExperienceBusinessService> {
+
     private static final Long ID = 1L;
 
     @Mock
-    private LeadershipExperienceValidationService validationService;
+    private Certificate certificate;
 
     @Mock
     private CertificatePersistenceService persistenceService;
 
     @Mock
-    private Certificate leadershipExperience;
+    private LeadershipExperienceValidationService validationService;
 
     @InjectMocks
     private LeadershipExperienceBusinessService businessService;
 
-    @DisplayName("Should get leadership experience by id")
+    @Override
+    Certificate getModel() {
+        return certificate;
+    }
+
+    @Override
+    CertificatePersistenceService getPersistenceService() {
+        return persistenceService;
+    }
+
+    @Override
+    LeadershipExperienceValidationService getValidationService() {
+        return validationService;
+    }
+
+    @Override
+    LeadershipExperienceBusinessService getBusinessService() {
+        return businessService;
+    }
+
+    @Override
+    @DisplayName("Should get certificate by id")
     @Test
-    void shouldGetLeadershipExperienceById() {
-        when(persistenceService.findLeadershipExperience(ID)).thenReturn(Optional.of(leadershipExperience));
+    void shouldGetById() {
+        when(persistenceService.findLeadershipExperience(ID)).thenReturn(Optional.of(certificate));
 
         Certificate result = businessService.getById(ID);
 
-        assertEquals(leadershipExperience, result);
+        assertEquals(certificate, result);
+
         verify(validationService).validateOnGetById(ID);
         verify(persistenceService).findLeadershipExperience(ID);
     }
 
-    @DisplayName("Should throw error when leadership experience with id does not exist")
+    @Override
+    @DisplayName("Should throw exception when getting a non-existing certificate")
     @Test
-    void shouldNotGetLeadershipExperienceByIdAndThrowError() {
-        Long id = 1L;
-        when(persistenceService.findLeadershipExperience(id)).thenReturn(Optional.empty());
+    void shouldNotGetByIdAndThrowException() {
+        when(persistenceService.findLeadershipExperience(ID)).thenReturn(Optional.empty());
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(id));
+        assertThrows(PCTSException.class, () -> businessService.getById(ID));
 
-        assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
-        assertEquals(List
-                .of(Map.of(FieldKey.FIELD, "id", FieldKey.IS, id.toString(), FieldKey.ENTITY, LEADERSHIP_EXPERIENCE)),
-                     exception.getErrorAttributes());
-        verify(validationService).validateOnGetById(id);
-        verify(persistenceService).findLeadershipExperience(id);
+        verify(validationService).validateOnGetById(ID);
+        verify(persistenceService).findLeadershipExperience(ID);
     }
 
-    @DisplayName("Should delete leadership experience")
+    @Override
+    @DisplayName("Should update certificate")
     @Test
-    void shouldDeleteLeadershipExperience() {
-        when(persistenceService.findLeadershipExperience(ID)).thenReturn(Optional.of(leadershipExperience));
+    void shouldUpdate() {
+        when(persistenceService.findLeadershipExperience(ID)).thenReturn(Optional.of(certificate));
+        when(persistenceService.save(certificate)).thenReturn(certificate);
+
+        Certificate result = businessService.update(ID, certificate);
+
+        assertEquals(certificate, result);
+
+        verify(certificate).setId(ID);
+        verify(validationService).validateOnUpdate(ID, certificate);
+        verify(persistenceService).save(certificate);
+    }
+
+    @Override
+    @DisplayName("Should throw exception when updating a non-existing certificate")
+    @Test
+    void shouldNotUpdateAndThrowException() {
+        when(persistenceService.findLeadershipExperience(ID)).thenReturn(Optional.empty());
+
+        assertThrows(PCTSException.class, () -> businessService.update(ID, certificate));
+
+        verify(persistenceService).findLeadershipExperience(ID);
+        verify(persistenceService, never()).save(any());
+    }
+
+    @Override
+    @DisplayName("Should delete certificate")
+    @Test
+    void shouldDelete() {
+        when(persistenceService.findLeadershipExperience(ID)).thenReturn(Optional.of(certificate));
+
         businessService.delete(ID);
 
         verify(validationService).validateOnDelete(ID);
         verify(persistenceService).delete(ID);
     }
 
-    @DisplayName("Should throw exception when deleting non-existing leadership experience")
+    @Override
+    @DisplayName("Should throw exception when deleting a non-existing certificate")
     @Test
-    void shouldThrowExceptionWhenDeletingNotFoundLeadershipExperience() {
-        Long id = 1L;
-        when(persistenceService.findLeadershipExperience(id)).thenReturn(Optional.empty());
+    void shouldNotDeleteAndThrowException() {
+        when(persistenceService.findLeadershipExperience(ID)).thenReturn(Optional.empty());
 
-        assertThrows(PCTSException.class, () -> businessService.delete(id));
+        assertThrows(PCTSException.class, () -> businessService.delete(ID));
 
-        verify(persistenceService).findLeadershipExperience(id);
-        verify(persistenceService, never()).delete(id);
+        verify(persistenceService).findLeadershipExperience(ID);
+        verify(persistenceService, never()).delete(ID);
     }
 }
