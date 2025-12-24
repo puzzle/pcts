@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
-      tag_name: ${{ steps.release.outputs.tag_name }}
+      version: ${{ steps.release.outputs.version }}
     steps:
       - id: release
         uses: googleapis/release-please-action@v4
@@ -36,7 +36,7 @@ jobs:
     with:
       context: ${{ matrix.context }}
       image_name: ${{ matrix.context }}
-      version: ${{needs.release-please.outputs.tag_name}}
+      version: ${{needs.release-please.outputs.version}}
     secrets: inherit
 
   documentation:
