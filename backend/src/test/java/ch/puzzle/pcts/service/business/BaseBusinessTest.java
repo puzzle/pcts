@@ -1,15 +1,11 @@
 package ch.puzzle.pcts.service.business;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.service.persistence.PersistenceBase;
 import ch.puzzle.pcts.service.validation.ValidationBase;
-import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,22 +35,11 @@ abstract class BaseBusinessTest<T extends Model, P extends PersistenceBase<T, ?>
     @DisplayName("Should get model by id")
     @Test
     void shouldGetById() {
-        when(persistenceService.getById(ID)).thenReturn(Optional.of(model));
+        when(persistenceService.getById(ID)).thenReturn(model);
 
         T result = businessService.getById(ID);
 
         assertEquals(model, result);
-
-        verify(validationService).validateOnGetById(ID);
-        verify(persistenceService).getById(ID);
-    }
-
-    @DisplayName("Should throw exception when getting a non-existing model")
-    @Test
-    void shouldNotGetByIdAndThrowException() {
-        when(persistenceService.getById(ID)).thenReturn(Optional.empty());
-
-        assertThrows(PCTSException.class, () -> businessService.getById(ID));
 
         verify(validationService).validateOnGetById(ID);
         verify(persistenceService).getById(ID);
@@ -76,7 +61,7 @@ abstract class BaseBusinessTest<T extends Model, P extends PersistenceBase<T, ?>
     @DisplayName("Should update model")
     @Test
     void shouldUpdate() {
-        when(persistenceService.getById(ID)).thenReturn(Optional.of(model));
+        when(persistenceService.getById(ID)).thenReturn(model);
         when(persistenceService.save(model)).thenReturn(model);
 
         T result = businessService.update(ID, model);
@@ -88,36 +73,12 @@ abstract class BaseBusinessTest<T extends Model, P extends PersistenceBase<T, ?>
         verify(persistenceService).save(model);
     }
 
-    @DisplayName("Should throw exception when updating a non-existing model")
-    @Test
-    void shouldNotUpdateAndThrowException() {
-        when(persistenceService.getById(ID)).thenReturn(Optional.empty());
-
-        assertThrows(PCTSException.class, () -> businessService.update(ID, model));
-
-        verify(persistenceService).getById(ID);
-        verify(persistenceService, never()).save(any());
-    }
-
     @DisplayName("Should delete model")
     @Test
     void shouldDelete() {
-        when(persistenceService.getById(ID)).thenReturn(Optional.of(model));
-
         businessService.delete(ID);
 
         verify(validationService).validateOnDelete(ID);
         verify(persistenceService).delete(ID);
-    }
-
-    @DisplayName("Should throw exception when deleting a non-existing model")
-    @Test
-    void shouldNotDeleteAndThrowException() {
-        when(persistenceService.getById(ID)).thenReturn(Optional.empty());
-
-        assertThrows(PCTSException.class, () -> businessService.delete(ID));
-
-        verify(persistenceService).getById(ID);
-        verify(persistenceService, never()).delete(ID);
     }
 }
