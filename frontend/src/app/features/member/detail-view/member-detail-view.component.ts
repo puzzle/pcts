@@ -19,6 +19,7 @@ import {
 } from './cv/member-detail-cv-table-definition';
 import { MemberOverviewModel } from '../member-overview.model';
 import { UserService } from '../../../core/auth/user.service';
+import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin.directive';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -30,7 +31,8 @@ import { UserService } from '../../../core/auth/user.service';
     GenericCvContentComponent,
     MatTabGroup,
     MatTab,
-    TranslationScopeDirective
+    TranslationScopeDirective,
+    ShowIfAdminDirective
   ],
   templateUrl: './member-detail-view.component.html'
 })
