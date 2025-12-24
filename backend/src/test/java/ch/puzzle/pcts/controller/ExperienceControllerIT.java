@@ -4,10 +4,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.experience.ExperienceDto;
 import ch.puzzle.pcts.dto.experience.ExperienceInputDto;
 import ch.puzzle.pcts.dto.experiencetype.ExperienceTypeDto;
@@ -26,21 +26,14 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-@Import(SpringSecurityConfig.class)
-@ExtendWith(MockitoExtension.class)
-@WebMvcTest(ExperienceController.class)
-class ExperienceControllerIT {
+@ControllerIT(ExperienceController.class)
+class ExperienceControllerIT extends ControllerITBase {
 
     private static final String BASEURL = "/api/v1/experiences";
     private final ObjectMapper objectMapper = new ObjectMapper()
@@ -68,7 +61,7 @@ class ExperienceControllerIT {
         id = 1L;
 
         member = Member.Builder.builder().withId(2L).build();
-        memberDto = new MemberDto(2L, "Jane", "Doe", null, null, null, null, null);
+        memberDto = new MemberDto(2L, "Jane", "Doe", null, null, null, null, null, null);
 
         type = new ExperienceType(10L, "Management", new BigDecimal("10"), new BigDecimal("3"), new BigDecimal("8"));
         typeDto = new ExperienceTypeDto(10L,
@@ -110,7 +103,7 @@ class ExperienceControllerIT {
         BDDMockito.given(mapper.toDto(any(Experience.class))).willReturn(expectedDto);
 
         mvc
-                .perform(get(BASEURL + "/" + id).with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .perform(get(BASEURL + "/" + id).with(csrf()).with(adminJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
@@ -129,7 +122,8 @@ class ExperienceControllerIT {
                 .perform(post(BASEURL)
                         .content(objectMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isCreated())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
@@ -149,7 +143,8 @@ class ExperienceControllerIT {
                 .perform(put(BASEURL + "/" + id)
                         .content(objectMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
@@ -163,9 +158,7 @@ class ExperienceControllerIT {
     void shouldDeleteExperience() throws Exception {
         BDDMockito.willDoNothing().given(service).delete(anyLong());
 
-        mvc
-                .perform(delete(BASEURL + "/" + id).with(SecurityMockMvcRequestPostProcessors.csrf()))
-                .andExpect(status().isNoContent());
+        mvc.perform(delete(BASEURL + "/" + id).with(csrf()).with(adminJwt())).andExpect(status().isNoContent());
 
         verify(service, times(1)).delete(anyLong());
     }

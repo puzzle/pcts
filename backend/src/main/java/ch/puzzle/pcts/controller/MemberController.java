@@ -4,6 +4,9 @@ import ch.puzzle.pcts.dto.member.MemberDto;
 import ch.puzzle.pcts.dto.member.MemberInputDto;
 import ch.puzzle.pcts.mapper.MemberMapper;
 import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.security.annotation.IsAdmin;
+import ch.puzzle.pcts.security.annotation.IsAdminOrOwner;
+import ch.puzzle.pcts.security.annotation.IsAuthenticated;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -14,8 +17,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
+@IsAdmin
 @RestController
 @RequestMapping("/api/v1/members")
 @Tag(name = "members", description = "Manage the members of the organisation, including status and organisation unit")
@@ -40,8 +45,9 @@ public class MemberController {
     @ApiResponse(responseCode = "200", description = "Successfully retrieved the member.", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = MemberDto.class)) })
     @GetMapping("{memberId}")
+    @IsAdminOrOwner
     public ResponseEntity<MemberDto> getMemberById(@Parameter(description = "ID of the member to retrieve.", required = true)
-    @PathVariable Long memberId) {
+    @PathVariable @P("id") Long memberId) {
         Member member = service.getById(memberId);
         return ResponseEntity.ok(mapper.toDto(member));
     }
@@ -74,5 +80,15 @@ public class MemberController {
     @PathVariable Long memberId) {
         service.delete(memberId);
         return ResponseEntity.status(204).build();
+    }
+
+    @Operation(summary = "Get the currently logged in member")
+    @ApiResponse(responseCode = "200", description = "The currently logged in member", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = MemberDto.class)) })
+    @GetMapping("myself")
+    @IsAuthenticated
+    public ResponseEntity<MemberDto> getMyself() {
+        Member member = service.getLoggedInMember();
+        return ResponseEntity.ok(mapper.toDto(member));
     }
 }

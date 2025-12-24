@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.certificate.CertificateDto;
 import ch.puzzle.pcts.dto.certificate.CertificateInputDto;
 import ch.puzzle.pcts.dto.certificatetype.CertificateTypeDto;
@@ -33,19 +32,13 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-@Import(SpringSecurityConfig.class)
-@ExtendWith(MockitoExtension.class)
-@WebMvcTest(CertificateController.class)
-class CertificateControllerIT {
+@ControllerIT(CertificateController.class)
+class CertificateControllerIT extends ControllerITBase {
 
     @MockitoBean
     private CertificateBusinessService service;
@@ -109,6 +102,7 @@ class CertificateControllerIT {
                                             "SM",
                                             commonDate,
                                             commonDate,
+                                            null,
                                             organisationUnitDto);
         CertificateTypeDto certificateDto = new CertificateTypeDto(ID,
                                                                    "CertificateDto",
@@ -122,11 +116,12 @@ class CertificateControllerIT {
     @DisplayName("Should successfully get certificate by id")
     @Test
     void shouldGetCertificateById() throws Exception {
+        given(securityService.isAdmin()).willReturn(true);
         given(service.getById(ID)).willReturn(certificate);
         given(mapper.toDto(any(Certificate.class))).willReturn(expectedDto);
 
         mvc
-                .perform(get(BASEURL + "/{id}", ID).with(csrf()))
+                .perform(get(BASEURL + "/{id}", ID).with(csrf()).with(adminJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
@@ -145,7 +140,8 @@ class CertificateControllerIT {
                 .perform(post(BASEURL)
                         .content(objectMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isCreated())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
@@ -165,7 +161,8 @@ class CertificateControllerIT {
                 .perform(put(BASEURL + "/{id}", ID)
                         .content(objectMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
@@ -180,7 +177,7 @@ class CertificateControllerIT {
         willDoNothing().given(service).delete(ID);
 
         mvc
-                .perform(delete(BASEURL + "/{id}", ID).with(csrf()))
+                .perform(delete(BASEURL + "/{id}", ID).with(csrf()).with(adminJwt()))
                 .andExpect(status().isNoContent())
                 .andExpect(jsonPath("$").doesNotExist());
 

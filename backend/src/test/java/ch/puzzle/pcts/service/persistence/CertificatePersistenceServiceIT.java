@@ -56,8 +56,8 @@ class CertificatePersistenceServiceIT
                                               createOrganisationUnit(1L,
                                                                      "OrganisationUnit 1",
                                                                      LocalDateTime
-                                                                             .ofInstant(Instant.EPOCH,
-                                                                                        ZoneOffset.UTC))),
+                                                                             .ofInstant(Instant.EPOCH, ZoneOffset.UTC)),
+                                              null),
                                  createCertificateType(1L,
                                                        "Certificate Type 1",
                                                        new BigDecimal("5.5"),
@@ -79,11 +79,8 @@ class CertificatePersistenceServiceIT
                                                                   createOrganisationUnit(1L,
                                                                                          "OrganisationUnit 1",
                                                                                          LocalDateTime
-                                                                                                 .of(1970,
-                                                                                                     1,
-                                                                                                     1,
-                                                                                                     0,
-                                                                                                     0))),
+                                                                                                 .of(1970, 1, 1, 0, 0)),
+                                                                  null),
                                                      createCertificateType(1L,
                                                                            "Certificate Type 1",
                                                                            new BigDecimal("5.5"),
@@ -100,7 +97,8 @@ class CertificatePersistenceServiceIT
                                                                   LocalDate.of(1998, 3, 3),
                                                                   createOrganisationUnit(2L,
                                                                                          "OrganisationUnit 2",
-                                                                                         null)),
+                                                                                         null),
+                                                                  "member2@puzzle.ch"),
                                                      createCertificateType(2L,
                                                                            "Certificate Type 2",
                                                                            new BigDecimal("1"),
@@ -117,7 +115,8 @@ class CertificatePersistenceServiceIT
                                                                   LocalDate.of(1998, 3, 3),
                                                                   createOrganisationUnit(2L,
                                                                                          "OrganisationUnit 2",
-                                                                                         null)),
+                                                                                         null),
+                                                                  "member2@puzzle.ch"),
                                                      createCertificateType(1L,
                                                                            "Certificate Type 1",
                                                                            new BigDecimal("5.5"),
@@ -135,11 +134,8 @@ class CertificatePersistenceServiceIT
                                                                   createOrganisationUnit(1L,
                                                                                          "OrganisationUnit 1",
                                                                                          LocalDateTime
-                                                                                                 .of(1970,
-                                                                                                     1,
-                                                                                                     1,
-                                                                                                     0,
-                                                                                                     0))),
+                                                                                                 .of(1970, 1, 1, 0, 0)),
+                                                                  null),
                                                      createCertificateType(2L,
                                                                            "Certificate Type 2",
                                                                            new BigDecimal("1"),
@@ -153,7 +149,7 @@ class CertificatePersistenceServiceIT
     }
 
     private Member createMember(Long id, String firstName, String abbreviation, LocalDate dateOfHire,
-                                LocalDate birthDate, OrganisationUnit organisationUnit) {
+                                LocalDate birthDate, OrganisationUnit organisationUnit, String email) {
         return Member.Builder
                 .builder()
                 .withId(id)
@@ -164,6 +160,7 @@ class CertificatePersistenceServiceIT
                 .withDateOfHire(dateOfHire)
                 .withBirthDate(birthDate)
                 .withOrganisationUnit(organisationUnit)
+                .withEmail(email)
                 .build();
     }
 
@@ -213,6 +210,7 @@ class CertificatePersistenceServiceIT
         member.setEmploymentState(EmploymentState.MEMBER);
         member.setOrganisationUnit(organisationUnit);
         member.setBirthDate(LocalDate.of(1999, 8, 10));
+        member.setEmail("member@puzzle.ch");
         member = memberRepository.save(member);
 
         CertificateType certificateType = new CertificateType();

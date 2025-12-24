@@ -4,11 +4,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.role.RoleDto;
 import ch.puzzle.pcts.mapper.RoleMapper;
 import ch.puzzle.pcts.model.role.Role;
@@ -19,21 +19,14 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-@Import(SpringSecurityConfig.class)
-@ExtendWith(MockitoExtension.class)
-@WebMvcTest(RoleController.class)
-class RoleControllerIT {
+@ControllerIT(RoleController.class)
+class RoleControllerIT extends ControllerITBase {
 
     @MockitoBean
     private RoleBusinessService service;
@@ -68,9 +61,7 @@ class RoleControllerIT {
         BDDMockito.given(mapper.toDto(any(List.class))).willReturn(List.of(expectedDto));
 
         mvc
-                .perform(get(BASEURL)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
-                        .accept(MediaType.APPLICATION_JSON))
+                .perform(get(BASEURL).with(csrf()).with(adminJwt()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$[0]"));
@@ -86,7 +77,7 @@ class RoleControllerIT {
         BDDMockito.given(mapper.toDto(any(Role.class))).willReturn(expectedDto);
 
         mvc
-                .perform(get(BASEURL + "/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .perform(get(BASEURL + "/1").with(csrf()).with(adminJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
@@ -105,7 +96,8 @@ class RoleControllerIT {
                 .perform(post(BASEURL)
                         .content(objectMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isCreated())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
@@ -125,7 +117,8 @@ class RoleControllerIT {
                 .perform(put(BASEURL + "/" + id)
                         .content(objectMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
@@ -142,7 +135,8 @@ class RoleControllerIT {
         mvc
                 .perform(delete(BASEURL + "/" + id)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().is(204))
                 .andExpect(jsonPath("$").doesNotExist());
 

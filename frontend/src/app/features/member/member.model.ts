@@ -7,6 +7,7 @@ export interface MemberModel {
   lastName: string;
   birthDate: Date;
   abbreviation: string | null;
+  email: string | null;
   employmentState: EmploymentState;
   organisationUnit: OrganisationUnitModel;
   dateOfHire: Date | null;
