@@ -2,28 +2,18 @@ package ch.puzzle.pcts.util;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import java.util.Iterator;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultMatcher;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.json.JsonMapper;
 
 public class JsonDtoMatcher {
 
-    private static final ObjectMapper objectMapper = createCustomObjectMapper();
-
-    private static ObjectMapper createCustomObjectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        return mapper;
-    }
+    private static final JsonMapper jsonMapper = new JsonMapper();
 
     public static ResultMatcher matchesDto(Object expectedDto, String jsonPrefix) {
         return result -> {
-            JsonNode expectedNode = objectMapper.valueToTree(expectedDto);
+            JsonNode expectedNode = jsonMapper.valueToTree(expectedDto);
             matchJson(expectedNode, jsonPrefix, result);
         };
     }
@@ -33,10 +23,8 @@ public class JsonDtoMatcher {
             return;
         switch (expected.getNodeType()) {
             case OBJECT -> {
-                Iterator<String> fieldNames = expected.fieldNames();
-                while (fieldNames.hasNext()) {
-                    String field = fieldNames.next();
-                    matchJson(expected.get(field), pathPrefix + "." + field, result);
+                for (String propertyName : expected.propertyNames()) {
+                    matchJson(expected.get(propertyName), pathPrefix + "." + propertyName, result);
                 }
             }
             case ARRAY -> {
@@ -45,9 +33,9 @@ public class JsonDtoMatcher {
                 }
             }
             case BOOLEAN -> jsonPath(pathPrefix).value(expected.booleanValue()).match(result);
-            case NUMBER -> jsonPath(pathPrefix).value(expected.longValue()).match(result);
+            case NUMBER -> jsonPath(pathPrefix).value(expected.decimalValue()).match(result);
             case NULL -> jsonPath(pathPrefix).doesNotExist().match(result);
-            default -> jsonPath(pathPrefix).value(expected.asText()).match(result);
+            default -> jsonPath(pathPrefix).value(expected.asString()).match(result);
         }
     }
 }

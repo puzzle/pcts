@@ -12,7 +12,6 @@ import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.service.business.LeadershipExperienceTypeBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,12 +21,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import tools.jackson.databind.json.JsonMapper;
 
 @Import(SpringSecurityConfig.class)
 @ExtendWith(MockitoExtension.class)
@@ -43,7 +43,8 @@ class LeadershipExperienceTypeControllerIT {
     @Autowired
     private MockMvc mvc;
 
-    ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private JsonMapper jsonMapper;
 
     private static final String BASEURL = "/api/v1/leadership-experience-types";
 
@@ -114,7 +115,7 @@ class LeadershipExperienceTypeControllerIT {
 
         mvc
                 .perform(post(BASEURL)
-                        .content(objectMapper.writeValueAsString(requestDto))
+                        .content(jsonMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isCreated())
@@ -134,7 +135,7 @@ class LeadershipExperienceTypeControllerIT {
 
         mvc
                 .perform(put(BASEURL + "/" + id)
-                        .content(objectMapper.writeValueAsString(requestDto))
+                        .content(jsonMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())

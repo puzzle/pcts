@@ -21,9 +21,6 @@ import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.DegreeBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,12 +30,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import tools.jackson.databind.json.JsonMapper;
 
 @Import(SpringSecurityConfig.class)
 @ExtendWith(MockitoExtension.class)
@@ -53,11 +51,10 @@ class DegreeControllerIT {
     @Autowired
     private MockMvc mvc;
 
-    private static final String BASEURL = "/api/v1/degrees";
+    @Autowired
+    private JsonMapper jsonMapper;
 
-    private final ObjectMapper objectMapper = new ObjectMapper()
-            .registerModule(new JavaTimeModule())
-            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    private static final String BASEURL = "/api/v1/degrees";
 
     private Long id;
 
@@ -165,7 +162,7 @@ class DegreeControllerIT {
 
         mvc
                 .perform(post(BASEURL)
-                        .content(objectMapper.writeValueAsString(degreeInputDto))
+                        .content(jsonMapper.writeValueAsString(degreeInputDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isCreated())
@@ -185,7 +182,7 @@ class DegreeControllerIT {
 
         mvc
                 .perform(put(BASEURL + "/" + id)
-                        .content(objectMapper.writeValueAsString(degreeInputDto))
+                        .content(jsonMapper.writeValueAsString(degreeInputDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
