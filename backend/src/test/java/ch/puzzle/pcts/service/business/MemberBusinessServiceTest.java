@@ -22,19 +22,19 @@ class MemberBusinessServiceTest
             BaseBusinessTest<Member, MemberPersistenceService, MemberValidationService, MemberBusinessService> {
 
     @Mock
-    Member member;
+    private Member member;
 
     @Mock
-    List<Member> members;
+    private List<Member> members;
 
     @Mock
-    MemberPersistenceService persistenceService;
+    private MemberPersistenceService persistenceService;
 
     @Mock
-    MemberValidationService validationService;
+    private MemberValidationService validationService;
 
     @InjectMocks
-    MemberBusinessService businessService;
+    private MemberBusinessService businessService;
 
     @Override
     Member getModel() {

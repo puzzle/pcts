@@ -14,16 +14,16 @@ class CalculationBusinessServiceTest
             BaseBusinessTest<Calculation, CalculationPersistenceService, CalculationValidationService, CalculationBusinessService> {
 
     @Mock
-    Calculation calculation;
+    private Calculation calculation;
 
     @Mock
-    CalculationPersistenceService persistenceService;
+    private CalculationPersistenceService persistenceService;
 
     @Mock
-    CalculationValidationService validationService;
+    private CalculationValidationService validationService;
 
     @InjectMocks
-    CalculationBusinessService businessService;
+    private CalculationBusinessService businessService;
 
     @Override
     Calculation getModel() {

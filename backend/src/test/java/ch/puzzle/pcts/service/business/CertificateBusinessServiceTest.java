@@ -14,16 +14,16 @@ class CertificateBusinessServiceTest
             BaseBusinessTest<Certificate, CertificatePersistenceService, CertificateValidationService, CertificateBusinessService> {
 
     @Mock
-    Certificate certificate;
+    private Certificate certificate;
 
     @Mock
-    CertificatePersistenceService persistenceService;
+    private CertificatePersistenceService persistenceService;
 
     @Mock
-    CertificateValidationService validationService;
+    private CertificateValidationService validationService;
 
     @InjectMocks
-    CertificateBusinessService businessService;
+    private CertificateBusinessService businessService;
 
     @Override
     Certificate getModel() {

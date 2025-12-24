@@ -22,16 +22,16 @@ class OrganisationUnitBusinessServiceTest
             BaseBusinessTest<OrganisationUnit, OrganisationUnitPersistenceService, OrganisationUnitValidationService, OrganisationUnitBusinessService> {
 
     @Mock
-    OrganisationUnit organisationUnit;
+    private OrganisationUnit organisationUnit;
 
     @Mock
-    List<OrganisationUnit> organisationUnits;
+    private List<OrganisationUnit> organisationUnits;
 
     @Mock
-    OrganisationUnitPersistenceService persistenceService;
+    private OrganisationUnitPersistenceService persistenceService;
 
     @Mock
-    OrganisationUnitValidationService validationService;
+    private OrganisationUnitValidationService validationService;
 
     @InjectMocks
     OrganisationUnitBusinessService businessService;

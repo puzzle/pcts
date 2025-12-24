@@ -22,19 +22,19 @@ class DegreeTypeBusinessServiceTest
             BaseBusinessTest<DegreeType, DegreeTypePersistenceService, DegreeTypeValidationService, DegreeTypeBusinessService> {
 
     @Mock
-    DegreeType degreeType;
+    private DegreeType degreeType;
 
     @Mock
-    List<DegreeType> degreeTypes;
+    private List<DegreeType> degreeTypes;
 
     @Mock
-    DegreeTypePersistenceService persistenceService;
+    private DegreeTypePersistenceService persistenceService;
 
     @Mock
-    DegreeTypeValidationService validationService;
+    private DegreeTypeValidationService validationService;
 
     @InjectMocks
-    DegreeTypeBusinessService businessService;
+    private DegreeTypeBusinessService businessService;
 
     @Override
     DegreeType getModel() {

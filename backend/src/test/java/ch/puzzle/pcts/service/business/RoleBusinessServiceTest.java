@@ -22,19 +22,19 @@ class RoleBusinessServiceTest
             BaseBusinessTest<Role, RolePersistenceService, RoleValidationService, RoleBusinessService> {
 
     @Mock
-    Role role;
+    private Role role;
 
     @Mock
-    List<Role> roles;
+    private List<Role> roles;
 
     @Mock
-    RolePersistenceService persistenceService;
+    private RolePersistenceService persistenceService;
 
     @Mock
-    RoleValidationService validationService;
+    private RoleValidationService validationService;
 
     @InjectMocks
-    RoleBusinessService businessService;
+    private RoleBusinessService businessService;
 
     @Override
     Role getModel() {

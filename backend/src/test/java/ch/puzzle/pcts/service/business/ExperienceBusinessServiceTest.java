@@ -14,16 +14,16 @@ class ExperienceBusinessServiceTest
             BaseBusinessTest<Experience, ExperiencePersistenceService, ExperienceValidationService, ExperienceBusinessService> {
 
     @Mock
-    Experience experience;
+    private Experience experience;
 
     @Mock
-    ExperiencePersistenceService persistenceService;
+    private ExperiencePersistenceService persistenceService;
 
     @Mock
-    ExperienceValidationService validationService;
+    private ExperienceValidationService validationService;
 
     @InjectMocks
-    ExperienceBusinessService businessService;
+    private ExperienceBusinessService businessService;
 
     @Override
     Experience getModel() {

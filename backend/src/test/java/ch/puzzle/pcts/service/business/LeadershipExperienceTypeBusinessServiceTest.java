@@ -22,19 +22,19 @@ class LeadershipExperienceTypeBusinessServiceTest
             BaseBusinessTest<CertificateType, LeadershipTypePersistenceService, LeadershipExperienceTypeValidationService, LeadershipExperienceTypeBusinessService> {
 
     @Mock
-    CertificateType certificateType;
+    private CertificateType certificateType;
 
     @Mock
-    List<CertificateType> certificateTypes;
+    private List<CertificateType> certificateTypes;
 
     @Mock
-    LeadershipTypePersistenceService persistenceService;
+    private LeadershipTypePersistenceService persistenceService;
 
     @Mock
-    LeadershipExperienceTypeValidationService validationService;
+    private LeadershipExperienceTypeValidationService validationService;
 
     @InjectMocks
-    LeadershipExperienceTypeBusinessService businessService;
+    private LeadershipExperienceTypeBusinessService businessService;
 
     @Override
     CertificateType getModel() {

@@ -22,22 +22,22 @@ class CertificateTypeBusinessServiceTest
             BaseBusinessTest<CertificateType, CertificateTypePersistenceService, CertificateTypeValidationService, CertificateTypeBusinessService> {
 
     @Mock
-    CertificateType certificateType;
+    private CertificateType certificateType;
 
     @Mock
-    List<CertificateType> certificateTypes;
+    private List<CertificateType> certificateTypes;
 
     @Mock
-    CertificateTypePersistenceService persistenceService;
+    private CertificateTypePersistenceService persistenceService;
 
     @Mock
-    CertificateTypeValidationService validationService;
+    private CertificateTypeValidationService validationService;
 
     @Mock
-    TagBusinessService tagBusinessService;
+    private TagBusinessService tagBusinessService;
 
     @InjectMocks
-    CertificateTypeBusinessService businessService;
+    private CertificateTypeBusinessService businessService;
 
     @Override
     CertificateType getModel() {

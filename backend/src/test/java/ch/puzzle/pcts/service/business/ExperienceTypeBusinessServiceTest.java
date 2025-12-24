@@ -22,19 +22,19 @@ class ExperienceTypeBusinessServiceTest
             BaseBusinessTest<ExperienceType, ExperienceTypePersistenceService, ExperienceTypeValidationService, ExperienceTypeBusinessService> {
 
     @Mock
-    ExperienceType experienceType;
+    private ExperienceType experienceType;
 
     @Mock
-    List<ExperienceType> experienceTypes;
+    private List<ExperienceType> experienceTypes;
 
     @Mock
-    ExperienceTypePersistenceService persistenceService;
+    private ExperienceTypePersistenceService persistenceService;
 
     @Mock
-    ExperienceTypeValidationService validationService;
+    private ExperienceTypeValidationService validationService;
 
     @InjectMocks
-    ExperienceTypeBusinessService businessService;
+    private ExperienceTypeBusinessService businessService;
 
     @Override
     ExperienceType getModel() {

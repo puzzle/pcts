@@ -24,16 +24,16 @@ class LeadershipExperienceBusinessServiceTest
     private static final Long ID = 1L;
 
     @Mock
-    Certificate certificate;
+    private Certificate certificate;
 
     @Mock
-    CertificatePersistenceService persistenceService;
+    private CertificatePersistenceService persistenceService;
 
     @Mock
-    LeadershipExperienceValidationService validationService;
+    private LeadershipExperienceValidationService validationService;
 
     @InjectMocks
-    LeadershipExperienceBusinessService businessService;
+    private LeadershipExperienceBusinessService businessService;
 
     @Override
     Certificate getModel() {

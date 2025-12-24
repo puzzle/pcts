@@ -14,16 +14,16 @@ class DegreeBusinessServiceTest
             BaseBusinessTest<Degree, DegreePersistenceService, DegreeValidationService, DegreeBusinessService> {
 
     @Mock
-    Degree degree;
+    private Degree degree;
 
     @Mock
-    DegreePersistenceService persistenceService;
+    private DegreePersistenceService persistenceService;
 
     @Mock
-    DegreeValidationService validationService;
+    private DegreeValidationService validationService;
 
     @InjectMocks
-    DegreeBusinessService businessService;
+    private DegreeBusinessService businessService;
 
     @Override
     Degree getModel() {
