@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 
 import { ConfigurationService } from './configuration.service';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { DegreeService } from '../degrees/degree.service';
 import { provideHttpClient } from '@angular/common/http';
 import { ConfigurationModel } from './configuration.model';
 import { configuration } from '../../shared/test/test-data';
@@ -14,8 +13,7 @@ describe('configurationService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [DegreeService,
-        provideHttpClient(),
+      providers: [provideHttpClient(),
         provideHttpClientTesting()]
     })
       .compileComponents();
