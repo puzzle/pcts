@@ -7,6 +7,7 @@ import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
 import { UserService } from '../../../core/auth/user.service';
+import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin.directive';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -16,7 +17,8 @@ import { UserService } from '../../../core/auth/user.service';
     CommonModule,
     DatePipe,
     ScopedTranslationPipe,
-    CrudButtonComponent
+    CrudButtonComponent,
+    ShowIfAdminDirective
   ],
   templateUrl: './member-detail-view.component.html'
 })
