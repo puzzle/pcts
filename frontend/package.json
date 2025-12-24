@@ -34,7 +34,6 @@
     "@ngx-translate/core": "^17.0.0",
     "@ngx-translate/http-loader": "^17.0.0",
     "@puzzleitc/puzzle-shell": "^5.1.0",
-    "angular-oauth2-oidc": "^20.0.2",
     "bootstrap": "^5.3.7",
     "cypress": "^15.2.0",
     "date-fns": "^4.1.0",
