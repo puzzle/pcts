@@ -1,7 +1,5 @@
 package ch.puzzle.pcts.service.business;
 
-import static ch.puzzle.pcts.Constants.CERTIFICATE_TYPE;
-
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import ch.puzzle.pcts.service.validation.CertificateTypeValidationService;
@@ -47,14 +45,7 @@ public class CertificateTypeBusinessService extends BusinessBase<CertificateType
 
     @Override
     public void delete(Long id) {
-        validationService.validateOnDelete(id);
-        certificateTypePersistenceService.getById(id);
-        persistenceService.delete(id);
+        super.delete(id);
         tagBusinessService.deleteUnusedTags();
-    }
-
-    @Override
-    protected String entityName() {
-        return CERTIFICATE_TYPE;
     }
 }

@@ -1,7 +1,5 @@
 package ch.puzzle.pcts.service.business;
 
-import static ch.puzzle.pcts.Constants.DEGREE_TYPE;
-
 import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.service.persistence.DegreeTypePersistenceService;
 import ch.puzzle.pcts.service.validation.DegreeTypeValidationService;
@@ -18,10 +16,5 @@ public class DegreeTypeBusinessService extends BusinessBase<DegreeType> {
 
     public List<DegreeType> getAll() {
         return persistenceService.getAll();
-    }
-
-    @Override
-    protected String entityName() {
-        return DEGREE_TYPE;
     }
 }

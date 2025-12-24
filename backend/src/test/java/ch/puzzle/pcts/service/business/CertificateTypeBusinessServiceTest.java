@@ -59,14 +59,6 @@ class CertificateTypeBusinessServiceTest
         return businessService;
     }
 
-    @Override
-    void shouldNotUpdateAndThrowException() {
-    }
-
-    @Override
-    void shouldNotDeleteAndThrowException() {
-    }
-
     @DisplayName("Should get all")
     @Test
     void shouldGetAll() {

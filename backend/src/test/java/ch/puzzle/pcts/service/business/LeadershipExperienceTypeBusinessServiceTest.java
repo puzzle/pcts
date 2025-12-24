@@ -56,10 +56,6 @@ class LeadershipExperienceTypeBusinessServiceTest
         return businessService;
     }
 
-    @Override
-    void shouldNotDeleteAndThrowException() {
-    }
-
     @DisplayName("Should get all")
     @Test
     void shouldGetAll() {

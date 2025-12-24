@@ -1,7 +1,5 @@
 package ch.puzzle.pcts.service.business;
 
-import static ch.puzzle.pcts.Constants.LEADERSHIP_EXPERIENCE_TYPE;
-
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.service.persistence.LeadershipTypePersistenceService;
 import ch.puzzle.pcts.service.validation.LeadershipExperienceTypeValidationService;
@@ -21,17 +19,5 @@ public class LeadershipExperienceTypeBusinessService extends BusinessBase<Certif
 
     public List<CertificateType> getAll() {
         return leadershipTypePersistenceService.getAll();
-    }
-
-    @Override
-    public void delete(Long id) {
-        validationService.validateOnDelete(id);
-        leadershipTypePersistenceService.getById(id);
-        leadershipTypePersistenceService.delete(id);
-    }
-
-    @Override
-    protected String entityName() {
-        return LEADERSHIP_EXPERIENCE_TYPE;
     }
 }

@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.service.persistence;
 
+import static ch.puzzle.pcts.Constants.CALCULATION;
+
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.repository.CalculationRepository;
@@ -24,6 +26,11 @@ public class CalculationPersistenceService extends PersistenceBase<Calculation, 
             setStateOfOldActiveCalculationsToArchived(calculation);
         }
         return super.save(calculation);
+    }
+
+    @Override
+    public String entityName() {
+        return CALCULATION;
     }
 
     private void setPublicationFields(Calculation calculation) {

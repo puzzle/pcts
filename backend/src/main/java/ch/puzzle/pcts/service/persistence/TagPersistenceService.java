@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.service.persistence;
 
+import static ch.puzzle.pcts.Constants.TAG;
+
 import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.repository.TagRepository;
 import java.util.Optional;
@@ -14,6 +16,11 @@ public class TagPersistenceService extends PersistenceBase<Tag, TagRepository> {
     public TagPersistenceService(TagRepository repository) {
         super(repository);
         this.repository = repository;
+    }
+
+    @Override
+    public String entityName() {
+        return TAG;
     }
 
     public Optional<Tag> findWithIgnoreCase(String tagName) {
