@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,8 +24,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.internalServerError().body(new GenericErrorDto(ErrorKey.INTERNAL));
     }
 
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<GenericErrorDto> handleAccessDeniedException(AccessDeniedException ex) {
+    @ExceptionHandler({ AccessDeniedException.class, AuthorizationDeniedException.class })
+    public ResponseEntity<GenericErrorDto> handleAccessDeniedException(Exception ex) {
         logger.warn("Access denied: {}", ex.getMessage());
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
