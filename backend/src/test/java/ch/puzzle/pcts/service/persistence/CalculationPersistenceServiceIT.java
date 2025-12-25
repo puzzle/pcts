@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.persistence;
 
+import static ch.puzzle.pcts.util.TestData.CALCULATIONS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -43,25 +44,7 @@ class CalculationPersistenceServiceIT
 
     @Override
     List<Calculation> getAll() {
-        return List
-                .of(new Calculation(1L,
-                                    memberPersistenceServiceIT.getAll().getFirst(),
-                                    rolePersistenceServiceIT.getAll().getLast(),
-                                    CalculationState.DRAFT,
-                                    LocalDate.of(2025, 1, 14),
-                                    "Ldap User"),
-                    new Calculation(2L,
-                                    memberPersistenceServiceIT.getAll().getLast(),
-                                    rolePersistenceServiceIT.getAll().getLast(),
-                                    CalculationState.ARCHIVED,
-                                    LocalDate.of(2025, 1, 14),
-                                    "Ldap User 2"),
-                    new Calculation(3L,
-                                    memberPersistenceServiceIT.getAll().getLast(),
-                                    rolePersistenceServiceIT.getAll().getLast(),
-                                    CalculationState.ACTIVE,
-                                    null,
-                                    null));
+        return CALCULATIONS;
     }
 
     @DisplayName("Should only have one active Calculation after save when member already has active Calculation for the same role.")
