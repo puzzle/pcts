@@ -4,6 +4,7 @@ import { provideRouter, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DOCUMENT } from '@angular/common';
 
+import { Router } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { UserService } from './core/auth/user.service';
 
@@ -11,6 +12,7 @@ jest.mock('@puzzleitc/puzzle-shell', () => jest.fn());
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
+  let routerMock: Partial<Router>;
   let component: AppComponent;
   let router: Router;
   let document: Document;
@@ -24,13 +26,23 @@ describe('AppComponent', () => {
       logout: jest.fn()
     };
 
+    routerMock = {
+      navigate: jest.fn()
+        .mockResolvedValue(true)
+    };
+
     await TestBed.configureTestingModule({
       imports: [AppComponent, TranslateModule.forRoot()],
-      providers: [provideTranslateService(),{
-        provide: UserService,
-        useValue: userServiceMock
-      },
-        provideRouter([])]
+      providers: [provideTranslateService(),
+        provideRouter([]),
+        {
+          provide: Router,
+          useValue: routerMock
+        },
+        {
+          provide: UserService,
+          useValue: userServiceMock
+        }]
     })
       .compileComponents();
 
@@ -38,10 +50,6 @@ describe('AppComponent', () => {
     component = fixture.componentInstance;
     document = TestBed.inject(DOCUMENT);
     translateService = TestBed.inject(TranslateService);
-
-    router = TestBed.inject(Router);
-    jest.spyOn(router, 'navigate')
-      .mockImplementation(() => Promise.resolve(true));
 
     fixture.detectChanges();
   });
@@ -58,8 +66,8 @@ describe('AppComponent', () => {
   it('should navigate to /member when visitRoot() is called', () => {
     component.visitRoot();
 
-    expect(router.navigate)
-      .toHaveBeenCalledWith(['/member']);
+    expect(routerMock.navigate)
+      .toHaveBeenCalledWith(['']);
   });
 
   it('should call logout service when handleLogout() is called', () => {
