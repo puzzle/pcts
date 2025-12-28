@@ -12,10 +12,10 @@ import org.springframework.validation.annotation.Validated;
 public record AuthorisationConfiguration(@NotBlank @DefaultValue("[pitc][roles]") String authoritiesSpElExpression,
         @NotEmpty @DefaultValue() List<@NotBlank String> adminAuthorities) {
     public List<String> adminAuthoritiesAsRoles() {
-        return this.adminAuthorities.stream().map(a -> "SCOPE_" + a).toList();
+        return adminAuthorities.stream().map(a -> "SCOPE_" + a).toList();
     }
 
     public List<String> adminAuthorities() {
-        return List.copyOf(this.adminAuthorities);
+        return List.copyOf(adminAuthorities);
     }
 }
