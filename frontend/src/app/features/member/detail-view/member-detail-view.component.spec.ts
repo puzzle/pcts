@@ -15,18 +15,15 @@ import { CertificateService } from '../../certificates/certificate.service';
 import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
 
 type MockKeycloak = Partial<Keycloak> & { tokenParsed?: any };
+import { UserService } from '../../../core/auth/user.service';
 
 describe('MemberDetailViewComponent (Jest)', () => {
   let memberServiceMock: Partial<jest.Mocked<MemberService>>;
+  let userServiceMock: jest.Mocked<UserService>;
   let certificateService: Partial<jest.Mocked<CertificateService>>;
   let modalService: Partial<jest.Mocked<PctsModalService>>;
   let routerMock: jest.Mocked<Router>;
   let routeMock: ActivatedRoute;
-  let keycloakMock: MockKeycloak;
-  const appConfigMock = {
-    adminAuthorities: ['ADMIN_ROLE',
-      'HR_ROLE']
-  };
 
   function setupTestBed(id: string | null) {
     memberServiceMock = {
@@ -35,17 +32,14 @@ describe('MemberDetailViewComponent (Jest)', () => {
       getCalculationsByMemberIdAndOptionalRoleId: jest.fn()
     } as Partial<jest.Mocked<MemberService>>;
 
+    userServiceMock = {
+      isAdmin: jest.fn()
+    } as unknown as jest.Mocked<UserService>;
+
     routerMock = {
       navigate: jest.fn(),
       url: '/member/1'
     } as any;
-
-    keycloakMock = {
-      tokenParsed: {
-        pitc: { roles: [] }
-      },
-      logout: jest.fn()
-    };
 
     routeMock = {
       snapshot: {
@@ -80,17 +74,11 @@ describe('MemberDetailViewComponent (Jest)', () => {
           useValue: modalService },
         { provide: CertificateService,
           useValue: certificateService },
+        {
+          provide: UserService,
+          useValue: userServiceMock
+        },
         provideTranslateService(),
-        { provide: MemberService,
-          useValue: memberServiceMock },
-        {
-          provide: APP_CONFIG,
-          useValue: appConfigMock
-        },
-        {
-          provide: Keycloak,
-          useValue: keycloakMock
-        },
         DatePipe
       ]
     });
