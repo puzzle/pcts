@@ -7,37 +7,27 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 import { memberOverview1 } from '../../../shared/test/test-data';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
-import { APP_CONFIG } from '../../configuration/configuration.token';
-import Keycloak from 'keycloak-js';
-
-type MockKeycloak = Partial<Keycloak> & { tokenParsed?: any };
+import { UserService } from '../../../core/auth/user.service';
 
 describe('MemberDetailViewComponent (Jest)', () => {
   let memberServiceMock: Partial<jest.Mocked<MemberService>>;
+  let userServiceMock: jest.Mocked<UserService>;
   let routerMock: jest.Mocked<Router>;
   let routeMock: ActivatedRoute;
-  let keycloakMock: MockKeycloak;
-  const appConfigMock = {
-    adminAuthorities: ['ADMIN_ROLE',
-      'HR_ROLE']
-  };
 
   function setupTestBed(id: string | null) {
     memberServiceMock = {
       getMemberOverviewByMemberId: jest.fn()
     } as Partial<jest.Mocked<MemberService>>;
 
+    userServiceMock = {
+      isAdmin: jest.fn()
+    } as unknown as jest.Mocked<UserService>;
+
     routerMock = {
       navigate: jest.fn(),
       url: '/member/1'
     } as any;
-
-    keycloakMock = {
-      tokenParsed: {
-        pitc: { roles: [] }
-      },
-      logout: jest.fn()
-    };
 
     routeMock = {
       snapshot: {
@@ -58,17 +48,11 @@ describe('MemberDetailViewComponent (Jest)', () => {
           useValue: routerMock },
         { provide: MemberService,
           useValue: memberServiceMock },
+        {
+          provide: UserService,
+          useValue: userServiceMock
+        },
         provideTranslateService(),
-        { provide: MemberService,
-          useValue: memberServiceMock },
-        {
-          provide: APP_CONFIG,
-          useValue: appConfigMock
-        },
-        {
-          provide: Keycloak,
-          useValue: keycloakMock
-        },
         DatePipe
       ]
     });
