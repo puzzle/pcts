@@ -28,7 +28,7 @@ export class AppComponent {
   }
 
   visitRoot(): void {
-    this.router.navigate(['/member']);
+    this.router.navigate(['']);
   }
 
   handleLogout() {
