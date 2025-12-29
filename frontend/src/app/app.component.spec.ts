@@ -6,7 +6,8 @@ import { DOCUMENT } from '@angular/common';
 
 import { Router } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
-import { UserService } from './core/auth/user.service';
+import { AuthService } from './core/auth/auth.service';
+import { signal } from '@angular/core';
 
 jest.mock('@puzzleitc/puzzle-shell', () => jest.fn());
 
@@ -14,15 +15,13 @@ describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
   let routerMock: Partial<Router>;
   let component: AppComponent;
-  let router: Router;
   let document: Document;
   let translateService: TranslateService;
-  let userServiceMock: Partial<UserService>;
+  let authServiceMock: Partial<AuthService>;
 
   beforeEach(async() => {
-    userServiceMock = {
-      getName: jest.fn()
-        .mockReturnValue('Test User'),
+    authServiceMock = {
+      name: signal('Test User'),
       logout: jest.fn()
     };
 
@@ -40,8 +39,8 @@ describe('AppComponent', () => {
           useValue: routerMock
         },
         {
-          provide: UserService,
-          useValue: userServiceMock
+          provide: AuthService,
+          useValue: authServiceMock
         }]
     })
       .compileComponents();
@@ -73,7 +72,7 @@ describe('AppComponent', () => {
   it('should call logout service when handleLogout() is called', () => {
     component.handleLogout();
 
-    expect(userServiceMock.logout)
+    expect(authServiceMock.logout)
       .toHaveBeenCalled();
   });
 

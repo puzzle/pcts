@@ -3,12 +3,12 @@ import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@a
 import { of } from 'rxjs';
 
 import { authGuard } from './auth.guard';
-import { UserService } from '../user.service';
+import { AuthService } from '../auth.service';
 import { MemberService } from '../../../features/member/member.service';
 import { APP_CONFIG } from '../../../features/configuration/configuration.token';
 
 describe('authGuard', () => {
-  let userServiceMock: Partial<UserService>;
+  let userServiceMock: Partial<AuthService>;
   let memberServiceMock: Partial<MemberService>;
   let routerMock: Partial<Router>;
   const mockConfig = { adminAuthorities: ['ADMIN_ROLE'] };
@@ -39,7 +39,7 @@ describe('authGuard', () => {
     TestBed.configureTestingModule({
       providers: [
         {
-          provide: UserService,
+          provide: AuthService,
           useValue: userServiceMock
         },
         {

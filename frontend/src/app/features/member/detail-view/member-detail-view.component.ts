@@ -34,6 +34,7 @@ import {
 import { LeadershipExperienceService } from '../../leadership-experiences/leadership-experience.service';
 import { concatMap, filter, Observable } from 'rxjs';
 import { UserService } from '../../../core/auth/user.service';
+import { AuthService } from '../../../core/auth/auth.service';
 import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin.directive';
 
 @Component({
@@ -56,7 +57,7 @@ import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin
 export class MemberDetailViewComponent implements OnInit {
   private readonly service = inject(MemberService);
 
-  protected readonly userService = inject(UserService);
+  protected readonly userService = inject(AuthService);
 
   private readonly route = inject(ActivatedRoute);
 
