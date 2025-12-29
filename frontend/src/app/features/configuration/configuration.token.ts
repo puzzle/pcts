@@ -8,7 +8,7 @@ export const APP_CONFIG = new InjectionToken<ConfigurationModel>('APP_CONFIG');
 
 let configState: ConfigurationModel;
 
-export function provideConfiguration() {
+export function provideAppConfiguration() {
   return [{
     provide: APP_CONFIG,
     useFactory: () => configState
