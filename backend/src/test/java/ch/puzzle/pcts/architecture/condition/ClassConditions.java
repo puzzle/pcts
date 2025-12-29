@@ -6,7 +6,10 @@ import com.tngtech.archunit.core.domain.JavaMethod;
 import com.tngtech.archunit.lang.ArchCondition;
 import com.tngtech.archunit.lang.ConditionEvents;
 import com.tngtech.archunit.lang.SimpleConditionEvent;
+import java.lang.annotation.Annotation;
+import java.util.Arrays;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ClassConditions {
 
@@ -31,6 +34,29 @@ public class ClassConditions {
                     String message = String
                             .format("Package '%s' does not follow pattern '%s'", javaPackage.getName(), pattern);
                     events.add(SimpleConditionEvent.violated(javaPackage, message));
+                }
+            }
+        };
+    }
+
+    public static ArchCondition<JavaClass> beAnnotatedWithOneOf(Class<? extends Annotation>... annotationClasses) {
+        String expectedAnnotations = Arrays
+                .stream(annotationClasses)
+                .map(Class::getSimpleName)
+                .map(name -> "@" + name)
+                .collect(Collectors.joining(" or "));
+
+        return new ArchCondition<>("be annotated with one " + expectedAnnotations) {
+            @Override
+            public void check(JavaClass javaClass, ConditionEvents events) {
+                boolean match = Arrays.stream(annotationClasses).anyMatch(javaClass::isAnnotatedWith);
+
+                if (!match) {
+                    String message = String
+                            .format("Class %s is not annotated with any of { %s }",
+                                    javaClass.getName(),
+                                    expectedAnnotations);
+                    events.add(SimpleConditionEvent.violated(javaClass, message));
                 }
             }
         };
