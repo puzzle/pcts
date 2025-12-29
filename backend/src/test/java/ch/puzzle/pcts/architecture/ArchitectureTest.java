@@ -6,6 +6,7 @@ import static ch.puzzle.pcts.architecture.condition.AnnotationConditions.havePre
 import static ch.puzzle.pcts.architecture.condition.AnnotationConditions.haveSuffix;
 import static ch.puzzle.pcts.architecture.condition.AnnotationConditions.haveValuePrefix;
 import static ch.puzzle.pcts.architecture.condition.AnnotationConditions.shouldBeValidDescription;
+import static ch.puzzle.pcts.architecture.condition.ClassConditions.beAnnotatedWithOneOf;
 import static ch.puzzle.pcts.architecture.condition.ClassConditions.followPattern;
 import static ch.puzzle.pcts.architecture.condition.ClassConditions.overrideEqualsMethod;
 import static ch.puzzle.pcts.architecture.condition.ClassConditions.overrideHashCodeMethod;
@@ -24,6 +25,9 @@ import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 import ch.puzzle.pcts.controller.ConfigurationController;
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.security.annotation.IsAdmin;
+import ch.puzzle.pcts.security.annotation.IsAdminOrOwner;
+import ch.puzzle.pcts.security.annotation.IsAuthenticated;
+import ch.puzzle.pcts.security.annotation.IsOwner;
 import com.tngtech.archunit.core.domain.*;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
@@ -207,9 +211,7 @@ class ArchitectureTest {
                 .areNotAnonymousClasses()
                 .and()
                 .resideInAPackage("ch.puzzle.pcts.controller..")
-                .and(not(equivalentTo(ConfigurationController.class)))
-                .should()
-                .beAnnotatedWith(IsAdmin.class)
+                .should(beAnnotatedWithOneOf(IsAdmin.class, IsOwner.class, IsAdminOrOwner.class, IsAuthenticated.class))
                 .andShould()
                 .notBeInterfaces();
 
