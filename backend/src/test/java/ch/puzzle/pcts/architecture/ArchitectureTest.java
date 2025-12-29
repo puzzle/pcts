@@ -201,7 +201,7 @@ class ArchitectureTest {
         rule.check(importedClasses);
     }
 
-    @DisplayName("Controller classes should be annotated with @IsAdmin")
+    @DisplayName("Controller classes should be annotated with at least one security annotation")
     @Test
     void controllersShouldBeAnnotatedWithIsAdmin() {
         JavaClasses importedClasses = getMainSourceClasses();
