@@ -19,7 +19,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 @ControllerIT(ConfigurationController.class)
-class ConfigurationControllerTest extends ControllerITBase {
+class ConfigurationControllerIT extends ControllerITBase {
     @MockitoBean
     private AuthorizationConfiguration authorizationConfiguration;
 
