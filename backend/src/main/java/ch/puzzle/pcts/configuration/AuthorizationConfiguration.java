@@ -8,8 +8,8 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.validation.annotation.Validated;
 
 @Validated
-@ConfigurationProperties(prefix = "pcts.security.authorisation")
-public record AuthorisationConfiguration(@NotBlank @DefaultValue("[pitc][roles]") String authoritiesSpElExpression,
+@ConfigurationProperties(prefix = "pcts.security.authorization")
+public record AuthorizationConfiguration(@NotBlank @DefaultValue("[pitc][roles]") String authoritiesSpElExpression,
         @NotEmpty @DefaultValue() List<@NotBlank String> adminAuthorities) {
     public List<String> adminAuthoritiesAsRoles() {
         return adminAuthorities.stream().map(a -> "SCOPE_" + a).toList();
