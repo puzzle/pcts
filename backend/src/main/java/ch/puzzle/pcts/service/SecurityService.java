@@ -1,6 +1,6 @@
 package ch.puzzle.pcts.service;
 
-import ch.puzzle.pcts.configuration.AuthorisationConfiguration;
+import ch.puzzle.pcts.configuration.AuthorizationConfiguration;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import java.util.Collection;
@@ -13,20 +13,20 @@ import org.springframework.stereotype.Service;
 public class SecurityService {
     private final UserService userService;
     private final MemberBusinessService memberService;
-    private final AuthorisationConfiguration authorisationConfiguration;
+    private final AuthorizationConfiguration authorizationConfiguration;
 
     public SecurityService(UserService userService, MemberBusinessService memberService,
-                           AuthorisationConfiguration authorisationConfiguration) {
+                           AuthorizationConfiguration authorizationConfiguration) {
         this.userService = userService;
         this.memberService = memberService;
-        this.authorisationConfiguration = authorisationConfiguration;
+        this.authorizationConfiguration = authorizationConfiguration;
     }
 
     public boolean isAdmin() {
         return getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)
-                .anyMatch(authorisationConfiguration.adminAuthoritiesAsRoles()::contains);
+                .anyMatch(authorizationConfiguration.adminAuthoritiesAsRoles()::contains);
     }
 
     public boolean isOwner(Long userId) {
