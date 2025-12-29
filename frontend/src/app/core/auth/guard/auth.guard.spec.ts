@@ -8,9 +8,9 @@ import { MemberService } from '../../../features/member/member.service';
 import { APP_CONFIG } from '../../../features/configuration/configuration.token';
 
 describe('authGuard', () => {
-  let userServiceMock: jest.Mocked<UserService>;
-  let memberServiceMock: jest.Mocked<MemberService>;
-  let routerMock: jest.Mocked<Router>;
+  let userServiceMock: Partial<UserService>;
+  let memberServiceMock: Partial<MemberService>;
+  let routerMock: Partial<Router>;
   const mockConfig = { adminAuthorities: ['ADMIN_ROLE'] };
 
   const executeGuard = (config?: { scope: 'admin' | 'user' },
@@ -20,18 +20,21 @@ describe('authGuard', () => {
   };
 
   beforeEach(() => {
+    jest.resetAllMocks();
+
     userServiceMock = {
       getRoles: jest.fn(),
       isAdmin: jest.fn()
-    } as any;
+    };
 
     memberServiceMock = {
       getMyself: jest.fn()
-    } as any;
+        .mockReturnValue(of({ id: 7 } as any))
+    };
 
     routerMock = {
       parseUrl: jest.fn((url) => ({ toString: () => url } as UrlTree))
-    } as any;
+    };
 
     TestBed.configureTestingModule({
       providers: [
@@ -62,7 +65,7 @@ describe('authGuard', () => {
   });
 
   it('should allow access if scope is "admin" and user has admin role', () => {
-    userServiceMock.isAdmin.mockReturnValue(true);
+    (userServiceMock.isAdmin as jest.Mock).mockReturnValue(true);
 
     const result = executeGuard({ scope: 'admin' });
 
@@ -72,12 +75,13 @@ describe('authGuard', () => {
 
   describe('Non-Admin redirection', () => {
     beforeEach(() => {
-      userServiceMock.getRoles.mockReturnValue(['USER_ROLE']); // Not an admin
+      userServiceMock = {
+        getRoles: jest.fn()
+          .mockReturnValue(['USER_ROLE'])
+      };
     });
 
     it('should redirect to /member/:id if user is not an admin', (done) => {
-      memberServiceMock.getMyself.mockReturnValue(of({ id: 7 } as any));
-
       const result$ = executeGuard({ scope: 'admin' });
 
       (result$ as any).subscribe((_: UrlTree) => {
@@ -88,8 +92,6 @@ describe('authGuard', () => {
     });
 
     it('should allow access if non-admin is already on their target personal URL', (done) => {
-      memberServiceMock.getMyself.mockReturnValue(of({ id: 7 } as any));
-
       const result$ = executeGuard({ scope: 'admin' }, {}, { url: '/member/7' });
 
       (result$ as any).subscribe((res: boolean) => {
