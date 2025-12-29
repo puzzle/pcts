@@ -1,6 +1,6 @@
 import { ShowIfAdminDirective } from './show-if-admin.directive';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UserService } from '../user.service';
+import { AuthService } from '../auth.service';
 import { Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
@@ -22,7 +22,7 @@ describe('ShowIfAdminDirective (Jest)', () => {
     await TestBed.configureTestingModule({
       imports: [ShowIfAdminDirectiveSpecComponent,
         ShowIfAdminDirective],
-      providers: [{ provide: UserService,
+      providers: [{ provide: AuthService,
         useValue: mockUserService }]
     })
       .compileComponents();
