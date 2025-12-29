@@ -15,7 +15,7 @@
       <pzsh-menu-dropdown href="#">
         <div slot="toggle">
           <pzsh-icon name="user"></pzsh-icon>
-          {{ userName }}
+          {{ userService.name() }}
         </div>
         <div slot="items">
           <pzsh-menu-dropdown-item href="#" (click)="handleLogout()" data-testid="logout">

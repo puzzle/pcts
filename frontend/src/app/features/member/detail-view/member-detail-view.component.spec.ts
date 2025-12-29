@@ -17,10 +17,11 @@ import { LeadershipExperienceService } from '../../leadership-experiences/leader
 
 type MockKeycloak = Partial<Keycloak> & { tokenParsed?: any };
 import { UserService } from '../../../core/auth/user.service';
+import { AuthService } from '../../../core/auth/auth.service';
 
 describe('MemberDetailViewComponent (Jest)', () => {
   let memberServiceMock: Partial<jest.Mocked<MemberService>>;
-  let userServiceMock: jest.Mocked<UserService>;
+  let userServiceMock: jest.Mocked<AuthService>;
   let certificateService: Partial<jest.Mocked<CertificateService>>;
   let leadershipExperienceService: Partial<jest.Mocked<LeadershipExperienceService>>;
   let modalService: Partial<jest.Mocked<PctsModalService>>;
@@ -36,7 +37,7 @@ describe('MemberDetailViewComponent (Jest)', () => {
 
     userServiceMock = {
       isAdmin: jest.fn()
-    } as unknown as jest.Mocked<UserService>;
+    } as unknown as jest.Mocked<AuthService>;
 
     routerMock = {
       navigate: jest.fn(),
@@ -84,7 +85,7 @@ describe('MemberDetailViewComponent (Jest)', () => {
         { provide: CertificateService,
           useValue: certificateService },
         {
-          provide: UserService,
+          provide: AuthService,
           useValue: userServiceMock
         },
         provideTranslateService(),

@@ -1,11 +1,11 @@
 import { Directive, inject, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
-import { UserService } from '../user.service';
+import { AuthService } from '../auth.service';
 
 @Directive({
   selector: '[appShowIfAdmin]'
 })
 export class ShowIfAdminDirective implements OnInit {
-  private userService = inject(UserService);
+  private userService = inject(AuthService);
 
   private templateRef = inject(TemplateRef<any>);
 

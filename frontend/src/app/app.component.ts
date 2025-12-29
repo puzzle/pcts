@@ -5,7 +5,7 @@ import { LangChangeEvent, TranslatePipe, TranslateService } from '@ngx-translate
 import { NgOptimizedImage } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
-import { UserService } from './core/auth/user.service';
+import { AuthService } from './core/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +21,7 @@ export class AppComponent {
 
   private readonly router = inject(Router);
 
-  private readonly userService = inject(UserService);
+  private readonly userService = inject(AuthService);
 
   private readonly translateService = inject(TranslateService);
 
