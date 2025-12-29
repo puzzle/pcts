@@ -6,7 +6,7 @@ import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
-import ch.puzzle.pcts.configuration.AuthorisationConfiguration;
+import ch.puzzle.pcts.configuration.AuthorizationConfiguration;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import java.util.Collections;
@@ -37,7 +37,7 @@ class SecurityServiceTest {
     MemberBusinessService memberBusinessService;
 
     @Mock
-    AuthorisationConfiguration authorisationConfiguration;
+    AuthorizationConfiguration authorizationConfiguration;
 
     @InjectMocks
     SecurityService service;
@@ -55,7 +55,7 @@ class SecurityServiceTest {
         try (MockedStatic<SecurityContextHolder> mockedContext = mockStatic(SecurityContextHolder.class)) {
             mockedContext.when(SecurityContextHolder::getContext).thenReturn(securityContext);
             mockSecurityContext(userRoles);
-            when(authorisationConfiguration.adminAuthoritiesAsRoles()).thenReturn(adminRoles);
+            when(authorizationConfiguration.adminAuthoritiesAsRoles()).thenReturn(adminRoles);
 
             assertFalse(service.isAdmin());
         }
@@ -67,7 +67,7 @@ class SecurityServiceTest {
         try (MockedStatic<SecurityContextHolder> mockedContext = mockStatic(SecurityContextHolder.class)) {
             mockedContext.when(SecurityContextHolder::getContext).thenReturn(securityContext);
             mockSecurityContext(userRoles);
-            when(authorisationConfiguration.adminAuthoritiesAsRoles()).thenReturn(adminRoles);
+            when(authorizationConfiguration.adminAuthoritiesAsRoles()).thenReturn(adminRoles);
 
             assertTrue(service.isAdmin());
         }

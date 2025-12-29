@@ -5,7 +5,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.puzzle.pcts.configuration.AuthorisationConfiguration;
+import ch.puzzle.pcts.configuration.AuthorizationConfiguration;
 import ch.puzzle.pcts.dto.configuration.ConfigurationDto;
 import ch.puzzle.pcts.mapper.ConfigurationMapper;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @ControllerIT(ConfigurationController.class)
 class ConfigurationControllerTest extends ControllerITBase {
     @MockitoBean
-    private AuthorisationConfiguration authorisationConfiguration;
+    private AuthorizationConfiguration authorizationConfiguration;
 
     @MockitoBean
     private ConfigurationMapper mapper;
@@ -41,7 +41,7 @@ class ConfigurationControllerTest extends ControllerITBase {
     @DisplayName("Should successfully get configuration")
     @Test
     void shouldSuccessfullyGetConfiguration() throws Exception {
-        given(mapper.toDto(authorisationConfiguration)).willReturn(configurationDto);
+        given(mapper.toDto(authorizationConfiguration)).willReturn(configurationDto);
 
         mvc
                 .perform(get(BASEURL).with(csrf()).accept(MediaType.APPLICATION_JSON))
