@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { of } from 'rxjs';
+import { lastValueFrom, of } from 'rxjs';
 
 import { authGuard } from './auth.guard';
 import { AuthService } from '../auth.service';
@@ -81,25 +81,23 @@ describe('authGuard', () => {
       };
     });
 
-    it('should redirect to /member/:id if user is not an admin', (done) => {
+    it('should redirect to /member/:id if user is not an admin', async() => {
       const result$ = executeGuard({ scope: 'admin' });
 
-      (result$ as any).subscribe((_: UrlTree) => {
-        expect(routerMock.parseUrl)
-          .toHaveBeenCalledWith('/member/7');
-        done();
-      });
+      await lastValueFrom(result$);
+
+      expect(routerMock.parseUrl)
+        .toHaveBeenCalledWith('/member/7');
     });
 
-    it('should allow access if non-admin is already on their target personal URL', (done) => {
+    it('should allow access if non-admin is already on their target personal URL', async() => {
       const result$ = executeGuard({ scope: 'admin' }, {}, { url: '/member/7' });
 
-      (result$ as any).subscribe((res: boolean) => {
-        expect(res)
-          .toBe(true);
-        expect(routerMock.parseUrl).not.toHaveBeenCalled();
-        done();
-      });
+      const result = await lastValueFrom(result$);
+
+      expect(result)
+        .toBe(true);
+      expect(routerMock.parseUrl).not.toHaveBeenCalled();
     });
   });
 });
