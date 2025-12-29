@@ -1,6 +1,6 @@
 package ch.puzzle.pcts.controller;
 
-import ch.puzzle.pcts.configuration.AuthorisationConfiguration;
+import ch.puzzle.pcts.configuration.AuthorizationConfiguration;
 import ch.puzzle.pcts.dto.configuration.ConfigurationDto;
 import ch.puzzle.pcts.mapper.ConfigurationMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "configuration", description = "Retrieve configuration properties for the application")
 public class ConfigurationController {
     private final ConfigurationMapper mapper;
-    private final AuthorisationConfiguration authConfig;
+    private final AuthorizationConfiguration authConfig;
 
-    public ConfigurationController(ConfigurationMapper mapper, AuthorisationConfiguration authConfig) {
+    public ConfigurationController(ConfigurationMapper mapper, AuthorizationConfiguration authConfig) {
         this.mapper = mapper;
         this.authConfig = authConfig;
     }
