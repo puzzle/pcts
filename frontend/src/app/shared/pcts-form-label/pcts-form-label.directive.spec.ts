@@ -65,7 +65,7 @@ describe('PctsFormLabelDirective', () => {
       .toBeTruthy();
   });
 
-  it('should translate and set label text correctly', (done) => {
+  it('should translate and set label text correctly', () => {
     const debugEl = fixture.debugElement.query(By.directive(PctsFormLabelDirective));
     const directive = debugEl.injector.get(PctsFormLabelDirective);
     const labelElement = debugEl.nativeElement as HTMLLabelElement;
@@ -78,6 +78,5 @@ describe('PctsFormLabelDirective', () => {
 
     expect(labelElement.innerHTML)
       .toBe('formatted_testControl');
-    done();
   });
 });
