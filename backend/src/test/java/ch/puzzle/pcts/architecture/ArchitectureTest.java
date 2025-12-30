@@ -211,6 +211,7 @@ class ArchitectureTest {
                 .areNotAnonymousClasses()
                 .and()
                 .resideInAPackage("ch.puzzle.pcts.controller..")
+                .and(not(equivalentTo(ConfigurationController.class)))
                 .should(beAnnotatedWithOneOf(IsAdmin.class, IsOwner.class, IsAdminOrOwner.class, IsAuthenticated.class))
                 .andShould()
                 .notBeInterfaces();

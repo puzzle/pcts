@@ -7,6 +7,7 @@ import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.service.JwtService;
 import ch.puzzle.pcts.service.UserService;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
@@ -19,16 +20,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MemberBusinessService extends BusinessBase<Member> {
-    private final UserService userService;
+    private final JwtService jwtService;
     private final MemberPersistenceService memberPersistenceService;
     RoleBusinessService roleBusinessService;
     CalculationBusinessService calculationBusinessService;
 
     public MemberBusinessService(MemberValidationService validationService,
                                  MemberPersistenceService persistenceService, RoleBusinessService roleBusinessService,
-                                 CalculationBusinessService calculationBusinessService, UserService userService) {
+                                 CalculationBusinessService calculationBusinessService, UserService userService, JwtService jwtService) {
         super(validationService, persistenceService);
-        this.userService = userService;
+        this.jwtService = jwtService;
         this.memberPersistenceService = persistenceService;
         this.roleBusinessService = roleBusinessService;
         this.calculationBusinessService = calculationBusinessService;
@@ -43,7 +44,7 @@ public class MemberBusinessService extends BusinessBase<Member> {
     }
 
     public Member getLoggedInMember() {
-        Optional<String> email = userService.getEmail();
+        Optional<String> email = jwtService.getEmail();
         if (email.isEmpty()) {
             GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, Map.of());
             throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));

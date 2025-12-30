@@ -31,7 +31,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @ExtendWith(MockitoExtension.class)
 class SecurityServiceTest {
     @Mock
-    UserService userService;
+    JwtService jwtService;
 
     @Mock
     MemberBusinessService memberBusinessService;
@@ -87,7 +87,7 @@ class SecurityServiceTest {
         member.setEmail("test@puzzle.ch");
 
         when(memberBusinessService.findIfExists(1L)).thenReturn(Optional.of(member));
-        when(userService.getEmail()).thenReturn(Optional.empty());
+        when(jwtService.getEmail()).thenReturn(Optional.empty());
 
         assertFalse(service.isOwner(1L));
     }
@@ -100,7 +100,7 @@ class SecurityServiceTest {
         member.setEmail(email);
 
         when(memberBusinessService.findIfExists(1L)).thenReturn(Optional.of(member));
-        when(userService.getEmail()).thenReturn(Optional.of(email));
+        when(jwtService.getEmail()).thenReturn(Optional.of(email));
 
         assertTrue(service.isOwner(1L));
     }
