@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.configuration.AuthenticationConfiguration;
+import ch.puzzle.pcts.exception.PCTSException;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,13 +13,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 
 @ExtendWith(MockitoExtension.class)
-public class UserServiceTest {
+public class JwtServiceTest {
 
     @Mock
     private AuthenticationConfiguration authConfiguration;
@@ -33,7 +35,7 @@ public class UserServiceTest {
     private Jwt jwt;
 
     @InjectMocks
-    private UserService userService;
+    private JwtService jwtService;
 
     @Test
     @DisplayName("Should return email when claim is present in JWT")
@@ -48,7 +50,7 @@ public class UserServiceTest {
             when(authentication.getCredentials()).thenReturn(jwt);
             when(jwt.getClaimAsString(emailClaim)).thenReturn(emailValue);
 
-            Optional<String> result = userService.getEmail();
+            Optional<String> result = jwtService.getEmail();
 
             assertTrue(result.isPresent());
             assertEquals(emailValue, result.get());
@@ -62,7 +64,7 @@ public class UserServiceTest {
             mockedContext.when(SecurityContextHolder::getContext).thenReturn(securityContext);
             when(securityContext.getAuthentication()).thenReturn(null);
 
-            Optional<String> result = userService.getEmail();
+            Optional<String> result = jwtService.getEmail();
 
             assertTrue(result.isEmpty());
         }
@@ -78,12 +80,12 @@ public class UserServiceTest {
             when(authentication.getCredentials()).thenReturn(jwt);
             when(jwt.getClaimAsString("preferred_username")).thenReturn("tester");
 
-            assertEquals("tester", userService.getDisplayName());
+            assertEquals("tester", jwtService.getDisplayName());
         }
     }
 
     @Test
-    @DisplayName("Should fall back to Subject if claim is missing")
+    @DisplayName("Should throw exception  if claim is missing")
     public void shouldFallbackToSubject() {
         try (MockedStatic<SecurityContextHolder> mockedContext = mockStatic(SecurityContextHolder.class)) {
             setupSecurityContext(mockedContext);
@@ -91,9 +93,10 @@ public class UserServiceTest {
             when(authConfiguration.usernameClaim()).thenReturn("preferred_username");
             when(authentication.getCredentials()).thenReturn(jwt);
             when(jwt.getClaimAsString("preferred_username")).thenReturn(null);
-            when(jwt.getSubject()).thenReturn("subject-123");
 
-            assertEquals("subject-123", userService.getDisplayName());
+            PCTSException exception = assertThrows(PCTSException.class, () -> jwtService.getDisplayName());
+
+            assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, exception.getStatusCode());
         }
     }
 
