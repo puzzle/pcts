@@ -15,6 +15,7 @@ import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.service.JwtService;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.UserService;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
@@ -43,13 +44,10 @@ class MemberBusinessServiceTest
     private Member member;
 
     @Mock
-    private UserService userService;
-
-    @Mock
     private List<Member> members;
 
     @Mock
-    private MemberPersistenceService persistenceService;
+    private JwtService jwtService;
 
     @Mock
     private MemberValidationService validationService;
@@ -59,6 +57,15 @@ class MemberBusinessServiceTest
 
     @Mock
     private CalculationBusinessService calculationBusinessService;
+
+    @Mock
+    private List<Calculation> calculations;
+
+    @Mock
+    private Role role;
+
+    @Mock
+    private MemberPersistenceService persistenceService;
 
     @InjectMocks
     @Spy
@@ -211,23 +218,23 @@ class MemberBusinessServiceTest
     @DisplayName("Should throw exception if current user has no email")
     @Test
     void shouldThrowExceptionIfCurrentUserHasNoEmail(){
-        when(userService.getEmail()).thenReturn(Optional.empty());
+        when(jwtService.getEmail()).thenReturn(Optional.empty());
 
         assertThrows(PCTSException.class, () -> businessService.getLoggedInMember());
 
-        verify(userService).getEmail();
+        verify(jwtService).getEmail();
     }
 
     @DisplayName("Should rethrow exception if no user for email can be found")
     @Test
     void shouldThrowExceptionIfNoUserForEmailCanBeFound() {
         String email = "example@puzzle.ch";
-        when(userService.getEmail()).thenReturn(Optional.of(email));
+        when(jwtService.getEmail()).thenReturn(Optional.of(email));
         when(persistenceService.getByEmail(email)).thenThrow(new PCTSException(HttpStatus.NOT_FOUND, List.of()));
 
         assertThrows(PCTSException.class, () -> businessService.getLoggedInMember());
 
-        verify(userService).getEmail();
+        verify(jwtService).getEmail();
         verify(persistenceService).getByEmail(email);
     }
 
@@ -235,13 +242,13 @@ class MemberBusinessServiceTest
     @Test
     void shouldReturnCurrentUser() {
         String email = "example@puzzle.ch";
-        when(userService.getEmail()).thenReturn(Optional.of(email));
+        when(jwtService.getEmail()).thenReturn(Optional.of(email));
         when(persistenceService.getByEmail(email)).thenReturn(member);
 
         Member result = businessService.getLoggedInMember();
 
         assertEquals(member, result);
-        verify(userService).getEmail();
+        verify(jwtService).getEmail();
         verify(persistenceService).getByEmail(email);
     }
 }

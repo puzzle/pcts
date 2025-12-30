@@ -24,13 +24,13 @@ import org.springframework.stereotype.Service;
  */
 @Service("SecurityService")
 public class SecurityService {
-    private final UserService userService;
+    private final JwtService jwtService;
     private final MemberBusinessService memberService;
     private final AuthorizationConfiguration authorizationConfiguration;
 
-    public SecurityService(UserService userService, MemberBusinessService memberService,
+    public SecurityService(JwtService jwtService, MemberBusinessService memberService,
                            AuthorizationConfiguration authorizationConfiguration) {
-        this.userService = userService;
+        this.jwtService = jwtService;
         this.memberService = memberService;
         this.authorizationConfiguration = authorizationConfiguration;
     }
@@ -48,7 +48,7 @@ public class SecurityService {
             return false;
         }
 
-        Optional<String> email = this.userService.getEmail();
+        Optional<String> email = this.jwtService.getEmail();
         if (email.isEmpty()) {
             return false;
         }
