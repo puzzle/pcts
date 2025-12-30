@@ -4,7 +4,6 @@ import ch.puzzle.pcts.configuration.AuthenticationConfiguration;
 import ch.puzzle.pcts.exception.PCTSException;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -14,26 +13,25 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
-    private static final Logger log = LoggerFactory.getLogger(UserService.class);
+public class JwtService {
+    private static final Logger log = LoggerFactory.getLogger(JwtService.class);
     private final AuthenticationConfiguration authConfiguration;
 
-    public UserService(AuthenticationConfiguration authConfiguration) {
+    public JwtService(AuthenticationConfiguration authConfiguration) {
         this.authConfiguration = authConfiguration;
     }
 
     public String getDisplayName() {
-        Function<Jwt, Optional<String>> useSubjectInstead = (jwt) -> Optional.ofNullable(jwt.getSubject());
-        Optional<String> name = this.getProperty(authConfiguration.usernameClaim(), useSubjectInstead);
+        Optional<String> name = this.getProperty(authConfiguration.usernameClaim());
 
         return name.orElseThrow(() -> new PCTSException(HttpStatus.INTERNAL_SERVER_ERROR, List.of()));
     }
 
     public Optional<String> getEmail() {
-        return this.getProperty(authConfiguration.emailClaim(), (jwt) -> Optional.empty());
+        return this.getProperty(authConfiguration.emailClaim());
     }
 
-    private Optional<String> getProperty(String propertyName, Function<Jwt, Optional<String>> backupFunction) {
+    private Optional<String> getProperty(String propertyName) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null) {
@@ -42,22 +40,22 @@ public class UserService {
         }
 
         if (authentication.getCredentials() instanceof Jwt jwt) {
-            final Optional<String> username = Optional.ofNullable(jwt.getClaimAsString(propertyName));
+            final Optional<String> property = Optional.ofNullable(jwt.getClaimAsString(propertyName));
 
-            if (username.isEmpty()) {
+            if (property.isEmpty()) {
                 log
                         .warn("Could not extract property '{}' from security context, applying backup function",
                               propertyName);
-                return backupFunction.apply(jwt);
+                return Optional.empty();
             }
 
-            return username;
+            return property;
         }
 
         log
-                .warn("Could not extract property '{}' from security context because the authentication object was not a JWT, returning standard authentication name instead.",
-                      propertyName);
-        return Optional.ofNullable(authentication.getName());
+                .error("Could not extract property '{}' from security context because the authentication object was not a JWT.",
+                       propertyName);
+        return Optional.empty();
     }
 
 }
