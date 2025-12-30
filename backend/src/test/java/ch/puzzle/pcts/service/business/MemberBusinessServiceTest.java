@@ -32,6 +32,7 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 
 @ExtendWith(MockitoExtension.class)
 class MemberBusinessServiceTest
@@ -217,30 +218,30 @@ class MemberBusinessServiceTest
         verify(userService).getEmail();
     }
 
-    @DisplayName("Should throw exception if no user for email can be found")
+    @DisplayName("Should rethrow exception if no user for email can be found")
     @Test
     void shouldThrowExceptionIfNoUserForEmailCanBeFound() {
         String email = "example@puzzle.ch";
         when(userService.getEmail()).thenReturn(Optional.of(email));
-        when(persistenceService.findByEmail(email)).thenReturn(Optional.empty());
+        when(persistenceService.getByEmail(email)).thenThrow(new PCTSException(HttpStatus.NOT_FOUND, List.of()));
 
         assertThrows(PCTSException.class, () -> businessService.getLoggedInMember());
 
         verify(userService).getEmail();
-        verify(persistenceService).findByEmail(email);
+        verify(persistenceService).getByEmail(email);
     }
 
     @DisplayName("Should return current user")
     @Test
-    void shoudReturnCurrentUser() {
+    void shouldReturnCurrentUser() {
         String email = "example@puzzle.ch";
         when(userService.getEmail()).thenReturn(Optional.of(email));
-        when(persistenceService.findByEmail(email)).thenReturn(Optional.of(member));
+        when(persistenceService.getByEmail(email)).thenReturn(member);
 
         Member result = businessService.getLoggedInMember();
 
         assertEquals(member, result);
         verify(userService).getEmail();
-        verify(persistenceService).findByEmail(email);
+        verify(persistenceService).getByEmail(email);
     }
 }

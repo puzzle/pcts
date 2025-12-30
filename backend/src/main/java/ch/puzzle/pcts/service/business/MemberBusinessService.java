@@ -50,10 +50,7 @@ public class MemberBusinessService extends BusinessBase<Member> {
             throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
         }
 
-        return memberPersistenceService.findByEmail(email.get()).orElseThrow(() -> {
-            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, Map.of());
-            return new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
-        });
+        return memberPersistenceService.getByEmail(email.get());
     }
 
     @Override
