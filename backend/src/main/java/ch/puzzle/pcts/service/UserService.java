@@ -1,10 +1,13 @@
 package ch.puzzle.pcts.service;
 
 import ch.puzzle.pcts.configuration.AuthenticationConfiguration;
+import ch.puzzle.pcts.exception.PCTSException;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -23,7 +26,7 @@ public class UserService {
         Function<Jwt, Optional<String>> useSubjectInstead = (jwt) -> Optional.ofNullable(jwt.getSubject());
         Optional<String> name = this.getProperty(authConfiguration.usernameClaim(), useSubjectInstead);
 
-        return name.orElseThrow();
+        return name.orElseThrow(() -> new PCTSException(HttpStatus.INTERNAL_SERVER_ERROR, List.of()));
     }
 
     public Optional<String> getEmail() {
