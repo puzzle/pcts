@@ -1,8 +1,11 @@
 package ch.puzzle.pcts.service.persistence;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ch.puzzle.pcts.util.TestDataModels.*;
 
+import ch.puzzle.pcts.exception.PCTSException;
+import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.repository.MemberRepository;
 import jakarta.transaction.Transactional;
@@ -89,6 +92,25 @@ class MemberPersistenceServiceIT extends PersistenceBaseIT<Member, MemberReposit
     void shouldGetMemberByEmail() {
         String email = "member2@puzzle.ch";
 
+        Member result = persistenceService.getByEmail(email);
+
+        assertThat(result.getEmail()).isEqualTo(email);
+        assertThat(result.getFirstName()).isEqualTo("Member 2");
+    }
+
+    @DisplayName("Should throw exception when email does not exist")
+    @Transactional
+    @Test
+    void shouldReturnEmptyWhenEmailDoesNotExistForGet() {
+        assertThrows(PCTSException.class, () -> persistenceService.getByEmail("non-existent@puzzle.ch"));
+    }
+
+    @DisplayName("Should find member by email")
+    @Transactional
+    @Test
+    void shouldFindMemberByEmail() {
+        String email = "member2@puzzle.ch";
+
         Optional<Member> result = persistenceService.findByEmail(email);
 
         assertThat(result).isPresent();
@@ -99,10 +121,9 @@ class MemberPersistenceServiceIT extends PersistenceBaseIT<Member, MemberReposit
     @DisplayName("Should return empty when email does not exist")
     @Transactional
     @Test
-    void shouldReturnEmptyWhenEmailDoesNotExist() {
+    void shouldReturnEmptyWhenEmailDoesNotExistForFind() {
         Optional<Member> result = persistenceService.findByEmail("non-existent@puzzle.ch");
 
         assertThat(result).isNotPresent();
     }
-
 }
