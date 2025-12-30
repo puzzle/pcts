@@ -9,6 +9,19 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service responsible for evaluating security constraints used in Method
+ * Security expressions.
+ * <p>
+ * This service is referenced directly in SpEL (Spring Expression Language)
+ * annotations such as:
+ * <ul>
+ * <li>{@link ch.puzzle.pcts.security.annotation.IsAdmin}</li>
+ * <li>{@link ch.puzzle.pcts.security.annotation.IsOwner}</li>
+ * <li>{@link ch.puzzle.pcts.security.annotation.IsAdminOrOwner}</li>
+ * </ul>
+ * <p>
+ */
 @Service("SecurityService")
 public class SecurityService {
     private final UserService userService;
