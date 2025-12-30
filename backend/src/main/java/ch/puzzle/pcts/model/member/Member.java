@@ -4,10 +4,9 @@ import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
-import ch.puzzle.pcts.util.validation.NotBlankIfPresent;
+import ch.puzzle.pcts.util.validation.PCTSEmailValidation;
 import ch.puzzle.pcts.util.validation.PCTSStringValidation;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import java.time.LocalDate;
@@ -36,8 +35,7 @@ public class Member implements Model {
 
     private LocalDate dateOfHire;
 
-    @NotBlankIfPresent
-    @Email(message = "{attribute.not.email}")
+    @PCTSEmailValidation
     private String email;
 
     @NotNull(message = "{attribute.not.null}")
