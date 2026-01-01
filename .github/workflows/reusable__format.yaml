@@ -48,7 +48,7 @@ jobs:
           node-version: ${{ vars.NODE_VERSION }}
 
       - name: Npm install
-        run: npm ci --force
+        run: npm ci
 
       - name: Format frontend
         run: npm run check-linting:all
