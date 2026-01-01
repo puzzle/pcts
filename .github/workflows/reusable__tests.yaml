@@ -30,7 +30,7 @@ jobs:
           node-version: ${{ vars.NODE_VERSION }}
 
       - name: Npm install
-        run: npm ci --force
+        run: npm ci
 
       - name: Run unit tests
         run: npm run test:ci
