@@ -17,7 +17,7 @@ public abstract class PersistenceBase<T extends Model, R extends JpaRepository<T
         implements
             PersistenceService<T> {
 
-    private final R repository;
+    protected final R repository;
 
     protected PersistenceBase(R repository) {
         this.repository = repository;

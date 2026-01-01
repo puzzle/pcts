@@ -87,6 +87,7 @@ class DegreeMapperTest {
                                   "SM",
                                   commonDate,
                                   commonDate,
+                                  null,
                                   organisationUnitDto);
 
         when(degreeTypeMapper.toDto(degreeType)).thenReturn(degreeTypeDto);

@@ -38,6 +38,8 @@
     "cypress": "^15.2.0",
     "date-fns": "^4.1.0",
     "jest-environment-jsdom": "^30.2.0",
+    "keycloak-angular": "^21.0.0",
+    "keycloak-js": "^26.2.2",
     "luxon": "^3.7.2",
     "material-icons": "^1.13.14",
     "rxjs": "~7.8.0",
@@ -78,6 +80,9 @@
   },
   "jest": {
     "preset": "jest-preset-angular",
+    "transformIgnorePatterns": [
+      "node_modules/(?!(.*.mjs$|keycloak.js))"
+    ],
     "setupFilesAfterEnv": [
       "<rootDir>/setup-jest.ts"
     ]

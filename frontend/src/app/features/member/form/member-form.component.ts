@@ -72,6 +72,8 @@ export class MemberFormComponent implements OnInit {
     lastName: ['',
       Validators.required],
     abbreviation: [''],
+    email: [null,
+      Validators.email],
     birthDate: ['',
       [Validators.required,
         isDateInPast()]],

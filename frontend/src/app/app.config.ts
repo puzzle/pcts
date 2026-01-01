@@ -13,24 +13,51 @@ import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { lastValueFrom } from 'rxjs';
 import { provideI18nPrefix } from './shared/i18n-prefix.provider';
-import { provideDateFnsAdapter } from '@angular/material-date-fns-adapter';
-import { de } from 'date-fns/locale';
-import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { registerLocaleData } from '@angular/common';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { errorInterceptor } from './core/error-interceptor/error-interceptor';
 import { successInterceptor } from './core/success-interceptor/success-interceptor';
+import {
+  createInterceptorCondition,
+  INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG, IncludeBearerTokenCondition, includeBearerTokenInterceptor,
+  provideKeycloak
+} from 'keycloak-angular';
+import { environment } from '../environments/environment';
+import { provideDateFnsAdapter } from '@angular/material-date-fns-adapter';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { de } from 'date-fns/locale/de';
+import { provideAppConfiguration } from './features/configuration/configuration.token';
 
 registerLocaleData(localeDeCH);
 
+const urlCondition = createInterceptorCondition<IncludeBearerTokenCondition>({
+  urlPattern: /^(\/)?api/,
+  bearerPrefix: 'Bearer'
+});
+
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideKeycloak({
+      config: {
+        url: environment.keycloak.url,
+        realm: environment.keycloak.realm,
+        clientId: environment.keycloak.clientId
+      },
+      initOptions: {
+        onLoad: 'login-required'
+      }
+    }),
+    {
+      provide: INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG,
+      useValue: [urlCondition]
+    },
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes, withComponentInputBinding()),
     importProvidersFrom(MatSnackBarModule),
     provideHttpClient(withInterceptors([errorInterceptor,
-      successInterceptor])),
+      successInterceptor,
+      includeBearerTokenInterceptor])),
     provideTranslateService({
       fallbackLang: 'de',
       loader: provideTranslateHttpLoader({
@@ -56,6 +83,7 @@ export const appConfig: ApplicationConfig = {
     {
       provide: LOCALE_ID,
       useValue: 'de-CH'
-    }
+    },
+    provideAppConfiguration()
   ]
 };

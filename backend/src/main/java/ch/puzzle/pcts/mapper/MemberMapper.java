@@ -35,6 +35,7 @@ public class MemberMapper {
                              model.getAbbreviation(),
                              model.getDateOfHire(),
                              model.getBirthDate(),
+                             model.getEmail(),
                              organisationUnitMapper.toDto(model.getOrganisationUnit()));
     }
 
@@ -47,6 +48,7 @@ public class MemberMapper {
                 .withAbbreviation(dto.abbreviation())
                 .withDateOfHire(dto.dateOfHire())
                 .withBirthDate(dto.birthDate())
+                .withEmail(dto.email())
                 .withOrganisationUnit(organisationUnitFromId(dto.organisationUnitId()))
                 .build();
     }

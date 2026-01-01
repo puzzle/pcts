@@ -1,10 +1,12 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="DB_UP" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
+  <configuration default="false" name="INFRA_UP" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
     <deployment type="docker-compose.yml">
       <settings>
+        <option name="containerName" value="pcts-db,pcts-keycloak" />
         <option name="services">
           <list>
             <option value="pcts-db" />
+            <option value="pcts-keycloak" />
           </list>
         </option>
         <option name="sourceFilePath" value="docker/docker-compose.yml" />
