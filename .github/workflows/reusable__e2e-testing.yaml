@@ -77,7 +77,6 @@ jobs:
           headed: false
           config: baseUrl=http://localhost:4200/
           spec: cypress/e2e/${{ matrix.file }}
-          install-command: npm ci --force
 
       - uses: actions/upload-artifact@v6
         if: always()
