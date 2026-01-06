@@ -2,13 +2,18 @@ package ch.puzzle.pcts.service.persistence;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import ch.puzzle.pcts.dto.error.ErrorKey;
+import ch.puzzle.pcts.dto.error.FieldKey;
+import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.Model;
 import jakarta.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import org.junit.jupiter.api.*;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 
 /**
@@ -23,10 +28,10 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
         extends
             PersistenceCoreIT {
 
-    protected final S service;
+    protected final S persistenceService;
 
-    PersistenceBaseIT(S service) {
-        this.service = service;
+    PersistenceBaseIT(S persistenceService) {
+        this.persistenceService = persistenceService;
     }
 
     /**
@@ -42,17 +47,38 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
     @DisplayName("Should get entity by id")
     @Test
     void shouldGetEntityById() {
-        Optional<T> entity = service.getById(2L);
+        T entity = persistenceService.getById(2L);
 
-        assertThat(entity).isPresent();
-        assertThat(entity.get().getId()).isEqualTo(2L);
+        assertThat(entity).isNotNull();
+        assertThat(entity.getId()).isEqualTo(2L);
+    }
+
+    @DisplayName("Should throw exception when id is not found")
+    @Test
+    void shouldThrowExceptionWhenIdIsNotFound() {
+        long invalidId = -1L;
+
+        Map<FieldKey, String> expectedAttributes = Map
+                .of(FieldKey.FIELD,
+                    "id",
+                    FieldKey.IS,
+                    String.valueOf(invalidId),
+                    FieldKey.ENTITY,
+                    persistenceService.entityName());
+
+        PCTSException exception = assertThrows(PCTSException.class, () -> persistenceService.getById(invalidId));
+
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
+
+        assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
+        assertEquals(List.of(expectedAttributes), exception.getErrorAttributes());
     }
 
     @DisplayName("Should get all entities")
     @Test
     @Transactional
     void shouldGetAllEntities() {
-        List<T> all = service.getAll();
+        List<T> all = persistenceService.getAll();
         assertThat(all).hasSize(getAll().size());
         assertEquals(getAll(), all);
     }
@@ -63,7 +89,7 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
     void shouldCreate() {
         T entity = getModel();
 
-        T result = service.save(entity);
+        T result = persistenceService.save(entity);
 
         entity.setId(result.getId());
         assertThat(result).isEqualTo(entity);
@@ -76,12 +102,12 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
         Long id = 2L;
         T entity = getModel();
         entity.setId(id);
-        service.save(entity);
+        persistenceService.save(entity);
 
-        Optional<T> result = service.getById(id);
+        T result = persistenceService.getById(id);
 
-        assertThat(result).isPresent();
-        assertEquals(entity, result.get());
+        assertThat(result).isNotNull();
+        assertEquals(entity, result);
     }
 
     @DisplayName("Should delete entity")
@@ -97,9 +123,8 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
     void shouldDelete() {
         Long id = 2L;
 
-        service.delete(id);
+        persistenceService.delete(id);
 
-        Optional<T> result = service.getById(id);
-        assertThat(result).isNotPresent();
+        assertThrows(PCTSException.class, () -> persistenceService.getById(id));
     }
 }

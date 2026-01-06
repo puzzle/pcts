@@ -1,7 +1,5 @@
 package ch.puzzle.pcts.service.business;
 
-import static ch.puzzle.pcts.Constants.ROLE;
-
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.persistence.RolePersistenceService;
 import ch.puzzle.pcts.service.validation.RoleValidationService;
@@ -17,10 +15,5 @@ public class RoleBusinessService extends BusinessBase<Role> {
 
     public List<Role> getAll() {
         return persistenceService.getAll();
-    }
-
-    @Override
-    protected String entityName() {
-        return ROLE;
     }
 }

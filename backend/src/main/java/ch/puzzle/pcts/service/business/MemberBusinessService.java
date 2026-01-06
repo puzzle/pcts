@@ -1,7 +1,5 @@
 package ch.puzzle.pcts.service.business;
 
-import static ch.puzzle.pcts.Constants.MEMBER;
-
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import ch.puzzle.pcts.service.validation.MemberValidationService;
@@ -18,10 +16,5 @@ public class MemberBusinessService extends BusinessBase<Member> {
 
     public List<Member> getAll() {
         return persistenceService.getAll();
-    }
-
-    @Override
-    protected String entityName() {
-        return MEMBER;
     }
 }

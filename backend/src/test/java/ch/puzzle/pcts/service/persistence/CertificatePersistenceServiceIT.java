@@ -1,7 +1,6 @@
 package ch.puzzle.pcts.service.persistence;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificatetype.CertificateKind;
@@ -21,7 +20,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -228,11 +226,10 @@ class CertificatePersistenceServiceIT
                 .withCompletedAt(LocalDate.now())
                 .build();
 
-        Certificate savedCertificate = service.save(certificate);
+        Certificate savedCertificate = persistenceService.save(certificate);
+        Certificate result = assertDoesNotThrow(() -> persistenceService
+                .findLeadershipExperience(savedCertificate.getId()));
 
-        Optional<Certificate> result = service.findLeadershipExperience(savedCertificate.getId());
-
-        assertTrue(result.isPresent());
-        assertEquals(savedCertificate.getId(), result.get().getId());
+        assertEquals(savedCertificate.getId(), result.getId());
     }
 }
