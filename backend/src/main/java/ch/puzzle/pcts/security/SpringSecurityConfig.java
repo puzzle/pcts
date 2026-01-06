@@ -23,7 +23,7 @@ public class SpringSecurityConfig {
     private String authoritiesPath;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) {
         return http
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/swagger-ui/**")
