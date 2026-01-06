@@ -5,11 +5,11 @@ import { AuthService } from '../auth.service';
   selector: '[appShowIfAdmin]'
 })
 export class ShowIfAdminDirective implements OnInit {
-  private userService = inject(AuthService);
+  private readonly userService = inject(AuthService);
 
-  private templateRef = inject(TemplateRef<any>);
+  private readonly templateRef = inject(TemplateRef<any>);
 
-  private viewContainer = inject(ViewContainerRef);
+  private readonly viewContainer = inject(ViewContainerRef);
 
   ngOnInit(): void {
     if (this.userService.isAdmin()) {

@@ -20,7 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 
 @ExtendWith(MockitoExtension.class)
-public class JwtServiceTest {
+class JwtServiceTest {
 
     @Mock
     private AuthenticationConfiguration authConfiguration;
@@ -39,7 +39,7 @@ public class JwtServiceTest {
 
     @Test
     @DisplayName("Should return email when claim is present in JWT")
-    public void shouldReturnEmailFromJwtClaim() {
+    void shouldReturnEmailFromJwtClaim() {
         try (MockedStatic<SecurityContextHolder> mockedContext = mockStatic(SecurityContextHolder.class)) {
             setupSecurityContext(mockedContext);
 
@@ -59,7 +59,7 @@ public class JwtServiceTest {
 
     @Test
     @DisplayName("Should return empty when no authentication exists")
-    public void shouldReturnEmptyWhenNoAuth() {
+    void shouldReturnEmptyWhenNoAuth() {
         try (MockedStatic<SecurityContextHolder> mockedContext = mockStatic(SecurityContextHolder.class)) {
             mockedContext.when(SecurityContextHolder::getContext).thenReturn(securityContext);
             when(securityContext.getAuthentication()).thenReturn(null);
@@ -72,7 +72,7 @@ public class JwtServiceTest {
 
     @Test
     @DisplayName("Should return username claim if present")
-    public void shouldReturnUsernameClaim() {
+    void shouldReturnUsernameClaim() {
         try (MockedStatic<SecurityContextHolder> mockedContext = mockStatic(SecurityContextHolder.class)) {
             setupSecurityContext(mockedContext);
 
@@ -86,7 +86,7 @@ public class JwtServiceTest {
 
     @Test
     @DisplayName("Should throw exception  if claim is missing")
-    public void shouldFallbackToSubject() {
+    void shouldFallbackToSubject() {
         try (MockedStatic<SecurityContextHolder> mockedContext = mockStatic(SecurityContextHolder.class)) {
             setupSecurityContext(mockedContext);
 
