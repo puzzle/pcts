@@ -14,6 +14,7 @@ import java.util.Map;
 import org.junit.jupiter.api.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.annotation.DirtiesContext;
 
 /**
  * @param <T>
@@ -117,7 +118,7 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
      * forces the Spring container to reset after this test class, so the tests do
      * not depend on execution order.
      */
-    // @DirtiesContext
+    @DirtiesContext
     @Test
     void shouldDelete() {
         Long id = 2L;
