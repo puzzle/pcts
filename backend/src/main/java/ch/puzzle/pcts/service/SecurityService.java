@@ -4,7 +4,9 @@ import ch.puzzle.pcts.configuration.AuthorizationConfiguration;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Optional;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -61,6 +63,9 @@ public class SecurityService {
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities() {
-        return SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        return Optional
+                .ofNullable(SecurityContextHolder.getContext().getAuthentication())
+                .map(Authentication::getAuthorities)
+                .orElse(Collections.emptyList());
     }
 }
