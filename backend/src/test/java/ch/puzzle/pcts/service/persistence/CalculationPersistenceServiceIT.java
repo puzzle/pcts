@@ -73,9 +73,9 @@ class CalculationPersistenceServiceIT
         activeCalculation.setPublicationDate(null);
         activeCalculation.setPublicizedBy(null);
 
-        service.save(oldActiveCalculation);
+        persistenceService.save(oldActiveCalculation);
 
-        Calculation result = service.save(activeCalculation);
+        Calculation result = persistenceService.save(activeCalculation);
 
         assertEquals(LocalDate.now(), result.getPublicationDate());
         assertEquals("Ldap User", result.getPublicizedBy());
@@ -93,10 +93,10 @@ class CalculationPersistenceServiceIT
         activeCalculation.setPublicizedBy(null);
 
         oldActiveCalculation.setId(2L);
-        service.save(oldActiveCalculation);
+        persistenceService.save(oldActiveCalculation);
 
         activeCalculation.setId(3L);
-        Calculation result = service.save(activeCalculation);
+        Calculation result = persistenceService.save(activeCalculation);
 
         assertEquals(LocalDate.now(), result.getPublicationDate());
         assertEquals("Ldap User", result.getPublicizedBy());
@@ -105,7 +105,7 @@ class CalculationPersistenceServiceIT
     }
 
     private List<Calculation> getActiveCalculations(Role role, Member member) {
-        return service
+        return persistenceService
                 .getAll()
                 .stream()
                 .filter(calculation -> calculation.getState().equals(CalculationState.ACTIVE)

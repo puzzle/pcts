@@ -14,7 +14,6 @@ import java.util.Map;
 import org.junit.jupiter.api.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.annotation.DirtiesContext;
 
 /**
  * @param <T>
@@ -28,10 +27,10 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
         extends
             PersistenceCoreIT {
 
-    protected final S service;
+    protected final S persistenceService;
 
-    PersistenceBaseIT(S service) {
-        this.service = service;
+    PersistenceBaseIT(S persistenceService) {
+        this.persistenceService = persistenceService;
     }
 
     /**
@@ -47,7 +46,7 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
     @DisplayName("Should get entity by id")
     @Test
     void shouldGetEntityById() {
-        T entity = service.getById(2L);
+        T entity = persistenceService.getById(2L);
 
         assertThat(entity).isNotNull();
         assertThat(entity.getId()).isEqualTo(2L);
@@ -64,9 +63,9 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
                     FieldKey.IS,
                     String.valueOf(invalidId),
                     FieldKey.ENTITY,
-                    service.entityName());
+                    persistenceService.entityName());
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.getById(invalidId));
+        PCTSException exception = assertThrows(PCTSException.class, () -> persistenceService.getById(invalidId));
 
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
 
@@ -78,7 +77,7 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
     @Test
     @Transactional
     void shouldGetAllEntities() {
-        List<T> all = service.getAll();
+        List<T> all = persistenceService.getAll();
         assertThat(all).hasSize(getAll().size());
         assertEquals(getAll(), all);
     }
@@ -89,7 +88,7 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
     void shouldCreate() {
         T entity = getModel();
 
-        T result = service.save(entity);
+        T result = persistenceService.save(entity);
 
         entity.setId(result.getId());
         assertThat(result).isEqualTo(entity);
@@ -102,9 +101,9 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
         Long id = 2L;
         T entity = getModel();
         entity.setId(id);
-        service.save(entity);
+        persistenceService.save(entity);
 
-        T result = service.getById(id);
+        T result = persistenceService.getById(id);
 
         assertThat(result).isNotNull();
         assertEquals(entity, result);
@@ -118,13 +117,13 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
      * forces the Spring container to reset after this test class, so the tests do
      * not depend on execution order.
      */
-    @DirtiesContext
+    // @DirtiesContext
     @Test
     void shouldDelete() {
         Long id = 2L;
 
-        service.delete(id);
+        persistenceService.delete(id);
 
-        assertThrows(PCTSException.class, () -> service.getById(id));
+        assertThrows(PCTSException.class, () -> persistenceService.getById(id));
     }
 }

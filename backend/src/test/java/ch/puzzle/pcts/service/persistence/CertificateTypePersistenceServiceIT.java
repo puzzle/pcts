@@ -95,7 +95,7 @@ class CertificateTypePersistenceServiceIT
                 .filter(ct -> ct.getCertificateKind() == CertificateKind.CERTIFICATE)
                 .toList();
 
-        List<CertificateType> all = service.getAll();
+        List<CertificateType> all = persistenceService.getAll();
 
         assertThat(all).hasSize(4).usingRecursiveComparison().ignoringFields("tags").isEqualTo(expectedCertificates);
     }
@@ -106,9 +106,9 @@ class CertificateTypePersistenceServiceIT
     void shouldDelete() {
         Long id = 2L;
 
-        service.delete(id);
+        persistenceService.delete(id);
 
-        assertThatThrownBy(() -> service.getById(id)).isInstanceOf(PCTSException.class);
+        assertThatThrownBy(() -> persistenceService.getById(id)).isInstanceOf(PCTSException.class);
     }
 
     @DisplayName("Should update certificate type")
@@ -123,9 +123,9 @@ class CertificateTypePersistenceServiceIT
                                                                     .of(new Tag(null, "Important tag"),
                                                                         new Tag(null, "Way more important tag")));
 
-        service.save(updatePayload);
+        persistenceService.save(updatePayload);
 
-        CertificateType certificateResult = service.getById(cId);
+        CertificateType certificateResult = persistenceService.getById(cId);
         assertThat(certificateResult.getId()).isEqualTo(cId);
         assertThat(certificateResult.getName()).isEqualTo("Updated certificate type");
         assertThat(certificateResult.getPoints()).isEqualByComparingTo(BigDecimal.valueOf(3));
@@ -139,7 +139,7 @@ class CertificateTypePersistenceServiceIT
     @DisplayName("Should get all certificate types")
     @Test
     void shouldGetAllCertificateTypes() {
-        List<CertificateType> all = service.getAll();
+        List<CertificateType> all = persistenceService.getAll();
 
         assertThat(all).hasSize(4);
         assertThat(all)
@@ -155,7 +155,7 @@ class CertificateTypePersistenceServiceIT
     void shouldGetCertificateTypeById() {
         Long certificateId = 1L;
 
-        CertificateType result = service.getById(certificateId);
+        CertificateType result = persistenceService.getById(certificateId);
 
         assertThat(result.getId()).isEqualTo(certificateId);
         assertThat(result.getName()).isEqualTo("Certificate Type 1");
@@ -167,7 +167,7 @@ class CertificateTypePersistenceServiceIT
     void shouldNotGetLeadershipExperienceAsCertificate() {
         Long id = 5L;
 
-        assertThatThrownBy(() -> service.getById(id))
+        assertThatThrownBy(() -> persistenceService.getById(id))
                 .isInstanceOf(PCTSException.class)
                 .extracting("errorKeys", "errorAttributes")
                 .containsExactly(List.of(ErrorKey.NOT_FOUND),

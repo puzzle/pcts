@@ -226,8 +226,9 @@ class CertificatePersistenceServiceIT
                 .withCompletedAt(LocalDate.now())
                 .build();
 
-        Certificate savedCertificate = service.save(certificate);
-        Certificate result = assertDoesNotThrow(() -> service.findLeadershipExperience(savedCertificate.getId()));
+        Certificate savedCertificate = persistenceService.save(certificate);
+        Certificate result = assertDoesNotThrow(() -> persistenceService
+                .findLeadershipExperience(savedCertificate.getId()));
 
         assertEquals(savedCertificate.getId(), result.getId());
     }

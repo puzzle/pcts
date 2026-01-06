@@ -89,16 +89,18 @@ class LeadershipTypePersistenceServiceIT
     void shouldDelete() {
         Long id = 6L;
 
-        service.delete(id);
+        persistenceService.delete(id);
 
-        assertThatThrownBy(() -> service.getById(id)).isInstanceOf(PCTSException.class).hasMessage("404 NOT_FOUND");
+        assertThatThrownBy(() -> persistenceService.getById(id))
+                .isInstanceOf(PCTSException.class)
+                .hasMessage("404 NOT_FOUND");
     }
 
     @Override
     @DisplayName("Should get entity by id")
     @Test
     void shouldGetEntityById() {
-        CertificateType entity = assertDoesNotThrow(() -> service.getById(7L));
+        CertificateType entity = assertDoesNotThrow(() -> persistenceService.getById(7L));
 
         assertEquals(7L, entity.getId());
     }
@@ -112,7 +114,7 @@ class LeadershipTypePersistenceServiceIT
                 .filter(ct -> ct.getCertificateKind() != null && ct.getCertificateKind().isLeadershipExperienceType())
                 .toList();
 
-        List<CertificateType> all = service.getAll();
+        List<CertificateType> all = persistenceService.getAll();
 
         assertThat(all).hasSize(3).containsExactlyElementsOf(expectedLeadershipTypes);
     }
@@ -128,9 +130,9 @@ class LeadershipTypePersistenceServiceIT
                                                             "This is a updated leadership experience type",
                                                             CertificateKind.YOUTH_AND_SPORT);
 
-        service.save(updatePayload);
+        persistenceService.save(updatePayload);
 
-        CertificateType leadershipResult = assertDoesNotThrow(() -> service.getById(lId));
+        CertificateType leadershipResult = assertDoesNotThrow(() -> persistenceService.getById(lId));
         assertThat(leadershipResult.getId()).isEqualTo(lId);
         assertThat(leadershipResult.getName()).isEqualTo("Updated leadership experience type");
         assertThat(leadershipResult.getPoints()).isEqualByComparingTo(BigDecimal.valueOf(5));
@@ -141,7 +143,7 @@ class LeadershipTypePersistenceServiceIT
     @DisplayName("Should get all leadership experience types")
     @Test
     void shouldGetAllLeadershipExperienceTypes() {
-        List<CertificateType> all = service.getAll();
+        List<CertificateType> all = persistenceService.getAll();
 
         assertThat(all)
                 .hasSize(3)
@@ -156,7 +158,7 @@ class LeadershipTypePersistenceServiceIT
     void shouldGetLeadershipExperienceTypeById() {
         Long leadershipId = 5L;
 
-        CertificateType leadership = assertDoesNotThrow(() -> service.getById(leadershipId));
+        CertificateType leadership = assertDoesNotThrow(() -> persistenceService.getById(leadershipId));
 
         assertEquals(leadershipId, leadership.getId());
         assertEquals("LeadershipExperience Type 1", leadership.getName());
@@ -168,7 +170,7 @@ class LeadershipTypePersistenceServiceIT
     void shouldNotGetCertificateAsLeadershipExperience() {
         Long id = 1L;
 
-        assertThatThrownBy(() -> service.getById(id))
+        assertThatThrownBy(() -> persistenceService.getById(id))
                 .isInstanceOf(PCTSException.class)
                 .extracting("errorKeys", "errorAttributes")
                 .containsExactly(List.of(ErrorKey.NOT_FOUND),
