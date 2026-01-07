@@ -373,6 +373,85 @@ public class TestData {
                         .withExperienceTypeName(EXPERIENCE_2.getType().getName())
                         .build());
 
+    public static final List<MemberOverview> MEMBER_2_OVERVIEWS = List
+            .of(MemberOverview.Builder
+                    .builder()
+                    .withUniqueRowId(5L)
+                    .withMemberId(MEMBER_2.getId())
+                    .withFirstName(MEMBER_2.getFirstName())
+                    .withLastName(MEMBER_2.getLastName())
+                    .withAbbreviation(MEMBER_2.getAbbreviation())
+                    .withEmploymentState(MEMBER_2.getEmploymentState())
+                    .withDateOfHire(MEMBER_2.getDateOfHire())
+                    .withBirthDate(MEMBER_2.getBirthDate())
+                    .withOrganisationUnitName(MEMBER_2.getOrganisationUnit().getName())
+                    .withCertificateId(CERTIFICATE_2.getId())
+                    .withCertificateCompletedAt(CERTIFICATE_2.getCompletedAt())
+                    .withCertificateComment(CERTIFICATE_2.getComment())
+                    .withCertificateTypeName(CERTIFICATE_2.getCertificateType().getName())
+                    .withleadershipTypeKind(CertificateKind.CERTIFICATE)
+                    .withDegreeId(DEGREE_2.getId())
+                    .withDegreeName(DEGREE_2.getName())
+                    .withDegreeStartDate(DEGREE_2.getStartDate())
+                    .withDegreeEndDate(DEGREE_2.getEndDate())
+                    .withDegreeTypeName(DEGREE_2.getDegreeType().getName())
+                    .withExperienceId(EXPERIENCE_3.getId())
+                    .withExperienceName(EXPERIENCE_3.getName())
+                    .withExperienceEmployer(EXPERIENCE_3.getEmployer())
+                    .withExperienceStartDate(EXPERIENCE_3.getStartDate())
+                    .withExperienceEndDate(EXPERIENCE_3.getEndDate())
+                    .withExperienceComment(EXPERIENCE_3.getComment())
+                    .withExperienceTypeName(EXPERIENCE_3.getType().getName())
+                    .build(),
+
+                MemberOverview.Builder
+                        .builder()
+                        .withUniqueRowId(6L)
+                        .withMemberId(MEMBER_2.getId())
+                        .withFirstName(MEMBER_2.getFirstName())
+                        .withLastName(MEMBER_2.getLastName())
+                        .withAbbreviation(MEMBER_2.getAbbreviation())
+                        .withEmploymentState(MEMBER_2.getEmploymentState())
+                        .withDateOfHire(MEMBER_2.getDateOfHire())
+                        .withBirthDate(MEMBER_2.getBirthDate())
+                        .withOrganisationUnitName(MEMBER_2.getOrganisationUnit().getName())
+                        .withCertificateId(CERTIFICATE_3.getId())
+                        .withCertificateCompletedAt(CERTIFICATE_3.getCompletedAt())
+                        .withCertificateComment(CERTIFICATE_3.getComment())
+                        .withCertificateTypeName(CERTIFICATE_3.getCertificateType().getName())
+                        .withleadershipTypeKind(CertificateKind.CERTIFICATE)
+                        .withDegreeId(DEGREE_2.getId())
+                        .withDegreeName(DEGREE_2.getName())
+                        .withDegreeStartDate(DEGREE_2.getStartDate())
+                        .withDegreeEndDate(DEGREE_2.getEndDate())
+                        .withDegreeTypeName(DEGREE_2.getDegreeType().getName())
+                        .withExperienceId(EXPERIENCE_3.getId())
+                        .withExperienceName(EXPERIENCE_3.getName())
+                        .withExperienceEmployer(EXPERIENCE_3.getEmployer())
+                        .withExperienceStartDate(EXPERIENCE_3.getStartDate())
+                        .withExperienceEndDate(EXPERIENCE_3.getEndDate())
+                        .withExperienceComment(EXPERIENCE_3.getComment())
+                        .withExperienceTypeName(EXPERIENCE_3.getType().getName())
+                        .build());
+
+    public static final List<MemberOverview> MEMBER_EMPTY_CV_OVERVIEWS = List
+            .of(MemberOverview.Builder
+                    .builder()
+                    .withUniqueRowId(99L)
+                    .withMemberId(MEMBER_1.getId())
+                    .withFirstName(MEMBER_1.getFirstName())
+                    .withLastName(MEMBER_1.getLastName())
+                    .withEmploymentState(MEMBER_1.getEmploymentState())
+                    .withAbbreviation(MEMBER_1.getAbbreviation())
+                    .withDateOfHire(MEMBER_1.getDateOfHire())
+                    .withBirthDate(MEMBER_1.getBirthDate())
+                    .withOrganisationUnitName(MEMBER_1.getOrganisationUnit().getName())
+                    // All CV IDs are NULL
+                    .withCertificateId(null)
+                    .withDegreeId(null)
+                    .withExperienceId(null)
+                    .build());
+
     public static final MemberOverviewDto MEMBER_1_OVERVIEW_DTO = new MemberOverviewDto(new MemberOverviewMemberDto(MEMBER_1
             .getId(),
                                                                                                                     MEMBER_1
@@ -453,6 +532,94 @@ public class TestData {
                                                                                                                                                      CERTIFICATE_4
                                                                                                                                                              .getComment())),
                                                                                                         List.of()));
+
+    public static final MemberOverviewDto MEMBER_2_OVERVIEW_DTO = new MemberOverviewDto(new MemberOverviewMemberDto(MEMBER_2
+            .getId(),
+                                                                                                                    MEMBER_2
+                                                                                                                            .getFirstName(),
+                                                                                                                    MEMBER_2
+                                                                                                                            .getLastName(),
+                                                                                                                    MEMBER_2
+                                                                                                                            .getEmploymentState(),
+                                                                                                                    MEMBER_2
+                                                                                                                            .getAbbreviation(),
+                                                                                                                    MEMBER_2
+                                                                                                                            .getDateOfHire(),
+                                                                                                                    MEMBER_2
+                                                                                                                            .getBirthDate(),
+                                                                                                                    MEMBER_2
+                                                                                                                            .getOrganisationUnit()
+                                                                                                                            .getName()),
+                                                                                        new MemberCvDto(List
+                                                                                                .of(new MemberOverviewDegreeDto(DEGREE_2
+                                                                                                        .getId(),
+                                                                                                                                DEGREE_2
+                                                                                                                                        .getName(),
+                                                                                                                                new MemberOverviewDegreeTypeDto(DEGREE_2
+                                                                                                                                        .getDegreeType()
+                                                                                                                                        .getName()),
+                                                                                                                                DEGREE_2
+                                                                                                                                        .getStartDate(),
+                                                                                                                                DEGREE_2
+                                                                                                                                        .getEndDate())),
+                                                                                                        List
+                                                                                                                .of(new MemberOverviewExperienceDto(EXPERIENCE_3
+                                                                                                                        .getId(),
+                                                                                                                                                    EXPERIENCE_3
+                                                                                                                                                            .getName(),
+                                                                                                                                                    EXPERIENCE_3
+                                                                                                                                                            .getEmployer(),
+                                                                                                                                                    new MemberOverviewExperienceTypeDto(EXPERIENCE_3
+                                                                                                                                                            .getType()
+                                                                                                                                                            .getName()),
+                                                                                                                                                    EXPERIENCE_3
+                                                                                                                                                            .getComment(),
+                                                                                                                                                    EXPERIENCE_3
+                                                                                                                                                            .getStartDate(),
+                                                                                                                                                    EXPERIENCE_3
+                                                                                                                                                            .getEndDate())),
+                                                                                                        List
+                                                                                                                .of(new MemberOverviewCertificateDto(CERTIFICATE_2
+                                                                                                                        .getId(),
+                                                                                                                                                     new MemberOverviewCertificateTypeDto(CERTIFICATE_2
+                                                                                                                                                             .getCertificateType()
+                                                                                                                                                             .getName()),
+                                                                                                                                                     CERTIFICATE_2
+                                                                                                                                                             .getCompletedAt(),
+                                                                                                                                                     CERTIFICATE_2
+                                                                                                                                                             .getComment()),
+                                                                                                                    new MemberOverviewCertificateDto(CERTIFICATE_3
+                                                                                                                            .getId(),
+                                                                                                                                                     new MemberOverviewCertificateTypeDto(CERTIFICATE_3
+                                                                                                                                                             .getCertificateType()
+                                                                                                                                                             .getName()),
+                                                                                                                                                     CERTIFICATE_3
+                                                                                                                                                             .getCompletedAt(),
+                                                                                                                                                     CERTIFICATE_3
+                                                                                                                                                             .getComment())),
+                                                                                                        List.of()));
+
+    public static final MemberOverviewDto MEMBER_EMPTY_CV_DTO = new MemberOverviewDto(new MemberOverviewMemberDto(MEMBER_1
+            .getId(),
+                                                                                                                  MEMBER_1
+                                                                                                                          .getFirstName(),
+                                                                                                                  MEMBER_1
+                                                                                                                          .getLastName(),
+                                                                                                                  MEMBER_1
+                                                                                                                          .getEmploymentState(),
+                                                                                                                  MEMBER_1
+                                                                                                                          .getAbbreviation(),
+                                                                                                                  MEMBER_1
+                                                                                                                          .getDateOfHire(),
+                                                                                                                  MEMBER_1
+                                                                                                                          .getBirthDate(),
+                                                                                                                  MEMBER_1
+                                                                                                                          .getOrganisationUnit()
+                                                                                                                          .getName()),
+                                                                                      new MemberCvDto(List.of(),
+                                                                                                      List.of(),
+                                                                                                      List.of(),
+                                                                                                      List.of()));
 
     public static final Calculation CALCULATION_1 = new Calculation(1L,
                                                                     MEMBER_1,

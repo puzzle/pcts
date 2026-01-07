@@ -1,19 +1,19 @@
 package ch.puzzle.pcts.mapper;
 
-import static ch.puzzle.pcts.util.TestData.MEMBER_1_OVERVIEWS;
+import static ch.puzzle.pcts.util.TestData.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.puzzle.pcts.dto.memberoverview.MemberCvDto;
 import ch.puzzle.pcts.dto.memberoverview.MemberOverviewDto;
-import ch.puzzle.pcts.dto.memberoverview.MemberOverviewMemberDto;
-import ch.puzzle.pcts.dto.memberoverview.certificate.MemberOverviewCertificateDto;
-import ch.puzzle.pcts.dto.memberoverview.degree.MemberOverviewDegreeDto;
-import ch.puzzle.pcts.dto.memberoverview.experience.MemberOverviewExperienceDto;
-import ch.puzzle.pcts.model.member.EmploymentState;
-import java.time.LocalDate;
+import ch.puzzle.pcts.model.memberoverview.MemberOverview;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -23,41 +23,33 @@ class MemberOverviewMapperTest {
     @InjectMocks
     private MemberOverviewMapper mapper;
 
-    @DisplayName("Should map List<MemberOverview> to MemberOverviewDto")
+    @DisplayName("Should map valid MemberOverview lists to MemberOverviewDto")
+    @ParameterizedTest(name = "{index} => {0}")
+    @MethodSource("provideMemberOverviews")
+    void shouldReturnMemberOverviewDto(String description, List<MemberOverview> inputOverviews,
+                                       MemberOverviewDto expectedDto) {
+        MemberOverviewDto actualDto = mapper.toDto(inputOverviews);
+
+        assertThat(actualDto).isNotNull();
+        assertThat(actualDto).usingRecursiveComparison().ignoringCollectionOrder().isEqualTo(expectedDto);
+    }
+
     @Test
-    void shouldReturnMemberOverviewDto() {
-        MemberOverviewDto dto = mapper.toDto(MEMBER_1_OVERVIEWS);
+    @DisplayName("Should return null when input list is null")
+    void shouldReturnNullWhenInputIsNull() {
+        assertThat(mapper.toDto(null)).isNull();
+    }
 
-        assertThat(dto).isNotNull();
-        assertThat(dto.member()).isNotNull();
-        assertThat(dto.cv()).isNotNull();
+    @Test
+    @DisplayName("Should return null when input list is empty")
+    void shouldReturnNullWhenInputIsEmpty() {
+        assertThat(mapper.toDto(Collections.emptyList())).isNull();
+    }
 
-        MemberOverviewMemberDto member = dto.member();
-        assertThat(member.id()).isEqualTo(1L);
-        assertThat(member.firstName()).isEqualTo("Member 1");
-        assertThat(member.lastName()).isEqualTo("Test");
-        assertThat(member.abbreviation()).isEqualTo("M1");
-        assertThat(member.employmentState()).isEqualTo(EmploymentState.MEMBER);
-        assertThat(member.dateOfHire()).isEqualTo(LocalDate.of(2021, 7, 15));
-        assertThat(member.birthDate()).isEqualTo(LocalDate.of(1999, 8, 10));
-        assertThat(member.organisationUnitName()).isEqualTo("OrganisationUnit 1");
-
-        MemberCvDto cv = dto.cv();
-
-        assertThat(cv.degrees()).hasSize(1);
-        MemberOverviewDegreeDto degree = cv.degrees().getFirst();
-        assertThat(degree.id()).isEqualTo(1L);
-        assertThat(degree.name()).isEqualTo("Degree 1");
-        assertThat(degree.type().name()).isEqualTo("Degree type 1");
-        assertThat(degree.startDate()).isEqualTo(LocalDate.of(2015, 9, 1));
-        assertThat(degree.endDate()).isEqualTo(LocalDate.of(2020, 6, 1));
-
-        assertThat(cv.experiences()).hasSize(2);
-        assertThat(cv.experiences()).extracting(MemberOverviewExperienceDto::id).containsExactlyInAnyOrder(1L, 2L);
-
-        assertThat(cv.certificates()).hasSize(2);
-        assertThat(cv.certificates()).extracting(MemberOverviewCertificateDto::id).containsExactlyInAnyOrder(1L, 4L);
-
-        assertThat(cv.leadershipExperiences()).isEmpty();
+    private static Stream<Arguments> provideMemberOverviews() {
+        return Stream
+                .of(Arguments.of("Standard Member (Full CV)", MEMBER_1_OVERVIEWS, MEMBER_1_OVERVIEW_DTO),
+                    Arguments.of("Member with multiple same-type items", MEMBER_2_OVERVIEWS, MEMBER_2_OVERVIEW_DTO),
+                    Arguments.of("Member with NO CV data (Sparse)", MEMBER_EMPTY_CV_OVERVIEWS, MEMBER_EMPTY_CV_DTO));
     }
 }
