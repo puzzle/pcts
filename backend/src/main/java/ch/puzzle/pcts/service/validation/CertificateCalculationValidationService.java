@@ -1,0 +1,61 @@
+package ch.puzzle.pcts.service.validation;
+
+import static ch.puzzle.pcts.Constants.CALCULATION;
+
+import ch.puzzle.pcts.dto.error.ErrorKey;
+import ch.puzzle.pcts.dto.error.FieldKey;
+import ch.puzzle.pcts.dto.error.GenericErrorDto;
+import ch.puzzle.pcts.exception.PCTSException;
+import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
+import ch.puzzle.pcts.model.member.Member;
+import java.util.List;
+import java.util.Map;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
+@Service
+public class CertificateCalculationValidationService extends ValidationBase<CertificateCalculation> {
+
+    CertificateCalculationValidationService() {
+    }
+
+    @Override
+    public void validateOnCreate(CertificateCalculation model) {
+        super.validateOnCreate(model);
+        this.validateMemberForCalculation(model);
+    }
+
+    public void validateDuplicateCertificateId(CertificateCalculation certificateCalculation,
+                                               List<CertificateCalculation> certificateCalculationList) {
+        if (!certificateCalculationList.isEmpty()) {
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY,
+                        CALCULATION,
+                        FieldKey.FIELD,
+                        "certificate",
+                        FieldKey.IS,
+                        certificateCalculation.getCertificate().getCertificateType().getName());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.DUPLICATE_CALCULATION, attributes);
+            throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
+        }
+    }
+
+    public void validateMemberForCalculation(CertificateCalculation model) {
+        Member certificateMember = model.getCertificate().getMember();
+        Member calculationMember = model.getCalculation().getMember();
+
+        if (!certificateMember.equals(calculationMember)) {
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY,
+                        CALCULATION,
+                        FieldKey.FIELD,
+                        "certificate",
+                        FieldKey.CONDITION_FIELD,
+                        "member");
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_MATCHES, attributes);
+            throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
+        }
+    }
+}
