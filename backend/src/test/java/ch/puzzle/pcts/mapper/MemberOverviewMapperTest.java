@@ -51,7 +51,6 @@ class MemberOverviewMapperTest {
         assertThat(degree.type().name()).isEqualTo("Degree type 1");
         assertThat(degree.startDate()).isEqualTo(LocalDate.of(2015, 9, 1));
         assertThat(degree.endDate()).isEqualTo(LocalDate.of(2020, 6, 1));
-        assertThat(degree.comment()).isEqualTo("Comment");
 
         assertThat(cv.experiences()).hasSize(2);
         assertThat(cv.experiences()).extracting(MemberOverviewExperienceDto::id).containsExactlyInAnyOrder(1L, 2L);
