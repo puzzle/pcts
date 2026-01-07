@@ -91,18 +91,4 @@ public class CertificateCalculationBusinessService extends BusinessBase<Certific
 
         return certificateCalculations;
     }
-
-    // private Long findIdByCalculationAndCertificate(CertificateCalculation
-    // certificateCalculation,
-    // List<CertificateCalculation> certificateCalculationList) {
-    // return certificateCalculationList
-    // .stream()
-    // .filter(ec ->
-    // ec.getCalculation().getId().equals(certificateCalculation.getCalculation().getId())
-    // &&
-    // ec.getCertificate().getId().equals(certificateCalculation.getCertificate().getId()))
-    // .map(CertificateCalculation::getId)
-    // .findFirst()
-    // .orElse(null);
-    // }
 }

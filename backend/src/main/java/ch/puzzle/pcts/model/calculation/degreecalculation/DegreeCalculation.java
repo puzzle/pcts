@@ -33,7 +33,7 @@ public class DegreeCalculation implements CalculationChild {
     private Relevancy relevancy;
 
     @NotNull(message = "{attribute.not.null}")
-    @Range(min = 1, max = 100, message = "{attribute.range.between}")
+    @Range(min = 1, max = 100, message = "{attribute.size.between}")
     private BigDecimal weight;
 
     private String comment;
