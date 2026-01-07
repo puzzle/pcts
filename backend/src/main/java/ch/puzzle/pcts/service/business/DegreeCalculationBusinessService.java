@@ -70,18 +70,6 @@ public class DegreeCalculationBusinessService extends BusinessBase<DegreeCalcula
         return degreeCalculations;
     }
 
-    // private Optional<Long> findIdByCalculationAndDegree(DegreeCalculation
-    // degreeCalculation,
-    // List<DegreeCalculation> degreeCalculationList) {
-    // return degreeCalculationList
-    // .stream()
-    // .filter(ec ->
-    // ec.getCalculation().getId().equals(degreeCalculation.getCalculation().getId())
-    // && ec.getDegree().getId().equals(degreeCalculation.getDegree().getId()))
-    // .map(DegreeCalculation::getId)
-    // .findFirst();
-    // }
-
     /*
      * The divisions are rounded to a DECIMAL128 digit because numbers with a
      * infinite amount of digits could cause a ArithmeticException

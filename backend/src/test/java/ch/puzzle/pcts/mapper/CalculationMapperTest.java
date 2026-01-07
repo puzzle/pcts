@@ -42,9 +42,6 @@ class CalculationMapperTest {
     private static final Long ROLE_ID = 2L;
     private static final Long CALC_ID = 3L;
     private static final Long CALC_2_ID = 4L;
-    private static final Long CERTIFICATE1_ID = 1L;
-    private static final Long CERTIFICATE2_ID = 2L;
-    private static final Long LEADERSHIP_EXPERIENCE_ID = 10L;
     private static final CalculationState STATE_ACTIVE = CalculationState.ACTIVE;
     private static final CalculationState STATE_DRAFT = CalculationState.DRAFT;
     private static final LocalDate PUBLICATION_DATE = LocalDate.now();
