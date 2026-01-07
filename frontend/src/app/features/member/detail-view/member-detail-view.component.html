@@ -14,7 +14,7 @@
         <app-crud-button mode="edit"/>
       </div>
 
-      <div class="d-flex justify-content-between flex-wrap">
+      <div class="d-flex justify-content-between flex-wrap mb-3">
         <span>
           <p class="mb-0">{{ 'ABBREVIATION' | scopedTranslation }}:</p>
           <p class="fw-bold">
@@ -54,6 +54,48 @@
           </p>
         </span>
       </div>
+      <div class="d-flex justify-content-start gap-5">
+        <span>
+          <p class="mb-0">{{ 'MEMBER.BIRTH_DATE' | scopedTranslation }}:</p>
+          <p class="fw-bold">{{ m.birthDate | date: GLOBAL_DATE_FORMAT }}</p>
+        </span>
+        <span>
+          <p class="mb-0">{{ 'MEMBER.BIRTH_DATE' | scopedTranslation }}:</p>
+          <p class="fw-bold">{{ m.birthDate | date: GLOBAL_DATE_FORMAT }}</p>
+        </span>
+      </div>
+    </div>
+    <div class="tab-content">
+      <button
+        type="button"
+        class="tab"
+        [class.active]="activeTab === viewState.CV"
+        (click)="setTab(viewState.CV)">
+        CV
+      </button>
+
+      <button
+        type="button"
+        class="tab"
+        [class.active]="activeTab === viewState.CALC"
+        (click)="setTab(viewState.CALC)">
+        Calculation
+      </button>
+    </div>
+
+    <div class="content-area">
+      @switch (activeTab) {
+        @case (viewState.CV) {
+          <app-generic-table [columns]="userColumns" [data]="userData" />
+          <app-generic-cv-content title="EDUCATION" />
+          <app-generic-cv-content title="PROFESSIONAL_AND_LIFE_EXPERIENCE" />
+          <app-generic-cv-content title="CERTIFICATES" />
+          <app-generic-cv-content title="LEADERSHIP_EXPERIENCE" />
+        }
+        @case (viewState.CALC) {
+          <span>calculation content ...</span>
+        }
+      }
     </div>
   </div>
 }

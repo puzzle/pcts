@@ -6,6 +6,9 @@ import { MemberModel } from '../member.model';
 import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
+import { GenericCvContentComponent } from './generic-cv-content/generic-cv-content.component';
+import { MatButton } from '@angular/material/button';
+import { GenericTableComponent } from '../../../shared/generic-table/generic-table.component';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -15,11 +18,31 @@ import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.com
     CommonModule,
     DatePipe,
     ScopedTranslationPipe,
-    CrudButtonComponent
+    CrudButtonComponent,
+    GenericCvContentComponent,
+    MatButton,
+    GenericTableComponent
   ],
-  templateUrl: './member-detail-view.component.html'
+  templateUrl: './member-detail-view.component.html',
+  styleUrl: './member-detail-view.component.scss'
 })
 export class MemberDetailViewComponent implements OnInit {
+  userColumns: { key: keyof User;
+    label: string; }[] = [{ key: 'name',
+    label: 'Name' },
+  { key: 'age',
+    label: 'Age' },
+  { key: 'email',
+    label: 'Email' }];
+
+  userData: User[] = [{ name: 'John Doe',
+    age: 30,
+    email: 'john@example.com' },
+  { name: 'Jane Smith',
+    age: 25,
+    email: 'jane@example.com' }];
+
+
   private readonly service = inject(MemberService);
 
   private readonly route = inject(ActivatedRoute);
@@ -29,6 +52,12 @@ export class MemberDetailViewComponent implements OnInit {
   protected readonly GLOBAL_DATE_FORMAT = GLOBAL_DATE_FORMAT;
 
   readonly member: WritableSignal<MemberModel | null> = signal<MemberModel | null>(null);
+
+  activeTab: ViewState = 0;
+
+  setTab(tab: ViewState) {
+    this.activeTab = tab;
+  }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -42,4 +71,16 @@ export class MemberDetailViewComponent implements OnInit {
         next: (member) => this.member.set(member)
       });
   }
+
+  protected readonly viewState = ViewState;
+}
+
+enum ViewState {
+  CV, CALC
+}
+
+interface User {
+  name: string;
+  age: number;
+  email: string;
 }
