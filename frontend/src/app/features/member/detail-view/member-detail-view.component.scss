@@ -1,0 +1,19 @@
+.tab-content {
+  width: 100%;
+  border-bottom: 1px solid black;
+  display: flex;
+}
+
+.tab {
+  padding: 0.25rem;
+  margin-left: 1rem;
+  background-color: lightgray;
+  border: 1px solid black;
+  border-bottom: none;
+
+  &.active {
+    background-color: white;
+    margin-bottom: -1px;
+    border-bottom: 1px solid white;
+  }
+}

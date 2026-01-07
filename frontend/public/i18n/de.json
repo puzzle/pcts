@@ -56,7 +56,12 @@
       "MEMBER": "Member",
       "APPLICANT": "Bewerber",
       "EX_MEMBER": "Ex-Member"
-    }
+    },
+    "EDUCATION": "Ausbildung",
+    "PROFESSIONAL_AND_LIFE_EXPERIENCE": "Berufs- und Lebenserfahrung",
+    "CERTIFICATES": "Zertifikate",
+    "LEADERSHIP_EXPERIENCE": "Führungserfahrung",
+    "ADD_ENTRY": "Eintrag hinzufügen"
   },
 
   "ERROR": {

@@ -1,11 +1,11 @@
 <button
-  [attr.data-testid]=`${mode}-${this.modelName}-button`
+  [attr.data-testid]=`${mode()}-${this.modelName}-button`
   type="button"
   mat-stroked-button
   class="text-nowrap"
   (click)="handleClick()">
 
-  <mat-icon>{{ mode }}</mat-icon>
+  <mat-icon>{{ mode() }}</mat-icon>
     {{ 'MODEL_NAME' | scopedTranslation }}
-    {{ ('FORM.' + mode + '.ACTION') | scopedTranslation }}
+    {{ ('FORM.' + mode() + '.ACTION') | scopedTranslation }}
 </button>
