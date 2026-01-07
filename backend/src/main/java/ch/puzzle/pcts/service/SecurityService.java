@@ -65,16 +65,12 @@ public class SecurityService {
 
     private Collection<? extends GrantedAuthority> getAuthorities() {
         SecurityContext context = SecurityContextHolder.getContext();
-        if (context == null) {
-            return Collections.emptyList();
-        }
 
         Authentication auth = context.getAuthentication();
         if (auth == null) {
             return Collections.emptyList();
         }
 
-        Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-        return authorities != null ? authorities : Collections.emptyList();
+        return auth.getAuthorities();
     }
 }
