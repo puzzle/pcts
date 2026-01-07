@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.service.persistence;
 
+import static ch.puzzle.pcts.Constants.CERTIFICATE_CALCULATION;
+
 import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
 import ch.puzzle.pcts.repository.CertificateCalculationRepository;
 import java.util.List;
@@ -24,4 +26,8 @@ public class CertificateCalculationPersistenceService
         return this.repository.findByCertificateId(certificateId);
     }
 
+    @Override
+    public String entityName() {
+        return CERTIFICATE_CALCULATION;
+    }
 }

@@ -60,9 +60,9 @@ class CertificateCalculationPersistenceServiceIT
     @Transactional
     @Test
     void shouldGetByCalculationId() {
-        CertificateCalculation cc = service.save(getModel());
+        CertificateCalculation cc = persistenceService.save(getModel());
 
-        List<CertificateCalculation> result = service.getByCalculationId(cc.getCalculation().getId());
+        List<CertificateCalculation> result = persistenceService.getByCalculationId(cc.getCalculation().getId());
 
         assertThat(result).contains(cc);
     }
@@ -71,9 +71,9 @@ class CertificateCalculationPersistenceServiceIT
     @Transactional
     @Test
     void shouldGetByCertificateId() {
-        CertificateCalculation cc = service.save(getModel());
+        CertificateCalculation cc = persistenceService.save(getModel());
 
-        List<CertificateCalculation> result = service.getByCertificateId(cc.getCertificate().getId());
+        List<CertificateCalculation> result = persistenceService.getByCertificateId(cc.getCertificate().getId());
 
         assertThat(result).contains(cc);
     }
@@ -83,10 +83,10 @@ class CertificateCalculationPersistenceServiceIT
     @Test
     void shouldSaveAndRetrieve() {
         CertificateCalculation cc = getModel();
-        CertificateCalculation saved = service.save(cc);
+        CertificateCalculation saved = persistenceService.save(cc);
 
         assertEquals(cc.getCalculation(), saved.getCalculation());
         assertEquals(cc.getCertificate(), saved.getCertificate());
-        assertThat(service.getAll()).contains(saved);
+        assertThat(persistenceService.getAll()).contains(saved);
     }
 }

@@ -37,8 +37,8 @@ class ExperienceCalculationPersistenceServiceIT
 
     @Override
     ExperienceCalculation getModel() {
-        Calculation calculation = calculationServiceIT.getAll().get(0);
-        Experience experience = experienceServiceIT.getAll().get(0);
+        Calculation calculation = calculationServiceIT.getAll().getFirst();
+        Experience experience = experienceServiceIT.getAll().getFirst();
 
         return new ExperienceCalculation(null, calculation, experience, Relevancy.HIGHLY, "Comment");
     }
@@ -78,9 +78,9 @@ class ExperienceCalculationPersistenceServiceIT
     @Transactional
     @Test
     void shouldGetByCalculationId() {
-        ExperienceCalculation ec = service.save(getModel());
+        ExperienceCalculation ec = persistenceService.save(getModel());
 
-        List<ExperienceCalculation> result = service.getByCalculationId(ec.getCalculation().getId());
+        List<ExperienceCalculation> result = persistenceService.getByCalculationId(ec.getCalculation().getId());
 
         assertThat(result).contains(ec);
     }
@@ -89,9 +89,9 @@ class ExperienceCalculationPersistenceServiceIT
     @Transactional
     @Test
     void shouldGetByExperienceId() {
-        ExperienceCalculation ec = service.save(getModel());
+        ExperienceCalculation ec = persistenceService.save(getModel());
 
-        List<ExperienceCalculation> result = service.getByExperienceId(ec.getExperience().getId());
+        List<ExperienceCalculation> result = persistenceService.getByExperienceId(ec.getExperience().getId());
 
         assertThat(result).contains(ec);
     }
@@ -101,12 +101,12 @@ class ExperienceCalculationPersistenceServiceIT
     @Test
     void shouldSaveAndRetrieve() {
         ExperienceCalculation ec = getModel();
-        ExperienceCalculation saved = service.save(ec);
+        ExperienceCalculation saved = persistenceService.save(ec);
 
         assertEquals(ec.getCalculation(), saved.getCalculation());
         assertEquals(ec.getExperience(), saved.getExperience());
         assertEquals(ec.getRelevancy(), saved.getRelevancy());
         assertEquals(ec.getComment(), saved.getComment());
-        assertThat(service.getAll()).contains(saved);
+        assertThat(persistenceService.getAll()).contains(saved);
     }
 }
