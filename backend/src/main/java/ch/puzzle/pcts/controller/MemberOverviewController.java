@@ -1,6 +1,5 @@
 package ch.puzzle.pcts.controller;
 
-import ch.puzzle.pcts.dto.member.MemberDto;
 import ch.puzzle.pcts.dto.memberoverview.MemberOverviewDto;
 import ch.puzzle.pcts.mapper.MemberOverviewMapper;
 import ch.puzzle.pcts.model.memberoverview.MemberOverview;
@@ -32,7 +31,7 @@ public class MemberOverviewController {
 
     @Operation(summary = "Get the member-overview by memberId")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved the member-overview.", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = MemberDto.class)) })
+            @Content(mediaType = "application/json", schema = @Schema(implementation = MemberOverviewDto.class)) })
     @GetMapping("{memberId}")
     public ResponseEntity<MemberOverviewDto> getMemberOverviewByMemberId(@Parameter(description = "The ID of the member whose overview should be retrieved.", required = true)
     @PathVariable Long memberId) {

@@ -12,7 +12,5 @@ public record MemberOverviewDegreeDto(
 
         @Schema(description = "The start date of the degree program.", example = "2018-09-01", requiredMode = Schema.RequiredMode.REQUIRED) LocalDate startDate,
 
-        @Schema(description = "The end date of the degree program.", example = "2022-06-30") LocalDate endDate,
-
-        @Schema(description = "Additional comments or notes about the degree.", example = "Graduated summa cum laude.") String comment) {
+        @Schema(description = "The end date of the degree program.", example = "2022-06-30") LocalDate endDate) {
 }
