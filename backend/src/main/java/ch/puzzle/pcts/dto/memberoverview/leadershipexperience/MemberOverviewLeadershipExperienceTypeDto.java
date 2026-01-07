@@ -5,6 +5,5 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 public record MemberOverviewLeadershipExperienceTypeDto(
         @Schema(description = "The name of the leadership-experience-type.", example = "", requiredMode = Schema.RequiredMode.REQUIRED, minLength = 1) String name,
-        @Schema(description = "A optional comment for the leadership-experience-type.", example = "This is an awesome leadership-experience-type!", requiredMode = Schema.RequiredMode.NOT_REQUIRED, nullable = true) String comment,
         @Schema(description = "The kind of leadership-experience-type which is either MILITARY_FUNCTION, YOUTH_AND_SPORT or LEADERSHIP_TRAINING", example = "LEADERSHIP_TRAINING", requiredMode = Schema.RequiredMode.REQUIRED) CertificateKind experienceKind) {
 }

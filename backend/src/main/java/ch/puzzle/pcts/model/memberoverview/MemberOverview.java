@@ -29,11 +29,9 @@ public class MemberOverview implements Model {
 
     private Long certificateId;
     private LocalDate certificateCompletedAt;
-    private LocalDate certificateValidUntil;
     private String certificateComment;
 
     private String certificateTypeName;
-    private String certificateTypeComment;
     @Enumerated(EnumType.STRING)
     private CertificateKind leadershipTypeKind;
 
@@ -41,7 +39,6 @@ public class MemberOverview implements Model {
     private String degreeName;
     private LocalDate degreeStartDate;
     private LocalDate degreeEndDate;
-    private String degreeComment;
 
     private String degreeTypeName;
 
@@ -66,15 +63,12 @@ public class MemberOverview implements Model {
         organisationUnitName = trim(builder.organisationUnitName);
         certificateId = builder.certificateId;
         certificateCompletedAt = builder.certificateCompletedAt;
-        certificateValidUntil = builder.certificateValidUntil;
         certificateComment = trim(builder.certificateComment);
         certificateTypeName = trim(builder.certificateTypeName);
-        certificateTypeComment = trim(builder.certificateTypeComment);
         degreeId = builder.degreeId;
         degreeName = trim(builder.degreeName);
         degreeStartDate = builder.degreeStartDate;
         degreeEndDate = builder.degreeEndDate;
-        degreeComment = builder.degreeComment;
         leadershipTypeKind = builder.leadershipTypeKind;
         degreeTypeName = trim(builder.degreeTypeName);
         experienceId = builder.experienceId;
@@ -180,14 +174,6 @@ public class MemberOverview implements Model {
         this.certificateCompletedAt = certificateCompletedAt;
     }
 
-    public LocalDate getCertificateValidUntil() {
-        return certificateValidUntil;
-    }
-
-    public void setCertificateValidUntil(LocalDate certificateValidUntil) {
-        this.certificateValidUntil = certificateValidUntil;
-    }
-
     public String getCertificateComment() {
         return certificateComment;
     }
@@ -202,14 +188,6 @@ public class MemberOverview implements Model {
 
     public void setCertificateTypeName(String certificateTypeName) {
         this.certificateTypeName = trim(certificateTypeName);
-    }
-
-    public String getCertificateTypeComment() {
-        return certificateTypeComment;
-    }
-
-    public void setCertificateTypeComment(String certificateTypeComment) {
-        this.certificateTypeComment = trim(certificateTypeComment);
     }
 
     public Long getDegreeId() {
@@ -240,16 +218,8 @@ public class MemberOverview implements Model {
         return degreeEndDate;
     }
 
-    public String getDegreeComment() {
-        return degreeComment;
-    }
-
     public void setDegreeEndDate(LocalDate degreeEndDate) {
         this.degreeEndDate = degreeEndDate;
-    }
-
-    public void setDegreeComment(String degreeComment) {
-        this.degreeComment = trim(degreeComment);
     }
 
     public CertificateKind getLeadershipTypeKind() {
@@ -353,17 +323,14 @@ public class MemberOverview implements Model {
 
         private Long certificateId;
         private LocalDate certificateCompletedAt;
-        private LocalDate certificateValidUntil;
         private String certificateComment;
 
         private String certificateTypeName;
-        private String certificateTypeComment;
 
         private Long degreeId;
         private String degreeName;
         private LocalDate degreeStartDate;
         private LocalDate degreeEndDate;
-        private String degreeComment;
 
         private CertificateKind leadershipTypeKind;
 
@@ -440,11 +407,6 @@ public class MemberOverview implements Model {
             return this;
         }
 
-        public Builder withCertificateValidUntil(LocalDate certificateValidUntil) {
-            this.certificateValidUntil = certificateValidUntil;
-            return this;
-        }
-
         public Builder withCertificateComment(String certificateComment) {
             this.certificateComment = trim(certificateComment);
             return this;
@@ -452,11 +414,6 @@ public class MemberOverview implements Model {
 
         public Builder withCertificateTypeName(String certificateTypeName) {
             this.certificateTypeName = trim(certificateTypeName);
-            return this;
-        }
-
-        public Builder withCertificateTypeComment(String certificateTypeComment) {
-            this.certificateTypeComment = trim(certificateTypeComment);
             return this;
         }
 
@@ -482,11 +439,6 @@ public class MemberOverview implements Model {
 
         public Builder withDegreeEndDate(LocalDate degreeEndDate) {
             this.degreeEndDate = degreeEndDate;
-            return this;
-        }
-
-        public Builder withDegreeComment(String degreeComment) {
-            this.degreeComment = trim(degreeComment);
             return this;
         }
 
