@@ -72,19 +72,6 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
         return experienceCalculations;
     }
 
-    // private Optional<Long> findIdByCalculationAndExperience(ExperienceCalculation
-    // experienceCalculation,
-    // List<ExperienceCalculation> experienceCalculationList) {
-    // return experienceCalculationList
-    // .stream()
-    // .filter(ec ->
-    // ec.getCalculation().getId().equals(experienceCalculation.getCalculation().getId())
-    // &&
-    // ec.getExperience().getId().equals(experienceCalculation.getExperience().getId()))
-    // .map(ExperienceCalculation::getId)
-    // .findFirst();
-    // }
-
     /*
      * The divisions are rounded to a DECIMAL128 digit because numbers with a
      * infinite amount of digits could cause a ArithmeticException
