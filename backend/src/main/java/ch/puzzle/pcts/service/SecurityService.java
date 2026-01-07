@@ -64,11 +64,11 @@ public class SecurityService {
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities() {
-        return Optional
-                .of(SecurityContextHolder.getContext())
+        Authentication auth = Optional
+                .ofNullable(SecurityContextHolder.getContext())
                 .map(SecurityContext::getAuthentication)
-                .map(Authentication::getAuthorities)
-                .orElse(Collections.emptyList());
+                .orElse(null);
+        return auth != null ? auth.getAuthorities() : Collections.emptyList();
     }
 
 }
