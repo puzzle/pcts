@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.service.persistence;
 
+import static ch.puzzle.pcts.Constants.EXPERIENCE_CALCULATION;
+
 import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
 import ch.puzzle.pcts.repository.ExperienceCalculationRepository;
 import java.util.List;
@@ -24,4 +26,8 @@ public class ExperienceCalculationPersistenceService
         return this.repository.findByExperienceId(experienceId);
     }
 
+    @Override
+    public String entityName() {
+        return EXPERIENCE_CALCULATION;
+    }
 }

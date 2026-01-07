@@ -1,11 +1,5 @@
 package ch.puzzle.pcts.service.business;
 
-import static ch.puzzle.pcts.Constants.EXPERIENCE_CALCULATION;
-
-import ch.puzzle.pcts.dto.error.ErrorKey;
-import ch.puzzle.pcts.dto.error.FieldKey;
-import ch.puzzle.pcts.dto.error.GenericErrorDto;
-import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
@@ -18,8 +12,6 @@ import java.math.MathContext;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Map;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -52,20 +44,6 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
         List<ExperienceCalculation> existing = this.getByExperienceId(experienceCalculation.getExperience().getId());
         experienceCalculationValidationService.validateOnCreate(experienceCalculation);
         experienceCalculationValidationService.validateDuplicateExperienceId(experienceCalculation, existing);
-        return experienceCalculationPersistenceService.save(experienceCalculation);
-    }
-
-    @Override
-    public ExperienceCalculation update(Long id, ExperienceCalculation experienceCalculation) {
-        if (persistenceService.getById(id).isEmpty()) {
-            Map<FieldKey, String> attributes = Map
-                    .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, id.toString());
-            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
-            throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
-        }
-        experienceCalculationValidationService.validateOnUpdate(id, experienceCalculation);
-        experienceCalculationValidationService.validateMemberForCalculation(experienceCalculation);
-        experienceCalculation.setId(id);
         return experienceCalculationPersistenceService.save(experienceCalculation);
     }
 
@@ -136,10 +114,5 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
             return LocalDate.now();
         }
         return date;
-    }
-
-    @Override
-    protected String entityName() {
-        return EXPERIENCE_CALCULATION;
     }
 }

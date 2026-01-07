@@ -1,19 +1,10 @@
 package ch.puzzle.pcts.service.business;
 
-import static ch.puzzle.pcts.Constants.CALCULATION;
-
-import ch.puzzle.pcts.dto.error.ErrorKey;
-import ch.puzzle.pcts.dto.error.FieldKey;
-import ch.puzzle.pcts.dto.error.GenericErrorDto;
-import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.service.persistence.CalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.CalculationValidationService;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,11 +24,10 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
         this.degreeCalculationBusinessService = degreeCalculationBusinessService;
     }
 
+    @Override
     @Transactional
     public Calculation create(Calculation calculation) {
-        validationService.validateOnCreate(calculation);
-
-        Calculation createdCalculation = persistenceService.save(calculation);
+        Calculation createdCalculation = super.create(calculation);
 
         createdCalculation
                 .setExperiences(experienceCalculationBusinessService.createExperienceCalculations(calculation));
@@ -49,19 +39,10 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
         return createdCalculation;
     }
 
+    @Override
     @Transactional
     public Calculation update(Long id, Calculation calculation) {
-        if (persistenceService.getById(id).isEmpty()) {
-            Map<FieldKey, String> attributes = Map
-                    .of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "id", FieldKey.IS, id.toString());
-            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
-            throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
-        }
-
-        validationService.validateOnUpdate(id, calculation);
-        calculation.setId(id);
-
-        Calculation updatedCalculation = persistenceService.save(calculation);
+        Calculation updatedCalculation = super.update(id, calculation);
 
         updatedCalculation
                 .setExperiences(experienceCalculationBusinessService.updateExperienceCalculations(calculation));
@@ -72,13 +53,9 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
         return updatedCalculation;
     }
 
+    @Override
     public Calculation getById(Long id) {
-        Calculation calculation = persistenceService.getById(id).orElseThrow(() -> {
-            Map<FieldKey, String> attributes = Map
-                    .of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "id", FieldKey.IS, id.toString());
-            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
-            return new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
-        });
+        Calculation calculation = super.getById(id);
 
         BigDecimal totalRelevancyPoints = BigDecimal.ZERO;
 
@@ -90,10 +67,5 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
 
         calculation.setPoints(totalRelevancyPoints);
         return calculation;
-    }
-
-    @Override
-    protected String entityName() {
-        return CALCULATION;
     }
 }

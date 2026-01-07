@@ -21,6 +21,12 @@ public class DegreeCalculationValidationService extends ValidationBase<DegreeCal
         this.validateMemberForCalculation(model);
     }
 
+    @Override
+    public void validateOnUpdate(Long id, DegreeCalculation model) {
+        super.validateOnUpdate(id, model);
+        validateMemberForCalculation(model);
+    }
+
     public void validateDuplicateDegreeId(DegreeCalculation degreeCalculation,
                                           List<DegreeCalculation> degreeCalculationList) {
         if (!degreeCalculationList.isEmpty()) {

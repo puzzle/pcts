@@ -22,6 +22,12 @@ public class ExperienceCalculationValidationService extends ValidationBase<Exper
         this.validateMemberForCalculation(model);
     }
 
+    @Override
+    public void validateOnUpdate(Long id, ExperienceCalculation model) {
+        super.validateOnUpdate(id, model);
+        this.validateMemberForCalculation(model);
+    }
+
     public void validateDuplicateExperienceId(ExperienceCalculation experienceCalculation,
                                               List<ExperienceCalculation> experienceCalculationList) {
         if (!experienceCalculationList.isEmpty()) {

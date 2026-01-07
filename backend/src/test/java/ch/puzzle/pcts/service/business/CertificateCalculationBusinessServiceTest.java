@@ -14,7 +14,6 @@ import ch.puzzle.pcts.service.validation.CertificateCalculationValidationService
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -179,7 +178,7 @@ class CertificateCalculationBusinessServiceTest
         when(calculation.getCertificates()).thenReturn(List.of(updated));
         when(persistenceService.getByCalculationId(ID)).thenReturn(new ArrayList<>(List.of(existing)));
 
-        when(persistenceService.getById(certificateCalculationId)).thenReturn(Optional.of(existing));
+        when(persistenceService.getById(certificateCalculationId)).thenReturn(existing);
 
         when(persistenceService.save(any(CertificateCalculation.class))).thenAnswer(inv -> inv.getArgument(0));
 

@@ -189,8 +189,8 @@ class CalculationPersistenceServiceIT
         Calculation calc1 = Calculation.Builder
                 .builder()
                 .withId(CALCULATION_ID_1)
-                .withMember(members.get(0))
-                .withRole(roles.get(0))
+                .withMember(members.getFirst())
+                .withRole(roles.getFirst())
                 .withState(CalculationState.DRAFT)
                 .withPublicationDate(LocalDate.of(2025, 1, 14))
                 .withPublicizedBy("Ldap User")
@@ -225,7 +225,7 @@ class CalculationPersistenceServiceIT
                 .builder()
                 .withId(CALCULATION_ID_2)
                 .withMember(members.get(1))
-                .withRole(roles.get(0))
+                .withRole(roles.getFirst())
                 .withState(CalculationState.ARCHIVED)
                 .withPublicationDate(LocalDate.of(2025, 1, 14))
                 .withPublicizedBy("Ldap User 2")
@@ -251,7 +251,7 @@ class CalculationPersistenceServiceIT
                 .builder()
                 .withId(CALCULATION_ID_3)
                 .withMember(members.get(1))
-                .withRole(roles.get(0))
+                .withRole(roles.getFirst())
                 .withState(CalculationState.ACTIVE)
                 .withDegrees(Collections.emptyList())
                 .withExperiences(Collections.emptyList())
@@ -278,9 +278,9 @@ class CalculationPersistenceServiceIT
         activeCalculation.setPublicationDate(null);
         activeCalculation.setPublicizedBy(null);
 
-        service.save(oldActiveCalculation);
+        persistenceService.save(oldActiveCalculation);
 
-        Calculation result = service.save(activeCalculation);
+        Calculation result = persistenceService.save(activeCalculation);
 
         assertEquals(LocalDate.now(), result.getPublicationDate());
         assertEquals("Ldap User", result.getPublicizedBy());
@@ -298,10 +298,10 @@ class CalculationPersistenceServiceIT
         activeCalculation.setPublicizedBy(null);
 
         oldActiveCalculation.setId(CALCULATION_ID_2);
-        service.save(oldActiveCalculation);
+        persistenceService.save(oldActiveCalculation);
 
         activeCalculation.setId(CALCULATION_ID_3);
-        Calculation result = service.save(activeCalculation);
+        Calculation result = persistenceService.save(activeCalculation);
 
         assertEquals(LocalDate.now(), result.getPublicationDate());
         assertEquals("Ldap User", result.getPublicizedBy());
@@ -310,7 +310,7 @@ class CalculationPersistenceServiceIT
     }
 
     private List<Calculation> getActiveCalculationsOfMember(Role role, Member member) {
-        return service
+        return persistenceService
                 .getAll()
                 .stream()
                 .filter(c -> c.getState() == CalculationState.ACTIVE && c.getRole().equals(role)

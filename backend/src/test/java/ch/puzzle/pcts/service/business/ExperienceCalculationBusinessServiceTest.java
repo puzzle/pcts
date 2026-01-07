@@ -16,7 +16,6 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -197,7 +196,7 @@ class ExperienceCalculationBusinessServiceTest
         when(calculation.getExperiences()).thenReturn(List.of(updated));
         when(persistenceService.getByCalculationId(ID)).thenReturn(new ArrayList<>(List.of(existing)));
 
-        when(persistenceService.getById(experienceCalculationId)).thenReturn(Optional.of(existing));
+        when(persistenceService.getById(experienceCalculationId)).thenReturn(existing);
 
         when(persistenceService.save(any(ExperienceCalculation.class))).thenAnswer(inv -> inv.getArgument(0));
 

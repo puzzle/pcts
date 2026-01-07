@@ -82,7 +82,7 @@ class DegreeCalculationPersistenceServiceIT
     @Transactional
     @Test
     void shouldGetByCalculationId() {
-        List<DegreeCalculation> result = service.getByCalculationId(1L);
+        List<DegreeCalculation> result = persistenceService.getByCalculationId(1L);
 
         assertThat(result).hasSize(2).allMatch(dc -> dc.getCalculation().getId().equals(1L));
     }
@@ -91,7 +91,7 @@ class DegreeCalculationPersistenceServiceIT
     @Transactional
     @Test
     void shouldGetByDegreeId() {
-        List<DegreeCalculation> result = service.getByDegreeId(2L);
+        List<DegreeCalculation> result = persistenceService.getByDegreeId(2L);
 
         assertThat(result).hasSize(3).allMatch(dc -> dc.getDegree().getId().equals(2L));
     }
@@ -101,7 +101,7 @@ class DegreeCalculationPersistenceServiceIT
     @Test
     void shouldSaveAndRetrieve() {
         DegreeCalculation dc = getModel();
-        DegreeCalculation saved = service.save(dc);
+        DegreeCalculation saved = persistenceService.save(dc);
 
         assertEquals(dc.getCalculation(), saved.getCalculation());
         assertEquals(dc.getDegree(), saved.getDegree());
@@ -109,6 +109,6 @@ class DegreeCalculationPersistenceServiceIT
         assertEquals(dc.getRelevancy(), saved.getRelevancy());
         assertEquals(dc.getComment(), saved.getComment());
 
-        assertThat(service.getAll()).contains(saved);
+        assertThat(persistenceService.getAll()).contains(saved);
     }
 }

@@ -25,6 +25,12 @@ public class CertificateCalculationValidationService extends ValidationBase<Cert
         this.validateMemberForCalculation(model);
     }
 
+    @Override
+    public void validateOnUpdate(Long id, CertificateCalculation model) {
+        super.validateOnUpdate(id, model);
+        validateMemberForCalculation(model);
+    }
+
     public void validateDuplicateCertificateId(CertificateCalculation certificateCalculation,
                                                List<CertificateCalculation> certificateCalculationList) {
         if (!certificateCalculationList.isEmpty()) {

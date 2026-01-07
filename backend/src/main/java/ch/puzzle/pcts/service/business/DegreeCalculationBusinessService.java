@@ -1,11 +1,5 @@
 package ch.puzzle.pcts.service.business;
 
-import static ch.puzzle.pcts.Constants.DEGREE_CALCULATION;
-
-import ch.puzzle.pcts.dto.error.ErrorKey;
-import ch.puzzle.pcts.dto.error.FieldKey;
-import ch.puzzle.pcts.dto.error.GenericErrorDto;
-import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
@@ -16,8 +10,6 @@ import ch.puzzle.pcts.service.validation.DegreeCalculationValidationService;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.List;
-import java.util.Map;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -50,20 +42,6 @@ public class DegreeCalculationBusinessService extends BusinessBase<DegreeCalcula
         List<DegreeCalculation> existing = this.getByDegreeId(degreeCalculation.getDegree().getId());
         degreeCalculationValidationService.validateOnCreate(degreeCalculation);
         degreeCalculationValidationService.validateDuplicateDegreeId(degreeCalculation, existing);
-        return degreeCalculationPersistenceService.save(degreeCalculation);
-    }
-
-    @Override
-    public DegreeCalculation update(Long id, DegreeCalculation degreeCalculation) {
-        if (persistenceService.getById(id).isEmpty()) {
-            Map<FieldKey, String> attributes = Map
-                    .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, id.toString());
-            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
-            throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
-        }
-        degreeCalculationValidationService.validateOnUpdate(id, degreeCalculation);
-        degreeCalculationValidationService.validateMemberForCalculation(degreeCalculation);
-        degreeCalculation.setId(id);
         return degreeCalculationPersistenceService.save(degreeCalculation);
     }
 
@@ -117,10 +95,5 @@ public class DegreeCalculationBusinessService extends BusinessBase<DegreeCalcula
         BigDecimal basePoints = type.getPointsByRelevancy(relevancy);
 
         return basePoints.divide(BigDecimal.valueOf(100), MathContext.DECIMAL128).multiply(weight);
-    }
-
-    @Override
-    protected String entityName() {
-        return DEGREE_CALCULATION;
     }
 }

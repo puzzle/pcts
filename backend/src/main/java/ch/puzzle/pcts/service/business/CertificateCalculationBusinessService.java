@@ -1,19 +1,11 @@
 package ch.puzzle.pcts.service.business;
 
-import static ch.puzzle.pcts.Constants.CERTIFICATE_CALCULATION;
-
-import ch.puzzle.pcts.dto.error.ErrorKey;
-import ch.puzzle.pcts.dto.error.FieldKey;
-import ch.puzzle.pcts.dto.error.GenericErrorDto;
-import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
 import ch.puzzle.pcts.service.persistence.CertificateCalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.CertificateCalculationValidationService;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -70,20 +62,6 @@ public class CertificateCalculationBusinessService extends BusinessBase<Certific
         return certificateCalculationPersistenceService.save(certificateCalculation);
     }
 
-    @Override
-    public CertificateCalculation update(Long id, CertificateCalculation certificateCalculation) {
-        if (persistenceService.getById(id).isEmpty()) {
-            Map<FieldKey, String> attributes = Map
-                    .of(FieldKey.ENTITY, entityName(), FieldKey.FIELD, "id", FieldKey.IS, id.toString());
-            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
-            throw new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
-        }
-        certificateCalculationValidationService.validateOnUpdate(id, certificateCalculation);
-        certificateCalculationValidationService.validateMemberForCalculation(certificateCalculation);
-        certificateCalculation.setId(id);
-        return certificateCalculationPersistenceService.save(certificateCalculation);
-    }
-
     public List<CertificateCalculation> createCertificateCalculations(Calculation calculation) {
         return calculation.getCertificates().stream().map(exp -> {
             exp.setCalculation(calculation);
@@ -127,9 +105,4 @@ public class CertificateCalculationBusinessService extends BusinessBase<Certific
     // .findFirst()
     // .orElse(null);
     // }
-
-    @Override
-    protected String entityName() {
-        return CERTIFICATE_CALCULATION;
-    }
 }

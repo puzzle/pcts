@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.service.persistence;
 
+import static ch.puzzle.pcts.Constants.DEGREE_CALCULATION;
+
 import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
 import ch.puzzle.pcts.repository.DegreeCalculationRepository;
 import java.util.List;
@@ -24,4 +26,8 @@ public class DegreeCalculationPersistenceService
         return this.repository.findByDegreeId(degreeId);
     }
 
+    @Override
+    public String entityName() {
+        return DEGREE_CALCULATION;
+    }
 }

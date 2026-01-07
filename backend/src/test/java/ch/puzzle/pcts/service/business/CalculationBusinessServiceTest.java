@@ -1,21 +1,12 @@
 package ch.puzzle.pcts.service.business;
 
-import static ch.puzzle.pcts.Constants.CALCULATION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-import ch.puzzle.pcts.dto.error.ErrorKey;
-import ch.puzzle.pcts.dto.error.FieldKey;
-import ch.puzzle.pcts.dto.error.GenericErrorDto;
-import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.service.persistence.CalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.CalculationValidationService;
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -54,7 +45,7 @@ class CalculationBusinessServiceTest {
     void shouldGetById() {
         Calculation calc = new Calculation();
 
-        when(persistenceService.getById(ID)).thenReturn(Optional.of(calc));
+        when(persistenceService.getById(ID)).thenReturn(calc);
         when(experienceBusinessService.getExperiencePoints(ID)).thenReturn(BigDecimal.ONE);
         when(degreeBusinessService.getDegreePoints(ID)).thenReturn(BigDecimal.ONE);
         when(certificateBusinessService.getCertificatePoints(ID)).thenReturn(BigDecimal.ONE);
@@ -66,18 +57,6 @@ class CalculationBusinessServiceTest {
         verify(persistenceService).getById(ID);
         verify(experienceBusinessService).getExperiencePoints(ID);
         verify(degreeBusinessService).getDegreePoints(ID);
-    }
-
-    @DisplayName("Should throw error when calculation with id does not exist")
-    @Test
-    void shouldNotGetByIdAndThrowError() {
-        when(persistenceService.getById(ID)).thenReturn(Optional.empty());
-        PCTSException exception = assertThrows(PCTSException.class, () -> businessService.getById(ID));
-
-        GenericErrorDto expectedError = new GenericErrorDto(ErrorKey.NOT_FOUND,
-                Map.of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "id", FieldKey.IS, ID.toString()));
-        assertEquals(List.of(expectedError), exception.getErrors());
-        verify(persistenceService).getById(ID);
     }
 
     @DisplayName("Should create calculation with experiences")
@@ -99,7 +78,7 @@ class CalculationBusinessServiceTest {
     @DisplayName("Should update calculation with experiences")
     @Test
     void shouldUpdate() {
-        when(persistenceService.getById(ID)).thenReturn(Optional.of(calculation));
+        when(persistenceService.getById(ID)).thenReturn(calculation);
         when(persistenceService.save(calculation)).thenReturn(calculation);
 
         Calculation result = businessService.update(ID, calculation);
@@ -108,14 +87,5 @@ class CalculationBusinessServiceTest {
         verify(validationService).validateOnUpdate(ID, calculation);
         verify(persistenceService).getById(ID);
         verify(persistenceService).save(calculation);
-    }
-
-    @DisplayName("Should throw exception when updating non-existing calculation")
-    @Test
-    void shouldThrowExceptionWhenUpdatingNotFound() {
-        when(persistenceService.getById(ID)).thenReturn(Optional.empty());
-        assertThrows(PCTSException.class, () -> businessService.update(ID, calculation));
-        verify(persistenceService).getById(ID);
-        verify(persistenceService, never()).save(any());
     }
 }
