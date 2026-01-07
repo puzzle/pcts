@@ -3,6 +3,7 @@ package ch.puzzle.pcts.model.experiencetype;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
+import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.util.PCTSPointsValidation;
 import ch.puzzle.pcts.util.PCTSStringValidation;
 import jakarta.persistence.*;
@@ -79,6 +80,15 @@ public class ExperienceType implements Model {
 
     public BigDecimal getLittleRelevantPoints() {
         return littleRelevantPoints;
+    }
+
+    public BigDecimal getPointsByRelevancy(Relevancy relevancy) {
+        return switch (relevancy) {
+            case HIGHLY -> getHighlyRelevantPoints();
+            case LIMITED -> getLimitedRelevantPoints();
+            case LITTLE -> getLittleRelevantPoints();
+            case NONE -> BigDecimal.ZERO;
+        };
     }
 
     public LocalDateTime getDeletedAt() {
