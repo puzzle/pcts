@@ -266,16 +266,13 @@ public class TestData {
                     .withOrganisationUnitName(MEMBER_1.getOrganisationUnit().getName())
                     .withCertificateId(CERTIFICATE_1.getId())
                     .withCertificateCompletedAt(CERTIFICATE_1.getCompletedAt())
-                    .withCertificateValidUntil(CERTIFICATE_1.getValidUntil())
                     .withCertificateComment(CERTIFICATE_1.getComment())
                     .withCertificateTypeName(CERTIFICATE_1.getCertificateType().getName())
-                    .withCertificateTypeComment(CERTIFICATE_1.getCertificateType().getComment())
                     .withleadershipTypeKind(CertificateKind.CERTIFICATE)
                     .withDegreeId(DEGREE_1.getId())
                     .withDegreeName(DEGREE_1.getName())
                     .withDegreeStartDate(DEGREE_1.getStartDate())
                     .withDegreeEndDate(DEGREE_1.getEndDate())
-                    .withDegreeComment(DEGREE_1.getComment())
                     .withDegreeTypeName(DEGREE_1.getDegreeType().getName())
                     .withExperienceId(EXPERIENCE_1.getId())
                     .withExperienceName(EXPERIENCE_1.getName())
@@ -299,16 +296,13 @@ public class TestData {
                         .withOrganisationUnitName(MEMBER_1.getOrganisationUnit().getName())
                         .withCertificateId(CERTIFICATE_1.getId())
                         .withCertificateCompletedAt(CERTIFICATE_1.getCompletedAt())
-                        .withCertificateValidUntil(CERTIFICATE_1.getValidUntil())
                         .withCertificateComment(CERTIFICATE_1.getComment())
                         .withCertificateTypeName(CERTIFICATE_1.getCertificateType().getName())
-                        .withCertificateTypeComment(CERTIFICATE_1.getCertificateType().getComment())
                         .withleadershipTypeKind(CertificateKind.CERTIFICATE)
                         .withDegreeId(DEGREE_1.getId())
                         .withDegreeName(DEGREE_1.getName())
                         .withDegreeStartDate(DEGREE_1.getStartDate())
                         .withDegreeEndDate(DEGREE_1.getEndDate())
-                        .withDegreeComment(DEGREE_1.getComment())
                         .withDegreeTypeName(DEGREE_1.getDegreeType().getName())
                         .withExperienceId(EXPERIENCE_2.getId())
                         .withExperienceName(EXPERIENCE_2.getName())
@@ -332,16 +326,13 @@ public class TestData {
                         .withOrganisationUnitName(MEMBER_1.getOrganisationUnit().getName())
                         .withCertificateId(CERTIFICATE_4.getId())
                         .withCertificateCompletedAt(CERTIFICATE_4.getCompletedAt())
-                        .withCertificateValidUntil(CERTIFICATE_4.getValidUntil())
                         .withCertificateComment(CERTIFICATE_4.getComment())
                         .withCertificateTypeName(CERTIFICATE_4.getCertificateType().getName())
-                        .withCertificateTypeComment(CERTIFICATE_4.getCertificateType().getComment())
                         .withleadershipTypeKind(CertificateKind.CERTIFICATE)
                         .withDegreeId(DEGREE_1.getId())
                         .withDegreeName(DEGREE_1.getName())
                         .withDegreeStartDate(DEGREE_1.getStartDate())
                         .withDegreeEndDate(DEGREE_1.getEndDate())
-                        .withDegreeComment(DEGREE_1.getComment())
                         .withDegreeTypeName(DEGREE_1.getDegreeType().getName())
                         .withExperienceId(EXPERIENCE_1.getId())
                         .withExperienceName(EXPERIENCE_1.getName())
@@ -365,16 +356,13 @@ public class TestData {
                         .withOrganisationUnitName(MEMBER_1.getOrganisationUnit().getName())
                         .withCertificateId(CERTIFICATE_4.getId())
                         .withCertificateCompletedAt(CERTIFICATE_4.getCompletedAt())
-                        .withCertificateValidUntil(CERTIFICATE_4.getValidUntil())
                         .withCertificateComment(CERTIFICATE_4.getComment())
                         .withCertificateTypeName(CERTIFICATE_4.getCertificateType().getName())
-                        .withCertificateTypeComment(CERTIFICATE_4.getCertificateType().getComment())
                         .withleadershipTypeKind(CertificateKind.CERTIFICATE)
                         .withDegreeId(DEGREE_1.getId())
                         .withDegreeName(DEGREE_1.getName())
                         .withDegreeStartDate(DEGREE_1.getStartDate())
                         .withDegreeEndDate(DEGREE_1.getEndDate())
-                        .withDegreeComment(DEGREE_1.getComment())
                         .withDegreeTypeName(DEGREE_1.getDegreeType().getName())
                         .withExperienceId(EXPERIENCE_2.getId())
                         .withExperienceName(EXPERIENCE_2.getName())
@@ -413,9 +401,7 @@ public class TestData {
                                                                                                                                 DEGREE_1
                                                                                                                                         .getStartDate(),
                                                                                                                                 DEGREE_1
-                                                                                                                                        .getEndDate(),
-                                                                                                                                DEGREE_1
-                                                                                                                                        .getComment())),
+                                                                                                                                        .getEndDate())),
                                                                                                         List
                                                                                                                 .of(new MemberOverviewExperienceDto(EXPERIENCE_1
                                                                                                                         .getId(),
@@ -452,28 +438,18 @@ public class TestData {
                                                                                                                         .getId(),
                                                                                                                                                      new MemberOverviewCertificateTypeDto(CERTIFICATE_1
                                                                                                                                                              .getCertificateType()
-                                                                                                                                                             .getName(),
-                                                                                                                                                                                          CERTIFICATE_1
-                                                                                                                                                                                                  .getCertificateType()
-                                                                                                                                                                                                  .getComment()),
+                                                                                                                                                             .getName()),
                                                                                                                                                      CERTIFICATE_1
                                                                                                                                                              .getCompletedAt(),
-                                                                                                                                                     CERTIFICATE_1
-                                                                                                                                                             .getValidUntil(),
                                                                                                                                                      CERTIFICATE_1
                                                                                                                                                              .getComment()),
                                                                                                                     new MemberOverviewCertificateDto(CERTIFICATE_4
                                                                                                                             .getId(),
                                                                                                                                                      new MemberOverviewCertificateTypeDto(CERTIFICATE_4
                                                                                                                                                              .getCertificateType()
-                                                                                                                                                             .getName(),
-                                                                                                                                                                                          CERTIFICATE_4
-                                                                                                                                                                                                  .getCertificateType()
-                                                                                                                                                                                                  .getComment()),
+                                                                                                                                                             .getName()),
                                                                                                                                                      CERTIFICATE_4
                                                                                                                                                              .getCompletedAt(),
-                                                                                                                                                     CERTIFICATE_4
-                                                                                                                                                             .getValidUntil(),
                                                                                                                                                      CERTIFICATE_4
                                                                                                                                                              .getComment())),
                                                                                                         List.of()));
