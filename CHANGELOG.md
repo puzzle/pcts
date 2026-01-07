@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.4.1](https://github.com/puzzle/pcts/compare/0.4.0...0.4.1) (2026-01-07)
+
+
+### Miscellaneous Chores
+
+* **dependencies:** update dependency org.flywaydb:flyway-database-postgresql to v11.20.0 ([c1c2762](https://github.com/puzzle/pcts/commit/c1c2762b90de5afa16554399db34135bc8e94cde))
+* **dependencies:** update dependency typescript-eslint to v8.52.0 ([a1b34d7](https://github.com/puzzle/pcts/commit/a1b34d74ecf4ccab3cea6adf7a2704ff3c0a6104))
+* **deps:** update all devdependencies (minor and patch) ([fc4b975](https://github.com/puzzle/pcts/commit/fc4b975f3f926c2e063806f35857413c878fb141))
+* **deps:** update angularmaterial monorepo to v21.0.5 ([af56bb8](https://github.com/puzzle/pcts/commit/af56bb82c7ed076b158310bf49fe9bce6c005739))
+* **deps:** update dependency cypress to v15.8.2 ([b6467e7](https://github.com/puzzle/pcts/commit/b6467e7bd9026de3c48e2ab34294c9d06b51bf6d))
+* **deps:** update dependency org.springframework.boot:spring-boot-starter-parent to v4.0.1 ([472b883](https://github.com/puzzle/pcts/commit/472b8833bd4e123bc0fde2b4fc6e29cf7dedde62))
+* **deps:** update dependency org.springframework.boot:spring-boot-testcontainers to v4 ([aa5623e](https://github.com/puzzle/pcts/commit/aa5623e78f34243250b460b98cd9d8b7500cd537))
+
 ## [0.4.0](https://github.com/puzzle/pcts/compare/0.3.0...0.4.0) (2025-12-24)
 
 
