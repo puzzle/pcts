@@ -2,9 +2,7 @@ package ch.puzzle.pcts.service;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.lenient;
-import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.configuration.AuthorizationConfiguration;
 import ch.puzzle.pcts.model.member.Member;
@@ -70,6 +68,23 @@ class SecurityServiceTest {
             when(authorizationConfiguration.adminAuthoritiesAsRoles()).thenReturn(adminRoles);
 
             assertTrue(service.isAdmin());
+        }
+    }
+
+    @Test
+    @DisplayName("Should return false if Authentication is null")
+    void shouldReturnFalseWhenAuthenticationIsNull() {
+        try (MockedStatic<SecurityContextHolder> mockedContextHolder = mockStatic(SecurityContextHolder.class)) {
+
+            SecurityContext context = mock(SecurityContext.class, RETURNS_DEEP_STUBS);
+
+            mockedContextHolder.when(SecurityContextHolder::getContext).thenReturn(context);
+
+            when(context.getAuthentication()).thenReturn(null);
+
+            when(authorizationConfiguration.adminAuthoritiesAsRoles()).thenReturn(List.of("ROLE_ADMIN"));
+
+            assertFalse(service.isAdmin());
         }
     }
 
