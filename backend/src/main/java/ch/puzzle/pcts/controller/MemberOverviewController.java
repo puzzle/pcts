@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/member-overviews")
 @Tag(name = "member-overviews", description = "Get the member and everything associated with the member")
 public class MemberOverviewController {
-    private final MemberOverviewMapper mapper;
-    private final MemberOverviewBusinessService service;
+    private final MemberOverviewMapper memberOverviewMapper;
+    private final MemberOverviewBusinessService memberOverviewBusinessService;
 
     public MemberOverviewController(MemberOverviewMapper mapper, MemberOverviewBusinessService service) {
-        this.mapper = mapper;
-        this.service = service;
+        this.memberOverviewMapper = mapper;
+        this.memberOverviewBusinessService = service;
     }
 
     @Operation(summary = "Get the member-overview by memberId")
@@ -35,7 +35,7 @@ public class MemberOverviewController {
     @GetMapping("{memberId}")
     public ResponseEntity<MemberOverviewDto> getMemberOverviewByMemberId(@Parameter(description = "The ID of the member whose overview should be retrieved.", required = true)
     @PathVariable Long memberId) {
-        List<MemberOverview> memberOverviews = service.getById(memberId);
-        return ResponseEntity.ok(mapper.toDto(memberOverviews));
+        List<MemberOverview> memberOverviews = memberOverviewBusinessService.getById(memberId);
+        return ResponseEntity.ok(memberOverviewMapper.toDto(memberOverviews));
     }
 }
