@@ -116,24 +116,24 @@ class MemberBusinessServiceTest
     @DisplayName("Should find member if it exists")
     @Test
     void shouldFindIfExists() {
-        when(persistenceService.getById(1L)).thenReturn(Optional.of(member));
+        when(persistenceService.findById(1L)).thenReturn(Optional.of(member));
 
         Optional<Member> result = businessService.findIfExists(1L);
 
         assertTrue(result.isPresent());
         assertEquals(member, result.get());
-        verify(persistenceService).getById(1L);
+        verify(persistenceService).findById(1L);
     }
 
     @DisplayName("Should return empty optional if member does not exist")
     @Test
     void shouldReturnEmptyIfDoesNotExist() {
-        when(persistenceService.getById(1L)).thenReturn(Optional.empty());
+        when(persistenceService.findById(1L)).thenReturn(Optional.empty());
 
         Optional<Member> result = businessService.findIfExists(1L);
 
         assertFalse(result.isPresent());
-        verify(persistenceService).getById(1L);
+        verify(persistenceService).findById(1L);
     }
 
     @DisplayName("Should get calculations by memberId and roleId")

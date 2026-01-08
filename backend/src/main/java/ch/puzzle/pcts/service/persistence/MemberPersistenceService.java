@@ -1,10 +1,10 @@
 package ch.puzzle.pcts.service.persistence;
 
+import static ch.puzzle.pcts.Constants.MEMBER;
+
 import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
-import static ch.puzzle.pcts.Constants.MEMBER;
-
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.repository.MemberRepository;
 import java.util.List;
@@ -21,6 +21,10 @@ public class MemberPersistenceService extends PersistenceBase<Member, MemberRepo
 
     public Optional<Member> findByEmail(String email) {
         return this.repository.findMemberByEmailAndEmailIsNotNull(email);
+    }
+
+    public Optional<Member> findById(Long id) {
+        return this.repository.findById(id);
     }
 
     public Member getByEmail(String email) {
