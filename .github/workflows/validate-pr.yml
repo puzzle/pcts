@@ -101,7 +101,7 @@ jobs:
     needs: validate-pr
     if: success()
     env:
-      GH_TOKEN: ${{ secrets.PROJECT_PAT }}
+      GH_TOKEN: ${{ github.token }}
       ORGANIZATION: "puzzle"
       PROJECT_NUMBER: 17
       FIELD_NAME: "Status"
