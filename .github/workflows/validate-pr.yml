@@ -2,98 +2,90 @@ name: PR Governance & Workflow
 
 on:
   pull_request:
-    types:
-      - opened
-      - edited
-      - reopened
-      - synchronize
-      - ready_for_review
-      - converted_to_draft
-      - assigned
-      - unassigned
-      - closed # 🟢 Added to detect merge events
+    types: [opened, edited, reopened, synchronize, ready_for_review, converted_to_draft, assigned, unassigned, closed]
 
 permissions:
   contents: read
-  pull-requests: write
+  pull-requests: write # Required for commenting
   repository-projects: write
+  issues: read
 
 jobs:
   validate-pr:
     name: Validate PR Standards
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - name: Validate Title, Assignee, and Ticket
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const pr = context.payload.pull_request;
-            const title = pr.title;
-            
-            let blockingErrors = [];
-            let warnings = [];
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-            // --- 1. BLOCKING CHECK: Assignee ---
-            if (pr.assignees.length === 0) {
-              blockingErrors.push('⛔ **Missing Assignee**: You must assign this PR to a user.');
-            }
+      # --- STEP 1: Check Assignee ---
+      - name: Check Assignee
+        id: check_assignee
+        run: |
+          ASSIGNEES=$(gh pr view ${{ github.event.pull_request.number }} --json assignees --jq '.assignees | length')
+          if [ "$ASSIGNEES" -eq 0 ]; then
+            echo "::error::⛔ Missing Assignee: You must assign this PR to a user."
+            exit 1
+          else
+            echo "✅ Assignee check passed."
+          fi
 
-            // --- 2. BLOCKING CHECK: Conventional Commits ---
-            const conventionalRegex = /^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-z0-9-]+\))?:\s.+$/;
+      # --- STEP 2: Check Conventional Commits ---
+      - name: Check Title Format (Conventional Commits)
+        id: check_title
+        run: |
+          TITLE="${{ github.event.pull_request.title }}"
+          # Regex: type(scope)?: description
+          if [[ ! "$TITLE" =~ ^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-z0-9-]+\))?:[[:space:]].+ ]]; then
+            echo "::error::⛔ Invalid Title: Must follow Conventional Commits (e.g., 'feat: Add new button')."
+            exit 1
+          else
+            echo "✅ Title format passed."
+          fi
 
-            if (!conventionalRegex.test(title)) {
-              blockingErrors.push(
-                '⛔ **Invalid Title**: Must follow Conventional Commits.\n' +
-                'Example: `feat: Allow users to upload photos`'
-              );
-            }
+      # --- STEP 3: Validate Linked Issue in Title ---
+      - name: Check Linked Issue & Title Match
+        id: check_issue
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          TITLE="${{ github.event.pull_request.title }}"
+          
+          # Get Linked Issues (e.g., #50)
+          # We use 'closingIssuesReferences' which catches "closes #50" or linked via sidebar
+          ISSUE_JSON=$(gh pr view $PR_NUMBER --json closingIssuesReferences --jq '.closingIssuesReferences')
+          ISSUE_COUNT=$(echo "$ISSUE_JSON" | jq 'length')
 
-            // --- 3. WARNING CHECK: Ticket Number (Optional) ---
-            const ticketRegex = /\s#\d+$/;
-            
-            if (!ticketRegex.test(title)) {
-              warnings.push('⚠️ **Notice**: No ticket number found at the end of the title. (Optional)');
-            }
+          if [ "$ISSUE_COUNT" -gt 0 ]; then
+            # Extract the first issue number
+            ISSUE_NUM=$(echo "$ISSUE_JSON" | jq -r '.[0].number')
+            echo "🔗 Found Linked Issue: #$ISSUE_NUM"
 
-            // --- 4. Handle Warnings (Post Comment) ---
-            // We skip posting comments on Merged/Closed PRs to avoid noise
-            if (warnings.length > 0 && context.payload.action !== 'closed') {
-              console.log("Warnings found. Processing comment...");
-            
-              const commentHeader = "### ⚠️ PR Governance Notices";
-              const commentBody = `${commentHeader}\n\n${warnings.join('\n\n')}`;
-            
-              const comments = await github.rest.issues.listComments({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: pr.number,
-              });
-            
-              const botComment = comments.data.find(c => c.body.includes(commentHeader));
+            # STRICT CHECK: The Issue Number MUST be in the Title
+            if [[ "$TITLE" != *"$ISSUE_NUM"* ]]; then
+              echo "::error::⛔ Title Mismatch: This PR is linked to Issue #$ISSUE_NUM, but the number is missing from the title."
+              exit 1
+            else
+              echo "✅ Title contains the linked issue number."
+            fi
 
-              if (botComment) {
-                await github.rest.issues.updateComment({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  comment_id: botComment.id,
-                  body: commentBody
-                });
-              } else {
-                await github.rest.issues.createComment({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: pr.number,
-                  body: commentBody
-                });
-              }
-            }
-
-            // --- 5. Handle Failures ---
-            if (blockingErrors.length > 0) {
-              core.setFailed(blockingErrors.join('\n'));
-            } else {
-              console.log("✅ Blocking requirements passed.");
-            }
+          else
+            # NO ISSUE FOUND -> Post Warning (Do not fail)
+            echo "⚠️ No linked issue found."
+          
+            WARNING_MSG="### ⚠️ PR Governance Notice<br/>No linked issue found. This PR will not be moved on the project board automatically."
+          
+            # Check if we already commented to avoid spam
+            EXISTING_COMMENT=$(gh pr view $PR_NUMBER --json comments --jq ".comments[] | select(.body | contains(\"PR Governance Notice\")) | .id")
+          
+            if [ -z "$EXISTING_COMMENT" ]; then
+              gh pr comment $PR_NUMBER --body "$WARNING_MSG"
+              echo "✅ Warning comment posted."
+            else
+              echo "ℹ️ Warning comment already exists."
+            fi
+          fi
 
   update-project-status:
     name: Update Project Status
@@ -106,29 +98,54 @@ jobs:
       PROJECT_NUMBER: 17
       FIELD_NAME: "Status"
     steps:
-      - name: Update Project Item Status
+      - name: Determine Target Status
+        id: set_status
         run: |
-          # 1. Determine Desired Status
           if [ "${{ github.event.pull_request.merged }}" == "true" ]; then
-            # 🟢 PR was Merged
-            STATUS="🗳️ Ready for Sprint Review"
+            echo "STATUS=🗳️ Ready for Sprint Review" >> $GITHUB_ENV
           elif [ "${{ github.event.action }}" == "closed" ]; then
-            # 🔴 PR was Closed but NOT Merged (e.g. cancelled)
-            echo "PR was closed without merging. No status update required."
-            exit 0
+            echo "PR closed without merge. Skipping update."
+            echo "STATUS=STOP" >> $GITHUB_ENV
           elif [ "${{ github.event.pull_request.draft }}" == "true" ]; then
-            # ⚪ PR is a Draft
-            STATUS="In Implementation"
+            echo "STATUS=In Implementation" >> $GITHUB_ENV
           else
-            # 🔵 PR is Open and Ready
-            STATUS="In review"
+            echo "STATUS=In review" >> $GITHUB_ENV
           fi
-          
-          echo "Processing PR #${{ github.event.pull_request.number }}..."
-          echo "Target Status: $STATUS"
 
-          # 2. Add PR to Project (if not already there) and Get Item ID
-          ITEM_ID=$(gh project item-add "$PROJECT_NUMBER" --owner "$ORGANIZATION" --url "${{ github.event.pull_request.html_url }}" --format json | jq -r '.id')
+      - name: Find Linked Issue URL
+        id: find_issue
+        if: env.STATUS != 'STOP'
+        run: |
+          # Fetch linked issue URL
+          LINKED_URL=$(gh pr view ${{ github.event.pull_request.number }} -R ${{ github.repository }} --json closingIssuesReferences --jq '.closingIssuesReferences[0].url')
           
-          # 3. Move Item to Status Column
-          gh project item-edit --id "$ITEM_ID" --field-id "$FIELD_NAME" --project-id "$PROJECT_NUMBER" --text "$STATUS"
+          if [ -n "$LINKED_URL" ] && [ "$LINKED_URL" != "null" ]; then
+            echo "TARGET_URL=$LINKED_URL" >> $GITHUB_ENV
+            echo "✅ Found Linked Issue: $LINKED_URL"
+          else
+            echo "⚠️ No linked issue found to move."
+            echo "TARGET_URL=" >> $GITHUB_ENV
+          fi
+
+      - name: Move Item on Project Board
+        if: env.STATUS != 'STOP' && env.TARGET_URL != ''
+        run: |
+          # 1. Add Item (Idempotent - returns ID if exists)
+          ITEM_ID=$(gh project item-add "$PROJECT_NUMBER" --owner "$ORGANIZATION" --url "$TARGET_URL" --format json | jq -r '.id')
+          
+          # 2. Update Status
+          if [ -n "$ITEM_ID" ]; then
+            gh project item-edit --id "$ITEM_ID" --field-id "$FIELD_NAME" --project-id "$PROJECT_NUMBER" --text "$STATUS"
+            echo "✅ Moved Item to: $STATUS"
+          else
+            echo "❌ Failed to get Item ID."
+            exit 1
+          fi
+
+      - name: Warn if Update Skipped
+        if: env.STATUS != 'STOP' && env.TARGET_URL == ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Switch back to standard token for commenting
+        run: |
+          echo "⚠️ Skipping Project Update because no linked issue was found."
+          # We don't exit 1 here, we just finish successfully without moving anything.
