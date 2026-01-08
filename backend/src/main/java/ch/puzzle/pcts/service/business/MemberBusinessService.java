@@ -1,7 +1,5 @@
 package ch.puzzle.pcts.service.business;
 
-import static ch.puzzle.pcts.Constants.MEMBER;
-
 import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
@@ -36,7 +34,7 @@ public class MemberBusinessService extends BusinessBase<Member> {
     }
 
     public Optional<Member> findIfExists(Long id) {
-        return persistenceService.getById(id);
+        return memberPersistenceService.findById(id);
     }
 
     public List<Member> getAll() {
@@ -51,11 +49,6 @@ public class MemberBusinessService extends BusinessBase<Member> {
         }
 
         return memberPersistenceService.getByEmail(email.get());
-    }
-
-    @Override
-    protected String entityName() {
-        return MEMBER;
     }
 }
 

@@ -41,7 +41,7 @@ class MemberPersistenceServiceIT extends PersistenceBaseIT<Member, MemberReposit
     void shouldGetMemberByEmail() {
         String email = "member2@puzzle.ch";
 
-        Member result = service.getByEmail(email);
+        Member result = persistenceService.getByEmail(email);
 
         assertThat(result.getEmail()).isEqualTo(email);
         assertThat(result.getFirstName()).isEqualTo("Member 2");
@@ -51,7 +51,7 @@ class MemberPersistenceServiceIT extends PersistenceBaseIT<Member, MemberReposit
     @Transactional
     @Test
     void shouldReturnEmptyWhenEmailDoesNotExistForGet() {
-        assertThrows(PCTSException.class, () -> service.getByEmail("non-existent@puzzle.ch"));
+        assertThrows(PCTSException.class, () -> persistenceService.getByEmail("non-existent@puzzle.ch"));
     }
 
     @DisplayName("Should find member by email")
@@ -60,7 +60,7 @@ class MemberPersistenceServiceIT extends PersistenceBaseIT<Member, MemberReposit
     void shouldFindMemberByEmail() {
         String email = "member2@puzzle.ch";
 
-        Optional<Member> result = service.findByEmail(email);
+        Optional<Member> result = persistenceService.findByEmail(email);
 
         assertThat(result).isPresent();
         assertThat(result.get().getEmail()).isEqualTo(email);
@@ -71,7 +71,7 @@ class MemberPersistenceServiceIT extends PersistenceBaseIT<Member, MemberReposit
     @Transactional
     @Test
     void shouldReturnEmptyWhenEmailDoesNotExistForFind() {
-        Optional<Member> result = service.findByEmail("non-existent@puzzle.ch");
+        Optional<Member> result = persistenceService.findByEmail("non-existent@puzzle.ch");
 
         assertThat(result).isNotPresent();
     }
