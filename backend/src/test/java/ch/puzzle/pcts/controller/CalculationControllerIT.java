@@ -9,7 +9,6 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.calculation.CalculationDto;
 import ch.puzzle.pcts.dto.calculation.CalculationInputDto;
 import ch.puzzle.pcts.dto.member.MemberDto;
@@ -28,20 +27,14 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.json.JsonMapper;
 
-@Import(SpringSecurityConfig.class)
-@ExtendWith(MockitoExtension.class)
-@WebMvcTest(CalculationController.class)
-class CalculationControllerIT {
+@ControllerIT(CalculationController.class)
+class CalculationControllerIT extends ControllerITBase {
 
     private static final String BASEURL = "/api/v1/calculations";
     private static final Long ID = 1L;
@@ -95,6 +88,7 @@ class CalculationControllerIT {
                                             "AM",
                                             commonDate,
                                             commonDate,
+                                            null,
                                             ouDto);
 
         expectedDto = new CalculationDto(ID, memberDto, roleDto, CalculationState.ACTIVE, commonDate, "System");
@@ -107,7 +101,7 @@ class CalculationControllerIT {
         given(mapper.toDto(any(Calculation.class))).willReturn(expectedDto);
 
         mvc
-                .perform(get(BASEURL + "/{id}", ID).with(csrf()))
+                .perform(get(BASEURL + "/{id}", ID).with(csrf()).with(adminJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
@@ -126,7 +120,8 @@ class CalculationControllerIT {
                 .perform(post(BASEURL)
                         .content(jsonMapper.writeValueAsString(inputDto))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isCreated())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
@@ -146,7 +141,8 @@ class CalculationControllerIT {
                 .perform(put(BASEURL + "/{id}", ID)
                         .content(jsonMapper.writeValueAsString(inputDto))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 

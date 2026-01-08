@@ -2,6 +2,7 @@ package ch.puzzle.pcts.controller;
 
 import ch.puzzle.pcts.dto.leadershipexperiencetype.LeadershipExperienceTypeDto;
 import ch.puzzle.pcts.mapper.LeadershipExperienceTypeMapper;
+import ch.puzzle.pcts.security.annotation.IsAdmin;
 import ch.puzzle.pcts.service.business.LeadershipExperienceTypeBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@IsAdmin
 @RestController
 @RequestMapping("/api/v1/leadership-experience-types")
 @Tag(name = "leadership-experience-types", description = "Manage leadership experience types")

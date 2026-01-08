@@ -1,3 +1,4 @@
+import * as users from '../fixtures/users.json';
 import translations from '../../public/i18n/de.json';
 import { EmploymentState } from '../../src/app/shared/enum/employment-state.enum';
 import FormPage from '../pages/formPage';
@@ -5,6 +6,7 @@ import OverviewPage from '../pages/overviewPage';
 
 describe('MemberOverviewComponent', () => {
   beforeEach(() => {
+    cy.loginAsUser(users.gl);
     OverviewPage.visit();
   });
 
@@ -100,14 +102,14 @@ describe('MemberOverviewComponent', () => {
       'Bewerber',
       'Member'],
     ['first-name',
-      'Felix',
+      'Abraham',
       'Tobias'],
     ['last-name',
-      'Becker',
+      'Woodard',
       'Weber'],
     ['birth-date',
       '03.03.1998',
-      '05.08.2001'],
+      '29.02.2004'],
     ['organisation-unit-name',
       '-',
       '/zh']

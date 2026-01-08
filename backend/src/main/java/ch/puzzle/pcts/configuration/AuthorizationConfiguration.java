@@ -1,0 +1,21 @@
+package ch.puzzle.pcts.configuration;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import java.util.List;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.validation.annotation.Validated;
+
+@Validated
+@ConfigurationProperties(prefix = "pcts.security.authorization")
+public record AuthorizationConfiguration(@NotBlank @DefaultValue("[pitc][roles]") String authoritiesSpElExpression,
+        @NotEmpty @DefaultValue() List<@NotBlank String> adminAuthorities) {
+    public List<String> adminAuthoritiesAsRoles() {
+        return adminAuthorities.stream().map(a -> "SCOPE_" + a).toList();
+    }
+
+    public List<String> adminAuthorities() {
+        return List.copyOf(adminAuthorities);
+    }
+}

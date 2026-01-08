@@ -6,6 +6,8 @@ import { MemberModel } from '../member.model';
 import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
+import { AuthService } from '../../../core/auth/auth.service';
+import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin.directive';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -15,12 +17,15 @@ import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.com
     CommonModule,
     DatePipe,
     ScopedTranslationPipe,
-    CrudButtonComponent
+    CrudButtonComponent,
+    ShowIfAdminDirective
   ],
   templateUrl: './member-detail-view.component.html'
 })
 export class MemberDetailViewComponent implements OnInit {
   private readonly service = inject(MemberService);
+
+  protected readonly userService = inject(AuthService);
 
   private readonly route = inject(ActivatedRoute);
 

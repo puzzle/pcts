@@ -8,6 +8,7 @@ import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.service.validation.ValidationBase;
+import ch.puzzle.pcts.util.validation.PCTSStringValidation;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
