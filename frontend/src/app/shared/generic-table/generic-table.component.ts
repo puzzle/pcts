@@ -1,24 +1,106 @@
-import { Component, input } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatCell, MatColumnDef, MatHeaderCell, MatTable } from '@angular/material/table';
+import { AfterViewChecked, Component, computed, effect, inject, input, signal, viewChild } from '@angular/core';
+import {
+  MatCell,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
+  MatHeaderRow,
+  MatHeaderRowDef,
+  MatNoDataRow,
+  MatRow,
+  MatRowDef,
+  MatTable
+} from '@angular/material/table';
+import { MatSort, MatSortHeader } from '@angular/material/sort';
 import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
+import { CaseFormatter } from '../format/case-formatter';
+import { GenCol, GenericTableDataSource } from './GenericTableDataSource';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-generic-table',
-  standalone: true,
   imports: [
-    CommonModule,
-    MatTable,
+    MatCell,
+    MatCellDef,
     MatColumnDef,
     MatHeaderCell,
-    MatCell,
-    ScopedTranslationPipe
+    MatHeaderRow,
+    MatHeaderRowDef,
+    MatRow,
+    MatRowDef,
+    MatSort,
+    MatSortHeader,
+    MatTable,
+    ScopedTranslationPipe,
+    MatHeaderCellDef,
+    MatNoDataRow,
+    RouterLink
   ],
-  templateUrl: './generic-table.component.html'
+  templateUrl: './generic-table.component.html',
+  styleUrl: './generic-table.component.scss'
 })
-export class GenericTableComponent<T> {
-  data = input.required<T[]>();
+export class GenericTableComponent<T extends object> implements AfterViewChecked {
+  caseFormatter = inject(CaseFormatter);
 
-  columns = input.required<{ key: keyof T;
-    label: string; }[]>();
+  idAttr = input<keyof T>();
+
+  crudBasePath = input<string>('');
+
+  dataSource = input.required<GenericTableDataSource<T>>();
+
+  entries = signal<T[]>([]);
+
+  columns = computed(() => this.dataSource().columnDefs);
+
+  columnNames = computed(() => this.dataSource().columnDefs.map((e) => e.columnName));
+
+  sort = viewChild(MatSort);
+
+  constructor() {
+    effect(() => {
+      this.dataSource().sortingDataAccessor = this.createSortingAccessor(this.columns());
+      this.dataSource().sort = this.sort();
+    });
+  }
+
+  createSortingAccessor(columns: GenCol<T>[]) {
+    return (data: T, sortHeaderId: string) => {
+      const find = columns
+        .find((e) => e.columnName == sortHeaderId)!;
+
+      const date = new Date(find.getValue(data));
+      if (date?.getTime()) {
+        return date.getTime();
+      }
+      return this.getDisplayValue(find, data)
+        .toLowerCase();
+    };
+  }
+
+  ngAfterViewChecked(): void {
+    this.entries.set(this.dataSource().data);
+  }
+
+  getFieldI18nKey(col: GenCol<T>) {
+    return this.caseFormatter.camelToSnake(col.columnName);
+  }
+
+  protected getDisplayValue(col: GenCol<T>, entity: T): string {
+    let value = col.getValue(entity) ?? '';
+    col.pipes.forEach((formatter) => {
+      value = formatter(value);
+    });
+    return value;
+  }
+
+  protected getRouterLink(entity: T) {
+    const idAttr = this.idAttr();
+    if (!idAttr) {
+      return undefined;
+    }
+    return [this.crudBasePath(),
+      entity[idAttr]].filter(Boolean)
+      .join('/');
+  }
 }

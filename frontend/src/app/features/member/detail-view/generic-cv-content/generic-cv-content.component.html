@@ -9,8 +9,13 @@
       {{'ADD_ENTRY' | scopedTranslation}}
     </button>
   </div>
-
-  Keine Enträge
+    @if (tableDataSource(); as ds) {
+      <div class="overflow-y-scroll mat-elevation-z8 table-max-height">
+      <app-generic-table
+        [dataSource]="ds"
+      />
+      </div>
+    }
 </div>
 
 
