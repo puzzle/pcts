@@ -48,10 +48,10 @@ public class MemberOverviewMapper {
             }
         }
 
-        MemberCvDto cvDto = new MemberCvDto(new ArrayList<>(degreeMap.values()),
-                                            new ArrayList<>(experienceMap.values()),
-                                            new ArrayList<>(certificateMap.values()),
-                                            new ArrayList<>(leadershipMap.values()));
+        MemberOverviewCvDto cvDto = new MemberOverviewCvDto(new ArrayList<>(degreeMap.values()),
+                                                            new ArrayList<>(experienceMap.values()),
+                                                            new ArrayList<>(certificateMap.values()),
+                                                            new ArrayList<>(leadershipMap.values()));
 
         return new MemberOverviewDto(getMemberDto(memberOverviews), cvDto);
     }
