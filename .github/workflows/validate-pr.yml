@@ -131,7 +131,7 @@ jobs:
         if: env.STATUS != 'STOP' && env.TARGET_URL != ''
         run: |
           # 1. Add Item (Idempotent - returns ID if exists) 
-         echo "Projectnumber: $PROJECT_NUMBER, ORG: $ORGANIZATION, url: $TARGET_URL" 
+          echo "Projectnumber: $PROJECT_NUMBER, ORG: $ORGANIZATION, url: $TARGET_URL" 
           ITEM_ID=$(gh project item-add "$PROJECT_NUMBER" --owner "$ORGANIZATION" --url "$TARGET_URL" --format json | jq -r '.id')
           
           # 2. Update Status
