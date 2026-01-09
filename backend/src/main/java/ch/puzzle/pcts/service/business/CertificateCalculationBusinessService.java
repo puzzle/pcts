@@ -54,10 +54,19 @@ public class CertificateCalculationBusinessService extends BusinessBase<Certific
     }
 
     @Override
-    public CertificateCalculation create(CertificateCalculation certificateCalculation) {
+    public CertificateCalculation update(Long id, CertificateCalculation certificateCalculation) {
+        certificateCalculationValidationService.validateOnUpdate(id, certificateCalculation);
         List<CertificateCalculation> existing = this
                 .getByCertificateId(certificateCalculation.getCertificate().getId());
+        certificateCalculationValidationService.validateDuplicateCertificateId(certificateCalculation, existing);
+        return certificateCalculationPersistenceService.save(certificateCalculation);
+    }
+
+    @Override
+    public CertificateCalculation create(CertificateCalculation certificateCalculation) {
         certificateCalculationValidationService.validateOnCreate(certificateCalculation);
+        List<CertificateCalculation> existing = this
+                .getByCertificateId(certificateCalculation.getCertificate().getId());
         certificateCalculationValidationService.validateDuplicateCertificateId(certificateCalculation, existing);
         return certificateCalculationPersistenceService.save(certificateCalculation);
     }

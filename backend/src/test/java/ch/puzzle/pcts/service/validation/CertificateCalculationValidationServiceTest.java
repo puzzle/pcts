@@ -29,6 +29,7 @@ class CertificateCalculationValidationServiceTest
     private static final Long MEMBER_ID_1 = 1L;
     private static final Long MEMBER_ID_2 = 2L;
     private static final Long CALCULATION_ID = 1L;
+    private static final Long CERTIFICATE_CALCULATION_ID = 1L;
     private static final Long CERTIFICATE_ID = 1L;
     private static final Long ORGANISATION_UNIT_ID = 1L;
 
@@ -79,10 +80,10 @@ class CertificateCalculationValidationServiceTest
 
         PCTSException exception = assertThrows(PCTSException.class, () -> spyService.validateMemberForCalculation(cc));
 
-        assertEquals(ErrorKey.ATTRIBUTE_MATCHES, exception.getErrorKeys().get(0));
+        assertEquals(ErrorKey.ATTRIBUTE_MATCHES, exception.getErrorKeys().getFirst());
         assertEquals(Map
                 .of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "certificate", FieldKey.CONDITION_FIELD, "member"),
-                     exception.getErrorAttributes().get(0));
+                     exception.getErrorAttributes().getFirst());
     }
 
     @DisplayName("Should throw exception on duplicate certificate ID")
@@ -90,16 +91,29 @@ class CertificateCalculationValidationServiceTest
     void shouldThrowExceptionOnDuplicateCertificateId() {
         CertificateCalculationValidationService spyService = spy(getService());
         CertificateCalculation cc = getValidModel();
-        cc.getCertificate().getCertificateType().setName(CERTIFICATE_NAME);
+        CertificateCalculation existingCc = getValidModel();
+        existingCc.setId(CERTIFICATE_CALCULATION_ID);
 
-        List<CertificateCalculation> existing = List.of(cc);
+        List<CertificateCalculation> existing = List.of(existingCc);
 
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> spyService.validateDuplicateCertificateId(cc, existing));
 
-        assertEquals(ErrorKey.DUPLICATE_CALCULATION, exception.getErrorKeys().get(0));
+        assertEquals(ErrorKey.DUPLICATE_CALCULATION, exception.getErrorKeys().getFirst());
         assertEquals(Map.of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "certificate", FieldKey.IS, CERTIFICATE_NAME),
-                     exception.getErrorAttributes().get(0));
+                     exception.getErrorAttributes().getFirst());
+    }
+
+    @DisplayName("Should not throw exception when only same entity exists")
+    @Test
+    void shouldNotThrowWhenOnlySameEntityExists() {
+        CertificateCalculationValidationService spyService = spy(getService());
+        CertificateCalculation cc = getValidModel();
+        cc.setId(CALCULATION_ID);
+
+        List<CertificateCalculation> existing = List.of(cc);
+
+        assertDoesNotThrow(() -> spyService.validateDuplicateCertificateId(cc, existing));
     }
 
     @DisplayName("Should call validateMemberForCalculation on validateOnCreate")

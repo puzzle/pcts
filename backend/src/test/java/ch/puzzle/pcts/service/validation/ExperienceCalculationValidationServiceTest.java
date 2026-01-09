@@ -29,6 +29,8 @@ class ExperienceCalculationValidationServiceTest
     private static final Long MEMBER_ID_1 = 1L;
     private static final Long MEMBER_ID_2 = 2L;
     private static final Long CALCULATION_ID = 1L;
+    private static final Long EXPERIENCE_CALCULATION_ID = 1L;
+
     private static final Long EXPERIENCE_ID = 1L;
     private static final Long ORGANISATION_UNIT_ID = 1L;
 
@@ -92,28 +94,39 @@ class ExperienceCalculationValidationServiceTest
 
         PCTSException exception = assertThrows(PCTSException.class, () -> spyService.validateMemberForCalculation(ec));
 
-        assertEquals(ErrorKey.ATTRIBUTE_MATCHES, exception.getErrorKeys().get(0));
+        assertEquals(ErrorKey.ATTRIBUTE_MATCHES, exception.getErrorKeys().getFirst());
         assertEquals(Map
                 .of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "experience", FieldKey.CONDITION_FIELD, "member"),
-                     exception.getErrorAttributes().get(0));
+                     exception.getErrorAttributes().getFirst());
     }
 
     @DisplayName("Should throw exception on duplicate experience ID")
     @Test
     void shouldThrowExceptionOnDuplicateExperienceId() {
         ExperienceCalculationValidationService spyService = spy(getService());
-
         ExperienceCalculation ec = getValidModel();
-        ec.getExperience().setName(EXPERIENCE_NAME);
-
-        List<ExperienceCalculation> existing = List.of(ec);
+        ExperienceCalculation existingEc = getValidModel();
+        existingEc.setId(EXPERIENCE_CALCULATION_ID);
+        List<ExperienceCalculation> existing = List.of(existingEc);
 
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> spyService.validateDuplicateExperienceId(ec, existing));
 
-        assertEquals(ErrorKey.DUPLICATE_CALCULATION, exception.getErrorKeys().get(0));
+        assertEquals(ErrorKey.DUPLICATE_CALCULATION, exception.getErrorKeys().getFirst());
         assertEquals(Map.of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "experience", FieldKey.IS, EXPERIENCE_NAME),
-                     exception.getErrorAttributes().get(0));
+                     exception.getErrorAttributes().getFirst());
+    }
+
+    @DisplayName("Should not throw exception when only same entity exists")
+    @Test
+    void shouldNotThrowWhenOnlySameEntityExists() {
+        ExperienceCalculationValidationService spyService = spy(getService());
+        ExperienceCalculation ec = getValidModel();
+        ec.setId(CALCULATION_ID);
+
+        List<ExperienceCalculation> existing = List.of(ec);
+
+        assertDoesNotThrow(() -> spyService.validateDuplicateExperienceId(ec, existing));
     }
 
     @DisplayName("Should call validateMemberForCalculation on validateOnCreate")

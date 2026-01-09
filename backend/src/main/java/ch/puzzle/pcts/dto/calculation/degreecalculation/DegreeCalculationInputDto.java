@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 
 public record DegreeCalculationInputDto(
-        @Schema(description = "Unique identifier of the degree calculation", example = "42", nullable = true) Long id,
+        @Schema(description = "Unique identifier of the degree calculation", nullable = true, example = "null") Long id,
 
         @Schema(description = "ID of the degree being evaluated", example = "1", requiredMode = Schema.RequiredMode.REQUIRED) Long degreeId,
 
