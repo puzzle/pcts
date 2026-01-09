@@ -8,6 +8,8 @@ import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import ch.puzzle.pcts.service.business.RoleBusinessService;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 import org.springframework.stereotype.Component;
@@ -78,9 +80,9 @@ public class CalculationMapper {
 
     private List<CertificateCalculation> mergeCertificates(List<LeadershipExperienceCalculationInputDto> leadershipExperiences,
                                                            List<CertificateCalculationInputDto> certificates) {
-        return Stream
-                .concat(certificateCalculationMapper.fromDto(certificates).stream(),
-                        leadershipExperienceCalculationMapper.fromDto(leadershipExperiences).stream())
-                .toList();
+        List<CertificateCalculation> certificateCalculations = new ArrayList<>();
+        certificateCalculations.addAll(certificateCalculationMapper.fromDto(certificates));
+        certificateCalculations.addAll(leadershipExperienceCalculationMapper.fromDto(leadershipExperiences));
+        return certificateCalculations;
     }
 }
