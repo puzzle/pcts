@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class MemberOverviewPersistenceService {
 
-    MemberOverviewRepository repository;
+    private final MemberOverviewRepository repository;
 
     public MemberOverviewPersistenceService(MemberOverviewRepository repository) {
         this.repository = repository;
