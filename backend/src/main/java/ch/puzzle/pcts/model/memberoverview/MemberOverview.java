@@ -10,12 +10,10 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "member_overview")
+@IdClass(MemberOverviewId.class)
 public class MemberOverview implements Model {
 
     @Id
-    @Column(name = "unique_row_id")
-    private Long uniqueRowId;
-
     private Long memberId;
     private String firstName;
     private String lastName;
@@ -27,6 +25,7 @@ public class MemberOverview implements Model {
     private EmploymentState employmentState;
     private String organisationUnitName;
 
+    @Id
     private Long certificateId;
     private LocalDate certificateCompletedAt;
     private String certificateComment;
@@ -35,6 +34,7 @@ public class MemberOverview implements Model {
     @Enumerated(EnumType.STRING)
     private CertificateKind leadershipTypeKind;
 
+    @Id
     private Long degreeId;
     private String degreeName;
     private LocalDate degreeStartDate;
@@ -42,6 +42,7 @@ public class MemberOverview implements Model {
 
     private String degreeTypeName;
 
+    @Id
     private Long experienceId;
     private String experienceName;
     private String experienceEmployer;
@@ -52,7 +53,6 @@ public class MemberOverview implements Model {
     private String experienceTypeName;
 
     private MemberOverview(Builder builder) {
-        uniqueRowId = builder.uniqueRowId;
         memberId = builder.memberId;
         firstName = trim(builder.firstName);
         lastName = trim(builder.lastName);
@@ -82,16 +82,6 @@ public class MemberOverview implements Model {
 
     public MemberOverview() {
 
-    }
-
-    @Override
-    public Long getId() {
-        return uniqueRowId;
-    }
-
-    @Override
-    public void setId(Long uniqueRowId) {
-        this.uniqueRowId = uniqueRowId;
     }
 
     public Long getMemberId() {
@@ -309,8 +299,17 @@ public class MemberOverview implements Model {
         return super.toString();
     }
 
+    @Override
+    public Long getId() {
+        return 0L;
+    }
+
+    @Override
+    public void setId(Long id) {
+
+    }
+
     public static final class Builder {
-        private Long uniqueRowId;
         private Long memberId;
         private String firstName;
         private String lastName;
@@ -350,11 +349,6 @@ public class MemberOverview implements Model {
 
         public static Builder builder() {
             return new Builder();
-        }
-
-        public Builder withUniqueRowId(Long uniqueRowId) {
-            this.uniqueRowId = uniqueRowId;
-            return this;
         }
 
         public Builder withMemberId(Long memberId) {

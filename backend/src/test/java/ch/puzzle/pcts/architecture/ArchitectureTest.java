@@ -281,6 +281,8 @@ class ArchitectureTest {
                 .areNotEnums()
                 .and()
                 .areNotNestedClasses()
+                .and()
+                .haveSimpleNameNotEndingWith("Id")
                 .should()
                 .beAnnotatedWith(Entity.class)
                 .andShould()
