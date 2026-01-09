@@ -4,11 +4,8 @@ import ch.puzzle.pcts.dto.memberoverview.MemberOverviewCvDto;
 import ch.puzzle.pcts.dto.memberoverview.MemberOverviewDto;
 import ch.puzzle.pcts.dto.memberoverview.MemberOverviewMemberDto;
 import ch.puzzle.pcts.dto.memberoverview.certificate.MemberOverviewCertificateDto;
-import ch.puzzle.pcts.dto.memberoverview.certificate.MemberOverviewCertificateTypeDto;
 import ch.puzzle.pcts.dto.memberoverview.degree.MemberOverviewDegreeDto;
-import ch.puzzle.pcts.dto.memberoverview.degree.MemberOverviewDegreeTypeDto;
 import ch.puzzle.pcts.dto.memberoverview.experience.MemberOverviewExperienceDto;
-import ch.puzzle.pcts.dto.memberoverview.experience.MemberOverviewExperienceTypeDto;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.certificate.Certificate;
@@ -467,9 +464,9 @@ public class TestData {
                                                                                                         .getId(),
                                                                                                                                 DEGREE_1
                                                                                                                                         .getName(),
-                                                                                                                                new MemberOverviewDegreeTypeDto(DEGREE_1
+                                                                                                                                DEGREE_1
                                                                                                                                         .getDegreeType()
-                                                                                                                                        .getName()),
+                                                                                                                                        .getName(),
                                                                                                                                 DEGREE_1
                                                                                                                                         .getStartDate(),
                                                                                                                                 DEGREE_1
@@ -481,9 +478,9 @@ public class TestData {
                                                                                                                                                                     .getName(),
                                                                                                                                                             EXPERIENCE_1
                                                                                                                                                                     .getEmployer(),
-                                                                                                                                                            new MemberOverviewExperienceTypeDto(EXPERIENCE_1
+                                                                                                                                                            EXPERIENCE_1
                                                                                                                                                                     .getType()
-                                                                                                                                                                    .getName()),
+                                                                                                                                                                    .getName(),
                                                                                                                                                             EXPERIENCE_1
                                                                                                                                                                     .getComment(),
                                                                                                                                                             EXPERIENCE_1
@@ -496,9 +493,9 @@ public class TestData {
                                                                                                                                                                     .getName(),
                                                                                                                                                             EXPERIENCE_2
                                                                                                                                                                     .getEmployer(),
-                                                                                                                                                            new MemberOverviewExperienceTypeDto(EXPERIENCE_2
+                                                                                                                                                            EXPERIENCE_2
                                                                                                                                                                     .getType()
-                                                                                                                                                                    .getName()),
+                                                                                                                                                                    .getName(),
                                                                                                                                                             EXPERIENCE_2
                                                                                                                                                                     .getComment(),
                                                                                                                                                             EXPERIENCE_2
@@ -508,18 +505,18 @@ public class TestData {
                                                                                                                 List
                                                                                                                         .of(new MemberOverviewCertificateDto(CERTIFICATE_1
                                                                                                                                 .getId(),
-                                                                                                                                                             new MemberOverviewCertificateTypeDto(CERTIFICATE_1
+                                                                                                                                                             CERTIFICATE_1
                                                                                                                                                                      .getCertificateType()
-                                                                                                                                                                     .getName()),
+                                                                                                                                                                     .getName(),
                                                                                                                                                              CERTIFICATE_1
                                                                                                                                                                      .getCompletedAt(),
                                                                                                                                                              CERTIFICATE_1
                                                                                                                                                                      .getComment()),
                                                                                                                             new MemberOverviewCertificateDto(CERTIFICATE_4
                                                                                                                                     .getId(),
-                                                                                                                                                             new MemberOverviewCertificateTypeDto(CERTIFICATE_4
+                                                                                                                                                             CERTIFICATE_4
                                                                                                                                                                      .getCertificateType()
-                                                                                                                                                                     .getName()),
+                                                                                                                                                                     .getName(),
                                                                                                                                                              CERTIFICATE_4
                                                                                                                                                                      .getCompletedAt(),
                                                                                                                                                              CERTIFICATE_4
@@ -549,9 +546,9 @@ public class TestData {
                                                                                                         .getId(),
                                                                                                                                 DEGREE_2
                                                                                                                                         .getName(),
-                                                                                                                                new MemberOverviewDegreeTypeDto(DEGREE_2
+                                                                                                                                DEGREE_2
                                                                                                                                         .getDegreeType()
-                                                                                                                                        .getName()),
+                                                                                                                                        .getName(),
                                                                                                                                 DEGREE_2
                                                                                                                                         .getStartDate(),
                                                                                                                                 DEGREE_2
@@ -563,9 +560,9 @@ public class TestData {
                                                                                                                                                                     .getName(),
                                                                                                                                                             EXPERIENCE_3
                                                                                                                                                                     .getEmployer(),
-                                                                                                                                                            new MemberOverviewExperienceTypeDto(EXPERIENCE_3
+                                                                                                                                                            EXPERIENCE_3
                                                                                                                                                                     .getType()
-                                                                                                                                                                    .getName()),
+                                                                                                                                                                    .getName(),
                                                                                                                                                             EXPERIENCE_3
                                                                                                                                                                     .getComment(),
                                                                                                                                                             EXPERIENCE_3
@@ -575,18 +572,18 @@ public class TestData {
                                                                                                                 List
                                                                                                                         .of(new MemberOverviewCertificateDto(CERTIFICATE_2
                                                                                                                                 .getId(),
-                                                                                                                                                             new MemberOverviewCertificateTypeDto(CERTIFICATE_2
+                                                                                                                                                             CERTIFICATE_2
                                                                                                                                                                      .getCertificateType()
-                                                                                                                                                                     .getName()),
+                                                                                                                                                                     .getName(),
                                                                                                                                                              CERTIFICATE_2
                                                                                                                                                                      .getCompletedAt(),
                                                                                                                                                              CERTIFICATE_2
                                                                                                                                                                      .getComment()),
                                                                                                                             new MemberOverviewCertificateDto(CERTIFICATE_3
                                                                                                                                     .getId(),
-                                                                                                                                                             new MemberOverviewCertificateTypeDto(CERTIFICATE_3
+                                                                                                                                                             CERTIFICATE_3
                                                                                                                                                                      .getCertificateType()
-                                                                                                                                                                     .getName()),
+                                                                                                                                                                     .getName(),
                                                                                                                                                              CERTIFICATE_3
                                                                                                                                                                      .getCompletedAt(),
                                                                                                                                                              CERTIFICATE_3
