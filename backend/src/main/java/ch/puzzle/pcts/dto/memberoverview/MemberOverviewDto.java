@@ -1,4 +1,4 @@
 package ch.puzzle.pcts.dto.memberoverview;
 
-public record MemberOverviewDto(MemberOverviewMemberDto member, MemberCvDto cv) {
+public record MemberOverviewDto(MemberOverviewMemberDto member, MemberOverviewCvDto cv) {
 }
