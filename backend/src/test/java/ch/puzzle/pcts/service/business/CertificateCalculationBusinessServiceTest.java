@@ -32,7 +32,9 @@ class CertificateCalculationBusinessServiceTest
         extends
             BaseBusinessTest<CertificateCalculation, CertificateCalculationPersistenceService, CertificateCalculationValidationService, CertificateCalculationBusinessService> {
 
-    private static final Long ID = 1L;
+    private static final Long CERTIFICATE_CALCULATION_ID_1 = 1L;
+    private static final Long CERTIFICATE_CALCULATION_ID_2 = 2L;
+    private static final Long CERTIFICATE_ID = 1L;
 
     @Mock
     private CertificateCalculationValidationService validationService;
@@ -75,24 +77,24 @@ class CertificateCalculationBusinessServiceTest
     @DisplayName("Should get certificate calculations by calculation id")
     void shouldGetByCalculationId() {
         CertificateCalculation cc = mock(CertificateCalculation.class);
-        when(persistenceService.getByCalculationId(ID)).thenReturn(List.of(cc));
+        when(persistenceService.getByCalculationId(CERTIFICATE_CALCULATION_ID_1)).thenReturn(List.of(cc));
 
-        List<CertificateCalculation> result = businessService.getByCalculationId(ID);
+        List<CertificateCalculation> result = businessService.getByCalculationId(CERTIFICATE_CALCULATION_ID_1);
 
         assertEquals(1, result.size());
-        verify(persistenceService).getByCalculationId(ID);
+        verify(persistenceService).getByCalculationId(CERTIFICATE_CALCULATION_ID_1);
     }
 
     @Test
     @DisplayName("Should get certificate calculations by certificate id")
     void shouldGetByCertificateId() {
         CertificateCalculation cc = mock(CertificateCalculation.class);
-        when(persistenceService.getByCertificateId(ID)).thenReturn(List.of(cc));
+        when(persistenceService.getByCertificateId(CERTIFICATE_CALCULATION_ID_1)).thenReturn(List.of(cc));
 
-        List<CertificateCalculation> result = businessService.getByCertificateId(ID);
+        List<CertificateCalculation> result = businessService.getByCertificateId(CERTIFICATE_CALCULATION_ID_1);
 
         assertEquals(1, result.size());
-        verify(persistenceService).getByCertificateId(ID);
+        verify(persistenceService).getByCertificateId(CERTIFICATE_CALCULATION_ID_1);
     }
 
     @MockitoSettings(strictness = Strictness.LENIENT)
@@ -118,21 +120,21 @@ class CertificateCalculationBusinessServiceTest
         when(cc.getCalculation()).thenReturn(calculation);
         when(cc.getCertificate()).thenReturn(certificate);
 
-        when(persistenceService.getByCalculationId(ID)).thenReturn(List.of(cc));
+        when(persistenceService.getByCalculationId(CERTIFICATE_CALCULATION_ID_1)).thenReturn(List.of(cc));
 
-        BigDecimal result = businessService.getCertificatePoints(ID);
+        BigDecimal result = businessService.getCertificatePoints(CERTIFICATE_CALCULATION_ID_1);
 
         assertEquals(0, expectedResult.compareTo(result));
 
-        verify(persistenceService).getByCalculationId(ID);
+        verify(persistenceService).getByCalculationId(CERTIFICATE_CALCULATION_ID_1);
     }
 
     @Test
     @DisplayName("Should return zero points if calculation has no certificates")
     void shouldReturnZeroPoints() {
-        when(persistenceService.getByCalculationId(ID)).thenReturn(List.of());
+        when(persistenceService.getByCalculationId(CERTIFICATE_CALCULATION_ID_1)).thenReturn(List.of());
 
-        BigDecimal result = businessService.getCertificatePoints(ID);
+        BigDecimal result = businessService.getCertificatePoints(CERTIFICATE_CALCULATION_ID_1);
 
         assertEquals(BigDecimal.ZERO, result);
     }
@@ -146,9 +148,9 @@ class CertificateCalculationBusinessServiceTest
         Certificate certificate = mock(Certificate.class);
 
         when(cc.getCertificate()).thenReturn(certificate);
-        when(certificate.getId()).thenReturn(ID);
+        when(certificate.getId()).thenReturn(CERTIFICATE_CALCULATION_ID_1);
         when(calculation.getCertificates()).thenReturn(List.of(cc));
-        when(persistenceService.getByCertificateId(ID)).thenReturn(List.of());
+        when(persistenceService.getByCertificateId(CERTIFICATE_CALCULATION_ID_1)).thenReturn(List.of());
         when(persistenceService.save(cc)).thenReturn(cc);
 
         List<CertificateCalculation> result = businessService.createCertificateCalculations(calculation);
@@ -159,34 +161,32 @@ class CertificateCalculationBusinessServiceTest
     }
 
     @Test
+    @Override
     @DisplayName("Should update certificate calculations and delete removed ones")
-    void shouldUpdateCertificateCalculations() {
-        Long certificateCalculationId = 100L;
-
+    void shouldUpdate() {
         Calculation calculation = mock(Calculation.class);
-        when(calculation.getId()).thenReturn(ID);
+        when(calculation.getId()).thenReturn(CERTIFICATE_CALCULATION_ID_1);
 
         Certificate certificate = mock(Certificate.class);
+        when(certificate.getId()).thenReturn(CERTIFICATE_ID);
 
         CertificateCalculation existing = new CertificateCalculation();
-        existing.setId(certificateCalculationId);
+        existing.setId(CERTIFICATE_CALCULATION_ID_2);
 
         CertificateCalculation updated = new CertificateCalculation();
-        updated.setId(certificateCalculationId);
+        updated.setId(CERTIFICATE_CALCULATION_ID_2);
         updated.setCertificate(certificate);
 
         when(calculation.getCertificates()).thenReturn(List.of(updated));
-        when(persistenceService.getByCalculationId(ID)).thenReturn(new ArrayList<>(List.of(existing)));
-
-        when(persistenceService.getById(certificateCalculationId)).thenReturn(existing);
-
+        when(persistenceService.getByCalculationId(CERTIFICATE_CALCULATION_ID_1))
+                .thenReturn(new ArrayList<>(List.of(existing)));
         when(persistenceService.save(any(CertificateCalculation.class))).thenAnswer(inv -> inv.getArgument(0));
 
         List<CertificateCalculation> result = businessService.updateCertificateCalculations(calculation);
 
         assertEquals(1, result.size());
 
-        verify(validationService).validateOnUpdate(certificateCalculationId, updated);
+        verify(validationService).validateOnUpdate(CERTIFICATE_CALCULATION_ID_2, updated);
 
         verify(persistenceService).delete(anyLong());
     }

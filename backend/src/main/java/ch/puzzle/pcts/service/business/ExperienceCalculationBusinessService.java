@@ -40,9 +40,17 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
     }
 
     @Override
-    public ExperienceCalculation create(ExperienceCalculation experienceCalculation) {
+    public ExperienceCalculation update(Long id, ExperienceCalculation experienceCalculation) {
+        experienceCalculationValidationService.validateOnUpdate(id, experienceCalculation);
         List<ExperienceCalculation> existing = this.getByExperienceId(experienceCalculation.getExperience().getId());
+        experienceCalculationValidationService.validateDuplicateExperienceId(experienceCalculation, existing);
+        return experienceCalculationPersistenceService.save(experienceCalculation);
+    }
+
+    @Override
+    public ExperienceCalculation create(ExperienceCalculation experienceCalculation) {
         experienceCalculationValidationService.validateOnCreate(experienceCalculation);
+        List<ExperienceCalculation> existing = this.getByExperienceId(experienceCalculation.getExperience().getId());
         experienceCalculationValidationService.validateDuplicateExperienceId(experienceCalculation, existing);
         return experienceCalculationPersistenceService.save(experienceCalculation);
     }

@@ -32,7 +32,9 @@ class ExperienceCalculationBusinessServiceTest
         extends
             BaseBusinessTest<ExperienceCalculation, ExperienceCalculationPersistenceService, ExperienceCalculationValidationService, ExperienceCalculationBusinessService> {
 
-    private static final Long ID = 1L;
+    private static final Long EXPERIENCE_CALCULATION_ID_1 = 1L;
+    private static final Long EXPERIENCE_CALCULATION_ID_2 = 2L;
+    private static final Long EXPERIENCE_ID = 1L;
 
     @Mock
     private ExperienceCalculationValidationService validationService;
@@ -99,24 +101,24 @@ class ExperienceCalculationBusinessServiceTest
     @DisplayName("Should get experience calculations by calculation id")
     void shouldGetByCalculationId() {
         ExperienceCalculation exp = mock(ExperienceCalculation.class);
-        when(persistenceService.getByCalculationId(ID)).thenReturn(List.of(exp));
+        when(persistenceService.getByCalculationId(EXPERIENCE_CALCULATION_ID_1)).thenReturn(List.of(exp));
 
-        List<ExperienceCalculation> result = businessService.getByCalculationId(ID);
+        List<ExperienceCalculation> result = businessService.getByCalculationId(EXPERIENCE_CALCULATION_ID_1);
 
         assertEquals(1, result.size());
-        verify(persistenceService).getByCalculationId(ID);
+        verify(persistenceService).getByCalculationId(EXPERIENCE_CALCULATION_ID_1);
     }
 
     @Test
     @DisplayName("Should get experience calculations by experience id")
     void shouldGetByExperienceId() {
         ExperienceCalculation exp = mock(ExperienceCalculation.class);
-        when(persistenceService.getByExperienceId(ID)).thenReturn(List.of(exp));
+        when(persistenceService.getByExperienceId(EXPERIENCE_CALCULATION_ID_1)).thenReturn(List.of(exp));
 
-        List<ExperienceCalculation> result = businessService.getByExperienceId(ID);
+        List<ExperienceCalculation> result = businessService.getByExperienceId(EXPERIENCE_CALCULATION_ID_1);
 
         assertEquals(1, result.size());
-        verify(persistenceService).getByExperienceId(ID);
+        verify(persistenceService).getByExperienceId(EXPERIENCE_CALCULATION_ID_1);
     }
 
     @ParameterizedTest
@@ -138,9 +140,9 @@ class ExperienceCalculationBusinessServiceTest
         when(calculation.getExperience()).thenReturn(exp);
         when(calculation.getRelevancy()).thenReturn(relevancy);
 
-        when(persistenceService.getByCalculationId(ID)).thenReturn(List.of(calculation));
+        when(persistenceService.getByCalculationId(EXPERIENCE_CALCULATION_ID_1)).thenReturn(List.of(calculation));
 
-        BigDecimal result = businessService.getExperiencePoints(ID);
+        BigDecimal result = businessService.getExperiencePoints(EXPERIENCE_CALCULATION_ID_1);
 
         assertEquals(0, expected.compareTo(result.setScale(2, RoundingMode.HALF_UP)));
     }
@@ -148,9 +150,9 @@ class ExperienceCalculationBusinessServiceTest
     @Test
     @DisplayName("Should return zero points if calculation has no experiences")
     void shouldReturnZeroPoints() {
-        when(persistenceService.getByCalculationId(ID)).thenReturn(List.of());
+        when(persistenceService.getByCalculationId(EXPERIENCE_CALCULATION_ID_1)).thenReturn(List.of());
 
-        BigDecimal result = businessService.getExperiencePoints(ID);
+        BigDecimal result = businessService.getExperiencePoints(EXPERIENCE_CALCULATION_ID_1);
 
         assertEquals(BigDecimal.ZERO, result);
     }
@@ -165,7 +167,7 @@ class ExperienceCalculationBusinessServiceTest
 
         when(calculation.getExperiences()).thenReturn(List.of(ec));
         when(ec.getExperience()).thenReturn(exp);
-        when(exp.getId()).thenReturn(ID);
+        when(exp.getId()).thenReturn(EXPERIENCE_CALCULATION_ID_1);
         when(persistenceService.getByExperienceId(any())).thenReturn(List.of());
         when(persistenceService.save(ec)).thenReturn(ec);
 
@@ -177,34 +179,32 @@ class ExperienceCalculationBusinessServiceTest
     }
 
     @Test
+    @Override
     @DisplayName("Should update experience calculations and delete removed ones")
-    void shouldUpdateExperienceCalculations() {
-        Long experienceCalculationId = 100L;
-
+    void shouldUpdate() {
         Calculation calculation = mock(Calculation.class);
-        when(calculation.getId()).thenReturn(ID);
+        when(calculation.getId()).thenReturn(EXPERIENCE_CALCULATION_ID_1);
 
         Experience experience = mock(Experience.class);
+        when(experience.getId()).thenReturn(EXPERIENCE_ID);
 
         ExperienceCalculation existing = new ExperienceCalculation();
-        existing.setId(experienceCalculationId);
+        existing.setId(EXPERIENCE_CALCULATION_ID_2);
 
         ExperienceCalculation updated = new ExperienceCalculation();
-        updated.setId(experienceCalculationId);
+        updated.setId(EXPERIENCE_CALCULATION_ID_2);
         updated.setExperience(experience);
 
         when(calculation.getExperiences()).thenReturn(List.of(updated));
-        when(persistenceService.getByCalculationId(ID)).thenReturn(new ArrayList<>(List.of(existing)));
-
-        when(persistenceService.getById(experienceCalculationId)).thenReturn(existing);
-
+        when(persistenceService.getByCalculationId(EXPERIENCE_CALCULATION_ID_1))
+                .thenReturn(new ArrayList<>(List.of(existing)));
         when(persistenceService.save(any(ExperienceCalculation.class))).thenAnswer(inv -> inv.getArgument(0));
 
         List<ExperienceCalculation> result = businessService.updateExperienceCalculations(calculation);
 
         assertEquals(1, result.size());
 
-        verify(validationService).validateOnUpdate(experienceCalculationId, updated);
+        verify(validationService).validateOnUpdate(EXPERIENCE_CALCULATION_ID_2, updated);
 
         verify(persistenceService).delete(anyLong());
     }

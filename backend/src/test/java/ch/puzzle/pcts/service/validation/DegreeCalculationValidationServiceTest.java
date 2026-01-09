@@ -29,6 +29,7 @@ class DegreeCalculationValidationServiceTest
     private static final Long MEMBER_ID_1 = 1L;
     private static final Long MEMBER_ID_2 = 2L;
     private static final Long CALCULATION_ID = 1L;
+    private static final Long DEGREE_CALCULATION_ID = 1L;
     private static final Long DEGREE_ID = 1L;
     private static final Long ORGANISATION_UNIT_ID = 1L;
 
@@ -146,25 +147,39 @@ class DegreeCalculationValidationServiceTest
 
         PCTSException exception = assertThrows(PCTSException.class, () -> spyService.validateMemberForCalculation(dc));
 
-        assertEquals(ErrorKey.ATTRIBUTE_MATCHES, exception.getErrorKeys().get(0));
+        assertEquals(ErrorKey.ATTRIBUTE_MATCHES, exception.getErrorKeys().getFirst());
         assertEquals(Map.of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "degree", FieldKey.CONDITION_FIELD, "member"),
-                     exception.getErrorAttributes().get(0));
+                     exception.getErrorAttributes().getFirst());
     }
 
     @DisplayName("Should throw exception on duplicate degree ID")
     @Test
     void shouldThrowExceptionOnDuplicateDegreeId() {
         DegreeCalculationValidationService spyService = spy(getService());
-
         DegreeCalculation dc = getValidModel();
-        List<DegreeCalculation> existing = List.of(dc);
+        DegreeCalculation existingDc = getValidModel();
+        existingDc.setId(DEGREE_CALCULATION_ID);
+
+        List<DegreeCalculation> existing = List.of(existingDc);
 
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> spyService.validateDuplicateDegreeId(dc, existing));
 
-        assertEquals(ErrorKey.DUPLICATE_CALCULATION, exception.getErrorKeys().get(0));
+        assertEquals(ErrorKey.DUPLICATE_CALCULATION, exception.getErrorKeys().getFirst());
         assertEquals(Map.of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "degree", FieldKey.IS, DEGREE_NAME),
-                     exception.getErrorAttributes().get(0));
+                     exception.getErrorAttributes().getFirst());
+    }
+
+    @DisplayName("Should not throw exception when only same entity exists")
+    @Test
+    void shouldNotThrowWhenOnlySameEntityExists() {
+        DegreeCalculationValidationService spyService = spy(getService());
+        DegreeCalculation dc = getValidModel();
+        dc.setId(CALCULATION_ID);
+
+        List<DegreeCalculation> existing = List.of(dc);
+
+        assertDoesNotThrow(() -> spyService.validateDuplicateDegreeId(dc, existing));
     }
 
     @DisplayName("Should call validateMemberForCalculation on validateOnCreate")

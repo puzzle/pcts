@@ -4,7 +4,7 @@ import ch.puzzle.pcts.model.calculation.Relevancy;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record ExperienceCalculationInputDto(
-        @Schema(description = "Unique identifier of the experience calculation", example = "42", nullable = true) Long id,
+        @Schema(description = "Unique identifier of the experience calculation", nullable = true, example = "null") Long id,
 
         @Schema(description = "ID of the experience to be linked", example = "1", requiredMode = Schema.RequiredMode.REQUIRED) Long experienceId,
 

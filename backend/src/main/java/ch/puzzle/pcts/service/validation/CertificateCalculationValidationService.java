@@ -10,6 +10,7 @@ import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalcul
 import ch.puzzle.pcts.model.member.Member;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,10 @@ public class CertificateCalculationValidationService extends ValidationBase<Cert
 
     public void validateDuplicateCertificateId(CertificateCalculation certificateCalculation,
                                                List<CertificateCalculation> certificateCalculationList) {
-        if (!certificateCalculationList.isEmpty()) {
+        boolean isSameEntityOnly = certificateCalculationList.size() == 1 && Objects
+                .equals(certificateCalculationList.getFirst().getId(), certificateCalculation.getId());
+
+        if (!isSameEntityOnly && !certificateCalculationList.isEmpty()) {
             Map<FieldKey, String> attributes = Map
                     .of(FieldKey.ENTITY,
                         CALCULATION,
@@ -42,8 +46,8 @@ public class CertificateCalculationValidationService extends ValidationBase<Cert
                         FieldKey.IS,
                         certificateCalculation.getCertificate().getCertificateType().getName());
 
-            GenericErrorDto error = new GenericErrorDto(ErrorKey.DUPLICATE_CALCULATION, attributes);
-            throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
+            throw new PCTSException(HttpStatus.BAD_REQUEST,
+                                    List.of(new GenericErrorDto(ErrorKey.DUPLICATE_CALCULATION, attributes)));
         }
     }
 

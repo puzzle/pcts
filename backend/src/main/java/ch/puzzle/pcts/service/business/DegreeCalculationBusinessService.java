@@ -38,9 +38,17 @@ public class DegreeCalculationBusinessService extends BusinessBase<DegreeCalcula
     }
 
     @Override
-    public DegreeCalculation create(DegreeCalculation degreeCalculation) {
+    public DegreeCalculation update(Long id, DegreeCalculation degreeCalculation) {
+        degreeCalculationValidationService.validateOnUpdate(id, degreeCalculation);
         List<DegreeCalculation> existing = this.getByDegreeId(degreeCalculation.getDegree().getId());
+        degreeCalculationValidationService.validateDuplicateDegreeId(degreeCalculation, existing);
+        return degreeCalculationPersistenceService.save(degreeCalculation);
+    }
+
+    @Override
+    public DegreeCalculation create(DegreeCalculation degreeCalculation) {
         degreeCalculationValidationService.validateOnCreate(degreeCalculation);
+        List<DegreeCalculation> existing = this.getByDegreeId(degreeCalculation.getDegree().getId());
         degreeCalculationValidationService.validateDuplicateDegreeId(degreeCalculation, existing);
         return degreeCalculationPersistenceService.save(degreeCalculation);
     }

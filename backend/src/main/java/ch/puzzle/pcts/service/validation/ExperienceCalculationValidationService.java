@@ -10,6 +10,7 @@ import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculat
 import ch.puzzle.pcts.model.member.Member;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,10 @@ public class ExperienceCalculationValidationService extends ValidationBase<Exper
 
     public void validateDuplicateExperienceId(ExperienceCalculation experienceCalculation,
                                               List<ExperienceCalculation> experienceCalculationList) {
-        if (!experienceCalculationList.isEmpty()) {
+        boolean isSameEntityOnly = experienceCalculationList.size() == 1 && Objects
+                .equals(experienceCalculationList.getFirst().getId(), experienceCalculation.getId());
+
+        if (!isSameEntityOnly && !experienceCalculationList.isEmpty()) {
             Map<FieldKey, String> attributes = Map
                     .of(FieldKey.ENTITY,
                         CALCULATION,

@@ -29,7 +29,11 @@ class DegreeCalculationBusinessServiceTest
         extends
             BaseBusinessTest<DegreeCalculation, DegreeCalculationPersistenceService, DegreeCalculationValidationService, DegreeCalculationBusinessService> {
 
-    private static final Long ID = 1L;
+    private static final Long DEGREE_CALCULATION_ID_1 = 1L;
+
+    private static final Long DEGREE_CALCULATION_ID_2 = 2L;
+
+    private static final Long DEGREE_ID = 1L;
 
     @Mock
     private DegreeCalculationValidationService validationService;
@@ -81,24 +85,24 @@ class DegreeCalculationBusinessServiceTest
     @DisplayName("Should get degree calculations by calculation id")
     void shouldGetByCalculationId() {
         DegreeCalculation dc = mock(DegreeCalculation.class);
-        when(persistenceService.getByCalculationId(ID)).thenReturn(List.of(dc));
+        when(persistenceService.getByCalculationId(DEGREE_CALCULATION_ID_1)).thenReturn(List.of(dc));
 
-        List<DegreeCalculation> result = businessService.getByCalculationId(ID);
+        List<DegreeCalculation> result = businessService.getByCalculationId(DEGREE_CALCULATION_ID_1);
 
         assertEquals(1, result.size());
-        verify(persistenceService).getByCalculationId(ID);
+        verify(persistenceService).getByCalculationId(DEGREE_CALCULATION_ID_1);
     }
 
     @Test
     @DisplayName("Should get degree calculations by degree id")
     void shouldGetByDegreeId() {
         DegreeCalculation dc = mock(DegreeCalculation.class);
-        when(persistenceService.getByDegreeId(ID)).thenReturn(List.of(dc));
+        when(persistenceService.getByDegreeId(DEGREE_CALCULATION_ID_1)).thenReturn(List.of(dc));
 
-        List<DegreeCalculation> result = businessService.getByDegreeId(ID);
+        List<DegreeCalculation> result = businessService.getByDegreeId(DEGREE_CALCULATION_ID_1);
 
         assertEquals(1, result.size());
-        verify(persistenceService).getByDegreeId(ID);
+        verify(persistenceService).getByDegreeId(DEGREE_CALCULATION_ID_1);
     }
 
     @ParameterizedTest
@@ -118,20 +122,20 @@ class DegreeCalculationBusinessServiceTest
         when(dc.getRelevancy()).thenReturn(relevancy);
         when(dc.getWeight()).thenReturn(weight);
 
-        when(persistenceService.getByCalculationId(ID)).thenReturn(List.of(dc));
+        when(persistenceService.getByCalculationId(DEGREE_CALCULATION_ID_1)).thenReturn(List.of(dc));
 
-        BigDecimal result = businessService.getDegreePoints(ID);
+        BigDecimal result = businessService.getDegreePoints(DEGREE_CALCULATION_ID_1);
 
         assertEquals(0, expected.compareTo(result));
-        verify(persistenceService).getByCalculationId(ID);
+        verify(persistenceService).getByCalculationId(DEGREE_CALCULATION_ID_1);
     }
 
     @Test
     @DisplayName("Should return zero points if calculation has no degrees")
     void shouldReturnZeroPoints() {
-        when(persistenceService.getByCalculationId(ID)).thenReturn(List.of());
+        when(persistenceService.getByCalculationId(DEGREE_CALCULATION_ID_1)).thenReturn(List.of());
 
-        BigDecimal result = businessService.getDegreePoints(ID);
+        BigDecimal result = businessService.getDegreePoints(DEGREE_CALCULATION_ID_1);
 
         assertEquals(BigDecimal.ZERO, result);
     }
@@ -143,13 +147,13 @@ class DegreeCalculationBusinessServiceTest
         Calculation calculation = mock(Calculation.class);
 
         Degree degree = mock(Degree.class);
-        when(degree.getId()).thenReturn(ID);
+        when(degree.getId()).thenReturn(DEGREE_CALCULATION_ID_1);
 
         DegreeCalculation dc = mock(DegreeCalculation.class);
         when(dc.getDegree()).thenReturn(degree);
 
         when(calculation.getDegrees()).thenReturn(List.of(dc));
-        when(persistenceService.getByDegreeId(ID)).thenReturn(List.of());
+        when(persistenceService.getByDegreeId(DEGREE_CALCULATION_ID_1)).thenReturn(List.of());
         when(persistenceService.save(dc)).thenReturn(dc);
 
         List<DegreeCalculation> result = businessService.createDegreeCalculations(calculation);
@@ -160,34 +164,32 @@ class DegreeCalculationBusinessServiceTest
     }
 
     @Test
+    @Override
     @DisplayName("Should update degree calculations and delete removed ones")
-    void shouldUpdateDegreeCalculations() {
-        Long degreeCalculationId = 100L;
-
+    void shouldUpdate() {
         Calculation calculation = mock(Calculation.class);
-        when(calculation.getId()).thenReturn(ID);
+        when(calculation.getId()).thenReturn(DEGREE_CALCULATION_ID_1);
 
         Degree degree = mock(Degree.class);
+        when(degree.getId()).thenReturn(DEGREE_ID);
 
         DegreeCalculation existing = new DegreeCalculation();
-        existing.setId(degreeCalculationId);
+        existing.setId(DEGREE_CALCULATION_ID_2);
 
         DegreeCalculation updated = new DegreeCalculation();
-        updated.setId(degreeCalculationId);
+        updated.setId(DEGREE_CALCULATION_ID_2);
         updated.setDegree(degree);
 
         when(calculation.getDegrees()).thenReturn(List.of(updated));
-        when(persistenceService.getByCalculationId(ID)).thenReturn(new ArrayList<>(List.of(existing)));
-
-        when(persistenceService.getById(degreeCalculationId)).thenReturn(existing);
-
+        when(persistenceService.getByCalculationId(DEGREE_CALCULATION_ID_1))
+                .thenReturn(new ArrayList<>(List.of(existing)));
         when(persistenceService.save(any(DegreeCalculation.class))).thenAnswer(inv -> inv.getArgument(0));
 
         List<DegreeCalculation> result = businessService.updateDegreeCalculations(calculation);
 
         assertEquals(1, result.size());
 
-        verify(validationService).validateOnUpdate(degreeCalculationId, updated);
+        verify(validationService).validateOnUpdate(DEGREE_CALCULATION_ID_2, updated);
 
         verify(persistenceService).delete(anyLong());
     }
