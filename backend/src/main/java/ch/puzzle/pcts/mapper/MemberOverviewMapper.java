@@ -2,11 +2,8 @@ package ch.puzzle.pcts.mapper;
 
 import ch.puzzle.pcts.dto.memberoverview.*;
 import ch.puzzle.pcts.dto.memberoverview.certificate.MemberOverviewCertificateDto;
-import ch.puzzle.pcts.dto.memberoverview.certificate.MemberOverviewCertificateTypeDto;
 import ch.puzzle.pcts.dto.memberoverview.degree.MemberOverviewDegreeDto;
-import ch.puzzle.pcts.dto.memberoverview.degree.MemberOverviewDegreeTypeDto;
 import ch.puzzle.pcts.dto.memberoverview.experience.MemberOverviewExperienceDto;
-import ch.puzzle.pcts.dto.memberoverview.experience.MemberOverviewExperienceTypeDto;
 import ch.puzzle.pcts.dto.memberoverview.leadershipexperience.MemberOverviewLeadershipExperienceDto;
 import ch.puzzle.pcts.dto.memberoverview.leadershipexperience.MemberOverviewLeadershipExperienceTypeDto;
 import ch.puzzle.pcts.model.memberoverview.MemberOverview;
@@ -69,18 +66,15 @@ public class MemberOverviewMapper {
     }
 
     private MemberOverviewDegreeDto mapToDegree(MemberOverview e) {
-        return new MemberOverviewDegreeDto(e.getDegreeId(),
-                                           e.getDegreeName(),
-                                           new MemberOverviewDegreeTypeDto(e.getDegreeTypeName()),
-                                           e.getDegreeStartDate(),
-                                           e.getDegreeEndDate());
+        return new MemberOverviewDegreeDto(e
+                .getDegreeId(), e.getDegreeName(), e.getDegreeTypeName(), e.getDegreeStartDate(), e.getDegreeEndDate());
     }
 
     private MemberOverviewExperienceDto mapToExperience(MemberOverview e) {
         return new MemberOverviewExperienceDto(e.getExperienceId(),
                                                e.getExperienceName(),
                                                e.getExperienceEmployer(),
-                                               new MemberOverviewExperienceTypeDto(e.getExperienceTypeName()),
+                                               e.getExperienceTypeName(),
                                                e.getExperienceComment(),
                                                e.getExperienceStartDate(),
                                                e.getExperienceEndDate());
@@ -88,7 +82,7 @@ public class MemberOverviewMapper {
 
     private MemberOverviewCertificateDto mapToCertificate(MemberOverview e) {
         return new MemberOverviewCertificateDto(e.getCertificateId(),
-                                                new MemberOverviewCertificateTypeDto(e.getCertificateTypeName()),
+                                                e.getCertificateTypeName(),
                                                 e.getCertificateCompletedAt(),
                                                 e.getCertificateComment());
     }
