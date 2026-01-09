@@ -7,7 +7,6 @@ import ch.puzzle.pcts.dto.memberoverview.experience.MemberOverviewExperienceDto;
 import ch.puzzle.pcts.dto.memberoverview.leadershipexperience.MemberOverviewLeadershipExperienceDto;
 import ch.puzzle.pcts.dto.memberoverview.leadershipexperience.MemberOverviewLeadershipExperienceTypeDto;
 import ch.puzzle.pcts.model.memberoverview.MemberOverview;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,10 +44,10 @@ public class MemberOverviewMapper {
             }
         }
 
-        MemberOverviewCvDto cvDto = new MemberOverviewCvDto(new ArrayList<>(degreeMap.values()),
-                                                            new ArrayList<>(experienceMap.values()),
-                                                            new ArrayList<>(certificateMap.values()),
-                                                            new ArrayList<>(leadershipMap.values()));
+        MemberOverviewCvDto cvDto = new MemberOverviewCvDto(List.copyOf(degreeMap.values()),
+                                                            List.copyOf(experienceMap.values()),
+                                                            List.copyOf(certificateMap.values()),
+                                                            List.copyOf(leadershipMap.values()));
 
         return new MemberOverviewDto(getMemberDto(memberOverviews), cvDto);
     }

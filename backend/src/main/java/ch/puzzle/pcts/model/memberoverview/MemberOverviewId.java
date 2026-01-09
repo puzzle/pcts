@@ -54,8 +54,9 @@ public class MemberOverviewId implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof MemberOverviewId that))
+        if (!(o instanceof MemberOverviewId that)) {
             return false;
+        }
         return Objects.equals(getMemberId(), that.getMemberId())
                && Objects.equals(getCertificateId(), that.getCertificateId())
                && Objects.equals(getDegreeId(), that.getDegreeId())

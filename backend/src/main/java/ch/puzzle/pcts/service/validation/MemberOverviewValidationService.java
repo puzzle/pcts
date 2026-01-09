@@ -9,6 +9,7 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+// Does not inherit from ValidationBase due to the model not extending from the base either, which is due to the primary key being a composite key
 @Service
 public class MemberOverviewValidationService {
 
