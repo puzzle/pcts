@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.service.persistence;
 
 import static ch.puzzle.pcts.Constants.LEADERSHIP_EXPERIENCE_TYPE;
+import static ch.puzzle.pcts.util.TestData.LEADERSHIP_EXPERIENCE_TYPES;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,45 +43,7 @@ class LeadershipTypePersistenceServiceIT
 
     @Override
     List<CertificateType> getAll() {
-        return List
-                .of(new CertificateType(1L,
-                                        "Certificate Type 1",
-                                        BigDecimal.valueOf(5.5),
-                                        "This is Certificate 1",
-                                        Set.of(new Tag(1L, "Tag 1"))),
-                    new CertificateType(2L,
-                                        "Certificate Type 2",
-                                        BigDecimal.valueOf(1),
-                                        "This is Certificate 2",
-                                        Set.of(new Tag(2L, "Longer tag name"))),
-                    new CertificateType(3L,
-                                        "Certificate Type 3",
-                                        BigDecimal.valueOf(3),
-                                        "This is Certificate 3",
-                                        Set.of()),
-                    new CertificateType(4L,
-                                        "Certificate Type 4",
-                                        BigDecimal.valueOf(0.5),
-                                        "This is Certificate 4",
-                                        Set.of()),
-                    new CertificateType(5L,
-                                        "LeadershipExperience Type 1",
-                                        BigDecimal.valueOf(5.5),
-                                        "This is LeadershipExperience 1",
-                                        Set.of(),
-                                        CertificateKind.MILITARY_FUNCTION),
-                    new CertificateType(6L,
-                                        "LeadershipExperience Type 2",
-                                        BigDecimal.valueOf(1),
-                                        "This is LeadershipExperience 2",
-                                        Set.of(),
-                                        CertificateKind.YOUTH_AND_SPORT),
-                    new CertificateType(7L,
-                                        "LeadershipExperience Type 3",
-                                        BigDecimal.valueOf(3),
-                                        "This is LeadershipExperience 3",
-                                        Set.of(),
-                                        CertificateKind.LEADERSHIP_TRAINING));
+        return LEADERSHIP_EXPERIENCE_TYPES;
     }
 
     @Override

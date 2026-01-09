@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.service.persistence;
 
+import static ch.puzzle.pcts.util.TestData.EXPERIENCE_TYPES;
+
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.repository.ExperienceTypeRepository;
 import java.math.BigDecimal;
@@ -26,16 +28,6 @@ class ExperienceTypePersistenceServiceIT
 
     @Override
     List<ExperienceType> getAll() {
-        return List
-                .of(new ExperienceType(1L,
-                                       "ExperienceType 1",
-                                       BigDecimal.valueOf(0),
-                                       BigDecimal.valueOf(12),
-                                       BigDecimal.valueOf(4.005)),
-                    new ExperienceType(2L,
-                                       "ExperienceType 2",
-                                       BigDecimal.valueOf(12),
-                                       BigDecimal.valueOf(10.7989),
-                                       BigDecimal.valueOf(6)));
+        return EXPERIENCE_TYPES;
     }
 }

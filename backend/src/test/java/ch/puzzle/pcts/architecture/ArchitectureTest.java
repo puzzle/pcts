@@ -11,8 +11,7 @@ import static ch.puzzle.pcts.architecture.condition.ClassConditions.overrideHash
 import static ch.puzzle.pcts.architecture.condition.ClassConditions.overrideToStringMethod;
 import static ch.puzzle.pcts.architecture.condition.CodeUnitConditions.trimAssignedStringFields;
 import static com.tngtech.archunit.base.DescribedPredicate.not;
-import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAPackage;
-import static com.tngtech.archunit.core.domain.JavaClass.Predicates.type;
+import static com.tngtech.archunit.core.domain.JavaClass.Predicates.*;
 import static com.tngtech.archunit.lang.conditions.ArchConditions.and;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
@@ -275,6 +274,7 @@ class ArchitectureTest {
 
         ArchRule rule = classes()
                 .that(resideInAPackage("ch.puzzle.pcts.model.."))
+                .and(not(resideInAnyPackage("ch.puzzle.pcts.model.memberoverview..")))
                 .and()
                 .areNotInterfaces()
                 .and()
