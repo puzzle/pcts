@@ -9,6 +9,7 @@ import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.com
 import { GenericCvContentComponent } from './generic-cv-content/generic-cv-content.component';
 import { MatButton } from '@angular/material/button';
 import { GenericTableComponent } from '../../../shared/generic-table/generic-table.component';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -21,7 +22,9 @@ import { GenericTableComponent } from '../../../shared/generic-table/generic-tab
     CrudButtonComponent,
     GenericCvContentComponent,
     MatButton,
-    GenericTableComponent
+    GenericTableComponent,
+    MatTabGroup,
+    MatTab
   ],
   templateUrl: './member-detail-view.component.html',
   styleUrl: './member-detail-view.component.scss'
@@ -53,12 +56,6 @@ export class MemberDetailViewComponent implements OnInit {
 
   readonly member: WritableSignal<MemberModel | null> = signal<MemberModel | null>(null);
 
-  activeTab: ViewState = 0;
-
-  setTab(tab: ViewState) {
-    this.activeTab = tab;
-  }
-
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) {
@@ -71,12 +68,6 @@ export class MemberDetailViewComponent implements OnInit {
         next: (member) => this.member.set(member)
       });
   }
-
-  protected readonly viewState = ViewState;
-}
-
-enum ViewState {
-  CV, CALC
 }
 
 interface User {
