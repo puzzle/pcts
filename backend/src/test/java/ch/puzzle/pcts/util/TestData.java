@@ -255,7 +255,6 @@ public class TestData {
     public static final List<MemberOverview> MEMBER_1_OVERVIEWS = List
             .of(MemberOverview.Builder
                     .builder()
-                    .withUniqueRowId(1L)
                     .withMemberId(MEMBER_1.getId())
                     .withFirstName(MEMBER_1.getFirstName())
                     .withLastName(MEMBER_1.getLastName())
@@ -285,7 +284,6 @@ public class TestData {
 
                 MemberOverview.Builder
                         .builder()
-                        .withUniqueRowId(2L)
                         .withMemberId(MEMBER_1.getId())
                         .withFirstName(MEMBER_1.getFirstName())
                         .withLastName(MEMBER_1.getLastName())
@@ -315,7 +313,6 @@ public class TestData {
 
                 MemberOverview.Builder
                         .builder()
-                        .withUniqueRowId(3L)
                         .withMemberId(MEMBER_1.getId())
                         .withFirstName(MEMBER_1.getFirstName())
                         .withLastName(MEMBER_1.getLastName())
@@ -345,7 +342,6 @@ public class TestData {
 
                 MemberOverview.Builder
                         .builder()
-                        .withUniqueRowId(4L)
                         .withMemberId(MEMBER_1.getId())
                         .withFirstName(MEMBER_1.getFirstName())
                         .withLastName(MEMBER_1.getLastName())
@@ -376,7 +372,6 @@ public class TestData {
     public static final List<MemberOverview> MEMBER_2_OVERVIEWS = List
             .of(MemberOverview.Builder
                     .builder()
-                    .withUniqueRowId(5L)
                     .withMemberId(MEMBER_2.getId())
                     .withFirstName(MEMBER_2.getFirstName())
                     .withLastName(MEMBER_2.getLastName())
@@ -406,7 +401,6 @@ public class TestData {
 
                 MemberOverview.Builder
                         .builder()
-                        .withUniqueRowId(6L)
                         .withMemberId(MEMBER_2.getId())
                         .withFirstName(MEMBER_2.getFirstName())
                         .withLastName(MEMBER_2.getLastName())
@@ -437,7 +431,6 @@ public class TestData {
     public static final List<MemberOverview> MEMBER_EMPTY_CV_OVERVIEWS = List
             .of(MemberOverview.Builder
                     .builder()
-                    .withUniqueRowId(99L)
                     .withMemberId(MEMBER_1.getId())
                     .withFirstName(MEMBER_1.getFirstName())
                     .withLastName(MEMBER_1.getLastName())
