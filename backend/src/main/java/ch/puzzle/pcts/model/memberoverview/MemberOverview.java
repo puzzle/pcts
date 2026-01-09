@@ -2,16 +2,16 @@ package ch.puzzle.pcts.model.memberoverview;
 
 import static org.apache.commons.lang3.StringUtils.trim;
 
-import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.member.EmploymentState;
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name = "member_overview")
 @IdClass(MemberOverviewId.class)
-public class MemberOverview implements Model {
+public class MemberOverview {
 
     @Id
     private Long memberId;
@@ -285,28 +285,79 @@ public class MemberOverview implements Model {
     }
 
     @Override
-    public int hashCode() {
-        return super.hashCode();
+    public boolean equals(Object o) {
+        if (!(o instanceof MemberOverview that))
+            return false;
+        return Objects.equals(getMemberId(), that.getMemberId()) && Objects.equals(getFirstName(), that.getFirstName())
+               && Objects.equals(getLastName(), that.getLastName())
+               && Objects.equals(getAbbreviation(), that.getAbbreviation())
+               && Objects.equals(getBirthDate(), that.getBirthDate())
+               && Objects.equals(getDateOfHire(), that.getDateOfHire())
+               && getEmploymentState() == that.getEmploymentState()
+               && Objects.equals(getOrganisationUnitName(), that.getOrganisationUnitName())
+               && Objects.equals(getCertificateId(), that.getCertificateId())
+               && Objects.equals(getCertificateCompletedAt(), that.getCertificateCompletedAt())
+               && Objects.equals(getCertificateComment(), that.getCertificateComment())
+               && Objects.equals(getCertificateTypeName(), that.getCertificateTypeName())
+               && getLeadershipTypeKind() == that.getLeadershipTypeKind()
+               && Objects.equals(getDegreeId(), that.getDegreeId())
+               && Objects.equals(getDegreeName(), that.getDegreeName())
+               && Objects.equals(getDegreeStartDate(), that.getDegreeStartDate())
+               && Objects.equals(getDegreeEndDate(), that.getDegreeEndDate())
+               && Objects.equals(getDegreeTypeName(), that.getDegreeTypeName())
+               && Objects.equals(getExperienceId(), that.getExperienceId())
+               && Objects.equals(getExperienceName(), that.getExperienceName())
+               && Objects.equals(getExperienceEmployer(), that.getExperienceEmployer())
+               && Objects.equals(getExperienceStartDate(), that.getExperienceStartDate())
+               && Objects.equals(getExperienceEndDate(), that.getExperienceEndDate())
+               && Objects.equals(getExperienceComment(), that.getExperienceComment())
+               && Objects.equals(getExperienceTypeName(), that.getExperienceTypeName());
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
+    public int hashCode() {
+        return Objects
+                .hash(getMemberId(),
+                      getFirstName(),
+                      getLastName(),
+                      getAbbreviation(),
+                      getBirthDate(),
+                      getDateOfHire(),
+                      getEmploymentState(),
+                      getOrganisationUnitName(),
+                      getCertificateId(),
+                      getCertificateCompletedAt(),
+                      getCertificateComment(),
+                      getCertificateTypeName(),
+                      getLeadershipTypeKind(),
+                      getDegreeId(),
+                      getDegreeName(),
+                      getDegreeStartDate(),
+                      getDegreeEndDate(),
+                      getDegreeTypeName(),
+                      getExperienceId(),
+                      getExperienceName(),
+                      getExperienceEmployer(),
+                      getExperienceStartDate(),
+                      getExperienceEndDate(),
+                      getExperienceComment(),
+                      getExperienceTypeName());
     }
 
     @Override
     public String toString() {
-        return super.toString();
-    }
-
-    @Override
-    public Long getId() {
-        return 0L;
-    }
-
-    @Override
-    public void setId(Long id) {
-
+        return "MemberOverview{" + "memberId=" + memberId + ", firstName='" + firstName + '\'' + ", lastName='"
+               + lastName + '\'' + ", abbreviation='" + abbreviation + '\'' + ", birthDate=" + birthDate
+               + ", dateOfHire=" + dateOfHire + ", employmentState=" + employmentState + ", organisationUnitName='"
+               + organisationUnitName + '\'' + ", certificateId=" + certificateId + ", certificateCompletedAt="
+               + certificateCompletedAt + ", certificateComment='" + certificateComment + '\''
+               + ", certificateTypeName='" + certificateTypeName + '\'' + ", leadershipTypeKind=" + leadershipTypeKind
+               + ", degreeId=" + degreeId + ", degreeName='" + degreeName + '\'' + ", degreeStartDate="
+               + degreeStartDate + ", degreeEndDate=" + degreeEndDate + ", degreeTypeName='" + degreeTypeName + '\''
+               + ", experienceId=" + experienceId + ", experienceName='" + experienceName + '\''
+               + ", experienceEmployer='" + experienceEmployer + '\'' + ", experienceStartDate=" + experienceStartDate
+               + ", experienceEndDate=" + experienceEndDate + ", experienceComment='" + experienceComment + '\''
+               + ", experienceTypeName='" + experienceTypeName + '\'' + '}';
     }
 
     public static final class Builder {

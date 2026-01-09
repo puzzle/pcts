@@ -20,6 +20,7 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 
 import ch.puzzle.pcts.model.Model;
+import ch.puzzle.pcts.model.memberoverview.MemberOverview;
 import com.tngtech.archunit.core.domain.*;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
@@ -283,6 +284,8 @@ class ArchitectureTest {
                 .areNotNestedClasses()
                 .and()
                 .haveSimpleNameNotEndingWith("Id")
+                .and()
+                .doNotBelongToAnyOf(MemberOverview.class)
                 .should()
                 .beAnnotatedWith(Entity.class)
                 .andShould()
