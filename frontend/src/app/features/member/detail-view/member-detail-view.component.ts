@@ -6,6 +6,12 @@ import { MemberModel } from '../member.model';
 import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
+import { GenericCvContentComponent } from './generic-cv-content/generic-cv-content.component';
+import { MatButton } from '@angular/material/button';
+import { GenericTableComponent } from '../../../shared/generic-table/generic-table.component';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { OrganisationUnitModel } from '../../organisation-unit/organisation-unit.model';
+import { GenCol } from '../../../shared/generic-table/GenericTableDataSource';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -15,11 +21,33 @@ import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.com
     CommonModule,
     DatePipe,
     ScopedTranslationPipe,
-    CrudButtonComponent
+    CrudButtonComponent,
+    GenericCvContentComponent,
+    MatButton,
+    GenericTableComponent,
+    MatTabGroup,
+    MatTab
   ],
-  templateUrl: './member-detail-view.component.html'
+  templateUrl: './member-detail-view.component.html',
+  styleUrl: './member-detail-view.component.scss'
 })
 export class MemberDetailViewComponent implements OnInit {
+  userColumns: { key: keyof User;
+    label: string; }[] = [{ key: 'name',
+    label: 'Name' },
+  { key: 'age',
+    label: 'Age' },
+  { key: 'email',
+    label: 'Email' }];
+
+  userData: User[] = [{ name: 'John Doe',
+    age: 30,
+    email: 'john@example.com' },
+  { name: 'Jane Smith',
+    age: 25,
+    email: 'jane@example.com' }];
+
+
   private readonly service = inject(MemberService);
 
   private readonly route = inject(ActivatedRoute);
@@ -30,6 +58,9 @@ export class MemberDetailViewComponent implements OnInit {
 
   readonly member: WritableSignal<MemberModel | null> = signal<MemberModel | null>(null);
 
+  orgData = signal<OrganisationUnitModel[] | null>(null);
+
+
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) {
@@ -39,7 +70,20 @@ export class MemberDetailViewComponent implements OnInit {
 
     this.service.getMemberById(Number(id))
       .subscribe({
-        next: (member) => this.member.set(member)
+        next: (member) => {
+          this.member.set(member);
+          this.orgData.set([member.organisationUnit]);
+          console.log(member);
+        }
       });
   }
+
+  orgColumns: GenCol<OrganisationUnitModel>[] = [GenCol.fromAttr('name')];
+}
+
+
+interface User {
+  name: string;
+  age: number;
+  email: string;
 }
