@@ -1,11 +1,11 @@
-FROM maven:3-eclipse-temurin-21-alpine AS builder
+FROM maven:3-eclipse-temurin-25-alpine AS builder
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
 RUN mvn clean install -DskipTests
 
 FROM alpine:3.23 AS runner
-RUN apk update && apk add --upgrade curl && apk --no-cache add openjdk21
+RUN apk update && apk add --upgrade curl && apk --no-cache add openjdk25
 WORKDIR /app
 EXPOSE 8080
 COPY --from=builder /app/target/*.jar app.jar
