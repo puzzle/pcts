@@ -1,7 +1,7 @@
 package ch.puzzle.pcts.service.persistence;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static ch.puzzle.pcts.util.TestData.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificatetype.CertificateKind;
@@ -17,8 +17,6 @@ import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
