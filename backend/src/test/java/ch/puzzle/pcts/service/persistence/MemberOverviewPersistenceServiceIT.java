@@ -18,7 +18,7 @@ import org.springframework.http.HttpStatus;
 
 class MemberOverviewPersistenceServiceIT extends PersistenceCoreIT {
 
-    protected final MemberOverviewPersistenceService service;
+    private final MemberOverviewPersistenceService service;
 
     @Autowired
     MemberOverviewPersistenceServiceIT(MemberOverviewPersistenceService service) {

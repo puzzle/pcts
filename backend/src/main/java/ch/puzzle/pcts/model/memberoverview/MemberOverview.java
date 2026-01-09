@@ -286,8 +286,9 @@ public class MemberOverview {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof MemberOverview that))
+        if (!(o instanceof MemberOverview that)) {
             return false;
+        }
         return Objects.equals(getMemberId(), that.getMemberId()) && Objects.equals(getFirstName(), that.getFirstName())
                && Objects.equals(getLastName(), that.getLastName())
                && Objects.equals(getAbbreviation(), that.getAbbreviation())
@@ -346,18 +347,19 @@ public class MemberOverview {
 
     @Override
     public String toString() {
-        return "MemberOverview{" + "memberId=" + memberId + ", firstName='" + firstName + '\'' + ", lastName='"
-               + lastName + '\'' + ", abbreviation='" + abbreviation + '\'' + ", birthDate=" + birthDate
-               + ", dateOfHire=" + dateOfHire + ", employmentState=" + employmentState + ", organisationUnitName='"
-               + organisationUnitName + '\'' + ", certificateId=" + certificateId + ", certificateCompletedAt="
-               + certificateCompletedAt + ", certificateComment='" + certificateComment + '\''
-               + ", certificateTypeName='" + certificateTypeName + '\'' + ", leadershipTypeKind=" + leadershipTypeKind
-               + ", degreeId=" + degreeId + ", degreeName='" + degreeName + '\'' + ", degreeStartDate="
-               + degreeStartDate + ", degreeEndDate=" + degreeEndDate + ", degreeTypeName='" + degreeTypeName + '\''
-               + ", experienceId=" + experienceId + ", experienceName='" + experienceName + '\''
-               + ", experienceEmployer='" + experienceEmployer + '\'' + ", experienceStartDate=" + experienceStartDate
-               + ", experienceEndDate=" + experienceEndDate + ", experienceComment='" + experienceComment + '\''
-               + ", experienceTypeName='" + experienceTypeName + '\'' + '}';
+        return "MemberOverview{" + "memberId=" + getMemberId() + ", firstName='" + getFirstName() + '\''
+               + ", lastName='" + getLastName() + '\'' + ", abbreviation='" + getAbbreviation() + '\'' + ", birthDate="
+               + getBirthDate() + ", dateOfHire=" + getDateOfHire() + ", employmentState=" + getEmploymentState()
+               + ", organisationUnitName='" + getOrganisationUnitName() + '\'' + ", certificateId=" + getCertificateId()
+               + ", certificateCompletedAt=" + getCertificateCompletedAt() + ", certificateComment='"
+               + getCertificateComment() + '\'' + ", certificateTypeName='" + getCertificateTypeName() + '\''
+               + ", leadershipTypeKind=" + getLeadershipTypeKind() + ", degreeId=" + getDegreeId() + ", degreeName='"
+               + getDegreeName() + '\'' + ", degreeStartDate=" + getDegreeStartDate() + ", degreeEndDate="
+               + getDegreeEndDate() + ", degreeTypeName='" + getDegreeTypeName() + '\'' + ", experienceId="
+               + getExperienceId() + ", experienceName='" + getExperienceName() + '\'' + ", experienceEmployer='"
+               + getExperienceEmployer() + '\'' + ", experienceStartDate=" + getExperienceStartDate()
+               + ", experienceEndDate=" + getExperienceEndDate() + ", experienceComment='" + getExperienceComment()
+               + '\'' + ", experienceTypeName='" + getExperienceTypeName() + '\'' + '}';
     }
 
     public static final class Builder {
