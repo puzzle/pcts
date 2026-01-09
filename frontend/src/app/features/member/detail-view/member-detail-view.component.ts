@@ -10,6 +10,8 @@ import { GenericCvContentComponent } from './generic-cv-content/generic-cv-conte
 import { MatButton } from '@angular/material/button';
 import { GenericTableComponent } from '../../../shared/generic-table/generic-table.component';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { OrganisationUnitModel } from '../../organisation-unit/organisation-unit.model';
+import { GenCol } from '../../../shared/generic-table/GenericTableDataSource';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -56,6 +58,9 @@ export class MemberDetailViewComponent implements OnInit {
 
   readonly member: WritableSignal<MemberModel | null> = signal<MemberModel | null>(null);
 
+  orgData = signal<OrganisationUnitModel[] | null>(null);
+
+
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) {
@@ -65,10 +70,17 @@ export class MemberDetailViewComponent implements OnInit {
 
     this.service.getMemberById(Number(id))
       .subscribe({
-        next: (member) => this.member.set(member)
+        next: (member) => {
+          this.member.set(member);
+          this.orgData.set([member.organisationUnit]);
+          console.log(member);
+        }
       });
   }
+
+  orgColumns: GenCol<OrganisationUnitModel>[] = [GenCol.fromAttr('name')];
 }
+
 
 interface User {
   name: string;
