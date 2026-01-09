@@ -65,37 +65,17 @@
         </span>
       </div>
     </div>
-    <div class="tab-content">
-      <button
-        type="button"
-        class="tab"
-        [class.active]="activeTab === viewState.CV"
-        (click)="setTab(viewState.CV)">
-        CV
-      </button>
-
-      <button
-        type="button"
-        class="tab"
-        [class.active]="activeTab === viewState.CALC"
-        (click)="setTab(viewState.CALC)">
-        Calculation
-      </button>
-    </div>
-
-    <div class="content-area">
-      @switch (activeTab) {
-        @case (viewState.CV) {
-          <app-generic-table [columns]="userColumns" [data]="userData" />
-          <app-generic-cv-content title="EDUCATION" />
-          <app-generic-cv-content title="PROFESSIONAL_AND_LIFE_EXPERIENCE" />
-          <app-generic-cv-content title="CERTIFICATES" />
-          <app-generic-cv-content title="LEADERSHIP_EXPERIENCE" />
-        }
-        @case (viewState.CALC) {
-          <span>calculation content ...</span>
-        }
-      }
-    </div>
+    <mat-tab-group class="folder-tabs" mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
+      <mat-tab label="CV">
+                  <app-generic-table [columns]="userColumns" [data]="userData" />
+                  <app-generic-cv-content title="EDUCATION" />
+                  <app-generic-cv-content title="PROFESSIONAL_AND_LIFE_EXPERIENCE" />
+                  <app-generic-cv-content title="CERTIFICATES" />
+                  <app-generic-cv-content title="LEADERSHIP_EXPERIENCE" />
+      </mat-tab>
+      <mat-tab label="Berechnungen">
+                  <span>calculation content ...</span>
+      </mat-tab>
+    </mat-tab-group>
   </div>
 }
