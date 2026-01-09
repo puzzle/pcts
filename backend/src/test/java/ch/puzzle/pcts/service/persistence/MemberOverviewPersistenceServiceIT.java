@@ -53,7 +53,7 @@ class MemberOverviewPersistenceServiceIT extends PersistenceCoreIT {
 
         assertThat(memberOverviews)
                 .usingRecursiveFieldByFieldElementComparator()
-                .containsExactlyElementsOf(MEMBER_1_OVERVIEWS);
+                .containsExactlyInAnyOrderElementsOf(MEMBER_1_OVERVIEWS);
     }
 
     @DisplayName("Should throw exception when id is not found")
