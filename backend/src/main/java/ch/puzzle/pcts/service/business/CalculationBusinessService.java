@@ -54,16 +54,16 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
     }
 
     @Override
-    public Calculation getById(Long id) {
-        Calculation calculation = super.getById(id);
+    public Calculation getById(Long calculationId) {
+        Calculation calculation = super.getById(calculationId);
 
         BigDecimal totalRelevancyPoints = BigDecimal.ZERO;
 
-        totalRelevancyPoints = totalRelevancyPoints.add(experienceCalculationBusinessService.getExperiencePoints(id));
+        totalRelevancyPoints = totalRelevancyPoints.add(experienceCalculationBusinessService.getExperiencePoints(calculationId));
 
-        totalRelevancyPoints = totalRelevancyPoints.add(degreeCalculationBusinessService.getDegreePoints(id));
+        totalRelevancyPoints = totalRelevancyPoints.add(degreeCalculationBusinessService.getDegreePoints(calculationId));
 
-        totalRelevancyPoints = totalRelevancyPoints.add(certificateCalculationBusinessService.getCertificatePoints(id));
+        totalRelevancyPoints = totalRelevancyPoints.add(certificateCalculationBusinessService.getCertificatePoints(calculationId));
 
         calculation.setPoints(totalRelevancyPoints);
         return calculation;

@@ -38,7 +38,7 @@ public class CertificateCalculationBusinessService extends BusinessBase<Certific
     }
 
     private boolean isEligibleForPoints(CertificateCalculation certificateCalculation) {
-        boolean isManagement = certificateCalculation.getCalculation().getRole().getIsManagement();
+        boolean hasManagementRole = certificateCalculation.getCalculation().getRole().getIsManagement();
 
         boolean isLeadership = certificateCalculation
                 .getCertificate()
@@ -46,7 +46,7 @@ public class CertificateCalculationBusinessService extends BusinessBase<Certific
                 .getCertificateKind()
                 .isLeadershipExperienceType();
 
-        return isManagement || !isLeadership;
+        return hasManagementRole || !isLeadership;
     }
 
     private BigDecimal extractPoints(CertificateCalculation certificateCalculation) {
@@ -72,9 +72,9 @@ public class CertificateCalculationBusinessService extends BusinessBase<Certific
     }
 
     public List<CertificateCalculation> createCertificateCalculations(Calculation calculation) {
-        return calculation.getCertificates().stream().map(exp -> {
-            exp.setCalculation(calculation);
-            return this.create(exp);
+        return calculation.getCertificates().stream().map(certCalc -> {
+            certCalc.setCalculation(calculation);
+            return this.create(certCalc);
         }).toList();
     }
 
