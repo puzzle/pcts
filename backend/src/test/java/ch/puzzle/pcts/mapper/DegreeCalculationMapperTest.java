@@ -12,7 +12,6 @@ import ch.puzzle.pcts.model.degree.Degree;
 import ch.puzzle.pcts.service.business.DegreeBusinessService;
 import java.math.BigDecimal;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

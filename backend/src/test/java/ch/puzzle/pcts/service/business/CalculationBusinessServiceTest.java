@@ -15,7 +15,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class CalculationBusinessServiceTest extends BaseBusinessTest<Calculation, CalculationPersistenceService, CalculationValidationService, CalculationBusinessService>{
+class CalculationBusinessServiceTest
+        extends
+            BaseBusinessTest<Calculation, CalculationPersistenceService, CalculationValidationService, CalculationBusinessService> {
 
     private static final Long ID = 1L;
 
