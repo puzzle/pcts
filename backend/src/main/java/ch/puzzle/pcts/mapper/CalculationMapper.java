@@ -8,10 +8,8 @@ import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import ch.puzzle.pcts.service.business.RoleBusinessService;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 import org.springframework.stereotype.Component;
 
 @Component
