@@ -26,6 +26,10 @@ public class CertificateCalculationPersistenceService
         return this.repository.findByCertificateId(certificateId);
     }
 
+    public void deleteAllByIdInBatch(List<Long> ids) {
+        this.repository.deleteAllByIdInBatch(ids);
+    }
+
     @Override
     public String entityName() {
         return CERTIFICATE_CALCULATION;

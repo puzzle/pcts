@@ -26,6 +26,10 @@ public class DegreeCalculationPersistenceService
         return this.repository.findByDegreeId(degreeId);
     }
 
+    public void deleteAllByIdInBatch(List<Long> ids) {
+        this.repository.deleteAllByIdInBatch(ids);
+    }
+
     @Override
     public String entityName() {
         return DEGREE_CALCULATION;

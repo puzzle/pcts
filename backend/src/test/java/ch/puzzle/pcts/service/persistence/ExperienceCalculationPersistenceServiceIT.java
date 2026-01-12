@@ -109,4 +109,23 @@ class ExperienceCalculationPersistenceServiceIT
         assertEquals(ec.getComment(), saved.getComment());
         assertThat(persistenceService.getAll()).contains(saved);
     }
+
+    @DisplayName("Should delete all ExperienceCalculations by IDs in batch")
+    @Transactional
+    @Test
+    void shouldDeleteAllByIdInBatch() {
+        ExperienceCalculation ec1 = persistenceService.save(getAll().get(0));
+        ExperienceCalculation ec2 = persistenceService.save(getAll().get(1));
+        ExperienceCalculation ec3 = persistenceService.save(getAll().get(2));
+
+        List<Long> idsToDelete = List.of(ec1.getId(), ec3.getId());
+
+        persistenceService.deleteAllByIdInBatch(idsToDelete);
+
+        List<ExperienceCalculation> remaining = persistenceService.getAll();
+
+        assertThat(remaining).hasSize(1);
+        assertThat(remaining.getFirst().getId()).isEqualTo(ec2.getId());
+    }
+
 }

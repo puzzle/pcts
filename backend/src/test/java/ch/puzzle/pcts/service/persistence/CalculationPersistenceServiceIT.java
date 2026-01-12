@@ -85,9 +85,9 @@ class CalculationPersistenceServiceIT
                 .withState(CalculationState.ACTIVE)
                 .withPublicationDate(LocalDate.of(2021, 12, 9))
                 .withPublicizedBy("Ldap User")
-                .withDegrees(Collections.emptyList())
-                .withExperiences(Collections.emptyList())
-                .withCertificates(Collections.emptyList())
+                .withDegreeCalculations(Collections.emptyList())
+                .withExperienceCalculations(Collections.emptyList())
+                .withCertificateCalculations(Collections.emptyList())
                 .build();
     }
 
@@ -194,7 +194,7 @@ class CalculationPersistenceServiceIT
                 .withState(CalculationState.DRAFT)
                 .withPublicationDate(LocalDate.of(2025, 1, 14))
                 .withPublicizedBy("Ldap User")
-                .withDegrees(List
+                .withDegreeCalculations(List
                         .of(new DegreeCalculation(DEGREE_CALC_ID_1,
                                                   null,
                                                   degree2,
@@ -207,17 +207,17 @@ class CalculationPersistenceServiceIT
                                                   Relevancy.LIMITED,
                                                   BigDecimal.valueOf(100),
                                                   "Comment")))
-                .withExperiences(List
+                .withExperienceCalculations(List
                         .of(new ExperienceCalculation(EXPERIENCE_CALC_ID_1, null, exp2, Relevancy.HIGHLY, "Comment"),
                             new ExperienceCalculation(EXPERIENCE_CALC_ID_3, null, exp3, Relevancy.LIMITED, "Comment")))
-                .withCertificates(List
+                .withCertificateCalculations(List
                         .of(new CertificateCalculation(CERTIFICATE_CALC_ID_1, null, cert2),
                             new CertificateCalculation(CERTIFICATE_CALC_ID_3, null, cert5)))
                 .build();
 
-        calc1.getExperiences().forEach(e -> e.setCalculation(calc1));
-        calc1.getDegrees().forEach(d -> d.setCalculation(calc1));
-        calc1.getCertificates().forEach(c -> c.setCalculation(calc1));
+        calc1.getExperienceCalculations().forEach(e -> e.setCalculation(calc1));
+        calc1.getDegreeCalculations().forEach(d -> d.setCalculation(calc1));
+        calc1.getCertificateCalculations().forEach(c -> c.setCalculation(calc1));
 
         calculations.add(calc1);
 
@@ -229,21 +229,21 @@ class CalculationPersistenceServiceIT
                 .withState(CalculationState.ARCHIVED)
                 .withPublicationDate(LocalDate.of(2025, 1, 14))
                 .withPublicizedBy("Ldap User 2")
-                .withDegrees(List
+                .withDegreeCalculations(List
                         .of(new DegreeCalculation(DEGREE_CALC_ID_2,
                                                   null,
                                                   degree2,
                                                   Relevancy.LITTLE,
                                                   BigDecimal.valueOf(10),
                                                   "Comment")))
-                .withExperiences(List
+                .withExperienceCalculations(List
                         .of(new ExperienceCalculation(EXPERIENCE_CALC_ID_2, null, exp2, Relevancy.LITTLE, "Comment")))
-                .withCertificates(List.of(new CertificateCalculation(CERTIFICATE_CALC_ID_2, null, cert2)))
+                .withCertificateCalculations(List.of(new CertificateCalculation(CERTIFICATE_CALC_ID_2, null, cert2)))
                 .build();
 
-        calc2.getExperiences().forEach(e -> e.setCalculation(calc2));
-        calc2.getDegrees().forEach(d -> d.setCalculation(calc2));
-        calc2.getCertificates().forEach(c -> c.setCalculation(calc2));
+        calc2.getExperienceCalculations().forEach(e -> e.setCalculation(calc2));
+        calc2.getDegreeCalculations().forEach(d -> d.setCalculation(calc2));
+        calc2.getCertificateCalculations().forEach(c -> c.setCalculation(calc2));
 
         calculations.add(calc2);
 
@@ -253,9 +253,9 @@ class CalculationPersistenceServiceIT
                 .withMember(members.get(1))
                 .withRole(roles.getFirst())
                 .withState(CalculationState.ACTIVE)
-                .withDegrees(Collections.emptyList())
-                .withExperiences(Collections.emptyList())
-                .withCertificates(Collections.emptyList())
+                .withDegreeCalculations(Collections.emptyList())
+                .withExperienceCalculations(Collections.emptyList())
+                .withCertificateCalculations(Collections.emptyList())
                 .build();
 
         calculations.add(calc3);

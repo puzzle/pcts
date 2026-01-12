@@ -17,6 +17,10 @@ import ch.puzzle.pcts.dto.member.MemberDto;
 import ch.puzzle.pcts.dto.role.RoleDto;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
+import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
+import ch.puzzle.pcts.model.certificate.Certificate;
+import ch.puzzle.pcts.model.certificatetype.CertificateKind;
+import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
@@ -101,9 +105,9 @@ class CalculationMapperTest {
                 .withState(state)
                 .withPublicationDate(publicationDate)
                 .withPublicizedBy(publicizedBy)
-                .withDegrees(List.of())
-                .withExperiences(List.of())
-                .withCertificates(List.of())
+                .withDegreeCalculations(List.of())
+                .withExperienceCalculations(List.of())
+                .withCertificateCalculations(List.of())
                 .withPoints(points)
                 .build();
     }
@@ -164,10 +168,10 @@ class CalculationMapperTest {
         assertEquals(calculation.getPoints(), result.points());
         assertEquals(memberDto, result.member());
         assertEquals(roleDto, result.role());
-        assertEquals(1, result.certificates().size());
-        assertEquals(1, result.experiences().size());
-        assertEquals(1, result.leadershipExperiences().size());
-        assertEquals(1, result.degrees().size());
+        assertEquals(1, result.certificateCalculations().size());
+        assertEquals(1, result.experienceCalculations().size());
+        assertEquals(1, result.leadershipExperienceCalculations().size());
+        assertEquals(1, result.degreeCalculations().size());
 
         verify(memberMapper).toDto(calculation.getMember());
         verify(roleMapper).toDto(calculation.getRole());
@@ -198,9 +202,9 @@ class CalculationMapperTest {
         assertNull(result.getPublicationDate());
         assertEquals(member, result.getMember());
         assertEquals(role, result.getRole());
-        assertEquals(0, result.getCertificates().size());
-        assertEquals(0, result.getExperiences().size());
-        assertEquals(0, result.getDegrees().size());
+        assertEquals(0, result.getCertificateCalculations().size());
+        assertEquals(0, result.getExperienceCalculations().size());
+        assertEquals(0, result.getDegreeCalculations().size());
 
         verify(memberBusinessService).getById(MEMBER_ID);
         verify(roleBusinessService).getById(ROLE_ID);
@@ -257,5 +261,31 @@ class CalculationMapperTest {
         verify(experienceCalculationMapper, times(2)).fromDto(anyList());
         verify(certificateCalculationMapper, times(2)).fromDto(anyList());
         verify(leadershipExperienceCalculationMapper, times(2)).fromDto(anyList());
+    }
+
+    @DisplayName("Should return CertificateCalculations depending on kind")
+    @Test
+    void shouldReturnCertificateCalculationsDependingOnKind() {
+        CertificateCalculation certificateCalculation = mock(CertificateCalculation.class);
+        Certificate certificate = mock(Certificate.class);
+        CertificateType certificateType = mock(CertificateType.class);
+
+        CertificateCalculation leadershipExperienceCalculation = mock(CertificateCalculation.class);
+        Certificate leadershipExperience = mock(Certificate.class);
+        CertificateType leadershipExperienceType = mock(CertificateType.class);
+
+        when(certificateCalculation.getCertificate()).thenReturn(certificate);
+        when(certificate.getCertificateType()).thenReturn(certificateType);
+        when(certificateType.getCertificateKind()).thenReturn(CertificateKind.CERTIFICATE);
+
+        when(leadershipExperienceCalculation.getCertificate()).thenReturn(leadershipExperience);
+        when(leadershipExperience.getCertificateType()).thenReturn(leadershipExperienceType);
+        when(leadershipExperienceType.getCertificateKind()).thenReturn(CertificateKind.MILITARY_FUNCTION);
+
+        calculation1.setCertificateCalculations(List.of(certificateCalculation, leadershipExperienceCalculation));
+
+        assertEquals(List.of(certificateCalculation), calculation1.getCertificateCalculationsWithCertificateType());
+        assertEquals(List.of(leadershipExperienceCalculation),
+                     calculation1.getCertificatesCalculationsWithLeadershipExperienceType());
     }
 }

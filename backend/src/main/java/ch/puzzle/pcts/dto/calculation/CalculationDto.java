@@ -27,11 +27,11 @@ public record CalculationDto(
 
         @Schema(description = "Total points of the calculation.", example = "0.1", requiredMode = Schema.RequiredMode.REQUIRED) BigDecimal points,
 
-        @Schema(description = "Certificates used in the calculation.") List<CertificateCalculationDto> certificates,
+        @Schema(description = "Certificates used in the calculation.") List<CertificateCalculationDto> certificateCalculations,
 
-        @Schema(description = "Leadership experiences used in the calculation.") List<LeadershipExperienceCalculationDto> leadershipExperiences,
+        @Schema(description = "Leadership experiences used in the calculation.") List<LeadershipExperienceCalculationDto> leadershipExperienceCalculations,
 
-        @Schema(description = "Degrees used in the calculation.") List<DegreeCalculationDto> degrees,
+        @Schema(description = "Degrees used in the calculation.") List<DegreeCalculationDto> degreeCalculations,
 
-        @Schema(description = "Experiences used in the calculation.") List<ExperienceCalculationDto> experiences) {
+        @Schema(description = "Experiences used in the calculation.") List<ExperienceCalculationDto> experienceCalculations) {
 }

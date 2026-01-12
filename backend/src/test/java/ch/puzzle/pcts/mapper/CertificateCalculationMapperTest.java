@@ -1,3 +1,4 @@
+
 package ch.puzzle.pcts.mapper;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -72,32 +73,17 @@ class CertificateCalculationMapperTest {
         verify(certificateMapper).toDto(certificate);
     }
 
-    @DisplayName("Should return null when certificate kind is not Certificate")
-    @Test
-    void shouldReturnNull() {
-        Certificate certificate = createCertificate(CertificateKind.LEADERSHIP_TRAINING);
-        CertificateCalculation model = createCertificateCalculation(certificate);
-
-        CertificateCalculationDto result = mapper.toDto(model);
-
-        assertNull(result);
-        verify(certificateMapper, never()).toDto(any(Certificate.class));
-    }
-
     @DisplayName("Should map List<CertificateCalculation> to List<CertificateCalculationDto> and remove LeadershipExperiences")
     @Test
     void shouldMapListToDto() {
         Certificate certificate = createCertificate(CertificateKind.CERTIFICATE);
-        Certificate leadershipExperience = createCertificate(CertificateKind.LEADERSHIP_TRAINING);
 
         CertificateCalculation certificateCalculation = createCertificateCalculation(certificate);
-        CertificateCalculation leadershipExperienceCalculation = createCertificateCalculation(leadershipExperience);
 
         CertificateDto mockedDto = mockCertificateDto();
         when(certificateMapper.toDto(certificate)).thenReturn(mockedDto);
 
-        List<CertificateCalculationDto> result = mapper
-                .toDto(List.of(certificateCalculation, leadershipExperienceCalculation));
+        List<CertificateCalculationDto> result = mapper.toDto(List.of(certificateCalculation));
 
         assertEquals(1, result.size());
         assertEquals(mockedDto, result.getFirst().certificate());

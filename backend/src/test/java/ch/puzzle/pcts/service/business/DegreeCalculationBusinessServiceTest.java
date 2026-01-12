@@ -152,7 +152,7 @@ class DegreeCalculationBusinessServiceTest
         DegreeCalculation dc = mock(DegreeCalculation.class);
         when(dc.getDegree()).thenReturn(degree);
 
-        when(calculation.getDegrees()).thenReturn(List.of(dc));
+        when(calculation.getDegreeCalculations()).thenReturn(List.of(dc));
         when(persistenceService.getByDegreeId(DEGREE_CALCULATION_ID_1)).thenReturn(List.of());
         when(persistenceService.save(dc)).thenReturn(dc);
 
@@ -180,7 +180,7 @@ class DegreeCalculationBusinessServiceTest
         updated.setId(DEGREE_CALCULATION_ID_2);
         updated.setDegree(degree);
 
-        when(calculation.getDegrees()).thenReturn(List.of(updated));
+        when(calculation.getDegreeCalculations()).thenReturn(List.of(updated));
         when(persistenceService.getByCalculationId(DEGREE_CALCULATION_ID_1))
                 .thenReturn(new ArrayList<>(List.of(existing)));
         when(persistenceService.save(any(DegreeCalculation.class))).thenAnswer(inv -> inv.getArgument(0));
@@ -191,7 +191,7 @@ class DegreeCalculationBusinessServiceTest
 
         verify(validationService).validateOnUpdate(DEGREE_CALCULATION_ID_2, updated);
 
-        verify(persistenceService).delete(anyLong());
+        verify(persistenceService).deleteAllByIdInBatch(anyList());
     }
 
     @Test

@@ -93,9 +93,9 @@ class CalculationControllerIT {
                 .withState(CalculationState.ACTIVE)
                 .withPublicationDate(commonDate)
                 .withPublicizedBy("System")
-                .withDegrees(List.of())
-                .withExperiences(List.of())
-                .withCertificates(List.of())
+                .withDegreeCalculations(List.of())
+                .withExperienceCalculations(List.of())
+                .withCertificateCalculations(List.of())
                 .withPoints(BigDecimal.TEN)
                 .build();
 

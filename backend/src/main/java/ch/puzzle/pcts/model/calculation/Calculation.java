@@ -40,13 +40,13 @@ public class Calculation implements Model {
     private String publicizedBy;
 
     @OneToMany(mappedBy = "calculation", fetch = FetchType.LAZY)
-    private List<DegreeCalculation> degrees;
+    private List<DegreeCalculation> degreeCalculations;
 
     @OneToMany(mappedBy = "calculation", fetch = FetchType.LAZY)
-    private List<ExperienceCalculation> experiences;
+    private List<ExperienceCalculation> experienceCalculations;
 
     @OneToMany(mappedBy = "calculation", fetch = FetchType.LAZY)
-    private List<CertificateCalculation> certificates;
+    private List<CertificateCalculation> certificatesCalculations;
 
     @Transient
     private BigDecimal points;
@@ -58,9 +58,9 @@ public class Calculation implements Model {
         this.state = builder.state;
         this.publicationDate = builder.publicationDate;
         this.publicizedBy = trim(builder.publicizedBy);
-        this.degrees = builder.degrees;
-        this.experiences = builder.experiences;
-        this.certificates = builder.certificates;
+        this.degreeCalculations = builder.degreeCalculations;
+        this.experienceCalculations = builder.experienceCalculations;
+        this.certificatesCalculations = builder.certificatesCalculations;
         this.points = builder.points;
     }
 
@@ -70,9 +70,9 @@ public class Calculation implements Model {
     @Override
     public String toString() {
         return "Calculation{" + "id=" + id + ", member=" + member + ", role=" + role + ", state=" + state
-               + ", publicationDate=" + publicationDate + ", publicizedBy='" + publicizedBy + '\'' + ", degrees="
-               + degrees + ", experiences=" + experiences + ", certificates=" + certificates + ", points=" + points
-               + '}';
+               + ", publicationDate=" + publicationDate + ", publicizedBy='" + publicizedBy + '\''
+               + ", degreeCalculations=" + degreeCalculations + ", experienceCalculations=" + experienceCalculations
+               + ", certificatesCalculations=" + certificatesCalculations + ", points=" + points + '}';
     }
 
     @Override
@@ -83,9 +83,9 @@ public class Calculation implements Model {
                && Objects.equals(getRole(), that.getRole()) && getState() == that.getState()
                && Objects.equals(getPublicationDate(), that.getPublicationDate())
                && Objects.equals(getPublicizedBy(), that.getPublicizedBy())
-               && Objects.equals(getDegrees(), that.getDegrees())
-               && Objects.equals(getExperiences(), that.getExperiences())
-               && Objects.equals(getCertificates(), that.getCertificates())
+               && Objects.equals(getDegreeCalculations(), that.getDegreeCalculations())
+               && Objects.equals(getExperienceCalculations(), that.getExperienceCalculations())
+               && Objects.equals(getCertificateCalculations(), that.getCertificateCalculations())
                && Objects.equals(getPoints(), that.getPoints());
     }
 
@@ -98,9 +98,9 @@ public class Calculation implements Model {
                       getState(),
                       getPublicationDate(),
                       getPublicizedBy(),
-                      getDegrees(),
-                      getExperiences(),
-                      getCertificates(),
+                      getDegreeCalculations(),
+                      getExperienceCalculations(),
+                      getCertificateCalculations(),
                       getPoints());
     }
 
@@ -152,28 +152,50 @@ public class Calculation implements Model {
         this.publicizedBy = trim(publicizedBy);
     }
 
-    public List<DegreeCalculation> getDegrees() {
-        return degrees;
+    public List<DegreeCalculation> getDegreeCalculations() {
+        return degreeCalculations;
     }
 
-    public void setDegrees(List<DegreeCalculation> degrees) {
-        this.degrees = degrees;
+    public void setDegreeCalculations(List<DegreeCalculation> degreeCalculations) {
+        this.degreeCalculations = degreeCalculations;
     }
 
-    public List<ExperienceCalculation> getExperiences() {
-        return experiences;
+    public List<ExperienceCalculation> getExperienceCalculations() {
+        return experienceCalculations;
     }
 
-    public void setExperiences(List<ExperienceCalculation> experiences) {
-        this.experiences = experiences;
+    public void setExperienceCalculations(List<ExperienceCalculation> experienceCalculations) {
+        this.experienceCalculations = experienceCalculations;
     }
 
-    public List<CertificateCalculation> getCertificates() {
-        return certificates;
+    public List<CertificateCalculation> getCertificateCalculations() {
+        return certificatesCalculations;
     }
 
-    public void setCertificates(List<CertificateCalculation> certificates) {
-        this.certificates = certificates;
+    public void setCertificateCalculations(List<CertificateCalculation> certificatesCalculations) {
+        this.certificatesCalculations = certificatesCalculations;
+    }
+
+    public List<CertificateCalculation> getCertificateCalculationsWithCertificateType() {
+        return this.certificatesCalculations
+                .stream()
+                .filter(certificateCalculation -> !certificateCalculation
+                        .getCertificate()
+                        .getCertificateType()
+                        .getCertificateKind()
+                        .isLeadershipExperienceType())
+                .toList();
+    }
+
+    public List<CertificateCalculation> getCertificatesCalculationsWithLeadershipExperienceType() {
+        return this.certificatesCalculations
+                .stream()
+                .filter(certificateCalculation -> certificateCalculation
+                        .getCertificate()
+                        .getCertificateType()
+                        .getCertificateKind()
+                        .isLeadershipExperienceType())
+                .toList();
     }
 
     public BigDecimal getPoints() {
@@ -191,9 +213,9 @@ public class Calculation implements Model {
         private CalculationState state;
         private LocalDate publicationDate;
         private String publicizedBy;
-        private List<DegreeCalculation> degrees;
-        private List<ExperienceCalculation> experiences;
-        private List<CertificateCalculation> certificates;
+        private List<DegreeCalculation> degreeCalculations;
+        private List<ExperienceCalculation> experienceCalculations;
+        private List<CertificateCalculation> certificatesCalculations;
         private BigDecimal points;
 
         private Builder() {
@@ -233,18 +255,18 @@ public class Calculation implements Model {
             return this;
         }
 
-        public Builder withDegrees(List<DegreeCalculation> degrees) {
-            this.degrees = degrees;
+        public Builder withDegreeCalculations(List<DegreeCalculation> degreeCalculations) {
+            this.degreeCalculations = degreeCalculations;
             return this;
         }
 
-        public Builder withExperiences(List<ExperienceCalculation> experiences) {
-            this.experiences = experiences;
+        public Builder withExperienceCalculations(List<ExperienceCalculation> experienceCalculations) {
+            this.experienceCalculations = experienceCalculations;
             return this;
         }
 
-        public Builder withCertificates(List<CertificateCalculation> certificates) {
-            this.certificates = certificates;
+        public Builder withCertificateCalculations(List<CertificateCalculation> certificatesCalculations) {
+            this.certificatesCalculations = certificatesCalculations;
             return this;
         }
 
@@ -256,6 +278,5 @@ public class Calculation implements Model {
         public Calculation build() {
             return new Calculation(this);
         }
-
     }
 }

@@ -56,10 +56,12 @@ public class CalculationMapper {
                                   model.getPublicationDate(),
                                   model.getPublicizedBy(),
                                   model.getPoints(),
-                                  certificateCalculationMapper.toDto(model.getCertificates()),
-                                  leadershipExperienceCalculationMapper.toDto(model.getCertificates()),
-                                  degreeCalculationMapper.toDto(model.getDegrees()),
-                                  experienceCalculationMapper.toDto(model.getExperiences()));
+                                  certificateCalculationMapper
+                                          .toDto(model.getCertificateCalculationsWithCertificateType()),
+                                  leadershipExperienceCalculationMapper
+                                          .toDto(model.getCertificatesCalculationsWithLeadershipExperienceType()),
+                                  degreeCalculationMapper.toDto(model.getDegreeCalculations()),
+                                  experienceCalculationMapper.toDto(model.getExperienceCalculations()));
     }
 
     public Calculation fromDto(CalculationInputDto dto) {
@@ -70,9 +72,10 @@ public class CalculationMapper {
                 .withState(dto.state())
                 .withPublicationDate(null)
                 .withPublicizedBy(null)
-                .withDegrees(this.degreeCalculationMapper.fromDto(dto.degrees()))
-                .withExperiences(this.experienceCalculationMapper.fromDto(dto.experiences()))
-                .withCertificates(mergeCertificates(dto.leadershipExperiences(), dto.certificates()))
+                .withDegreeCalculations(this.degreeCalculationMapper.fromDto(dto.degreeCalculations()))
+                .withExperienceCalculations(this.experienceCalculationMapper.fromDto(dto.experienceCalculations()))
+                .withCertificateCalculations(mergeCertificates(dto.leadershipExperienceCalculations(),
+                                                               dto.certificateCalculations()))
                 .build();
     }
 

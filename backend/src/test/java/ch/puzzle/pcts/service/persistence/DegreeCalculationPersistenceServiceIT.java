@@ -111,4 +111,23 @@ class DegreeCalculationPersistenceServiceIT
 
         assertThat(persistenceService.getAll()).contains(saved);
     }
+
+    @DisplayName("Should delete all DegreeCalculations by IDs in batch")
+    @Transactional
+    @Test
+    void shouldDeleteAllByIdInBatch() {
+        DegreeCalculation dc1 = persistenceService.save(getAll().get(0));
+        DegreeCalculation dc2 = persistenceService.save(getAll().get(1));
+        DegreeCalculation dc3 = persistenceService.save(getAll().get(2));
+
+        List<Long> idsToDelete = List.of(dc1.getId(), dc3.getId());
+
+        persistenceService.deleteAllByIdInBatch(idsToDelete);
+
+        List<DegreeCalculation> remaining = persistenceService.getAll();
+
+        assertThat(remaining).hasSize(1);
+        assertThat(remaining.getFirst().getId()).isEqualTo(dc2.getId());
+    }
+
 }

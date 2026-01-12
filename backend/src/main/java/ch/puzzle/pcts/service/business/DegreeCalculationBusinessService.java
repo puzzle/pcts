@@ -54,7 +54,7 @@ public class DegreeCalculationBusinessService extends BusinessBase<DegreeCalcula
     }
 
     public List<DegreeCalculation> createDegreeCalculations(Calculation calculation) {
-        return calculation.getDegrees().stream().map(deg -> {
+        return calculation.getDegreeCalculations().stream().map(deg -> {
             deg.setCalculation(calculation);
             return this.create(deg);
         }).toList();
@@ -63,7 +63,7 @@ public class DegreeCalculationBusinessService extends BusinessBase<DegreeCalcula
     public List<DegreeCalculation> updateDegreeCalculations(Calculation calculation) {
         List<DegreeCalculation> existing = this.getByCalculationId(calculation.getId());
 
-        List<DegreeCalculation> degreeCalculations = calculation.getDegrees().stream().map(deg -> {
+        List<DegreeCalculation> degreeCalculations = calculation.getDegreeCalculations().stream().map(deg -> {
             deg.setCalculation(calculation);
             return deg.getId() == null ? this.create(deg) : this.update(deg.getId(), deg);
         }).toList();
@@ -73,7 +73,8 @@ public class DegreeCalculationBusinessService extends BusinessBase<DegreeCalcula
          * unused degree calculations
          */
         existing.removeAll(degreeCalculations);
-        existing.stream().map(DegreeCalculation::getId).forEach(this::delete);
+        this.degreeCalculationPersistenceService
+                .deleteAllByIdInBatch(existing.stream().map(DegreeCalculation::getId).toList());
 
         return degreeCalculations;
     }

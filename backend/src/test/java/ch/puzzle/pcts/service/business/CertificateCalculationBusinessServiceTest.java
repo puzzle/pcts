@@ -149,7 +149,7 @@ class CertificateCalculationBusinessServiceTest
 
         when(cc.getCertificate()).thenReturn(certificate);
         when(certificate.getId()).thenReturn(CERTIFICATE_CALCULATION_ID_1);
-        when(calculation.getCertificates()).thenReturn(List.of(cc));
+        when(calculation.getCertificateCalculations()).thenReturn(List.of(cc));
         when(persistenceService.getByCertificateId(CERTIFICATE_CALCULATION_ID_1)).thenReturn(List.of());
         when(persistenceService.save(cc)).thenReturn(cc);
 
@@ -177,7 +177,7 @@ class CertificateCalculationBusinessServiceTest
         updated.setId(CERTIFICATE_CALCULATION_ID_2);
         updated.setCertificate(certificate);
 
-        when(calculation.getCertificates()).thenReturn(List.of(updated));
+        when(calculation.getCertificateCalculations()).thenReturn(List.of(updated));
         when(persistenceService.getByCalculationId(CERTIFICATE_CALCULATION_ID_1))
                 .thenReturn(new ArrayList<>(List.of(existing)));
         when(persistenceService.save(any(CertificateCalculation.class))).thenAnswer(inv -> inv.getArgument(0));
@@ -188,6 +188,6 @@ class CertificateCalculationBusinessServiceTest
 
         verify(validationService).validateOnUpdate(CERTIFICATE_CALCULATION_ID_2, updated);
 
-        verify(persistenceService).delete(anyLong());
+        verify(persistenceService).deleteAllByIdInBatch(anyList());
     }
 }

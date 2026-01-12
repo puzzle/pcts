@@ -165,7 +165,7 @@ class ExperienceCalculationBusinessServiceTest
         ExperienceCalculation ec = mock(ExperienceCalculation.class);
         Experience exp = mock(Experience.class);
 
-        when(calculation.getExperiences()).thenReturn(List.of(ec));
+        when(calculation.getExperienceCalculations()).thenReturn(List.of(ec));
         when(ec.getExperience()).thenReturn(exp);
         when(exp.getId()).thenReturn(EXPERIENCE_CALCULATION_ID_1);
         when(persistenceService.getByExperienceId(any())).thenReturn(List.of());
@@ -195,7 +195,7 @@ class ExperienceCalculationBusinessServiceTest
         updated.setId(EXPERIENCE_CALCULATION_ID_2);
         updated.setExperience(experience);
 
-        when(calculation.getExperiences()).thenReturn(List.of(updated));
+        when(calculation.getExperienceCalculations()).thenReturn(List.of(updated));
         when(persistenceService.getByCalculationId(EXPERIENCE_CALCULATION_ID_1))
                 .thenReturn(new ArrayList<>(List.of(existing)));
         when(persistenceService.save(any(ExperienceCalculation.class))).thenAnswer(inv -> inv.getArgument(0));
@@ -206,7 +206,7 @@ class ExperienceCalculationBusinessServiceTest
 
         verify(validationService).validateOnUpdate(EXPERIENCE_CALCULATION_ID_2, updated);
 
-        verify(persistenceService).delete(anyLong());
+        verify(persistenceService).deleteAllByIdInBatch(anyList());
     }
 
     @Test

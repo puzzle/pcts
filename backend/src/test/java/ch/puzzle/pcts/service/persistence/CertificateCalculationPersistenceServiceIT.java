@@ -89,4 +89,23 @@ class CertificateCalculationPersistenceServiceIT
         assertEquals(cc.getCertificate(), saved.getCertificate());
         assertThat(persistenceService.getAll()).contains(saved);
     }
+
+    @DisplayName("Should delete all CertificateCalculations by IDs in batch")
+    @Transactional
+    @Test
+    void shouldDeleteAllByIdInBatch() {
+        CertificateCalculation cc1 = persistenceService.save(getAll().get(0));
+        CertificateCalculation cc2 = persistenceService.save(getAll().get(1));
+        CertificateCalculation cc3 = persistenceService.save(getAll().get(2));
+
+        List<Long> idsToDelete = List.of(cc1.getId(), cc3.getId());
+
+        persistenceService.deleteAllByIdInBatch(idsToDelete);
+
+        List<CertificateCalculation> remaining = persistenceService.getAll();
+
+        assertThat(remaining).hasSize(1);
+        assertThat(remaining.getFirst().getId()).isEqualTo(cc2.getId());
+    }
+
 }

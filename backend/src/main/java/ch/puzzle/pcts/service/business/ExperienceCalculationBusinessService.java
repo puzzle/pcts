@@ -56,7 +56,7 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
     }
 
     public List<ExperienceCalculation> createExperienceCalculations(Calculation calculation) {
-        return calculation.getExperiences().stream().map(exp -> {
+        return calculation.getExperienceCalculations().stream().map(exp -> {
             exp.setCalculation(calculation);
             return this.create(exp);
         }).toList();
@@ -65,17 +65,22 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
     public List<ExperienceCalculation> updateExperienceCalculations(Calculation calculation) {
         List<ExperienceCalculation> existing = this.getByCalculationId(calculation.getId());
 
-        List<ExperienceCalculation> experienceCalculations = calculation.getExperiences().stream().map(exp -> {
-            exp.setCalculation(calculation);
-            return exp.getId() == null ? this.create(exp) : this.update(exp.getId(), exp);
-        }).toList();
+        List<ExperienceCalculation> experienceCalculations = calculation
+                .getExperienceCalculations()
+                .stream()
+                .map(exp -> {
+                    exp.setCalculation(calculation);
+                    return exp.getId() == null ? this.create(exp) : this.update(exp.getId(), exp);
+                })
+                .toList();
 
         /*
          * Removing all created or updated experience calculations to later delete the
          * unused experience calculations
          */
         existing.removeAll(experienceCalculations);
-        existing.stream().map(ExperienceCalculation::getId).forEach(this::delete);
+        this.experienceCalculationPersistenceService
+                .deleteAllByIdInBatch(existing.stream().map(ExperienceCalculation::getId).toList());
 
         return experienceCalculations;
     }

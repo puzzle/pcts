@@ -72,7 +72,7 @@ public class CertificateCalculationBusinessService extends BusinessBase<Certific
     }
 
     public List<CertificateCalculation> createCertificateCalculations(Calculation calculation) {
-        return calculation.getCertificates().stream().map(certCalc -> {
+        return calculation.getCertificateCalculations().stream().map(certCalc -> {
             certCalc.setCalculation(calculation);
             return this.create(certCalc);
         }).toList();
@@ -82,7 +82,7 @@ public class CertificateCalculationBusinessService extends BusinessBase<Certific
         List<CertificateCalculation> existing = this.getByCalculationId(calculation.getId());
 
         List<CertificateCalculation> certificateCalculations = calculation
-                .getCertificates()
+                .getCertificateCalculations()
                 .stream()
                 .map(certificateCalculation -> {
                     certificateCalculation.setCalculation(calculation);
@@ -96,7 +96,8 @@ public class CertificateCalculationBusinessService extends BusinessBase<Certific
          * unused certificate calculations
          */
         existing.removeAll(certificateCalculations);
-        existing.stream().map(CertificateCalculation::getId).forEach(this::delete);
+        this.certificateCalculationPersistenceService
+                .deleteAllByIdInBatch(existing.stream().map(CertificateCalculation::getId).toList());
 
         return certificateCalculations;
     }

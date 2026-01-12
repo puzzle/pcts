@@ -1,10 +1,14 @@
 package ch.puzzle.pcts.service.business;
 
 import ch.puzzle.pcts.model.calculation.Calculation;
+import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
+import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
+import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
 import ch.puzzle.pcts.service.persistence.CalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.CalculationValidationService;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,14 +31,21 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
     @Override
     @Transactional
     public Calculation create(Calculation calculation) {
+        // create base Calculation first to get the final persisted state
         Calculation createdCalculation = super.create(calculation);
 
-        createdCalculation
-                .setExperiences(experienceCalculationBusinessService.createExperienceCalculations(calculation));
-        createdCalculation.setDegrees(degreeCalculationBusinessService.createDegreeCalculations(calculation));
+        // create related entities using the createdCalculation
+        List<ExperienceCalculation> createdExperienceCalculations = experienceCalculationBusinessService
+                .createExperienceCalculations(calculation);
+        List<DegreeCalculation> createdDegreeCalculations = degreeCalculationBusinessService
+                .createDegreeCalculations(calculation);
+        List<CertificateCalculation> createdCertificatesCalculations = certificateCalculationBusinessService
+                .createCertificateCalculations(calculation);
 
-        createdCalculation
-                .setCertificates(certificateCalculationBusinessService.createCertificateCalculations(calculation));
+        // set relations to return a fully-populated object
+        createdCalculation.setExperienceCalculations(createdExperienceCalculations);
+        createdCalculation.setDegreeCalculations(createdDegreeCalculations);
+        createdCalculation.setCertificateCalculations(createdCertificatesCalculations);
 
         return createdCalculation;
     }
@@ -42,13 +53,23 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
     @Override
     @Transactional
     public Calculation update(Long id, Calculation calculation) {
+        // update base Calculation first to get the final persisted state
         Calculation updatedCalculation = super.update(id, calculation);
 
-        updatedCalculation
-                .setExperiences(experienceCalculationBusinessService.updateExperienceCalculations(calculation));
-        updatedCalculation.setDegrees(degreeCalculationBusinessService.updateDegreeCalculations(calculation));
-        updatedCalculation
-                .setCertificates(certificateCalculationBusinessService.updateCertificateCalculations(calculation));
+        // update related entities using the updatedCalculation
+        List<ExperienceCalculation> updatedExperienceCalculations = experienceCalculationBusinessService
+                .updateExperienceCalculations(updatedCalculation);
+
+        List<DegreeCalculation> updatedDegreeCalculations = degreeCalculationBusinessService
+                .updateDegreeCalculations(updatedCalculation);
+
+        List<CertificateCalculation> updatedCertificateCalculations = certificateCalculationBusinessService
+                .updateCertificateCalculations(updatedCalculation);
+
+        // set relations to return a fully-populated object
+        updatedCalculation.setExperienceCalculations(updatedExperienceCalculations);
+        updatedCalculation.setDegreeCalculations(updatedDegreeCalculations);
+        updatedCalculation.setCertificateCalculations(updatedCertificateCalculations);
 
         return updatedCalculation;
     }

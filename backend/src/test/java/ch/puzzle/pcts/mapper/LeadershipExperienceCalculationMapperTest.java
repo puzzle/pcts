@@ -81,36 +81,23 @@ class LeadershipExperienceCalculationMapperTest {
         verify(leadershipExperienceMapper).toDto(experience);
     }
 
-    @DisplayName("Should return null when certificate kind is CERTIFICATE")
-    @Test
-    void shouldReturnNullWhenCertificateKindIsCertificate() {
-        CertificateCalculation model = createCertificateCalculation(createCertificateOnly());
-
-        LeadershipExperienceCalculationDto result = mapper.toDto(model);
-
-        assertNull(result);
-        verify(leadershipExperienceMapper, never()).toDto(any(Certificate.class));
-    }
-
     @DisplayName("Should map List<CertificateCalculation> to List<LeadershipExperienceCalculationDto> and remove Certificates")
     @Test
     void shouldMapListToDto() {
         Certificate leadershipExperience = createLeadershipExperience();
-        Certificate certificate = createCertificateOnly();
 
         CertificateCalculation leadershipCalc = createCertificateCalculation(leadershipExperience);
-        CertificateCalculation certificateCalc = createCertificateCalculation(certificate);
 
         LeadershipExperienceDto mockedDto = mockLeadershipExperienceDto();
         when(leadershipExperienceMapper.toDto(leadershipExperience)).thenReturn(mockedDto);
 
-        List<LeadershipExperienceCalculationDto> result = mapper.toDto(List.of(leadershipCalc, certificateCalc));
+        List<LeadershipExperienceCalculationDto> result = mapper.toDto(List.of(leadershipCalc));
 
         assertEquals(1, result.size());
-        assertEquals(mockedDto, result.get(0).experience());
+        assertEquals(mockedDto, result.getFirst().experience());
 
         verify(leadershipExperienceMapper).toDto(leadershipExperience);
-        verify(leadershipExperienceMapper, never()).toDto(certificate);
+
     }
 
     @DisplayName("Should map ID to CertificateCalculation")

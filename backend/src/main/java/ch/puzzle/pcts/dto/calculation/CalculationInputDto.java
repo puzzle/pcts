@@ -16,11 +16,11 @@ public record CalculationInputDto(
 
         @Schema(description = "The role id for this calculation.", example = "1") Long roleId,
 
-        @Schema(description = "Certificates associated with the calculation.") List<CertificateCalculationInputDto> certificates,
+        @Schema(description = "Certificates associated with the calculation.") List<CertificateCalculationInputDto> certificateCalculations,
 
-        @Schema(description = "Leadership experiences associated with the calculation.") List<LeadershipExperienceCalculationInputDto> leadershipExperiences,
+        @Schema(description = "Leadership experiences associated with the calculation.") List<LeadershipExperienceCalculationInputDto> leadershipExperienceCalculations,
 
-        @Schema(description = "Degrees associated with the calculation.") List<DegreeCalculationInputDto> degrees,
+        @Schema(description = "Degrees associated with the calculation.") List<DegreeCalculationInputDto> degreeCalculations,
 
-        @Schema(description = "Experiences associated with the calculation.") List<ExperienceCalculationInputDto> experiences) {
+        @Schema(description = "Experiences associated with the calculation.") List<ExperienceCalculationInputDto> experienceCalculations) {
 }
