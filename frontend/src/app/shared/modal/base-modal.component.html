@@ -1,7 +1,7 @@
 <div class="d-flex p-3" mat-dialog-title>
   <div class="container-fluid">
     <div class="d-flex align-items-center justify-content-between flex-row">
-        <h3 [attr.data-testid]=" ('MODEL_NAME' | scopedTranslation) +'-title'" class="mb-0">
+        <h3 [attr.data-testid]="'title' | translatedModelSuffix" class="mb-0">
           {{ "MODEL_NAME" | scopedTranslation  }}
           {{ "ACTION" | scopedTranslation }}
         </h3>
@@ -9,8 +9,7 @@
         type="reset"
         [mat-dialog-close]="true"
         mat-icon-button
-        [attr.data-testId]=" ('MODEL_NAME' | scopedTranslation) + '-close-dialog'"
-        class=""
+        [attr.data-testId]="'close-dialog' | translatedModelSuffix"
       >
         <mat-icon class="text-secondary">close</mat-icon>
       </button>

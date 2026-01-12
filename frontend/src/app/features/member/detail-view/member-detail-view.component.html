@@ -18,7 +18,7 @@
         <span>
           <p class="mb-0">{{ 'ABBREVIATION' | scopedTranslation }}:</p>
           <p class="fw-bold">
-            {{ m.abbreviation ? (m.abbreviation) : ('ATTRIBUTE_NULL' | scopedTranslation)}}
+            {{ m.abbreviation | nullFallback }}
           </p>
         </span>
 
@@ -30,12 +30,8 @@
         <span>
           <p class="mb-0">{{ 'DATE_OF_HIRE' | scopedTranslation }}:</p>
           <p class="fw-bold">
-            {{ m.dateOfHire
-            ? (m.dateOfHire | date)
-            : ('ATTRIBUTE_NULL' | scopedTranslation)
-            }}
+              {{ m.dateOfHire | date | nullFallback }}
           </p>
-
         </span>
 
         <span>
@@ -46,11 +42,7 @@
         <span>
           <p class="mb-0">{{ 'ORGANISATION_UNIT' | scopedTranslation }}:</p>
           <p class="fw-bold">
-            @if (m.organisationUnitName) {
-              {{m.organisationUnitName}}
-            } @else {
-              {{'ATTRIBUTE_NULL' | scopedTranslation}}
-            }
+              {{m.organisationUnit?.name | nullFallback}}
           </p>
         </span>
       </div>
@@ -99,3 +91,4 @@
     </mat-tab-group>
   </div>
 }
+<div class="vh-100"></div>
