@@ -1,4 +1,4 @@
-import { CertificateKind } from '../certificates/certificate-type/certificate-kind.enum';
+import { CertificateKind } from '../../../certificates/certificate-type/certificate-kind.enum';
 
 export interface LeadershipExperienceTypeOverviewModel {
   name: string;

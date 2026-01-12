@@ -1,7 +1,7 @@
 import { Directive, inject, input, TemplateRef } from '@angular/core';
 
 @Directive({
-  selector: '[columnTemplate]',
+  selector: '[appColumnTemplate]',
   standalone: true
 })
 export class ColumnTemplateDirective {
@@ -9,5 +9,5 @@ export class ColumnTemplateDirective {
   template = inject(TemplateRef);
 
   // Captures the input value, e.g. columnTemplate="status"
-  columnName = input.required<string>({ alias: 'columnTemplate' });
+  columnName = input.required<string>({ alias: 'appColumnTemplate' });
 }

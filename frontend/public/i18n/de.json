@@ -1,6 +1,24 @@
 {
   "PCTS_LOGO_ALT": "Puzzle PCTS Logo",
   "LOGOUT": "Abmelden",
+  "DEGREE": {
+    "MODEL_NAME": "Ausbildung",
+    "NAME": "Name"
+  },
+  "EXPERIENCE": {
+    "MODEL_NAME": "Berufs- und Lebenserfahrung",
+    "COMMENT": "Kommentar"
+  },
+  "CERTIFICATE": {
+    "MODEL_NAME": "Zertifikate",
+    "COMMENT": "Kommentar",
+    "COMPLETED_AT": "Abgeschlossen am"
+  },
+  "LEADERSHIP_EXPERIENCE": {
+    "MODEL_NAME": "Führungserfahrung",
+    "LEADERSHIP_EXPERIENCE_TYPE": "Führungserfahrung Typ",
+    "COMMENT": "Kommentar"
+  },
 
   "FORM": {
     "ADD": {
@@ -57,11 +75,27 @@
       "APPLICANT": "Bewerber",
       "EX_MEMBER": "Ex-Member"
     },
-    "EDUCATION": "Ausbildung",
-    "PROFESSIONAL_AND_LIFE_EXPERIENCE": "Berufs- und Lebenserfahrung",
-    "CERTIFICATES": "Zertifikate",
-    "LEADERSHIP_EXPERIENCE": "Führungserfahrung",
-    "ADD_ENTRY": "Eintrag hinzufügen"
+    "CV": {
+      "DEGREE": {
+        "MODEL_NAME": "Ausbildung",
+        "DEGREE_TYPE_NAME": "Ausbildungs Typ",
+        "DATE_RANGE": "Zeitspanne"
+      },
+      "EXPERIENCE": {
+        "MODEL_NAME": "Berufs- und Lebenserfahrung",
+        "DATE_RANGE": "Zeitspanne",
+        "WORK_NAME": "Arbeitsort",
+        "EXPERIENCE_TYPE_NAME": "Erfahrungs Typ"
+      },
+      "CERTIFICATE": {
+        "MODEL_NAME": "Zertifikate",
+        "CERTIFICATE_TYPE_NAME": "Zertifikat's Typ"
+      },
+      "LEADERSHIP_EXPERIENCE": {
+        "MODEL_NAME": "Führungserfahrung"
+      },
+      "ADD_ENTRY": "Eintrag hinzufügen"
+    }
   },
 
   "ERROR": {

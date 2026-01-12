@@ -29,7 +29,7 @@ import { CaseFormatter } from '../format/case-formatter';
 import { GenCol, GenericTableDataSource } from './GenericTableDataSource';
 import { RouterLink } from '@angular/router';
 import { NgTemplateOutlet } from '@angular/common';
-import { ColumnTemplateDirective } from './column-template.directive';
+import { ColumnTemplateDirective } from './column-template/column-template.directive';
 
 @Component({
   selector: 'app-generic-table',
