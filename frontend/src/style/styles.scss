@@ -2,3 +2,14 @@
 @use 'variables';
 
 @import 'material-icons/iconfont/material-icons.css';
+
+.experience-type-pill {
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 12px;
+  background-color: red;
+}
+
+.split-text {
+  white-space: pre-line;
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit, WritableSignal, signal, inject } from '@angular/core';
+import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberService } from '../member.service';
@@ -13,7 +13,6 @@ import { DegreeOverviewModel } from '../degree-overview.model';
 import { ExperienceOverviewModel } from '../experience-overview.model';
 import { CertificateOverviewModel } from '../certificate-overview.model';
 import { LeadershipExperienceOverviewModel } from '../leadership-experience-overview.model';
-import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -66,6 +65,7 @@ export class MemberDetailViewComponent implements OnInit {
 
   leadershipExperienceData = signal<LeadershipExperienceOverviewModel[] | null>(null);
 
+  private readonly datePipe = inject(DatePipe);
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -86,18 +86,30 @@ export class MemberDetailViewComponent implements OnInit {
       });
   }
 
-  degreeColumns: GenCol<DegreeOverviewModel>[] = [GenCol.fromAttr('startDate'), // use from Calc function
-    GenCol.fromAttr('name'),
-    GenCol.fromAttr('degreeTypeName')];
+  degreeColumns: GenCol<DegreeOverviewModel>[] = [GenCol.fromCalculated('dateRange', (e) => {
+    const start = this.datePipe.transform(e.startDate, GLOBAL_DATE_FORMAT);
+    const end = this.datePipe.transform(e.endDate, GLOBAL_DATE_FORMAT);
+    return `${start} - ${end}`;
+  }),
+
+  GenCol.fromAttr('name'),
+  GenCol.fromAttr('degreeTypeName')];
 
   experienceColumns: GenCol<ExperienceOverviewModel>[] = [
-    GenCol.fromAttr('startDate'), // use from Calc function
-    GenCol.fromAttr('name'), // use form calc with employer
+    GenCol.fromCalculated('dateRange', (e) => {
+      const start = this.datePipe.transform(e.startDate, GLOBAL_DATE_FORMAT);
+      const end = this.datePipe.transform(e.endDate, GLOBAL_DATE_FORMAT);
+      return `${start} - ${end}`;
+    }),
+    GenCol.fromCalculated('name', (e: ExperienceOverviewModel) => `${e.employer}\n${e.name}`)
+      .withCellClass('split-text'),
+
     GenCol.fromAttr('comment'),
-    GenCol.fromAttr('experienceTypeName') // custom styling
+    GenCol.fromAttr('experienceTypeName')
+      .withCellClass('experience-type-pill')
   ];
 
-  certificateColumns: GenCol<CertificateOverviewModel>[] = [GenCol.fromAttr('completedAt', [(d: DateTime) => d.toLocaleString(DateTime.DATE_MED)]),
+  certificateColumns: GenCol<CertificateOverviewModel>[] = [GenCol.fromAttr('completedAt', [(d: Date) => this.datePipe.transform(d, GLOBAL_DATE_FORMAT)]),
     GenCol.fromAttr('certificateTypeName'),
     GenCol.fromAttr('comment')];
 
