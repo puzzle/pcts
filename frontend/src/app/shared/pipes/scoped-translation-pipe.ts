@@ -9,6 +9,6 @@ export class ScopedTranslationPipe implements PipeTransform {
   pctsTranslationService = inject(ScopedTranslationService);
 
   transform(value: string, params?: InterpolationParameters): string {
-    return this.pctsTranslationService.instant(value, params);
+    return this.pctsTranslationService.instant(value.toUpperCase(), params);
   }
 }
