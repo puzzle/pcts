@@ -1,8 +1,8 @@
 <div class="d-flex flex-row gap-3">
-  <button mat-stroked-button type="button" (click)="canceled.emit()">
+  <button matButton="text" type="button" (click)="canceled.emit()">
     {{ "BUTTONS.CANCEL" | scopedTranslation  }}
   </button>
-  <button mat-flat-button color="primary" type="submit" data-testid="submit-button" [disabled]="!formGroup().valid">
+  <button matButton="filled" type="submit" data-testid="submit-button" [disabled]="!formGroup().valid">
     {{ "BUTTONS.ACTION" | scopedTranslation }}
   </button>
 </div>
