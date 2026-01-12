@@ -1,8 +1,6 @@
 import { MatTableDataSource } from '@angular/material/table';
 
-
 type Formatter = (value: any) => any;
-
 
 export class GenCol<T> {
   columnName = '';
@@ -10,8 +8,6 @@ export class GenCol<T> {
   getValue: (model: T) => any = () => {};
 
   pipes: Formatter[] = [];
-
-  cellClass?: string | ((row: T) => string);
 
   shouldLink = false;
 
@@ -37,13 +33,7 @@ export class GenCol<T> {
     this.shouldLink = shouldLink;
     return this;
   }
-
-  withCellClass(cls: string | ((row: T) => string)) {
-    this.cellClass = cls;
-    return this;
-  }
 }
-
 
 export class GenericTableDataSource<T> extends MatTableDataSource<T> {
   private _columnDefs: GenCol<T>[] = [];
@@ -52,7 +42,6 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
     super(initialData);
     this.columnDefs = columnDefs;
   }
-
 
   get columnDefs(): GenCol<T>[] {
     return this._columnDefs;

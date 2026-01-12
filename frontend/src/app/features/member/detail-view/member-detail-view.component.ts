@@ -31,22 +31,6 @@ import { LeadershipExperienceOverviewModel } from '../leadership-experience-over
   styleUrl: './member-detail-view.component.scss'
 })
 export class MemberDetailViewComponent implements OnInit {
-  userColumns: { key: keyof User;
-    label: string; }[] = [{ key: 'name',
-    label: 'Name' },
-  { key: 'age',
-    label: 'Age' },
-  { key: 'email',
-    label: 'Email' }];
-
-  userData: User[] = [{ name: 'John Doe',
-    age: 30,
-    email: 'john@example.com' },
-  { name: 'Jane Smith',
-    age: 25,
-    email: 'jane@example.com' }];
-
-
   private readonly service = inject(MemberService);
 
   private readonly route = inject(ActivatedRoute);
@@ -101,12 +85,9 @@ export class MemberDetailViewComponent implements OnInit {
       const end = this.datePipe.transform(e.endDate, GLOBAL_DATE_FORMAT);
       return `${start} - ${end}`;
     }),
-    GenCol.fromCalculated('name', (e: ExperienceOverviewModel) => `${e.employer}\n${e.name}`)
-      .withCellClass('split-text'),
-
+    GenCol.fromCalculated('workName', (e: ExperienceOverviewModel) => `${e.employer}\n${e.name}`),
     GenCol.fromAttr('comment'),
     GenCol.fromAttr('experienceTypeName')
-      .withCellClass('experience-type-pill')
   ];
 
   certificateColumns: GenCol<CertificateOverviewModel>[] = [GenCol.fromAttr('completedAt', [(d: Date) => this.datePipe.transform(d, GLOBAL_DATE_FORMAT)]),
@@ -115,11 +96,4 @@ export class MemberDetailViewComponent implements OnInit {
 
   leadershipExperienceColumns: GenCol<LeadershipExperienceOverviewModel>[] = [GenCol.fromCalculated('leadershipExperienceType', (e) => e.leadershipExperienceType.name),
     GenCol.fromAttr('comment')];
-}
-
-
-interface User {
-  name: string;
-  age: number;
-  email: string;
 }
