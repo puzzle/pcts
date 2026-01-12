@@ -68,12 +68,10 @@ export class MemberDetailViewComponent implements OnInit {
       return;
     }
 
-    this.service.getMemberById(Number(id))
+    this.service.getMemberOverviewByMemberId(Number(id))
       .subscribe({
-        next: (member) => {
-          this.member.set(member);
-          this.orgData.set([member.organisationUnit]);
-          console.log(member);
+        next: (memberOverview) => {
+          this.member.set(memberOverview.member);
         }
       });
   }
