@@ -13,6 +13,7 @@ import { DegreeOverviewModel } from '../degree-overview.model';
 import { ExperienceOverviewModel } from '../experience-overview.model';
 import { CertificateOverviewModel } from '../certificate-overview.model';
 import { LeadershipExperienceOverviewModel } from '../leadership-experience-overview.model';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -85,18 +86,23 @@ export class MemberDetailViewComponent implements OnInit {
       });
   }
 
-  degreeColumns: GenCol<DegreeOverviewModel>[] = [
-    GenCol.fromAttr('startDate'),
-    GenCol.fromAttr('endDate'),
+  degreeColumns: GenCol<DegreeOverviewModel>[] = [GenCol.fromAttr('startDate'), // use from Calc function
     GenCol.fromAttr('name'),
-    GenCol.fromAttr('degreeTypeName')
+    GenCol.fromAttr('degreeTypeName')];
+
+  experienceColumns: GenCol<ExperienceOverviewModel>[] = [
+    GenCol.fromAttr('startDate'), // use from Calc function
+    GenCol.fromAttr('name'), // use form calc with employer
+    GenCol.fromAttr('comment'),
+    GenCol.fromAttr('experienceTypeName') // custom styling
   ];
 
-  experienceColumns: GenCol<ExperienceOverviewModel>[] = [GenCol.fromAttr('name')];
+  certificateColumns: GenCol<CertificateOverviewModel>[] = [GenCol.fromAttr('completedAt', [(d: DateTime) => d.toLocaleString(DateTime.DATE_MED)]),
+    GenCol.fromAttr('certificateTypeName'),
+    GenCol.fromAttr('comment')];
 
-  certificateColumns: GenCol<CertificateOverviewModel>[] = [GenCol.fromAttr('certificateTypeName')];
-
-  leadershipExperienceColumns: GenCol<LeadershipExperienceOverviewModel>[] = [GenCol.fromAttr('leadershipExperienceType')];
+  leadershipExperienceColumns: GenCol<LeadershipExperienceOverviewModel>[] = [GenCol.fromCalculated('leadershipExperienceType', (e) => e.leadershipExperienceType.name),
+    GenCol.fromAttr('comment')];
 }
 
 
