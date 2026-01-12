@@ -1,4 +1,14 @@
-import { AfterViewChecked, Component, computed, effect, inject, input, signal, viewChild } from '@angular/core';
+import {
+  AfterViewChecked,
+  Component,
+  computed,
+  contentChildren,
+  effect,
+  inject,
+  input,
+  signal, TemplateRef,
+  viewChild
+} from '@angular/core';
 import {
   MatCell,
   MatCellDef,
@@ -17,6 +27,8 @@ import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
 import { CaseFormatter } from '../format/case-formatter';
 import { GenCol, GenericTableDataSource } from './GenericTableDataSource';
 import { RouterLink } from '@angular/router';
+import { ColumnTemplateDirective } from './ColumnTemplate.directive';
+import { NgTemplateOutlet } from '@angular/common';
 
 
 @Component({
@@ -36,7 +48,8 @@ import { RouterLink } from '@angular/router';
     ScopedTranslationPipe,
     MatHeaderCellDef,
     MatNoDataRow,
-    RouterLink
+    RouterLink,
+    NgTemplateOutlet
   ],
   templateUrl: './generic-table.component.html',
   styleUrl: './generic-table.component.scss'
@@ -64,6 +77,17 @@ export class GenericTableComponent<T extends object> implements AfterViewChecked
       this.dataSource().sort = this.sort();
     });
   }
+
+  customTemplates = contentChildren(ColumnTemplateDirective);
+
+  templateMap = computed(() => {
+    const map = new Map<string, TemplateRef<any>>();
+    this.customTemplates()
+      .forEach((dir) => {
+        map.set(dir.columnName(), dir.template);
+      });
+    return map;
+  });
 
   createSortingAccessor(columns: GenCol<T>[]) {
     return (data: T, sortHeaderId: string) => {

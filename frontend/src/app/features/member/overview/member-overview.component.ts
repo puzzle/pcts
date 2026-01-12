@@ -20,6 +20,9 @@ import { ScopedTranslationService } from '../../../shared/services/scoped-transl
 import { map, startWith } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MemberOverviewParams } from './member-overview-resolver';
+import { ColumnTemplateDirective } from '../../../shared/generic-table/ColumnTemplate.directive';
+import { JsonPipe } from '@angular/common';
+import { TypedTemplateDirective } from '../../../shared/generic-table/typed-template.directive';
 
 
 type TypedAbstractControl = AbstractControl & { getRawValue: () => object };
@@ -40,7 +43,10 @@ export type RequiredFormRawValue<T extends TypedAbstractControl> =
     MatButton,
     ScopedTranslationPipe,
     GenericTableComponent,
-    CrudButtonComponent
+    CrudButtonComponent,
+    ColumnTemplateDirective,
+    JsonPipe,
+    TypedTemplateDirective
   ],
   templateUrl: './member-overview.component.html',
   styleUrl: './member-overview.component.scss'

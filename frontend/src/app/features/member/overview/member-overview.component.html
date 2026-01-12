@@ -59,6 +59,10 @@
   </div>
 
   <div class="overflow-y-scroll mat-elevation-z8 table-max-height">
-      <app-generic-table [dataSource]="this.dataSource" idAttr="id" />
+      <app-generic-table [dataSource]="this.dataSource" idAttr="id" >
+          <ng-template columnTemplate="firstName" let-member [typedTemplate]="this.dataSource.data">
+                  {{ member | json }}
+          </ng-template>
+      </app-generic-table>
   </div>
 </div>
