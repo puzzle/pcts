@@ -11,6 +11,8 @@ export class GenCol<T> {
 
   pipes: Formatter[] = [];
 
+  cellClass?: string | ((row: T) => string);
+
   shouldLink = false;
 
   protected constructor() {}
@@ -33,6 +35,11 @@ export class GenCol<T> {
 
   public withLink(shouldLink = true) {
     this.shouldLink = shouldLink;
+    return this;
+  }
+
+  withCellClass(cls: string | ((row: T) => string)) {
+    this.cellClass = cls;
     return this;
   }
 }
