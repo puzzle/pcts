@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class CalculationBusinessServiceTest {
+class CalculationBusinessServiceTest extends BaseBusinessTest<Calculation, CalculationPersistenceService, CalculationValidationService, CalculationBusinessService>{
 
     private static final Long ID = 1L;
 
@@ -40,6 +40,27 @@ class CalculationBusinessServiceTest {
     @InjectMocks
     private CalculationBusinessService businessService;
 
+    @Override
+    Calculation getModel() {
+        return calculation;
+    }
+
+    @Override
+    CalculationPersistenceService getPersistenceService() {
+        return persistenceService;
+    }
+
+    @Override
+    CalculationValidationService getValidationService() {
+        return validationService;
+    }
+
+    @Override
+    CalculationBusinessService getBusinessService() {
+        return businessService;
+    }
+
+    @Override
     @DisplayName("Should get calculation by id and set total points")
     @Test
     void shouldGetById() {
@@ -53,39 +74,32 @@ class CalculationBusinessServiceTest {
         Calculation result = businessService.getById(ID);
 
         assertEquals(calc, result);
-        assertEquals(BigDecimal.valueOf(3), result.getPoints()); // 1 + 1 + 1 = 3
+        assertEquals(BigDecimal.valueOf(3), result.getPoints());
         verify(persistenceService).getById(ID);
         verify(experienceBusinessService).getExperiencePoints(ID);
         verify(degreeBusinessService).getDegreePoints(ID);
+        verify(certificateBusinessService).getCertificatePoints(ID);
+
     }
 
+    @Override
     @DisplayName("Should create calculation with experiences")
     @Test
     void shouldCreate() {
-        when(persistenceService.save(calculation)).thenReturn(calculation);
-
-        Calculation result = businessService.create(calculation);
-
-        assertEquals(calculation, result);
-
-        verify(validationService).validateOnCreate(calculation);
+        super.shouldCreate();
         verify(experienceBusinessService).createExperienceCalculations(calculation);
         verify(certificateBusinessService).createCertificateCalculations(calculation);
         verify(degreeBusinessService).createDegreeCalculations(calculation);
-        verify(persistenceService).save(calculation);
     }
 
+    @Override
     @DisplayName("Should update calculation with experiences")
     @Test
     void shouldUpdate() {
-        when(persistenceService.getById(ID)).thenReturn(calculation);
-        when(persistenceService.save(calculation)).thenReturn(calculation);
-
-        Calculation result = businessService.update(ID, calculation);
-
-        assertEquals(calculation, result);
+        super.shouldUpdate();
         verify(validationService).validateOnUpdate(ID, calculation);
-        verify(persistenceService).getById(ID);
-        verify(persistenceService).save(calculation);
+        verify(experienceBusinessService).updateExperienceCalculations(calculation);
+        verify(certificateBusinessService).updateCertificateCalculations(calculation);
+        verify(degreeBusinessService).updateDegreeCalculations(calculation);
     }
 }

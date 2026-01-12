@@ -51,10 +51,6 @@ class LeadershipExperienceCalculationMapperTest {
         return createCertificate(CertificateKind.LEADERSHIP_TRAINING, EXPERIENCE_ID);
     }
 
-    private Certificate createCertificateOnly() {
-        return createCertificate(CertificateKind.CERTIFICATE, null);
-    }
-
     private CertificateCalculation createCertificateCalculation(Certificate certificate) {
         return new CertificateCalculation(5L, null, certificate);
     }
