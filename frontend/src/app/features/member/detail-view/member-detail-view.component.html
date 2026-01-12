@@ -67,35 +67,29 @@
     </div>
     <mat-tab-group class="folder-tabs" mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
       <mat-tab label="CV">
-<!--                  <app-generic-table [columns]="userColumns" [data]="userData" />-->
         <app-generic-cv-content
           title="ORGUNIT"
-          [data]="orgData()"
-          [columns]="orgColumns"
+          [data]="degreeData()"
+          [columns]="degreeColumns"
         />
-<!--        <app-generic-cv-content-->
-<!--          title="EDUCATION"-->
-<!--          [data]="educationData()"-->
-<!--          [columns]="educationColumns"-->
-<!--        />-->
 
-<!--        <app-generic-cv-content-->
-<!--          title="PROFESSIONAL_AND_LIFE_EXPERIENCE"-->
-<!--          [data]="experienceData()"-->
-<!--          [columns]="experienceColumns"-->
-<!--        />-->
+        <app-generic-cv-content
+          title="PROFESSIONAL_AND_LIFE_EXPERIENCE"
+          [data]="experienceData()"
+          [columns]="experienceColumns"
+        />
 
-<!--        <app-generic-cv-content-->
-<!--          title="CERTIFICATES"-->
-<!--          [data]="certificatesData()"-->
-<!--          [columns]="certificateColumns"-->
-<!--        />-->
+        <app-generic-cv-content
+          title="CERTIFICATES"
+          [data]="certificateData()"
+          [columns]="certificateColumns"
+        />
 
-<!--        <app-generic-cv-content-->
-<!--          title="LEADERSHIP_EXPERIENCE"-->
-<!--          [data]="leadershipData()"-->
-<!--          [columns]="leadershipColumns"-->
-<!--        />-->
+        <app-generic-cv-content
+          title="LEADERSHIP_EXPERIENCE"
+          [data]="leadershipExperienceData()"
+          [columns]="leadershipExperienceColumns"
+        />
 
       </mat-tab>
       <mat-tab label="Berechnungen">

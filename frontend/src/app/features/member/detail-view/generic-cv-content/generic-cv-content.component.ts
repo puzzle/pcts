@@ -37,9 +37,6 @@ export class GenericCvContentComponent<T extends object> {
         } else {
           this.tableDataSource.set(new GenericTableDataSource<T>(cols, data));
         }
-        console.log(this.tableDataSource());
-        console.log(this.columns());
-        console.log(this.data());
       }
     });
   }

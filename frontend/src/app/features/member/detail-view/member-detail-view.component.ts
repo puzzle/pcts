@@ -7,11 +7,12 @@ import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
 import { GenericCvContentComponent } from './generic-cv-content/generic-cv-content.component';
-import { MatButton } from '@angular/material/button';
-import { GenericTableComponent } from '../../../shared/generic-table/generic-table.component';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
-import { OrganisationUnitModel } from '../../organisation-unit/organisation-unit.model';
 import { GenCol } from '../../../shared/generic-table/GenericTableDataSource';
+import { DegreeOverviewModel } from '../degree-overview.model';
+import { ExperienceOverviewModel } from '../experience-overview.model';
+import { CertificateOverviewModel } from '../certificate-overview.model';
+import { LeadershipExperienceOverviewModel } from '../leadership-experience-overview.model';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -23,8 +24,6 @@ import { GenCol } from '../../../shared/generic-table/GenericTableDataSource';
     ScopedTranslationPipe,
     CrudButtonComponent,
     GenericCvContentComponent,
-    MatButton,
-    GenericTableComponent,
     MatTabGroup,
     MatTab
   ],
@@ -58,7 +57,13 @@ export class MemberDetailViewComponent implements OnInit {
 
   readonly member: WritableSignal<MemberModel | null> = signal<MemberModel | null>(null);
 
-  orgData = signal<OrganisationUnitModel[] | null>(null);
+  degreeData = signal<DegreeOverviewModel[] | null>(null);
+
+  experienceData = signal<ExperienceOverviewModel[] | null>(null);
+
+  certificateData = signal<CertificateOverviewModel[] | null>(null);
+
+  leadershipExperienceData = signal<LeadershipExperienceOverviewModel[] | null>(null);
 
 
   ngOnInit(): void {
@@ -72,11 +77,26 @@ export class MemberDetailViewComponent implements OnInit {
       .subscribe({
         next: (memberOverview) => {
           this.member.set(memberOverview.member);
+          this.degreeData.set(memberOverview.cv.degrees);
+          this.experienceData.set(memberOverview.cv.experiences);
+          this.certificateData.set(memberOverview.cv.certificates);
+          this.leadershipExperienceData.set(memberOverview.cv.leadershipExperiences);
         }
       });
   }
 
-  orgColumns: GenCol<OrganisationUnitModel>[] = [GenCol.fromAttr('name')];
+  degreeColumns: GenCol<DegreeOverviewModel>[] = [
+    GenCol.fromAttr('startDate'),
+    GenCol.fromAttr('endDate'),
+    GenCol.fromAttr('name'),
+    GenCol.fromAttr('degreeTypeName')
+  ];
+
+  experienceColumns: GenCol<ExperienceOverviewModel>[] = [GenCol.fromAttr('name')];
+
+  certificateColumns: GenCol<CertificateOverviewModel>[] = [GenCol.fromAttr('certificateTypeName')];
+
+  leadershipExperienceColumns: GenCol<LeadershipExperienceOverviewModel>[] = [GenCol.fromAttr('leadershipExperienceType')];
 }
 
 
