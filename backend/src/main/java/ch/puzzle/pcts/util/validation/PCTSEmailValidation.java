@@ -3,7 +3,6 @@ package ch.puzzle.pcts.util.validation;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Pattern;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -24,10 +23,9 @@ import java.lang.annotation.Target;
  * </p>
  */
 @Documented
-@Constraint(validatedBy = {})
+@Constraint(validatedBy = { PCTSEmailValidator.class })
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
-@Pattern(regexp = ".*\\S.*", message = "{attribute.not.blank}")
 @Email(message = "{attribute.not.email}")
 public @interface PCTSEmailValidation {
     String message() default "{class}.{field} is not valid";
