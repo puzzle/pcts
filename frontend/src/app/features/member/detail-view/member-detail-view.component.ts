@@ -20,7 +20,7 @@ import {
 } from './cv/member-detail-cv-table-definition';
 import { MemberOverviewModel } from '../member-overview.model';
 import { NullFallbackPipe } from '../../../shared/pipes/null-fallback.pipe';
-import { TranslationScope } from '../../../shared/directives/translation-scope';
+import { TranslationScopeDirective } from '../../../shared/directives/translation-scope';
 
 @Component({
   selector: 'app-member-detail-view',
