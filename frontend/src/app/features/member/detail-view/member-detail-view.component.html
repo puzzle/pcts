@@ -1,7 +1,6 @@
 @if (member(); as m) {
   <div class="p-4" data-testid="member-detail-view">
     <div class="w-50">
-
       <h1 class="mb-5">
         {{ m.firstName }} {{ m.lastName }}
       </h1>
@@ -18,42 +17,36 @@
         <span>
           <p class="mb-0">{{ 'ABBREVIATION' | scopedTranslation }}:</p>
           <p class="fw-bold">
-            {{ m.abbreviation ? (m.abbreviation) : ('ATTRIBUTE_NULL' | scopedTranslation)}}
+            {{ m.abbreviation | nullFallback }}
           </p>
         </span>
 
         <span>
-          <p class="mb-0">{{ 'MEMBER.BIRTH_DATE' | scopedTranslation }}:</p>
-          <p class="fw-bold">{{ m.birthDate | date: GLOBAL_DATE_FORMAT }}</p>
+          <p class="mb-0">{{ 'BIRTH_DATE' | scopedTranslation }}:</p>
+          <p class="fw-bold">{{ m.birthDate | date }}</p>
         </span>
 
         <span>
-          <p class="mb-0">{{ 'MEMBER.DATE_OF_HIRE' | scopedTranslation }}:</p>
+          <p class="mb-0">{{ 'DATE_OF_HIRE' | scopedTranslation }}:</p>
           <p class="fw-bold">
-            {{ m.dateOfHire
-            ? (m.dateOfHire | date: GLOBAL_DATE_FORMAT)
-            : ('ATTRIBUTE_NULL' | scopedTranslation)
-            }}
+              {{ m.dateOfHire | date | nullFallback }}
           </p>
-
         </span>
 
         <span>
-          <p class="mb-0">{{ 'MEMBER.EMPLOYMENT_STATE' | scopedTranslation }}:</p>
-          <p class="fw-bold">{{ 'MEMBER.EMPLOYMENT_STATUS_VALUES.' + m.employmentState | scopedTranslation }}</p>
+          <p class="mb-0">{{ 'EMPLOYMENT_STATE' | scopedTranslation }}:</p>
+          <p class="fw-bold" translationScope="EMPLOYMENT_STATUS_VALUES">{{ m.employmentState | scopedTranslation }}</p>
+<!--          <p class="fw-bold" translationScope="EMPLOYMENT_STATUS_VALUES">{{ m.employmentState}}</p>-->
         </span>
 
         <span>
-          <p class="mb-0">{{ 'MEMBER.ORGANISATION_UNIT' | scopedTranslation }}:</p>
+          <p class="mb-0">{{ 'ORGANISATION_UNIT' | scopedTranslation }}:</p>
           <p class="fw-bold">
-            @if (m.organisationUnit) {
-              {{m.organisationUnit.name}}
-            } @else {
-              {{'ATTRIBUTE_NULL' | scopedTranslation}}
-            }
+              {{m.organisationUnit?.name | nullFallback}}
           </p>
         </span>
       </div>
     </div>
   </div>
 }
+<div class="vh-100"></div>
