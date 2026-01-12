@@ -6,7 +6,7 @@ import { MemberModel } from '../member.model';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
 import { NullFallbackPipe } from '../../../shared/pipes/null-fallback.pipe';
-import { TranslationScope } from '../../../shared/directives/translation-scope';
+import { TranslationScopeDirective } from '../../../shared/directives/translation-scope';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -18,7 +18,7 @@ import { TranslationScope } from '../../../shared/directives/translation-scope';
     ScopedTranslationPipe,
     CrudButtonComponent,
     NullFallbackPipe,
-    TranslationScope
+    TranslationScopeDirective
   ],
   templateUrl: './member-detail-view.component.html'
 })

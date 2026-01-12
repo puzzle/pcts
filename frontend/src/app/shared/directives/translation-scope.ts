@@ -1,29 +1,34 @@
-import { computed, Directive, effect, inject, input } from '@angular/core';
-import { isArray } from '@ngx-translate/core';
-import { provideI18nScope, ScopedTranslationService } from '../i18n-prefix.provider';
-
+import {
+  Directive,
+  input,
+  inject,
+  TemplateRef,
+  ViewContainerRef,
+  Injector,
+  OnInit
+} from '@angular/core';
+import { provideI18nPrefix } from '../i18n-prefix.provider';
 
 @Directive({
-  selector: '[translationScope]',
-  providers: [provideI18nScope(TranslationScope),
-    ScopedTranslationService]
+  selector: '[appTranslationScope]',
+  standalone: true
 })
-export class TranslationScope {
-  scopedTranslationService = inject(ScopedTranslationService);
-  // i18nPrefix = inject(I18N_PREFIX);
+export class TranslationScopeDirective implements OnInit {
+  readonly scopeInput = input.required<string>({ alias: 'appTranslationScope' });
 
-  translationScope = input.required<string | string[]>();
+  // 4. Structural Directive Dependencies
+  private readonly vcr = inject(ViewContainerRef);
 
-  scope = computed(() => {
-    const scope = this.translationScope();
-    return isArray(scope) ? scope.join('.') : scope;
-  });
+  private readonly tpl = inject(TemplateRef);
 
-  constructor() {
-    effect(() => {
-      // console.log(this.i18nPrefix)
-      console.log(this.scopedTranslationService.prefix);
-      console.log(this.scope());
+  private readonly injector = inject(Injector);
+
+  ngOnInit(): void {
+    const customInjector = Injector.create({
+      providers: [provideI18nPrefix(this.scopeInput())],
+      parent: this.injector // Link to the ElementInjector of this anchor
     });
+
+    this.vcr.createEmbeddedView(this.tpl, null, { injector: customInjector });
   }
 }

@@ -35,8 +35,7 @@
 
         <span>
           <p class="mb-0">{{ 'EMPLOYMENT_STATE' | scopedTranslation }}:</p>
-          <p class="fw-bold" translationScope="EMPLOYMENT_STATUS_VALUES">{{ m.employmentState | scopedTranslation }}</p>
-<!--          <p class="fw-bold" translationScope="EMPLOYMENT_STATUS_VALUES">{{ m.employmentState}}</p>-->
+          <p class="fw-bold" *appTranslationScope="'EMPLOYMENT_STATUS_VALUES'">{{ m.employmentState | scopedTranslation }}</p>
         </span>
 
         <span>
@@ -49,4 +48,3 @@
     </div>
   </div>
 }
-<div class="vh-100"></div>
