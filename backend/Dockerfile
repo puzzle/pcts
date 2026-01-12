@@ -4,8 +4,8 @@ COPY pom.xml .
 COPY src ./src
 RUN mvn clean install -DskipTests
 
-FROM alpine:3.23 AS runner
-RUN apk update && apk add --upgrade curl && apk --no-cache add openjdk25
+FROM eclipse-temurin:25-jre-alpine AS runner
+RUN apk update && apk add --upgrade curl
 WORKDIR /app
 EXPOSE 8080
 COPY --from=builder /app/target/*.jar app.jar
