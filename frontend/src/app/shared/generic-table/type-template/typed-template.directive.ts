@@ -4,10 +4,10 @@ type TemplateType<T> = T | T[] | undefined;
 
 @Directive({
 
-  selector: 'ng-template[typedTemplate]'
+  selector: 'ng-template[appTypedTemplate]'
 })
 export class TypedTemplateDirective<T> {
-  typedTemplate = input<ResourceRef<TemplateType<T>> | TemplateType<T>>();
+  appTypedTemplate = input<ResourceRef<TemplateType<T>> | TemplateType<T>>();
 
   private readonly contentTemplate = inject(TemplateRef<T>);
 

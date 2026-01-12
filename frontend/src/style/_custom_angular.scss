@@ -57,11 +57,9 @@ $pz-theme: mat.m2-define-light-theme(
 .folder-tabs {
   .mat-mdc-tab-header {
     &::before {
-      border-bottom: #000 solid 1px;
       width: 30px;
-      content: ' ';
+      content: '';
     }
-
     &::after {
       position: absolute;
       bottom: 0;

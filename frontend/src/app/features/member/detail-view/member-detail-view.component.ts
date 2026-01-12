@@ -9,10 +9,12 @@ import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.com
 import { GenericCvContentComponent } from './generic-cv-content/generic-cv-content.component';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { GenCol } from '../../../shared/generic-table/GenericTableDataSource';
-import { DegreeOverviewModel } from '../degree-overview.model';
-import { ExperienceOverviewModel } from '../experience-overview.model';
-import { CertificateOverviewModel } from '../certificate-overview.model';
-import { LeadershipExperienceOverviewModel } from '../leadership-experience-overview.model';
+import { DegreeOverviewModel } from './cv/degree-overview.model';
+import { ExperienceOverviewModel } from './cv/experience-overview.model';
+import { CertificateOverviewModel } from './cv/certificate-overview.model';
+import { LeadershipExperienceOverviewModel } from './cv/leadership-experience-overview.model';
+import { ColumnTemplateDirective } from '../../../shared/generic-table/column-template/column-template.directive';
+import { TranslationScopeDirective } from '../../../shared/translation-scope.directive';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -25,7 +27,9 @@ import { LeadershipExperienceOverviewModel } from '../leadership-experience-over
     CrudButtonComponent,
     GenericCvContentComponent,
     MatTabGroup,
-    MatTab
+    MatTab,
+    ColumnTemplateDirective,
+    TranslationScopeDirective
   ],
   templateUrl: './member-detail-view.component.html',
   styleUrl: './member-detail-view.component.scss'

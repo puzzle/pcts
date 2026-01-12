@@ -23,12 +23,12 @@
         </span>
 
         <span>
-          <p class="mb-0">{{ 'MEMBER.BIRTH_DATE' | scopedTranslation }}:</p>
+          <p class="mb-0">{{ 'BIRTH_DATE' | scopedTranslation }}:</p>
           <p class="fw-bold">{{ m.birthDate | date: GLOBAL_DATE_FORMAT }}</p>
         </span>
 
         <span>
-          <p class="mb-0">{{ 'MEMBER.DATE_OF_HIRE' | scopedTranslation }}:</p>
+          <p class="mb-0">{{ 'DATE_OF_HIRE' | scopedTranslation }}:</p>
           <p class="fw-bold">
             {{ m.dateOfHire
             ? (m.dateOfHire | date: GLOBAL_DATE_FORMAT)
@@ -39,12 +39,12 @@
         </span>
 
         <span>
-          <p class="mb-0">{{ 'MEMBER.EMPLOYMENT_STATE' | scopedTranslation }}:</p>
-          <p class="fw-bold">{{ 'MEMBER.EMPLOYMENT_STATUS_VALUES.' + m.employmentState | scopedTranslation }}</p>
+          <p class="mb-0">{{ 'EMPLOYMENT_STATE' | scopedTranslation }}:</p>
+          <p class="fw-bold">{{ 'EMPLOYMENT_STATUS_VALUES.' + m.employmentState | scopedTranslation }}</p>
         </span>
 
         <span>
-          <p class="mb-0">{{ 'MEMBER.ORGANISATION_UNIT' | scopedTranslation }}:</p>
+          <p class="mb-0">{{ 'ORGANISATION_UNIT' | scopedTranslation }}:</p>
           <p class="fw-bold">
             @if (m.organisationUnit) {
               {{m.organisationUnit.name}}
@@ -56,11 +56,11 @@
       </div>
       <div class="d-flex justify-content-start gap-5">
         <span>
-          <p class="mb-0">{{ 'MEMBER.BIRTH_DATE' | scopedTranslation }}:</p>
+          <p class="mb-0">{{ 'BIRTH_DATE' | scopedTranslation }}:</p>
           <p class="fw-bold">{{ m.birthDate | date: GLOBAL_DATE_FORMAT }}</p>
         </span>
         <span>
-          <p class="mb-0">{{ 'MEMBER.BIRTH_DATE' | scopedTranslation }}:</p>
+          <p class="mb-0">{{ 'BIRTH_DATE' | scopedTranslation }}:</p>
           <p class="fw-bold">{{ m.birthDate | date: GLOBAL_DATE_FORMAT }}</p>
         </span>
       </div>
@@ -68,26 +68,26 @@
     <mat-tab-group class="folder-tabs" mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
       <mat-tab label="CV">
         <app-generic-cv-content
-          title="ORGUNIT"
           [data]="degreeData()"
+          *appTranslationScope="'CV.DEGREE'"
           [columns]="degreeColumns"
         />
 
         <app-generic-cv-content
-          title="PROFESSIONAL_AND_LIFE_EXPERIENCE"
           [data]="experienceData()"
+          *appTranslationScope="'CV.EXPERIENCE'"
           [columns]="experienceColumns"
         />
 
         <app-generic-cv-content
-          title="CERTIFICATES"
           [data]="certificateData()"
+          *appTranslationScope="'CV.CERTIFICATE'"
           [columns]="certificateColumns"
         />
 
         <app-generic-cv-content
-          title="LEADERSHIP_EXPERIENCE"
           [data]="leadershipExperienceData()"
+          *appTranslationScope="'CV.LEADERSHIP_EXPERIENCE'"
           [columns]="leadershipExperienceColumns"
         />
 
