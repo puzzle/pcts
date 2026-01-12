@@ -1,5 +1,5 @@
 <div class="mt-5 pb-5 border-bottom">
-  <div class="d-flex gap-4 align-items-center">
+  <div class="d-flex gap-4 align-items-center mb-3">
     <h3>{{title() | scopedTranslation}}</h3>
     <button
       type="button"
@@ -12,12 +12,30 @@
     @if (tableDataSource(); as ds) {
       <div class="overflow-y-scroll mat-elevation-z8 table-max-height">
         <ng-content>
-          <app-generic-table
-            [dataSource]="ds"
-          />
+          <app-generic-table [dataSource]="ds">
+            <ng-template columnTemplate="firstName" let-member [typedTemplate]="ds.data">
+              {{ member | json }}
+            </ng-template>
+
+
+            <ng-template
+              columnTemplate="experienceTypeName"
+              let-experience
+            >
+            <span [class]="getExperienceBadgeClass(experience.experienceTypeName)" class="badge">
+              {{ experience.experienceTypeName }}
+            </span>
+            </ng-template>
+
+            <ng-template
+              columnTemplate="workName"
+              let-experience
+            >
+            <b>{{ experience.employer }}</b><br/>
+              {{ experience.name}}
+            </ng-template>
+          </app-generic-table>
         </ng-content>
       </div>
     }
 </div>
-
-

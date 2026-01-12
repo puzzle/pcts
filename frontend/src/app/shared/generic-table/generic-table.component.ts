@@ -1,4 +1,15 @@
-import { AfterViewChecked, Component, computed, effect, inject, input, signal, viewChild } from '@angular/core';
+import {
+  AfterViewChecked,
+  Component,
+  computed,
+  contentChildren,
+  effect,
+  inject,
+  input,
+  signal,
+  TemplateRef,
+  viewChild
+} from '@angular/core';
 import {
   MatCell,
   MatCellDef,
@@ -17,6 +28,8 @@ import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
 import { CaseFormatter } from '../format/case-formatter';
 import { GenCol, GenericTableDataSource } from './GenericTableDataSource';
 import { RouterLink } from '@angular/router';
+import { NgTemplateOutlet } from '@angular/common';
+import { ColumnTemplateDirective } from './column-template.directive';
 
 @Component({
   selector: 'app-generic-table',
@@ -35,7 +48,8 @@ import { RouterLink } from '@angular/router';
     ScopedTranslationPipe,
     MatHeaderCellDef,
     MatNoDataRow,
-    RouterLink
+    RouterLink,
+    NgTemplateOutlet
   ],
   templateUrl: './generic-table.component.html',
   styleUrl: './generic-table.component.scss'
@@ -56,6 +70,22 @@ export class GenericTableComponent<T extends object> implements AfterViewChecked
   columnNames = computed(() => this.dataSource().columnDefs.map((e) => e.columnName));
 
   sort = viewChild(MatSort);
+
+  customTemplates = contentChildren(ColumnTemplateDirective);
+
+  /*
+   * 2. Create a Signal Map for O(1) lookup in the template
+   * This prevents looping through the array for every single cell
+   */
+  templateMap = computed(() => {
+    const map = new Map<string, TemplateRef<any>>();
+    this.customTemplates()
+      .forEach((dir) => {
+        map.set(dir.columnName(), dir.template);
+      });
+    return map;
+  });
+
 
   constructor() {
     effect(() => {
