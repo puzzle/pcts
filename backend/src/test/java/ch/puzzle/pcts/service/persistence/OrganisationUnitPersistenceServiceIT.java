@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.persistence;
 
+import static ch.puzzle.pcts.util.TestData.ORGANISATION_UNITS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
@@ -29,7 +30,7 @@ class OrganisationUnitPersistenceServiceIT
 
     @Override
     List<OrganisationUnit> getAll() {
-        return List.of(new OrganisationUnit(2L, "OrganisationUnit 2"));
+        return ORGANISATION_UNITS;
     }
 
     @DisplayName("Should get organisationUnit by name")

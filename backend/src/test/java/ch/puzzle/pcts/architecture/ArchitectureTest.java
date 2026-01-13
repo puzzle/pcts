@@ -11,8 +11,7 @@ import static ch.puzzle.pcts.architecture.condition.ClassConditions.overrideHash
 import static ch.puzzle.pcts.architecture.condition.ClassConditions.overrideToStringMethod;
 import static ch.puzzle.pcts.architecture.condition.CodeUnitConditions.trimAssignedStringFields;
 import static com.tngtech.archunit.base.DescribedPredicate.not;
-import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAPackage;
-import static com.tngtech.archunit.core.domain.JavaClass.Predicates.type;
+import static com.tngtech.archunit.core.domain.JavaClass.Predicates.*;
 import static com.tngtech.archunit.lang.conditions.ArchConditions.and;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
@@ -268,9 +267,9 @@ class ArchitectureTest {
         rule.check(importedClasses);
     }
 
-    @DisplayName("Models should implement interface, have @Entity annotation and override methods")
+    @DisplayName("Models should override methods")
     @Test
-    void modelShouldImplementInterfaceAndOverrideMethods() {
+    void modelShouldOverrideMethods() {
         JavaClasses importedClasses = getMainSourceClasses();
 
         ArchRule rule = classes()
@@ -281,13 +280,50 @@ class ArchitectureTest {
                 .areNotEnums()
                 .and()
                 .areNotNestedClasses()
-                .should()
-                .beAnnotatedWith(Entity.class)
-                .andShould()
-                .implement(Model.class)
-                .andShould(overrideEqualsMethod)
+                .should(overrideEqualsMethod)
                 .andShould(overrideHashCodeMethod)
                 .andShould(overrideToStringMethod);
+
+        rule.check(importedClasses);
+    }
+
+    @DisplayName("Models should have @Entity annotation")
+    @Test
+    void modelShouldHaveEntityAnnotation() {
+        JavaClasses importedClasses = getMainSourceClasses();
+
+        ArchRule rule = classes()
+                .that(resideInAPackage("ch.puzzle.pcts.model.."))
+                .and()
+                .doNotHaveSimpleName("MemberOverviewId")
+                .and()
+                .areNotInterfaces()
+                .and()
+                .areNotEnums()
+                .and()
+                .areNotNestedClasses()
+                .should()
+                .beAnnotatedWith(Entity.class);
+
+        rule.check(importedClasses);
+    }
+
+    @DisplayName("Models should implement interface")
+    @Test
+    void modelShouldImplementInterface() {
+        JavaClasses importedClasses = getMainSourceClasses();
+
+        ArchRule rule = classes()
+                .that(resideInAPackage("ch.puzzle.pcts.model.."))
+                .and(not(resideInAnyPackage("ch.puzzle.pcts.model.memberoverview..")))
+                .and()
+                .areNotInterfaces()
+                .and()
+                .areNotEnums()
+                .and()
+                .areNotNestedClasses()
+                .should()
+                .implement(Model.class);
 
         rule.check(importedClasses);
     }

@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.service.persistence;
 
+import static ch.puzzle.pcts.util.TestData.DEGREE_TYPES;
+
 import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.repository.DegreeTypeRepository;
 import java.math.BigDecimal;
@@ -26,16 +28,6 @@ class DegreeTypePersistenceServiceIT
 
     @Override
     List<DegreeType> getAll() {
-        return List
-                .of(new DegreeType(1L,
-                                   "Degree type 1",
-                                   BigDecimal.valueOf(120.55),
-                                   BigDecimal.valueOf(60),
-                                   BigDecimal.valueOf(15.45)),
-                    new DegreeType(2L,
-                                   "Degree type 2",
-                                   BigDecimal.valueOf(12),
-                                   BigDecimal.valueOf(3.961),
-                                   BigDecimal.valueOf(3)));
+        return DEGREE_TYPES;
     }
 }
