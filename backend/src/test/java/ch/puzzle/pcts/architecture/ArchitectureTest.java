@@ -267,9 +267,50 @@ class ArchitectureTest {
         rule.check(importedClasses);
     }
 
-    @DisplayName("Models should implement interface, have @Entity annotation and override methods")
+    @DisplayName("Models should override methods")
     @Test
-    void modelShouldImplementInterfaceAndOverrideMethods() {
+    void modelShouldOverrideMethods() {
+        JavaClasses importedClasses = getMainSourceClasses();
+
+        ArchRule rule = classes()
+                .that(resideInAPackage("ch.puzzle.pcts.model.."))
+                .and()
+                .areNotInterfaces()
+                .and()
+                .areNotEnums()
+                .and()
+                .areNotNestedClasses()
+                .should(overrideEqualsMethod)
+                .andShould(overrideHashCodeMethod)
+                .andShould(overrideToStringMethod);
+
+        rule.check(importedClasses);
+    }
+
+    @DisplayName("Models should have @Entity annotation")
+    @Test
+    void modelShouldHaveEntityAnnotation() {
+        JavaClasses importedClasses = getMainSourceClasses();
+
+        ArchRule rule = classes()
+                .that(resideInAPackage("ch.puzzle.pcts.model.."))
+                .and()
+                .doNotHaveSimpleName("MemberOverviewId")
+                .and()
+                .areNotInterfaces()
+                .and()
+                .areNotEnums()
+                .and()
+                .areNotNestedClasses()
+                .should()
+                .beAnnotatedWith(Entity.class);
+
+        rule.check(importedClasses);
+    }
+
+    @DisplayName("Models should implement interface")
+    @Test
+    void modelShouldImplementInterface() {
         JavaClasses importedClasses = getMainSourceClasses();
 
         ArchRule rule = classes()
@@ -282,12 +323,7 @@ class ArchitectureTest {
                 .and()
                 .areNotNestedClasses()
                 .should()
-                .beAnnotatedWith(Entity.class)
-                .andShould()
-                .implement(Model.class)
-                .andShould(overrideEqualsMethod)
-                .andShould(overrideHashCodeMethod)
-                .andShould(overrideToStringMethod);
+                .implement(Model.class);
 
         rule.check(importedClasses);
     }
