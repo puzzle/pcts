@@ -18,6 +18,8 @@ import {
   getLeadershipExperienceTable
 } from './cv/member-detail-cv-table-definition';
 import { MemberOverviewModel } from '../member-overview.model';
+import { AddCertificateComponent } from '../modal-components/add-certificate.component/add-certificate.component';
+import { ModalService } from '../../../shared/modal-service';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -48,6 +50,9 @@ export class MemberDetailViewComponent implements OnInit {
   experienceData = signal<ExperienceOverviewModel[]>([]);
 
   certificateData = signal<CertificateOverviewModel[]>([]);
+  private readonly dialog = inject(ModalService);
+
+  protected readonly GLOBAL_DATE_FORMAT = GLOBAL_DATE_FORMAT;
 
   leadershipExperienceData = signal<LeadershipExperienceOverviewModel[]>([]);
 
@@ -76,5 +81,9 @@ export class MemberDetailViewComponent implements OnInit {
           this.leadershipExperienceData.set(memberOverview.cv.leadershipExperiences);
         }
       });
+  }
+
+  openCertificateDialog() {
+    this.dialog.openModal(AddCertificateComponent);
   }
 }
