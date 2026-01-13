@@ -3,5 +3,5 @@ export interface DegreeOverviewModel {
   name: string;
   degreeTypeName: string;
   startDate: Date;
-  endDate: Date;
+  endDate: Date | null;
 }

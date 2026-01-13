@@ -3,21 +3,21 @@
   "LOGOUT": "Abmelden",
   "DEGREE": {
     "MODEL_NAME": "Ausbildung",
-    "NAME": "Name"
+    "NAME": "Bezeichnung"
   },
   "EXPERIENCE": {
     "MODEL_NAME": "Berufs- und Lebenserfahrung",
-    "COMMENT": "Kommentar"
+    "COMMENT": "Beschreibung"
   },
   "CERTIFICATE": {
     "MODEL_NAME": "Zertifikate",
-    "COMMENT": "Kommentar",
+    "COMMENT": "Beschreibung",
     "COMPLETED_AT": "Abgeschlossen am"
   },
   "LEADERSHIP_EXPERIENCE": {
     "MODEL_NAME": "Führungserfahrung",
-    "LEADERSHIP_EXPERIENCE_TYPE": "Führungserfahrung Typ",
-    "COMMENT": "Kommentar"
+    "LEADERSHIP_EXPERIENCE_TYPE": "Art der Führungserfahrung",
+    "COMMENT": "Beschreibung"
   },
 
   "FORM": {
@@ -78,18 +78,18 @@
     "CV": {
       "DEGREE": {
         "MODEL_NAME": "Ausbildung",
-        "DEGREE_TYPE_NAME": "Ausbildungs Typ",
-        "DATE_RANGE": "Zeitspanne"
+        "DEGREE_TYPE_NAME": "Ausbildungsart",
+        "DATE_RANGE": "Zeitraum"
       },
       "EXPERIENCE": {
         "MODEL_NAME": "Berufs- und Lebenserfahrung",
-        "DATE_RANGE": "Zeitspanne",
-        "WORK_NAME": "Arbeitsort",
-        "EXPERIENCE_TYPE_NAME": "Erfahrungs Typ"
+        "DATE_RANGE": "Zeitraum",
+        "WORK_NAME": "Position",
+        "EXPERIENCE_TYPE_NAME": "Erfahrungsart"
       },
       "CERTIFICATE": {
         "MODEL_NAME": "Zertifikate",
-        "CERTIFICATE_TYPE_NAME": "Zertifikat's Typ"
+        "CERTIFICATE_TYPE_NAME": "Zertifikatstyp"
       },
       "LEADERSHIP_EXPERIENCE": {
         "MODEL_NAME": "Führungserfahrung"
