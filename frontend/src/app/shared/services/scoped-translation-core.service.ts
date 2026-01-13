@@ -87,8 +87,11 @@ export class ScopedTranslationCoreService {
     for (const key of keyList) {
       const translation = this.translateService.instant(key, params);
 
-      // instant() returns the key itself if no translation is found
-      if (translation !== key) {
+      /*
+       * instant() returns the key itself if no translation is found
+       * prevent returning anything else than a string since ngx-translate return an obj whenever a key is translated that contains sub keys
+       */
+      if (translation !== key && typeof translation === 'string') {
         return translation;
       }
     }

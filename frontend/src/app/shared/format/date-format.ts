@@ -1,7 +1,5 @@
 import { MatDateFormats } from '@angular/material/core';
 
-export const GLOBAL_DATE_FORMAT = 'dd.MM.yyyy';
-
 export const GLOBAL_DATE_FORMATS: MatDateFormats = {
   parse: {
     dateInput: { month: 'short',
