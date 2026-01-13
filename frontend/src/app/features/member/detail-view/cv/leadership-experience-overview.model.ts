@@ -2,6 +2,6 @@ import { LeadershipExperienceTypeOverviewModel } from './Leadership-experience-t
 
 export interface LeadershipExperienceOverviewModel {
   id: number;
-  leadershipExperienceType: LeadershipExperienceTypeOverviewModel;
+  leadershipExperienceType: LeadershipExperienceTypeOverviewModel | null;
   comment: string | null;
 }

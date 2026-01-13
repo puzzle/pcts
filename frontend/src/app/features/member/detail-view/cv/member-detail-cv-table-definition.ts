@@ -33,5 +33,7 @@ export const getCertificateColumns = (locale: string): GenCol<CertificateOvervie
 GenCol.fromAttr('certificateTypeName'),
 GenCol.fromAttr('comment')];
 
-export const getLeadershipColumns = (): GenCol<LeadershipExperienceOverviewModel>[] => [GenCol.fromCalculated('leadershipExperienceType', (e: LeadershipExperienceOverviewModel) => e.leadershipExperienceType.name),
-  GenCol.fromAttr('comment')];
+export const getLeadershipColumns = (): GenCol<LeadershipExperienceOverviewModel>[] => [GenCol.fromCalculated('leadershipExperienceType', (e: LeadershipExperienceOverviewModel) => {
+  return e.leadershipExperienceType ? e.leadershipExperienceType.name : '';
+}),
+GenCol.fromAttr('comment')];

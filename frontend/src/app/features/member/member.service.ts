@@ -1,12 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { MemberModel } from './member.model';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable, of } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { MemberDto } from './dto/member.dto';
 import { DateTime } from 'luxon';
 import { MemberOverviewModel } from './member-overview.model';
-import { EmploymentState } from '../../shared/enum/employment-state.enum';
-import { CertificateKind } from '../certificates/certificate-type/certificate-kind.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -59,70 +57,7 @@ export class MemberService {
   }
 
   getMemberOverviewByMemberId(id: number): Observable<MemberOverviewModel> {
-    return of({
-      member: {
-        id: 1,
-        firstName: 'Lena',
-        lastName: 'Müller',
-        employmentState: EmploymentState.MEMBER,
-        abbreviation: 'LM',
-        dateOfHire: new Date(),
-        birthDate: new Date(),
-        organisationUnit: {
-          id: 1,
-          name: '/zh'
-        }
-      },
-      cv: {
-        degrees: [{
-          id: 1,
-          name: 'Bachelor of Science in Mathematics',
-          degreeTypeName: 'Bachelor\'s Degree',
-          startDate: new Date(),
-          endDate: new Date()
-        }],
-        experiences: [{
-          id: 1,
-          name: 'Software Engineer',
-          employer: 'TechNova Solutions',
-          experienceTypeName: 'Internship',
-          comment: 'Worked on backend APIs and DevOps tasks.',
-          startDate: new Date(2025, 1, 24),
-          endDate: new Date()
-        },
-        {
-          id: 3,
-          name: 'Web Developer (Freelance)',
-          employer: 'Freelance',
-          experienceTypeName: 'Hackathon',
-          comment: null,
-          startDate: new Date(2025, 2, 13),
-          endDate: new Date()
-        },
-        {
-          id: 4,
-          name: 'Web Developer (Freelance)',
-          employer: 'Freelance',
-          experienceTypeName: 'Hackathon',
-          comment: null,
-          startDate: new Date(2025, 1, 1),
-          endDate: null
-        }],
-        certificates: [{
-          id: 1,
-          certificateTypeName: 'CompTIA A+',
-          completedAt: new Date(),
-          comment: 'Completed first aid training.'
-        }],
-        leadershipExperiences: [{
-          id: 1,
-          comment: 'LeadershipExperience',
-          leadershipExperienceType: {
-            name: 'Leadership Experience',
-            certificateKind: CertificateKind.LEADERSHIP_TRAINING
-          }
-        }]
-      }
-    });
+    return this.httpClient.get<MemberOverviewModel>(`api/v1/member-overviews/${id}`)
+      .pipe(map((dto) => dto));
   }
 }

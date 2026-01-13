@@ -3,6 +3,7 @@
     <h3>{{"MODEL_NAME" | scopedTranslation}}</h3>
     <app-crud-button mode="add"/>
   </div>
+  @if (this.data()?.length != 0) {
     @if (tableDataSource(); as ds) {
       <div class="overflow-y-scroll mat-elevation-z8 table-max-height">
         <ng-content>
@@ -30,4 +31,7 @@
         </ng-content>
       </div>
     }
+  } @else {
+    {{ "TABLE.NO_DATA" | scopedTranslation }}
+  }
 </div>
