@@ -1,5 +1,5 @@
 import { Component, input, output } from '@angular/core';
-import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } from '@angular/material/dialog';
+import { MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } from '@angular/material/dialog';
 import { MatDivider } from '@angular/material/divider';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -22,6 +22,9 @@ import { FormGroup } from '@angular/forms';
     ScopedTranslationPipe,
     BaseFormActionsComponent
   ],
+  providers: [{ provide: MatDialog,
+    useValue: BaseModalComponent }],
+  standalone: true,
   templateUrl: './base-modal.component.html'
 })
 export class BaseModalComponent {

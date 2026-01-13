@@ -1,17 +1,58 @@
-<app-base-modal [formGroup]="formGroup" (canceled)="console.log('Canceled')">
-  <app-form content [formGroup]="formGroup">
+<app-base-modal [formGroup]="formGroup" (canceled)="onCancel()">
+  <app-base-form content [formGroup]="formGroup">
     <ng-container title/>
     <ng-container content>
 
+      <mat-form-field>
+        <mat-label appPctsFormLabel/>
+        <input type="text" formControlName="certificateKind" matInput [matAutocomplete]="certificateKindAutoComplete"
+               data-testid="certificateKind">
+        <mat-autocomplete autoActiveFirstOption #certificateKindAutoComplete="matAutocomplete"
+                          [displayWith]="displayCertificateKind">
+          @for (employmentState of certificateKindFilteredOptions(); track employmentState) {
+            <mat-option [value]="employmentState">{{ displayCertificateKind(employmentState) }}</mat-option>
+          }
+        </mat-autocomplete>
+        <mat-error appPctsFormError/>
+
+      </mat-form-field>
+
     <app-input-field>
-      <input type="text" formControlName="firstName" matInput data-testid="firstName">
+      <input type="date" formControlName="startDate" matInput data-testid="startDate">
     </app-input-field>
 
     <app-input-field>
-      <input type="text" formControlName="lastName" matInput data-testid="lastName">
+      <input type="date" formControlName="dateUntil" matInput data-testid="lastName">
     </app-input-field>
+
+      <app-input-field>
+        <input type="text" formControlName="comment" matInput data-testid="lastName">
+      </app-input-field>
     </ng-container>
-
     <ng-container actions/>
-  </app-form>
+  </app-base-form>
+
+  <ng-container actions>
+    <div class="d-flex flex-row gap-3">
+      <button matButton="text" type="button" (click)="onCancel()">
+        {{ "BUTTONS.CANCEL" | scopedTranslation  }}
+      </button>
+      <button matButton="filled" type="submit" data-testid="submit-button" [disabled]="!formGroup.valid">
+        {{ "BUTTONS.ACTION" | scopedTranslation }}
+      </button>
+      <button mat-flat-button
+              type="submit"
+              [matMenuTriggerFor]="menu"
+              [disabled]="!formGroup.valid">
+        <mat-icon>arrow_drop_down</mat-icon>
+      </button>
+    </div>
+
+  </ng-container>
 </app-base-modal>
+
+<mat-menu #menu="matMenu">
+  <button mat-menu-item>Item 1</button>
+  <button mat-menu-item>Item 2</button>
+</mat-menu>
+
