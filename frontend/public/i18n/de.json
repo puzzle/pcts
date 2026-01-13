@@ -100,7 +100,20 @@
   },
 
   "CERTIFICATE": {
-    "MODEL_NAME": "Zertifikat"
+    "CERTIFICATE_KIND": "Zetifikate type",
+    "MODEL_NAME": "Zertifikat",
+    "START_DATE": "Datum",
+    "DATE_UNTIL": "Gültig bis",
+    "COMMENT": "Bemerkung",
+    "KIND": {
+      "CERTIFICATE_KIND": "Zetifikate type",
+      "VALUES": {
+        "CERTIFICATE": "Zertifikate",
+        "MILITARY_FUNCTION": "Militär Funktion",
+        "YOUTH_AND_SPORT": "J+S Kurs",
+        "LEADERSHIP_TRAINING": "Führungskräftetraining"
+      }
+    }
   },
 
   "ERROR": {
