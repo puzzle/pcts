@@ -1,0 +1,17 @@
+<app-base-modal [formGroup]="formGroup" (canceled)="console.log('Canceled')">
+  <app-form content [formGroup]="formGroup">
+    <ng-container title/>
+    <ng-container content>
+
+    <app-input-field>
+      <input type="text" formControlName="firstName" matInput data-testid="firstName">
+    </app-input-field>
+
+    <app-input-field>
+      <input type="text" formControlName="lastName" matInput data-testid="lastName">
+    </app-input-field>
+    </ng-container>
+
+    <ng-container actions/>
+  </app-form>
+</app-base-modal>
