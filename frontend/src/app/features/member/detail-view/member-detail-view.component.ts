@@ -1,5 +1,5 @@
-import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { Component, OnInit, signal, WritableSignal, inject, LOCALE_ID } from '@angular/core';
+import { CommonModule, formatDate } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberService } from '../member.service';
 import { MemberModel } from '../member.model';
@@ -19,10 +19,8 @@ import { TranslationScopeDirective } from '../../../shared/translation-scope.dir
 @Component({
   selector: 'app-member-detail-view',
   standalone: true,
-  providers: [DatePipe],
   imports: [
     CommonModule,
-    DatePipe,
     ScopedTranslationPipe,
     CrudButtonComponent,
     GenericCvContentComponent,
@@ -41,6 +39,8 @@ export class MemberDetailViewComponent implements OnInit {
 
   private readonly router = inject(Router);
 
+  private readonly locale = inject(LOCALE_ID);
+
   protected readonly GLOBAL_DATE_FORMAT = GLOBAL_DATE_FORMAT;
 
   readonly member: WritableSignal<MemberModel | null> = signal<MemberModel | null>(null);
@@ -52,8 +52,6 @@ export class MemberDetailViewComponent implements OnInit {
   certificateData = signal<CertificateOverviewModel[] | null>(null);
 
   leadershipExperienceData = signal<LeadershipExperienceOverviewModel[] | null>(null);
-
-  private readonly datePipe = inject(DatePipe);
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -75,8 +73,8 @@ export class MemberDetailViewComponent implements OnInit {
   }
 
   degreeColumns: GenCol<DegreeOverviewModel>[] = [GenCol.fromCalculated('dateRange', (e) => {
-    const start = this.datePipe.transform(e.startDate, GLOBAL_DATE_FORMAT);
-    const end = this.datePipe.transform(e.endDate, GLOBAL_DATE_FORMAT);
+    const start = formatDate(e.startDate, GLOBAL_DATE_FORMAT, this.locale);
+    const end = e.endDate ? formatDate(e.endDate, GLOBAL_DATE_FORMAT, this.locale) : '';
     return `${start} - ${end}`;
   }),
 
@@ -84,17 +82,26 @@ export class MemberDetailViewComponent implements OnInit {
   GenCol.fromAttr('degreeTypeName')];
 
   experienceColumns: GenCol<ExperienceOverviewModel>[] = [
-    GenCol.fromCalculated('dateRange', (e) => {
-      const start = this.datePipe.transform(e.startDate, GLOBAL_DATE_FORMAT);
-      const end = this.datePipe.transform(e.endDate, GLOBAL_DATE_FORMAT);
-      return `${start} - ${end}`;
-    }),
+    GenCol.fromCalculated(
+      'dateRange', (e) => {
+        const start = formatDate(e.startDate, GLOBAL_DATE_FORMAT, this.locale);
+        const end = e.endDate
+          ? formatDate(e.endDate, GLOBAL_DATE_FORMAT, this.locale)
+          : 'heute';
+
+        return `${start} - ${end}`;
+      }, [], (e) => new Date(e.startDate)
+        .getTime()
+    ),
     GenCol.fromCalculated('workName', (e: ExperienceOverviewModel) => `${e.employer}\n${e.name}`),
     GenCol.fromAttr('comment'),
     GenCol.fromAttr('experienceTypeName')
   ];
 
-  certificateColumns: GenCol<CertificateOverviewModel>[] = [GenCol.fromAttr('completedAt', [(d: Date) => this.datePipe.transform(d, GLOBAL_DATE_FORMAT)]),
+  certificateColumns: GenCol<CertificateOverviewModel>[] =
+    [GenCol.fromAttr('completedAt', [(d: Date) => {
+      return d ? formatDate(d, GLOBAL_DATE_FORMAT, this.locale) : '';
+    }]),
     GenCol.fromAttr('certificateTypeName'),
     GenCol.fromAttr('comment')];
 

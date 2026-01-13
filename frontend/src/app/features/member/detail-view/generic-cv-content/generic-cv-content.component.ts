@@ -1,31 +1,26 @@
 import { Component, effect, inject, input, signal } from '@angular/core';
 import { GenCol, GenericTableDataSource } from '../../../../shared/generic-table/GenericTableDataSource';
 import { GenericTableComponent } from '../../../../shared/generic-table/generic-table.component';
-import { MatIcon } from '@angular/material/icon';
-import { MatButton } from '@angular/material/button';
 import { ScopedTranslationPipe } from '../../../../shared/pipes/scoped-translation-pipe';
-import { JsonPipe } from '@angular/common';
 import { ColumnTemplateDirective } from '../../../../shared/generic-table/column-template/column-template.directive';
 import { TypedTemplateDirective } from '../../../../shared/generic-table/type-template/typed-template.directive';
 import { I18N_PREFIX } from '../../../../shared/i18n-prefix.token';
+import { CrudButtonComponent } from '../../../../shared/crud-button/crud-button.component';
 
 @Component({
   selector: 'app-generic-cv-content',
   standalone: true,
   imports: [
     ScopedTranslationPipe,
-    MatButton,
-    MatIcon,
     GenericTableComponent,
     ColumnTemplateDirective,
-    JsonPipe,
-    TypedTemplateDirective
+    TypedTemplateDirective,
+    CrudButtonComponent
   ],
   templateUrl: './generic-cv-content.component.html',
   styleUrl: './generic-cv-content.component.scss'
 })
 export class GenericCvContentComponent<T extends object> {
-  // title = input.required<string>();
   i18nPrefix = inject(I18N_PREFIX);
 
   data = input.required<T[] | null>();

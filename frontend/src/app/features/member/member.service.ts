@@ -87,7 +87,7 @@ export class MemberService {
           employer: 'TechNova Solutions',
           experienceTypeName: 'Internship',
           comment: 'Worked on backend APIs and DevOps tasks.',
-          startDate: new Date(),
+          startDate: new Date(2025, 1, 24),
           endDate: new Date()
         },
         {
@@ -96,8 +96,17 @@ export class MemberService {
           employer: 'Freelance',
           experienceTypeName: 'Hackathon',
           comment: null,
-          startDate: new Date(),
+          startDate: new Date(2025, 2, 13),
           endDate: new Date()
+        },
+        {
+          id: 4,
+          name: 'Web Developer (Freelance)',
+          employer: 'Freelance',
+          experienceTypeName: 'Hackathon',
+          comment: null,
+          startDate: new Date(2025, 1, 1),
+          endDate: null
         }],
         certificates: [{
           id: 1,

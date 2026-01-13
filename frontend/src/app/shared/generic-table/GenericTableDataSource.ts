@@ -1,6 +1,7 @@
 import { MatTableDataSource } from '@angular/material/table';
 
 type Formatter = (value: any) => any;
+type SortAccessor<T> = (model: T) => any;
 
 export class GenCol<T> {
   columnName = '';
@@ -11,6 +12,8 @@ export class GenCol<T> {
 
   shouldLink = false;
 
+  sortValue?: SortAccessor<T>;
+
   protected constructor() {}
 
   public static fromAttr<T>(field: keyof T, pipes: Formatter[] = []): GenCol<T> {
@@ -18,14 +21,18 @@ export class GenCol<T> {
     genCol.getValue = (model: T) => model[field];
     genCol.columnName = field.toString();
     genCol.pipes = pipes;
+    genCol.sortValue = (model: T) => model[field];
     return genCol;
   }
 
-  public static fromCalculated<T>(columnName: string, getValue: (model: T) => any, pipes: Formatter[] = []): GenCol<T> {
+  public static fromCalculated<T>(
+    columnName: string, getValue: (model: T) => any, pipes: Formatter[] = [], sortValue?: SortAccessor<T>
+  ): GenCol<T> {
     const genCol = new GenCol<T>();
     genCol.getValue = getValue;
     genCol.columnName = columnName;
     genCol.pipes = pipes;
+    genCol.sortValue = sortValue;
     return genCol;
   }
 
