@@ -55,32 +55,31 @@ $pz-theme: mat.m2-define-light-theme(
 );
 
 .folder-tabs {
-  .mat-mdc-tab-header {
-    &::before {
-      width: 30px;
-      content: '';
-    }
-    &::after {
-      position: absolute;
-      bottom: 0;
-      border-bottom: #000 solid 1px;
-      width: 100%;
-      content: '';
-    }
+  .mat-mdc-tab-header::before {
+    width: 30px;
+    content: '';
   }
 
-  .mdc-tab-indicator {
-    display: none;
+  .mat-mdc-tab-header::after {
+    position: absolute;
+    bottom: 0;
+    border-bottom: #000 solid 1px;
+    width: 100%;
+    content: '';
+  }
+
+  .mdc-tab-indicator__content {
+    border: none;
   }
 
   .mdc-tab {
-    background-color: #000;
+    background-color: black;
     padding: 1px 1px 0 1px;
     min-width: auto;
     clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 98%, 0 98%);
 
     .mdc-tab__content {
-      background-color: lightgray;
+      background-color: variables.$table-primary-color;
 
       clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 100%, 0 100%);
 
@@ -93,10 +92,10 @@ $pz-theme: mat.m2-define-light-theme(
 
     padding: 1px 1px 1px 1px;
 
-    background-color: #000;
+    background-color: black;
 
     .mdc-tab__content {
-      background-color: #fff;
+      background-color: white;
     }
   }
 }

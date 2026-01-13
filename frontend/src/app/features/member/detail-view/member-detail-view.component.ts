@@ -1,5 +1,5 @@
 import { Component, OnInit, signal, WritableSignal, inject, LOCALE_ID } from '@angular/core';
-import { CommonModule, formatDate } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberService } from '../member.service';
 import { MemberModel } from '../member.model';
@@ -8,13 +8,17 @@ import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
 import { GenericCvContentComponent } from './generic-cv-content/generic-cv-content.component';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
-import { GenCol } from '../../../shared/generic-table/GenericTableDataSource';
 import { DegreeOverviewModel } from './cv/degree-overview.model';
 import { ExperienceOverviewModel } from './cv/experience-overview.model';
 import { CertificateOverviewModel } from './cv/certificate-overview.model';
 import { LeadershipExperienceOverviewModel } from './cv/leadership-experience-overview.model';
-import { ColumnTemplateDirective } from '../../../shared/generic-table/column-template/column-template.directive';
-import { TranslationScopeDirective } from '../../../shared/translation-scope.directive';
+import { TranslationScopeDirective } from '../../../shared/translation-scope/translation-scope.directive';
+import {
+  getCertificateColumns,
+  getDegreeColumns,
+  getExperienceColumns,
+  getLeadershipColumns
+} from './cv/member-detail-cv-table-definition';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -26,7 +30,6 @@ import { TranslationScopeDirective } from '../../../shared/translation-scope.dir
     GenericCvContentComponent,
     MatTabGroup,
     MatTab,
-    ColumnTemplateDirective,
     TranslationScopeDirective
   ],
   templateUrl: './member-detail-view.component.html',
@@ -53,6 +56,14 @@ export class MemberDetailViewComponent implements OnInit {
 
   leadershipExperienceData = signal<LeadershipExperienceOverviewModel[] | null>(null);
 
+  readonly degreeColumns = getDegreeColumns(this.locale);
+
+  readonly experienceColumns = getExperienceColumns(this.locale);
+
+  readonly certificateColumns = getCertificateColumns(this.locale);
+
+  readonly leadershipExperienceColumns = getLeadershipColumns();
+
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) {
@@ -71,40 +82,4 @@ export class MemberDetailViewComponent implements OnInit {
         }
       });
   }
-
-  degreeColumns: GenCol<DegreeOverviewModel>[] = [GenCol.fromCalculated('dateRange', (e) => {
-    const start = formatDate(e.startDate, GLOBAL_DATE_FORMAT, this.locale);
-    const end = e.endDate ? formatDate(e.endDate, GLOBAL_DATE_FORMAT, this.locale) : '';
-    return `${start} - ${end}`;
-  }),
-
-  GenCol.fromAttr('name'),
-  GenCol.fromAttr('degreeTypeName')];
-
-  experienceColumns: GenCol<ExperienceOverviewModel>[] = [
-    GenCol.fromCalculated(
-      'dateRange', (e) => {
-        const start = formatDate(e.startDate, GLOBAL_DATE_FORMAT, this.locale);
-        const end = e.endDate
-          ? formatDate(e.endDate, GLOBAL_DATE_FORMAT, this.locale)
-          : 'heute';
-
-        return `${start} - ${end}`;
-      }, [], (e) => new Date(e.startDate)
-        .getTime()
-    ),
-    GenCol.fromCalculated('workName', (e: ExperienceOverviewModel) => `${e.employer}\n${e.name}`),
-    GenCol.fromAttr('comment'),
-    GenCol.fromAttr('experienceTypeName')
-  ];
-
-  certificateColumns: GenCol<CertificateOverviewModel>[] =
-    [GenCol.fromAttr('completedAt', [(d: Date) => {
-      return d ? formatDate(d, GLOBAL_DATE_FORMAT, this.locale) : '';
-    }]),
-    GenCol.fromAttr('certificateTypeName'),
-    GenCol.fromAttr('comment')];
-
-  leadershipExperienceColumns: GenCol<LeadershipExperienceOverviewModel>[] = [GenCol.fromCalculated('leadershipExperienceType', (e) => e.leadershipExperienceType.name),
-    GenCol.fromAttr('comment')];
 }

@@ -55,29 +55,29 @@
         </span>
       </div>
     </div>
-    <mat-tab-group class="folder-tabs" mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
+    <mat-tab-group class="folder-tabs" mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms" *appTranslationScope="'CV'">
       <mat-tab label="CV">
         <app-generic-cv-content
           [data]="degreeData()"
-          *appTranslationScope="'CV.DEGREE'"
+          *appTranslationScope="'DEGREE'"
           [columns]="degreeColumns"
         />
 
         <app-generic-cv-content
           [data]="experienceData()"
-          *appTranslationScope="'CV.EXPERIENCE'"
+          *appTranslationScope="'EXPERIENCE'"
           [columns]="experienceColumns"
         />
 
         <app-generic-cv-content
           [data]="certificateData()"
-          *appTranslationScope="'CV.CERTIFICATE'"
+          *appTranslationScope="'CERTIFICATE'"
           [columns]="certificateColumns"
         />
 
         <app-generic-cv-content
           [data]="leadershipExperienceData()"
-          *appTranslationScope="'CV.LEADERSHIP_EXPERIENCE'"
+          *appTranslationScope="'LEADERSHIP_EXPERIENCE'"
           [columns]="leadershipExperienceColumns"
         />
 

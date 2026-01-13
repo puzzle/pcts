@@ -12,7 +12,7 @@ export class GenCol<T> {
 
   shouldLink = false;
 
-  sortValue?: SortAccessor<T>;
+  sortingAccessor?: SortAccessor<T>;
 
   protected constructor() {}
 
@@ -21,19 +21,20 @@ export class GenCol<T> {
     genCol.getValue = (model: T) => model[field];
     genCol.columnName = field.toString();
     genCol.pipes = pipes;
-    genCol.sortValue = (model: T) => model[field];
     return genCol;
   }
 
-  public static fromCalculated<T>(
-    columnName: string, getValue: (model: T) => any, pipes: Formatter[] = [], sortValue?: SortAccessor<T>
-  ): GenCol<T> {
+  public static fromCalculated<T>(columnName: string, getValue: (model: T) => any, pipes: Formatter[] = []): GenCol<T> {
     const genCol = new GenCol<T>();
     genCol.getValue = getValue;
     genCol.columnName = columnName;
     genCol.pipes = pipes;
-    genCol.sortValue = sortValue;
     return genCol;
+  }
+
+  public withCustomSortingAccessor(sortValue?: SortAccessor<T>) {
+    this.sortingAccessor = sortValue;
+    return this;
   }
 
   public withLink(shouldLink = true) {
