@@ -26,7 +26,7 @@ import {
 import { MatSort, MatSortHeader } from '@angular/material/sort';
 import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
 import { CaseFormatter } from '../format/case-formatter';
-import { GenCol, GenericTableDataSource } from './GenericTableDataSource';
+import { GenCol, GenericTableDataSource } from './generic-table-data-source';
 import { RouterLink } from '@angular/router';
 import { NgTemplateOutlet } from '@angular/common';
 import { ColumnTemplateDirective } from './column-template/column-template.directive';
@@ -98,8 +98,8 @@ export class GenericTableComponent<T extends object> implements AfterViewChecked
     return (data: T, sortHeaderId: string) => {
       const col = columns.find((c) => c.columnName === sortHeaderId)!;
 
-      const raw = col.sortValue
-        ? col.sortValue(data)
+      const raw = col.sortingAccessor
+        ? col.sortingAccessor(data)
         : col.getValue(data);
 
       if (raw instanceof Date) {

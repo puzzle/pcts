@@ -1,5 +1,5 @@
 import { Component, effect, inject, input, signal } from '@angular/core';
-import { GenCol, GenericTableDataSource } from '../../../../shared/generic-table/GenericTableDataSource';
+import { GenCol, GenericTableDataSource } from '../../../../shared/generic-table/generic-table-data-source';
 import { GenericTableComponent } from '../../../../shared/generic-table/generic-table.component';
 import { ScopedTranslationPipe } from '../../../../shared/pipes/scoped-translation-pipe';
 import { ColumnTemplateDirective } from '../../../../shared/generic-table/column-template/column-template.directive';
