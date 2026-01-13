@@ -5,7 +5,7 @@ import { BaseFormActionsComponent } from '../base-form-actions/base-form-actions
 
 @Component({
   standalone: true,
-  selector: 'app-form',
+  selector: 'app-base-form',
   imports: [ReactiveFormsModule,
     ScopedTranslationPipe,
     BaseFormActionsComponent],

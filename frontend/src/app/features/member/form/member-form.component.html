@@ -1,5 +1,5 @@
 <div class="w-75 mx-auto mt-5">
-  <app-form [formGroup]="memberForm" (canceled)="onCancel()" (submitted)="onSubmit()">
+  <app-base-form [formGroup]="memberForm" (canceled)="onCancel()" (submitted)="onSubmit()">
     <ng-container content>
       <p class="fw-bold">
         {{ "PERSONAL_DETAILS" | scopedTranslation }}
@@ -59,6 +59,6 @@
         <mat-error appPctsFormError/>
       </mat-form-field>
     </ng-container>
-  </app-form>
+  </app-base-form>
 </div>
 
