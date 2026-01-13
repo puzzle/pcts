@@ -31,7 +31,7 @@ class MemberOverviewPersistenceServiceIT extends PersistenceCoreIT {
         List<MemberOverview> memberOverviews = service.getById(1L);
 
         assertThat(memberOverviews).isNotNull();
-        assertThat(memberOverviews).hasSize(4);
+        assertThat(memberOverviews).hasSize(MEMBER_1_OVERVIEWS.size());
 
         assertThat(memberOverviews).allSatisfy(row -> {
             assertThat(row.getMemberId()).isEqualTo(1L);
@@ -43,13 +43,13 @@ class MemberOverviewPersistenceServiceIT extends PersistenceCoreIT {
 
         assertThat(memberOverviews)
                 .extracting(MemberOverview::getCertificateId)
-                .containsExactlyInAnyOrder(1L, 1L, 4L, 4L);
+                .containsExactlyInAnyOrder(1L, 1L, 4L, 4L, 5L, 5L);
 
         assertThat(memberOverviews).extracting(MemberOverview::getDegreeId).containsOnly(1L);
 
         assertThat(memberOverviews)
                 .extracting(MemberOverview::getExperienceId)
-                .containsExactlyInAnyOrder(1L, 2L, 1L, 2L);
+                .containsExactlyInAnyOrder(1L, 1L, 1L, 2L, 2L, 2L);
 
         assertThat(memberOverviews)
                 .usingRecursiveFieldByFieldElementComparator()

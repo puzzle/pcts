@@ -6,8 +6,14 @@ import ch.puzzle.pcts.dto.memberoverview.MemberOverviewMemberDto;
 import ch.puzzle.pcts.dto.memberoverview.certificate.MemberOverviewCertificateDto;
 import ch.puzzle.pcts.dto.memberoverview.degree.MemberOverviewDegreeDto;
 import ch.puzzle.pcts.dto.memberoverview.experience.MemberOverviewExperienceDto;
+import ch.puzzle.pcts.dto.memberoverview.leadershipexperience.MemberOverviewLeadershipExperienceDto;
+import ch.puzzle.pcts.dto.memberoverview.leadershipexperience.MemberOverviewLeadershipExperienceTypeDto;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
+import ch.puzzle.pcts.model.calculation.Relevancy;
+import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
+import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
+import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
@@ -42,6 +48,11 @@ public class TestData {
 
     public static final OrganisationUnit ORG_UNIT_2 = new OrganisationUnit(2L, "OrganisationUnit 2");
 
+    public static final Role ROLE_1;
+    static {
+        ROLE_1 = new Role(1L, "Role 1", true);
+        ROLE_1.setDeletedAt(UNIX_EPOCH);
+    }
     public static final Role ROLE_2 = new Role(2L, "Role 2", false);
 
     public static final Tag TAG_1 = new Tag(1L, "Tag 1");
@@ -155,6 +166,16 @@ public class TestData {
             .withId(4L)
             .withMember(MEMBER_1)
             .withCertificateType(CERT_TYPE_2)
+            .withCompletedAt(LocalDate.of(2010, 8, 12))
+            .withValidUntil(LocalDate.of(2023, 3, 25))
+            .withComment("Left organization.")
+            .build();
+
+    public static final Certificate CERTIFICATE_5 = Certificate.Builder
+            .builder()
+            .withId(5L)
+            .withMember(MEMBER_1)
+            .withCertificateType(LEADERSHIP_TYPE_1)
             .withCompletedAt(LocalDate.of(2010, 8, 12))
             .withValidUntil(LocalDate.of(2023, 3, 25))
             .withComment("Left organization.")
@@ -364,6 +385,62 @@ public class TestData {
                         .withExperienceEndDate(EXPERIENCE_2.getEndDate())
                         .withExperienceComment(EXPERIENCE_2.getComment())
                         .withExperienceTypeName(EXPERIENCE_2.getType().getName())
+                        .build(),
+                MemberOverview.Builder
+                        .builder()
+                        .withMemberId(MEMBER_1.getId())
+                        .withFirstName(MEMBER_1.getFirstName())
+                        .withLastName(MEMBER_1.getLastName())
+                        .withAbbreviation(MEMBER_1.getAbbreviation())
+                        .withEmploymentState(MEMBER_1.getEmploymentState())
+                        .withDateOfHire(MEMBER_1.getDateOfHire())
+                        .withBirthDate(MEMBER_1.getBirthDate())
+                        .withOrganisationUnitName(MEMBER_1.getOrganisationUnit().getName())
+                        .withCertificateId(CERTIFICATE_5.getId())
+                        .withCertificateCompletedAt(CERTIFICATE_5.getCompletedAt())
+                        .withCertificateComment(CERTIFICATE_5.getComment())
+                        .withCertificateTypeName(CERTIFICATE_5.getCertificateType().getName())
+                        .withleadershipTypeKind(CERTIFICATE_5.getCertificateType().getCertificateKind())
+                        .withDegreeId(DEGREE_1.getId())
+                        .withDegreeName(DEGREE_1.getName())
+                        .withDegreeStartDate(DEGREE_1.getStartDate())
+                        .withDegreeEndDate(DEGREE_1.getEndDate())
+                        .withDegreeTypeName(DEGREE_1.getDegreeType().getName())
+                        .withExperienceId(EXPERIENCE_2.getId())
+                        .withExperienceName(EXPERIENCE_2.getName())
+                        .withExperienceEmployer(EXPERIENCE_2.getEmployer())
+                        .withExperienceStartDate(EXPERIENCE_2.getStartDate())
+                        .withExperienceEndDate(EXPERIENCE_2.getEndDate())
+                        .withExperienceComment(EXPERIENCE_2.getComment())
+                        .withExperienceTypeName(EXPERIENCE_2.getType().getName())
+                        .build(),
+                MemberOverview.Builder
+                        .builder()
+                        .withMemberId(MEMBER_1.getId())
+                        .withFirstName(MEMBER_1.getFirstName())
+                        .withLastName(MEMBER_1.getLastName())
+                        .withAbbreviation(MEMBER_1.getAbbreviation())
+                        .withEmploymentState(MEMBER_1.getEmploymentState())
+                        .withDateOfHire(MEMBER_1.getDateOfHire())
+                        .withBirthDate(MEMBER_1.getBirthDate())
+                        .withOrganisationUnitName(MEMBER_1.getOrganisationUnit().getName())
+                        .withCertificateId(CERTIFICATE_5.getId())
+                        .withCertificateCompletedAt(CERTIFICATE_5.getCompletedAt())
+                        .withCertificateComment(CERTIFICATE_5.getComment())
+                        .withCertificateTypeName(CERTIFICATE_5.getCertificateType().getName())
+                        .withleadershipTypeKind(CERTIFICATE_5.getCertificateType().getCertificateKind())
+                        .withDegreeId(DEGREE_1.getId())
+                        .withDegreeName(DEGREE_1.getName())
+                        .withDegreeStartDate(DEGREE_1.getStartDate())
+                        .withDegreeEndDate(DEGREE_1.getEndDate())
+                        .withDegreeTypeName(DEGREE_1.getDegreeType().getName())
+                        .withExperienceId(EXPERIENCE_1.getId())
+                        .withExperienceName(EXPERIENCE_1.getName())
+                        .withExperienceEmployer(EXPERIENCE_1.getEmployer())
+                        .withExperienceStartDate(EXPERIENCE_1.getStartDate())
+                        .withExperienceEndDate(EXPERIENCE_1.getEndDate())
+                        .withExperienceComment(EXPERIENCE_1.getComment())
+                        .withExperienceTypeName(EXPERIENCE_1.getType().getName())
                         .build());
 
     public static final List<MemberOverview> MEMBER_2_OVERVIEWS = List
@@ -522,7 +599,16 @@ public class TestData {
                                                                                                                                                              CERTIFICATE_4
                                                                                                                                                                      .getComment())),
                                                                                                                 List
-                                                                                                                        .of()));
+                                                                                                                        .of(new MemberOverviewLeadershipExperienceDto(CERTIFICATE_5
+                                                                                                                                .getId(),
+                                                                                                                                                                      new MemberOverviewLeadershipExperienceTypeDto(CERTIFICATE_5
+                                                                                                                                                                              .getCertificateType()
+                                                                                                                                                                              .getName(),
+                                                                                                                                                                                                                    CERTIFICATE_5
+                                                                                                                                                                                                                            .getCertificateType()
+                                                                                                                                                                                                                            .getCertificateKind()),
+                                                                                                                                                                      CERTIFICATE_5
+                                                                                                                                                                              .getComment()))));
 
     public static final MemberOverviewDto MEMBER_2_OVERVIEW_DTO = new MemberOverviewDto(new MemberOverviewMemberDto(MEMBER_2
             .getId(),
@@ -614,26 +700,104 @@ public class TestData {
                                                                                                               List
                                                                                                                       .of()));
 
-    public static final Calculation CALCULATION_1 = new Calculation(1L,
-                                                                    MEMBER_1,
-                                                                    ROLE_2,
-                                                                    CalculationState.DRAFT,
-                                                                    LocalDate.of(2025, 1, 14),
-                                                                    "Ldap User");
+    public static final DegreeCalculation DEGREE_CALC_1 = new DegreeCalculation(1L,
+                                                                                null,
+                                                                                DEGREE_2,
+                                                                                Relevancy.HIGHLY,
+                                                                                BigDecimal.valueOf(80),
+                                                                                "Comment");
 
-    public static final Calculation CALCULATION_2 = new Calculation(2L,
-                                                                    MEMBER_2,
-                                                                    ROLE_2,
-                                                                    CalculationState.ARCHIVED,
-                                                                    LocalDate.of(2025, 1, 14),
-                                                                    "Ldap User 2");
+    public static final DegreeCalculation DEGREE_CALC_2 = new DegreeCalculation(2L,
+                                                                                null,
+                                                                                DEGREE_2,
+                                                                                Relevancy.LITTLE,
+                                                                                BigDecimal.valueOf(10),
+                                                                                "Comment");
 
-    public static final Calculation CALCULATION_3 = new Calculation(3L,
-                                                                    MEMBER_2,
-                                                                    ROLE_2,
-                                                                    CalculationState.ACTIVE,
-                                                                    null,
-                                                                    null);
+    public static final DegreeCalculation DEGREE_CALC_3 = new DegreeCalculation(3L,
+                                                                                null,
+                                                                                DEGREE_2,
+                                                                                Relevancy.LIMITED,
+                                                                                BigDecimal.valueOf(100),
+                                                                                "Comment");
+
+    public static final ExperienceCalculation EXP_CALC_1 = new ExperienceCalculation(1L,
+                                                                                     null,
+                                                                                     EXPERIENCE_2,
+                                                                                     Relevancy.HIGHLY,
+                                                                                     "Comment");
+
+    public static final ExperienceCalculation EXP_CALC_2 = new ExperienceCalculation(2L,
+                                                                                     null,
+                                                                                     EXPERIENCE_2,
+                                                                                     Relevancy.LITTLE,
+                                                                                     "Comment");
+
+    public static final ExperienceCalculation EXP_CALC_3 = new ExperienceCalculation(3L,
+                                                                                     null,
+                                                                                     EXPERIENCE_3,
+                                                                                     Relevancy.LIMITED,
+                                                                                     "Comment");
+
+    public static final CertificateCalculation CERT_CALC_1 = new CertificateCalculation(1L, null, CERTIFICATE_2);
+
+    public static final CertificateCalculation CERT_CALC_2 = new CertificateCalculation(2L, null, CERTIFICATE_2);
+
+    public static final CertificateCalculation CERT_CALC_3 = new CertificateCalculation(3L, null, CERTIFICATE_5);
+
+    public static final Calculation CALCULATION_1;
+    public static final Calculation CALCULATION_2;
+    public static final Calculation CALCULATION_3;
+
+    static {
+
+        Calculation calc1 = Calculation.Builder
+                .builder()
+                .withId(1L)
+                .withMember(MEMBER_1)
+                .withRole(ROLE_2)
+                .withState(CalculationState.DRAFT)
+                .withPublicationDate(LocalDate.of(2025, 1, 14))
+                .withPublicizedBy("Ldap User")
+                .withDegreeCalculations(List.of(DEGREE_CALC_1, DEGREE_CALC_3))
+                .withExperienceCalculations(List.of(EXP_CALC_1, EXP_CALC_3))
+                .withCertificateCalculations(List.of(CERT_CALC_1, CERT_CALC_3))
+                .build();
+
+        calc1.getDegreeCalculations().forEach(d -> d.setCalculation(calc1));
+        calc1.getExperienceCalculations().forEach(e -> e.setCalculation(calc1));
+        calc1.getCertificateCalculations().forEach(c -> c.setCalculation(calc1));
+        CALCULATION_1 = calc1;
+
+        Calculation calc2 = Calculation.Builder
+                .builder()
+                .withId(2L)
+                .withMember(MEMBER_2)
+                .withRole(ROLE_2)
+                .withState(CalculationState.ARCHIVED)
+                .withPublicationDate(LocalDate.of(2025, 1, 14))
+                .withPublicizedBy("Ldap User 2")
+                .withDegreeCalculations(List.of(DEGREE_CALC_2))
+                .withExperienceCalculations(List.of(EXP_CALC_2))
+                .withCertificateCalculations(List.of(CERT_CALC_2))
+                .build();
+
+        calc2.getDegreeCalculations().forEach(d -> d.setCalculation(calc2));
+        calc2.getExperienceCalculations().forEach(e -> e.setCalculation(calc2));
+        calc2.getCertificateCalculations().forEach(c -> c.setCalculation(calc2));
+        CALCULATION_2 = calc2;
+
+        CALCULATION_3 = Calculation.Builder
+                .builder()
+                .withId(3L)
+                .withMember(MEMBER_2)
+                .withRole(ROLE_2)
+                .withState(CalculationState.ACTIVE)
+                .withDegreeCalculations(List.of())
+                .withExperienceCalculations(List.of())
+                .withCertificateCalculations(List.of())
+                .build();
+    }
 
     public static final List<OrganisationUnit> ORGANISATION_UNITS = List.of(ORG_UNIT_2);
 
@@ -650,7 +814,7 @@ public class TestData {
             .of(LEADERSHIP_TYPE_1, LEADERSHIP_TYPE_2, LEADERSHIP_TYPE_3);
 
     public static final List<Certificate> CERTIFICATES = List
-            .of(CERTIFICATE_1, CERTIFICATE_2, CERTIFICATE_3, CERTIFICATE_4);
+            .of(CERTIFICATE_1, CERTIFICATE_2, CERTIFICATE_3, CERTIFICATE_4, CERTIFICATE_5);
 
     public static final List<DegreeType> DEGREE_TYPES = List.of(DEGREE_TYPE_1, DEGREE_TYPE_2);
 
@@ -659,6 +823,15 @@ public class TestData {
     public static final List<ExperienceType> EXPERIENCE_TYPES = List.of(EXP_TYPE_1, EXP_TYPE_2);
 
     public static final List<Experience> EXPERIENCES = List.of(EXPERIENCE_2, EXPERIENCE_3);
+
+    public static final List<DegreeCalculation> DEGREE_CALCULATIONS = List
+            .of(DEGREE_CALC_1, DEGREE_CALC_2, DEGREE_CALC_3);
+
+    public static final List<ExperienceCalculation> EXPERIENCE_CALCULATIONS = List
+            .of(EXP_CALC_1, EXP_CALC_2, EXP_CALC_3);
+
+    public static final List<CertificateCalculation> CERTIFICATE_CALCULATIONS = List
+            .of(CERT_CALC_1, CERT_CALC_2, CERT_CALC_3);
 
     public static final List<Calculation> CALCULATIONS = List.of(CALCULATION_1, CALCULATION_2, CALCULATION_3);
 

@@ -69,10 +69,11 @@ public class Calculation implements Model {
 
     @Override
     public String toString() {
-        return "Calculation{" + "id=" + id + ", member=" + member + ", role=" + role + ", state=" + state
-               + ", publicationDate=" + publicationDate + ", publicizedBy='" + publicizedBy + '\''
-               + ", degreeCalculations=" + degreeCalculations + ", experienceCalculations=" + experienceCalculations
-               + ", certificatesCalculations=" + certificatesCalculations + ", points=" + points + '}';
+        return "Calculation{" + "id=" + getId() + ", member=" + getMember() + ", role=" + getRole() + ", state="
+               + getState() + ", publicationDate=" + getPublicationDate() + ", publicizedBy='" + getPublicizedBy()
+               + '\'' + ", degreeCalculations=" + getDegreeCalculations() + ", experienceCalculations="
+               + getExperienceCalculations() + ", certificatesCalculations=" + getCertificateCalculations()
+               + ", points=" + getPoints() + '}';
     }
 
     @Override

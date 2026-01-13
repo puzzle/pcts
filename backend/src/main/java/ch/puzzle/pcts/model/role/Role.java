@@ -70,13 +70,13 @@ public class Role implements Model {
     public boolean equals(Object o) {
         if (!(o instanceof Role role))
             return false;
-        return isManagement == role.isManagement && Objects.equals(getId(), role.getId())
+        return getIsManagement() == role.getIsManagement() && Objects.equals(getId(), role.getId())
                && Objects.equals(getName(), role.getName()) && Objects.equals(getDeletedAt(), role.getDeletedAt());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), isManagement, getDeletedAt());
+        return Objects.hash(getId(), getName(), getIsManagement(), getDeletedAt());
     }
 
     @Override

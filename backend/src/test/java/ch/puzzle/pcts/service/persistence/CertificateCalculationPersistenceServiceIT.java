@@ -1,14 +1,12 @@
 package ch.puzzle.pcts.service.persistence;
 
+import static ch.puzzle.pcts.util.TestData.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
-import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.repository.CertificateCalculationRepository;
 import jakarta.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,42 +16,19 @@ class CertificateCalculationPersistenceServiceIT
         extends
             PersistenceBaseIT<CertificateCalculation, CertificateCalculationRepository, CertificateCalculationPersistenceService> {
 
-    CalculationPersistenceServiceIT calculationServiceIT;
-    CertificatePersistenceServiceIT certificateServiceIT;
-
-    private static final Long CERT_CALC_ID_1 = 1L;
-    private static final Long CERT_CALC_ID_2 = 2L;
-    private static final Long CERT_CALC_ID_3 = 3L;
-
     @Autowired
-    CertificateCalculationPersistenceServiceIT(CertificateCalculationPersistenceService service,
-                                               CalculationPersistenceService calculationService,
-                                               CertificatePersistenceService certificateService) {
+    CertificateCalculationPersistenceServiceIT(CertificateCalculationPersistenceService service) {
         super(service);
-        this.calculationServiceIT = new CalculationPersistenceServiceIT(calculationService, null, null);
-        this.certificateServiceIT = new CertificatePersistenceServiceIT(certificateService);
     }
 
     @Override
     CertificateCalculation getModel() {
-        Calculation calculation = calculationServiceIT.getAll().getFirst();
-        Certificate certificate = certificateServiceIT.getAll().getFirst();
-
-        return new CertificateCalculation(null, calculation, certificate);
+        return new CertificateCalculation(null, CALCULATION_1, CERTIFICATE_1);
     }
 
     @Override
     List<CertificateCalculation> getAll() {
-        List<Calculation> calculations = calculationServiceIT.getAll();
-        List<Certificate> certificates = certificateServiceIT.getAll();
-
-        List<CertificateCalculation> list = new ArrayList<>();
-
-        list.add(new CertificateCalculation(CERT_CALC_ID_1, calculations.getFirst(), certificates.get(1)));
-        list.add(new CertificateCalculation(CERT_CALC_ID_2, calculations.get(1), certificates.get(1)));
-
-        list.add(new CertificateCalculation(CERT_CALC_ID_3, calculations.getFirst(), certificates.get(4)));
-        return list;
+        return CERTIFICATE_CALCULATIONS;
     }
 
     @DisplayName("Should fetch CertificateCalculations by calculationId")
@@ -107,5 +82,4 @@ class CertificateCalculationPersistenceServiceIT
         assertThat(remaining).hasSize(1);
         assertThat(remaining.getFirst().getId()).isEqualTo(cc2.getId());
     }
-
 }
