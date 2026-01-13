@@ -6,6 +6,8 @@ import { MemberModel } from '../member.model';
 import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
+import { AddCertificateComponent } from '../modal-components/add-certificate.component/add-certificate.component';
+import { ModalService } from '../../../shared/modal-service';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -26,6 +28,8 @@ export class MemberDetailViewComponent implements OnInit {
 
   private readonly router = inject(Router);
 
+  private readonly dialog = inject(ModalService);
+
   protected readonly GLOBAL_DATE_FORMAT = GLOBAL_DATE_FORMAT;
 
   readonly member: WritableSignal<MemberModel | null> = signal<MemberModel | null>(null);
@@ -41,5 +45,9 @@ export class MemberDetailViewComponent implements OnInit {
       .subscribe({
         next: (member) => this.member.set(member)
       });
+  }
+
+  openCertificateDialog() {
+    this.dialog.openModal(AddCertificateComponent);
   }
 }
