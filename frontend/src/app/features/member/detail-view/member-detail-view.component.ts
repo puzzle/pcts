@@ -18,6 +18,8 @@ import {
   getLeadershipExperienceTable
 } from './cv/member-detail-cv-table-definition';
 import { MemberOverviewModel } from '../member-overview.model';
+import { AddCertificateComponent } from '../modal-components/add-certificate.component/add-certificate.component';
+import { ModalService } from '../../../shared/modal-service';
 import { RolePointsModel } from './RolePointsModel';
 import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
 
@@ -43,6 +45,8 @@ export class MemberDetailViewComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
 
   private readonly router = inject(Router);
+
+  private readonly dialog = inject(ModalService);
 
   readonly experienceTable = getExperienceTable();
 
@@ -95,6 +99,10 @@ export class MemberDetailViewComponent implements OnInit {
           }
         }
       });
+  }
+
+  openCertificateDialog() {
+    this.dialog.openModal(AddCertificateComponent);
   }
 
   onTabIndexChange(index: number) {
