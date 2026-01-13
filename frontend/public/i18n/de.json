@@ -40,6 +40,7 @@
     }
   },
   "TABLE": {
+    "NO_DATA": "Keine Einträge",
     "NO_SEARCH_RESULT": "Kein {{model}} mit den Attributen \"{{searchValue}}\" gefunden."
   },
   "FILTER": {
