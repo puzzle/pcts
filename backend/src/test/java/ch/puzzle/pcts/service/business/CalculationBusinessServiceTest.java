@@ -10,7 +10,6 @@ import ch.puzzle.pcts.service.persistence.CalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.CalculationValidationService;
 import java.math.BigDecimal;
 import java.util.List;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -135,7 +134,6 @@ class CalculationBusinessServiceTest
 
         verify(persistenceService).getAllByMember(member);
     }
-
 
     @DisplayName("Should get all calculations by member and role and set points")
     @Test
