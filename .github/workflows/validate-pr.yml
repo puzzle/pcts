@@ -112,36 +112,41 @@ jobs:
             echo "STATUS=In review" >> $GITHUB_ENV
           fi
 
-      - name: Find Linked Issue URL
-        id: find_issue
-        if: env.STATUS != 'STOP'
+      - name: Move Linked Issues
+        if: env.TARGET_STATUS != 'STOP'
+        shell: bash
         run: |
-          # Fetch linked issue URL
-          LINKED_URL=$(gh pr view ${{ github.event.pull_request.number }} -R ${{ github.repository }} --json closingIssuesReferences --jq '.closingIssuesReferences[0].url')
-          
-          if [ -n "$LINKED_URL" ] && [ "$LINKED_URL" != "null" ]; then
-            echo "TARGET_URL=$LINKED_URL" >> $GITHUB_ENV
-            echo "✅ Found Linked Issue: $LINKED_URL"
-          else
-            echo "⚠️ No linked issue found to move."
-            echo "TARGET_URL=" >> $GITHUB_ENV
+          LINKED_ISSUES=$(gh pr view "$PR_NUMBER" --json closingIssuesReferences -q '.closingIssuesReferences[].number')
+
+          if [[ -z "$LINKED_ISSUES" ]]; then
+            echo "No linked issues found for PR #$PR_NUMBER."
+            exit 0
           fi
 
-      - name: Move Item on Project Board
-        if: env.STATUS != 'STOP' && env.TARGET_URL != ''
-        run: |
-          # 1. Add Item (Idempotent - returns ID if exists) 
-          echo "Projectnumber: $PROJECT_NUMBER, ORG: $ORGANIZATION, url: $TARGET_URL" 
-          ITEM_ID=$(gh project item-add "$PROJECT_NUMBER" --owner "$ORGANIZATION" --url "$TARGET_URL" --format json | jq -r '.id')
+          PROJECT_ID=$(gh project view "$PROJECT_NUM" --owner "$OWNER" --format json -q .id)
+
+          IDS=$(gh project field-list "$PROJECT_NUM" --owner "$OWNER" --format json | jq -r --arg f "$STATUS_FIELD" --arg o "$TARGET_STATUS" '
+            .fields[] 
+            | select(.name == $f) 
+            | {fieldId: .id, optionId: (.options[] | select(.name == $o) | .id)} 
+            | "\(.fieldId) \(.optionId)"
+          ')
+          read -r FIELD_ID OPTION_ID <<< "$IDS"
+
+          for ISSUE_NUM in $LINKED_ISSUES; do
+            echo "Processing Issue #$ISSUE_NUM..."
           
-          # 2. Update Status
-          if [ -n "$ITEM_ID" ]; then
-            gh project item-edit --id "$ITEM_ID" --field-id "$FIELD_NAME" --project-id "$PROJECT_NUMBER" --text "$STATUS"
-            echo "✅ Moved Item to: $STATUS"
-          else
-            echo "❌ Failed to get Item ID."
-            exit 1
-          fi
+            ITEM_ID=$(gh project item-list "$PROJECT_NUM" --owner "$OWNER" --limit 100 --format json | jq -r --argjson n "$ISSUE_NUM" '
+              .items[] | select(.content.number == $n) | .id
+            ')
+
+            if [[ -n "$ITEM_ID" && -n "$FIELD_ID" && -n "$OPTION_ID" ]]; then
+              gh project item-edit --id "$ITEM_ID" --project-id "$PROJECT_ID" --field-id "$FIELD_ID" --single-select-option-id "$OPTION_ID"
+              echo "✅ Issue #$ISSUE_NUM moved to '$TARGET_STATUS'"
+            else
+              echo "⚠️  Skipping Issue #$ISSUE_NUM: Item not found in project or IDs missing."
+            fi
+          done
 
       - name: Warn if Update Skipped
         if: env.STATUS != 'STOP' && env.TARGET_URL == ''
