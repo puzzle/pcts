@@ -113,8 +113,6 @@ jobs:
           fi
           
       - name: Get Id of desired status label
-        env:
-          GH_TOKEN: ${{ github.token }} # Ensure token is available for gh cli
         run: |
           LABEL_ID=$(gh project field-list "$PROJECT_NUMBER" --owner "$OWNER" --format json | jq -r --arg field_name "Status" --arg search_string "In review" '
             .fields[] 
