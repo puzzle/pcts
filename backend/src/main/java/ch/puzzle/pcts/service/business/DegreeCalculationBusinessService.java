@@ -3,8 +3,6 @@ package ch.puzzle.pcts.service.business;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
-import ch.puzzle.pcts.model.degree.Degree;
-import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.service.persistence.DegreeCalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.DegreeCalculationValidationService;
 import java.math.BigDecimal;
@@ -69,8 +67,8 @@ public class DegreeCalculationBusinessService extends BusinessBase<DegreeCalcula
         }).toList();
 
         /*
-         * Removing all created or updated degree calculations from the list and then delete the
-         * remaining, which are unused
+         * Removing all created or updated degree calculations from the list and then
+         * delete the remaining, which are unused
          */
         existing.removeAll(degreeCalculations);
         this.degreeCalculationPersistenceService

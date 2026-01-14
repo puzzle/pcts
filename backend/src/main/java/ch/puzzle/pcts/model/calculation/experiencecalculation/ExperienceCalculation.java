@@ -113,7 +113,7 @@ public class ExperienceCalculation implements CalculationChild, Model {
     @Override
     public String toString() {
         return "ExperienceCalculation{" + "id=" + id + ", calculationId="
-               + (getCalculation() != null ? getCalculation().getId() : null) + ", experience=" + getExperience() + ", relevancy="
-               + getRelevancy() + ", comment='" + getComment() + '\'' + '}';
+               + (getCalculation() != null ? getCalculation().getId() : null) + ", experience=" + getExperience()
+               + ", relevancy=" + getRelevancy() + ", comment='" + getComment() + '\'' + '}';
     }
 }

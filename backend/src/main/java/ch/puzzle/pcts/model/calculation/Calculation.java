@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 @Entity
 public class Calculation implements Model {
@@ -178,25 +179,14 @@ public class Calculation implements Model {
         this.certificatesCalculations = certificatesCalculations;
     }
 
+    public List<CertificateCalculation> getCertificatesCalculationsWithLeadershipExperienceType() {
+        return this.certificatesCalculations.stream().filter(CertificateCalculation::isLeadershipExperience).toList();
+    }
+
     public List<CertificateCalculation> getCertificateCalculationsWithCertificateType() {
         return this.certificatesCalculations
                 .stream()
-                .filter(certificateCalculation -> !certificateCalculation
-                        .getCertificate()
-                        .getCertificateType()
-                        .getCertificateKind()
-                        .isLeadershipExperienceType())
-                .toList();
-    }
-
-    public List<CertificateCalculation> getCertificatesCalculationsWithLeadershipExperienceType() {
-        return this.certificatesCalculations
-                .stream()
-                .filter(certificateCalculation -> certificateCalculation
-                        .getCertificate()
-                        .getCertificateType()
-                        .getCertificateKind()
-                        .isLeadershipExperienceType())
+                .filter(Predicate.not(CertificateCalculation::isLeadershipExperience))
                 .toList();
     }
 

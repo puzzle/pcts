@@ -36,7 +36,8 @@ public class CertificateCalculation implements CalculationChild, Model {
     @Override
     public String toString() {
         return "CertificateCalculation{" + "id=" + id + ", calculation="
-               + (getCalculation() != null ? getCalculation().getId() : null) + ", certificate=" + getCertificate() + '}';
+               + (getCalculation() != null ? getCalculation().getId() : null) + ", certificate=" + getCertificate()
+               + '}';
     }
 
     @Override
@@ -54,6 +55,10 @@ public class CertificateCalculation implements CalculationChild, Model {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getCalculation() != null ? getCalculation().getId() : null, getCertificate());
+    }
+
+    public boolean isLeadershipExperience() {
+        return this.getCertificate().getCertificateType().getCertificateKind().isLeadershipExperienceType();
     }
 
     public Long getId() {

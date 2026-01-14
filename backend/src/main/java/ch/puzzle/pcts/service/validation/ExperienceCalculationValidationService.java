@@ -8,9 +8,9 @@ import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
 import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.service.validation.util.CalculationChildValidationUtil;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -31,10 +31,8 @@ public class ExperienceCalculationValidationService extends ValidationBase<Exper
 
     public void validateDuplicateExperienceId(ExperienceCalculation experienceCalculation,
                                               List<ExperienceCalculation> experienceCalculationList) {
-        boolean isSameEntityOnly = experienceCalculationList.size() == 1 && Objects
-                .equals(experienceCalculationList.getFirst().getId(), experienceCalculation.getId());
-
-        if (!isSameEntityOnly && !experienceCalculationList.isEmpty()) {
+        if (CalculationChildValidationUtil
+                .validateDuplicateCalculationChildId(experienceCalculation, experienceCalculationList)) {
             Map<FieldKey, String> attributes = Map
                     .of(FieldKey.ENTITY,
                         CALCULATION,

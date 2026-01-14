@@ -8,9 +8,9 @@ import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
 import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.service.validation.util.CalculationChildValidationUtil;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -30,10 +30,8 @@ public class DegreeCalculationValidationService extends ValidationBase<DegreeCal
 
     public void validateDuplicateDegreeId(DegreeCalculation degreeCalculation,
                                           List<DegreeCalculation> degreeCalculationList) {
-        boolean isSameEntityOnly = degreeCalculationList.size() == 1 && Objects
-                .equals(degreeCalculationList.getFirst().getId(), degreeCalculation.getId());
-
-        if (!isSameEntityOnly && !degreeCalculationList.isEmpty()) {
+        if (CalculationChildValidationUtil
+                .validateDuplicateCalculationChildId(degreeCalculation, degreeCalculationList)) {
             Map<FieldKey, String> attributes = Map
                     .of(FieldKey.ENTITY,
                         CALCULATION,

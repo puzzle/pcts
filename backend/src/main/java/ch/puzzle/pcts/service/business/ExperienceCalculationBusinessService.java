@@ -75,8 +75,8 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
                 .toList();
 
         /*
-         * Removing all created or updated experience calculations from the list and then delete the
-         * remaining, which are unused
+         * Removing all created or updated experience calculations from the list and
+         * then delete the remaining, which are unused
          */
         existing.removeAll(experienceCalculations);
         this.experienceCalculationPersistenceService

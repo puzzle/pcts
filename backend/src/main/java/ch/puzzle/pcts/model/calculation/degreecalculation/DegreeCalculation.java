@@ -56,8 +56,9 @@ public class DegreeCalculation implements CalculationChild, Model {
     @Override
     public String toString() {
         return "DegreeCalculation{" + "id=" + id + ", calculationId="
-               + (getCalculation() != null ? getCalculation().getId() : null) + ", degree=" + getDegree() + ", relevancy=" + getRelevancy()
-               + ", weight=" + getWeight() + ", comment='" + getComment() + '\'' + '}';
+               + (getCalculation() != null ? getCalculation().getId() : null) + ", degree=" + getDegree()
+               + ", relevancy=" + getRelevancy() + ", weight=" + getWeight() + ", comment='" + getComment() + '\''
+               + '}';
     }
 
     @Override

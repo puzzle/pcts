@@ -8,9 +8,9 @@ import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
 import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.service.validation.util.CalculationChildValidationUtil;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -31,10 +31,8 @@ public class CertificateCalculationValidationService extends ValidationBase<Cert
 
     public void validateDuplicateCertificateId(CertificateCalculation certificateCalculation,
                                                List<CertificateCalculation> certificateCalculationList) {
-        boolean isSameEntityOnly = certificateCalculationList.size() == 1 && Objects
-                .equals(certificateCalculationList.getFirst().getId(), certificateCalculation.getId());
-
-        if (!isSameEntityOnly && !certificateCalculationList.isEmpty()) {
+        if (CalculationChildValidationUtil
+                .validateDuplicateCalculationChildId(certificateCalculation, certificateCalculationList)) {
             Map<FieldKey, String> attributes = Map
                     .of(FieldKey.ENTITY,
                         CALCULATION,
