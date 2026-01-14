@@ -92,8 +92,8 @@ public class CertificateCalculationBusinessService extends BusinessBase<Certific
                 .toList();
 
         /*
-         * Removing all created or updated certificate calculations to later delete the
-         * unused certificate calculations
+         * Removing all created or updated certificate calculations from the list and then delete the
+         * remaining, which are unused
          */
         existing.removeAll(certificateCalculations);
         this.certificateCalculationPersistenceService

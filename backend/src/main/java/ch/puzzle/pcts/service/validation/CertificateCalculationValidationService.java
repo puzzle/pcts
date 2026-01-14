@@ -17,9 +17,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class CertificateCalculationValidationService extends ValidationBase<CertificateCalculation> {
 
-    CertificateCalculationValidationService() {
-    }
-
     @Override
     public void validateOnCreate(CertificateCalculation model) {
         super.validateOnCreate(model);

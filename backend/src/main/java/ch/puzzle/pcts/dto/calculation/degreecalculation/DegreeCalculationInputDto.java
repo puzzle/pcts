@@ -13,5 +13,5 @@ public record DegreeCalculationInputDto(
 
         @Schema(description = "Relevancy level of the degree", example = "HIGHLY", requiredMode = Schema.RequiredMode.REQUIRED) Relevancy relevancy,
 
-        @Schema(description = "Optional comment explaining the relevancy decision", example = "It's highly relevant because it matches the current position.") String comment) {
+        @Schema(description = "Optional comment explaining the relevancy and weight decision", example = "It's highly relevant because it matches the current position.") String comment) {
 }

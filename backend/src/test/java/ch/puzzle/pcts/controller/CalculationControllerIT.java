@@ -62,6 +62,7 @@ class CalculationControllerIT {
 
     @Autowired
     private MockMvc mvc;
+
     @Autowired
     private JsonMapper jsonMapper;
     private Calculation calculation;

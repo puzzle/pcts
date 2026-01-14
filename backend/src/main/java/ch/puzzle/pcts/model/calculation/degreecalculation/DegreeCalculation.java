@@ -56,14 +56,15 @@ public class DegreeCalculation implements CalculationChild, Model {
     @Override
     public String toString() {
         return "DegreeCalculation{" + "id=" + id + ", calculationId="
-               + (calculation != null ? calculation.getId() : null) + ", degree=" + degree + ", relevancy=" + relevancy
-               + ", weight=" + weight + ", comment='" + comment + '\'' + '}';
+               + (getCalculation() != null ? getCalculation().getId() : null) + ", degree=" + getDegree() + ", relevancy=" + getRelevancy()
+               + ", weight=" + getWeight() + ", comment='" + getComment() + '\'' + '}';
     }
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof DegreeCalculation that))
+        if (!(object instanceof DegreeCalculation that)) {
             return false;
+        }
         return Objects.equals(getId(), that.getId())
                && Objects
                        .equals(this.getCalculation() != null ? this.getCalculation().getId() : null,

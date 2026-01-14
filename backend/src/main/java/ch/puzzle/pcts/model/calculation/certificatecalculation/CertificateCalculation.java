@@ -36,13 +36,14 @@ public class CertificateCalculation implements CalculationChild, Model {
     @Override
     public String toString() {
         return "CertificateCalculation{" + "id=" + id + ", calculation="
-               + (getCalculation() != null ? getCalculation().getId() : null) + ", certificate=" + certificate + '}';
+               + (getCalculation() != null ? getCalculation().getId() : null) + ", certificate=" + getCertificate() + '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof CertificateCalculation that))
+        if (!(o instanceof CertificateCalculation that)) {
             return false;
+        }
         return Objects.equals(getId(), that.getId())
                && Objects
                        .equals(this.getCalculation() != null ? this.getCalculation().getId() : null,

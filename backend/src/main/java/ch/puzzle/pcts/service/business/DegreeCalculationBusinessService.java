@@ -69,8 +69,8 @@ public class DegreeCalculationBusinessService extends BusinessBase<DegreeCalcula
         }).toList();
 
         /*
-         * Removing all created or updated degree calculations to later delete the
-         * unused degree calculations
+         * Removing all created or updated degree calculations from the list and then delete the
+         * remaining, which are unused
          */
         existing.removeAll(degreeCalculations);
         this.degreeCalculationPersistenceService
@@ -84,13 +84,11 @@ public class DegreeCalculationBusinessService extends BusinessBase<DegreeCalcula
      * infinite amount of digits could cause a ArithmeticException
      */
     private BigDecimal calculatePoints(DegreeCalculation calculation) {
-        Degree degree = calculation.getDegree();
-        DegreeType type = degree.getDegreeType();
         Relevancy relevancy = calculation.getRelevancy();
         BigDecimal weight = calculation.getWeight();
 
-        BigDecimal basePoints = type.getPointsByRelevancy(relevancy);
+        BigDecimal pointsByRelevancy = calculation.getDegree().getDegreeType().getPointsByRelevancy(relevancy);
 
-        return basePoints.divide(BigDecimal.valueOf(100), MathContext.DECIMAL128).multiply(weight);
+        return pointsByRelevancy.divide(BigDecimal.valueOf(100), MathContext.DECIMAL128).multiply(weight);
     }
 }

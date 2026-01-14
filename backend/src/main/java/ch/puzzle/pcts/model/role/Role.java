@@ -68,8 +68,9 @@ public class Role implements Model {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Role role))
+        if (!(o instanceof Role role)) {
             return false;
+        }
         return getIsManagement() == role.getIsManagement() && Objects.equals(getId(), role.getId())
                && Objects.equals(getName(), role.getName()) && Objects.equals(getDeletedAt(), role.getDeletedAt());
     }

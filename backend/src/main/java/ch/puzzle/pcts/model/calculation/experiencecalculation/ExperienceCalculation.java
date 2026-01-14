@@ -89,8 +89,9 @@ public class ExperienceCalculation implements CalculationChild, Model {
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof ExperienceCalculation that))
+        if (!(object instanceof ExperienceCalculation that)) {
             return false;
+        }
         return Objects.equals(getId(), that.getId())
                && Objects
                        .equals(this.getCalculation() != null ? this.getCalculation().getId() : null,
@@ -112,7 +113,7 @@ public class ExperienceCalculation implements CalculationChild, Model {
     @Override
     public String toString() {
         return "ExperienceCalculation{" + "id=" + id + ", calculationId="
-               + (calculation != null ? calculation.getId() : null) + ", experience=" + experience + ", relevancy="
-               + relevancy + ", comment='" + comment + '\'' + '}';
+               + (getCalculation() != null ? getCalculation().getId() : null) + ", experience=" + getExperience() + ", relevancy="
+               + getRelevancy() + ", comment='" + getComment() + '\'' + '}';
     }
 }

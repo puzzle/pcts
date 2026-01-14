@@ -78,15 +78,9 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
     public Calculation getById(Long calculationId) {
         Calculation calculation = super.getById(calculationId);
 
-        BigDecimal totalRelevancyPoints = BigDecimal.ZERO;
-
-        totalRelevancyPoints = totalRelevancyPoints
-                .add(experienceCalculationBusinessService.getExperiencePoints(calculationId));
-
-        totalRelevancyPoints = totalRelevancyPoints
-                .add(degreeCalculationBusinessService.getDegreePoints(calculationId));
-
-        totalRelevancyPoints = totalRelevancyPoints
+        BigDecimal totalRelevancyPoints = BigDecimal.ZERO
+                .add(experienceCalculationBusinessService.getExperiencePoints(calculationId))
+                .add(degreeCalculationBusinessService.getDegreePoints(calculationId))
                 .add(certificateCalculationBusinessService.getCertificatePoints(calculationId));
 
         calculation.setPoints(totalRelevancyPoints);
