@@ -30,9 +30,7 @@ class MemberOverviewPersistenceServiceIT extends PersistenceCoreIT {
     void shouldGetAllMemberOverviewRowsForMember1() {
         List<MemberOverview> memberOverviews = service.getById(1L);
 
-        assertThat(memberOverviews).isNotNull().hasSize(4);
-
-        assertThat(memberOverviews).allSatisfy(row -> {
+        assertThat(memberOverviews).isNotNull().hasSize(4).allSatisfy(row -> {
             assertThat(row.getMemberId()).isEqualTo(1L);
             assertThat(row.getFirstName()).isEqualTo("Member 1");
             assertThat(row.getLastName()).isEqualTo("Test");
