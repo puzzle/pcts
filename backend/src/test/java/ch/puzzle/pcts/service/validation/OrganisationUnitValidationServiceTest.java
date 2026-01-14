@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.service.validation;
 
 import static ch.puzzle.pcts.Constants.ORGANISATION_UNIT;
+import static ch.puzzle.pcts.util.TestData.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -51,8 +52,6 @@ class OrganisationUnitValidationServiceTest
     }
 
     static Stream<Arguments> invalidModelProvider() {
-        String tooLongName = new String(new char[251]).replace("\0", "s");
-
         return Stream
                 .of(Arguments
                         .of(createOrganisationUnit(null),
@@ -93,7 +92,7 @@ class OrganisationUnitValidationServiceTest
                                                     FieldKey.IS,
                                                     "S"))),
                     Arguments
-                            .of(createOrganisationUnit(tooLongName),
+                            .of(createOrganisationUnit(TOO_LONG_STRING),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -105,7 +104,7 @@ class OrganisationUnitValidationServiceTest
                                                     FieldKey.MAX,
                                                     "250",
                                                     FieldKey.IS,
-                                                    tooLongName))));
+                                                    TOO_LONG_STRING))));
 
     }
 
@@ -133,15 +132,14 @@ class OrganisationUnitValidationServiceTest
     @DisplayName("Should throw Exception on validateOnUpdate() when name already exists")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExists() {
-        Long id = 1L;
         OrganisationUnit newOrganisationUnit = getValidModel();
         OrganisationUnit organisationUnit = getValidModel();
-        organisationUnit.setId(2L);
+        organisationUnit.setId(ORG_UNIT_2_ID);
 
         when(persistenceService.getByName(newOrganisationUnit.getName())).thenReturn(Optional.of(organisationUnit));
 
         PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> service.validateOnUpdate(id, newOrganisationUnit));
+                                               () -> service.validateOnUpdate(ORG_UNIT_1_ID, newOrganisationUnit));
 
         assertEquals(List.of(ErrorKey.ATTRIBUTE_UNIQUE), exception.getErrorKeys());
         assertEquals(List
@@ -172,15 +170,14 @@ class OrganisationUnitValidationServiceTest
     @DisplayName("Should call correct validate method on validateOnUpdate()")
     @Test
     void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
-        Long id = 1L;
         OrganisationUnit organisationUnit = getValidModel();
 
         OrganisationUnitValidationService spyService = spy(service);
         doNothing().when((ValidationBase<OrganisationUnit>) spyService).validateOnUpdate(anyLong(), any());
 
-        spyService.validateOnUpdate(id, organisationUnit);
+        spyService.validateOnUpdate(ORG_UNIT_1_ID, organisationUnit);
 
-        verify(spyService).validateOnUpdate(id, organisationUnit);
+        verify(spyService).validateOnUpdate(ORG_UNIT_1_ID, organisationUnit);
         verifyNoMoreInteractions(persistenceService);
     }
 }

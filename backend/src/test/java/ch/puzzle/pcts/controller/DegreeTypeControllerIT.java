@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.controller;
 
+import static ch.puzzle.pcts.util.TestData.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
@@ -14,9 +15,7 @@ import ch.puzzle.pcts.mapper.DegreeTypeMapper;
 import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.service.business.DegreeTypeBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
-import java.math.BigDecimal;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,36 +49,11 @@ class DegreeTypeControllerIT {
 
     private static final String BASEURL = "/api/v1/degree-types";
 
-    private DegreeType degreeType;
-    private DegreeType requestDto;
-    private DegreeTypeDto expectedDto;
-    private Long id;
-
-    @BeforeEach
-    void setUp() {
-        degreeType = new DegreeType(1L,
-                                    "Degree type 1",
-                                    new BigDecimal("1.0"),
-                                    new BigDecimal("2.0"),
-                                    new BigDecimal("3.0"));
-        requestDto = new DegreeType(1L,
-                                    "Degree type 1",
-                                    new BigDecimal("1.0"),
-                                    new BigDecimal("2.0"),
-                                    new BigDecimal("3.0"));
-        expectedDto = new DegreeTypeDto(1L,
-                                        "Degree type 1",
-                                        new BigDecimal("1.0"),
-                                        new BigDecimal("2.0"),
-                                        new BigDecimal("3.0"));
-        id = 1L;
-    }
-
     @DisplayName("Should successfully get all degree types")
     @Test
     void shouldGetAllDegreeTypes() throws Exception {
-        BDDMockito.given(service.getAll()).willReturn(List.of(degreeType));
-        BDDMockito.given(mapper.toDto(any(List.class))).willReturn(List.of(expectedDto));
+        BDDMockito.given(service.getAll()).willReturn(List.of(DEGREE_TYPE_1));
+        BDDMockito.given(mapper.toDto(any(List.class))).willReturn(List.of(DEGREE_TYPE_1_DTO));
 
         mvc
                 .perform(get(BASEURL)
@@ -87,7 +61,7 @@ class DegreeTypeControllerIT {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$[0]"));
+                .andExpect(JsonDtoMatcher.matchesDto(DEGREE_TYPE_1_DTO, "$[0]"));
 
         verify(service, times(1)).getAll();
         verify(mapper, times(1)).toDto(any(List.class));
@@ -96,13 +70,13 @@ class DegreeTypeControllerIT {
     @DisplayName("Should successfully get degree type by id")
     @Test
     void shouldGetDegreeTypeById() throws Exception {
-        BDDMockito.given(service.getById(anyLong())).willReturn(degreeType);
-        BDDMockito.given(mapper.toDto(any(DegreeType.class))).willReturn(expectedDto);
+        BDDMockito.given(service.getById(anyLong())).willReturn(DEGREE_TYPE_1);
+        BDDMockito.given(mapper.toDto(any(DegreeType.class))).willReturn(DEGREE_TYPE_1_DTO);
 
         mvc
                 .perform(get(BASEURL + "/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
-                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
+                .andExpect(JsonDtoMatcher.matchesDto(DEGREE_TYPE_1_DTO, "$"));
 
         verify(service, times(1)).getById(1L);
         verify(mapper, times(1)).toDto(any(DegreeType.class));
@@ -111,18 +85,18 @@ class DegreeTypeControllerIT {
     @DisplayName("Should successfully create new degree type")
     @Test
     void shouldCreateNewDegreeType() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(DegreeTypeDto.class))).willReturn(degreeType);
-        BDDMockito.given(service.create(any(DegreeType.class))).willReturn(degreeType);
-        BDDMockito.given(mapper.toDto(any(DegreeType.class))).willReturn(expectedDto);
+        BDDMockito.given(mapper.fromDto(any(DegreeTypeDto.class))).willReturn(DEGREE_TYPE_1);
+        BDDMockito.given(service.create(any(DegreeType.class))).willReturn(DEGREE_TYPE_1);
+        BDDMockito.given(mapper.toDto(any(DegreeType.class))).willReturn(DEGREE_TYPE_1_DTO);
 
         mvc
                 .perform(post(BASEURL)
-                        .content(jsonMapper.writeValueAsString(requestDto))
+                        .content(jsonMapper.writeValueAsString(DEGREE_TYPE_1_INPUT))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
+                .andExpect(JsonDtoMatcher.matchesDto(DEGREE_TYPE_1_DTO, "$"));
 
         verify(mapper, times(1)).fromDto(any(DegreeTypeDto.class));
         verify(service, times(1)).create(any(DegreeType.class));
@@ -132,17 +106,17 @@ class DegreeTypeControllerIT {
     @DisplayName("Should successfully update Degree type")
     @Test
     void shouldUpdateDegreeType() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(DegreeTypeDto.class))).willReturn(degreeType);
-        BDDMockito.given(service.update(any(Long.class), any(DegreeType.class))).willReturn(degreeType);
-        BDDMockito.given(mapper.toDto(any(DegreeType.class))).willReturn(expectedDto);
+        BDDMockito.given(mapper.fromDto(any(DegreeTypeDto.class))).willReturn(DEGREE_TYPE_1);
+        BDDMockito.given(service.update(any(Long.class), any(DegreeType.class))).willReturn(DEGREE_TYPE_1);
+        BDDMockito.given(mapper.toDto(any(DegreeType.class))).willReturn(DEGREE_TYPE_1_DTO);
 
         mvc
-                .perform(put(BASEURL + "/" + id)
-                        .content(jsonMapper.writeValueAsString(requestDto))
+                .perform(put(BASEURL + "/" + DEGREE_TYPE_1_ID)
+                        .content(jsonMapper.writeValueAsString(DEGREE_TYPE_1_INPUT))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
-                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
+                .andExpect(JsonDtoMatcher.matchesDto(DEGREE_TYPE_1_DTO, "$"));
 
         verify(mapper, times(1)).fromDto(any(DegreeTypeDto.class));
         verify(service, times(1)).update(any(Long.class), any(DegreeType.class));
@@ -155,7 +129,7 @@ class DegreeTypeControllerIT {
         BDDMockito.willDoNothing().given(service).delete(anyLong());
 
         mvc
-                .perform(delete(BASEURL + "/" + id)
+                .perform(delete(BASEURL + "/" + DEGREE_TYPE_1_ID)
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().is(204))

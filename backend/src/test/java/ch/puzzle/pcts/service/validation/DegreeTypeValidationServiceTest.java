@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.service.validation;
 
 import static ch.puzzle.pcts.Constants.DEGREE_TYPE;
+import static ch.puzzle.pcts.util.TestData.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -58,20 +59,15 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
     }
 
     static Stream<Arguments> invalidModelProvider() {
-        String validName = "Valid Name";
-        String tooLongName = new String(new char[251]).replace("\0", "s");
-        BigDecimal validBigDecimal = BigDecimal.valueOf(1);
-        BigDecimal negativeBigDecimal = BigDecimal.valueOf(-1);
-
         return Stream
                 .of(Arguments
-                        .of(createDegreeType(null, validBigDecimal, validBigDecimal, validBigDecimal),
+                        .of(createDegreeType(null, VALID_BIG_DECIMAL, VALID_BIG_DECIMAL, VALID_BIG_DECIMAL),
                             List.of(Map.of(FieldKey.CLASS, "DegreeType", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createDegreeType("", validBigDecimal, validBigDecimal, validBigDecimal),
+                            .of(createDegreeType("", VALID_BIG_DECIMAL, VALID_BIG_DECIMAL, VALID_BIG_DECIMAL),
                                 List.of(Map.of(FieldKey.CLASS, "DegreeType", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createDegreeType("h", validBigDecimal, validBigDecimal, validBigDecimal),
+                            .of(createDegreeType("h", VALID_BIG_DECIMAL, VALID_BIG_DECIMAL, VALID_BIG_DECIMAL),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -85,7 +81,10 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
                                                     FieldKey.IS,
                                                     "h"))),
                     Arguments
-                            .of(createDegreeType(tooLongName, validBigDecimal, validBigDecimal, validBigDecimal),
+                            .of(createDegreeType(TOO_LONG_STRING,
+                                                 VALID_BIG_DECIMAL,
+                                                 VALID_BIG_DECIMAL,
+                                                 VALID_BIG_DECIMAL),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -97,12 +96,15 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
                                                     FieldKey.MAX,
                                                     "250",
                                                     FieldKey.IS,
-                                                    tooLongName))),
+                                                    TOO_LONG_STRING))),
                     Arguments
-                            .of(createDegreeType(validName, null, validBigDecimal, validBigDecimal),
+                            .of(createDegreeType(VALID_STRING, null, VALID_BIG_DECIMAL, VALID_BIG_DECIMAL),
                                 List.of(Map.of(FieldKey.CLASS, "DegreeType", FieldKey.FIELD, "highlyRelevantPoints"))),
                     Arguments
-                            .of(createDegreeType(validName, negativeBigDecimal, validBigDecimal, validBigDecimal),
+                            .of(createDegreeType(VALID_STRING,
+                                                 NEGATIVE_BIG_DECIMAL,
+                                                 VALID_BIG_DECIMAL,
+                                                 VALID_BIG_DECIMAL),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -112,10 +114,13 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
                                                     FieldKey.IS,
                                                     "-1"))),
                     Arguments
-                            .of(createDegreeType(validName, validBigDecimal, null, validBigDecimal),
+                            .of(createDegreeType(VALID_STRING, VALID_BIG_DECIMAL, null, VALID_BIG_DECIMAL),
                                 List.of(Map.of(FieldKey.CLASS, "DegreeType", FieldKey.FIELD, "limitedRelevantPoints"))),
                     Arguments
-                            .of(createDegreeType(validName, validBigDecimal, negativeBigDecimal, validBigDecimal),
+                            .of(createDegreeType(VALID_STRING,
+                                                 VALID_BIG_DECIMAL,
+                                                 NEGATIVE_BIG_DECIMAL,
+                                                 VALID_BIG_DECIMAL),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -125,10 +130,13 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
                                                     FieldKey.IS,
                                                     "-1"))),
                     Arguments
-                            .of(createDegreeType(validName, validBigDecimal, validBigDecimal, null),
+                            .of(createDegreeType(VALID_STRING, VALID_BIG_DECIMAL, VALID_BIG_DECIMAL, null),
                                 List.of(Map.of(FieldKey.CLASS, "DegreeType", FieldKey.FIELD, "littleRelevantPoints"))),
                     Arguments
-                            .of(createDegreeType(validName, validBigDecimal, validBigDecimal, negativeBigDecimal),
+                            .of(createDegreeType(VALID_STRING,
+                                                 VALID_BIG_DECIMAL,
+                                                 VALID_BIG_DECIMAL,
+                                                 NEGATIVE_BIG_DECIMAL),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -156,14 +164,14 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
     @DisplayName("Should throw Exception on validateOnUpdate() when name already exists")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExists() {
-        Long id = 1L;
         DegreeType degreeType = getValidModel();
         DegreeType newDegreeType = getValidModel();
-        degreeType.setId(2L);
+        degreeType.setId(DEGREE_2_ID);
 
         when(persistenceService.getByName(newDegreeType.getName())).thenReturn(Optional.of(degreeType));
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnUpdate(id, newDegreeType));
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> service.validateOnUpdate(DEGREE_1_ID, newDegreeType));
 
         assertEquals(List.of(ErrorKey.ATTRIBUTE_UNIQUE), exception.getErrorKeys());
         assertEquals(List.of(Map.of(FieldKey.FIELD, "name", FieldKey.IS, "Degree Type", FieldKey.ENTITY, DEGREE_TYPE)),
@@ -187,15 +195,14 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
     @DisplayName("Should call correct validate method on validateOnUpdate()")
     @Test
     void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
-        Long id = 1L;
         DegreeType degreeType = getValidModel();
 
         DegreeTypeValidationService spyService = spy(service);
         doNothing().when((ValidationBase<DegreeType>) spyService).validateOnUpdate(anyLong(), any());
 
-        spyService.validateOnUpdate(id, degreeType);
+        spyService.validateOnUpdate(DEGREE_1_ID, degreeType);
 
-        verify(spyService).validateOnUpdate(id, degreeType);
+        verify(spyService).validateOnUpdate(DEGREE_1_ID, degreeType);
         verifyNoMoreInteractions(persistenceService);
     }
 }

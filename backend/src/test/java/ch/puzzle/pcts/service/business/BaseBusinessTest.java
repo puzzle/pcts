@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.business;
 
+import static ch.puzzle.pcts.util.TestData.GENERIC_1_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -11,8 +12,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 abstract class BaseBusinessTest<T extends Model, P extends PersistenceBase<T, ?>, V extends ValidationBase<T>, S extends BusinessBase<T>> {
-
-    private static final Long ID = 1L;
 
     private T model;
     private P persistenceService;
@@ -35,14 +34,14 @@ abstract class BaseBusinessTest<T extends Model, P extends PersistenceBase<T, ?>
     @DisplayName("Should get model by id")
     @Test
     void shouldGetById() {
-        when(persistenceService.getById(ID)).thenReturn(model);
+        when(persistenceService.getById(GENERIC_1_ID)).thenReturn(model);
 
-        T result = businessService.getById(ID);
+        T result = businessService.getById(GENERIC_1_ID);
 
         assertEquals(model, result);
 
-        verify(validationService).validateOnGetById(ID);
-        verify(persistenceService).getById(ID);
+        verify(validationService).validateOnGetById(GENERIC_1_ID);
+        verify(persistenceService).getById(GENERIC_1_ID);
     }
 
     @DisplayName("Should create new model")
@@ -61,24 +60,24 @@ abstract class BaseBusinessTest<T extends Model, P extends PersistenceBase<T, ?>
     @DisplayName("Should update model")
     @Test
     void shouldUpdate() {
-        when(persistenceService.getById(ID)).thenReturn(model);
+        when(persistenceService.getById(GENERIC_1_ID)).thenReturn(model);
         when(persistenceService.save(model)).thenReturn(model);
 
-        T result = businessService.update(ID, model);
+        T result = businessService.update(GENERIC_1_ID, model);
 
         assertEquals(model, result);
 
-        verify(model).setId(ID);
-        verify(validationService).validateOnUpdate(ID, model);
+        verify(model).setId(GENERIC_1_ID);
+        verify(validationService).validateOnUpdate(GENERIC_1_ID, model);
         verify(persistenceService).save(model);
     }
 
     @DisplayName("Should delete model")
     @Test
     void shouldDelete() {
-        businessService.delete(ID);
+        businessService.delete(GENERIC_1_ID);
 
-        verify(validationService).validateOnDelete(ID);
-        verify(persistenceService).delete(ID);
+        verify(validationService).validateOnDelete(GENERIC_1_ID);
+        verify(persistenceService).delete(GENERIC_1_ID);
     }
 }

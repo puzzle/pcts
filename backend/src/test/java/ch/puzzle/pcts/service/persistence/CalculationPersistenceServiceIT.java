@@ -1,6 +1,6 @@
 package ch.puzzle.pcts.service.persistence;
 
-import static ch.puzzle.pcts.util.TestData.CALCULATIONS;
+import static ch.puzzle.pcts.util.TestData.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -75,10 +75,10 @@ class CalculationPersistenceServiceIT
         activeCalculation.setPublicationDate(null);
         activeCalculation.setPublicizedBy(null);
 
-        oldActiveCalculation.setId(2L);
+        oldActiveCalculation.setId(CALCULATION_2_ID);
         persistenceService.save(oldActiveCalculation);
 
-        activeCalculation.setId(3L);
+        activeCalculation.setId(CALCULATION_3_ID);
         Calculation result = persistenceService.save(activeCalculation);
 
         assertEquals(LocalDate.now(), result.getPublicationDate());

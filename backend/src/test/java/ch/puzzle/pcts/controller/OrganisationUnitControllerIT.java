@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.controller;
 
+import static ch.puzzle.pcts.util.TestData.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
@@ -15,7 +16,6 @@ import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.OrganisationUnitBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -49,24 +49,11 @@ class OrganisationUnitControllerIT {
 
     private static final String BASEURL = "/api/v1/organisation-units";
 
-    private OrganisationUnit organisationUnit;
-    private OrganisationUnitDto requestDto;
-    private OrganisationUnitDto expectedDto;
-    private Long id;
-
-    @BeforeEach
-    void setUp() {
-        organisationUnit = new OrganisationUnit(1L, "OrganisationUnit 1");
-        requestDto = new OrganisationUnitDto(null, "OrganisationUnit 1");
-        expectedDto = new OrganisationUnitDto(1L, "OrganisationUnit 1");
-        id = 1L;
-    }
-
     @DisplayName("Should successfully get all roles organisation units")
     @Test
     void shouldGetAllOrganisationUnits() throws Exception {
-        BDDMockito.given(service.getAll()).willReturn(List.of(organisationUnit));
-        BDDMockito.given(mapper.toDto(any(List.class))).willReturn(List.of(expectedDto));
+        BDDMockito.given(service.getAll()).willReturn(List.of(ORG_UNIT_1));
+        BDDMockito.given(mapper.toDto(any(List.class))).willReturn(List.of(ORG_UNIT_1_DTO));
 
         mvc
                 .perform(get(BASEURL)
@@ -74,7 +61,7 @@ class OrganisationUnitControllerIT {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$[0]"));
+                .andExpect(JsonDtoMatcher.matchesDto(ORG_UNIT_1_DTO, "$[0]"));
 
         verify(service, times(1)).getAll();
         verify(mapper, times(1)).toDto(any(List.class));
@@ -83,13 +70,13 @@ class OrganisationUnitControllerIT {
     @DisplayName("Should successfully get organisation unit by id")
     @Test
     void shouldGetOrganisationUnitById() throws Exception {
-        BDDMockito.given(service.getById(anyLong())).willReturn(organisationUnit);
-        BDDMockito.given(mapper.toDto(any(OrganisationUnit.class))).willReturn(expectedDto);
+        BDDMockito.given(service.getById(anyLong())).willReturn(ORG_UNIT_1);
+        BDDMockito.given(mapper.toDto(any(OrganisationUnit.class))).willReturn(ORG_UNIT_1_DTO);
 
         mvc
                 .perform(get(BASEURL + "/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
-                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
+                .andExpect(JsonDtoMatcher.matchesDto(ORG_UNIT_1_DTO, "$"));
 
         verify(service, times(1)).getById(1L);
         verify(mapper, times(1)).toDto(any(OrganisationUnit.class));
@@ -98,17 +85,17 @@ class OrganisationUnitControllerIT {
     @DisplayName("Should successfully create new organisation unit")
     @Test
     void shouldCreateNewOrganisationUnit() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(OrganisationUnitDto.class))).willReturn(organisationUnit);
-        BDDMockito.given(service.create(any(OrganisationUnit.class))).willReturn(organisationUnit);
-        BDDMockito.given(mapper.toDto(any(OrganisationUnit.class))).willReturn(expectedDto);
+        BDDMockito.given(mapper.fromDto(any(OrganisationUnitDto.class))).willReturn(ORG_UNIT_1);
+        BDDMockito.given(service.create(any(OrganisationUnit.class))).willReturn(ORG_UNIT_1);
+        BDDMockito.given(mapper.toDto(any(OrganisationUnit.class))).willReturn(ORG_UNIT_1_DTO);
 
         mvc
                 .perform(post(BASEURL)
-                        .content(jsonMapper.writeValueAsString(requestDto))
+                        .content(jsonMapper.writeValueAsString(ORG_UNIT_1_INPUT))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isCreated())
-                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
+                .andExpect(JsonDtoMatcher.matchesDto(ORG_UNIT_1_DTO, "$"));
 
         verify(mapper, times(1)).fromDto(any(OrganisationUnitDto.class));
         verify(service, times(1)).create(any(OrganisationUnit.class));
@@ -118,17 +105,17 @@ class OrganisationUnitControllerIT {
     @DisplayName("Should successfully update organisation unit")
     @Test
     void shouldUpdateOrganisationUnit() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(OrganisationUnitDto.class))).willReturn(organisationUnit);
-        BDDMockito.given(service.update(any(Long.class), any(OrganisationUnit.class))).willReturn(organisationUnit);
-        BDDMockito.given(mapper.toDto(any(OrganisationUnit.class))).willReturn(expectedDto);
+        BDDMockito.given(mapper.fromDto(any(OrganisationUnitDto.class))).willReturn(ORG_UNIT_1);
+        BDDMockito.given(service.update(any(Long.class), any(OrganisationUnit.class))).willReturn(ORG_UNIT_1);
+        BDDMockito.given(mapper.toDto(any(OrganisationUnit.class))).willReturn(ORG_UNIT_1_DTO);
 
         mvc
-                .perform(put(BASEURL + "/" + id)
-                        .content(jsonMapper.writeValueAsString(requestDto))
+                .perform(put(BASEURL + "/" + ORG_UNIT_1_ID)
+                        .content(jsonMapper.writeValueAsString(ORG_UNIT_1_INPUT))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
-                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
+                .andExpect(JsonDtoMatcher.matchesDto(ORG_UNIT_1_DTO, "$"));
 
         verify(mapper, times(1)).fromDto(any(OrganisationUnitDto.class));
         verify(service, times(1)).update(any(Long.class), any(OrganisationUnit.class));
@@ -141,7 +128,7 @@ class OrganisationUnitControllerIT {
         BDDMockito.willDoNothing().given(service).delete(anyLong());
 
         mvc
-                .perform(delete(BASEURL + "/" + id)
+                .perform(delete(BASEURL + "/" + ORG_UNIT_1_ID)
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().is(204))

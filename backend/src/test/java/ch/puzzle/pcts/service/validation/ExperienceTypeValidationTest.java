@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.service.validation;
 
 import static ch.puzzle.pcts.Constants.EXPERIENCE_TYPE;
+import static ch.puzzle.pcts.util.TestData.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -60,20 +61,15 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
     }
 
     static Stream<Arguments> invalidModelProvider() {
-        String validName = "Valid Name";
-        String tooLongName = new String(new char[251]).replace("\0", "s");
-        BigDecimal validBigDecimal = BigDecimal.valueOf(1);
-        BigDecimal negativeBigDecimal = BigDecimal.valueOf(-1);
-
         return Stream
                 .of(Arguments
-                        .of(createExperienceType(null, validBigDecimal, validBigDecimal, validBigDecimal),
+                        .of(createExperienceType(null, VALID_BIG_DECIMAL, VALID_BIG_DECIMAL, VALID_BIG_DECIMAL),
                             List.of(Map.of(FieldKey.CLASS, "ExperienceType", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createExperienceType("", validBigDecimal, validBigDecimal, validBigDecimal),
+                            .of(createExperienceType("", VALID_BIG_DECIMAL, VALID_BIG_DECIMAL, VALID_BIG_DECIMAL),
                                 List.of(Map.of(FieldKey.CLASS, "ExperienceType", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createExperienceType("h", validBigDecimal, validBigDecimal, validBigDecimal),
+                            .of(createExperienceType("h", VALID_BIG_DECIMAL, VALID_BIG_DECIMAL, VALID_BIG_DECIMAL),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -87,7 +83,10 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
                                                     FieldKey.IS,
                                                     "h"))),
                     Arguments
-                            .of(createExperienceType(tooLongName, validBigDecimal, validBigDecimal, validBigDecimal),
+                            .of(createExperienceType(TOO_LONG_STRING,
+                                                     VALID_BIG_DECIMAL,
+                                                     VALID_BIG_DECIMAL,
+                                                     VALID_BIG_DECIMAL),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -99,9 +98,9 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
                                                     FieldKey.MIN,
                                                     "2",
                                                     FieldKey.IS,
-                                                    tooLongName))),
+                                                    TOO_LONG_STRING))),
                     Arguments
-                            .of(createExperienceType(validName, null, validBigDecimal, validBigDecimal),
+                            .of(createExperienceType(VALID_STRING, null, VALID_BIG_DECIMAL, VALID_BIG_DECIMAL),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -109,7 +108,10 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
                                                     FieldKey.FIELD,
                                                     "highlyRelevantPoints"))),
                     Arguments
-                            .of(createExperienceType(validName, negativeBigDecimal, validBigDecimal, validBigDecimal),
+                            .of(createExperienceType(VALID_STRING,
+                                                     NEGATIVE_BIG_DECIMAL,
+                                                     VALID_BIG_DECIMAL,
+                                                     VALID_BIG_DECIMAL),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -119,7 +121,7 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
                                                     FieldKey.IS,
                                                     "-1"))),
                     Arguments
-                            .of(createExperienceType(validName, validBigDecimal, null, validBigDecimal),
+                            .of(createExperienceType(VALID_STRING, VALID_BIG_DECIMAL, null, VALID_BIG_DECIMAL),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -127,7 +129,10 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
                                                     FieldKey.FIELD,
                                                     "limitedRelevantPoints"))),
                     Arguments
-                            .of(createExperienceType(validName, validBigDecimal, negativeBigDecimal, validBigDecimal),
+                            .of(createExperienceType(VALID_STRING,
+                                                     VALID_BIG_DECIMAL,
+                                                     NEGATIVE_BIG_DECIMAL,
+                                                     VALID_BIG_DECIMAL),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -137,7 +142,7 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
                                                     FieldKey.IS,
                                                     "-1"))),
                     Arguments
-                            .of(createExperienceType(validName, validBigDecimal, validBigDecimal, null),
+                            .of(createExperienceType(VALID_STRING, VALID_BIG_DECIMAL, VALID_BIG_DECIMAL, null),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -145,7 +150,10 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
                                                     FieldKey.FIELD,
                                                     "littleRelevantPoints"))),
                     Arguments
-                            .of(createExperienceType(validName, validBigDecimal, validBigDecimal, negativeBigDecimal),
+                            .of(createExperienceType(VALID_STRING,
+                                                     VALID_BIG_DECIMAL,
+                                                     VALID_BIG_DECIMAL,
+                                                     NEGATIVE_BIG_DECIMAL),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -174,15 +182,14 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
     @DisplayName("Should throw Exception on validateOnUpdate() when name already exists")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExists() {
-        Long id = 1L;
         ExperienceType experienceType = getValidModel();
         ExperienceType newExperienceType = getValidModel();
-        experienceType.setId(2L);
+        experienceType.setId(EXP_TYPE_2_ID);
 
         when(persistenceService.getByName(newExperienceType.getName())).thenReturn(Optional.of(experienceType));
 
         PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> service.validateOnUpdate(id, newExperienceType));
+                                               () -> service.validateOnUpdate(EXP_TYPE_1_ID, newExperienceType));
 
         assertEquals(List.of(ErrorKey.ATTRIBUTE_UNIQUE), exception.getErrorKeys());
         assertEquals(List
@@ -207,15 +214,14 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
     @DisplayName("Should call correct validate method on validateOnUpdate()")
     @Test
     void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
-        Long id = 1L;
         ExperienceType experienceType = getValidModel();
 
         ExperienceTypeValidationService spyService = spy(service);
         doNothing().when((ValidationBase<ExperienceType>) spyService).validateOnUpdate(anyLong(), any());
 
-        spyService.validateOnUpdate(id, experienceType);
+        spyService.validateOnUpdate(EXP_TYPE_1_ID, experienceType);
 
-        verify(spyService).validateOnUpdate(id, experienceType);
+        verify(spyService).validateOnUpdate(EXP_TYPE_1_ID, experienceType);
         verifyNoMoreInteractions(persistenceService);
     }
 }

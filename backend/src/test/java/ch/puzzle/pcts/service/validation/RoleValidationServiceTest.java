@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.service.validation;
 
 import static ch.puzzle.pcts.Constants.ROLE;
+import static ch.puzzle.pcts.util.TestData.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -52,8 +53,6 @@ class RoleValidationServiceTest extends ValidationBaseServiceTest<Role, RoleVali
     }
 
     static Stream<Arguments> invalidModelProvider() {
-        String tooLongName = new String(new char[251]).replace("\0", "s");
-
         return Stream
                 .of(Arguments.of(createRole(null), List.of(Map.of(FieldKey.CLASS, "Role", FieldKey.FIELD, "name"))),
                     Arguments.of(createRole(""), List.of(Map.of(FieldKey.CLASS, "Role", FieldKey.FIELD, "name"))),
@@ -87,7 +86,7 @@ class RoleValidationServiceTest extends ValidationBaseServiceTest<Role, RoleVali
                                                     FieldKey.IS,
                                                     "S"))),
                     Arguments
-                            .of(createRole(tooLongName),
+                            .of(createRole(TOO_LONG_STRING),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -99,7 +98,7 @@ class RoleValidationServiceTest extends ValidationBaseServiceTest<Role, RoleVali
                                                     FieldKey.MAX,
                                                     "250",
                                                     FieldKey.IS,
-                                                    tooLongName))));
+                                                    TOO_LONG_STRING))));
 
     }
 
@@ -120,14 +119,13 @@ class RoleValidationServiceTest extends ValidationBaseServiceTest<Role, RoleVali
     @DisplayName("Should throw exception on validateOnUpdate() when name already exists")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExists() {
-        Long id = 1L;
         Role newRole = getValidModel();
         Role role = getValidModel();
-        role.setId(2L);
+        role.setId(ROLE_2_ID);
 
         when(persistenceService.getByName(newRole.getName())).thenReturn(Optional.of(role));
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnUpdate(id, newRole));
+        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnUpdate(ROLE_1_ID, newRole));
 
         assertEquals(List.of(ErrorKey.ATTRIBUTE_UNIQUE), exception.getErrorKeys());
         assertEquals(List.of(Map.of(FieldKey.FIELD, "name", FieldKey.IS, "Role", FieldKey.ENTITY, ROLE)),
@@ -150,14 +148,13 @@ class RoleValidationServiceTest extends ValidationBaseServiceTest<Role, RoleVali
     @DisplayName("Should call correct validate method on validateOnUpdate()")
     @Test
     void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
-        Long id = 1L;
         Role role = getValidModel();
 
         doNothing().when((ValidationBase<Role>) validationService).validateOnUpdate(anyLong(), any());
 
-        validationService.validateOnUpdate(id, role);
+        validationService.validateOnUpdate(ROLE_1_ID, role);
 
-        verify(validationService).validateOnUpdate(id, role);
+        verify(validationService).validateOnUpdate(ROLE_1_ID, role);
         verifyNoMoreInteractions(persistenceService);
     }
 }

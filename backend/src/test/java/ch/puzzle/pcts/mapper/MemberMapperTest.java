@@ -1,17 +1,14 @@
 package ch.puzzle.pcts.mapper;
 
+import static ch.puzzle.pcts.util.TestData.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
 
 import ch.puzzle.pcts.dto.member.MemberDto;
-import ch.puzzle.pcts.dto.member.MemberInputDto;
-import ch.puzzle.pcts.dto.organisationunit.OrganisationUnitDto;
-import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.OrganisationUnitBusinessService;
-import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,143 +21,64 @@ class MemberMapperTest {
     private OrganisationUnitBusinessService organisationUnitBusinessService;
     private OrganisationUnitMapper organisationUnitMapper;
 
-    private OrganisationUnit organisationUnit;
-    private OrganisationUnitDto organisationUnitDto;
-    private Member member1;
-    private final LocalDate commonDate = LocalDate.of(2019, 8, 4);
-    private final Long orgUnitId = 1L;
-
     @BeforeEach
     void setUp() {
         organisationUnitBusinessService = Mockito.mock(OrganisationUnitBusinessService.class);
         organisationUnitMapper = Mockito.mock(OrganisationUnitMapper.class);
         mapper = new MemberMapper(organisationUnitBusinessService, organisationUnitMapper);
-        organisationUnit = new OrganisationUnit(orgUnitId, "/bbt");
-        organisationUnitDto = new OrganisationUnitDto(orgUnitId, "/bbt");
 
-        member1 = Member.Builder
-                .builder()
-                .withId(1L)
-                .withFirstName("Susi")
-                .withLastName("Miller")
-                .withEmploymentState(EmploymentState.APPLICANT)
-                .withAbbreviation("SM")
-                .withDateOfHire(commonDate)
-                .withBirthDate(commonDate)
-                .withOrganisationUnit(organisationUnit)
-                .build();
-
-        when(organisationUnitMapper.toDto(organisationUnit)).thenReturn(organisationUnitDto);
-        when(organisationUnitBusinessService.getById(orgUnitId)).thenReturn(organisationUnit);
+        when(organisationUnitMapper.toDto(ORG_UNIT_1)).thenReturn(ORG_UNIT_1_DTO);
+        when(organisationUnitMapper.toDto(ORG_UNIT_2)).thenReturn(ORG_UNIT_2_DTO);
+        when(organisationUnitBusinessService.getById(ORG_UNIT_1_ID)).thenReturn(ORG_UNIT_1);
+        when(organisationUnitBusinessService.getById(ORG_UNIT_2_ID)).thenReturn(ORG_UNIT_2);
     }
 
     @DisplayName("Should map Member model to MemberDto correctly")
     @Test
     void shouldReturnMemberDto() {
-        Member modelWithApplicantState = Member.Builder
-                .builder()
-                .withId(1L)
-                .withFirstName("Susi")
-                .withLastName("Miller")
-                .withEmploymentState(EmploymentState.APPLICANT)
-                .withAbbreviation("SM")
-                .withDateOfHire(commonDate)
-                .withBirthDate(commonDate)
-                .withOrganisationUnit(organisationUnit)
-                .build();
+        MemberDto result = mapper.toDto(MEMBER_1);
 
-        MemberDto result = mapper.toDto(modelWithApplicantState);
-
-        assertEquals(modelWithApplicantState.getId(), result.id());
-        assertEquals(modelWithApplicantState.getFirstName(), result.firstName());
-        assertEquals(modelWithApplicantState.getLastName(), result.lastName());
-        assertEquals(modelWithApplicantState.getEmploymentState(), result.employmentState());
-        assertEquals(modelWithApplicantState.getAbbreviation(), result.abbreviation());
-        assertEquals(modelWithApplicantState.getDateOfHire(), result.dateOfHire());
-        assertEquals(modelWithApplicantState.getBirthDate(), result.birthDate());
-        assertEquals(organisationUnitDto, result.organisationUnit());
+        assertEquals(MEMBER_1_DTO, result);
     }
 
     @DisplayName("Should map MemberInputDto to Member model correctly")
     @Test
     void shouldReturnMemberModel() {
-        MemberInputDto dtoWithExMemberState = new MemberInputDto("Jane",
-                                                                 "Smith",
-                                                                 EmploymentState.EX_MEMBER,
-                                                                 "JS",
-                                                                 commonDate,
-                                                                 commonDate,
-                                                                 orgUnitId);
+        Member result = mapper.fromDto(MEMBER_1_INPUT);
 
-        Member result = mapper.fromDto(dtoWithExMemberState);
-
-        assertEquals(dtoWithExMemberState.firstName(), result.getFirstName());
-        assertEquals(dtoWithExMemberState.lastName(), result.getLastName());
-        assertEquals(dtoWithExMemberState.employmentState(), result.getEmploymentState());
-        assertEquals(dtoWithExMemberState.abbreviation(), result.getAbbreviation());
-        assertEquals(dtoWithExMemberState.dateOfHire(), result.getDateOfHire());
-        assertEquals(dtoWithExMemberState.birthDate(), result.getBirthDate());
-        assertEquals(organisationUnit, result.getOrganisationUnit());
+        assertEquals(MEMBER_1_INPUT.firstName(), result.getFirstName());
+        assertEquals(MEMBER_1_INPUT.lastName(), result.getLastName());
+        assertEquals(MEMBER_1_INPUT.employmentState(), result.getEmploymentState());
+        assertEquals(MEMBER_1_INPUT.abbreviation(), result.getAbbreviation());
+        assertEquals(MEMBER_1_INPUT.dateOfHire(), result.getDateOfHire());
+        assertEquals(MEMBER_1_INPUT.birthDate(), result.getBirthDate());
+        assertEquals(ORG_UNIT_1, result.getOrganisationUnit());
     }
 
     @DisplayName("Should map list of Member models to list of MemberDtos")
     @Test
     void shouldReturnListOfMemberDtos() {
-        Member member2 = Member.Builder
-                .builder()
-                .withId(1L)
-                .withFirstName("Susi")
-                .withLastName("Miller")
-                .withEmploymentState(EmploymentState.APPLICANT)
-                .withAbbreviation("SM")
-                .withDateOfHire(commonDate)
-                .withBirthDate(commonDate)
-                .withOrganisationUnit(organisationUnit)
-                .build();
-        List<Member> members = List.of(member1, member2);
-
-        List<MemberDto> result = mapper.toDto(members);
+        List<MemberDto> result = mapper.toDto(List.of(MEMBER_1, MEMBER_2));
 
         assertEquals(2, result.size());
-        MemberDto resultDto1 = result.get(0);
-        assertEquals(member1.getId(), resultDto1.id());
-        assertEquals(member1.getFirstName(), resultDto1.firstName());
-        assertEquals(member1.getEmploymentState(), resultDto1.employmentState());
-        assertEquals(organisationUnitDto, resultDto1.organisationUnit());
-
-        MemberDto resultDto2 = result.get(1);
-        assertEquals(member2.getId(), resultDto2.id());
+        assertEquals(MEMBER_1_DTO, result.getFirst());
+        assertEquals(MEMBER_2_DTO, result.getLast());
     }
 
     @DisplayName("Should map list of MemberInputDtos to list of Member models")
     @Test
     void shouldReturnListOfMembers() {
-        MemberInputDto dto1 = new MemberInputDto(member1.getFirstName(),
-                                                 member1.getLastName(),
-                                                 member1.getEmploymentState(),
-                                                 member1.getAbbreviation(),
-                                                 member1.getDateOfHire(),
-                                                 member1.getBirthDate(),
-                                                 orgUnitId);
-        MemberInputDto dto2 = new MemberInputDto("Jane",
-                                                 "Smith",
-                                                 EmploymentState.MEMBER,
-                                                 "JS",
-                                                 commonDate,
-                                                 commonDate,
-                                                 orgUnitId);
-        List<MemberInputDto> dtos = List.of(dto1, dto2);
 
-        List<Member> result = mapper.fromDto(dtos);
+        List<Member> result = mapper.fromDto(List.of(MEMBER_1_INPUT, MEMBER_2_INPUT));
 
         assertEquals(2, result.size());
         Member resultModel1 = result.get(0);
-        assertEquals(dto1.firstName(), resultModel1.getFirstName());
-        assertEquals(dto1.employmentState(), resultModel1.getEmploymentState());
-        assertEquals(organisationUnit, resultModel1.getOrganisationUnit());
+        assertEquals(MEMBER_1_INPUT.firstName(), resultModel1.getFirstName());
+        assertEquals(MEMBER_1_INPUT.employmentState(), resultModel1.getEmploymentState());
+        assertEquals(ORG_UNIT_1, resultModel1.getOrganisationUnit());
 
         Member resultModel2 = result.get(1);
-        assertEquals(dto2.abbreviation(), resultModel2.getAbbreviation());
+        assertEquals(MEMBER_2_INPUT.abbreviation(), resultModel2.getAbbreviation());
     }
 
     @DisplayName("Should return null if OrganisationUnitId is null")
@@ -173,7 +91,7 @@ class MemberMapperTest {
     @DisplayName("Should return OrganisationUnit if OrganisationUnit exists")
     @Test
     void shouldReturnOrganisationUnitIfOrganisationUnitExists() {
-        OrganisationUnit result = mapper.organisationUnitFromId(organisationUnit.getId());
-        assertEquals(organisationUnit, result);
+        OrganisationUnit result = mapper.organisationUnitFromId(ORG_UNIT_1.getId());
+        assertEquals(ORG_UNIT_1, result);
     }
 }

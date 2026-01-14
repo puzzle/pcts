@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.service.validation;
 
 import static ch.puzzle.pcts.Constants.CERTIFICATE;
+import static ch.puzzle.pcts.util.TestData.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -82,17 +83,13 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
     }
 
     static Stream<Arguments> invalidModelProvider() {
-        final Member validMember = createMember();
-        final CertificateType validCertificateType = createCertificateType();
-        final LocalDate validPastDate = LocalDate.of(1990, 1, 1);
-
         return Stream
                 .of(Arguments
-                        .of(createCertificate(null, validCertificateType, validPastDate),
+                        .of(createCertificate(null, CERT_TYPE_1, DATE_PAST),
                             List.of(Map.of(FieldKey.CLASS, "Certificate", FieldKey.FIELD, "member"))),
 
                     Arguments
-                            .of(createCertificate(validMember, null, validPastDate),
+                            .of(createCertificate(MEMBER_1, null, DATE_PAST),
                                 List.of(Map.of(FieldKey.CLASS, "Certificate", FieldKey.FIELD, "certificateType"))));
 
     }
@@ -104,7 +101,7 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
         certificate.setCompletedAt(LocalDate.now().plusDays(1));
 
         List<PCTSException> exceptions = List
-                .of(assertThrows(PCTSException.class, () -> service.validateOnUpdate(1L, certificate)),
+                .of(assertThrows(PCTSException.class, () -> service.validateOnUpdate(CERTIFICATE_1_ID, certificate)),
                     assertThrows(PCTSException.class, () -> service.validateOnCreate(certificate)));
 
         exceptions
@@ -139,7 +136,7 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
 
         certificate.setValidUntil(null);
 
-        assertDoesNotThrow(() -> service.validateOnUpdate(1L, certificate));
+        assertDoesNotThrow(() -> service.validateOnUpdate(CERTIFICATE_1_ID, certificate));
     }
 
     @DisplayName("Should pass validateOnCreate() when completedAt is exactly the same as validUntil")
@@ -159,7 +156,7 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
 
         certificate.setCompletedAt(LocalDate.now());
 
-        assertDoesNotThrow(() -> service.validateOnUpdate(1L, certificate));
+        assertDoesNotThrow(() -> service.validateOnUpdate(CERTIFICATE_1_ID, certificate));
     }
 
     @DisplayName("Should not throw when completedAt is null")
@@ -187,15 +184,14 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
     @DisplayName("Should call correct validate method on validateOnUpdate()")
     @Test
     void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
-        Long id = 1L;
         Certificate certificate = getValidModel();
 
         CertificateValidationService spyService = spy(service);
         doNothing().when((ValidationBase<Certificate>) spyService).validateOnUpdate(anyLong(), any());
 
-        spyService.validateOnUpdate(id, certificate);
+        spyService.validateOnUpdate(CERTIFICATE_1_ID, certificate);
 
-        verify(spyService).validateOnUpdate(id, certificate);
+        verify(spyService).validateOnUpdate(CERTIFICATE_1_ID, certificate);
         verifyNoMoreInteractions(persistenceService);
     }
 }

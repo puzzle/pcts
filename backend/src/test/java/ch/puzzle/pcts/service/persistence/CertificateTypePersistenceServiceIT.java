@@ -1,7 +1,7 @@
 package ch.puzzle.pcts.service.persistence;
 
 import static ch.puzzle.pcts.Constants.CERTIFICATE_TYPE;
-import static ch.puzzle.pcts.util.TestData.CERTIFICATE_TYPES;
+import static ch.puzzle.pcts.util.TestData.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -37,7 +37,7 @@ class CertificateTypePersistenceServiceIT
                                    "Created certificate type",
                                    BigDecimal.valueOf(3),
                                    "This is a newly created certificate",
-                                   Set.of(new Tag(1L, "Important tag")));
+                                   Set.of(new Tag(TAG_1_ID, "Important tag")));
     }
 
     @Override
@@ -63,18 +63,15 @@ class CertificateTypePersistenceServiceIT
     @DisplayName("Should delete entity")
     @Test
     void shouldDelete() {
-        Long id = 2L;
+        persistenceService.delete(CERTIFICATE_2_ID);
 
-        persistenceService.delete(id);
-
-        assertThatThrownBy(() -> persistenceService.getById(id)).isInstanceOf(PCTSException.class);
+        assertThatThrownBy(() -> persistenceService.getById(CERTIFICATE_2_ID)).isInstanceOf(PCTSException.class);
     }
 
     @DisplayName("Should update certificate type")
     @Test
     void shouldUpdateCertificate() {
-        Long cId = 4L;
-        CertificateType updatePayload = new CertificateType(cId,
+        CertificateType updatePayload = new CertificateType(CERTIFICATE_4_ID,
                                                             "Updated certificate type",
                                                             BigDecimal.valueOf(3),
                                                             "This is a updated certificate",
@@ -84,8 +81,8 @@ class CertificateTypePersistenceServiceIT
 
         persistenceService.save(updatePayload);
 
-        CertificateType certificateResult = persistenceService.getById(cId);
-        assertThat(certificateResult.getId()).isEqualTo(cId);
+        CertificateType certificateResult = persistenceService.getById(CERTIFICATE_4_ID);
+        assertThat(certificateResult.getId()).isEqualTo(CERTIFICATE_4_ID);
         assertThat(certificateResult.getName()).isEqualTo("Updated certificate type");
         assertThat(certificateResult.getPoints()).isEqualByComparingTo(BigDecimal.valueOf(3));
         assertThat(certificateResult.getComment()).isEqualTo("This is a updated certificate");
@@ -112,11 +109,9 @@ class CertificateTypePersistenceServiceIT
     @DisplayName("Should get certificate type by id")
     @Test
     void shouldGetCertificateTypeById() {
-        Long certificateId = 1L;
+        CertificateType result = persistenceService.getById(CERTIFICATE_1_ID);
 
-        CertificateType result = persistenceService.getById(certificateId);
-
-        assertThat(result.getId()).isEqualTo(certificateId);
+        assertThat(result.getId()).isEqualTo(CERTIFICATE_1_ID);
         assertThat(result.getName()).isEqualTo("Certificate Type 1");
         assertThat(result.getCertificateKind()).isEqualTo(CertificateKind.CERTIFICATE);
     }
@@ -124,9 +119,7 @@ class CertificateTypePersistenceServiceIT
     @DisplayName("Should not get leadership experience with certificate method")
     @Test
     void shouldNotGetLeadershipExperienceAsCertificate() {
-        Long id = 5L;
-
-        assertThatThrownBy(() -> persistenceService.getById(id))
+        assertThatThrownBy(() -> persistenceService.getById(INVALID_ID))
                 .isInstanceOf(PCTSException.class)
                 .extracting("errorKeys", "errorAttributes")
                 .containsExactly(List.of(ErrorKey.NOT_FOUND),
@@ -135,7 +128,7 @@ class CertificateTypePersistenceServiceIT
                                                  .of(FieldKey.FIELD,
                                                      "id",
                                                      FieldKey.IS,
-                                                     id.toString(),
+                                                     INVALID_ID.toString(),
                                                      FieldKey.ENTITY,
                                                      CERTIFICATE_TYPE)));
     }

@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.business;
 
+import static ch.puzzle.pcts.util.TestData.CERTIFICATE_1_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -17,8 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class LeadershipExperienceBusinessServiceTest
         extends
             BaseBusinessTest<Certificate, CertificatePersistenceService, LeadershipExperienceValidationService, LeadershipExperienceBusinessService> {
-
-    private static final Long ID = 1L;
 
     @Mock
     private Certificate certificate;
@@ -56,14 +55,14 @@ class LeadershipExperienceBusinessServiceTest
     @DisplayName("Should get certificate by id")
     @Test
     void shouldGetById() {
-        when(persistenceService.findLeadershipExperience(ID)).thenReturn(certificate);
+        when(persistenceService.findLeadershipExperience(CERTIFICATE_1_ID)).thenReturn(certificate);
 
-        Certificate result = businessService.getById(ID);
+        Certificate result = businessService.getById(CERTIFICATE_1_ID);
 
         assertEquals(certificate, result);
 
-        verify(validationService).validateOnGetById(ID);
-        verify(persistenceService).findLeadershipExperience(ID);
+        verify(validationService).validateOnGetById(CERTIFICATE_1_ID);
+        verify(persistenceService).findLeadershipExperience(CERTIFICATE_1_ID);
     }
 
     @Override
@@ -72,12 +71,12 @@ class LeadershipExperienceBusinessServiceTest
     void shouldUpdate() {
         when(persistenceService.save(certificate)).thenReturn(certificate);
 
-        Certificate result = businessService.update(ID, certificate);
+        Certificate result = businessService.update(CERTIFICATE_1_ID, certificate);
 
         assertEquals(certificate, result);
 
-        verify(certificate).setId(ID);
-        verify(validationService).validateOnUpdate(ID, certificate);
+        verify(certificate).setId(CERTIFICATE_1_ID);
+        verify(validationService).validateOnUpdate(CERTIFICATE_1_ID, certificate);
         verify(persistenceService).save(certificate);
     }
 
@@ -85,9 +84,9 @@ class LeadershipExperienceBusinessServiceTest
     @DisplayName("Should delete certificate")
     @Test
     void shouldDelete() {
-        businessService.delete(ID);
+        businessService.delete(CERTIFICATE_1_ID);
 
-        verify(validationService).validateOnDelete(ID);
-        verify(persistenceService).delete(ID);
+        verify(validationService).validateOnDelete(CERTIFICATE_1_ID);
+        verify(persistenceService).delete(CERTIFICATE_1_ID);
     }
 }

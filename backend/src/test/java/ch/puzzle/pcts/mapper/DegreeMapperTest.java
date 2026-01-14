@@ -1,7 +1,7 @@
 package ch.puzzle.pcts.mapper;
 
-import static ch.puzzle.pcts.Constants.DEGREE_TYPE;
-import static ch.puzzle.pcts.Constants.MEMBER;
+import static ch.puzzle.pcts.Constants.*;
+import static ch.puzzle.pcts.util.TestData.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -9,22 +9,13 @@ import static org.mockito.Mockito.when;
 
 import ch.puzzle.pcts.dto.degree.DegreeDto;
 import ch.puzzle.pcts.dto.degree.DegreeInputDto;
-import ch.puzzle.pcts.dto.degreetype.DegreeTypeDto;
 import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.dto.error.GenericErrorDto;
-import ch.puzzle.pcts.dto.member.MemberDto;
-import ch.puzzle.pcts.dto.organisationunit.OrganisationUnitDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.degree.Degree;
-import ch.puzzle.pcts.model.degreetype.DegreeType;
-import ch.puzzle.pcts.model.member.EmploymentState;
-import ch.puzzle.pcts.model.member.Member;
-import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.DegreeTypeBusinessService;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,17 +27,6 @@ import org.springframework.http.HttpStatus;
 class DegreeMapperTest {
     private DegreeMapper mapper;
 
-    private Member member;
-    private MemberDto memberDto;
-    private DegreeType degreeType;
-    private DegreeTypeDto degreeTypeDto;
-
-    private final Long degreeId = 1L;
-    private final Long degreeTypeId = 1L;
-    private final Long memberId = 1L;
-
-    private final LocalDate commonDate = LocalDate.EPOCH;
-
     @BeforeEach
     void setUp() {
         MemberBusinessService memberBusinessService = Mockito.mock(MemberBusinessService.class);
@@ -55,196 +35,93 @@ class DegreeMapperTest {
         MemberMapper memberMapper = Mockito.mock(MemberMapper.class);
         mapper = new DegreeMapper(memberBusinessService, degreeTypeBusinessService, degreeTypeMapper, memberMapper);
 
-        degreeType = new DegreeType(degreeTypeId,
-                                    "Degree Type 1",
-                                    new BigDecimal("3.0"),
-                                    new BigDecimal("2.0"),
-                                    new BigDecimal("1.0"));
-        degreeTypeDto = new DegreeTypeDto(degreeTypeId,
-                                          "Degree Type 1",
-                                          new BigDecimal("3.0"),
-                                          new BigDecimal("2.0"),
-                                          new BigDecimal("1.0"));
-
-        OrganisationUnit organisationUnit = new OrganisationUnit(1L, "/bbt");
-        OrganisationUnitDto organisationUnitDto = new OrganisationUnitDto(1L, "/bbt");
-
-        member = Member.Builder
-                .builder()
-                .withId(memberId)
-                .withFirstName("Susi")
-                .withLastName("Miller")
-                .withEmploymentState(EmploymentState.APPLICANT)
-                .withAbbreviation("SM")
-                .withDateOfHire(commonDate)
-                .withBirthDate(commonDate)
-                .withOrganisationUnit(organisationUnit)
-                .build();
-        memberDto = new MemberDto(memberId,
-                                  "Susi",
-                                  "Miller",
-                                  EmploymentState.APPLICANT,
-                                  "SM",
-                                  commonDate,
-                                  commonDate,
-                                  organisationUnitDto);
-
-        when(degreeTypeMapper.toDto(degreeType)).thenReturn(degreeTypeDto);
-        when(degreeTypeBusinessService.getById(degreeTypeId)).thenReturn(degreeType);
-        when(memberMapper.toDto(member)).thenReturn(memberDto);
-        when(memberBusinessService.getById(memberId)).thenReturn(member);
+        when(degreeTypeMapper.toDto(DEGREE_TYPE_1)).thenReturn(DEGREE_TYPE_1_DTO);
+        when(degreeTypeBusinessService.getById(DEGREE_TYPE_1_ID)).thenReturn(DEGREE_TYPE_1);
+        when(memberMapper.toDto(MEMBER_1)).thenReturn(MEMBER_1_DTO);
+        when(memberBusinessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
     }
 
     @DisplayName("Should return degree")
     @Test
     void shouldReturnDegree() {
-        DegreeInputDto degreeInputDto = new DegreeInputDto(memberId,
-                                                           "Degree 1",
-                                                           "Institution 1",
-                                                           true,
-                                                           degreeTypeId,
-                                                           commonDate,
-                                                           commonDate,
-                                                           "Comment 1");
+        Degree result = mapper.fromDto(DEGREE_1_INPUT);
 
-        Degree result = mapper.fromDto(degreeInputDto);
-
-        assertEquals(member, result.getMember());
-        assertEquals(degreeInputDto.name(), result.getName());
-        assertEquals(degreeInputDto.institution(), result.getInstitution());
-        assertEquals(degreeInputDto.completed(), result.getCompleted());
-        assertEquals(degreeType, result.getDegreeType());
-        assertEquals(degreeInputDto.startDate(), result.getStartDate());
-        assertEquals(degreeInputDto.endDate(), result.getEndDate());
-        assertEquals(degreeInputDto.comment(), result.getComment());
+        assertEquals(MEMBER_1, result.getMember());
+        assertEquals(DEGREE_1_INPUT.name(), result.getName());
+        assertEquals(DEGREE_1_INPUT.institution(), result.getInstitution());
+        assertEquals(DEGREE_1_INPUT.completed(), result.getCompleted());
+        assertEquals(DEGREE_TYPE_1, result.getDegreeType());
+        assertEquals(DEGREE_1_INPUT.startDate(), result.getStartDate());
+        assertEquals(DEGREE_1_INPUT.endDate(), result.getEndDate());
+        assertEquals(DEGREE_1_INPUT.comment(), result.getComment());
     }
 
     @DisplayName("Should return degree dto")
     @Test
     void shouldReturnDegreeDto() {
-        Degree degree = Degree.Builder
-                .builder()
-                .withId(degreeId)
-                .withMember(member)
-                .withName("Degree 1")
-                .withInstitution("Institution 1")
-                .withCompleted(true)
-                .withDegreeType(degreeType)
-                .withStartDate(commonDate)
-                .withEndDate(commonDate)
-                .withComment("Comment 1")
-                .build();
+        DegreeDto result = mapper.toDto(DEGREE_1);
 
-        DegreeDto result = mapper.toDto(degree);
-
-        assertEquals(degree.getId(), result.id());
-        assertEquals(memberDto, result.member());
-        assertEquals(degree.getName(), result.name());
-        assertEquals(degree.getInstitution(), result.institution());
-        assertEquals(degree.getCompleted(), result.completed());
-        assertEquals(degreeTypeDto, result.type());
-        assertEquals(degree.getStartDate(), result.startDate());
-        assertEquals(degree.getEndDate(), result.endDate());
-        assertEquals(degree.getComment(), result.comment());
+        assertEquals(DEGREE_1.getId(), result.id());
+        assertEquals(MEMBER_1_DTO, result.member());
+        assertEquals(DEGREE_1.getName(), result.name());
+        assertEquals(DEGREE_1.getInstitution(), result.institution());
+        assertEquals(DEGREE_1.getCompleted(), result.completed());
+        assertEquals(DEGREE_TYPE_1_DTO, result.type());
+        assertEquals(DEGREE_1.getStartDate(), result.startDate());
+        assertEquals(DEGREE_1.getEndDate(), result.endDate());
+        assertEquals(DEGREE_1.getComment(), result.comment());
     }
 
     @DisplayName("Should return list of degrees")
     @Test
     void shouldReturnListOfDegree() {
-        DegreeInputDto degreeInputDto1 = new DegreeInputDto(memberId,
-                                                            "Degree 1",
-                                                            "Institution 1",
-                                                            true,
-                                                            degreeTypeId,
-                                                            commonDate,
-                                                            commonDate,
-                                                            "Comment 1");
-        DegreeInputDto degreeInputDto2 = new DegreeInputDto(memberId,
-                                                            "Degree 2",
-                                                            "Institution 2",
-                                                            false,
-                                                            degreeTypeId,
-                                                            commonDate,
-                                                            commonDate,
-                                                            "Comment 2");
-
-        List<DegreeInputDto> inputList = List.of(degreeInputDto1, degreeInputDto2);
-
-        List<Degree> result = mapper.fromDto(inputList);
+        List<Degree> result = mapper.fromDto(List.of(DEGREE_1_INPUT, DEGREE_2_INPUT));
 
         assertEquals(2, result.size());
 
         Degree first = result.getFirst();
-        assertEquals("Degree 1", first.getName());
-        assertEquals("Institution 1", first.getInstitution());
-        assertEquals(true, first.getCompleted());
-        assertEquals("Comment 1", first.getComment());
+        assertEquals(DEGREE_1.getName(), first.getName());
+        assertEquals(DEGREE_1.getInstitution(), first.getInstitution());
+        assertEquals(DEGREE_1.getCompleted(), first.getCompleted());
+        assertEquals(DEGREE_1.getComment(), first.getComment());
 
         Degree second = result.get(1);
-        assertEquals("Degree 2", second.getName());
-        assertEquals("Institution 2", second.getInstitution());
-        assertEquals(false, second.getCompleted());
-        assertEquals("Comment 2", second.getComment());
+        assertEquals(DEGREE_2.getName(), second.getName());
+        assertEquals(DEGREE_2.getInstitution(), second.getInstitution());
+        assertEquals(DEGREE_2.getCompleted(), second.getCompleted());
+        assertEquals(DEGREE_2.getComment(), second.getComment());
     }
 
     @DisplayName("Should return list of degree dto")
     @Test
     void shouldReturnListOfDegreeDto() {
-        Degree degree1 = Degree.Builder
-                .builder()
-                .withId(degreeId)
-                .withMember(member)
-                .withName("Degree 1")
-                .withInstitution("Institution 1")
-                .withCompleted(true)
-                .withDegreeType(degreeType)
-                .withStartDate(commonDate)
-                .withEndDate(commonDate)
-                .withComment("Comment 1")
-                .build();
-
-        Degree degree2 = Degree.Builder
-                .builder()
-                .withId(2L)
-                .withMember(member)
-                .withName("Degree 2")
-                .withInstitution("Institution 2")
-                .withCompleted(false)
-                .withDegreeType(degreeType)
-                .withStartDate(commonDate)
-                .withEndDate(commonDate)
-                .withComment("Comment 2")
-                .build();
-
-        List<Degree> degreeList = List.of(degree1, degree2);
-
-        List<DegreeDto> result = mapper.toDto(degreeList);
+        List<DegreeDto> result = mapper.toDto(List.of(DEGREE_1, DEGREE_2));
 
         assertEquals(2, result.size());
 
         DegreeDto first = result.getFirst();
-        assertEquals("Degree 1", first.name());
-        assertEquals("Institution 1", first.institution());
-        assertEquals(true, first.completed());
-        assertEquals("Comment 1", first.comment());
+        assertEquals(DEGREE_1.getName(), first.name());
+        assertEquals(DEGREE_1.getInstitution(), first.institution());
+        assertEquals(DEGREE_1.getCompleted(), first.completed());
+        assertEquals(DEGREE_1.getComment(), first.comment());
 
         DegreeDto second = result.get(1);
-        assertEquals("Degree 2", second.name());
-        assertEquals("Institution 2", second.institution());
-        assertEquals(false, second.completed());
-        assertEquals("Comment 2", second.comment());
+        assertEquals(DEGREE_2.getName(), second.name());
+        assertEquals(DEGREE_2.getInstitution(), second.institution());
+        assertEquals(DEGREE_2.getCompleted(), second.completed());
+        assertEquals(DEGREE_2.getComment(), second.comment());
     }
 
     @DisplayName("Should throw exception when member id is invalid")
     @Test
     void shouldThrowExceptionWhenMemberIdIsInvalid() {
-        DegreeInputDto invalidInput = new DegreeInputDto(999L,
+        DegreeInputDto invalidInput = new DegreeInputDto(INVALID_ID,
                                                          "Degree Invalid",
                                                          "Institution X",
                                                          true,
-                                                         degreeTypeId,
-                                                         commonDate,
-                                                         commonDate,
+                                                         DEGREE_TYPE_1_ID,
+                                                         DATE_NOW,
+                                                         DATE_NOW,
                                                          "Invalid Member");
 
         Map<FieldKey, String> attributes = Map
@@ -266,13 +143,13 @@ class DegreeMapperTest {
     @DisplayName("Should throw exception when degree type id is invalid")
     @Test
     void shouldThrowExceptionWhenDegreeTypeIdIsInvalid() {
-        DegreeInputDto invalidInput = new DegreeInputDto(memberId,
+        DegreeInputDto invalidInput = new DegreeInputDto(MEMBER_1_ID,
                                                          "Degree Invalid",
                                                          "Institution X",
                                                          true,
-                                                         999L,
-                                                         commonDate,
-                                                         commonDate,
+                                                         INVALID_ID,
+                                                         DATE_NOW,
+                                                         DATE_NOW,
                                                          "Invalid Degree Type");
 
         Map<FieldKey, String> attributes = Map

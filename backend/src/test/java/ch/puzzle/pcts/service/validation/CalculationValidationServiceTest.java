@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.validation;
 
+import static ch.puzzle.pcts.util.TestData.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -59,27 +60,21 @@ class CalculationValidationServiceTest extends ValidationBaseServiceTest<Calcula
         c.setMember(member);
         c.setRole(role);
         c.setState(state);
-        c.setPublicationDate(LocalDate.now());
+        c.setPublicationDate(DATE_NOW);
         c.setPublicizedBy("Admin");
         return c;
     }
 
     static Stream<Arguments> invalidModelProvider() {
-        Member validMember = new Member();
-        validMember.setId(1L);
-
-        Role validRole = new Role();
-        validRole.setId(1L);
-
         return Stream
                 .of(Arguments
-                        .of(createCalculation(null, validRole, CalculationState.ACTIVE),
+                        .of(createCalculation(null, ROLE_2, CalculationState.ACTIVE),
                             List.of(Map.of(FieldKey.CLASS, "Calculation", FieldKey.FIELD, "member"))),
                     Arguments
-                            .of(createCalculation(validMember, null, CalculationState.ACTIVE),
+                            .of(createCalculation(MEMBER_1, null, CalculationState.ACTIVE),
                                 List.of(Map.of(FieldKey.CLASS, "Calculation", FieldKey.FIELD, "role"))),
                     Arguments
-                            .of(createCalculation(validMember, validRole, null),
+                            .of(createCalculation(MEMBER_1, ROLE_2, null),
                                 List.of(Map.of(FieldKey.CLASS, "Calculation", FieldKey.FIELD, "state"))));
     }
 
@@ -100,15 +95,14 @@ class CalculationValidationServiceTest extends ValidationBaseServiceTest<Calcula
     @DisplayName("Should call correct validate method on validateOnUpdate()")
     @Test
     void shouldCallCorrectMethodOnValidateOnUpdate() {
-        Long id = 1L;
         Calculation calculation = getValidModel();
 
         CalculationValidationService spyService = spy(service);
         doNothing().when((ValidationBase<Calculation>) spyService).validateOnUpdate(anyLong(), any());
 
-        spyService.validateOnUpdate(id, calculation);
+        spyService.validateOnUpdate(CALCULATION_1_ID, calculation);
 
-        verify(spyService).validateOnUpdate(id, calculation);
+        verify(spyService).validateOnUpdate(CALCULATION_1_ID, calculation);
         verifyNoMoreInteractions(persistenceService);
     }
 }
