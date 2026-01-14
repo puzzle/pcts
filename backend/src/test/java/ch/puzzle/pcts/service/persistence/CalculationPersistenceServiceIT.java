@@ -95,6 +95,7 @@ class CalculationPersistenceServiceIT
     }
 
     @DisplayName("Should get all Calculations for a given Member")
+    @Transactional
     @Test
     void shouldGetAllByMember() {
         List<Calculation> results = persistenceService.getAllByMember(MEMBER_1);
@@ -102,6 +103,7 @@ class CalculationPersistenceServiceIT
     }
 
     @DisplayName("Should get all Calculations for a given Member and Role")
+    @Transactional
     @Test
     void shouldGetAllByMemberAndRole() {
         List<Calculation> results = persistenceService.getAllByMemberAndRole(MEMBER_2, ROLE_2);

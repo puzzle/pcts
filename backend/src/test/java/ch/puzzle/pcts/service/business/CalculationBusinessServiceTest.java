@@ -23,6 +23,7 @@ class CalculationBusinessServiceTest
             BaseBusinessTest<Calculation, CalculationPersistenceService, CalculationValidationService, CalculationBusinessService> {
 
     private static final Long ID = 1L;
+    private static final Long ID_2 = 2L;
 
     @Mock
     private CalculationValidationService validationService;
@@ -115,7 +116,9 @@ class CalculationBusinessServiceTest
         Member member = mock(Member.class);
 
         Calculation calc1 = new Calculation();
+        calc1.setId(ID);
         Calculation calc2 = new Calculation();
+        calc2.setId(ID_2);
         List<Calculation> calculations = List.of(calc1, calc2);
 
         when(persistenceService.getAllByMember(member)).thenReturn(calculations);
@@ -153,7 +156,7 @@ class CalculationBusinessServiceTest
         List<Calculation> result = businessService.getAllByMemberAndRole(member, role);
 
         assertEquals(1, result.size());
-        assertEquals(BigDecimal.valueOf(2), result.get(0).getPoints());
+        assertEquals(BigDecimal.valueOf(2), result.getFirst().getPoints());
 
         verify(persistenceService).getAllByMemberAndRole(member, role);
     }
