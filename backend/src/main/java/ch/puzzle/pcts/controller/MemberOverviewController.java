@@ -3,6 +3,7 @@ package ch.puzzle.pcts.controller;
 import ch.puzzle.pcts.dto.memberoverview.MemberOverviewDto;
 import ch.puzzle.pcts.mapper.MemberOverviewMapper;
 import ch.puzzle.pcts.model.memberoverview.MemberOverview;
+import ch.puzzle.pcts.security.annotation.IsAdmin;
 import ch.puzzle.pcts.service.business.MemberOverviewBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@IsAdmin
 @RestController
 @RequestMapping("/api/v1/member-overviews")
 @Tag(name = "member-overviews", description = "Get the member and everything associated with the member")
