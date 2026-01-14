@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ExperienceTypePillComponent } from './experience-type-pill.component';
 
-describe('ExperienceTypePillComponent', () => {
+describe('ExperienceTypePill', () => {
   let component: ExperienceTypePillComponent;
   let fixture: ComponentFixture<ExperienceTypePillComponent>;
 

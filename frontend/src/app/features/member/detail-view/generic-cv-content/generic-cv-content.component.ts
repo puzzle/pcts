@@ -1,5 +1,5 @@
 import { Component, effect, input, signal } from '@angular/core';
-import { GenCol, GenericTableDataSource } from '../../../../shared/generic-table/generic-table-data-source';
+import { GenericTableDataSource } from '../../../../shared/generic-table/generic-table-data-source';
 import { GenericTableComponent } from '../../../../shared/generic-table/generic-table.component';
 import { ScopedTranslationPipe } from '../../../../shared/pipes/scoped-translation-pipe';
 import { ColumnTemplateDirective } from '../../../../shared/generic-table/column-template/column-template.directive';
@@ -24,21 +24,22 @@ import { ExperienceTypePillComponent } from '../../../../shared/experience-type-
 export class GenericCvContentComponent<T extends object> {
   data = input.required<T[] | null>();
 
-  columns = input.required<GenCol<T>[]>();
+  // columns = input.required<GenCol<T>[]>();
+
+  table = input.required<GenericTableDataSource<T>>();
 
   tableDataSource = signal<GenericTableDataSource<T> | null>(null);
 
   constructor() {
     effect(() => {
-      const cols = this.columns();
-      const data = this.data();
-      if (data) {
-        if (this.tableDataSource()) {
-          this.tableDataSource()!.columnDefs = cols;
-          this.tableDataSource()!.data = data;
-        } else {
-          this.tableDataSource.set(new GenericTableDataSource<T>(cols, data));
-        }
+      const tableValue = this.table();
+      const dataValue = this.data();
+
+
+      // Use the existing table
+      this.tableDataSource.set(tableValue);
+      if (dataValue) {
+        tableValue.data = dataValue;
       }
     });
   }

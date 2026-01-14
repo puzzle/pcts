@@ -1,6 +1,6 @@
-<table
+  <table
   mat-table
-  [dataSource]="this.dataSource()"
+  [dataSource]="dataSource()"
   class="table table-striped table-hover member-table m-0"
   matSort
   [matSortActive]="this.columnNames()[0]"
@@ -11,27 +11,38 @@
   @for (col of columns(); track col.columnName) {
     <ng-container [matColumnDef]="col.columnName">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>
-        {{getFieldI18nKey(col) | scopedTranslation}}
+        {{ getFieldI18nKey(col) | scopedTranslation }}
       </th>
+
       <td mat-cell *matCellDef="let entity">
         @let customTpl = templateMap().get(col.columnName);
 
-        <ng-container *ngTemplateOutlet="customTpl || defaultRenderer; context: { $implicit: entity, col: col }"/>
+        <ng-container
+          *ngTemplateOutlet="customTpl || defaultRenderer;
+          context: { $implicit: entity, col: col }"
+        />
       </td>
     </ng-container>
   }
 
+  <tr
+    class="h-25"
+    mat-header-row
+    *matHeaderRowDef="this.columnNames(); sticky: true">
+  </tr>
 
-  <tr class="h-25" mat-header-row *matHeaderRowDef="this.columnNames(); sticky: true"></tr>
   <tr
     mat-row
     *matRowDef="let row; columns: this.columnNames();"
-    data-testid="member-row"
-  ></tr>
+    data-testid="member-row">
+  </tr>
 
   <tr *matNoDataRow data-testid="no-results-row">
     <td colspan="4">
-      {{ 'TABLE.NO_SEARCH_RESULT' | scopedTranslation : {model: 'MODEL_NAME' | scopedTranslation ,searchValue: ''} }}
+      {{
+        'TABLE.NO_SEARCH_RESULT' | scopedTranslation :
+          {model: 'MODEL_NAME' | scopedTranslation, searchValue: ''}
+      }}
     </td>
   </tr>
 </table>
@@ -45,3 +56,15 @@
     {{ getDisplayValue(col, entity) }}
   }
 </ng-template>
+
+@if (hasLimit()) {
+  <div class="d-flex justify-content-center mt-2">
+    <button
+      type="button"
+      class="btn btn-link"
+      (click)="showAll.set(!showAll())"
+    >
+      {{ showAll() ? 'Show less' : 'Show all' }}
+    </button>
+  </div>
+}

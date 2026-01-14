@@ -46,9 +46,16 @@ export class GenCol<T> {
 export class GenericTableDataSource<T> extends MatTableDataSource<T> {
   private _columnDefs: GenCol<T>[] = [];
 
+  pageSize?: number | null;
+
   constructor(columnDefs: GenCol<T>[], initialData?: T[]) {
     super(initialData);
     this.columnDefs = columnDefs;
+  }
+
+  public withLimit(limit: number) {
+    this.pageSize = limit;
+    return this;
   }
 
   get columnDefs(): GenCol<T>[] {

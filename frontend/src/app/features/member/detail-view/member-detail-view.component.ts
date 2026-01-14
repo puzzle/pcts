@@ -16,7 +16,7 @@ import { TranslationScopeDirective } from '../../../shared/translation-scope/tra
 import {
   getCertificateColumns,
   getDegreeColumns,
-  getExperienceColumns,
+  getExperienceColumns, getExperienceTable,
   getLeadershipColumns
 } from './cv/member-detail-cv-table-definition';
 
@@ -59,6 +59,8 @@ export class MemberDetailViewComponent implements OnInit {
   readonly degreeColumns = getDegreeColumns(this.locale);
 
   readonly experienceColumns = getExperienceColumns(this.locale);
+
+  readonly experienceTable = getExperienceTable(this.locale);
 
   readonly certificateColumns = getCertificateColumns(this.locale);
 
