@@ -1,7 +1,7 @@
 import { formatDate } from '@angular/common';
 import { GLOBAL_DATE_FORMAT } from '../../../../shared/format/date-format';
 import { DegreeOverviewModel } from './degree-overview.model';
-import { GenCol } from '../../../../shared/generic-table/generic-table-data-source';
+import { GenCol, GenericTableDataSource } from '../../../../shared/generic-table/generic-table-data-source';
 import { ExperienceOverviewModel } from './experience-overview.model';
 import { CertificateOverviewModel } from './certificate-overview.model';
 import { LeadershipExperienceOverviewModel } from './leadership-experience-overview.model';
@@ -17,6 +17,9 @@ export const getDegreeColumns = (locale: string): GenCol<DegreeOverviewModel>[] 
     .getTime()),
 GenCol.fromAttr('name'),
 GenCol.fromAttr('degreeTypeName')];
+
+export const getExperienceTable = (locale: string): GenericTableDataSource<ExperienceOverviewModel> => new GenericTableDataSource(getExperienceColumns(locale))
+  .withLimit(4);
 
 export const getExperienceColumns = (locale: string): GenCol<ExperienceOverviewModel>[] => [
   GenCol.fromCalculated('dateRange', (e: ExperienceOverviewModel) => formatRange(e.startDate, e.endDate, locale))
