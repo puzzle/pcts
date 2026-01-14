@@ -94,7 +94,7 @@ jobs:
     if: success()
     env:
       GH_TOKEN: ${{ secrets.RELEASE_PLEASE_GH_TOKEN }}
-      ORGANIZATION: "puzzle"
+      OWNER: "puzzle"
       PROJECT_NUMBER: 17
       FIELD_NAME: "Status"
     steps:
@@ -122,7 +122,7 @@ jobs:
             | .id
           ')
           echo "$LABEL_ID"
-          echo "DESIRED_STATUS_LABEL_ID=$LABEL_ID" >> "$GITHUB_ENV"
+          echo "DESIRED_STATUS_LABEL_ID=$LABEL_ID" >> $GITHUB_ENV
 
       - name: Move Linked Issues
         if: env.TARGET_STATUS != 'STOP'
