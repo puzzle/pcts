@@ -15,6 +15,7 @@ import static ch.puzzle.pcts.architecture.condition.CodeUnitConditions.trimAssig
 import static com.tngtech.archunit.base.DescribedPredicate.not;
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.equivalentTo;
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAPackage;
+import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAnyPackage;
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.type;
 import static com.tngtech.archunit.lang.conditions.ArchConditions.and;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
