@@ -19,9 +19,6 @@ import ch.puzzle.pcts.mapper.MemberOverviewMapper;
 import ch.puzzle.pcts.model.memberoverview.MemberOverview;
 import ch.puzzle.pcts.service.business.MemberOverviewBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
@@ -52,10 +49,6 @@ class MemberOverviewControllerIT {
     private MockMvc mvc;
 
     private static final String BASEURL = "/api/v1/member-overviews";
-
-    private final ObjectMapper objectMapper = new ObjectMapper()
-            .registerModule(new JavaTimeModule())
-            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
     @DisplayName("Should successfully get member overview by member id")
     @Test
