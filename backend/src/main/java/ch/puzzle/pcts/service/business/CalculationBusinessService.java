@@ -4,6 +4,8 @@ import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
 import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
 import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
+import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.persistence.CalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.CalculationValidationService;
 import jakarta.transaction.Transactional;
@@ -16,16 +18,19 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
     private final ExperienceCalculationBusinessService experienceCalculationBusinessService;
     private final CertificateCalculationBusinessService certificateCalculationBusinessService;
     private final DegreeCalculationBusinessService degreeCalculationBusinessService;
+    private final CalculationPersistenceService calculationPersistenceService;
 
     protected CalculationBusinessService(CalculationValidationService validationService,
                                          CalculationPersistenceService persistenceService,
                                          ExperienceCalculationBusinessService experienceCalculationBusinessService,
                                          CertificateCalculationBusinessService certificateCalculationBusinessService,
-                                         DegreeCalculationBusinessService degreeCalculationBusinessService) {
+                                         DegreeCalculationBusinessService degreeCalculationBusinessService,
+                                         CalculationPersistenceService calculationPersistenceService) {
         super(validationService, persistenceService);
         this.experienceCalculationBusinessService = experienceCalculationBusinessService;
         this.certificateCalculationBusinessService = certificateCalculationBusinessService;
         this.degreeCalculationBusinessService = degreeCalculationBusinessService;
+        this.calculationPersistenceService = calculationPersistenceService;
     }
 
     @Override
@@ -77,13 +82,34 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
     @Override
     public Calculation getById(Long calculationId) {
         Calculation calculation = super.getById(calculationId);
+        calculation.setPoints(getPointsOfCalculation(calculation));
+        return calculation;
+    }
 
-        BigDecimal totalRelevancyPoints = BigDecimal.ZERO
+    public List<Calculation> getAllByMember(Member member) {
+        List<Calculation> calculations = calculationPersistenceService.getAllByMember(member);
+        setPointsForCalculations(calculations);
+        return calculations;
+    }
+
+    public List<Calculation> getAllByMemberAndRole(Member member, Role role) {
+        List<Calculation> calculations = calculationPersistenceService.getAllByMemberAndRole(member, role);
+        setPointsForCalculations(calculations);
+        return calculations;
+    }
+
+    public BigDecimal getPointsOfCalculation(Calculation calculation) {
+        Long calculationId = calculation.getId();
+        return BigDecimal.ZERO
                 .add(experienceCalculationBusinessService.getExperiencePoints(calculationId))
                 .add(degreeCalculationBusinessService.getDegreePoints(calculationId))
                 .add(certificateCalculationBusinessService.getCertificatePoints(calculationId));
+    }
 
-        calculation.setPoints(totalRelevancyPoints);
-        return calculation;
+    public void setPointsForCalculations(List<Calculation> calculations) {
+        calculations.forEach(calculation -> {
+            BigDecimal points = this.getPointsOfCalculation(calculation);
+            calculation.setPoints(points);
+        });
     }
 }
