@@ -1,8 +1,12 @@
 FROM maven:3-eclipse-temurin-25-alpine AS builder
 WORKDIR /app
+
 COPY pom.xml .
+COPY sonar-project.properties .
+
 COPY backend/pom.xml backend/
 COPY backend/src backend/src
+
 RUN mvn -f backend/pom.xml clean install -DskipTests
 
 FROM eclipse-temurin:25-jre-alpine AS runner
