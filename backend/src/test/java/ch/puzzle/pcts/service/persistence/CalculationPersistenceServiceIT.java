@@ -94,6 +94,25 @@ class CalculationPersistenceServiceIT
                 .containsExactly(result);
     }
 
+    @DisplayName("Should get all Calculations for a given Member")
+    @Test
+    void shouldGetAllByMember() {
+        List<Calculation> results = persistenceService.getAllByMember(MEMBER_1);
+        assertThat(results)
+                .isNotEmpty()
+                .allMatch(c -> c.getMember().equals(MEMBER_1));
+    }
+
+    @DisplayName("Should get all Calculations for a given Member and Role")
+    @Test
+    void shouldGetAllByMemberAndRole() {
+        List<Calculation> results = persistenceService.getAllByMemberAndRole(MEMBER_2, ROLE_2);
+        assertThat(results)
+                .isNotEmpty()
+                .allMatch(c -> c.getMember().equals(MEMBER_2) && c.getRole().equals(ROLE_2));
+    }
+
+
     private List<Calculation> getActiveCalculationsOfMember(Role role, Member member) {
         return persistenceService
                 .getAll()

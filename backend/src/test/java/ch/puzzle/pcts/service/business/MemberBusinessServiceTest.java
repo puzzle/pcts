@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.role.Role;
-import ch.puzzle.pcts.service.persistence.CalculationPersistenceService;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import ch.puzzle.pcts.service.validation.MemberValidationService;
 import java.util.Collections;
@@ -40,7 +39,7 @@ class MemberBusinessServiceTest
     private RoleBusinessService roleBusinessService;
 
     @Mock
-    private CalculationPersistenceService calculationPersistenceService;
+    private CalculationBusinessService calculationBusinessService;
 
     @Mock
     private List<Calculation> calculations;
@@ -102,7 +101,7 @@ class MemberBusinessServiceTest
 
         when(businessService.getById(memberId)).thenReturn(member);
         when(roleBusinessService.getById(roleId)).thenReturn(role);
-        when(calculationPersistenceService.getAllByMemberAndRole(member, role)).thenReturn(calculations);
+        when(calculationBusinessService.getAllByMemberAndRole(member, role)).thenReturn(calculations);
         when(calculations.size()).thenReturn(3);
 
         List<Calculation> result = businessService.getAllCalculationsByMemberIdAndRoleId(memberId, roleId);
@@ -112,7 +111,7 @@ class MemberBusinessServiceTest
 
         verify(persistenceService).getById(memberId);
         verify(roleBusinessService).getById(roleId);
-        verify(calculationPersistenceService).getAllByMemberAndRole(member, role);
+        verify(calculationBusinessService).getAllByMemberAndRole(member, role);
     }
 
     @DisplayName("Should get calculations by memberId only when roleId is null")
@@ -121,7 +120,7 @@ class MemberBusinessServiceTest
         Long memberId = 1L;
 
         when(businessService.getById(memberId)).thenReturn(member);
-        when(calculationPersistenceService.getAllByMember(member)).thenReturn(calculations);
+        when(calculationBusinessService.getAllByMember(member)).thenReturn(calculations);
         when(calculations.size()).thenReturn(1);
 
         List<Calculation> result = businessService.getAllCalculationsByMemberIdAndRoleId(memberId, null);
@@ -130,7 +129,7 @@ class MemberBusinessServiceTest
         assertEquals(calculations, result);
 
         verify(persistenceService).getById(memberId);
-        verify(calculationPersistenceService).getAllByMember(member);
+        verify(calculationBusinessService).getAllByMember(member);
     }
 
     @DisplayName("Should return empty list when no calculations found")
@@ -139,7 +138,7 @@ class MemberBusinessServiceTest
         Long memberId = 1L;
 
         when(businessService.getById(memberId)).thenReturn(member);
-        when(calculationPersistenceService.getAllByMember(member)).thenReturn(Collections.emptyList());
+        when(calculationBusinessService.getAllByMember(member)).thenReturn(Collections.emptyList());
 
         List<Calculation> result = businessService.getAllCalculationsByMemberIdAndRoleId(memberId, null);
 

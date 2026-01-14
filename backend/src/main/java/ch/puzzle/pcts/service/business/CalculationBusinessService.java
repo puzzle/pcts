@@ -98,7 +98,7 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
         return calculations;
     }
 
-    public BigDecimal getPointsOfCalculation(Calculation calculation) {
+    private BigDecimal getPointsOfCalculation(Calculation calculation) {
         Long calculationId = calculation.getId();
         return BigDecimal.ZERO
                 .add(experienceCalculationBusinessService.getExperiencePoints(calculationId))
@@ -106,7 +106,7 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
                 .add(certificateCalculationBusinessService.getCertificatePoints(calculationId));
     }
 
-    public void setPointsForCalculations(List<Calculation> calculations) {
+    private void setPointsForCalculations(List<Calculation> calculations) {
         calculations.forEach(calculation -> {
             BigDecimal points = this.getPointsOfCalculation(calculation);
             calculation.setPoints(points);
