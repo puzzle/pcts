@@ -15,17 +15,14 @@
               appColumnTemplate="experienceTypeName"
               let-experience
             >
-            <span [class]="getExperienceBadgeClass(experience.experienceTypeName)" class="badge">
-              {{ experience.experienceTypeName }}
-            </span>
+              <app-experience-type-pill [experienceType]="experience.experienceTypeName" />
             </ng-template>
 
-            <ng-template
-              appColumnTemplate="workName"
-              let-experience
-            >
-            <b>{{ experience.employer }}</b><br/>
-              {{ experience.name}}
+            <ng-template appColumnTemplate="workName" let-experience>
+              @if (experience.employer; as employer) {
+                <b>{{ employer }}</b><br />
+              }
+              {{ experience.name }}
             </ng-template>
           </app-generic-table>
         </ng-content>
