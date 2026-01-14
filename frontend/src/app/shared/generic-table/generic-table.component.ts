@@ -91,6 +91,7 @@ export class GenericTableComponent<T extends object> implements AfterViewChecked
     effect(() => {
       this.dataSource().sortingDataAccessor = this.createSortingAccessor(this.columns());
       this.dataSource().sort = this.sort();
+      this.dataSource();
     });
   }
 

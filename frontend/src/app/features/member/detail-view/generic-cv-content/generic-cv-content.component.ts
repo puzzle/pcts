@@ -5,6 +5,7 @@ import { ScopedTranslationPipe } from '../../../../shared/pipes/scoped-translati
 import { ColumnTemplateDirective } from '../../../../shared/generic-table/column-template/column-template.directive';
 import { TypedTemplateDirective } from '../../../../shared/generic-table/type-template/typed-template.directive';
 import { CrudButtonComponent } from '../../../../shared/crud-button/crud-button.component';
+import { ExperienceTypePillComponent } from '../../../../shared/experience-type-pill/experience-type-pill.component';
 
 @Component({
   selector: 'app-generic-cv-content',
@@ -14,7 +15,8 @@ import { CrudButtonComponent } from '../../../../shared/crud-button/crud-button.
     GenericTableComponent,
     ColumnTemplateDirective,
     TypedTemplateDirective,
-    CrudButtonComponent
+    CrudButtonComponent,
+    ExperienceTypePillComponent
   ],
   templateUrl: './generic-cv-content.component.html',
   styleUrl: './generic-cv-content.component.scss'
@@ -39,16 +41,5 @@ export class GenericCvContentComponent<T extends object> {
         }
       }
     });
-  }
-
-  getExperienceBadgeClass(type: string): string {
-    switch (type) {
-      case 'Internship':
-        return 'badge-internship';
-      case 'Hackathon':
-        return 'badge-hackathon';
-      default:
-        return 'badge-default';
-    }
   }
 }
