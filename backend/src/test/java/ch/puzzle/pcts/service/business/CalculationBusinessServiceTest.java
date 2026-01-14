@@ -70,6 +70,7 @@ class CalculationBusinessServiceTest
     @Test
     void shouldGetById() {
         Calculation calc = new Calculation();
+        calc.setId(ID);
 
         when(persistenceService.getById(ID)).thenReturn(calc);
         when(experienceBusinessService.getExperiencePoints(ID)).thenReturn(BigDecimal.ONE);
