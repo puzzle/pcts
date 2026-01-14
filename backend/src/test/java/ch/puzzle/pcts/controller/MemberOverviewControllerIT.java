@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.dto.error.GenericErrorDto;
@@ -19,6 +18,7 @@ import ch.puzzle.pcts.dto.memberoverview.MemberOverviewDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.mapper.MemberOverviewMapper;
 import ch.puzzle.pcts.model.memberoverview.MemberOverview;
+import ch.puzzle.pcts.security.SpringSecurityConfig;
 import ch.puzzle.pcts.service.business.MemberOverviewBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import java.util.List;
