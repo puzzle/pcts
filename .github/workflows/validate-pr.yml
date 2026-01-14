@@ -116,8 +116,8 @@ jobs:
         if: env.TARGET_STATUS != 'STOP'
         shell: bash
         run: |
-          LINKED_ISSUES=$(gh pr view "$PR_NUMBER" --json closingIssuesReferences -q '.closingIssuesReferences[].number')
-
+          LINKED_ISSUES=$(gh pr view "$PR_NUMBER" -R "$REPO" --json closingIssuesReferences -q '.closingIssuesReferences[].number')
+          echo "linked issue: $LINKED_ISSUES"
           if [[ -z "$LINKED_ISSUES" ]]; then
             echo "No linked issues found for PR #$PR_NUMBER."
             exit 0
