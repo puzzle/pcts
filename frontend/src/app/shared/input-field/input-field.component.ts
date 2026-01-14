@@ -41,7 +41,8 @@ export class InputFieldComponent {
   matFormField = viewChild.required(MatFormField);
 
   matFormFieldControl = contentChild.required(MatFormFieldControl);
-  matAutocompleteTrigger = contentChild(MatAutocompleteTrigger)
+
+  matAutocompleteTrigger = contentChild(MatAutocompleteTrigger);
 
   constructor() {
     effect(() => {
@@ -51,9 +52,9 @@ export class InputFieldComponent {
     });
 
     effect(() => {
-      const matAutocompleteTrigger = this.matAutocompleteTrigger()
+      const matAutocompleteTrigger = this.matAutocompleteTrigger();
       if (matAutocompleteTrigger) {
-        matAutocompleteTrigger["_formField"] = this.matFormField()
+        matAutocompleteTrigger['_formField'] = this.matFormField();
       }
     });
   }
