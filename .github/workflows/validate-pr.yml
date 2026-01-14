@@ -102,36 +102,43 @@ jobs:
         id: set_status
         run: |
           if [ "${{ github.event.pull_request.merged }}" == "true" ]; then
-            echo "STATUS=🗳️ Ready for Sprint Review" >> $GITHUB_ENV
+            echo "TARGET_STATUS=🗳️ Ready for Sprint Review" >> $GITHUB_ENV
           elif [ "${{ github.event.action }}" == "closed" ]; then
             echo "PR closed without merge. Skipping update."
-            echo "STATUS=STOP" >> $GITHUB_ENV
+            echo "TARGET_STATUS=STOP" >> $GITHUB_ENV
           elif [ "${{ github.event.pull_request.draft }}" == "true" ]; then
-            echo "STATUS=In Implementation" >> $GITHUB_ENV
+            echo "TARGET_STATUS=In Implementation" >> $GITHUB_ENV
           else
-            echo "STATUS=In review" >> $GITHUB_ENV
+            echo "TARGET_STATUS=In review" >> $GITHUB_ENV
           fi
+          
+      - name: Get Id of desired status label
+        env:
+          GH_TOKEN: ${{ github.token }} # Ensure token is available for gh cli
+        run: |
+          LABEL_ID=$(gh project field-list "$PROJECT_NUMBER" --owner "$OWNER" --format json | jq -r --arg field_name "Status" --arg search_string "In review" '
+            .fields[] 
+            | select(.name == $field_name) 
+            | .options[] 
+            | select(.name | endswith($search_string)) 
+            | .id
+          ')
+          echo "$LABEL_ID"
+          echo "DESIRED_STATUS_LABEL_ID=$LABEL_ID" >> "$GITHUB_ENV"
 
       - name: Move Linked Issues
         if: env.TARGET_STATUS != 'STOP'
         shell: bash
         run: |
-          LINKED_ISSUES=$(gh pr view "$PR_NUMBER" -R "$REPO" --json closingIssuesReferences -q '.closingIssuesReferences[].number')
+          echo "Desired status: $TARGET_STATUS, desired status label id: $DESIRED_STATUS_LABEL_ID=$LABEL_ID"
+          ISSUE_ID=$(gh pr view "$PR_NUMBER" -R "$REPO" --json closingIssuesReferences -q '.closingIssuesReferences[].id')
           echo "linked issue: $LINKED_ISSUES"
-          if [[ -z "$LINKED_ISSUES" ]]; then
+          if [[ -z "ISSUE_ID" ]]; then
             echo "No linked issues found for PR #$PR_NUMBER."
             exit 0
           fi
 
-          PROJECT_ID=$(gh project view "$PROJECT_NUM" --owner "$OWNER" --format json -q .id)
-
-          IDS=$(gh project field-list "$PROJECT_NUM" --owner "$OWNER" --format json | jq -r --arg f "$STATUS_FIELD" --arg o "$TARGET_STATUS" '
-            .fields[] 
-            | select(.name == $f) 
-            | {fieldId: .id, optionId: (.options[] | select(.name == $o) | .id)} 
-            | "\(.fieldId) \(.optionId)"
-          ')
-          read -r FIELD_ID OPTION_ID <<< "$IDS"
+          PROJECT_ID=$(gh project view "PROJECT_NUMBER" --owner "$OWNER" --format json -q .id)
 
           for ISSUE_NUM in $LINKED_ISSUES; do
             echo "Processing Issue #$ISSUE_NUM..."
