@@ -18,9 +18,6 @@ import ch.puzzle.pcts.dto.role.RoleDto;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
-import ch.puzzle.pcts.model.certificate.Certificate;
-import ch.puzzle.pcts.model.certificatetype.CertificateKind;
-import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
@@ -267,20 +264,10 @@ class CalculationMapperTest {
     @Test
     void shouldReturnCertificateCalculationsDependingOnKind() {
         CertificateCalculation certificateCalculation = mock(CertificateCalculation.class);
-        Certificate certificate = mock(Certificate.class);
-        CertificateType certificateType = mock(CertificateType.class);
-
         CertificateCalculation leadershipExperienceCalculation = mock(CertificateCalculation.class);
-        Certificate leadershipExperience = mock(Certificate.class);
-        CertificateType leadershipExperienceType = mock(CertificateType.class);
 
-        when(certificateCalculation.getCertificate()).thenReturn(certificate);
-        when(certificate.getCertificateType()).thenReturn(certificateType);
-        when(certificateType.getCertificateKind()).thenReturn(CertificateKind.CERTIFICATE);
-
-        when(leadershipExperienceCalculation.getCertificate()).thenReturn(leadershipExperience);
-        when(leadershipExperience.getCertificateType()).thenReturn(leadershipExperienceType);
-        when(leadershipExperienceType.getCertificateKind()).thenReturn(CertificateKind.MILITARY_FUNCTION);
+        when(certificateCalculation.isLeadershipExperience()).thenReturn(false);
+        when(leadershipExperienceCalculation.isLeadershipExperience()).thenReturn(true);
 
         calculation1.setCertificateCalculations(List.of(certificateCalculation, leadershipExperienceCalculation));
 
