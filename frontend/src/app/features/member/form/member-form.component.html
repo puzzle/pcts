@@ -33,8 +33,7 @@
         <mat-error appPctsFormError/>
       </mat-form-field>
 
-      <mat-form-field>
-        <mat-label appPctsFormLabel/>
+      <app-input-field>
         <input type="text" formControlName="employmentState" matInput [matAutocomplete]="employmentStateAutoComplete"
                data-testid="employmentState">
         <mat-autocomplete autoActiveFirstOption #employmentStateAutoComplete="matAutocomplete"
@@ -43,11 +42,9 @@
             <mat-option [value]="employmentState">{{ displayEmploymentState(employmentState) }}</mat-option>
           }
         </mat-autocomplete>
-        <mat-error appPctsFormError/>
-      </mat-form-field>
+      </app-input-field>
 
-      <mat-form-field>
-        <mat-label appPctsFormLabel/>
+      <app-input-field>
         <input type="text" formControlName="organisationUnit" matInput
                [matAutocomplete]="organisationUnitAutoComplete" data-testid="organisationUnit">
         <mat-autocomplete autoActiveFirstOption #organisationUnitAutoComplete="matAutocomplete"
@@ -56,8 +53,7 @@
             <mat-option [value]="organisationUnit">{{ displayOrganisationUnit(organisationUnit) }}</mat-option>
           }
         </mat-autocomplete>
-        <mat-error appPctsFormError/>
-      </mat-form-field>
+      </app-input-field>
     </ng-container>
   </app-form>
 </div>

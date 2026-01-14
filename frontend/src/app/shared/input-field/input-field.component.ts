@@ -16,6 +16,7 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { PctsFormErrorDirective } from '../pcts-form-error/pcts-form-error.directive';
 import { PctsFormLabelDirective } from '../pcts-form-label/pcts-form-label.directive';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-input-field',
@@ -40,11 +41,19 @@ export class InputFieldComponent {
   matFormField = viewChild.required(MatFormField);
 
   matFormFieldControl = contentChild.required(MatFormFieldControl);
+  matAutocompleteTrigger = contentChild(MatAutocompleteTrigger)
 
   constructor() {
     effect(() => {
       if (this.matFormFieldControl()) {
         this.matFormField()._control = this.matFormFieldControl();
+      }
+    });
+
+    effect(() => {
+      const matAutocompleteTrigger = this.matAutocompleteTrigger()
+      if (matAutocompleteTrigger) {
+        matAutocompleteTrigger["_formField"] = this.matFormField()
       }
     });
   }
