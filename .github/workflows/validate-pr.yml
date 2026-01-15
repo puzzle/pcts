@@ -55,7 +55,7 @@ jobs:
           WARNING_BODY="### ⚠️ $WARNING_IDENTIFIER<br/>No linked issue found. This PR will not be moved on the project board automatically."
 
           # 1. Check if a warning comment already exists
-          EXISTING_COMMENT_ID=$(gh api  repos/puzzle/pcts/issues/$PR_NUMBER/comments   --jq '.[] | select(.body | contains("$WARNING_IDENTIFIER")) | .id')
+          EXISTING_COMMENT_ID=$(gh api repos/puzzle/pcts/issues/$PR_NUMBER/comments --jq --arg id "$WARNING_IDENTIFIER" '.[] | select(.body | contains($id)) | .id')
 
           # 2. Get Linked Issues
           ISSUE_JSON=$(gh pr view $PR_NUMBER --json closingIssuesReferences --jq '.closingIssuesReferences')
@@ -76,7 +76,7 @@ jobs:
               # CLEANUP: If the warning comment exists, delete it now because the PR is fixed.
               if [ ! -z "$EXISTING_COMMENT_ID" ]; then
                 echo "🧹 Removing stale warning comment (ID: $EXISTING_COMMENT_ID)..."
-                gh api -X DELETE repos/puzzle/pcts/issues/comments/$EXISTING_COMMENT_ID"
+                gh api -X DELETE "repos/puzzle/pcts/issues/comments/$EXISTING_COMMENT_ID"
                 echo "✅ Comment deleted."
               fi
             fi
