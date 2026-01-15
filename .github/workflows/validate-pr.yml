@@ -102,12 +102,12 @@ jobs:
         id: set_status
         run: |
           if [ "${{ github.event.pull_request.merged }}" == "true" ]; then
-            echo "TARGET_STATUS=🗳️ Ready for Sprint Review" >> $GITHUB_ENV
+            echo "TARGET_STATUS=Ready for Sprint Review" >> $GITHUB_ENV
           elif [ "${{ github.event.action }}" == "closed" ]; then
             echo "PR closed without merge. Skipping update."
             echo "TARGET_STATUS=STOP" >> $GITHUB_ENV
           elif [ "${{ github.event.pull_request.draft }}" == "true" ]; then
-            echo "TARGET_STATUS=In Implementation" >> $GITHUB_ENV
+            echo "TARGET_STATUS=In progress" >> $GITHUB_ENV
           else
             echo "TARGET_STATUS=In review" >> $GITHUB_ENV
           fi
@@ -180,7 +180,7 @@ jobs:
               FIELD_ID=$(gh project field-list "$PROJECT_NUMBER" --owner "$OWNER" --format json | jq -r --arg name "$FIELD_NAME" '.fields[] | select(.name==$name) | .id')
 
               OPTION_ID=$(gh project field-list "$PROJECT_NUMBER" --owner "$OWNER" --format json | jq -r --arg name "$FIELD_NAME" --arg status "$TARGET_STATUS" '
-                 .fields[] | select(.name==$name) | .options[] | select(.name==$status) | .id
+                .fields[] | select(.name==$name) | .options[] | select(.name | endswith($status)) | .id
               ')
 
               if [[ -n "$FIELD_ID" && -n "$OPTION_ID" ]]; then
