@@ -35,7 +35,6 @@ export class GenericCvContentComponent<T extends object> {
       const tableValue = this.table();
       const dataValue = this.data();
 
-
       // Use the existing table
       this.tableDataSource.set(tableValue);
       if (dataValue) {

@@ -19,7 +19,7 @@ GenCol.fromAttr('name'),
 GenCol.fromAttr('degreeTypeName')];
 
 export const getExperienceTable = (locale: string): GenericTableDataSource<ExperienceOverviewModel> => new GenericTableDataSource(getExperienceColumns(locale))
-  .withLimit(4);
+  .withLimit(5);
 
 export const getExperienceColumns = (locale: string): GenCol<ExperienceOverviewModel>[] => [
   GenCol.fromCalculated('dateRange', (e: ExperienceOverviewModel) => formatRange(e.startDate, e.endDate, locale))
