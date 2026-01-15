@@ -55,7 +55,9 @@ jobs:
           WARNING_BODY="### ⚠️ $WARNING_IDENTIFIER<br/>No linked issue found. This PR will not be moved on the project board automatically."
 
           # 1. Check if a warning comment already exists
-          EXISTING_COMMENT_ID=$(gh api repos/puzzle/pcts/issues/$PR_NUMBER/comments --jq --arg id "$WARNING_IDENTIFIER" '.[] | select(.body | contains($id)) | .id')
+          # We inject the variable directly into the jq string using escaped quotes (\")
+          EXISTING_COMMENT_ID=$(gh api repos/puzzle/pcts/issues/$PR_NUMBER/comments \
+          --jq ".[] | select(.body | contains(\"$WARNING_IDENTIFIER\")) | .id")
 
           # 2. Get Linked Issues
           ISSUE_JSON=$(gh pr view $PR_NUMBER --json closingIssuesReferences --jq '.closingIssuesReferences')
