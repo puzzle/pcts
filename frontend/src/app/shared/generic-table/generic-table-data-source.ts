@@ -46,17 +46,13 @@ export class GenCol<T> {
 export class GenericTableDataSource<T> extends MatTableDataSource<T> {
   private _columnDefs: GenCol<T>[] = [];
 
-  pageSize?: number | null;
+  private _ignorePredicate = false;
 
   constructor(columnDefs: GenCol<T>[], initialData?: T[]) {
     super(initialData);
     this.columnDefs = columnDefs;
   }
 
-  public withLimit(limit: number) {
-    this.pageSize = limit;
-    return this;
-  }
 
   get columnDefs(): GenCol<T>[] {
     return this._columnDefs;
@@ -64,5 +60,44 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
 
   set columnDefs(value: GenCol<T>[]) {
     this._columnDefs = value;
+  }
+
+  public withLimit(limit: number) {
+    this.filterPredicateWithIndex = (data: T, filter: string, index: number) => index < limit;
+    return this;
+  }
+
+  public withCustomFilterPredicate(predicate: (data: T, filter: string, index: number) => boolean) {
+    this.filterPredicateWithIndex = predicate;
+    return this;
+  }
+
+  override _filterData(data: T[]) {
+    if (!this._ignorePredicate) {
+      this.filteredData = data.filter((obj: T, index: number) => this.filterPredicateWithIndex(obj, this.filter, index));
+    } else {
+      this.filteredData = this.data;
+    }
+
+    if (this.paginator) {
+      this._updatePaginator(this.filteredData.length);
+    }
+
+    return this.filteredData;
+  }
+
+  filterPredicateWithIndex: (data: T, filter: string, index: number) => boolean = (data: T, filter: string, index: number) => {
+    if (this.filter == null || this.filter === '') {
+      return true;
+    }
+    return this.filterPredicate(data, filter);
+  };
+
+  set ignorePredicate(value: boolean) {
+    this._ignorePredicate = value;
+  }
+
+  reloadData() {
+    this['_filter'].next('');
   }
 }

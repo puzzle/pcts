@@ -64,15 +64,10 @@ export class GenericTableComponent<T extends object> {
 
   showAll = signal(false);
 
-  hasLimit = computed(() => {
-    /*
-     * return size !== null && this.dataSource().data.length > size;
-     * const size = this.pageSize();
-     */
-    return true;
+  isFilterApplied = computed(() => {
+    console.log('test');
+    return this.dataSource().filteredData.length !== this.dataSource().data.length;
   });
-
-  pageSize = computed<number | null>(() => this.dataSource().pageSize ?? null);
 
   columns = computed(() => this.dataSource().columnDefs);
 
@@ -95,29 +90,25 @@ export class GenericTableComponent<T extends object> {
     return map;
   });
 
-  entries = computed(() => {
-    this.sort();
-    const ds = this.dataSource();
-    const size = this.pageSize();
-
-    const data = ds.data;
-    console.log(size == null || this.showAll() ? data : data.slice(0, size));
-    return size == null || this.showAll() ? data : data.slice(0, size);
-  });
 
   constructor() {
     effect(() => {
       this.dataSource().sortingDataAccessor = this.createSortingAccessor(this.columns());
       this.dataSource().sort = this.sort();
-      console.log(this.dataSource().data);
-      /*
-       * this.dataSource().filter = "";
-       * this.dataSource().data = []
-       */
     });
 
     effect(() => {
-      this.dataSource().data = this.entries();
+      this.dataSource().ignorePredicate = this.showAll();
+      /*
+       * console.log(this.showAll())
+       * console.log(this.dataSource().data)
+       * const data = this.dataSource().data
+       * this.dataSource().data = []
+       * this.dataSource().data = data
+       */
+      this.dataSource()
+        .reloadData();
+      // this.dataSource()._filterData(this.dataSource().data)
     });
   }
 
