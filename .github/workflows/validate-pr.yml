@@ -128,7 +128,7 @@ jobs:
         if: env.TARGET_STATUS != 'STOP'
         shell: bash
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # or your specific PAT
+#          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # or your specific PAT
           OWNER: puzzle
           PROJECT_NUMBER: 17
           FIELD_NAME: Status
