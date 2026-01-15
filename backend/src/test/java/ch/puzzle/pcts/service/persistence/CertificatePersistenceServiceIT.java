@@ -68,6 +68,7 @@ class CertificatePersistenceServiceIT
         member.setEmploymentState(EmploymentState.MEMBER);
         member.setOrganisationUnit(organisationUnit);
         member.setBirthDate(LocalDate.of(1999, 8, 10));
+        member.setEmail("member@puzzle.ch");
         member = memberRepository.save(member);
 
         CertificateType certificateType = new CertificateType();

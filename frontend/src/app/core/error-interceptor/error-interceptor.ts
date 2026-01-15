@@ -15,6 +15,18 @@ export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>,
       const translate = injector.get(ScopedTranslationService);
       let toasts: string[];
 
+      if (error.status == 401) {
+        toasts = [translate.instant('ERROR.NOT_AUTHENTICATED')];
+        toastService.showToasts(toasts, 'error');
+        return throwError(() => error);
+      }
+
+      if (error.status === 403) {
+        toasts = [translate.instant('ERROR.NOT_ALLOWED')];
+        toastService.showToasts(toasts, 'error');
+        return throwError(() => error);
+      }
+
       if (Array.isArray(error.error)) {
         toasts = error.error.map((err) => {
           const key = `ERROR.${err.key}`;
@@ -34,6 +46,7 @@ export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>,
           }
 
           const message: string = translate.instant(key, values);
+
           return message && message !== key ? message : translate.instant('ERROR.DEFAULT');
         });
       } else {
@@ -44,7 +57,6 @@ export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>,
       return throwError(() => error);
     }));
 };
-
 
 function toScreamingSnake(text: string): string {
   if (!text) {

@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { MemberDto } from './dto/member.dto';
 import { DateTime } from 'luxon';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -32,6 +33,11 @@ export class MemberService {
       .pipe(map((dto) => this.mapDates(dto)));
   }
 
+  getMyself() {
+    return this.httpClient.get<MemberModel>(`${this.API_URL}/myself`)
+      .pipe(map((dto) => this.mapDates(dto)));
+  }
+
   private mapDates(dto: MemberModel): MemberModel {
     return {
       ...dto,
@@ -47,6 +53,7 @@ export class MemberService {
       birthDate: DateTime.fromJSDate(model.birthDate)
         .toISODate(),
       abbreviation: model.abbreviation,
+      email: model.email?.trim() === '' ? null : model.email,
       employmentState: model.employmentState,
       organisationUnitId: model.organisationUnit?.id,
       dateOfHire: model.dateOfHire ? DateTime.fromJSDate(model.dateOfHire)

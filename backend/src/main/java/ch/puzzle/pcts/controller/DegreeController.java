@@ -4,6 +4,7 @@ import ch.puzzle.pcts.dto.degree.DegreeDto;
 import ch.puzzle.pcts.dto.degree.DegreeInputDto;
 import ch.puzzle.pcts.mapper.DegreeMapper;
 import ch.puzzle.pcts.model.degree.Degree;
+import ch.puzzle.pcts.security.annotation.IsAdmin;
 import ch.puzzle.pcts.service.business.DegreeBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -15,6 +16,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@IsAdmin
 @RestController
 @RequestMapping("/api/v1/degrees")
 @Tag(name = "degrees", description = "Manage the degrees which are associated with any one member")

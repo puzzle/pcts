@@ -5,17 +5,19 @@ import static ch.puzzle.pcts.Constants.CALCULATION;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.repository.CalculationRepository;
+import ch.puzzle.pcts.service.JwtService;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CalculationPersistenceService extends PersistenceBase<Calculation, CalculationRepository> {
-
+    private final JwtService jwtService;
     private final CalculationRepository repository;
 
-    public CalculationPersistenceService(CalculationRepository repository) {
+    public CalculationPersistenceService(JwtService jwtService, CalculationRepository repository) {
         super(repository);
+        this.jwtService = jwtService;
         this.repository = repository;
     }
 
@@ -35,8 +37,7 @@ public class CalculationPersistenceService extends PersistenceBase<Calculation, 
 
     private void setPublicationFields(Calculation calculation) {
         calculation.setPublicationDate(LocalDate.now());
-        // TODO: Replace this with the Ldap's username executing the request
-        calculation.setPublicizedBy("Ldap User");
+        calculation.setPublicizedBy(this.jwtService.getDisplayName());
     }
 
     private void setStateOfOldActiveCalculationsToArchived(Calculation calculation) {
