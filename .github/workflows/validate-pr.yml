@@ -124,32 +124,72 @@ jobs:
           echo "$LABEL_ID"
           echo "DESIRED_STATUS_LABEL_ID=$LABEL_ID" >> $GITHUB_ENV
 
-      - name: Move Linked Issues
+      - name: Move Linked Issues to In Implementation
         if: env.TARGET_STATUS != 'STOP'
         shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # or your specific PAT
+          OWNER: puzzle
+          PROJECT_NUMBER: 17
+          FIELD_NAME: Status
+          TARGET_STATUS: In Implementation
+          DESIRED_STATUS_LABEL_ID: 98a3c7d6
+          # ADDED: These are required for the script to work
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           echo "Desired status: $TARGET_STATUS, desired status label id: $DESIRED_STATUS_LABEL_ID"
-          ISSUE_ID=$(gh pr view "$PR_NUMBER" -R "$REPO" --json closingIssuesReferences -q '.closingIssuesReferences[].id')
-          echo "linked issue: $ISSUE_ID"
-          if [[ -z "ISSUE_ID" ]]; then
+
+          # 1. Fetch Closing Issues (Renamed variable to match the loop below)
+          # We use -R to explicitly tell gh which repo to use, avoiding the 'not a git repo' error
+          LINKED_ISSUES=$(gh pr view "$PR_NUMBER" -R "$REPO" --json closingIssuesReferences -q '.closingIssuesReferences[].number')
+
+          echo "Linked issue numbers: $LINKED_ISSUES"
+
+          # 2. Fix: Check the variable $LINKED_ISSUES, not the string "ISSUE_ID"
+          if [[ -z "$LINKED_ISSUES" ]]; then
             echo "No linked issues found for PR #$PR_NUMBER."
             exit 0
           fi
 
-          PROJECT_ID=$(gh project view "PROJECT_NUMBER" --owner "$OWNER" --format json -q .id)
+          # 3. Get Project ID
+          # Fix: Use $PROJECT_NUMBER (variable) not "PROJECT_NUMBER" (string literal)
+          PROJECT_ID=$(gh project view "$PROJECT_NUMBER" --owner "$OWNER" --format json -q .id)
+          echo "Project ID: $PROJECT_ID"
 
+          # 4. Loop through issues
           for ISSUE_NUM in $LINKED_ISSUES; do
             echo "Processing Issue #$ISSUE_NUM..."
-          
-            ITEM_ID=$(gh project item-list "$PROJECT_NUM" --owner "$OWNER" --limit 100 --format json | jq -r --argjson n "$ISSUE_NUM" '
+
+            # Get Item ID within the project
+            # Fix: Use $PROJECT_NUMBER not $PROJECT_NUM
+            ITEM_ID=$(gh project item-list "$PROJECT_NUMBER" --owner "$OWNER" --limit 100 --format json | jq -r --argjson n "$ISSUE_NUM" '
               .items[] | select(.content.number == $n) | .id
             ')
 
-            if [[ -n "$ITEM_ID" && -n "$FIELD_ID" && -n "$OPTION_ID" ]]; then
-              gh project item-edit --id "$ITEM_ID" --project-id "$PROJECT_ID" --field-id "$FIELD_ID" --single-select-option-id "$OPTION_ID"
-              echo "✅ Issue #$ISSUE_NUM moved to '$TARGET_STATUS'"
+            echo "Found Item ID: $ITEM_ID"
+
+            if [[ -n "$ITEM_ID" ]]; then
+              # Note: FIELD_ID and OPTION_ID were missing in your snippet logic. 
+              # Usually, you must fetch these IDs first based on FIELD_NAME and TARGET_STATUS.
+              # Assuming you have logic to get them, or hardcoded them. 
+              # For this fix, I will assume you need to fetch the Option ID for the specific status.
+
+              # Example of fetching the IDs dynamically (Recommended):
+              FIELD_ID=$(gh project field-list "$PROJECT_NUMBER" --owner "$OWNER" --format json | jq -r --arg name "$FIELD_NAME" '.fields[] | select(.name==$name) | .id')
+
+              OPTION_ID=$(gh project field-list "$PROJECT_NUMBER" --owner "$OWNER" --format json | jq -r --arg name "$FIELD_NAME" --arg status "$TARGET_STATUS" '
+                 .fields[] | select(.name==$name) | .options[] | select(.name==$status) | .id
+              ')
+
+              if [[ -n "$FIELD_ID" && -n "$OPTION_ID" ]]; then
+                 gh project item-edit --id "$ITEM_ID" --project-id "$PROJECT_ID" --field-id "$FIELD_ID" --single-select-option-id "$OPTION_ID"
+                 echo "✅ Issue #$ISSUE_NUM moved to '$TARGET_STATUS'"
+              else
+                 echo "❌ Could not find Field ID or Option ID for status '$TARGET_STATUS'"
+              fi
             else
-              echo "⚠️  Skipping Issue #$ISSUE_NUM: Item not found in project or IDs missing."
+              echo "⚠️  Skipping Issue #$ISSUE_NUM: Item not found in project."
             fi
           done
 
