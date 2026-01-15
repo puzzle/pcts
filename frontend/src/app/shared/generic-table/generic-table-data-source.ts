@@ -95,6 +95,7 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
 
   toggleIgnorePredicate() {
     this._ignorePredicate = !this._ignorePredicate;
+    this.reloadData();
   }
 
   reloadData() {
