@@ -1,7 +1,18 @@
-import { Component, computed, effect, inject, input, OnInit, Signal, signal, WritableSignal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  linkedSignal,
+  OnInit,
+  Signal,
+  signal,
+  WritableSignal
+} from '@angular/core';
 import { MemberService } from '../member.service';
 import { MemberModel } from '../member.model';
-import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,20 +20,16 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
 import { EmploymentState } from '../../../shared/enum/employment-state.enum';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
-import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
 import { GenericTableComponent } from '../../../shared/generic-table/generic-table.component';
 import { GenCol, GenericTableDataSource } from '../../../shared/generic-table/GenericTableDataSource';
-import { DateTime } from 'luxon';
-import { ScopedTranslationService } from '../../../shared/services/scoped-translation.service';
 import { map, startWith } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MemberOverviewParams } from './member-overview-resolver';
-import { ColumnTemplateDirective } from '../../../shared/generic-table/ColumnTemplate.directive';
-import { JsonPipe } from '@angular/common';
-import { TypedTemplateDirective } from '../../../shared/generic-table/typed-template.directive';
+import { ScopedTranslationService } from '../../../shared/i18n-prefix.provider';
+import { format } from 'date-fns';
+import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
 
 
 type TypedAbstractControl = AbstractControl & { getRawValue: () => object };
@@ -43,10 +50,7 @@ export type RequiredFormRawValue<T extends TypedAbstractControl> =
     MatButton,
     ScopedTranslationPipe,
     GenericTableComponent,
-    CrudButtonComponent,
-    ColumnTemplateDirective,
-    JsonPipe,
-    TypedTemplateDirective
+    CrudButtonComponent
   ],
   templateUrl: './member-overview.component.html',
   styleUrl: './member-overview.component.scss'
@@ -56,19 +60,22 @@ export class MemberOverviewComponent implements OnInit {
 
   members: WritableSignal<MemberModel[]> = signal([]);
 
-  filterFormGroup = new FormGroup({
-    searchControl: new FormControl('', { nonNullable: true }),
-    employmentStateFilter: new FormControl<Set<EmploymentState>>(new Set([]), { nonNullable: true })
+  filteredCount = linkedSignal(() => this.members().length);
+
+  fb = inject(FormBuilder);
+
+  filterFormGroup = this.fb.nonNullable.group({
+    searchControl: [''],
+    employmentStateFilter: [new Set([]) as Set<EmploymentState>]
   });
 
   employmentStateValues: EmploymentState[] = Object.values(EmploymentState);
 
-  // debounceTime(300),
   filterFromGroupValue: Signal<RequiredFormRawValue<typeof this.filterFormGroup>> = toSignal(this.filterFormGroup.valueChanges.pipe(startWith(this.filterFormGroup.getRawValue()), map(() => this.filterFormGroup.getRawValue())), { initialValue: this.filterFormGroup.getRawValue() });
 
   areAllFiltersActive = computed(() => Array.from(this.filterFromGroupValue().employmentStateFilter).length == 0);
 
-  private readonly service: MemberService = inject(MemberService);
+  private readonly memberService: MemberService = inject(MemberService);
 
   private readonly scopedTranslationService: ScopedTranslationService = inject(ScopedTranslationService);
 
@@ -77,9 +84,10 @@ export class MemberOverviewComponent implements OnInit {
       .withLink(),
     GenCol.fromAttr('lastName')
       .withLink(),
-    GenCol.fromAttr('birthDate', [(d: DateTime) => d.toLocaleString(DateTime.DATE_MED)]),
-    GenCol.fromCalculated('organisationUnit', (e) => e.organisationUnit.name),
-    GenCol.fromAttr('employmentState', [(key) => this.scopedTranslationService.instant('EMPLOYMENT_STATUS_VALUES.' + key)])
+    GenCol.fromAttr('birthDate', [(d: Date) => format(d, 'P')]),
+    GenCol.fromCalculated('organisationUnit', (e) => e.organisationUnit?.name),
+    GenCol.fromAttr('employmentState')
+      .withI18nPrefix('EMPLOYMENT_STATUS_VALUES')
   ];
 
   dataSource: GenericTableDataSource<MemberModel> = new GenericTableDataSource<MemberModel>(this.columns, this.members());
@@ -88,8 +96,6 @@ export class MemberOverviewComponent implements OnInit {
 
   private readonly route = inject(ActivatedRoute);
 
-  private readonly translate = inject(TranslateService);
-
   constructor() {
     effect((): void => {
       this.dataSource.data = this.members();
@@ -97,6 +103,7 @@ export class MemberOverviewComponent implements OnInit {
 
     effect((): void => {
       this.writeFormToUrl(this.filterFromGroupValue());
+      this.filteredCount.set(this.dataSource.filteredData.length);
     });
 
     effect(() => {
@@ -115,7 +122,7 @@ export class MemberOverviewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.service.getAllMembers()
+    this.memberService.getAllMembers()
       .subscribe((members: MemberModel[]): void => {
         this.members.set(members);
       });
@@ -130,13 +137,14 @@ export class MemberOverviewComponent implements OnInit {
 
       const statusMatch: boolean = statuses.length == 0 || statuses.includes(member.employmentState);
 
-      const memberDataString: string = (
-        member.firstName +
-        member.lastName +
-        member.birthDate +
-        (member.organisationUnit ? member.organisationUnit.name : this.translate.instant('MEMBER.NO_DIVISION')) +
-        this.translate.instant('MEMBER.EMPLOYMENT_STATUS_VALUES.' + member.employmentState)
-      ).toLowerCase();
+      const memberDataString: string = [
+        member.firstName,
+        member.lastName,
+        member.birthDate,
+        member.organisationUnit?.name ?? this.scopedTranslationService.instant('NO_DIVISION'),
+        this.scopedTranslationService.instant('EMPLOYMENT_STATUS_VALUES.' + member.employmentState)
+      ].join('')
+        .toLowerCase();
 
       const searchTerms: string[] = searchTxt.split(' ')
         .filter(Boolean);

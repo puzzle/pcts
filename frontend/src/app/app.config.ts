@@ -12,7 +12,6 @@ import { provideTranslateService, TranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { lastValueFrom } from 'rxjs';
-import { provideI18nPrefix } from './shared/i18n-prefix.provider';
 import { provideDateFnsAdapter } from '@angular/material-date-fns-adapter';
 import { de } from 'date-fns/locale';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
@@ -21,6 +20,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { errorInterceptor } from './core/error-interceptor/error-interceptor';
 import { successInterceptor } from './core/success-interceptor/success-interceptor';
 import { Settings } from 'luxon';
+import { setDefaultOptions } from 'date-fns';
 
 registerLocaleData(localeDeCH);
 
@@ -59,6 +59,7 @@ export const appConfig: ApplicationConfig = {
     },
     provideAppInitializer(() => {
       Settings.defaultLocale = inject(LOCALE_ID);
+      setDefaultOptions({ locale: de });
     })
 
   ]

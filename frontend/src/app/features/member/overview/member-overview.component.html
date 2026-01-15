@@ -14,7 +14,7 @@
         <mat-icon matPrefix>search</mat-icon>
         <input
           matInput
-          [formControl]="filterFormGroup.controls['searchControl']"
+          formControlName="searchControl"
           [placeholder]="'FILTER.SEARCH' | scopedTranslation"
           data-testid="search-input"
         />
@@ -45,24 +45,8 @@
         </button>
       }
     </div>
-
-    <button
-      type="button"
-      mat-stroked-button
-      data-testid="add-member-button"
-      (click)="handleAddMemberClick()"
-    >
-      <mat-icon>add</mat-icon>
-        {{ 'MODEL_NAME' | scopedTranslation }}
-        {{ 'FORM.ADD.ACTION' | scopedTranslation }}
-    </button>
+      <app-crud-button />
   </div>
 
-  <div class="overflow-y-scroll mat-elevation-z8 table-max-height">
-      <app-generic-table [dataSource]="this.dataSource" idAttr="id" >
-          <ng-template columnTemplate="firstName" let-member [typedTemplate]="this.dataSource.data">
-                  {{ member | json }}
-          </ng-template>
-      </app-generic-table>
-  </div>
+      <app-generic-table [dataSource]="this.dataSource" idAttr="id"/>
 </div>

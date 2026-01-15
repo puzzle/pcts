@@ -13,6 +13,8 @@ export class GenCol<T> {
 
   shouldLink = false;
 
+  i18nPrefix?: string;
+
   protected constructor() {}
 
   public static fromAttr<T>(field: keyof T, pipes: Formatter[] = []): GenCol<T> {
@@ -35,6 +37,11 @@ export class GenCol<T> {
     this.shouldLink = shouldLink;
     return this;
   }
+
+  public withI18nPrefix(value: string) {
+    this.i18nPrefix = value;
+    return this;
+  }
 }
 
 
@@ -54,4 +61,22 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
   set columnDefs(value: GenCol<T>[]) {
     this._columnDefs = value;
   }
+
+  override _filterData(data: T[]) {
+    if (this.filter == null || this.filter === '') {
+      this.filteredData = data;
+    } else {
+      this.filteredData = data.filter((obj: T, index: number) => this.filterPredicateWithIndex(obj, this.filter, index));
+    }
+
+    if (this.paginator) {
+      this._updatePaginator(this.filteredData.length);
+    }
+
+    return this.filteredData;
+  }
+
+  filterPredicateWithIndex: (data: T, filter: string, index: number) => boolean = (data: T, filter: string, index: number) => {
+    return this.filterPredicate(data, filter);
+  };
 }

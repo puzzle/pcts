@@ -29,6 +29,7 @@ import { GenCol, GenericTableDataSource } from './GenericTableDataSource';
 import { RouterLink } from '@angular/router';
 import { ColumnTemplateDirective } from './ColumnTemplate.directive';
 import { NgTemplateOutlet } from '@angular/common';
+import { ScopedTranslationService } from '../i18n-prefix.provider';
 
 
 @Component({
@@ -70,6 +71,8 @@ export class GenericTableComponent<T extends object> implements AfterViewChecked
   columnNames = computed(() => this.dataSource().columnDefs.map((e) => e.columnName));
 
   sort = viewChild(MatSort);
+
+  scopedTranslationService = inject(ScopedTranslationService);
 
   constructor() {
     effect(() => {
@@ -116,6 +119,10 @@ export class GenericTableComponent<T extends object> implements AfterViewChecked
     col.pipes.forEach((formatter) => {
       value = formatter(value);
     });
+
+    if (col.i18nPrefix) {
+      value = this.scopedTranslationService.instant(col.i18nPrefix + '.' + value);
+    }
     return value;
   }
 

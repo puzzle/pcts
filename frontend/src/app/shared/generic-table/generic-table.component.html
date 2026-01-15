@@ -1,7 +1,7 @@
 <table
         mat-table
         [dataSource]="this.dataSource()"
-        class="table table-striped table-hover member-table m-0"
+        class="table table-striped table-hover member-table m-0 overflow-y-auto mat-elevation-z8 table-max-height"
         matSort
         [matSortActive]="this.columnNames()[0]"
         matSortDirection="asc"
@@ -39,9 +39,9 @@
 <ng-template #defaultRenderer let-entity let-col="col">
     @if (col.shouldLink) {
         <a [routerLink]="getRouterLink(entity)">
-            {{getDisplayValue(col, entity)}}
+            {{getDisplayValue(col, entity) ?? "-"}}
         </a>
     } @else {
-        {{getDisplayValue(col, entity)}}
+        {{getDisplayValue(col, entity) ?? "-"}}
     }
 </ng-template>
