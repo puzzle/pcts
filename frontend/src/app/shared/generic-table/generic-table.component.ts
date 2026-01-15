@@ -97,9 +97,6 @@ export class GenericTableComponent<T extends object> {
   toggleButton() {
     this.dataSource()
       .toggleIgnorePredicate();
-
-    this.dataSource()
-      .reloadData();
   }
 
 
