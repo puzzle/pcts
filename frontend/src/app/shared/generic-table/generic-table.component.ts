@@ -5,7 +5,6 @@ import {
   effect,
   inject,
   input,
-  signal,
   TemplateRef,
   viewChild
 } from '@angular/core';
@@ -62,12 +61,9 @@ export class GenericTableComponent<T extends object> {
 
   dataSource = input.required<GenericTableDataSource<T>>();
 
-  showAll = signal(false);
-
-  isFilterApplied = computed(() => {
-    console.log('test');
+  isFilterApplied = () => {
     return this.dataSource().filteredData.length !== this.dataSource().data.length;
-  });
+  };
 
   columns = computed(() => this.dataSource().columnDefs);
 
@@ -96,20 +92,14 @@ export class GenericTableComponent<T extends object> {
       this.dataSource().sortingDataAccessor = this.createSortingAccessor(this.columns());
       this.dataSource().sort = this.sort();
     });
+  }
 
-    effect(() => {
-      this.dataSource().ignorePredicate = this.showAll();
-      /*
-       * console.log(this.showAll())
-       * console.log(this.dataSource().data)
-       * const data = this.dataSource().data
-       * this.dataSource().data = []
-       * this.dataSource().data = data
-       */
-      this.dataSource()
-        .reloadData();
-      // this.dataSource()._filterData(this.dataSource().data)
-    });
+  toggleButton() {
+    this.dataSource()
+      .toggleIgnorePredicate();
+
+    this.dataSource()
+      .reloadData();
   }
 
 
