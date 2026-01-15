@@ -132,8 +132,6 @@ jobs:
           OWNER: puzzle
           PROJECT_NUMBER: 17
           FIELD_NAME: Status
-          TARGET_STATUS: In Implementation
-          DESIRED_STATUS_LABEL_ID: 98a3c7d6
           # ADDED: These are required for the script to work
           REPO: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
