@@ -1,3 +1,4 @@
+---
 name: PR Governance & Workflow
 
 on:
@@ -53,14 +54,13 @@ jobs:
           TITLE: "${{ github.event.pull_request.title }}"
           REPO: "${{ github.repository }}"
         run: |
-          
 
           # Define the text we look for to identify our bot's comment
           WARNING_IDENTIFIER="PR Governance Notice"
           WARNING_BODY="### ⚠️ $WARNING_IDENTIFIER<br/>No linked issue found. This PR will not be moved on the project board automatically."
 
           # 1. Check if a warning comment already exists
-          EXISTING_COMMENT_ID=$(gh pr view $PR_NUMBER --json comments --jq ".comments[] | select(.body | contains(\"$WARNING_IDENTIFIER\")) | .id")
+          EXISTING_COMMENT_ID=$(gh api  repos/puzzle/pcts/issues/$PR_NUMBER/comments   --jq '.[] | select(.body | contains("$WARNING_IDENTIFIER")) | .id')
 
           # 2. Get Linked Issues
           ISSUE_JSON=$(gh pr view $PR_NUMBER --json closingIssuesReferences --jq '.closingIssuesReferences')
@@ -81,7 +81,7 @@ jobs:
               # CLEANUP: If the warning comment exists, delete it now because the PR is fixed.
               if [ ! -z "$EXISTING_COMMENT_ID" ]; then
                 echo "🧹 Removing stale warning comment (ID: $EXISTING_COMMENT_ID)..."
-                gh api -X DELETE "repos/$REPO/issues/comments/$EXISTING_COMMENT_ID"
+                gh api -X DELETE repos/puzzle/pcts/issues/comments/$EXISTING_COMMENT_ID"
                 echo "✅ Comment deleted."
               fi
             fi
@@ -97,6 +97,34 @@ jobs:
             else
               echo "ℹ️ Warning comment already exists. No action taken."
             fi
+          fi
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check Ancestry
+        run: |
+          # Define branch names for clarity
+          BASE_BRANCH="origin/${{ github.base_ref }}"
+          HEAD_BRANCH="origin/${{ github.head_ref }}"
+
+          echo "Checking if $HEAD_BRANCH is rebased on $BASE_BRANCH..."
+
+          # Fetch the latest refs to ensure accurate comparison
+          git fetch origin ${{ github.base_ref }}
+          git fetch origin ${{ github.head_ref }}
+
+          # Check if the base branch is an ancestor of the head branch
+          if git merge-base --is-ancestor "$BASE_BRANCH" "$HEAD_BRANCH"; then
+            echo "✅ Success: The PR branch is fully up-to-date with the base branch."
+            exit 0
+          else
+            echo "❌ Error: The PR branch is behind the base branch."
+            echo "Action Required: Please rebase your branch on ${{ github.base_ref }}."
+            echo "Command suggestion: git fetch origin && git rebase origin/${{ github.base_ref }}"
+            exit 1
           fi
 
   update-project-status:
@@ -123,14 +151,14 @@ jobs:
           else
             echo "TARGET_STATUS=In review" >> $GITHUB_ENV
           fi
-          
+
       - name: Get Id of desired status label
         run: |
           LABEL_ID=$(gh project field-list "$PROJECT_NUMBER" --owner "$OWNER" --format json | jq -r --arg field_name "Status" --arg search_string "In review" '
-            .fields[] 
-            | select(.name == $field_name) 
-            | .options[] 
-            | select(.name | endswith($search_string)) 
+            .fields[]
+            | select(.name == $field_name)
+            | .options[]
+            | select(.name | endswith($search_string))
             | .id
           ')
           echo "$LABEL_ID"
