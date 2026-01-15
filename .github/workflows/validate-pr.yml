@@ -17,6 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+      TITLE: "${{ github.event.pull_request.title }}"
+      REPO: "${{ github.repository }}"
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -37,8 +40,6 @@ jobs:
       - name: Check Title Format (Conventional Commits)
         id: check_title
         run: |
-          TITLE="${{ github.event.pull_request.title }}"
-          # Regex: type(scope)?: description
           if [[ ! "$TITLE" =~ ^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-z0-9-]+\))?:[[:space:]].+ ]]; then
             echo "::error::⛔ Invalid Title: Must follow Conventional Commits (e.g., 'feat: Add new button')."
             exit 1
@@ -49,10 +50,6 @@ jobs:
       # --- STEP 3: Validate Linked Issue in Title ---
       - name: Check Linked Issue & Title Match
         id: check_issue
-        env:
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          TITLE: "${{ github.event.pull_request.title }}"
-          REPO: "${{ github.repository }}"
         run: |
           WARNING_IDENTIFIER="PR Governance Notice"
           WARNING_BODY="### ⚠️ $WARNING_IDENTIFIER<br/>No linked issue found. This PR will not be moved on the project board automatically."
