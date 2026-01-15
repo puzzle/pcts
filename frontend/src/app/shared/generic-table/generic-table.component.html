@@ -62,9 +62,9 @@
     <button
       type="button"
       class="btn btn-link"
-      (click)="showAll.set(!showAll())"
+      (click)="toggleButton()"
     >
-      {{ showAll() ? 'Show less' : 'Show all' }}
+      {{isFilterApplied() ? 'Show all' : 'Show less'  }}
     </button>
   </div>
 <!--}-->

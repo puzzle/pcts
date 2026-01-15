@@ -93,8 +93,8 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
     return this.filterPredicate(data, filter);
   };
 
-  set ignorePredicate(value: boolean) {
-    this._ignorePredicate = value;
+  toggleIgnorePredicate() {
+    this._ignorePredicate = !this._ignorePredicate;
   }
 
   reloadData() {
