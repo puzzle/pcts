@@ -54,8 +54,6 @@ jobs:
           TITLE: "${{ github.event.pull_request.title }}"
           REPO: "${{ github.repository }}"
         run: |
-
-          # Define the text we look for to identify our bot's comment
           WARNING_IDENTIFIER="PR Governance Notice"
           WARNING_BODY="### ⚠️ $WARNING_IDENTIFIER<br/>No linked issue found. This PR will not be moved on the project board automatically."
 
