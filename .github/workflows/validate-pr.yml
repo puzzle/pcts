@@ -152,6 +152,9 @@ jobs:
 
           # 3. Get Project ID
           # Fix: Use $PROJECT_NUMBER (variable) not "PROJECT_NUMBER" (string literal)
+          echo "Project number: $PROJECT_NUMBER, owner $OWNER"
+          echo 'command: gh project view "$PROJECT_NUMBER" --owner "$OWNER" --format json -q .id'
+          echo "command: gh project view \"$PROJECT_NUMBER\" --owner \"$OWNER\" --format json -q .id"
           PROJECT_ID=$(gh project view "$PROJECT_NUMBER" --owner "$OWNER" --format json -q .id)
           echo "Project ID: $PROJECT_ID"
 
