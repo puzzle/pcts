@@ -48,42 +48,54 @@ jobs:
       # --- STEP 3: Validate Linked Issue in Title ---
       - name: Check Linked Issue & Title Match
         id: check_issue
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          TITLE: "${{ github.event.pull_request.title }}"
+          REPO: "${{ github.repository }}"
         run: |
-          PR_NUMBER=${{ github.event.pull_request.number }}
-          TITLE="${{ github.event.pull_request.title }}"
           
-          # Get Linked Issues (e.g., #50)
-          # We use 'closingIssuesReferences' which catches "closes #50" or linked via sidebar
+
+          # Define the text we look for to identify our bot's comment
+          WARNING_IDENTIFIER="PR Governance Notice"
+          WARNING_BODY="### ⚠️ $WARNING_IDENTIFIER<br/>No linked issue found. This PR will not be moved on the project board automatically."
+
+          # 1. Check if a warning comment already exists
+          EXISTING_COMMENT_ID=$(gh pr view $PR_NUMBER --json comments --jq ".comments[] | select(.body | contains(\"$WARNING_IDENTIFIER\")) | .id")
+
+          # 2. Get Linked Issues
           ISSUE_JSON=$(gh pr view $PR_NUMBER --json closingIssuesReferences --jq '.closingIssuesReferences')
           ISSUE_COUNT=$(echo "$ISSUE_JSON" | jq 'length')
 
           if [ "$ISSUE_COUNT" -gt 0 ]; then
-            # Extract the first issue number
+            # --- SCENARIO: Issue is Linked ---
             ISSUE_NUM=$(echo "$ISSUE_JSON" | jq -r '.[0].number')
             echo "🔗 Found Linked Issue: #$ISSUE_NUM"
 
-            # STRICT CHECK: The Issue Number MUST be in the Title
+            # Check if Title contains the number
             if [[ "$TITLE" != *"$ISSUE_NUM"* ]]; then
               echo "::error::⛔ Title Mismatch: This PR is linked to Issue #$ISSUE_NUM, but the number is missing from the title."
               exit 1
             else
               echo "✅ Title contains the linked issue number."
+
+              # CLEANUP: If the warning comment exists, delete it now because the PR is fixed.
+              if [ ! -z "$EXISTING_COMMENT_ID" ]; then
+                echo "🧹 Removing stale warning comment (ID: $EXISTING_COMMENT_ID)..."
+                gh api -X DELETE "repos/$REPO/issues/comments/$EXISTING_COMMENT_ID"
+                echo "✅ Comment deleted."
+              fi
             fi
 
           else
-            # NO ISSUE FOUND -> Post Warning (Do not fail)
+            # --- SCENARIO: No Linked Issue ---
             echo "⚠️ No linked issue found."
-          
-            WARNING_MSG="### ⚠️ PR Governance Notice<br/>No linked issue found. This PR will not be moved on the project board automatically."
-          
-            # Check if we already commented to avoid spam
-            EXISTING_COMMENT=$(gh pr view $PR_NUMBER --json comments --jq ".comments[] | select(.body | contains(\"PR Governance Notice\")) | .id")
-          
-            if [ -z "$EXISTING_COMMENT" ]; then
-              gh pr comment $PR_NUMBER --body "$WARNING_MSG"
+
+            # Only post if the comment doesn't already exist to avoid spam
+            if [ -z "$EXISTING_COMMENT_ID" ]; then
+              gh pr comment $PR_NUMBER --body "$WARNING_BODY"
               echo "✅ Warning comment posted."
             else
-              echo "ℹ️ Warning comment already exists."
+              echo "ℹ️ Warning comment already exists. No action taken."
             fi
           fi
 
@@ -139,22 +151,16 @@ jobs:
           echo "Desired status: $TARGET_STATUS, desired status label id: $DESIRED_STATUS_LABEL_ID"
 
           # 1. Fetch Closing Issues (Renamed variable to match the loop below)
-          # We use -R to explicitly tell gh which repo to use, avoiding the 'not a git repo' error
           LINKED_ISSUES=$(gh pr view "$PR_NUMBER" -R "$REPO" --json closingIssuesReferences -q '.closingIssuesReferences[].number')
-
           echo "Linked issue numbers: $LINKED_ISSUES"
 
-          # 2. Fix: Check the variable $LINKED_ISSUES, not the string "ISSUE_ID"
           if [[ -z "$LINKED_ISSUES" ]]; then
             echo "No linked issues found for PR #$PR_NUMBER."
             exit 0
           fi
 
           # 3. Get Project ID
-          # Fix: Use $PROJECT_NUMBER (variable) not "PROJECT_NUMBER" (string literal)
           echo "Project number: $PROJECT_NUMBER, owner $OWNER"
-          echo 'command: gh project view "$PROJECT_NUMBER" --owner "$OWNER" --format json -q .id'
-          echo "command: gh project view \"$PROJECT_NUMBER\" --owner \"$OWNER\" --format json -q .id"
           PROJECT_ID=$(gh project view "$PROJECT_NUMBER" --owner "$OWNER" --format json -q .id)
           echo "Project ID: $PROJECT_ID"
 
@@ -163,7 +169,6 @@ jobs:
             echo "Processing Issue #$ISSUE_NUM..."
 
             # Get Item ID within the project
-            # Fix: Use $PROJECT_NUMBER not $PROJECT_NUM
             ITEM_ID=$(gh project item-list "$PROJECT_NUMBER" --owner "$OWNER" --limit 100 --format json | jq -r --argjson n "$ISSUE_NUM" '
               .items[] | select(.content.number == $n) | .id
             ')
@@ -171,12 +176,6 @@ jobs:
             echo "Found Item ID: $ITEM_ID"
 
             if [[ -n "$ITEM_ID" ]]; then
-              # Note: FIELD_ID and OPTION_ID were missing in your snippet logic. 
-              # Usually, you must fetch these IDs first based on FIELD_NAME and TARGET_STATUS.
-              # Assuming you have logic to get them, or hardcoded them. 
-              # For this fix, I will assume you need to fetch the Option ID for the specific status.
-
-              # Example of fetching the IDs dynamically (Recommended):
               FIELD_ID=$(gh project field-list "$PROJECT_NUMBER" --owner "$OWNER" --format json | jq -r --arg name "$FIELD_NAME" '.fields[] | select(.name==$name) | .id')
 
               OPTION_ID=$(gh project field-list "$PROJECT_NUMBER" --owner "$OWNER" --format json | jq -r --arg name "$FIELD_NAME" --arg status "$TARGET_STATUS" '
