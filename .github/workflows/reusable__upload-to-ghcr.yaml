@@ -1,10 +1,10 @@
 ---
-name: Upload image to GHRC
+name: Upload images to GHCR
 on:
   workflow_call:
     inputs:
-      context:
-        description: "Path to the workdir from the Root"
+      dockerfile:
+        description: "Path to Dockerfile relative to repository root"
         required: true
         type: string
 
@@ -22,7 +22,7 @@ env:
   COMMIT_HASH: ${{ github.sha }}
 
 jobs:
-  upload-to-ghrc:
+  upload-to-ghcr:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -52,8 +52,8 @@ jobs:
         id: push
         uses: docker/build-push-action@v6
         with:
-          context: ${{ inputs.context }}
-          file: ./${{ inputs.context }}/Dockerfile
+          context: .
+          file: ${{ inputs.dockerfile }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
