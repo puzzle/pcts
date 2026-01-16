@@ -1,12 +1,17 @@
-FROM maven:3-eclipse-temurin-21-alpine AS builder
+FROM maven:3-eclipse-temurin-25-alpine AS builder
 WORKDIR /app
-COPY pom.xml .
-COPY src ./src
-RUN mvn clean install -DskipTests
 
-FROM alpine:3.23 AS runner
-RUN apk update && apk add --upgrade curl && apk --no-cache add openjdk21
+COPY pom.xml .
+COPY sonar-project.properties .
+
+COPY backend/pom.xml backend/
+COPY backend/src backend/src
+
+RUN mvn -f backend/pom.xml clean install -DskipTests
+
+FROM eclipse-temurin:25-jre-alpine AS runner
+RUN apk update && apk add --upgrade curl
 WORKDIR /app
 EXPOSE 8080
-COPY --from=builder /app/target/*.jar app.jar
+COPY --from=builder /app/backend/target/*.jar app.jar
 ENTRYPOINT ["java","-jar","app.jar"]
