@@ -3,6 +3,8 @@ package ch.puzzle.pcts.mapper;
 import static ch.puzzle.pcts.Constants.LEADERSHIP_EXPERIENCE_TYPE;
 import static ch.puzzle.pcts.Constants.MEMBER;
 import static ch.puzzle.pcts.util.TestData.*;
+import static ch.puzzle.pcts.util.TestDataDTOs.*;
+import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 

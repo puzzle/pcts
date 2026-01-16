@@ -1,7 +1,7 @@
 package ch.puzzle.pcts.service.persistence;
 
-import static ch.puzzle.pcts.util.TestData.TAGS_1;
 import static ch.puzzle.pcts.util.TestData.TAG_2_ID;
+import static ch.puzzle.pcts.util.TestDataModels.TAGS_1;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.puzzle.pcts.model.certificatetype.Tag;

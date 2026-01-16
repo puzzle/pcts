@@ -2,6 +2,8 @@ package ch.puzzle.pcts.mapper;
 
 import static ch.puzzle.pcts.Constants.*;
 import static ch.puzzle.pcts.util.TestData.*;
+import static ch.puzzle.pcts.util.TestDataDTOs.*;
+import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;

@@ -3,6 +3,8 @@ package ch.puzzle.pcts.mapper;
 import static ch.puzzle.pcts.Constants.CERTIFICATE_TYPE;
 import static ch.puzzle.pcts.Constants.MEMBER;
 import static ch.puzzle.pcts.util.TestData.*;
+import static ch.puzzle.pcts.util.TestDataDTOs.*;
+import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -19,7 +21,6 @@ import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.business.CertificateTypeBusinessService;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
-import ch.puzzle.pcts.util.TestData;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -82,12 +83,12 @@ class CertificateMapperTest {
         when(memberBusinessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
         when(certificateTypeBusinessService.getById(CERT_TYPE_1_ID)).thenReturn(CERT_TYPE_1);
 
-        Certificate resultCertificate = certificateMapper.fromDto(TestData.CERTIFICATE_1_INPUT);
+        Certificate resultCertificate = certificateMapper.fromDto(CERTIFICATE_1_INPUT);
 
         assertNotNull(resultCertificate);
-        assertEquals(TestData.CERTIFICATE_1_INPUT.completedAt(), resultCertificate.getCompletedAt());
-        assertEquals(TestData.CERTIFICATE_1_INPUT.validUntil(), resultCertificate.getValidUntil());
-        assertEquals(TestData.CERTIFICATE_1_INPUT.comment(), resultCertificate.getComment());
+        assertEquals(CERTIFICATE_1_INPUT.completedAt(), resultCertificate.getCompletedAt());
+        assertEquals(CERTIFICATE_1_INPUT.validUntil(), resultCertificate.getValidUntil());
+        assertEquals(CERTIFICATE_1_INPUT.comment(), resultCertificate.getComment());
         assertEquals(MEMBER_1, resultCertificate.getMember());
         assertEquals(CERT_TYPE_1, resultCertificate.getCertificateType());
 
@@ -120,11 +121,11 @@ class CertificateMapperTest {
         when(certificateTypeBusinessService.getById(CERT_TYPE_1_ID)).thenReturn(CERT_TYPE_1);
         when(certificateTypeBusinessService.getById(CERT_TYPE_2_ID)).thenReturn(CERT_TYPE_2);
 
-        List<Certificate> resultList = certificateMapper.fromDto(List.of(TestData.CERTIFICATE_1_INPUT, CERTIFICATE_2_INPUT));
+        List<Certificate> resultList = certificateMapper.fromDto(List.of(CERTIFICATE_1_INPUT, CERTIFICATE_2_INPUT));
 
         assertNotNull(resultList);
         assertEquals(2, resultList.size());
-        assertEquals(TestData.CERTIFICATE_1_INPUT.comment(), resultList.get(0).getComment());
+        assertEquals(CERTIFICATE_1_INPUT.comment(), resultList.get(0).getComment());
         assertEquals(CERTIFICATE_2_INPUT.comment(), resultList.get(1).getComment());
 
         verify(memberBusinessService).getById(MEMBER_1_ID);

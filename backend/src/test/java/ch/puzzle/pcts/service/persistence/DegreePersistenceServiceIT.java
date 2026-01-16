@@ -1,6 +1,6 @@
 package ch.puzzle.pcts.service.persistence;
 
-import static ch.puzzle.pcts.util.TestData.*;
+import static ch.puzzle.pcts.util.TestDataModels.*;
 
 import ch.puzzle.pcts.model.degree.Degree;
 import ch.puzzle.pcts.repository.DegreeRepository;

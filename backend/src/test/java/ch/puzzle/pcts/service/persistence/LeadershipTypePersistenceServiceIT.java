@@ -2,6 +2,8 @@ package ch.puzzle.pcts.service.persistence;
 
 import static ch.puzzle.pcts.Constants.LEADERSHIP_EXPERIENCE_TYPE;
 import static ch.puzzle.pcts.util.TestData.*;
+import static ch.puzzle.pcts.util.TestDataModels.LEADERSHIP_EXPERIENCE_TYPES;
+import static ch.puzzle.pcts.util.TestDataModels.LEADERSHIP_TYPE_1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;

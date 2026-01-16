@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.mapper;
 
-import static ch.puzzle.pcts.util.TestData.*;
+import static ch.puzzle.pcts.util.TestDataDTOs.*;
+import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import ch.puzzle.pcts.dto.organisationunit.OrganisationUnitDto;

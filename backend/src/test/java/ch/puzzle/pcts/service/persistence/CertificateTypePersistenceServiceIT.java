@@ -2,6 +2,7 @@ package ch.puzzle.pcts.service.persistence;
 
 import static ch.puzzle.pcts.Constants.CERTIFICATE_TYPE;
 import static ch.puzzle.pcts.util.TestData.*;
+import static ch.puzzle.pcts.util.TestDataModels.CERTIFICATE_TYPES;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

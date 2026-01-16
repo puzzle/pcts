@@ -1,7 +1,7 @@
 package ch.puzzle.pcts.service.persistence;
 
-import static ch.puzzle.pcts.util.TestData.MEMBERS;
-import static ch.puzzle.pcts.util.TestData.ORG_UNIT_2;
+import static ch.puzzle.pcts.util.TestDataModels.MEMBERS;
+import static ch.puzzle.pcts.util.TestDataModels.ORG_UNIT_2;
 
 import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;

@@ -2,6 +2,7 @@ package ch.puzzle.pcts.service.validation;
 
 import static ch.puzzle.pcts.Constants.DEGREE;
 import static ch.puzzle.pcts.util.TestData.*;
+import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
