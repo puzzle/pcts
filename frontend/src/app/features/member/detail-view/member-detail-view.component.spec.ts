@@ -5,9 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { provideTranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
-import { member1 } from '../../../shared/test/test-data';
+import { memberOverview1 } from '../../../shared/test/test-data';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
-
 
 describe('MemberDetailViewComponent (Jest)', () => {
   let memberServiceMock: jest.Mocked<MemberService>;
@@ -16,7 +15,7 @@ describe('MemberDetailViewComponent (Jest)', () => {
 
   function setupTestBed(id: string | null) {
     memberServiceMock = {
-      getMemberById: jest.fn()
+      getMemberOverviewByMemberId: jest.fn()
     } as unknown as jest.Mocked<MemberService>;
 
     routerMock = {
@@ -44,8 +43,6 @@ describe('MemberDetailViewComponent (Jest)', () => {
         { provide: MemberService,
           useValue: memberServiceMock },
         provideTranslateService(),
-        { provide: MemberService,
-          useValue: memberServiceMock },
         DatePipe
       ]
     });
@@ -57,16 +54,37 @@ describe('MemberDetailViewComponent (Jest)', () => {
     };
   }
 
-  it('loads the member when id exists', () => {
+  it('loads the member overview when id exists', () => {
     const { fixture, component } = setupTestBed('1');
-    memberServiceMock.getMemberById.mockReturnValue(of(member1));
+
+    memberServiceMock.getMemberOverviewByMemberId.mockReturnValue(of(memberOverview1));
 
     fixture.detectChanges();
 
-    expect(memberServiceMock.getMemberById)
+    expect(memberServiceMock.getMemberOverviewByMemberId)
       .toHaveBeenCalledWith(1);
     expect(component.member())
-      .toEqual(member1);
+      .toEqual(memberOverview1.member);
+    expect(component.degreeData())
+      .toEqual(memberOverview1.cv.degrees);
+    expect(component.experienceData())
+      .toEqual(memberOverview1.cv.experiences);
+    expect(component.certificateData())
+      .toEqual(memberOverview1.cv.certificates);
+    expect(component.leadershipExperienceData())
+      .toEqual(memberOverview1.cv.leadershipExperiences);
     expect(routerMock.navigate).not.toHaveBeenCalled();
+  });
+
+  it('navigates back when id does not exist', () => {
+    const { fixture, component } = setupTestBed(null);
+
+    fixture.detectChanges();
+
+    expect(routerMock.navigate)
+      .toHaveBeenCalledWith(['/member']);
+    expect(memberServiceMock.getMemberOverviewByMemberId).not.toHaveBeenCalled();
+    expect(component.member())
+      .toBeNull();
   });
 });
