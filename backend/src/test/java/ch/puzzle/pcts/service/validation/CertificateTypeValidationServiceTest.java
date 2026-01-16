@@ -1,6 +1,8 @@
 package ch.puzzle.pcts.service.validation;
 
 import static ch.puzzle.pcts.Constants.CERTIFICATE_TYPE;
+import static ch.puzzle.pcts.util.TestData.*;
+import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -57,25 +59,22 @@ class CertificateTypeValidationServiceTest
         c.setName(name);
         c.setPoints(points);
         c.setComment("Comment");
-        c.setTags(Set.of(new Tag(null, "Tag")));
+        c.setTags(Set.of(TAG_1));
         c.setCertificateKind(certificateKind);
 
         return c;
     }
 
     static Stream<Arguments> invalidModelProvider() {
-        BigDecimal validBigDecimal = BigDecimal.valueOf(1);
-        String tooLongName = new String(new char[251]).replace("\0", "s");
-
         return Stream
                 .of(Arguments
-                        .of(createCertificateType(null, validBigDecimal, CertificateKind.CERTIFICATE),
+                        .of(createCertificateType(null, POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
                             List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createCertificateType("", validBigDecimal, CertificateKind.CERTIFICATE),
+                            .of(createCertificateType("", POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
                                 List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createCertificateType("h", validBigDecimal, CertificateKind.CERTIFICATE),
+                            .of(createCertificateType("h", POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -89,7 +88,9 @@ class CertificateTypeValidationServiceTest
                                                     FieldKey.IS,
                                                     "h"))),
                     Arguments
-                            .of(createCertificateType(tooLongName, validBigDecimal, CertificateKind.CERTIFICATE),
+                            .of(createCertificateType(TOO_LONG_STRING,
+                                                      POSITIVE_BIG_DECIMAL,
+                                                      CertificateKind.CERTIFICATE),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -101,7 +102,7 @@ class CertificateTypeValidationServiceTest
                                                     FieldKey.MAX,
                                                     "250",
                                                     FieldKey.IS,
-                                                    tooLongName))),
+                                                    TOO_LONG_STRING))),
                     Arguments
                             .of(createCertificateType("Name", null, CertificateKind.CERTIFICATE),
                                 List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "points"))),
@@ -155,15 +156,14 @@ class CertificateTypeValidationServiceTest
     @DisplayName("Should throw Exception on validateOnUpdate() when name already exists")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExists() {
-        Long id = 1L;
         CertificateType certificateType = getValidModel();
         CertificateType newCertificateType = getValidModel();
-        certificateType.setId(2L);
+        certificateType.setId(CERTIFICATE_2_ID);
 
         when(persistenceService.getByName(newCertificateType.getName())).thenReturn(Optional.of(certificateType));
 
         PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> service.validateOnUpdate(id, newCertificateType));
+                                               () -> service.validateOnUpdate(CERT_TYPE_1_ID, newCertificateType));
 
         assertEquals(List.of(ErrorKey.INVALID_ARGUMENT), exception.getErrorKeys());
         assertEquals(List
@@ -188,15 +188,14 @@ class CertificateTypeValidationServiceTest
     @DisplayName("Should call correct validate method on validateOnUpdate()")
     @Test
     void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
-        Long id = 1L;
         CertificateType certificate = getValidModel();
 
         CertificateTypeValidationService spyService = spy(service);
         doNothing().when((ValidationBase<CertificateType>) spyService).validateOnUpdate(anyLong(), any());
 
-        spyService.validateOnUpdate(id, certificate);
+        spyService.validateOnUpdate(CERT_TYPE_1_ID, certificate);
 
-        verify(spyService).validateOnUpdate(id, certificate);
+        verify(spyService).validateOnUpdate(CERT_TYPE_1_ID, certificate);
         verifyNoMoreInteractions(persistenceService);
     }
 }

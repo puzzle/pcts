@@ -1,5 +1,8 @@
 package ch.puzzle.pcts.controller;
 
+import static ch.puzzle.pcts.util.TestData.*;
+import static ch.puzzle.pcts.util.TestDataDTOs.*;
+import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -11,23 +14,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import ch.puzzle.pcts.SpringSecurityConfig;
-import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceDto;
 import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceInputDto;
-import ch.puzzle.pcts.dto.leadershipexperiencetype.LeadershipExperienceTypeDto;
-import ch.puzzle.pcts.dto.member.MemberDto;
-import ch.puzzle.pcts.dto.organisationunit.OrganisationUnitDto;
 import ch.puzzle.pcts.mapper.LeadershipExperienceMapper;
 import ch.puzzle.pcts.model.certificate.Certificate;
-import ch.puzzle.pcts.model.certificatetype.CertificateKind;
-import ch.puzzle.pcts.model.certificatetype.CertificateType;
-import ch.puzzle.pcts.model.member.EmploymentState;
-import ch.puzzle.pcts.model.member.Member;
-import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.LeadershipExperienceBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -58,94 +49,36 @@ class LeadershipExperienceControllerIT {
     private JsonMapper jsonMapper;
 
     private static final String BASEURL = "/api/v1/leadership-experiences";
-    private static final Long ID = 1L;
-    private final LocalDate commonDate = LocalDate.of(2019, 8, 4);
-
-    private Certificate certificate;
-    private LeadershipExperienceDto dto;
-    private LeadershipExperienceInputDto inputDto;
-
-    @BeforeEach
-    void setUp() {
-
-        OrganisationUnit organisationUnit = new OrganisationUnit(1L, "/bbt");
-
-        Member member = Member.Builder
-                .builder()
-                .withId(ID)
-                .withFirstName("Susi")
-                .withLastName("Miller")
-                .withEmploymentState(EmploymentState.APPLICANT)
-                .withAbbreviation("SM")
-                .withDateOfHire(commonDate)
-                .withBirthDate(commonDate)
-                .withOrganisationUnit(organisationUnit)
-                .build();
-
-        CertificateType experienceType = new CertificateType(ID,
-                                                             "Leadership Level 1",
-                                                             BigDecimal.ONE,
-                                                             "Basic level",
-                                                             CertificateKind.MILITARY_FUNCTION);
-
-        certificate = Certificate.Builder
-                .builder()
-                .withId(ID)
-                .withMember(member)
-                .withCertificateType(experienceType)
-                .withComment("Completed via fast-track program")
-                .build();
-
-        OrganisationUnitDto orgDto = new OrganisationUnitDto(1L, "/bbt");
-        MemberDto memberDto = new MemberDto(ID,
-                                            "Susi",
-                                            "Miller",
-                                            EmploymentState.APPLICANT,
-                                            "SM",
-                                            commonDate,
-                                            commonDate,
-                                            orgDto);
-
-        LeadershipExperienceTypeDto experienceTypeDto = new LeadershipExperienceTypeDto(ID,
-                                                                                        "Leadership Level 1",
-                                                                                        BigDecimal.ONE,
-                                                                                        "Basic level",
-                                                                                        CertificateKind.MILITARY_FUNCTION);
-
-        dto = new LeadershipExperienceDto(ID, memberDto, experienceTypeDto, "Completed via fast-track program");
-
-        inputDto = new LeadershipExperienceInputDto(ID, ID, "Completed via fast-track program");
-    }
 
     @DisplayName("Should successfully get leadership experience by ID")
     @Test
     void shouldGetLeadershipExperienceById() throws Exception {
-        given(businessService.getById(ID)).willReturn(certificate);
-        given(mapper.toDto(any(Certificate.class))).willReturn(dto);
+        given(businessService.getById(LEADERSHIP_CERT_1_ID)).willReturn(LEADERSHIP_CERT_1);
+        given(mapper.toDto(any(Certificate.class))).willReturn(LEADERSHIP_CERT_1_DTO);
 
         mvc
-                .perform(get(BASEURL + "/{id}", ID).with(csrf()).accept(MediaType.APPLICATION_JSON))
+                .perform(get(BASEURL + "/{id}", LEADERSHIP_CERT_1_ID).with(csrf()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(JsonDtoMatcher.matchesDto(dto, "$"));
+                .andExpect(JsonDtoMatcher.matchesDto(LEADERSHIP_CERT_1_DTO, "$"));
 
-        verify(businessService, times(1)).getById(ID);
+        verify(businessService, times(1)).getById(LEADERSHIP_CERT_1_ID);
         verify(mapper, times(1)).toDto(any(Certificate.class));
     }
 
     @DisplayName("Should successfully create leadership experience")
     @Test
     void shouldCreateLeadershipExperience() throws Exception {
-        given(mapper.fromDto(any(LeadershipExperienceInputDto.class))).willReturn(certificate);
-        given(businessService.create(any(Certificate.class))).willReturn(certificate);
-        given(mapper.toDto(any(Certificate.class))).willReturn(dto);
+        given(mapper.fromDto(any(LeadershipExperienceInputDto.class))).willReturn(LEADERSHIP_CERT_1);
+        given(businessService.create(any(Certificate.class))).willReturn(LEADERSHIP_CERT_1);
+        given(mapper.toDto(any(Certificate.class))).willReturn(LEADERSHIP_CERT_1_DTO);
 
         mvc
                 .perform(post(BASEURL)
-                        .content(jsonMapper.writeValueAsString(inputDto))
+                        .content(jsonMapper.writeValueAsString(LEADERSHIP_CERT_1_INPUT))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()))
                 .andExpect(status().isCreated())
-                .andExpect(JsonDtoMatcher.matchesDto(dto, "$"));
+                .andExpect(JsonDtoMatcher.matchesDto(LEADERSHIP_CERT_1_DTO, "$"));
 
         verify(mapper, times(1)).fromDto(any(LeadershipExperienceInputDto.class));
         verify(businessService, times(1)).create(any(Certificate.class));
@@ -155,33 +88,33 @@ class LeadershipExperienceControllerIT {
     @DisplayName("Should successfully update leadership experience")
     @Test
     void shouldUpdateLeadershipExperience() throws Exception {
-        given(mapper.fromDto(any(LeadershipExperienceInputDto.class))).willReturn(certificate);
-        given(businessService.update(eq(ID), any(Certificate.class))).willReturn(certificate);
-        given(mapper.toDto(any(Certificate.class))).willReturn(dto);
+        given(mapper.fromDto(any(LeadershipExperienceInputDto.class))).willReturn(LEADERSHIP_CERT_1);
+        given(businessService.update(eq(LEADERSHIP_CERT_1_ID), any(Certificate.class))).willReturn(LEADERSHIP_CERT_1);
+        given(mapper.toDto(any(Certificate.class))).willReturn(LEADERSHIP_CERT_1_DTO);
 
         mvc
-                .perform(put(BASEURL + "/{id}", ID)
-                        .content(jsonMapper.writeValueAsString(inputDto))
+                .perform(put(BASEURL + "/{id}", LEADERSHIP_CERT_1_ID)
+                        .content(jsonMapper.writeValueAsString(LEADERSHIP_CERT_1_INPUT))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(JsonDtoMatcher.matchesDto(dto, "$"));
+                .andExpect(JsonDtoMatcher.matchesDto(LEADERSHIP_CERT_1_DTO, "$"));
 
         verify(mapper, times(1)).fromDto(any(LeadershipExperienceInputDto.class));
-        verify(businessService, times(1)).update(eq(ID), any(Certificate.class));
+        verify(businessService, times(1)).update(eq(LEADERSHIP_CERT_1_ID), any(Certificate.class));
         verify(mapper, times(1)).toDto(any(Certificate.class));
     }
 
     @DisplayName("Should successfully delete leadership experience")
     @Test
     void shouldDeleteLeadershipExperience() throws Exception {
-        willDoNothing().given(businessService).delete(ID);
+        willDoNothing().given(businessService).delete(LEADERSHIP_CERT_1_ID);
 
         mvc
-                .perform(delete(BASEURL + "/{id}", ID).with(csrf()))
+                .perform(delete(BASEURL + "/{id}", LEADERSHIP_CERT_1_ID).with(csrf()))
                 .andExpect(status().isNoContent())
                 .andExpect(jsonPath("$").doesNotExist());
 
-        verify(businessService, times(1)).delete(ID);
+        verify(businessService, times(1)).delete(LEADERSHIP_CERT_1_ID);
     }
 }

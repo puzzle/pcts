@@ -1,5 +1,8 @@
 package ch.puzzle.pcts.controller;
 
+import static ch.puzzle.pcts.util.TestData.*;
+import static ch.puzzle.pcts.util.TestDataDTOs.*;
+import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
@@ -15,7 +18,6 @@ import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.business.RoleBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -49,24 +51,11 @@ class RoleControllerIT {
 
     private static final String BASEURL = "/api/v1/roles";
 
-    private Role role;
-    private RoleDto requestDto;
-    private RoleDto expectedDto;
-    private Long id;
-
-    @BeforeEach
-    void setUp() {
-        role = new Role(1L, "Role 1", false);
-        requestDto = new RoleDto(null, "Role 1", false);
-        expectedDto = new RoleDto(1L, "Role 1", false);
-        id = 1L;
-    }
-
     @DisplayName("Should successfully get all roles")
     @Test
     void shouldGetAllRoles() throws Exception {
-        BDDMockito.given(service.getAll()).willReturn(List.of(role));
-        BDDMockito.given(mapper.toDto(any(List.class))).willReturn(List.of(expectedDto));
+        BDDMockito.given(service.getAll()).willReturn(List.of(ROLE_2));
+        BDDMockito.given(mapper.toDto(any(List.class))).willReturn(List.of(ROLE_2_DTO));
 
         mvc
                 .perform(get(BASEURL)
@@ -74,7 +63,7 @@ class RoleControllerIT {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$[0]"));
+                .andExpect(JsonDtoMatcher.matchesDto(ROLE_2_DTO, "$[0]"));
 
         verify(service, times(1)).getAll();
         verify(mapper, times(1)).toDto(any(List.class));
@@ -83,13 +72,13 @@ class RoleControllerIT {
     @DisplayName("Should successfully get role by id")
     @Test
     void shouldGetRoleById() throws Exception {
-        BDDMockito.given(service.getById(anyLong())).willReturn(role);
-        BDDMockito.given(mapper.toDto(any(Role.class))).willReturn(expectedDto);
+        BDDMockito.given(service.getById(anyLong())).willReturn(ROLE_2);
+        BDDMockito.given(mapper.toDto(any(Role.class))).willReturn(ROLE_2_DTO);
 
         mvc
                 .perform(get(BASEURL + "/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
-                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
+                .andExpect(JsonDtoMatcher.matchesDto(ROLE_2_DTO, "$"));
 
         verify(service, times(1)).getById((1L));
         verify(mapper, times(1)).toDto(any(Role.class));
@@ -98,17 +87,17 @@ class RoleControllerIT {
     @DisplayName("Should successfully create new role")
     @Test
     void shouldCreateNewRole() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(RoleDto.class))).willReturn(role);
-        BDDMockito.given(service.create(any(Role.class))).willReturn(role);
-        BDDMockito.given(mapper.toDto(any(Role.class))).willReturn(expectedDto);
+        BDDMockito.given(mapper.fromDto(any(RoleDto.class))).willReturn(ROLE_2);
+        BDDMockito.given(service.create(any(Role.class))).willReturn(ROLE_2);
+        BDDMockito.given(mapper.toDto(any(Role.class))).willReturn(ROLE_2_DTO);
 
         mvc
                 .perform(post(BASEURL)
-                        .content(jsonMapper.writeValueAsString(requestDto))
+                        .content(jsonMapper.writeValueAsString(ROLE_2_DTO))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isCreated())
-                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
+                .andExpect(JsonDtoMatcher.matchesDto(ROLE_2_DTO, "$"));
 
         verify(mapper, times(1)).fromDto(any(RoleDto.class));
         verify(service, times(1)).create(any(Role.class));
@@ -118,17 +107,17 @@ class RoleControllerIT {
     @DisplayName("Should successfully update role")
     @Test
     void shouldUpdateRole() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(RoleDto.class))).willReturn(role);
-        BDDMockito.given(service.update(any(Long.class), any(Role.class))).willReturn(role);
-        BDDMockito.given(mapper.toDto(any(Role.class))).willReturn(expectedDto);
+        BDDMockito.given(mapper.fromDto(any(RoleDto.class))).willReturn(ROLE_2);
+        BDDMockito.given(service.update(any(Long.class), any(Role.class))).willReturn(ROLE_2);
+        BDDMockito.given(mapper.toDto(any(Role.class))).willReturn(ROLE_2_DTO);
 
         mvc
-                .perform(put(BASEURL + "/" + id)
-                        .content(jsonMapper.writeValueAsString(requestDto))
+                .perform(put(BASEURL + "/" + ROLE_2_ID)
+                        .content(jsonMapper.writeValueAsString(ROLE_2_INPUT))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
-                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
+                .andExpect(JsonDtoMatcher.matchesDto(ROLE_2_DTO, "$"));
 
         verify(mapper, times(1)).fromDto(any(RoleDto.class));
         verify(service, times(1)).update(any(Long.class), any(Role.class));
@@ -141,7 +130,7 @@ class RoleControllerIT {
         BDDMockito.willDoNothing().given(service).delete(anyLong());
 
         mvc
-                .perform(delete(BASEURL + "/" + id)
+                .perform(delete(BASEURL + "/" + ROLE_2_ID)
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().is(204))

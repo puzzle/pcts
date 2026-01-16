@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.validation;
 
+import static ch.puzzle.pcts.util.TestData.MEMBER_1_ID;
 import static org.junit.jupiter.api.Assertions.*;
 
 import ch.puzzle.pcts.dto.error.ErrorKey;
@@ -22,8 +23,7 @@ class MemberOverviewValidationServiceTest {
     @DisplayName("Should be successful validateOnGet() when Id is valid")
     @Test
     void validateOnGetByIdShouldBeSuccessfulWhenIdIsValid() {
-        Long id = 1L;
-        assertDoesNotThrow(() -> validationService.validateOnGetById(id));
+        assertDoesNotThrow(() -> validationService.validateOnGetById(MEMBER_1_ID));
     }
 
     @DisplayName("Should throw exception validateOnGet() when Id is null")

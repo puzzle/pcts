@@ -1,6 +1,6 @@
 package ch.puzzle.pcts.service.persistence;
 
-import static ch.puzzle.pcts.util.TestData.ROLES;
+import static ch.puzzle.pcts.util.TestDataModels.ROLES;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.puzzle.pcts.model.role.Role;

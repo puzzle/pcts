@@ -1,6 +1,6 @@
 package ch.puzzle.pcts.service.persistence;
 
-import static ch.puzzle.pcts.util.TestData.EXPERIENCE_TYPES;
+import static ch.puzzle.pcts.util.TestDataModels.EXPERIENCE_TYPES;
 
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.repository.ExperienceTypeRepository;

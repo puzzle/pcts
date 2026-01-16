@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.service.persistence;
 
-import static ch.puzzle.pcts.util.TestData.TAGS;
+import static ch.puzzle.pcts.util.TestData.TAG_2_ID;
+import static ch.puzzle.pcts.util.TestDataModels.TAGS_1;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.puzzle.pcts.model.certificatetype.Tag;
@@ -28,7 +29,7 @@ class TagPersistenceServiceIT extends PersistenceBaseIT<Tag, TagRepository, TagP
     }
 
     List<Tag> getAll() {
-        return TAGS;
+        return TAGS_1;
     }
 
     @DisplayName("Should find tag by name written in different cases")
@@ -39,6 +40,6 @@ class TagPersistenceServiceIT extends PersistenceBaseIT<Tag, TagRepository, TagP
         Tag result = service.findWithIgnoreCase(tagName).get();
 
         assertThat(result.getName()).isEqualTo("Longer tag name");
-        assertThat(result.getId()).isEqualTo(2L);
+        assertThat(result.getId()).isEqualTo(TAG_2_ID);
     }
 }

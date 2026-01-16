@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.service.validation.util;
 
+import static ch.puzzle.pcts.util.TestData.GENERIC_1_ID;
+import static ch.puzzle.pcts.util.TestData.GENERIC_2_ID;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -35,10 +37,10 @@ class UniqueNameValidationUtilTest {
     @Test
     @DisplayName("Should return true when another entity has the same name")
     void shouldReturnTrueWhenOtherEntityHasSameName() {
-        when(mockModel.getId()).thenReturn(2L);
+        when(mockModel.getId()).thenReturn(GENERIC_2_ID);
 
         boolean result = UniqueNameValidationUtil
-                .nameExcludingIdAlreadyUsed(1L, "Duplicate", name -> Optional.of(mockModel));
+                .nameExcludingIdAlreadyUsed(GENERIC_1_ID, "Duplicate", name -> Optional.of(mockModel));
 
         assertTrue(result);
     }
@@ -46,10 +48,10 @@ class UniqueNameValidationUtilTest {
     @Test
     @DisplayName("Should return false when entity with same ID has same name")
     void shouldReturnFalseWhenSameEntityHasSameName() {
-        when(mockModel.getId()).thenReturn(1L);
+        when(mockModel.getId()).thenReturn(GENERIC_1_ID);
 
         boolean result = UniqueNameValidationUtil
-                .nameExcludingIdAlreadyUsed(1L, "SameName", name -> Optional.of(mockModel));
+                .nameExcludingIdAlreadyUsed(GENERIC_1_ID, "SameName", name -> Optional.of(mockModel));
 
         assertFalse(result);
     }
@@ -58,7 +60,7 @@ class UniqueNameValidationUtilTest {
     @DisplayName("Should return false when no entity found")
     void shouldReturnFalseWhenNoEntityFound() {
         boolean result = UniqueNameValidationUtil
-                .nameExcludingIdAlreadyUsed(1L, "NonExistent", name -> Optional.empty());
+                .nameExcludingIdAlreadyUsed(GENERIC_1_ID, "NonExistent", name -> Optional.empty());
 
         assertFalse(result);
     }

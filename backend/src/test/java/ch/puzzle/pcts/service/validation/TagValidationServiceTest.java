@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.service.validation;
 
+import static ch.puzzle.pcts.util.TestData.TAG_1_ID;
+import static ch.puzzle.pcts.util.TestData.TOO_LONG_STRING;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -43,8 +45,6 @@ class TagValidationServiceTest extends ValidationBaseServiceTest<Tag, TagValidat
     }
 
     static Stream<Arguments> invalidModelProvider() {
-        String tooLongName = new String(new char[251]).replace("\0", "s");
-
         return Stream
                 .of(Arguments.of(createTag(null), List.of(Map.of(FieldKey.CLASS, "Tag", FieldKey.FIELD, "name"))),
                     Arguments.of(createTag(""), List.of(Map.of(FieldKey.CLASS, "Tag", FieldKey.FIELD, "name"))),
@@ -78,7 +78,7 @@ class TagValidationServiceTest extends ValidationBaseServiceTest<Tag, TagValidat
                                                     FieldKey.IS,
                                                     "S"))),
                     Arguments
-                            .of(createTag(tooLongName),
+                            .of(createTag(TOO_LONG_STRING),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -90,7 +90,7 @@ class TagValidationServiceTest extends ValidationBaseServiceTest<Tag, TagValidat
                                                     FieldKey.MAX,
                                                     "250",
                                                     FieldKey.IS,
-                                                    tooLongName))));
+                                                    TOO_LONG_STRING))));
     }
 
     @DisplayName("Should call correct validate method on validateOnCreate()")
@@ -110,15 +110,14 @@ class TagValidationServiceTest extends ValidationBaseServiceTest<Tag, TagValidat
     @DisplayName("Should call correct validate method on validateOnUpdate()")
     @Test
     void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
-        Long id = 1L;
         Tag tag = getValidModel();
 
         TagValidationService spyService = spy(service);
         doNothing().when((ValidationBase<Tag>) spyService).validateOnUpdate(anyLong(), any());
 
-        spyService.validateOnUpdate(id, tag);
+        spyService.validateOnUpdate(TAG_1_ID, tag);
 
-        verify(spyService).validateOnUpdate(id, tag);
+        verify(spyService).validateOnUpdate(TAG_1_ID, tag);
         verifyNoMoreInteractions(persistenceService);
     }
 }

@@ -1,5 +1,8 @@
 package ch.puzzle.pcts.controller;
 
+import static ch.puzzle.pcts.util.TestData.*;
+import static ch.puzzle.pcts.util.TestDataDTOs.*;
+import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
@@ -8,19 +11,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.puzzle.pcts.SpringSecurityConfig;
-import ch.puzzle.pcts.dto.experience.ExperienceDto;
 import ch.puzzle.pcts.dto.experience.ExperienceInputDto;
-import ch.puzzle.pcts.dto.experiencetype.ExperienceTypeDto;
-import ch.puzzle.pcts.dto.member.MemberDto;
 import ch.puzzle.pcts.mapper.ExperienceMapper;
 import ch.puzzle.pcts.model.experience.Experience;
-import ch.puzzle.pcts.model.experiencetype.ExperienceType;
-import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.business.ExperienceBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,8 +36,6 @@ import tools.jackson.databind.json.JsonMapper;
 class ExperienceControllerIT {
 
     private static final String BASEURL = "/api/v1/experiences";
-    private final LocalDate startDate = LocalDate.of(2020, 1, 1);
-    private final LocalDate endDate = startDate.plusDays(30);
     @MockitoBean
     private ExperienceBusinessService service;
     @MockitoBean
@@ -51,84 +44,36 @@ class ExperienceControllerIT {
     private MockMvc mvc;
     @Autowired
     private JsonMapper jsonMapper;
-    private Experience experience;
-    private ExperienceInputDto requestDto;
-    private ExperienceDto expectedDto;
-    private Member member;
-    private MemberDto memberDto;
-    private ExperienceType type;
-    private ExperienceTypeDto typeDto;
-    private Long id;
-
-    @BeforeEach
-    void setUp() {
-        id = 1L;
-
-        member = Member.Builder.builder().withId(2L).build();
-        memberDto = new MemberDto(2L, "Jane", "Doe", null, null, null, null, null);
-
-        type = new ExperienceType(10L, "Management", new BigDecimal("10"), new BigDecimal("3"), new BigDecimal("8"));
-        typeDto = new ExperienceTypeDto(10L,
-                                        "Management",
-                                        new BigDecimal("10"),
-                                        new BigDecimal("3"),
-                                        new BigDecimal("8"));
-
-        experience = new Experience.Builder()
-                .withId(id)
-                .withMember(member)
-                .withName("Developer")
-                .withEmployer("Puzzle ITC")
-                .withPercent(80)
-                .withType(type)
-                .withComment("Worked on backend")
-                .withStartDate(startDate)
-                .withEndDate(endDate)
-                .build();
-
-        expectedDto = new ExperienceDto(id,
-                                        memberDto,
-                                        "Developer",
-                                        "Puzzle ITC",
-                                        80,
-                                        typeDto,
-                                        "Worked on backend",
-                                        startDate,
-                                        endDate);
-
-        requestDto = new ExperienceInputDto(member
-                .getId(), "Developer", "Puzzle ITC", 80, type.getId(), "Worked on backend", startDate, endDate);
-    }
 
     @DisplayName("Should successfully get experience by id")
     @Test
     void shouldGetExperienceById() throws Exception {
-        BDDMockito.given(service.getById(anyLong())).willReturn(experience);
-        BDDMockito.given(mapper.toDto(any(Experience.class))).willReturn(expectedDto);
+        BDDMockito.given(service.getById(anyLong())).willReturn(EXPERIENCE_1);
+        BDDMockito.given(mapper.toDto(any(Experience.class))).willReturn(EXPERIENCE_1_DTO);
 
         mvc
-                .perform(get(BASEURL + "/" + id).with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .perform(get(BASEURL + "/" + EXPERIENCE_1_ID).with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
-                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
+                .andExpect(JsonDtoMatcher.matchesDto(EXPERIENCE_1_DTO, "$"));
 
-        verify(service, times(1)).getById(id);
+        verify(service, times(1)).getById(EXPERIENCE_1_ID);
         verify(mapper, times(1)).toDto(any(Experience.class));
     }
 
     @DisplayName("Should successfully create new experience")
     @Test
     void shouldCreateExperience() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(ExperienceInputDto.class))).willReturn(experience);
-        BDDMockito.given(service.create(any(Experience.class))).willReturn(experience);
-        BDDMockito.given(mapper.toDto(any(Experience.class))).willReturn(expectedDto);
+        BDDMockito.given(mapper.fromDto(any(ExperienceInputDto.class))).willReturn(EXPERIENCE_1);
+        BDDMockito.given(service.create(any(Experience.class))).willReturn(EXPERIENCE_1);
+        BDDMockito.given(mapper.toDto(any(Experience.class))).willReturn(EXPERIENCE_1_DTO);
 
         mvc
                 .perform(post(BASEURL)
-                        .content(jsonMapper.writeValueAsString(requestDto))
+                        .content(jsonMapper.writeValueAsString(EXPERIENCE_1_INPUT))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isCreated())
-                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
+                .andExpect(JsonDtoMatcher.matchesDto(EXPERIENCE_1_DTO, "$"));
 
         verify(mapper, times(1)).fromDto(any(ExperienceInputDto.class));
         verify(service, times(1)).create(any(Experience.class));
@@ -138,17 +83,17 @@ class ExperienceControllerIT {
     @DisplayName("Should successfully update experience")
     @Test
     void shouldUpdateExperience() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(ExperienceInputDto.class))).willReturn(experience);
-        BDDMockito.given(service.update(anyLong(), any(Experience.class))).willReturn(experience);
-        BDDMockito.given(mapper.toDto(any(Experience.class))).willReturn(expectedDto);
+        BDDMockito.given(mapper.fromDto(any(ExperienceInputDto.class))).willReturn(EXPERIENCE_1);
+        BDDMockito.given(service.update(anyLong(), any(Experience.class))).willReturn(EXPERIENCE_1);
+        BDDMockito.given(mapper.toDto(any(Experience.class))).willReturn(EXPERIENCE_1_DTO);
 
         mvc
-                .perform(put(BASEURL + "/" + id)
-                        .content(jsonMapper.writeValueAsString(requestDto))
+                .perform(put(BASEURL + "/" + EXPERIENCE_1_ID)
+                        .content(jsonMapper.writeValueAsString(EXPERIENCE_1_INPUT))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
-                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
+                .andExpect(JsonDtoMatcher.matchesDto(EXPERIENCE_1_DTO, "$"));
 
         verify(mapper, times(1)).fromDto(any(ExperienceInputDto.class));
         verify(service, times(1)).update(anyLong(), any(Experience.class));
@@ -161,7 +106,7 @@ class ExperienceControllerIT {
         BDDMockito.willDoNothing().given(service).delete(anyLong());
 
         mvc
-                .perform(delete(BASEURL + "/" + id).with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .perform(delete(BASEURL + "/" + EXPERIENCE_1_ID).with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isNoContent());
 
         verify(service, times(1)).delete(anyLong());

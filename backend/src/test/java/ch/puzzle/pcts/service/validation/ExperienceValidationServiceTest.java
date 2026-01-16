@@ -2,6 +2,7 @@ package ch.puzzle.pcts.service.validation;
 
 import static ch.puzzle.pcts.Constants.EXPERIENCE;
 import static ch.puzzle.pcts.service.validation.MemberValidationServiceTest.createMember;
+import static ch.puzzle.pcts.util.TestData.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -60,24 +61,20 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
     }
 
     static Stream<Arguments> invalidModelProvider() {
-        LocalDate today = LocalDate.now();
-        LocalDate pastDate = today.minusDays(1);
-        LocalDate futureDate = today.plusDays(1);
-        String tooLongString = new String(new char[251]).replace("\0", "s");
         int validPercentage = 100;
 
         return Stream
                 .of(Arguments
-                        .of(createExperience(null, today, futureDate, validPercentage),
+                        .of(createExperience(null, DATE_NOW, DATE_TOMORROW, validPercentage),
                             List.of(Map.of(FieldKey.CLASS, "Experience", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createExperience("", today, futureDate, validPercentage),
+                            .of(createExperience("", DATE_NOW, DATE_TOMORROW, validPercentage),
                                 List.of(Map.of(FieldKey.CLASS, "Experience", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createExperience("  ", today, futureDate, validPercentage),
+                            .of(createExperience("  ", DATE_NOW, DATE_TOMORROW, validPercentage),
                                 List.of(Map.of(FieldKey.CLASS, "Experience", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createExperience("S", today, futureDate, validPercentage),
+                            .of(createExperience("S", DATE_NOW, DATE_TOMORROW, validPercentage),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -91,7 +88,7 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
                                                     FieldKey.IS,
                                                     "S"))),
                     Arguments
-                            .of(createExperience("  S ", today, futureDate, validPercentage),
+                            .of(createExperience("  S ", DATE_NOW, DATE_TOMORROW, validPercentage),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -105,7 +102,7 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
                                                     FieldKey.IS,
                                                     "S"))),
                     Arguments
-                            .of(createExperience(tooLongString, today, futureDate, validPercentage),
+                            .of(createExperience(TOO_LONG_STRING, DATE_NOW, DATE_TOMORROW, validPercentage),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -117,12 +114,12 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
                                                     FieldKey.MIN,
                                                     "2",
                                                     FieldKey.IS,
-                                                    tooLongString))),
+                                                    TOO_LONG_STRING))),
                     Arguments
-                            .of(createExperience("Experience", futureDate, futureDate, validPercentage),
+                            .of(createExperience("Experience", DATE_TOMORROW, DATE_TOMORROW, validPercentage),
                                 List.of(Map.of(FieldKey.IS, "{attribute.date.past.present}"))),
                     Arguments
-                            .of(createExperience("Experience", null, today, validPercentage),
+                            .of(createExperience("Experience", null, DATE_NOW, validPercentage),
                                 List.of(Map.of(FieldKey.CLASS, "Experience", FieldKey.FIELD, "startDate"))),
                     Arguments
                             .of(new Experience.Builder()
@@ -135,15 +132,15 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
                                     .withEmployer("Employer")
                                     .withPercent(100)
                                     .withComment("Comment test")
-                                    .withStartDate(today)
-                                    .withEndDate(today)
+                                    .withStartDate(DATE_NOW)
+                                    .withEndDate(DATE_NOW)
                                     .build(),
                                 List.of(Map.of(FieldKey.CLASS, "Experience", FieldKey.FIELD, "type"))),
                     Arguments
-                            .of(createExperience("Experience", pastDate, today, -1),
+                            .of(createExperience("Experience", DATE_YESTERDAY, DATE_NOW, -1),
                                 List.of(Map.of(FieldKey.CLASS, "Experience", FieldKey.FIELD, "percent"))),
                     Arguments
-                            .of(createExperience("Experience", pastDate, today, 115),
+                            .of(createExperience("Experience", DATE_YESTERDAY, DATE_NOW, 115),
                                 List.of(Map.of(FieldKey.CLASS, "Experience", FieldKey.FIELD, "percent"))));
     }
 
@@ -160,14 +157,12 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
     @DisplayName("Should throw exception on ValidateOnUpdate and ValidateOnCreate when endDate is before startDate")
     @Test
     void shouldThrowExceptionWhenEndDateIsBeforeStartDate() {
-        LocalDate today = LocalDate.now();
-        LocalDate pastDate = today.minusDays(1);
         int validPercentage = 50;
 
-        Experience experience = createExperience("Experience", today, pastDate, validPercentage);
+        Experience experience = createExperience("Experience", DATE_NOW, DATE_YESTERDAY, validPercentage);
 
         List<PCTSException> exceptions = List
-                .of(assertThrows(PCTSException.class, () -> service.validateOnUpdate(1L, experience)),
+                .of(assertThrows(PCTSException.class, () -> service.validateOnUpdate(EXPERIENCE_1_ID, experience)),
                     assertThrows(PCTSException.class, () -> service.validateOnCreate(experience)));
 
         exceptions
@@ -179,11 +174,11 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
                                     FieldKey.FIELD,
                                     "startDate",
                                     FieldKey.IS,
-                                    today.toString(),
+                                    DATE_NOW.toString(),
                                     FieldKey.CONDITION_FIELD,
                                     "endDate",
                                     FieldKey.MAX,
-                                    pastDate.toString())), exception.getErrorAttributes()));
+                                    DATE_YESTERDAY.toString())), exception.getErrorAttributes()));
     }
 
     @DisplayName("Should call correct validate method on validateOnCreate()")
@@ -202,14 +197,13 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
     @DisplayName("Should call correct validate method on validateOnUpdate()")
     @Test
     void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
-        Long id = 1L;
         Experience experience = getValidModel();
 
         doNothing().when((ValidationBase<Experience>) service).validateOnUpdate(anyLong(), any());
 
-        service.validateOnUpdate(id, experience);
+        service.validateOnUpdate(EXPERIENCE_1_ID, experience);
 
-        verify(service).validateOnUpdate(id, experience);
+        verify(service).validateOnUpdate(EXPERIENCE_1_ID, experience);
         verifyNoMoreInteractions(persistenceService);
     }
 }

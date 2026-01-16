@@ -1,6 +1,6 @@
 package ch.puzzle.pcts.service.persistence;
 
-import static ch.puzzle.pcts.util.TestData.ORGANISATION_UNITS;
+import static ch.puzzle.pcts.util.TestDataModels.ORGANISATION_UNITS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;

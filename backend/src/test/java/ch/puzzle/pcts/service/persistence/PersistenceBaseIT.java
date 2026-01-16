@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.service.persistence;
 
+import static ch.puzzle.pcts.util.TestData.GENERIC_2_ID;
+import static ch.puzzle.pcts.util.TestData.INVALID_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -47,26 +49,24 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
     @DisplayName("Should get entity by id")
     @Test
     void shouldGetEntityById() {
-        T entity = persistenceService.getById(2L);
+        T entity = persistenceService.getById(GENERIC_2_ID);
 
         assertThat(entity).isNotNull();
-        assertThat(entity.getId()).isEqualTo(2L);
+        assertThat(entity.getId()).isEqualTo(GENERIC_2_ID);
     }
 
     @DisplayName("Should throw exception when id is not found")
     @Test
     void shouldThrowExceptionWhenIdIsNotFound() {
-        long invalidId = -1L;
-
         Map<FieldKey, String> expectedAttributes = Map
                 .of(FieldKey.FIELD,
                     "id",
                     FieldKey.IS,
-                    String.valueOf(invalidId),
+                    String.valueOf(INVALID_ID),
                     FieldKey.ENTITY,
                     persistenceService.entityName());
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> persistenceService.getById(invalidId));
+        PCTSException exception = assertThrows(PCTSException.class, () -> persistenceService.getById(INVALID_ID));
 
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
 
@@ -99,12 +99,11 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
     @Transactional
     @Test
     void shouldUpdate() {
-        Long id = 2L;
         T entity = getModel();
-        entity.setId(id);
+        entity.setId(GENERIC_2_ID);
         persistenceService.save(entity);
 
-        T result = persistenceService.getById(id);
+        T result = persistenceService.getById(GENERIC_2_ID);
 
         assertThat(result).isNotNull();
         assertEquals(entity, result);
@@ -121,10 +120,8 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
     @DirtiesContext
     @Test
     void shouldDelete() {
-        Long id = 2L;
+        persistenceService.delete(GENERIC_2_ID);
 
-        persistenceService.delete(id);
-
-        assertThrows(PCTSException.class, () -> persistenceService.getById(id));
+        assertThrows(PCTSException.class, () -> persistenceService.getById(GENERIC_2_ID));
     }
 }

@@ -1,6 +1,8 @@
 package ch.puzzle.pcts.service.validation;
 
 import static ch.puzzle.pcts.Constants.LEADERSHIP_EXPERIENCE_TYPE;
+import static ch.puzzle.pcts.util.TestData.*;
+import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -9,7 +11,6 @@ import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
-import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import java.math.BigDecimal;
 import java.util.List;
@@ -55,27 +56,25 @@ class LeadershipExperienceTypeValidationServiceTest
         c.setName(name);
         c.setPoints(points);
         c.setComment("Comment");
-        c.setTags(Set.of(new Tag(null, "Tag")));
+        c.setTags(Set.of(TAG_1));
         c.setCertificateKind(certificateKind);
 
         return c;
     }
 
     static Stream<Arguments> invalidModelProvider() {
-        String tooLongName = new String(new char[251]).replace("\0", "s");
-
         return Stream
                 .of(Arguments
-                        .of(createCertificate(null, new BigDecimal(1), CertificateKind.CERTIFICATE),
+                        .of(createCertificate(null, POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
                             List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createCertificate("", new BigDecimal(1), CertificateKind.CERTIFICATE),
+                            .of(createCertificate("", POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
                                 List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createCertificate("  ", new BigDecimal(1), CertificateKind.CERTIFICATE),
+                            .of(createCertificate("  ", POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
                                 List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createCertificate("S", new BigDecimal(1), CertificateKind.CERTIFICATE),
+                            .of(createCertificate("S", POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -90,7 +89,7 @@ class LeadershipExperienceTypeValidationServiceTest
                                                     "S"))),
 
                     Arguments
-                            .of(createCertificate("  S ", new BigDecimal(1), CertificateKind.CERTIFICATE),
+                            .of(createCertificate("  S ", POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -105,7 +104,7 @@ class LeadershipExperienceTypeValidationServiceTest
                                                     "S"))),
 
                     Arguments
-                            .of(createCertificate(tooLongName, new BigDecimal(1), CertificateKind.CERTIFICATE),
+                            .of(createCertificate(TOO_LONG_STRING, POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -117,7 +116,7 @@ class LeadershipExperienceTypeValidationServiceTest
                                                     FieldKey.MAX,
                                                     "250",
                                                     FieldKey.IS,
-                                                    tooLongName))),
+                                                    TOO_LONG_STRING))),
 
                     Arguments
                             .of(createCertificate("LeadershipExperience", null, CertificateKind.CERTIFICATE),
@@ -125,7 +124,7 @@ class LeadershipExperienceTypeValidationServiceTest
 
                     Arguments
                             .of(createCertificate("LeadershipExperience",
-                                                  new BigDecimal(-1),
+                                                  NEGATIVE_BIG_DECIMAL,
                                                   CertificateKind.CERTIFICATE),
                                 List
                                         .of(Map
@@ -136,7 +135,7 @@ class LeadershipExperienceTypeValidationServiceTest
                                                     FieldKey.IS,
                                                     "-1"))),
                     Arguments
-                            .of(createCertificate("LeadershipExperience", new BigDecimal(1), null),
+                            .of(createCertificate("LeadershipExperience", POSITIVE_BIG_DECIMAL, null),
                                 List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "certificateKind"))));
     }
 
@@ -184,16 +183,17 @@ class LeadershipExperienceTypeValidationServiceTest
     @DisplayName("Should throw Exception on validateOnUpdate() when name already exists")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExists() {
-        Long id = 1L;
         CertificateType newLeadershipExperience = getValidModel();
         CertificateType leadershipExperience = getValidModel();
-        leadershipExperience.setId(2L);
+        leadershipExperience.setId(LEADERSHIP_TYPE_2_ID);
 
         when(persistenceService.getByName(newLeadershipExperience.getName()))
                 .thenReturn(Optional.of(leadershipExperience));
 
         PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> service.validateOnUpdate(id, newLeadershipExperience));
+                                               () -> service
+                                                       .validateOnUpdate(LEADERSHIP_TYPE_1_ID,
+                                                                         newLeadershipExperience));
 
         assertEquals(List.of(ErrorKey.ATTRIBUTE_UNIQUE), exception.getErrorKeys());
         assertEquals(List
@@ -224,15 +224,14 @@ class LeadershipExperienceTypeValidationServiceTest
     @DisplayName("Should call correct validate method on validateOnUpdate()")
     @Test
     void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
-        Long id = 1L;
         CertificateType leadershipExperience = getValidModel();
 
         LeadershipExperienceTypeValidationService spyService = spy(service);
         doNothing().when((ValidationBase<CertificateType>) spyService).validateOnUpdate(anyLong(), any());
 
-        spyService.validateOnUpdate(id, leadershipExperience);
+        spyService.validateOnUpdate(LEADERSHIP_TYPE_1_ID, leadershipExperience);
 
-        verify(spyService).validateOnUpdate(id, leadershipExperience);
+        verify(spyService).validateOnUpdate(LEADERSHIP_TYPE_1_ID, leadershipExperience);
         verifyNoMoreInteractions(persistenceService);
     }
 }

@@ -1,7 +1,8 @@
 package ch.puzzle.pcts.controller;
 
-import static ch.puzzle.pcts.util.TestData.MEMBER_1_OVERVIEWS;
-import static ch.puzzle.pcts.util.TestData.MEMBER_1_OVERVIEW_DTO;
+import static ch.puzzle.pcts.util.TestData.*;
+import static ch.puzzle.pcts.util.TestDataDTOs.*;
+import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -53,8 +54,6 @@ class MemberOverviewControllerIT {
     @DisplayName("Should successfully get member overview by member id")
     @Test
     void shouldGetMemberOverviewById() throws Exception {
-        Long memberId = 1L;
-
         List<MemberOverview> memberOverviews = MEMBER_1_OVERVIEWS;
         MemberOverviewDto expectedDto = MEMBER_1_OVERVIEW_DTO;
 
@@ -62,36 +61,36 @@ class MemberOverviewControllerIT {
         BDDMockito.given(mapper.toDto(memberOverviews)).willReturn(expectedDto);
 
         mvc
-                .perform(get(BASEURL + "/" + memberId).with(csrf()).accept(MediaType.APPLICATION_JSON))
+                .perform(get(BASEURL + "/" + MEMBER_1_ID).with(csrf()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
-        verify(service, times(1)).getById(memberId);
+        verify(service, times(1)).getById(MEMBER_1_ID);
         verify(mapper, times(1)).toDto(memberOverviews);
     }
 
     @DisplayName("Should return 404 with NOT_FOUND error when member does not exist")
     @Test
     void shouldReturn404WhenMemberNotFound() throws Exception {
-        Long memberId = 99L;
-
         Map<FieldKey, String> attributes = Map
-                .of(FieldKey.ENTITY, "Member", FieldKey.FIELD, "id", FieldKey.IS, memberId.toString());
+                .of(FieldKey.ENTITY, "Member", FieldKey.FIELD, "id", FieldKey.IS, INVALID_ID.toString());
 
         GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
 
-        BDDMockito.given(service.getById(memberId)).willThrow(new PCTSException(HttpStatus.NOT_FOUND, List.of(error)));
+        BDDMockito
+                .given(service.getById(INVALID_ID))
+                .willThrow(new PCTSException(HttpStatus.NOT_FOUND, List.of(error)));
 
         mvc
-                .perform(get(BASEURL + "/" + memberId).with(csrf()).accept(MediaType.APPLICATION_JSON))
+                .perform(get(BASEURL + "/" + INVALID_ID).with(csrf()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$[0].key").value("NOT_FOUND"))
                 .andExpect(jsonPath("$[0].values.ENTITY").value("Member"))
                 .andExpect(jsonPath("$[0].values.FIELD").value("id"))
-                .andExpect(jsonPath("$[0].values.IS").value("99"));
+                .andExpect(jsonPath("$[0].values.IS").value(INVALID_ID.toString()));
 
-        verify(service).getById(memberId);
+        verify(service).getById(INVALID_ID);
         verifyNoInteractions(mapper);
     }
 }

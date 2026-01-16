@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.service.persistence;
 
-import static ch.puzzle.pcts.util.TestData.MEMBER_1_OVERVIEWS;
+import static ch.puzzle.pcts.util.TestData.*;
+import static ch.puzzle.pcts.util.TestDataModels.MEMBER_1_OVERVIEWS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -28,10 +29,10 @@ class MemberOverviewPersistenceServiceIT extends PersistenceCoreIT {
     @DisplayName("Should get all member overview with member id 1")
     @Test
     void shouldGetAllMemberOverviewRowsForMember1() {
-        List<MemberOverview> memberOverviews = service.getById(1L);
+        List<MemberOverview> memberOverviews = service.getById(MEMBER_1_ID);
 
         assertThat(memberOverviews).isNotNull().hasSize(4).allSatisfy(row -> {
-            assertThat(row.getMemberId()).isEqualTo(1L);
+            assertThat(row.getMemberId()).isEqualTo(MEMBER_1_ID);
             assertThat(row.getFirstName()).isEqualTo("Member 1");
             assertThat(row.getLastName()).isEqualTo("Test");
             assertThat(row.getAbbreviation()).isEqualTo("M1");
@@ -56,17 +57,15 @@ class MemberOverviewPersistenceServiceIT extends PersistenceCoreIT {
     @DisplayName("Should throw exception when id is not found")
     @Test
     void shouldThrowExceptionWhenIdIsNotFound() {
-        Long invalidId = -1L;
-
         Map<FieldKey, String> expectedAttributes = Map
                 .of(FieldKey.FIELD,
                     "id",
                     FieldKey.IS,
-                    String.valueOf(invalidId),
+                    String.valueOf(INVALID_ID),
                     FieldKey.ENTITY,
                     service.entityName());
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.getById(invalidId));
+        PCTSException exception = assertThrows(PCTSException.class, () -> service.getById(INVALID_ID));
 
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
 

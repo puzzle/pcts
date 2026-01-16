@@ -1,6 +1,8 @@
 package ch.puzzle.pcts.service.validation;
 
 import static ch.puzzle.pcts.Constants.DEGREE;
+import static ch.puzzle.pcts.util.TestData.*;
+import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -37,13 +39,11 @@ class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, Degr
     @InjectMocks
     private DegreeValidationService service;
 
-    private Long id;
-
     private final LocalDate commonDate = LocalDate.EPOCH;
 
     @Override
     Degree getValidModel() {
-        id = 1L;
+        Long id = 1L;
         DegreeType degreeType = new DegreeType(id,
                                                "Degree Type 1",
                                                new BigDecimal("3.0"),
@@ -98,44 +98,21 @@ class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, Degr
     }
 
     static Stream<Arguments> invalidModelProvider() {
-        String tooLongString = new String(new char[251]).replace("\0", "x");
-        OrganisationUnit organisationUnit = new OrganisationUnit(1L, "/bbt");
-        LocalDate today = LocalDate.now();
-        LocalDate pastDate = today.minusDays(1);
-        LocalDate futureDate = today.plusDays(1);
-
-        Member member = Member.Builder
-                .builder()
-                .withId(1L)
-                .withFirstName("Susi")
-                .withLastName("Miller")
-                .withEmploymentState(EmploymentState.APPLICANT)
-                .withAbbreviation("SM")
-                .withDateOfHire(pastDate)
-                .withBirthDate(today)
-                .withOrganisationUnit(organisationUnit)
-                .build();
-        DegreeType degreeType = new DegreeType(1L,
-                                               "Bachelor",
-                                               new BigDecimal("3.0"),
-                                               new BigDecimal("2.0"),
-                                               new BigDecimal("1.0"));
-
         return Stream
                 .of(Arguments
-                        .of(createDegree(null, "Computer Science", degreeType, true, pastDate, today),
+                        .of(createDegree(null, "Computer Science", DEGREE_TYPE_1, true, DATE_YESTERDAY, DATE_NOW),
                             List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "member"))),
                     Arguments
-                            .of(createDegree(member, null, degreeType, true, pastDate, today),
+                            .of(createDegree(MEMBER_1, null, DEGREE_TYPE_1, true, DATE_YESTERDAY, DATE_NOW),
                                 List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createDegree(member, "", degreeType, true, pastDate, today),
+                            .of(createDegree(MEMBER_1, "", DEGREE_TYPE_1, true, DATE_YESTERDAY, DATE_NOW),
                                 List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createDegree(member, "  ", degreeType, true, pastDate, today),
+                            .of(createDegree(MEMBER_1, "  ", DEGREE_TYPE_1, true, DATE_YESTERDAY, DATE_NOW),
                                 List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createDegree(member, "A", degreeType, true, pastDate, today),
+                            .of(createDegree(MEMBER_1, "A", DEGREE_TYPE_1, true, DATE_YESTERDAY, DATE_NOW),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -149,7 +126,7 @@ class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, Degr
                                                     FieldKey.IS,
                                                     "A"))),
                     Arguments
-                            .of(createDegree(member, tooLongString, degreeType, true, pastDate, today),
+                            .of(createDegree(MEMBER_1, TOO_LONG_STRING, DEGREE_TYPE_1, true, DATE_YESTERDAY, DATE_NOW),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -161,18 +138,23 @@ class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, Degr
                                                     FieldKey.MIN,
                                                     "2",
                                                     FieldKey.IS,
-                                                    tooLongString))),
+                                                    TOO_LONG_STRING))),
                     Arguments
-                            .of(createDegree(member, "Computer Science", null, true, pastDate, today),
+                            .of(createDegree(MEMBER_1, "Computer Science", null, true, DATE_YESTERDAY, DATE_NOW),
                                 List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "degreeType"))),
                     Arguments
-                            .of(createDegree(member, "Computer Science", degreeType, null, pastDate, today),
+                            .of(createDegree(MEMBER_1,
+                                             "Computer Science",
+                                             DEGREE_TYPE_1,
+                                             null,
+                                             DATE_YESTERDAY,
+                                             DATE_NOW),
                                 List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "completed"))),
                     Arguments
-                            .of(createDegree(member, "Computer Science", degreeType, true, null, today),
+                            .of(createDegree(MEMBER_1, "Computer Science", DEGREE_TYPE_1, true, null, DATE_NOW),
                                 List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "startDate"))),
                     Arguments
-                            .of(createDegree(member, "Computer Science", degreeType, true, futureDate, null),
+                            .of(createDegree(MEMBER_1, "Computer Science", DEGREE_TYPE_1, true, DATE_TOMORROW, null),
                                 List.of(Map.of(FieldKey.IS, "{attribute.date.past.present}"))));
     }
 
@@ -193,45 +175,24 @@ class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, Degr
     @DisplayName("Should call correct validate method on validateOnUpdate()")
     @Test
     void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
-        id = 1L;
         Degree degree = getValidModel();
 
         DegreeValidationService degreeValidationService = spy(service);
         doNothing().when((ValidationBase<Degree>) degreeValidationService).validateOnUpdate(anyLong(), any());
 
-        degreeValidationService.validateOnUpdate(id, degree);
+        degreeValidationService.validateOnUpdate(DEGREE_1_ID, degree);
 
-        verify(degreeValidationService).validateOnUpdate(id, degree);
+        verify(degreeValidationService).validateOnUpdate(DEGREE_1_ID, degree);
         verifyNoMoreInteractions(degreePersistenceService);
     }
 
     @DisplayName("Should throw exception on ValidateOnUpdate and ValidateOnCreate when endDate is before startDate")
     @Test
     void shouldThrowExceptionWhenEndDateIsBeforeStartDate() {
-        LocalDate today = LocalDate.now();
-        LocalDate pastDate = today.minusDays(1);
-        OrganisationUnit organisationUnit = new OrganisationUnit(1L, "/bbt");
-        Member member = Member.Builder
-                .builder()
-                .withId(1L)
-                .withFirstName("Susi")
-                .withLastName("Miller")
-                .withEmploymentState(EmploymentState.APPLICANT)
-                .withAbbreviation("SM")
-                .withDateOfHire(today)
-                .withBirthDate(pastDate)
-                .withOrganisationUnit(organisationUnit)
-                .build();
-        DegreeType degreeType = new DegreeType(1L,
-                                               "Bachelor",
-                                               new BigDecimal("3.0"),
-                                               new BigDecimal("2.0"),
-                                               new BigDecimal("1.0"));
-
-        Degree degree = createDegree(member, "Degree", degreeType, true, today, pastDate);
+        Degree degree = createDegree(MEMBER_1, "Degree", DEGREE_TYPE_1, true, DATE_NOW, DATE_YESTERDAY);
 
         List<PCTSException> exceptions = List
-                .of(assertThrows(PCTSException.class, () -> service.validateOnUpdate(1L, degree)),
+                .of(assertThrows(PCTSException.class, () -> service.validateOnUpdate(DEGREE_1_ID, degree)),
                     assertThrows(PCTSException.class, () -> service.validateOnCreate(degree)));
 
         exceptions
@@ -242,10 +203,10 @@ class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, Degr
                                     FieldKey.FIELD,
                                     "startDate",
                                     FieldKey.IS,
-                                    today.toString(),
+                                    DATE_NOW.toString(),
                                     FieldKey.CONDITION_FIELD,
                                     "endDate",
                                     FieldKey.MAX,
-                                    pastDate.toString())), exception.getErrorAttributes()));
+                                    DATE_YESTERDAY.toString())), exception.getErrorAttributes()));
     }
 }

@@ -2,6 +2,9 @@ package ch.puzzle.pcts.mapper;
 
 import static ch.puzzle.pcts.Constants.LEADERSHIP_EXPERIENCE_TYPE;
 import static ch.puzzle.pcts.Constants.MEMBER;
+import static ch.puzzle.pcts.util.TestData.*;
+import static ch.puzzle.pcts.util.TestDataDTOs.*;
+import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -31,11 +34,6 @@ import org.springframework.http.HttpStatus;
 @ExtendWith(MockitoExtension.class)
 class LeadershipExperienceMapperTest {
 
-    private static final Long MEMBER_ID = 1L;
-    private static final Long LEADERSHIP_TYPE_ID = 10L;
-    private static final Long CERT_ID = 100L;
-    private static final String COMMENT = "Leadership Comment";
-
     @Mock
     private MemberMapper memberMapper;
     @Mock
@@ -55,97 +53,48 @@ class LeadershipExperienceMapperTest {
                                                                     memberBusinessService);
     }
 
-    private Member createTestMember() {
-        Member member = new Member();
-        member.setId(MEMBER_ID);
-        return member;
-    }
-
-    private CertificateType createTestCertType() {
-        CertificateType certType = new CertificateType();
-        certType.setId(LEADERSHIP_TYPE_ID);
-        return certType;
-    }
-
-    private Certificate createTestCertificate(Member member, CertificateType certType) {
-        return Certificate.Builder
-                .builder()
-                .withId(CERT_ID)
-                .withMember(member)
-                .withCertificateType(certType)
-                .withComment(COMMENT)
-                .build();
-    }
-
-    private LeadershipExperienceInputDto createTestInputDto() {
-        return new LeadershipExperienceInputDto(MEMBER_ID, LEADERSHIP_TYPE_ID, COMMENT);
-    }
-
     @DisplayName("Should return LeadershipExperienceDto")
     @Test
     void shouldReturnLeadershipExperienceDto() {
-        Member member = createTestMember();
-        CertificateType certType = createTestCertType();
-        Certificate certificate = createTestCertificate(member, certType);
+        when(memberMapper.toDto(MEMBER_1)).thenReturn(MEMBER_1_DTO);
+        when(leadershipExperienceTypeMapper.toDto(LEADERSHIP_TYPE_1)).thenReturn(LEADERSHIP_TYPE_1_DTO);
 
-        MemberDto expectedMemberDto = mock(MemberDto.class);
-        LeadershipExperienceTypeDto expectedTypeDto = mock(LeadershipExperienceTypeDto.class);
-
-        when(memberMapper.toDto(member)).thenReturn(expectedMemberDto);
-        when(leadershipExperienceTypeMapper.toDto(certType)).thenReturn(expectedTypeDto);
-
-        LeadershipExperienceDto resultDto = leadershipExperienceMapper.toDto(certificate);
+        LeadershipExperienceDto resultDto = leadershipExperienceMapper.toDto(LEADERSHIP_CERT_1);
 
         assertNotNull(resultDto);
-        assertEquals(CERT_ID, resultDto.id());
-        assertEquals(COMMENT, resultDto.comment());
-        assertEquals(expectedMemberDto, resultDto.member());
-        assertEquals(expectedTypeDto, resultDto.experience());
+        assertEquals(LEADERSHIP_CERT_1_ID, resultDto.id());
+        assertEquals(LEADERSHIP_CERT_1.getComment(), resultDto.comment());
+        assertEquals(MEMBER_1_DTO, resultDto.member());
+        assertEquals(LEADERSHIP_TYPE_1_DTO, resultDto.experience());
 
-        verify(memberMapper).toDto(member);
-        verify(leadershipExperienceTypeMapper).toDto(certType);
+        verify(memberMapper).toDto(MEMBER_1);
+        verify(leadershipExperienceTypeMapper).toDto(LEADERSHIP_TYPE_1);
     }
 
     @DisplayName("Should return Certificate model from InputDto")
     @Test
     void shouldReturnCertificate() {
-        LeadershipExperienceInputDto inputDto = createTestInputDto();
-        Member expectedMember = createTestMember();
-        CertificateType expectedCertType = createTestCertType();
+        when(memberBusinessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
+        when(leadershipExperienceTypeBusinessService.getById(LEADERSHIP_TYPE_1_ID)).thenReturn(LEADERSHIP_TYPE_1);
 
-        when(memberBusinessService.getById(MEMBER_ID)).thenReturn(expectedMember);
-        when(leadershipExperienceTypeBusinessService.getById(LEADERSHIP_TYPE_ID)).thenReturn(expectedCertType);
-
-        Certificate resultCertificate = leadershipExperienceMapper.fromDto(inputDto);
+        Certificate resultCertificate = leadershipExperienceMapper.fromDto(LEADERSHIP_CERT_1_INPUT);
 
         assertNotNull(resultCertificate);
-        assertEquals(inputDto.comment(), resultCertificate.getComment());
-        assertEquals(expectedMember, resultCertificate.getMember());
-        assertEquals(expectedCertType, resultCertificate.getCertificateType());
+        assertEquals(LEADERSHIP_CERT_1_INPUT.comment(), resultCertificate.getComment());
+        assertEquals(MEMBER_1, resultCertificate.getMember());
+        assertEquals(LEADERSHIP_TYPE_1, resultCertificate.getCertificateType());
 
         assertNull(resultCertificate.getCompletedAt());
         assertNull(resultCertificate.getValidUntil());
 
-        verify(memberBusinessService).getById(MEMBER_ID);
-        verify(leadershipExperienceTypeBusinessService).getById(LEADERSHIP_TYPE_ID);
+        verify(memberBusinessService).getById(MEMBER_1_ID);
+        verify(leadershipExperienceTypeBusinessService).getById(LEADERSHIP_TYPE_1_ID);
     }
 
     @DisplayName("Should return a list of LeadershipExperienceDto")
     @Test
     void shouldGetListOfLeadershipExperienceDto() {
-        Certificate cert1 = Certificate.Builder
-                .builder()
-                .withId(1L)
-                .withMember(new Member())
-                .withCertificateType(new CertificateType())
-                .build();
-        Certificate cert2 = Certificate.Builder
-                .builder()
-                .withId(2L)
-                .withMember(new Member())
-                .withCertificateType(new CertificateType())
-                .build();
-        List<Certificate> certificateList = List.of(cert1, cert2);
+        List<Certificate> certificateList = List.of(LEADERSHIP_CERT_1, LEADERSHIP_CERT_2);
 
         when(memberMapper.toDto(any(Member.class))).thenReturn(mock(MemberDto.class));
         when(leadershipExperienceTypeMapper.toDto(any(CertificateType.class)))
@@ -155,8 +104,8 @@ class LeadershipExperienceMapperTest {
 
         assertNotNull(dtoList);
         assertEquals(2, dtoList.size());
-        assertEquals(1L, dtoList.get(0).id());
-        assertEquals(2L, dtoList.get(1).id());
+        assertEquals(LEADERSHIP_CERT_1.getId(), dtoList.get(0).id());
+        assertEquals(LEADERSHIP_CERT_2.getId(), dtoList.get(1).id());
 
         verify(memberMapper, times(2)).toDto(any(Member.class));
         verify(leadershipExperienceTypeMapper, times(2)).toDto(any(CertificateType.class));
@@ -165,35 +114,32 @@ class LeadershipExperienceMapperTest {
     @DisplayName("Should return a list of Certificate models")
     @Test
     void shouldGetListOfCertificate() {
-        LeadershipExperienceInputDto input1 = new LeadershipExperienceInputDto(1L, 10L, "c1");
-        LeadershipExperienceInputDto input2 = new LeadershipExperienceInputDto(2L, 20L, "c2");
-        List<LeadershipExperienceInputDto> inputList = List.of(input1, input2);
+        List<LeadershipExperienceInputDto> inputList = List.of(LEADERSHIP_CERT_1_INPUT, LEADERSHIP_CERT_2_INPUT);
 
-        when(memberBusinessService.getById(1L)).thenReturn(new Member());
-        when(memberBusinessService.getById(2L)).thenReturn(new Member());
-        when(leadershipExperienceTypeBusinessService.getById(10L)).thenReturn(new CertificateType());
-        when(leadershipExperienceTypeBusinessService.getById(20L)).thenReturn(new CertificateType());
+        when(memberBusinessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
+        when(memberBusinessService.getById(MEMBER_2_ID)).thenReturn(MEMBER_2);
+        when(leadershipExperienceTypeBusinessService.getById(LEADERSHIP_TYPE_1_ID)).thenReturn(LEADERSHIP_TYPE_1);
+        when(leadershipExperienceTypeBusinessService.getById(LEADERSHIP_TYPE_2_ID)).thenReturn(LEADERSHIP_TYPE_2);
 
         List<Certificate> resultList = leadershipExperienceMapper.fromDto(inputList);
 
         assertNotNull(resultList);
         assertEquals(2, resultList.size());
-        assertEquals("c1", resultList.get(0).getComment());
-        assertEquals("c2", resultList.get(1).getComment());
+        assertEquals(LEADERSHIP_CERT_1.getComment(), resultList.get(0).getComment());
+        assertEquals(LEADERSHIP_CERT_2.getComment(), resultList.get(1).getComment());
 
-        verify(memberBusinessService).getById(1L);
-        verify(memberBusinessService).getById(2L);
-        verify(leadershipExperienceTypeBusinessService).getById(10L);
-        verify(leadershipExperienceTypeBusinessService).getById(20L);
+        verify(memberBusinessService).getById(MEMBER_1_ID);
+        verify(memberBusinessService).getById(MEMBER_2_ID);
+        verify(leadershipExperienceTypeBusinessService).getById(LEADERSHIP_TYPE_1_ID);
+        verify(leadershipExperienceTypeBusinessService).getById(LEADERSHIP_TYPE_2_ID);
     }
 
     @DisplayName("Should throw exception when member is not found")
     @Test
     void shouldThrowExceptionWhenMemberIsNotFound() {
-        Long nonExistentMemberId = 999L;
-        LeadershipExperienceInputDto inputDto = new LeadershipExperienceInputDto(nonExistentMemberId,
-                                                                                 LEADERSHIP_TYPE_ID,
-                                                                                 "Comment");
+        LeadershipExperienceInputDto inputDto = new LeadershipExperienceInputDto(INVALID_ID,
+                                                                                 LEADERSHIP_TYPE_1_ID,
+                                                                                 "This is a comment.");
 
         Map<FieldKey, String> attributes = Map
                 .of(FieldKey.ENTITY, MEMBER, FieldKey.FIELD, "id", FieldKey.IS, "" + inputDto.memberId());
@@ -208,10 +154,9 @@ class LeadershipExperienceMapperTest {
     @DisplayName("Should throw exception when LeadershipExperienceType is not found")
     @Test
     void shouldThrowExceptionWhenLeadershipExperienceTypeIsNotFound() {
-        Long nonExistentTypeId = 999L;
-        LeadershipExperienceInputDto inputDto = new LeadershipExperienceInputDto(MEMBER_ID,
-                                                                                 nonExistentTypeId,
-                                                                                 "Comment");
+        LeadershipExperienceInputDto inputDto = new LeadershipExperienceInputDto(MEMBER_1_ID,
+                                                                                 INVALID_ID,
+                                                                                 "This is a comment.");
 
         Map<FieldKey, String> attributes = Map
                 .of(FieldKey.ENTITY,

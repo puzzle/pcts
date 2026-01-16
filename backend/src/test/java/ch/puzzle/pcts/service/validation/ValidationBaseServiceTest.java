@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.service.validation;
 
+import static ch.puzzle.pcts.util.TestData.GENERIC_1_ID;
+import static ch.puzzle.pcts.util.TestData.GENERIC_2_ID;
 import static org.junit.jupiter.api.Assertions.*;
 
 import ch.puzzle.pcts.dto.error.ErrorKey;
@@ -56,8 +58,7 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
     @DisplayName("Should be successful validateOnGet() when Id is valid")
     @Test
     void validateOnGetByIdShouldBeSuccessfulWhenIdIsValid() {
-        Long id = 1L;
-        assertDoesNotThrow(() -> service.validateOnGetById(id));
+        assertDoesNotThrow(() -> service.validateOnGetById(GENERIC_1_ID));
     }
 
     @DisplayName("Should throw exception validateOnGet() when Id is null")
@@ -83,7 +84,7 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
     @Test
     void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
         T model = getValidModel();
-        model.setId(1L);
+        model.setId(GENERIC_1_ID);
 
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnCreate(model));
 
@@ -103,11 +104,10 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
     @DisplayName("Should be successful validateOnUpdate() when model is Valid")
     @Test
     void validateOnUpdateShouldBeSuccessfulWhenIdAndModelIsValid() {
-        Long id = 1L;
         T model = getValidModel();
-        model.setId(1L);
+        model.setId(GENERIC_1_ID);
 
-        assertDoesNotThrow(() -> service.validateOnUpdate(id, model));
+        assertDoesNotThrow(() -> service.validateOnUpdate(GENERIC_1_ID, model));
     }
 
     @DisplayName("Should throw exception validateOnUpdate() when id is null")
@@ -125,9 +125,7 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
     @DisplayName("Should throw exception validateOnUpdate() when model is null")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenModelIsNull() {
-        Long id = 1L;
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnUpdate(id, null));
+        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnUpdate(GENERIC_1_ID, null));
 
         assertEquals(List.of(ErrorKey.VALIDATION), exception.getErrorKeys());
         assertEquals(List.of(Map.of(FieldKey.FIELD, "id")), exception.getErrorAttributes());
@@ -136,11 +134,11 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
     @DisplayName("Should throw exception validateOnUpdate() when id has changed")
     @Test
     void validateOnUpdateShouldThrowExceptionWhenIdHasChanged() {
-        Long id = 1L;
         T model = getValidModel();
-        model.setId(2L);
+        model.setId(GENERIC_2_ID);
 
-        PCTSException exception = assertThrows(PCTSException.class, () -> service.validateOnUpdate(id, model));
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> service.validateOnUpdate(GENERIC_1_ID, model));
 
         assertEquals(List.of(ErrorKey.VALIDATION), exception.getErrorKeys());
         assertEquals(List.of(Map.of(FieldKey.FIELD, "id")), exception.getErrorAttributes());
@@ -149,8 +147,7 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
     @DisplayName("Should be successful validateOnDelete() when Id is valid")
     @Test
     void validateOnDeleteShouldBeSuccessfulWhenIdIsValid() {
-        Long id = 1L;
-        assertDoesNotThrow(() -> service.validateOnDelete(id));
+        assertDoesNotThrow(() -> service.validateOnDelete(GENERIC_1_ID));
     }
 
     @DisplayName("Should throw exception validateOnDelete() when Id is not null")
