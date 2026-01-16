@@ -18,6 +18,11 @@ public class TestData {
     public static final String VALID_STRING = "Valid String";
     public static final String TOO_LONG_STRING = "a".repeat(251);
 
+    public static final BigDecimal VALID_WEIGHT = BigDecimal.valueOf(50);
+    public static final BigDecimal TOO_HIGH_WEIGHT = BigDecimal.valueOf(200);
+    public static final String MIN_WEIGHT = "1";
+    public static final String MAX_WEIGHT = "100";
+
     public static final Long INVALID_ID = 999L;
 
     public static final Long GENERIC_1_ID = 1L;
@@ -53,8 +58,8 @@ public class TestData {
     public static final Long CERTIFICATE_3_ID = 3L;
     public static final Long CERTIFICATE_4_ID = 4L;
 
-    public static final Long LEADERSHIP_CERT_1_ID = 1L;
-    public static final Long LEADERSHIP_CERT_2_ID = 2L;
+    public static final Long LEADERSHIP_CERT_1_ID = 5L;
+    public static final Long LEADERSHIP_CERT_2_ID = 6L;
 
     public static final Long DEGREE_TYPE_1_ID = 1L;
     public static final Long DEGREE_TYPE_2_ID = 2L;
@@ -67,7 +72,18 @@ public class TestData {
 
     public static final Long EXPERIENCE_1_ID = 1L;
     public static final Long EXPERIENCE_2_ID = 2L;
-    public static final Long EXPERIENCE_3_ID = 3L;
+    public static final Long EXPERIENCE_3_ID = 3L;;
+    public static final Long DEGREE_CALC_1_ID = 1L;
+    public static final Long DEGREE_CALC_2_ID = 2L;
+    public static final Long DEGREE_CALC_3_ID = 3L;
+
+    public static final Long EXPERIENCE_CALC_1_ID = 1L;
+    public static final Long EXPERIENCE_CALC_2_ID = 2L;
+    public static final Long EXPERIENCE_CALC_3_ID = 3L;
+
+    public static final Long CERTIFICATE_CALC_1_ID = 1L;
+    public static final Long CERTIFICATE_CALC_2_ID = 2L;
+    public static final Long CERTIFICATE_CALC_3_ID = 3L;
 
     public static final Long CALCULATION_1_ID = 1L;
     public static final Long CALCULATION_2_ID = 2L;
