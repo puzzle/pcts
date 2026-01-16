@@ -2,9 +2,14 @@ package ch.puzzle.pcts.util;
 
 import static ch.puzzle.pcts.util.TestData.*;
 import static ch.puzzle.pcts.util.TestDataModels.*;
+import static org.mockito.Mockito.mock;
 
 import ch.puzzle.pcts.dto.calculation.CalculationDto;
 import ch.puzzle.pcts.dto.calculation.CalculationInputDto;
+import ch.puzzle.pcts.dto.calculation.calculationleadershipexperience.LeadershipExperienceCalculationDto;
+import ch.puzzle.pcts.dto.calculation.certificatecalculation.CertificateCalculationDto;
+import ch.puzzle.pcts.dto.calculation.degreecalculation.DegreeCalculationDto;
+import ch.puzzle.pcts.dto.calculation.experiencecalculation.ExperienceCalculationDto;
 import ch.puzzle.pcts.dto.certificate.CertificateDto;
 import ch.puzzle.pcts.dto.certificate.CertificateInputDto;
 import ch.puzzle.pcts.dto.certificatetype.CertificateTypeDto;
@@ -25,9 +30,12 @@ import ch.puzzle.pcts.dto.memberoverview.MemberOverviewMemberDto;
 import ch.puzzle.pcts.dto.memberoverview.certificate.MemberOverviewCertificateDto;
 import ch.puzzle.pcts.dto.memberoverview.degree.MemberOverviewDegreeDto;
 import ch.puzzle.pcts.dto.memberoverview.experience.MemberOverviewExperienceDto;
+import ch.puzzle.pcts.dto.memberoverview.leadershipexperience.MemberOverviewLeadershipExperienceDto;
+import ch.puzzle.pcts.dto.memberoverview.leadershipexperience.MemberOverviewLeadershipExperienceTypeDto;
 import ch.puzzle.pcts.dto.organisationunit.OrganisationUnitDto;
 import ch.puzzle.pcts.dto.role.RoleDto;
 import ch.puzzle.pcts.model.certificatetype.Tag;
+import java.math.BigDecimal;
 import java.util.List;
 
 public class TestDataDTOs {
@@ -364,9 +372,22 @@ public class TestDataDTOs {
                                                                                                                                                              CERTIFICATE_4
                                                                                                                                                                      .getCompletedAt(),
                                                                                                                                                              CERTIFICATE_4
-                                                                                                                                                                     .getComment())),
+                                                                                                                                                                     .getComment())
+
+                                                                                                                        ),
                                                                                                                 List
-                                                                                                                        .of()));
+                                                                                                                        .of(new MemberOverviewLeadershipExperienceDto(LEADERSHIP_CERT_1
+                                                                                                                                .getId(),
+                                                                                                                                                                      new MemberOverviewLeadershipExperienceTypeDto(LEADERSHIP_CERT_1
+                                                                                                                                                                              .getCertificateType()
+                                                                                                                                                                              .getName(),
+                                                                                                                                                                                                                    LEADERSHIP_CERT_1
+                                                                                                                                                                                                                            .getCertificateType()
+                                                                                                                                                                                                                            .getCertificateKind()
+
+                                                                                                                                                                      ),
+                                                                                                                                                                      LEADERSHIP_CERT_1
+                                                                                                                                                                              .getComment()))));
 
     public static final MemberOverviewDto MEMBER_2_OVERVIEW_DTO = new MemberOverviewDto(new MemberOverviewMemberDto(MEMBER_2
             .getId(),
@@ -463,13 +484,38 @@ public class TestDataDTOs {
                                                                               ROLE_2_DTO,
                                                                               CALCULATION_1.getState(),
                                                                               CALCULATION_1.getPublicationDate(),
-                                                                              CALCULATION_1.getPublicizedBy());
+                                                                              CALCULATION_1.getPublicizedBy(),
+                                                                              BigDecimal.TEN,
+                                                                              List
+                                                                                      .of(mock(CertificateCalculationDto.class)),
+                                                                              List
+                                                                                      .of(mock(LeadershipExperienceCalculationDto.class)),
+                                                                              List.of(mock(DegreeCalculationDto.class)),
+                                                                              List
+                                                                                      .of(mock(ExperienceCalculationDto.class)));
 
     public static final CalculationInputDto CALCULATION_INPUT_DTO_1 = new CalculationInputDto(CALCULATION_1
             .getMember()
-            .getId(), CALCULATION_1.getRole().getId(), CALCULATION_1.getState());
+            .getId(),
+                                                                                              CALCULATION_1.getState(),
+                                                                                              CALCULATION_1
+                                                                                                      .getRole()
+                                                                                                      .getId(),
+                                                                                              List.of(),
+                                                                                              List.of(),
+                                                                                              List.of(),
+                                                                                              List.of());
 
     public static final CalculationInputDto CALCULATION_INPUT_DTO_2 = new CalculationInputDto(CALCULATION_2
             .getMember()
-            .getId(), CALCULATION_2.getRole().getId(), CALCULATION_2.getState());
+            .getId(),
+                                                                                              CALCULATION_2.getState(),
+                                                                                              CALCULATION_2
+                                                                                                      .getRole()
+                                                                                                      .getId(),
+                                                                                              List.of(),
+                                                                                              List.of(),
+                                                                                              List.of(),
+                                                                                              List.of());
+
 }

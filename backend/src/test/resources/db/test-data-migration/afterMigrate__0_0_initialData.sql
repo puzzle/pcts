@@ -84,7 +84,8 @@ VALUES
     (1, 1, '2023-01-15', '2025-01-14', 'Completed first aid training.'),
     (2, 2, '2022-11-01', NULL, 'Completed first aid training.'),
     (2, 1, '2023-01-15', '2025-01-14', NULL),
-    (1, 2, '2010-08-12', '2023-03-25', 'Left organization.');
+    (1, 2, '2010-08-12', '2023-03-25', 'Left organization.'),
+    (1, 5, '2010-08-12', '2023-03-25', 'Left organization.');
 
 TRUNCATE TABLE calculation CASCADE;
 
@@ -94,3 +95,30 @@ VALUES
     (1, 2, 'DRAFT', '2025-01-14', 'Ldap User'),
     (2, 2, 'ARCHIVED', '2025-01-14', 'Ldap User 2'),
     (2, 2, 'ACTIVE', NULL, NULL);
+
+TRUNCATE TABLE experience_calculation CASCADE;
+
+INSERT INTO experience_calculation
+(calculation_id, experience_id, relevancy, comment)
+VALUES
+    (1, 2, 'HIGHLY', 'Comment'),
+    (2, 2, 'LITTLE', 'Comment'),
+    (1, 3, 'LIMITED','Comment');
+
+TRUNCATE TABLE degree_calculation CASCADE;
+
+INSERT INTO degree_calculation
+(calculation_id, degree_id, weight, relevancy, comment)
+VALUES
+    (1, 2, 80,'HIGHLY', 'Comment'),
+    (2, 2, 10,'LITTLE', 'Comment'),
+    (1, 2, 100,'LIMITED','Comment');
+
+TRUNCATE TABLE certificate_calculation CASCADE;
+
+INSERT INTO certificate_calculation
+(calculation_id, certificate_id)
+VALUES
+    (1, 2),
+    (2, 2),
+    (1, 5);
