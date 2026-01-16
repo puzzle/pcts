@@ -8,6 +8,6 @@ export interface MemberModel {
   birthDate: Date;
   abbreviation: string | null;
   employmentState: EmploymentState;
-  organisationUnit: OrganisationUnitModel;
+  organisationUnit: OrganisationUnitModel | null;
   dateOfHire: Date | null;
 }
