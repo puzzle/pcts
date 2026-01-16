@@ -30,7 +30,6 @@ jobs:
   build-and-push:
     needs: release-please
     strategy:
-      fail-fast: false
       matrix:
         include:
           - service: backend
