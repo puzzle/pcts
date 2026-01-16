@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, WritableSignal, inject, LOCALE_ID } from '@angular/core';
+import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberService } from '../member.service';
@@ -14,10 +14,10 @@ import { CertificateOverviewModel } from './cv/certificate-overview.model';
 import { LeadershipExperienceOverviewModel } from './cv/leadership-experience-overview.model';
 import { TranslationScopeDirective } from '../../../shared/translation-scope/translation-scope.directive';
 import {
-  getCertificateColumns,
-  getDegreeColumns,
-  getExperienceColumns, getExperienceTable,
-  getLeadershipColumns
+  getCertificateTable,
+  getDegreeTable,
+  getExperienceTable,
+  getLeadershipExperienceTable
 } from './cv/member-detail-cv-table-definition';
 
 @Component({
@@ -42,8 +42,6 @@ export class MemberDetailViewComponent implements OnInit {
 
   private readonly router = inject(Router);
 
-  private readonly locale = inject(LOCALE_ID);
-
   protected readonly GLOBAL_DATE_FORMAT = GLOBAL_DATE_FORMAT;
 
   readonly member: WritableSignal<MemberModel | null> = signal<MemberModel | null>(null);
@@ -56,15 +54,13 @@ export class MemberDetailViewComponent implements OnInit {
 
   leadershipExperienceData = signal<LeadershipExperienceOverviewModel[] | null>(null);
 
-  readonly degreeColumns = getDegreeColumns(this.locale);
+  readonly experienceTable = getExperienceTable();
 
-  readonly experienceColumns = getExperienceColumns(this.locale);
+  readonly certificateTable = getCertificateTable();
 
-  readonly experienceTable = getExperienceTable(this.locale);
+  readonly degreeTable = getDegreeTable();
 
-  readonly certificateColumns = getCertificateColumns(this.locale);
-
-  readonly leadershipExperienceColumns = getLeadershipColumns();
+  readonly leadershipExperienceTable = getLeadershipExperienceTable();
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');

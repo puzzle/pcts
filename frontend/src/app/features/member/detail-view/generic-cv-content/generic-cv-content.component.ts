@@ -24,8 +24,6 @@ import { ExperienceTypePillComponent } from '../../../../shared/experience-type-
 export class GenericCvContentComponent<T extends object> {
   data = input.required<T[] | null>();
 
-  // columns = input.required<GenCol<T>[]>();
-
   table = input.required<GenericTableDataSource<T>>();
 
   tableDataSource = signal<GenericTableDataSource<T> | null>(null);
@@ -35,7 +33,6 @@ export class GenericCvContentComponent<T extends object> {
       const tableValue = this.table();
       const dataValue = this.data();
 
-      // Use the existing table
       this.tableDataSource.set(tableValue);
       if (dataValue) {
         tableValue.data = dataValue;

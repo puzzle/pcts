@@ -33,9 +33,7 @@
 
   <tr
     mat-row
-    *matRowDef="let row; columns: this.columnNames();let i = index"
-    [style.--i]="i"
-    class="animate-row"
+    *matRowDef="let row; columns: this.columnNames();"
     data-testid="member-row">
   </tr>
 
@@ -59,14 +57,14 @@
   }
 </ng-template>
 
-<!--@if (isFilterApplied()) {-->
-  <div class="d-flex justify-content-center mt-2">
-    <button
-      type="button"
-      class="btn btn-link"
-      (click)="toggleButton()"
-    >
-      {{isFilterApplied() ? 'Show all' : 'Show less'  }}
-    </button>
-  </div>
-<!--}-->
+@if (isFilterApplied()) {
+    <div class="d-flex justify-content-center mt-2">
+      <button
+        type="button"
+        class="btn btn-link"
+        (click)="toggleButton()"
+      >
+        {{ isExpanded ? 'Show less' : 'Show all' }}
+      </button>
+    </div>
+}
