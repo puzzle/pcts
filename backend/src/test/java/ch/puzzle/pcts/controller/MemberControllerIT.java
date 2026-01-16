@@ -157,7 +157,7 @@ class MemberControllerIT {
                 .given(service.getAllCalculationsByMemberIdAndRoleId(memberId, roleId))
                 .willReturn(List.of(calculation));
 
-        BDDMockito.given(calculationMapper.toDto(any(List.class))).willReturn(List.of(calculationDto));
+        BDDMockito.given(calculationMapper.toDto(anyList())).willReturn(List.of(calculationDto));
 
         mvc
                 .perform(get(BASEURL + "/" + memberId + "/calculations")
@@ -168,7 +168,31 @@ class MemberControllerIT {
                 .andExpect(jsonPath("$.length()").value(1));
 
         verify(service, times(1)).getAllCalculationsByMemberIdAndRoleId(memberId, roleId);
-        verify(calculationMapper, times(1)).toDto(any(List.class));
+        verify(calculationMapper, times(1)).toDto(anyList());
     }
 
+    @DisplayName("Should successfully get calculations of member without roleId")
+    @Test
+    void shouldGetCalculationsByMemberIdWithoutRoleId() throws Exception {
+        Long memberId = 1L;
+
+        Calculation calculation = mock(Calculation.class);
+        CalculationDto calculationDto = mock(CalculationDto.class);
+
+        BDDMockito
+                .given(service.getAllCalculationsByMemberIdAndRoleId(memberId, null))
+                .willReturn(List.of(calculation));
+
+        BDDMockito.given(calculationMapper.toDto(anyList())).willReturn(List.of(calculationDto));
+
+        mvc
+                .perform(get(BASEURL + "/" + memberId + "/calculations")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1));
+
+        verify(service, times(1)).getAllCalculationsByMemberIdAndRoleId(memberId, null);
+        verify(calculationMapper, times(1)).toDto(anyList());
+    }
 }
