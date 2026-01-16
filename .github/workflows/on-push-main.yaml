@@ -33,16 +33,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        service: ["backend", "frontend"]
+        include:
+          - service: backend
+            dockerfile: backend/Dockerfile
+            context: .
+            image_name: backend
+          - service: frontend
+            dockerfile: frontend/Dockerfile
+            context: .
+            image_name: frontend
     uses: ./.github/workflows/reusable__upload-to-ghcr.yaml
     with:
-      dockerfile: ${{ matrix.service == 'backend' && 'backend/Dockerfile' || 'frontend/Dockerfile' }}
-      context: ${{ matrix.service == 'backend' && '.' || 'frontend' }}
-      image_name: ${{ matrix.service }}
+      dockerfile: ${{ matrix.dockerfile }}
+      image_name: ${{ matrix.image_name }}
       version: ${{ needs.release-please.outputs.version }}
     secrets: inherit
 
-  documentation:
-    uses: ./.github/workflows/reusable__documentation.yaml
-    with:
-      COMMIT_HASH: ${{ github.sha }}
