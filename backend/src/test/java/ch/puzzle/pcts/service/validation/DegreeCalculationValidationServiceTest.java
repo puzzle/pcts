@@ -1,6 +1,8 @@
 package ch.puzzle.pcts.service.validation;
 
 import static ch.puzzle.pcts.Constants.CALCULATION;
+import static ch.puzzle.pcts.util.TestData.*;
+import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -10,11 +12,6 @@ import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
-import ch.puzzle.pcts.model.degree.Degree;
-import ch.puzzle.pcts.model.member.Member;
-import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -26,29 +23,6 @@ class DegreeCalculationValidationServiceTest
         extends
             ValidationBaseServiceTest<DegreeCalculation, DegreeCalculationValidationService> {
 
-    private static final Long MEMBER_ID_1 = 1L;
-    private static final Long MEMBER_ID_2 = 2L;
-    private static final Long CALCULATION_ID = 1L;
-    private static final Long DEGREE_CALCULATION_ID = 1L;
-    private static final Long DEGREE_ID = 1L;
-    private static final Long ORGANISATION_UNIT_ID = 1L;
-
-    private static final String FIRST_NAME_1 = "Alice";
-    private static final String LAST_NAME_1 = "Smith";
-    private static final String FIRST_NAME_2 = "Bob";
-    private static final String LAST_NAME_2 = "Johnson";
-    private static final String DEGREE_NAME = "Degree 1";
-    private static final String ORG_UNIT_NAME = "Org Unit";
-    private static final String VALID_COMMENT = "Valid comment";
-    private static final String COMMENT = "Comment";
-
-    private static final BigDecimal VALID_WEIGHT = BigDecimal.valueOf(50);
-    private static final BigDecimal NEGATIVE_WEIGHT = BigDecimal.valueOf(-1);
-    private static final BigDecimal TOO_HIGH_WEIGHT = BigDecimal.valueOf(200);
-
-    private static final String MIN_WEIGHT = "1";
-    private static final String MAX_WEIGHT = "100";
-
     @Override
     DegreeCalculationValidationService getService() {
         return new DegreeCalculationValidationService();
@@ -56,49 +30,40 @@ class DegreeCalculationValidationServiceTest
 
     @Override
     DegreeCalculation getValidModel() {
-        Member member = createMember(MEMBER_ID_1, FIRST_NAME_1, LAST_NAME_1);
-        Calculation calculation = createCalculation(CALCULATION_ID, member);
-        Degree degree = createDegree(DEGREE_ID, member, DEGREE_NAME);
-
-        return new DegreeCalculation(null, calculation, degree, Relevancy.HIGHLY, VALID_WEIGHT, VALID_COMMENT);
+        return new DegreeCalculation(null, CALCULATION_1, DEGREE_1, Relevancy.HIGHLY, VALID_WEIGHT, VALID_STRING);
     }
 
     static Stream<Arguments> invalidModelProvider() {
         return Stream
                 .of(Arguments
-                        .of(new DegreeCalculation(null, null, new Degree(), Relevancy.HIGHLY, VALID_WEIGHT, COMMENT),
+                        .of(new DegreeCalculation(null, null, DEGREE_1, Relevancy.HIGHLY, VALID_WEIGHT, VALID_STRING),
                             List.of(Map.of(FieldKey.CLASS, "DegreeCalculation", FieldKey.FIELD, "calculation"))),
                     Arguments
                             .of(new DegreeCalculation(null,
-                                                      new Calculation(),
+                                                      CALCULATION_1,
                                                       null,
                                                       Relevancy.HIGHLY,
                                                       VALID_WEIGHT,
-                                                      COMMENT),
+                                                      VALID_STRING),
                                 List.of(Map.of(FieldKey.CLASS, "DegreeCalculation", FieldKey.FIELD, "degree"))),
                     Arguments
-                            .of(new DegreeCalculation(null,
-                                                      new Calculation(),
-                                                      new Degree(),
-                                                      null,
-                                                      VALID_WEIGHT,
-                                                      COMMENT),
+                            .of(new DegreeCalculation(null, CALCULATION_1, DEGREE_1, null, VALID_WEIGHT, VALID_STRING),
                                 List.of(Map.of(FieldKey.CLASS, "DegreeCalculation", FieldKey.FIELD, "relevancy"))),
                     Arguments
                             .of(new DegreeCalculation(null,
-                                                      new Calculation(),
-                                                      new Degree(),
+                                                      CALCULATION_1,
+                                                      DEGREE_1,
                                                       Relevancy.HIGHLY,
                                                       null,
-                                                      COMMENT),
+                                                      VALID_STRING),
                                 List.of(Map.of(FieldKey.CLASS, "DegreeCalculation", FieldKey.FIELD, "weight"))),
                     Arguments
                             .of(new DegreeCalculation(null,
-                                                      new Calculation(),
-                                                      new Degree(),
+                                                      CALCULATION_1,
+                                                      DEGREE_1,
                                                       Relevancy.HIGHLY,
-                                                      NEGATIVE_WEIGHT,
-                                                      COMMENT),
+                                                      NEGATIVE_BIG_DECIMAL,
+                                                      VALID_STRING),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -110,14 +75,14 @@ class DegreeCalculationValidationServiceTest
                                                     FieldKey.MIN,
                                                     MIN_WEIGHT,
                                                     FieldKey.IS,
-                                                    NEGATIVE_WEIGHT.toString()))),
+                                                    NEGATIVE_BIG_DECIMAL.toString()))),
                     Arguments
                             .of(new DegreeCalculation(null,
-                                                      new Calculation(),
-                                                      new Degree(),
+                                                      CALCULATION_1,
+                                                      DEGREE_1,
                                                       Relevancy.HIGHLY,
                                                       TOO_HIGH_WEIGHT,
-                                                      COMMENT),
+                                                      VALID_STRING),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -136,14 +101,11 @@ class DegreeCalculationValidationServiceTest
     @Test
     void shouldThrowExceptionWhenMembersDoNotMatch() {
         DegreeCalculationValidationService spyService = spy(getService());
+        DegreeCalculation dc = getValidModel();
 
-        Member member1 = createMember(MEMBER_ID_1, FIRST_NAME_1, LAST_NAME_1);
-        Member member2 = createMember(MEMBER_ID_2, FIRST_NAME_2, LAST_NAME_2);
-
-        Degree degree = createDegree(DEGREE_ID, member1, DEGREE_NAME);
-        DegreeCalculation dc = new DegreeCalculation();
-        dc.setCalculation(createCalculationWithMember(member2));
-        dc.setDegree(degree);
+        Calculation calculationForMember2 = new Calculation();
+        calculationForMember2.setMember(MEMBER_2);
+        dc.setCalculation(calculationForMember2);
 
         PCTSException exception = assertThrows(PCTSException.class, () -> spyService.validateMemberForCalculation(dc));
 
@@ -158,7 +120,7 @@ class DegreeCalculationValidationServiceTest
         DegreeCalculationValidationService spyService = spy(getService());
         DegreeCalculation dc = getValidModel();
         DegreeCalculation existingDc = getValidModel();
-        existingDc.setId(DEGREE_CALCULATION_ID);
+        existingDc.setId(DEGREE_CALC_1_ID);
 
         List<DegreeCalculation> existing = List.of(existingDc);
 
@@ -166,7 +128,7 @@ class DegreeCalculationValidationServiceTest
                                                () -> spyService.validateDuplicateDegreeId(dc, existing));
 
         assertEquals(ErrorKey.DUPLICATE_CALCULATION, exception.getErrorKeys().getFirst());
-        assertEquals(Map.of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "degree", FieldKey.IS, DEGREE_NAME),
+        assertEquals(Map.of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "degree", FieldKey.IS, DEGREE_1.getName()),
                      exception.getErrorAttributes().getFirst());
     }
 
@@ -175,7 +137,7 @@ class DegreeCalculationValidationServiceTest
     void shouldNotThrowWhenOnlySameEntityExists() {
         DegreeCalculationValidationService spyService = spy(getService());
         DegreeCalculation dc = getValidModel();
-        dc.setId(CALCULATION_ID);
+        dc.setId(DEGREE_CALC_1.getId());
 
         List<DegreeCalculation> existing = List.of(dc);
 
@@ -193,36 +155,5 @@ class DegreeCalculationValidationServiceTest
         spyService.validateOnCreate(dc);
 
         verify(spyService).validateMemberForCalculation(dc);
-    }
-
-    private Member createMember(Long id, String firstName, String lastName) {
-        Member member = new Member();
-        member.setId(id);
-        member.setFirstName(firstName);
-        member.setLastName(lastName);
-        member.setBirthDate(LocalDate.of(1980, 1, 1));
-        member.setOrganisationUnit(new OrganisationUnit(ORGANISATION_UNIT_ID, ORG_UNIT_NAME));
-        return member;
-    }
-
-    private Degree createDegree(Long id, Member member, String name) {
-        Degree degree = new Degree();
-        degree.setId(id);
-        degree.setMember(member);
-        degree.setName(name);
-        return degree;
-    }
-
-    private Calculation createCalculation(Long id, Member member) {
-        Calculation calculation = new Calculation();
-        calculation.setId(id);
-        calculation.setMember(member);
-        return calculation;
-    }
-
-    private Calculation createCalculationWithMember(Member member) {
-        Calculation calculation = new Calculation();
-        calculation.setMember(member);
-        return calculation;
     }
 }
