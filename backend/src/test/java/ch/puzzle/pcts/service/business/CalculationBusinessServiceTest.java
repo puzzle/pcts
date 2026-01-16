@@ -1,5 +1,10 @@
 package ch.puzzle.pcts.service.business;
 
+import static ch.puzzle.pcts.util.TestData.CALCULATION_1_ID;
+import static ch.puzzle.pcts.util.TestData.CALCULATION_2_ID;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.role.Role;
@@ -7,18 +12,12 @@ import ch.puzzle.pcts.service.persistence.CalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.CalculationValidationService;
 import java.math.BigDecimal;
 import java.util.List;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import static ch.puzzle.pcts.util.TestData.CALCULATION_1_ID;
-import static ch.puzzle.pcts.util.TestData.CALCULATION_2_ID;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CalculationBusinessServiceTest
@@ -71,6 +70,7 @@ class CalculationBusinessServiceTest
     @Test
     void shouldGetById() {
         Calculation calc = new Calculation();
+        calc.setId(CALCULATION_1_ID);
 
         when(persistenceService.getById(CALCULATION_1_ID)).thenReturn(calc);
         when(experienceBusinessService.getExperiencePoints(CALCULATION_1_ID)).thenReturn(BigDecimal.ONE);
@@ -92,21 +92,33 @@ class CalculationBusinessServiceTest
     @DisplayName("Should create calculation with experiences")
     @Test
     void shouldCreate() {
+        when(experienceBusinessService.getExperiencePoints(anyLong())).thenReturn(BigDecimal.ONE);
+        when(degreeBusinessService.getDegreePoints(anyLong())).thenReturn(BigDecimal.ONE);
+        when(certificateBusinessService.getCertificatePoints(anyLong())).thenReturn(BigDecimal.ONE);
         super.shouldCreate();
         verify(experienceBusinessService).createExperienceCalculations(calculation);
         verify(certificateBusinessService).createCertificateCalculations(calculation);
         verify(degreeBusinessService).createDegreeCalculations(calculation);
+        verify(experienceBusinessService).getExperiencePoints(anyLong());
+        verify(degreeBusinessService).getDegreePoints(anyLong());
+        verify(certificateBusinessService).getCertificatePoints(anyLong());
     }
 
     @Override
     @DisplayName("Should update calculation with experiences")
     @Test
     void shouldUpdate() {
+        when(experienceBusinessService.getExperiencePoints(anyLong())).thenReturn(BigDecimal.ONE);
+        when(degreeBusinessService.getDegreePoints(anyLong())).thenReturn(BigDecimal.ONE);
+        when(certificateBusinessService.getCertificatePoints(anyLong())).thenReturn(BigDecimal.ONE);
         super.shouldUpdate();
         verify(validationService).validateOnUpdate(CALCULATION_1_ID, calculation);
         verify(experienceBusinessService).updateExperienceCalculations(calculation);
         verify(certificateBusinessService).updateCertificateCalculations(calculation);
         verify(degreeBusinessService).updateDegreeCalculations(calculation);
+        verify(experienceBusinessService).getExperiencePoints(anyLong());
+        verify(degreeBusinessService).getDegreePoints(anyLong());
+        verify(certificateBusinessService).getCertificatePoints(anyLong());
     }
 
     @DisplayName("Should get all calculations by member and set points")
