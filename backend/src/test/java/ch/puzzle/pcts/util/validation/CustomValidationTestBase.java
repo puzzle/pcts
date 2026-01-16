@@ -32,9 +32,6 @@ public class CustomValidationTestBase {
         @PCTSEmailValidation
         String email;
 
-        public DummyClass() {
-        }
-
         public void setEmail(String email) {
             this.email = trim(email);
         }
