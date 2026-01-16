@@ -16,8 +16,8 @@ import {
 } from '../../features/leadership-experiences/leadership-experiences-type/leadership-experience-type.model';
 import { DegreeTypeModel } from '../../features/degrees/degree-type/degree-type.model';
 import { DegreeModel } from '../../features/degrees/degree.model';
-import { MemberOverviewModel } from '../../features/member/member-overview.model';
 import { DegreeOverviewModel } from '../../features/member/detail-view/cv/degree-overview.model';
+import { MemberCvOverviewModel } from '../../features/member/member-cv-overview.model';
 
 export const url = '/api/v1/data';
 
@@ -312,7 +312,7 @@ export const degree2: DegreeModel = {
   endDate: null
 };
 
-export const memberOverview1: MemberOverviewModel = {
+export const memberOverview1: MemberCvOverviewModel = {
   member: {
     id: 1,
     firstName: 'Lena',
@@ -321,10 +321,7 @@ export const memberOverview1: MemberOverviewModel = {
     abbreviation: 'LM',
     dateOfHire: new Date(),
     birthDate: new Date(),
-    organisationUnit: {
-      id: 1,
-      name: '/zh'
-    }
+    organisationUnitName: '/zh'
   },
   cv: {
     degrees: [{
