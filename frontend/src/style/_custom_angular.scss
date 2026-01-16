@@ -1,5 +1,6 @@
 @use '@angular/material' as mat;
 @use 'variables';
+@use 'sass:map';
 
 .small-form-field {
   @include mat.form-field-density(-4);
@@ -40,12 +41,12 @@ $pz-theme: mat.m2-define-light-theme(
     outlined-pressed-state-layer-opacity: 0.04,
 
     filled-container-color: variables.$pz-dark-blue,
-    filled-label-text-color: map-get(
-        map-get(variables.$pz-dark-blue-palette, contrast),
+    filled-label-text-color: map.get(
+        map.get(variables.$pz-dark-blue-palette, contrast),
         900
       ),
-    filled-state-layer-color: map-get(
-        map-get(variables.$pz-dark-blue-palette, contrast),
+    filled-state-layer-color: map.get(
+        map.get(variables.$pz-dark-blue-palette, contrast),
         900
       ),
     filled-hover-state-layer-opacity: 0.1,
