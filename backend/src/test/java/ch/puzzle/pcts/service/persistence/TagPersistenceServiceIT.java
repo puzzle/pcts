@@ -25,7 +25,7 @@ class TagPersistenceServiceIT extends PersistenceBaseIT<Tag, TagRepository, TagP
 
     @Override
     Tag getModel() {
-        return new Tag(null, "Very important tag");
+        return Tag.Builder.builder().withName("Very important tag").build();
     }
 
     List<Tag> getAll() {

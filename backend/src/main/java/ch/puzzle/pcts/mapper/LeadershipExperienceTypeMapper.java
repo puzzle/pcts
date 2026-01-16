@@ -23,7 +23,8 @@ public class LeadershipExperienceTypeMapper {
     }
 
     public CertificateType fromDto(LeadershipExperienceTypeDto dto) {
-        return CertificateType.Builder.builder()
+        return CertificateType.Builder
+                .builder()
                 .withId(dto.id())
                 .withName(dto.name())
                 .withPoints(dto.points())

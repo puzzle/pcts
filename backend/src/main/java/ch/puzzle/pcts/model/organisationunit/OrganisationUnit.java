@@ -89,10 +89,9 @@ public class OrganisationUnit implements Model {
         }
 
         public Builder withName(String name) {
-            this.name = name;
+            this.name = trim(name);
             return this;
         }
-
 
         public OrganisationUnit build() {
             return new OrganisationUnit(this);

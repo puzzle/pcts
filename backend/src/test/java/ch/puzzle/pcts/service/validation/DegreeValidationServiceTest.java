@@ -44,13 +44,15 @@ class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, Degr
     @Override
     Degree getValidModel() {
         Long id = 1L;
-        DegreeType degreeType = new DegreeType(id,
-                                               "Degree Type 1",
-                                               new BigDecimal("3.0"),
-                                               new BigDecimal("2.0"),
-                                               new BigDecimal("1.0"));
+        DegreeType degreeType = DegreeType.Builder
+                .builder()
+                .withName("Degree Type 1")
+                .withHighlyRelevantPoints(BigDecimal.valueOf(3.0))
+                .withLimitedRelevantPoints(BigDecimal.valueOf(2.0))
+                .withLittleRelevantPoints(BigDecimal.valueOf(1.0))
+                .build();
 
-        OrganisationUnit organisationUnit = new OrganisationUnit(id, "/bbt");
+        OrganisationUnit organisationUnit = OrganisationUnit.Builder.builder().withId(id).withName("/bbt").build();
 
         Member member = Member.Builder
                 .builder()

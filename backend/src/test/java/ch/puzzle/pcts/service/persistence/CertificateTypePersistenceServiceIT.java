@@ -2,7 +2,7 @@ package ch.puzzle.pcts.service.persistence;
 
 import static ch.puzzle.pcts.Constants.CERTIFICATE_TYPE;
 import static ch.puzzle.pcts.util.TestData.*;
-import static ch.puzzle.pcts.util.TestDataModels.CERTIFICATE_TYPES;
+import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -34,11 +34,14 @@ class CertificateTypePersistenceServiceIT
 
     @Override
     CertificateType getModel() {
-        return new CertificateType(null,
-                                   "Created certificate type",
-                                   BigDecimal.valueOf(3),
-                                   "This is a newly created certificate",
-                                   Set.of(new Tag(TAG_1_ID, "Important tag")));
+        return CertificateType.Builder
+                .builder()
+                .withName("Created certificate type")
+                .withPoints(BigDecimal.valueOf(3))
+                .withComment("This is a newly created certificate")
+                .withTags(Set.of(TAG_1))
+                .withCertificateKind(CertificateKind.CERTIFICATE)
+                .build();
     }
 
     @Override
@@ -72,13 +75,15 @@ class CertificateTypePersistenceServiceIT
     @DisplayName("Should update certificate type")
     @Test
     void shouldUpdateCertificate() {
-        CertificateType updatePayload = new CertificateType(CERTIFICATE_4_ID,
-                                                            "Updated certificate type",
-                                                            BigDecimal.valueOf(3),
-                                                            "This is a updated certificate",
-                                                            Set
-                                                                    .of(new Tag(null, "Important tag"),
-                                                                        new Tag(null, "Way more important tag")));
+        CertificateType updatePayload = CertificateType.Builder
+                .builder()
+                .withId(CERTIFICATE_4_ID)
+                .withName("Updated certificate type")
+                .withPoints(BigDecimal.valueOf(3))
+                .withComment("This is a updated certificate")
+                .withTags(Set.of(TAG_3, TAG_4))
+                .withCertificateKind(CertificateKind.CERTIFICATE)
+                .build();
 
         persistenceService.save(updatePayload);
 
@@ -90,7 +95,7 @@ class CertificateTypePersistenceServiceIT
         assertThat(certificateResult.getCertificateKind()).isEqualTo(CertificateKind.CERTIFICATE);
         assertThat(certificateResult.getTags())
                 .extracting(Tag::getName)
-                .containsExactlyInAnyOrder("Important tag", "Way more important tag");
+                .containsExactlyInAnyOrder(TAG_3.getName(), TAG_4.getName());
     }
 
     @DisplayName("Should get all certificate types")

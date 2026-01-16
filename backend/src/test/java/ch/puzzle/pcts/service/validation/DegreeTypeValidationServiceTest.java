@@ -36,11 +36,13 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
 
     @Override
     DegreeType getValidModel() {
-        return new DegreeType(null,
-                              "Degree Type",
-                              BigDecimal.valueOf(7.5),
-                              BigDecimal.valueOf(4.75),
-                              BigDecimal.valueOf(3));
+        return DegreeType.Builder
+                .builder()
+                .withName("Degree Type")
+                .withHighlyRelevantPoints(BigDecimal.valueOf(7.5))
+                .withLimitedRelevantPoints(BigDecimal.valueOf(4.75))
+                .withLittleRelevantPoints(BigDecimal.valueOf(3))
+                .build();
     }
     @Override
     DegreeTypeValidationService getService() {

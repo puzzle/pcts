@@ -35,7 +35,7 @@ public class ExperienceType implements Model {
 
     private ExperienceType(Builder builder) {
         this.id = builder.id;
-        this.name = trim(name);
+        this.name = trim(builder.name);
         this.highlyRelevantPoints = builder.highlyRelevantPoints;
         this.limitedRelevantPoints = builder.limitedRelevantPoints;
         this.littleRelevantPoints = builder.littleRelevantPoints;
@@ -138,7 +138,7 @@ public class ExperienceType implements Model {
         }
 
         public Builder withName(String name) {
-            this.name = name;
+            this.name = trim(name);
             return this;
         }
 
@@ -157,8 +157,7 @@ public class ExperienceType implements Model {
             return this;
         }
 
-
-            public ExperienceType build() {
+        public ExperienceType build() {
             return new ExperienceType(this);
         }
     }

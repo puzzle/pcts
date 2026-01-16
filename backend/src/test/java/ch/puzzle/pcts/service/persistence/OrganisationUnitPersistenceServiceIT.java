@@ -25,7 +25,7 @@ class OrganisationUnitPersistenceServiceIT
 
     @Override
     OrganisationUnit getModel() {
-        return new OrganisationUnit(null, "OrganisationUnit 3");
+        return OrganisationUnit.Builder.builder().withName("OrganisationUnit 3").build();
     }
 
     @Override
