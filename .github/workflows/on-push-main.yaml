@@ -22,7 +22,7 @@ jobs:
         service: ["backend", "frontend"]
     uses: ./.github/workflows/reusable__upload-to-ghcr.yaml
     with:
-      dockerfile: ${{ matrix.service == 'backend' && 'backend/Dockerfile' || 'Dockerfile' }}
+      dockerfile: ${{ matrix.service == 'backend' && 'backend/Dockerfile' || 'frontend/Dockerfile' }}
       context: ${{ matrix.service == 'backend' && '.' || 'frontend' }}
       image_name: ${{ matrix.service }}
       version: ${{ needs.release-please.outputs.version }}
