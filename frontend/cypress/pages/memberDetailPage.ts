@@ -9,8 +9,20 @@ class MemberDetailPage extends Page {
     return cy.getByTestId('edit-member-button');
   }
 
-  memberDetailView() {
-    return cy.getByTestId('member-detail-view');
+  memberDetailData() {
+    return cy.getByTestId('member-detail-data');
+  }
+
+  memberName() {
+    return cy.getByTestId('member-name');
+  }
+
+  memberDetailTitle() {
+    return cy.getByTestId('member-detail-title');
+  }
+
+  memberCvTab() {
+    return cy.getByTestId('cv-tab');
   }
 }
 

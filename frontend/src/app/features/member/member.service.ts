@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { MemberDto } from './dto/member.dto';
 import { DateTime } from 'luxon';
-import { MemberOverviewModel } from './member-overview.model';
+import { MemberCvOverviewModel } from './member-cv-overview.model';
 
 @Injectable({
   providedIn: 'root'
@@ -56,8 +56,8 @@ export class MemberService {
     };
   }
 
-  getMemberOverviewByMemberId(id: number): Observable<MemberOverviewModel> {
-    return this.httpClient.get<MemberOverviewModel>(`api/v1/member-overviews/${id}`)
+  getMemberOverviewByMemberId(id: number): Observable<MemberCvOverviewModel> {
+    return this.httpClient.get<MemberCvOverviewModel>(`api/v1/member-overviews/${id}`)
       .pipe(map((dto) => dto));
   }
 }

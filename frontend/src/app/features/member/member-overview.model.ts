@@ -1,7 +1,12 @@
-import { MemberModel } from './member.model';
-import { CvOverviewModel } from './detail-view/cv/cv.model';
+import { EmploymentState } from '../../shared/enum/employment-state.enum';
 
 export interface MemberOverviewModel {
-  member: MemberModel;
-  cv: CvOverviewModel;
+  id: number;
+  firstName: string;
+  lastName: string;
+  birthDate: Date;
+  abbreviation: string | null;
+  employmentState: EmploymentState;
+  organisationUnitName: string | null;
+  dateOfHire: Date | null;
 }
