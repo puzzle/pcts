@@ -1,0 +1,227 @@
+---
+name: PR Governance & Workflow
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize, ready_for_review, converted_to_draft, assigned, unassigned, closed]
+
+permissions:
+  contents: read
+  pull-requests: write # Required for commenting
+  repository-projects: write
+  issues: read
+
+jobs:
+  validate-pr:
+    name: Validate PR Standards
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+      TITLE: "${{ github.event.pull_request.title }}"
+      REPO: "${{ github.repository }}"
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # --- STEP 1: Check Assignee ---
+      - name: Check Assignee
+        id: check_assignee
+        run: |
+          ASSIGNEES=$(gh pr view ${{ github.event.pull_request.number }} --json assignees --jq '.assignees | length')
+          if [ "$ASSIGNEES" -eq 0 ]; then
+            echo "::error::⛔ Missing Assignee: You must assign this PR to a user."
+            exit 1
+          else
+            echo "✅ Assignee check passed."
+          fi
+
+      # --- STEP 2: Check Conventional Commits ---
+      - name: Check Title Format (Conventional Commits)
+        id: check_title
+        run: |
+          if [[ ! "$TITLE" =~ ^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-z0-9-]+\))?:[[:space:]].+ ]]; then
+            echo "::error::⛔ Invalid Title: Must follow Conventional Commits (e.g., 'feat: Add new button')."
+            exit 1
+          else
+            echo "✅ Title format passed."
+          fi
+
+      # --- STEP 3: Validate Linked Issue in Title ---
+      - name: Check Linked Issue & Title Match
+        id: check_issue
+        run: |
+          WARNING_IDENTIFIER="PR Governance Notice"
+          WARNING_BODY="### ⚠️ $WARNING_IDENTIFIER<br/>No linked issue found. This PR will not be moved on the project board automatically."
+
+          # 1. Check if a warning comment already exists
+          # We inject the variable directly into the jq string using escaped quotes (\")
+          EXISTING_COMMENT_ID=$(gh api repos/puzzle/pcts/issues/$PR_NUMBER/comments \
+          --jq ".[] | select(.body | contains(\"$WARNING_IDENTIFIER\")) | .id")
+
+          # 2. Get Linked Issues
+          ISSUE_JSON=$(gh pr view $PR_NUMBER --json closingIssuesReferences --jq '.closingIssuesReferences')
+          ISSUE_COUNT=$(echo "$ISSUE_JSON" | jq 'length')
+
+          if [ "$ISSUE_COUNT" -gt 0 ]; then
+            # --- SCENARIO: Issue is Linked ---
+            ISSUE_NUM=$(echo "$ISSUE_JSON" | jq -r '.[0].number')
+            echo "🔗 Found Linked Issue: #$ISSUE_NUM"
+
+            # Check if Title contains the number
+            if [[ "$TITLE" != *"$ISSUE_NUM"* ]]; then
+              echo "::error::⛔ Title Mismatch: This PR is linked to Issue #$ISSUE_NUM, but the number is missing from the title."
+              exit 1
+            else
+              echo "✅ Title contains the linked issue number."
+
+              # CLEANUP: If the warning comment exists, delete it now because the PR is fixed.
+              if [ ! -z "$EXISTING_COMMENT_ID" ]; then
+                echo "🧹 Removing stale warning comment (ID: $EXISTING_COMMENT_ID)..."
+                gh api -X DELETE "repos/puzzle/pcts/issues/comments/$EXISTING_COMMENT_ID"
+                echo "✅ Comment deleted."
+              fi
+            fi
+
+          else
+            # --- SCENARIO: No Linked Issue ---
+            echo "⚠️ No linked issue found."
+
+            # Only post if the comment doesn't already exist to avoid spam
+            if [ -z "$EXISTING_COMMENT_ID" ]; then
+              gh pr comment $PR_NUMBER --body "$WARNING_BODY"
+              echo "✅ Warning comment posted."
+            else
+              echo "ℹ️ Warning comment already exists. No action taken."
+            fi
+          fi
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check Ancestry
+        run: |
+          # Define branch names for clarity
+          BASE_BRANCH="origin/${{ github.base_ref }}"
+          HEAD_BRANCH="origin/${{ github.head_ref }}"
+
+          echo "Checking if $HEAD_BRANCH is rebased on $BASE_BRANCH..."
+
+          # Fetch the latest refs to ensure accurate comparison
+          git fetch origin ${{ github.base_ref }}
+          git fetch origin ${{ github.head_ref }}
+
+          # Check if the base branch is an ancestor of the head branch
+          if git merge-base --is-ancestor "$BASE_BRANCH" "$HEAD_BRANCH"; then
+            echo "✅ Success: The PR branch is fully up-to-date with the base branch."
+            exit 0
+          else
+            echo "❌ Error: The PR branch is behind the base branch."
+            echo "Action Required: Please rebase your branch on ${{ github.base_ref }}."
+            echo "Command suggestion: git fetch origin && git rebase origin/${{ github.base_ref }}"
+            exit 1
+          fi
+
+  update-project-status:
+    name: Update Project Status
+    runs-on: ubuntu-latest
+    needs: validate-pr
+    if: success()
+    env:
+      GH_TOKEN: ${{ secrets.RELEASE_PLEASE_GH_TOKEN }}
+      OWNER: "puzzle"
+      PROJECT_NUMBER: 17
+      FIELD_NAME: "Status"
+    steps:
+      - name: Determine Target Status
+        id: set_status
+        run: |
+          if [ "${{ github.event.pull_request.merged }}" == "true" ]; then
+            echo "TARGET_STATUS=Ready for Sprint Review" >> $GITHUB_ENV
+          elif [ "${{ github.event.action }}" == "closed" ]; then
+            echo "PR closed without merge. Skipping update."
+            echo "TARGET_STATUS=STOP" >> $GITHUB_ENV
+          elif [ "${{ github.event.pull_request.draft }}" == "true" ]; then
+            echo "TARGET_STATUS=In progress" >> $GITHUB_ENV
+          else
+            echo "TARGET_STATUS=In review" >> $GITHUB_ENV
+          fi
+
+      - name: Get Id of desired status label
+        run: |
+          LABEL_ID=$(gh project field-list "$PROJECT_NUMBER" --owner "$OWNER" --format json | jq -r --arg field_name "Status" --arg search_string "In review" '
+            .fields[]
+            | select(.name == $field_name)
+            | .options[]
+            | select(.name | endswith($search_string))
+            | .id
+          ')
+          echo "$LABEL_ID"
+          echo "DESIRED_STATUS_LABEL_ID=$LABEL_ID" >> $GITHUB_ENV
+
+      - name: Move Linked Issues to In Implementation
+        if: env.TARGET_STATUS != 'STOP'
+        shell: bash
+        env:
+#          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # or your specific PAT
+          OWNER: puzzle
+          PROJECT_NUMBER: 17
+          FIELD_NAME: Status
+          # ADDED: These are required for the script to work
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          echo "Desired status: $TARGET_STATUS, desired status label id: $DESIRED_STATUS_LABEL_ID"
+
+          # 1. Fetch Closing Issues (Renamed variable to match the loop below)
+          LINKED_ISSUES=$(gh pr view "$PR_NUMBER" -R "$REPO" --json closingIssuesReferences -q '.closingIssuesReferences[].number')
+          echo "Linked issue numbers: $LINKED_ISSUES"
+
+          if [[ -z "$LINKED_ISSUES" ]]; then
+            echo "No linked issues found for PR #$PR_NUMBER."
+            exit 0
+          fi
+
+          # 3. Get Project ID
+          echo "Project number: $PROJECT_NUMBER, owner $OWNER"
+          PROJECT_ID=$(gh project view "$PROJECT_NUMBER" --owner "$OWNER" --format json -q .id)
+          echo "Project ID: $PROJECT_ID"
+
+          # 4. Loop through issues
+          for ISSUE_NUM in $LINKED_ISSUES; do
+            echo "Processing Issue #$ISSUE_NUM..."
+
+            # Get Item ID within the project
+            ITEM_ID=$(gh project item-list "$PROJECT_NUMBER" --owner "$OWNER" --limit 100 --format json | jq -r --argjson n "$ISSUE_NUM" '
+              .items[] | select(.content.number == $n) | .id
+            ')
+
+            echo "Found Item ID: $ITEM_ID"
+
+            if [[ -n "$ITEM_ID" ]]; then
+              FIELD_ID=$(gh project field-list "$PROJECT_NUMBER" --owner "$OWNER" --format json | jq -r --arg name "$FIELD_NAME" '.fields[] | select(.name==$name) | .id')
+
+              OPTION_ID=$(gh project field-list "$PROJECT_NUMBER" --owner "$OWNER" --format json | jq -r --arg name "$FIELD_NAME" --arg status "$TARGET_STATUS" '
+                .fields[] | select(.name==$name) | .options[] | select(.name | endswith($status)) | .id
+              ')
+
+              if [[ -n "$FIELD_ID" && -n "$OPTION_ID" ]]; then
+                 gh project item-edit --id "$ITEM_ID" --project-id "$PROJECT_ID" --field-id "$FIELD_ID" --single-select-option-id "$OPTION_ID"
+                 echo "✅ Issue #$ISSUE_NUM moved to '$TARGET_STATUS'"
+              else
+                 echo "❌ Could not find Field ID or Option ID for status '$TARGET_STATUS'"
+              fi
+            else
+              echo "⚠️  Skipping Issue #$ISSUE_NUM: Item not found in project."
+            fi
+          done
+
+      - name: Warn if Update Skipped
+        if: env.STATUS != 'STOP' && env.TARGET_URL == ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Switch back to standard token for commenting
+        run: |
+          echo "⚠️ Skipping Project Update because no linked issue was found."
+          # We don't exit 1 here, we just finish successfully without moving anything.
