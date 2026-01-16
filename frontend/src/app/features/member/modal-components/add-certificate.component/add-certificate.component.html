@@ -34,25 +34,27 @@
 
   <ng-container actions>
     <div class="d-flex flex-row gap-3">
+
       <button matButton="text" type="button" (click)="onCancel()">
         {{ "BUTTONS.CANCEL" | scopedTranslation  }}
       </button>
-      <button matButton="filled" type="submit" data-testid="submit-button" [disabled]="!formGroup.valid">
-        {{ "BUTTONS.ACTION" | scopedTranslation }}
-      </button>
-      <button mat-flat-button
-              type="submit"
-              [matMenuTriggerFor]="menu"
-              [disabled]="!formGroup.valid">
-        <mat-icon>arrow_drop_down</mat-icon>
-      </button>
-    </div>
 
+      <div class="d-flex">
+        <button class="rounded-end-0" matButton="filled" type="submit" data-testid="submit-button">
+          {{ "BUTTONS.ACTION" | scopedTranslation }}
+        </button>
+        <button matButton="filled" class="ms-0 rounded-start-0 p-0 px-1" style="min-width: 0" [matMenuTriggerFor]="submitMenu">
+          <span class="d-flex justify-content-center">
+            <mat-icon>arrow_drop_down</mat-icon>
+          </span>
+        </button>
+      </div>
+    </div>
   </ng-container>
 </app-base-modal>
 
-<mat-menu #menu="matMenu">
-  <button mat-menu-item>Item 1</button>
-  <button mat-menu-item>Item 2</button>
+<mat-menu #submitMenu="matMenu">
+  <button class="d-flex" mat-menu-item>{{ "BUTTONS.ACTION" | scopedTranslation }} {{ "BUTTONS.ENTER_ANOTHER" | scopedTranslation}}</button>
+  <button mat-menu-item>{{ "BUTTONS.ACTION" | scopedTranslation }} {{ "BUTTONS.COPY" | scopedTranslation}}</button>
 </mat-menu>
 
