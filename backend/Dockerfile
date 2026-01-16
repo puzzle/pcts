@@ -2,7 +2,6 @@ FROM maven:3-eclipse-temurin-25-alpine AS builder
 WORKDIR /app
 
 COPY pom.xml .
-COPY sonar-project.properties .
 
 COPY backend/pom.xml backend/
 COPY backend/src backend/src
