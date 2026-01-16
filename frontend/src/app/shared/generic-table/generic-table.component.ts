@@ -61,8 +61,10 @@ export class GenericTableComponent<T extends object> {
 
   dataSource = input.required<GenericTableDataSource<T>>();
 
+  isExpanded = false;
+
   isFilterApplied = () => {
-    return this.dataSource().filteredData.length !== this.dataSource().data.length;
+    return this.dataSource().filteredData.length !== this.dataSource().data.length || this.isExpanded;
   };
 
   columns = computed(() => this.dataSource().columnDefs);
@@ -95,6 +97,7 @@ export class GenericTableComponent<T extends object> {
   }
 
   toggleButton() {
+    this.isExpanded = !this.isExpanded;
     this.dataSource()
       .toggleIgnorePredicate();
   }

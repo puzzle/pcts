@@ -57,36 +57,29 @@
     </div>
     <mat-tab-group class="folder-tabs" mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms" *appTranslationScope="'CV'">
       <mat-tab label="CV">
-<!--        <app-generic-cv-content-->
-<!--          [data]="degreeData()"-->
-<!--          *appTranslationScope="'DEGREE'"-->
-<!--          [columns]="degreeColumns"-->
-<!--        />-->
+        <app-generic-cv-content
+          [data]="degreeData()"
+          *appTranslationScope="'DEGREE'"
+          [table]="degreeTable"
+        />
 
-<!--        <app-generic-cv-content-->
-<!--          [data]="experienceData()"-->
-<!--          *appTranslationScope="'EXPERIENCE'"-->
-<!--          [columns]="experienceColumns"-->
-<!--        />-->
+        <app-generic-cv-content
+          [data]="experienceData()"
+          *appTranslationScope="'EXPERIENCE'"
+          [table]="experienceTable"
+        />
 
-<!--        <app-generic-cv-content-->
-<!--          [data]="certificateData()"-->
-<!--          *appTranslationScope="'CERTIFICATE'"-->
-<!--          [columns]="certificateColumns"-->
-<!--        />-->
+        <app-generic-cv-content
+          [data]="certificateData()"
+          *appTranslationScope="'CERTIFICATE'"
+          [table]="certificateTable"
+        />
 
-<!--        <app-generic-cv-content-->
-<!--          [data]="leadershipExperienceData()"-->
-<!--          *appTranslationScope="'LEADERSHIP_EXPERIENCE'"-->
-<!--          [columns]="leadershipExperienceColumns"-->
-<!--        />-->
-
-
-                <app-generic-cv-content
-                  [data]="experienceData()"
-                  *appTranslationScope="'EXPERIENCE'"
-                  [table]="experienceTable"
-                />
+        <app-generic-cv-content
+          [data]="leadershipExperienceData()"
+          *appTranslationScope="'LEADERSHIP_EXPERIENCE'"
+          [table]="leadershipExperienceTable"
+        />
       </mat-tab>
       <mat-tab label="Berechnungen">
                   <span>calculation content ...</span>

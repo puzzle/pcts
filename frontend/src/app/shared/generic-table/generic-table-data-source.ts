@@ -72,11 +72,12 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
     return this;
   }
 
-  override _filterData(data: T[]) {
-    if (!this._ignorePredicate) {
-      this.filteredData = data.filter((obj: T, index: number) => this.filterPredicateWithIndex(obj, this.filter, index));
-    } else {
+
+  override _filterData(data: T[]) { // eslint-disable-line @typescript-eslint/naming-convention
+    if (this._ignorePredicate) {
       this.filteredData = this.data;
+    } else {
+      this.filteredData = data.filter((obj: T, index: number) => this.filterPredicateWithIndex(obj, this.filter, index));
     }
 
     if (this.paginator) {
