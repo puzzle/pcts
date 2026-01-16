@@ -1,0 +1,60 @@
+<app-base-modal [formGroup]="formGroup" (canceled)="onCancel()">
+  <app-base-form content [formGroup]="formGroup">
+    <ng-container title/>
+    <ng-container content>
+
+      <mat-form-field>
+        <mat-label appPctsFormLabel/>
+        <input type="text" formControlName="certificateKind" matInput [matAutocomplete]="certificateKindAutoComplete"
+               data-testid="certificateKind">
+        <mat-autocomplete autoActiveFirstOption #certificateKindAutoComplete="matAutocomplete"
+                          [displayWith]="displayCertificateTypes">
+          @for (employmentState of certificateKindFilteredOptions(); track employmentState) {
+            <mat-option [value]="employmentState">{{ displayCertificateTypes(employmentState) }}</mat-option>
+          }
+        </mat-autocomplete>
+        <mat-error appPctsFormError/>
+
+      </mat-form-field>
+
+    <app-input-field>
+      <input type="date" formControlName="startDate" matInput data-testid="startDate">
+    </app-input-field>
+
+    <app-input-field>
+      <input type="date" formControlName="dateUntil" matInput data-testid="dateUntil">
+    </app-input-field>
+
+      <app-input-field>
+        <input type="text" formControlName="comment" matInput data-testid="comment">
+      </app-input-field>
+    </ng-container>
+    <ng-container actions/>
+  </app-base-form>
+
+  <ng-container actions>
+    <div class="d-flex flex-row gap-3">
+
+      <button matButton="text" type="button" (click)="onCancel()">
+        {{ "BUTTONS.CANCEL" | scopedTranslation  }}
+      </button>
+
+      <div class="d-flex">
+        <button (click)="onSubmit(ModalSubmitMode.ENTER_ANOTHER)" class="rounded-end-0" matButton="filled" type="submit" data-testid="submit-button">
+          {{ "BUTTONS.ACTION" | scopedTranslation }}
+        </button>
+        <button matButton="filled" class="ms-0 rounded-start-0 p-0 px-1" [matMenuTriggerFor]="submitMenu">
+          <span class="d-flex justify-content-center">
+            <mat-icon>arrow_drop_down</mat-icon>
+          </span>
+        </button>
+      </div>
+    </div>
+  </ng-container>
+</app-base-modal>
+
+<mat-menu #submitMenu="matMenu">
+  <button (click)="onSubmit(ModalSubmitMode.ENTER_ANOTHER)" class="d-flex" mat-menu-item>{{ "BUTTONS.ACTION" | scopedTranslation }} {{ "BUTTONS.ENTER_ANOTHER" | scopedTranslation}}</button>
+  <button (click)="onSubmit(ModalSubmitMode.COPY)" mat-menu-item>{{ "BUTTONS.ACTION" | scopedTranslation }} {{ "BUTTONS.COPY" | scopedTranslation}}</button>
+</mat-menu>
+

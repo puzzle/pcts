@@ -7,7 +7,9 @@
       "ACTION": "hinzufügen",
       "BUTTONS": {
         "ACTION": "Hinzufügen",
-        "CANCEL": "Abbrechen"
+        "CANCEL": "Abbrechen",
+        "ENTER_ANOTHER": " + weitern Eintrag erfassen",
+        "COPY": " + Inhalt kopieren"
       }
     },
     "EDIT": {
@@ -56,6 +58,23 @@
       "MEMBER": "Member",
       "APPLICANT": "Bewerber",
       "EX_MEMBER": "Ex-Member"
+    }
+  },
+
+  "CERTIFICATE": {
+    "CERTIFICATE_KIND": "Zetifikate type",
+    "MODEL_NAME": "Zertifikat",
+    "START_DATE": "Datum",
+    "DATE_UNTIL": "Gültig bis",
+    "COMMENT": "Bemerkung",
+    "KIND": {
+      "CERTIFICATE_KIND": "Zetifikate type",
+      "VALUES": {
+        "CERTIFICATE": "Zertifikate",
+        "MILITARY_FUNCTION": "Militär Funktion",
+        "YOUTH_AND_SPORT": "J+S Kurs",
+        "LEADERSHIP_TRAINING": "Führungskräftetraining"
+      }
     }
   },
 
