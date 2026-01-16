@@ -19,11 +19,13 @@ class ExperienceTypePersistenceServiceIT
 
     @Override
     ExperienceType getModel() {
-        return new ExperienceType(null,
-                                  "ExperienceType 3",
-                                  BigDecimal.valueOf(10.055),
-                                  BigDecimal.valueOf(5.603),
-                                  BigDecimal.valueOf(2.005));
+        return ExperienceType.Builder
+                .builder()
+                .withName("ExperienceType 3")
+                .withHighlyRelevantPoints(BigDecimal.valueOf(10.055))
+                .withLimitedRelevantPoints(BigDecimal.valueOf(5.603))
+                .withLittleRelevantPoints(BigDecimal.valueOf(2.005))
+                .build();
     }
 
     @Override

@@ -37,7 +37,7 @@ class OrganisationUnitValidationServiceTest
 
     @Override
     OrganisationUnit getValidModel() {
-        return new OrganisationUnit(null, "Organisation Unit");
+        return OrganisationUnit.Builder.builder().withName("Organisation Unit").build();
     }
 
     @Override

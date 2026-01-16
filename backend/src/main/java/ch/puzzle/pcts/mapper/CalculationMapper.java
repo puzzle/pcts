@@ -43,11 +43,11 @@ public class CalculationMapper {
     }
 
     public Calculation fromDto(CalculationInputDto dto) {
-        return new Calculation(null,
-                               this.memberBusinessService.getById(dto.memberId()),
-                               this.roleBusinessService.getById(dto.roleId()),
-                               dto.state(),
-                               null,
-                               null);
+        return Calculation.Builder
+                .builder()
+                .withMember(this.memberBusinessService.getById(dto.memberId()))
+                .withRole(this.roleBusinessService.getById(dto.roleId()))
+                .withState(dto.state())
+                .build();
     }
 }

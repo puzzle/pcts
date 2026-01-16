@@ -27,7 +27,7 @@ public class TagBusinessService {
             validationService.validate(tag);
             return persistenceService
                     .findWithIgnoreCase(tag.getName())
-                    .orElseGet(() -> persistenceService.save(new Tag(null, tag.getName())));
+                    .orElseGet(() -> persistenceService.save(Tag.Builder.builder().withName(tag.getName()).build()));
         }).collect(Collectors.toSet());
     }
 

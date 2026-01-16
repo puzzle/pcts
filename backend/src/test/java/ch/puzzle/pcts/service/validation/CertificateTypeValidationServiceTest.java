@@ -11,7 +11,6 @@ import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
-import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import java.math.BigDecimal;
 import java.util.List;
@@ -40,12 +39,14 @@ class CertificateTypeValidationServiceTest
 
     @Override
     CertificateType getValidModel() {
-        return new CertificateType(null,
-                                   "CertificateType",
-                                   BigDecimal.valueOf(10),
-                                   "Comment",
-                                   Set.of(new Tag(null, "Tag")),
-                                   CertificateKind.CERTIFICATE);
+        return CertificateType.Builder
+                .builder()
+                .withName("CertificateType")
+                .withPoints(BigDecimal.valueOf(10))
+                .withComment("Comment")
+                .withTags(Set.of(TAG_3))
+                .withCertificateKind(CertificateKind.CERTIFICATE)
+                .build();
     }
 
     @Override

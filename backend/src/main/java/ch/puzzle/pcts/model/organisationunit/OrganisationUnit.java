@@ -22,9 +22,9 @@ public class OrganisationUnit implements Model {
     @Column(name = "deleted_at", insertable = false, updatable = false)
     private LocalDateTime deletedAt;
 
-    public OrganisationUnit(Long id, String name) {
-        this.id = id;
-        this.name = trim(name);
+    private OrganisationUnit(Builder builder) {
+        this.id = builder.id;
+        this.name = trim(builder.name);
     }
 
     public OrganisationUnit() {
@@ -70,5 +70,31 @@ public class OrganisationUnit implements Model {
     @Override
     public String toString() {
         return "OrganisationUnit{" + "id=" + id + ", name='" + name + '\'' + ", deletedAt=" + deletedAt + '}';
+    }
+
+    public static final class Builder {
+        private Long id;
+        private String name;
+
+        private Builder() {
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder withName(String name) {
+            this.name = trim(name);
+            return this;
+        }
+
+        public OrganisationUnit build() {
+            return new OrganisationUnit(this);
+        }
     }
 }
