@@ -36,19 +36,19 @@ class CalculationValidationServiceTest extends ValidationBaseServiceTest<Calcula
     Calculation getValidModel() {
 
         Member member = new Member();
-        member.setId(1L);
+        member.setId(MEMBER_ID);
 
         Role role = new Role();
-        role.setId(1L);
+        role.setId(ROLE_ID);
 
-        Calculation c = new Calculation();
-        c.setMember(member);
-        c.setRole(role);
-        c.setState(CalculationState.ACTIVE);
-        c.setPublicationDate(LocalDate.now());
-        c.setPublicizedBy("Admin");
+        Calculation calculation = new Calculation();
+        calculation.setMember(member);
+        calculation.setRole(role);
+        calculation.setState(CalculationState.ACTIVE);
+        calculation.setPublicationDate(LocalDate.now());
+        calculation.setPublicizedBy("Admin");
 
-        return c;
+        return calculation;
     }
 
     @Override
@@ -57,13 +57,13 @@ class CalculationValidationServiceTest extends ValidationBaseServiceTest<Calcula
     }
 
     private static Calculation createCalculation(Member member, Role role, CalculationState state) {
-        Calculation c = new Calculation();
-        c.setMember(member);
-        c.setRole(role);
-        c.setState(state);
-        c.setPublicationDate(DATE_NOW);
-        c.setPublicizedBy("Admin");
-        return c;
+        Calculation calculation = new Calculation();
+        calculation.setMember(member);
+        calculation.setRole(role);
+        calculation.setState(state);
+        calculation.setPublicationDate(DATE_NOW);
+        calculation.setPublicizedBy("Admin");
+        return calculation;
     }
 
     static Stream<Arguments> invalidModelProvider() {
@@ -85,7 +85,7 @@ class CalculationValidationServiceTest extends ValidationBaseServiceTest<Calcula
         Calculation calculation = getValidModel();
 
         CalculationValidationService spyService = spy(service);
-        doNothing().when((ValidationBase<Calculation>) spyService).validateOnCreate(any());
+        doNothing().when((ValidationBase<Calculation>) spyService).validateOnCreate(calculation);
 
         spyService.validateOnCreate(calculation);
 
@@ -99,7 +99,7 @@ class CalculationValidationServiceTest extends ValidationBaseServiceTest<Calcula
         Calculation calculation = getValidModel();
 
         CalculationValidationService spyService = spy(service);
-        doNothing().when((ValidationBase<Calculation>) spyService).validateOnUpdate(anyLong(), any());
+        doNothing().when((ValidationBase<Calculation>) spyService).validateOnUpdate(CALCULATION_ID, calculation);
 
         spyService.validateOnUpdate(CALCULATION_1_ID, calculation);
 

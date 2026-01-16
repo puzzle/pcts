@@ -10,7 +10,7 @@ public record DegreeDto(
 
         @Schema(description = "The unique identifier of the degree.", example = "1", accessMode = Schema.AccessMode.READ_ONLY) Long id,
 
-        @Schema(description = "The member associated with this degree.", exampleClasses = MemberDto.class, requiredMode = Schema.RequiredMode.REQUIRED) MemberDto member,
+        @Schema(description = "The member associated with this degree.", requiredMode = Schema.RequiredMode.REQUIRED) MemberDto member,
 
         @Schema(description = "The name of the degree.", example = "Master of Computer Science", requiredMode = Schema.RequiredMode.REQUIRED, minLength = 1) String name,
 
@@ -18,7 +18,7 @@ public record DegreeDto(
 
         @Schema(description = "Indicates whether the degree has been completed.", example = "true", requiredMode = Schema.RequiredMode.REQUIRED) Boolean completed,
 
-        @Schema(description = "The type of the degree", exampleClasses = DegreeTypeDto.class, requiredMode = Schema.RequiredMode.REQUIRED) DegreeTypeDto type,
+        @Schema(description = "The type of the degree", requiredMode = Schema.RequiredMode.REQUIRED) DegreeTypeDto type,
 
         @Schema(description = "The start date of the degree program.", example = "2018-09-01", requiredMode = Schema.RequiredMode.REQUIRED) LocalDate startDate,
 

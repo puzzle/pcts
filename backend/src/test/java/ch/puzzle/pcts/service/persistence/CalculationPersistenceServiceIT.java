@@ -12,6 +12,7 @@ import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.repository.CalculationRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,32 +21,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 class CalculationPersistenceServiceIT
         extends
             PersistenceBaseIT<Calculation, CalculationRepository, CalculationPersistenceService> {
-
-    MemberPersistenceServiceIT memberPersistenceServiceIT;
-    RolePersistenceServiceIT rolePersistenceServiceIT;
-
     @Autowired
-    CalculationPersistenceServiceIT(CalculationPersistenceService service,
-                                    MemberPersistenceService memberPersistenceService,
-                                    RolePersistenceService rolePersistenceService) {
+    CalculationPersistenceServiceIT(CalculationPersistenceService service) {
         super(service);
-        memberPersistenceServiceIT = new MemberPersistenceServiceIT(memberPersistenceService);
-        rolePersistenceServiceIT = new RolePersistenceServiceIT(rolePersistenceService);
     }
 
     @Override
     Calculation getModel() {
-        return CALCULATION_2;
-    }
-
-    private Calculation createModel() {
         return Calculation.Builder
                 .builder()
-                .withMember(memberPersistenceServiceIT.getAll().getFirst())
-                .withRole(rolePersistenceServiceIT.getAll().getFirst())
+                .withMember(MEMBER_1)
+                .withRole(ROLE_1)
                 .withState(CalculationState.ACTIVE)
                 .withPublicationDate(LocalDate.of(2021, 12, 9))
                 .withPublicizedBy("Ldap User")
+                .withDegreeCalculations(Collections.emptyList())
+                .withExperienceCalculations(Collections.emptyList())
+                .withCertificateCalculations(Collections.emptyList())
                 .build();
     }
 
@@ -54,12 +46,17 @@ class CalculationPersistenceServiceIT
         return CALCULATIONS;
     }
 
+    @Override
+    void shouldDelete() {
+        // no delete function because we archive instead of deleting
+    }
+
     @DisplayName("Should only have one active Calculation after save when member already has active Calculation for the same role.")
     @Transactional
     @Test
     void shouldOnlyHaveOneActiveCalculationAfterSave() {
-        Calculation oldActiveCalculation = createModel();
-        Calculation activeCalculation = createModel();
+        Calculation oldActiveCalculation = getModel();
+        Calculation activeCalculation = getModel();
         activeCalculation.setPublicationDate(null);
         activeCalculation.setPublicizedBy(null);
 
@@ -69,7 +66,7 @@ class CalculationPersistenceServiceIT
 
         assertEquals(LocalDate.now(), result.getPublicationDate());
         assertEquals("Ldap User", result.getPublicizedBy());
-        assertThat(getActiveCalculations(activeCalculation.getRole(), activeCalculation.getMember()))
+        assertThat(getActiveCalculationsOfMember(activeCalculation.getRole(), activeCalculation.getMember()))
                 .containsExactly(activeCalculation);
     }
 
@@ -77,8 +74,8 @@ class CalculationPersistenceServiceIT
     @Transactional
     @Test
     void shouldOnlyHaveOneActiveCalculationAfterUpdate() {
-        Calculation oldActiveCalculation = createModel();
-        Calculation activeCalculation = createModel();
+        Calculation oldActiveCalculation = getModel();
+        Calculation activeCalculation = getModel();
         activeCalculation.setPublicationDate(null);
         activeCalculation.setPublicizedBy(null);
 
@@ -90,16 +87,16 @@ class CalculationPersistenceServiceIT
 
         assertEquals(LocalDate.now(), result.getPublicationDate());
         assertEquals("Ldap User", result.getPublicizedBy());
-        assertThat(getActiveCalculations(activeCalculation.getRole(), activeCalculation.getMember()))
-                .containsExactly(activeCalculation);
+        assertThat(getActiveCalculationsOfMember(activeCalculation.getRole(), activeCalculation.getMember()))
+                .containsExactly(result);
     }
 
-    private List<Calculation> getActiveCalculations(Role role, Member member) {
+    private List<Calculation> getActiveCalculationsOfMember(Role role, Member member) {
         return persistenceService
                 .getAll()
                 .stream()
-                .filter(calculation -> calculation.getState().equals(CalculationState.ACTIVE)
-                                       && calculation.getRole().equals(role) && calculation.getMember().equals(member))
+                .filter(c -> c.getState() == CalculationState.ACTIVE && c.getRole().equals(role)
+                             && c.getMember().equals(member))
                 .toList();
     }
 }
