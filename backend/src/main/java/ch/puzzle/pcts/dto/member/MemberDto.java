@@ -13,5 +13,5 @@ public record MemberDto(
         @Schema(description = "The abbreviation of the member.", example = "SM", requiredMode = Schema.RequiredMode.NOT_REQUIRED) String abbreviation,
         @Schema(description = "The member's hire date.", example = "2025-09-24", requiredMode = Schema.RequiredMode.NOT_REQUIRED) LocalDate dateOfHire,
         @Schema(description = "The member's birth date.", example = "1995-02-19", requiredMode = Schema.RequiredMode.REQUIRED) LocalDate birthDate,
-        @Schema(description = "The Organisation unit of the member.", exampleClasses = OrganisationUnitDto.class, requiredMode = Schema.RequiredMode.NOT_REQUIRED) OrganisationUnitDto organisationUnit) {
+        @Schema(description = "The Organisation unit of the member.", requiredMode = Schema.RequiredMode.NOT_REQUIRED) OrganisationUnitDto organisationUnit) {
 }
