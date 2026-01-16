@@ -17,6 +17,7 @@ jobs:
 
   build-and-push:
     strategy:
+      fail-fast: false
       matrix:
         service: ["backend", "frontend"]
     uses: ./.github/workflows/reusable__upload-to-ghcr.yaml
