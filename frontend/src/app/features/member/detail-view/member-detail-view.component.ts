@@ -20,6 +20,9 @@ import {
 import { MemberOverviewModel } from '../member-overview.model';
 import { AddCertificateComponent } from '../modal-components/add-certificate.component/add-certificate.component';
 import { ModalService } from '../../../shared/modal-service';
+import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
+import { CertificateModel } from '../../certificates/certificate.model';
+import { CertificateService } from '../../certificates/certificate.service';
 import { RolePointsModel } from './RolePointsModel';
 import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
 
@@ -47,6 +50,8 @@ export class MemberDetailViewComponent implements OnInit {
   private readonly router = inject(Router);
 
   private readonly dialog = inject(ModalService);
+
+  private readonly certificateService = inject(CertificateService);
 
   readonly experienceTable = getExperienceTable();
 
@@ -101,8 +106,23 @@ export class MemberDetailViewComponent implements OnInit {
       });
   }
 
-  openCertificateDialog() {
-    this.dialog.openModal(AddCertificateComponent);
+  openCertificateDialog(model?: CertificateModel) {
+    this.dialog.openModal(AddCertificateComponent, { data: { model } })
+      .afterClosed()
+      .subscribe((result: { modalSubmitMode: ModalSubmitMode;
+        submittedModel: CertificateModel; }) => {
+        switch (result.modalSubmitMode) {
+          case ModalSubmitMode.ENTER_ANOTHER:
+
+            break;
+          case ModalSubmitMode.COPY:
+            this.openCertificateDialog(result.submittedModel);
+            break;
+          default:
+          result.modalSubmitMode satisfies never;
+        }
+      // this.certificateService.addCertificate(result.submittedModel);
+      });
   }
 
   onTabIndexChange(index: number) {
