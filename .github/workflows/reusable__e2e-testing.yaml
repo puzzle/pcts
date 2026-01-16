@@ -59,7 +59,7 @@ jobs:
           ref: ${{ env.COMMIT_REF }}
 
       - name: Start application stack with Docker Compose
-        run: cd docker && docker compose -f docker-compose.yml -f docker-compose.e2e.yml up -d
+        run: docker compose -f docker/docker-compose.yml -f docker/docker-compose.e2e.yml up -d
 
       - name: Set up node for Cypress
         uses: actions/setup-node@v6
