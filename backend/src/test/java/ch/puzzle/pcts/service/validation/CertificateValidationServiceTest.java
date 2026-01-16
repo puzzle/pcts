@@ -85,11 +85,11 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
     static Stream<Arguments> invalidModelProvider() {
         return Stream
                 .of(Arguments
-                        .of(createCertificate(null, CERT_TYPE_1, DATE_PAST),
+                        .of(createCertificate(null, CERT_TYPE_1, DATE_YESTERDAY),
                             List.of(Map.of(FieldKey.CLASS, "Certificate", FieldKey.FIELD, "member"))),
 
                     Arguments
-                            .of(createCertificate(MEMBER_1, null, DATE_PAST),
+                            .of(createCertificate(MEMBER_1, null, DATE_YESTERDAY),
                                 List.of(Map.of(FieldKey.CLASS, "Certificate", FieldKey.FIELD, "certificateType"))));
 
     }

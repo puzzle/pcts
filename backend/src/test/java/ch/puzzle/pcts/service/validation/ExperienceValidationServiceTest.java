@@ -65,16 +65,16 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
 
         return Stream
                 .of(Arguments
-                        .of(createExperience(null, DATE_NOW, DATE_FUTURE, validPercentage),
+                        .of(createExperience(null, DATE_NOW, DATE_TOMORROW, validPercentage),
                             List.of(Map.of(FieldKey.CLASS, "Experience", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createExperience("", DATE_NOW, DATE_FUTURE, validPercentage),
+                            .of(createExperience("", DATE_NOW, DATE_TOMORROW, validPercentage),
                                 List.of(Map.of(FieldKey.CLASS, "Experience", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createExperience("  ", DATE_NOW, DATE_FUTURE, validPercentage),
+                            .of(createExperience("  ", DATE_NOW, DATE_TOMORROW, validPercentage),
                                 List.of(Map.of(FieldKey.CLASS, "Experience", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createExperience("S", DATE_NOW, DATE_FUTURE, validPercentage),
+                            .of(createExperience("S", DATE_NOW, DATE_TOMORROW, validPercentage),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -88,7 +88,7 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
                                                     FieldKey.IS,
                                                     "S"))),
                     Arguments
-                            .of(createExperience("  S ", DATE_NOW, DATE_FUTURE, validPercentage),
+                            .of(createExperience("  S ", DATE_NOW, DATE_TOMORROW, validPercentage),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -102,7 +102,7 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
                                                     FieldKey.IS,
                                                     "S"))),
                     Arguments
-                            .of(createExperience(TOO_LONG_STRING, DATE_NOW, DATE_FUTURE, validPercentage),
+                            .of(createExperience(TOO_LONG_STRING, DATE_NOW, DATE_TOMORROW, validPercentage),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -116,7 +116,7 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
                                                     FieldKey.IS,
                                                     TOO_LONG_STRING))),
                     Arguments
-                            .of(createExperience("Experience", DATE_FUTURE, DATE_FUTURE, validPercentage),
+                            .of(createExperience("Experience", DATE_TOMORROW, DATE_TOMORROW, validPercentage),
                                 List.of(Map.of(FieldKey.IS, "{attribute.date.past.present}"))),
                     Arguments
                             .of(createExperience("Experience", null, DATE_NOW, validPercentage),
@@ -137,10 +137,10 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
                                     .build(),
                                 List.of(Map.of(FieldKey.CLASS, "Experience", FieldKey.FIELD, "type"))),
                     Arguments
-                            .of(createExperience("Experience", DATE_PAST, DATE_NOW, -1),
+                            .of(createExperience("Experience", DATE_YESTERDAY, DATE_NOW, -1),
                                 List.of(Map.of(FieldKey.CLASS, "Experience", FieldKey.FIELD, "percent"))),
                     Arguments
-                            .of(createExperience("Experience", DATE_PAST, DATE_NOW, 115),
+                            .of(createExperience("Experience", DATE_YESTERDAY, DATE_NOW, 115),
                                 List.of(Map.of(FieldKey.CLASS, "Experience", FieldKey.FIELD, "percent"))));
     }
 
@@ -159,7 +159,7 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
     void shouldThrowExceptionWhenEndDateIsBeforeStartDate() {
         int validPercentage = 50;
 
-        Experience experience = createExperience("Experience", DATE_NOW, DATE_PAST, validPercentage);
+        Experience experience = createExperience("Experience", DATE_NOW, DATE_YESTERDAY, validPercentage);
 
         List<PCTSException> exceptions = List
                 .of(assertThrows(PCTSException.class, () -> service.validateOnUpdate(EXPERIENCE_1_ID, experience)),
@@ -178,7 +178,7 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
                                     FieldKey.CONDITION_FIELD,
                                     "endDate",
                                     FieldKey.MAX,
-                                    DATE_PAST.toString())), exception.getErrorAttributes()));
+                                    DATE_YESTERDAY.toString())), exception.getErrorAttributes()));
     }
 
     @DisplayName("Should call correct validate method on validateOnCreate()")

@@ -63,13 +63,13 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
     static Stream<Arguments> invalidModelProvider() {
         return Stream
                 .of(Arguments
-                        .of(createExperienceType(null, VALID_BIG_DECIMAL, VALID_BIG_DECIMAL, VALID_BIG_DECIMAL),
+                        .of(createExperienceType(null, POSITIVE_BIG_DECIMAL, POSITIVE_BIG_DECIMAL, POSITIVE_BIG_DECIMAL),
                             List.of(Map.of(FieldKey.CLASS, "ExperienceType", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createExperienceType("", VALID_BIG_DECIMAL, VALID_BIG_DECIMAL, VALID_BIG_DECIMAL),
+                            .of(createExperienceType("", POSITIVE_BIG_DECIMAL, POSITIVE_BIG_DECIMAL, POSITIVE_BIG_DECIMAL),
                                 List.of(Map.of(FieldKey.CLASS, "ExperienceType", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createExperienceType("h", VALID_BIG_DECIMAL, VALID_BIG_DECIMAL, VALID_BIG_DECIMAL),
+                            .of(createExperienceType("h", POSITIVE_BIG_DECIMAL, POSITIVE_BIG_DECIMAL, POSITIVE_BIG_DECIMAL),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -84,9 +84,9 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
                                                     "h"))),
                     Arguments
                             .of(createExperienceType(TOO_LONG_STRING,
-                                                     VALID_BIG_DECIMAL,
-                                                     VALID_BIG_DECIMAL,
-                                                     VALID_BIG_DECIMAL),
+                                            POSITIVE_BIG_DECIMAL,
+                                            POSITIVE_BIG_DECIMAL,
+                                            POSITIVE_BIG_DECIMAL),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -100,7 +100,7 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
                                                     FieldKey.IS,
                                                     TOO_LONG_STRING))),
                     Arguments
-                            .of(createExperienceType(VALID_STRING, null, VALID_BIG_DECIMAL, VALID_BIG_DECIMAL),
+                            .of(createExperienceType(VALID_STRING, null, POSITIVE_BIG_DECIMAL, POSITIVE_BIG_DECIMAL),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -110,8 +110,8 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
                     Arguments
                             .of(createExperienceType(VALID_STRING,
                                                      NEGATIVE_BIG_DECIMAL,
-                                                     VALID_BIG_DECIMAL,
-                                                     VALID_BIG_DECIMAL),
+                                            POSITIVE_BIG_DECIMAL,
+                                            POSITIVE_BIG_DECIMAL),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -121,7 +121,7 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
                                                     FieldKey.IS,
                                                     "-1"))),
                     Arguments
-                            .of(createExperienceType(VALID_STRING, VALID_BIG_DECIMAL, null, VALID_BIG_DECIMAL),
+                            .of(createExperienceType(VALID_STRING, POSITIVE_BIG_DECIMAL, null, POSITIVE_BIG_DECIMAL),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -130,9 +130,9 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
                                                     "limitedRelevantPoints"))),
                     Arguments
                             .of(createExperienceType(VALID_STRING,
-                                                     VALID_BIG_DECIMAL,
+                                            POSITIVE_BIG_DECIMAL,
                                                      NEGATIVE_BIG_DECIMAL,
-                                                     VALID_BIG_DECIMAL),
+                                            POSITIVE_BIG_DECIMAL),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -142,7 +142,7 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
                                                     FieldKey.IS,
                                                     "-1"))),
                     Arguments
-                            .of(createExperienceType(VALID_STRING, VALID_BIG_DECIMAL, VALID_BIG_DECIMAL, null),
+                            .of(createExperienceType(VALID_STRING, POSITIVE_BIG_DECIMAL, POSITIVE_BIG_DECIMAL, null),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -151,8 +151,8 @@ class ExperienceTypeValidationTest extends ValidationBaseServiceTest<ExperienceT
                                                     "littleRelevantPoints"))),
                     Arguments
                             .of(createExperienceType(VALID_STRING,
-                                                     VALID_BIG_DECIMAL,
-                                                     VALID_BIG_DECIMAL,
+                                            POSITIVE_BIG_DECIMAL,
+                                            POSITIVE_BIG_DECIMAL,
                                                      NEGATIVE_BIG_DECIMAL),
                                 List
                                         .of(Map

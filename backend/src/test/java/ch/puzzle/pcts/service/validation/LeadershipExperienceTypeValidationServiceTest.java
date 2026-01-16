@@ -64,16 +64,16 @@ class LeadershipExperienceTypeValidationServiceTest
     static Stream<Arguments> invalidModelProvider() {
         return Stream
                 .of(Arguments
-                        .of(createCertificate(null, VALID_BIG_DECIMAL, CertificateKind.CERTIFICATE),
+                        .of(createCertificate(null, POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
                             List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createCertificate("", VALID_BIG_DECIMAL, CertificateKind.CERTIFICATE),
+                            .of(createCertificate("", POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
                                 List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createCertificate("  ", VALID_BIG_DECIMAL, CertificateKind.CERTIFICATE),
+                            .of(createCertificate("  ", POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
                                 List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createCertificate("S", VALID_BIG_DECIMAL, CertificateKind.CERTIFICATE),
+                            .of(createCertificate("S", POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -88,7 +88,7 @@ class LeadershipExperienceTypeValidationServiceTest
                                                     "S"))),
 
                     Arguments
-                            .of(createCertificate("  S ", VALID_BIG_DECIMAL, CertificateKind.CERTIFICATE),
+                            .of(createCertificate("  S ", POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -103,7 +103,7 @@ class LeadershipExperienceTypeValidationServiceTest
                                                     "S"))),
 
                     Arguments
-                            .of(createCertificate(TOO_LONG_STRING, VALID_BIG_DECIMAL, CertificateKind.CERTIFICATE),
+                            .of(createCertificate(TOO_LONG_STRING, POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -134,7 +134,7 @@ class LeadershipExperienceTypeValidationServiceTest
                                                     FieldKey.IS,
                                                     "-1"))),
                     Arguments
-                            .of(createCertificate("LeadershipExperience", VALID_BIG_DECIMAL, null),
+                            .of(createCertificate("LeadershipExperience", POSITIVE_BIG_DECIMAL, null),
                                 List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "certificateKind"))));
     }
 

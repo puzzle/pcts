@@ -67,13 +67,13 @@ class CertificateTypeValidationServiceTest
     static Stream<Arguments> invalidModelProvider() {
         return Stream
                 .of(Arguments
-                        .of(createCertificateType(null, VALID_BIG_DECIMAL, CertificateKind.CERTIFICATE),
+                        .of(createCertificateType(null, POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
                             List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createCertificateType("", VALID_BIG_DECIMAL, CertificateKind.CERTIFICATE),
+                            .of(createCertificateType("", POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
                                 List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createCertificateType("h", VALID_BIG_DECIMAL, CertificateKind.CERTIFICATE),
+                            .of(createCertificateType("h", POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -87,7 +87,7 @@ class CertificateTypeValidationServiceTest
                                                     FieldKey.IS,
                                                     "h"))),
                     Arguments
-                            .of(createCertificateType(TOO_LONG_STRING, VALID_BIG_DECIMAL, CertificateKind.CERTIFICATE),
+                            .of(createCertificateType(TOO_LONG_STRING, POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,

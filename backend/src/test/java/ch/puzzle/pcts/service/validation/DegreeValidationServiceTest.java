@@ -99,19 +99,19 @@ class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, Degr
     static Stream<Arguments> invalidModelProvider() {
         return Stream
                 .of(Arguments
-                        .of(createDegree(null, "Computer Science", DEGREE_TYPE_1, true, DATE_PAST, DATE_NOW),
+                        .of(createDegree(null, "Computer Science", DEGREE_TYPE_1, true, DATE_YESTERDAY, DATE_NOW),
                             List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "member"))),
                     Arguments
-                            .of(createDegree(MEMBER_1, null, DEGREE_TYPE_1, true, DATE_PAST, DATE_NOW),
+                            .of(createDegree(MEMBER_1, null, DEGREE_TYPE_1, true, DATE_YESTERDAY, DATE_NOW),
                                 List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createDegree(MEMBER_1, "", DEGREE_TYPE_1, true, DATE_PAST, DATE_NOW),
+                            .of(createDegree(MEMBER_1, "", DEGREE_TYPE_1, true, DATE_YESTERDAY, DATE_NOW),
                                 List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createDegree(MEMBER_1, "  ", DEGREE_TYPE_1, true, DATE_PAST, DATE_NOW),
+                            .of(createDegree(MEMBER_1, "  ", DEGREE_TYPE_1, true, DATE_YESTERDAY, DATE_NOW),
                                 List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createDegree(MEMBER_1, "A", DEGREE_TYPE_1, true, DATE_PAST, DATE_NOW),
+                            .of(createDegree(MEMBER_1, "A", DEGREE_TYPE_1, true, DATE_YESTERDAY, DATE_NOW),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -125,7 +125,7 @@ class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, Degr
                                                     FieldKey.IS,
                                                     "A"))),
                     Arguments
-                            .of(createDegree(MEMBER_1, TOO_LONG_STRING, DEGREE_TYPE_1, true, DATE_PAST, DATE_NOW),
+                            .of(createDegree(MEMBER_1, TOO_LONG_STRING, DEGREE_TYPE_1, true, DATE_YESTERDAY, DATE_NOW),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -139,16 +139,16 @@ class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, Degr
                                                     FieldKey.IS,
                                                     TOO_LONG_STRING))),
                     Arguments
-                            .of(createDegree(MEMBER_1, "Computer Science", null, true, DATE_PAST, DATE_NOW),
+                            .of(createDegree(MEMBER_1, "Computer Science", null, true, DATE_YESTERDAY, DATE_NOW),
                                 List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "degreeType"))),
                     Arguments
-                            .of(createDegree(MEMBER_1, "Computer Science", DEGREE_TYPE_1, null, DATE_PAST, DATE_NOW),
+                            .of(createDegree(MEMBER_1, "Computer Science", DEGREE_TYPE_1, null, DATE_YESTERDAY, DATE_NOW),
                                 List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "completed"))),
                     Arguments
                             .of(createDegree(MEMBER_1, "Computer Science", DEGREE_TYPE_1, true, null, DATE_NOW),
                                 List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "startDate"))),
                     Arguments
-                            .of(createDegree(MEMBER_1, "Computer Science", DEGREE_TYPE_1, true, DATE_FUTURE, null),
+                            .of(createDegree(MEMBER_1, "Computer Science", DEGREE_TYPE_1, true, DATE_TOMORROW, null),
                                 List.of(Map.of(FieldKey.IS, "{attribute.date.past.present}"))));
     }
 
@@ -183,7 +183,7 @@ class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, Degr
     @DisplayName("Should throw exception on ValidateOnUpdate and ValidateOnCreate when endDate is before startDate")
     @Test
     void shouldThrowExceptionWhenEndDateIsBeforeStartDate() {
-        Degree degree = createDegree(MEMBER_1, "Degree", DEGREE_TYPE_1, true, DATE_NOW, DATE_PAST);
+        Degree degree = createDegree(MEMBER_1, "Degree", DEGREE_TYPE_1, true, DATE_NOW, DATE_YESTERDAY);
 
         List<PCTSException> exceptions = List
                 .of(assertThrows(PCTSException.class, () -> service.validateOnUpdate(DEGREE_1_ID, degree)),
@@ -201,6 +201,6 @@ class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, Degr
                                     FieldKey.CONDITION_FIELD,
                                     "endDate",
                                     FieldKey.MAX,
-                                    DATE_PAST.toString())), exception.getErrorAttributes()));
+                                    DATE_YESTERDAY.toString())), exception.getErrorAttributes()));
     }
 }

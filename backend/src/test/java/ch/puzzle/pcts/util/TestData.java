@@ -54,14 +54,14 @@ public class TestData {
     }
 
     public static final LocalDate DATE_NOW = LocalDate.now();
-    public static final LocalDate DATE_PAST = DATE_NOW.minusDays(1);
-    public static final LocalDate DATE_FUTURE = DATE_NOW.plusDays(1);
+    public static final LocalDate DATE_YESTERDAY = DATE_NOW.minusDays(1);
+    public static final LocalDate DATE_TOMORROW = DATE_NOW.plusDays(1);
 
-    public static final BigDecimal VALID_BIG_DECIMAL = BigDecimal.valueOf(1);
+    public static final BigDecimal POSITIVE_BIG_DECIMAL = BigDecimal.valueOf(1);
     public static final BigDecimal NEGATIVE_BIG_DECIMAL = BigDecimal.valueOf(-1);
 
     public static final String VALID_STRING = "Valid String";
-    public static final String TOO_LONG_STRING = new String(new char[251]).replace("\0", "s");
+    public static final String TOO_LONG_STRING = "a".repeat(251);
 
     public static final Long INVALID_ID = 999L;
 
