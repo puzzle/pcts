@@ -27,15 +27,15 @@ public class MemberOverviewMapper {
 
         for (MemberOverview row : memberOverviews) {
 
-            if (row.getDegreeId() != null) {
+            if (row.getDegreeId() != null && row.getDegreeId() > 0) {
                 degreeMap.putIfAbsent(row.getDegreeId(), mapToDegree(row));
             }
 
-            if (row.getExperienceId() != null) {
+            if (row.getExperienceId() != null && row.getExperienceId() > 0) {
                 experienceMap.putIfAbsent(row.getExperienceId(), mapToExperience(row));
             }
 
-            if (row.getCertificateId() != null) {
+            if (row.getCertificateId() != null && row.getCertificateId() > 0) {
                 if (row.getLeadershipTypeKind().isLeadershipExperienceType()) {
                     leadershipMap.putIfAbsent(row.getCertificateId(), mapToLeadershipExperience(row));
                 } else {

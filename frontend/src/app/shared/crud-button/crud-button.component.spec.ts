@@ -52,8 +52,10 @@ describe('CrudButtonComponent', () => {
       .toBeTruthy();
   });
 
-  it('should navigate to the add path when mode is add', () => {
-    component.mode = 'add';
+  it('should navigate to add when mode is add', () => {
+    fixture.componentRef.setInput('mode', 'add');
+    fixture.detectChanges();
+
     component.handleClick();
 
     expect(routerMock.navigate)
@@ -61,10 +63,12 @@ describe('CrudButtonComponent', () => {
         'add']);
   });
 
-  it('should navigate to the edit path when mode is edit', () => {
+  it('should navigate to edit when mode is edit and id exists', () => {
     currentUrlState = MOCK_DEFAULT_URL_WITH_ID;
 
-    component.mode = 'edit';
+    fixture.componentRef.setInput('mode', 'edit');
+    fixture.detectChanges();
+
     component.handleClick();
 
     expect(routerMock.navigate)
@@ -72,10 +76,12 @@ describe('CrudButtonComponent', () => {
         'edit']);
   });
 
-  it('should navigate to the delete path when mode is delete', () => {
+  it('should navigate to delete when mode is delete and id exists', () => {
     currentUrlState = MOCK_DEFAULT_URL_WITH_ID;
 
-    component.mode = 'delete';
+    fixture.componentRef.setInput('mode', 'delete');
+    fixture.detectChanges();
+
     component.handleClick();
 
     expect(routerMock.navigate)

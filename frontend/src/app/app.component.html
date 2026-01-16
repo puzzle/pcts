@@ -1,15 +1,16 @@
 <pzsh-container>
-  <pzsh-topbar class="position-sticky top-0 z-1">
+  <pzsh-topbar class="position-sticky top-0 z-3">
     <button class="btn btn-link" (click)="visitRoot()">
       <!--Inline style here due to ngSrc not working without it -->
       <img
+        priority
         ngSrc="/images/pcts-logo.svg"
         alt="{{'PCTS_LOGO_ALT' | translate}}"
         height="32" width="140"/>
     </button>
 
   </pzsh-topbar>
-  <pzsh-menu class="position-fixed z-1">
+  <pzsh-menu class="position-fixed z-3">
     <div slot="actions">
       <pzsh-menu-dropdown href="#">
         <div slot="toggle">
