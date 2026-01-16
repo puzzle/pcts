@@ -31,7 +31,9 @@
       "ACTION": "hinzufügen",
       "BUTTONS": {
         "ACTION": "Hinzufügen",
-        "CANCEL": "Abbrechen"
+        "CANCEL": "Abbrechen",
+        "ENTER_ANOTHER": " + weitern Eintrag erfassen",
+        "COPY": " + Inhalt kopieren"
       }
     },
     "EDIT": {
