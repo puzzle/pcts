@@ -5,15 +5,20 @@ import static ch.puzzle.pcts.util.TestDataDTOs.*;
 import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.puzzle.pcts.SpringSecurityConfig;
+import ch.puzzle.pcts.dto.calculation.CalculationDto;
+import ch.puzzle.pcts.dto.member.MemberDto;
 import ch.puzzle.pcts.dto.member.MemberInputDto;
+import ch.puzzle.pcts.dto.organisationunit.OrganisationUnitDto;
+import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.mapper.MemberMapper;
+import ch.puzzle.pcts.model.calculation.Calculation;
+import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
@@ -42,6 +47,9 @@ class MemberControllerIT {
 
     @MockitoBean
     private MemberMapper mapper;
+
+    @MockitoBean
+    private CalculationMapper calculationMapper;
 
     @Autowired
     private MockMvc mvc;
@@ -138,4 +146,32 @@ class MemberControllerIT {
 
         verify(service, times(1)).delete(any(Long.class));
     }
+
+    @DisplayName("Should successfully get calculations of member with optional roleId")
+    @Test
+    void shouldGetCalculationsByMemberId() throws Exception {
+        Long memberId = 1L;
+        Long roleId = 2L;
+
+        Calculation calculation = mock(Calculation.class);
+        CalculationDto calculationDto = mock(CalculationDto.class);
+
+        BDDMockito
+                .given(service.getAllCalculationsByMemberIdAndRoleId(memberId, roleId))
+                .willReturn(List.of(calculation));
+
+        BDDMockito.given(calculationMapper.toDto(any(List.class))).willReturn(List.of(calculationDto));
+
+        mvc
+                .perform(get(BASEURL + "/" + memberId + "/calculations")
+                        .param("roleId", String.valueOf(roleId))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1));
+
+        verify(service, times(1)).getAllCalculationsByMemberIdAndRoleId(memberId, roleId);
+        verify(calculationMapper, times(1)).toDto(any(List.class));
+    }
+
 }
