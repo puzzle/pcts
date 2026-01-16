@@ -28,8 +28,8 @@ services:
   pcts-frontend:
     container_name: pcts-frontend
     build:
-      context: ../frontend
-      dockerfile: ../frontend/Dockerfile
+      context: ..
+      dockerfile: ./frontend/Dockerfile
     ports:
       - "4200:4200"
     profiles: ['']
