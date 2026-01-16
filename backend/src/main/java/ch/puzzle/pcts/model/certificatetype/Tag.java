@@ -74,7 +74,7 @@ public class Tag implements Model {
         }
 
         public Builder withName(String name) {
-            this.name = name;
+            this.name = trim(name);
             return this;
         }
 

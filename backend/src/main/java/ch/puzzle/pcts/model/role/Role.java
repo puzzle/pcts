@@ -85,7 +85,6 @@ public class Role implements Model {
                + deletedAt + '}';
     }
 
-
     public static final class Builder {
         private Long id;
         private String name;
@@ -104,7 +103,7 @@ public class Role implements Model {
         }
 
         public Builder withName(String name) {
-            this.name = name;
+            this.name = trim(name);
             return this;
         }
 
@@ -112,7 +111,6 @@ public class Role implements Model {
             this.isManagement = isManagement;
             return this;
         }
-
 
         public Role build() {
             return new Role(this);

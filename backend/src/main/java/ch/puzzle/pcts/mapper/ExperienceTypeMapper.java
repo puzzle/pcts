@@ -25,7 +25,8 @@ public class ExperienceTypeMapper {
     }
 
     public ExperienceType fromDto(ExperienceTypeDto dto) {
-        return ExperienceType.Builder.builder()
+        return ExperienceType.Builder
+                .builder()
                 .withId(dto.id())
                 .withName(dto.name())
                 .withHighlyRelevantPoints(dto.highlyRelevantPoints())

@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.mapper;
 
 import ch.puzzle.pcts.dto.certificatetype.CertificateTypeDto;
+import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.certificatetype.Tag;
 import java.util.*;
@@ -39,12 +40,14 @@ public class CertificateTypeMapper {
                         .map(name -> Tag.Builder.builder().withName(name).build())
                         .collect(Collectors.toCollection(LinkedHashSet::new));
 
-        return CertificateType.Builder.builder()
+        return CertificateType.Builder
+                .builder()
                 .withId(dto.id())
                 .withName(dto.name())
                 .withPoints(dto.points())
                 .withComment(dto.comment())
                 .withTags(rawTags)
+                .withCertificateKind(CertificateKind.CERTIFICATE)
                 .build();
     }
 }

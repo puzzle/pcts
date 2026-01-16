@@ -35,12 +35,14 @@ class CalculationPersistenceServiceIT
 
     @Override
     Calculation getModel() {
-        return new Calculation(null,
-                               memberPersistenceServiceIT.getAll().getFirst(),
-                               rolePersistenceServiceIT.getAll().getFirst(),
-                               CalculationState.ACTIVE,
-                               LocalDate.of(2021, 12, 9),
-                               "Ldap User");
+        return Calculation.Builder
+                .builder()
+                .withMember(memberPersistenceServiceIT.getAll().getFirst())
+                .withRole(rolePersistenceServiceIT.getAll().getFirst())
+                .withState(CalculationState.ACTIVE)
+                .withPublicationDate(LocalDate.of(2021, 12, 9))
+                .withPublicizedBy("Ldap User")
+                .build();
     }
 
     @Override

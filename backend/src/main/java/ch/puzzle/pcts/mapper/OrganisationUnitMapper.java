@@ -24,9 +24,6 @@ public class OrganisationUnitMapper {
     }
 
     public OrganisationUnit fromDto(OrganisationUnitDto dto) {
-        return OrganisationUnit.Builder.builder()
-                .withId(dto.id())
-                .withName(dto.name())
-                .build();
+        return OrganisationUnit.Builder.builder().withId(dto.id()).withName(dto.name()).build();
     }
 }

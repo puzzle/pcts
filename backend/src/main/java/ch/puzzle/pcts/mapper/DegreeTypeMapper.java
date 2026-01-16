@@ -24,7 +24,8 @@ public class DegreeTypeMapper {
     }
 
     public DegreeType fromDto(DegreeTypeDto dto) {
-        return DegreeType.Builder.builder()
+        return DegreeType.Builder
+                .builder()
                 .withId(dto.id())
                 .withName(dto.name())
                 .withHighlyRelevantPoints(dto.highlyRelevantPoints())

@@ -13,10 +13,8 @@ import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
-import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
-import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.persistence.CertificatePersistenceService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -58,17 +56,19 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
         m.setLastName("Test");
         m.setAbbreviation("MT");
         m.setDateOfHire(LocalDate.EPOCH);
-        m.setOrganisationUnit(new OrganisationUnit(1L, "Organisation Unit"));
+        m.setOrganisationUnit(ORG_UNIT_2);
         return m;
     }
 
     private static CertificateType createCertificateType() {
-        return new CertificateType(null,
-                                   "Certificate",
-                                   BigDecimal.valueOf(10),
-                                   "Comment",
-                                   Set.of(new Tag(null, "Tag")),
-                                   CertificateKind.CERTIFICATE);
+        return CertificateType.Builder
+                .builder()
+                .withName("Certificate")
+                .withPoints(BigDecimal.valueOf(10))
+                .withComment("Comment")
+                .withTags(Set.of(TAG_3))
+                .withCertificateKind(CertificateKind.CERTIFICATE)
+                .build();
     }
 
     private static Certificate createCertificate(Member member, CertificateType certificateType,

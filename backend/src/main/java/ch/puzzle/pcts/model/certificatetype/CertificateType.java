@@ -150,7 +150,7 @@ public class CertificateType implements Model {
         }
 
         public Builder withName(String name) {
-            this.name = name;
+            this.name = trim(name);
             return this;
         }
 
@@ -160,7 +160,7 @@ public class CertificateType implements Model {
         }
 
         public Builder withComment(String comment) {
-            this.comment = comment;
+            this.comment = trim(comment);
             return this;
         }
 

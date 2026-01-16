@@ -39,11 +39,14 @@ class LeadershipExperienceTypeValidationServiceTest
 
     @Override
     CertificateType getValidModel() {
-        return new CertificateType(null,
-                                   "Leadership Experience Type",
-                                   BigDecimal.valueOf(10),
-                                   "Comment",
-                                   CertificateKind.YOUTH_AND_SPORT);
+        return CertificateType.Builder
+                .builder()
+                .withName("Leadership Experience Type")
+                .withPoints(BigDecimal.valueOf(10))
+                .withComment("Comment")
+                .withTags(Set.of(TAG_3))
+                .withCertificateKind(CertificateKind.YOUTH_AND_SPORT)
+                .build();
     }
 
     @Override

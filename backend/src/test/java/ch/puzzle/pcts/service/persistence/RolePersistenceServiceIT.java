@@ -23,7 +23,7 @@ class RolePersistenceServiceIT extends PersistenceBaseIT<Role, RoleRepository, R
 
     @Override
     Role getModel() {
-        return new Role(null, "Role 3", false);
+        return Role.Builder.builder().withName("Role 3").withIsManagement(false).build();
     }
 
     List<Role> getAll() {

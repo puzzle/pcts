@@ -132,9 +132,9 @@ public class Calculation implements Model {
         }
 
         public Builder withId(Long id) {
-          this.id = id;
-          return this;
-        };
+            this.id = id;
+            return this;
+        }
 
         public Builder withMember(Member member) {
             this.member = member;
@@ -157,7 +157,7 @@ public class Calculation implements Model {
         }
 
         public Builder withPublicizedBy(String publicizedBy) {
-            this.publicizedBy = publicizedBy;
+            this.publicizedBy = trim(publicizedBy);
             return this;
         }
 
