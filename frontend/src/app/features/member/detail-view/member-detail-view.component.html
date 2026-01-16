@@ -58,24 +58,28 @@
     <mat-tab-group class="folder-tabs" mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms" *appTranslationScope="'CV'">
       <mat-tab label="CV">
         <app-generic-cv-content
+          idAttr="id"
           [data]="degreeData()"
           *appTranslationScope="'DEGREE'"
           [table]="degreeTable"
         />
 
         <app-generic-cv-content
+          idAttr="id"
           [data]="experienceData()"
           *appTranslationScope="'EXPERIENCE'"
           [table]="experienceTable"
         />
 
         <app-generic-cv-content
+          idAttr="id"
           [data]="certificateData()"
           *appTranslationScope="'CERTIFICATE'"
           [table]="certificateTable"
         />
 
         <app-generic-cv-content
+          idAttr="id"
           [data]="leadershipExperienceData()"
           *appTranslationScope="'LEADERSHIP_EXPERIENCE'"
           [table]="leadershipExperienceTable"

@@ -16,7 +16,7 @@ export const getDegreeTable = (): GenericTableDataSource<DegreeOverviewModel> =>
 export const getDegreeColumns = (): GenCol<DegreeOverviewModel>[] => [GenCol.fromCalculated('dateRange', (e: DegreeOverviewModel) => formatRange(e.startDate, e.endDate))
   .withCustomSortingAccessor((e: DegreeOverviewModel) => new Date(e.startDate)
     .getTime()),
-GenCol.fromAttr('name'),
+GenCol.fromAttr<DegreeOverviewModel>('name'),
 GenCol.fromAttr('degreeTypeName')];
 
 export const getExperienceTable = (): GenericTableDataSource<ExperienceOverviewModel> => new GenericTableDataSource(getExperienceColumns())
