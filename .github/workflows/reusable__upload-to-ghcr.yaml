@@ -8,6 +8,11 @@ on:
         required: true
         type: string
 
+      context:
+        description: "Path to the build context relative to repository root"
+        required: true
+        type: string
+
       image_name:
         description: "Name for the image. PCTS is the prefix"
         required: true
@@ -52,7 +57,7 @@ jobs:
         id: push
         uses: docker/build-push-action@v6
         with:
-          context: .
+          context: ${{ inputs.context }}
           file: ${{ inputs.dockerfile }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}

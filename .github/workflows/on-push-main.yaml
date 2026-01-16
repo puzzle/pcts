@@ -19,10 +19,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        service: ["backend", "frontend"]
+        service: [ "backend", "frontend" ]
     uses: ./.github/workflows/reusable__upload-to-ghcr.yaml
     with:
-      dockerfile: ${{ matrix.service }}/Dockerfile
+      dockerfile: ${{ matrix.service == 'backend' && 'backend/Dockerfile' || 'Dockerfile' }}
+      context: ${{ matrix.service == 'backend' && '.' || 'frontend' }}
       image_name: ${{ matrix.service }}
       version: ${{ needs.release-please.outputs.version }}
     secrets: inherit
