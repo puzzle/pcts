@@ -121,7 +121,7 @@ public class TestDataDTOs {
                                                                                               .map(Tag::getName)
                                                                                               .toList());
 
-    public final static LeadershipExperienceTypeDto LEADERSHIP_TYPE_1_DTO = new LeadershipExperienceTypeDto(LEADERSHIP_TYPE_1_ID,
+    public static final LeadershipExperienceTypeDto LEADERSHIP_TYPE_1_DTO = new LeadershipExperienceTypeDto(LEADERSHIP_TYPE_1_ID,
                                                                                                             LEADERSHIP_TYPE_1
                                                                                                                     .getName(),
                                                                                                             LEADERSHIP_TYPE_1
@@ -151,7 +151,7 @@ public class TestDataDTOs {
                                                                                                             LEADERSHIP_TYPE_5
                                                                                                                     .getCertificateKind());
 
-    public final static LeadershipExperienceTypeDto LEADERSHIP_TYPE_1_INPUT = new LeadershipExperienceTypeDto(null,
+    public static final LeadershipExperienceTypeDto LEADERSHIP_TYPE_1_INPUT = new LeadershipExperienceTypeDto(null,
                                                                                                               LEADERSHIP_TYPE_1
                                                                                                                       .getName(),
                                                                                                               LEADERSHIP_TYPE_1
@@ -196,11 +196,11 @@ public class TestDataDTOs {
                                                                                                     LEADERSHIP_CERT_1
                                                                                                             .getComment());
 
-    public final static LeadershipExperienceInputDto LEADERSHIP_CERT_1_INPUT = new LeadershipExperienceInputDto(LEADERSHIP_CERT_1
+    public static final LeadershipExperienceInputDto LEADERSHIP_CERT_1_INPUT = new LeadershipExperienceInputDto(LEADERSHIP_CERT_1
             .getMember()
             .getId(), LEADERSHIP_CERT_1.getCertificateType().getId(), LEADERSHIP_CERT_1.getComment());
 
-    public final static LeadershipExperienceInputDto LEADERSHIP_CERT_2_INPUT = new LeadershipExperienceInputDto(LEADERSHIP_CERT_2
+    public static final LeadershipExperienceInputDto LEADERSHIP_CERT_2_INPUT = new LeadershipExperienceInputDto(LEADERSHIP_CERT_2
             .getMember()
             .getId(), LEADERSHIP_CERT_2.getCertificateType().getId(), LEADERSHIP_CERT_2.getComment());
 
