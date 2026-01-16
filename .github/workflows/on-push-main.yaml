@@ -48,4 +48,3 @@ jobs:
       image_name: ${{ matrix.image_name }}
       version: ${{ needs.release-please.outputs.version }}
     secrets: inherit
-
