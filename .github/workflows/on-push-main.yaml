@@ -3,7 +3,8 @@ name: "On-Push-Main"
 on:
   push:
     branches:
-      - main, fix/409-deploy-pipeline
+      - main
+      - fix/409-deploy-pipeline
   workflow_dispatch:
 permissions:
   contents: read
