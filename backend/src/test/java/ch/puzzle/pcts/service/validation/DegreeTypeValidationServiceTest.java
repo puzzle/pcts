@@ -82,9 +82,9 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
                                                     "h"))),
                     Arguments
                             .of(createDegreeType(TOO_LONG_STRING,
-                                            POSITIVE_BIG_DECIMAL,
-                                            POSITIVE_BIG_DECIMAL,
-                                            POSITIVE_BIG_DECIMAL),
+                                                 POSITIVE_BIG_DECIMAL,
+                                                 POSITIVE_BIG_DECIMAL,
+                                                 POSITIVE_BIG_DECIMAL),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -103,8 +103,8 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
                     Arguments
                             .of(createDegreeType(VALID_STRING,
                                                  NEGATIVE_BIG_DECIMAL,
-                                            POSITIVE_BIG_DECIMAL,
-                                            POSITIVE_BIG_DECIMAL),
+                                                 POSITIVE_BIG_DECIMAL,
+                                                 POSITIVE_BIG_DECIMAL),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -118,9 +118,9 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
                                 List.of(Map.of(FieldKey.CLASS, "DegreeType", FieldKey.FIELD, "limitedRelevantPoints"))),
                     Arguments
                             .of(createDegreeType(VALID_STRING,
-                                            POSITIVE_BIG_DECIMAL,
+                                                 POSITIVE_BIG_DECIMAL,
                                                  NEGATIVE_BIG_DECIMAL,
-                                            POSITIVE_BIG_DECIMAL),
+                                                 POSITIVE_BIG_DECIMAL),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -134,8 +134,8 @@ class DegreeTypeValidationServiceTest extends ValidationBaseServiceTest<DegreeTy
                                 List.of(Map.of(FieldKey.CLASS, "DegreeType", FieldKey.FIELD, "littleRelevantPoints"))),
                     Arguments
                             .of(createDegreeType(VALID_STRING,
-                                            POSITIVE_BIG_DECIMAL,
-                                            POSITIVE_BIG_DECIMAL,
+                                                 POSITIVE_BIG_DECIMAL,
+                                                 POSITIVE_BIG_DECIMAL,
                                                  NEGATIVE_BIG_DECIMAL),
                                 List
                                         .of(Map

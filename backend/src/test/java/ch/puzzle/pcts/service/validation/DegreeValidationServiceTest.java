@@ -142,7 +142,12 @@ class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, Degr
                             .of(createDegree(MEMBER_1, "Computer Science", null, true, DATE_YESTERDAY, DATE_NOW),
                                 List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "degreeType"))),
                     Arguments
-                            .of(createDegree(MEMBER_1, "Computer Science", DEGREE_TYPE_1, null, DATE_YESTERDAY, DATE_NOW),
+                            .of(createDegree(MEMBER_1,
+                                             "Computer Science",
+                                             DEGREE_TYPE_1,
+                                             null,
+                                             DATE_YESTERDAY,
+                                             DATE_NOW),
                                 List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "completed"))),
                     Arguments
                             .of(createDegree(MEMBER_1, "Computer Science", DEGREE_TYPE_1, true, null, DATE_NOW),

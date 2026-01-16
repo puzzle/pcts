@@ -87,7 +87,9 @@ class CertificateTypeValidationServiceTest
                                                     FieldKey.IS,
                                                     "h"))),
                     Arguments
-                            .of(createCertificateType(TOO_LONG_STRING, POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
+                            .of(createCertificateType(TOO_LONG_STRING,
+                                                      POSITIVE_BIG_DECIMAL,
+                                                      CertificateKind.CERTIFICATE),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
