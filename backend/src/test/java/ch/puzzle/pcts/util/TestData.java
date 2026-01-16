@@ -42,7 +42,6 @@ import ch.puzzle.pcts.model.role.Role;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -185,20 +184,20 @@ public class TestData {
                                                                           Set.of(),
                                                                           CertificateKind.CERTIFICATE);
 
-    private static final LinkedHashSet<Tag> LINKED_TAGS = new LinkedHashSet<>(List.of(TAG_3, TAG_4));
+    private static final Set<Tag> TAGS_2 = Set.of(TAG_3, TAG_4);
 
     public static final CertificateType CERT_TYPE_5 = new CertificateType(CERT_TYPE_5_ID,
                                                                           "Certificate Type 5",
                                                                           BigDecimal.valueOf(0.5),
                                                                           "This is Certificate 5",
-                                                                          LINKED_TAGS,
+                                                                          TAGS_2,
                                                                           CertificateKind.CERTIFICATE);
 
     public static final CertificateType CERT_TYPE_6 = new CertificateType(CERT_TYPE_6_ID,
                                                                           "Certificate Type 6",
                                                                           BigDecimal.valueOf(0.5),
                                                                           "This is Certificate 6",
-                                                                          LINKED_TAGS,
+                                                                          TAGS_2,
                                                                           CertificateKind.CERTIFICATE);
 
     public static final CertificateType LEADERSHIP_TYPE_1 = new CertificateType(LEADERSHIP_TYPE_1_ID,
@@ -1041,7 +1040,7 @@ public class TestData {
 
     public static final List<Role> ROLES = List.of(ROLE_2);
 
-    public static final List<Tag> TAGS = List.of(TAG_1, TAG_2);
+    public static final List<Tag> TAGS_1 = List.of(TAG_1, TAG_2);
 
     public static final List<Member> MEMBERS = List.of(MEMBER_1, MEMBER_2);
 

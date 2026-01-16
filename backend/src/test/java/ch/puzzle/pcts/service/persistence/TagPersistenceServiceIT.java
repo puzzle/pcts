@@ -1,6 +1,6 @@
 package ch.puzzle.pcts.service.persistence;
 
-import static ch.puzzle.pcts.util.TestData.TAGS;
+import static ch.puzzle.pcts.util.TestData.TAGS_1;
 import static ch.puzzle.pcts.util.TestData.TAG_2_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,7 +29,7 @@ class TagPersistenceServiceIT extends PersistenceBaseIT<Tag, TagRepository, TagP
     }
 
     List<Tag> getAll() {
-        return TAGS;
+        return TAGS_1;
     }
 
     @DisplayName("Should find tag by name written in different cases")
