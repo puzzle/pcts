@@ -72,7 +72,7 @@ public class TestData {
 
     public static final Long EXPERIENCE_1_ID = 1L;
     public static final Long EXPERIENCE_2_ID = 2L;
-    public static final Long EXPERIENCE_3_ID = 3L;;
+    public static final Long EXPERIENCE_3_ID = 3L;
     public static final Long DEGREE_CALC_1_ID = 1L;
     public static final Long DEGREE_CALC_2_ID = 2L;
     public static final Long DEGREE_CALC_3_ID = 3L;
