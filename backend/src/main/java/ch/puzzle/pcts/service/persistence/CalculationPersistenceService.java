@@ -4,6 +4,8 @@ import static ch.puzzle.pcts.Constants.CALCULATION;
 
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
+import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.repository.CalculationRepository;
 import java.time.LocalDate;
 import java.util.List;
@@ -50,5 +52,13 @@ public class CalculationPersistenceService extends PersistenceBase<Calculation, 
                 repository.save(activeCalculation);
             }
         });
+    }
+
+    public List<Calculation> getAllByMember(Member member) {
+        return repository.findAllByMember(member);
+    }
+
+    public List<Calculation> getAllByMemberAndRole(Member member, Role role) {
+        return repository.findAllByMemberAndRole(member, role);
     }
 }
