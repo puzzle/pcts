@@ -22,6 +22,8 @@ import { ExperienceTypePillComponent } from '../../../../shared/experience-type-
   styleUrl: './generic-cv-content.component.scss'
 })
 export class GenericCvContentComponent<T extends object> {
+  idAttr = input<keyof T>();
+
   data = input.required<T[] | null>();
 
   table = input.required<GenericTableDataSource<T>>();

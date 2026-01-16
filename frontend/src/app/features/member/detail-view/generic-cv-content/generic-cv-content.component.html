@@ -6,7 +6,7 @@
   @if (this.data()?.length != 0) {
     @if (tableDataSource(); as ds) {
         <ng-content>
-          <app-generic-table [dataSource]="ds">
+          <app-generic-table [dataSource]="ds" [idAttr]="idAttr()">
             <ng-template [appTypedTemplate]="ds.data"/>
 
 
