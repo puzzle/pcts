@@ -32,6 +32,10 @@ public abstract class PersistenceBase<T extends Model, R extends JpaRepository<T
         return repository.findById(id).orElseThrow(() -> throwNotFoundError(id.toString()));
     }
 
+    public T getReferenceById(Long id) {
+        return repository.getReferenceById(id);
+    }
+
     public List<T> getAll() {
         return repository.findAll();
     }

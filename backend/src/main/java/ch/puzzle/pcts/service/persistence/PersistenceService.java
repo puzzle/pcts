@@ -6,6 +6,8 @@ import java.util.List;
 public interface PersistenceService<T extends Model> {
     T getById(Long id);
 
+    T getReferenceById(Long id);
+
     List<T> getAll();
 
     T save(T model);

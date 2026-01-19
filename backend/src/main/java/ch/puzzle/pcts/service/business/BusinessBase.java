@@ -29,6 +29,11 @@ public abstract class BusinessBase<T extends Model> {
         return persistenceService.getById(id);
     }
 
+    public T getReferenceById(Long id) {
+        validationService.validateOnGetById(id);
+        return persistenceService.getReferenceById(id);
+    }
+
     public T update(Long id, T model) {
         validationService.validateOnUpdate(id, model);
         persistenceService.getById(id);
