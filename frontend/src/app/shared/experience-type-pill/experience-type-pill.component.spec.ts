@@ -23,42 +23,44 @@ describe('ExperienceTypePillComponent', () => {
       .toBeTruthy();
   });
 
-  it('should accept the experienceType input', () => {
-    fixture.componentRef.setInput('experienceType', 'Praktikum');
-    fixture.detectChanges();
-    expect(component.experienceType())
-      .toBe('Praktikum');
+  const experienceInputs = [
+    'default',
+    'Praktikum',
+    'Berufserfahrung',
+    'Nebenerwerb',
+    'Unknown Type',
+    ''
+  ];
+  experienceInputs.forEach((input) => {
+    it(`should accept experienceType input "${input}"`, () => {
+      fixture.componentRef.setInput('experienceType', input);
+      fixture.detectChanges();
+
+      expect(component.experienceType())
+        .toBe(input);
+    });
   });
 
-  describe('getExperienceBadgeClass', () => {
-    it('should return "badge-internship" for "Praktikum"', () => {
-      const result = component.getExperienceBadgeClass('Praktikum');
-      expect(result)
-        .toBe('badge-internship');
-    });
+  const badgeTestCases: { input: string;
+    expected: string; }[] = [
+    { input: 'Praktikum',
+      expected: 'badge-internship' },
+    { input: 'Berufserfahrung',
+      expected: 'badge-work-experience' },
+    { input: 'Nebenerwerb',
+      expected: 'badge-work-part-time' },
+    { input: 'Unknown Type',
+      expected: 'badge-default' },
+    { input: '',
+      expected: 'badge-default' }
+  ];
 
-    it('should return "badge-work-experience" for "Berufserfahrung"', () => {
-      const result = component.getExperienceBadgeClass('Berufserfahrung');
+  badgeTestCases.forEach(({ input, expected }) => {
+    it(`getExperienceBadgeClass("${input}") should return "${expected}"`, () => {
+      fixture.componentRef.setInput('experienceType', input);
+      const result = component.experienceBadgeClass();
       expect(result)
-        .toBe('badge-work-experience');
-    });
-
-    it('should return "badge-work-part-time" for "Nebenerwerb"', () => {
-      const result = component.getExperienceBadgeClass('Nebenerwerb');
-      expect(result)
-        .toBe('badge-work-part-time');
-    });
-
-    it('should return "badge-default" for unknown types', () => {
-      const result = component.getExperienceBadgeClass('Unknown Type');
-      expect(result)
-        .toBe('badge-default');
-    });
-
-    it('should return "badge-default" for empty strings', () => {
-      const result = component.getExperienceBadgeClass('');
-      expect(result)
-        .toBe('badge-default');
+        .toBe(expected);
     });
   });
 });

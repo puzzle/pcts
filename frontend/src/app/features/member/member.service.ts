@@ -57,7 +57,6 @@ export class MemberService {
   }
 
   getMemberOverviewByMemberId(id: number): Observable<MemberCvOverviewModel> {
-    return this.httpClient.get<MemberCvOverviewModel>(`api/v1/member-overviews/${id}`)
-      .pipe(map((dto) => dto));
+    return this.httpClient.get<MemberCvOverviewModel>(`api/v1/member-overviews/${id}`);
   }
 }

@@ -109,9 +109,7 @@ export class GenericTableComponent<T extends object> {
     return (data: T, sortHeaderId: string) => {
       const col = columns.find((c) => c.columnName === sortHeaderId)!;
 
-      const raw = col.sortingAccessor
-        ? col.sortingAccessor(data)
-        : col.getValue(data);
+      const raw = col.sortingAccessor(data);
 
       if (raw instanceof Date) {
         return raw.getTime();

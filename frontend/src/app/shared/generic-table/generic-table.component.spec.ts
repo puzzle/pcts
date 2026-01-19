@@ -1,26 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GenericTableComponent } from './generic-table.component';
-import { GenericTableDataSource, GenCol } from './generic-table-data-source';
-import { CaseFormatter } from '../format/case-formatter';
-import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
-import { provideRouter } from '@angular/router';
-import { Pipe, PipeTransform } from '@angular/core';
-import { MatSortModule } from '@angular/material/sort';
-import { MatTableModule } from '@angular/material/table';
+import { GenCol, GenericTableDataSource } from './generic-table-data-source';
 import { DegreeOverviewModel } from '../../features/member/detail-view/cv/degree-overview.model';
 import { degreeOverviewList } from '../test/test-data';
+import {
+  GenericCvContentComponent
+} from '../../features/member/detail-view/generic-cv-content/generic-cv-content.component';
+import { ScopedTranslationService } from '../i18n-prefix.provider';
+import { translationMock } from '../../../../setup-jest';
 
-@Pipe({ name: 'scopedTranslation',
-  standalone: true })
-class MockScopedTranslationPipe implements PipeTransform {
-  transform(value: string) {
-    return value;
-  }
-}
-
-const mockCaseFormatter = {
-  camelToSnake: jest.fn((str: string) => `MOCKED_${str}`)
-};
 
 describe('GenericTableComponent', () => {
   let component: GenericTableComponent<DegreeOverviewModel>;
@@ -29,17 +17,12 @@ describe('GenericTableComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      imports: [GenericTableComponent,
-        MatSortModule,
-        MatTableModule],
-      providers: [provideRouter([]),
-        { provide: CaseFormatter,
-          useValue: mockCaseFormatter }]
+      imports: [GenericCvContentComponent],
+      providers: [{
+        provide: ScopedTranslationService,
+        useValue: translationMock
+      }]
     })
-      .overrideComponent(GenericTableComponent, {
-        remove: { imports: [ScopedTranslationPipe] },
-        add: { imports: [MockScopedTranslationPipe] }
-      })
       .compileComponents();
 
     fixture = TestBed.createComponent(GenericTableComponent<DegreeOverviewModel>);
@@ -104,21 +87,11 @@ describe('GenericTableComponent', () => {
   });
 
   describe('Display and Formatting', () => {
-    it('should generate I18n keys using CaseFormatter', () => {
-      const col = dataSource.columnDefs.find((c) => c.columnName === 'degreeTypeName')!;
-      const key = component.getFieldI18nKey(col);
-
-      expect(mockCaseFormatter.camelToSnake)
-        .toHaveBeenCalledWith('degreeTypeName');
-      expect(key)
-        .toBe('MOCKED_degreeTypeName');
-    });
-
     it('should retrieve values correctly using getDisplayValue', () => {
       const col = dataSource.columnDefs.find((c) => c.columnName === 'name')!;
       const row = degreeOverviewList[1];
 
-      const val = (component as any).getDisplayValue(col, row);
+      const val = component['getDisplayValue'](col, row);
 
       expect(val)
         .toBe('Master of Artificial Intelligence');

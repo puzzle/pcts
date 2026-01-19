@@ -7,12 +7,7 @@ import { GLOBAL_DATE_FORMATS } from '../../../../shared/format/date-format';
 import { degreeOverviewList } from '../../../../shared/test/test-data';
 import { provideRouter } from '@angular/router';
 import { GenericTableDataSource } from '../../../../shared/generic-table/generic-table-data-source';
-
-
-const translationMock = {
-  instant: jest.fn()
-    .mockImplementation((key: string) => key)
-};
+import { translationMock } from '../../../../../../setup-jest';
 
 describe('GenericCvContentComponent', () => {
   let component: GenericCvContentComponent<any>;

@@ -99,7 +99,7 @@ describe('GenericTableDataSource', () => {
       .withLimit(2);
 
     ds.filter = 'any';
-    ds._updateChangeSubscription?.();
+    ds.reloadData();
 
     expect(ds.filteredData.length)
       .toBe(2);

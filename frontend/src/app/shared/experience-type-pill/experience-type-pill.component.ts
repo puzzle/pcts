@@ -1,24 +1,24 @@
-import { Component, input, InputSignal } from '@angular/core';
+import { Component, input, InputSignal, computed, Signal } from '@angular/core';
+import { ExperienceType } from '../../features/experiences/experience-type/experience-type.enum';
 
 @Component({
   selector: 'app-experience-type-pill',
-  imports: [],
   templateUrl: './experience-type-pill.component.html',
-  styleUrl: './experience-type-pill.component.scss'
+  styleUrls: ['./experience-type-pill.component.scss']
 })
 export class ExperienceTypePillComponent {
   experienceType: InputSignal<string> = input.required();
 
-  getExperienceBadgeClass(type: string): string {
-    switch (type) {
-      case 'Praktikum':
+  experienceBadgeClass: Signal<string> = computed(() => {
+    switch (this.experienceType()) {
+      case ExperienceType.INTERNSHIP:
         return 'badge-internship';
-      case 'Berufserfahrung':
+      case ExperienceType.WORK_EXPERIENCE:
         return 'badge-work-experience';
-      case 'Nebenerwerb':
+      case ExperienceType.WORK_PART_TIME:
         return 'badge-work-part-time';
       default:
         return 'badge-default';
     }
-  }
+  });
 }
