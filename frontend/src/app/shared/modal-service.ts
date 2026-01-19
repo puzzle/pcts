@@ -14,7 +14,7 @@ export class ModalService {
       ...options });
   }
 
-  openModalAtCurrentHirarchy<T>(component: ComponentType<T>, options: MatDialogConfig = {}) {
+  openModalAtCurrentHierarchy<T>(component: ComponentType<T>, options: MatDialogConfig = {}) {
     return this.matDialog.open(component, { ...defaultSize,
       injector: this.injector,
       ...options });
