@@ -1,3 +1,4 @@
+@if (dataSource().data.length > 0) {
   <table
   mat-table
   [dataSource]="dataSource()"
@@ -68,4 +69,7 @@
         {{ isExpanded ? ('SHOW_LESS' | scopedTranslation) : ('SHOW_ALL'  | scopedTranslation) }}
       </button>
     </div>
+}
+} @else {
+  {{ "TABLE.NO_DATA" | scopedTranslation }}
 }

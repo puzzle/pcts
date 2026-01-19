@@ -1,4 +1,4 @@
-import { Component, effect, input, signal } from '@angular/core';
+import { Component, effect, input } from '@angular/core';
 import { GenericTableDataSource } from '../../../../shared/generic-table/generic-table-data-source';
 import { GenericTableComponent } from '../../../../shared/generic-table/generic-table.component';
 import { ScopedTranslationPipe } from '../../../../shared/pipes/scoped-translation-pipe';
@@ -24,18 +24,15 @@ import { ExperienceTypePillComponent } from '../../../../shared/experience-type-
 export class GenericCvContentComponent<T extends object> {
   idAttr = input<keyof T>();
 
-  data = input.required<T[] | null>();
+  data = input.required<T[]>();
 
   table = input.required<GenericTableDataSource<T>>();
-
-  tableDataSource = signal<GenericTableDataSource<T> | null>(null);
 
   constructor() {
     effect(() => {
       const tableValue = this.table();
       const dataValue = this.data();
 
-      this.tableDataSource.set(tableValue);
       if (dataValue) {
         tableValue.data = dataValue;
       }

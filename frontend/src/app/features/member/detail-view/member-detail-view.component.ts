@@ -46,13 +46,13 @@ export class MemberDetailViewComponent implements OnInit {
 
   readonly member: WritableSignal<MemberOverviewModel | null> = signal<MemberOverviewModel | null>(null);
 
-  degreeData = signal<DegreeOverviewModel[] | null>(null);
+  degreeData = signal<DegreeOverviewModel[]>([]);
 
-  experienceData = signal<ExperienceOverviewModel[] | null>(null);
+  experienceData = signal<ExperienceOverviewModel[]>([]);
 
-  certificateData = signal<CertificateOverviewModel[] | null>(null);
+  certificateData = signal<CertificateOverviewModel[]>([]);
 
-  leadershipExperienceData = signal<LeadershipExperienceOverviewModel[] | null>(null);
+  leadershipExperienceData = signal<LeadershipExperienceOverviewModel[]>([]);
 
   readonly experienceTable = getExperienceTable();
 

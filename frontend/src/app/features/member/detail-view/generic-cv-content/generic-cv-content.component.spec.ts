@@ -4,24 +4,10 @@ import { ScopedTranslationService } from '../../../../shared/i18n-prefix.provide
 import { I18N_PREFIX } from '../../../../shared/i18n-prefix.token';
 import { DateAdapter, MAT_DATE_FORMATS, NativeDateAdapter } from '@angular/material/core';
 import { GLOBAL_DATE_FORMATS } from '../../../../shared/format/date-format';
-import { provideRouter } from '@angular/router';
-import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { degreeOverviewList } from '../../../../shared/test/test-data';
+import { provideRouter } from '@angular/router';
+import { GenericTableDataSource } from '../../../../shared/generic-table/generic-table-data-source';
 
-
-@Pipe({
-  name: 'scopedTranslation',
-  standalone: true
-})
-class MockScopedTranslationPipe implements PipeTransform {
-  transform(value: string): string {
-    return value;
-  }
-}
-
-class MockGenericTableDataSource<T> {
-  data: T[] = [];
-}
 
 const translationMock = {
   instant: jest.fn()
@@ -31,7 +17,7 @@ const translationMock = {
 describe('GenericCvContentComponent', () => {
   let component: GenericCvContentComponent<any>;
   let fixture: ComponentFixture<GenericCvContentComponent<any>>;
-  let mockTableSource: MockGenericTableDataSource<any>;
+  let mockTableSource: GenericTableDataSource<any>;
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
@@ -46,19 +32,13 @@ describe('GenericCvContentComponent', () => {
           useClass: NativeDateAdapter },
         { provide: MAT_DATE_FORMATS,
           useValue: GLOBAL_DATE_FORMATS }
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
+      ]
     })
-      .overrideComponent(GenericCvContentComponent, {
-        set: {
-          imports: [MockScopedTranslationPipe]
-        }
-      })
       .compileComponents();
 
     fixture = TestBed.createComponent(GenericCvContentComponent);
     component = fixture.componentInstance;
-    mockTableSource = new MockGenericTableDataSource();
+    mockTableSource = new GenericTableDataSource([]);
   });
 
   it('should create', () => {
@@ -75,7 +55,7 @@ describe('GenericCvContentComponent', () => {
 
     fixture.detectChanges();
 
-    expect(component.tableDataSource())
+    expect(component.table())
       .toBe(mockTableSource as any);
     expect(mockTableSource.data)
       .toEqual(degreeOverviewList);
