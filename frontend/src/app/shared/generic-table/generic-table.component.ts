@@ -3,7 +3,6 @@ import {
   computed,
   contentChildren,
   effect,
-  inject,
   input,
   TemplateRef,
   viewChild
@@ -23,7 +22,7 @@ import {
 } from '@angular/material/table';
 import { MatSort, MatSortHeader } from '@angular/material/sort';
 import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
-import { CaseFormatter } from '../format/case-formatter';
+import { camelToSnake } from '../utils/case-formatter';
 import { GenCol, GenericTableDataSource } from './generic-table-data-source';
 import { RouterLink } from '@angular/router';
 import { NgTemplateOutlet } from '@angular/common';
@@ -55,8 +54,6 @@ import { TranslationScopeDirective } from '../translation-scope/translation-scop
   styleUrl: './generic-table.component.scss'
 })
 export class GenericTableComponent<T extends object> {
-  caseFormatter = inject(CaseFormatter);
-
   idAttr = input<keyof T>();
 
   crudBasePath = input<string>('');
@@ -125,7 +122,7 @@ export class GenericTableComponent<T extends object> {
   }
 
   getFieldI18nKey(col: GenCol<T>) {
-    return this.caseFormatter.camelToSnake(col.columnName);
+    return camelToSnake(col.columnName);
   }
 
   protected getDisplayValue(col: GenCol<T>, entity: T): string {

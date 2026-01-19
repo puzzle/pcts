@@ -1,5 +1,5 @@
 import { AfterViewInit, Directive, ElementRef, inject, Renderer2 } from '@angular/core';
-import { CaseFormatter } from '../format/case-formatter';
+import { camelToSnake } from '../utils/case-formatter';
 import { NgControl } from '@angular/forms';
 import { MatFormField } from '@angular/material/form-field';
 import { ScopedTranslationService } from '../i18n-prefix.provider';
@@ -9,8 +9,6 @@ import { ScopedTranslationService } from '../i18n-prefix.provider';
   standalone: true
 })
 export class PctsFormLabelDirective implements AfterViewInit {
-  private readonly caseFormatter = inject(CaseFormatter);
-
   public matFormField = inject(MatFormField);
 
   public translateService = inject(ScopedTranslationService);
@@ -21,7 +19,7 @@ export class PctsFormLabelDirective implements AfterViewInit {
 
   ngAfterViewInit(): void {
     const controlName = this.matFormFieldControl?.name?.toString() ?? '';
-    const labelKey = this.caseFormatter.camelToSnake(controlName);
+    const labelKey = camelToSnake(controlName);
     if (labelKey === '') {
       return;
     }

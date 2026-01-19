@@ -99,7 +99,7 @@ describe('GenericTableDataSource', () => {
       .withLimit(2);
 
     ds.filter = 'any';
-    ds.reloadData();
+    ds._updateChangeSubscription();
 
     expect(ds.filteredData.length)
       .toBe(2);
@@ -114,7 +114,7 @@ describe('GenericTableDataSource', () => {
       .withCustomFilterPredicate((item, _filter, index) => index === 1);
 
     ds.filter = 'test';
-    ds._updateChangeSubscription?.();
+    ds._updateChangeSubscription();
 
     expect(ds.filteredData.length)
       .toBe(1);
@@ -127,7 +127,7 @@ describe('GenericTableDataSource', () => {
 
     ds.filterPredicate = (item, filter) => item.name.includes(filter);
     ds.filter = 'Alpha';
-    ds._updateChangeSubscription?.();
+    ds._updateChangeSubscription();
 
     expect(ds.filteredData.length)
       .toBe(1);
@@ -140,7 +140,7 @@ describe('GenericTableDataSource', () => {
       .withLimit(1);
 
     ds.filter = 'test';
-    ds._updateChangeSubscription?.();
+    ds._updateChangeSubscription();
     expect(ds.filteredData.length)
       .toBe(1);
 
@@ -157,7 +157,7 @@ describe('GenericTableDataSource', () => {
     ds.toggleIgnorePredicate();
 
     ds.filter = 'test';
-    ds._updateChangeSubscription?.();
+    ds._updateChangeSubscription();
 
     expect(ds.filteredData.length)
       .toBe(1);
@@ -169,7 +169,7 @@ describe('GenericTableDataSource', () => {
 
     ds.filter = 'test';
     ds.reloadData();
-    ds._updateChangeSubscription?.();
+    ds._updateChangeSubscription();
 
     expect(ds.filteredData.length)
       .toBe(1);

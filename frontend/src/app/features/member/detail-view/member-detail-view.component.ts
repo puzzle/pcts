@@ -2,7 +2,6 @@ import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberService } from '../member.service';
-import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
 import { GenericCvContentComponent } from './generic-cv-content/generic-cv-content.component';
@@ -42,8 +41,6 @@ export class MemberDetailViewComponent implements OnInit {
 
   private readonly router = inject(Router);
 
-  protected readonly GLOBAL_DATE_FORMAT = GLOBAL_DATE_FORMAT;
-
   readonly member: WritableSignal<MemberOverviewModel | null> = signal<MemberOverviewModel | null>(null);
 
   degreeData = signal<DegreeOverviewModel[]>([]);
@@ -69,10 +66,13 @@ export class MemberDetailViewComponent implements OnInit {
       return;
     }
 
+    /*
+     * TODO: Refactor to use Angular `rxResource` (https://angular.dev/api/core/rxjs-interop/rxResource)
+     * once it’s stable — to replace this direct service call with a reactive resource pattern.
+     */
     this.service.getMemberOverviewByMemberId(Number(id))
       .subscribe({
         next: (memberOverview) => {
-          console.log(memberOverview.member);
           this.member.set(memberOverview.member);
           this.degreeData.set(memberOverview.cv.degrees);
           this.experienceData.set(memberOverview.cv.experiences);

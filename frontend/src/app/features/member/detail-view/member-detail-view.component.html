@@ -8,7 +8,7 @@
 
       <div class="w-50 d-flex align-items-center justify-content-between mb-3 gap-3" data-testid="member-detail-title">
         <h2>
-          {{ 'FORM.PERSONAL_DETAILS' | scopedTranslation }}
+          {{ 'PERSONAL_DETAILS' | scopedTranslation }}
         </h2>
 
         <app-crud-button mode="edit"/>
@@ -31,7 +31,7 @@
           <p class="mb-0">{{ 'DATE_OF_HIRE' | scopedTranslation }}:</p>
           <p class="fw-bold">
             {{ m.dateOfHire
-            ? (m.dateOfHire | date: GLOBAL_DATE_FORMAT)
+            ? (m.dateOfHire | date)
             : ('ATTRIBUTE_NULL' | scopedTranslation)
             }}
           </p>
@@ -40,7 +40,7 @@
 
         <span>
           <p class="mb-0">{{ 'EMPLOYMENT_STATE' | scopedTranslation }}:</p>
-          <p class="fw-bold">{{ 'EMPLOYMENT_STATUS_VALUES.' + m.employmentState | scopedTranslation }}</p>
+          <p class="fw-bold" *appTranslationScope="'EMPLOYMENT_STATUS_VALUES'">{{ m.employmentState | scopedTranslation }}</p>
         </span>
 
         <span>

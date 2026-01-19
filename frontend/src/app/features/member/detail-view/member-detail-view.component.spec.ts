@@ -16,7 +16,8 @@ describe('MemberDetailViewComponent (Jest)', () => {
   function setupTestBed(id: string | null) {
     memberServiceMock = {
       getMemberOverviewByMemberId: jest.fn()
-    } as unknown as jest.Mocked<MemberService>;
+    } as Partial<jest.Mocked<MemberService>> as jest.Mocked<MemberService>;
+
 
     routerMock = {
       navigate: jest.fn(),

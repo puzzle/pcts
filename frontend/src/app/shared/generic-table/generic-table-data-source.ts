@@ -12,11 +12,9 @@ export class GenCol<T> {
 
   shouldLink = false;
 
-  sortingAccessor: SortAccessor<T>;
+  sortingAccessor: SortAccessor<T> = (model: T) => this.getValue(model);
 
-  protected constructor() {
-    this.sortingAccessor = (model: T) => this.getValue(model);
-  }
+  protected constructor() {}
 
   public static fromAttr<T>(field: keyof T, pipes: Formatter[] = []): GenCol<T> {
     const genCol = new GenCol<T>();
