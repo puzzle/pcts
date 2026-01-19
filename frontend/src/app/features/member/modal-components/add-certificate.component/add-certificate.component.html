@@ -33,9 +33,11 @@
         <mat-error appPctsFormError/>
       </mat-form-field>
 
-      <app-input-field>
-        <input type="text" formControlName="comment" matInput data-testid="comment">
-      </app-input-field>
+      <mat-form-field>
+        <mat-label appPctsFormLabel/>
+        <textarea type="text" formControlName="comment" data-testid="comment" matInput></textarea>
+      </mat-form-field>
+
     </ng-container>
     <ng-container actions/>
   </app-base-form>
@@ -48,10 +50,10 @@
       </button>
 
       <div class="d-flex">
-        <button (click)="onSubmit(ModalSubmitMode.ENTER_ANOTHER)" class="rounded-end-0" matButton="filled" type="submit" data-testid="submit-button">
+        <button [disabled]="!formGroup.valid" (click)="onSubmit(ModalSubmitMode.ENTER_ANOTHER)" class="rounded-end-0" matButton="filled" type="submit" data-testid="submit-button">
           {{ "BUTTONS.ACTION" | scopedTranslation }}
         </button>
-        <button matButton="filled" class="ms-0 rounded-start-0 p-0 px-1" [matMenuTriggerFor]="submitMenu">
+        <button [disabled]="!formGroup.valid" matButton="filled" class="ms-0 rounded-start-0 p-0 px-1" [matMenuTriggerFor]="submitMenu">
           <span class="d-flex justify-content-center">
             <mat-icon>arrow_drop_down</mat-icon>
           </span>

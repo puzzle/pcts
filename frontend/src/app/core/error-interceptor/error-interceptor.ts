@@ -26,7 +26,8 @@ export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>,
           }
 
           if (typeof values.FIELD === 'string') {
-            values.FIELD = translate.instant(`${toScreamingSnake(values.CLASS)}.${toScreamingSnake(values.FIELD)}`);
+            const parent = values.CLASS ?? values.ENTITY;
+            values.FIELD = translate.instant(`${toScreamingSnake(parent)}.${toScreamingSnake(values.FIELD)}`);
           }
 
           if (typeof values.CLASS === 'string') {
