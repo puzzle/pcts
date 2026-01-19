@@ -119,9 +119,14 @@ export class MemberDetailViewComponent implements OnInit {
             this.openCertificateDialog(result.submittedModel);
             break;
           default:
-          result.modalSubmitMode satisfies never;
+            result.modalSubmitMode satisfies never;
         }
-      // this.certificateService.addCertificate(result.submittedModel);
+        const member1 = this.member();
+        if (member1) {
+          result.submittedModel.member = member1;
+        }
+        this.certificateService.addCertificate(result.submittedModel)
+          .subscribe();
       });
   }
 
