@@ -46,7 +46,7 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
      */
     abstract List<T> getAll();
 
-    @DisplayName("Should get entity by id")
+    @DisplayName("Should get entity by id in getById")
     @Test
     void shouldGetEntityById() {
         T entity = persistenceService.getById(GENERIC_2_ID);
@@ -55,7 +55,16 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
         assertThat(entity.getId()).isEqualTo(GENERIC_2_ID);
     }
 
-    @DisplayName("Should throw exception when id is not found")
+    @DisplayName("Should get entity by id in getReferenceById")
+    @Test
+    void shouldGetEntityByIdForGetReferenceById() {
+        T entity = persistenceService.getReferenceById(GENERIC_2_ID);
+
+        assertThat(entity).isNotNull();
+        assertThat(entity.getId()).isEqualTo(GENERIC_2_ID);
+    }
+
+    @DisplayName("Should throw exception when id is not found in getById")
     @Test
     void shouldThrowExceptionWhenIdIsNotFound() {
         Map<FieldKey, String> expectedAttributes = Map
@@ -67,6 +76,26 @@ abstract class PersistenceBaseIT<T extends Model, R extends JpaRepository<T, Lon
                     persistenceService.entityName());
 
         PCTSException exception = assertThrows(PCTSException.class, () -> persistenceService.getById(INVALID_ID));
+
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
+
+        assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
+        assertEquals(List.of(expectedAttributes), exception.getErrorAttributes());
+    }
+
+    @DisplayName("Should throw exception when id is not found in getReferenceById")
+    @Test
+    void shouldThrowExceptionWhenIdIsNotFoundForGetReferenceById() {
+        Map<FieldKey, String> expectedAttributes = Map
+                .of(FieldKey.FIELD,
+                    "id",
+                    FieldKey.IS,
+                    String.valueOf(INVALID_ID),
+                    FieldKey.ENTITY,
+                    persistenceService.entityName());
+
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> persistenceService.getReferenceById(INVALID_ID));
 
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
 
