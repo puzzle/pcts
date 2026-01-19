@@ -45,8 +45,8 @@ public class CertificateMapper {
     public Certificate fromDto(CertificateInputDto dto) {
         return Certificate.Builder
                 .builder()
-                .withMember(memberBusinessService.getById(dto.memberId()))
-                .withCertificateType(certificateTypeBusinessService.getById(dto.certificateTypeId()))
+                .withMember(memberBusinessService.getReferenceById(dto.memberId()))
+                .withCertificateType(certificateTypeBusinessService.getReferenceById(dto.certificateTypeId()))
                 .withCompletedAt(dto.completedAt())
                 .withValidUntil(dto.validUntil())
                 .withComment(dto.comment())

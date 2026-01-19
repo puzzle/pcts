@@ -52,6 +52,6 @@ public class MemberMapper {
     }
 
     protected OrganisationUnit organisationUnitFromId(Long organisationUnitId) {
-        return organisationUnitId == null ? null : organisationUnitBusinessService.getById(organisationUnitId);
+        return organisationUnitId == null ? null : organisationUnitBusinessService.getReferenceById(organisationUnitId);
     }
 }

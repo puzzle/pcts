@@ -46,11 +46,11 @@ public class DegreeMapper {
     public Degree fromDto(DegreeInputDto dto) {
         return Degree.Builder
                 .builder()
-                .withMember(memberBusinessService.getById(dto.memberId()))
+                .withMember(memberBusinessService.getReferenceById(dto.memberId()))
                 .withName(dto.name())
                 .withInstitution(dto.institution())
                 .withCompleted(dto.completed())
-                .withDegreeType(degreeTypeBusinessService.getById(dto.typeId()))
+                .withDegreeType(degreeTypeBusinessService.getReferenceById(dto.typeId()))
                 .withStartDate(dto.startDate())
                 .withEndDate(dto.endDate())
                 .withComment(dto.comment())

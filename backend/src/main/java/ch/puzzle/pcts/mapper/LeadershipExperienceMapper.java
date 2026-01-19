@@ -43,8 +43,9 @@ public class LeadershipExperienceMapper {
     public Certificate fromDto(LeadershipExperienceInputDto dto) {
         return Certificate.Builder
                 .builder()
-                .withMember(memberBusinessService.getById(dto.memberId()))
-                .withCertificateType(leadershipExperienceTypeBusinessService.getById(dto.leadershipExperienceTypeId()))
+                .withMember(memberBusinessService.getReferenceById(dto.memberId()))
+                .withCertificateType(leadershipExperienceTypeBusinessService
+                        .getReferenceById(dto.leadershipExperienceTypeId()))
                 .withComment(dto.comment())
                 .build();
     }

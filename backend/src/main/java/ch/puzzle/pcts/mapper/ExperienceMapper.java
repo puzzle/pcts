@@ -46,11 +46,11 @@ public class ExperienceMapper {
 
     public Experience fromDto(ExperienceInputDto dto) {
         return new Experience.Builder()
-                .withMember(memberBusinessService.getById(dto.memberId()))
+                .withMember(memberBusinessService.getReferenceById(dto.memberId()))
                 .withName(dto.name())
                 .withEmployer(dto.employer())
                 .withPercent(dto.percent())
-                .withType(experienceTypeBusinessService.getById(dto.experienceTypeId()))
+                .withType(experienceTypeBusinessService.getReferenceById(dto.experienceTypeId()))
                 .withComment(dto.comment())
                 .withStartDate(dto.startDate())
                 .withEndDate(dto.endDate())

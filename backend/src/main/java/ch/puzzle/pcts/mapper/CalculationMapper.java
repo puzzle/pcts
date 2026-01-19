@@ -44,8 +44,8 @@ public class CalculationMapper {
 
     public Calculation fromDto(CalculationInputDto dto) {
         return new Calculation(null,
-                               this.memberBusinessService.getById(dto.memberId()),
-                               this.roleBusinessService.getById(dto.roleId()),
+                               this.memberBusinessService.getReferenceById(dto.memberId()),
+                               this.roleBusinessService.getReferenceById(dto.roleId()),
                                dto.state(),
                                null,
                                null);

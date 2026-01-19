@@ -31,8 +31,8 @@ class MemberMapperTest {
 
         when(organisationUnitMapper.toDto(ORG_UNIT_1)).thenReturn(ORG_UNIT_1_DTO);
         when(organisationUnitMapper.toDto(ORG_UNIT_2)).thenReturn(ORG_UNIT_2_DTO);
-        when(organisationUnitBusinessService.getById(ORG_UNIT_1_ID)).thenReturn(ORG_UNIT_1);
-        when(organisationUnitBusinessService.getById(ORG_UNIT_2_ID)).thenReturn(ORG_UNIT_2);
+        when(organisationUnitBusinessService.getReferenceById(ORG_UNIT_1_ID)).thenReturn(ORG_UNIT_1);
+        when(organisationUnitBusinessService.getReferenceById(ORG_UNIT_2_ID)).thenReturn(ORG_UNIT_2);
     }
 
     @DisplayName("Should map Member model to MemberDto correctly")
