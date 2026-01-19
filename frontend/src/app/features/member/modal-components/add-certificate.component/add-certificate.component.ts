@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal, WritableSignal, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { BaseModalComponent } from '../../../../shared/modal/base-modal.component';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BaseFormComponent } from '../../../../shared/form/base-form.component';
@@ -24,6 +24,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { CertificateTypeModel } from '../../../certificates/certificate-type/certificate-type.model';
 import { CertificateTypeService } from '../../../certificates/certificate-type/certificate-type.service';
+import { OrganisationUnitModel } from '../../../organisation-unit/organisation-unit.model';
 
 @Component({
   selector: 'app-add-certificate',
@@ -99,30 +100,34 @@ export class AddCertificateComponent<D> implements OnInit {
     this.location.back();
   }
 
-  protected displayCertificateTypes = (certificateType: CertificateTypeModel | string): string => {
+  protected displayCertificateTypes = (certificateType: CertificateTypeModel): string => {
     if (!certificateType) {
       return '';
     }
-    const translationKey = 'CERTIFICATE.KIND.VALUES.' + certificateType;
+    const translationKey = 'CERTIFICATE.TYPE.VALUES.' + certificateType.name;
     return this.translateService.instant(translationKey);
   };
 
   protected certificateTypeControlSignal = toSignal(this.formGroup.get('certificateType')!.valueChanges, { initialValue: this.formGroup.get('certificateType')!.value });
 
-  protected certificateKindFilteredOptions = computed(() => {
+  protected certificateTypeFilteredOptions = computed(() => {
     const value = this.certificateTypeControlSignal() ?? '';
     return this.filterCertificateKind(value);
   });
 
-  protected filterCertificateKind(value: string): string[] {
-    const filterValue = value?.toLowerCase() || '';
+  private filterCertificateKind(value: OrganisationUnitModel | string | null): CertificateTypeModel[] {
+    if (value === null || value === undefined || value === '') {
+      return this.certificateTypeOptions();
+    }
 
-    return this.certificateTypeOptions.filter((option) => {
-      const translationKey = 'CERTIFICATE.KIND.VALUES.' + option;
-      const translatedValue = this.translateService.instant(translationKey);
-      return translatedValue.toLowerCase()
-        .includes(filterValue);
-    });
+    const filterValue = (typeof value === 'string' ? value : value.name).toLowerCase();
+
+    if (filterValue === '') {
+      return this.certificateTypeOptions();
+    }
+    return this.certificateTypeOptions()
+      .filter((option) => option.name.toLowerCase()
+        .includes(filterValue));
   }
 
   onSubmit(submitMod: ModalSubmitMode) {

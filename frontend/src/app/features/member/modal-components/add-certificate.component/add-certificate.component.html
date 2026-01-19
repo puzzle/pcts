@@ -5,12 +5,12 @@
 
       <mat-form-field>
         <mat-label appPctsFormLabel/>
-        <input type="text" formControlName="certificateKind" matInput [matAutocomplete]="certificateKindAutoComplete"
-               data-testid="certificateKind">
-        <mat-autocomplete autoActiveFirstOption #certificateKindAutoComplete="matAutocomplete"
+        <input type="text" formControlName="certificateType" matInput [matAutocomplete]="certificateTypeAutoComplete"
+               data-testid="certificateType">
+        <mat-autocomplete autoActiveFirstOption #certificateTypeAutoComplete="matAutocomplete"
                           [displayWith]="displayCertificateTypes">
-          @for (employmentState of certificateKindFilteredOptions(); track employmentState) {
-            <mat-option [value]="employmentState">{{ displayCertificateTypes(employmentState) }}</mat-option>
+          @for (certificateType of certificateTypeFilteredOptions(); track certificateType) {
+            <mat-option [value]="certificateType">{{ displayCertificateTypes(certificateType) }}</mat-option>
           }
         </mat-autocomplete>
         <mat-error appPctsFormError/>
