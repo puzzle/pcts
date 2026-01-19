@@ -102,18 +102,23 @@
   },
 
   "CERTIFICATE": {
-    "CERTIFICATE_KIND": "Zetifikate type",
+    "CERTIFICATE_TYPE": "Zetifikate type",
     "MODEL_NAME": "Zertifikat",
     "START_DATE": "Datum",
     "DATE_UNTIL": "Gültig bis",
     "COMMENT": "Bemerkung",
-    "KIND": {
-      "CERTIFICATE_KIND": "Zetifikate type",
+    "TYPE": {
+      "CERTIFICATE_TYPE": "Zetifikate type",
       "VALUES": {
-        "CERTIFICATE": "Zertifikate",
-        "MILITARY_FUNCTION": "Militär Funktion",
-        "YOUTH_AND_SPORT": "J+S Kurs",
-        "LEADERSHIP_TRAINING": "Führungskräftetraining"
+        "CompTIA A+": "CompTIA A+",
+        "Microsoft 365 Administrator Associate": "Microsoft 365 Administrator Associate",
+        "AWS Certified Solutions Architect – Associate": "AWS Certified Solutions Architect – Associate",
+        "ITIL 4 Foundation": "ITIL 4 Foundation",
+        "Google IT Support Professional": "Google IT Support Professional",
+        "Red Hat Certified System Administrator (RHCSA)": "Red Hat Certified System Administrator (RHCSA)",
+        "Certified Information Systems Security Professional (CISSP)": "Certified Information Systems Security Professional (CISSP)",
+        "Project Management Professional (PMP)": "Project Management Professional (PMP)",
+        "Microsoft Certified: Azure Administrator Associate": "Microsoft Certified: Azure Administrator Associate"
       }
     }
   },
