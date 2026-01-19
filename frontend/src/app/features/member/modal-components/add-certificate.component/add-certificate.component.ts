@@ -3,14 +3,13 @@ import { BaseModalComponent } from '../../../../shared/modal/base-modal.componen
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BaseFormComponent } from '../../../../shared/form/base-form.component';
 import { InputFieldComponent } from '../../../../shared/input-field/input-field.component';
-import { MatError, MatFormField, MatInput, MatLabel } from '@angular/material/input';
+import { MatError, MatFormField, MatInput, MatLabel, MatSuffix } from '@angular/material/input';
 import { provideI18nPrefix } from '../../../../shared/i18n-prefix.provider';
 import { MatAutocomplete, MatAutocompleteTrigger, MatOption } from '@angular/material/autocomplete';
 import { PctsFormErrorDirective } from '../../../../shared/pcts-form-error/pcts-form-error.directive';
 import { PctsFormLabelDirective } from '../../../../shared/pcts-form-label/pcts-form-label.directive';
 import { TranslateService } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { Observable } from 'rxjs';
 import { Location } from '@angular/common';
 import { isValueInListSignal } from '../../../../shared/form/form-validators';
 import { MatButton } from '@angular/material/button';
@@ -18,13 +17,13 @@ import { ScopedTranslationPipe } from '../../../../shared/pipes/scoped-translati
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
 import { ModalSubmitMode } from '../../../../shared/enum/modal-submit-mode.enum';
-import { MemberModel } from '../../member.model';
 import { MemberService } from '../../member.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { CertificateTypeModel } from '../../../certificates/certificate-type/certificate-type.model';
 import { CertificateTypeService } from '../../../certificates/certificate-type/certificate-type.service';
 import { OrganisationUnitModel } from '../../../organisation-unit/organisation-unit.model';
+import { MatDatepicker, MatDatepickerInput, MatDatepickerToggle } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-add-certificate',
@@ -48,7 +47,11 @@ import { OrganisationUnitModel } from '../../../organisation-unit/organisation-u
     MatMenu,
     MatMenuItem,
     MatMenuTrigger,
-    MatIcon
+    MatIcon,
+    MatDatepicker,
+    MatDatepickerInput,
+    MatDatepickerToggle,
+    MatSuffix
   ],
   templateUrl: './add-certificate.component.html',
   styleUrl: './add-certificate.component.scss',
@@ -76,12 +79,14 @@ export class AddCertificateComponent<D> implements OnInit {
   dialogDat: D = inject(MAT_DIALOG_DATA);
 
   protected formGroup = this.fb.nonNullable.group({
+    id: [null],
+    member: [null],
     certificateType: [null,
       [Validators.required,
         isValueInListSignal(this.certificateTypeOptions)]],
-    startDate: ['',
+    completedAt: ['',
       Validators.required],
-    dateUntil: [''],
+    validUntil: [''],
     comment: ['']
   });
 
@@ -131,12 +136,10 @@ export class AddCertificateComponent<D> implements OnInit {
   }
 
   onSubmit(submitMod: ModalSubmitMode) {
+    console.log(this.formGroup.getRawValue());
     this.dialogRef.close({
-      modalSubmitMode: submitMod
+      modalSubmitMode: submitMod,
+      submittedModel: this.formGroup.getRawValue()
     });
-  }
-
-  getMember(): Observable<MemberModel> {
-    return this.memberService.getMemberById(Number(this.route.snapshot.paramMap.get('id')));
   }
 }

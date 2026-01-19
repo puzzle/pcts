@@ -17,13 +17,21 @@
 
       </mat-form-field>
 
-    <app-input-field>
-      <input type="date" formControlName="startDate" matInput data-testid="startDate">
-    </app-input-field>
+      <mat-form-field>
+        <mat-label appPctsFormLabel/>
+        <input matInput [matDatepicker]="completedAtPicker" formControlName="completedAt" data-testid="completedAt">
+        <mat-datepicker-toggle matIconSuffix [for]="completedAtPicker"/>
+        <mat-datepicker #completedAtPicker/>
+        <mat-error appPctsFormError/>
+      </mat-form-field>
 
-    <app-input-field>
-      <input type="date" formControlName="dateUntil" matInput data-testid="dateUntil">
-    </app-input-field>
+      <mat-form-field>
+        <mat-label appPctsFormLabel/>
+        <input matInput [matDatepicker]="validUntilPicker" formControlName="validUntil" data-testid="validUntil">
+        <mat-datepicker-toggle matIconSuffix [for]="validUntilPicker"/>
+        <mat-datepicker #validUntilPicker/>
+        <mat-error appPctsFormError/>
+      </mat-form-field>
 
       <app-input-field>
         <input type="text" formControlName="comment" matInput data-testid="comment">

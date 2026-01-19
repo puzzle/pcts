@@ -128,6 +128,7 @@ export class MemberFormComponent implements OnInit {
       return;
     }
     const memberToSave = this.memberForm.getRawValue() as MemberModel;
+    console.log(memberToSave);
     if (this.isEdit()) {
       this.memberService.updateMember(this.memberForm.get('id')?.value, memberToSave)
         .subscribe(() => {
@@ -176,7 +177,6 @@ export class MemberFormComponent implements OnInit {
     if (value === null || value === undefined || value === '') {
       return this.organisationUnitsOptions();
     }
-
 
     const filterValue = (typeof value === 'string' ? value : value.name).toLowerCase();
 
