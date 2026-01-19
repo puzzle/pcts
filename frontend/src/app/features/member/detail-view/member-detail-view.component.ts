@@ -95,7 +95,7 @@ export class MemberDetailViewComponent implements OnInit {
         submittedModel: CertificateModel; }) => {
         switch (result.modalSubmitMode) {
           case ModalSubmitMode.ENTER_ANOTHER:
-
+            this.openCertificateDialog();
             break;
           case ModalSubmitMode.COPY:
             this.openCertificateDialog(result.submittedModel);
@@ -103,10 +103,8 @@ export class MemberDetailViewComponent implements OnInit {
           default:
             result.modalSubmitMode satisfies never;
         }
-        const member1 = this.member();
-        if (member1) {
-          result.submittedModel.member = member1;
-        }
+        result.submittedModel.member = this.member()!;
+
         this.certificateService.addCertificate(result.submittedModel)
           .subscribe();
       });
