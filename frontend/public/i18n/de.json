@@ -41,7 +41,9 @@
   },
   "TABLE": {
     "NO_DATA": "Keine Einträge",
-    "NO_SEARCH_RESULT": "Kein {{model}} mit den Attributen \"{{searchValue}}\" gefunden."
+    "NO_SEARCH_RESULT": "Kein {{model}} mit den Attributen \"{{searchValue}}\" gefunden.",
+    "SHOW_ALL": "Alles anzeigen",
+    "SHOW_LESS": "Weniger anzeigen"
   },
   "FILTER": {
     "SEARCH": "Suchen",

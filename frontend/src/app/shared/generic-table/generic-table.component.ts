@@ -28,6 +28,7 @@ import { GenCol, GenericTableDataSource } from './generic-table-data-source';
 import { RouterLink } from '@angular/router';
 import { NgTemplateOutlet } from '@angular/common';
 import { ColumnTemplateDirective } from './column-template/column-template.directive';
+import { TranslationScopeDirective } from '../translation-scope/translation-scope.directive';
 
 @Component({
   selector: 'app-generic-table',
@@ -47,7 +48,8 @@ import { ColumnTemplateDirective } from './column-template/column-template.direc
     MatHeaderCellDef,
     MatNoDataRow,
     RouterLink,
-    NgTemplateOutlet
+    NgTemplateOutlet,
+    TranslationScopeDirective
   ],
   templateUrl: './generic-table.component.html',
   styleUrl: './generic-table.component.scss'

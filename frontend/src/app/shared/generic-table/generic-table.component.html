@@ -58,13 +58,14 @@
 </ng-template>
 
 @if (isFilterApplied()) {
-    <div class="d-flex justify-content-center mt-2">
+    <div class="d-flex justify-content-center mt-2" *appTranslationScope="'TABLE'">
       <button
+        data-testid="show-list"
         type="button"
         class="btn btn-link"
         (click)="toggleButton()"
       >
-        {{ isExpanded ? 'Show less' : 'Show all' }}
+        {{ isExpanded ? ('SHOW_LESS' | scopedTranslation) : ('SHOW_ALL'  | scopedTranslation) }}
       </button>
     </div>
 }

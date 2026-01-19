@@ -36,4 +36,25 @@ describe('MemberOverviewComponent', () => {
       });
     });
   });
+
+  it('should disable table when no entries are found', () => {
+    MemberDetailPage.visit(1);
+    CvMemberPage.cvTable('leadership-experience')
+      .should('include.text', 'Keine Einträge');
+  });
+
+  it('should cut list after 5 entries', () => {
+    MemberDetailPage.visit(1);
+    CvMemberPage.showListButton()
+      .should('include.text', 'Alles anzeigen')
+      .click();
+    CvMemberPage.showListButton()
+      .should('include.text', 'Weniger anzeigen');
+  });
+
+  it('should include position text even if employer is not set', () => {
+    MemberDetailPage.visit(3);
+    CvMemberPage.cvTable('experience')
+      .should('include.text', 'Data Analyst');
+  });
 });
