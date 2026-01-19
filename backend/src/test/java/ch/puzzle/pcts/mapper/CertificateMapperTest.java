@@ -80,8 +80,8 @@ class CertificateMapperTest {
     @DisplayName("Should return Certificate")
     @Test
     void shouldReturnCertificate() {
-        when(memberBusinessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
-        when(certificateTypeBusinessService.getById(CERT_TYPE_1_ID)).thenReturn(CERT_TYPE_1);
+        when(memberBusinessService.getReferenceById(MEMBER_1_ID)).thenReturn(MEMBER_1);
+        when(certificateTypeBusinessService.getReferenceById(CERT_TYPE_1_ID)).thenReturn(CERT_TYPE_1);
 
         Certificate resultCertificate = certificateMapper.fromDto(CERTIFICATE_1_INPUT);
 
@@ -92,8 +92,8 @@ class CertificateMapperTest {
         assertEquals(MEMBER_1, resultCertificate.getMember());
         assertEquals(CERT_TYPE_1, resultCertificate.getCertificateType());
 
-        verify(memberBusinessService).getById(MEMBER_1_ID);
-        verify(certificateTypeBusinessService).getById(CERT_TYPE_1_ID);
+        verify(memberBusinessService).getReferenceById(MEMBER_1_ID);
+        verify(certificateTypeBusinessService).getReferenceById(CERT_TYPE_1_ID);
     }
 
     @DisplayName("Should return a list of Certificate dto")
@@ -116,10 +116,10 @@ class CertificateMapperTest {
     @DisplayName("Should return a list of Certificate")
     @Test
     void shouldGetListOfCertificate() {
-        when(memberBusinessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
-        when(memberBusinessService.getById(MEMBER_2_ID)).thenReturn(MEMBER_2);
-        when(certificateTypeBusinessService.getById(CERT_TYPE_1_ID)).thenReturn(CERT_TYPE_1);
-        when(certificateTypeBusinessService.getById(CERT_TYPE_2_ID)).thenReturn(CERT_TYPE_2);
+        when(memberBusinessService.getReferenceById(MEMBER_1_ID)).thenReturn(MEMBER_1);
+        when(memberBusinessService.getReferenceById(MEMBER_2_ID)).thenReturn(MEMBER_2);
+        when(certificateTypeBusinessService.getReferenceById(CERT_TYPE_1_ID)).thenReturn(CERT_TYPE_1);
+        when(certificateTypeBusinessService.getReferenceById(CERT_TYPE_2_ID)).thenReturn(CERT_TYPE_2);
 
         List<Certificate> resultList = certificateMapper.fromDto(List.of(CERTIFICATE_1_INPUT, CERTIFICATE_2_INPUT));
 
@@ -128,10 +128,10 @@ class CertificateMapperTest {
         assertEquals(CERTIFICATE_1_INPUT.comment(), resultList.get(0).getComment());
         assertEquals(CERTIFICATE_2_INPUT.comment(), resultList.get(1).getComment());
 
-        verify(memberBusinessService).getById(MEMBER_1_ID);
-        verify(memberBusinessService).getById(MEMBER_2_ID);
-        verify(certificateTypeBusinessService).getById(CERT_TYPE_1_ID);
-        verify(certificateTypeBusinessService).getById(CERT_TYPE_2_ID);
+        verify(memberBusinessService).getReferenceById(MEMBER_1_ID);
+        verify(memberBusinessService).getReferenceById(MEMBER_2_ID);
+        verify(certificateTypeBusinessService).getReferenceById(CERT_TYPE_1_ID);
+        verify(certificateTypeBusinessService).getReferenceById(CERT_TYPE_2_ID);
     }
 
     @DisplayName("Should throw exception when member is not found")
@@ -147,7 +147,7 @@ class CertificateMapperTest {
                 .of(FieldKey.ENTITY, MEMBER, FieldKey.FIELD, "id", FieldKey.IS, "" + inputDto.memberId());
 
         // mock the behavior
-        when(certificateMapper.memberBusinessService.getById(anyLong()))
+        when(certificateMapper.memberBusinessService.getReferenceById(anyLong()))
                 .thenThrow(new PCTSException(HttpStatus.NOT_FOUND,
                                              List.of(new GenericErrorDto(ErrorKey.NOT_FOUND, attributes))));
 
@@ -168,7 +168,7 @@ class CertificateMapperTest {
                     String.valueOf(inputDto.certificateTypeId()));
 
         // mock the behavior
-        when(certificateMapper.certificateTypeBusinessService.getById(anyLong()))
+        when(certificateMapper.certificateTypeBusinessService.getReferenceById(anyLong()))
                 .thenThrow(new PCTSException(HttpStatus.NOT_FOUND,
                                              List.of(new GenericErrorDto(ErrorKey.NOT_FOUND, attributes))));
 

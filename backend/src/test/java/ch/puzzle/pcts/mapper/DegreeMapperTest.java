@@ -38,9 +38,9 @@ class DegreeMapperTest {
         mapper = new DegreeMapper(memberBusinessService, degreeTypeBusinessService, degreeTypeMapper, memberMapper);
 
         when(degreeTypeMapper.toDto(DEGREE_TYPE_1)).thenReturn(DEGREE_TYPE_1_DTO);
-        when(degreeTypeBusinessService.getById(DEGREE_TYPE_1_ID)).thenReturn(DEGREE_TYPE_1);
+        when(degreeTypeBusinessService.getReferenceById(DEGREE_TYPE_1_ID)).thenReturn(DEGREE_TYPE_1);
         when(memberMapper.toDto(MEMBER_1)).thenReturn(MEMBER_1_DTO);
-        when(memberBusinessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
+        when(memberBusinessService.getReferenceById(MEMBER_1_ID)).thenReturn(MEMBER_1);
     }
 
     @DisplayName("Should return degree")
@@ -135,7 +135,7 @@ class DegreeMapperTest {
                     String.valueOf(invalidInput.memberId()));
 
         // mock the behavior
-        when(mapper.memberBusinessService.getById(anyLong()))
+        when(mapper.memberBusinessService.getReferenceById(anyLong()))
                 .thenThrow(new PCTSException(HttpStatus.NOT_FOUND,
                                              List.of(new GenericErrorDto(ErrorKey.NOT_FOUND, attributes))));
 
@@ -163,7 +163,7 @@ class DegreeMapperTest {
                     String.valueOf(invalidInput.typeId()));
 
         // mock the behavior
-        when(mapper.degreeTypeBusinessService.getById(anyLong()))
+        when(mapper.degreeTypeBusinessService.getReferenceById(anyLong()))
                 .thenThrow(new PCTSException(HttpStatus.NOT_FOUND,
                                              List.of(new GenericErrorDto(ErrorKey.NOT_FOUND, attributes))));
 

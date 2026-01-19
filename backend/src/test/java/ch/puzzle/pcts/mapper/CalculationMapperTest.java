@@ -70,8 +70,8 @@ class CalculationMapperTest {
     @DisplayName("Should map CalculationInputDto to Calculation")
     @Test
     void shouldReturnCalculation() {
-        when(memberBusinessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
-        when(roleBusinessService.getById(ROLE_2_ID)).thenReturn(ROLE_2);
+        when(memberBusinessService.getReferenceById(MEMBER_1_ID)).thenReturn(MEMBER_1);
+        when(roleBusinessService.getReferenceById(ROLE_2_ID)).thenReturn(ROLE_2);
 
         Calculation result = calculationMapper.fromDto(CALCULATION_INPUT_DTO_1);
 
@@ -82,8 +82,8 @@ class CalculationMapperTest {
         assertEquals(MEMBER_1, result.getMember());
         assertEquals(ROLE_2, result.getRole());
 
-        verify(memberBusinessService).getById(MEMBER_1_ID);
-        verify(roleBusinessService).getById(ROLE_2_ID);
+        verify(memberBusinessService).getReferenceById(MEMBER_1_ID);
+        verify(roleBusinessService).getReferenceById(ROLE_2_ID);
     }
 
     @DisplayName("Should map list of Calculations to CalculationDto list")
@@ -106,24 +106,24 @@ class CalculationMapperTest {
     @DisplayName("Should map list of CalculationInputDto to Calculation list")
     @Test
     void shouldReturnListOfCalculation() {
-        when(memberBusinessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
-        when(memberBusinessService.getById(MEMBER_2_ID)).thenReturn(MEMBER_2);
-        when(roleBusinessService.getById(ROLE_2_ID)).thenReturn(ROLE_2);
+        when(memberBusinessService.getReferenceById(MEMBER_1_ID)).thenReturn(MEMBER_1);
+        when(memberBusinessService.getReferenceById(MEMBER_2_ID)).thenReturn(MEMBER_2);
+        when(roleBusinessService.getReferenceById(ROLE_2_ID)).thenReturn(ROLE_2);
 
         List<Calculation> result = calculationMapper.fromDto(List.of(CALCULATION_INPUT_DTO_1, CALCULATION_INPUT_DTO_2));
 
         assertNotNull(result);
         assertEquals(2, result.size());
 
-        verify(memberBusinessService).getById(MEMBER_1_ID);
-        verify(memberBusinessService).getById(MEMBER_2_ID);
-        verify(roleBusinessService, times(2)).getById(ROLE_2_ID);
+        verify(memberBusinessService).getReferenceById(MEMBER_1_ID);
+        verify(memberBusinessService).getReferenceById(MEMBER_2_ID);
+        verify(roleBusinessService, times(2)).getReferenceById(ROLE_2_ID);
     }
 
     @DisplayName("Should throw when Member not found")
     @Test
     void shouldThrowWhenMemberNotFound() {
-        when(memberBusinessService.getById(anyLong())).thenThrow(new PCTSException(HttpStatus.NOT_FOUND, List.of()));
+        when(memberBusinessService.getReferenceById(anyLong())).thenThrow(new PCTSException(HttpStatus.NOT_FOUND, List.of()));
 
         assertThrows(PCTSException.class, () -> calculationMapper.fromDto(CALCULATION_INPUT_DTO_1));
     }
@@ -131,8 +131,8 @@ class CalculationMapperTest {
     @DisplayName("Should throw when Role not found")
     @Test
     void shouldThrowWhenRoleNotFound() {
-        when(memberBusinessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
-        when(roleBusinessService.getById(anyLong())).thenThrow(new PCTSException(HttpStatus.NOT_FOUND, List.of()));
+        when(memberBusinessService.getReferenceById(MEMBER_1_ID)).thenReturn(MEMBER_1);
+        when(roleBusinessService.getReferenceById(anyLong())).thenThrow(new PCTSException(HttpStatus.NOT_FOUND, List.of()));
 
         assertThrows(PCTSException.class, () -> calculationMapper.fromDto(CALCULATION_INPUT_DTO_1));
     }

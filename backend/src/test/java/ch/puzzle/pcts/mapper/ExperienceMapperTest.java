@@ -47,9 +47,9 @@ class ExperienceMapperTest {
                                       experienceTypeBusinessService);
 
         when(memberMapper.toDto(MEMBER_1)).thenReturn(MEMBER_1_DTO);
-        when(memberBusinessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
+        when(memberBusinessService.getReferenceById(MEMBER_1_ID)).thenReturn(MEMBER_1);
         when(experienceTypeMapper.toDto(EXP_TYPE_1)).thenReturn(EXP_TYPE_1_DTO);
-        when(experienceTypeBusinessService.getById(EXP_TYPE_1_ID)).thenReturn(EXP_TYPE_1);
+        when(experienceTypeBusinessService.getReferenceById(EXP_TYPE_1_ID)).thenReturn(EXP_TYPE_1);
     }
 
     @DisplayName("Should map Experience model to ExperienceDto correctly")
@@ -104,7 +104,7 @@ class ExperienceMapperTest {
     @DisplayName("Should throw exception when member with id does not exist")
     @Test
     void shouldThrowExceptionWhenMemberWithIdDoesNotExist() {
-        when(memberBusinessService.getById(INVALID_ID)).thenThrow(new PCTSException(HttpStatus.NOT_FOUND, List.of(new GenericErrorDto(ErrorKey.NOT_FOUND, Map.of(FieldKey.ENTITY, MEMBER, FieldKey.FIELD, "id",  FieldKey.IS, String.valueOf(INVALID_ID))))));
+        when(memberBusinessService.getReferenceById(INVALID_ID)).thenThrow(new PCTSException(HttpStatus.NOT_FOUND, List.of(new GenericErrorDto(ErrorKey.NOT_FOUND, Map.of(FieldKey.ENTITY, MEMBER, FieldKey.FIELD, "id",  FieldKey.IS, String.valueOf(INVALID_ID))))));
 
         ExperienceInputDto experienceInputDto = new ExperienceInputDto(
                 INVALID_ID,
@@ -125,7 +125,7 @@ class ExperienceMapperTest {
     @DisplayName("Should throw exception when experienceType with id does not exist")
     @Test
     void shouldThrowExceptionWhenExperienceTypeWithIdDoesNotExist() {
-        when(experienceTypeBusinessService.getById(INVALID_ID)).thenThrow(new PCTSException(HttpStatus.NOT_FOUND, List.of(new GenericErrorDto(ErrorKey.NOT_FOUND, Map.of(FieldKey.ENTITY, EXPERIENCE_TYPE, FieldKey.FIELD, "id",  FieldKey.IS, String.valueOf(INVALID_ID))))));
+        when(experienceTypeBusinessService.getReferenceById(INVALID_ID)).thenThrow(new PCTSException(HttpStatus.NOT_FOUND, List.of(new GenericErrorDto(ErrorKey.NOT_FOUND, Map.of(FieldKey.ENTITY, EXPERIENCE_TYPE, FieldKey.FIELD, "id",  FieldKey.IS, String.valueOf(INVALID_ID))))));
 
         ExperienceInputDto experienceInputDto = new ExperienceInputDto(
                 MEMBER_1_ID,

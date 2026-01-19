@@ -74,8 +74,8 @@ class LeadershipExperienceMapperTest {
     @DisplayName("Should return Certificate model from InputDto")
     @Test
     void shouldReturnCertificate() {
-        when(memberBusinessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
-        when(leadershipExperienceTypeBusinessService.getById(LEADERSHIP_TYPE_1_ID)).thenReturn(LEADERSHIP_TYPE_1);
+        when(memberBusinessService.getReferenceById(MEMBER_1_ID)).thenReturn(MEMBER_1);
+        when(leadershipExperienceTypeBusinessService.getReferenceById(LEADERSHIP_TYPE_1_ID)).thenReturn(LEADERSHIP_TYPE_1);
 
         Certificate resultCertificate = leadershipExperienceMapper.fromDto(LEADERSHIP_CERT_1_INPUT);
 
@@ -87,8 +87,8 @@ class LeadershipExperienceMapperTest {
         assertNull(resultCertificate.getCompletedAt());
         assertNull(resultCertificate.getValidUntil());
 
-        verify(memberBusinessService).getById(MEMBER_1_ID);
-        verify(leadershipExperienceTypeBusinessService).getById(LEADERSHIP_TYPE_1_ID);
+        verify(memberBusinessService).getReferenceById(MEMBER_1_ID);
+        verify(leadershipExperienceTypeBusinessService).getReferenceById(LEADERSHIP_TYPE_1_ID);
     }
 
     @DisplayName("Should return a list of LeadershipExperienceDto")
@@ -116,10 +116,12 @@ class LeadershipExperienceMapperTest {
     void shouldGetListOfCertificate() {
         List<LeadershipExperienceInputDto> inputList = List.of(LEADERSHIP_CERT_1_INPUT, LEADERSHIP_CERT_2_INPUT);
 
-        when(memberBusinessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
-        when(memberBusinessService.getById(MEMBER_2_ID)).thenReturn(MEMBER_2);
-        when(leadershipExperienceTypeBusinessService.getById(LEADERSHIP_TYPE_1_ID)).thenReturn(LEADERSHIP_TYPE_1);
-        when(leadershipExperienceTypeBusinessService.getById(LEADERSHIP_TYPE_2_ID)).thenReturn(LEADERSHIP_TYPE_2);
+        when(memberBusinessService.getReferenceById(MEMBER_1_ID)).thenReturn(MEMBER_1);
+        when(memberBusinessService.getReferenceById(MEMBER_2_ID)).thenReturn(MEMBER_2);
+        when(leadershipExperienceTypeBusinessService.getReferenceById(LEADERSHIP_TYPE_1_ID))
+                .thenReturn(LEADERSHIP_TYPE_1);
+        when(leadershipExperienceTypeBusinessService.getReferenceById(LEADERSHIP_TYPE_2_ID))
+                .thenReturn(LEADERSHIP_TYPE_2);
 
         List<Certificate> resultList = leadershipExperienceMapper.fromDto(inputList);
 
@@ -128,10 +130,10 @@ class LeadershipExperienceMapperTest {
         assertEquals(LEADERSHIP_CERT_1.getComment(), resultList.get(0).getComment());
         assertEquals(LEADERSHIP_CERT_2.getComment(), resultList.get(1).getComment());
 
-        verify(memberBusinessService).getById(MEMBER_1_ID);
-        verify(memberBusinessService).getById(MEMBER_2_ID);
-        verify(leadershipExperienceTypeBusinessService).getById(LEADERSHIP_TYPE_1_ID);
-        verify(leadershipExperienceTypeBusinessService).getById(LEADERSHIP_TYPE_2_ID);
+        verify(memberBusinessService).getReferenceById(MEMBER_1_ID);
+        verify(memberBusinessService).getReferenceById(MEMBER_2_ID);
+        verify(leadershipExperienceTypeBusinessService).getReferenceById(LEADERSHIP_TYPE_1_ID);
+        verify(leadershipExperienceTypeBusinessService).getReferenceById(LEADERSHIP_TYPE_2_ID);
     }
 
     @DisplayName("Should throw exception when member is not found")
@@ -144,7 +146,7 @@ class LeadershipExperienceMapperTest {
         Map<FieldKey, String> attributes = Map
                 .of(FieldKey.ENTITY, MEMBER, FieldKey.FIELD, "id", FieldKey.IS, "" + inputDto.memberId());
 
-        when(memberBusinessService.getById(anyLong()))
+        when(memberBusinessService.getReferenceById(anyLong()))
                 .thenThrow(new PCTSException(HttpStatus.NOT_FOUND,
                                              List.of(new GenericErrorDto(ErrorKey.NOT_FOUND, attributes))));
 
@@ -166,7 +168,7 @@ class LeadershipExperienceMapperTest {
                     FieldKey.IS,
                     String.valueOf(inputDto.leadershipExperienceTypeId()));
 
-        when(leadershipExperienceTypeBusinessService.getById(anyLong()))
+        when(leadershipExperienceTypeBusinessService.getReferenceById(anyLong()))
                 .thenThrow(new PCTSException(HttpStatus.NOT_FOUND,
                                              List.of(new GenericErrorDto(ErrorKey.NOT_FOUND, attributes))));
 
