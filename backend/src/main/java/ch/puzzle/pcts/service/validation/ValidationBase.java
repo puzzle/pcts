@@ -10,6 +10,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
@@ -165,5 +166,31 @@ public abstract class ValidationBase<T extends Model> implements ValidationServi
 
     public static List<GenericErrorDto> buildGenericErrorDto(ErrorKey key, Map<FieldKey, String> errors) {
         return List.of(new GenericErrorDto(key, errors));
+    }
+
+    public void validateDateIsBefore(String entity, String earlyFieldName, LocalDate earlyDate, String lateFieldName,
+                                     LocalDate lateDate) {
+
+        if (earlyDate == null || lateDate == null) {
+            return;
+        }
+
+        if (earlyDate.isAfter(lateDate)) {
+
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY,
+                        entity,
+                        FieldKey.FIELD,
+                        earlyFieldName,
+                        FieldKey.IS,
+                        earlyDate.toString(),
+                        FieldKey.CONDITION_FIELD,
+                        lateFieldName,
+                        FieldKey.MAX,
+                        lateDate.toString());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_NOT_BEFORE, attributes);
+            throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
+        }
     }
 }
