@@ -1,5 +1,7 @@
 import { Component, inject, input, OnInit, signal, viewChild, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberService } from '../member.service';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
@@ -112,6 +114,8 @@ export class MemberDetailViewComponent implements OnInit {
       .subscribe((result: { modalSubmitMode: ModalSubmitMode;
         submittedModel: CertificateModel; }) => {
         switch (result.modalSubmitMode) {
+          case ModalSubmitMode.SAVE:
+            break;
           case ModalSubmitMode.ENTER_ANOTHER:
             this.openCertificateDialog();
             break;
