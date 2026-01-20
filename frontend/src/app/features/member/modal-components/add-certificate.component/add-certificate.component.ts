@@ -7,20 +7,16 @@ import { provideI18nPrefix } from '../../../../shared/i18n-prefix.provider';
 import { MatAutocomplete, MatAutocompleteTrigger, MatOption } from '@angular/material/autocomplete';
 import { PctsFormErrorDirective } from '../../../../shared/pcts-form-error/pcts-form-error.directive';
 import { PctsFormLabelDirective } from '../../../../shared/pcts-form-label/pcts-form-label.directive';
-import { TranslateService } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { JsonPipe, Location } from '@angular/common';
 import { isCertificateTypeName } from '../../../../shared/form/form-validators';
 import { MatButton } from '@angular/material/button';
 import { ScopedTranslationPipe } from '../../../../shared/pipes/scoped-translation-pipe';
-import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
-import { MatIcon } from '@angular/material/icon';
 import { ModalSubmitMode } from '../../../../shared/enum/modal-submit-mode.enum';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CertificateTypeModel } from '../../../certificates/certificate-type/certificate-type.model';
 import { CertificateTypeService } from '../../../certificates/certificate-type/certificate-type.service';
-import { OrganisationUnitModel } from '../../../organisation-unit/organisation-unit.model';
 import { MatDatepicker, MatDatepickerInput, MatDatepickerToggle } from '@angular/material/datepicker';
+import { MenuButtonComponent } from '../../../../shared/menu-button/menu-button.component';
 
 @Component({
   selector: 'app-add-certificate',
@@ -40,34 +36,26 @@ import { MatDatepicker, MatDatepickerInput, MatDatepickerToggle } from '@angular
     PctsFormLabelDirective,
     MatButton,
     ScopedTranslationPipe,
-    MatMenu,
-    MatMenuItem,
-    MatMenuTrigger,
-    MatIcon,
     MatDatepicker,
     MatDatepickerInput,
     MatDatepickerToggle,
     MatSuffix,
-    JsonPipe
+    MenuButtonComponent
   ],
   templateUrl: './add-certificate.component.html',
   styleUrl: './add-certificate.component.scss',
   providers: [provideI18nPrefix('CERTIFICATE.FORM.ADD')]
 })
-export class AddCertificateComponent<D> implements OnInit {
+export class AddCertificateComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
 
   protected readonly ModalSubmitMode = ModalSubmitMode;
-
-  private readonly translateService = inject(TranslateService);
 
   private readonly certificateTypeOptions: WritableSignal<CertificateTypeModel[]> = signal([]);
 
   private readonly certificateTypeService = inject(CertificateTypeService);
 
-  private readonly location = inject(Location);
-
-  private readonly dialogRef = inject(MatDialogRef<AddCertificateComponent<D>>);
+  private readonly dialogRef = inject(MatDialogRef<AddCertificateComponent>);
 
   private readonly dialogDat = inject(MAT_DIALOG_DATA);
 
@@ -101,25 +89,21 @@ export class AddCertificateComponent<D> implements OnInit {
   }
 
   onCancel() {
-    this.location.back();
+    this.dialogRef.close();
   }
 
   protected displayCertificateTypes = (certificateType: CertificateTypeModel): string => {
-    if (!certificateType) {
-      return '';
-    }
-    const translationKey = 'CERTIFICATE.TYPE.VALUES.' + certificateType.name;
-    return this.translateService.instant(translationKey);
+    return certificateType?.name ?? '';
   };
 
   protected certificateTypeControlSignal = toSignal(this.formGroup.get('certificateType')!.valueChanges, { initialValue: this.formGroup.get('certificateType')!.value });
 
   protected certificateTypeFilteredOptions = computed(() => {
     const value = this.certificateTypeControlSignal() ?? '';
-    return this.filterCertificateKind(value);
+    return this.filterCertificateType(value);
   });
 
-  private filterCertificateKind(value: OrganisationUnitModel | string | null): CertificateTypeModel[] {
+  private filterCertificateType(value: CertificateTypeModel | string | null): CertificateTypeModel[] {
     if (value === null || value === undefined || value === '') {
       return this.certificateTypeOptions();
     }

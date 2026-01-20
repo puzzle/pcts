@@ -23,16 +23,6 @@ export function provideI18nPrefix(suffix: string, separator = '.'): Provider[] {
   ModalService];
 }
 
-
-export function clearI18nPrefix(): Provider[] {
-  return [{
-    provide: I18N_PREFIX,
-    useValue: ''
-  },
-  ScopedTranslationService,
-  ModalService];
-}
-
 @Injectable()
 export class ScopedTranslationService {
   private readonly core = inject(ScopedTranslationCoreService);

@@ -26,8 +26,8 @@
       "BUTTONS": {
         "ACTION": "Hinzufügen",
         "CANCEL": "Abbrechen",
-        "ENTER_ANOTHER": " + weitern Eintrag erfassen",
-        "COPY": " + Inhalt kopieren"
+        "ENTER_ANOTHER": "Hinzufügen + weitern Eintrag erfassen",
+        "COPY": "Hinzufügen + Inhalt kopieren"
       }
     },
     "EDIT": {
@@ -106,21 +106,7 @@
     "MODEL_NAME": "Zertifikat",
     "COMPLETED_AT": "Datum",
     "VALID_UNTIL": "Gültig bis",
-    "COMMENT": "Bemerkung",
-    "TYPE": {
-      "CERTIFICATE_TYPE": "Zetifikate type",
-      "VALUES": {
-        "CompTIA A+": "CompTIA A+",
-        "Microsoft 365 Administrator Associate": "Microsoft 365 Administrator Associate",
-        "AWS Certified Solutions Architect – Associate": "AWS Certified Solutions Architect – Associate",
-        "ITIL 4 Foundation": "ITIL 4 Foundation",
-        "Google IT Support Professional": "Google IT Support Professional",
-        "Red Hat Certified System Administrator (RHCSA)": "Red Hat Certified System Administrator (RHCSA)",
-        "Certified Information Systems Security Professional (CISSP)": "Certified Information Systems Security Professional (CISSP)",
-        "Project Management Professional (PMP)": "Project Management Professional (PMP)",
-        "Microsoft Certified: Azure Administrator Associate": "Microsoft Certified: Azure Administrator Associate"
-      }
-    }
+    "COMMENT": "Bemerkung"
   },
 
   "ERROR": {
