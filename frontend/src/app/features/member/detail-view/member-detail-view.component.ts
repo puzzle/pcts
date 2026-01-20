@@ -31,8 +31,7 @@ import { MemberOverviewModel } from '../member-overview.model';
     MatTab,
     TranslationScopeDirective
   ],
-  templateUrl: './member-detail-view.component.html',
-  styleUrl: './member-detail-view.component.scss'
+  templateUrl: './member-detail-view.component.html'
 })
 export class MemberDetailViewComponent implements OnInit {
   private readonly service = inject(MemberService);

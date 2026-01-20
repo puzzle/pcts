@@ -50,8 +50,7 @@ import { TranslationScopeDirective } from '../translation-scope/translation-scop
     NgTemplateOutlet,
     TranslationScopeDirective
   ],
-  templateUrl: './generic-table.component.html',
-  styleUrl: './generic-table.component.scss'
+  templateUrl: './generic-table.component.html'
 })
 export class GenericTableComponent<T extends object> {
   idAttr = input<keyof T>();
