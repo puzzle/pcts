@@ -176,7 +176,6 @@ export class MemberFormComponent implements OnInit {
     if (value === null || value === undefined || value === '') {
       return this.organisationUnitsOptions();
     }
-
     const filterValue = (typeof value === 'string' ? value : value.name).toLowerCase();
 
     if (filterValue === '') {

@@ -1,4 +1,5 @@
 export enum ModalSubmitMode {
-  ENTER_ANOTHER,
-  COPY
+  SAVE,
+  ENTER_ANOTHER = 'ENTER_ANOTHER',
+  COPY = 'COPY'
 }
