@@ -1,7 +1,7 @@
 package ch.puzzle.pcts.service.validation.util;
 
 import ch.puzzle.pcts.model.Model;
-import ch.puzzle.pcts.model.calculation.CalculationChild;
+import ch.puzzle.pcts.model.calculation.CalculationChildInterface;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,7 +20,7 @@ public final class CalculationChildValidationUtil {
      *
      * @param <T>
      *            the type of the calculation child, which must implement both
-     *            {@link CalculationChild} and {@link Model}
+     *            {@link CalculationChildInterface} and {@link Model}
      * @param calculationChild
      *            the entity being validated for duplicates
      * @param existingCalculationChildren
@@ -30,8 +30,8 @@ public final class CalculationChildValidationUtil {
      *         in the system; {@code false} if the only match is the same entity or
      *         if no matches exist at all
      */
-    public static <T extends CalculationChild & Model> boolean validateDuplicateCalculationChildId(T calculationChild,
-                                                                                                   List<T> existingCalculationChildren) {
+    public static <T extends CalculationChildInterface & Model> boolean validateDuplicateCalculationChildId(T calculationChild,
+                                                                                                            List<T> existingCalculationChildren) {
         List<T> duplicates = existingCalculationChildren
                 .stream()
                 .filter(existing -> sameCalculation(existing, calculationChild))
@@ -51,7 +51,8 @@ public final class CalculationChildValidationUtil {
         return true;
     }
 
-    private static <T extends CalculationChild & Model> boolean sameCalculation(T existing, T calculationChild) {
+    private static <T extends CalculationChildInterface & Model> boolean sameCalculation(T existing,
+                                                                                         T calculationChild) {
         return Objects.equals(existing.getCalculation().getId(), calculationChild.getCalculation().getId());
     }
 }

@@ -4,7 +4,7 @@ import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.calculation.Calculation;
-import ch.puzzle.pcts.model.calculation.CalculationChild;
+import ch.puzzle.pcts.model.calculation.CalculationChildInterface;
 import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.experience.Experience;
 import jakarta.persistence.*;
@@ -12,7 +12,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity
-public class ExperienceCalculation implements CalculationChild, Model {
+public class ExperienceCalculation implements CalculationChildInterface, Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

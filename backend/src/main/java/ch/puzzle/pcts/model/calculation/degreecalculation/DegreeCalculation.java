@@ -4,7 +4,7 @@ import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.calculation.Calculation;
-import ch.puzzle.pcts.model.calculation.CalculationChild;
+import ch.puzzle.pcts.model.calculation.CalculationChildInterface;
 import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.degree.Degree;
 import jakarta.persistence.*;
@@ -14,7 +14,7 @@ import java.util.Objects;
 import org.hibernate.validator.constraints.Range;
 
 @Entity
-public class DegreeCalculation implements CalculationChild, Model {
+public class DegreeCalculation implements CalculationChildInterface, Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -1,6 +1,6 @@
 package ch.puzzle.pcts.repository;
 
-import ch.puzzle.pcts.model.calculation.CalculationChild;
+import ch.puzzle.pcts.model.calculation.CalculationChildInterface;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
@@ -15,6 +15,6 @@ import org.springframework.data.repository.NoRepositoryBean;
  *            the Type of the ID of the entity
  **/
 @NoRepositoryBean
-public interface CalculationChildRepository<T extends CalculationChild, I> extends JpaRepository<T, I> {
+public interface CalculationChildRepository<T extends CalculationChildInterface, I> extends JpaRepository<T, I> {
     List<T> findByCalculationId(Long calculationId);
 }

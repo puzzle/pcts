@@ -5,7 +5,7 @@ import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.calculation.Calculation;
-import ch.puzzle.pcts.model.calculation.CalculationChild;
+import ch.puzzle.pcts.model.calculation.CalculationChildInterface;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,15 +18,15 @@ class CalculationChildValidationUtilTest {
     /*
      * This is needed because mockito can't mock multiple interfaces
      */
-    private interface TestChild extends CalculationChild, Model {
+    private interface TestChildInterface extends CalculationChildInterface, Model {
     }
 
     @Mock
-    private TestChild calculationChild1;
+    private TestChildInterface calculationChild1;
     @Mock
-    private TestChild calculationChild2;
+    private TestChildInterface calculationChild2;
     @Mock
-    private TestChild calculationChild3;
+    private TestChildInterface calculationChild3;
 
     @Mock
     private Calculation calculation1;
