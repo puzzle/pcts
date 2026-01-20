@@ -18,8 +18,7 @@ import { ExperienceTypePillComponent } from '../../../../shared/experience-type-
     CrudButtonComponent,
     ExperienceTypePillComponent
   ],
-  templateUrl: './generic-cv-content.component.html',
-  styleUrl: './generic-cv-content.component.scss'
+  templateUrl: './generic-cv-content.component.html'
 })
 export class GenericCvContentComponent<T extends object> {
   idAttr = input<keyof T>();

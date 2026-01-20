@@ -43,6 +43,8 @@ public class TestDataDTOs {
     private TestDataDTOs() {
     }
 
+    public static final RoleDto ROLE_3_DTO = new RoleDto(ROLE_3.getId(), ROLE_3.getName(), ROLE_3.getIsManagement());
+
     public static final RoleDto ROLE_2_DTO = new RoleDto(ROLE_2.getId(), ROLE_2.getName(), ROLE_2.getIsManagement());
 
     public static final RoleDto ROLE_2_INPUT = new RoleDto(null, ROLE_2.getName(), ROLE_2.getIsManagement());
@@ -218,6 +220,12 @@ public class TestDataDTOs {
                                                                             DEGREE_TYPE_1.getLimitedRelevantPoints(),
                                                                             DEGREE_TYPE_1.getLittleRelevantPoints());
 
+    public static final DegreeTypeDto DEGREE_TYPE_2_DTO = new DegreeTypeDto(DEGREE_TYPE_2_ID,
+                                                                            DEGREE_TYPE_2.getName(),
+                                                                            DEGREE_TYPE_2.getHighlyRelevantPoints(),
+                                                                            DEGREE_TYPE_2.getLimitedRelevantPoints(),
+                                                                            DEGREE_TYPE_2.getLittleRelevantPoints());
+
     public static final DegreeTypeDto DEGREE_TYPE_1_INPUT = new DegreeTypeDto(null,
                                                                               DEGREE_TYPE_1.getName(),
                                                                               DEGREE_TYPE_1.getHighlyRelevantPoints(),
@@ -257,6 +265,12 @@ public class TestDataDTOs {
                                                                                  EXP_TYPE_1.getHighlyRelevantPoints(),
                                                                                  EXP_TYPE_1.getLimitedRelevantPoints(),
                                                                                  EXP_TYPE_1.getLittleRelevantPoints());
+
+    public static final ExperienceTypeDto EXP_TYPE_2_DTO = new ExperienceTypeDto(EXP_TYPE_2_ID,
+                                                                                 EXP_TYPE_2.getName(),
+                                                                                 EXP_TYPE_2.getHighlyRelevantPoints(),
+                                                                                 EXP_TYPE_2.getLimitedRelevantPoints(),
+                                                                                 EXP_TYPE_2.getLittleRelevantPoints());
 
     public static final ExperienceTypeDto EXP_TYPE_1_INPUT = new ExperienceTypeDto(null,
                                                                                    EXP_TYPE_1.getName(),

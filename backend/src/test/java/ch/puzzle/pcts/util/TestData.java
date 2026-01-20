@@ -33,6 +33,7 @@ public class TestData {
 
     public static final Long ROLE_1_ID = 1L;
     public static final Long ROLE_2_ID = 2L;
+    public static final Long ROLE_3_ID = 3L;
 
     public static final Long TAG_1_ID = 1L;
     public static final Long TAG_2_ID = 2L;

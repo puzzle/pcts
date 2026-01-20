@@ -53,6 +53,13 @@ public class TestDataModels {
             .withIsManagement(false)
             .build();
 
+    public static final Role ROLE_3 = Role.Builder
+            .builder()
+            .withId(ROLE_3_ID)
+            .withName("Role 3")
+            .withIsManagement(false)
+            .build();
+
     public static final Role ROLE_1;
     static {
         ROLE_1 = Role.Builder.builder().withId(ROLE_1_ID).withName("Role 1").withIsManagement(true).build();
