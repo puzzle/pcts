@@ -28,9 +28,6 @@ class CalculationPersistenceServiceIT
     @MockitoBean
     private JwtService jwtService;
 
-    MemberPersistenceServiceIT memberPersistenceServiceIT;
-    RolePersistenceServiceIT rolePersistenceServiceIT;
-
     @Autowired
     CalculationPersistenceServiceIT(CalculationPersistenceService service) {
         super(service);

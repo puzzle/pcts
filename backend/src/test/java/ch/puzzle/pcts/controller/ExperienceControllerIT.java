@@ -100,7 +100,9 @@ class ExperienceControllerIT extends ControllerITBase {
     void shouldDeleteExperience() throws Exception {
         doNothing().when(service).delete(anyLong());
 
-        mvc.perform(delete(BASEURL + "/" + EXPERIENCE_1_ID).with(csrf()).with(adminJwt())).andExpect(status().isNoContent());
+        mvc
+                .perform(delete(BASEURL + "/" + EXPERIENCE_1_ID).with(csrf()).with(adminJwt()))
+                .andExpect(status().isNoContent());
 
         verify(service, times(1)).delete(anyLong());
     }

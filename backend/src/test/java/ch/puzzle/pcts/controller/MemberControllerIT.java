@@ -5,15 +5,14 @@ import static ch.puzzle.pcts.util.TestDataDTOs.*;
 import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.calculation.CalculationDto;
 import ch.puzzle.pcts.dto.calculation.RolePointDto;
 import ch.puzzle.pcts.dto.member.MemberInputDto;
@@ -21,7 +20,6 @@ import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.mapper.MemberMapper;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.member.Member;
-import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import java.util.List;
@@ -83,20 +81,20 @@ class MemberControllerIT extends ControllerITBase {
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(MEMBER_1_DTO, "$"));
 
-        verify(service, times(1)).getById(id);
+        verify(service, times(1)).getById(MEMBER_1_ID);
         verify(mapper, times(1)).toDto(any(Member.class));
     }
 
     @DisplayName("Should successfully get member by id as the owner")
     @Test
     void shouldGetMemberByIdAsOwner() throws Exception {
-        BDDMockito.given(service.getById(anyLong())).willReturn(member);
-        BDDMockito.given(mapper.toDto(any(Member.class))).willReturn(expectedDto);
+        BDDMockito.given(service.getById(anyLong())).willReturn(MEMBER_1);
+        BDDMockito.given(mapper.toDto(any(Member.class))).willReturn(MEMBER_1_DTO);
 
         mvc
-                .perform(get(BASEURL + "/" + id).with(csrf()).with(ownerJwt()))
+                .perform(get(BASEURL + "/" + MEMBER_1_ID).with(csrf()).with(ownerJwt()))
                 .andExpect(status().isOk())
-                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
+                .andExpect(JsonDtoMatcher.matchesDto(MEMBER_1_DTO, "$"));
 
         verify(service, times(1)).getById(MEMBER_1_ID);
         verify(mapper, times(1)).toDto(any(Member.class));
@@ -176,7 +174,8 @@ class MemberControllerIT extends ControllerITBase {
         mvc
                 .perform(get(BASEURL + "/" + memberId + "/calculations")
                         .param("roleId", String.valueOf(roleId))
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .with(csrf())
+                        .with(adminJwt())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1));
@@ -199,7 +198,8 @@ class MemberControllerIT extends ControllerITBase {
 
         mvc
                 .perform(get(BASEURL + "/" + memberId + "/calculations")
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .with(csrf())
+                        .with(adminJwt())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1));
@@ -233,13 +233,13 @@ class MemberControllerIT extends ControllerITBase {
     @DisplayName("Should successfully get myself as a member")
     @Test
     void shouldSuccessfullyGetMyselfAsAMember() throws Exception {
-        when(service.getLoggedInMember()).thenReturn(member);
-        when(mapper.toDto(any(Member.class))).thenReturn(expectedDto);
+        when(service.getLoggedInMember()).thenReturn(MEMBER_1);
+        when(mapper.toDto(any(Member.class))).thenReturn(MEMBER_1_DTO);
 
         mvc
                 .perform(get(BASEURL + "/myself").with(csrf()).with(ownerJwt()))
                 .andExpect(status().isOk())
-                .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
+                .andExpect(JsonDtoMatcher.matchesDto(MEMBER_1_DTO, "$"));
 
         verify(service, times(1)).getLoggedInMember();
         verify(mapper, times(1)).toDto(any(Member.class));

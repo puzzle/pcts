@@ -47,7 +47,10 @@ class LeadershipExperienceControllerIT extends ControllerITBase {
         when(mapper.toDto(any(LeadershipExperience.class))).thenReturn(LEADERSHIP_CERT_1_DTO);
 
         mvc
-                .perform(get(BASEURL + "/{id}", LEADERSHIP_CERT_1_ID).with(csrf()).with(adminJwt()).accept(MediaType.APPLICATION_JSON))
+                .perform(get(BASEURL + "/{id}", LEADERSHIP_CERT_1_ID)
+                        .with(csrf())
+                        .with(adminJwt())
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(LEADERSHIP_CERT_1_DTO, "$"));
 

@@ -105,6 +105,7 @@ public class TestDataModels {
             .withDateOfHire(LocalDate.of(2020, 6, 1))
             .withBirthDate(LocalDate.of(1998, 3, 3))
             .withOrganisationUnit(ORG_UNIT_2)
+            .withEmail("member2@puzzle.ch")
             .withPtimeId(2L)
             .withLastSuccessfulSync(LocalDateTime.of(2025, 12, 1, 1, 1))
             .withSyncErrorCount(0)
