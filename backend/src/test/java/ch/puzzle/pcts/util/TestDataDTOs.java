@@ -43,7 +43,7 @@ public class TestDataDTOs {
     private TestDataDTOs() {
     }
 
-    public static final RoleDto ROLE_1_DTO = new RoleDto(ROLE_1.getId(), ROLE_1.getName(), ROLE_1.getIsManagement());
+    public static final RoleDto ROLE_3_DTO = new RoleDto(ROLE_3.getId(), ROLE_3.getName(), ROLE_3.getIsManagement());
 
     public static final RoleDto ROLE_2_DTO = new RoleDto(ROLE_2.getId(), ROLE_2.getName(), ROLE_2.getIsManagement());
 
