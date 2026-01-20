@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.service.persistence;
 
 import static ch.puzzle.pcts.util.TestDataModels.ORGANISATION_UNITS;
+import static ch.puzzle.pcts.util.TestDataModels.ORG_UNIT_2;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
@@ -25,7 +26,7 @@ class OrganisationUnitPersistenceServiceIT
 
     @Override
     OrganisationUnit getModel() {
-        return OrganisationUnit.Builder.builder().withName("OrganisationUnit 3").build();
+        return ORG_UNIT_2;
     }
 
     @Override

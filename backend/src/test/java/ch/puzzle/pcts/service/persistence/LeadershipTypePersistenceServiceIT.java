@@ -34,14 +34,7 @@ class LeadershipTypePersistenceServiceIT
 
     @Override
     CertificateType getModel() {
-        return CertificateType.Builder
-                .builder()
-                .withName("Created certificate type")
-                .withPoints(BigDecimal.valueOf(3))
-                .withComment("This is a newly created certificate")
-                .withTags(Set.of(TAG_1))
-                .withCertificateKind(CertificateKind.CERTIFICATE)
-                .build();
+        return LEADERSHIP_TYPE_1;
     }
 
     @Override

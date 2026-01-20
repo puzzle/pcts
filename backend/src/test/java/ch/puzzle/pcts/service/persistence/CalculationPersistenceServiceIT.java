@@ -35,6 +35,10 @@ class CalculationPersistenceServiceIT
 
     @Override
     Calculation getModel() {
+        return CALCULATION_2;
+    }
+
+    private Calculation createModel() {
         return Calculation.Builder
                 .builder()
                 .withMember(memberPersistenceServiceIT.getAll().getFirst())
@@ -54,8 +58,8 @@ class CalculationPersistenceServiceIT
     @Transactional
     @Test
     void shouldOnlyHaveOneActiveCalculationAfterSave() {
-        Calculation oldActiveCalculation = getModel();
-        Calculation activeCalculation = getModel();
+        Calculation oldActiveCalculation = createModel();
+        Calculation activeCalculation = createModel();
         activeCalculation.setPublicationDate(null);
         activeCalculation.setPublicizedBy(null);
 
@@ -73,8 +77,8 @@ class CalculationPersistenceServiceIT
     @Transactional
     @Test
     void shouldOnlyHaveOneActiveCalculationAfterUpdate() {
-        Calculation oldActiveCalculation = getModel();
-        Calculation activeCalculation = getModel();
+        Calculation oldActiveCalculation = createModel();
+        Calculation activeCalculation = createModel();
         activeCalculation.setPublicationDate(null);
         activeCalculation.setPublicizedBy(null);
 

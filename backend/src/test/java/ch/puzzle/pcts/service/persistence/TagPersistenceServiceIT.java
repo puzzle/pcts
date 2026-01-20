@@ -2,6 +2,7 @@ package ch.puzzle.pcts.service.persistence;
 
 import static ch.puzzle.pcts.util.TestData.TAG_2_ID;
 import static ch.puzzle.pcts.util.TestDataModels.TAGS_1;
+import static ch.puzzle.pcts.util.TestDataModels.TAG_2;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.puzzle.pcts.model.certificatetype.Tag;
@@ -25,7 +26,7 @@ class TagPersistenceServiceIT extends PersistenceBaseIT<Tag, TagRepository, TagP
 
     @Override
     Tag getModel() {
-        return Tag.Builder.builder().withName("Very important tag").build();
+        return TAG_2;
     }
 
     List<Tag> getAll() {

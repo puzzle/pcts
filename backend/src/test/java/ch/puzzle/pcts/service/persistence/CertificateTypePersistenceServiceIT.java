@@ -13,10 +13,12 @@ import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.repository.CertificateTypeRepository;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,14 +36,7 @@ class CertificateTypePersistenceServiceIT
 
     @Override
     CertificateType getModel() {
-        return CertificateType.Builder
-                .builder()
-                .withName("Created certificate type")
-                .withPoints(BigDecimal.valueOf(3))
-                .withComment("This is a newly created certificate")
-                .withTags(Set.of(TAG_1))
-                .withCertificateKind(CertificateKind.CERTIFICATE)
-                .build();
+        return CERT_TYPE_2;
     }
 
     @Override
