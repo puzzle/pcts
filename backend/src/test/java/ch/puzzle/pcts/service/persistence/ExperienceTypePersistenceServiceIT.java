@@ -1,11 +1,11 @@
 package ch.puzzle.pcts.service.persistence;
 
+import static ch.puzzle.pcts.util.TestDataModels.*;
+
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.repository.ExperienceTypeRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import static ch.puzzle.pcts.util.TestDataModels.*;
 
 class ExperienceTypePersistenceServiceIT
         extends

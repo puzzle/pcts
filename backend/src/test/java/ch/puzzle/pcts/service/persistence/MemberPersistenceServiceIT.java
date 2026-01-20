@@ -1,11 +1,11 @@
 package ch.puzzle.pcts.service.persistence;
 
+import static ch.puzzle.pcts.util.TestDataModels.*;
+
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.repository.MemberRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import static ch.puzzle.pcts.util.TestDataModels.*;
 
 class MemberPersistenceServiceIT extends PersistenceBaseIT<Member, MemberRepository, MemberPersistenceService> {
 
