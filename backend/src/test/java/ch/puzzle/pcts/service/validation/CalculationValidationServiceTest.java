@@ -2,7 +2,6 @@ package ch.puzzle.pcts.service.validation;
 
 import static ch.puzzle.pcts.util.TestData.*;
 import static ch.puzzle.pcts.util.TestDataModels.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.dto.error.FieldKey;
@@ -11,7 +10,6 @@ import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.persistence.CalculationPersistenceService;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -34,36 +32,18 @@ class CalculationValidationServiceTest extends ValidationBaseServiceTest<Calcula
 
     @Override
     Calculation getValidModel() {
-
-        Member member = new Member();
-        member.setId(1L);
-
-        Role role = new Role();
-        role.setId(1L);
-
-        Calculation c = new Calculation();
-        c.setMember(member);
-        c.setRole(role);
-        c.setState(CalculationState.ACTIVE);
-        c.setPublicationDate(LocalDate.now());
-        c.setPublicizedBy("Admin");
-
-        return c;
+        Calculation calculation = new Calculation();
+        calculation.setMember(MEMBER_1);
+        calculation.setRole(ROLE_2);
+        calculation.setState(CalculationState.ACTIVE);
+        calculation.setPublicationDate(DATE_NOW);
+        calculation.setPublicizedBy(VALID_STRING);
+        return calculation;
     }
 
     @Override
     CalculationValidationService getService() {
         return service;
-    }
-
-    private static Calculation createCalculation(Member member, Role role, CalculationState state) {
-        Calculation c = new Calculation();
-        c.setMember(member);
-        c.setRole(role);
-        c.setState(state);
-        c.setPublicationDate(DATE_NOW);
-        c.setPublicizedBy("Admin");
-        return c;
     }
 
     static Stream<Arguments> invalidModelProvider() {
@@ -79,13 +59,23 @@ class CalculationValidationServiceTest extends ValidationBaseServiceTest<Calcula
                                 List.of(Map.of(FieldKey.CLASS, "Calculation", FieldKey.FIELD, "state"))));
     }
 
+    private static Calculation createCalculation(Member member, Role role, CalculationState state) {
+        Calculation calculation = new Calculation();
+        calculation.setMember(member);
+        calculation.setRole(role);
+        calculation.setState(state);
+        calculation.setPublicationDate(DATE_NOW);
+        calculation.setPublicizedBy(VALID_STRING);
+        return calculation;
+    }
+
     @DisplayName("Should call correct validate method on validateOnCreate()")
     @Test
     void shouldCallCorrectMethodOnValidateOnCreate() {
         Calculation calculation = getValidModel();
 
         CalculationValidationService spyService = spy(service);
-        doNothing().when((ValidationBase<Calculation>) spyService).validateOnCreate(any());
+        doNothing().when((ValidationBase<Calculation>) spyService).validateOnCreate(calculation);
 
         spyService.validateOnCreate(calculation);
 
@@ -99,7 +89,7 @@ class CalculationValidationServiceTest extends ValidationBaseServiceTest<Calcula
         Calculation calculation = getValidModel();
 
         CalculationValidationService spyService = spy(service);
-        doNothing().when((ValidationBase<Calculation>) spyService).validateOnUpdate(anyLong(), any());
+        doNothing().when((ValidationBase<Calculation>) spyService).validateOnUpdate(CALCULATION_1_ID, calculation);
 
         spyService.validateOnUpdate(CALCULATION_1_ID, calculation);
 

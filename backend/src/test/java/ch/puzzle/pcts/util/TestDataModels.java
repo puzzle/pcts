@@ -4,6 +4,10 @@ import static ch.puzzle.pcts.util.TestData.*;
 
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
+import ch.puzzle.pcts.model.calculation.Relevancy;
+import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
+import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
+import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
@@ -48,6 +52,12 @@ public class TestDataModels {
             .withName("Role 2")
             .withIsManagement(false)
             .build();
+
+    public static final Role ROLE_1;
+    static {
+        ROLE_1 = Role.Builder.builder().withId(ROLE_1_ID).withName("Role 1").withIsManagement(true).build();
+        ROLE_1.setDeletedAt(UNIX_EPOCH);
+    }
 
     public static final Tag TAG_1 = Tag.Builder.builder().withId(TAG_1_ID).withName("Tag 1").build();
 
@@ -236,9 +246,9 @@ public class TestDataModels {
             .withId(LEADERSHIP_CERT_1_ID)
             .withMember(MEMBER_1)
             .withCertificateType(LEADERSHIP_TYPE_1)
-            .withCompletedAt(DATE_NOW)
-            .withValidUntil(DATE_NOW)
-            .withComment("This is a comment.")
+            .withCompletedAt(LocalDate.of(2010, 8, 12))
+            .withValidUntil(LocalDate.of(2023, 3, 25))
+            .withComment("Left organization.")
             .build();
 
     public static final Certificate LEADERSHIP_CERT_2 = Certificate.Builder
@@ -468,6 +478,62 @@ public class TestDataModels {
                         .withExperienceEndDate(EXPERIENCE_2.getEndDate())
                         .withExperienceComment(EXPERIENCE_2.getComment())
                         .withExperienceTypeName(EXPERIENCE_2.getType().getName())
+                        .build(),
+                MemberOverview.Builder
+                        .builder()
+                        .withMemberId(MEMBER_1.getId())
+                        .withFirstName(MEMBER_1.getFirstName())
+                        .withLastName(MEMBER_1.getLastName())
+                        .withAbbreviation(MEMBER_1.getAbbreviation())
+                        .withEmploymentState(MEMBER_1.getEmploymentState())
+                        .withDateOfHire(MEMBER_1.getDateOfHire())
+                        .withBirthDate(MEMBER_1.getBirthDate())
+                        .withOrganisationUnitName(MEMBER_1.getOrganisationUnit().getName())
+                        .withCertificateId(LEADERSHIP_CERT_1.getId())
+                        .withCertificateCompletedAt(LEADERSHIP_CERT_1.getCompletedAt())
+                        .withCertificateComment(LEADERSHIP_CERT_1.getComment())
+                        .withCertificateTypeName(LEADERSHIP_CERT_1.getCertificateType().getName())
+                        .withleadershipTypeKind(LEADERSHIP_CERT_1.getCertificateType().getCertificateKind())
+                        .withDegreeId(DEGREE_1.getId())
+                        .withDegreeName(DEGREE_1.getName())
+                        .withDegreeStartDate(DEGREE_1.getStartDate())
+                        .withDegreeEndDate(DEGREE_1.getEndDate())
+                        .withDegreeTypeName(DEGREE_1.getDegreeType().getName())
+                        .withExperienceId(EXPERIENCE_2.getId())
+                        .withExperienceName(EXPERIENCE_2.getName())
+                        .withExperienceEmployer(EXPERIENCE_2.getEmployer())
+                        .withExperienceStartDate(EXPERIENCE_2.getStartDate())
+                        .withExperienceEndDate(EXPERIENCE_2.getEndDate())
+                        .withExperienceComment(EXPERIENCE_2.getComment())
+                        .withExperienceTypeName(EXPERIENCE_2.getType().getName())
+                        .build(),
+                MemberOverview.Builder
+                        .builder()
+                        .withMemberId(MEMBER_1.getId())
+                        .withFirstName(MEMBER_1.getFirstName())
+                        .withLastName(MEMBER_1.getLastName())
+                        .withAbbreviation(MEMBER_1.getAbbreviation())
+                        .withEmploymentState(MEMBER_1.getEmploymentState())
+                        .withDateOfHire(MEMBER_1.getDateOfHire())
+                        .withBirthDate(MEMBER_1.getBirthDate())
+                        .withOrganisationUnitName(MEMBER_1.getOrganisationUnit().getName())
+                        .withCertificateId(LEADERSHIP_CERT_1.getId())
+                        .withCertificateCompletedAt(LEADERSHIP_CERT_1.getCompletedAt())
+                        .withCertificateComment(LEADERSHIP_CERT_1.getComment())
+                        .withCertificateTypeName(LEADERSHIP_CERT_1.getCertificateType().getName())
+                        .withleadershipTypeKind(LEADERSHIP_CERT_1.getCertificateType().getCertificateKind())
+                        .withDegreeId(DEGREE_1.getId())
+                        .withDegreeName(DEGREE_1.getName())
+                        .withDegreeStartDate(DEGREE_1.getStartDate())
+                        .withDegreeEndDate(DEGREE_1.getEndDate())
+                        .withDegreeTypeName(DEGREE_1.getDegreeType().getName())
+                        .withExperienceId(EXPERIENCE_1.getId())
+                        .withExperienceName(EXPERIENCE_1.getName())
+                        .withExperienceEmployer(EXPERIENCE_1.getEmployer())
+                        .withExperienceStartDate(EXPERIENCE_1.getStartDate())
+                        .withExperienceEndDate(EXPERIENCE_1.getEndDate())
+                        .withExperienceComment(EXPERIENCE_1.getComment())
+                        .withExperienceTypeName(EXPERIENCE_1.getType().getName())
                         .build());
 
     public static final List<MemberOverview> MEMBER_2_OVERVIEWS = List
@@ -546,33 +612,110 @@ public class TestDataModels {
                     .withExperienceId(null)
                     .build());
 
-    public static final Calculation CALCULATION_1 = Calculation.Builder
-            .builder()
-            .withId(CALCULATION_1_ID)
-            .withMember(MEMBER_1)
-            .withRole(ROLE_2)
-            .withState(CalculationState.DRAFT)
-            .withPublicationDate(LocalDate.of(2025, 1, 14))
-            .withPublicizedBy("Ldap User")
-            .build();
+    public static final DegreeCalculation DEGREE_CALC_1 = new DegreeCalculation(DEGREE_CALC_1_ID,
+                                                                                null,
+                                                                                DEGREE_2,
+                                                                                Relevancy.STRONGLY,
+                                                                                BigDecimal.valueOf(80),
+                                                                                "Comment");
 
-    public static final Calculation CALCULATION_2 = Calculation.Builder
-            .builder()
-            .withId(CALCULATION_2_ID)
-            .withMember(MEMBER_2)
-            .withRole(ROLE_2)
-            .withState(CalculationState.ARCHIVED)
-            .withPublicationDate(LocalDate.of(2025, 1, 14))
-            .withPublicizedBy("Ldap User 2")
-            .build();
+    public static final DegreeCalculation DEGREE_CALC_2 = new DegreeCalculation(DEGREE_CALC_2_ID,
+                                                                                null,
+                                                                                DEGREE_2,
+                                                                                Relevancy.POORLY,
+                                                                                BigDecimal.valueOf(10),
+                                                                                "Comment");
 
-    public static final Calculation CALCULATION_3 = Calculation.Builder
-            .builder()
-            .withId(CALCULATION_3_ID)
-            .withMember(MEMBER_2)
-            .withRole(ROLE_2)
-            .withState(CalculationState.ACTIVE)
-            .build();
+    public static final DegreeCalculation DEGREE_CALC_3 = new DegreeCalculation(DEGREE_CALC_3_ID,
+                                                                                null,
+                                                                                DEGREE_2,
+                                                                                Relevancy.NORMAL,
+                                                                                BigDecimal.valueOf(100),
+                                                                                "Comment");
+
+    public static final ExperienceCalculation EXP_CALC_1 = new ExperienceCalculation(EXPERIENCE_CALC_1_ID,
+                                                                                     null,
+                                                                                     EXPERIENCE_2,
+                                                                                     Relevancy.STRONGLY,
+                                                                                     "Comment");
+
+    public static final ExperienceCalculation EXP_CALC_2 = new ExperienceCalculation(EXPERIENCE_CALC_2_ID,
+                                                                                     null,
+                                                                                     EXPERIENCE_2,
+                                                                                     Relevancy.POORLY,
+                                                                                     "Comment");
+
+    public static final ExperienceCalculation EXP_CALC_3 = new ExperienceCalculation(EXPERIENCE_CALC_3_ID,
+                                                                                     null,
+                                                                                     EXPERIENCE_3,
+                                                                                     Relevancy.NORMAL,
+                                                                                     "Comment");
+
+    public static final CertificateCalculation CERT_CALC_1 = new CertificateCalculation(CERTIFICATE_CALC_1_ID,
+                                                                                        null,
+                                                                                        CERTIFICATE_2);
+
+    public static final CertificateCalculation CERT_CALC_2 = new CertificateCalculation(CERTIFICATE_CALC_2_ID,
+                                                                                        null,
+                                                                                        CERTIFICATE_2);
+
+    public static final CertificateCalculation CERT_CALC_3 = new CertificateCalculation(CERTIFICATE_CALC_3_ID,
+                                                                                        null,
+                                                                                        LEADERSHIP_CERT_1);
+
+    public static final Calculation CALCULATION_1;
+    public static final Calculation CALCULATION_2;
+    public static final Calculation CALCULATION_3;
+
+    static {
+
+        Calculation calc1 = Calculation.Builder
+                .builder()
+                .withId(CALCULATION_1_ID)
+                .withMember(MEMBER_1)
+                .withRole(ROLE_2)
+                .withState(CalculationState.DRAFT)
+                .withPublicationDate(LocalDate.of(2025, 1, 14))
+                .withPublicizedBy("Ldap User")
+                .withDegreeCalculations(List.of(DEGREE_CALC_1, DEGREE_CALC_3))
+                .withExperienceCalculations(List.of(EXP_CALC_1, EXP_CALC_3))
+                .withCertificateCalculations(List.of(CERT_CALC_1, CERT_CALC_3))
+                .build();
+
+        calc1.getDegreeCalculations().forEach(d -> d.setCalculation(calc1));
+        calc1.getExperienceCalculations().forEach(e -> e.setCalculation(calc1));
+        calc1.getCertificateCalculations().forEach(c -> c.setCalculation(calc1));
+        CALCULATION_1 = calc1;
+
+        Calculation calc2 = Calculation.Builder
+                .builder()
+                .withId(CALCULATION_2_ID)
+                .withMember(MEMBER_2)
+                .withRole(ROLE_2)
+                .withState(CalculationState.ARCHIVED)
+                .withPublicationDate(LocalDate.of(2025, 1, 14))
+                .withPublicizedBy("Ldap User 2")
+                .withDegreeCalculations(List.of(DEGREE_CALC_2))
+                .withExperienceCalculations(List.of(EXP_CALC_2))
+                .withCertificateCalculations(List.of(CERT_CALC_2))
+                .build();
+
+        calc2.getDegreeCalculations().forEach(d -> d.setCalculation(calc2));
+        calc2.getExperienceCalculations().forEach(e -> e.setCalculation(calc2));
+        calc2.getCertificateCalculations().forEach(c -> c.setCalculation(calc2));
+        CALCULATION_2 = calc2;
+
+        CALCULATION_3 = Calculation.Builder
+                .builder()
+                .withId(CALCULATION_3_ID)
+                .withMember(MEMBER_2)
+                .withRole(ROLE_2)
+                .withState(CalculationState.ACTIVE)
+                .withDegreeCalculations(List.of())
+                .withExperienceCalculations(List.of())
+                .withCertificateCalculations(List.of())
+                .build();
+    }
 
     public static final List<OrganisationUnit> ORGANISATION_UNITS = List.of(ORG_UNIT_2);
 
@@ -589,7 +732,7 @@ public class TestDataModels {
             .of(LEADERSHIP_TYPE_1, LEADERSHIP_TYPE_2, LEADERSHIP_TYPE_3);
 
     public static final List<Certificate> CERTIFICATES = List
-            .of(CERTIFICATE_1, CERTIFICATE_2, CERTIFICATE_3, CERTIFICATE_4);
+            .of(CERTIFICATE_1, CERTIFICATE_2, CERTIFICATE_3, CERTIFICATE_4, LEADERSHIP_CERT_1);
 
     public static final List<DegreeType> DEGREE_TYPES = List.of(DEGREE_TYPE_1, DEGREE_TYPE_2);
 
@@ -598,6 +741,15 @@ public class TestDataModels {
     public static final List<ExperienceType> EXPERIENCE_TYPES = List.of(EXP_TYPE_1, EXP_TYPE_2);
 
     public static final List<Experience> EXPERIENCES = List.of(EXPERIENCE_2, EXPERIENCE_3);
+
+    public static final List<DegreeCalculation> DEGREE_CALCULATIONS = List
+            .of(DEGREE_CALC_1, DEGREE_CALC_2, DEGREE_CALC_3);
+
+    public static final List<ExperienceCalculation> EXPERIENCE_CALCULATIONS = List
+            .of(EXP_CALC_1, EXP_CALC_2, EXP_CALC_3);
+
+    public static final List<CertificateCalculation> CERTIFICATE_CALCULATIONS = List
+            .of(CERT_CALC_1, CERT_CALC_2, CERT_CALC_3);
 
     public static final List<Calculation> CALCULATIONS = List.of(CALCULATION_1, CALCULATION_2, CALCULATION_3);
 }
