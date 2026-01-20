@@ -1,8 +1,11 @@
 package ch.puzzle.pcts.controller;
 
+import ch.puzzle.pcts.dto.calculation.CalculationDto;
 import ch.puzzle.pcts.dto.member.MemberDto;
 import ch.puzzle.pcts.dto.member.MemberInputDto;
+import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.mapper.MemberMapper;
+import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,10 +24,12 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "members", description = "Manage the members of the organisation, including status and organisation unit")
 public class MemberController {
     private final MemberMapper mapper;
+    private final CalculationMapper calculationMapper;
     private final MemberBusinessService service;
 
-    public MemberController(MemberMapper mapper, MemberBusinessService service) {
+    public MemberController(MemberMapper mapper, CalculationMapper calculationMapper, MemberBusinessService service) {
         this.mapper = mapper;
+        this.calculationMapper = calculationMapper;
         this.service = service;
     }
 
@@ -44,6 +49,15 @@ public class MemberController {
     @PathVariable Long memberId) {
         Member member = service.getById(memberId);
         return ResponseEntity.ok(mapper.toDto(member));
+    }
+
+    @Operation(summary = "Get calculations for a member, optionally filtered by role")
+    @ApiResponse(responseCode = "200", description = "Successfully retrieved the calculations.", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = CalculationDto.class))))
+    @GetMapping("{memberId}/calculations")
+    public ResponseEntity<List<CalculationDto>> getMemberCalculations(@Parameter(description = "ID of the member.", required = true)
+    @PathVariable Long memberId, @Parameter(description = "Optional role ID to filter calculations.") @RequestParam(name = "roleId", required = false) Long roleId) {
+        List<Calculation> calculations = service.getAllCalculationsByMemberIdAndRoleId(memberId, roleId);
+        return ResponseEntity.ok(calculationMapper.toDto(calculations));
     }
 
     @Operation(summary = "Create a new member")
