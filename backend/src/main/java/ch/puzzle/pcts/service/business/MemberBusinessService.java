@@ -6,9 +6,8 @@ import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.member.Member;
-import ch.puzzle.pcts.service.JwtService;
-import ch.puzzle.pcts.service.UserService;
 import ch.puzzle.pcts.model.role.Role;
+import ch.puzzle.pcts.service.JwtService;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import ch.puzzle.pcts.service.validation.MemberValidationService;
 import jakarta.annotation.Nullable;
@@ -27,9 +26,9 @@ public class MemberBusinessService extends BusinessBase<Member> {
     RoleBusinessService roleBusinessService;
     CalculationBusinessService calculationBusinessService;
 
-    public MemberBusinessService(MemberValidationService validationService,
-                                 MemberPersistenceService memberPersistenceService, RoleBusinessService roleBusinessService,
-                                 CalculationBusinessService calculationBusinessService, UserService userService, JwtService jwtService) {
+    public MemberBusinessService(MemberValidationService validationService, MemberPersistenceService memberPersistenceService,
+                                 RoleBusinessService roleBusinessService,
+                                 CalculationBusinessService calculationBusinessService, JwtService jwtService) {
         super(validationService, memberPersistenceService);
         this.jwtService = jwtService;
         this.roleBusinessService = roleBusinessService;
@@ -54,7 +53,6 @@ public class MemberBusinessService extends BusinessBase<Member> {
 
         return memberPersistenceService.getByEmail(email.get());
     }
-}
 
     public List<Calculation> getAllCalculationsByMemberIdAndRoleId(Long memberId, Long roleId) {
         Member member = this.getById(memberId);
