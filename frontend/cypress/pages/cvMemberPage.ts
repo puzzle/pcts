@@ -10,7 +10,7 @@ class CvMemberPage extends Page {
   }
 
   cvTableRows(tableName: string) {
-    return this.cvTable('tableName')
+    return this.cvTable(tableName)
       .findByTestId('member-cv-table-row');
   }
 }

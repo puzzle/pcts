@@ -47,7 +47,7 @@ describe('MemberOverviewComponent', () => {
     MemberDetailPage.visit(1);
     CvMemberPage.cvTable('experience');
     CvMemberPage.cvTableRows('experience')
-      .should('have.length', 5);
+      .should('have.length', 10);
     CvMemberPage.showListButton()
       .should('include.text', 'Alles anzeigen')
       .click();
