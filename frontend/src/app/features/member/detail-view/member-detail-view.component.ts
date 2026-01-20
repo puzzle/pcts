@@ -1,7 +1,5 @@
 import { Component, inject, input, OnInit, signal, viewChild, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberService } from '../member.service';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
@@ -25,6 +23,7 @@ import { ModalService } from '../../../shared/modal-service';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import { CertificateModel } from '../../certificates/certificate.model';
 import { CertificateService } from '../../certificates/certificate.service';
+import { MemberModel } from '../member.model';
 import { RolePointsModel } from './RolePointsModel';
 import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
 
@@ -125,7 +124,7 @@ export class MemberDetailViewComponent implements OnInit {
           default:
             result.modalSubmitMode satisfies never;
         }
-        result.submittedModel.member = this.member()!;
+        result.submittedModel.member = { id: this.member()!.id } as MemberModel;
 
         this.certificateService.addCertificate(result.submittedModel)
           .subscribe();
