@@ -1,23 +1,17 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseFormComponent } from './base-form.component';
-import { CaseFormatter } from '../format/case-formatter';
 import { provideTranslateService } from '@ngx-translate/core';
 
 describe('BaseFormComponent', () => {
   let component: BaseFormComponent;
   let fixture: ComponentFixture<BaseFormComponent>;
-  let caseFormatterMock: any;
 
 
   beforeEach(async() => {
-    caseFormatterMock = { camelToSnake: jest.fn((value: string) => 'TEST_FORM_NAME') };
-
     await TestBed.configureTestingModule({
       imports: [BaseFormComponent],
-      providers: [{ provide: CaseFormatter,
-        useValue: caseFormatterMock },
-      provideTranslateService()]
+      providers: [provideTranslateService()]
     })
       .compileComponents();
   });

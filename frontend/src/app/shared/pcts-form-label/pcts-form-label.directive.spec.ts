@@ -3,12 +3,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PctsFormLabelDirective } from './pcts-form-label.directive';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { CaseFormatter } from '../format/case-formatter';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { PctsFormErrorDirective } from '../pcts-form-error/pcts-form-error.directive';
 import { translationMock } from '../../../../setup-jest';
 import { ScopedTranslationService } from '../i18n-prefix.provider';
+import * as CaseFormatter from '../utils/case-formatter';
 
 @Component({
   standalone: true,
@@ -42,12 +42,8 @@ describe('PctsFormLabelDirective', () => {
 
 
   beforeEach(async() => {
-    const caseFormatterMock = { camelToSnake: jest.fn((key) => `formatted_${key}`) };
-
     await TestBed.configureTestingModule({
-      imports: [TestComponent],
-      providers: [{ provide: CaseFormatter,
-        useValue: caseFormatterMock }]
+      imports: [TestComponent]
     })
       .compileComponents();
 
@@ -69,6 +65,9 @@ describe('PctsFormLabelDirective', () => {
     const debugEl = fixture.debugElement.query(By.directive(PctsFormLabelDirective));
     const directive = debugEl.injector.get(PctsFormLabelDirective);
     const labelElement = debugEl.nativeElement as HTMLLabelElement;
+
+    jest.spyOn(CaseFormatter, 'camelToSnake')
+      .mockImplementation((key: string) => `formatted_${key}`);
 
     jest.spyOn(directive, 'matFormFieldControl', 'get')
       .mockReturnValue({ name: 'testControl' } as any);

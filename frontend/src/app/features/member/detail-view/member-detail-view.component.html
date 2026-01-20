@@ -1,20 +1,20 @@
 @if (member(); as m) {
-  <div class="p-4" data-testid="member-detail-view">
+  <div class="p-4">
     <div class="w-50">
 
-      <h1 class="mb-5">
+      <h1 class="mb-5" data-testid="member-name">
         {{ m.firstName }} {{ m.lastName }}
       </h1>
 
-      <div class="w-50 d-flex align-items-center justify-content-between mb-3 gap-3">
+      <div class="w-50 d-flex align-items-center justify-content-between mb-3 gap-3" data-testid="member-detail-title">
         <h2>
-          {{ 'FORM.PERSONAL_DETAILS' | scopedTranslation }}
+          {{ 'PERSONAL_DETAILS' | scopedTranslation }}
         </h2>
 
         <app-crud-button mode="edit"/>
       </div>
 
-      <div class="d-flex justify-content-between flex-wrap">
+      <div class="d-flex justify-content-between flex-wrap mb-3" data-testid="member-detail-data">
         <span>
           <p class="mb-0">{{ 'ABBREVIATION' | scopedTranslation }}:</p>
           <p class="fw-bold">
@@ -23,15 +23,15 @@
         </span>
 
         <span>
-          <p class="mb-0">{{ 'MEMBER.BIRTH_DATE' | scopedTranslation }}:</p>
-          <p class="fw-bold">{{ m.birthDate | date: GLOBAL_DATE_FORMAT }}</p>
+          <p class="mb-0">{{ 'BIRTH_DATE' | scopedTranslation }}:</p>
+          <p class="fw-bold">{{ m.birthDate | date }}</p>
         </span>
 
         <span>
-          <p class="mb-0">{{ 'MEMBER.DATE_OF_HIRE' | scopedTranslation }}:</p>
+          <p class="mb-0">{{ 'DATE_OF_HIRE' | scopedTranslation }}:</p>
           <p class="fw-bold">
             {{ m.dateOfHire
-            ? (m.dateOfHire | date: GLOBAL_DATE_FORMAT)
+            ? (m.dateOfHire | date)
             : ('ATTRIBUTE_NULL' | scopedTranslation)
             }}
           </p>
@@ -39,15 +39,15 @@
         </span>
 
         <span>
-          <p class="mb-0">{{ 'MEMBER.EMPLOYMENT_STATE' | scopedTranslation }}:</p>
-          <p class="fw-bold">{{ 'MEMBER.EMPLOYMENT_STATUS_VALUES.' + m.employmentState | scopedTranslation }}</p>
+          <p class="mb-0">{{ 'EMPLOYMENT_STATE' | scopedTranslation }}:</p>
+          <p class="fw-bold" *appTranslationScope="'EMPLOYMENT_STATUS_VALUES'">{{ m.employmentState | scopedTranslation }}</p>
         </span>
 
         <span>
-          <p class="mb-0">{{ 'MEMBER.ORGANISATION_UNIT' | scopedTranslation }}:</p>
+          <p class="mb-0">{{ 'ORGANISATION_UNIT' | scopedTranslation }}:</p>
           <p class="fw-bold">
-            @if (m.organisationUnit) {
-              {{m.organisationUnit.name}}
+            @if (m.organisationUnitName) {
+              {{m.organisationUnitName}}
             } @else {
               {{'ATTRIBUTE_NULL' | scopedTranslation}}
             }
@@ -55,5 +55,43 @@
         </span>
       </div>
     </div>
+    <mat-tab-group class="folder-tabs" mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms" *appTranslationScope="'CV'" data-testid="cv-tab">
+      <mat-tab label="CV">
+        <app-generic-cv-content
+          data-testid="cv-table-degree"
+          idAttr="id"
+          [data]="degreeData()"
+          *appTranslationScope="'DEGREE'"
+          [table]="degreeTable"
+        />
+
+        <app-generic-cv-content
+          data-testid="cv-table-experience"
+          idAttr="id"
+          [data]="experienceData()"
+          *appTranslationScope="'EXPERIENCE'"
+          [table]="experienceTable"
+        />
+
+        <app-generic-cv-content
+          data-testid="cv-table-certificate"
+          idAttr="id"
+          [data]="certificateData()"
+          *appTranslationScope="'CERTIFICATE'"
+          [table]="certificateTable"
+        />
+
+        <app-generic-cv-content
+          data-testid="cv-table-leadership-experience"
+          idAttr="id"
+          [data]="leadershipExperienceData()"
+          *appTranslationScope="'LEADERSHIP_EXPERIENCE'"
+          [table]="leadershipExperienceTable"
+        />
+      </mat-tab>
+      <mat-tab label="Berechnungen">
+                  <span>calculation content ...</span>
+      </mat-tab>
+    </mat-tab-group>
   </div>
 }

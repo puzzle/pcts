@@ -1,4 +1,6 @@
 import { MatDateFormats } from '@angular/material/core';
+import { format } from 'date-fns';
+import { de } from 'date-fns/locale';
 
 export const GLOBAL_DATE_FORMAT = 'dd.MM.yyyy';
 
@@ -21,3 +23,7 @@ export const GLOBAL_DATE_FORMATS: MatDateFormats = {
       month: 'long' }
   }
 };
+
+export function formatDateLocale(date: Date): string {
+  return format(date, 'P', { locale: de });
+}

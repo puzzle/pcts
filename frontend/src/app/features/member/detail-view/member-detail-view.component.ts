@@ -1,23 +1,38 @@
-import { Component, OnInit, WritableSignal, signal, inject } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberService } from '../member.service';
-import { MemberModel } from '../member.model';
-import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
+import { GenericCvContentComponent } from './generic-cv-content/generic-cv-content.component';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { DegreeOverviewModel } from './cv/degree-overview.model';
+import { ExperienceOverviewModel } from './cv/experience-overview.model';
+import { CertificateOverviewModel } from './cv/certificate-overview.model';
+import { LeadershipExperienceOverviewModel } from './cv/leadership-experience-overview.model';
+import { TranslationScopeDirective } from '../../../shared/translation-scope/translation-scope.directive';
+import {
+  getCertificateTable,
+  getDegreeTable,
+  getExperienceTable,
+  getLeadershipExperienceTable
+} from './cv/member-detail-cv-table-definition';
+import { MemberOverviewModel } from '../member-overview.model';
 
 @Component({
   selector: 'app-member-detail-view',
   standalone: true,
-  providers: [DatePipe],
   imports: [
     CommonModule,
-    DatePipe,
     ScopedTranslationPipe,
-    CrudButtonComponent
+    CrudButtonComponent,
+    GenericCvContentComponent,
+    MatTabGroup,
+    MatTab,
+    TranslationScopeDirective
   ],
-  templateUrl: './member-detail-view.component.html'
+  templateUrl: './member-detail-view.component.html',
+  styleUrl: './member-detail-view.component.scss'
 })
 export class MemberDetailViewComponent implements OnInit {
   private readonly service = inject(MemberService);
@@ -26,9 +41,23 @@ export class MemberDetailViewComponent implements OnInit {
 
   private readonly router = inject(Router);
 
-  protected readonly GLOBAL_DATE_FORMAT = GLOBAL_DATE_FORMAT;
+  readonly member: WritableSignal<MemberOverviewModel | null> = signal<MemberOverviewModel | null>(null);
 
-  readonly member: WritableSignal<MemberModel | null> = signal<MemberModel | null>(null);
+  degreeData = signal<DegreeOverviewModel[]>([]);
+
+  experienceData = signal<ExperienceOverviewModel[]>([]);
+
+  certificateData = signal<CertificateOverviewModel[]>([]);
+
+  leadershipExperienceData = signal<LeadershipExperienceOverviewModel[]>([]);
+
+  readonly experienceTable = getExperienceTable();
+
+  readonly certificateTable = getCertificateTable();
+
+  readonly degreeTable = getDegreeTable();
+
+  readonly leadershipExperienceTable = getLeadershipExperienceTable();
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -37,9 +66,15 @@ export class MemberDetailViewComponent implements OnInit {
       return;
     }
 
-    this.service.getMemberById(Number(id))
+    this.service.getMemberOverviewByMemberId(Number(id))
       .subscribe({
-        next: (member) => this.member.set(member)
+        next: (memberOverview) => {
+          this.member.set(memberOverview.member);
+          this.degreeData.set(memberOverview.cv.degrees);
+          this.experienceData.set(memberOverview.cv.experiences);
+          this.certificateData.set(memberOverview.cv.certificates);
+          this.leadershipExperienceData.set(memberOverview.cv.leadershipExperiences);
+        }
       });
   }
 }

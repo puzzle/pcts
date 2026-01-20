@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { MemberDto } from './dto/member.dto';
 import { DateTime } from 'luxon';
+import { MemberCvOverviewModel } from './member-cv-overview.model';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -52,5 +54,9 @@ export class MemberService {
       dateOfHire: model.dateOfHire ? DateTime.fromJSDate(model.dateOfHire)
         .toISODate() : null
     };
+  }
+
+  getMemberOverviewByMemberId(id: number): Observable<MemberCvOverviewModel> {
+    return this.httpClient.get<MemberCvOverviewModel>(`api/v1/member-overviews/${id}`);
   }
 }

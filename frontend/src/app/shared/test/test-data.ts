@@ -16,6 +16,8 @@ import {
 } from '../../features/leadership-experiences/leadership-experiences-type/leadership-experience-type.model';
 import { DegreeTypeModel } from '../../features/degrees/degree-type/degree-type.model';
 import { DegreeModel } from '../../features/degrees/degree.model';
+import { DegreeOverviewModel } from '../../features/member/detail-view/cv/degree-overview.model';
+import { MemberCvOverviewModel } from '../../features/member/member-cv-overview.model';
 
 export const url = '/api/v1/data';
 
@@ -309,3 +311,80 @@ export const degree2: DegreeModel = {
   startDate: new Date('2021-10-01'),
   endDate: null
 };
+
+export const memberOverview1: MemberCvOverviewModel = {
+  member: {
+    id: 1,
+    firstName: 'Lena',
+    lastName: 'Müller',
+    employmentState: EmploymentState.MEMBER,
+    abbreviation: 'LM',
+    dateOfHire: new Date(),
+    birthDate: new Date(),
+    organisationUnitName: '/zh'
+  },
+  cv: {
+    degrees: [{
+      id: 1,
+      name: 'Bachelor of Science in Mathematics',
+      degreeTypeName: 'Bachelor\'s Degree',
+      startDate: new Date(),
+      endDate: new Date()
+    }],
+    experiences: [{
+      id: 1,
+      name: 'Software Engineer',
+      employer: 'TechNova Solutions',
+      experienceTypeName: 'Internship',
+      comment: 'Worked on backend APIs and DevOps tasks.',
+      startDate: new Date(),
+      endDate: new Date()
+    },
+    {
+      id: 3,
+      name: 'Web Developer (Freelance)',
+      employer: 'Freelance',
+      experienceTypeName: 'Hackathon',
+      comment: null,
+      startDate: new Date(),
+      endDate: new Date()
+    }],
+    certificates: [{
+      id: 1,
+      certificateTypeName: 'CompTIA A+',
+      completedAt: new Date(),
+      comment: 'Completed first aid training.'
+    }],
+    leadershipExperiences: [{
+      id: 1,
+      comment: 'LeadershipExperience',
+      leadershipExperienceType: {
+        name: 'Leadership Experience',
+        certificateKind: CertificateKind.LEADERSHIP_TRAINING
+      }
+    }]
+  }
+};
+
+export const degreeOverviewList: DegreeOverviewModel[] = [{
+  id: 1,
+  name: 'Bachelor of Science in Computer Science',
+  degreeTypeName: 'Bachelor',
+  startDate: new Date('2015-09-01'),
+  endDate: new Date('2018-06-30')
+},
+{
+  id: 2,
+  name: 'Master of Artificial Intelligence',
+  degreeTypeName: 'Master',
+  startDate: new Date('2018-09-01'),
+  endDate: new Date('2020-06-30')
+},
+{
+  id: 3,
+  name: 'PhD in Machine Learning',
+  degreeTypeName: 'Doctorate',
+  startDate: new Date('2020-09-01'),
+  endDate: null
+}];
+

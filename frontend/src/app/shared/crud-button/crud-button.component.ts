@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
@@ -19,10 +19,10 @@ export class CrudButtonComponent {
   // This logic gets the model name from the URL. It assumes that the URL structure is 'root/modelName/'
   protected modelName: string = this.router.url.split('/')[1] ?? '';
 
-  @Input() mode: 'add' | 'edit' | 'delete' = 'add';
+  mode = input<'add' | 'edit' | 'delete'>('add');
 
   handleClick() {
-    switch (this.mode) {
+    switch (this.mode()) {
       case 'edit':
         if (this.idFromRoute) {
           this.router.navigate([this.router.url,

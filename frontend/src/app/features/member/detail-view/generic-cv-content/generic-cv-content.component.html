@@ -1,0 +1,28 @@
+<div class="mt-5 pb-5 border-bottom p-3">
+  <div class="d-flex gap-4 align-items-center mb-3">
+    <h3>{{"MODEL_NAME" | scopedTranslation}}</h3>
+    <app-crud-button mode="add"/>
+  </div>
+    @if (table(); as ds) {
+        <ng-content>
+          <app-generic-table [dataSource]="ds" [idAttr]="idAttr()">
+            <ng-template [appTypedTemplate]="ds.data"/>
+
+
+            <ng-template
+              appColumnTemplate="experienceTypeName"
+              let-experience
+            >
+              <app-experience-type-pill [experienceType]="experience.experienceTypeName" />
+            </ng-template>
+
+            <ng-template appColumnTemplate="workName" let-experience>
+              @if (experience.employer; as employer) {
+                <b>{{ employer }}</b><br />
+              }
+              {{ experience.name }}
+            </ng-template>
+          </app-generic-table>
+        </ng-content>
+    }
+</div>

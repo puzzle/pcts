@@ -5,6 +5,7 @@ import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.puzzle.pcts.dto.memberoverview.MemberOverviewDto;
+import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.memberoverview.MemberOverview;
 import java.util.Collections;
 import java.util.List;
@@ -52,5 +53,37 @@ class MemberOverviewMapperTest {
                 .of(Arguments.of("Standard Member (Full CV)", MEMBER_1_OVERVIEWS, MEMBER_1_OVERVIEW_DTO),
                     Arguments.of("Member with multiple same-type items", MEMBER_2_OVERVIEWS, MEMBER_2_OVERVIEW_DTO),
                     Arguments.of("Member with NO CV data (Sparse)", MEMBER_EMPTY_CV_OVERVIEWS, MEMBER_EMPTY_CV_DTO));
+    }
+
+    @Test
+    @DisplayName("Should ignore CV rows when IDs are 0")
+    void shouldIgnoreZeroIds() {
+        MemberOverview row = new MemberOverview();
+
+        row.setMemberId(1L);
+        row.setFirstName("Max");
+        row.setLastName("Muster");
+        row.setEmploymentState(EmploymentState.EX_MEMBER);
+        row.setAbbreviation("MM");
+        row.setOrganisationUnitName("IT");
+
+        row.setDegreeId(0L);
+        row.setExperienceId(0L);
+        row.setCertificateId(0L);
+
+        List<MemberOverview> input = List.of(row);
+
+        MemberOverviewDto dto = mapper.toDto(input);
+
+        assertThat(dto).isNotNull();
+
+        assertThat(dto.member().id()).isEqualTo(1L);
+        assertThat(dto.member().firstName()).isEqualTo("Max");
+        assertThat(dto.member().lastName()).isEqualTo("Muster");
+
+        assertThat(dto.cv().degrees()).isEmpty();
+        assertThat(dto.cv().experiences()).isEmpty();
+        assertThat(dto.cv().certificates()).isEmpty();
+        assertThat(dto.cv().leadershipExperiences()).isEmpty();
     }
 }

@@ -1,6 +1,24 @@
 {
   "PCTS_LOGO_ALT": "Puzzle PCTS Logo",
   "LOGOUT": "Abmelden",
+  "DEGREE": {
+    "MODEL_NAME": "Ausbildung",
+    "NAME": "Bezeichnung"
+  },
+  "EXPERIENCE": {
+    "MODEL_NAME": "Berufs- und Lebenserfahrung",
+    "COMMENT": "Beschreibung"
+  },
+  "CERTIFICATE": {
+    "MODEL_NAME": "Zertifikate",
+    "COMMENT": "Beschreibung",
+    "COMPLETED_AT": "Abgeschlossen am"
+  },
+  "LEADERSHIP_EXPERIENCE": {
+    "MODEL_NAME": "Führungserfahrung",
+    "LEADERSHIP_EXPERIENCE_TYPE": "Art der Führungserfahrung",
+    "COMMENT": "Beschreibung"
+  },
 
   "FORM": {
     "ADD": {
@@ -22,7 +40,10 @@
     }
   },
   "TABLE": {
-    "NO_SEARCH_RESULT": "Kein {{model}} mit den Attributen \"{{searchValue}}\" gefunden."
+    "NO_DATA": "Keine Einträge",
+    "NO_SEARCH_RESULT": "Kein {{model}} mit den Attributen \"{{searchValue}}\" gefunden.",
+    "SHOW_ALL": "Alles anzeigen",
+    "SHOW_LESS": "Weniger anzeigen"
   },
   "FILTER": {
     "SEARCH": "Suchen",
@@ -49,13 +70,32 @@
     "ORGANISATION_UNIT": "Division",
     "EMPLOYMENT_STATE": "Anstellungsstatus",
     "ATTRIBUTE_NULL": "-",
-    "FORM": {
-      "PERSONAL_DETAILS": "Personalien"
-    },
+    "PERSONAL_DETAILS": "Personalien",
     "EMPLOYMENT_STATUS_VALUES": {
       "MEMBER": "Member",
       "APPLICANT": "Bewerber",
       "EX_MEMBER": "Ex-Member"
+    },
+    "CV": {
+      "DEGREE": {
+        "MODEL_NAME": "Ausbildung",
+        "DEGREE_TYPE_NAME": "Ausbildungsart",
+        "DATE_RANGE": "Zeitraum"
+      },
+      "EXPERIENCE": {
+        "MODEL_NAME": "Berufs- und Lebenserfahrung",
+        "DATE_RANGE": "Zeitraum",
+        "WORK_NAME": "Position",
+        "EXPERIENCE_TYPE_NAME": "Erfahrungsart"
+      },
+      "CERTIFICATE": {
+        "MODEL_NAME": "Zertifikate",
+        "CERTIFICATE_TYPE_NAME": "Zertifikatstyp"
+      },
+      "LEADERSHIP_EXPERIENCE": {
+        "MODEL_NAME": "Führungserfahrung"
+      },
+      "ADD_ENTRY": "Eintrag hinzufügen"
     }
   },
 
