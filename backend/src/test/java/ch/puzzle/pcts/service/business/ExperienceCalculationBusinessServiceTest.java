@@ -68,28 +68,28 @@ class ExperienceCalculationBusinessServiceTest
     static Stream<Arguments> experiencePointsProvider() {
         return Stream
                 .of(Arguments
-                        .of(Relevancy.HIGHLY,
+                        .of(Relevancy.STRONGLY,
                             BigDecimal.TEN,
                             50,
                             LocalDate.of(2020, 1, 1),
                             LocalDate.of(2024, 7, 1),
                             BigDecimal.valueOf(22.51)),
                     Arguments
-                            .of(Relevancy.LIMITED,
+                            .of(Relevancy.NORMAL,
                                 BigDecimal.valueOf(5),
                                 100,
                                 LocalDate.of(2021, 1, 1),
                                 LocalDate.of(2022, 1, 1),
                                 BigDecimal.valueOf(5.00)),
                     Arguments
-                            .of(Relevancy.LITTLE,
+                            .of(Relevancy.POORLY,
                                 BigDecimal.valueOf(2),
                                 25,
                                 LocalDate.of(2020, 1, 1),
                                 LocalDate.of(2020, 7, 1),
                                 BigDecimal.valueOf(0.25)),
                     Arguments
-                            .of(Relevancy.HIGHLY,
+                            .of(Relevancy.STRONGLY,
                                 BigDecimal.TEN,
                                 0,
                                 LocalDate.of(2020, 1, 1),
@@ -214,8 +214,8 @@ class ExperienceCalculationBusinessServiceTest
     void shouldReceiveCorrectAmountOfPoints() {
         ExperienceType experienceType = new ExperienceType(null, null, BigDecimal.TEN, BigDecimal.TWO, BigDecimal.ONE);
 
-        assertEquals(BigDecimal.TEN, experienceType.getPointsByRelevancy(Relevancy.HIGHLY));
-        assertEquals(BigDecimal.TWO, experienceType.getPointsByRelevancy(Relevancy.LIMITED));
-        assertEquals(BigDecimal.ONE, experienceType.getPointsByRelevancy(Relevancy.LITTLE));
+        assertEquals(BigDecimal.TEN, experienceType.getPointsByRelevancy(Relevancy.STRONGLY));
+        assertEquals(BigDecimal.TWO, experienceType.getPointsByRelevancy(Relevancy.NORMAL));
+        assertEquals(BigDecimal.ONE, experienceType.getPointsByRelevancy(Relevancy.POORLY));
     }
 }

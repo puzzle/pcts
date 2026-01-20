@@ -31,16 +31,16 @@ class ExperienceCalculationValidationServiceTest
 
     @Override
     ExperienceCalculation getValidModel() {
-        return new ExperienceCalculation(null, CALCULATION_1, EXPERIENCE_1, Relevancy.HIGHLY, VALID_STRING);
+        return new ExperienceCalculation(null, CALCULATION_1, EXPERIENCE_1, Relevancy.STRONGLY, VALID_STRING);
     }
 
     static Stream<Arguments> invalidModelProvider() {
         return Stream
                 .of(Arguments
-                        .of(new ExperienceCalculation(null, null, EXPERIENCE_1, Relevancy.HIGHLY, VALID_STRING),
+                        .of(new ExperienceCalculation(null, null, EXPERIENCE_1, Relevancy.STRONGLY, VALID_STRING),
                             List.of(Map.of(FieldKey.CLASS, "ExperienceCalculation", FieldKey.FIELD, "calculation"))),
                     Arguments
-                            .of(new ExperienceCalculation(null, CALCULATION_1, null, Relevancy.HIGHLY, VALID_STRING),
+                            .of(new ExperienceCalculation(null, CALCULATION_1, null, Relevancy.STRONGLY, VALID_STRING),
                                 List.of(Map.of(FieldKey.CLASS, "ExperienceCalculation", FieldKey.FIELD, "experience"))),
                     Arguments
                             .of(new ExperienceCalculation(null, CALCULATION_1, EXPERIENCE_1, null, VALID_STRING),

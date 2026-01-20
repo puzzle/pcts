@@ -20,7 +20,7 @@ public class CertificateCalculationValidationService extends ValidationBase<Cert
     @Override
     public void validateOnCreate(CertificateCalculation model) {
         super.validateOnCreate(model);
-        this.validateMemberForCalculation(model);
+        validateMemberForCalculation(model);
     }
 
     @Override

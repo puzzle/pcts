@@ -30,19 +30,19 @@ class DegreeCalculationValidationServiceTest
 
     @Override
     DegreeCalculation getValidModel() {
-        return new DegreeCalculation(null, CALCULATION_1, DEGREE_1, Relevancy.HIGHLY, VALID_WEIGHT, VALID_STRING);
+        return new DegreeCalculation(null, CALCULATION_1, DEGREE_1, Relevancy.STRONGLY, VALID_WEIGHT, VALID_STRING);
     }
 
     static Stream<Arguments> invalidModelProvider() {
         return Stream
                 .of(Arguments
-                        .of(new DegreeCalculation(null, null, DEGREE_1, Relevancy.HIGHLY, VALID_WEIGHT, VALID_STRING),
+                        .of(new DegreeCalculation(null, null, DEGREE_1, Relevancy.STRONGLY, VALID_WEIGHT, VALID_STRING),
                             List.of(Map.of(FieldKey.CLASS, "DegreeCalculation", FieldKey.FIELD, "calculation"))),
                     Arguments
                             .of(new DegreeCalculation(null,
                                                       CALCULATION_1,
                                                       null,
-                                                      Relevancy.HIGHLY,
+                                                      Relevancy.STRONGLY,
                                                       VALID_WEIGHT,
                                                       VALID_STRING),
                                 List.of(Map.of(FieldKey.CLASS, "DegreeCalculation", FieldKey.FIELD, "degree"))),
@@ -53,7 +53,7 @@ class DegreeCalculationValidationServiceTest
                             .of(new DegreeCalculation(null,
                                                       CALCULATION_1,
                                                       DEGREE_1,
-                                                      Relevancy.HIGHLY,
+                                                      Relevancy.STRONGLY,
                                                       null,
                                                       VALID_STRING),
                                 List.of(Map.of(FieldKey.CLASS, "DegreeCalculation", FieldKey.FIELD, "weight"))),
@@ -61,7 +61,7 @@ class DegreeCalculationValidationServiceTest
                             .of(new DegreeCalculation(null,
                                                       CALCULATION_1,
                                                       DEGREE_1,
-                                                      Relevancy.HIGHLY,
+                                                      Relevancy.STRONGLY,
                                                       NEGATIVE_BIG_DECIMAL,
                                                       VALID_STRING),
                                 List
@@ -80,7 +80,7 @@ class DegreeCalculationValidationServiceTest
                             .of(new DegreeCalculation(null,
                                                       CALCULATION_1,
                                                       DEGREE_1,
-                                                      Relevancy.HIGHLY,
+                                                      Relevancy.STRONGLY,
                                                       TOO_HIGH_WEIGHT,
                                                       VALID_STRING),
                                 List

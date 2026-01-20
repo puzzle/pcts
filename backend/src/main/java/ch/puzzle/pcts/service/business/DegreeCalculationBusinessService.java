@@ -2,6 +2,7 @@ package ch.puzzle.pcts.service.business;
 
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.Relevancy;
+import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
 import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
 import ch.puzzle.pcts.service.persistence.DegreeCalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.DegreeCalculationValidationService;
@@ -15,7 +16,7 @@ public class DegreeCalculationBusinessService extends BusinessBase<DegreeCalcula
     private final DegreeCalculationPersistenceService degreeCalculationPersistenceService;
     private final DegreeCalculationValidationService degreeCalculationValidationService;
 
-    protected DegreeCalculationBusinessService(DegreeCalculationValidationService validationService,
+    public DegreeCalculationBusinessService(DegreeCalculationValidationService validationService,
                                                DegreeCalculationPersistenceService persistenceService) {
         super(validationService, persistenceService);
         this.degreeCalculationPersistenceService = persistenceService;
@@ -23,22 +24,22 @@ public class DegreeCalculationBusinessService extends BusinessBase<DegreeCalcula
     }
 
     public List<DegreeCalculation> getByCalculationId(Long calculationId) {
-        return this.degreeCalculationPersistenceService.getByCalculationId(calculationId);
+        return degreeCalculationPersistenceService.getByCalculationId(calculationId);
     }
 
     public List<DegreeCalculation> getByDegreeId(Long degreeId) {
-        return this.degreeCalculationPersistenceService.getByDegreeId(degreeId);
+        return degreeCalculationPersistenceService.getByDegreeId(degreeId);
     }
 
     public BigDecimal getDegreePoints(Long id) {
-        List<DegreeCalculation> degreeCalculations = this.getByCalculationId(id);
+        List<DegreeCalculation> degreeCalculations = getByCalculationId(id);
         return degreeCalculations.stream().map(this::calculatePoints).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Override
     public DegreeCalculation update(Long id, DegreeCalculation degreeCalculation) {
         degreeCalculationValidationService.validateOnUpdate(id, degreeCalculation);
-        List<DegreeCalculation> existing = this.getByDegreeId(degreeCalculation.getDegree().getId());
+        List<DegreeCalculation> existing = getByDegreeId(degreeCalculation.getDegree().getId());
         degreeCalculationValidationService.validateDuplicateDegreeId(degreeCalculation, existing);
         return degreeCalculationPersistenceService.save(degreeCalculation);
     }
@@ -46,7 +47,7 @@ public class DegreeCalculationBusinessService extends BusinessBase<DegreeCalcula
     @Override
     public DegreeCalculation create(DegreeCalculation degreeCalculation) {
         degreeCalculationValidationService.validateOnCreate(degreeCalculation);
-        List<DegreeCalculation> existing = this.getByDegreeId(degreeCalculation.getDegree().getId());
+        List<DegreeCalculation> existing = getByDegreeId(degreeCalculation.getDegree().getId());
         degreeCalculationValidationService.validateDuplicateDegreeId(degreeCalculation, existing);
         return degreeCalculationPersistenceService.save(degreeCalculation);
     }
@@ -54,27 +55,35 @@ public class DegreeCalculationBusinessService extends BusinessBase<DegreeCalcula
     public List<DegreeCalculation> createDegreeCalculations(Calculation calculation) {
         return calculation.getDegreeCalculations().stream().map(deg -> {
             deg.setCalculation(calculation);
-            return this.create(deg);
+            return create(deg);
         }).toList();
     }
 
     public List<DegreeCalculation> updateDegreeCalculations(Calculation calculation) {
-        List<DegreeCalculation> existing = this.getByCalculationId(calculation.getId());
+        List<DegreeCalculation> existing = getByCalculationId(calculation.getId());
 
         List<DegreeCalculation> degreeCalculations = calculation.getDegreeCalculations().stream().map(deg -> {
             deg.setCalculation(calculation);
-            return deg.getId() == null ? this.create(deg) : this.update(deg.getId(), deg);
+            return deg.getId() == null ? create(deg) : update(deg.getId(), deg);
         }).toList();
-
-        /*
-         * Removing all created or updated degree calculations from the list and then
-         * delete the remaining, which are unused
-         */
-        existing.removeAll(degreeCalculations);
-        this.degreeCalculationPersistenceService
-                .deleteAllByIdInBatch(existing.stream().map(DegreeCalculation::getId).toList());
+        deleteUnusedDegreeCalculations(existing, degreeCalculations);
 
         return degreeCalculations;
+    }
+
+    private void deleteUnusedDegreeCalculations(
+            List<DegreeCalculation> existing,
+            List<DegreeCalculation> updated) {
+        // remove all created/updated degree calculations from the list
+        existing.removeAll(updated);
+
+        // delete the remaining, which are unused
+        degreeCalculationPersistenceService
+                .deleteAllByIdInBatch(
+                        existing.stream()
+                                .map(DegreeCalculation::getId)
+                                .toList()
+                );
     }
 
     /*

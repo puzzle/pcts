@@ -19,15 +19,15 @@ public class ExperienceCalculationPersistenceService
     }
 
     public List<ExperienceCalculation> getByCalculationId(Long calculationId) {
-        return this.repository.findByCalculationId(calculationId);
+        return repository.findByCalculationId(calculationId);
     }
 
     public List<ExperienceCalculation> getByExperienceId(Long experienceId) {
-        return this.repository.findByExperienceId(experienceId);
+        return repository.findByExperienceId(experienceId);
     }
 
     public void deleteAllByIdInBatch(List<Long> ids) {
-        this.repository.deleteAllByIdInBatch(ids);
+        repository.deleteAllByIdInBatch(ids);
     }
     @Override
     public String entityName() {

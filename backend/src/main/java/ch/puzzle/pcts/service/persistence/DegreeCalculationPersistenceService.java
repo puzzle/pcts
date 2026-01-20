@@ -19,15 +19,15 @@ public class DegreeCalculationPersistenceService
     }
 
     public List<DegreeCalculation> getByCalculationId(Long calculationId) {
-        return this.repository.findByCalculationId(calculationId);
+        return repository.findByCalculationId(calculationId);
     }
 
     public List<DegreeCalculation> getByDegreeId(Long degreeId) {
-        return this.repository.findByDegreeId(degreeId);
+        return repository.findByDegreeId(degreeId);
     }
 
     public void deleteAllByIdInBatch(List<Long> ids) {
-        this.repository.deleteAllByIdInBatch(ids);
+        repository.deleteAllByIdInBatch(ids);
     }
 
     @Override

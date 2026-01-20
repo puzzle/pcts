@@ -2,6 +2,7 @@ package ch.puzzle.pcts.service.business;
 
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.Relevancy;
+import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
 import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
 import ch.puzzle.pcts.model.experience.Experience;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
@@ -27,22 +28,22 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
     }
 
     public List<ExperienceCalculation> getByCalculationId(Long calculationId) {
-        return this.experienceCalculationPersistenceService.getByCalculationId(calculationId);
+        return experienceCalculationPersistenceService.getByCalculationId(calculationId);
     }
 
     public List<ExperienceCalculation> getByExperienceId(Long experienceId) {
-        return this.experienceCalculationPersistenceService.getByExperienceId(experienceId);
+        return experienceCalculationPersistenceService.getByExperienceId(experienceId);
     }
 
     public BigDecimal getExperiencePoints(Long id) {
-        List<ExperienceCalculation> experienceCalculations = this.getByCalculationId(id);
+        List<ExperienceCalculation> experienceCalculations = getByCalculationId(id);
         return experienceCalculations.stream().map(this::calculatePoints).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Override
     public ExperienceCalculation update(Long id, ExperienceCalculation experienceCalculation) {
         experienceCalculationValidationService.validateOnUpdate(id, experienceCalculation);
-        List<ExperienceCalculation> existing = this.getByExperienceId(experienceCalculation.getExperience().getId());
+        List<ExperienceCalculation> existing = getByExperienceId(experienceCalculation.getExperience().getId());
         experienceCalculationValidationService.validateDuplicateExperienceId(experienceCalculation, existing);
         return experienceCalculationPersistenceService.save(experienceCalculation);
     }
@@ -50,7 +51,7 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
     @Override
     public ExperienceCalculation create(ExperienceCalculation experienceCalculation) {
         experienceCalculationValidationService.validateOnCreate(experienceCalculation);
-        List<ExperienceCalculation> existing = this.getByExperienceId(experienceCalculation.getExperience().getId());
+        List<ExperienceCalculation> existing = getByExperienceId(experienceCalculation.getExperience().getId());
         experienceCalculationValidationService.validateDuplicateExperienceId(experienceCalculation, existing);
         return experienceCalculationPersistenceService.save(experienceCalculation);
     }
@@ -58,7 +59,7 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
     public List<ExperienceCalculation> createExperienceCalculations(Calculation calculation) {
         return calculation.getExperienceCalculations().stream().map(exp -> {
             exp.setCalculation(calculation);
-            return this.create(exp);
+            return create(exp);
         }).toList();
     }
 
@@ -73,16 +74,25 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
                     return exp.getId() == null ? this.create(exp) : this.update(exp.getId(), exp);
                 })
                 .toList();
-
-        /*
-         * Removing all created or updated experience calculations from the list and
-         * then delete the remaining, which are unused
-         */
-        existing.removeAll(experienceCalculations);
-        this.experienceCalculationPersistenceService
-                .deleteAllByIdInBatch(existing.stream().map(ExperienceCalculation::getId).toList());
+        deleteUnusedExperienceCalculations(existing, experienceCalculations);
 
         return experienceCalculations;
+    }
+
+
+    private void deleteUnusedExperienceCalculations(
+            List<ExperienceCalculation> existing,
+            List<ExperienceCalculation> updated) {
+        // remove all created/updated degree calculations from the list
+        existing.removeAll(updated);
+
+        // delete the remaining, which are unused
+        experienceCalculationPersistenceService
+                .deleteAllByIdInBatch(
+                        existing.stream()
+                                .map(ExperienceCalculation::getId)
+                                .toList()
+                );
     }
 
     /*

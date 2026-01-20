@@ -10,7 +10,7 @@ public record ExperienceCalculationDto(
 
         @Schema(description = "Referenced experience") ExperienceDto experience,
 
-        @Schema(description = "Relevancy of the experience for the calculation", example = "HIGHLY") Relevancy relevancy,
+        @Schema(description = "Relevancy of the experience for the calculation", example = "STRONGLY") Relevancy relevancy,
 
         @Schema(description = "Optional comment explaining the relevancy", example = "Same job role and technology stack", nullable = true) String comment) {
 }

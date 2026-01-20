@@ -19,15 +19,15 @@ public class CertificateCalculationPersistenceService
     }
 
     public List<CertificateCalculation> getByCalculationId(Long calculationId) {
-        return this.repository.findByCalculationId(calculationId);
+        return repository.findByCalculationId(calculationId);
     }
 
     public List<CertificateCalculation> getByCertificateId(Long certificateId) {
-        return this.repository.findByCertificateId(certificateId);
+        return repository.findByCertificateId(certificateId);
     }
 
     public void deleteAllByIdInBatch(List<Long> ids) {
-        this.repository.deleteAllByIdInBatch(ids);
+        repository.deleteAllByIdInBatch(ids);
     }
 
     @Override

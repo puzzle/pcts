@@ -615,40 +615,40 @@ public class TestDataModels {
     public static final DegreeCalculation DEGREE_CALC_1 = new DegreeCalculation(DEGREE_CALC_1_ID,
                                                                                 null,
                                                                                 DEGREE_2,
-                                                                                Relevancy.HIGHLY,
+                                                                                Relevancy.STRONGLY,
                                                                                 BigDecimal.valueOf(80),
                                                                                 "Comment");
 
     public static final DegreeCalculation DEGREE_CALC_2 = new DegreeCalculation(DEGREE_CALC_2_ID,
                                                                                 null,
                                                                                 DEGREE_2,
-                                                                                Relevancy.LITTLE,
+                                                                                Relevancy.POORLY,
                                                                                 BigDecimal.valueOf(10),
                                                                                 "Comment");
 
     public static final DegreeCalculation DEGREE_CALC_3 = new DegreeCalculation(DEGREE_CALC_3_ID,
                                                                                 null,
                                                                                 DEGREE_2,
-                                                                                Relevancy.LIMITED,
+                                                                                Relevancy.NORMAL,
                                                                                 BigDecimal.valueOf(100),
                                                                                 "Comment");
 
     public static final ExperienceCalculation EXP_CALC_1 = new ExperienceCalculation(EXPERIENCE_CALC_1_ID,
                                                                                      null,
                                                                                      EXPERIENCE_2,
-                                                                                     Relevancy.HIGHLY,
+                                                                                     Relevancy.STRONGLY,
                                                                                      "Comment");
 
     public static final ExperienceCalculation EXP_CALC_2 = new ExperienceCalculation(EXPERIENCE_CALC_2_ID,
                                                                                      null,
                                                                                      EXPERIENCE_2,
-                                                                                     Relevancy.LITTLE,
+                                                                                     Relevancy.POORLY,
                                                                                      "Comment");
 
     public static final ExperienceCalculation EXP_CALC_3 = new ExperienceCalculation(EXPERIENCE_CALC_3_ID,
                                                                                      null,
                                                                                      EXPERIENCE_3,
-                                                                                     Relevancy.LIMITED,
+                                                                                     Relevancy.NORMAL,
                                                                                      "Comment");
 
     public static final CertificateCalculation CERT_CALC_1 = new CertificateCalculation(CERTIFICATE_CALC_1_ID,

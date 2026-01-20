@@ -83,9 +83,9 @@ public class ExperienceType implements Model {
 
     public BigDecimal getPointsByRelevancy(Relevancy relevancy) {
         return switch (relevancy) {
-            case HIGHLY -> getHighlyRelevantPoints();
-            case LIMITED -> getLimitedRelevantPoints();
-            case LITTLE -> getLittleRelevantPoints();
+            case STRONGLY -> getHighlyRelevantPoints();
+            case NORMAL -> getLimitedRelevantPoints();
+            case POORLY -> getLittleRelevantPoints();
             case NONE -> BigDecimal.ZERO;
         };
     }

@@ -24,7 +24,7 @@ class DegreeCalculationMapperTest {
 
     private static final Long DEGREE_ID = 100L;
     private static final Long DEGREE_CALCULATION_ID = 20L;
-    private static final Relevancy RELEVANCY = Relevancy.HIGHLY;
+    private static final Relevancy RELEVANCY = Relevancy.STRONGLY;
     private static final BigDecimal WEIGHT = BigDecimal.ONE;
     private static final String COMMENT = "Comment";
 

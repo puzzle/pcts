@@ -17,7 +17,7 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
     private final CertificateCalculationBusinessService certificateCalculationBusinessService;
     private final DegreeCalculationBusinessService degreeCalculationBusinessService;
 
-    protected CalculationBusinessService(CalculationValidationService validationService,
+    public CalculationBusinessService(CalculationValidationService validationService,
                                          CalculationPersistenceService persistenceService,
                                          ExperienceCalculationBusinessService experienceCalculationBusinessService,
                                          CertificateCalculationBusinessService certificateCalculationBusinessService,
@@ -32,49 +32,49 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
     @Transactional
     public Calculation create(Calculation calculation) {
         // create base Calculation first to get the final persisted state
-        Calculation createdCalculation = super.create(calculation);
+        Calculation baseCalc = super.create(calculation);
 
-        // create related entities using the createdCalculation
-        List<ExperienceCalculation> createdExperienceCalculations = experienceCalculationBusinessService
+        // create related entities using the baseCalc
+        List<ExperienceCalculation> expCalc = experienceCalculationBusinessService
                 .createExperienceCalculations(calculation);
-        List<DegreeCalculation> createdDegreeCalculations = degreeCalculationBusinessService
+        List<DegreeCalculation> degCalc = degreeCalculationBusinessService
                 .createDegreeCalculations(calculation);
-        List<CertificateCalculation> createdCertificatesCalculations = certificateCalculationBusinessService
+        List<CertificateCalculation> certCalc = certificateCalculationBusinessService
                 .createCertificateCalculations(calculation);
 
         // set relations to return a fully-populated object
-        createdCalculation.setExperienceCalculations(createdExperienceCalculations);
-        createdCalculation.setDegreeCalculations(createdDegreeCalculations);
-        createdCalculation.setCertificateCalculations(createdCertificatesCalculations);
+        baseCalc.setExperienceCalculations(expCalc);
+        baseCalc.setDegreeCalculations(degCalc);
+        baseCalc.setCertificateCalculations(certCalc);
 
-        return createdCalculation;
+        return baseCalc;
     }
 
     @Override
     @Transactional
     public Calculation update(Long id, Calculation calculation) {
         // update base Calculation first to get the final persisted state
-        Calculation updatedCalculation = super.update(id, calculation);
-        calculation.setId(updatedCalculation.getId());
+        Calculation baseCalc = super.update(id, calculation);
+        calculation.setId(baseCalc.getId());
 
-        // update related entities using the updatedCalculation we use the not persisted
+        // update related entities using the baseCalc we use the not persisted
         // calculation for this as the persisted calculation does not contain any
         // relations yet
-        List<ExperienceCalculation> updatedExperienceCalculations = experienceCalculationBusinessService
+        List<ExperienceCalculation> expCalc = experienceCalculationBusinessService
                 .updateExperienceCalculations(calculation);
 
-        List<DegreeCalculation> updatedDegreeCalculations = degreeCalculationBusinessService
+        List<DegreeCalculation> degCalc = degreeCalculationBusinessService
                 .updateDegreeCalculations(calculation);
 
-        List<CertificateCalculation> updatedCertificateCalculations = certificateCalculationBusinessService
+        List<CertificateCalculation> certCalc = certificateCalculationBusinessService
                 .updateCertificateCalculations(calculation);
 
         // set relations to return a fully-populated object
-        updatedCalculation.setExperienceCalculations(updatedExperienceCalculations);
-        updatedCalculation.setDegreeCalculations(updatedDegreeCalculations);
-        updatedCalculation.setCertificateCalculations(updatedCertificateCalculations);
+        baseCalc.setExperienceCalculations(expCalc);
+        baseCalc.setDegreeCalculations(degCalc);
+        baseCalc.setCertificateCalculations(certCalc);
 
-        return updatedCalculation;
+        return baseCalc;
     }
 
     @Override

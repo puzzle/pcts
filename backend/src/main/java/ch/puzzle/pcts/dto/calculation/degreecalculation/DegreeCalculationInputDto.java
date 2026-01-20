@@ -11,7 +11,7 @@ public record DegreeCalculationInputDto(
 
         @Schema(description = "Weight of the degree in percent (1–100)", example = "25", minimum = "1", maximum = "100", requiredMode = Schema.RequiredMode.REQUIRED) BigDecimal weight,
 
-        @Schema(description = "Relevancy level of the degree", example = "HIGHLY", requiredMode = Schema.RequiredMode.REQUIRED) Relevancy relevancy,
+        @Schema(description = "Relevancy level of the degree", example = "STRONGLY", requiredMode = Schema.RequiredMode.REQUIRED) Relevancy relevancy,
 
         @Schema(description = "Optional comment explaining the relevancy and weight decision", example = "It's highly relevant because it matches the current position.") String comment) {
 }

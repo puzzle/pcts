@@ -24,7 +24,7 @@ class ExperienceCalculationPersistenceServiceIT
 
     @Override
     ExperienceCalculation getModel() {
-        return new ExperienceCalculation(null, CALCULATION_1, EXPERIENCE_2, Relevancy.HIGHLY, "Comment");
+        return new ExperienceCalculation(null, CALCULATION_1, EXPERIENCE_2, Relevancy.STRONGLY, "Comment");
     }
 
     @Override

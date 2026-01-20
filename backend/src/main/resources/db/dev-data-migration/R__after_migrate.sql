@@ -161,18 +161,18 @@ TRUNCATE TABLE experience_calculation CASCADE;
 INSERT INTO experience_calculation
 (calculation_id, experience_id, relevancy, comment)
 VALUES
-    (2, 2, 'LITTLE',  'Marketing internship, low relevance'),
-    (3, 4, 'HIGHLY',  'Full-time data analyst role'),
-    (4, 2, 'LIMITED', 'Internship experience');
+    (2, 2, 'POORLY',  'Marketing internship, low relevance'),
+    (3, 4, 'STRONGLY',  'Full-time data analyst role'),
+    (4, 2, 'NORMAL', 'Internship experience');
 
 TRUNCATE TABLE degree_calculation CASCADE;
 
 INSERT INTO degree_calculation
 (calculation_id, degree_id, weight, relevancy, comment)
 VALUES
-    (2, 2, 40,  'LITTLE',  'Low relevance for technical role'),
-    (3, 3, 90,  'HIGHLY',  'Directly relevant degree'),
-    (4, 3, 70,  'LIMITED', 'Relevant but less practical focus');
+    (2, 2, 40,  'POORLY',  'Low relevance for technical role'),
+    (3, 3, 90,  'STRONGLY',  'Directly relevant degree'),
+    (4, 3, 70,  'NORMAL', 'Relevant but less practical focus');
 
 TRUNCATE TABLE certificate_calculation CASCADE;
 

@@ -67,18 +67,18 @@ class DegreeCalculationBusinessServiceTest
     static Stream<Arguments> degreePointsProvider() {
         return Stream
                 .of(Arguments
-                        .of(Relevancy.HIGHLY, BigDecimal.valueOf(50), BigDecimal.valueOf(80), BigDecimal.valueOf(40)),
+                        .of(Relevancy.STRONGLY, BigDecimal.valueOf(50), BigDecimal.valueOf(80), BigDecimal.valueOf(40)),
                     Arguments
-                            .of(Relevancy.LIMITED,
+                            .of(Relevancy.NORMAL,
                                 BigDecimal.valueOf(30),
                                 BigDecimal.valueOf(100),
                                 BigDecimal.valueOf(30)),
                     Arguments
-                            .of(Relevancy.LITTLE,
+                            .of(Relevancy.POORLY,
                                 BigDecimal.valueOf(20),
                                 BigDecimal.valueOf(50),
                                 BigDecimal.valueOf(10)),
-                    Arguments.of(Relevancy.HIGHLY, BigDecimal.ZERO, BigDecimal.valueOf(75), BigDecimal.ZERO));
+                    Arguments.of(Relevancy.STRONGLY, BigDecimal.ZERO, BigDecimal.valueOf(75), BigDecimal.ZERO));
     }
 
     @Test
@@ -199,8 +199,8 @@ class DegreeCalculationBusinessServiceTest
     void shouldReturnCorrectAmountOfPoints() {
         DegreeType degreeType = new DegreeType(null, null, BigDecimal.TEN, BigDecimal.TWO, BigDecimal.ONE);
 
-        assertEquals(BigDecimal.TEN, degreeType.getPointsByRelevancy(Relevancy.HIGHLY));
-        assertEquals(BigDecimal.TWO, degreeType.getPointsByRelevancy(Relevancy.LIMITED));
-        assertEquals(BigDecimal.ONE, degreeType.getPointsByRelevancy(Relevancy.LITTLE));
+        assertEquals(BigDecimal.TEN, degreeType.getPointsByRelevancy(Relevancy.STRONGLY));
+        assertEquals(BigDecimal.TWO, degreeType.getPointsByRelevancy(Relevancy.NORMAL));
+        assertEquals(BigDecimal.ONE, degreeType.getPointsByRelevancy(Relevancy.POORLY));
     }
 }

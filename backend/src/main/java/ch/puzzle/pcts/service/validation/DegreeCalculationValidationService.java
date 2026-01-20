@@ -19,7 +19,7 @@ public class DegreeCalculationValidationService extends ValidationBase<DegreeCal
     @Override
     public void validateOnCreate(DegreeCalculation model) {
         super.validateOnCreate(model);
-        this.validateMemberForCalculation(model);
+        validateMemberForCalculation(model);
     }
 
     @Override

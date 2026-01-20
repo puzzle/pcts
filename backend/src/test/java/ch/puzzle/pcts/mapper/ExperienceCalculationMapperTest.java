@@ -23,7 +23,7 @@ class ExperienceCalculationMapperTest {
 
     private static final Long EXPERIENCE_ID = 11L;
     private static final Long EXPERIENCE_CALCULATION_ID = 22L;
-    private static final Relevancy RELEVANCY = Relevancy.HIGHLY;
+    private static final Relevancy RELEVANCY = Relevancy.STRONGLY;
     private static final String COMMENT = "Comment";
 
     @Mock

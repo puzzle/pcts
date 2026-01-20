@@ -1,8 +1,8 @@
 package ch.puzzle.pcts.model.calculation;
 
 public enum Relevancy {
-    HIGHLY,
-    LIMITED,
-    LITTLE,
+    STRONGLY,
+    NORMAL,
+    POORLY,
     NONE
 }

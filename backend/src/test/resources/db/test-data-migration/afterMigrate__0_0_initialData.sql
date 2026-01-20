@@ -101,18 +101,18 @@ TRUNCATE TABLE experience_calculation CASCADE;
 INSERT INTO experience_calculation
 (calculation_id, experience_id, relevancy, comment)
 VALUES
-    (1, 2, 'HIGHLY', 'Comment'),
-    (2, 2, 'LITTLE', 'Comment'),
-    (1, 3, 'LIMITED','Comment');
+    (1, 2, 'STRONGLY', 'Comment'),
+    (2, 2, 'POORLY', 'Comment'),
+    (1, 3, 'NORMAL','Comment');
 
 TRUNCATE TABLE degree_calculation CASCADE;
 
 INSERT INTO degree_calculation
 (calculation_id, degree_id, weight, relevancy, comment)
 VALUES
-    (1, 2, 80,'HIGHLY', 'Comment'),
-    (2, 2, 10,'LITTLE', 'Comment'),
-    (1, 2, 100,'LIMITED','Comment');
+    (1, 2, 80,'STRONGLY', 'Comment'),
+    (2, 2, 10,'POORLY', 'Comment'),
+    (1, 2, 100,'NORMAL','Comment');
 
 TRUNCATE TABLE certificate_calculation CASCADE;
 

@@ -28,7 +28,7 @@ class DegreeCalculationPersistenceServiceIT
         return new DegreeCalculation(null,
                                      CALCULATION_1,
                                      DEGREE_2,
-                                     Relevancy.HIGHLY,
+                                     Relevancy.STRONGLY,
                                      BigDecimal.valueOf(80),
                                      "Comment");
     }

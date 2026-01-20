@@ -21,15 +21,15 @@ public class CertificateCalculationBusinessService extends BusinessBase<Certific
     }
 
     public List<CertificateCalculation> getByCalculationId(Long calculationId) {
-        return this.certificateCalculationPersistenceService.getByCalculationId(calculationId);
+        return certificateCalculationPersistenceService.getByCalculationId(calculationId);
     }
 
     public List<CertificateCalculation> getByCertificateId(Long certificateId) {
-        return this.certificateCalculationPersistenceService.getByCertificateId(certificateId);
+        return certificateCalculationPersistenceService.getByCertificateId(certificateId);
     }
 
     public BigDecimal getCertificatePoints(Long id) {
-        List<CertificateCalculation> certificateCalculations = this.getByCalculationId(id);
+        List<CertificateCalculation> certificateCalculations = getByCalculationId(id);
         return certificateCalculations
                 .stream()
                 .filter(this::isEligibleForPoints)
@@ -56,8 +56,7 @@ public class CertificateCalculationBusinessService extends BusinessBase<Certific
     @Override
     public CertificateCalculation update(Long id, CertificateCalculation certificateCalculation) {
         certificateCalculationValidationService.validateOnUpdate(id, certificateCalculation);
-        List<CertificateCalculation> existing = this
-                .getByCertificateId(certificateCalculation.getCertificate().getId());
+        List<CertificateCalculation> existing = getByCertificateId(certificateCalculation.getCertificate().getId());
         certificateCalculationValidationService.validateDuplicateCertificateId(certificateCalculation, existing);
         return certificateCalculationPersistenceService.save(certificateCalculation);
     }
@@ -65,8 +64,7 @@ public class CertificateCalculationBusinessService extends BusinessBase<Certific
     @Override
     public CertificateCalculation create(CertificateCalculation certificateCalculation) {
         certificateCalculationValidationService.validateOnCreate(certificateCalculation);
-        List<CertificateCalculation> existing = this
-                .getByCertificateId(certificateCalculation.getCertificate().getId());
+        List<CertificateCalculation> existing = getByCertificateId(certificateCalculation.getCertificate().getId());
         certificateCalculationValidationService.validateDuplicateCertificateId(certificateCalculation, existing);
         return certificateCalculationPersistenceService.save(certificateCalculation);
     }
@@ -74,31 +72,40 @@ public class CertificateCalculationBusinessService extends BusinessBase<Certific
     public List<CertificateCalculation> createCertificateCalculations(Calculation calculation) {
         return calculation.getCertificateCalculations().stream().map(certCalc -> {
             certCalc.setCalculation(calculation);
-            return this.create(certCalc);
+            return create(certCalc);
         }).toList();
     }
 
     public List<CertificateCalculation> updateCertificateCalculations(Calculation calculation) {
-        List<CertificateCalculation> existing = this.getByCalculationId(calculation.getId());
+        List<CertificateCalculation> existing = getByCalculationId(calculation.getId());
 
         List<CertificateCalculation> certificateCalculations = calculation
                 .getCertificateCalculations()
                 .stream()
                 .map(certificateCalculation -> {
                     certificateCalculation.setCalculation(calculation);
-                    return certificateCalculation.getId() == null ? this.create(certificateCalculation)
-                            : this.update(certificateCalculation.getId(), certificateCalculation);
+                    return certificateCalculation.getId() == null ? create(certificateCalculation)
+                            : update(certificateCalculation.getId(), certificateCalculation);
                 })
                 .toList();
-
-        /*
-         * Removing all created or updated certificate calculations from the list and
-         * then delete the remaining, which are unused
-         */
-        existing.removeAll(certificateCalculations);
-        this.certificateCalculationPersistenceService
-                .deleteAllByIdInBatch(existing.stream().map(CertificateCalculation::getId).toList());
+        deleteUnusedCertificateCalculations(existing, certificateCalculations);
 
         return certificateCalculations;
+    }
+
+
+    private void deleteUnusedCertificateCalculations(
+            List<CertificateCalculation> existing,
+            List<CertificateCalculation> updated) {
+        // remove all created/updated certificate calculations from the list
+        existing.removeAll(updated);
+
+        // delete the remaining, which are unused
+        certificateCalculationPersistenceService
+                .deleteAllByIdInBatch(
+                        existing.stream()
+                                .map(CertificateCalculation::getId)
+                                .toList()
+                );
     }
 }

@@ -20,13 +20,13 @@ public class ExperienceCalculationValidationService extends ValidationBase<Exper
     @Override
     public void validateOnCreate(ExperienceCalculation model) {
         super.validateOnCreate(model);
-        this.validateMemberForCalculation(model);
+        validateMemberForCalculation(model);
     }
 
     @Override
     public void validateOnUpdate(Long id, ExperienceCalculation model) {
         super.validateOnUpdate(id, model);
-        this.validateMemberForCalculation(model);
+        validateMemberForCalculation(model);
     }
 
     public void validateDuplicateExperienceId(ExperienceCalculation experienceCalculation,
