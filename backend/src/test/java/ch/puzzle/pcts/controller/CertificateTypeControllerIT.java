@@ -10,11 +10,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.certificatetype.CertificateTypeDto;
 import ch.puzzle.pcts.mapper.CertificateTypeMapper;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
-import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.service.business.CertificateTypeBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import java.util.List;

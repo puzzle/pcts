@@ -66,16 +66,31 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
     static Stream<Arguments> invalidModelProvider() {
         return Stream
                 .of(Arguments
-                        .of(createMember(EmploymentState.MEMBER, DATE_YESTERDAY, null, "Test", "MT"),
+                        .of(createMember(EmploymentState.MEMBER, DATE_YESTERDAY, null, "Test", "MT", "test@puzzle.ch"),
                             List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "firstName"))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, DATE_YESTERDAY, "", "Test", "MT"),
+                            .of(createMember(EmploymentState.MEMBER,
+                                             DATE_YESTERDAY,
+                                             "",
+                                             "Test",
+                                             "MT",
+                                             "test@puzzle.ch"),
                                 List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "firstName"))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, DATE_YESTERDAY, "  ", "Test", "MT"),
+                            .of(createMember(EmploymentState.MEMBER,
+                                             DATE_YESTERDAY,
+                                             "  ",
+                                             "Test",
+                                             "MT",
+                                             "test@puzzle.ch"),
                                 List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "firstName"))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, DATE_YESTERDAY, "S", "Test", "MT"),
+                            .of(createMember(EmploymentState.MEMBER,
+                                             DATE_YESTERDAY,
+                                             "S",
+                                             "Test",
+                                             "MT",
+                                             "test@puzzle.ch"),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -89,7 +104,12 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                                     FieldKey.IS,
                                                     "S"))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, DATE_YESTERDAY, "  S ", "Test", "MT"),
+                            .of(createMember(EmploymentState.MEMBER,
+                                             DATE_YESTERDAY,
+                                             "  S ",
+                                             "Test",
+                                             "MT",
+                                             "test@puzzle.ch"),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -103,7 +123,12 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                                     FieldKey.IS,
                                                     "S"))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, DATE_YESTERDAY, TOO_LONG_STRING, "Test", "MT"),
+                            .of(createMember(EmploymentState.MEMBER,
+                                             DATE_YESTERDAY,
+                                             TOO_LONG_STRING,
+                                             "Test",
+                                             "MT",
+                                             "test@puzzle.ch"),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -117,16 +142,36 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                                     FieldKey.IS,
                                                     TOO_LONG_STRING))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, DATE_YESTERDAY, "Member", null, "MT"),
+                            .of(createMember(EmploymentState.MEMBER,
+                                             DATE_YESTERDAY,
+                                             "Member",
+                                             null,
+                                             "MT",
+                                             "test@puzzle.ch"),
                                 List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "lastName"))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, DATE_YESTERDAY, "Member", "", "MT"),
+                            .of(createMember(EmploymentState.MEMBER,
+                                             DATE_YESTERDAY,
+                                             "Member",
+                                             "",
+                                             "MT",
+                                             "test@puzzle.ch"),
                                 List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "lastName"))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, DATE_YESTERDAY, "Member", "  ", "MT"),
+                            .of(createMember(EmploymentState.MEMBER,
+                                             DATE_YESTERDAY,
+                                             "Member",
+                                             "  ",
+                                             "MT",
+                                             "test@puzzle.ch"),
                                 List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "lastName"))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, DATE_YESTERDAY, "Member", "S", "MT"),
+                            .of(createMember(EmploymentState.MEMBER,
+                                             DATE_YESTERDAY,
+                                             "Member",
+                                             "S",
+                                             "MT",
+                                             "test@puzzle.ch"),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -140,7 +185,12 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                                     FieldKey.IS,
                                                     "S"))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, DATE_YESTERDAY, "Member", "  S ", "MT"),
+                            .of(createMember(EmploymentState.MEMBER,
+                                             DATE_YESTERDAY,
+                                             "Member",
+                                             "  S ",
+                                             "MT",
+                                             "test@puzzle.ch"),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -154,7 +204,12 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                                     FieldKey.IS,
                                                     "S"))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, DATE_YESTERDAY, "Member", TOO_LONG_STRING, "MT"),
+                            .of(createMember(EmploymentState.MEMBER,
+                                             DATE_YESTERDAY,
+                                             "Member",
+                                             TOO_LONG_STRING,
+                                             "MT",
+                                             "test@puzzle.ch"),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -168,16 +223,26 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                                     FieldKey.IS,
                                                     TOO_LONG_STRING))),
                     Arguments
-                            .of(createMember(null, DATE_YESTERDAY, "Member", "Test", "MT"),
+                            .of(createMember(null, DATE_YESTERDAY, "Member", "Test", "MT", "test@puzzle.ch"),
                                 List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "employmentState"))),
                     Arguments
                             .of(createMember(EmploymentState.MEMBER, null, "Member", "Test", "MT", "test@puzzle.ch"),
                                 List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "birthDate"))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, DATE_TOMORROW, "Member", "Test", "MT"),
+                            .of(createMember(EmploymentState.MEMBER,
+                                             DATE_TOMORROW,
+                                             "Member",
+                                             "Test",
+                                             "MT",
+                                             "test@puzzle.ch"),
                                 List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "birthDate"))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, DATE_TOMORROW, "Member", "Test", "MT"),
+                            .of(createMember(EmploymentState.MEMBER,
+                                             DATE_TOMORROW,
+                                             "Member",
+                                             "Test",
+                                             "MT",
+                                             "test@puzzle.ch"),
                                 List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "birthDate"))));
     }
 

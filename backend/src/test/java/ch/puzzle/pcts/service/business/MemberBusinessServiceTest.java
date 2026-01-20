@@ -11,13 +11,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.CalculationState;
+import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.member.Member;
-import ch.puzzle.pcts.service.JwtService;
 import ch.puzzle.pcts.model.role.Role;
-import ch.puzzle.pcts.service.UserService;
+import ch.puzzle.pcts.service.JwtService;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import ch.puzzle.pcts.service.validation.MemberValidationService;
 import java.util.Collections;

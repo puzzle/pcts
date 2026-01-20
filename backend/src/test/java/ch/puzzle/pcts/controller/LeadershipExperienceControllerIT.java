@@ -10,15 +10,9 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceInputDto;
 import ch.puzzle.pcts.mapper.LeadershipExperienceMapper;
 import ch.puzzle.pcts.model.certificate.Certificate;
-import ch.puzzle.pcts.model.certificatetype.CertificateKind;
-import ch.puzzle.pcts.model.certificatetype.CertificateType;
-import ch.puzzle.pcts.model.member.EmploymentState;
-import ch.puzzle.pcts.model.member.Member;
-import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.LeadershipExperienceBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import org.junit.jupiter.api.DisplayName;
@@ -53,7 +47,10 @@ class LeadershipExperienceControllerIT extends ControllerITBase {
         when(mapper.toDto(any(Certificate.class))).thenReturn(LEADERSHIP_CERT_1_DTO);
 
         mvc
-                .perform(get(BASEURL + "/{id}", LEADERSHIP_CERT_1_ID).with(csrf()).with(adminJwt()).accept(MediaType.APPLICATION_JSON))
+                .perform(get(BASEURL + "/{id}", LEADERSHIP_CERT_1_ID)
+                        .with(csrf())
+                        .with(adminJwt())
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(LEADERSHIP_CERT_1_DTO, "$"));
 

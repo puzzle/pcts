@@ -12,15 +12,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.certificate.CertificateInputDto;
 import ch.puzzle.pcts.mapper.CertificateMapper;
 import ch.puzzle.pcts.model.certificate.Certificate;
-import ch.puzzle.pcts.model.certificatetype.CertificateType;
-import ch.puzzle.pcts.model.certificatetype.Tag;
-import ch.puzzle.pcts.model.member.EmploymentState;
-import ch.puzzle.pcts.model.member.Member;
-import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.CertificateBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import org.junit.jupiter.api.DisplayName;
