@@ -33,13 +33,12 @@ public class ExperienceType implements Model {
     @Column(name = "deleted_at", insertable = false, updatable = false)
     private LocalDateTime deletedAt;
 
-    public ExperienceType(Long id, String name, BigDecimal highlyRelevantPoints, BigDecimal limitedRelevantPoints,
-                          BigDecimal littleRelevantPoints) {
-        this.id = id;
-        this.name = trim(name);
-        this.highlyRelevantPoints = highlyRelevantPoints;
-        this.limitedRelevantPoints = limitedRelevantPoints;
-        this.littleRelevantPoints = littleRelevantPoints;
+    private ExperienceType(Builder builder) {
+        this.id = builder.id;
+        this.name = trim(builder.name);
+        this.highlyRelevantPoints = builder.highlyRelevantPoints;
+        this.limitedRelevantPoints = builder.limitedRelevantPoints;
+        this.littleRelevantPoints = builder.littleRelevantPoints;
     }
 
     public ExperienceType() {
@@ -120,5 +119,46 @@ public class ExperienceType implements Model {
         return "ExperienceType{" + "id=" + id + ", name='" + name + '\'' + ", highlyRelevantPoints="
                + highlyRelevantPoints + ", limitedRelevantPoints=" + limitedRelevantPoints + ", littleRelevantPoints="
                + littleRelevantPoints + '}';
+    }
+
+    public static final class Builder {
+        private Long id;
+        private String name;
+        private BigDecimal highlyRelevantPoints;
+        private BigDecimal limitedRelevantPoints;
+        private BigDecimal littleRelevantPoints;
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder withName(String name) {
+            this.name = trim(name);
+            return this;
+        }
+
+        public Builder withHighlyRelevantPoints(BigDecimal highlyRelevantPoints) {
+            this.highlyRelevantPoints = highlyRelevantPoints;
+            return this;
+        }
+
+        public Builder withLimitedRelevantPoints(BigDecimal limitedRelevantPoints) {
+            this.limitedRelevantPoints = limitedRelevantPoints;
+            return this;
+        }
+
+        public Builder withLittleRelevantPoints(BigDecimal littleRelevantPoints) {
+            this.littleRelevantPoints = littleRelevantPoints;
+            return this;
+        }
+
+        public ExperienceType build() {
+            return new ExperienceType(this);
+        }
     }
 }

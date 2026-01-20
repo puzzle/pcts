@@ -16,9 +16,9 @@ public class Tag implements Model {
     @PCTSStringValidation
     private String name;
 
-    public Tag(Long id, String name) {
-        this.id = id;
-        this.name = trim(name);
+    private Tag(Builder builder) {
+        this.id = builder.id;
+        this.name = trim(builder.name);
     }
 
     public Tag() {
@@ -55,5 +55,31 @@ public class Tag implements Model {
     @Override
     public String toString() {
         return "Tag{" + "id=" + id + ", name='" + name + '\'' + '}';
+    }
+
+    public static final class Builder {
+        private Long id;
+        private String name;
+
+        private Builder() {
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder withName(String name) {
+            this.name = trim(name);
+            return this;
+        }
+
+        public Tag build() {
+            return new Tag(this);
+        }
     }
 }

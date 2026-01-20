@@ -35,12 +35,18 @@ class CalculationPersistenceServiceIT
 
     @Override
     Calculation getModel() {
-        return new Calculation(null,
-                               memberPersistenceServiceIT.getAll().getFirst(),
-                               rolePersistenceServiceIT.getAll().getFirst(),
-                               CalculationState.ACTIVE,
-                               LocalDate.of(2021, 12, 9),
-                               "Ldap User");
+        return CALCULATION_2;
+    }
+
+    private Calculation createModel() {
+        return Calculation.Builder
+                .builder()
+                .withMember(memberPersistenceServiceIT.getAll().getFirst())
+                .withRole(rolePersistenceServiceIT.getAll().getFirst())
+                .withState(CalculationState.ACTIVE)
+                .withPublicationDate(LocalDate.of(2021, 12, 9))
+                .withPublicizedBy("Ldap User")
+                .build();
     }
 
     @Override
@@ -52,8 +58,8 @@ class CalculationPersistenceServiceIT
     @Transactional
     @Test
     void shouldOnlyHaveOneActiveCalculationAfterSave() {
-        Calculation oldActiveCalculation = getModel();
-        Calculation activeCalculation = getModel();
+        Calculation oldActiveCalculation = createModel();
+        Calculation activeCalculation = createModel();
         activeCalculation.setPublicationDate(null);
         activeCalculation.setPublicizedBy(null);
 
@@ -71,8 +77,8 @@ class CalculationPersistenceServiceIT
     @Transactional
     @Test
     void shouldOnlyHaveOneActiveCalculationAfterUpdate() {
-        Calculation oldActiveCalculation = getModel();
-        Calculation activeCalculation = getModel();
+        Calculation oldActiveCalculation = createModel();
+        Calculation activeCalculation = createModel();
         activeCalculation.setPublicationDate(null);
         activeCalculation.setPublicizedBy(null);
 

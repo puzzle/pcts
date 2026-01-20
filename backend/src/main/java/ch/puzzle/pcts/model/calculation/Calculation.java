@@ -34,14 +34,13 @@ public class Calculation implements Model {
 
     private String publicizedBy;
 
-    public Calculation(Long id, Member member, Role role, CalculationState state, LocalDate publicationDate,
-                       String publicizedBy) {
-        this.id = id;
-        this.member = member;
-        this.role = role;
-        this.state = state;
-        this.publicationDate = publicationDate;
-        this.publicizedBy = trim(publicizedBy);
+    private Calculation(Builder builder) {
+        this.id = builder.id;
+        this.member = builder.member;
+        this.role = builder.role;
+        this.state = builder.state;
+        this.publicationDate = builder.publicationDate;
+        this.publicizedBy = trim(builder.publicizedBy);
     }
 
     public Calculation() {
@@ -115,5 +114,55 @@ public class Calculation implements Model {
 
     public void setPublicizedBy(String publicizedBy) {
         this.publicizedBy = trim(publicizedBy);
+    }
+
+    public static final class Builder {
+        private Long id;
+        private Member member;
+        private Role role;
+        private CalculationState state;
+        private LocalDate publicationDate;
+        private String publicizedBy;
+
+        private Builder() {
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder withMember(Member member) {
+            this.member = member;
+            return this;
+        }
+
+        public Builder withRole(Role role) {
+            this.role = role;
+            return this;
+        }
+
+        public Builder withState(CalculationState state) {
+            this.state = state;
+            return this;
+        }
+
+        public Builder withPublicationDate(LocalDate publicationDate) {
+            this.publicationDate = publicationDate;
+            return this;
+        }
+
+        public Builder withPublicizedBy(String publicizedBy) {
+            this.publicizedBy = trim(publicizedBy);
+            return this;
+        }
+
+        public Calculation build() {
+            return new Calculation(this);
+        }
     }
 }

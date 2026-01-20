@@ -24,7 +24,13 @@ public class DegreeTypeMapper {
     }
 
     public DegreeType fromDto(DegreeTypeDto dto) {
-        return new DegreeType(dto
-                .id(), dto.name(), dto.highlyRelevantPoints(), dto.limitedRelevantPoints(), dto.littleRelevantPoints());
+        return DegreeType.Builder
+                .builder()
+                .withId(dto.id())
+                .withName(dto.name())
+                .withHighlyRelevantPoints(dto.highlyRelevantPoints())
+                .withLimitedRelevantPoints(dto.limitedRelevantPoints())
+                .withLittleRelevantPoints(dto.littleRelevantPoints())
+                .build();
     }
 }

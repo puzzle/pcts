@@ -32,18 +32,30 @@ public class TestDataModels {
 
     public static final OrganisationUnit ORG_UNIT_1;
     static {
-        ORG_UNIT_1 = new OrganisationUnit(ORG_UNIT_1_ID, "OrganisationUnit 1");
+        ORG_UNIT_1 = OrganisationUnit.Builder.builder().withId(ORG_UNIT_1_ID).withName("OrganisationUnit 1").build();
         ORG_UNIT_1.setDeletedAt(UNIX_EPOCH);
     }
 
-    public static final OrganisationUnit ORG_UNIT_2 = new OrganisationUnit(ORG_UNIT_2_ID, "OrganisationUnit 2");
+    public static final OrganisationUnit ORG_UNIT_2 = OrganisationUnit.Builder
+            .builder()
+            .withId(ORG_UNIT_2_ID)
+            .withName("OrganisationUnit 2")
+            .build();
 
-    public static final Role ROLE_2 = new Role(ROLE_2_ID, "Role 2", false);
+    public static final Role ROLE_2 = Role.Builder
+            .builder()
+            .withId(ROLE_2_ID)
+            .withName("Role 2")
+            .withIsManagement(false)
+            .build();
 
-    public static final Tag TAG_1 = new Tag(TAG_1_ID, "Tag 1");
-    public static final Tag TAG_2 = new Tag(TAG_2_ID, "Longer tag name");
-    public static final Tag TAG_3 = new Tag(null, "First tag without id");
-    public static final Tag TAG_4 = new Tag(null, "Second tag without id");
+    public static final Tag TAG_1 = Tag.Builder.builder().withId(TAG_1_ID).withName("Tag 1").build();
+
+    public static final Tag TAG_2 = Tag.Builder.builder().withId(TAG_2_ID).withName("Longer tag name").build();
+
+    public static final Tag TAG_3 = Tag.Builder.builder().withName("First tag without id").build();
+
+    public static final Tag TAG_4 = Tag.Builder.builder().withName("Second tag without id").build();
 
     public static final Member MEMBER_1 = Member.Builder
             .builder()
@@ -69,84 +81,115 @@ public class TestDataModels {
             .withOrganisationUnit(ORG_UNIT_2)
             .build();
 
-    public static final CertificateType CERT_TYPE_1 = new CertificateType(CERT_TYPE_1_ID,
-                                                                          "Certificate Type 1",
-                                                                          BigDecimal.valueOf(5.5),
-                                                                          "This is Certificate 1",
-                                                                          Set.of(TAG_1),
-                                                                          CertificateKind.CERTIFICATE);
+    public static final CertificateType CERT_TYPE_1 = CertificateType.Builder
+            .builder()
+            .withId(CERT_TYPE_1_ID)
+            .withName("Certificate Type 1")
+            .withPoints(BigDecimal.valueOf(5.5))
+            .withComment("This is Certificate 1")
+            .withTags(Set.of(TAG_1))
+            .withCertificateKind(CertificateKind.CERTIFICATE)
+            .build();
 
-    public static final CertificateType CERT_TYPE_2 = new CertificateType(CERT_TYPE_2_ID,
-                                                                          "Certificate Type 2",
-                                                                          BigDecimal.valueOf(1),
-                                                                          "This is Certificate 2",
-                                                                          Set.of(TAG_2),
-                                                                          CertificateKind.CERTIFICATE);
+    public static final CertificateType CERT_TYPE_2 = CertificateType.Builder
+            .builder()
+            .withId(CERT_TYPE_2_ID)
+            .withName("Certificate Type 2")
+            .withPoints(BigDecimal.valueOf(1))
+            .withComment("This is Certificate 2")
+            .withTags(Set.of(TAG_2))
+            .withCertificateKind(CertificateKind.CERTIFICATE)
+            .build();
 
-    public static final CertificateType CERT_TYPE_3 = new CertificateType(CERT_TYPE_3_ID,
-                                                                          "Certificate Type 3",
-                                                                          BigDecimal.valueOf(3),
-                                                                          "This is Certificate 3",
-                                                                          Set.of(),
-                                                                          CertificateKind.CERTIFICATE);
+    public static final CertificateType CERT_TYPE_3 = CertificateType.Builder
+            .builder()
+            .withId(CERT_TYPE_3_ID)
+            .withName("Certificate Type 3")
+            .withPoints(BigDecimal.valueOf(3))
+            .withComment("This is Certificate 3")
+            .withTags(Set.of())
+            .withCertificateKind(CertificateKind.CERTIFICATE)
+            .build();
 
-    public static final CertificateType CERT_TYPE_4 = new CertificateType(CERT_TYPE_4_ID,
-                                                                          "Certificate Type 4",
-                                                                          BigDecimal.valueOf(0.5),
-                                                                          "This is Certificate 4",
-                                                                          Set.of(),
-                                                                          CertificateKind.CERTIFICATE);
+    public static final CertificateType CERT_TYPE_4 = CertificateType.Builder
+            .builder()
+            .withId(CERT_TYPE_4_ID)
+            .withName("Certificate Type 4")
+            .withPoints(BigDecimal.valueOf(0.5))
+            .withComment("This is Certificate 4")
+            .withTags(Set.of())
+            .withCertificateKind(CertificateKind.CERTIFICATE)
+            .build();
 
-    private static final Set<Tag> TAGS_2 = Set.of(TAG_3, TAG_4);
+    public static final CertificateType CERT_TYPE_5 = CertificateType.Builder
+            .builder()
+            .withId(CERT_TYPE_5_ID)
+            .withName("Certificate Type 5")
+            .withPoints(BigDecimal.valueOf(0.5))
+            .withComment("This is Certificate 5")
+            .withTags(Set.of(TAG_3, TAG_4))
+            .withCertificateKind(CertificateKind.CERTIFICATE)
+            .build();
 
-    public static final CertificateType CERT_TYPE_5 = new CertificateType(CERT_TYPE_5_ID,
-                                                                          "Certificate Type 5",
-                                                                          BigDecimal.valueOf(0.5),
-                                                                          "This is Certificate 5",
-                                                                          TAGS_2,
-                                                                          CertificateKind.CERTIFICATE);
+    public static final CertificateType CERT_TYPE_6 = CertificateType.Builder
+            .builder()
+            .withId(CERT_TYPE_6_ID)
+            .withName("Certificate Type 6")
+            .withPoints(BigDecimal.valueOf(0.5))
+            .withComment("This is Certificate 6")
+            .withTags(Set.of(TAG_3, TAG_4))
+            .withCertificateKind(CertificateKind.CERTIFICATE)
+            .build();
 
-    public static final CertificateType CERT_TYPE_6 = new CertificateType(CERT_TYPE_6_ID,
-                                                                          "Certificate Type 6",
-                                                                          BigDecimal.valueOf(0.5),
-                                                                          "This is Certificate 6",
-                                                                          TAGS_2,
-                                                                          CertificateKind.CERTIFICATE);
+    public static final CertificateType LEADERSHIP_TYPE_1 = CertificateType.Builder
+            .builder()
+            .withId(LEADERSHIP_TYPE_1_ID)
+            .withName("LeadershipExperience Type 1")
+            .withPoints(BigDecimal.valueOf(5.5))
+            .withComment("This is LeadershipExperience 1")
+            .withTags(Set.of())
+            .withCertificateKind(CertificateKind.MILITARY_FUNCTION)
+            .build();
 
-    public static final CertificateType LEADERSHIP_TYPE_1 = new CertificateType(LEADERSHIP_TYPE_1_ID,
-                                                                                "LeadershipExperience Type 1",
-                                                                                BigDecimal.valueOf(5.5),
-                                                                                "This is LeadershipExperience 1",
-                                                                                Set.of(),
-                                                                                CertificateKind.MILITARY_FUNCTION);
+    public static final CertificateType LEADERSHIP_TYPE_2 = CertificateType.Builder
+            .builder()
+            .withId(LEADERSHIP_TYPE_2_ID)
+            .withName("LeadershipExperience Type 2")
+            .withPoints(BigDecimal.valueOf(1))
+            .withComment("This is LeadershipExperience 2")
+            .withTags(Set.of())
+            .withCertificateKind(CertificateKind.YOUTH_AND_SPORT)
+            .build();
 
-    public static final CertificateType LEADERSHIP_TYPE_2 = new CertificateType(LEADERSHIP_TYPE_2_ID,
-                                                                                "LeadershipExperience Type 2",
-                                                                                BigDecimal.valueOf(1),
-                                                                                "This is LeadershipExperience 2",
-                                                                                Set.of(),
-                                                                                CertificateKind.YOUTH_AND_SPORT);
+    public static final CertificateType LEADERSHIP_TYPE_3 = CertificateType.Builder
+            .builder()
+            .withId(LEADERSHIP_TYPE_3_ID)
+            .withName("LeadershipExperience Type 3")
+            .withPoints(BigDecimal.valueOf(3))
+            .withComment("This is LeadershipExperience 3")
+            .withTags(Set.of())
+            .withCertificateKind(CertificateKind.LEADERSHIP_TRAINING)
+            .build();
 
-    public static final CertificateType LEADERSHIP_TYPE_3 = new CertificateType(LEADERSHIP_TYPE_3_ID,
-                                                                                "LeadershipExperience Type 3",
-                                                                                BigDecimal.valueOf(3),
-                                                                                "This is LeadershipExperience 3",
-                                                                                Set.of(),
-                                                                                CertificateKind.LEADERSHIP_TRAINING);
+    public static final CertificateType LEADERSHIP_TYPE_4 = CertificateType.Builder
+            .builder()
+            .withId(LEADERSHIP_TYPE_4_ID)
+            .withName("LeadershipExperience Type 4")
+            .withPoints(BigDecimal.valueOf(4))
+            .withComment("This is a comment.")
+            .withTags(null)
+            .withCertificateKind(CertificateKind.YOUTH_AND_SPORT)
+            .build();
 
-    public static final CertificateType LEADERSHIP_TYPE_4 = new CertificateType(LEADERSHIP_TYPE_4_ID,
-                                                                                "LeadershipExperience Type 4",
-                                                                                BigDecimal.valueOf(4),
-                                                                                "This is a comment.",
-                                                                                null,
-                                                                                CertificateKind.YOUTH_AND_SPORT);
-
-    public static final CertificateType LEADERSHIP_TYPE_5 = new CertificateType(LEADERSHIP_TYPE_5_ID,
-                                                                                "LeadershipExperience Type 5",
-                                                                                BigDecimal.valueOf(2),
-                                                                                "This is a comment.",
-                                                                                null,
-                                                                                CertificateKind.MILITARY_FUNCTION);
+    public static final CertificateType LEADERSHIP_TYPE_5 = CertificateType.Builder
+            .builder()
+            .withId(LEADERSHIP_TYPE_5_ID)
+            .withName("LeadershipExperience Type 5")
+            .withPoints(BigDecimal.valueOf(2))
+            .withComment("This is a comment.")
+            .withTags(null)
+            .withCertificateKind(CertificateKind.MILITARY_FUNCTION)
+            .build();
 
     public static final Certificate CERTIFICATE_1 = Certificate.Builder
             .builder()
@@ -208,17 +251,23 @@ public class TestDataModels {
             .withComment("This is a comment.")
             .build();
 
-    public static final DegreeType DEGREE_TYPE_1 = new DegreeType(DEGREE_TYPE_1_ID,
-                                                                  "Degree type 1",
-                                                                  BigDecimal.valueOf(120.55),
-                                                                  BigDecimal.valueOf(60),
-                                                                  BigDecimal.valueOf(15.45));
+    public static final DegreeType DEGREE_TYPE_1 = DegreeType.Builder
+            .builder()
+            .withId(DEGREE_1_ID)
+            .withName("Degree type 1")
+            .withHighlyRelevantPoints(BigDecimal.valueOf(120.55))
+            .withLimitedRelevantPoints(BigDecimal.valueOf(60))
+            .withLittleRelevantPoints(BigDecimal.valueOf(15.45))
+            .build();
 
-    public static final DegreeType DEGREE_TYPE_2 = new DegreeType(DEGREE_TYPE_2_ID,
-                                                                  "Degree type 2",
-                                                                  BigDecimal.valueOf(12),
-                                                                  BigDecimal.valueOf(3.961),
-                                                                  BigDecimal.valueOf(3));
+    public static final DegreeType DEGREE_TYPE_2 = DegreeType.Builder
+            .builder()
+            .withId(DEGREE_2_ID)
+            .withName("Degree type 2")
+            .withHighlyRelevantPoints(BigDecimal.valueOf(12))
+            .withLimitedRelevantPoints(BigDecimal.valueOf(3.961))
+            .withLittleRelevantPoints(BigDecimal.valueOf(3))
+            .build();
 
     public static final Degree DEGREE_1 = Degree.Builder
             .builder()
@@ -246,17 +295,24 @@ public class TestDataModels {
             .withComment("Comment")
             .build();
 
-    public static final ExperienceType EXP_TYPE_1 = new ExperienceType(EXP_TYPE_1_ID,
-                                                                       "ExperienceType 1",
-                                                                       BigDecimal.ZERO,
-                                                                       BigDecimal.valueOf(12),
-                                                                       BigDecimal.valueOf(4.005));
+    public static final ExperienceType EXP_TYPE_1 = ExperienceType.Builder
+            .builder()
+            .withId(EXP_TYPE_1_ID)
+            .withName("ExperienceType 1")
+            .withHighlyRelevantPoints(BigDecimal.ZERO)
+            .withLimitedRelevantPoints(BigDecimal.valueOf(12))
+            .withLittleRelevantPoints(BigDecimal.valueOf(4.005))
+            .build();
 
-    public static final ExperienceType EXP_TYPE_2 = new ExperienceType(EXP_TYPE_2_ID,
-                                                                       "ExperienceType 2",
-                                                                       BigDecimal.valueOf(12),
-                                                                       BigDecimal.valueOf(10.7989),
-                                                                       BigDecimal.valueOf(6));
+    public static final ExperienceType EXP_TYPE_2 = ExperienceType.Builder
+            .builder()
+            .withId(EXP_TYPE_2_ID)
+            .withName("ExperienceType 2")
+            .withHighlyRelevantPoints(BigDecimal.valueOf(12))
+            .withLimitedRelevantPoints(BigDecimal.valueOf(10.7989))
+            .withLittleRelevantPoints(BigDecimal.valueOf(6))
+            .build();
+
     public static final Experience EXPERIENCE_1;
     static {
         EXPERIENCE_1 = new Experience.Builder()
@@ -490,26 +546,33 @@ public class TestDataModels {
                     .withExperienceId(null)
                     .build());
 
-    public static final Calculation CALCULATION_1 = new Calculation(CALCULATION_1_ID,
-                                                                    MEMBER_1,
-                                                                    ROLE_2,
-                                                                    CalculationState.DRAFT,
-                                                                    LocalDate.of(2025, 1, 14),
-                                                                    "Ldap User");
+    public static final Calculation CALCULATION_1 = Calculation.Builder
+            .builder()
+            .withId(CALCULATION_1_ID)
+            .withMember(MEMBER_1)
+            .withRole(ROLE_2)
+            .withState(CalculationState.DRAFT)
+            .withPublicationDate(LocalDate.of(2025, 1, 14))
+            .withPublicizedBy("Ldap User")
+            .build();
 
-    public static final Calculation CALCULATION_2 = new Calculation(CALCULATION_2_ID,
-                                                                    MEMBER_2,
-                                                                    ROLE_2,
-                                                                    CalculationState.ARCHIVED,
-                                                                    LocalDate.of(2025, 1, 14),
-                                                                    "Ldap User 2");
+    public static final Calculation CALCULATION_2 = Calculation.Builder
+            .builder()
+            .withId(CALCULATION_2_ID)
+            .withMember(MEMBER_2)
+            .withRole(ROLE_2)
+            .withState(CalculationState.ARCHIVED)
+            .withPublicationDate(LocalDate.of(2025, 1, 14))
+            .withPublicizedBy("Ldap User 2")
+            .build();
 
-    public static final Calculation CALCULATION_3 = new Calculation(CALCULATION_3_ID,
-                                                                    MEMBER_2,
-                                                                    ROLE_2,
-                                                                    CalculationState.ACTIVE,
-                                                                    null,
-                                                                    null);
+    public static final Calculation CALCULATION_3 = Calculation.Builder
+            .builder()
+            .withId(CALCULATION_3_ID)
+            .withMember(MEMBER_2)
+            .withRole(ROLE_2)
+            .withState(CalculationState.ACTIVE)
+            .build();
 
     public static final List<OrganisationUnit> ORGANISATION_UNITS = List.of(ORG_UNIT_2);
 

@@ -1,10 +1,9 @@
 package ch.puzzle.pcts.service.persistence;
 
-import static ch.puzzle.pcts.util.TestDataModels.EXPERIENCE_TYPES;
+import static ch.puzzle.pcts.util.TestDataModels.*;
 
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
 import ch.puzzle.pcts.repository.ExperienceTypeRepository;
-import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,11 +18,7 @@ class ExperienceTypePersistenceServiceIT
 
     @Override
     ExperienceType getModel() {
-        return new ExperienceType(null,
-                                  "ExperienceType 3",
-                                  BigDecimal.valueOf(10.055),
-                                  BigDecimal.valueOf(5.603),
-                                  BigDecimal.valueOf(2.005));
+        return EXP_TYPE_2;
     }
 
     @Override

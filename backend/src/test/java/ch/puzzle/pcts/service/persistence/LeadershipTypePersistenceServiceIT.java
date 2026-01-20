@@ -2,8 +2,7 @@ package ch.puzzle.pcts.service.persistence;
 
 import static ch.puzzle.pcts.Constants.LEADERSHIP_EXPERIENCE_TYPE;
 import static ch.puzzle.pcts.util.TestData.*;
-import static ch.puzzle.pcts.util.TestDataModels.LEADERSHIP_EXPERIENCE_TYPES;
-import static ch.puzzle.pcts.util.TestDataModels.LEADERSHIP_TYPE_1;
+import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,7 +12,6 @@ import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
-import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.repository.CertificateTypeRepository;
 import java.math.BigDecimal;
 import java.util.List;
@@ -36,11 +34,7 @@ class LeadershipTypePersistenceServiceIT
 
     @Override
     CertificateType getModel() {
-        return new CertificateType(null,
-                                   "Created certificate type",
-                                   BigDecimal.valueOf(3),
-                                   "This is a newly created certificate",
-                                   Set.of(new Tag(TAG_1_ID, "Important tag")));
+        return LEADERSHIP_TYPE_1;
     }
 
     @Override
@@ -86,11 +80,15 @@ class LeadershipTypePersistenceServiceIT
     @DisplayName("Should update leadership experience type")
     @Test
     void shouldUpdate() {
-        CertificateType updatePayload = new CertificateType(LEADERSHIP_TYPE_1_ID,
-                                                            "Updated leadership experience type",
-                                                            BigDecimal.valueOf(5),
-                                                            "This is a updated leadership experience type",
-                                                            CertificateKind.YOUTH_AND_SPORT);
+        CertificateType updatePayload = CertificateType.Builder
+                .builder()
+                .withId(LEADERSHIP_TYPE_1_ID)
+                .withName("Updated leadership experience type")
+                .withPoints(BigDecimal.valueOf(5))
+                .withComment("This is a updated leadership experience type")
+                .withCertificateKind(CertificateKind.YOUTH_AND_SPORT)
+                .withTags(Set.of(TAG_1))
+                .build();
 
         persistenceService.save(updatePayload);
 

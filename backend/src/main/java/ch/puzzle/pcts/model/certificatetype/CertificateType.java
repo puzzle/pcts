@@ -39,22 +39,13 @@ public class CertificateType implements Model {
     @Column(name = "deleted_at", insertable = false, updatable = false)
     private LocalDateTime deletedAt;
 
-    public CertificateType(Long id, String name, BigDecimal points, String comment, Set<Tag> tags,
-                           CertificateKind certificateKind) {
-        this.id = id;
-        this.name = trim(name);
-        this.points = points;
-        this.comment = trim(comment);
-        this.tags = tags;
-        this.certificateKind = certificateKind;
-    }
-
-    public CertificateType(Long id, String name, BigDecimal points, String comment, Set<Tag> tags) {
-        this(id, name, points, comment, tags, CertificateKind.CERTIFICATE);
-    }
-
-    public CertificateType(Long id, String name, BigDecimal points, String comment, CertificateKind certificateKind) {
-        this(id, name, points, comment, null, certificateKind);
+    private CertificateType(Builder builder) {
+        this.id = builder.id;
+        this.name = trim(builder.name);
+        this.points = builder.points;
+        this.comment = trim(builder.comment);
+        this.tags = builder.tags;
+        this.certificateKind = builder.certificateKind;
     }
 
     public CertificateType() {
@@ -136,5 +127,55 @@ public class CertificateType implements Model {
     public String toString() {
         return "Certificate{" + "id=" + id + ", name='" + name + '\'' + ", points=" + points + ", comment='" + comment
                + '\'' + ", tags=" + tags + ", certificateType=" + certificateKind + ", deletedAt=" + deletedAt + '}';
+    }
+
+    public static final class Builder {
+        private Long id;
+        private String name;
+        private BigDecimal points;
+        private String comment;
+        private Set<Tag> tags;
+        private CertificateKind certificateKind;
+
+        private Builder() {
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder withName(String name) {
+            this.name = trim(name);
+            return this;
+        }
+
+        public Builder withPoints(BigDecimal points) {
+            this.points = points;
+            return this;
+        }
+
+        public Builder withComment(String comment) {
+            this.comment = trim(comment);
+            return this;
+        }
+
+        public Builder withTags(Set<Tag> tags) {
+            this.tags = tags;
+            return this;
+        }
+
+        public Builder withCertificateKind(CertificateKind certificateKind) {
+            this.certificateKind = certificateKind;
+            return this;
+        }
+
+        public CertificateType build() {
+            return new CertificateType(this);
+        }
     }
 }

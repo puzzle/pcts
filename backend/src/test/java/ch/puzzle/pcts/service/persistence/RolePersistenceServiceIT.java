@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.service.persistence;
 
 import static ch.puzzle.pcts.util.TestDataModels.ROLES;
+import static ch.puzzle.pcts.util.TestDataModels.ROLE_2;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.puzzle.pcts.model.role.Role;
@@ -23,7 +24,7 @@ class RolePersistenceServiceIT extends PersistenceBaseIT<Role, RoleRepository, R
 
     @Override
     Role getModel() {
-        return new Role(null, "Role 3", false);
+        return ROLE_2;
     }
 
     List<Role> getAll() {

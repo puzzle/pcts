@@ -25,7 +25,13 @@ public class ExperienceTypeMapper {
     }
 
     public ExperienceType fromDto(ExperienceTypeDto dto) {
-        return new ExperienceType(dto
-                .id(), dto.name(), dto.highlyRelevantPoints(), dto.limitedRelevantPoints(), dto.littleRelevantPoints());
+        return ExperienceType.Builder
+                .builder()
+                .withId(dto.id())
+                .withName(dto.name())
+                .withHighlyRelevantPoints(dto.highlyRelevantPoints())
+                .withLimitedRelevantPoints(dto.limitedRelevantPoints())
+                .withLittleRelevantPoints(dto.littleRelevantPoints())
+                .build();
     }
 }

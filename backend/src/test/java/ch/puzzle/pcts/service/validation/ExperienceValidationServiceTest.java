@@ -40,11 +40,13 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
     private ExperiencePersistenceService persistenceService;
 
     protected static Experience createExperience(String name, LocalDate startDate, LocalDate endDate, int percent) {
-        ExperienceType experienceType = new ExperienceType(null,
-                                                           "Experience Type",
-                                                           BigDecimal.valueOf(7.5),
-                                                           BigDecimal.valueOf(4.75),
-                                                           BigDecimal.valueOf(3));
+        ExperienceType experienceType = ExperienceType.Builder
+                .builder()
+                .withName("Experience Type")
+                .withHighlyRelevantPoints(BigDecimal.valueOf(7.5))
+                .withLimitedRelevantPoints(BigDecimal.valueOf(4.75))
+                .withLittleRelevantPoints(BigDecimal.valueOf(3))
+                .build();
 
         Member member = createMember(EmploymentState.MEMBER, LocalDate.EPOCH, "Member", "Test", "MT");
 
