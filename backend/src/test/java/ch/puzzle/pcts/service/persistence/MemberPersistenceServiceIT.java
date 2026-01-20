@@ -1,17 +1,13 @@
 package ch.puzzle.pcts.service.persistence;
 
-import static ch.puzzle.pcts.util.TestData.MEMBERS;
-import static ch.puzzle.pcts.util.TestData.ORG_UNIT_2;
+import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static ch.puzzle.pcts.util.TestDataModels.*;
 
 import ch.puzzle.pcts.exception.PCTSException;
-import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.repository.MemberRepository;
 import jakarta.transaction.Transactional;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;

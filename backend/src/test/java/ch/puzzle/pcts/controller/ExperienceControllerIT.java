@@ -11,12 +11,9 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.experience.ExperienceInputDto;
 import ch.puzzle.pcts.mapper.ExperienceMapper;
 import ch.puzzle.pcts.model.experience.Experience;
-import ch.puzzle.pcts.model.experiencetype.ExperienceType;
-import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.business.ExperienceBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import org.junit.jupiter.api.DisplayName;
@@ -103,7 +100,9 @@ class ExperienceControllerIT extends ControllerITBase {
     void shouldDeleteExperience() throws Exception {
         BDDMockito.willDoNothing().given(service).delete(anyLong());
 
-        mvc.perform(delete(BASEURL + "/" + EXPERIENCE_1_ID).with(csrf()).with(adminJwt())).andExpect(status().isNoContent());
+        mvc
+                .perform(delete(BASEURL + "/" + EXPERIENCE_1_ID).with(csrf()).with(adminJwt()))
+                .andExpect(status().isNoContent());
 
         verify(service, times(1)).delete(anyLong());
     }
