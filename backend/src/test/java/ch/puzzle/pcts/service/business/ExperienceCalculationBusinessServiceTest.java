@@ -212,7 +212,14 @@ class ExperienceCalculationBusinessServiceTest
     @Test
     @DisplayName("Should return correct base points based on relevancy")
     void shouldReceiveCorrectAmountOfPoints() {
-        ExperienceType experienceType = new ExperienceType(null, null, BigDecimal.TEN, BigDecimal.TWO, BigDecimal.ONE);
+        ExperienceType experienceType = ExperienceType.Builder
+                .builder()
+                .withId(null)
+                .withName(null)
+                .withHighlyRelevantPoints(BigDecimal.TEN)
+                .withLimitedRelevantPoints(BigDecimal.TWO)
+                .withLittleRelevantPoints(BigDecimal.ONE)
+                .build();
 
         assertEquals(BigDecimal.TEN, experienceType.getPointsByRelevancy(Relevancy.STRONGLY));
         assertEquals(BigDecimal.TWO, experienceType.getPointsByRelevancy(Relevancy.NORMAL));
