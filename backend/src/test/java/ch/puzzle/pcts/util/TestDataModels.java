@@ -46,6 +46,13 @@ public class TestDataModels {
             .withName("OrganisationUnit 2")
             .build();
 
+    public static final Role ROLE_1 = Role.Builder
+            .builder()
+            .withId(ROLE_1_ID)
+            .withName("Role 1")
+            .withIsManagement(true)
+            .build();
+
     public static final Role ROLE_2 = Role.Builder
             .builder()
             .withId(ROLE_2_ID)
