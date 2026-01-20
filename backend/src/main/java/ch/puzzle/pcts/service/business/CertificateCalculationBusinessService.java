@@ -93,19 +93,13 @@ public class CertificateCalculationBusinessService extends BusinessBase<Certific
         return certificateCalculations;
     }
 
-
-    private void deleteUnusedCertificateCalculations(
-            List<CertificateCalculation> existing,
-            List<CertificateCalculation> updated) {
+    private void deleteUnusedCertificateCalculations(List<CertificateCalculation> existing,
+                                                     List<CertificateCalculation> updated) {
         // remove all created/updated certificate calculations from the list
         existing.removeAll(updated);
 
         // delete the remaining, which are unused
         certificateCalculationPersistenceService
-                .deleteAllByIdInBatch(
-                        existing.stream()
-                                .map(CertificateCalculation::getId)
-                                .toList()
-                );
+                .deleteAllByIdInBatch(existing.stream().map(CertificateCalculation::getId).toList());
     }
 }

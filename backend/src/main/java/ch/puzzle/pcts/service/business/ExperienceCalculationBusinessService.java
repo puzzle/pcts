@@ -2,7 +2,6 @@ package ch.puzzle.pcts.service.business;
 
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.Relevancy;
-import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
 import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
 import ch.puzzle.pcts.model.experience.Experience;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
@@ -79,20 +78,14 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
         return experienceCalculations;
     }
 
-
-    private void deleteUnusedExperienceCalculations(
-            List<ExperienceCalculation> existing,
-            List<ExperienceCalculation> updated) {
+    private void deleteUnusedExperienceCalculations(List<ExperienceCalculation> existing,
+                                                    List<ExperienceCalculation> updated) {
         // remove all created/updated degree calculations from the list
         existing.removeAll(updated);
 
         // delete the remaining, which are unused
         experienceCalculationPersistenceService
-                .deleteAllByIdInBatch(
-                        existing.stream()
-                                .map(ExperienceCalculation::getId)
-                                .toList()
-                );
+                .deleteAllByIdInBatch(existing.stream().map(ExperienceCalculation::getId).toList());
     }
 
     /*

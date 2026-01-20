@@ -2,7 +2,6 @@ package ch.puzzle.pcts.service.business;
 
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.Relevancy;
-import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
 import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
 import ch.puzzle.pcts.service.persistence.DegreeCalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.DegreeCalculationValidationService;
@@ -17,7 +16,7 @@ public class DegreeCalculationBusinessService extends BusinessBase<DegreeCalcula
     private final DegreeCalculationValidationService degreeCalculationValidationService;
 
     public DegreeCalculationBusinessService(DegreeCalculationValidationService validationService,
-                                               DegreeCalculationPersistenceService persistenceService) {
+                                            DegreeCalculationPersistenceService persistenceService) {
         super(validationService, persistenceService);
         this.degreeCalculationPersistenceService = persistenceService;
         this.degreeCalculationValidationService = validationService;
@@ -71,19 +70,13 @@ public class DegreeCalculationBusinessService extends BusinessBase<DegreeCalcula
         return degreeCalculations;
     }
 
-    private void deleteUnusedDegreeCalculations(
-            List<DegreeCalculation> existing,
-            List<DegreeCalculation> updated) {
+    private void deleteUnusedDegreeCalculations(List<DegreeCalculation> existing, List<DegreeCalculation> updated) {
         // remove all created/updated degree calculations from the list
         existing.removeAll(updated);
 
         // delete the remaining, which are unused
         degreeCalculationPersistenceService
-                .deleteAllByIdInBatch(
-                        existing.stream()
-                                .map(DegreeCalculation::getId)
-                                .toList()
-                );
+                .deleteAllByIdInBatch(existing.stream().map(DegreeCalculation::getId).toList());
     }
 
     /*

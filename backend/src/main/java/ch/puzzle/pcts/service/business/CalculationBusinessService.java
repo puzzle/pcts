@@ -18,10 +18,10 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
     private final DegreeCalculationBusinessService degreeCalculationBusinessService;
 
     public CalculationBusinessService(CalculationValidationService validationService,
-                                         CalculationPersistenceService persistenceService,
-                                         ExperienceCalculationBusinessService experienceCalculationBusinessService,
-                                         CertificateCalculationBusinessService certificateCalculationBusinessService,
-                                         DegreeCalculationBusinessService degreeCalculationBusinessService) {
+                                      CalculationPersistenceService persistenceService,
+                                      ExperienceCalculationBusinessService experienceCalculationBusinessService,
+                                      CertificateCalculationBusinessService certificateCalculationBusinessService,
+                                      DegreeCalculationBusinessService degreeCalculationBusinessService) {
         super(validationService, persistenceService);
         this.experienceCalculationBusinessService = experienceCalculationBusinessService;
         this.certificateCalculationBusinessService = certificateCalculationBusinessService;
@@ -37,8 +37,7 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
         // create related entities using the baseCalc
         List<ExperienceCalculation> expCalc = experienceCalculationBusinessService
                 .createExperienceCalculations(calculation);
-        List<DegreeCalculation> degCalc = degreeCalculationBusinessService
-                .createDegreeCalculations(calculation);
+        List<DegreeCalculation> degCalc = degreeCalculationBusinessService.createDegreeCalculations(calculation);
         List<CertificateCalculation> certCalc = certificateCalculationBusinessService
                 .createCertificateCalculations(calculation);
 
@@ -63,8 +62,7 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
         List<ExperienceCalculation> expCalc = experienceCalculationBusinessService
                 .updateExperienceCalculations(calculation);
 
-        List<DegreeCalculation> degCalc = degreeCalculationBusinessService
-                .updateDegreeCalculations(calculation);
+        List<DegreeCalculation> degCalc = degreeCalculationBusinessService.updateDegreeCalculations(calculation);
 
         List<CertificateCalculation> certCalc = certificateCalculationBusinessService
                 .updateCertificateCalculations(calculation);
