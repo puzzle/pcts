@@ -21,8 +21,6 @@ import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.memberoverview.MemberOverview;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.model.role.Role;
-import ch.puzzle.pcts.repository.TagRepository;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -57,12 +55,7 @@ public class TestDataModels {
 
     public static final Role ROLE_1;
     static {
-        ROLE_1 = Role.Builder
-                .builder()
-                .withId(ROLE_1_ID)
-                .withName("Role 1")
-                .withIsManagement(true)
-                .build();
+        ROLE_1 = Role.Builder.builder().withId(ROLE_1_ID).withName("Role 1").withIsManagement(true).build();
         ROLE_1.setDeletedAt(UNIX_EPOCH);
     }
 
