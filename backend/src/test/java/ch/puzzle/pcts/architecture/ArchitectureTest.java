@@ -24,9 +24,13 @@ import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.lang.ArchCondition;
 import com.tngtech.archunit.lang.ArchRule;
+import com.tngtech.archunit.lang.ConditionEvents;
+import com.tngtech.archunit.lang.SimpleConditionEvent;
 import com.tngtech.archunit.library.Architectures;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ManyToOne;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -328,6 +332,22 @@ class ArchitectureTest {
         rule.check(importedClasses);
     }
 
+    @DisplayName("Models with ManyToOne relations should have fetch type LAZY")
+    @Test
+    void modelShouldHaveFetchTypeLazy() {
+        JavaClasses importedClasses = getMainSourceClasses();
+
+        ArchRule rule = fields()
+                .that()
+                .areDeclaredInClassesThat()
+                .resideInAPackage("ch.puzzle.pcts.model..")
+                .and()
+                .areAnnotatedWith(ManyToOne.class)
+                .should(haveLazyManyToOne());
+
+        rule.check(importedClasses);
+    }
+
     @DisplayName("Classes should reside in the correct packages based on naming conventions")
     @ParameterizedTest
     @ValueSource(strings = { "controller", "service", "mapper", "repository", "dto", "exception" })
@@ -417,4 +437,22 @@ class ArchitectureTest {
         followsPatternRule.check(importedClasses);
     }
 
+    private static ArchCondition<JavaField> haveLazyManyToOne() {
+        return new ArchCondition<>("have @ManyToOne(fetch = LAZY)") {
+            @Override
+            public void check(JavaField field, ConditionEvents events) {
+                ManyToOne annotation = field.getAnnotationOfType(ManyToOne.class);
+
+                if (annotation.fetch() != FetchType.LAZY) {
+                    String message = String
+                            .format("Field %s.%s has @ManyToOne with fetch=%s",
+                                    field.getOwner().getName(),
+                                    field.getName(),
+                                    annotation.fetch());
+
+                    events.add(SimpleConditionEvent.violated(field, message));
+                }
+            }
+        };
+    }
 }
