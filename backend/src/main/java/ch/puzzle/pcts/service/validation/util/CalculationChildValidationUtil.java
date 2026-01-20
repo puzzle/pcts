@@ -5,9 +5,16 @@ import ch.puzzle.pcts.model.calculation.CalculationChildInterface;
 import java.util.List;
 import java.util.Objects;
 
-/*
-* T type of the calculation child
+/**
+ * Utility class providing helper methods for validating children belonging to a
+ * calculation.
+ *
+ * <p>
+ * Provides helper methods to determines whether the provided calculation child
+ * has at least one other entity with the same identifying attributes
+ * </p>
  */
+
 public final class CalculationChildValidationUtil {
 
     private CalculationChildValidationUtil() {
