@@ -9,15 +9,14 @@ import { memberOverview1 } from '../../../shared/test/test-data';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
 
 describe('MemberDetailViewComponent (Jest)', () => {
-  let memberServiceMock: jest.Mocked<MemberService>;
+  let memberServiceMock: Partial<jest.Mocked<MemberService>>;
   let routerMock: jest.Mocked<Router>;
   let routeMock: ActivatedRoute;
 
   function setupTestBed(id: string | null) {
     memberServiceMock = {
       getMemberOverviewByMemberId: jest.fn()
-    } as Partial<jest.Mocked<MemberService>> as jest.Mocked<MemberService>;
-
+    } as Partial<jest.Mocked<MemberService>>;
 
     routerMock = {
       navigate: jest.fn(),
@@ -58,7 +57,7 @@ describe('MemberDetailViewComponent (Jest)', () => {
   it('loads the member overview when id exists', () => {
     const { fixture, component } = setupTestBed('1');
 
-    memberServiceMock.getMemberOverviewByMemberId.mockReturnValue(of(memberOverview1));
+    memberServiceMock.getMemberOverviewByMemberId?.mockReturnValue(of(memberOverview1));
 
     fixture.detectChanges();
 

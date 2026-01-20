@@ -46,12 +46,12 @@ describe('MemberOverviewComponent', () => {
   it('should cut list after 5 entries', () => {
     MemberDetailPage.visit(1);
     CvMemberPage.cvTable('experience');
-    CvMemberPage.cvTableRow()
+    CvMemberPage.cvTableRows('experience')
       .should('have.length', 5);
     CvMemberPage.showListButton()
       .should('include.text', 'Alles anzeigen')
       .click();
-    CvMemberPage.cvTableRow()
+    CvMemberPage.cvTableRows('experience')
       .should('have.length', 13);
     CvMemberPage.showListButton()
       .should('include.text', 'Weniger anzeigen');

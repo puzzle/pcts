@@ -6,8 +6,6 @@ import { degreeOverviewList } from '../test/test-data';
 import {
   GenericCvContentComponent
 } from '../../features/member/detail-view/generic-cv-content/generic-cv-content.component';
-import { ScopedTranslationService } from '../i18n-prefix.provider';
-import { translationMock } from '../../../../setup-jest';
 
 
 describe('GenericTableComponent', () => {
@@ -17,11 +15,7 @@ describe('GenericTableComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      imports: [GenericCvContentComponent],
-      providers: [{
-        provide: ScopedTranslationService,
-        useValue: translationMock
-      }]
+      imports: [GenericCvContentComponent]
     })
       .compileComponents();
 

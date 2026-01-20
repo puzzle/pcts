@@ -66,10 +66,6 @@ export class MemberDetailViewComponent implements OnInit {
       return;
     }
 
-    /*
-     * TODO: Refactor to use Angular `rxResource` (https://angular.dev/api/core/rxjs-interop/rxResource)
-     * once it’s stable — to replace this direct service call with a reactive resource pattern.
-     */
     this.service.getMemberOverviewByMemberId(Number(id))
       .subscribe({
         next: (memberOverview) => {

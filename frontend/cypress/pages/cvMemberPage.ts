@@ -6,11 +6,11 @@ class CvMemberPage extends Page {
   }
 
   showListButton() {
-    return cy.getByTestId('show-list');
+    return cy.getByTestId('limit-list-button');
   }
 
-  cvTableRow() {
-    return this.cvTable('experience')
+  cvTableRows(tableName: string) {
+    return this.cvTable('tableName')
       .findByTestId('member-cv-table-row');
   }
 }
