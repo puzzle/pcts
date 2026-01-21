@@ -18,7 +18,6 @@ import {
   getLeadershipExperienceTable
 } from './cv/member-detail-cv-table-definition';
 import { MemberOverviewModel } from '../member-overview.model';
-import { UserService } from '../../../core/auth/user.service';
 import { AuthService } from '../../../core/auth/auth.service';
 import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin.directive';
 
