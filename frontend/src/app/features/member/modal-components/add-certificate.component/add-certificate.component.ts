@@ -19,7 +19,6 @@ import { MenuButtonComponent } from '../../../../shared/menu-button/menu-button.
 import { DialogResult, StrictlyTypedMatDialog } from '../../../../shared/strictly-typed-mat-dialog';
 import { CertificateModel } from '../../../certificates/certificate.model';
 import { MemberModel } from '../../member.model';
-import { NoIdCertificate } from '../../../certificates/certificate.service';
 
 
 @Component({
@@ -50,7 +49,7 @@ import { NoIdCertificate } from '../../../certificates/certificate.service';
   styleUrl: './add-certificate.component.scss',
   providers: [provideI18nPrefix('CERTIFICATE.FORM.ADD')]
 })
-export class AddCertificateComponent extends StrictlyTypedMatDialog<NoIdCertificate | undefined, DialogResult<CertificateModel>> implements OnInit {
+export class AddCertificateComponent extends StrictlyTypedMatDialog<CertificateModel | undefined, DialogResult<CertificateModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);
 
   protected readonly ModalSubmitMode = ModalSubmitMode;
@@ -60,15 +59,15 @@ export class AddCertificateComponent extends StrictlyTypedMatDialog<NoIdCertific
   private readonly certificateTypeService = inject(CertificateTypeService);
 
   protected formGroup = this.fb.nonNullable.group({
-    id: this.fb.control<null | number>(null),
-    member: [{} as MemberModel],
-    certificateType: [{} as CertificateTypeModel,
+    id: [null as null | number],
+    member: [null as MemberModel | null],
+    certificateType: [null as CertificateTypeModel | null,
       [Validators.required,
         isCertificateTypeName(this.certificateTypeOptions)]],
-    completedAt: [{} as Date,
+    completedAt: [null as Date | null,
       Validators.required],
-    validUntil: this.fb.control<Date | null>(null),
-    comment: this.fb.control<string | null>('')
+    validUntil: [null as Date | null],
+    comment: ['' as string | null]
   });
 
   constructor() {
@@ -105,7 +104,7 @@ export class AddCertificateComponent extends StrictlyTypedMatDialog<NoIdCertific
   });
 
   private filterCertificateType(value: CertificateTypeModel | string | null): CertificateTypeModel[] {
-    if (value === null || value === undefined || value === '' || Object.keys(value).length == 0) {
+    if (value === null || value === undefined || value === '') {
       return this.certificateTypeOptions();
     }
 
@@ -122,7 +121,7 @@ export class AddCertificateComponent extends StrictlyTypedMatDialog<NoIdCertific
   onSubmit(submitMod: ModalSubmitMode) {
     this.dialogRef.close({
       modalSubmitMode: submitMod,
-      submittedModel: this.formGroup.getRawValue()
+      submittedModel: this.formGroup.getRawValue() as CertificateModel
     });
   }
 }

@@ -2,9 +2,12 @@ import { inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { filter, Observable, ReplaySubject } from 'rxjs';
 import { ModalSubmitMode } from './enum/modal-submit-mode.enum';
+import { FormGroup } from '@angular/forms';
 
 export abstract class StrictlyTypedMatDialog<DialogData, DialogResult> {
   protected data: DialogData = inject(MAT_DIALOG_DATA);
+
+  protected abstract formGroup: FormGroup;
 
   protected dialogRef: MatDialogRef<StrictlyTypedMatDialog<DialogData, DialogResult>, DialogResult> =
     inject(MatDialogRef);
@@ -18,8 +21,12 @@ export function enrichMatDialogRef<D, R>(ref: MatDialogRef<D, R>) {
   const afterSubmitted$ = new ReplaySubject<R>(1);
 
   ref.afterClosed()
-    .pipe(filter((e): e is R => Boolean(e)))
-    .subscribe((e) => afterSubmitted$.next(e));
+    .pipe(filter((e): e is R => e !== undefined))
+    .subscribe({
+      next: (e) => afterSubmitted$.next(e),
+      complete: () => afterSubmitted$.complete(), // Important for cleanup
+      error: (err) => afterSubmitted$.error(err)
+    });
 
   (ref as any).afterSubmitted = afterSubmitted$.asObservable();
 
@@ -33,5 +40,5 @@ export type WithNullable<T, K extends keyof any> = Omit<T, K> & {
 
 export interface DialogResult<D> {
   modalSubmitMode: ModalSubmitMode;
-  submittedModel: WithNullable<D, 'id'>;
+  submittedModel: D;
 }
