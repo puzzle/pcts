@@ -18,7 +18,8 @@ export const getExperienceTable = () => new GenericTableDataSource(getExperience
   .withLimit(10);
 
 export const getCertificateTable = () => new GenericTableDataSource(getCertificateColumns())
-  .withLimit(10);
+  .withLimit(10)
+  .withLink();
 
 export const getLeadershipExperienceTable = () => new GenericTableDataSource(getLeadershipExperienceColumns())
   .withLimit(10);

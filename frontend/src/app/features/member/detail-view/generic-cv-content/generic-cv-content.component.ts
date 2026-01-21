@@ -27,6 +27,8 @@ export class GenericCvContentComponent<T extends object> {
 
   table = input.required<GenericTableDataSource<T>>();
 
+  crudBasePath = input<string>('');
+
   constructor() {
     effect(() => {
       const tableValue = this.table();

@@ -32,11 +32,13 @@
     *matHeaderRowDef="this.columnNames(); sticky: true">
   </tr>
 
-  <tr
-    mat-row
-    *matRowDef="let row; columns: this.columnNames();"
-    data-testid="member-cv-table-row">
-  </tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: columnNames();"
+      [routerLink]="dataSource().shouldLink ? getRouterLink(row) : null"
+      [class.clickable-row]="dataSource().shouldLink"
+      data-testid="member-cv-table-row">
+    </tr>
 
   <tr *matNoDataRow data-testid="no-results-row">
     <td colspan="4">
@@ -49,13 +51,7 @@
 </table>
 
 <ng-template #defaultRenderer let-entity let-col="col">
-  @if (col.shouldLink) {
-    <a [routerLink]="getRouterLink(entity)">
-      {{ getDisplayValue(col, entity) }}
-    </a>
-  } @else {
     {{ getDisplayValue(col, entity) }}
-  }
 </ng-template>
 
 @if (isFilterApplied()) {

@@ -60,6 +60,7 @@
         <app-generic-cv-content
           data-testid="cv-table-degree"
           idAttr="id"
+          crudBasePath="degree"
           [data]="degreeData()"
           *appTranslationScope="'DEGREE'"
           [table]="degreeTable"
@@ -68,6 +69,7 @@
         <app-generic-cv-content
           data-testid="cv-table-experience"
           idAttr="id"
+          crudBasePath="experience"
           [data]="experienceData()"
           *appTranslationScope="'EXPERIENCE'"
           [table]="experienceTable"
@@ -76,6 +78,7 @@
         <app-generic-cv-content
           data-testid="cv-table-certificate"
           idAttr="id"
+          crudBasePath="certificate"
           [data]="certificateData()"
           *appTranslationScope="'CERTIFICATE'"
           [table]="certificateTable"
@@ -84,13 +87,14 @@
         <app-generic-cv-content
           data-testid="cv-table-leadership-experience"
           idAttr="id"
+          crudBasePath="leadership-experience"
           [data]="leadershipExperienceData()"
           *appTranslationScope="'LEADERSHIP_EXPERIENCE'"
           [table]="leadershipExperienceTable"
         />
       </mat-tab>
       <mat-tab label="Berechnungen">
-                  <span>calculation content ...</span>
+        <span>calculation content ...</span>
       </mat-tab>
     </mat-tab-group>
   </div>
