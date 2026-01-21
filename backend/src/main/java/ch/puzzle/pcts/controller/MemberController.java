@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.controller;
 
 import ch.puzzle.pcts.dto.calculation.CalculationDto;
+import ch.puzzle.pcts.dto.calculation.RolePointDto;
 import ch.puzzle.pcts.dto.member.MemberDto;
 import ch.puzzle.pcts.dto.member.MemberInputDto;
 import ch.puzzle.pcts.mapper.CalculationMapper;
@@ -58,6 +59,14 @@ public class MemberController {
     @PathVariable Long memberId, @Parameter(description = "Optional role ID to filter calculations.") @RequestParam(name = "roleId", required = false) Long roleId) {
         List<Calculation> calculations = service.getAllCalculationsByMemberIdAndRoleId(memberId, roleId);
         return ResponseEntity.ok(calculationMapper.toDto(calculations));
+    }
+
+    @Operation(summary = "Get roles and points for a member")
+    @ApiResponse(responseCode = "200", description = "Successfully retrieved the roles and points.", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = RolePointDto.class))))
+    @GetMapping("{memberId}/role-points")
+    public ResponseEntity<List<RolePointDto>> getPointsForActiveCalculationsForRoleByMemberId(@Parameter(description = "ID of the member.", required = true)
+    @PathVariable Long memberId) {
+        return ResponseEntity.ok(service.getAllPointsByMemberIdAndRoleId(memberId));
     }
 
     @Operation(summary = "Create a new member")
