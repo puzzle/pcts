@@ -1,6 +1,6 @@
 
 export const degreeTableData: string[] = ['01.09.2016 - 30.06.2019',
-  ' Bachelor of Arts in English Language and Literature ',
+  'Bachelor of Arts in English Language and Literature',
   'PhD'];
 
 export const experienceTableData: string[] = [

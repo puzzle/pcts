@@ -12,17 +12,20 @@ const formatRange = (start: Date, end: Date | null): string => {
 };
 
 export const getDegreeTable = () => new GenericTableDataSource(getDegreeColumns())
-  .withLimit(10);
+  .withLimit(10)
+  .withLink();
 
 export const getExperienceTable = () => new GenericTableDataSource(getExperienceColumns())
-  .withLimit(10);
+  .withLimit(10)
+  .withLink();
 
 export const getCertificateTable = () => new GenericTableDataSource(getCertificateColumns())
   .withLimit(10)
   .withLink();
 
 export const getLeadershipExperienceTable = () => new GenericTableDataSource(getLeadershipExperienceColumns())
-  .withLimit(10);
+  .withLimit(10)
+  .withLink();
 
 const getDegreeColumns = (): GenCol<DegreeOverviewModel>[] => [GenCol.fromCalculated('dateRange', (e: DegreeOverviewModel) => formatRange(e.startDate, e.endDate))
   .withCustomSortingAccessor((e: DegreeOverviewModel) => new Date(e.startDate)

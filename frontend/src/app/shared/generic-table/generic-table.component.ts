@@ -91,7 +91,6 @@ export class GenericTableComponent<T extends object> {
     effect(() => {
       this.dataSource().sortingDataAccessor = this.createSortingAccessor(this.columns());
       this.dataSource().sort = this.sort();
-      console.log(this.idAttr());
     });
   }
 
@@ -138,10 +137,6 @@ export class GenericTableComponent<T extends object> {
     if (!idAttr) {
       return undefined;
     }
-    console.log();
-    console.log([this.crudBasePath(),
-      entity[idAttr]].filter(Boolean)
-      .join('/'));
     return [this.crudBasePath(),
       entity[idAttr]].filter(Boolean)
       .join('/');
