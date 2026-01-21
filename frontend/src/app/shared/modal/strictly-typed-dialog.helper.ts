@@ -1,15 +1,15 @@
 import { inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { filter, Observable, ReplaySubject } from 'rxjs';
-import { ModalSubmitMode } from './enum/modal-submit-mode.enum';
+import { ModalSubmitMode } from '../enum/modal-submit-mode.enum';
 import { FormGroup } from '@angular/forms';
 
-export abstract class StrictlyTypedMatDialog<DialogData, DialogResult> {
+export abstract class StrictlyTypedDialog<DialogData, DialogResult> {
   protected data: DialogData = inject(MAT_DIALOG_DATA);
 
   protected abstract formGroup: FormGroup;
 
-  protected dialogRef: MatDialogRef<StrictlyTypedMatDialog<DialogData, DialogResult>, DialogResult> =
+  protected dialogRef: MatDialogRef<StrictlyTypedDialog<DialogData, DialogResult>, DialogResult> =
     inject(MatDialogRef);
 }
 

@@ -19,7 +19,7 @@ import {
 } from './cv/member-detail-cv-table-definition';
 import { MemberOverviewModel } from '../member-overview.model';
 import { AddCertificateComponent } from '../modal-components/add-certificate.component/add-certificate.component';
-import { PctsModalService } from '../../../shared/pcts-modal.service';
+import { PctsModalService } from '../../../shared/modal/pcts-modal.service';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import { CertificateService } from '../../certificates/certificate.service';
 import { MemberModel } from '../member.model';

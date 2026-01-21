@@ -1,12 +1,12 @@
 import { inject, Injectable, Injector, Type } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
-import { defaultSize } from './modal/base-modal.component';
-import { enrichMatDialogRef, StrictlyTypedMatDialog, TypedMatDialogRef } from './strictly-typed-mat-dialog';
+import { defaultSize } from './base-modal.component';
+import { enrichMatDialogRef, StrictlyTypedDialog, TypedMatDialogRef } from './strictly-typed-dialog.helper';
 
 // Extract the Data type from the component
-type ExtractData<C> = C extends StrictlyTypedMatDialog<infer D, any> ? D : never;
+type ExtractData<C> = C extends StrictlyTypedDialog<infer D, any> ? D : never;
 // Extract the Result type from the component
-type ExtractResult<C> = C extends StrictlyTypedMatDialog<any, infer R> ? R : never;
+type ExtractResult<C> = C extends StrictlyTypedDialog<any, infer R> ? R : never;
 
 // Helper to enforce/relax data requirements in MatDialogConfig
 type WithRequiredData<D> = Omit<MatDialogConfig<D>, 'data'> & { data: D };
@@ -32,18 +32,18 @@ export class PctsModalService {
 
   private readonly injector = inject(Injector);
 
-  openModal<C extends StrictlyTypedMatDialog<any, any>>(component: Type<C>,
+  openModal<C extends StrictlyTypedDialog<any, any>>(component: Type<C>,
     config: WithRequiredData<ExtractData<C>>) {
     return this.open(component, config);
   }
 
-  openModalAtCurrentHierarchy<C extends StrictlyTypedMatDialog<any, any>>(component: Type<C>,
+  openModalAtCurrentHierarchy<C extends StrictlyTypedDialog<any, any>>(component: Type<C>,
     config: WithRequiredData<ExtractData<C>>) {
     return this.open(component, { injector: this.injector,
       ...config });
   }
 
-  private open<C extends StrictlyTypedMatDialog<any, any>>(
+  private open<C extends StrictlyTypedDialog<any, any>>(
     component: Type<C>,
     ...args: ArgsFor<C>
   ): TypedMatDialogRef<C, ExtractResult<C>>;

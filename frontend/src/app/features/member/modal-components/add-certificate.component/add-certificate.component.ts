@@ -16,7 +16,7 @@ import { CertificateTypeModel } from '../../../certificates/certificate-type/cer
 import { CertificateTypeService } from '../../../certificates/certificate-type/certificate-type.service';
 import { MatDatepicker, MatDatepickerInput, MatDatepickerToggle } from '@angular/material/datepicker';
 import { MenuButtonComponent } from '../../../../shared/menu-button/menu-button.component';
-import { DialogResult, StrictlyTypedMatDialog } from '../../../../shared/strictly-typed-mat-dialog';
+import { DialogResult, StrictlyTypedDialog } from '../../../../shared/modal/strictly-typed-dialog.helper';
 import { CertificateModel } from '../../../certificates/certificate.model';
 import { MemberModel } from '../../member.model';
 
@@ -49,7 +49,7 @@ import { MemberModel } from '../../member.model';
   styleUrl: './add-certificate.component.scss',
   providers: [provideI18nPrefix('CERTIFICATE.FORM.ADD')]
 })
-export class AddCertificateComponent extends StrictlyTypedMatDialog<CertificateModel | undefined, DialogResult<CertificateModel>> implements OnInit {
+export class AddCertificateComponent extends StrictlyTypedDialog<CertificateModel | undefined, DialogResult<CertificateModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);
 
   protected readonly ModalSubmitMode = ModalSubmitMode;
