@@ -65,7 +65,10 @@ class ExperienceTypeControllerIT extends ControllerITBase {
         when(mapper.toDto(any(ExperienceType.class))).thenReturn(EXP_TYPE_1_DTO);
 
         mvc
-                .perform(get(BASEURL + "/" + EXP_TYPE_1_ID).with(csrf()).with(adminJwt()).accept(MediaType.APPLICATION_JSON))
+                .perform(get(BASEURL + "/" + EXP_TYPE_1_ID)
+                        .with(csrf())
+                        .with(adminJwt())
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(EXP_TYPE_1, "$"));
 
