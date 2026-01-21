@@ -12,11 +12,19 @@ import { isCertificateTypeName } from '../../../../shared/form/form-validators';
 import { MatButton } from '@angular/material/button';
 import { ScopedTranslationPipe } from '../../../../shared/pipes/scoped-translation-pipe';
 import { ModalSubmitMode } from '../../../../shared/enum/modal-submit-mode.enum';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CertificateTypeModel } from '../../../certificates/certificate-type/certificate-type.model';
 import { CertificateTypeService } from '../../../certificates/certificate-type/certificate-type.service';
 import { MatDatepicker, MatDatepickerInput, MatDatepickerToggle } from '@angular/material/datepicker';
 import { MenuButtonComponent } from '../../../../shared/menu-button/menu-button.component';
+import { StrictlyTypedMatDialog } from '../../../../shared/strictly-typed-mat-dialog';
+import { CertificateModel } from '../../../certificates/certificate.model';
+import { MemberModel } from '../../member.model';
+
+
+export interface Result {
+  modalSubmitMode: ModalSubmitMode;
+  submittedModel: Omit<CertificateModel, 'id'> & { id: number | null };
+}
 
 @Component({
   selector: 'app-add-certificate',
@@ -46,7 +54,7 @@ import { MenuButtonComponent } from '../../../../shared/menu-button/menu-button.
   styleUrl: './add-certificate.component.scss',
   providers: [provideI18nPrefix('CERTIFICATE.FORM.ADD')]
 })
-export class AddCertificateComponent implements OnInit {
+export class AddCertificateComponent extends StrictlyTypedMatDialog<CertificateModel | undefined, Result> implements OnInit {
   private readonly fb = inject(FormBuilder);
 
   protected readonly ModalSubmitMode = ModalSubmitMode;
@@ -55,26 +63,24 @@ export class AddCertificateComponent implements OnInit {
 
   private readonly certificateTypeService = inject(CertificateTypeService);
 
-  private readonly dialogRef = inject(MatDialogRef<AddCertificateComponent>);
-
-  private readonly dialogDat = inject(MAT_DIALOG_DATA);
 
   protected formGroup = this.fb.nonNullable.group({
     id: [null],
-    member: [null],
-    certificateType: [null,
+    member: [{} as MemberModel],
+    certificateType: [{} as CertificateTypeModel,
       [Validators.required,
         isCertificateTypeName(this.certificateTypeOptions)]],
-    completedAt: ['',
+    completedAt: [{} as Date,
       Validators.required],
-    validUntil: [''],
+    validUntil: [{} as Date],
     comment: ['']
   });
 
   constructor() {
-    if (this.dialogDat.model) {
+    super();
+    if (this.data) {
       this.formGroup.patchValue({
-        ...this.dialogDat.model
+        ...this.data
       } as any);
     }
   }
@@ -104,7 +110,7 @@ export class AddCertificateComponent implements OnInit {
   });
 
   private filterCertificateType(value: CertificateTypeModel | string | null): CertificateTypeModel[] {
-    if (value === null || value === undefined || value === '') {
+    if (value === null || value === undefined || value === '' || Object.keys(value).length == 0) {
       return this.certificateTypeOptions();
     }
 

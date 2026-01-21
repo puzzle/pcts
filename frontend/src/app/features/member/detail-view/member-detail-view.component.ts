@@ -19,7 +19,7 @@ import {
 } from './cv/member-detail-cv-table-definition';
 import { MemberOverviewModel } from '../member-overview.model';
 import { AddCertificateComponent } from '../modal-components/add-certificate.component/add-certificate.component';
-import { ModalService } from '../../../shared/modal-service';
+import { PctsModalService } from '../../../shared/pcts-modal.service';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import { CertificateModel } from '../../certificates/certificate.model';
 import { CertificateService } from '../../certificates/certificate.service';
@@ -55,7 +55,7 @@ export class MemberDetailViewComponent implements OnInit {
 
   certificateData = signal<CertificateOverviewModel[]>([]);
 
-  private readonly dialog = inject(ModalService);
+  private readonly dialog = inject(PctsModalService);
 
   private readonly certificateService = inject(CertificateService);
 
@@ -89,25 +89,23 @@ export class MemberDetailViewComponent implements OnInit {
   }
 
   openCertificateDialog(model?: CertificateModel) {
-    this.dialog.openModal(AddCertificateComponent, { data: { model } })
-      .afterClosed()
-      .subscribe((result: { modalSubmitMode: ModalSubmitMode;
-        submittedModel: CertificateModel; }) => {
-        switch (result.modalSubmitMode) {
+    this.dialog.openModal(AddCertificateComponent, { data: model })
+      .afterSubmitted
+      .subscribe(({ modalSubmitMode, submittedModel }) => {
+        switch (modalSubmitMode) {
           case ModalSubmitMode.SAVE:
             break;
           case ModalSubmitMode.ENTER_ANOTHER:
             this.openCertificateDialog();
             break;
           case ModalSubmitMode.COPY:
-            this.openCertificateDialog(result.submittedModel);
+            this.openCertificateDialog(submittedModel as CertificateModel);
             break;
           default:
-            result.modalSubmitMode satisfies never;
+            modalSubmitMode satisfies never;
         }
-        result.submittedModel.member = { id: this.member()!.id } as MemberModel;
-
-        this.certificateService.addCertificate(result.submittedModel)
+        submittedModel.member = { id: this.member()!.id } as MemberModel;
+        this.certificateService.addCertificate(submittedModel as CertificateModel)
           .subscribe();
       });
   }
