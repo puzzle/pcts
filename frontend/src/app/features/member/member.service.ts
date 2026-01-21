@@ -5,6 +5,7 @@ import { map, Observable } from 'rxjs';
 import { MemberDto } from './dto/member.dto';
 import { DateTime } from 'luxon';
 import { MemberCvOverviewModel } from './member-cv-overview.model';
+import { RolePointsModel } from './detail-view/RolePointsModel';
 
 @Injectable({
   providedIn: 'root'
@@ -58,5 +59,9 @@ export class MemberService {
 
   getMemberOverviewByMemberId(id: number): Observable<MemberCvOverviewModel> {
     return this.httpClient.get<MemberCvOverviewModel>(`api/v1/member-overviews/${id}`);
+  }
+
+  getPointsForActiveCalculationsForRoleByMemberId(id: number): Observable<RolePointsModel[]> {
+    return this.httpClient.get<RolePointsModel[]>(`${this.API_URL}/${id}/role-points`);
   }
 }

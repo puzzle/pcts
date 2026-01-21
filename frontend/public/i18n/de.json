@@ -19,6 +19,12 @@
     "LEADERSHIP_EXPERIENCE_TYPE": "Art der Führungserfahrung",
     "COMMENT": "Beschreibung"
   },
+  "ROLE": {
+    "MODEL_NAME": "Role"
+  },
+  "CALCULATION": {
+    "POINTS": "Punkte"
+  },
 
   "FORM": {
     "ADD": {
