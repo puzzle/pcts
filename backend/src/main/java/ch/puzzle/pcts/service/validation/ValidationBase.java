@@ -171,11 +171,7 @@ public abstract class ValidationBase<T extends Model> implements ValidationServi
     public void validateDateIsBefore(String entity, String earlyFieldName, LocalDate earlyDate, String lateFieldName,
                                      LocalDate lateDate) {
 
-        if (earlyDate == null || lateDate == null) {
-            return;
-        }
-
-        if (earlyDate.isAfter(lateDate)) {
+        if (earlyDate != null && lateDate != null && earlyDate.isAfter(lateDate)) {
 
             Map<FieldKey, String> attributes = Map
                     .of(FieldKey.ENTITY,
