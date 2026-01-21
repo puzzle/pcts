@@ -12,16 +12,16 @@ public class MemberValidationService extends ValidationBase<Member> {
     @Override
     public void validateOnCreate(Member member) {
         super.validateOnCreate(member);
-        validateDateOfHireIsBeforeBirthDate(member.getDateOfHire(), member.getBirthDate());
+        validateBirthDateIsBeforeDateOfHire(member.getBirthDate(), member.getDateOfHire());
     }
 
     @Override
     public void validateOnUpdate(Long id, Member member) {
         super.validateOnUpdate(id, member);
-        validateDateOfHireIsBeforeBirthDate(member.getDateOfHire(), member.getBirthDate());
+        validateBirthDateIsBeforeDateOfHire(member.getBirthDate(), member.getDateOfHire());
     }
 
-    public void validateDateOfHireIsBeforeBirthDate(LocalDate dateOfHire, LocalDate birthDate) {
+    private void validateBirthDateIsBeforeDateOfHire(LocalDate birthDate, LocalDate dateOfHire) {
         validateDateIsBefore(MEMBER, "dateOfBirth", birthDate, "dateOfHire", dateOfHire);
     }
 }

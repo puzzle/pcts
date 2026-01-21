@@ -20,7 +20,7 @@ public class CertificateValidationService extends ValidationBase<Certificate> {
         validateCompletedAtIsBeforeValidUntil(certificate.getCompletedAt(), certificate.getValidUntil());
     }
 
-    public void validateCompletedAtIsBeforeValidUntil(LocalDate completedAt, LocalDate validUntil) {
+    private void validateCompletedAtIsBeforeValidUntil(LocalDate completedAt, LocalDate validUntil) {
         validateDateIsBefore(CERTIFICATE, "completedAt", completedAt, "validUntil", validUntil);
     }
 }

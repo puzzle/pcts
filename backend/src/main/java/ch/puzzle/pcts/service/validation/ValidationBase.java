@@ -164,12 +164,12 @@ public abstract class ValidationBase<T extends Model> implements ValidationServi
                 .collect(Collectors.toMap(entry -> entry[0].toLowerCase(), entry -> entry[1]));
     }
 
-    public static List<GenericErrorDto> buildGenericErrorDto(ErrorKey key, Map<FieldKey, String> errors) {
+    protected static List<GenericErrorDto> buildGenericErrorDto(ErrorKey key, Map<FieldKey, String> errors) {
         return List.of(new GenericErrorDto(key, errors));
     }
 
-    public void validateDateIsBefore(String entity, String earlyFieldName, LocalDate earlyDate, String lateFieldName,
-                                     LocalDate lateDate) {
+    protected void validateDateIsBefore(String entity, String earlyFieldName, LocalDate earlyDate, String lateFieldName,
+                                        LocalDate lateDate) {
 
         if (earlyDate != null && lateDate != null && earlyDate.isAfter(lateDate)) {
 
