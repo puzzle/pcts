@@ -1,24 +1,30 @@
 package ch.puzzle.pcts.service.validation;
 
+import static ch.puzzle.pcts.Constants.CERTIFICATE;
+import static ch.puzzle.pcts.Constants.MEMBER;
 import static ch.puzzle.pcts.util.TestData.*;
 import static ch.puzzle.pcts.util.TestDataModels.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import ch.puzzle.pcts.dto.error.FieldKey;
+import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
@@ -175,29 +181,125 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                 List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "birthDate"))));
     }
 
-    @DisplayName("Should call correct validate method on validateOnCreate()")
+    @DisplayName("Should pass validation when birthDate is before dateOfHire")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("validationOperations")
+    void shouldPassWhenBirthDateIsBeforeHireDate(String opName, BiConsumer<MemberValidationService, Member> validator) {
+        Member member = getValidModel();
+        member.setBirthDate(LocalDate.now().minusYears(20));
+        member.setDateOfHire(LocalDate.now());
+
+        assertDoesNotThrow(() -> validator.accept(service, member));
+    }
+
+    @DisplayName("Should pass validation when birthDate equals dateOfHire")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("validationOperations")
+    void shouldPassWhenCompletedAtEqualsValidUntil(String opName,
+                                                   BiConsumer<MemberValidationService, Member> validator) {
+        Member member = getValidModel();
+        LocalDate date = LocalDate.now();
+        member.setBirthDate(date);
+        member.setDateOfHire(date);
+
+        assertDoesNotThrow(() -> validator.accept(service, member));
+    }
+
+    @DisplayName("Should pass validation when birthDate is null")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("validationOperations")
+    void shouldPassWhenCompletedAtIsNull(String opName, BiConsumer<MemberValidationService, Member> validator) {
+        Member member = getValidModel();
+        member.setBirthDate(null);
+
+        assertDoesNotThrow(() -> validator.accept(service, member));
+    }
+
+    @DisplayName("Should pass validation when dateOfHire is null")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("validationOperations")
+    void shouldPassWhenValidUntilIsNull(String opName, BiConsumer<MemberValidationService, Member> validator) {
+        Member member = getValidModel();
+        member.setDateOfHire(null);
+
+        assertDoesNotThrow(() -> validator.accept(service, member));
+    }
+
+    @DisplayName("Should throw exception when birthDate is after dateOfHire")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("validationOperations")
+    void shouldFailWhenCompletedAtIsAfterValidUntil(String opName,
+                                                    BiConsumer<MemberValidationService, Member> validator) {
+        Member member = getValidModel();
+        member.setBirthDate(LocalDate.now().plusDays(1));
+        member.setDateOfHire(LocalDate.now());
+
+        PCTSException exception = assertThrows(PCTSException.class, () -> validator.accept(service, member));
+
+        assertEquals(List
+                .of(Map
+                        .of(FieldKey.ENTITY,
+                            CERTIFICATE,
+                            FieldKey.FIELD,
+                            "birthDate",
+                            FieldKey.IS,
+                            member.getBirthDate().toString(),
+                            FieldKey.CONDITION_FIELD,
+                            "dateOfHire",
+                            FieldKey.MAX,
+                            member.getDateOfHire().toString())),
+                     exception.getErrorAttributes());
+    }
+
+    @DisplayName("Should call correct validate methods on validateOnCreate()")
     @Test
     void shouldCallAllMethodsOnValidateOnCreateWhenValid() {
         Member member = getValidModel();
 
-        doNothing().when((ValidationBase<Member>) service).validateOnCreate(any());
+        doNothing().when((ValidationBase<Member>) service).validateDateIsBefore(any(), any(), any(), any(), any());
 
         service.validateOnCreate(member);
 
         verify(service).validateOnCreate(member);
+        verify(service)
+                .validateDateIsBefore(MEMBER,
+                                      "dateOfBirth",
+                                      member.getBirthDate(),
+                                      "dateOfHire",
+                                      member.getDateOfHire());
+
         verifyNoMoreInteractions(persistenceService);
     }
 
-    @DisplayName("Should call correct validate method on validateOnUpdate()")
+    @DisplayName("Should call correct validate methods on validateOnUpdate()")
     @Test
     void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
         Member member = getValidModel();
 
-        doNothing().when((ValidationBase<Member>) service).validateOnUpdate(anyLong(), any());
+        doNothing().when((ValidationBase<Member>) service).validateDateIsBefore(any(), any(), any(), any(), any());
 
         service.validateOnUpdate(MEMBER_1_ID, member);
 
         verify(service).validateOnUpdate(MEMBER_1_ID, member);
+        verify(service)
+                .validateDateIsBefore(MEMBER,
+                                      "dateOfBirth",
+                                      member.getBirthDate(),
+                                      "dateOfHire",
+                                      member.getDateOfHire());
+
         verifyNoMoreInteractions(persistenceService);
+    }
+
+    static Stream<Arguments> validationOperations() {
+        return Stream
+                .of(Arguments
+                        .of("validateOnCreate",
+                            (BiConsumer<MemberValidationService, Member>) MemberValidationService::validateOnCreate),
+
+                    Arguments
+                            .of("validateOnUpdate",
+                                (BiConsumer<MemberValidationService, Member>) (svc, member) -> svc
+                                        .validateOnUpdate(MEMBER_1_ID, member)));
     }
 }
