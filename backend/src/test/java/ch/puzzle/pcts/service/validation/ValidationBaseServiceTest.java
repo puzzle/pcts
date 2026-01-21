@@ -166,7 +166,7 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
     @Test
     void validateDateIsBeforeShouldThrowExceptionWhenDateIsAfter() {
         LocalDate pastDate = LocalDate.of(2020, 1, 2);
-        LocalDate currentDate = LocalDate.now();
+        LocalDate currentDate = LocalDate.of(2026, 1, 15);
 
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> service
@@ -188,12 +188,12 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
                             FieldKey.ENTITY,
                             "ENTITY",
                             FieldKey.IS,
-                            "2026-01-20")),
+                            "2026-01-15")),
                      exception.getErrorAttributes());
     }
 
     @DisplayName("Should not throw exception when date is before, the same or either of them null")
-    @ParameterizedTest(name = "{index}: {1} - {index}: {2}")
+    @ParameterizedTest(name = "ED: {index}: {0}" + " - " + "LD: {index}: {1}")
     @MethodSource("dateProvider")
     void validateDateIsBeforeShouldNotThrowExceptionWhenDateIsValid(LocalDate earlyDate, LocalDate lateDate) {
         assertDoesNotThrow(() -> service.validateDateIsBefore("ENTITY", "EarlyDate", earlyDate, "LateDate", lateDate));
