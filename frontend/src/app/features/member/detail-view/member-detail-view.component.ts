@@ -21,8 +21,7 @@ import { MemberOverviewModel } from '../member-overview.model';
 import { AddCertificateComponent } from '../modal-components/add-certificate.component/add-certificate.component';
 import { ModalService } from '../../../shared/modal-service';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
-import { CertificateModel } from '../../certificates/certificate.model';
-import { CertificateService } from '../../certificates/certificate.service';
+import { CertificateService, NoIdCertificate } from '../../certificates/certificate.service';
 import { MemberModel } from '../member.model';
 import { RolePointsModel } from './RolePointsModel';
 import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
@@ -107,7 +106,7 @@ export class MemberDetailViewComponent implements OnInit {
       });
   }
 
-  openCertificateDialog(model?: CertificateModel) {
+  openCertificateDialog(model?: NoIdCertificate) {
     this.dialog.openModal(AddCertificateComponent, { data: model })
       .afterSubmitted
       .subscribe(({ modalSubmitMode, submittedModel }) => {
@@ -118,13 +117,13 @@ export class MemberDetailViewComponent implements OnInit {
             this.openCertificateDialog();
             break;
           case ModalSubmitMode.COPY:
-            this.openCertificateDialog(submittedModel as CertificateModel);
+            this.openCertificateDialog(submittedModel);
             break;
           default:
             modalSubmitMode satisfies never;
         }
         submittedModel.member = { id: this.member()!.id } as MemberModel;
-        this.certificateService.addCertificate(submittedModel as CertificateModel)
+        this.certificateService.addCertificate(submittedModel)
           .subscribe();
       });
   }
