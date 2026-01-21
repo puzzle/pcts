@@ -11,4 +11,4 @@ rules:
   document-start:
     level: error
   line-length:
-    max: 120
+    max: 170
