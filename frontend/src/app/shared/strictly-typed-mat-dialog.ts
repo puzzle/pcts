@@ -1,6 +1,7 @@
 import { inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { filter, Observable, ReplaySubject } from 'rxjs';
+import { ModalSubmitMode } from './enum/modal-submit-mode.enum';
 
 export abstract class StrictlyTypedMatDialog<DialogData, DialogResult> {
   protected data: DialogData = inject(MAT_DIALOG_DATA);
@@ -23,4 +24,14 @@ export function enrichMatDialogRef<D, R>(ref: MatDialogRef<D, R>) {
   (ref as any).afterSubmitted = afterSubmitted$.asObservable();
 
   return ref as TypedMatDialogRef<D, R>;
+}
+
+
+export type WithNullable<T, K extends keyof any> = Omit<T, K> & {
+  [P in (K & keyof T)]: T[P] | null;
+};
+
+export interface DialogResult<D> {
+  modalSubmitMode: ModalSubmitMode;
+  submittedModel: WithNullable<D, 'id'>;
 }

@@ -16,15 +16,11 @@ import { CertificateTypeModel } from '../../../certificates/certificate-type/cer
 import { CertificateTypeService } from '../../../certificates/certificate-type/certificate-type.service';
 import { MatDatepicker, MatDatepickerInput, MatDatepickerToggle } from '@angular/material/datepicker';
 import { MenuButtonComponent } from '../../../../shared/menu-button/menu-button.component';
-import { StrictlyTypedMatDialog } from '../../../../shared/strictly-typed-mat-dialog';
+import { DialogResult, StrictlyTypedMatDialog } from '../../../../shared/strictly-typed-mat-dialog';
 import { CertificateModel } from '../../../certificates/certificate.model';
 import { MemberModel } from '../../member.model';
+import { NoIdCertificate } from '../../../certificates/certificate.service';
 
-
-export interface Result {
-  modalSubmitMode: ModalSubmitMode;
-  submittedModel: Omit<CertificateModel, 'id'> & { id: number | null };
-}
 
 @Component({
   selector: 'app-add-certificate',
@@ -54,7 +50,7 @@ export interface Result {
   styleUrl: './add-certificate.component.scss',
   providers: [provideI18nPrefix('CERTIFICATE.FORM.ADD')]
 })
-export class AddCertificateComponent extends StrictlyTypedMatDialog<CertificateModel | undefined, Result> implements OnInit {
+export class AddCertificateComponent extends StrictlyTypedMatDialog<NoIdCertificate | undefined, DialogResult<CertificateModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);
 
   protected readonly ModalSubmitMode = ModalSubmitMode;
@@ -63,17 +59,16 @@ export class AddCertificateComponent extends StrictlyTypedMatDialog<CertificateM
 
   private readonly certificateTypeService = inject(CertificateTypeService);
 
-
   protected formGroup = this.fb.nonNullable.group({
-    id: [null],
+    id: this.fb.control<null | number>(null),
     member: [{} as MemberModel],
     certificateType: [{} as CertificateTypeModel,
       [Validators.required,
         isCertificateTypeName(this.certificateTypeOptions)]],
     completedAt: [{} as Date,
       Validators.required],
-    validUntil: [{} as Date],
-    comment: ['']
+    validUntil: this.fb.control<Date | null>(null),
+    comment: this.fb.control<string | null>('')
   });
 
   constructor() {
@@ -81,7 +76,7 @@ export class AddCertificateComponent extends StrictlyTypedMatDialog<CertificateM
     if (this.data) {
       this.formGroup.patchValue({
         ...this.data
-      } as any);
+      });
     }
   }
 

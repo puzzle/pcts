@@ -4,6 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { CertificateModel } from './certificate.model';
 import { CertificateDto } from './dto/certificate.dto';
 import { DateTime } from 'luxon';
+import { WithNullable } from '../../shared/strictly-typed-mat-dialog';
+
+export type NoIdCertificate = WithNullable<CertificateModel, 'id'>;
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +20,7 @@ export class CertificateService {
     return this.httpClient.get<CertificateModel>(`${this.API_URL}/${id}`);
   }
 
-  addCertificate(certificate: CertificateModel): Observable<CertificateModel> {
+  addCertificate(certificate: NoIdCertificate): Observable<CertificateModel> {
     return this.httpClient.post<CertificateModel>(this.API_URL, this.toDto(certificate));
   }
 
@@ -29,7 +32,7 @@ export class CertificateService {
     return this.httpClient.delete<void>(`${this.API_URL}/${id}`);
   }
 
-  toDto(model: CertificateModel): CertificateDto {
+  toDto(model: NoIdCertificate): CertificateDto {
     return {
       memberId: model.member.id,
       certificateTypeId: model.certificateType.id,
