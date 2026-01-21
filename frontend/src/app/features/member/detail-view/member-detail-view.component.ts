@@ -50,7 +50,7 @@ export class MemberDetailViewComponent implements OnInit {
 
   private readonly router = inject(Router);
 
-  private readonly dialog = inject(ModalService);
+  private readonly dialog = inject(PctsModalService);
 
   private readonly certificateService = inject(CertificateService);
 
@@ -108,25 +108,23 @@ export class MemberDetailViewComponent implements OnInit {
   }
 
   openCertificateDialog(model?: CertificateModel) {
-    this.dialog.openModal(AddCertificateComponent, { data: { model } })
-      .afterClosed()
-      .subscribe((result: { modalSubmitMode: ModalSubmitMode;
-        submittedModel: CertificateModel; }) => {
-        switch (result.modalSubmitMode) {
+    this.dialog.openModal(AddCertificateComponent, { data: model })
+      .afterSubmitted
+      .subscribe(({ modalSubmitMode, submittedModel }) => {
+        switch (modalSubmitMode) {
           case ModalSubmitMode.SAVE:
             break;
           case ModalSubmitMode.ENTER_ANOTHER:
             this.openCertificateDialog();
             break;
           case ModalSubmitMode.COPY:
-            this.openCertificateDialog(result.submittedModel);
+            this.openCertificateDialog(submittedModel as CertificateModel);
             break;
           default:
-            result.modalSubmitMode satisfies never;
+            modalSubmitMode satisfies never;
         }
-        result.submittedModel.member = { id: this.member()!.id } as MemberModel;
-
-        this.certificateService.addCertificate(result.submittedModel)
+        submittedModel.member = { id: this.member()!.id } as MemberModel;
+        this.certificateService.addCertificate(submittedModel as CertificateModel)
           .subscribe();
       });
   }
