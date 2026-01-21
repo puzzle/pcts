@@ -1,0 +1,11 @@
+default-src 'self';
+object-src 'none';
+base-uri 'self';
+connect-src 'self' https://sso.puzzle.ch;
+font-src 'self';
+frame-src 'self';
+img-src 'self';
+manifest-src 'self';
+media-src 'self';
+report-uri https://6970885c6102afeed1394792.endpoint.csper.io/?v=0;
+worker-src 'none';
