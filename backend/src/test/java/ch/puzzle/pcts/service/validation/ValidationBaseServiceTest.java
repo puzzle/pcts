@@ -162,7 +162,7 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
         assertEquals(List.of(Map.of(FieldKey.FIELD, "id")), exception.getErrorAttributes());
     }
 
-    @DisplayName("Should throw exception when early date is after late date")
+    @DisplayName("Should throw exception when the date passed first is after the second date")
     @Test
     void validateDateIsBeforeShouldThrowExceptionWhenDateIsAfter() {
         LocalDate pastDate = LocalDate.of(2020, 1, 2);
@@ -192,7 +192,7 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
                      exception.getErrorAttributes());
     }
 
-    @DisplayName("Should not throw exception when date is before, the same or either of them null")
+    @DisplayName("Accepts early date before or equal to late date, including null values")
     @ParameterizedTest(name = "ED: {index}: {0}" + " - " + "LD: {index}: {1}")
     @MethodSource("dateProvider")
     void validateDateIsBeforeShouldNotThrowExceptionWhenDateIsValid(LocalDate earlyDate, LocalDate lateDate) {
