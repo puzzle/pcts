@@ -50,7 +50,7 @@
       </button>
 
       <div class="d-flex">
-        <button [disabled]="!formGroup.valid" (click)="onSubmit(ModalSubmitMode.ENTER_ANOTHER)" class="rounded-end-0" matButton="filled" type="submit" data-testid="submit-button">
+        <button [disabled]="!formGroup.valid" (click)="onSubmit(ModalSubmitMode.SAVE)" class="rounded-end-0" matButton="filled" type="submit" data-testid="submit-button">
           {{ "BUTTONS.ACTION" | scopedTranslation }}
         </button>
         <app-menu-button [isValid]="formGroup.valid" [functions]="[ModalSubmitMode.ENTER_ANOTHER, ModalSubmitMode.COPY]" (selected)="onSubmit($event)"/>
