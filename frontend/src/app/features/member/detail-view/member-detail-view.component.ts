@@ -2,7 +2,6 @@ import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberService } from '../member.service';
-import { MemberModel } from '../member.model';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
 import { GenericCvContentComponent } from './generic-cv-content/generic-cv-content.component';
@@ -20,7 +19,6 @@ import {
 } from './cv/member-detail-cv-table-definition';
 import { MemberOverviewModel } from '../member-overview.model';
 import { NullFallbackPipe } from '../../../shared/pipes/null-fallback.pipe';
-import { TranslationScopeDirective } from '../../../shared/directives/translation-scope';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -30,7 +28,7 @@ import { TranslationScopeDirective } from '../../../shared/directives/translatio
     ScopedTranslationPipe,
     CrudButtonComponent,
     NullFallbackPipe,
-    TranslationScope
+    TranslationScopeDirective,
     CrudButtonComponent,
     GenericCvContentComponent,
     MatTabGroup,
