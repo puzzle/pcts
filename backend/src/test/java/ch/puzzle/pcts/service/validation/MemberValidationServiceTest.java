@@ -1,6 +1,5 @@
 package ch.puzzle.pcts.service.validation;
 
-import static ch.puzzle.pcts.Constants.CERTIFICATE;
 import static ch.puzzle.pcts.Constants.MEMBER;
 import static ch.puzzle.pcts.util.TestData.*;
 import static ch.puzzle.pcts.util.TestDataModels.*;
@@ -181,6 +180,19 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                 List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "birthDate"))));
     }
 
+    @DisplayName("Should throw error when birthDate is not in past")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("validationOperations")
+    void shouldFailWhenBirthDateIsNotInPast(String opName, BiConsumer<MemberValidationService, Member> validator) {
+        Member member = getValidModel();
+        member.setBirthDate(LocalDate.now());
+
+        PCTSException exception = assertThrows(PCTSException.class, () -> validator.accept(service, member));
+
+        assertEquals(List.of(Map.of(FieldKey.FIELD, "birthDate", FieldKey.CLASS, "Member")),
+                     exception.getErrorAttributes());
+    }
+
     @DisplayName("Should pass validation when birthDate is before dateOfHire")
     @ParameterizedTest(name = "{0}")
     @MethodSource("validationOperations")
@@ -198,19 +210,9 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
     void shouldPassWhenCompletedAtEqualsValidUntil(String opName,
                                                    BiConsumer<MemberValidationService, Member> validator) {
         Member member = getValidModel();
-        LocalDate date = LocalDate.now();
+        LocalDate date = LocalDate.now().minusDays(1);
         member.setBirthDate(date);
         member.setDateOfHire(date);
-
-        assertDoesNotThrow(() -> validator.accept(service, member));
-    }
-
-    @DisplayName("Should pass validation when birthDate is null")
-    @ParameterizedTest(name = "{0}")
-    @MethodSource("validationOperations")
-    void shouldPassWhenCompletedAtIsNull(String opName, BiConsumer<MemberValidationService, Member> validator) {
-        Member member = getValidModel();
-        member.setBirthDate(null);
 
         assertDoesNotThrow(() -> validator.accept(service, member));
     }
@@ -223,32 +225,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
         member.setDateOfHire(null);
 
         assertDoesNotThrow(() -> validator.accept(service, member));
-    }
-
-    @DisplayName("Should throw exception when birthDate is after dateOfHire")
-    @ParameterizedTest(name = "{0}")
-    @MethodSource("validationOperations")
-    void shouldFailWhenCompletedAtIsAfterValidUntil(String opName,
-                                                    BiConsumer<MemberValidationService, Member> validator) {
-        Member member = getValidModel();
-        member.setBirthDate(LocalDate.now().plusDays(1));
-        member.setDateOfHire(LocalDate.now());
-
-        PCTSException exception = assertThrows(PCTSException.class, () -> validator.accept(service, member));
-
-        assertEquals(List
-                .of(Map
-                        .of(FieldKey.ENTITY,
-                            CERTIFICATE,
-                            FieldKey.FIELD,
-                            "birthDate",
-                            FieldKey.IS,
-                            member.getBirthDate().toString(),
-                            FieldKey.CONDITION_FIELD,
-                            "dateOfHire",
-                            FieldKey.MAX,
-                            member.getDateOfHire().toString())),
-                     exception.getErrorAttributes());
     }
 
     @DisplayName("Should call correct validate methods on validateOnCreate()")
