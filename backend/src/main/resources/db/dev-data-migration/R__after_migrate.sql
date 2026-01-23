@@ -155,7 +155,7 @@ VALUES
     (3, 3, 'ARCHIVED', '2025-01-10', 'admin_user'),
     (4, 4, 'DRAFT', NULL, NULL),
     (5, 5, 'ACTIVE', '2025-01-28', 'admin_user'),
-    (1, 5, 'ARCHIVED', '2025-01-28', 'admin_user'),
+    (1, 5, 'ACTIVE', '2025-01-28', 'admin_user'),
     (1, 1, 'ARCHIVED', '2025-01-28', 'admin_user');
 
 TRUNCATE TABLE experience_calculation CASCADE;
