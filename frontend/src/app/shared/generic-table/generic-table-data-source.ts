@@ -66,7 +66,7 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
     return this;
   }
 
-  public withLink(shouldLink = true) {
+  public withDetailViewLink(shouldLink = true) {
     this.shouldLink = shouldLink;
     return this;
   }

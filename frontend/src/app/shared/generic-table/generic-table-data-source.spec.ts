@@ -169,7 +169,7 @@ describe('GenericTableDataSource', () => {
 
   it('should allow link flag', () => {
     const ds = new GenericTableDataSource(columns, data)
-      .withLink();
+      .withDetailViewLink();
 
     expect(ds.shouldLink)
       .toBe(true);

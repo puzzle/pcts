@@ -36,7 +36,7 @@
       mat-row
       *matRowDef="let row; columns: columnNames();"
       [routerLink]="dataSource().shouldLink ? getRouterLink(row) : null"
-      [class.clickable-row]="dataSource().shouldLink"
+      [class.cursor-pointer]="dataSource().shouldLink"
       data-testid="member-cv-table-row">
     </tr>
 
