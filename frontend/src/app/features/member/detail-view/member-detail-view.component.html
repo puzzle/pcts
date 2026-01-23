@@ -108,9 +108,7 @@
           *appTranslationScope="'CERTIFICATE'"
           [table]="certificateTable"
         >
-          <ng-template #modalOpen>
-            <app-crud-button mode="add" (selected)="openCertificateDialog()"/>
-          </ng-template>
+          <app-crud-button crud-button mode="add" (selected)="openCertificateDialog()"/>
         </app-generic-cv-content>
 
         <app-generic-cv-content
