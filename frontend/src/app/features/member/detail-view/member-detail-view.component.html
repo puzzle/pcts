@@ -82,7 +82,11 @@
           [data]="certificateData()"
           *appTranslationScope="'CERTIFICATE'"
           [table]="certificateTable"
-        />
+        >
+          <ng-template #modalOpen>
+            <app-crud-button mode="add" (selected)="openCertificateDialog()"/>
+          </ng-template>
+        </app-generic-cv-content>
 
         <app-generic-cv-content
           data-testid="cv-table-leadership-experience"
@@ -99,5 +103,3 @@
     </mat-tab-group>
   </div>
 }
-<!--This is only for development purposes until #374 is merged. -->
-<button (click)="openCertificateDialog()">click</button>
