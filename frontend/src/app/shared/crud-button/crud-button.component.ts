@@ -3,6 +3,8 @@ import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
 import { ActivatedRoute, Router } from '@angular/router';
+import { outputFromObservable } from '@angular/core/rxjs-interop';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-crud-button',
@@ -16,34 +18,42 @@ export class CrudButtonComponent {
 
   private readonly route = inject(ActivatedRoute);
 
+  readonly selectedSubject = new Subject<void>();
+
+  selected = outputFromObservable(this.selectedSubject);
+
   // This logic gets the model name from the URL. It assumes that the URL structure is 'root/modelName/'
   protected modelName: string = this.router.url.split('/')[1] ?? '';
 
   mode = input<'add' | 'edit' | 'delete'>('add');
 
   handleClick() {
-    switch (this.mode()) {
-      case 'edit':
-        if (this.idFromRoute) {
+    if (this.selectedSubject.observed) {
+      this.selectedSubject.next();
+    } else {
+      switch (this.mode()) {
+        case 'edit':
+          if (this.idFromRoute) {
+            this.router.navigate([this.router.url,
+              'edit']);
+          }
+          break;
+
+        case 'delete':
+          if (this.idFromRoute) {
+            this.router.navigate([this.router.url,
+              'delete']);
+          }
+          break;
+
+        case 'add':
           this.router.navigate([this.router.url,
-            'edit']);
-        }
-        break;
+            'add']);
+          break;
 
-      case 'delete':
-        if (this.idFromRoute) {
-          this.router.navigate([this.router.url,
-            'delete']);
-        }
-        break;
-
-      case 'add':
-        this.router.navigate([this.router.url,
-          'add']);
-        break;
-
-      default:
-        break;
+        default:
+          break;
+      }
     }
   }
 
