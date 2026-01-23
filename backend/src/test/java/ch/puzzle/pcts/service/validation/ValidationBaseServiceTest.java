@@ -171,20 +171,20 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> service
                                                        .validateDateIsBefore("ENTITY",
-                                                                             "EarlyDate",
+                                                                             "EarlierDate",
                                                                              currentDate,
-                                                                             "LateDate",
+                                                                             "LaterDate",
                                                                              pastDate));
 
         assertEquals(List.of(ErrorKey.ATTRIBUTE_NOT_BEFORE), exception.getErrorKeys());
         assertEquals(List
                 .of(Map
                         .of(FieldKey.FIELD,
-                            "EarlyDate",
+                            "EarlierDate",
                             FieldKey.MAX,
                             "2020-01-02",
                             FieldKey.CONDITION_FIELD,
-                            "LateDate",
+                            "LaterDate",
                             FieldKey.ENTITY,
                             "ENTITY",
                             FieldKey.IS,
@@ -192,11 +192,12 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
                      exception.getErrorAttributes());
     }
 
-    @DisplayName("Accepts early date before or equal to late date, including null values")
-    @ParameterizedTest(name = "ED: {index}: {0}" + " - " + "LD: {index}: {1}")
+    @DisplayName("Accepts earlier date before or equal to later date, including null values")
+    @ParameterizedTest(name = "EarlierDate: {index}: {0}" + " - " + "LaterDate: {index}: {1}")
     @MethodSource("dateProvider")
-    void validateDateIsBeforeShouldNotThrowExceptionWhenDateIsValid(LocalDate earlyDate, LocalDate lateDate) {
-        assertDoesNotThrow(() -> service.validateDateIsBefore("ENTITY", "EarlyDate", earlyDate, "LateDate", lateDate));
+    void validateDateIsBeforeShouldNotThrowExceptionWhenDateIsValid(LocalDate earlierDate, LocalDate laterDate) {
+        assertDoesNotThrow(() -> service
+                .validateDateIsBefore("ENTITY", "EarlierDate", earlierDate, "LaterDate", laterDate));
     }
 
     static Stream<Arguments> dateProvider() {
@@ -204,6 +205,6 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
                 .of(Arguments.of(LocalDate.of(2021, 5, 23), LocalDate.of(2024, 8, 4)),
                     Arguments.of(LocalDate.of(1999, 3, 27), LocalDate.of(1999, 3, 27)),
                     Arguments.of(LocalDate.now(), null),
-                    Arguments.of(null, LocalDate.now()));
+                    Arguments.of(null, LocalDate.now(), Arguments.of(null, null)));
     }
 }

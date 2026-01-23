@@ -168,22 +168,22 @@ public abstract class ValidationBase<T extends Model> implements ValidationServi
         return List.of(new GenericErrorDto(key, errors));
     }
 
-    protected void validateDateIsBefore(String entity, String earlyFieldName, LocalDate earlyDate, String lateFieldName,
-                                        LocalDate lateDate) {
+    protected void validateDateIsBefore(String entity, String earlierFieldName, LocalDate earlierDate,
+                                        String laterFieldName, LocalDate laterDate) {
 
-        if (earlyDate != null && lateDate != null && earlyDate.isAfter(lateDate)) {
+        if (earlierDate != null && laterDate != null && earlierDate.isAfter(laterDate)) {
 
             Map<FieldKey, String> attributes = Map
                     .of(FieldKey.ENTITY,
                         entity,
                         FieldKey.FIELD,
-                        earlyFieldName,
+                        earlierFieldName,
                         FieldKey.IS,
-                        earlyDate.toString(),
+                        earlierDate.toString(),
                         FieldKey.CONDITION_FIELD,
-                        lateFieldName,
+                        laterFieldName,
                         FieldKey.MAX,
-                        lateDate.toString());
+                        laterDate.toString());
 
             GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_NOT_BEFORE, attributes);
             throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
