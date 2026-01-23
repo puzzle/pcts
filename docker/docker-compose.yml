@@ -27,6 +27,8 @@ services:
 
   pcts-frontend:
     container_name: pcts-frontend
+    depends_on:
+      - pcts-backend
     build:
       context: ..
       dockerfile: ./frontend/Dockerfile
