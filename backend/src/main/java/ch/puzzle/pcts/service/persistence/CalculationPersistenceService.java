@@ -58,6 +58,10 @@ public class CalculationPersistenceService extends PersistenceBase<Calculation, 
         return repository.findAllByMember(member);
     }
 
+    public List<Calculation> getAllByMemberAndState(Member member, CalculationState state) {
+        return repository.findAllByMemberAndState(member, state);
+    }
+
     public List<Calculation> getAllByMemberAndRole(Member member, Role role) {
         return repository.findAllByMemberAndRole(member, role);
     }
