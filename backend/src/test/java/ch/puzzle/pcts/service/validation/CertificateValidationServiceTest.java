@@ -21,17 +21,23 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certificate, CertificateValidationService> {
+
+    @Spy
     @InjectMocks
     private CertificateValidationService service;
 
@@ -95,104 +101,128 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
 
     }
 
-    @DisplayName("Should throw exception on validateOnCreate() and validateOnUpdate() when competedAt is after validUntil")
-    @Test
-    void shouldThrowExceptionOnValidateOnCreateAndValidateOnUpdateWhenCompletedAtIsAfterValidUntil() {
+    @DisplayName("Should pass validation when completedAt is before validUntil")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("validationOperations")
+    void shouldPassWhenBirthDateIsBeforeHireDate(String opName,
+                                                 BiConsumer<CertificateValidationService, Certificate> validator) {
+        Certificate certificate = getValidModel();
+        certificate.setCompletedAt(LocalDate.now().minusYears(20));
+        certificate.setValidUntil(LocalDate.now());
+
+        assertDoesNotThrow(() -> validator.accept(service, certificate));
+    }
+
+    @DisplayName("Should pass validation when completedAt equals validUntil")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("validationOperations")
+    void shouldPassWhenCompletedAtEqualsValidUntil(String opName,
+                                                   BiConsumer<CertificateValidationService, Certificate> validator) {
+        Certificate certificate = getValidModel();
+        LocalDate date = LocalDate.now();
+        certificate.setCompletedAt(date);
+        certificate.setValidUntil(date);
+
+        assertDoesNotThrow(() -> validator.accept(service, certificate));
+    }
+
+    @DisplayName("Should pass validation when completedAt is null")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("validationOperations")
+    void shouldPassWhenCompletedAtIsNull(String opName,
+                                         BiConsumer<CertificateValidationService, Certificate> validator) {
+        Certificate certificate = getValidModel();
+        certificate.setCompletedAt(null);
+
+        assertDoesNotThrow(() -> validator.accept(service, certificate));
+    }
+
+    @DisplayName("Should pass validation when validUntil is null")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("validationOperations")
+    void shouldPassWhenValidUntilIsNull(String opName,
+                                        BiConsumer<CertificateValidationService, Certificate> validator) {
+        Certificate certificate = getValidModel();
+        certificate.setValidUntil(null);
+
+        assertDoesNotThrow(() -> validator.accept(service, certificate));
+    }
+
+    @DisplayName("Should throw exception when completedAt is after validUntil")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("validationOperations")
+    void shouldFailWhenCompletedAtIsAfterValidUntil(String opName,
+                                                    BiConsumer<CertificateValidationService, Certificate> validator) {
         Certificate certificate = getValidModel();
         certificate.setCompletedAt(LocalDate.now().plusDays(1));
+        certificate.setValidUntil(LocalDate.now());
 
-        List<PCTSException> exceptions = List
-                .of(assertThrows(PCTSException.class, () -> service.validateOnUpdate(CERTIFICATE_1_ID, certificate)),
-                    assertThrows(PCTSException.class, () -> service.validateOnCreate(certificate)));
+        PCTSException exception = assertThrows(PCTSException.class, () -> validator.accept(service, certificate));
 
-        exceptions
-                .forEach(exception -> assertEquals(List
-                        .of(Map
-                                .of(FieldKey.ENTITY,
-                                    CERTIFICATE,
-                                    FieldKey.FIELD,
-                                    "completedAt",
-                                    FieldKey.IS,
-                                    certificate.getCompletedAt().toString(),
-                                    FieldKey.CONDITION_FIELD,
-                                    "validUntil",
-                                    FieldKey.MAX,
-                                    certificate.getValidUntil().toString())), exception.getErrorAttributes()));
+        assertEquals(List
+                .of(Map
+                        .of(FieldKey.ENTITY,
+                            CERTIFICATE,
+                            FieldKey.FIELD,
+                            "completedAt",
+                            FieldKey.IS,
+                            certificate.getCompletedAt().toString(),
+                            FieldKey.CONDITION_FIELD,
+                            "validUntil",
+                            FieldKey.MAX,
+                            certificate.getValidUntil().toString())),
+                     exception.getErrorAttributes());
     }
 
-    @DisplayName("Should pass validateOnCreate() when validUntil is null")
-    @Test
-    void shouldPassValidateOnCreateWhenValidUntilIsNull() {
-        Certificate certificate = getValidModel();
-
-        certificate.setValidUntil(null);
-
-        assertDoesNotThrow(() -> service.validateOnCreate(certificate));
-    }
-
-    @DisplayName("Should pass validateOnUpdate() when validUntil is null")
-    @Test
-    void shouldPassValidateOnUpdateWhenValidUntilIsNull() {
-        Certificate certificate = getValidModel();
-
-        certificate.setValidUntil(null);
-
-        assertDoesNotThrow(() -> service.validateOnUpdate(CERTIFICATE_1_ID, certificate));
-    }
-
-    @DisplayName("Should pass validateOnCreate() when completedAt is exactly the same as validUntil")
-    @Test
-    void shouldPassValidateOnCreateWhenCompletedAtIsEqualToValidUntil() {
-        Certificate certificate = getValidModel();
-
-        certificate.setCompletedAt(LocalDate.now());
-
-        assertDoesNotThrow(() -> service.validateOnCreate(certificate));
-    }
-
-    @DisplayName("Should pass validateOnUpdate() when completedAt is exactly the same as validUntil")
-    @Test
-    void shouldPassValidateOnUpdateWhenCompletedAtIsEqualToValidUntil() {
-        Certificate certificate = getValidModel();
-
-        certificate.setCompletedAt(LocalDate.now());
-
-        assertDoesNotThrow(() -> service.validateOnUpdate(CERTIFICATE_1_ID, certificate));
-    }
-
-    @DisplayName("Should not throw when completedAt is null")
-    @Test
-    void shouldNotThrowWhenCompletedAtIsNull() {
-        LocalDate validUntil = LocalDate.now();
-
-        assertDoesNotThrow(() -> service.validateCompletedAtIsBeforeValidUntil(null, validUntil));
-    }
-
-    @DisplayName("Should call correct validate method on validateOnCreate()")
+    @DisplayName("Should call correct validate methods on validateOnCreate()")
     @Test
     void shouldCallAllMethodsOnValidateOnCreateWhenValid() {
         Certificate certificate = getValidModel();
 
-        CertificateValidationService spyService = spy(service);
-        doNothing().when((ValidationBase<Certificate>) spyService).validateOnCreate(any());
+        doNothing().when((ValidationBase<Certificate>) service).validateDateIsBefore(any(), any(), any(), any(), any());
 
-        spyService.validateOnCreate(certificate);
+        service.validateOnCreate(certificate);
 
-        verify(spyService).validateOnCreate(certificate);
+        verify(service).validateOnCreate(certificate);
+        verify(service)
+                .validateDateIsBefore(CERTIFICATE,
+                                      "completedAt",
+                                      certificate.getCompletedAt(),
+                                      "validUntil",
+                                      certificate.getValidUntil());
+
         verifyNoMoreInteractions(persistenceService);
     }
 
-    @DisplayName("Should call correct validate method on validateOnUpdate()")
+    @DisplayName("Should call correct validate methods on validateOnUpdate()")
     @Test
     void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
         Certificate certificate = getValidModel();
 
-        CertificateValidationService spyService = spy(service);
-        doNothing().when((ValidationBase<Certificate>) spyService).validateOnUpdate(anyLong(), any());
+        doNothing().when((ValidationBase<Certificate>) service).validateDateIsBefore(any(), any(), any(), any(), any());
 
-        spyService.validateOnUpdate(CERTIFICATE_1_ID, certificate);
+        service.validateOnUpdate(CERTIFICATE_1_ID, certificate);
 
-        verify(spyService).validateOnUpdate(CERTIFICATE_1_ID, certificate);
+        verify(service).validateOnUpdate(CERTIFICATE_1_ID, certificate);
+        verify(service)
+                .validateDateIsBefore(CERTIFICATE,
+                                      "completedAt",
+                                      certificate.getCompletedAt(),
+                                      "validUntil",
+                                      certificate.getValidUntil());
+
         verifyNoMoreInteractions(persistenceService);
+    }
+
+    static Stream<Arguments> validationOperations() {
+        return Stream
+                .of(Arguments
+                        .of("validateOnCreate",
+                            (BiConsumer<CertificateValidationService, Certificate>) CertificateValidationService::validateOnCreate),
+
+                    Arguments
+                            .of("validateOnUpdate",
+                                (BiConsumer<CertificateValidationService, Certificate>) (svc, cert) -> svc
+                                        .validateOnUpdate(CERTIFICATE_1_ID, cert)));
     }
 }

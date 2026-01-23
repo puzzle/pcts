@@ -8,6 +8,7 @@ import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.Model;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -159,5 +160,51 @@ abstract class ValidationBaseServiceTest<T extends Model, S extends ValidationBa
 
         assertEquals(List.of(ErrorKey.VALIDATION), exception.getErrorKeys());
         assertEquals(List.of(Map.of(FieldKey.FIELD, "id")), exception.getErrorAttributes());
+    }
+
+    @DisplayName("Should throw exception when the date passed first is after the second date")
+    @Test
+    void validateDateIsBeforeShouldThrowExceptionWhenDateIsAfter() {
+        LocalDate pastDate = LocalDate.of(2020, 1, 2);
+        LocalDate currentDate = LocalDate.of(2026, 1, 15);
+
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> service
+                                                       .validateDateIsBefore("ENTITY",
+                                                                             "EarlierDate",
+                                                                             currentDate,
+                                                                             "LaterDate",
+                                                                             pastDate));
+
+        assertEquals(List.of(ErrorKey.ATTRIBUTE_NOT_BEFORE), exception.getErrorKeys());
+        assertEquals(List
+                .of(Map
+                        .of(FieldKey.FIELD,
+                            "EarlierDate",
+                            FieldKey.MAX,
+                            "2020-01-02",
+                            FieldKey.CONDITION_FIELD,
+                            "LaterDate",
+                            FieldKey.ENTITY,
+                            "ENTITY",
+                            FieldKey.IS,
+                            "2026-01-15")),
+                     exception.getErrorAttributes());
+    }
+
+    @DisplayName("Accepts earlier date before or equal to later date, including null values")
+    @ParameterizedTest(name = "EarlierDate: {index}: {0}" + " - " + "LaterDate: {index}: {1}")
+    @MethodSource("dateProvider")
+    void validateDateIsBeforeShouldNotThrowExceptionWhenDateIsValid(LocalDate earlierDate, LocalDate laterDate) {
+        assertDoesNotThrow(() -> service
+                .validateDateIsBefore("ENTITY", "EarlierDate", earlierDate, "LaterDate", laterDate));
+    }
+
+    static Stream<Arguments> dateProvider() {
+        return Stream
+                .of(Arguments.of(LocalDate.of(2021, 5, 23), LocalDate.of(2024, 8, 4)),
+                    Arguments.of(LocalDate.of(1999, 3, 27), LocalDate.of(1999, 3, 27)),
+                    Arguments.of(LocalDate.now(), null),
+                    Arguments.of(null, LocalDate.now(), Arguments.of(null, null)));
     }
 }
