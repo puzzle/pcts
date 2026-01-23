@@ -8,7 +8,7 @@ import { MatAutocomplete, MatAutocompleteTrigger, MatOption } from '@angular/mat
 import { PctsFormErrorDirective } from '../../../../shared/pcts-form-error/pcts-form-error.directive';
 import { PctsFormLabelDirective } from '../../../../shared/pcts-form-label/pcts-form-label.directive';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { isCertificateTypeName } from '../../../../shared/form/form-validators';
+import { isOptionInList } from '../../../../shared/form/form-validators';
 import { MatButton } from '@angular/material/button';
 import { ScopedTranslationPipe } from '../../../../shared/pipes/scoped-translation-pipe';
 import { ModalSubmitMode } from '../../../../shared/enum/modal-submit-mode.enum';
@@ -19,6 +19,7 @@ import { MenuButtonComponent } from '../../../../shared/menu-button/menu-button.
 import { CertificateModel } from '../../../certificates/certificate.model';
 import { MemberModel } from '../../member.model';
 import { DialogResult, StrictlyTypedDialog } from '../../../../shared/modal/strictly-typed-dialog.helper';
+import { InputFieldComponent } from '../../../../shared/input-field/input-field.component';
 
 
 @Component({
@@ -43,7 +44,8 @@ import { DialogResult, StrictlyTypedDialog } from '../../../../shared/modal/stri
     MatDatepickerInput,
     MatDatepickerToggle,
     MatSuffix,
-    MenuButtonComponent
+    MenuButtonComponent,
+    InputFieldComponent
   ],
   templateUrl: './add-certificate.component.html',
   styleUrl: './add-certificate.component.scss',
@@ -63,7 +65,7 @@ export class AddCertificateComponent extends StrictlyTypedDialog<CertificateMode
     member: [null as MemberModel | null],
     certificateType: [null as CertificateTypeModel | null,
       [Validators.required,
-        isCertificateTypeName(this.certificateTypeOptions)]],
+        isOptionInList(this.certificateTypeOptions, 'name')]],
     completedAt: [null as Date | null,
       Validators.required],
     validUntil: [null as Date | null],

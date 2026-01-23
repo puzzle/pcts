@@ -24,16 +24,16 @@ export function isDateInPastOrPresent(): ValidatorFn {
   };
 }
 
-export function isCertificateTypeName<T extends { name: string }>(validOptionsSignal: Signal<T[]>): ValidatorFn {
+export function isOptionInList<T extends { name: string }>(validOptionsSignal: Signal<T[]>, property: keyof T): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const value = control.value;
     const validOptions = validOptionsSignal();
 
-    if (!value || !value.name) {
+    if (!value || !value[property]) {
       return null;
     }
 
-    const isValidOption = validOptions.some((option) => option.name === value.name);
+    const isValidOption = validOptions.some((option) => option[property] === value[property]);
 
     return isValidOption ? null : { invalid_entry: true };
   };

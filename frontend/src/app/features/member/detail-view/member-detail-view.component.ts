@@ -69,6 +69,10 @@ export class MemberDetailViewComponent implements OnInit {
   readonly leadershipExperienceTable = getLeadershipExperienceTable();
 
   ngOnInit(): void {
+    this.getData();
+  }
+
+  getData() {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) {
       this.router.navigate(['/member']);
@@ -91,6 +95,7 @@ export class MemberDetailViewComponent implements OnInit {
     this.dialog.openModal(AddCertificateComponent, { data: model })
       .afterSubmitted
       .subscribe(({ modalSubmitMode, submittedModel }) => {
+        submittedModel.member = { id: this.member()!.id } as MemberModel;
         switch (modalSubmitMode) {
           case ModalSubmitMode.SAVE:
             break;
@@ -103,9 +108,8 @@ export class MemberDetailViewComponent implements OnInit {
           default:
             modalSubmitMode satisfies never;
         }
-        submittedModel.member = { id: this.member()!.id } as MemberModel;
         this.certificateService.addCertificate(submittedModel)
-          .subscribe();
+          .subscribe(() => this.getData());
       });
   }
 }

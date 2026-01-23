@@ -27,8 +27,8 @@ $pz-theme: mat.m2-define-light-theme(
   box-shadow: none !important;
 }
 
-.mdc-button {
-  min-width: 0 !important;
+body .mat-mdc-button-base {
+  min-width: 0;
 }
 
 @include mat.button-overrides(

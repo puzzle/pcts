@@ -4,9 +4,7 @@ import { GenericTableComponent } from '../../../../shared/generic-table/generic-
 import { ScopedTranslationPipe } from '../../../../shared/pipes/scoped-translation-pipe';
 import { ColumnTemplateDirective } from '../../../../shared/generic-table/column-template/column-template.directive';
 import { TypedTemplateDirective } from '../../../../shared/generic-table/type-template/typed-template.directive';
-import { CrudButtonComponent } from '../../../../shared/crud-button/crud-button.component';
 import { ExperienceTypePillComponent } from '../../../../shared/experience-type-pill/experience-type-pill.component';
-import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-generic-cv-content',
@@ -16,9 +14,7 @@ import { NgTemplateOutlet } from '@angular/common';
     GenericTableComponent,
     ColumnTemplateDirective,
     TypedTemplateDirective,
-    CrudButtonComponent,
-    ExperienceTypePillComponent,
-    NgTemplateOutlet
+    ExperienceTypePillComponent
   ],
   templateUrl: './generic-cv-content.component.html'
 })

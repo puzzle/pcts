@@ -3,19 +3,16 @@
     <ng-container title/>
     <ng-container content>
 
-      <mat-form-field>
-        <mat-label appPctsFormLabel/>
-        <input type="text" formControlName="certificateType" matInput [matAutocomplete]="certificateTypeAutoComplete"
-               data-testid="certificateType">
-        <mat-autocomplete autoActiveFirstOption #certificateTypeAutoComplete="matAutocomplete"
-                          [displayWith]="displayCertificateTypes">
-          @for (certificateType of certificateTypeFilteredOptions(); track certificateType) {
-            <mat-option [value]="certificateType">{{ displayCertificateTypes(certificateType) }}</mat-option>
-          }
-        </mat-autocomplete>
-        <mat-error appPctsFormError/>
-
-      </mat-form-field>
+      <app-input-field>
+          <input type="text" formControlName="certificateType" matInput [matAutocomplete]="certificateTypeAutoComplete"
+                 data-testid="certificateType">
+          <mat-autocomplete autoActiveFirstOption #certificateTypeAutoComplete="matAutocomplete"
+                            [displayWith]="displayCertificateTypes">
+            @for (certificateType of certificateTypeFilteredOptions(); track certificateType) {
+              <mat-option [value]="certificateType">{{ displayCertificateTypes(certificateType) }}</mat-option>
+            }
+          </mat-autocomplete>
+      </app-input-field>
 
       <mat-form-field>
         <mat-label appPctsFormLabel/>
@@ -30,13 +27,11 @@
         <input matInput [matDatepicker]="validUntilPicker" formControlName="validUntil" data-testid="validUntil">
         <mat-datepicker-toggle matIconSuffix [for]="validUntilPicker"/>
         <mat-datepicker #validUntilPicker/>
-        <mat-error appPctsFormError/>
       </mat-form-field>
 
-      <mat-form-field>
-        <mat-label appPctsFormLabel/>
+        <app-input-field>
         <textarea type="text" formControlName="comment" data-testid="comment" matInput></textarea>
-      </mat-form-field>
+      </app-input-field>
 
     </ng-container>
     <ng-container actions/>
