@@ -35,13 +35,12 @@ services:
     container_name: pcts-frontend
     depends_on:
       - pcts-backend
+      - pcts-keycloak
     build:
       context: ..
       dockerfile: ./frontend/Dockerfile
     ports:
       - "4200:4200"
-    depends_on:
-      - pcts-keycloak
     profiles: ['']
 
   pcts-keycloak:
