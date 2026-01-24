@@ -53,7 +53,7 @@
     "@angular/compiler-cli": "^21.0.4",
     "@html-eslint/eslint-plugin": "^0.53.0",
     "@stylistic/eslint-plugin": "^5.2.3",
-    "@types/jasmine": "~5.1.0",
+    "@types/jasmine": "~6.0.0",
     "@types/jest": "^30.0.0",
     "@types/luxon": "^3.7.1",
     "angular-eslint": "^21.1.0",
