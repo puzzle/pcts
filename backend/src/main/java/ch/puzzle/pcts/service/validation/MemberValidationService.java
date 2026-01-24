@@ -6,15 +6,13 @@ import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
-import static ch.puzzle.pcts.Constants.MEMBER;
-
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import ch.puzzle.pcts.service.validation.util.UniqueNameValidationUtil;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
-import java.time.LocalDate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,6 +26,7 @@ public class MemberValidationService extends ValidationBase<Member> {
     @Override
     public void validateOnCreate(Member member) {
         super.validateOnCreate(member);
+        validateBirthDateIsBeforeDateOfHire(member.getBirthDate(), member.getDateOfHire());
         if (UniqueNameValidationUtil.nameAlreadyUsed(member.getEmail(), persistenceService::findByEmail)) {
             Map<FieldKey, String> attributes = Map
                     .of(FieldKey.CLASS, MEMBER, FieldKey.FIELD, "email", FieldKey.IS, member.getEmail());
@@ -39,16 +38,9 @@ public class MemberValidationService extends ValidationBase<Member> {
     }
 
     @Override
-    public void validateOnCreate(Member member) {
-        super.validateOnCreate(member);
-        validateBirthDateIsBeforeDateOfHire(member.getBirthDate(), member.getDateOfHire());
-    }
-
-    @Override
     public void validateOnUpdate(Long id, Member member) {
         super.validateOnUpdate(id, member);
         validateBirthDateIsBeforeDateOfHire(member.getBirthDate(), member.getDateOfHire());
-
         if (UniqueNameValidationUtil
                 .nameExcludingIdAlreadyUsed(id, member.getEmail(), persistenceService::findByEmail)) {
             Map<FieldKey, String> attributes = Map

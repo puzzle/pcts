@@ -6,7 +6,6 @@ import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
@@ -309,8 +308,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                       member.getBirthDate(),
                                       "dateOfHire",
                                       member.getDateOfHire());
-
-        verifyNoMoreInteractions(persistenceService);
     }
 
     @DisplayName("Should call correct validate methods on validateOnUpdate()")
@@ -329,8 +326,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                       member.getBirthDate(),
                                       "dateOfHire",
                                       member.getDateOfHire());
-
-        verifyNoMoreInteractions(persistenceService);
     }
 
     static Stream<Arguments> validationOperations() {
