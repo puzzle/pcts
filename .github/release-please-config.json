@@ -29,6 +29,11 @@
           "path": "backend/pom.xml"
         },
         {
+          "type": "xml",
+          "path": "backend/pom.xml",
+          "xpath": "/*[local-name()='project']/*[local-name()='parent']/*[local-name()='version']"
+        },
+        {
           "type": "pom",
           "path": "pom.xml"
         }
