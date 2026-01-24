@@ -38,7 +38,6 @@ jobs:
       - name: Create report directories
         run: |
           mkdir -p frontend/coverage
-          mkdir -p backend/target/surefire-reports
 
       - name: Download frontend reports
         uses: actions/download-artifact@v5
@@ -50,10 +49,7 @@ jobs:
         uses: actions/download-artifact@v5
         with:
           name: backend-test-reports
-          path: backend/target/
-
-      - name: Debug
-        run: tree
+          path: .
 
       - name: Build and analyze
         run: |
@@ -61,7 +57,6 @@ jobs:
           -DskipTests \
           -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
           -Dsonar.host.url=${{ vars.SONAR_HOST_URL }} \
-          -Dsonar.jacoco.reportPaths=target/jacoco-output/merged.exec \
           -Dsonar.javascript.lcov.reportPaths=$GITHUB_WORKSPACE/frontend/coverage/lcov.info \
           -Dsonar.junit.reportPaths=$GITHUB_WORKSPACE/frontend/junit.xml,target/surefire-reports,target/failsafe-reports
 
