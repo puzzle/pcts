@@ -7,7 +7,7 @@ on:
 
 permissions:
   contents: read
-  pull-requests: write # Required for commenting
+  pull-requests: write  # Required for commenting
   repository-projects: write
   issues: read
 
@@ -165,7 +165,7 @@ jobs:
         if: env.TARGET_STATUS != 'STOP'
         shell: bash
         env:
-#          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # or your specific PAT
+          # GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # or your specific PAT
           OWNER: puzzle
           PROJECT_NUMBER: 17
           FIELD_NAME: Status
@@ -221,7 +221,7 @@ jobs:
       - name: Warn if Update Skipped
         if: env.STATUS != 'STOP' && env.TARGET_URL == ''
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Switch back to standard token for commenting
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Switch back to standard token for commenting
         run: |
           echo "⚠️ Skipping Project Update because no linked issue was found."
           # We don't exit 1 here, we just finish successfully without moving anything.
