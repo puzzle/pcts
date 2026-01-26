@@ -40,7 +40,7 @@ describe('Non-Admin (Member) Permissions', () => {
   it('should not show the "Edit" button on member detail page', () => {
     MemberDetailPage.visit(user.databaseId);
 
-    MemberDetailPage.memberDetailView()
+    MemberDetailPage.memberDetailTitle()
       .should('be.visible')
       .should('include.text', 'Personalien');
 
