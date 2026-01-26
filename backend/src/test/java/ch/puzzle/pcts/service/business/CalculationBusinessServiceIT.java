@@ -26,4 +26,14 @@ class CalculationBusinessServiceIT {
         assertThat(calcBusinessService.getById(1000L).getPoints().setScale(1, RoundingMode.FLOOR))
                 .isEqualTo(BigDecimal.valueOf(15.7));
     }
+
+    @Transactional
+    @DisplayName("Should calculate the points of Hermine Sidney correctly")
+    @Test
+    @Sql({ "/db/test-data-migration/db-scripts/alter__sequences.sql",
+            "/db/test-data-migration/db-scripts/insert__hermine_sidney.sql" })
+    void shouldCalculateHermineSidney() {
+        assertThat(calcBusinessService.getById(1000L).getPoints().setScale(1, RoundingMode.FLOOR))
+                .isEqualTo(BigDecimal.valueOf(95.7));
+    }
 }
