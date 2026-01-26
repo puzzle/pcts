@@ -7,9 +7,11 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 import { memberOverview1 } from '../../../shared/test/test-data';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
+import { PctsModalService } from '../../../shared/modal/pcts-modal.service';
 
 describe('MemberDetailViewComponent (Jest)', () => {
   let memberServiceMock: Partial<jest.Mocked<MemberService>>;
+  let modalService: Partial<PctsModalService>;
   let routerMock: jest.Mocked<Router>;
   let routeMock: ActivatedRoute;
 
@@ -42,6 +44,8 @@ describe('MemberDetailViewComponent (Jest)', () => {
           useValue: routerMock },
         { provide: MemberService,
           useValue: memberServiceMock },
+        { provide: PctsModalService,
+          useValue: modalService },
         provideTranslateService(),
         DatePipe
       ]

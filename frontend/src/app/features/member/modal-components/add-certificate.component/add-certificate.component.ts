@@ -60,7 +60,7 @@ export class AddCertificateComponent extends StrictlyTypedDialog<CertificateMode
 
   private readonly certificateTypeService = inject(CertificateTypeService);
 
-  protected formGroup = this.fb.nonNullable.group({
+  formGroup = this.fb.nonNullable.group({
     id: [null as null | number],
     member: [null as MemberModel | null],
     certificateType: [null as CertificateTypeModel | null,
