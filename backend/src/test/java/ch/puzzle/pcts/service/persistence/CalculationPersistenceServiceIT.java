@@ -107,6 +107,32 @@ class CalculationPersistenceServiceIT
         assertThat(results).isNotEmpty().allMatch(c -> c.getMember().equals(MEMBER_2) && c.getRole().equals(ROLE_2));
     }
 
+    @DisplayName("Should get all Calculations for a given Member and State")
+    @Transactional
+    @Test
+    void shouldGetAllByMemberAndState() {
+        Calculation activeCalculation = getModel();
+        activeCalculation.setState(CalculationState.ACTIVE);
+        activeCalculation.setMember(MEMBER_1);
+
+        persistenceService.save(activeCalculation);
+
+        List<Calculation> results = persistenceService.getAllByMemberAndState(MEMBER_1, CalculationState.ACTIVE);
+
+        assertThat(results)
+                .hasSize(1)
+                .allMatch(c -> c.getMember().equals(MEMBER_1) && c.getState() == CalculationState.ACTIVE);
+    }
+
+    @DisplayName("Should return empty list when no Calculations exist for given Member and State")
+    @Transactional
+    @Test
+    void shouldReturnEmptyListWhenNoCalculationsForMemberAndState() {
+        List<Calculation> results = persistenceService.getAllByMemberAndState(MEMBER_1, CalculationState.ARCHIVED);
+
+        assertThat(results).isEmpty();
+    }
+
     private List<Calculation> getActiveCalculationsOfMember(Role role, Member member) {
         return persistenceService
                 .getAll()

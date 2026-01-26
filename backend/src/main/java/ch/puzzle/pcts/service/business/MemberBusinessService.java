@@ -37,7 +37,7 @@ public class MemberBusinessService extends BusinessBase<Member> {
         }
     }
 
-    public List<RolePointDto> getAllPointsByMemberIdAndRoleId(Long memberId) {
+    public List<RolePointDto> getAllRolePointsByMemberId(Long memberId) {
         Member member = this.getById(memberId);
         List<Calculation> calculations = calculationBusinessService
                 .getAllByMemberAndState(member, CalculationState.ACTIVE);

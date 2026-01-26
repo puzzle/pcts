@@ -1,14 +1,16 @@
 package ch.puzzle.pcts.service.business;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
+import ch.puzzle.pcts.dto.calculation.RolePointDto;
 import ch.puzzle.pcts.model.calculation.Calculation;
+import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import ch.puzzle.pcts.service.validation.MemberValidationService;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -143,6 +145,56 @@ class MemberBusinessServiceTest
         List<Calculation> result = businessService.getAllCalculationsByMemberIdAndRoleId(memberId, null);
 
         assertEquals(0, result.size());
+    }
+
+    @DisplayName("Should get all role points by memberId")
+    @Test
+    void shouldGetAllRolePointsByMemberId() {
+        Long memberId = 1L;
+
+        Calculation calc1 = mock(Calculation.class);
+        Calculation calc2 = mock(Calculation.class);
+
+        List<Calculation> calculations = List.of(calc1, calc2);
+
+        when(businessService.getById(memberId)).thenReturn(member);
+        when(calculationBusinessService.getAllByMemberAndState(member, CalculationState.ACTIVE))
+                .thenReturn(calculations);
+
+        when(calc1.getRole()).thenReturn(role);
+        when(calc1.getPoints()).thenReturn(BigDecimal.TEN);
+
+        Role anotherRole = mock(Role.class);
+        when(calc2.getRole()).thenReturn(anotherRole);
+        when(calc2.getPoints()).thenReturn(BigDecimal.TWO);
+
+        List<RolePointDto> result = businessService.getAllRolePointsByMemberId(memberId);
+
+        assertEquals(2, result.size());
+        assertEquals(role, result.get(0).role());
+        assertEquals(BigDecimal.TEN, result.get(0).points());
+        assertEquals(anotherRole, result.get(1).role());
+        assertEquals(BigDecimal.TWO, result.get(1).points());
+
+        verify(persistenceService).getById(memberId);
+        verify(calculationBusinessService).getAllByMemberAndState(member, CalculationState.ACTIVE);
+    }
+
+    @DisplayName("Should return empty role points list when no active calculations exist")
+    @Test
+    void shouldReturnEmptyRolePointsList() {
+        Long memberId = 1L;
+
+        when(businessService.getById(memberId)).thenReturn(member);
+        when(calculationBusinessService.getAllByMemberAndState(member, CalculationState.ACTIVE))
+                .thenReturn(Collections.emptyList());
+
+        List<RolePointDto> result = businessService.getAllRolePointsByMemberId(memberId);
+
+        assertEquals(0, result.size());
+
+        verify(persistenceService).getById(memberId);
+        verify(calculationBusinessService).getAllByMemberAndState(member, CalculationState.ACTIVE);
     }
 
 }

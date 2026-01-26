@@ -86,6 +86,4 @@ export class MemberDetailViewComponent implements OnInit {
         }
       });
   }
-
-  protected readonly Math = Math;
 }

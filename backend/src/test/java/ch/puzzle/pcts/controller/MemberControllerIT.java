@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.calculation.CalculationDto;
+import ch.puzzle.pcts.dto.calculation.RolePointDto;
 import ch.puzzle.pcts.dto.member.MemberInputDto;
 import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.mapper.MemberMapper;
@@ -194,5 +195,24 @@ class MemberControllerIT {
 
         verify(service, times(1)).getAllCalculationsByMemberIdAndRoleId(memberId, null);
         verify(calculationMapper, times(1)).toDto(anyList());
+    }
+
+    @DisplayName("Should successfully get role points of member")
+    @Test
+    void shouldGetRolePointsByMemberId() throws Exception {
+        Long memberId = 1L;
+
+        RolePointDto rolePointDto = mock(RolePointDto.class);
+
+        BDDMockito.given(service.getAllRolePointsByMemberId(memberId)).willReturn(List.of(rolePointDto));
+
+        mvc
+                .perform(get(BASEURL + "/" + memberId + "/role-points")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1));
+
+        verify(service, times(1)).getAllRolePointsByMemberId(memberId);
     }
 }

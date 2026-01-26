@@ -2,7 +2,15 @@ import { TestBed } from '@angular/core/testing';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { MemberService } from './member.service';
 import { MemberModel } from './member.model';
-import { member1, member2, member4, memberDto1, memberDto2, memberOverview1 } from '../../shared/test/test-data';
+import {
+  member1,
+  member2,
+  member4,
+  memberDto1,
+  memberDto2,
+  memberOverview1,
+  rolePointsList1
+} from '../../shared/test/test-data';
 import { provideHttpClient } from '@angular/common/http';
 
 describe('MemberService', () => {
@@ -118,20 +126,38 @@ describe('MemberService', () => {
       req.flush(member4);
     });
   });
+  describe('should get overview', () => {
+    it('should call httpClient.get with the correct URL for a given id to get overview', () => {
+      const memberId = 1;
 
-  it('should call httpClient.get with the correct URL for a given id to get overview', () => {
-    const memberId = 1;
+      service.getMemberOverviewByMemberId(memberId)
+        .subscribe((member) => {
+          expect(member)
+            .toEqual(memberOverview1);
+        });
 
-    service.getMemberOverviewByMemberId(memberId)
-      .subscribe((member) => {
-        expect(member)
-          .toEqual(memberOverview1);
-      });
+      const req = httpMock.expectOne(`api/v1/member-overviews/${memberId}`);
+      expect(req.request.method)
+        .toBe('GET');
+      req.flush(memberOverview1);
+    });
+  });
 
-    const req = httpMock.expectOne(`api/v1/member-overviews/${memberId}`);
-    expect(req.request.method)
-      .toBe('GET');
-    req.flush(memberOverview1);
+  describe('should get roles and points', () => {
+    it('should call httpClient.get with the correct URL for a given id to get role and there points', () => {
+      const memberId = 1;
+
+      service.getPointsForActiveCalculationsForRoleByMemberId(memberId)
+        .subscribe((rolePoints) => {
+          expect(rolePoints)
+            .toEqual(rolePointsList1);
+        });
+
+      const req = httpMock.expectOne(`${API_URL}/${memberId}/role-points`);
+      expect(req.request.method)
+        .toBe('GET');
+      req.flush(rolePointsList1);
+    });
   });
 
   describe('toDto', () => {

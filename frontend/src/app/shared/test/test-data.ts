@@ -18,6 +18,8 @@ import { DegreeTypeModel } from '../../features/degrees/degree-type/degree-type.
 import { DegreeModel } from '../../features/degrees/degree.model';
 import { DegreeOverviewModel } from '../../features/member/detail-view/cv/degree-overview.model';
 import { MemberCvOverviewModel } from '../../features/member/member-cv-overview.model';
+import { RolePointsModel } from '../../features/member/detail-view/RolePointsModel';
+import { RoleModel } from '../../features/roles/RoleModel';
 
 export const url = '/api/v1/data';
 
@@ -388,3 +390,28 @@ export const degreeOverviewList: DegreeOverviewModel[] = [{
   endDate: null
 }];
 
+export const role1: RoleModel = {
+  id: 1,
+  name: 'Intern',
+  isManagement: false
+};
+
+export const role2: RoleModel = {
+  id: 2,
+  name: 'Administrator',
+  isManagement: true
+};
+
+export const rolePointsList1: RolePointsModel[] = [{
+  role: role1,
+  points: 15
+},
+{
+  role: role2,
+  points: 20
+}];
+
+export const rolePointsList2: RolePointsModel[] = [{
+  role: role2,
+  points: 20
+}];

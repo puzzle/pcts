@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { provideTranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
-import { memberOverview1 } from '../../../shared/test/test-data';
+import { memberOverview1, rolePointsList1 } from '../../../shared/test/test-data';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
 
 describe('MemberDetailViewComponent (Jest)', () => {
@@ -15,7 +15,8 @@ describe('MemberDetailViewComponent (Jest)', () => {
 
   function setupTestBed(id: string | null) {
     memberServiceMock = {
-      getMemberOverviewByMemberId: jest.fn()
+      getMemberOverviewByMemberId: jest.fn(),
+      getPointsForActiveCalculationsForRoleByMemberId: jest.fn()
     } as Partial<jest.Mocked<MemberService>>;
 
     routerMock = {
@@ -54,17 +55,31 @@ describe('MemberDetailViewComponent (Jest)', () => {
     };
   }
 
-  it('loads the member overview when id exists', () => {
+  it('loads member overview and role points', () => {
     const { fixture, component } = setupTestBed('1');
 
     memberServiceMock.getMemberOverviewByMemberId?.mockReturnValue(of(memberOverview1));
 
+    memberServiceMock.getPointsForActiveCalculationsForRoleByMemberId?.mockReturnValue(of(rolePointsList1));
+
     fixture.detectChanges();
 
+    // Service calls
+    expect(memberServiceMock.getMemberOverviewByMemberId)
+      .toHaveBeenCalledTimes(1);
     expect(memberServiceMock.getMemberOverviewByMemberId)
       .toHaveBeenCalledWith(1);
+
+    expect(memberServiceMock.getPointsForActiveCalculationsForRoleByMemberId)
+      .toHaveBeenCalledTimes(1);
+    expect(memberServiceMock.getPointsForActiveCalculationsForRoleByMemberId)
+      .toHaveBeenCalledWith(1);
+
+    // Member data
     expect(component.member())
       .toEqual(memberOverview1.member);
+
+    // CV data
     expect(component.degreeData())
       .toEqual(memberOverview1.cv.degrees);
     expect(component.experienceData())
@@ -74,6 +89,10 @@ describe('MemberDetailViewComponent (Jest)', () => {
     expect(component.leadershipExperienceData())
       .toEqual(memberOverview1.cv.leadershipExperiences);
     expect(routerMock.navigate).not.toHaveBeenCalled();
+
+    // Role points
+    expect(component.rolePointList())
+      .toEqual(rolePointsList1);
   });
 
   it('navigates back when id does not exist', () => {
@@ -83,8 +102,15 @@ describe('MemberDetailViewComponent (Jest)', () => {
 
     expect(routerMock.navigate)
       .toHaveBeenCalledWith(['/member']);
-    expect(memberServiceMock.getMemberOverviewByMemberId).not.toHaveBeenCalled();
+
+    expect(memberServiceMock.getMemberOverviewByMemberId)
+      .not.toHaveBeenCalled();
+    expect(memberServiceMock.getPointsForActiveCalculationsForRoleByMemberId)
+      .not.toHaveBeenCalled();
+
     expect(component.member())
       .toBeNull();
+    expect(component.rolePointList())
+      .toEqual([]);
   });
 });
