@@ -10,8 +10,6 @@ export class GenCol<T> {
 
   pipes: Formatter[] = [];
 
-  shouldLink = false;
-
   sortingAccessor: SortAccessor<T> = (model: T) => this.getValue(model);
 
   protected constructor() {}
@@ -36,11 +34,6 @@ export class GenCol<T> {
     this.sortingAccessor = sortValue;
     return this;
   }
-
-  public withLink(shouldLink = true) {
-    this.shouldLink = shouldLink;
-    return this;
-  }
 }
 
 export class GenericTableDataSource<T> extends MatTableDataSource<T> {
@@ -48,11 +41,12 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
 
   private _ignorePredicate = false;
 
+  shouldLink = false;
+
   constructor(columnDefs: GenCol<T>[], initialData?: T[]) {
     super(initialData);
     this.columnDefs = columnDefs;
   }
-
 
   get columnDefs(): GenCol<T>[] {
     return this._columnDefs;
@@ -72,6 +66,10 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
     return this;
   }
 
+  public withDetailViewLink(shouldLink = true) {
+    this.shouldLink = shouldLink;
+    return this;
+  }
 
   override _filterData(data: T[]) { // eslint-disable-line @typescript-eslint/naming-convention
     if (this._ignorePredicate) {

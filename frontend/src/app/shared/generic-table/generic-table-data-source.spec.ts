@@ -20,8 +20,6 @@ describe('GenCol', () => {
       .toBe('Test');
     expect(col.pipes)
       .toEqual([]);
-    expect(col.shouldLink)
-      .toBe(false);
   });
 
   it('should create column from calculated value', () => {
@@ -44,14 +42,6 @@ describe('GenCol', () => {
 
     expect(col.sortingAccessor)
       .toBe(accessor);
-  });
-
-  it('should allow link flag', () => {
-    const col = GenCol.fromAttr<TestModel>('name')
-      .withLink();
-
-    expect(col.shouldLink)
-      .toBe(true);
   });
 });
 
@@ -82,6 +72,8 @@ describe('GenericTableDataSource', () => {
       .toEqual(data);
     expect(ds.columnDefs)
       .toEqual(columns);
+    expect(ds.shouldLink)
+      .toBe(false);
   });
 
   it('should update column definitions via setter', () => {
@@ -173,5 +165,13 @@ describe('GenericTableDataSource', () => {
 
     expect(ds.filteredData.length)
       .toBe(1);
+  });
+
+  it('should allow link flag', () => {
+    const ds = new GenericTableDataSource(columns, data)
+      .withDetailViewLink();
+
+    expect(ds.shouldLink)
+      .toBe(true);
   });
 });
