@@ -155,11 +155,11 @@ class MemberBusinessServiceTest
         Calculation calc1 = mock(Calculation.class);
         Calculation calc2 = mock(Calculation.class);
 
-        List<Calculation> calculations = List.of(calc1, calc2);
+        List<Calculation> calculationList = List.of(calc1, calc2);
 
         when(businessService.getById(memberId)).thenReturn(member);
         when(calculationBusinessService.getAllByMemberAndState(member, CalculationState.ACTIVE))
-                .thenReturn(calculations);
+                .thenReturn(calculationList);
 
         when(calc1.getRole()).thenReturn(role);
         when(calc1.getPoints()).thenReturn(BigDecimal.TEN);

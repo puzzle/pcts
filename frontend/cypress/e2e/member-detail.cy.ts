@@ -50,4 +50,19 @@ describe('MemberOverviewComponent', () => {
       .should('include.text', 'Zertifikate')
       .should('include.text', 'Führungserfahrung');
   });
+
+  it('should display right role tabs', () => {
+    memberDetailPage.memberCvTab()
+      .should('include.text', 'CV')
+      .should('include.text', 'Administrator')
+      .should('include.text', 'Intern');
+  });
+
+  it('should display role and there points', () => {
+    memberDetailPage.getRolePointBox()
+      .should('include.text', 'Role: Administrator')
+      .should('include.text', 'Punkte: 7.50')
+      .should('include.text', 'Role: Administrator')
+      .should('include.text', 'Punkte: 4.55');
+  });
 });

@@ -24,6 +24,10 @@ class MemberDetailPage extends Page {
   memberCvTab() {
     return cy.getByTestId('cv-tab');
   }
+
+  getRolePointBox() {
+    return cy.getByTestId('role-points');
+  }
 }
 
 export default new MemberDetailPage();
