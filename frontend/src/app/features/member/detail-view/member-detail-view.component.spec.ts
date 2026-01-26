@@ -11,7 +11,7 @@ import { AuthService } from '../../../core/auth/auth.service';
 
 describe('MemberDetailViewComponent (Jest)', () => {
   let memberServiceMock: Partial<jest.Mocked<MemberService>>;
-  let userServiceMock: jest.Mocked<AuthService>;
+  let authServiceMock: jest.Mocked<AuthService>;
   let routerMock: jest.Mocked<Router>;
   let routeMock: ActivatedRoute;
 
@@ -20,7 +20,7 @@ describe('MemberDetailViewComponent (Jest)', () => {
       getMemberOverviewByMemberId: jest.fn()
     } as Partial<jest.Mocked<MemberService>>;
 
-    userServiceMock = {
+    authServiceMock = {
       isAdmin: jest.fn()
     } as unknown as jest.Mocked<AuthService>;
 
@@ -50,7 +50,7 @@ describe('MemberDetailViewComponent (Jest)', () => {
           useValue: memberServiceMock },
         {
           provide: AuthService,
-          useValue: userServiceMock
+          useValue: authServiceMock
         },
         provideTranslateService(),
         DatePipe
