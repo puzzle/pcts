@@ -8,7 +8,7 @@ import { MatAutocomplete, MatAutocompleteTrigger, MatOption } from '@angular/mat
 import { PctsFormErrorDirective } from '../../../../shared/pcts-form-error/pcts-form-error.directive';
 import { PctsFormLabelDirective } from '../../../../shared/pcts-form-label/pcts-form-label.directive';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { isOptionInList } from '../../../../shared/form/form-validators';
+import { isValueInListSignal } from '../../../../shared/form/form-validators';
 import { MatButton } from '@angular/material/button';
 import { ScopedTranslationPipe } from '../../../../shared/pipes/scoped-translation-pipe';
 import { ModalSubmitMode } from '../../../../shared/enum/modal-submit-mode.enum';
@@ -65,7 +65,7 @@ export class AddCertificateComponent extends StrictlyTypedDialog<CertificateMode
     member: [null as MemberModel | null],
     certificateType: [null as CertificateTypeModel | null,
       [Validators.required,
-        isOptionInList(this.certificateTypeOptions, 'name')]],
+        isValueInListSignal(this.certificateTypeOptions)]],
     completedAt: [null as Date | null,
       Validators.required],
     validUntil: [null as Date | null],
@@ -121,6 +121,7 @@ export class AddCertificateComponent extends StrictlyTypedDialog<CertificateMode
   }
 
   onSubmit(submitMod: ModalSubmitMode) {
+    console.log(submitMod);
     this.dialogRef.close({
       modalSubmitMode: submitMod,
       submittedModel: this.formGroup.getRawValue() as CertificateModel

@@ -27,11 +27,12 @@
         <input matInput [matDatepicker]="validUntilPicker" formControlName="validUntil" data-testid="validUntil">
         <mat-datepicker-toggle matIconSuffix [for]="validUntilPicker"/>
         <mat-datepicker #validUntilPicker/>
+        <mat-error appPctsFormError/>
       </mat-form-field>
 
         <app-input-field>
-        <textarea type="text" formControlName="comment" data-testid="comment" matInput></textarea>
-      </app-input-field>
+          <textarea type="text" formControlName="comment" data-testid="comment" matInput></textarea>
+        </app-input-field>
 
     </ng-container>
     <ng-container actions/>
