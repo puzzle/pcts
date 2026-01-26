@@ -6,6 +6,7 @@ import { ColumnTemplateDirective } from '../../../../shared/generic-table/column
 import { TypedTemplateDirective } from '../../../../shared/generic-table/type-template/typed-template.directive';
 import { CrudButtonComponent } from '../../../../shared/crud-button/crud-button.component';
 import { ExperienceTypePillComponent } from '../../../../shared/experience-type-pill/experience-type-pill.component';
+import { ShowIfAdminDirective } from '../../../../core/auth/directive/show-if-admin.directive';
 
 @Component({
   selector: 'app-generic-cv-content',
@@ -16,7 +17,8 @@ import { ExperienceTypePillComponent } from '../../../../shared/experience-type-
     ColumnTemplateDirective,
     TypedTemplateDirective,
     CrudButtonComponent,
-    ExperienceTypePillComponent
+    ExperienceTypePillComponent,
+    ShowIfAdminDirective
   ],
   templateUrl: './generic-cv-content.component.html'
 })
