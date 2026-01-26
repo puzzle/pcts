@@ -3,6 +3,9 @@ import OverviewPage from '../pages/overviewPage';
 import MemberDetailPage from '../pages/memberDetailPage';
 import FormPage from '../pages/formPage';
 
+
+import CvMemberPage from '../pages/cvMemberPage';
+
 const user = users.member;
 
 describe('Non-Admin (Member) Permissions', () => {
@@ -37,7 +40,7 @@ describe('Non-Admin (Member) Permissions', () => {
       .should('not.exist');
   });
 
-  it('should not show the "Edit" button on member detail page', () => {
+  it('should not show "Edit" button on member detail page', () => {
     MemberDetailPage.visit(user.databaseId);
 
     MemberDetailPage.memberDetailTitle()
@@ -46,5 +49,23 @@ describe('Non-Admin (Member) Permissions', () => {
 
     MemberDetailPage.editMemberButton()
       .should('not.exist');
+
+    MemberDetailPage.memberCvTab();
+  });
+
+  const tableData: string[] = [
+    'degree',
+    'experience',
+    'certificate',
+    'leadership-experience'
+  ];
+
+  tableData.forEach((tableName) => {
+    it(`should not show "Add" button on member detail page for table ${tableName}`, () => {
+      MemberDetailPage.visit(user.databaseId);
+      CvMemberPage.cvTable(tableName)
+        .getByTestId('add-member-button')
+        .should('not.exist');
+    });
   });
 });

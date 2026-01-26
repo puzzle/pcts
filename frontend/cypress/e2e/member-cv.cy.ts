@@ -6,8 +6,8 @@ import { TableHelper } from '../support/helper/table-helper';
 
 describe('MemberOverviewComponent', () => {
   beforeEach(() => {
-    // Equals to 'Lena Müller'
     cy.loginAsUser(users.gl);
+    // Equals to 'Lena Müller'
     memberDetailPage.visit(1);
   });
 
