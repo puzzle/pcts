@@ -1,10 +1,13 @@
 import { certificateTableData, degreeTableData, experienceTableData, leadershipExperienceTableData, TableData } from '../support/helper/table-data';
 import memberDetailPage from '../pages/memberDetailPage';
 import MemberDetailPage from '../pages/memberDetailPage';
+import * as users from '../fixtures/users.json';
 import { TableHelper } from '../support/helper/table-helper';
 
 describe('MemberOverviewComponent', () => {
   beforeEach(() => {
+    // Equals to 'Lena Müller'
+    cy.loginAsUser(users.gl);
     memberDetailPage.visit(1);
   });
 
