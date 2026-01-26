@@ -1,0 +1,12 @@
+ALTER SEQUENCE role_id_seq RESTART WITH 1000;
+ALTER SEQUENCE experience_id_seq RESTART WITH 1000;
+ALTER SEQUENCE experience_type_id_seq RESTART WITH 1000;
+ALTER SEQUENCE certificate_id_seq RESTART WITH 1000;
+ALTER SEQUENCE certificate_type_id_seq RESTART WITH 1000;
+ALTER SEQUENCE degree_id_seq RESTART WITH 1000;
+ALTER SEQUENCE degree_type_id_seq RESTART WITH 1000;
+ALTER SEQUENCE calculation_id_seq RESTART WITH 1000;
+ALTER SEQUENCE certificate_calculation_id_seq RESTART WITH 1000;
+ALTER SEQUENCE experience_calculation_id_seq RESTART WITH 1000;
+ALTER SEQUENCE degree_calculation_id_seq RESTART WITH 1000;
+ALTER SEQUENCE member_id_seq RESTART WITH 1000;
