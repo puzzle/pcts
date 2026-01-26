@@ -14,7 +14,7 @@
           "builder": "@angular/build:application",
           "options": {
             "security": {
-              "autoCsp": true
+              "autoCsp": false
             },
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
@@ -72,6 +72,12 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
+              "optimization": {
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false
+                }
+              },
               "buildTarget": "pcts:build:production"
             },
             "development": {
