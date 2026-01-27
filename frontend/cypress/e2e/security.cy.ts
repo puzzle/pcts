@@ -1,4 +1,4 @@
-// Those tests will not succeed locally when you run them without using docker, because the csp is set by the nginx.
+// Those tests will not succeed locally if you run them without using docker, because the CSP is set by the nginx proxy.
 describe('Security', () => {
   it('should have set the nonce', () => {
     cy.request({
