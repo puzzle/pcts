@@ -32,7 +32,12 @@ public class DegreeCalculationBusinessService extends BusinessBase<DegreeCalcula
 
     public BigDecimal getDegreePoints(Long id) {
         List<DegreeCalculation> degreeCalculations = getByCalculationId(id);
-        return degreeCalculations.stream().map(this::calculatePoints).reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        return degreeCalculations
+                .stream()
+                .filter(dc -> dc.getDegree().getCompleted())
+                .map(this::calculatePoints)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Override
