@@ -3,7 +3,8 @@ TRUNCATE TABLE role CASCADE;
 INSERT INTO role (name, deleted_at, is_management)
 VALUES
     ('Role 1', '1970-01-01 00:00:00', TRUE),
-    ('Role 2', null,  FALSE);
+    ('Role 2', null,  FALSE),
+    ('Role 3', null,  FALSE);
 
 TRUNCATE TABLE organisation_unit CASCADE;
 
@@ -60,7 +61,8 @@ TRUNCATE TABLE member CASCADE;
 INSERT INTO member (first_name, last_name, abbreviation, employment_state, date_of_hire, birth_date, organisation_unit)
 VALUES
     ('Member 1', 'Test', 'M1', 'MEMBER', '2021-07-15', '1999-08-10', 1),
-    ('Member 2', 'Test', 'M2', 'MEMBER', '2020-06-01', '1998-03-03', 2);
+    ('Member 2', 'Test', 'M2', 'MEMBER', '2020-06-01', '1998-03-03', 2),
+    ('Member 3', 'Test', 'M3', 'MEMBER', '2020-06-01', '1998-03-03', 2);
 
 TRUNCATE TABLE experience CASCADE;
 
@@ -94,7 +96,8 @@ INSERT INTO calculation
 VALUES
     (1, 2, 'DRAFT', '2025-01-14', 'Ldap User'),
     (2, 2, 'ARCHIVED', '2025-01-14', 'Ldap User 2'),
-    (2, 2, 'ACTIVE', NULL, NULL);
+    (2, 2, 'ACTIVE', NULL, NULL),
+    (3, 3, 'DRAFT', '2025-01-14', 'Ldap User 2');
 
 TRUNCATE TABLE experience_calculation CASCADE;
 

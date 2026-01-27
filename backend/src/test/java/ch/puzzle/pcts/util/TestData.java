@@ -40,6 +40,7 @@ public class TestData {
 
     public static final Long MEMBER_1_ID = 1L;
     public static final Long MEMBER_2_ID = 2L;
+    public static final Long MEMBER_3_ID = 3L;
 
     public static final Long CERT_TYPE_1_ID = 1L;
     public static final Long CERT_TYPE_2_ID = 2L;
@@ -90,4 +91,5 @@ public class TestData {
     public static final Long CALCULATION_2_ID = 2L;
     public static final Long CALCULATION_3_ID = 3L;
     public static final Long CALCULATION_4_ID = 4L;
+    public static final Long CALCULATION_5_ID = 5L;
 }

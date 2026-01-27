@@ -59,21 +59,21 @@
         @for (rolePoint of rolePointList(); track rolePoint.role) {
           <div class="role-box d-flex flex-row justify-content-around p-2 gap-3" [attr.data-testid]=`role-points-${rolePoint.role.name}`>
             <span class="d-flex flex-column justify-content-center">
-          <p class="mb-0">{{ 'ROLE.MODEL_NAME' | scopedTranslation }}:</p>
-          <p class="fw-bold m-0">
-              {{ rolePoint.role.name }}
-          </p>
-        </span>
+              <p class="mb-0">{{ 'ROLE.MODEL_NAME' | scopedTranslation }}:</p>
+              <p class="fw-bold m-0">
+                {{ rolePoint.role.name }}
+              </p>
+            </span>
             <span class="d-flex flex-column justify-content-center">
-          <p class="mb-0">{{ 'CALCULATION.POINTS' | scopedTranslation }}:</p>
-          <p class="fw-bold m-0">
-            @if (rolePoint.points) {
-              {{ rolePoint.points.toFixed(2) }}
-            } @else {
-              {{ 'ATTRIBUTE_NULL' | scopedTranslation }}
-            }
-          </p>
-        </span>
+              <p class="mb-0">{{ 'CALCULATION.POINTS' | scopedTranslation }}:</p>
+              <p class="fw-bold m-0">
+                @if (rolePoint.points) {
+                  {{ rolePoint.points.toFixed(2) }}
+                } @else {
+                  {{ 'ATTRIBUTE_NULL' | scopedTranslation }}
+                }
+              </p>
+            </span>
           </div>
         }
     </div>

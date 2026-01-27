@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -45,7 +46,7 @@ class MemberBusinessServiceTest
 
     @Override
     Member getModel() {
-        return MEMBER_1;
+        return Mockito.spy(MEMBER_1);
     }
 
     @Override
@@ -70,7 +71,7 @@ class MemberBusinessServiceTest
 
         List<Member> result = businessService.getAll();
 
-        assertEquals(2, result.size());
+        assertEquals(3, result.size());
         assertEquals(MEMBERS, result);
         verify(persistenceService).getAll();
     }
@@ -94,7 +95,7 @@ class MemberBusinessServiceTest
 
         List<Calculation> result = businessService.getAllCalculationsByMemberIdAndRoleId(MEMBER_1_ID, ROLE_2_ID);
 
-        assertEquals(3, result.size());
+        assertEquals(4, result.size());
         assertEquals(CALCULATIONS, result);
 
         verify(persistenceService).getById(MEMBER_1_ID);
@@ -109,7 +110,7 @@ class MemberBusinessServiceTest
         when(calculationBusinessService.getAllByMember(MEMBER_1)).thenReturn(CALCULATIONS);
         List<Calculation> result = businessService.getAllCalculationsByMemberIdAndRoleId(MEMBER_1_ID, null);
 
-        assertEquals(3, result.size());
+        assertEquals(4, result.size());
         assertEquals(CALCULATIONS, result);
 
         verify(persistenceService).getById(MEMBER_1_ID);
