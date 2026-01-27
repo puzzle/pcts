@@ -119,7 +119,7 @@ export class MemberFormComponent implements OnInit {
 
       this.memberForm.get('organisationUnit')
         ?.setValue(this.organisationUnitsOptions()
-          .find((orgUnit) => orgUnit.id === this.member().organisationUnit.id));
+          .find((orgUnit) => orgUnit.id === this.member().organisationUnit?.id));
     });
   }
 

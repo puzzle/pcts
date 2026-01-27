@@ -4,10 +4,10 @@ import { MatDivider } from '@angular/material/divider';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 
-
-import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
 import { BaseFormActionsComponent } from '../base-form-actions/base-form-actions.component';
 import { FormGroup } from '@angular/forms';
+import { TranslatedModelSuffixPipe } from '../pipes/translated-model-suffix.pipe';
+import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
 
 @Component({
   selector: 'app-base-modal',
@@ -19,8 +19,10 @@ import { FormGroup } from '@angular/forms';
     MatIcon,
     MatDialogClose,
     MatIconButton,
-    ScopedTranslationPipe,
-    BaseFormActionsComponent
+    BaseFormActionsComponent,
+    TranslatedModelSuffixPipe,
+    TranslatedModelSuffixPipe,
+    ScopedTranslationPipe
   ],
   templateUrl: './base-modal.component.html'
 })

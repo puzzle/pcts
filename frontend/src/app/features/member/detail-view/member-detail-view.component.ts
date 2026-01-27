@@ -18,6 +18,7 @@ import {
   getLeadershipExperienceTable
 } from './cv/member-detail-cv-table-definition';
 import { MemberOverviewModel } from '../member-overview.model';
+import { NullFallbackPipe } from '../../../shared/pipes/null-fallback.pipe';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -25,6 +26,9 @@ import { MemberOverviewModel } from '../member-overview.model';
   imports: [
     CommonModule,
     ScopedTranslationPipe,
+    CrudButtonComponent,
+    NullFallbackPipe,
+    TranslationScopeDirective,
     CrudButtonComponent,
     GenericCvContentComponent,
     MatTabGroup,

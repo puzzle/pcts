@@ -10,19 +10,19 @@ import { DatePipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { EmploymentState } from '../../../shared/enum/employment-state.enum';
 import { debounceTime } from 'rxjs/operators';
-import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
 import sortingDataAccessor from '../../../shared/utils/sortingDataAccessor';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
+import { NullFallbackPipe } from '../../../shared/pipes/null-fallback.pipe';
+import { TranslationScopeDirective } from '../../../shared/translation-scope/translation-scope.directive';
 
 
 @Component({
   selector: 'app-member-overview',
   standalone: true,
-  providers: [DatePipe],
   imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -32,10 +32,11 @@ import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.com
     DatePipe,
     MatIcon,
     MatButton,
-    TranslatePipe,
     RouterLink,
     ScopedTranslationPipe,
-    CrudButtonComponent
+    CrudButtonComponent,
+    TranslationScopeDirective,
+    NullFallbackPipe
   ],
   templateUrl: './member-overview.component.html',
   styleUrl: './member-overview.component.scss'
@@ -43,15 +44,11 @@ import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.com
 export class MemberOverviewComponent implements OnInit {
   private readonly service: MemberService = inject(MemberService);
 
-  private readonly datePipe: DatePipe = inject(DatePipe);
-
   private readonly router = inject(Router);
 
   private readonly route = inject(ActivatedRoute);
 
   private readonly translate = inject(TranslateService);
-
-  protected readonly GLOBAL_DATE_FORMAT = GLOBAL_DATE_FORMAT;
 
   displayedColumns: string[] = [
     'first_name',
@@ -173,9 +170,5 @@ export class MemberOverviewComponent implements OnInit {
       this.employmentStateValues.forEach((s) => this.activeFilters.delete(s));
     }
     return all;
-  }
-
-  handleAddMemberClick(): void {
-    this.router.navigate(['/member/add']);
   }
 }
