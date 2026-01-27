@@ -66,7 +66,8 @@ public class MemberController {
     @GetMapping("{memberId}/role-points")
     public ResponseEntity<List<RolePointDto>> getPointsForActiveCalculationsForRoleByMemberId(@Parameter(description = "ID of the member.", required = true)
     @PathVariable Long memberId) {
-        return ResponseEntity.ok(service.getAllRolePointsByMemberId(memberId));
+        List<Calculation> calculationList = service.getAllActiveCalculationsByMemberId(memberId);
+        return ResponseEntity.ok(calculationMapper.toRolePointDto(calculationList));
     }
 
     @Operation(summary = "Create a new member")

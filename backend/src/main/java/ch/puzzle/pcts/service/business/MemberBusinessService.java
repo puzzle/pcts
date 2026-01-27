@@ -1,6 +1,5 @@
 package ch.puzzle.pcts.service.business;
 
-import ch.puzzle.pcts.dto.calculation.RolePointDto;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.member.Member;
@@ -37,12 +36,9 @@ public class MemberBusinessService extends BusinessBase<Member> {
         }
     }
 
-    public List<RolePointDto> getAllRolePointsByMemberId(Long memberId) {
-        Member member = this.getById(memberId);
-        List<Calculation> calculations = calculationBusinessService
-                .getAllByMemberAndState(member, CalculationState.ACTIVE);
-
-        return calculations.stream().map(c -> new RolePointDto(c.getRole(), c.getPoints())).toList();
+    public List<Calculation> getAllActiveCalculationsByMemberId(Long memberId) {
+        Member member = getById(memberId);
+        return calculationBusinessService.getAllByMemberAndState(member, CalculationState.ACTIVE);
     }
 
 }

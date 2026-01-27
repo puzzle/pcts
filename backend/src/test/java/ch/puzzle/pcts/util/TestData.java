@@ -89,4 +89,5 @@ public class TestData {
     public static final Long CALCULATION_1_ID = 1L;
     public static final Long CALCULATION_2_ID = 2L;
     public static final Long CALCULATION_3_ID = 3L;
+    public static final Long CALCULATION_4_ID = 4L;
 }

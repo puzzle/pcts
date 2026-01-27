@@ -59,10 +59,7 @@ describe('MemberOverviewComponent', () => {
   });
 
   it('should display role and there points', () => {
-    memberDetailPage.getRolePointBox()
-      .should('include.text', 'Role: Administrator')
-      .should('include.text', 'Punkte: 7.50')
-      .should('include.text', 'Role: Administrator')
-      .should('include.text', 'Punkte: 4.55');
+    memberDetailPage.assertRoleWithPoints('Administrator', '7.50');
+    memberDetailPage.assertRoleWithPoints('Intern', '4.55');
   });
 });

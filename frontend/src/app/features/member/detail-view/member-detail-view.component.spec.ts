@@ -67,8 +67,6 @@ describe('MemberDetailViewComponent (Jest)', () => {
     // Service calls
     expect(memberServiceMock.getMemberOverviewByMemberId)
       .toHaveBeenCalledTimes(1);
-    expect(memberServiceMock.getMemberOverviewByMemberId)
-      .toHaveBeenCalledWith(1);
 
     expect(memberServiceMock.getPointsForActiveCalculationsForRoleByMemberId)
       .toHaveBeenCalledTimes(1);

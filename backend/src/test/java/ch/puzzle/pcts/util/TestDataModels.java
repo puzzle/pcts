@@ -673,6 +673,7 @@ public class TestDataModels {
     public static final Calculation CALCULATION_1;
     public static final Calculation CALCULATION_2;
     public static final Calculation CALCULATION_3;
+    public static final Calculation CALCULATION_4;
 
     static {
 
@@ -693,6 +694,24 @@ public class TestDataModels {
         calc1.getExperienceCalculations().forEach(e -> e.setCalculation(calc1));
         calc1.getCertificateCalculations().forEach(c -> c.setCalculation(calc1));
         CALCULATION_1 = calc1;
+
+        Calculation calc4 = Calculation.Builder
+                .builder()
+                .withId(CALCULATION_4_ID)
+                .withMember(MEMBER_1)
+                .withRole(ROLE_2)
+                .withState(CalculationState.ACTIVE)
+                .withPublicationDate(LocalDate.of(2025, 1, 14))
+                .withPublicizedBy("Ldap User")
+                .withDegreeCalculations(List.of(DEGREE_CALC_1, DEGREE_CALC_3))
+                .withExperienceCalculations(List.of(EXP_CALC_1, EXP_CALC_3))
+                .withCertificateCalculations(List.of(CERT_CALC_1, CERT_CALC_3))
+                .build();
+
+        calc1.getDegreeCalculations().forEach(d -> d.setCalculation(calc1));
+        calc1.getExperienceCalculations().forEach(e -> e.setCalculation(calc1));
+        calc1.getCertificateCalculations().forEach(c -> c.setCalculation(calc1));
+        CALCULATION_4 = calc4;
 
         Calculation calc2 = Calculation.Builder
                 .builder()
@@ -716,7 +735,7 @@ public class TestDataModels {
                 .builder()
                 .withId(CALCULATION_3_ID)
                 .withMember(MEMBER_2)
-                .withRole(ROLE_2)
+                .withRole(ROLE_3)
                 .withState(CalculationState.ACTIVE)
                 .withDegreeCalculations(List.of())
                 .withExperienceCalculations(List.of())

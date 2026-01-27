@@ -203,8 +203,10 @@ class MemberControllerIT {
         Long memberId = 1L;
 
         RolePointDto rolePointDto = mock(RolePointDto.class);
+        Calculation calculation = mock(Calculation.class);
 
-        BDDMockito.given(service.getAllRolePointsByMemberId(memberId)).willReturn(List.of(rolePointDto));
+        BDDMockito.given(service.getAllActiveCalculationsByMemberId(memberId)).willReturn(List.of(calculation));
+        BDDMockito.given(calculationMapper.toRolePointDto(List.of(calculation))).willReturn(List.of(rolePointDto));
 
         mvc
                 .perform(get(BASEURL + "/" + memberId + "/role-points")
@@ -213,6 +215,7 @@ class MemberControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1));
 
-        verify(service, times(1)).getAllRolePointsByMemberId(memberId);
+        verify(service, times(1)).getAllActiveCalculationsByMemberId(memberId);
+        verify(calculationMapper, times(1)).toRolePointDto(List.of(calculation));
     }
 }

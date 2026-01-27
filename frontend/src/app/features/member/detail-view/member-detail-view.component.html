@@ -55,9 +55,9 @@
         </span>
       </div>
 
-      <div class="d-flex flex-row gap-2 mb-4" data-testid="role-points">
-        @for (rolePoint of rolePointList(); track rolePoint.points) {
-          <div class="role-box d-flex flex-row justify-content-around p-2 gap-3">
+      <div class="d-flex flex-row gap-2 mb-4">
+        @for (rolePoint of rolePointList(); track rolePoint.role) {
+          <div class="role-box d-flex flex-row justify-content-around p-2 gap-3" [attr.data-testid]=`role-points-${rolePoint.role.name}`>
             <span class="d-flex flex-column justify-content-center">
           <p class="mb-0">{{ 'ROLE.MODEL_NAME' | scopedTranslation }}:</p>
           <p class="fw-bold m-0">

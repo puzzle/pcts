@@ -1,35 +1,31 @@
 package ch.puzzle.pcts.service.business;
 
+import static ch.puzzle.pcts.util.TestData.MEMBER_1_ID;
+import static ch.puzzle.pcts.util.TestData.ROLE_2_ID;
+import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-import ch.puzzle.pcts.dto.calculation.RolePointDto;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.member.Member;
-import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import ch.puzzle.pcts.service.validation.MemberValidationService;
-import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class MemberBusinessServiceTest
         extends
             BaseBusinessTest<Member, MemberPersistenceService, MemberValidationService, MemberBusinessService> {
-
-    @Mock
-    private Member member;
-
-    @Mock
-    private List<Member> members;
 
     @Mock
     private MemberPersistenceService persistenceService;
@@ -43,18 +39,13 @@ class MemberBusinessServiceTest
     @Mock
     private CalculationBusinessService calculationBusinessService;
 
-    @Mock
-    private List<Calculation> calculations;
-
-    @Mock
-    private Role role;
-
     @InjectMocks
+    @Spy
     private MemberBusinessService businessService;
 
     @Override
     Member getModel() {
-        return member;
+        return MEMBER_1;
     }
 
     @Override
@@ -75,13 +66,12 @@ class MemberBusinessServiceTest
     @DisplayName("Should get all")
     @Test
     void shouldGetAll() {
-        when(persistenceService.getAll()).thenReturn(members);
-        when(members.size()).thenReturn(2);
+        when(persistenceService.getAll()).thenReturn(MEMBERS);
 
         List<Member> result = businessService.getAll();
 
         assertEquals(2, result.size());
-        assertEquals(members, result);
+        assertEquals(MEMBERS, result);
         verify(persistenceService).getAll();
     }
 
@@ -98,40 +88,32 @@ class MemberBusinessServiceTest
     @DisplayName("Should get calculations by memberId and roleId")
     @Test
     void shouldGetCalculationsByMemberIdAndRoleId() {
-        Long memberId = 1L;
-        Long roleId = 2L;
+        when(businessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
+        when(roleBusinessService.getById(ROLE_2_ID)).thenReturn(ROLE_2);
+        when(calculationBusinessService.getAllByMemberAndRole(MEMBER_1, ROLE_2)).thenReturn(CALCULATIONS);
 
-        when(businessService.getById(memberId)).thenReturn(member);
-        when(roleBusinessService.getById(roleId)).thenReturn(role);
-        when(calculationBusinessService.getAllByMemberAndRole(member, role)).thenReturn(calculations);
-        when(calculations.size()).thenReturn(3);
-
-        List<Calculation> result = businessService.getAllCalculationsByMemberIdAndRoleId(memberId, roleId);
+        List<Calculation> result = businessService.getAllCalculationsByMemberIdAndRoleId(MEMBER_1_ID, ROLE_2_ID);
 
         assertEquals(3, result.size());
-        assertEquals(calculations, result);
+        assertEquals(CALCULATIONS, result);
 
-        verify(persistenceService).getById(memberId);
-        verify(roleBusinessService).getById(roleId);
-        verify(calculationBusinessService).getAllByMemberAndRole(member, role);
+        verify(persistenceService).getById(MEMBER_1_ID);
+        verify(roleBusinessService).getById(ROLE_2_ID);
+        verify(calculationBusinessService).getAllByMemberAndRole(MEMBER_1, ROLE_2);
     }
 
     @DisplayName("Should get calculations by memberId only when roleId is null")
     @Test
     void shouldGetCalculationsByMemberIdOnly() {
-        Long memberId = 1L;
+        when(businessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
+        when(calculationBusinessService.getAllByMember(MEMBER_1)).thenReturn(CALCULATIONS);
+        List<Calculation> result = businessService.getAllCalculationsByMemberIdAndRoleId(MEMBER_1_ID, null);
 
-        when(businessService.getById(memberId)).thenReturn(member);
-        when(calculationBusinessService.getAllByMember(member)).thenReturn(calculations);
-        when(calculations.size()).thenReturn(1);
+        assertEquals(3, result.size());
+        assertEquals(CALCULATIONS, result);
 
-        List<Calculation> result = businessService.getAllCalculationsByMemberIdAndRoleId(memberId, null);
-
-        assertEquals(1, result.size());
-        assertEquals(calculations, result);
-
-        verify(persistenceService).getById(memberId);
-        verify(calculationBusinessService).getAllByMember(member);
+        verify(persistenceService).getById(MEMBER_1_ID);
+        verify(calculationBusinessService).getAllByMember(MEMBER_1);
     }
 
     @DisplayName("Should return empty list when no calculations found")
@@ -139,62 +121,46 @@ class MemberBusinessServiceTest
     void shouldReturnEmptyListWhenNoCalculationsFound() {
         Long memberId = 1L;
 
-        when(businessService.getById(memberId)).thenReturn(member);
-        when(calculationBusinessService.getAllByMember(member)).thenReturn(Collections.emptyList());
+        when(businessService.getById(memberId)).thenReturn(MEMBER_1);
+        when(calculationBusinessService.getAllByMember(MEMBER_1)).thenReturn(Collections.emptyList());
 
         List<Calculation> result = businessService.getAllCalculationsByMemberIdAndRoleId(memberId, null);
 
         assertEquals(0, result.size());
     }
 
-    @DisplayName("Should get all role points by memberId")
+    @DisplayName("Should get all active calculations by memberId")
     @Test
-    void shouldGetAllRolePointsByMemberId() {
-        Long memberId = 1L;
+    void shouldGetAllActiveCalculationsByMemberId() {
+        when(businessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
+        when(calculationBusinessService.getAllByMemberAndState(MEMBER_1, CalculationState.ACTIVE))
+                .thenReturn(CALCULATIONS);
 
-        Calculation calc1 = mock(Calculation.class);
-        Calculation calc2 = mock(Calculation.class);
+        List<Calculation> result =
+                businessService.getAllActiveCalculationsByMemberId(MEMBER_1_ID);
 
-        List<Calculation> calculationList = List.of(calc1, calc2);
+        assertEquals(CALCULATIONS, result);
 
-        when(businessService.getById(memberId)).thenReturn(member);
-        when(calculationBusinessService.getAllByMemberAndState(member, CalculationState.ACTIVE))
-                .thenReturn(calculationList);
-
-        when(calc1.getRole()).thenReturn(role);
-        when(calc1.getPoints()).thenReturn(BigDecimal.TEN);
-
-        Role anotherRole = mock(Role.class);
-        when(calc2.getRole()).thenReturn(anotherRole);
-        when(calc2.getPoints()).thenReturn(BigDecimal.TWO);
-
-        List<RolePointDto> result = businessService.getAllRolePointsByMemberId(memberId);
-
-        assertEquals(2, result.size());
-        assertEquals(role, result.get(0).role());
-        assertEquals(BigDecimal.TEN, result.get(0).points());
-        assertEquals(anotherRole, result.get(1).role());
-        assertEquals(BigDecimal.TWO, result.get(1).points());
-
-        verify(persistenceService).getById(memberId);
-        verify(calculationBusinessService).getAllByMemberAndState(member, CalculationState.ACTIVE);
+        verify(businessService).getById(MEMBER_1_ID);
+        verify(calculationBusinessService)
+                .getAllByMemberAndState(MEMBER_1, CalculationState.ACTIVE);
     }
 
-    @DisplayName("Should return empty role points list when no active calculations exist")
+    @DisplayName("Should return empty list when no active calculations exist")
     @Test
-    void shouldReturnEmptyRolePointsList() {
-        Long memberId = 1L;
-
-        when(businessService.getById(memberId)).thenReturn(member);
-        when(calculationBusinessService.getAllByMemberAndState(member, CalculationState.ACTIVE))
+    void shouldReturnEmptyListWhenNoActiveCalculationsExist() {
+        when(businessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
+        when(calculationBusinessService.getAllByMemberAndState(MEMBER_1, CalculationState.ACTIVE))
                 .thenReturn(Collections.emptyList());
 
-        List<RolePointDto> result = businessService.getAllRolePointsByMemberId(memberId);
+        List<Calculation> result =
+                businessService.getAllActiveCalculationsByMemberId(MEMBER_1_ID);
 
-        assertEquals(0, result.size());
+        Assertions.assertTrue(result.isEmpty());
 
-        verify(persistenceService).getById(memberId);
-        verify(calculationBusinessService).getAllByMemberAndState(member, CalculationState.ACTIVE);
+        verify(businessService).getById(MEMBER_1_ID);
+        verify(calculationBusinessService)
+                .getAllByMemberAndState(MEMBER_1, CalculationState.ACTIVE);
     }
 
 }

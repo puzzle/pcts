@@ -10,12 +10,14 @@ import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.dto.calculation.CalculationDto;
 import ch.puzzle.pcts.dto.calculation.CalculationInputDto;
+import ch.puzzle.pcts.dto.calculation.RolePointDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import ch.puzzle.pcts.service.business.RoleBusinessService;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -185,4 +187,36 @@ class CalculationMapperTest {
         verify(memberBusinessService).getById(MEMBER_1_ID);
         verify(roleBusinessService).getById(ROLE_2_ID);
     }
+
+    @DisplayName("Should map Calculations to RolePointDto list")
+    @Test
+    void shouldReturnListOfRolePointDto() {
+        Calculation calculation1 = mock(Calculation.class);
+        Calculation calculation2 = mock(Calculation.class);
+
+        when(calculation1.getRole()).thenReturn(ROLE_1);
+        when(calculation1.getPoints()).thenReturn(BigDecimal.TEN);
+
+        when(calculation2.getRole()).thenReturn(ROLE_2);
+        when(calculation2.getPoints()).thenReturn(BigDecimal.TWO);
+
+        List<Calculation> calculations = List.of(calculation1, calculation2);
+
+        List<RolePointDto> result = calculationMapper.toRolePointDto(calculations);
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+
+        assertEquals(ROLE_1, result.get(0).role());
+        assertEquals(BigDecimal.TEN, result.get(0).points());
+
+        assertEquals(ROLE_2, result.get(1).role());
+        assertEquals(BigDecimal.TWO, result.get(1).points());
+
+        verify(calculation1).getRole();
+        verify(calculation1).getPoints();
+        verify(calculation2).getRole();
+        verify(calculation2).getPoints();
+    }
+
 }
