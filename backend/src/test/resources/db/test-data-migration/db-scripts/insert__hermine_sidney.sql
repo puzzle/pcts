@@ -52,7 +52,7 @@ VALUES ('Apprenticeship', 5, 4, 3),
 
 INSERT INTO degree(member_id, name, institution, completed, degree_type_id, start_date, end_date)
 VALUES (1000, 'Apprenticeship', 'AnzuLabs', true, 1000, '2000-02-03', null),
-       (1000, 'Specialist', 'Viacet', false, 1001, '2005-01-01', null);
+       (1000, 'Specialist', 'Viacet', true, 1001, '2005-01-01', null);
 
 INSERT INTO calculation(member_id, role_id, state, publication_date, publicized_by)
 VALUES (1000, 1000, 'ACTIVE', '2020-01-01', 'root');
