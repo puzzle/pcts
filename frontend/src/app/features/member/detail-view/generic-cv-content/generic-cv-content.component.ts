@@ -1,4 +1,4 @@
-import { Component, ContentChild, effect, input, TemplateRef } from '@angular/core';
+import { Component, effect, input } from '@angular/core';
 import { GenericTableDataSource } from '../../../../shared/generic-table/generic-table-data-source';
 import { GenericTableComponent } from '../../../../shared/generic-table/generic-table.component';
 import { ScopedTranslationPipe } from '../../../../shared/pipes/scoped-translation-pipe';
@@ -19,9 +19,6 @@ import { ExperienceTypePillComponent } from '../../../../shared/experience-type-
   templateUrl: './generic-cv-content.component.html'
 })
 export class GenericCvContentComponent<T extends object> {
-  @ContentChild('modalOpen')
-  modalOpen!: TemplateRef<any>;
-
   idAttr = input<keyof T>();
 
   data = input.required<T[]>();
