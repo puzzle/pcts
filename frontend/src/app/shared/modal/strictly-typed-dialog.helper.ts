@@ -3,7 +3,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { filter, Observable, ReplaySubject } from 'rxjs';
 import { ModalSubmitMode } from '../enum/modal-submit-mode.enum';
 import { FormGroup } from '@angular/forms';
-import { tap } from 'rxjs/operators';
 
 export abstract class StrictlyTypedDialog<DialogData, DialogResult> {
   protected data: DialogData = inject(MAT_DIALOG_DATA);
@@ -22,7 +21,7 @@ export function enrichMatDialogRef<D, R>(ref: MatDialogRef<D, R>) {
   const afterSubmitted$ = new ReplaySubject<R>(1);
 
   ref.afterClosed()
-    .pipe(tap(console.log), filter((e): e is R => e !== undefined), tap(console.log))
+    .pipe(filter((e): e is R => e !== undefined))
     .subscribe({
       next: (e) => afterSubmitted$.next(e),
       complete: () => afterSubmitted$.complete(), // Important for cleanup

@@ -5,7 +5,6 @@ import { CertificateModel } from './certificate.model';
 import { CertificateDto } from './dto/certificate.dto';
 import { DateTime } from 'luxon';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -22,8 +21,8 @@ export class CertificateService {
     return this.httpClient.post<CertificateModel>(this.API_URL, this.toDto(certificate));
   }
 
-  updateCertificate(id: number, certificate: CertificateDto): Observable<CertificateModel> {
-    return this.httpClient.put<CertificateModel>(`${this.API_URL}/${id}`, certificate);
+  updateCertificate(id: number, certificate: CertificateModel): Observable<CertificateModel> {
+    return this.httpClient.put<CertificateModel>(`${this.API_URL}/${id}`, this.toDto(certificate));
   }
 
   deleteCertificate(id: number): Observable<void> {

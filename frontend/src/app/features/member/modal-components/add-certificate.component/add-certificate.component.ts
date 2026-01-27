@@ -121,7 +121,6 @@ export class AddCertificateComponent extends StrictlyTypedDialog<CertificateMode
   }
 
   onSubmit(submitMod: ModalSubmitMode) {
-    console.log(submitMod);
     this.dialogRef.close({
       modalSubmitMode: submitMod,
       submittedModel: this.formGroup.getRawValue() as CertificateModel

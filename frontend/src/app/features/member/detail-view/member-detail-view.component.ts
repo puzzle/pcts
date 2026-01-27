@@ -116,7 +116,6 @@ export class MemberDetailViewComponent implements OnInit {
     this.dialog.openModal(AddCertificateComponent, { data: model })
       .afterSubmitted
       .subscribe(({ modalSubmitMode, submittedModel }) => {
-        console.log('Logg', submittedModel, modalSubmitMode);
         submittedModel.member = { id: this.member()!.id } as MemberModel;
         switch (modalSubmitMode) {
           case ModalSubmitMode.SAVE:

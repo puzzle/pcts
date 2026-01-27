@@ -5,14 +5,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { provideTranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
-import { memberOverview1, rolePointsList1 } from '../../../shared/test/test-data';
+import { certificate1, memberOverview1, rolePointsList1 } from '../../../shared/test/test-data';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
 import { PctsModalService } from '../../../shared/modal/pcts-modal.service';
+import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
+import { CertificateService } from '../../certificates/certificate.service';
 import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
 
 describe('MemberDetailViewComponent (Jest)', () => {
   let memberServiceMock: Partial<jest.Mocked<MemberService>>;
-  let modalService: Partial<PctsModalService>;
+  let certificateService: Partial<jest.Mocked<CertificateService>>;
+  let modalService: Partial<jest.Mocked<PctsModalService>>;
   let routerMock: jest.Mocked<Router>;
   let routeMock: ActivatedRoute;
 
@@ -37,6 +40,20 @@ describe('MemberDetailViewComponent (Jest)', () => {
       }
     } as unknown as ActivatedRoute;
 
+    modalService = {
+      openModal: jest.fn()
+        .mockReturnValue({
+          afterSubmitted: of({
+            modalSubmitMode: ModalSubmitMode.SAVE,
+            submittedModel: certificate1
+          })
+        })
+    };
+
+    certificateService = {
+      addCertificate: jest.fn()
+    } as Partial<jest.Mocked<CertificateService>>;
+
     TestBed.configureTestingModule({
       imports: [MemberDetailViewComponent,
         MemberCalculationTableComponent,
@@ -50,6 +67,8 @@ describe('MemberDetailViewComponent (Jest)', () => {
           useValue: memberServiceMock },
         { provide: PctsModalService,
           useValue: modalService },
+        { provide: CertificateService,
+          useValue: certificateService },
         provideTranslateService(),
         DatePipe
       ]
@@ -118,5 +137,17 @@ describe('MemberDetailViewComponent (Jest)', () => {
       .toBeNull();
     expect(component.rolePointList())
       .toEqual([]);
+  });
+
+  describe('open certificate modal', () => {
+    it('should test openmodal', () => {
+      const { component } = setupTestBed('1');
+      component.openCertificateDialog();
+
+      expect(modalService.openModal)
+        .toHaveBeenCalled();
+      expect(certificateService.addCertificate)
+        .toHaveBeenCalled();
+    });
   });
 });
