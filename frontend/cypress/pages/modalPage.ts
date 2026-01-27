@@ -8,6 +8,11 @@ class ModalPage extends Page {
   modalTitle() {
     return cy.getByTestId('modal-title');
   }
+
+  shouldCloseModal() {
+    cy.get('.mat-dialog-container')
+      .should('not.exist');
+  }
 }
 
 export default new ModalPage();
