@@ -24,7 +24,6 @@ export class ScopedTranslationCoreService {
   private generateKeyHierarchy(key: string, i18nPrefix: string): string[] {
     const variations = this.getStringVariations(i18nPrefix, key);
     const allKeys = variations.flatMap((v) => this.getKeyList(v.prefix, v.key));
-
     // De-duplicate the list to avoid redundant checks
     return [...new Set(allKeys)];
   }

@@ -82,7 +82,9 @@
           [data]="certificateData()"
           *appTranslationScope="'CERTIFICATE'"
           [table]="certificateTable"
-        />
+        >
+          <app-crud-button crud-button mode="add" (selected)="openCertificateDialog()" data-testid="add-certificate-button"/>
+        </app-generic-cv-content>
 
         <app-generic-cv-content
           data-testid="cv-table-leadership-experience"

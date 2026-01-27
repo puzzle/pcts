@@ -4,7 +4,6 @@ import { GenericTableComponent } from '../../../../shared/generic-table/generic-
 import { ScopedTranslationPipe } from '../../../../shared/pipes/scoped-translation-pipe';
 import { ColumnTemplateDirective } from '../../../../shared/generic-table/column-template/column-template.directive';
 import { TypedTemplateDirective } from '../../../../shared/generic-table/type-template/typed-template.directive';
-import { CrudButtonComponent } from '../../../../shared/crud-button/crud-button.component';
 import { ExperienceTypePillComponent } from '../../../../shared/experience-type-pill/experience-type-pill.component';
 
 @Component({
@@ -15,7 +14,6 @@ import { ExperienceTypePillComponent } from '../../../../shared/experience-type-
     GenericTableComponent,
     ColumnTemplateDirective,
     TypedTemplateDirective,
-    CrudButtonComponent,
     ExperienceTypePillComponent
   ],
   templateUrl: './generic-cv-content.component.html'

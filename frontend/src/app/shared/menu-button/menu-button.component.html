@@ -1,0 +1,11 @@
+<button type="submit" [disabled]="!isValid()" matButton="filled" class="ms-0 rounded-start-0 p-0 px-1" [matMenuTriggerFor]="submitMenu">
+  <span class="d-flex justify-content-center">
+    <mat-icon>arrow_drop_down</mat-icon>
+  </span>
+</button>
+
+<mat-menu #submitMenu="matMenu">
+  @for (submitMode of functions(); track submitMode) {
+    <button type="submit" (click)="selected.emit(submitMode)" class="d-flex" mat-menu-item>{{ "BUTTONS." + submitMode | scopedTranslation}}</button>
+  }
+</mat-menu>

@@ -18,6 +18,12 @@ import {
   getLeadershipExperienceTable
 } from './cv/member-detail-cv-table-definition';
 import { MemberOverviewModel } from '../member-overview.model';
+import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
+import { CertificateService } from '../../certificates/certificate.service';
+import { MemberModel } from '../member.model';
+import { CertificateModel } from '../../certificates/certificate.model';
+import { AddCertificateComponent } from '../modal-components/add-certificate.component/add-certificate.component';
+import { PctsModalService } from '../../../shared/modal/pcts-modal.service';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -48,6 +54,10 @@ export class MemberDetailViewComponent implements OnInit {
 
   certificateData = signal<CertificateOverviewModel[]>([]);
 
+  private readonly dialog = inject(PctsModalService);
+
+  private readonly certificateService = inject(CertificateService);
+
   leadershipExperienceData = signal<LeadershipExperienceOverviewModel[]>([]);
 
   readonly experienceTable = getExperienceTable();
@@ -59,6 +69,10 @@ export class MemberDetailViewComponent implements OnInit {
   readonly leadershipExperienceTable = getLeadershipExperienceTable();
 
   ngOnInit(): void {
+    this.getData();
+  }
+
+  getData() {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) {
       this.router.navigate(['/member']);
@@ -74,6 +88,28 @@ export class MemberDetailViewComponent implements OnInit {
           this.certificateData.set(memberOverview.cv.certificates);
           this.leadershipExperienceData.set(memberOverview.cv.leadershipExperiences);
         }
+      });
+  }
+
+  openCertificateDialog(model?: CertificateModel) {
+    this.dialog.openModal(AddCertificateComponent, { data: model })
+      .afterSubmitted
+      .subscribe(({ modalSubmitMode, submittedModel }) => {
+        submittedModel.member = { id: this.member()!.id } as MemberModel;
+        switch (modalSubmitMode) {
+          case ModalSubmitMode.SAVE:
+            break;
+          case ModalSubmitMode.ENTER_ANOTHER:
+            this.openCertificateDialog();
+            break;
+          case ModalSubmitMode.COPY:
+            this.openCertificateDialog(submittedModel);
+            break;
+          default:
+            modalSubmitMode satisfies never;
+        }
+        this.certificateService.addCertificate(submittedModel)
+          .subscribe(() => this.getData());
       });
   }
 }

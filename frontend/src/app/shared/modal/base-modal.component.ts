@@ -22,6 +22,8 @@ import { FormGroup } from '@angular/forms';
     ScopedTranslationPipe,
     BaseFormActionsComponent
   ],
+  providers: [],
+  standalone: true,
   templateUrl: './base-modal.component.html'
 })
 export class BaseModalComponent {

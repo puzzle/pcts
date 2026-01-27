@@ -29,8 +29,17 @@ class FormPage {
 
   typeAndBlur(fieldName: string, text: string) {
     cy.getByTestId(fieldName)
-      .type(text)
+      .focus();
+    cy.getByTestId(fieldName)
+      .type(text);
+    cy.getByTestId(fieldName)
       .blur();
+    return this;
+  }
+
+  type(fieldName: string, text: string) {
+    cy.getByTestId(fieldName)
+      .type(text);
     return this;
   }
 
