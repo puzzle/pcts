@@ -1,25 +1,61 @@
-// Those tests will not succeed locally if you run them without using docker, because the CSP is set by the nginx proxy.
-describe('Security', () => {
-  it('should have set the nonce', () => {
-    cy.request({
-      url: '/',
-      method: 'GET'
-    })
-      .then((response) => {
-        const csp = response.headers['content-security-policy'];
+interface CspAttribute {
+  name: string;
+  value: string;
+}
 
-        expect(csp).to.not.include('script-src \'nonce-$request_id\'');
-        expect(csp).to.not.include('style-src \'self\' \'sha256-mwH/Oz1bMiZ9vHH84YJ6PbP6BpLW5nG9AD9Lad8u1+c=\' \'nonce-$request_id\';');
-      });
-  });
+// These tests rely on Nginx to set headers, so they may fail without Docker/Proxy.
+describe('Security: Content Security Policy', () => {
+  let csp: string;
 
-  it('should have a csp header', () => {
+  const expectedDirectives: CspAttribute[] = [
+    { name: 'default-src',
+      value: 'self' },
+    { name: 'object-src',
+      value: 'none' },
+    { name: 'base-uri',
+      value: 'self' },
+    { name: 'connect-src',
+      value: 'self' },
+    { name: 'font-src',
+      value: 'self' },
+    { name: 'frame-src',
+      value: 'self' },
+    { name: 'img-src',
+      value: 'self' },
+    { name: 'manifest-src',
+      value: 'self' },
+    { name: 'media-src',
+      value: 'self' },
+    { name: 'worker-src',
+      value: 'none' }
+  ];
+
+  before(() => {
     cy.request({
       url: '/',
       method: 'GET'
     })
       .then((response) => {
         expect(response.headers).to.have.property('content-security-policy');
+        csp = response.headers['content-security-policy'] as string;
       });
+  });
+
+  it('should contain all required directives with correct values', () => {
+    expectedDirectives.forEach(({ name, value }) => {
+      expect(csp, `Checking directive: ${name}`).to.include(`${name} '${value}'`);
+    });
+  });
+
+  it('should have replaced the Nginx request_id variable with a real nonce', () => {
+    expect(csp).to.not.include('nonce-$request_id');
+
+    const nonceRegex = /'nonce-[A-Za-z0-9+/=]+'/;
+    expect(csp).to.match(nonceRegex, 'CSP should contain a valid generated nonce');
+  });
+
+  it('should include specific style-src hashes', () => {
+    const expectedHash = '\'sha256-mwH/Oz1bMiZ9vHH84YJ6PbP6BpLW5nG9AD9Lad8u1+c=\'';
+    expect(csp).to.include(expectedHash);
   });
 });
