@@ -18,6 +18,8 @@ import {
   getLeadershipExperienceTable
 } from './cv/member-detail-cv-table-definition';
 import { MemberOverviewModel } from '../member-overview.model';
+import { AuthService } from '../../../core/auth/auth.service';
+import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin.directive';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -29,12 +31,15 @@ import { MemberOverviewModel } from '../member-overview.model';
     GenericCvContentComponent,
     MatTabGroup,
     MatTab,
-    TranslationScopeDirective
+    TranslationScopeDirective,
+    ShowIfAdminDirective
   ],
   templateUrl: './member-detail-view.component.html'
 })
 export class MemberDetailViewComponent implements OnInit {
   private readonly service = inject(MemberService);
+
+  protected readonly userService = inject(AuthService);
 
   private readonly route = inject(ActivatedRoute);
 

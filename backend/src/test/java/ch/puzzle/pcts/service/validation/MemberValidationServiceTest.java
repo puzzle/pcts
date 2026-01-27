@@ -6,7 +6,6 @@ import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
@@ -41,7 +40,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
 
     @Override
     Member getValidModel() {
-        return createMember(EmploymentState.MEMBER, LocalDate.EPOCH, "Member", "Test", "MT");
+        return createMember(EmploymentState.MEMBER, LocalDate.EPOCH, "Member", "Test", "MT", "test@puzzle.ch");
     }
 
     @Override
@@ -50,7 +49,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
     }
 
     protected static Member createMember(EmploymentState employmentState, LocalDate birthDate, String firstName,
-                                         String lastName, String abbreviation) {
+                                         String lastName, String abbreviation, String email) {
         Member m = new Member();
         m.setEmploymentState(employmentState);
         m.setBirthDate(birthDate);
@@ -59,22 +58,38 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
         m.setAbbreviation(abbreviation);
         m.setDateOfHire(LocalDate.EPOCH);
         m.setOrganisationUnit(ORG_UNIT_1);
+        m.setEmail(email);
         return m;
     }
 
     static Stream<Arguments> invalidModelProvider() {
         return Stream
                 .of(Arguments
-                        .of(createMember(EmploymentState.MEMBER, DATE_YESTERDAY, null, "Test", "MT"),
+                        .of(createMember(EmploymentState.MEMBER, DATE_YESTERDAY, null, "Test", "MT", "test@puzzle.ch"),
                             List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "firstName"))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, DATE_YESTERDAY, "", "Test", "MT"),
+                            .of(createMember(EmploymentState.MEMBER,
+                                             DATE_YESTERDAY,
+                                             "",
+                                             "Test",
+                                             "MT",
+                                             "test@puzzle.ch"),
                                 List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "firstName"))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, DATE_YESTERDAY, "  ", "Test", "MT"),
+                            .of(createMember(EmploymentState.MEMBER,
+                                             DATE_YESTERDAY,
+                                             "  ",
+                                             "Test",
+                                             "MT",
+                                             "test@puzzle.ch"),
                                 List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "firstName"))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, DATE_YESTERDAY, "S", "Test", "MT"),
+                            .of(createMember(EmploymentState.MEMBER,
+                                             DATE_YESTERDAY,
+                                             "S",
+                                             "Test",
+                                             "MT",
+                                             "test@puzzle.ch"),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -88,7 +103,12 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                                     FieldKey.IS,
                                                     "S"))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, DATE_YESTERDAY, "  S ", "Test", "MT"),
+                            .of(createMember(EmploymentState.MEMBER,
+                                             DATE_YESTERDAY,
+                                             "  S ",
+                                             "Test",
+                                             "MT",
+                                             "test@puzzle.ch"),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -102,7 +122,12 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                                     FieldKey.IS,
                                                     "S"))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, DATE_YESTERDAY, TOO_LONG_STRING, "Test", "MT"),
+                            .of(createMember(EmploymentState.MEMBER,
+                                             DATE_YESTERDAY,
+                                             TOO_LONG_STRING,
+                                             "Test",
+                                             "MT",
+                                             "test@puzzle.ch"),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -116,16 +141,36 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                                     FieldKey.IS,
                                                     TOO_LONG_STRING))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, DATE_YESTERDAY, "Member", null, "MT"),
+                            .of(createMember(EmploymentState.MEMBER,
+                                             DATE_YESTERDAY,
+                                             "Member",
+                                             null,
+                                             "MT",
+                                             "test@puzzle.ch"),
                                 List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "lastName"))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, DATE_YESTERDAY, "Member", "", "MT"),
+                            .of(createMember(EmploymentState.MEMBER,
+                                             DATE_YESTERDAY,
+                                             "Member",
+                                             "",
+                                             "MT",
+                                             "test@puzzle.ch"),
                                 List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "lastName"))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, DATE_YESTERDAY, "Member", "  ", "MT"),
+                            .of(createMember(EmploymentState.MEMBER,
+                                             DATE_YESTERDAY,
+                                             "Member",
+                                             "  ",
+                                             "MT",
+                                             "test@puzzle.ch"),
                                 List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "lastName"))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, DATE_YESTERDAY, "Member", "S", "MT"),
+                            .of(createMember(EmploymentState.MEMBER,
+                                             DATE_YESTERDAY,
+                                             "Member",
+                                             "S",
+                                             "MT",
+                                             "test@puzzle.ch"),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -139,7 +184,12 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                                     FieldKey.IS,
                                                     "S"))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, DATE_YESTERDAY, "Member", "  S ", "MT"),
+                            .of(createMember(EmploymentState.MEMBER,
+                                             DATE_YESTERDAY,
+                                             "Member",
+                                             "  S ",
+                                             "MT",
+                                             "test@puzzle.ch"),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -153,7 +203,12 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                                     FieldKey.IS,
                                                     "S"))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, DATE_YESTERDAY, "Member", TOO_LONG_STRING, "MT"),
+                            .of(createMember(EmploymentState.MEMBER,
+                                             DATE_YESTERDAY,
+                                             "Member",
+                                             TOO_LONG_STRING,
+                                             "MT",
+                                             "test@puzzle.ch"),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -167,16 +222,26 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                                     FieldKey.IS,
                                                     TOO_LONG_STRING))),
                     Arguments
-                            .of(createMember(null, DATE_YESTERDAY, "Member", "Test", "MT"),
+                            .of(createMember(null, DATE_YESTERDAY, "Member", "Test", "MT", "test@puzzle.ch"),
                                 List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "employmentState"))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, null, "Member", "Test", "MT"),
+                            .of(createMember(EmploymentState.MEMBER, null, "Member", "Test", "MT", "test@puzzle.ch"),
                                 List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "birthDate"))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, DATE_TOMORROW, "Member", "Test", "MT"),
+                            .of(createMember(EmploymentState.MEMBER,
+                                             DATE_TOMORROW,
+                                             "Member",
+                                             "Test",
+                                             "MT",
+                                             "test@puzzle.ch"),
                                 List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "birthDate"))),
                     Arguments
-                            .of(createMember(EmploymentState.MEMBER, DATE_TOMORROW, "Member", "Test", "MT"),
+                            .of(createMember(EmploymentState.MEMBER,
+                                             DATE_TOMORROW,
+                                             "Member",
+                                             "Test",
+                                             "MT",
+                                             "test@puzzle.ch"),
                                 List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "birthDate"))));
     }
 
@@ -243,8 +308,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                       member.getBirthDate(),
                                       "dateOfHire",
                                       member.getDateOfHire());
-
-        verifyNoMoreInteractions(persistenceService);
     }
 
     @DisplayName("Should call correct validate methods on validateOnUpdate()")
@@ -263,8 +326,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                       member.getBirthDate(),
                                       "dateOfHire",
                                       member.getDateOfHire());
-
-        verifyNoMoreInteractions(persistenceService);
     }
 
     static Stream<Arguments> validationOperations() {

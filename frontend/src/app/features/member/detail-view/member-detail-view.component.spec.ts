@@ -7,9 +7,11 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 import { memberOverview1 } from '../../../shared/test/test-data';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
+import { AuthService } from '../../../core/auth/auth.service';
 
 describe('MemberDetailViewComponent (Jest)', () => {
   let memberServiceMock: Partial<jest.Mocked<MemberService>>;
+  let authServiceMock: jest.Mocked<AuthService>;
   let routerMock: jest.Mocked<Router>;
   let routeMock: ActivatedRoute;
 
@@ -17,6 +19,10 @@ describe('MemberDetailViewComponent (Jest)', () => {
     memberServiceMock = {
       getMemberOverviewByMemberId: jest.fn()
     } as Partial<jest.Mocked<MemberService>>;
+
+    authServiceMock = {
+      isAdmin: jest.fn()
+    } as unknown as jest.Mocked<AuthService>;
 
     routerMock = {
       navigate: jest.fn(),
@@ -42,6 +48,10 @@ describe('MemberDetailViewComponent (Jest)', () => {
           useValue: routerMock },
         { provide: MemberService,
           useValue: memberServiceMock },
+        {
+          provide: AuthService,
+          useValue: authServiceMock
+        },
         provideTranslateService(),
         DatePipe
       ]

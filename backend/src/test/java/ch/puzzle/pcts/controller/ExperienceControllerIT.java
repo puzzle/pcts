@@ -7,10 +7,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.experience.ExperienceInputDto;
 import ch.puzzle.pcts.mapper.ExperienceMapper;
 import ch.puzzle.pcts.model.experience.Experience;
@@ -18,22 +18,15 @@ import ch.puzzle.pcts.service.business.ExperienceBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.json.JsonMapper;
 
-@Import(SpringSecurityConfig.class)
-@ExtendWith(MockitoExtension.class)
-@WebMvcTest(ExperienceController.class)
-class ExperienceControllerIT {
+@ControllerIT(ExperienceController.class)
+class ExperienceControllerIT extends ControllerITBase {
 
     private static final String BASEURL = "/api/v1/experiences";
     @MockitoBean
@@ -52,7 +45,7 @@ class ExperienceControllerIT {
         BDDMockito.given(mapper.toDto(any(Experience.class))).willReturn(EXPERIENCE_1_DTO);
 
         mvc
-                .perform(get(BASEURL + "/" + EXPERIENCE_1_ID).with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .perform(get(BASEURL + "/" + EXPERIENCE_1_ID).with(csrf()).with(adminJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(EXPERIENCE_1_DTO, "$"));
 
@@ -71,7 +64,8 @@ class ExperienceControllerIT {
                 .perform(post(BASEURL)
                         .content(jsonMapper.writeValueAsString(EXPERIENCE_1_INPUT))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isCreated())
                 .andExpect(JsonDtoMatcher.matchesDto(EXPERIENCE_1_DTO, "$"));
 
@@ -91,7 +85,8 @@ class ExperienceControllerIT {
                 .perform(put(BASEURL + "/" + EXPERIENCE_1_ID)
                         .content(jsonMapper.writeValueAsString(EXPERIENCE_1_INPUT))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(EXPERIENCE_1_DTO, "$"));
 
@@ -106,7 +101,7 @@ class ExperienceControllerIT {
         BDDMockito.willDoNothing().given(service).delete(anyLong());
 
         mvc
-                .perform(delete(BASEURL + "/" + EXPERIENCE_1_ID).with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .perform(delete(BASEURL + "/" + EXPERIENCE_1_ID).with(csrf()).with(adminJwt()))
                 .andExpect(status().isNoContent());
 
         verify(service, times(1)).delete(anyLong());

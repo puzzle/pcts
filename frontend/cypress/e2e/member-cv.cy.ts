@@ -7,9 +7,11 @@ import {
   leadershipExperienceTableData
 } from '../support/helper/table-data';
 import MemberDetailPage from '../pages/memberDetailPage';
+import * as users from '../fixtures/users.json';
 
 describe('MemberOverviewComponent', () => {
   beforeEach(() => {
+    cy.loginAsUser(users.gl);
     // Equals to 'Lena Müller'
     memberDetailPage.visit(1);
   });
