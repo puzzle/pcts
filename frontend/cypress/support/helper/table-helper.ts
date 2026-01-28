@@ -3,7 +3,7 @@ import { TableData } from './table-data';
 export class TableHelper {
   private readonly tableTestId: string;
 
-  constructor(tableTestId: string) {
+  private constructor(tableTestId: string) {
     this.tableTestId = tableTestId;
   }
 
@@ -21,7 +21,8 @@ export class TableHelper {
   }
 
   getShowAllButton() {
-    return cy.getByTestId('limit-list-button');
+    return this.getTableHTMLElement()
+      .findByTestId('limit-list-button');
   }
 
   expectTableContains(tableData: TableData) {
@@ -56,20 +57,13 @@ export class TableHelper {
     return this;
   }
 
-  expandTable() {
-    this.getShowAllButton()
-      .click();
-    return this;
-  }
-
   expectTableToBeFoldable() {
     this.getShowAllButton()
       .should('include.text', 'Weniger anzeigen');
     return this;
   }
 
-
-  foldTable() {
+  toggleTable() {
     this.getShowAllButton()
       .click();
     return this;

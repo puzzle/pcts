@@ -35,10 +35,10 @@ describe('MemberOverviewComponent', () => {
     TableHelper.withTableTestId('cv-table-experience')
       .expectLengthOfTable(10)
       .expectTableToBeExtendable()
-      .expandTable()
+      .toggleTable()
       .expectLengthOfTable(13)
       .expectTableToBeFoldable()
-      .foldTable();
+      .toggleTable();
   });
 
   it('should include position text even if employer is not set', () => {

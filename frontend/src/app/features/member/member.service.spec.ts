@@ -3,6 +3,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { MemberService } from './member.service';
 import { MemberModel } from './member.model';
 import {
+  calculation1, calculation2,
   member1,
   member2,
   member4,
@@ -12,6 +13,7 @@ import {
   rolePointsList1
 } from '../../shared/test/test-data';
 import { provideHttpClient } from '@angular/common/http';
+import { CalculationModel } from '../calculations/calculation.model';
 
 describe('MemberService', () => {
   let service: MemberService;
@@ -140,6 +142,46 @@ describe('MemberService', () => {
       expect(req.request.method)
         .toBe('GET');
       req.flush(memberOverview1);
+    });
+  });
+  describe('should get calculations by member id and optional role id', () => {
+    const mockCalcs = [calculation1,
+      calculation2] as CalculationModel[];
+
+    it('should call httpClient.get with the correct URL and no roleId', () => {
+      const memberId = 5;
+
+      service.getCalculationsByMemberIdAndOptionalRoleId(memberId)
+        .subscribe((calcs) => {
+          expect(calcs)
+            .toEqual(mockCalcs);
+        });
+
+      const req = httpMock.expectOne(`${API_URL}/${memberId}/calculations`);
+      expect(req.request.method)
+        .toBe('GET');
+      expect(req.request.params.keys().length)
+        .toBe(0);
+      req.flush(mockCalcs);
+    });
+
+    it('should call httpClient.get with the correct URL and include roleId in query params', () => {
+      const memberId = 5;
+      const roleId = 2;
+
+      service.getCalculationsByMemberIdAndOptionalRoleId(memberId, roleId)
+        .subscribe((calcs) => {
+          expect(calcs)
+            .toEqual(mockCalcs);
+        });
+
+      const req = httpMock.expectOne((r) => r.url === `${API_URL}/${memberId}/calculations` &&
+        r.params.has('roleId') &&
+        r.params.get('roleId') === `${roleId}`);
+
+      expect(req.request.method)
+        .toBe('GET');
+      req.flush(mockCalcs);
     });
   });
 
