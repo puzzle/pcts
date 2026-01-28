@@ -162,7 +162,6 @@ VALUES
     (1, 1, 'DRAFT', NULL, NULL),
     (1, 1, 'DRAFT', NULL, NULL),
     (1, 1, 'DRAFT', NULL, NULL),
-
     (2, 2, 'ACTIVE', '2025-02-02', 'system'),
     (3, 3, 'ARCHIVED', '2025-01-10', 'admin_user'),
     (4, 4, 'DRAFT', NULL, NULL),
@@ -176,7 +175,7 @@ VALUES
     (2, 2, 'POORLY',  'Marketing internship, low relevance'),
     (3, 4, 'STRONGLY',  'Full-time data analyst role'),
     (4, 2, 'NORMAL', 'Internship experience'),
-    (6, 2, 'NORMAL', 'Internship experience'),
+    (15, 2, 'NORMAL', 'Internship experience'),
     (7, 4, 'NORMAL', 'Internship experience');
 
 
