@@ -7,7 +7,7 @@ on:
 
 permissions:
   contents: read
-  pull-requests: write # Required for commenting
+  pull-requests: write  # Required for commenting
   repository-projects: write
   issues: read
 
@@ -28,6 +28,12 @@ jobs:
       - name: Check Assignee
         id: check_assignee
         run: |
+          AUTHOR=$(gh pr view 454 --json author --jq '.author.login')
+          if [ "$AUTHOR" == "app/renovate" ]; then
+            echo "✅ This PR is authored by Renovate, no assignee required"
+            exit 0
+          fi
+
           ASSIGNEES=$(gh pr view ${{ github.event.pull_request.number }} --json assignees --jq '.assignees | length')
           if [ "$ASSIGNEES" -eq 0 ]; then
             echo "::error::⛔ Missing Assignee: You must assign this PR to a user."
@@ -165,7 +171,7 @@ jobs:
         if: env.TARGET_STATUS != 'STOP'
         shell: bash
         env:
-#          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # or your specific PAT
+          # GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # or your specific PAT
           OWNER: puzzle
           PROJECT_NUMBER: 17
           FIELD_NAME: Status
@@ -221,7 +227,7 @@ jobs:
       - name: Warn if Update Skipped
         if: env.STATUS != 'STOP' && env.TARGET_URL == ''
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Switch back to standard token for commenting
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Switch back to standard token for commenting
         run: |
           echo "⚠️ Skipping Project Update because no linked issue was found."
           # We don't exit 1 here, we just finish successfully without moving anything.
