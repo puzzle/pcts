@@ -117,8 +117,8 @@
         />
       </mat-tab>
       @for (rolePoints of rolePointList(); track rolePoints.role) {
-        <mat-tab [label]='rolePoints.role.name'>
-          <app-member-calculation-table data-testid="member-calculation-table" [memberId]="m.id"/>
+        <mat-tab *appTranslationScope="'CALCULATION'" [label]='rolePoints.role.name'>
+          <app-member-calculation-table data-testid="member-calculation-table" [roleId]="rolePoints.role.id" [memberId]="m.id"/>
         </mat-tab>
       }
     </mat-tab-group>
