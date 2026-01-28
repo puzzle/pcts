@@ -28,6 +28,7 @@ import { RouterLink } from '@angular/router';
 import { NgTemplateOutlet } from '@angular/common';
 import { ColumnTemplateDirective } from './column-template/column-template.directive';
 import { TranslationScopeDirective } from '../translation-scope/translation-scope.directive';
+import { MatIconButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-generic-table',
@@ -48,7 +49,8 @@ import { TranslationScopeDirective } from '../translation-scope/translation-scop
     MatNoDataRow,
     RouterLink,
     NgTemplateOutlet,
-    TranslationScopeDirective
+    TranslationScopeDirective,
+    MatIconButton
   ],
   templateUrl: './generic-table.component.html'
 })

@@ -18,8 +18,21 @@ import { DegreeTypeModel } from '../../features/degrees/degree-type/degree-type.
 import { DegreeModel } from '../../features/degrees/degree.model';
 import { DegreeOverviewModel } from '../../features/member/detail-view/cv/degree-overview.model';
 import { MemberCvOverviewModel } from '../../features/member/member-cv-overview.model';
+import { CalculationModel } from '../../features/calculations/calculation.model';
+import { RoleModel } from '../../features/roles/role.model';
 import { RolePointsModel } from '../../features/member/detail-view/RolePointsModel';
-import { RoleModel } from '../../features/roles/RoleModel';
+import { Relevancy } from '../../features/calculations/relevancy.enum';
+import { CalculationState } from '../../features/calculations/calculation-state.enum';
+import {
+  CertificateCalculationModel
+} from '../../features/calculations/certificate-calculation/certificate-calculation.model';
+import {
+  LeadershipExperienceCalculationModel
+} from '../../features/calculations/leadership-experience-calculation/leadership-experience-calculation.model';
+import { DegreeCalculationModel } from '../../features/calculations/degree-calculation/degree-calculation.model';
+import {
+  ExperienceCalculationModel
+} from '../../features/calculations/experience-calculation/experience-calculation.model';
 
 export const url = '/api/v1/data';
 
@@ -402,6 +415,13 @@ export const role2: RoleModel = {
   isManagement: true
 };
 
+
+export const role3: RoleModel = {
+  id: 3,
+  name: 'Department Head',
+  isManagement: true
+};
+
 export const rolePointsList1: RolePointsModel[] = [{
   role: role1,
   points: 15
@@ -415,3 +435,95 @@ export const rolePointsList2: RolePointsModel[] = [{
   role: role2,
   points: 20
 }];
+
+export const certificateCalculation1: CertificateCalculationModel = {
+  id: 1,
+  certificate: certificate1
+};
+
+export const certificateCalculation2: CertificateCalculationModel = {
+  id: 2,
+  certificate: certificate2
+};
+
+export const leadershipExperienceCalculation1: LeadershipExperienceCalculationModel = {
+  id: 1,
+  leadershipExperience: leadershipExperience1
+};
+
+export const leadershipExperienceCalculation2: LeadershipExperienceCalculationModel = {
+  id: 2,
+  leadershipExperience: leadershipExperience2
+};
+
+export const degreeCalculation1: DegreeCalculationModel = {
+  id: 1,
+  degree: degree1,
+  weight: 1.0,
+  relevancy: Relevancy.STRONGLY,
+  comment: null
+};
+
+export const degreeCalculation2: DegreeCalculationModel = {
+  id: 2,
+  degree: degree2,
+  weight: 0.7,
+  relevancy: Relevancy.NORMAL,
+  comment: 'Still pursuing the degree'
+};
+
+export const experienceCalculation1: ExperienceCalculationModel = {
+  id: 1,
+  experience: experience1,
+  relevancy: Relevancy.STRONGLY,
+  comment: 'High impact backend development work'
+};
+
+export const experienceCalculation2: ExperienceCalculationModel = {
+  id: 2,
+  experience: experience2,
+  relevancy: Relevancy.NORMAL,
+  comment: 'Leadership engagement relevant but mixed focus'
+};
+
+export const calculation1: CalculationModel = {
+  id: 1,
+  member: member1,
+  role: role1,
+  state: CalculationState.ACTIVE,
+  publicationDate: new Date('2024-01-20'),
+  publicizedBy: 'Admin',
+  points: 145,
+  certificateCalculations: [certificateCalculation1],
+  leadershipExperienceCalculations: [leadershipExperienceCalculation1],
+  degreeCalculations: [degreeCalculation1],
+  experienceCalculations: [experienceCalculation1]
+};
+
+export const calculation2: CalculationModel = {
+  id: 2,
+  member: member2,
+  role: role2,
+  state: CalculationState.DRAFT,
+  publicationDate: null,
+  publicizedBy: null,
+  points: 195,
+  certificateCalculations: [certificateCalculation2],
+  leadershipExperienceCalculations: [leadershipExperienceCalculation2],
+  degreeCalculations: [degreeCalculation2],
+  experienceCalculations: [experienceCalculation2]
+};
+
+export const calculation3: CalculationModel = {
+  id: 3,
+  member: member3,
+  role: role3,
+  state: CalculationState.ARCHIVED,
+  publicationDate: null,
+  publicizedBy: null,
+  points: 98,
+  certificateCalculations: [],
+  leadershipExperienceCalculations: [],
+  degreeCalculations: [],
+  experienceCalculations: []
+};

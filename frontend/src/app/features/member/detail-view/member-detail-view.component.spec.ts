@@ -7,6 +7,7 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 import { memberOverview1, rolePointsList1 } from '../../../shared/test/test-data';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
+import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
 
 describe('MemberDetailViewComponent (Jest)', () => {
   let memberServiceMock: Partial<jest.Mocked<MemberService>>;
@@ -16,7 +17,8 @@ describe('MemberDetailViewComponent (Jest)', () => {
   function setupTestBed(id: string | null) {
     memberServiceMock = {
       getMemberOverviewByMemberId: jest.fn(),
-      getPointsForActiveCalculationsForRoleByMemberId: jest.fn()
+      getPointsForActiveCalculationsForRoleByMemberId: jest.fn(),
+      getCalculationsByMemberIdAndOptionalRoleId: jest.fn()
     } as Partial<jest.Mocked<MemberService>>;
 
     routerMock = {
@@ -35,6 +37,7 @@ describe('MemberDetailViewComponent (Jest)', () => {
 
     TestBed.configureTestingModule({
       imports: [MemberDetailViewComponent,
+        MemberCalculationTableComponent,
         CrudButtonComponent],
       providers: [
         { provide: ActivatedRoute,
@@ -59,6 +62,7 @@ describe('MemberDetailViewComponent (Jest)', () => {
     const { fixture, component } = setupTestBed('1');
 
     memberServiceMock.getMemberOverviewByMemberId?.mockReturnValue(of(memberOverview1));
+    memberServiceMock.getCalculationsByMemberIdAndOptionalRoleId?.mockReturnValue(of([]));
 
     memberServiceMock.getPointsForActiveCalculationsForRoleByMemberId?.mockReturnValue(of(rolePointsList1));
 

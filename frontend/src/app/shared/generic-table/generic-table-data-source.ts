@@ -43,9 +43,12 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
 
   shouldLink = false;
 
+  sortedBy: string;
+
   constructor(columnDefs: GenCol<T>[], initialData?: T[]) {
     super(initialData);
     this.columnDefs = columnDefs;
+    this.sortedBy = this.columnDefs.map((e) => e.columnName)[0];
   }
 
   get columnDefs(): GenCol<T>[] {
@@ -68,6 +71,11 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
 
   public withDetailViewLink(shouldLink = true) {
     this.shouldLink = shouldLink;
+    return this;
+  }
+
+  public withSortedBy(sortedBy: string) {
+    this.sortedBy = sortedBy;
     return this;
   }
 
