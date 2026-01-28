@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.service.business;
 
 import ch.puzzle.pcts.model.calculation.Calculation;
+import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
 import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
 import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
@@ -90,6 +91,12 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
 
     public List<Calculation> getAllByMember(Member member) {
         List<Calculation> calculations = calculationPersistenceService.getAllByMember(member);
+        setPointsForCalculations(calculations);
+        return calculations;
+    }
+
+    public List<Calculation> getAllByMemberAndState(Member member, CalculationState state) {
+        List<Calculation> calculations = calculationPersistenceService.getAllByMemberAndState(member, state);
         setPointsForCalculations(calculations);
         return calculations;
     }

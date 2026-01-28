@@ -24,6 +24,16 @@ class MemberDetailPage extends Page {
   memberCvTab() {
     return cy.getByTestId('cv-tab');
   }
+
+  rolePointBox(roleName: string) {
+    return cy.getByTestId(`role-points-${roleName}`);
+  }
+
+  assertRoleWithPoints(role: string, points: string) {
+    this.rolePointBox(role)
+      .should('include.text', role)
+      .and('include.text', points);
+  }
 }
 
 export default new MemberDetailPage();

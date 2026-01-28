@@ -1,6 +1,7 @@
 package ch.puzzle.pcts.service.business;
 
 import ch.puzzle.pcts.model.calculation.Calculation;
+import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
@@ -34,4 +35,10 @@ public class MemberBusinessService extends BusinessBase<Member> {
             return calculationBusinessService.getAllByMember(member);
         }
     }
+
+    public List<Calculation> getAllActiveCalculationsByMemberId(Long memberId) {
+        Member member = getById(memberId);
+        return calculationBusinessService.getAllByMemberAndState(member, CalculationState.ACTIVE);
+    }
+
 }

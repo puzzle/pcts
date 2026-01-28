@@ -18,6 +18,7 @@ import {
   getLeadershipExperienceTable
 } from './cv/member-detail-cv-table-definition';
 import { MemberOverviewModel } from '../member-overview.model';
+import { RolePointsModel } from './RolePointsModel';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -31,7 +32,8 @@ import { MemberOverviewModel } from '../member-overview.model';
     MatTab,
     TranslationScopeDirective
   ],
-  templateUrl: './member-detail-view.component.html'
+  templateUrl: './member-detail-view.component.html',
+  styleUrls: ['./member-detail-view.component.scss']
 })
 export class MemberDetailViewComponent implements OnInit {
   private readonly service = inject(MemberService);
@@ -58,6 +60,8 @@ export class MemberDetailViewComponent implements OnInit {
 
   readonly leadershipExperienceTable = getLeadershipExperienceTable();
 
+  readonly rolePointList = signal<RolePointsModel[]>([]);
+
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) {
@@ -73,6 +77,12 @@ export class MemberDetailViewComponent implements OnInit {
           this.experienceData.set(memberOverview.cv.experiences);
           this.certificateData.set(memberOverview.cv.certificates);
           this.leadershipExperienceData.set(memberOverview.cv.leadershipExperiences);
+        }
+      });
+    this.service.getPointsForActiveCalculationsForRoleByMemberId(Number(id))
+      .subscribe({
+        next: (RolePoints) => {
+          this.rolePointList.set(RolePoints);
         }
       });
   }

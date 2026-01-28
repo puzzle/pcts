@@ -54,6 +54,29 @@
           </p>
         </span>
       </div>
+
+      <div class="d-flex flex-row gap-2 mb-4">
+        @for (rolePoint of rolePointList(); track rolePoint.role) {
+          <div class="role-box d-flex flex-row justify-content-around p-2 gap-3" [attr.data-testid]=`role-points-${rolePoint.role.name}`>
+            <span class="d-flex flex-column justify-content-center">
+              <p class="mb-0">{{ 'ROLE.MODEL_NAME' | scopedTranslation }}:</p>
+              <p class="fw-bold m-0">
+                {{ rolePoint.role.name }}
+              </p>
+            </span>
+            <span class="d-flex flex-column justify-content-center">
+              <p class="mb-0">{{ 'CALCULATION.POINTS' | scopedTranslation }}:</p>
+              <p class="fw-bold m-0">
+                @if (rolePoint.points) {
+                  {{ rolePoint.points.toFixed(2) }}
+                } @else {
+                  {{ 'ATTRIBUTE_NULL' | scopedTranslation }}
+                }
+              </p>
+            </span>
+          </div>
+        }
+    </div>
     </div>
     <mat-tab-group class="folder-tabs" mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms" *appTranslationScope="'CV'" data-testid="cv-tab">
       <mat-tab label="CV">
@@ -93,9 +116,11 @@
           [table]="leadershipExperienceTable"
         />
       </mat-tab>
-      <mat-tab label="Berechnungen">
-        <span>calculation content ...</span>
-      </mat-tab>
+      @for (rolePoints of rolePointList(); track rolePoints.role) {
+        <mat-tab [label]='rolePoints.role.name'>
+          <span>calculation content ...</span>
+        </mat-tab>
+      }
     </mat-tab-group>
   </div>
 }

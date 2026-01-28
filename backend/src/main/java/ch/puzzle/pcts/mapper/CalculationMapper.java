@@ -2,6 +2,7 @@ package ch.puzzle.pcts.mapper;
 
 import ch.puzzle.pcts.dto.calculation.CalculationDto;
 import ch.puzzle.pcts.dto.calculation.CalculationInputDto;
+import ch.puzzle.pcts.dto.calculation.RolePointDto;
 import ch.puzzle.pcts.dto.calculation.calculationleadershipexperience.LeadershipExperienceCalculationInputDto;
 import ch.puzzle.pcts.dto.calculation.certificatecalculation.CertificateCalculationInputDto;
 import ch.puzzle.pcts.model.calculation.Calculation;
@@ -46,6 +47,10 @@ public class CalculationMapper {
 
     public List<Calculation> fromDto(List<CalculationInputDto> dtos) {
         return dtos.stream().map(this::fromDto).toList();
+    }
+
+    public List<RolePointDto> toRolePointDto(List<Calculation> calculations) {
+        return calculations.stream().map(c -> new RolePointDto(c.getRole(), c.getPoints())).toList();
     }
 
     public CalculationDto toDto(Calculation model) {

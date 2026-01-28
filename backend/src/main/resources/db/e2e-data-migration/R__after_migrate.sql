@@ -10,6 +10,9 @@ TRUNCATE TABLE experience CASCADE;
 TRUNCATE TABLE degree CASCADE;
 TRUNCATE TABLE certificate CASCADE;
 TRUNCATE TABLE calculation CASCADE;
+TRUNCATE TABLE certificate_calculation CASCADE;
+TRUNCATE TABLE degree_calculation CASCADE;
+TRUNCATE TABLE experience_calculation CASCADE;
 
 INSERT INTO organisation_unit (name)
 VALUES
@@ -152,5 +155,37 @@ VALUES
     (2, 2, 'DRAFT', NULL, NULL),
     (3, 3, 'ARCHIVED', '2025-01-10', 'admin_user'),
     (4, 4, 'DRAFT', NULL, NULL),
-    (5, 5, 'ACTIVE', '2025-01-28', 'admin_user');
+    (5, 5, 'ACTIVE', '2025-01-28', 'admin_user'),
+    (1, 5, 'ACTIVE', '2025-01-28', 'admin_user'),
+    (1, 1, 'ARCHIVED', '2025-01-28', 'admin_user');
+
+
+INSERT INTO experience_calculation
+(calculation_id, experience_id, relevancy, comment)
+VALUES
+    (2, 2, 'POORLY',  'Marketing internship, low relevance'),
+    (3, 4, 'STRONGLY',  'Full-time data analyst role'),
+    (4, 2, 'NORMAL', 'Internship experience'),
+    (6, 2, 'NORMAL', 'Internship experience'),
+    (7, 4, 'NORMAL', 'Internship experience');
+
+
+INSERT INTO degree_calculation
+(calculation_id, degree_id, weight, relevancy, comment)
+VALUES
+    (2, 2, 40,  'POORLY',  'Low relevance for technical role'),
+    (3, 3, 90,  'STRONGLY',  'Directly relevant degree'),
+    (4, 3, 70,  'NORMAL', 'Relevant but less practical focus');
+
+
+INSERT INTO certificate_calculation
+(calculation_id, certificate_id)
+VALUES
+    (2, 2),
+    (3, 3),
+    (4, 4),
+    (5, 5),
+    (1, 6),
+    (2, 7),
+    (4, 8);
 
