@@ -1,13 +1,9 @@
-interface CspAttribute {
-  name: string;
-  value: string;
-}
-
 // These tests rely on Nginx to set headers, so they may fail without Docker/Proxy.
 describe('Security: Content Security Policy', () => {
   let csp: string;
 
-  const expectedDirectives: CspAttribute[] = [
+  const expectedDirectives: { name: string;
+    value: string; }[] = [
     { name: 'default-src',
       value: 'self' },
     { name: 'object-src',
