@@ -39,7 +39,7 @@ VALUES (1000, 'Customs administration', 'Customs specialist', 100, 1000, '1999-0
        (1000, 'Various short deployments', 'Zivi', 20, 1000, '2007-04-01', '2010-07-31'), -- 1010
        (1000, 'School sport', 'School', 20, 1000, '2007-08-01', '2008-07-31'), -- 1011
        (1000, 'Teacher', 'School', 80, 1000, '2009-08-01', '2011-07-31'), -- 1012
-       (1000, 'Life experience', 'Life itself', 73, 1001, '2006-11-01', '2011-07-31'), -- 1013
+       (1000, 'Life experience', 'Life itself', 60, 1001, '2006-11-01', '2011-07-31'), -- 1013
        (1000, 'Life experience', 'Life itself', 100, 1001, '2011-08-01', '2011-09-30'), -- 1014
        (1000, 'Specialized Teacher', 'School', 60, 1000, '2011-10-01', '2021-07-31'), -- 1015
        (1000, 'Specialized Teacher (Info)', 'School', 30, 1000, '2011-10-01', '2021-07-31'), -- 1016
