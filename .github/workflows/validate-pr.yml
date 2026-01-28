@@ -28,6 +28,12 @@ jobs:
       - name: Check Assignee
         id: check_assignee
         run: |
+          AUTHOR=$(gh pr view 454 --json author --jq '.author.login')
+          if [ "$AUTHOR" == "app/renovate" ]; then 
+            echo "✅ This PR is authored by Renovate, no assignee required"
+            exit 0
+          fi
+          
           ASSIGNEES=$(gh pr view ${{ github.event.pull_request.number }} --json assignees --jq '.assignees | length')
           if [ "$ASSIGNEES" -eq 0 ]; then
             echo "::error::⛔ Missing Assignee: You must assign this PR to a user."
