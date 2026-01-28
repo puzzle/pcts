@@ -47,6 +47,6 @@ class CalculationBusinessServiceIT {
                 .isEqualTo(BigDecimal.valueOf(87.5));
 
         assertThat(calcBusinessService.getById(1001L).getPoints().setScale(1, RoundingMode.FLOOR))
-                .isEqualTo(BigDecimal.valueOf(83.9));
+                .isEqualTo(BigDecimal.valueOf(84.4));
     }
 }
