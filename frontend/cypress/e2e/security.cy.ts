@@ -2,8 +2,7 @@
 describe('Security: Content Security Policy', () => {
   let csp: string;
 
-  const expectedDirectives: { name: string;
-    value: string; }[] = [
+  const expectedDirectives = [
     { name: 'default-src',
       value: 'self' },
     { name: 'object-src',
