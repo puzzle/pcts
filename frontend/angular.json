@@ -69,6 +69,12 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
+              "optimization": {
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false
+                }
+              },
               "buildTarget": "pcts:build:production"
             },
             "development": {
