@@ -37,8 +37,6 @@
       *matRowDef="let row; columns: columnNames();"
       [routerLink]="dataSource().shouldLink ? getRouterLink(row) : null"
       [class.cursor-pointer]="dataSource().shouldLink"
-      [routerLink]="dataSource().shouldLink ? getRouterLink(row) : null"
-      [class.cursor-pointer]="dataSource().shouldLink"
       data-testId="generic-table-row">
     </tr>
 
