@@ -116,6 +116,7 @@ class DegreeCalculationBusinessServiceTest
 
         Degree degree = mock(Degree.class);
         when(degree.getDegreeType()).thenReturn(type);
+        when(degree.getCompleted()).thenReturn(true);
 
         DegreeCalculation dc = mock(DegreeCalculation.class);
         when(dc.getDegree()).thenReturn(degree);
