@@ -688,6 +688,27 @@ public class TestDataModels {
     public static final Calculation CALCULATION_4;
     public static final Calculation CALCULATION_5;
 
+    public static Calculation GET_CALCULATIN() {
+        Calculation calc1 = Calculation.Builder
+                .builder()
+                .withId(CALCULATION_1_ID)
+                .withMember(MEMBER_1)
+                .withRole(ROLE_2)
+                .withState(CalculationState.DRAFT)
+                .withPublicationDate(LocalDate.of(2025, 1, 14))
+                .withPublicizedBy("Ldap User")
+                .withDegreeCalculations(List.of(DEGREE_CALC_1, DEGREE_CALC_3))
+                .withExperienceCalculations(List.of(EXP_CALC_1, EXP_CALC_3))
+                .withCertificateCalculations(List.of(CERT_CALC_1, CERT_CALC_3))
+                .build();
+
+        calc1.getDegreeCalculations().forEach(d -> d.setCalculation(calc1));
+        calc1.getExperienceCalculations().forEach(e -> e.setCalculation(calc1));
+        calc1.getCertificateCalculations().forEach(c -> c.setCalculation(calc1));
+
+        return calc1;
+    }
+
     static {
         Calculation calc1 = Calculation.Builder
                 .builder()

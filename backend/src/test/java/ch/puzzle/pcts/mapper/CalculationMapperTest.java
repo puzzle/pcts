@@ -191,10 +191,12 @@ class CalculationMapperTest {
     @DisplayName("Should map Calculations to RolePointDto list")
     @Test
     void shouldReturnListOfRolePointDto() {
-        CALCULATION_1.setPoints(BigDecimal.TEN);
-        CALCULATION_2.setPoints(BigDecimal.TWO);
+        Calculation calculation1 = GET_CALCULATIN();
+        Calculation calculation2 = GET_CALCULATIN();
+        calculation1.setPoints(BigDecimal.TEN);
+        calculation2.setPoints(BigDecimal.TWO);
 
-        List<Calculation> calculations = List.of(CALCULATION_1, CALCULATION_2);
+        List<Calculation> calculations = List.of(calculation1, calculation2);
 
         List<RolePointDto> result = calculationMapper.toRolePointDto(calculations);
 
@@ -206,9 +208,5 @@ class CalculationMapperTest {
 
         assertEquals(ROLE_2, result.get(1).role());
         assertEquals(BigDecimal.TWO, result.get(1).points());
-
-        CALCULATION_1.setPoints(null);
-        CALCULATION_2.setPoints(null);
     }
-
 }
