@@ -1,10 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { MemberModel } from './member.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { MemberDto } from './dto/member.dto';
 import { DateTime } from 'luxon';
 import { MemberCvOverviewModel } from './member-cv-overview.model';
+import { CalculationModel } from '../calculations/calculation.model';
 import { RolePointsModel } from './detail-view/RolePointsModel';
 
 @Injectable({
@@ -33,6 +34,16 @@ export class MemberService {
   updateMember(id: number, member: MemberModel): Observable<MemberModel> {
     return this.httpClient.put<MemberModel>(`${this.API_URL}/${id}`, this.toDto(member))
       .pipe(map((dto) => this.mapDates(dto)));
+  }
+
+  getCalculationsByMemberIdAndOptionalRoleId(memberId: number, roleId?: number): Observable<CalculationModel[]> {
+    let roleIdParam = new HttpParams();
+    if (roleId) {
+      roleIdParam = roleIdParam.set('roleId', roleId);
+    }
+    return this.httpClient.get<CalculationModel[]>(`${this.API_URL}/${memberId}/calculations`, {
+      params: roleIdParam
+    });
   }
 
   private mapDates(dto: MemberModel): MemberModel {

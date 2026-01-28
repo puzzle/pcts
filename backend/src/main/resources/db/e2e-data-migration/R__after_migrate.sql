@@ -152,7 +152,18 @@ VALUES
 INSERT INTO calculation (member_id, role_id, state, publication_date, publicized_by)
 VALUES
     (1, 1, 'ACTIVE', '2025-02-02', 'system'),
-    (2, 2, 'DRAFT', NULL, NULL),
+    (1, 1, 'DRAFT', NULL, NULL),
+    (1, 1, 'DRAFT', NULL, NULL),
+    (1, 1, 'DRAFT', NULL, NULL),
+    (1, 1, 'DRAFT', NULL, NULL),
+    (1, 1, 'DRAFT', NULL, NULL),
+    (1, 1, 'DRAFT', NULL, NULL),
+    (1, 1, 'DRAFT', NULL, NULL),
+    (1, 1, 'DRAFT', NULL, NULL),
+    (1, 1, 'DRAFT', NULL, NULL),
+    (1, 1, 'DRAFT', NULL, NULL),
+
+    (2, 2, 'ACTIVE', '2025-02-02', 'system'),
     (3, 3, 'ARCHIVED', '2025-01-10', 'admin_user'),
     (4, 4, 'DRAFT', NULL, NULL),
     (5, 5, 'ACTIVE', '2025-01-28', 'admin_user'),
