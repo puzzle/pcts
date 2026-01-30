@@ -45,10 +45,10 @@ export const leadershipExperienceTableData: TableData = {
 export const memberCalculationTableData: TableData = {
   rows: [{
     cells: [
-      '0',
-      'ACTIVE',
+      '0.00',
+      'Aktiv',
       'system',
-      '2025-02-02'
+      '02.02.2025'
     ]
   }]
 };
