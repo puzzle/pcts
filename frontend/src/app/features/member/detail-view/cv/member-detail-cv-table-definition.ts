@@ -6,8 +6,8 @@ import { formatDateLocale } from '../../../../shared/format/date-format';
 import { CertificateOverviewModel } from './certificate-overview.model';
 import { CalculationModel } from '../../../calculations/calculation.model';
 import { CalculationState, calculationStateSortingPriority } from '../../../calculations/calculation-state.enum';
-import { inject } from '@angular/core'
-import { ScopedTranslationService } from '../../../../shared/i18n-prefix.provider'
+import { inject } from '@angular/core';
+import { ScopedTranslationService } from '../../../../shared/i18n-prefix.provider';
 
 const formatRange = (start: Date, end: Date | null): string => {
   const s = formatDateLocale(start);

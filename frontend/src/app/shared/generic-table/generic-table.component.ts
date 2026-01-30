@@ -128,7 +128,7 @@ export class GenericTableComponent<T extends object> {
 
   protected getDisplayValue(col: GenCol<T>, entity: T): string {
     let value = col.getValue(entity) ?? '';
-    runInInjectionContext(this.injector, ()=>{
+    runInInjectionContext(this.injector, () => {
       col.pipes.forEach((formatter) => {
         value = formatter(value);
       });
