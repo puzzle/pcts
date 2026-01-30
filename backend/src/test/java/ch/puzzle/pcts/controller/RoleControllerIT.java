@@ -1,12 +1,12 @@
 package ch.puzzle.pcts.controller;
 
-import static ch.puzzle.pcts.util.TestData.*;
-import static ch.puzzle.pcts.util.TestDataDTOs.*;
-import static ch.puzzle.pcts.util.TestDataModels.*;
+import static ch.puzzle.pcts.util.TestData.ROLE_2_ID;
+import static ch.puzzle.pcts.util.TestDataDTOs.ROLE_2_DTO;
+import static ch.puzzle.pcts.util.TestDataDTOs.ROLE_2_INPUT;
+import static ch.puzzle.pcts.util.TestDataModels.ROLE_2;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -21,7 +21,6 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -54,8 +53,8 @@ class RoleControllerIT {
     @DisplayName("Should successfully get all roles")
     @Test
     void shouldGetAllRoles() throws Exception {
-        BDDMockito.given(service.getAll()).willReturn(List.of(ROLE_2));
-        BDDMockito.given(mapper.toDto(any(List.class))).willReturn(List.of(ROLE_2_DTO));
+        when(service.getAll()).thenReturn(List.of(ROLE_2));
+        when(mapper.toDto(any(List.class))).thenReturn(List.of(ROLE_2_DTO));
 
         mvc
                 .perform(get(BASEURL)
@@ -72,8 +71,8 @@ class RoleControllerIT {
     @DisplayName("Should successfully get role by id")
     @Test
     void shouldGetRoleById() throws Exception {
-        BDDMockito.given(service.getById(anyLong())).willReturn(ROLE_2);
-        BDDMockito.given(mapper.toDto(any(Role.class))).willReturn(ROLE_2_DTO);
+        when(service.getById(anyLong())).thenReturn(ROLE_2);
+        when(mapper.toDto(any(Role.class))).thenReturn(ROLE_2_DTO);
 
         mvc
                 .perform(get(BASEURL + "/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -87,9 +86,9 @@ class RoleControllerIT {
     @DisplayName("Should successfully create new role")
     @Test
     void shouldCreateNewRole() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(RoleDto.class))).willReturn(ROLE_2);
-        BDDMockito.given(service.create(any(Role.class))).willReturn(ROLE_2);
-        BDDMockito.given(mapper.toDto(any(Role.class))).willReturn(ROLE_2_DTO);
+        when(mapper.fromDto(any(RoleDto.class))).thenReturn(ROLE_2);
+        when(service.create(any(Role.class))).thenReturn(ROLE_2);
+        when(mapper.toDto(any(Role.class))).thenReturn(ROLE_2_DTO);
 
         mvc
                 .perform(post(BASEURL)
@@ -107,9 +106,9 @@ class RoleControllerIT {
     @DisplayName("Should successfully update role")
     @Test
     void shouldUpdateRole() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(RoleDto.class))).willReturn(ROLE_2);
-        BDDMockito.given(service.update(any(Long.class), any(Role.class))).willReturn(ROLE_2);
-        BDDMockito.given(mapper.toDto(any(Role.class))).willReturn(ROLE_2_DTO);
+        when(mapper.fromDto(any(RoleDto.class))).thenReturn(ROLE_2);
+        when(service.update(any(Long.class), any(Role.class))).thenReturn(ROLE_2);
+        when(mapper.toDto(any(Role.class))).thenReturn(ROLE_2_DTO);
 
         mvc
                 .perform(put(BASEURL + "/" + ROLE_2_ID)
@@ -127,7 +126,7 @@ class RoleControllerIT {
     @DisplayName("Should successfully delete role")
     @Test
     void shouldDeleteRole() throws Exception {
-        BDDMockito.willDoNothing().given(service).delete(anyLong());
+        doNothing().when(service).delete(anyLong());
 
         mvc
                 .perform(delete(BASEURL + "/" + ROLE_2_ID)

@@ -1,14 +1,11 @@
 package ch.puzzle.pcts.controller;
 
-import static ch.puzzle.pcts.util.TestData.*;
+import static ch.puzzle.pcts.util.TestData.CERTIFICATE_1_ID;
 import static ch.puzzle.pcts.util.TestDataDTOs.*;
-import static ch.puzzle.pcts.util.TestDataModels.*;
+import static ch.puzzle.pcts.util.TestDataModels.CERTIFICATE_1;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willDoNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -54,8 +51,8 @@ class CertificateControllerIT {
     @DisplayName("Should successfully get certificate by id")
     @Test
     void shouldGetCertificateById() throws Exception {
-        given(service.getById(CERTIFICATE_1_ID)).willReturn(CERTIFICATE_1);
-        given(mapper.toDto(any(Certificate.class))).willReturn(CERTIFICATE_1_DTO);
+        when(service.getById(CERTIFICATE_1_ID)).thenReturn(CERTIFICATE_1);
+        when(mapper.toDto(any(Certificate.class))).thenReturn(CERTIFICATE_1_DTO);
 
         mvc
                 .perform(get(BASEURL + "/{id}", CERTIFICATE_1_ID).with(csrf()))
@@ -69,9 +66,9 @@ class CertificateControllerIT {
     @DisplayName("Should successfully create new certificate")
     @Test
     void shouldCreateNewMemberCertificate() throws Exception {
-        given(mapper.fromDto(any(CertificateInputDto.class))).willReturn(CERTIFICATE_1);
-        given(service.create(any(Certificate.class))).willReturn(CERTIFICATE_1);
-        given(mapper.toDto(any(Certificate.class))).willReturn(CERTIFICATE_1_DTO);
+        when(mapper.fromDto(any(CertificateInputDto.class))).thenReturn(CERTIFICATE_1);
+        when(service.create(any(Certificate.class))).thenReturn(CERTIFICATE_1);
+        when(mapper.toDto(any(Certificate.class))).thenReturn(CERTIFICATE_1_DTO);
 
         mvc
                 .perform(post(BASEURL)
@@ -89,9 +86,9 @@ class CertificateControllerIT {
     @DisplayName("Should successfully update certificate")
     @Test
     void shouldUpdateCertificate() throws Exception {
-        given(mapper.fromDto(any(CertificateInputDto.class))).willReturn(CERTIFICATE_1);
-        given(service.update(eq(CERTIFICATE_1_ID), any(Certificate.class))).willReturn(CERTIFICATE_1);
-        given(mapper.toDto(any(Certificate.class))).willReturn(CERTIFICATE_1_DTO);
+        when(mapper.fromDto(any(CertificateInputDto.class))).thenReturn(CERTIFICATE_1);
+        when(service.update(eq(CERTIFICATE_1_ID), any(Certificate.class))).thenReturn(CERTIFICATE_1);
+        when(mapper.toDto(any(Certificate.class))).thenReturn(CERTIFICATE_1_DTO);
 
         mvc
                 .perform(put(BASEURL + "/{id}", CERTIFICATE_1_ID)
@@ -109,7 +106,7 @@ class CertificateControllerIT {
     @DisplayName("Should successfully delete certificate")
     @Test
     void shouldDeleteCertificate() throws Exception {
-        willDoNothing().given(service).delete(CERTIFICATE_1_ID);
+        doNothing().when(service).delete(CERTIFICATE_1_ID);
 
         mvc
                 .perform(delete(BASEURL + "/{id}", CERTIFICATE_1_ID).with(csrf()))

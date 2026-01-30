@@ -1,8 +1,9 @@
 package ch.puzzle.pcts.controller;
 
-import static ch.puzzle.pcts.util.TestData.*;
-import static ch.puzzle.pcts.util.TestDataDTOs.*;
-import static ch.puzzle.pcts.util.TestDataModels.*;
+import static ch.puzzle.pcts.util.TestData.CERT_TYPE_5_ID;
+import static ch.puzzle.pcts.util.TestDataDTOs.CERT_TYPE_5_DTO;
+import static ch.puzzle.pcts.util.TestDataDTOs.CERT_TYPE_5_Input;
+import static ch.puzzle.pcts.util.TestDataModels.CERT_TYPE_5;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -18,7 +19,6 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -51,8 +51,8 @@ class CertificateTypeControllerIT {
     @DisplayName("Should successfully get all certificate types")
     @Test
     void shouldGetAllCertificateTypes() throws Exception {
-        BDDMockito.given(service.getAll()).willReturn(List.of(CERT_TYPE_5));
-        BDDMockito.given(mapper.toDto(any(List.class))).willReturn(List.of(CERT_TYPE_5_DTO));
+        when(service.getAll()).thenReturn(List.of(CERT_TYPE_5));
+        when(mapper.toDto(any(List.class))).thenReturn(List.of(CERT_TYPE_5_DTO));
 
         mvc
                 .perform(get(BASEURL)
@@ -69,8 +69,8 @@ class CertificateTypeControllerIT {
     @DisplayName("Should successfully get certificate type by id")
     @Test
     void shouldGetCertificateTypeById() throws Exception {
-        BDDMockito.given(service.getById(anyLong())).willReturn(CERT_TYPE_5);
-        BDDMockito.given(mapper.toDto(any(CertificateType.class))).willReturn(CERT_TYPE_5_DTO);
+        when(service.getById(anyLong())).thenReturn(CERT_TYPE_5);
+        when(mapper.toDto(any(CertificateType.class))).thenReturn(CERT_TYPE_5_DTO);
 
         mvc
                 .perform(get(BASEURL + "/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -84,9 +84,9 @@ class CertificateTypeControllerIT {
     @DisplayName("Should successfully create new certificate type")
     @Test
     void shouldCreateNewCertificateType() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(CertificateTypeDto.class))).willReturn(CERT_TYPE_5);
-        BDDMockito.given(service.create(any(CertificateType.class))).willReturn(CERT_TYPE_5);
-        BDDMockito.given(mapper.toDto(any(CertificateType.class))).willReturn(CERT_TYPE_5_DTO);
+        when(mapper.fromDto(any(CertificateTypeDto.class))).thenReturn(CERT_TYPE_5);
+        when(service.create(any(CertificateType.class))).thenReturn(CERT_TYPE_5);
+        when(mapper.toDto(any(CertificateType.class))).thenReturn(CERT_TYPE_5_DTO);
 
         mvc
                 .perform(post(BASEURL)
@@ -104,9 +104,9 @@ class CertificateTypeControllerIT {
     @DisplayName("Should successfully update certificate type")
     @Test
     void shouldUpdateCertificateType() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(CertificateTypeDto.class))).willReturn(CERT_TYPE_5);
-        BDDMockito.given(service.update(any(Long.class), any(CertificateType.class))).willReturn(CERT_TYPE_5);
-        BDDMockito.given(mapper.toDto(any(CertificateType.class))).willReturn(CERT_TYPE_5_DTO);
+        when(mapper.fromDto(any(CertificateTypeDto.class))).thenReturn(CERT_TYPE_5);
+        when(service.update(any(Long.class), any(CertificateType.class))).thenReturn(CERT_TYPE_5);
+        when(mapper.toDto(any(CertificateType.class))).thenReturn(CERT_TYPE_5_DTO);
 
         mvc
                 .perform(put(BASEURL + "/" + CERT_TYPE_5_ID)
@@ -124,7 +124,7 @@ class CertificateTypeControllerIT {
     @DisplayName("Should successfully delete certificate type")
     @Test
     void shouldDeleteCertificateType() throws Exception {
-        BDDMockito.willDoNothing().given(service).delete(anyLong());
+        doNothing().when(service).delete(anyLong());
 
         mvc
                 .perform(delete(BASEURL + "/" + CERT_TYPE_5_ID)

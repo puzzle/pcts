@@ -5,10 +5,7 @@ import static ch.puzzle.pcts.util.TestDataDTOs.*;
 import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willDoNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -53,8 +50,8 @@ class LeadershipExperienceControllerIT {
     @DisplayName("Should successfully get leadership experience by ID")
     @Test
     void shouldGetLeadershipExperienceById() throws Exception {
-        given(businessService.getById(LEADERSHIP_CERT_1_ID)).willReturn(LEADERSHIP_CERT_1);
-        given(mapper.toDto(any(Certificate.class))).willReturn(LEADERSHIP_CERT_1_DTO);
+        when(businessService.getById(LEADERSHIP_CERT_1_ID)).thenReturn(LEADERSHIP_CERT_1);
+        when(mapper.toDto(any(Certificate.class))).thenReturn(LEADERSHIP_CERT_1_DTO);
 
         mvc
                 .perform(get(BASEURL + "/{id}", LEADERSHIP_CERT_1_ID).with(csrf()).accept(MediaType.APPLICATION_JSON))
@@ -68,9 +65,9 @@ class LeadershipExperienceControllerIT {
     @DisplayName("Should successfully create leadership experience")
     @Test
     void shouldCreateLeadershipExperience() throws Exception {
-        given(mapper.fromDto(any(LeadershipExperienceInputDto.class))).willReturn(LEADERSHIP_CERT_1);
-        given(businessService.create(any(Certificate.class))).willReturn(LEADERSHIP_CERT_1);
-        given(mapper.toDto(any(Certificate.class))).willReturn(LEADERSHIP_CERT_1_DTO);
+        when(mapper.fromDto(any(LeadershipExperienceInputDto.class))).thenReturn(LEADERSHIP_CERT_1);
+        when(businessService.create(any(Certificate.class))).thenReturn(LEADERSHIP_CERT_1);
+        when(mapper.toDto(any(Certificate.class))).thenReturn(LEADERSHIP_CERT_1_DTO);
 
         mvc
                 .perform(post(BASEURL)
@@ -88,9 +85,9 @@ class LeadershipExperienceControllerIT {
     @DisplayName("Should successfully update leadership experience")
     @Test
     void shouldUpdateLeadershipExperience() throws Exception {
-        given(mapper.fromDto(any(LeadershipExperienceInputDto.class))).willReturn(LEADERSHIP_CERT_1);
-        given(businessService.update(eq(LEADERSHIP_CERT_1_ID), any(Certificate.class))).willReturn(LEADERSHIP_CERT_1);
-        given(mapper.toDto(any(Certificate.class))).willReturn(LEADERSHIP_CERT_1_DTO);
+        when(mapper.fromDto(any(LeadershipExperienceInputDto.class))).thenReturn(LEADERSHIP_CERT_1);
+        when(businessService.update(eq(LEADERSHIP_CERT_1_ID), any(Certificate.class))).thenReturn(LEADERSHIP_CERT_1);
+        when(mapper.toDto(any(Certificate.class))).thenReturn(LEADERSHIP_CERT_1_DTO);
 
         mvc
                 .perform(put(BASEURL + "/{id}", LEADERSHIP_CERT_1_ID)
@@ -108,7 +105,7 @@ class LeadershipExperienceControllerIT {
     @DisplayName("Should successfully delete leadership experience")
     @Test
     void shouldDeleteLeadershipExperience() throws Exception {
-        willDoNothing().given(businessService).delete(LEADERSHIP_CERT_1_ID);
+        doNothing().when(businessService).delete(LEADERSHIP_CERT_1_ID);
 
         mvc
                 .perform(delete(BASEURL + "/{id}", LEADERSHIP_CERT_1_ID).with(csrf()))

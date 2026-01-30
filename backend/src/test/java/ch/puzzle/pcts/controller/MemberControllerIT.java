@@ -24,7 +24,6 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -60,8 +59,8 @@ class MemberControllerIT {
     @DisplayName("Should successfully get all members")
     @Test
     void shouldGetAllMembers() throws Exception {
-        BDDMockito.given(service.getAll()).willReturn(List.of(MEMBER_1));
-        BDDMockito.given(mapper.toDto(any(List.class))).willReturn(List.of(MEMBER_1_DTO));
+        when(service.getAll()).thenReturn(List.of(MEMBER_1));
+        when(mapper.toDto(any(List.class))).thenReturn(List.of(MEMBER_1_DTO));
 
         mvc
                 .perform(get(BASEURL)
@@ -78,8 +77,8 @@ class MemberControllerIT {
     @DisplayName("Should successfully get member by id")
     @Test
     void shouldGetMemberById() throws Exception {
-        BDDMockito.given(service.getById(anyLong())).willReturn(MEMBER_1);
-        BDDMockito.given(mapper.toDto(any(Member.class))).willReturn(MEMBER_1_DTO);
+        when(service.getById(anyLong())).thenReturn(MEMBER_1);
+        when(mapper.toDto(any(Member.class))).thenReturn(MEMBER_1_DTO);
 
         mvc
                 .perform(get(BASEURL + "/" + MEMBER_1_ID).with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -93,9 +92,9 @@ class MemberControllerIT {
     @DisplayName("Should successfully create new member")
     @Test
     void shouldCreateNewMember() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(MemberInputDto.class))).willReturn(MEMBER_1);
-        BDDMockito.given(service.create(any(Member.class))).willReturn(MEMBER_1);
-        BDDMockito.given(mapper.toDto(any(Member.class))).willReturn(MEMBER_1_DTO);
+        when(mapper.fromDto(any(MemberInputDto.class))).thenReturn(MEMBER_1);
+        when(service.create(any(Member.class))).thenReturn(MEMBER_1);
+        when(mapper.toDto(any(Member.class))).thenReturn(MEMBER_1_DTO);
 
         mvc
                 .perform(post(BASEURL)
@@ -113,9 +112,9 @@ class MemberControllerIT {
     @DisplayName("Should successfully update member")
     @Test
     void shouldUpdateMember() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(MemberInputDto.class))).willReturn(MEMBER_1);
-        BDDMockito.given(service.update(any(Long.class), any(Member.class))).willReturn(MEMBER_1);
-        BDDMockito.given(mapper.toDto(any(Member.class))).willReturn(MEMBER_1_DTO);
+        when(mapper.fromDto(any(MemberInputDto.class))).thenReturn(MEMBER_1);
+        when(service.update(any(Long.class), any(Member.class))).thenReturn(MEMBER_1);
+        when(mapper.toDto(any(Member.class))).thenReturn(MEMBER_1_DTO);
 
         mvc
                 .perform(put(BASEURL + "/" + MEMBER_1_ID)
@@ -133,7 +132,7 @@ class MemberControllerIT {
     @DisplayName("Should successfully delete member")
     @Test
     void shouldDeleteMember() throws Exception {
-        BDDMockito.willDoNothing().given(service).delete(anyLong());
+        doNothing().when(service).delete(anyLong());
 
         mvc
                 .perform(delete(BASEURL + "/" + MEMBER_1_ID)
@@ -154,11 +153,9 @@ class MemberControllerIT {
         Calculation calculation = mock(Calculation.class);
         CalculationDto calculationDto = mock(CalculationDto.class);
 
-        BDDMockito
-                .given(service.getAllCalculationsByMemberIdAndRoleId(memberId, roleId))
-                .willReturn(List.of(calculation));
+        when(service.getAllCalculationsByMemberIdAndRoleId(memberId, roleId)).thenReturn(List.of(calculation));
 
-        BDDMockito.given(calculationMapper.toDto(anyList())).willReturn(List.of(calculationDto));
+        when(calculationMapper.toDto(anyList())).thenReturn(List.of(calculationDto));
 
         mvc
                 .perform(get(BASEURL + "/" + memberId + "/calculations")
@@ -180,11 +177,9 @@ class MemberControllerIT {
         Calculation calculation = mock(Calculation.class);
         CalculationDto calculationDto = mock(CalculationDto.class);
 
-        BDDMockito
-                .given(service.getAllCalculationsByMemberIdAndRoleId(memberId, null))
-                .willReturn(List.of(calculation));
+        when(service.getAllCalculationsByMemberIdAndRoleId(memberId, null)).thenReturn(List.of(calculation));
 
-        BDDMockito.given(calculationMapper.toDto(anyList())).willReturn(List.of(calculationDto));
+        when(calculationMapper.toDto(anyList())).thenReturn(List.of(calculationDto));
 
         mvc
                 .perform(get(BASEURL + "/" + memberId + "/calculations")
@@ -205,8 +200,8 @@ class MemberControllerIT {
         RolePointDto rolePointDto = mock(RolePointDto.class);
         Calculation calculation = mock(Calculation.class);
 
-        BDDMockito.given(service.getAllActiveCalculationsByMemberId(memberId)).willReturn(List.of(calculation));
-        BDDMockito.given(calculationMapper.toRolePointDto(List.of(calculation))).willReturn(List.of(rolePointDto));
+        when(service.getAllActiveCalculationsByMemberId(memberId)).thenReturn(List.of(calculation));
+        when(calculationMapper.toRolePointDto(List.of(calculation))).thenReturn(List.of(rolePointDto));
 
         mvc
                 .perform(get(BASEURL + "/" + memberId + "/role-points")
