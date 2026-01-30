@@ -132,8 +132,25 @@ class DegreeCalculationBusinessServiceTest
     }
 
     @Test
+    @DisplayName("Should return zero points if degrees are not completed")
+    void shouldReturnZeroPointsWhenNotCompleted() {
+        Degree degree = mock(Degree.class);
+        when(degree.getCompleted()).thenReturn(false);
+
+        DegreeCalculation dc = mock(DegreeCalculation.class);
+        when(dc.getDegree()).thenReturn(degree);
+
+        when(persistenceService.getByCalculationId(DEGREE_CALCULATION_ID_1)).thenReturn(List.of(dc));
+
+        BigDecimal result = businessService.getDegreePoints(DEGREE_CALCULATION_ID_1);
+
+        assertEquals(BigDecimal.ZERO, result);
+        verify(persistenceService).getByCalculationId(DEGREE_CALCULATION_ID_1);
+    }
+
+    @Test
     @DisplayName("Should return zero points if calculation has no degrees")
-    void shouldReturnZeroPoints() {
+    void shouldReturnZeroPointsWhenNoDegrees() {
         when(persistenceService.getByCalculationId(DEGREE_CALCULATION_ID_1)).thenReturn(List.of());
 
         BigDecimal result = businessService.getDegreePoints(DEGREE_CALCULATION_ID_1);
