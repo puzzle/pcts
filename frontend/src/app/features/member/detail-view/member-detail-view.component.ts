@@ -143,7 +143,7 @@ export class MemberDetailViewComponent implements OnInit {
           .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe(() => this.getData());
       });
-  }
+  };
 
   onTabIndexChange(index: number) {
     this.router.navigate([], {
