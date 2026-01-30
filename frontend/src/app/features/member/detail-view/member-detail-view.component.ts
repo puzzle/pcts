@@ -64,7 +64,7 @@ export class MemberDetailViewComponent implements OnInit {
 
   leadershipExperienceData = signal<LeadershipExperienceOverviewModel[]>([]);
 
-  tabGroup = viewChild.required(MatTabGroup);
+  tabGroup = viewChild(MatTabGroup);
 
   tabIndex = input.required<number>();
 
@@ -89,7 +89,10 @@ export class MemberDetailViewComponent implements OnInit {
       .subscribe({
         next: (RolePoints) => {
           this.rolePointList.set(RolePoints);
-          this.tabGroup().selectedIndex = this.tabIndex();
+          const tabGroup = this.tabGroup();
+          if (tabGroup) {
+            tabGroup.selectedIndex = this.tabIndex();
+          }
         }
       });
   }

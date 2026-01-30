@@ -7,11 +7,13 @@ describe('MemberCalculationComponent', () => {
 
   beforeEach(() => {
     tableHelper = TableHelper.withTableTestId('member-calculation-table');
-    memberDetailPage.visit(1, 1);
+    memberDetailPage.visit(1)
+      .withTabIndex(1);
   });
 
   it('should contain correct member calculation table data', () => {
-    memberDetailPage.visit(2, 1);
+    memberDetailPage.visit(2)
+      .withTabIndex(1);
 
     tableHelper.expectTableContains(memberCalculationTableData);
   });

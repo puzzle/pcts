@@ -4,7 +4,9 @@ import MemberDetailPage from '../pages/memberDetailPage';
 import { TableHelper } from '../support/helper/table-helper';
 
 describe('MemberOverviewComponent', () => {
-  beforeEach(() => memberDetailPage.visit(1));
+  beforeEach(() => {
+    memberDetailPage.visit(1);
+  });
 
   const tables: [string, TableData][] = [
     ['degree',
