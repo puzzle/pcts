@@ -1,6 +1,4 @@
 import memberDetailPage from '../pages/memberDetailPage';
-import MemberCalculationPage from '../pages/memberCalculationPage';
-import memberCalculationPage from '../pages/memberCalculationPage';
 import { memberCalculationTableData } from '../support/helper/table-data';
 import { TableHelper } from '../support/helper/table-helper';
 
@@ -9,21 +7,18 @@ describe('MemberCalculationComponent', () => {
 
   beforeEach(() => {
     tableHelper = TableHelper.withTableTestId('member-calculation-table');
-    memberDetailPage.visit(1);
+    memberDetailPage.visit(1)
+      .withTabIndex(1);
   });
 
   it('should contain correct member calculation table data', () => {
-    memberDetailPage.visit(2);
-    MemberCalculationPage.memberCalculationTab()
-      .click();
+    memberDetailPage.visit(2)
+      .withTabIndex(1);
 
     tableHelper.expectTableContains(memberCalculationTableData);
   });
 
   it('should cut list after 10 entries', () => {
-    memberCalculationPage.memberCalculationTab()
-      .click();
-
     tableHelper.expectLengthOfTable(10)
       .expectTableToBeExtendable()
       .toggleShowAll()

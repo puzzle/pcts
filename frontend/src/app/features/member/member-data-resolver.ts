@@ -6,11 +6,12 @@ import { Observable, of, EMPTY } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 export const memberDataResolver: ResolveFn<MemberModel> = (route): Observable<MemberModel> => {
-  const id: string | null = route.paramMap.get('id');
+  // Extract the route `id` and strip any query parameters if present
+  const id: string | undefined = route.paramMap.get('id')
+    ?.split('?')[0];
   const router = inject(Router);
   const memberService = inject(MemberService);
-
-  if (id === null) {
+  if (!id) {
     return of({} as MemberModel);
   }
 

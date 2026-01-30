@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, inject, input, OnInit, signal, viewChild, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberService } from '../member.service';
@@ -44,7 +44,17 @@ export class MemberDetailViewComponent implements OnInit {
 
   private readonly router = inject(Router);
 
+  readonly experienceTable = getExperienceTable();
+
+  readonly certificateTable = getCertificateTable();
+
+  readonly degreeTable = getDegreeTable();
+
+  readonly leadershipExperienceTable = getLeadershipExperienceTable();
+
   readonly member: WritableSignal<MemberOverviewModel | null> = signal<MemberOverviewModel | null>(null);
+
+  readonly rolePointList = signal<RolePointsModel[]>([]);
 
   degreeData = signal<DegreeOverviewModel[]>([]);
 
@@ -54,15 +64,9 @@ export class MemberDetailViewComponent implements OnInit {
 
   leadershipExperienceData = signal<LeadershipExperienceOverviewModel[]>([]);
 
-  readonly experienceTable = getExperienceTable();
+  tabGroup = viewChild(MatTabGroup);
 
-  readonly certificateTable = getCertificateTable();
-
-  readonly degreeTable = getDegreeTable();
-
-  readonly leadershipExperienceTable = getLeadershipExperienceTable();
-
-  readonly rolePointList = signal<RolePointsModel[]>([]);
+  tabIndex = input.required<number>();
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -85,7 +89,20 @@ export class MemberDetailViewComponent implements OnInit {
       .subscribe({
         next: (RolePoints) => {
           this.rolePointList.set(RolePoints);
+          const tabGroup = this.tabGroup();
+          if (tabGroup) {
+            tabGroup.selectedIndex = this.tabIndex();
+          }
         }
       });
+  }
+
+  onTabIndexChange(index: number) {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { tabIndex: index },
+      queryParamsHandling: 'merge',
+      replaceUrl: true
+    });
   }
 }
