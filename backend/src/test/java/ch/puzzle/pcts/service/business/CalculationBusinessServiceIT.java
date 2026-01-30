@@ -23,8 +23,8 @@ class CalculationBusinessServiceIT {
     @Sql({ "/db/test-data-migration/db-scripts/alter__sequences.sql",
             "/db/test-data-migration/db-scripts/insert__john_doe.sql" })
     void shouldCalculateSimpleMemberCorrectly() {
-        assertThat(calcBusinessService.getById(1000L).getPoints().setScale(1, RoundingMode.FLOOR))
-                .isEqualTo(BigDecimal.valueOf(15.7));
+        assertThat(calcBusinessService.getById(1000L).getPoints().setScale(2, RoundingMode.CEILING))
+                .isEqualByComparingTo(BigDecimal.valueOf(15.80));
     }
 
     @Transactional
@@ -33,8 +33,8 @@ class CalculationBusinessServiceIT {
     @Sql({ "/db/test-data-migration/db-scripts/alter__sequences.sql",
             "/db/test-data-migration/db-scripts/insert__hermine_sidney.sql" })
     void shouldCalculateComplexMemberCorrectly() {
-        assertThat(calcBusinessService.getById(1000L).getPoints().setScale(1, RoundingMode.FLOOR))
-                .isEqualTo(BigDecimal.valueOf(95.7));
+        assertThat(calcBusinessService.getById(1000L).getPoints().setScale(2, RoundingMode.CEILING))
+                .isEqualTo(BigDecimal.valueOf(95.76));
     }
 
     @Transactional
@@ -43,10 +43,10 @@ class CalculationBusinessServiceIT {
     @Sql({ "/db/test-data-migration/db-scripts/alter__sequences.sql",
             "/db/test-data-migration/db-scripts/insert__devon_ricky.sql" })
     void shouldCalculateComplexMultiRoleMemberCorrectly() {
-        assertThat(calcBusinessService.getById(1000L).getPoints().setScale(1, RoundingMode.FLOOR))
-                .isEqualTo(BigDecimal.valueOf(87.5));
+        assertThat(calcBusinessService.getById(1000L).getPoints().setScale(2, RoundingMode.CEILING))
+                .isEqualTo(BigDecimal.valueOf(87.51));
 
-        assertThat(calcBusinessService.getById(1001L).getPoints().setScale(1, RoundingMode.FLOOR))
-                .isEqualTo(BigDecimal.valueOf(84.4));
+        assertThat(calcBusinessService.getById(1001L).getPoints().setScale(2, RoundingMode.CEILING))
+                .isEqualTo(BigDecimal.valueOf(84.48));
     }
 }
