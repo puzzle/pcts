@@ -17,16 +17,16 @@ import { switchMap } from 'rxjs';
 export class MemberCalculationTableComponent {
   private readonly memberService: MemberService = inject(MemberService);
 
-  private readonly calculationsRequest$ = computed(() => ({
+  private readonly calculationsRequest$ = toObservable(computed(() => ({
     memberId: this.memberId(),
     roleId: this.roleId()
-  }));
+  })));
 
   memberId = input.required<number>();
 
   roleId = input<number>();
 
-  calculations = toSignal(toObservable(this.calculationsRequest$)
+  calculations = toSignal(this.calculationsRequest$
     .pipe(switchMap((params) => this.memberService.getCalculationsByMemberIdAndOptionalRoleId(params.memberId, params.roleId))), { initialValue: [] });
 
   calculationTable = getCalculationTable();
