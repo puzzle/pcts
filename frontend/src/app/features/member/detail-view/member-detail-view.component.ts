@@ -19,6 +19,7 @@ import {
 } from './cv/member-detail-cv-table-definition';
 import { MemberOverviewModel } from '../member-overview.model';
 import { RolePointsModel } from './RolePointsModel';
+import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -30,7 +31,8 @@ import { RolePointsModel } from './RolePointsModel';
     GenericCvContentComponent,
     MatTabGroup,
     MatTab,
-    TranslationScopeDirective
+    TranslationScopeDirective,
+    MemberCalculationTableComponent
   ],
   templateUrl: './member-detail-view.component.html',
   styleUrls: ['./member-detail-view.component.scss']

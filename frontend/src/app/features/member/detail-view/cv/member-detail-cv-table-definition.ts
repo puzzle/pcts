@@ -4,6 +4,10 @@ import { ExperienceOverviewModel } from './experience-overview.model';
 import { LeadershipExperienceOverviewModel } from './leadership-experience-overview.model';
 import { formatDateLocale } from '../../../../shared/format/date-format';
 import { CertificateOverviewModel } from './certificate-overview.model';
+import { CalculationModel } from '../../../calculations/calculation.model';
+import { CalculationState, calculationStateSortingPriority } from '../../../calculations/calculation-state.enum';
+import { inject } from '@angular/core';
+import { ScopedTranslationService } from '../../../../shared/i18n-prefix.provider';
 
 const formatRange = (start: Date, end: Date | null): string => {
   const s = formatDateLocale(start);
@@ -26,6 +30,11 @@ export const getCertificateTable = () => new GenericTableDataSource(getCertifica
 export const getLeadershipExperienceTable = () => new GenericTableDataSource(getLeadershipExperienceColumns())
   .withLimit(10)
   .withDetailViewLink();
+
+export const getCalculationTable = () => new GenericTableDataSource(getCalculationColumns())
+  .withLimit(10)
+  .withDetailViewLink()
+  .withSortedBy('state');
 
 const getDegreeColumns = (): GenCol<DegreeOverviewModel>[] => [GenCol.fromCalculated('dateRange', (e: DegreeOverviewModel) => formatRange(e.startDate, e.endDate))
   .withCustomSortingAccessor((e: DegreeOverviewModel) => new Date(e.startDate)
@@ -52,3 +61,18 @@ const getLeadershipExperienceColumns = (): GenCol<LeadershipExperienceOverviewMo
   return e.leadershipExperienceType ? e.leadershipExperienceType.name : '';
 }),
 GenCol.fromAttr('comment')];
+
+const getCalculationColumns = (): GenCol<CalculationModel>[] => [
+  GenCol.fromCalculated('points', (e: CalculationModel) => {
+    return e.points.toFixed(2);
+  }),
+  GenCol.fromAttr<CalculationModel>('state', [(s: CalculationState) => {
+    const scopedTranslationService = inject(ScopedTranslationService);
+    return scopedTranslationService.instant(s);
+  }])
+    .withCustomSortingAccessor((e) => calculationStateSortingPriority[e.state]),
+  GenCol.fromAttr('publicizedBy'),
+  GenCol.fromAttr('publicationDate', [(d: Date) => {
+    return d ? formatDateLocale(d) : '';
+  }])
+];

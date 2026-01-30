@@ -78,8 +78,8 @@
         }
     </div>
     </div>
-    <mat-tab-group class="folder-tabs" mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms" *appTranslationScope="'CV'" data-testid="cv-tab">
-      <mat-tab label="CV">
+    <mat-tab-group class="folder-tabs" mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms" data-testid="cv-tab">
+      <mat-tab *appTranslationScope="'CV'" label="CV">
         <app-generic-cv-content
           data-testid="cv-table-degree"
           idAttr="id"
@@ -117,8 +117,8 @@
         />
       </mat-tab>
       @for (rolePoints of rolePointList(); track rolePoints.role) {
-        <mat-tab [label]='rolePoints.role.name'>
-          <span>calculation content ...</span>
+        <mat-tab *appTranslationScope="'CALCULATION'" [label]='rolePoints.role.name'>
+          <app-member-calculation-table data-testid="member-calculation-table" [roleId]="rolePoints.role.id" [memberId]="m.id"/>
         </mat-tab>
       }
     </mat-tab-group>

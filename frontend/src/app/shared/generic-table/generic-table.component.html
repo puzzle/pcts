@@ -4,9 +4,9 @@
   [dataSource]="dataSource()"
   class="table table-striped table-hover member-table m-0"
   matSort
-  [matSortActive]="this.columnNames()[0]"
+  [matSortActive]="this.dataSource().sortedBy"
   matSortDirection="asc"
-  data-testid="member-table"
+  data-testid="generic-table"
 >
 
   @for (col of columns(); track col.columnName) {
@@ -15,7 +15,7 @@
         {{ getFieldI18nKey(col) | scopedTranslation }}
       </th>
 
-      <td mat-cell *matCellDef="let entity">
+      <td mat-cell data-testid="generic-table-cell" *matCellDef="let entity">
         @let customTpl = templateMap().get(col.columnName);
 
         <ng-container
@@ -37,7 +37,7 @@
       *matRowDef="let row; columns: columnNames();"
       [routerLink]="dataSource().shouldLink ? getRouterLink(row) : null"
       [class.cursor-pointer]="dataSource().shouldLink"
-      data-testid="member-cv-table-row">
+      data-testid="generic-table-row">
     </tr>
 
   <tr *matNoDataRow data-testid="no-results-row">

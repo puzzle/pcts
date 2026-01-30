@@ -1,20 +1,12 @@
+import { certificateTableData, degreeTableData, experienceTableData, leadershipExperienceTableData, TableData } from '../support/helper/table-data';
 import memberDetailPage from '../pages/memberDetailPage';
-import CvMemberPage from '../pages/cvMemberPage';
-import {
-  certificateTableData,
-  degreeTableData,
-  experienceTableData,
-  leadershipExperienceTableData
-} from '../support/helper/table-data';
 import MemberDetailPage from '../pages/memberDetailPage';
+import { TableHelper } from '../support/helper/table-helper';
 
 describe('MemberOverviewComponent', () => {
-  beforeEach(() => {
-    // Equals to 'Lena Müller'
-    memberDetailPage.visit(1);
-  });
+  beforeEach(() => memberDetailPage.visit(1));
 
-  const tableData: [string, string[]][] = [
+  const tables: [string, TableData][] = [
     ['degree',
       degreeTableData],
     ['experience',
@@ -25,41 +17,34 @@ describe('MemberOverviewComponent', () => {
       leadershipExperienceTableData]
   ];
 
-  tableData.forEach(([tableName,
-    tableDataList]) => {
-    it(`should contain correct ${tableName} table data`, () => {
+  tables.forEach(([name,
+    content]) => {
+    it(`should contain correct ${name} table data`, () => {
       MemberDetailPage.visit(2);
-      CvMemberPage.cvTable(tableName);
-      tableDataList.forEach((tableString) => {
-        CvMemberPage.cvTable(tableName)
-          .should('include.text', tableString);
-      });
+      TableHelper.withTableTestId(`cv-table-${name}`)
+        .expectTableContains(content);
     });
   });
 
   it('should disable table when no entries are found', () => {
-    MemberDetailPage.visit(1);
-    CvMemberPage.cvTable('leadership-experience')
-      .should('include.text', 'Keine Einträge');
+    TableHelper.withTableTestId('cv-table-leadership-experience')
+      .expectEmptyTable();
   });
 
   it('should cut list after 5 entries', () => {
-    MemberDetailPage.visit(1);
-    CvMemberPage.cvTable('experience');
-    CvMemberPage.cvTableRows('experience')
-      .should('have.length', 10);
-    CvMemberPage.showListButton()
-      .should('include.text', 'Alles anzeigen')
-      .click();
-    CvMemberPage.cvTableRows('experience')
-      .should('have.length', 13);
-    CvMemberPage.showListButton()
-      .should('include.text', 'Weniger anzeigen');
+    TableHelper.withTableTestId('cv-table-experience')
+      .expectLengthOfTable(10)
+      .expectTableToBeExtendable()
+      .toggleShowAll()
+      .expectLengthOfTable(13)
+      .expectTableToBeFoldable()
+      .toggleShowAll();
   });
 
   it('should include position text even if employer is not set', () => {
     MemberDetailPage.visit(3);
-    CvMemberPage.cvTable('experience')
+    TableHelper.withTableTestId('cv-table-experience')
+      .getTableHTMLElement()
       .should('include.text', 'Data Analyst');
   });
 });
