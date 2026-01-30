@@ -6,7 +6,7 @@ class ModalPage extends Page {
     return cy.getByTestId('modal-title');
   }
 
-  isModalClosed() {
+  checkModalIsClosed() {
     cy.get('.mat-dialog-container')
       .should('not.exist');
   }
@@ -17,6 +17,12 @@ class ModalPage extends Page {
       .contains(value)
       .click();
   };
+
+  checkModalIconButtonVisible() {
+    cy.getByTestId('close-modal-icon-button')
+      .should('be.visible')
+      .and('be.focused');
+  }
 }
 
 export default new ModalPage();

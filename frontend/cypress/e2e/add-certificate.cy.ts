@@ -7,9 +7,7 @@ describe('Add Certificate Modal', () => {
     memberDetailPage.openModalButton('add', 'certificate')
       .click();
 
-    cy.getByTestId('close-modal-icon-button')
-      .should('be.visible')
-      .and('be.focused');
+    modalPage.checkModalIconButtonVisible();
   };
 
   beforeEach(() => {
@@ -33,7 +31,7 @@ describe('Add Certificate Modal', () => {
     formPage.save();
 
     formPage.shouldShowSuccessToast('Zertifikat wurde erfolgreich erstellt.');
-    modalPage.isModalClosed();
+    modalPage.checkModalIsClosed();
   });
 
   describe('Validation Errors', () => {
@@ -104,7 +102,7 @@ describe('Add Certificate Modal', () => {
       it(`closes via ${buttonType}`, () => {
         cy.getByTestId(`close-modal-${buttonType}`)
           .click();
-        modalPage.isModalClosed();
+        modalPage.checkModalIsClosed();
       });
     });
   });

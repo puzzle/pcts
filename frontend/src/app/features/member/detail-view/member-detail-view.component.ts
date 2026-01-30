@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, input, OnInit, signal, viewChild, WritableSignal } from '@angular/core';
+import { Component, inject, input, OnInit, signal, viewChild, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberService } from '../member.service';
@@ -79,8 +79,6 @@ export class MemberDetailViewComponent implements OnInit {
 
   tabIndex = input.required<number>();
 
-  private readonly destroyRef = inject(DestroyRef);
-
   ngOnInit(): void {
     this.getData();
   }
@@ -117,7 +115,7 @@ export class MemberDetailViewComponent implements OnInit {
   openCertificateDialog = (model?: CertificateModel) => {
     this.dialog.openModal(AddCertificateComponent, { data: model })
       .afterSubmitted
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed())
       .subscribe(({ modalSubmitMode, submittedModel }) => {
         const memberId = this.member()?.id;
         if (memberId) {
@@ -140,7 +138,7 @@ export class MemberDetailViewComponent implements OnInit {
         }
         this.certificateService
           .addCertificate(submittedModel)
-          .pipe(takeUntilDestroyed(this.destroyRef))
+          .pipe(takeUntilDestroyed())
           .subscribe(() => this.getData());
       });
   };
