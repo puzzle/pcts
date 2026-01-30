@@ -63,7 +63,7 @@ export class TableHelper {
     return this;
   }
 
-  toggleTable() {
+  toggleShowAll() {
     this.getShowAllButton()
       .click();
     return this;

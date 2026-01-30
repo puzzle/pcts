@@ -26,9 +26,9 @@ describe('MemberCalculationComponent', () => {
 
     tableHelper.expectLengthOfTable(10)
       .expectTableToBeExtendable()
-      .toggleTable()
+      .toggleShowAll()
       .expectLengthOfTable(12)
       .expectTableToBeFoldable()
-      .toggleTable();
+      .toggleShowAll();
   });
 });
