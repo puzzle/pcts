@@ -1,6 +1,6 @@
 export enum CalculationState {
-  DRAFT = 'Entwurf',
-  ACTIVE = 'Aktiv',
+  DRAFT = 'DRAFT',
+  ACTIVE = 'ACTIVE',
   ARCHIVED = 'ARCHIVED'
 }
 

@@ -107,11 +107,11 @@
       "MODEL_NAME": "PCTS-Berechnung",
       "POINTS": "PCTS-Punkte",
       "STATE": "Status",
-      "PUBLICIZED_BY": "Veröffentlicht von",
-      "PUBLICATION_DATE": "Veröffentlicht am",
       "ACTIVE": "Aktiv",
       "DRAFT": "Entwurf",
-      "ARCHIVED": "Archiviert"
+      "ARCHIVED": "Archiviert",
+      "PUBLICIZED_BY": "Veröffentlicht von",
+      "PUBLICATION_DATE": "Veröffentlicht am"
     }
   },
   "ERROR": {
