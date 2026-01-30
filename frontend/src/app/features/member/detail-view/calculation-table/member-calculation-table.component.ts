@@ -17,7 +17,7 @@ import { switchMap } from 'rxjs';
 export class MemberCalculationTableComponent {
   private readonly memberService: MemberService = inject(MemberService);
 
-  private calculationsRequest$ = computed(() => ({
+  private readonly calculationsRequest$ = computed(() => ({
     memberId: this.memberId(),
     roleId: this.roleId()
   }));
