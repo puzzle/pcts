@@ -26,7 +26,7 @@ describe('Add Certificate Modal', () => {
     openCertificateModal();
 
     formPage.submitButtonShouldBe('disabled');
-    modalPage.selectModelTypeValue('certificate', 'Microsoft Certified: Azure Administrator Associate');
+    modalPage.selectAutoCompleteValue('certificateType', 'Microsoft Certified: Azure Administrator Associate');
 
     formPage.typeAndBlur('completedAt', '10.10.2000');
     formPage.submitButtonShouldBe('enabled');
