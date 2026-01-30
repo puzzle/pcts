@@ -17,7 +17,6 @@ describe('MemberCalculationComponent', () => {
   });
 
   it('should cut list after 10 entries', () => {
-
     tableHelper.expectLengthOfTable(10)
       .expectTableToBeExtendable()
       .toggleShowAll()
