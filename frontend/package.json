@@ -1,13 +1,14 @@
 {
   "name": "pcts",
   "version": "0.4.0",
+  "packageManager": "npm",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --hmr",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "jest --silent --runInBand",
-    "test:ci": "jest --ci --reporters=default --reporters=jest-junit",
+    "test:ci": "jest --ci --reporters=default --reporters=jest-junit --coverage",
     "format:all": "npm run lint:format && npm run prettier:lint:format",
     "check-linting:all": "npm run lint && npm run prettier:lint",
     "lint:format:specific": "eslint --fix  --no-warn-ignored",
