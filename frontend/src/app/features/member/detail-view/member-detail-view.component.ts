@@ -138,7 +138,6 @@ export class MemberDetailViewComponent implements OnInit {
         }
         this.certificateService
           .addCertificate(submittedModel)
-          .pipe(takeUntilDestroyed())
           .subscribe(() => this.getData());
       });
   };
