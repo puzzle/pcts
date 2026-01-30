@@ -2,8 +2,8 @@ import {
   Component,
   computed,
   contentChildren,
-  effect,
-  input,
+  effect, inject, Injector,
+  input, runInInjectionContext,
   TemplateRef,
   viewChild
 } from '@angular/core';
@@ -53,6 +53,8 @@ import { TranslationScopeDirective } from '../translation-scope/translation-scop
   templateUrl: './generic-table.component.html'
 })
 export class GenericTableComponent<T extends object> {
+  injector = inject(Injector);
+
   idAttr = input<keyof T>();
 
   crudBasePath = input<string>('');
@@ -126,9 +128,12 @@ export class GenericTableComponent<T extends object> {
 
   protected getDisplayValue(col: GenCol<T>, entity: T): string {
     let value = col.getValue(entity) ?? '';
-    col.pipes.forEach((formatter) => {
-      value = formatter(value);
+    runInInjectionContext(this.injector, ()=>{
+      col.pipes.forEach((formatter) => {
+        value = formatter(value);
+      });
     });
+
     return value;
   }
 

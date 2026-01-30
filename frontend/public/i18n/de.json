@@ -108,7 +108,10 @@
       "POINTS": "PCTS-Punkte",
       "STATE": "Status",
       "PUBLICIZED_BY": "Veröffentlicht von",
-      "PUBLICATION_DATE": "Veröffentlicht am"
+      "PUBLICATION_DATE": "Veröffentlicht am",
+      "ACTIVE": "Aktiv",
+      "DRAFT": "Entwurf",
+      "ARCHIVED": "Archiviert"
     }
   },
   "ERROR": {

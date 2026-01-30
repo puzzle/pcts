@@ -5,7 +5,9 @@ import { LeadershipExperienceOverviewModel } from './leadership-experience-overv
 import { formatDateLocale } from '../../../../shared/format/date-format';
 import { CertificateOverviewModel } from './certificate-overview.model';
 import { CalculationModel } from '../../../calculations/calculation.model';
-import { calculationStateSortingPriority } from '../../../calculations/calculation-state.enum';
+import { CalculationState, calculationStateSortingPriority } from '../../../calculations/calculation-state.enum';
+import { inject } from '@angular/core'
+import { ScopedTranslationService } from '../../../../shared/i18n-prefix.provider'
 
 const formatRange = (start: Date, end: Date | null): string => {
   const s = formatDateLocale(start);
@@ -62,10 +64,15 @@ GenCol.fromAttr('comment')];
 
 const getCalculationColumns = (): GenCol<CalculationModel>[] => [
   GenCol.fromCalculated('points', (e: CalculationModel) => {
-    return Number(e.points.toFixed(2));
+    return e.points.toFixed(2);
   }),
-  GenCol.fromAttr<CalculationModel>('state')
+  GenCol.fromAttr<CalculationModel>('state', [(s: CalculationState) => {
+    const scopedTranslationService = inject(ScopedTranslationService);
+    return scopedTranslationService.instant(s);
+  }])
     .withCustomSortingAccessor((e) => calculationStateSortingPriority[e.state]),
   GenCol.fromAttr('publicizedBy'),
-  GenCol.fromAttr('publicationDate')
+  GenCol.fromAttr('publicationDate', [(d: Date) => {
+    return d ? formatDateLocale(d) : '';
+  }])
 ];
