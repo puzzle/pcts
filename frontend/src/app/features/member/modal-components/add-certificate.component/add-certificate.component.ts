@@ -105,7 +105,7 @@ export class AddCertificateComponent extends StrictlyTypedDialog<CertificateMode
     return this.filterCertificateType(value);
   });
 
-  private filterCertificateType(value: CertificateTypeModel | string | null): CertificateTypeModel[] {
+  filterCertificateType(value: CertificateTypeModel | string | null): CertificateTypeModel[] {
     if (value === null || value === undefined || value === '') {
       return this.certificateTypeOptions();
     }

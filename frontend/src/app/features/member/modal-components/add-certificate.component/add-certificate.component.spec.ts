@@ -19,12 +19,14 @@ describe('AddCertificateComponent', () => {
         certificateType2]))
   };
 
+  const dialogData = certificate1;
+
   beforeEach(async() => {
     await TestBed.configureTestingModule({
       imports: [AddCertificateComponent],
       providers: [
         { provide: MAT_DIALOG_DATA,
-          useValue: certificate1 },
+          useValue: dialogData },
         { provide: MatDialogRef,
           useValue: dialogRefMock },
         { provide: CertificateTypeService,
@@ -75,6 +77,31 @@ describe('AddCertificateComponent', () => {
       component.onCancel();
       expect(dialogRefMock.close)
         .toHaveBeenCalledWith();
+    });
+  });
+
+  it('should set formgroup value correctly from data', () => {
+    expect(component.formGroup.getRawValue())
+      .toEqual(certificate1);
+  });
+
+  describe('filterCertificateType', () => {
+    [{ ...certificateType1,
+      name: '' },
+    '',
+    null].forEach((value) => {
+      it(`should return default certificates when value is ${value}`, () => {
+        const result = component.filterCertificateType(value);
+        expect(result)
+          .toEqual([certificateType1,
+            certificateType2]);
+      });
+    });
+
+    it('should return ', () => {
+      const result = component.filterCertificateType('GitLab');
+      expect(result)
+        .toEqual([certificateType1]);
     });
   });
 });

@@ -19,7 +19,6 @@ import {
 } from './cv/member-detail-cv-table-definition';
 import { MemberOverviewModel } from '../member-overview.model';
 import { AddCertificateComponent } from '../modal-components/add-certificate.component/add-certificate.component';
-import { ModalService } from '../../../shared/modal-service';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import { CertificateService } from '../../certificates/certificate.service';
 import { MemberModel } from '../member.model';
@@ -112,11 +111,17 @@ export class MemberDetailViewComponent implements OnInit {
       });
   }
 
-  openCertificateDialog(model?: CertificateModel) {
+  openCertificateDialog = (model?: CertificateModel) => {
     this.dialog.openModal(AddCertificateComponent, { data: model })
       .afterSubmitted
       .subscribe(({ modalSubmitMode, submittedModel }) => {
-        submittedModel.member = { id: this.member()!.id } as MemberModel;
+        const memberId = this.member()?.id;
+        if (memberId) {
+          submittedModel.member = { id: memberId } as MemberModel;
+        } else {
+          // Prevent running if member id is null
+          return;
+        }
         switch (modalSubmitMode) {
           case ModalSubmitMode.SAVE:
             break;
