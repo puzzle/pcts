@@ -16,8 +16,6 @@ export class CrudButtonComponent {
 
   private readonly route = inject(ActivatedRoute);
 
-  // readonly selectedSubject = new Subject<void>();
-
   customOnClick = input<() => void>();
 
   // This logic gets the model name from the URL. It assumes that the URL structure is 'root/modelName/'

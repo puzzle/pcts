@@ -9,7 +9,7 @@
         type="reset"
         (click)="canceled.emit()"
         mat-icon-button
-        [attr.data-testId]=" ('MODEL_NAME' | scopedTranslation) + '-close-dialog'"
+        data-testId="close-modal-icon-button"
         class=""
       >
         <mat-icon class="text-secondary">close</mat-icon>

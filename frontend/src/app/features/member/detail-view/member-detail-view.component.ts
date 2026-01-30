@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit, signal, viewChild, WritableSignal } from '@angular/core';
+import { Component, DestroyRef, inject, input, OnInit, signal, viewChild, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberService } from '../member.service';
@@ -18,14 +18,15 @@ import {
   getLeadershipExperienceTable
 } from './cv/member-detail-cv-table-definition';
 import { MemberOverviewModel } from '../member-overview.model';
-import { AddCertificateComponent } from '../modal-components/add-certificate.component/add-certificate.component';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import { CertificateService } from '../../certificates/certificate.service';
 import { MemberModel } from '../member.model';
 import { CertificateModel } from '../../certificates/certificate.model';
+import { AddCertificateComponent } from '../../certificates/add-certificate/add-certificate.component';
 import { PctsModalService } from '../../../shared/modal/pcts-modal.service';
 import { RolePointsModel } from './RolePointsModel';
 import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -78,6 +79,8 @@ export class MemberDetailViewComponent implements OnInit {
 
   tabIndex = input.required<number>();
 
+  private readonly destroyRef = inject(DestroyRef);
+
   ngOnInit(): void {
     this.getData();
   }
@@ -114,6 +117,7 @@ export class MemberDetailViewComponent implements OnInit {
   openCertificateDialog = (model?: CertificateModel) => {
     this.dialog.openModal(AddCertificateComponent, { data: model })
       .afterSubmitted
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(({ modalSubmitMode, submittedModel }) => {
         const memberId = this.member()?.id;
         if (memberId) {
@@ -134,7 +138,9 @@ export class MemberDetailViewComponent implements OnInit {
           default:
             modalSubmitMode satisfies never;
         }
-        this.certificateService.addCertificate(submittedModel)
+        this.certificateService
+          .addCertificate(submittedModel)
+          .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe(() => this.getData());
       });
   }

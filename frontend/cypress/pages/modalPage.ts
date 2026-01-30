@@ -1,18 +1,22 @@
 import { Page } from './page';
+import formPage from './formPage';
 
 class ModalPage extends Page {
-  modalButton(mode: string, modelName: string) {
-    return cy.getByTestId(`${mode}-${modelName}-button`);
-  }
-
   modalTitle() {
     return cy.getByTestId('modal-title');
   }
 
-  shouldCloseModal() {
+  isModalClosed() {
     cy.get('.mat-dialog-container')
       .should('not.exist');
   }
+
+  selectModelTypeValue = (modelName: string, value: string) => {
+    formPage.type(`${modelName}Type`, modelName.slice(0, 3));
+    cy.get('mat-option')
+      .contains(value)
+      .click();
+  };
 }
 
 export default new ModalPage();

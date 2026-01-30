@@ -1,25 +1,25 @@
 import { Component, computed, inject, OnInit, signal, WritableSignal } from '@angular/core';
-import { BaseModalComponent } from '../../../../shared/modal/base-modal.component';
+import { BaseModalComponent } from '../../../shared/modal/base-modal.component';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { BaseFormComponent } from '../../../../shared/form/base-form.component';
+import { BaseFormComponent } from '../../../shared/form/base-form.component';
 import { MatError, MatFormField, MatInput, MatLabel, MatSuffix } from '@angular/material/input';
-import { provideI18nPrefix } from '../../../../shared/i18n-prefix.provider';
+import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
 import { MatAutocomplete, MatAutocompleteTrigger, MatOption } from '@angular/material/autocomplete';
-import { PctsFormErrorDirective } from '../../../../shared/pcts-form-error/pcts-form-error.directive';
-import { PctsFormLabelDirective } from '../../../../shared/pcts-form-label/pcts-form-label.directive';
+import { PctsFormErrorDirective } from '../../../shared/pcts-form-error/pcts-form-error.directive';
+import { PctsFormLabelDirective } from '../../../shared/pcts-form-label/pcts-form-label.directive';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { isValueInListSignal } from '../../../../shared/form/form-validators';
+import { isValueInListSignal } from '../../../shared/form/form-validators';
 import { MatButton } from '@angular/material/button';
-import { ScopedTranslationPipe } from '../../../../shared/pipes/scoped-translation-pipe';
-import { ModalSubmitMode } from '../../../../shared/enum/modal-submit-mode.enum';
-import { CertificateTypeModel } from '../../../certificates/certificate-type/certificate-type.model';
-import { CertificateTypeService } from '../../../certificates/certificate-type/certificate-type.service';
+import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
+import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
+import { CertificateTypeModel } from '../certificate-type/certificate-type.model';
+import { CertificateTypeService } from '../certificate-type/certificate-type.service';
 import { MatDatepicker, MatDatepickerInput, MatDatepickerToggle } from '@angular/material/datepicker';
-import { MenuButtonComponent } from '../../../../shared/menu-button/menu-button.component';
-import { CertificateModel } from '../../../certificates/certificate.model';
-import { MemberModel } from '../../member.model';
-import { DialogResult, StrictlyTypedDialog } from '../../../../shared/modal/strictly-typed-dialog.helper';
-import { InputFieldComponent } from '../../../../shared/input-field/input-field.component';
+import { MenuButtonComponent } from '../../../shared/menu-button/menu-button.component';
+import { CertificateModel } from '../certificate.model';
+import { MemberModel } from '../../member/member.model';
+import { DialogResult, StrictlyTypedDialog } from '../../../shared/modal/strictly-typed-dialog.helper';
+import { InputFieldComponent } from '../../../shared/input-field/input-field.component';
 
 
 @Component({

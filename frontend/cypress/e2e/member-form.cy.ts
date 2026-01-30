@@ -204,9 +204,6 @@ describe('show toaster message member form (parameterised)', () => {
 
   cases.forEach(({ input, field, expectedMessage, expectError }) => {
     it(`should show toaster with ${expectedMessage}`, () => {
-      cy.on('uncaught:exception', (err, runnable) => {
-        return !(err.message.includes('Http failure response') ?? err.message.includes('400'));
-      });
       FormPage.visitEdit(2, 'member');
       FormPage.clearAndBlur(field);
       FormPage.typeAndBlur(field, input);

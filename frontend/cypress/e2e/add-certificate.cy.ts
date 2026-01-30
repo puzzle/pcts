@@ -4,9 +4,10 @@ import formPage from '../pages/formPage';
 
 describe('Add Certificate Modal', () => {
   const openCertificateModal = () => {
-    modalPage.modalButton('add', 'certificate')
+    memberDetailPage.openModalButton('add', 'certificate')
       .click();
-    cy.getByTestId('Zertifikat-close-dialog')
+
+    cy.getByTestId('close-modal-icon-button')
       .should('be.visible')
       .and('be.focused');
   };
@@ -25,18 +26,14 @@ describe('Add Certificate Modal', () => {
     openCertificateModal();
 
     formPage.submitButtonShouldBe('disabled');
-    formPage.type('certificateType', 'Mic');
-
-    cy.get('mat-option')
-      .contains('Microsoft Certified: Azure Administrator Associate')
-      .click();
+    modalPage.selectModelTypeValue('certificate', 'Microsoft Certified: Azure Administrator Associate');
 
     formPage.typeAndBlur('completedAt', '10.10.2000');
     formPage.submitButtonShouldBe('enabled');
     formPage.save();
 
     formPage.shouldShowSuccessToast('Zertifikat wurde erfolgreich erstellt.');
-    modalPage.shouldCloseModal();
+    modalPage.isModalClosed();
   });
 
   describe('Validation Errors', () => {
@@ -57,27 +54,30 @@ describe('Add Certificate Modal', () => {
       formPage.shouldShowValidationError('Ungültige Eingabe', 'certificateType');
     });
 
-    ['completedAt',
-      'validUntil'].forEach((fieldName) => {
-      it(`shows error for invalid date in: ${fieldName}`, () => {
-        formPage.submitButtonShouldBe('disabled');
-        formPage.typeAndBlur(fieldName, 'invalid entry');
+    const fields = {
+      completedAt: ['Muss ausgefühlt sein',
+        'Ungültiges Datum'],
+      validUntil: ['Ungültiges Datum']
+    };
 
-        if (fieldName === 'completedAt') {
-          formPage.shouldShowValidationError('Muss ausgefühlt sein', fieldName);
-        }
-        formPage.shouldShowValidationError('Ungültiges Datum', fieldName);
-        formPage.submitButtonShouldBe('disabled');
+    Object.entries(fields)
+      .forEach(([fieldName,
+        errors]) => {
+        it(`shows error for invalid date in: ${fieldName}`, () => {
+          formPage.submitButtonShouldBe('disabled');
+
+          formPage.typeAndBlur(fieldName, 'invalid entry');
+
+          errors.forEach((error) => {
+            formPage.shouldShowValidationError(error, fieldName);
+          });
+          formPage.submitButtonShouldBe('disabled');
+        });
       });
-    });
   });
 
   describe('Error Toasts', () => {
     it('should show error when completedAt is after validUntil', () => {
-      cy.on('uncaught:exception', (err) => {
-        return !(err.message.includes('Http failure response') || err.message.includes('400'));
-      });
-
       openCertificateModal();
       formPage.type('certificateType', 'Mic');
       cy.get('mat-option')
@@ -99,16 +99,13 @@ describe('Add Certificate Modal', () => {
       openCertificateModal();
     });
 
-    it('closes via the close icon', () => {
-      cy.getByTestId('Zertifikat-close-dialog')
-        .click();
-      modalPage.shouldCloseModal();
-    });
-
-    it('closes via the cancel button', () => {
-      cy.getByTestId('certificate-cancel')
-        .click();
-      modalPage.shouldCloseModal();
+    ['icon-button',
+      'button'].forEach((buttonType: string) => {
+      it(`closes via ${buttonType}`, () => {
+        cy.getByTestId(`close-modal-${buttonType}`)
+          .click();
+        modalPage.isModalClosed();
+      });
     });
   });
 });

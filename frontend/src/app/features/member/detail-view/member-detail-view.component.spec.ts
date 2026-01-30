@@ -81,7 +81,7 @@ describe('MemberDetailViewComponent (Jest)', () => {
     };
   }
 
-  it('loads the member overview and role points when id exists', () => {
+  it('loads the member overview and role points when an id exists', () => {
     const { component } = setupTestBed('1');
 
     // Service calls

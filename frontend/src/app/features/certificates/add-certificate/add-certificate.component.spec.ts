@@ -4,9 +4,9 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
 import { AddCertificateComponent } from './add-certificate.component';
-import { CertificateTypeService } from '../../../certificates/certificate-type/certificate-type.service';
-import { ModalSubmitMode } from '../../../../shared/enum/modal-submit-mode.enum';
-import { certificate1, certificateType1, certificateType2 } from '../../../../shared/test/test-data';
+import { CertificateTypeService } from '../certificate-type/certificate-type.service';
+import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
+import { certificate1, certificateType1, certificateType2 } from '../../../shared/test/test-data';
 
 describe('AddCertificateComponent', () => {
   let component: AddCertificateComponent;
