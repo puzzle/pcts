@@ -1,8 +1,8 @@
 import { Page } from './page';
 
 class MemberDetailPage extends Page {
-  visit(id: number) {
-    cy.visit('/member/' + id);
+  visit(id: number, tabIndex = 0) {
+    cy.visit(`/member/${id}?tabIndex=${tabIndex}`);
   }
 
   editMemberButton() {
