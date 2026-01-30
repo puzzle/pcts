@@ -19,7 +19,6 @@ export class CrudButtonComponent {
   // readonly selectedSubject = new Subject<void>();
 
   customOnClick = input<() => void>();
-  // selected = outputFromObservable(this.selectedSubject);
 
   // This logic gets the model name from the URL. It assumes that the URL structure is 'root/modelName/'
   protected modelName: string = this.router.url.split('/')[1] ?? '';
