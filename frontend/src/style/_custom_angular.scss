@@ -27,6 +27,10 @@ $pz-theme: mat.m2-define-light-theme(
   box-shadow: none !important;
 }
 
+body .mat-mdc-button-base {
+  min-width: 0;
+}
+
 @include mat.button-overrides(
   (
     text-label-text-color: variables.$pz-dark-blue,

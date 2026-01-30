@@ -5,12 +5,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { provideTranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
-import { memberOverview1, rolePointsList1 } from '../../../shared/test/test-data';
+import { certificate1, memberOverview1, rolePointsList1 } from '../../../shared/test/test-data';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
+import { PctsModalService } from '../../../shared/modal/pcts-modal.service';
+import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
+import { CertificateService } from '../../certificates/certificate.service';
 import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
 
 describe('MemberDetailViewComponent (Jest)', () => {
   let memberServiceMock: Partial<jest.Mocked<MemberService>>;
+  let certificateService: Partial<jest.Mocked<CertificateService>>;
+  let modalService: Partial<jest.Mocked<PctsModalService>>;
   let routerMock: jest.Mocked<Router>;
   let routeMock: ActivatedRoute;
 
@@ -35,6 +40,15 @@ describe('MemberDetailViewComponent (Jest)', () => {
       }
     } as unknown as ActivatedRoute;
 
+    modalService = {
+      openModal: jest.fn()
+    };
+
+    certificateService = {
+      addCertificate: jest.fn()
+        .mockReturnValue(of(certificate1))
+    } as Partial<jest.Mocked<CertificateService>>;
+
     TestBed.configureTestingModule({
       imports: [MemberDetailViewComponent,
         MemberCalculationTableComponent,
@@ -46,27 +60,29 @@ describe('MemberDetailViewComponent (Jest)', () => {
           useValue: routerMock },
         { provide: MemberService,
           useValue: memberServiceMock },
+        { provide: PctsModalService,
+          useValue: modalService },
+        { provide: CertificateService,
+          useValue: certificateService },
         provideTranslateService(),
         DatePipe
       ]
     });
 
     const fixture = TestBed.createComponent(MemberDetailViewComponent);
+    memberServiceMock.getMemberOverviewByMemberId?.mockReturnValue(of(memberOverview1));
+    memberServiceMock.getCalculationsByMemberIdAndOptionalRoleId?.mockReturnValue(of([]));
+
+    memberServiceMock.getPointsForActiveCalculationsForRoleByMemberId?.mockReturnValue(of(rolePointsList1));
+    fixture.detectChanges();
     return {
       fixture,
       component: fixture.componentInstance
     };
   }
 
-  it('loads member overview and role points', () => {
-    const { fixture, component } = setupTestBed('1');
-
-    memberServiceMock.getMemberOverviewByMemberId?.mockReturnValue(of(memberOverview1));
-    memberServiceMock.getCalculationsByMemberIdAndOptionalRoleId?.mockReturnValue(of([]));
-
-    memberServiceMock.getPointsForActiveCalculationsForRoleByMemberId?.mockReturnValue(of(rolePointsList1));
-
-    fixture.detectChanges();
+  it('loads the member overview and role points when an id exists', () => {
+    const { component } = setupTestBed('1');
 
     // Service calls
     expect(memberServiceMock.getMemberOverviewByMemberId)
@@ -98,9 +114,7 @@ describe('MemberDetailViewComponent (Jest)', () => {
   });
 
   it('navigates back when id does not exist', () => {
-    const { fixture, component } = setupTestBed(null);
-
-    fixture.detectChanges();
+    const { component } = setupTestBed(null);
 
     expect(routerMock.navigate)
       .toHaveBeenCalledWith(['/member']);
@@ -114,5 +128,98 @@ describe('MemberDetailViewComponent (Jest)', () => {
       .toBeNull();
     expect(component.rolePointList())
       .toEqual([]);
+  });
+
+  describe('open certificate modal', () => {
+    it('should test openmodal', () => {
+      const { component } = setupTestBed('1');
+
+      modalService.openModal?.mockReturnValue({
+        afterSubmitted: of({
+          modalSubmitMode: ModalSubmitMode.SAVE,
+          submittedModel: certificate1
+        })
+      });
+
+      const spyData = jest.spyOn(component, 'getData');
+      const spyOpenCertificateDialog = jest.spyOn(component, 'openCertificateDialog');
+
+      component.openCertificateDialog();
+
+      expect(spyOpenCertificateDialog)
+        .toHaveBeenCalledTimes(1);
+      expect(modalService.openModal)
+        .toHaveBeenCalled();
+      expect(certificateService.addCertificate)
+        .toHaveBeenCalledWith(certificate1);
+      expect(spyData)
+        .toHaveBeenCalledTimes(1);
+    });
+
+    it('should test openmodal', () => {
+      const { component } = setupTestBed('1');
+
+      modalService.openModal?.mockReturnValueOnce({
+        afterSubmitted: of({
+          modalSubmitMode: ModalSubmitMode.ENTER_ANOTHER,
+          submittedModel: certificate1
+        })
+      });
+
+      modalService.openModal?.mockReturnValue({
+        afterSubmitted: of({
+          modalSubmitMode: ModalSubmitMode.SAVE,
+          submittedModel: certificate1
+        })
+      });
+
+      const spyData = jest.spyOn(component, 'getData');
+      const spyOpenCertificateDialog = jest.spyOn(component, 'openCertificateDialog');
+
+      component.openCertificateDialog();
+
+      expect(spyOpenCertificateDialog)
+        .toHaveBeenCalledTimes(2);
+      expect(modalService.openModal)
+        .toHaveBeenCalled();
+      expect(certificateService.addCertificate)
+        .toHaveBeenCalledWith(certificate1);
+      expect(spyData)
+        .toHaveBeenCalledTimes(2);
+    });
+  });
+
+  it('should test openmodal', () => {
+    const { component } = setupTestBed('1');
+
+    modalService.openModal?.mockReturnValueOnce({
+      afterSubmitted: of({
+        modalSubmitMode: ModalSubmitMode.COPY,
+        submittedModel: certificate1
+      })
+    });
+
+    modalService.openModal?.mockReturnValue({
+      afterSubmitted: of({
+        modalSubmitMode: ModalSubmitMode.SAVE,
+        submittedModel: certificate1
+      })
+    });
+
+    const spyData = jest.spyOn(component, 'getData');
+    const spyOpenCertificateDialog = jest.spyOn(component, 'openCertificateDialog');
+
+    component.openCertificateDialog();
+
+    expect(spyOpenCertificateDialog)
+      .toHaveBeenCalledTimes(2);
+    expect(spyOpenCertificateDialog)
+      .toHaveBeenNthCalledWith(2, certificate1);
+    expect(modalService.openModal)
+      .toHaveBeenCalled();
+    expect(certificateService.addCertificate)
+      .toHaveBeenCalledWith(certificate1);
+    expect(spyData)
+      .toHaveBeenCalledTimes(2);
   });
 });

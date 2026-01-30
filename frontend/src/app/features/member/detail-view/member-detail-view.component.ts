@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit, signal, viewChild, WritableSignal } from '@angular/core';
+import { Component, DestroyRef, inject, input, OnInit, signal, viewChild, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberService } from '../member.service';
@@ -18,8 +18,15 @@ import {
   getLeadershipExperienceTable
 } from './cv/member-detail-cv-table-definition';
 import { MemberOverviewModel } from '../member-overview.model';
+import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
+import { CertificateService } from '../../certificates/certificate.service';
+import { MemberModel } from '../member.model';
+import { CertificateModel } from '../../certificates/certificate.model';
+import { AddCertificateComponent } from '../../certificates/add-certificate/add-certificate.component';
+import { PctsModalService } from '../../../shared/modal/pcts-modal.service';
 import { RolePointsModel } from './RolePointsModel';
 import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -43,6 +50,10 @@ export class MemberDetailViewComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
 
   private readonly router = inject(Router);
+
+  private readonly dialog = inject(PctsModalService);
+
+  private readonly certificateService = inject(CertificateService);
 
   readonly experienceTable = getExperienceTable();
 
@@ -68,7 +79,13 @@ export class MemberDetailViewComponent implements OnInit {
 
   tabIndex = input.required<number>();
 
+  private readonly destroyRef = inject(DestroyRef);
+
   ngOnInit(): void {
+    this.getData();
+  }
+
+  getData() {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) {
       this.router.navigate(['/member']);
@@ -96,6 +113,36 @@ export class MemberDetailViewComponent implements OnInit {
         }
       });
   }
+
+  openCertificateDialog = (model?: CertificateModel) => {
+    this.dialog.openModal(AddCertificateComponent, { data: model })
+      .afterSubmitted
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(({ modalSubmitMode, submittedModel }) => {
+        const memberId = this.member()?.id;
+        if (memberId) {
+          submittedModel.member = { id: memberId } as MemberModel;
+        } else {
+          // Prevent running if member id is null
+          return;
+        }
+        switch (modalSubmitMode) {
+          case ModalSubmitMode.SAVE:
+            break;
+          case ModalSubmitMode.ENTER_ANOTHER:
+            this.openCertificateDialog();
+            break;
+          case ModalSubmitMode.COPY:
+            this.openCertificateDialog(submittedModel);
+            break;
+          default:
+            modalSubmitMode satisfies never;
+        }
+        this.certificateService
+          .addCertificate(submittedModel)
+          .subscribe(() => this.getData());
+      });
+  };
 
   onTabIndexChange(index: number) {
     this.router.navigate([], {

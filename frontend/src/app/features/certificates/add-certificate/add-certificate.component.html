@@ -1,0 +1,56 @@
+<app-base-modal [formGroup]="formGroup" (canceled)="onCancel()">
+  <app-base-form content [formGroup]="formGroup">
+    <ng-container title/>
+    <ng-container content>
+
+      <app-input-field>
+          <input type="text" formControlName="certificateType" matInput [matAutocomplete]="certificateTypeAutoComplete"
+                 data-testid="certificateType">
+          <mat-autocomplete autoActiveFirstOption #certificateTypeAutoComplete="matAutocomplete"
+                            [displayWith]="displayCertificateTypes">
+            @for (certificateType of certificateTypeFilteredOptions(); track certificateType) {
+              <mat-option [value]="certificateType">{{ displayCertificateTypes(certificateType) }}</mat-option>
+            }
+          </mat-autocomplete>
+      </app-input-field>
+
+      <mat-form-field>
+        <mat-label appPctsFormLabel/>
+        <input matInput [matDatepicker]="completedAtPicker" formControlName="completedAt" data-testid="completedAt">
+        <mat-datepicker-toggle matIconSuffix [for]="completedAtPicker"/>
+        <mat-datepicker #completedAtPicker/>
+        <mat-error appPctsFormError/>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label appPctsFormLabel/>
+        <input matInput [matDatepicker]="validUntilPicker" formControlName="validUntil" data-testid="validUntil">
+        <mat-datepicker-toggle matIconSuffix [for]="validUntilPicker"/>
+        <mat-datepicker #validUntilPicker/>
+        <mat-error appPctsFormError/>
+      </mat-form-field>
+
+      <app-input-field>
+        <textarea type="text" formControlName="comment" data-testid="comment" matInput></textarea>
+      </app-input-field>
+
+    </ng-container>
+    <ng-container actions/>
+  </app-base-form>
+
+  <ng-container actions>
+    <div class="d-flex flex-row gap-3">
+
+      <button data-testid="close-modal-button" matButton="text" type="button" (click)="onCancel()">
+        {{ "BUTTONS.CANCEL" | scopedTranslation  }}
+      </button>
+
+      <div class="d-flex">
+        <button [disabled]="!formGroup.valid" (click)="onSubmit(ModalSubmitMode.SAVE)" class="rounded-end-0" matButton="filled" type="submit" data-testid="submit-button">
+          {{ "BUTTONS.ACTION" | scopedTranslation }}
+        </button>
+        <app-menu-button [isValid]="formGroup.valid" [functions]="[ModalSubmitMode.ENTER_ANOTHER, ModalSubmitMode.COPY]" (selected)="onSubmit($event)"/>
+      </div>
+    </div>
+  </ng-container>
+</app-base-modal>

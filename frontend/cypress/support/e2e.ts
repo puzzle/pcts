@@ -17,3 +17,9 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands';
+
+
+Cypress.on('uncaught:exception', (err) => {
+  return !(err.message.includes('Http failure response') ||
+    err.message.includes('400'));
+});

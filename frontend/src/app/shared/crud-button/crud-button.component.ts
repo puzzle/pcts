@@ -16,12 +16,20 @@ export class CrudButtonComponent {
 
   private readonly route = inject(ActivatedRoute);
 
+  customOnClick = input<() => void>();
+
   // This logic gets the model name from the URL. It assumes that the URL structure is 'root/modelName/'
   protected modelName: string = this.router.url.split('/')[1] ?? '';
 
   mode = input<'add' | 'edit' | 'delete'>('add');
 
   handleClick() {
+    const onClick = this.customOnClick();
+    if (onClick) {
+      onClick();
+      return;
+    }
+
     switch (this.mode()) {
       case 'edit':
         if (this.idFromRoute) {

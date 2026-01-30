@@ -13,6 +13,11 @@ class MemberDetailPage extends Page {
       });
   }
 
+  openModalButton(mode: string, modelName: string) {
+    return cy.getByTestId(`${mode}-${modelName}-button`);
+  }
+
+
   editMemberButton() {
     return cy.getByTestId('edit-member-button');
   }
