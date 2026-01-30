@@ -1,8 +1,9 @@
 package ch.puzzle.pcts.controller;
 
-import static ch.puzzle.pcts.util.TestData.*;
-import static ch.puzzle.pcts.util.TestDataDTOs.*;
-import static ch.puzzle.pcts.util.TestDataModels.*;
+import static ch.puzzle.pcts.util.TestData.LEADERSHIP_TYPE_1_ID;
+import static ch.puzzle.pcts.util.TestDataDTOs.LEADERSHIP_TYPE_1_DTO;
+import static ch.puzzle.pcts.util.TestDataDTOs.LEADERSHIP_TYPE_1_INPUT;
+import static ch.puzzle.pcts.util.TestDataModels.LEADERSHIP_TYPE_1;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -18,7 +19,6 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -51,8 +51,8 @@ class LeadershipExperienceTypeControllerIT {
     @DisplayName("Should successfully get all leadershipExperience types")
     @Test
     void shouldGetAllLeadershipExperienceTypes() throws Exception {
-        BDDMockito.given(service.getAll()).willReturn(List.of(LEADERSHIP_TYPE_1));
-        BDDMockito.given(mapper.toDto(any(List.class))).willReturn(List.of(LEADERSHIP_TYPE_1_DTO));
+        when(service.getAll()).thenReturn(List.of(LEADERSHIP_TYPE_1));
+        when(mapper.toDto(any(List.class))).thenReturn(List.of(LEADERSHIP_TYPE_1_DTO));
 
         mvc
                 .perform(get(BASEURL)
@@ -69,8 +69,8 @@ class LeadershipExperienceTypeControllerIT {
     @DisplayName("Should successfully get leadershipExperience type by id")
     @Test
     void shouldGetLeadershipExperienceById() throws Exception {
-        BDDMockito.given(service.getById(anyLong())).willReturn(LEADERSHIP_TYPE_1);
-        BDDMockito.given(mapper.toDto(any(CertificateType.class))).willReturn(LEADERSHIP_TYPE_1_DTO);
+        when(service.getById(anyLong())).thenReturn(LEADERSHIP_TYPE_1);
+        when(mapper.toDto(any(CertificateType.class))).thenReturn(LEADERSHIP_TYPE_1_DTO);
 
         mvc
                 .perform(get(BASEURL + "/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -84,9 +84,9 @@ class LeadershipExperienceTypeControllerIT {
     @DisplayName("Should successfully create new leadershipExperience type")
     @Test
     void shouldCreateNewLeadershipExperience() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(LeadershipExperienceTypeDto.class))).willReturn(LEADERSHIP_TYPE_1);
-        BDDMockito.given(service.create(any(CertificateType.class))).willReturn(LEADERSHIP_TYPE_1);
-        BDDMockito.given(mapper.toDto(any(CertificateType.class))).willReturn(LEADERSHIP_TYPE_1_DTO);
+        when(mapper.fromDto(any(LeadershipExperienceTypeDto.class))).thenReturn(LEADERSHIP_TYPE_1);
+        when(service.create(any(CertificateType.class))).thenReturn(LEADERSHIP_TYPE_1);
+        when(mapper.toDto(any(CertificateType.class))).thenReturn(LEADERSHIP_TYPE_1_DTO);
 
         mvc
                 .perform(post(BASEURL)
@@ -104,9 +104,9 @@ class LeadershipExperienceTypeControllerIT {
     @DisplayName("Should successfully update leadershipExperience type")
     @Test
     void shouldUpdateLeadershipExperience() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(LeadershipExperienceTypeDto.class))).willReturn(LEADERSHIP_TYPE_1);
-        BDDMockito.given(service.update(any(Long.class), any(CertificateType.class))).willReturn(LEADERSHIP_TYPE_1);
-        BDDMockito.given(mapper.toDto(any(CertificateType.class))).willReturn(LEADERSHIP_TYPE_1_DTO);
+        when(mapper.fromDto(any(LeadershipExperienceTypeDto.class))).thenReturn(LEADERSHIP_TYPE_1);
+        when(service.update(any(Long.class), any(CertificateType.class))).thenReturn(LEADERSHIP_TYPE_1);
+        when(mapper.toDto(any(CertificateType.class))).thenReturn(LEADERSHIP_TYPE_1_DTO);
 
         mvc
                 .perform(put(BASEURL + "/" + LEADERSHIP_TYPE_1_ID)
@@ -124,7 +124,7 @@ class LeadershipExperienceTypeControllerIT {
     @DisplayName("Should successfully delete leadershipExperience type")
     @Test
     void shouldDeleteLeadershipExperience() throws Exception {
-        BDDMockito.willDoNothing().given(service).delete(anyLong());
+        doNothing().when(service).delete(anyLong());
 
         mvc
                 .perform(delete(BASEURL + "/" + LEADERSHIP_TYPE_1_ID)

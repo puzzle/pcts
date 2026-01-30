@@ -1,12 +1,12 @@
 package ch.puzzle.pcts.controller;
 
-import static ch.puzzle.pcts.util.TestData.*;
-import static ch.puzzle.pcts.util.TestDataDTOs.*;
-import static ch.puzzle.pcts.util.TestDataModels.*;
+import static ch.puzzle.pcts.util.TestData.DEGREE_TYPE_1_ID;
+import static ch.puzzle.pcts.util.TestDataDTOs.DEGREE_TYPE_1_DTO;
+import static ch.puzzle.pcts.util.TestDataDTOs.DEGREE_TYPE_1_INPUT;
+import static ch.puzzle.pcts.util.TestDataModels.DEGREE_TYPE_1;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -21,7 +21,6 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -54,8 +53,8 @@ class DegreeTypeControllerIT {
     @DisplayName("Should successfully get all degree types")
     @Test
     void shouldGetAllDegreeTypes() throws Exception {
-        BDDMockito.given(service.getAll()).willReturn(List.of(DEGREE_TYPE_1));
-        BDDMockito.given(mapper.toDto(any(List.class))).willReturn(List.of(DEGREE_TYPE_1_DTO));
+        when(service.getAll()).thenReturn(List.of(DEGREE_TYPE_1));
+        when(mapper.toDto(any(List.class))).thenReturn(List.of(DEGREE_TYPE_1_DTO));
 
         mvc
                 .perform(get(BASEURL)
@@ -72,8 +71,8 @@ class DegreeTypeControllerIT {
     @DisplayName("Should successfully get degree type by id")
     @Test
     void shouldGetDegreeTypeById() throws Exception {
-        BDDMockito.given(service.getById(anyLong())).willReturn(DEGREE_TYPE_1);
-        BDDMockito.given(mapper.toDto(any(DegreeType.class))).willReturn(DEGREE_TYPE_1_DTO);
+        when(service.getById(anyLong())).thenReturn(DEGREE_TYPE_1);
+        when(mapper.toDto(any(DegreeType.class))).thenReturn(DEGREE_TYPE_1_DTO);
 
         mvc
                 .perform(get(BASEURL + "/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -87,9 +86,9 @@ class DegreeTypeControllerIT {
     @DisplayName("Should successfully create new degree type")
     @Test
     void shouldCreateNewDegreeType() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(DegreeTypeDto.class))).willReturn(DEGREE_TYPE_1);
-        BDDMockito.given(service.create(any(DegreeType.class))).willReturn(DEGREE_TYPE_1);
-        BDDMockito.given(mapper.toDto(any(DegreeType.class))).willReturn(DEGREE_TYPE_1_DTO);
+        when(mapper.fromDto(any(DegreeTypeDto.class))).thenReturn(DEGREE_TYPE_1);
+        when(service.create(any(DegreeType.class))).thenReturn(DEGREE_TYPE_1);
+        when(mapper.toDto(any(DegreeType.class))).thenReturn(DEGREE_TYPE_1_DTO);
 
         mvc
                 .perform(post(BASEURL)
@@ -108,9 +107,9 @@ class DegreeTypeControllerIT {
     @DisplayName("Should successfully update Degree type")
     @Test
     void shouldUpdateDegreeType() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(DegreeTypeDto.class))).willReturn(DEGREE_TYPE_1);
-        BDDMockito.given(service.update(any(Long.class), any(DegreeType.class))).willReturn(DEGREE_TYPE_1);
-        BDDMockito.given(mapper.toDto(any(DegreeType.class))).willReturn(DEGREE_TYPE_1_DTO);
+        when(mapper.fromDto(any(DegreeTypeDto.class))).thenReturn(DEGREE_TYPE_1);
+        when(service.update(any(Long.class), any(DegreeType.class))).thenReturn(DEGREE_TYPE_1);
+        when(mapper.toDto(any(DegreeType.class))).thenReturn(DEGREE_TYPE_1_DTO);
 
         mvc
                 .perform(put(BASEURL + "/" + DEGREE_TYPE_1_ID)
@@ -128,7 +127,7 @@ class DegreeTypeControllerIT {
     @DisplayName("Should successfully delete degree type")
     @Test
     void shouldDeleteDegreeType() throws Exception {
-        BDDMockito.willDoNothing().given(service).delete(anyLong());
+        doNothing().when(service).delete(anyLong());
 
         mvc
                 .perform(delete(BASEURL + "/" + DEGREE_TYPE_1_ID)

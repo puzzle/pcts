@@ -1,8 +1,9 @@
 package ch.puzzle.pcts.controller;
 
-import static ch.puzzle.pcts.util.TestData.*;
-import static ch.puzzle.pcts.util.TestDataDTOs.*;
-import static ch.puzzle.pcts.util.TestDataModels.*;
+import static ch.puzzle.pcts.util.TestData.INVALID_ID;
+import static ch.puzzle.pcts.util.TestData.MEMBER_1_ID;
+import static ch.puzzle.pcts.util.TestDataDTOs.MEMBER_1_OVERVIEW_DTO;
+import static ch.puzzle.pcts.util.TestDataModels.MEMBER_1_OVERVIEWS;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -25,7 +26,6 @@ import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -57,8 +57,8 @@ class MemberOverviewControllerIT {
         List<MemberOverview> memberOverviews = MEMBER_1_OVERVIEWS;
         MemberOverviewDto expectedDto = MEMBER_1_OVERVIEW_DTO;
 
-        BDDMockito.given(service.getById(anyLong())).willReturn(memberOverviews);
-        BDDMockito.given(mapper.toDto(memberOverviews)).willReturn(expectedDto);
+        when(service.getById(anyLong())).thenReturn(memberOverviews);
+        when(mapper.toDto(memberOverviews)).thenReturn(expectedDto);
 
         mvc
                 .perform(get(BASEURL + "/" + MEMBER_1_ID).with(csrf()).accept(MediaType.APPLICATION_JSON))
@@ -77,9 +77,7 @@ class MemberOverviewControllerIT {
 
         GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, attributes);
 
-        BDDMockito
-                .given(service.getById(INVALID_ID))
-                .willThrow(new PCTSException(HttpStatus.NOT_FOUND, List.of(error)));
+        when(service.getById(INVALID_ID)).thenThrow(new PCTSException(HttpStatus.NOT_FOUND, List.of(error)));
 
         mvc
                 .perform(get(BASEURL + "/" + INVALID_ID).with(csrf()).accept(MediaType.APPLICATION_JSON))

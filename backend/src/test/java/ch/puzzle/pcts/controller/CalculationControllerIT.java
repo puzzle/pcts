@@ -1,13 +1,12 @@
 package ch.puzzle.pcts.controller;
 
-import static ch.puzzle.pcts.util.TestData.*;
-import static ch.puzzle.pcts.util.TestDataDTOs.*;
-import static ch.puzzle.pcts.util.TestDataModels.*;
+import static ch.puzzle.pcts.util.TestData.CALCULATION_1_ID;
+import static ch.puzzle.pcts.util.TestDataDTOs.CALCULATION_DTO_1;
+import static ch.puzzle.pcts.util.TestDataDTOs.CALCULATION_INPUT_DTO_1;
+import static ch.puzzle.pcts.util.TestDataModels.CALCULATION_1;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -49,8 +48,8 @@ class CalculationControllerIT {
     @DisplayName("Should successfully get calculation by ID")
     @Test
     void shouldGetCalculationById() throws Exception {
-        given(businessService.getById(CALCULATION_1_ID)).willReturn(CALCULATION_1);
-        given(mapper.toDto(any(Calculation.class))).willReturn(CALCULATION_DTO_1);
+        when(businessService.getById(CALCULATION_1_ID)).thenReturn(CALCULATION_1);
+        when(mapper.toDto(any(Calculation.class))).thenReturn(CALCULATION_DTO_1);
 
         mvc
                 .perform(get(BASEURL + "/{id}", CALCULATION_1_ID).with(csrf()))
@@ -64,9 +63,9 @@ class CalculationControllerIT {
     @DisplayName("Should successfully create new calculation")
     @Test
     void shouldCreateCalculation() throws Exception {
-        given(mapper.fromDto(any(CalculationInputDto.class))).willReturn(CALCULATION_1);
-        given(businessService.create(any(Calculation.class))).willReturn(CALCULATION_1);
-        given(mapper.toDto(any(Calculation.class))).willReturn(CALCULATION_DTO_1);
+        when(mapper.fromDto(any(CalculationInputDto.class))).thenReturn(CALCULATION_1);
+        when(businessService.create(any(Calculation.class))).thenReturn(CALCULATION_1);
+        when(mapper.toDto(any(Calculation.class))).thenReturn(CALCULATION_DTO_1);
 
         mvc
                 .perform(post(BASEURL)
@@ -84,9 +83,9 @@ class CalculationControllerIT {
     @DisplayName("Should successfully update calculation")
     @Test
     void shouldUpdateCalculation() throws Exception {
-        given(mapper.fromDto(any(CalculationInputDto.class))).willReturn(CALCULATION_1);
-        given(businessService.update(eq(CALCULATION_1_ID), any(Calculation.class))).willReturn(CALCULATION_1);
-        given(mapper.toDto(any(Calculation.class))).willReturn(CALCULATION_DTO_1);
+        when(mapper.fromDto(any(CalculationInputDto.class))).thenReturn(CALCULATION_1);
+        when(businessService.update(eq(CALCULATION_1_ID), any(Calculation.class))).thenReturn(CALCULATION_1);
+        when(mapper.toDto(any(Calculation.class))).thenReturn(CALCULATION_DTO_1);
 
         mvc
                 .perform(put(BASEURL + "/{id}", CALCULATION_1_ID)

@@ -5,8 +5,7 @@ import static ch.puzzle.pcts.util.TestDataDTOs.*;
 import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -19,7 +18,6 @@ import ch.puzzle.pcts.util.JsonDtoMatcher;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -48,8 +46,8 @@ class ExperienceControllerIT {
     @DisplayName("Should successfully get experience by id")
     @Test
     void shouldGetExperienceById() throws Exception {
-        BDDMockito.given(service.getById(anyLong())).willReturn(EXPERIENCE_1);
-        BDDMockito.given(mapper.toDto(any(Experience.class))).willReturn(EXPERIENCE_1_DTO);
+        when(service.getById(anyLong())).thenReturn(EXPERIENCE_1);
+        when(mapper.toDto(any(Experience.class))).thenReturn(EXPERIENCE_1_DTO);
 
         mvc
                 .perform(get(BASEURL + "/" + EXPERIENCE_1_ID).with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -63,9 +61,9 @@ class ExperienceControllerIT {
     @DisplayName("Should successfully create new experience")
     @Test
     void shouldCreateExperience() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(ExperienceInputDto.class))).willReturn(EXPERIENCE_1);
-        BDDMockito.given(service.create(any(Experience.class))).willReturn(EXPERIENCE_1);
-        BDDMockito.given(mapper.toDto(any(Experience.class))).willReturn(EXPERIENCE_1_DTO);
+        when(mapper.fromDto(any(ExperienceInputDto.class))).thenReturn(EXPERIENCE_1);
+        when(service.create(any(Experience.class))).thenReturn(EXPERIENCE_1);
+        when(mapper.toDto(any(Experience.class))).thenReturn(EXPERIENCE_1_DTO);
 
         mvc
                 .perform(post(BASEURL)
@@ -83,9 +81,9 @@ class ExperienceControllerIT {
     @DisplayName("Should successfully update experience")
     @Test
     void shouldUpdateExperience() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(ExperienceInputDto.class))).willReturn(EXPERIENCE_1);
-        BDDMockito.given(service.update(anyLong(), any(Experience.class))).willReturn(EXPERIENCE_1);
-        BDDMockito.given(mapper.toDto(any(Experience.class))).willReturn(EXPERIENCE_1_DTO);
+        when(mapper.fromDto(any(ExperienceInputDto.class))).thenReturn(EXPERIENCE_1);
+        when(service.update(anyLong(), any(Experience.class))).thenReturn(EXPERIENCE_1);
+        when(mapper.toDto(any(Experience.class))).thenReturn(EXPERIENCE_1_DTO);
 
         mvc
                 .perform(put(BASEURL + "/" + EXPERIENCE_1_ID)
@@ -103,7 +101,7 @@ class ExperienceControllerIT {
     @DisplayName("Should successfully delete experience")
     @Test
     void shouldDeleteExperience() throws Exception {
-        BDDMockito.willDoNothing().given(service).delete(anyLong());
+        doNothing().when(service).delete(anyLong());
 
         mvc
                 .perform(delete(BASEURL + "/" + EXPERIENCE_1_ID).with(SecurityMockMvcRequestPostProcessors.csrf()))

@@ -1,12 +1,12 @@
 package ch.puzzle.pcts.controller;
 
-import static ch.puzzle.pcts.util.TestData.*;
-import static ch.puzzle.pcts.util.TestDataDTOs.*;
-import static ch.puzzle.pcts.util.TestDataModels.*;
+import static ch.puzzle.pcts.util.TestData.ORG_UNIT_1_ID;
+import static ch.puzzle.pcts.util.TestDataDTOs.ORG_UNIT_1_DTO;
+import static ch.puzzle.pcts.util.TestDataDTOs.ORG_UNIT_1_INPUT;
+import static ch.puzzle.pcts.util.TestDataModels.ORG_UNIT_1;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -21,7 +21,6 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -54,8 +53,8 @@ class OrganisationUnitControllerIT {
     @DisplayName("Should successfully get all roles organisation units")
     @Test
     void shouldGetAllOrganisationUnits() throws Exception {
-        BDDMockito.given(service.getAll()).willReturn(List.of(ORG_UNIT_1));
-        BDDMockito.given(mapper.toDto(any(List.class))).willReturn(List.of(ORG_UNIT_1_DTO));
+        when(service.getAll()).thenReturn(List.of(ORG_UNIT_1));
+        when(mapper.toDto(any(List.class))).thenReturn(List.of(ORG_UNIT_1_DTO));
 
         mvc
                 .perform(get(BASEURL)
@@ -72,8 +71,8 @@ class OrganisationUnitControllerIT {
     @DisplayName("Should successfully get organisation unit by id")
     @Test
     void shouldGetOrganisationUnitById() throws Exception {
-        BDDMockito.given(service.getById(anyLong())).willReturn(ORG_UNIT_1);
-        BDDMockito.given(mapper.toDto(any(OrganisationUnit.class))).willReturn(ORG_UNIT_1_DTO);
+        when(service.getById(anyLong())).thenReturn(ORG_UNIT_1);
+        when(mapper.toDto(any(OrganisationUnit.class))).thenReturn(ORG_UNIT_1_DTO);
 
         mvc
                 .perform(get(BASEURL + "/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -87,9 +86,9 @@ class OrganisationUnitControllerIT {
     @DisplayName("Should successfully create new organisation unit")
     @Test
     void shouldCreateNewOrganisationUnit() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(OrganisationUnitDto.class))).willReturn(ORG_UNIT_1);
-        BDDMockito.given(service.create(any(OrganisationUnit.class))).willReturn(ORG_UNIT_1);
-        BDDMockito.given(mapper.toDto(any(OrganisationUnit.class))).willReturn(ORG_UNIT_1_DTO);
+        when(mapper.fromDto(any(OrganisationUnitDto.class))).thenReturn(ORG_UNIT_1);
+        when(service.create(any(OrganisationUnit.class))).thenReturn(ORG_UNIT_1);
+        when(mapper.toDto(any(OrganisationUnit.class))).thenReturn(ORG_UNIT_1_DTO);
 
         mvc
                 .perform(post(BASEURL)
@@ -107,9 +106,9 @@ class OrganisationUnitControllerIT {
     @DisplayName("Should successfully update organisation unit")
     @Test
     void shouldUpdateOrganisationUnit() throws Exception {
-        BDDMockito.given(mapper.fromDto(any(OrganisationUnitDto.class))).willReturn(ORG_UNIT_1);
-        BDDMockito.given(service.update(any(Long.class), any(OrganisationUnit.class))).willReturn(ORG_UNIT_1);
-        BDDMockito.given(mapper.toDto(any(OrganisationUnit.class))).willReturn(ORG_UNIT_1_DTO);
+        when(mapper.fromDto(any(OrganisationUnitDto.class))).thenReturn(ORG_UNIT_1);
+        when(service.update(any(Long.class), any(OrganisationUnit.class))).thenReturn(ORG_UNIT_1);
+        when(mapper.toDto(any(OrganisationUnit.class))).thenReturn(ORG_UNIT_1_DTO);
 
         mvc
                 .perform(put(BASEURL + "/" + ORG_UNIT_1_ID)
@@ -127,7 +126,7 @@ class OrganisationUnitControllerIT {
     @DisplayName("Should successfully delete organisation unit")
     @Test
     void shouldDeleteOrganisationUnit() throws Exception {
-        BDDMockito.willDoNothing().given(service).delete(anyLong());
+        doNothing().when(service).delete(anyLong());
 
         mvc
                 .perform(delete(BASEURL + "/" + ORG_UNIT_1_ID)

@@ -1,12 +1,12 @@
 package ch.puzzle.pcts.controller;
 
-import static ch.puzzle.pcts.util.TestData.*;
-import static ch.puzzle.pcts.util.TestDataDTOs.*;
-import static ch.puzzle.pcts.util.TestDataModels.*;
+import static ch.puzzle.pcts.util.TestData.DEGREE_1_ID;
+import static ch.puzzle.pcts.util.TestDataDTOs.DEGREE_1_DTO;
+import static ch.puzzle.pcts.util.TestDataDTOs.DEGREE_1_INPUT;
+import static ch.puzzle.pcts.util.TestDataModels.DEGREE_1;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -19,7 +19,6 @@ import ch.puzzle.pcts.util.JsonDtoMatcher;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -54,8 +53,8 @@ class DegreeControllerIT {
     @DisplayName("Should successfully get degree by id")
     @Test
     void shouldSuccessfullyGetDegreeById() throws Exception {
-        BDDMockito.given(businessService.getById(DEGREE_1_ID)).willReturn(DEGREE_1);
-        BDDMockito.given(degreeMapper.toDto(any(Degree.class))).willReturn(DEGREE_1_DTO);
+        when(businessService.getById(DEGREE_1_ID)).thenReturn(DEGREE_1);
+        when(degreeMapper.toDto(any(Degree.class))).thenReturn(DEGREE_1_DTO);
 
         mvc
                 .perform(get(BASEURL + "/" + DEGREE_1_ID)
@@ -71,9 +70,9 @@ class DegreeControllerIT {
     @DisplayName("Should successfully create degree")
     @Test
     void shouldSuccessfullyCreateDegree() throws Exception {
-        BDDMockito.given(degreeMapper.toDto(any(Degree.class))).willReturn(DEGREE_1_DTO);
-        BDDMockito.given(businessService.create(any(Degree.class))).willReturn(DEGREE_1);
-        BDDMockito.given(degreeMapper.fromDto(any(DegreeInputDto.class))).willReturn(DEGREE_1);
+        when(degreeMapper.toDto(any(Degree.class))).thenReturn(DEGREE_1_DTO);
+        when(businessService.create(any(Degree.class))).thenReturn(DEGREE_1);
+        when(degreeMapper.fromDto(any(DegreeInputDto.class))).thenReturn(DEGREE_1);
 
         mvc
                 .perform(post(BASEURL)
@@ -91,9 +90,9 @@ class DegreeControllerIT {
     @DisplayName("Should successfully update degree")
     @Test
     void shouldSuccessfullyUpdateDegree() throws Exception {
-        BDDMockito.given(degreeMapper.toDto(any(Degree.class))).willReturn(DEGREE_1_DTO);
-        BDDMockito.given(businessService.update(any(Long.class), any(Degree.class))).willReturn(DEGREE_1);
-        BDDMockito.given(degreeMapper.fromDto(any(DegreeInputDto.class))).willReturn(DEGREE_1);
+        when(degreeMapper.toDto(any(Degree.class))).thenReturn(DEGREE_1_DTO);
+        when(businessService.update(any(Long.class), any(Degree.class))).thenReturn(DEGREE_1);
+        when(degreeMapper.fromDto(any(DegreeInputDto.class))).thenReturn(DEGREE_1);
 
         mvc
                 .perform(put(BASEURL + "/" + DEGREE_1_ID)
@@ -111,7 +110,7 @@ class DegreeControllerIT {
     @DisplayName("Should successfully delete degree")
     @Test
     void shouldSuccessfullyDeleteDegree() throws Exception {
-        BDDMockito.willDoNothing().given(businessService).delete(anyLong());
+        doNothing().when(businessService).delete(anyLong());
 
         mvc
                 .perform(delete(BASEURL + "/" + DEGREE_1_ID)
