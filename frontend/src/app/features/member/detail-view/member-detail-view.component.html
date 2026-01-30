@@ -76,9 +76,11 @@
             </span>
           </div>
         }
+      </div>
     </div>
-    </div>
-    <mat-tab-group class="folder-tabs" mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms" data-testid="cv-tab">
+    <mat-tab-group (selectedIndexChange)="onTabIndexChange($event)" class="folder-tabs"
+                   mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms"
+                   data-testid="cv-tab">
       <mat-tab *appTranslationScope="'CV'" label="CV">
         <app-generic-cv-content
           data-testid="cv-table-degree"
