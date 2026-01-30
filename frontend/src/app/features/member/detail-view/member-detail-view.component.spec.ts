@@ -82,7 +82,7 @@ describe('MemberDetailViewComponent (Jest)', () => {
   }
 
   it('loads the member overview and role points when id exists', () => {
-    const {component} = setupTestBed('1');
+    const { component } = setupTestBed('1');
 
     // Service calls
     expect(memberServiceMock.getMemberOverviewByMemberId)
@@ -114,7 +114,7 @@ describe('MemberDetailViewComponent (Jest)', () => {
   });
 
   it('navigates back when id does not exist', () => {
-    const {component} = setupTestBed(null);
+    const { component } = setupTestBed(null);
 
     expect(routerMock.navigate)
       .toHaveBeenCalledWith(['/member']);
@@ -157,7 +157,7 @@ describe('MemberDetailViewComponent (Jest)', () => {
     });
 
     it('should test openmodal', () => {
-      const {component} = setupTestBed('1');
+      const { component } = setupTestBed('1');
 
       modalService.openModal?.mockReturnValueOnce({
         afterSubmitted: of({
@@ -190,7 +190,7 @@ describe('MemberDetailViewComponent (Jest)', () => {
   });
 
   it('should test openmodal', () => {
-    const {component} = setupTestBed('1');
+    const { component } = setupTestBed('1');
 
     modalService.openModal?.mockReturnValueOnce({
       afterSubmitted: of({
