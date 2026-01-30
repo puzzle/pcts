@@ -417,4 +417,18 @@ class ArchitectureTest {
         followsPatternRule.check(importedClasses);
     }
 
+    @DisplayName("All Java test classes should not depend on BDDMockito")
+    @Test
+    void testClassesMustNotUseBDDMockito() {
+        JavaClasses importedClasses = new ClassFileImporter()
+                .withImportOption(new ImportOption.OnlyIncludeTests())
+                .importPackages("ch.puzzle.pcts");
+
+        ArchRule noBddMockito = noClasses()
+                .should()
+                .dependOnClassesThat()
+                .haveFullyQualifiedName("org.mockito.BDDMockito");
+
+        noBddMockito.check(importedClasses);
+    }
 }
