@@ -1,5 +1,73 @@
 # Changelog
 
+## [0.5.0](https://github.com/puzzle/pcts/compare/0.4.0...0.5.0) (2026-02-04)
+
+
+### Features
+
+* add role points endpoint and ui [#379](https://github.com/puzzle/pcts/issues/379) ([5406f0c](https://github.com/puzzle/pcts/commit/5406f0c5b142bf9a38c0ba0ec837ee243ef655cc))
+* add security headers [#32](https://github.com/puzzle/pcts/issues/32) ([da1a93d](https://github.com/puzzle/pcts/commit/da1a93dbe94d9412fb044201cf10ea509213dc51))
+* **backend:** Implement calculation logic [#42](https://github.com/puzzle/pcts/issues/42) ([b5ddf80](https://github.com/puzzle/pcts/commit/b5ddf809823f5033d83480e12034c0311a4b30c6))
+* **frontend:** Implement abstract data picker and autocomplete forms 179 ([4bff7d2](https://github.com/puzzle/pcts/commit/4bff7d24cfb80e8ad538f872bdf86ac44af7b947))
+* **frontend:** Implement CV UI for Member Detail View [#374](https://github.com/puzzle/pcts/issues/374) ([01b79ea](https://github.com/puzzle/pcts/commit/01b79ea776acba0d5386a70292604cb29c6268cb))
+* **frontend:** make generic table rows clickable [#428](https://github.com/puzzle/pcts/issues/428) ([b2b2a9b](https://github.com/puzzle/pcts/commit/b2b2a9b695026dbb85d0202e088245dc66af5137))
+* **frontend:** Rework Buttons Globally [#301](https://github.com/puzzle/pcts/issues/301) ([#335](https://github.com/puzzle/pcts/issues/335)) ([4b8ab72](https://github.com/puzzle/pcts/commit/4b8ab72f8b6c841cbc1cbf6926b8a4b80d50c055))
+* implement member calculations tab [#375](https://github.com/puzzle/pcts/issues/375) ([41f3a48](https://github.com/puzzle/pcts/commit/41f3a48434e7c59a5aee10367e7cfec3fae20ebe))
+* implement member endpoint calculation [#386](https://github.com/puzzle/pcts/issues/386) ([c3213f8](https://github.com/puzzle/pcts/commit/c3213f82b785a1200a6ec8453d7b23b725a6b4e1))
+* **modal:** create certificate modal [#306](https://github.com/puzzle/pcts/issues/306)  ([06ef14f](https://github.com/puzzle/pcts/commit/06ef14f6db359ea2d8094e6700fe8d2f1b3d3949))
+* save tab index in route [#450](https://github.com/puzzle/pcts/issues/450) ([d7643e0](https://github.com/puzzle/pcts/commit/d7643e02910899c8360dca50d2f01e9175464b83))
+
+
+### Bug Fixes
+
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v11.20.1 ([0ceb448](https://github.com/puzzle/pcts/commit/0ceb448877fedb5aead24513f3b005162453066b))
+* error message on overview uses the entire table width [#444](https://github.com/puzzle/pcts/issues/444) ([8fa3018](https://github.com/puzzle/pcts/commit/8fa30187a289a57c8a55b5218af8f9fe4b5c99fe))
+* use map.get instead of the deprecated map-get ([#406](https://github.com/puzzle/pcts/issues/406)) ([2b8706b](https://github.com/puzzle/pcts/commit/2b8706bf6b077403647bc63a4a2e42fd10f61fec))
+* **validation:** Check that birthDate is before dateOfHire [#421](https://github.com/puzzle/pcts/issues/421) ([f37f171](https://github.com/puzzle/pcts/commit/f37f17132d9b13fd8dd454f9bc9e97dc024981cb))
+
+
+### Miscellaneous Chores
+
+* Add documentation back to on push main ([98f6a34](https://github.com/puzzle/pcts/commit/98f6a343cb2aaaaf11385207ec60b7ccd4e36a04))
+* also update parent reference in backend/pom.xml [#447](https://github.com/puzzle/pcts/issues/447) ([83e01f7](https://github.com/puzzle/pcts/commit/83e01f75cf78a2619477c6e6e35608a7e9e7f998))
+* **backend:** fix sonar issues ([a2d130d](https://github.com/puzzle/pcts/commit/a2d130df979194054f432efc52fd32e19dda9c47))
+* **dependencies:** update dependency org.flywaydb:flyway-database-postgresql to v11.20.0 ([c1c2762](https://github.com/puzzle/pcts/commit/c1c2762b90de5afa16554399db34135bc8e94cde))
+* **dependencies:** update dependency typescript-eslint to v8.52.0 ([a1b34d7](https://github.com/puzzle/pcts/commit/a1b34d74ecf4ccab3cea6adf7a2704ff3c0a6104))
+* **deps:** update actions/checkout action to v6 ([e13c155](https://github.com/puzzle/pcts/commit/e13c1558107909c43604f072d482144479174120))
+* **deps:** update all devdependencies (minor and patch) ([fa85831](https://github.com/puzzle/pcts/commit/fa8583103d07933a65ffd12a52fea3dd243dcb71))
+* **deps:** update all devdependencies (minor and patch) ([fc4b975](https://github.com/puzzle/pcts/commit/fc4b975f3f926c2e063806f35857413c878fb141))
+* **deps:** update all devdependencies (minor and patch) ([#405](https://github.com/puzzle/pcts/issues/405)) ([dd0e37f](https://github.com/puzzle/pcts/commit/dd0e37f4616697940ddfbe3ef433eb76bdfd1753))
+* **deps:** update angularmaterial monorepo to v21.0.5 ([af56bb8](https://github.com/puzzle/pcts/commit/af56bb82c7ed076b158310bf49fe9bce6c005739))
+* **deps:** update angularmaterial monorepo to v21.0.6 ([94719bf](https://github.com/puzzle/pcts/commit/94719bfa26de40ae0cb58c8b42d5fe0cb9463900))
+* **deps:** update angularmaterial monorepo to v21.1.0 ([81a3ec5](https://github.com/puzzle/pcts/commit/81a3ec5900d063e4aad3d81228737dac9a984128))
+* **deps:** update angularmaterial monorepo to v21.1.1 ([efa7975](https://github.com/puzzle/pcts/commit/efa79754df3ed44aaf87b76abf088a64d4537279))
+* **deps:** update angularmaterial monorepo to v21.1.2 ([ed52320](https://github.com/puzzle/pcts/commit/ed52320863ec84fb0cc845ea54ffa3c9eed75964))
+* **deps:** update dependency @types/jasmine to v6 ([dc132dd](https://github.com/puzzle/pcts/commit/dc132dd1f3e7f8d861c6cd5881ae625307ea0cd3))
+* **deps:** update dependency com.diffplug.spotless:spotless-maven-plugin to v3.2.0 ([b4a3206](https://github.com/puzzle/pcts/commit/b4a32060d71ce49321b03b7be80758c36c082a70))
+* **deps:** update dependency com.diffplug.spotless:spotless-maven-plugin to v3.2.1 ([#454](https://github.com/puzzle/pcts/issues/454)) ([a82d7b3](https://github.com/puzzle/pcts/commit/a82d7b329116fca93de1142b3098c81837b25937))
+* **deps:** update dependency cypress to v15.8.2 ([b6467e7](https://github.com/puzzle/pcts/commit/b6467e7bd9026de3c48e2ab34294c9d06b51bf6d))
+* **deps:** update dependency cypress to v15.9.0 ([1249e59](https://github.com/puzzle/pcts/commit/1249e592cf80a3c47d7d53853a754c9d40c57ed0))
+* **deps:** update dependency jasmine-core to v6 ([#417](https://github.com/puzzle/pcts/issues/417)) ([a8f41f6](https://github.com/puzzle/pcts/commit/a8f41f60880e4cf74fccde5fb62412fe5b1e69b8))
+* **deps:** update dependency org.codehaus.mojo:properties-maven-plugin to v1.3.0 ([#418](https://github.com/puzzle/pcts/issues/418)) ([5f4535e](https://github.com/puzzle/pcts/commit/5f4535e1739cb022978c2e035fe2a491cd92ea35))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v11.20.2  ([d63e7ca](https://github.com/puzzle/pcts/commit/d63e7ca80c7d16d6fbf36fd8a3c72cfe60d3a932))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v11.20.3 ([f8c4f40](https://github.com/puzzle/pcts/commit/f8c4f40a3b8a06f9ff283196e8d82bc2e97009ce))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v12 ([e93d75e](https://github.com/puzzle/pcts/commit/e93d75e7a114eb0364a8c0abd9be065205c8aca6))
+* **deps:** update dependency org.springdoc:springdoc-openapi-starter-webmvc-ui to v3 ([c5f62c8](https://github.com/puzzle/pcts/commit/c5f62c802b3fd99d3ccc60892c54d7697d2805ce))
+* **deps:** update dependency org.springframework.boot:spring-boot-starter-parent to v4.0.1 ([472b883](https://github.com/puzzle/pcts/commit/472b8833bd4e123bc0fde2b4fc6e29cf7dedde62))
+* **deps:** update dependency org.springframework.boot:spring-boot-testcontainers to v4 ([aa5623e](https://github.com/puzzle/pcts/commit/aa5623e78f34243250b460b98cd9d8b7500cd537))
+* **deps:** update dependency typescript-eslint to v8.53.0 ([66c01b0](https://github.com/puzzle/pcts/commit/66c01b0062cd45643eb8f761557c30d50585356a))
+* **deps:** update dependency typescript-eslint to v8.53.1 ([#425](https://github.com/puzzle/pcts/issues/425)) ([6b9e34d](https://github.com/puzzle/pcts/commit/6b9e34d0c65f00f2c0eb66fe18d8b2e0d20acaaf))
+* **deps:** update dependency typescript-eslint to v8.54.0 ([#455](https://github.com/puzzle/pcts/issues/455)) ([ad6e599](https://github.com/puzzle/pcts/commit/ad6e599c4902ce13c52d54a69028fa77ce4df2eb))
+* **deps:** update eclipse-temurin docker tag to v25.0.1_8-jre-alpine ([#416](https://github.com/puzzle/pcts/issues/416)) ([fa383b6](https://github.com/puzzle/pcts/commit/fa383b6b311a76cdb4e0fc31806777d345d8ee91))
+* **deps:** update node.js to v24.13.0 ([9952fb9](https://github.com/puzzle/pcts/commit/9952fb9729804570eecdbae24d90c1b039db0c8c))
+* **deps:** update spring boot to v4.0.2 ([3cac99e](https://github.com/puzzle/pcts/commit/3cac99e2c9eefdb9e0a5774d13614edab0d905a3))
+* force renovate to use 'chore' for dependency updates ([c74c29e](https://github.com/puzzle/pcts/commit/c74c29ec0b6a1f3cd7633911a29a7cea1ee8cb5a))
+* make pcts-frontend container dependent on pcts-backend ([712e720](https://github.com/puzzle/pcts/commit/712e720f70aaf4d26e1c87473149f16930e5d235))
+* migrate to Java 25 ([18a13b6](https://github.com/puzzle/pcts/commit/18a13b6ceb909ca140ff71eb5ad300f8d03308d9))
+* new workflow validates pr [#396](https://github.com/puzzle/pcts/issues/396) ([cf5eb66](https://github.com/puzzle/pcts/commit/cf5eb6642e657b5aa258d86800e482b71f78f2ca))
+* no longer require assignee for renovate prs ([ae5d1d7](https://github.com/puzzle/pcts/commit/ae5d1d7c3a456bd9f7c97654a75767f603678f2e))
+* Rework ghcr pipeline to work with java 25 [#409](https://github.com/puzzle/pcts/issues/409) ([01545da](https://github.com/puzzle/pcts/commit/01545da8eefc557bd73ee076efcb727bbdd7e4d8))
+
 ## [0.4.0](https://github.com/puzzle/pcts/compare/0.3.0...0.4.0) (2025-12-24)
 
 
