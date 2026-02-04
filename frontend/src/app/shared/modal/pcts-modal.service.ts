@@ -16,7 +16,7 @@ type WithoutData = Omit<MatDialogConfig<never>, 'data'> & { data?: never };
 // The "Smart" Tuple: Decides arguments based on Data type
 type ArgsFor<C> =
 // Case 1: Data is strictly 'never' or 'void' -> Config is optional, Data forbidden
-  ExtractData<C> extends never | void
+  ExtractData<C> extends void
     ? [config?: WithoutData]
   // Case 2: Data allows undefined/null -> Config is optional, Data optional
     : undefined extends ExtractData<C>
