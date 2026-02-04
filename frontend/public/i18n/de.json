@@ -32,7 +32,7 @@
       "BUTTONS": {
         "ACTION": "Hinzufügen",
         "CANCEL": "Abbrechen",
-        "ENTER_ANOTHER": "Hinzufügen + weitern Eintrag erfassen",
+        "ENTER_ANOTHER": "Hinzufügen + weiteren Eintrag erfassen",
         "COPY": "Hinzufügen + Inhalt kopieren"
       }
     },
@@ -118,9 +118,9 @@
   },
 
   "CERTIFICATE": {
-    "CERTIFICATE_TYPE": "Zetifikate type",
+    "CERTIFICATE_TYPE": "Art des Zertifikats",
     "MODEL_NAME": "Zertifikat",
-    "COMPLETED_AT": "Datum",
+    "COMPLETED_AT": "Abgeschlossen am",
     "VALID_UNTIL": "Gültig bis",
     "COMMENT": "Bemerkung"
   },
