@@ -88,7 +88,7 @@ describe('Add Certificate Modal', () => {
       formPage.submitButtonShouldBe('enabled');
       formPage.save();
 
-      formPage.shouldShowErrorToast('Datum mit dem Wert 2000-10-10 muss jünger sein als 2000-09-10.');
+      formPage.shouldShowErrorToast('Abgeschlossen am mit dem Wert 2000-10-10 muss jünger sein als 2000-09-10.');
     });
   });
 
