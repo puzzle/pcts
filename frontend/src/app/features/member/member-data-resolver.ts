@@ -15,7 +15,7 @@ export const memberDataResolver: ResolveFn<MemberModel> = (route): Observable<Me
     return of({} as MemberModel);
   }
 
-  if (isNaN(+id)) {
+  if (Number.isNaN(+id)) {
     router.navigate(['/member']);
     return EMPTY;
   }

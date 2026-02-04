@@ -15,8 +15,7 @@ import { ModalSubmitMode } from '../enum/modal-submit-mode.enum';
     MatMenuItem,
     ScopedTranslationPipe
   ],
-  templateUrl: './menu-button.component.html',
-  styleUrl: './menu-button.component.scss'
+  templateUrl: './menu-button.component.html'
 })
 export class MenuButtonComponent {
   selected = output<ModalSubmitMode>();

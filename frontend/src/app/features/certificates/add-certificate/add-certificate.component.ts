@@ -48,7 +48,6 @@ import { InputFieldComponent } from '../../../shared/input-field/input-field.com
     InputFieldComponent
   ],
   templateUrl: './add-certificate.component.html',
-  styleUrl: './add-certificate.component.scss',
   providers: [provideI18nPrefix('CERTIFICATE.FORM.ADD')]
 })
 export class AddCertificateComponent extends StrictlyTypedDialog<CertificateModel | undefined, DialogResult<CertificateModel>> implements OnInit {

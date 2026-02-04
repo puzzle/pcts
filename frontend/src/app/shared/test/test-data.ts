@@ -459,7 +459,7 @@ export const leadershipExperienceCalculation2: LeadershipExperienceCalculationMo
 export const degreeCalculation1: DegreeCalculationModel = {
   id: 1,
   degree: degree1,
-  weight: 1.0,
+  weight: 1,
   relevancy: Relevancy.STRONGLY,
   comment: null
 };
