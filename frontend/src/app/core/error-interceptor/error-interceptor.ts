@@ -52,6 +52,6 @@ function toScreamingSnake(text: string): string {
     return '';
   }
   return text
-    .replace(/([a-z])([A-Z])/g, '$1_$2')
+    .replaceAll(/([a-z])([A-Z])/g, '$1_$2')
     .toUpperCase();
 }
