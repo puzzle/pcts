@@ -24,6 +24,12 @@ export const GLOBAL_DATE_FORMATS: MatDateFormats = {
   }
 };
 
+/**
+ * This functions checks if a string is formatted like YYYY-MM-DD.
+ * Returns true if it is
+ *
+ * @param text the string to check
+ */
 export function isSimpleISODate(text: string): boolean {
   if (!text) {
     return false;
