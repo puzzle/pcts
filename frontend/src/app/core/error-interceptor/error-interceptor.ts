@@ -4,6 +4,7 @@ import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { SnackbarService } from '../toast/snackbar.service';
 import { ScopedTranslationService } from '../../shared/i18n-prefix.provider';
+import { formatDateLocale, isSimpleISODate } from '../../shared/format/date-format';
 
 export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>,
   next: HttpHandlerFn) => {
@@ -22,7 +23,27 @@ export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>,
 
           if (typeof values.IS === 'string') {
             const original: string = values.IS;
-            values.IS = original.length > 15 ? original.slice(0, 15) + '...' : original;
+
+
+            console.log(original);
+            console.log(`${isSimpleISODate(original)}`);
+
+            if (isSimpleISODate(original)) {
+              const date = new Date(original);
+              values.IS = formatDateLocale(date);
+            } else if (original.length > 15) {
+              values.IS = original.slice(0, 15) + '...';
+            }
+          }
+
+          if (typeof values.MAX === 'string' && isSimpleISODate(values.MAX)) {
+            const date = new Date(values.MAX);
+            values.MAX = formatDateLocale(date);
+          }
+
+          if (typeof values.MIN === 'string' && isSimpleISODate(values.MIN)) {
+            const date = new Date(values.MIN);
+            values.MAX = formatDateLocale(date);
           }
 
           if (typeof values.FIELD === 'string') {

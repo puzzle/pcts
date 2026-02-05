@@ -24,6 +24,14 @@ export const GLOBAL_DATE_FORMATS: MatDateFormats = {
   }
 };
 
+export function isSimpleISODate(text: string): boolean {
+  if (!text) {
+    return false;
+  }
+
+  return text.matchAll(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/g) !== null;
+}
+
 export function formatDateLocale(date: Date): string {
   return format(date, 'P', { locale: de });
 }
