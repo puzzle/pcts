@@ -10,6 +10,10 @@ export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>,
   next: HttpHandlerFn) => {
   const injector: Injector = inject(Injector);
   const toastService: SnackbarService = injector.get(SnackbarService);
+  const keysWithPotentialDates = ['IS',
+    'MAX',
+    'MIN'];
+
 
   return next(req)
     .pipe(catchError((error: HttpErrorResponse) => {
@@ -19,31 +23,13 @@ export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>,
       if (Array.isArray(error.error)) {
         toasts = error.error.map((err) => {
           const key = `ERROR.${err.key}`;
-          const values = { ...err.values };
+          let values = { ...err.values };
+
+          values = formatDates(values, keysWithPotentialDates);
 
           if (typeof values.IS === 'string') {
             const original: string = values.IS;
-
-
-            console.log(original);
-            console.log(`${isSimpleISODate(original)}`);
-
-            if (isSimpleISODate(original)) {
-              const date = new Date(original);
-              values.IS = formatDateLocale(date);
-            } else if (original.length > 15) {
-              values.IS = original.slice(0, 15) + '...';
-            }
-          }
-
-          if (typeof values.MAX === 'string' && isSimpleISODate(values.MAX)) {
-            const date = new Date(values.MAX);
-            values.MAX = formatDateLocale(date);
-          }
-
-          if (typeof values.MIN === 'string' && isSimpleISODate(values.MIN)) {
-            const date = new Date(values.MIN);
-            values.MAX = formatDateLocale(date);
+            original.length > 15 ? values.IS = original.slice(0, 15) + '...' : values.IS = original;
           }
 
           if (typeof values.FIELD === 'string') {
@@ -67,6 +53,25 @@ export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>,
     }));
 };
 
+/**
+ * Format all values to look like dates, to use the correct date format.
+ * All other values will return unchanged
+ *
+ * @param values object with a max depth of one
+ * @param keys name of the keys to check as a list of strings
+ */
+function formatDates<T>(values: T, keys: (keyof T)[]): T {
+  const formatted: any = { ...values };
+
+  for (const key of keys) {
+    const value = formatted[key];
+    if (typeof value === 'string' && isSimpleISODate(value)) {
+      formatted[key] = formatDateLocale(new Date(value));
+    }
+  }
+
+  return formatted;
+}
 
 function toScreamingSnake(text: string): string {
   if (!text) {
