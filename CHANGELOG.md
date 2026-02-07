@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.5.1](https://github.com/puzzle/pcts/compare/0.5.0...0.5.1) (2026-02-07)
+
+
+### Bug Fixes
+
+* change faulty translations [#471](https://github.com/puzzle/pcts/issues/471) ([285da37](https://github.com/puzzle/pcts/commit/285da37c96dc4c3866650625b31fa8e8a5e44217))
+
+
+### Miscellaneous Chores
+
+* **deps:** update angularmaterial monorepo to v21.1.3 ([4372962](https://github.com/puzzle/pcts/commit/4372962ecff79bfb08a1f210560886a35ef5c722))
+* **deps:** update dependency cypress to v15.10.0 ([c75aedb](https://github.com/puzzle/pcts/commit/c75aedb7b1ce2410f69c0908d10be5e710169ef5))
+* **deps:** update eclipse-temurin docker tag to v25.0.2_10-jre-alpine ([cbb6132](https://github.com/puzzle/pcts/commit/cbb6132445af70596c44ff989b220b0fcd647cca))
+
 ## [0.5.0](https://github.com/puzzle/pcts/compare/0.4.0...0.5.0) (2026-02-04)
 
 
