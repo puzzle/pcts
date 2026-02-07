@@ -8,7 +8,7 @@ COPY backend/src backend/src
 
 RUN mvn -f backend/pom.xml clean install -DskipTests
 
-FROM eclipse-temurin:25.0.1_8-jre-alpine AS runner
+FROM eclipse-temurin:25.0.2_10-jre-alpine AS runner
 RUN apk update && apk add --upgrade curl
 WORKDIR /app
 EXPOSE 8080
