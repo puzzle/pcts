@@ -12,10 +12,13 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 import org.hibernate.annotations.SQLDelete;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Entity
 @SQLDelete(sql = "UPDATE certificate_type SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
 public class CertificateType implements Model {
+    private static final Logger log = LoggerFactory.getLogger(CertificateType.class);
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,6 +39,24 @@ public class CertificateType implements Model {
     @NotNull(message = "{attribute.not.null}")
     private CertificateKind certificateKind;
 
+    private double effort;
+
+    private Integer duration;
+
+    private String link;
+
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "{attribute.not.null}")
+    private ExamType examType;
+
+    private String publisher;
+
+    private int linkErrorCounter = 0;
+
+    private boolean linkBroken = false;
+
+    private LocalDateTime linkLastCheckedAt = null;
+
     @Column(name = "deleted_at", insertable = false, updatable = false)
     private LocalDateTime deletedAt;
 
@@ -46,6 +67,11 @@ public class CertificateType implements Model {
         this.comment = trim(builder.comment);
         this.tags = builder.tags;
         this.certificateKind = builder.certificateKind;
+        this.effort = builder.effort;
+        this.duration = builder.duration;
+        this.link = builder.link;
+        this.examType = builder.examType;
+        this.publisher = builder.publisher;
     }
 
     public CertificateType() {
@@ -99,6 +125,64 @@ public class CertificateType implements Model {
         this.certificateKind = certificateKind;
     }
 
+    public double getEffort() {
+        return effort;
+    }
+
+    public void setEffort(double effort) {
+        this.effort = effort;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public ExamType getExamType() {
+        return examType;
+    }
+
+    public void setExamType(ExamType examType) {
+        this.examType = examType;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
+    public int getLinkErrorCounter() {
+        return linkErrorCounter;
+    }
+
+    public LocalDateTime getLinkLastCheckedAt() {
+        return linkLastCheckedAt;
+    }
+
+    public void recordLinkFailure() {
+        this.linkErrorCounter++;
+        this.linkLastCheckedAt = LocalDateTime.now();
+    }
+
+    public void resetLinkStatus() {
+        this.linkErrorCounter = 0;
+        this.linkLastCheckedAt = LocalDateTime.now();
+    }
+
     public LocalDateTime getDeletedAt() {
         return deletedAt;
     }
@@ -111,22 +195,45 @@ public class CertificateType implements Model {
     public boolean equals(Object o) {
         if (!(o instanceof CertificateType that))
             return false;
-        return Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName())
-               && Objects.equals(getPoints(), that.getPoints()) && Objects.equals(getComment(), that.getComment())
-               && Objects.equals(getTags(), that.getTags()) && getCertificateKind() == that.getCertificateKind()
+        return Double.compare(getEffort(), that.getEffort()) == 0 && getLinkErrorCounter() == that.getLinkErrorCounter()
+               && linkBroken == that.linkBroken && Objects.equals(getId(), that.getId())
+               && Objects.equals(getName(), that.getName()) && Objects.equals(getPoints(), that.getPoints())
+               && Objects.equals(getComment(), that.getComment()) && Objects.equals(getTags(), that.getTags())
+               && getCertificateKind() == that.getCertificateKind() && Objects.equals(getDuration(), that.getDuration())
+               && Objects.equals(getLink(), that.getLink()) && Objects.equals(getExamType(), that.getExamType())
+               && Objects.equals(getPublisher(), that.getPublisher())
+               && Objects.equals(getLinkLastCheckedAt(), that.getLinkLastCheckedAt())
                && Objects.equals(getDeletedAt(), that.getDeletedAt());
     }
 
     @Override
     public int hashCode() {
         return Objects
-                .hash(getId(), getName(), getPoints(), getComment(), getTags(), getCertificateKind(), getDeletedAt());
+                .hash(getId(),
+                      getName(),
+                      getPoints(),
+                      getComment(),
+                      getTags(),
+                      getCertificateKind(),
+                      getEffort(),
+                      getDuration(),
+                      getLink(),
+                      getExamType(),
+                      getPublisher(),
+                      getLinkErrorCounter(),
+                      linkBroken,
+                      getLinkLastCheckedAt(),
+                      getDeletedAt());
     }
 
     @Override
     public String toString() {
-        return "Certificate{" + "id=" + id + ", name='" + name + '\'' + ", points=" + points + ", comment='" + comment
-               + '\'' + ", tags=" + tags + ", certificateType=" + certificateKind + ", deletedAt=" + deletedAt + '}';
+        return "CertificateType{" + "id=" + getId() + ", name='" + getName() + '\'' + ", points=" + getPoints()
+               + ", comment='" + getComment() + '\'' + ", tags=" + getTags() + ", certificateKind="
+               + getCertificateKind() + ", effort=" + getEffort() + ", duration=" + getDuration() + ", link='"
+               + getLink() + '\'' + ", examType='" + getExamType() + '\'' + ", publisher='" + getPublisher() + '\''
+               + ", linkErrorCounter=" + getLinkErrorCounter() + ", linkBroken=" + linkBroken + ", linkLastCheckedAt="
+               + getLinkLastCheckedAt() + ", deletedAt=" + getDeletedAt() + '}';
     }
 
     public static final class Builder {
@@ -136,6 +243,11 @@ public class CertificateType implements Model {
         private String comment;
         private Set<Tag> tags;
         private CertificateKind certificateKind;
+        private double effort;
+        private Integer duration;
+        private String link;
+        private ExamType examType;
+        private String publisher;
 
         private Builder() {
         }
@@ -171,6 +283,31 @@ public class CertificateType implements Model {
 
         public Builder withCertificateKind(CertificateKind certificateKind) {
             this.certificateKind = certificateKind;
+            return this;
+        }
+
+        public Builder withEffort(double effort) {
+            this.effort = effort;
+            return this;
+        }
+
+        public Builder withDuration(Integer duration) {
+            this.duration = duration;
+            return this;
+        }
+
+        public Builder withLink(String link) {
+            this.link = link;
+            return this;
+        }
+
+        public Builder withExamType(ExamType examType) {
+            this.examType = examType;
+            return this;
+        }
+
+        public Builder withPublisher(String publisher) {
+            this.publisher = publisher;
             return this;
         }
 

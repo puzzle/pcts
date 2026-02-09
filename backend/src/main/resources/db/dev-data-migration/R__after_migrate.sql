@@ -30,23 +30,23 @@ VALUES
     ('/mid');
 
 
-INSERT INTO certificate_type (name, points, deleted_at, comment, certificate_kind)
+INSERT INTO certificate_type (name, points, deleted_at, comment, certificate_kind, effort, exam_duration, link, exam_type, publisher)
 VALUES
-    ('CompTIA A+', 5.0, NULL, 'Entry-level IT certification covering hardware, software, and troubleshooting', 'CERTIFICATE'),
-    ('Cisco CCNA', 7.5, '2023-06-20 14:21:27.063055', 'Cisco Certified Network Associate – networking fundamentals and routing/switching', 'CERTIFICATE'),
-    ('Microsoft 365 Administrator Associate', 6.0, NULL, 'Cloud and productivity administration in Microsoft 365 environments', 'CERTIFICATE'),
-    ('AWS Certified Solutions Architect – Associate', 8.0, NULL, 'Amazon Web Services cloud design and deployment certification', 'CERTIFICATE'),
-    ('ITIL 4 Foundation', 4.0, NULL, 'Certification in IT service management best practices', 'CERTIFICATE'),
-    ('Google IT Support Professional', 5.5, NULL, 'Foundational IT skills including networking, OS, and security basics', 'CERTIFICATE'),
-    ('Red Hat Certified System Administrator (RHCSA)', 7.0, NULL, 'Linux administration and system management certification', 'CERTIFICATE'),
-    ('Certified Information Systems Security Professional (CISSP)', 9.0, NULL, 'Advanced cybersecurity certification for security leadership roles', 'CERTIFICATE'),
-    ('Project Management Professional (PMP)', 8.5, NULL, 'Globally recognized project management certification', 'CERTIFICATE'),
-    ('Microsoft Certified: Azure Administrator Associate', 7.5, NULL, 'Managing Azure cloud services and resources', 'CERTIFICATE'),
+    ('CompTIA A+', 5.0, NULL, 'Entry-level IT certification covering hardware, software, and troubleshooting', 'CERTIFICATE', 5, 120, 'https://example.com/', 'MULTIPLE_CHOICE', 'Puzzle ITC'),
+    ('Cisco CCNA', 7.5, '2023-06-20 14:21:27.063055', 'Cisco Certified Network Associate – networking fundamentals and routing/switching', 'CERTIFICATE', 5, 120, 'https://example.com/', 'MULTIPLE_CHOICE', 'Puzzle ITC'),
+    ('Microsoft 365 Administrator Associate', 6.0, NULL, 'Cloud and productivity administration in Microsoft 365 environments', 'CERTIFICATE', 5, 120, 'https://example.com/', 'MULTIPLE_CHOICE', 'Puzzle ITC'),
+    ('AWS Certified Solutions Architect – Associate', 8.0, NULL, 'Amazon Web Services cloud design and deployment certification', 'CERTIFICATE', 5, 120, 'https://example.com/', 'MULTIPLE_CHOICE', 'Puzzle ITC'),
+    ('ITIL 4 Foundation', 4.0, NULL, 'Certification in IT service management best practices', 'CERTIFICATE', 5, 120, 'https://example.com/', 'MULTIPLE_CHOICE', 'Puzzle ITC'),
+    ('Google IT Support Professional', 5.5, NULL, 'Foundational IT skills including networking, OS, and security basics', 'CERTIFICATE', 5, 120, 'https://example.com/', 'MULTIPLE_CHOICE', 'Puzzle ITC'),
+    ('Red Hat Certified System Administrator (RHCSA)', 7.0, NULL, 'Linux administration and system management certification', 'CERTIFICATE', 5, 120, 'https://example.com/', 'MULTIPLE_CHOICE', 'Puzzle ITC'),
+    ('Certified Information Systems Security Professional (CISSP)', 9.0, NULL, 'Advanced cybersecurity certification for security leadership roles', 'CERTIFICATE', 5, 120, 'https://example.com/', 'MULTIPLE_CHOICE', 'Puzzle ITC'),
+    ('Project Management Professional (PMP)', 8.5, NULL, 'Globally recognized project management certification', 'CERTIFICATE', 5, 120, 'https://example.com/', 'MULTIPLE_CHOICE', 'Puzzle ITC'),
+    ('Microsoft Certified: Azure Administrator Associate', 7.5, NULL, 'Managing Azure cloud services and resources', 'CERTIFICATE', 5, 120, 'https://example.com/', 'MULTIPLE_CHOICE', 'Puzzle ITC'),
 
     --     Below are all the LeadershipExperiences
-    ('Soldier', 7.5, NULL, '', 'MILITARY_FUNCTION'),
-    ('Ski Camp Manager', 5, NULL, '', 'YOUTH_AND_SPORT'),
-    ('Leader Essentials', 2, NULL, '', 'LEADERSHIP_TRAINING');
+    ('Soldier', 7.5, NULL, '', 'MILITARY_FUNCTION', 5, 120, 'https://example.com/', 'MULTIPLE_CHOICE', 'Puzzle ITC'),
+    ('Ski Camp Manager', 5, NULL, '', 'YOUTH_AND_SPORT', 5, 120, 'https://example.com/', 'MULTIPLE_CHOICE', 'Puzzle ITC'),
+    ('Leader Essentials', 2, NULL, '', 'LEADERSHIP_TRAINING', 5, 120, 'https://example.com/', 'MULTIPLE_CHOICE', 'Puzzle ITC');
 
 
 INSERT INTO experience_type (name, highly_relevant_points, limited_relevant_points, little_relevant_points)
