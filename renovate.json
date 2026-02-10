@@ -5,7 +5,7 @@
     ":rebaseStalePrs",
     ":semanticCommitTypeAll(chore)"
   ],
-  "schedule" : [
+  "schedule": [
     "* 23,0-4 * * *"
   ],
   "automergeSchedule": [
@@ -16,25 +16,50 @@
   "packageRules": [
     {
       "groupName": "All Angular packages",
-      "matchPackageNames": ["^@angular", "^@angular-eslint"],
-      "matchUpdateTypes": ["major", "minor", "patch"]
+      "matchPackageNames": [
+        "^@angular",
+        "^@angular-eslint"
+      ],
+      "matchUpdateTypes": [
+        "major",
+        "minor",
+        "patch"
+      ]
     },
     {
       "groupName": "All devDependencies (minor and patch)",
-      "matchDepTypes": ["devDependencies"],
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchDepTypes": [
+        "devDependencies"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "automerge": true
     },
     {
       "groupName": "All ESLint packages",
-      "matchPackageNames": ["eslint", "typescript-eslint"],
-      "matchUpdateTypes": ["major", "minor", "patch"]
+      "matchPackageNames": [
+        "eslint",
+        "typescript-eslint"
+      ],
+      "matchUpdateTypes": [
+        "major",
+        "minor",
+        "patch"
+      ]
     },
     {
-      "matchDatasources": [ "maven" ],
-      "matchPackagePrefixes": [ "ch.puzzle.pcts" ],
-      "matchDepTypes": [ "parent" ],
-      "enabled": false
+      "matchDatasources": [
+        "maven"
+      ],
+      "matchDepTypes": [
+        "parent"
+      ],
+      "enabled": false,
+      "matchPackageNames": [
+        "ch.puzzle.pcts{/,}**"
+      ]
     }
   ]
 }
