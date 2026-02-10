@@ -39,9 +39,11 @@ public class CertificateType implements Model {
     @NotNull(message = "{attribute.not.null}")
     private CertificateKind certificateKind;
 
+    @NotNull(message = "{attribute.not.null}")
+    @PositiveOrZero(message = "{attribute.not.negative}")
     private double effort;
 
-    private Integer duration;
+    private Integer examDuration;
 
     private String link;
 
@@ -49,11 +51,10 @@ public class CertificateType implements Model {
     @NotNull(message = "{attribute.not.null}")
     private ExamType examType;
 
+    @PCTSStringValidation
     private String publisher;
 
-    private int linkErrorCounter = 0;
-
-    private boolean linkBroken = false;
+    private int linkErrorCount = 0;
 
     private LocalDateTime linkLastCheckedAt = null;
 
@@ -68,7 +69,7 @@ public class CertificateType implements Model {
         this.tags = builder.tags;
         this.certificateKind = builder.certificateKind;
         this.effort = builder.effort;
-        this.duration = builder.duration;
+        this.examDuration = builder.examDuration;
         this.link = builder.link;
         this.examType = builder.examType;
         this.publisher = builder.publisher;
@@ -133,12 +134,12 @@ public class CertificateType implements Model {
         this.effort = effort;
     }
 
-    public Integer getDuration() {
-        return duration;
+    public Integer getExamDuration() {
+        return examDuration;
     }
 
-    public void setDuration(Integer duration) {
-        this.duration = duration;
+    public void setExamDuration(Integer examDuration) {
+        this.examDuration = examDuration;
     }
 
     public String getLink() {
@@ -165,8 +166,8 @@ public class CertificateType implements Model {
         this.publisher = publisher;
     }
 
-    public int getLinkErrorCounter() {
-        return linkErrorCounter;
+    public int getLinkErrorCount() {
+        return linkErrorCount;
     }
 
     public LocalDateTime getLinkLastCheckedAt() {
@@ -174,12 +175,12 @@ public class CertificateType implements Model {
     }
 
     public void recordLinkFailure() {
-        this.linkErrorCounter++;
+        this.linkErrorCount++;
         this.linkLastCheckedAt = LocalDateTime.now();
     }
 
     public void resetLinkStatus() {
-        this.linkErrorCounter = 0;
+        this.linkErrorCount = 0;
         this.linkLastCheckedAt = LocalDateTime.now();
     }
 
@@ -195,12 +196,12 @@ public class CertificateType implements Model {
     public boolean equals(Object o) {
         if (!(o instanceof CertificateType that))
             return false;
-        return Double.compare(getEffort(), that.getEffort()) == 0 && getLinkErrorCounter() == that.getLinkErrorCounter()
-               && linkBroken == that.linkBroken && Objects.equals(getId(), that.getId())
-               && Objects.equals(getName(), that.getName()) && Objects.equals(getPoints(), that.getPoints())
-               && Objects.equals(getComment(), that.getComment()) && Objects.equals(getTags(), that.getTags())
-               && getCertificateKind() == that.getCertificateKind() && Objects.equals(getDuration(), that.getDuration())
-               && Objects.equals(getLink(), that.getLink()) && Objects.equals(getExamType(), that.getExamType())
+        return Double.compare(getEffort(), that.getEffort()) == 0 && getLinkErrorCount() == that.getLinkErrorCount()
+               && Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName())
+               && Objects.equals(getPoints(), that.getPoints()) && Objects.equals(getComment(), that.getComment())
+               && Objects.equals(getTags(), that.getTags()) && getCertificateKind() == that.getCertificateKind()
+               && Objects.equals(getExamDuration(), that.getExamDuration()) && Objects.equals(getLink(), that.getLink())
+               && Objects.equals(getExamType(), that.getExamType())
                && Objects.equals(getPublisher(), that.getPublisher())
                && Objects.equals(getLinkLastCheckedAt(), that.getLinkLastCheckedAt())
                && Objects.equals(getDeletedAt(), that.getDeletedAt());
@@ -216,12 +217,11 @@ public class CertificateType implements Model {
                       getTags(),
                       getCertificateKind(),
                       getEffort(),
-                      getDuration(),
+                      getExamDuration(),
                       getLink(),
                       getExamType(),
                       getPublisher(),
-                      getLinkErrorCounter(),
-                      linkBroken,
+                      getLinkErrorCount(),
                       getLinkLastCheckedAt(),
                       getDeletedAt());
     }
@@ -230,10 +230,10 @@ public class CertificateType implements Model {
     public String toString() {
         return "CertificateType{" + "id=" + getId() + ", name='" + getName() + '\'' + ", points=" + getPoints()
                + ", comment='" + getComment() + '\'' + ", tags=" + getTags() + ", certificateKind="
-               + getCertificateKind() + ", effort=" + getEffort() + ", duration=" + getDuration() + ", link='"
+               + getCertificateKind() + ", effort=" + getEffort() + ", duration=" + getExamDuration() + ", link='"
                + getLink() + '\'' + ", examType='" + getExamType() + '\'' + ", publisher='" + getPublisher() + '\''
-               + ", linkErrorCounter=" + getLinkErrorCounter() + ", linkBroken=" + linkBroken + ", linkLastCheckedAt="
-               + getLinkLastCheckedAt() + ", deletedAt=" + getDeletedAt() + '}';
+               + ", linkErrorCount=" + getLinkErrorCount() + ", linkLastCheckedAt=" + getLinkLastCheckedAt()
+               + ", deletedAt=" + getDeletedAt() + '}';
     }
 
     public static final class Builder {
@@ -244,7 +244,7 @@ public class CertificateType implements Model {
         private Set<Tag> tags;
         private CertificateKind certificateKind;
         private double effort;
-        private Integer duration;
+        private Integer examDuration;
         private String link;
         private ExamType examType;
         private String publisher;
@@ -291,8 +291,8 @@ public class CertificateType implements Model {
             return this;
         }
 
-        public Builder withDuration(Integer duration) {
-            this.duration = duration;
+        public Builder withExamDuration(Integer examDuration) {
+            this.examDuration = examDuration;
             return this;
         }
 
