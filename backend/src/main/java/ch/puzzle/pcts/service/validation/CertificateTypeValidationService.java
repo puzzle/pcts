@@ -25,13 +25,19 @@ public class CertificateTypeValidationService extends ValidationBase<Certificate
     }
 
     @Override
-    public void validateOnUpdate(Long id, CertificateType certificate) {
-        super.validateOnUpdate(id, certificate);
-        validateCertificateKind(certificate.getCertificateKind());
+    public void validateOnUpdate(Long id, CertificateType certificateType) {
+        super.validateOnUpdate(id, certificateType);
+        validateCertificateKind(certificateType.getCertificateKind());
+        validateUniquenessOfNameAndPublisher(certificateType.getName(), certificateType.getPublisher());
         if (UniqueNameValidationUtil
-                .nameExcludingIdAlreadyUsed(id, certificate.getName(), persistenceService::getByName)) {
+                .nameExcludingIdAlreadyUsed(id, certificateType.getName(), persistenceService::getByName)) {
             Map<FieldKey, String> attributes = Map
-                    .of(FieldKey.ENTITY, CERTIFICATE_TYPE, FieldKey.FIELD, "name", FieldKey.IS, certificate.getName());
+                    .of(FieldKey.ENTITY,
+                        CERTIFICATE_TYPE,
+                        FieldKey.FIELD,
+                        "name",
+                        FieldKey.IS,
+                        certificateType.getName());
 
             GenericErrorDto error = new GenericErrorDto(ErrorKey.INVALID_ARGUMENT, attributes);
 
@@ -44,6 +50,7 @@ public class CertificateTypeValidationService extends ValidationBase<Certificate
     public void validateOnCreate(CertificateType certificateType) {
         super.validateOnCreate(certificateType);
         validateCertificateKind(certificateType.getCertificateKind());
+        validateUniquenessOfNameAndPublisher(certificateType.getName(), certificateType.getPublisher());
         if (UniqueNameValidationUtil.nameAlreadyUsed(certificateType.getName(), persistenceService::getByName)) {
             Map<FieldKey, String> attributes = Map
                     .of(FieldKey.ENTITY,
@@ -73,6 +80,15 @@ public class CertificateTypeValidationService extends ValidationBase<Certificate
 
             throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
 
+        }
+    }
+
+    public void validateUniquenessOfNameAndPublisher(String name, String publisher) {
+        if (persistenceService.existsByNameAndPublisher(name, publisher)) {
+            throw new PCTSException(HttpStatus.BAD_REQUEST,
+                                    List
+                                            .of(new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE,
+                                                                    Map.of(FieldKey.FIELD, "name & publisher"))));
         }
     }
 }
