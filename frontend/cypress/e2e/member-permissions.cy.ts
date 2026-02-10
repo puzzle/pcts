@@ -3,7 +3,6 @@ import OverviewPage from '../pages/overviewPage';
 import MemberDetailPage from '../pages/memberDetailPage';
 import FormPage from '../pages/formPage';
 
-
 import CvMemberPage from '../pages/cvMemberPage';
 
 const user = users.member;

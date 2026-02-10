@@ -27,8 +27,6 @@ import { PctsModalService } from '../../../shared/modal/pcts-modal.service';
 import { RolePointsModel } from './RolePointsModel';
 import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { UserService } from '../../../core/auth/user.service';
-import { AuthService } from '../../../core/auth/auth.service';
 import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin.directive';
 
 @Component({
@@ -50,8 +48,6 @@ import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin
 })
 export class MemberDetailViewComponent implements OnInit {
   private readonly service = inject(MemberService);
-
-  protected readonly userService = inject(AuthService);
 
   private readonly route = inject(ActivatedRoute);
 

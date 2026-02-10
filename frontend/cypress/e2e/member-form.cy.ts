@@ -215,12 +215,12 @@ describe('MemberFormComponent', () => {
       expectError: false
     }];
 
-  cases.forEach(({ input, field, expectedMessage, expectError }) => {
-    it(`should show toaster with ${expectedMessage}`, () => {
-      FormPage.visitEdit(2, 'member');
-      FormPage.clearAndBlur(field);
-      FormPage.typeAndBlur(field, input);
-      FormPage.save();
+    cases.forEach(({ input, field, expectedMessage, expectError }) => {
+      it(`should show toaster with ${expectedMessage}`, () => {
+        FormPage.visitEdit(2, 'member');
+        FormPage.clearAndBlur(field);
+        FormPage.typeAndBlur(field, input);
+        FormPage.save();
 
         if (expectError) {
           FormPage.shouldShowErrorToast(expectedMessage);
