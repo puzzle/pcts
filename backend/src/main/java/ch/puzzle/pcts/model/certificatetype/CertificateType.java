@@ -12,13 +12,11 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 import org.hibernate.annotations.SQLDelete;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Entity
 @SQLDelete(sql = "UPDATE certificate_type SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
 public class CertificateType implements Model {
-    private static final Logger log = LoggerFactory.getLogger(CertificateType.class);
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

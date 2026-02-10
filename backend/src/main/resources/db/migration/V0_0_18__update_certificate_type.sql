@@ -10,4 +10,5 @@ ALTER TABLE certificate_type
 ALTER TABLE certificate_type
     ALTER COLUMN effort DROP DEFAULT,
     ALTER COLUMN exam_type DROP DEFAULT,
-    ALTER COLUMN publisher DROP DEFAULT;
+    ALTER COLUMN publisher DROP DEFAULT,
+    ADD CONSTRAINT uc_certificate_type_name_publisher UNIQUE (name, publisher);
