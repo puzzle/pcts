@@ -61,7 +61,7 @@ TRUNCATE TABLE member CASCADE;
 INSERT INTO member (first_name, last_name, abbreviation, email, employment_state, date_of_hire, birth_date, organisation_unit)
 VALUES
     ('Member 1', 'Test', 'M1', null,'MEMBER', '2021-07-15', '1999-08-10', 1),
-    ('Member 2', 'Test', 'M2', 'member2@puzzle.ch', 'MEMBER', '2020-06-01', '1998-03-03', 2);
+    ('Member 2', 'Test', 'M2', 'member2@puzzle.ch', 'MEMBER', '2020-06-01', '1998-03-03', 2),
     ('Member 3', 'Test', 'M3', 'member3@puzzle.ch', 'MEMBER', '2020-06-01', '1998-03-03', 2);
 
 TRUNCATE TABLE experience CASCADE;
