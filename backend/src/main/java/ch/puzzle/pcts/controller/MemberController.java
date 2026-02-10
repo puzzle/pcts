@@ -69,9 +69,10 @@ public class MemberController {
 
     @Operation(summary = "Get roles and points for a member")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved the roles and points.", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = RolePointDto.class))))
+    @IsAdminOrOwner
     @GetMapping("{memberId}/role-points")
     public ResponseEntity<List<RolePointDto>> getPointsForActiveCalculationsForRoleByMemberId(@Parameter(description = "ID of the member.", required = true)
-    @PathVariable Long memberId) {
+    @PathVariable @P("id") Long memberId) {
         List<Calculation> calculationList = service.getAllActiveCalculationsByMemberId(memberId);
         return ResponseEntity.ok(calculationMapper.toRolePointDto(calculationList));
     }
