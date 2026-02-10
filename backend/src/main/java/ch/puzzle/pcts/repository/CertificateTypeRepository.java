@@ -20,6 +20,8 @@ public interface CertificateTypeRepository extends SoftDeleteRepository<Certific
 
     Optional<CertificateType> findByNameAndCertificateKindNotAndDeletedAtIsNull(String name, CertificateKind kind);
 
+    List<CertificateType> findAllByCertificateKindAndLinkNotNullAndDeletedAtIsNull(CertificateKind kind);
+
     default List<CertificateType> findAllOfCertificateType() {
         return findAllByCertificateKindAndDeletedAtIsNull(CertificateKind.CERTIFICATE);
     }
