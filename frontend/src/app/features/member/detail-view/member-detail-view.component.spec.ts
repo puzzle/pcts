@@ -7,21 +7,16 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 import { certificate1, leadershipExperience1, memberOverview1, rolePointsList1 } from '../../../shared/test/test-data';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
-import { APP_CONFIG } from '../../configuration/configuration.token';
-import Keycloak from 'keycloak-js';
 import { PctsModalService } from '../../../shared/modal/pcts-modal.service';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import { CertificateService } from '../../certificates/certificate.service';
 import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
 import { LeadershipExperienceService } from '../../leadership-experiences/leadership-experience.service';
 
-type MockKeycloak = Partial<Keycloak> & { tokenParsed?: any };
-import { UserService } from '../../../core/auth/user.service';
 import { AuthService } from '../../../core/auth/auth.service';
 
 describe('MemberDetailViewComponent (Jest)', () => {
   let memberServiceMock: Partial<jest.Mocked<MemberService>>;
-  let userServiceMock: jest.Mocked<AuthService>;
   let certificateService: Partial<jest.Mocked<CertificateService>>;
   let leadershipExperienceService: Partial<jest.Mocked<LeadershipExperienceService>>;
   let modalService: Partial<jest.Mocked<PctsModalService>>;
