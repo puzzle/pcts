@@ -5,7 +5,6 @@ import { ScopedTranslationPipe } from '../../../../shared/pipes/scoped-translati
 import { ColumnTemplateDirective } from '../../../../shared/generic-table/column-template/column-template.directive';
 import { TypedTemplateDirective } from '../../../../shared/generic-table/type-template/typed-template.directive';
 import { ExperienceTypePillComponent } from '../../../../shared/experience-type-pill/experience-type-pill.component';
-import { ShowIfAdminDirective } from '../../../../core/auth/directive/show-if-admin.directive';
 
 @Component({
   selector: 'app-generic-cv-content',
@@ -15,9 +14,7 @@ import { ShowIfAdminDirective } from '../../../../core/auth/directive/show-if-ad
     GenericTableComponent,
     ColumnTemplateDirective,
     TypedTemplateDirective,
-    CrudButtonComponent,
     ExperienceTypePillComponent,
-    ShowIfAdminDirective,
     ExperienceTypePillComponent
   ],
   templateUrl: './generic-cv-content.component.html'
