@@ -4,7 +4,7 @@ import static ch.puzzle.pcts.util.TestData.*;
 import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
@@ -62,7 +62,7 @@ class CalculationPersistenceServiceIT
     @Transactional
     @Test
     void shouldOnlyHaveOneActiveCalculationAfterSave() {
-        given(jwtService.getDisplayName()).willReturn("PersistenceIT User");
+        when(jwtService.getDisplayName()).thenReturn("PersistenceIT User");
         Calculation oldActiveCalculation = getModel();
         Calculation activeCalculation = getModel();
         activeCalculation.setPublicationDate(null);
@@ -82,7 +82,7 @@ class CalculationPersistenceServiceIT
     @Transactional
     @Test
     void shouldOnlyHaveOneActiveCalculationAfterUpdate() {
-        given(jwtService.getDisplayName()).willReturn("PersistenceIT User");
+        when(jwtService.getDisplayName()).thenReturn("PersistenceIT User");
         Calculation oldActiveCalculation = getModel();
         Calculation activeCalculation = getModel();
         activeCalculation.setPublicationDate(null);

@@ -1,6 +1,6 @@
 package ch.puzzle.pcts.controller;
 
-import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,7 +41,7 @@ class ConfigurationControllerIT extends ControllerITBase {
     @DisplayName("Should successfully get configuration")
     @Test
     void shouldSuccessfullyGetConfiguration() throws Exception {
-        given(mapper.toDto(authorizationConfiguration)).willReturn(configurationDto);
+        when(mapper.toDto(authorizationConfiguration)).thenReturn(configurationDto);
 
         mvc
                 .perform(get(BASEURL).with(csrf()).accept(MediaType.APPLICATION_JSON))

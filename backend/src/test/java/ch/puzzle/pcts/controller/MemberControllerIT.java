@@ -25,11 +25,9 @@ import ch.puzzle.pcts.util.JsonDtoMatcher;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.json.JsonMapper;
@@ -88,8 +86,8 @@ class MemberControllerIT extends ControllerITBase {
     @DisplayName("Should successfully get member by id as the owner")
     @Test
     void shouldGetMemberByIdAsOwner() throws Exception {
-        BDDMockito.given(service.getById(anyLong())).willReturn(MEMBER_1);
-        BDDMockito.given(mapper.toDto(any(Member.class))).willReturn(MEMBER_1_DTO);
+        when(service.getById(anyLong())).thenReturn(MEMBER_1);
+        when(mapper.toDto(any(Member.class))).thenReturn(MEMBER_1_DTO);
 
         mvc
                 .perform(get(BASEURL + "/" + MEMBER_1_ID).with(csrf()).with(ownerJwt()))

@@ -5,7 +5,6 @@ import static ch.puzzle.pcts.util.TestDataDTOs.*;
 import static ch.puzzle.pcts.util.TestDataModels.CERTIFICATE_1;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -45,7 +44,7 @@ class CertificateControllerIT extends ControllerITBase {
     @DisplayName("Should successfully get certificate by id")
     @Test
     void shouldGetCertificateById() throws Exception {
-        when(securityService.isAdmin()).willReturn(true);
+        when(securityService.isAdmin()).thenReturn(true);
         when(service.getById(CERTIFICATE_1_ID)).thenReturn(CERTIFICATE_1);
         when(mapper.toDto(any(Certificate.class))).thenReturn(CERTIFICATE_1_DTO);
 
