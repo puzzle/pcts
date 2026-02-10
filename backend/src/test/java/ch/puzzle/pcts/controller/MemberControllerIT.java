@@ -27,7 +27,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.json.JsonMapper;
@@ -219,7 +218,8 @@ class MemberControllerIT extends ControllerITBase {
 
         mvc
                 .perform(get(BASEURL + "/" + memberId + "/role-points")
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .with(csrf())
+                        .with(ownerJwt())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1));

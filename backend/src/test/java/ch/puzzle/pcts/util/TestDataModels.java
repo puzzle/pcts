@@ -117,6 +117,7 @@ public class TestDataModels {
             .withFirstName("Member 3")
             .withLastName("Test")
             .withLdapName("mtest3")
+            .withEmail("member3@puzzle.ch")
             .withEmploymentState(EmploymentState.MEMBER)
             .withAbbreviation("M3")
             .withDateOfHire(LocalDate.of(2020, 6, 1))
