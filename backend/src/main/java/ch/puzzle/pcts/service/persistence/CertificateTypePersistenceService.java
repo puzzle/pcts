@@ -2,6 +2,7 @@ package ch.puzzle.pcts.service.persistence;
 
 import static ch.puzzle.pcts.Constants.*;
 
+import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.repository.CertificateTypeRepository;
 import java.util.List;
@@ -19,6 +20,10 @@ public class CertificateTypePersistenceService extends PersistenceBase<Certifica
 
     public Optional<CertificateType> getByName(String name) {
         return repository.findByNameOfCertificateType(name);
+    }
+
+    public List<CertificateType> findAllWhereLinkIsNotNull() {
+        return repository.findAllByCertificateKindAndLinkNotNullAndDeletedAtIsNull(CertificateKind.CERTIFICATE);
     }
 
     @Override

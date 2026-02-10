@@ -40,7 +40,6 @@ public class CertificateTypeMapper {
                                       isLinkValid,
                                       model.getLinkErrorCount(),
                                       model.getLinkLastCheckedAt());
-
     }
 
     public CertificateType fromDto(CertificateTypeDto dto) {
