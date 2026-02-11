@@ -24,8 +24,6 @@ public class CertificateTypeMapper {
     }
 
     public CertificateTypeDto toDto(CertificateType model) {
-        boolean isLinkValid = model.getLinkErrorCount() < maxRetries;
-
         return new CertificateTypeDto(model.getId(),
                                       model.getName(),
                                       model.getPoints(),
@@ -37,7 +35,7 @@ public class CertificateTypeMapper {
                                       model.getLink(),
                                       model.getExamType(),
                                       model.getPublisher(),
-                                      isLinkValid,
+                                      model.isLinkValid(maxRetries),
                                       model.getLinkErrorCount(),
                                       model.getLinkLastCheckedAt());
     }
