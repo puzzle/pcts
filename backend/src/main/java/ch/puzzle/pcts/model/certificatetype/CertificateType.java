@@ -59,6 +59,9 @@ public class CertificateType implements Model {
     @Column(name = "deleted_at", insertable = false, updatable = false)
     private LocalDateTime deletedAt;
 
+    @Transient
+    private int maxRetriesFromConfig = 0;
+
     private CertificateType(Builder builder) {
         this.id = builder.id;
         this.name = trim(builder.name);
@@ -168,8 +171,16 @@ public class CertificateType implements Model {
         return linkErrorCount;
     }
 
+    public void setLinkErrorCount(int linkErrorCount) {
+        this.linkErrorCount = linkErrorCount;
+    }
+
     public LocalDateTime getLinkLastCheckedAt() {
         return linkLastCheckedAt;
+    }
+
+    public void setMaxRetriesFromConfig(int maxRetriesFromConfig) {
+        this.maxRetriesFromConfig = maxRetriesFromConfig;
     }
 
     public void recordLinkFailure() {
@@ -195,7 +206,11 @@ public class CertificateType implements Model {
         this.deletedAt = deletedAt;
     }
 
-    public boolean isLinkValid(int maxRetriesFromConfig) {
+    public boolean isLinkValid() {
+        if (maxRetriesFromConfig == 0) {
+            return true;
+        }
+
         return getLinkErrorCount() < maxRetriesFromConfig;
     }
 
