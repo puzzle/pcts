@@ -4,6 +4,7 @@ import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import ch.puzzle.pcts.service.validation.CertificateTypeValidationService;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,11 +36,24 @@ public class CertificateTypeBusinessService extends BusinessBase<CertificateType
     @Override
     public CertificateType update(Long id, CertificateType certificateType) {
         validationService.validateOnUpdate(id, certificateType);
-        certificateTypePersistenceService.getById(id);
+
+        CertificateType existingCertificate = certificateTypePersistenceService.getById(id);
+
+        boolean linkHasChanged = !Objects.equals(existingCertificate.getLink(), certificateType.getLink());
+
+        if (linkHasChanged) {
+            certificateType.resetLinkStatus();
+        } else {
+            certificateType
+                    .keepLinkStatus(existingCertificate.getLinkErrorCount(),
+                                    existingCertificate.getLinkLastCheckedAt());
+        }
+
         certificateType.setTags(tagBusinessService.resolveTags(certificateType.getTags()));
         certificateType.setId(id);
         CertificateType result = persistenceService.save(certificateType);
         tagBusinessService.deleteUnusedTags();
+
         return result;
     }
 

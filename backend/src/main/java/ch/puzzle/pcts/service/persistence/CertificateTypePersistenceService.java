@@ -26,8 +26,8 @@ public class CertificateTypePersistenceService extends PersistenceBase<Certifica
         return repository.findAllByCertificateKindAndLinkNotNullAndDeletedAtIsNull(CertificateKind.CERTIFICATE);
     }
 
-    public boolean existsByNameAndPublisher(String name, String publisher) {
-        return repository.existsByNameAndPublisher(name, publisher);
+    public boolean nameAndPublisherExcludingIdAlreadyUsed(String name, String publisher, Long id) {
+        return repository.existsByNameAndPublisherAndIdNot(name, publisher, id);
     }
 
     @Override
