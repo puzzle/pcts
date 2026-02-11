@@ -190,6 +190,10 @@ public class CertificateType implements Model {
         this.deletedAt = deletedAt;
     }
 
+    public boolean isLinkValid(int maxRetriesFromConfig) {
+        return getLinkErrorCount() < maxRetriesFromConfig;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof CertificateType that))
