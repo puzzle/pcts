@@ -6,14 +6,10 @@ import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.certificatetype.Tag;
 import java.util.*;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CertificateTypeMapper {
-
-    @Value("${app.link-check.max-retries:3}")
-    private int maxRetries;
 
     public List<CertificateTypeDto> toDto(List<CertificateType> models) {
         return models.stream().map(this::toDto).toList();
@@ -35,7 +31,7 @@ public class CertificateTypeMapper {
                                       model.getLink(),
                                       model.getExamType(),
                                       model.getPublisher(),
-                                      model.isLinkValid(maxRetries),
+                                      model.isLinkValid(),
                                       model.getLinkErrorCount(),
                                       model.getLinkLastCheckedAt());
     }
