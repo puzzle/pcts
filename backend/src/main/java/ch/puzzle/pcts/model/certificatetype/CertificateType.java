@@ -182,6 +182,11 @@ public class CertificateType implements Model {
         this.linkLastCheckedAt = LocalDateTime.now();
     }
 
+    public void keepLinkStatus(int linkErrorCount, LocalDateTime linkLastCheckedAt) {
+        this.linkErrorCount = linkErrorCount;
+        this.linkLastCheckedAt = linkLastCheckedAt;
+    }
+
     public LocalDateTime getDeletedAt() {
         return deletedAt;
     }

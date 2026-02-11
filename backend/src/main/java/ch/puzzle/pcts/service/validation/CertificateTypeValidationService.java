@@ -28,7 +28,7 @@ public class CertificateTypeValidationService extends ValidationBase<Certificate
     public void validateOnUpdate(Long id, CertificateType certificateType) {
         super.validateOnUpdate(id, certificateType);
         validateCertificateKind(certificateType.getCertificateKind());
-        validateUniquenessOfNameAndPublisher(certificateType.getName(), certificateType.getPublisher());
+        validateUniquenessOfNameAndPublisherExcludingId(certificateType.getName(), certificateType.getPublisher(), id);
         if (UniqueNameValidationUtil
                 .nameExcludingIdAlreadyUsed(id, certificateType.getName(), persistenceService::getByName)) {
             Map<FieldKey, String> attributes = Map
@@ -50,7 +50,9 @@ public class CertificateTypeValidationService extends ValidationBase<Certificate
     public void validateOnCreate(CertificateType certificateType) {
         super.validateOnCreate(certificateType);
         validateCertificateKind(certificateType.getCertificateKind());
-        validateUniquenessOfNameAndPublisher(certificateType.getName(), certificateType.getPublisher());
+        validateUniquenessOfNameAndPublisherExcludingId(certificateType.getName(),
+                                                        certificateType.getPublisher(),
+                                                        certificateType.getId());
         if (UniqueNameValidationUtil.nameAlreadyUsed(certificateType.getName(), persistenceService::getByName)) {
             Map<FieldKey, String> attributes = Map
                     .of(FieldKey.ENTITY,
@@ -83,8 +85,8 @@ public class CertificateTypeValidationService extends ValidationBase<Certificate
         }
     }
 
-    public void validateUniquenessOfNameAndPublisher(String name, String publisher) {
-        if (persistenceService.existsByNameAndPublisher(name, publisher)) {
+    public void validateUniquenessOfNameAndPublisherExcludingId(String name, String publisher, Long id) {
+        if (persistenceService.nameAndPublisherExcludingIdAlreadyUsed(name, publisher, id)) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
                                     List
                                             .of(new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE,
