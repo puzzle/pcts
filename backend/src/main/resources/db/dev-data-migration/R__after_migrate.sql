@@ -85,7 +85,7 @@ INSERT INTO member (first_name, last_name, email, abbreviation, employment_state
 VALUES
     ('Lena', 'Müller', 'muller@puzzle.ch','LM', 'MEMBER', '2021-07-15', '1999-08-10', 1),
     ('Jonas', 'Schmidt', 'schmidt@puzzle.ch','JS', 'MEMBER', '2020-06-01', '1998-03-03', 2),
-    ( 'Sophie', 'Keller', null,null, 'APPLICANT', null, '1999-02-28', null),
+    ( 'Sophie', 'Keller', null,'SK', 'APPLICANT', '2019-11-22', '1999-02-28', 3),
     ( 'Tobias', 'Weber', 'weber@puzzle.ch','TW', 'APPLICANT', '2022-02-14', '2000-07-06', 4),
     ( 'Mara', 'Becker', 'becker@puzzle.ch','MB', 'EX_MEMBER', '2023-01-09', '2001-08-05', null),
     ( 'Felix', 'Hofmann', 'hofmann@puzzle.ch','FH', 'EX_MEMBER', '2021-09-17', '2000-02-29', 1),
@@ -107,7 +107,7 @@ VALUES
     (1, 'Software Engineer', 'TechNova Solutions', 100, 1, 'Worked on backend APIs and DevOps tasks.', '2019-03-01', '2022-07-31'),
     (1, 'Software Engineer', 'TechNova Solutions', 100, 1, 'Worked on backend APIs and DevOps tasks.', '2019-03-01', '2022-07-31'),
     (1, 'Software Engineer', 'TechNova Solutions', 100, 1, 'Worked on backend APIs and DevOps tasks.', '2019-03-01', '2022-07-31'),
-    (2, 'Marketing Intern', 'TechNova Solutions', 80, 2, 'Assisted in content strategy and social media analytics.', '2021-06-01', null),
+    (2, 'Marketing Intern', null, 80, 2, 'Assisted in content strategy and social media analytics.', '2021-06-01', null),
     (1, 'Web Developer (Freelance)', 'Freelance', 50, 3, null, '2020-02-15', '2020-12-15'),
     (3, 'Data Analyst',  null, 100, 1, null, '2018-01-10', null);
 
@@ -147,7 +147,7 @@ VALUES
     (5, 4, '2024-02-01', '2026-02-01', NULL, NULL),
 
     --     LeadershipExperiences
-    (2, 11, NULL, NULL, NULL, NULL),
+    (1, 11, NULL, NULL, NULL, NULL),
     (2, 12, NULL, NULL, 'This is quite hard', NULL),
     (4, 13, NULL, NULL, NULL, '2025-01-03 10:43:12');
 
