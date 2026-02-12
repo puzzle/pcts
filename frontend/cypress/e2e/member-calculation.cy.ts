@@ -9,7 +9,6 @@ describe('MemberCalculationComponent', () => {
 
   beforeEach(() => {
     cy.loginAsUser(users.gl);
-
     tableHelper = TableHelper.withTableTestId('member-calculation-table');
   });
 
