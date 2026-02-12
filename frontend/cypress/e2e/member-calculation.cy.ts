@@ -9,20 +9,20 @@ describe('MemberCalculationComponent', () => {
 
   beforeEach(() => {
     cy.loginAsUser(users.gl);
-
     tableHelper = TableHelper.withTableTestId('member-calculation-table');
-    memberDetailPage.visit(1)
-      .withTabIndex(1);
   });
 
   it('should contain correct member calculation table data', () => {
     memberDetailPage.visit(2)
-      .withTabIndex(1);
+      .switchTab('Manager');
 
     tableHelper.expectTableContains(memberCalculationTableData);
   });
 
   it('should cut list after 10 entries', () => {
+    memberDetailPage.visit(1)
+      .switchTab('Administrator');
+
     tableHelper.expectLengthOfTable(10)
       .expectTableToBeExtendable()
       .toggleShowAll()
