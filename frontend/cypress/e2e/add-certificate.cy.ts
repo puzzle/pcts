@@ -1,6 +1,7 @@
 import memberDetailPage from '../pages/memberDetailPage';
 import modalPage from '../pages/modalPage';
 import formPage from '../pages/formPage';
+import * as users from '../fixtures/users.json';
 
 describe('Add Certificate Modal', () => {
 describe('Add certificate Modal', () => {
@@ -16,6 +17,7 @@ describe('Add certificate Modal', () => {
   };
 
   beforeEach(() => {
+    cy.loginAsUser(users.gl);
     memberDetailPage.visit(1);
   });
 
