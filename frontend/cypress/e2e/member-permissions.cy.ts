@@ -3,7 +3,7 @@ import OverviewPage from '../pages/overviewPage';
 import MemberDetailPage from '../pages/memberDetailPage';
 import FormPage from '../pages/formPage';
 
-import CvMemberPage from '../pages/memberDetailPage';
+import CvMemberPage from '../pages/cvMemberPage';
 
 const user = users.member;
 
@@ -62,7 +62,7 @@ describe('Non-Admin (Member) Permissions', () => {
   tableData.forEach((tableName) => {
     it(`should not show "Add" button on member detail page for table ${tableName}`, () => {
       MemberDetailPage.visit(user.databaseId);
-      CvMemberPage.memberCvTab()
+      CvMemberPage.cvTable(tableName)
         .getByTestId('add-member-button')
         .should('not.exist');
     });

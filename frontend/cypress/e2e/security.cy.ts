@@ -1,5 +1,3 @@
-import * as users from '../fixtures/users.json';
-
 // These tests rely on Nginx to set headers, so they may fail without Docker/Proxy.
 describe('Security: Content Security Policy', () => {
   let csp: string;
@@ -28,8 +26,6 @@ describe('Security: Content Security Policy', () => {
   ];
 
   before(() => {
-    cy.loginAsUser(users.gl);
-
     cy.request({
       url: '/',
       method: 'GET'
