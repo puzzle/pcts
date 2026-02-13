@@ -11,6 +11,7 @@ import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
+import ch.puzzle.pcts.model.certificatetype.ExamType;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import java.math.BigDecimal;
 import java.util.List;
@@ -46,6 +47,11 @@ class CertificateTypeValidationServiceTest
                 .withComment("Comment")
                 .withTags(Set.of(TAG_3))
                 .withCertificateKind(CertificateKind.CERTIFICATE)
+                .withEffort(6D)
+                .withExamDuration(60)
+                .withLink("https://www.example.com")
+                .withExamType(ExamType.PRACTICAL)
+                .withPublisher("Works on my machine GMBH")
                 .build();
     }
 
@@ -54,14 +60,20 @@ class CertificateTypeValidationServiceTest
         return service;
     }
 
-    private static CertificateType createCertificateType(String name, BigDecimal points,
-                                                         CertificateKind certificateKind) {
+    private static CertificateType createCertificateType(String name, BigDecimal points, Double effort,
+                                                         Integer examDuration, String link, ExamType examType,
+                                                         String publisher) {
         CertificateType c = new CertificateType();
         c.setName(name);
         c.setPoints(points);
         c.setComment("Comment");
         c.setTags(Set.of(TAG_1));
-        c.setCertificateKind(certificateKind);
+        c.setCertificateKind(CertificateKind.CERTIFICATE);
+        c.setEffort(effort);
+        c.setExamDuration(examDuration);
+        c.setLink(link);
+        c.setExamType(examType);
+        c.setPublisher(publisher);
 
         return c;
     }
@@ -69,13 +81,31 @@ class CertificateTypeValidationServiceTest
     static Stream<Arguments> invalidModelProvider() {
         return Stream
                 .of(Arguments
-                        .of(createCertificateType(null, POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
+                        .of(createCertificateType(null,
+                                                  POSITIVE_BIG_DECIMAL,
+                                                  10D,
+                                                  60,
+                                                  "https://www.example.com",
+                                                  ExamType.PRACTICAL,
+                                                  "Publisher"),
                             List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createCertificateType("", POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
+                            .of(createCertificateType("",
+                                                      POSITIVE_BIG_DECIMAL,
+                                                      10D,
+                                                      60,
+                                                      "https://www.example.com",
+                                                      ExamType.PRACTICAL,
+                                                      "Publisher"),
                                 List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createCertificateType("h", POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
+                            .of(createCertificateType("h",
+                                                      POSITIVE_BIG_DECIMAL,
+                                                      10D,
+                                                      60,
+                                                      "https://www.example.com",
+                                                      ExamType.PRACTICAL,
+                                                      "Publisher"),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -91,7 +121,11 @@ class CertificateTypeValidationServiceTest
                     Arguments
                             .of(createCertificateType(TOO_LONG_STRING,
                                                       POSITIVE_BIG_DECIMAL,
-                                                      CertificateKind.CERTIFICATE),
+                                                      10D,
+                                                      60,
+                                                      "https://www.example.com",
+                                                      ExamType.PRACTICAL,
+                                                      "Publisher"),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -105,10 +139,22 @@ class CertificateTypeValidationServiceTest
                                                     FieldKey.IS,
                                                     TOO_LONG_STRING))),
                     Arguments
-                            .of(createCertificateType("Name", null, CertificateKind.CERTIFICATE),
+                            .of(createCertificateType("Name",
+                                                      null,
+                                                      10D,
+                                                      60,
+                                                      "https://www.example.com",
+                                                      ExamType.PRACTICAL,
+                                                      "Publisher"),
                                 List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "points"))),
                     Arguments
-                            .of(createCertificateType("Name", BigDecimal.valueOf(-1), CertificateKind.CERTIFICATE),
+                            .of(createCertificateType("Name",
+                                                      BigDecimal.valueOf(-1),
+                                                      10D,
+                                                      60,
+                                                      "https://www.example.com",
+                                                      ExamType.PRACTICAL,
+                                                      "Publisher"),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
@@ -116,7 +162,124 @@ class CertificateTypeValidationServiceTest
                                                     FieldKey.FIELD,
                                                     "points",
                                                     FieldKey.IS,
-                                                    "-1"))));
+                                                    "-1"))),
+                    Arguments
+                            .of(createCertificateType("Name",
+                                                      POSITIVE_BIG_DECIMAL,
+                                                      null,
+                                                      60,
+                                                      "https://www.example.com",
+                                                      ExamType.PRACTICAL,
+                                                      "Publisher"),
+                                List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "effort"))),
+                    Arguments
+                            .of(createCertificateType("Name",
+                                                      POSITIVE_BIG_DECIMAL,
+                                                      -1D,
+                                                      60,
+                                                      "https://www.example.com",
+                                                      ExamType.PRACTICAL,
+                                                      "Publisher"),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "CertificateType",
+                                                    FieldKey.FIELD,
+                                                    "effort",
+                                                    FieldKey.IS,
+                                                    "-1.0"))),
+                    Arguments
+                            .of(createCertificateType("Name",
+                                                      POSITIVE_BIG_DECIMAL,
+                                                      10D,
+                                                      -1,
+                                                      "https://www.example.com",
+                                                      ExamType.PRACTICAL,
+                                                      "Publisher"),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "CertificateType",
+                                                    FieldKey.FIELD,
+                                                    "examDuration",
+                                                    FieldKey.IS,
+                                                    "-1"))),
+                    Arguments
+                            .of(createCertificateType("Name",
+                                                      POSITIVE_BIG_DECIMAL,
+                                                      10D,
+                                                      60,
+                                                      "not-a-link-whatsoever",
+                                                      ExamType.PRACTICAL,
+                                                      "Publisher"),
+                                List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "link"))),
+                    Arguments
+                            .of(createCertificateType("Name",
+                                                      POSITIVE_BIG_DECIMAL,
+                                                      10D,
+                                                      60,
+                                                      "https://www.example.com",
+                                                      null,
+                                                      "Publisher"),
+                                List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "examType"))),
+                    Arguments
+                            .of(createCertificateType("Name",
+                                                      POSITIVE_BIG_DECIMAL,
+                                                      10D,
+                                                      60,
+                                                      "https://www.example.com",
+                                                      ExamType.PRACTICAL,
+                                                      null),
+                                List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "publisher"))),
+                    Arguments
+                            .of(createCertificateType("Name",
+                                                      POSITIVE_BIG_DECIMAL,
+                                                      10D,
+                                                      60,
+                                                      "https://www.example.com",
+                                                      ExamType.PRACTICAL,
+                                                      ""),
+                                List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "publisher"))),
+                    Arguments
+                            .of(createCertificateType("Name",
+                                                      POSITIVE_BIG_DECIMAL,
+                                                      10D,
+                                                      60,
+                                                      "https://www.example.com",
+                                                      ExamType.PRACTICAL,
+                                                      "h"),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "CertificateType",
+                                                    FieldKey.FIELD,
+                                                    "publisher",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.IS,
+                                                    "h"))),
+                    Arguments
+                            .of(createCertificateType("Name",
+                                                      POSITIVE_BIG_DECIMAL,
+                                                      10D,
+                                                      60,
+                                                      "https://www.example.com",
+                                                      ExamType.PRACTICAL,
+                                                      TOO_LONG_STRING),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "CertificateType",
+                                                    FieldKey.FIELD,
+                                                    "publisher",
+                                                    FieldKey.MIN,
+                                                    "2",
+                                                    FieldKey.MAX,
+                                                    "250",
+                                                    FieldKey.IS,
+                                                    TOO_LONG_STRING))));
     }
 
     @DisplayName("Should throw exception on validateOnGetById() when certificate kind is not certificate")
@@ -198,5 +361,54 @@ class CertificateTypeValidationServiceTest
 
         verify(spyService).validateOnUpdate(CERT_TYPE_1_ID, certificate);
         verifyNoMoreInteractions(persistenceService);
+    }
+
+    @DisplayName("Should validate uniqueness of name and publisher excluding ID")
+    @Test
+    void shouldNotThrowExceptionWhenNameAndPublisherAreUnique() {
+        String name = "Unique Name";
+        String publisher = "Unique Publisher";
+        Long id = 100L;
+
+        when(persistenceService.nameAndPublisherExcludingIdAlreadyUsed(name, publisher, id)).thenReturn(false);
+
+        assertDoesNotThrow(() -> service.validateUniquenessOfNameAndPublisherExcludingId(name, publisher, id));
+    }
+
+    @DisplayName("Should throw exception when name and publisher already exist for another ID")
+    @Test
+    void shouldThrowExceptionWhenNameAndPublisherAlreadyExist() {
+        String name = "Duplicate Name";
+        String publisher = "Duplicate Publisher";
+        Long id = 100L;
+
+        when(persistenceService.nameAndPublisherExcludingIdAlreadyUsed(name, publisher, id)).thenReturn(true);
+
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> service
+                                                       .validateUniquenessOfNameAndPublisherExcludingId(name,
+                                                                                                        publisher,
+                                                                                                        id));
+
+        assertEquals(List.of(ErrorKey.ATTRIBUTE_UNIQUE), exception.getErrorKeys());
+        assertEquals(List.of(Map.of(FieldKey.FIELD, "name & publisher")), exception.getErrorAttributes());
+    }
+
+    @DisplayName("Should pass validation when ExamType is NONE and Duration is null")
+    @Test
+    void shouldNotThrowExceptionWhenExamTypeIsNoneAndDurationIsNull() {
+        assertDoesNotThrow(() -> service.validateThatDurationIsNullWhenExamTypeIsNone(ExamType.NONE, null));
+    }
+
+    @DisplayName("Should throw exception when ExamType is NONE but Duration is provided")
+    @Test
+    void shouldThrowExceptionWhenExamTypeIsNoneAndDurationIsNotNull() {
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> service
+                                                       .validateThatDurationIsNullWhenExamTypeIsNone(ExamType.NONE,
+                                                                                                     60));
+
+        assertEquals(List.of(ErrorKey.ATTRIBUTE_NOT_NULL), exception.getErrorKeys());
+        assertEquals(List.of(Map.of(FieldKey.FIELD, "duration")), exception.getErrorAttributes());
     }
 }
