@@ -40,7 +40,7 @@ public class CertificateType implements Model {
 
     @NotNull(message = "{attribute.not.null}")
     @PositiveOrZero(message = "{attribute.not.negative}")
-    private double effort;
+    private Double effort;
 
     @Min(value = 0, message = "{attribute.not.negative}")
     private Integer examDuration;
@@ -130,11 +130,11 @@ public class CertificateType implements Model {
         this.certificateKind = certificateKind;
     }
 
-    public double getEffort() {
+    public Double getEffort() {
         return effort;
     }
 
-    public void setEffort(double effort) {
+    public void setEffort(Double effort) {
         this.effort = effort;
     }
 
@@ -270,7 +270,7 @@ public class CertificateType implements Model {
         private String comment;
         private Set<Tag> tags;
         private CertificateKind certificateKind;
-        private double effort;
+        private Double effort;
         private Integer examDuration;
         private String link;
         private ExamType examType;
@@ -313,7 +313,7 @@ public class CertificateType implements Model {
             return this;
         }
 
-        public Builder withEffort(double effort) {
+        public Builder withEffort(Double effort) {
             this.effort = effort;
             return this;
         }
