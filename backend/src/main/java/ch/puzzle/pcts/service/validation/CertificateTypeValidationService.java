@@ -30,6 +30,7 @@ public class CertificateTypeValidationService extends ValidationBase<Certificate
         super.validateOnUpdate(id, certificateType);
         validateCertificateKind(certificateType.getCertificateKind());
         validateUniquenessOfNameAndPublisherExcludingId(certificateType.getName(), certificateType.getPublisher(), id);
+        validateThatDurationIsNullWhenExamTypeIsNone(certificateType.getExamType(), certificateType.getExamDuration());
         if (UniqueNameValidationUtil
                 .nameExcludingIdAlreadyUsed(id, certificateType.getName(), persistenceService::getByName)) {
             Map<FieldKey, String> attributes = Map
@@ -54,6 +55,7 @@ public class CertificateTypeValidationService extends ValidationBase<Certificate
         validateUniquenessOfNameAndPublisherExcludingId(certificateType.getName(),
                                                         certificateType.getPublisher(),
                                                         certificateType.getId());
+        validateThatDurationIsNullWhenExamTypeIsNone(certificateType.getExamType(), certificateType.getExamDuration());
         if (UniqueNameValidationUtil.nameAlreadyUsed(certificateType.getName(), persistenceService::getByName)) {
             Map<FieldKey, String> attributes = Map
                     .of(FieldKey.ENTITY,

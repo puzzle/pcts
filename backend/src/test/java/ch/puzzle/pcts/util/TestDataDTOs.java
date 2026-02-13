@@ -99,7 +99,15 @@ public class TestDataDTOs {
                                                                                             .getTags()
                                                                                             .stream()
                                                                                             .map(Tag::getName)
-                                                                                            .toList());
+                                                                                            .toList(),
+                                                                                    CERT_TYPE_1.getEffort(),
+                                                                                    CERT_TYPE_1.getExamDuration(),
+                                                                                    CERT_TYPE_1.getLink(),
+                                                                                    CERT_TYPE_1.getExamType(),
+                                                                                    CERT_TYPE_1.getPublisher(),
+                                                                                    true,
+                                                                                    0,
+                                                                                    null);
 
     public static final CertificateTypeDto CERT_TYPE_5_DTO = new CertificateTypeDto(CERT_TYPE_5_ID,
                                                                                     CERT_TYPE_5.getName(),
@@ -109,7 +117,15 @@ public class TestDataDTOs {
                                                                                             .getTags()
                                                                                             .stream()
                                                                                             .map(Tag::getName)
-                                                                                            .toList());
+                                                                                            .toList(),
+                                                                                    CERT_TYPE_1.getEffort(),
+                                                                                    CERT_TYPE_1.getExamDuration(),
+                                                                                    CERT_TYPE_1.getLink(),
+                                                                                    CERT_TYPE_1.getExamType(),
+                                                                                    CERT_TYPE_1.getPublisher(),
+                                                                                    true,
+                                                                                    0,
+                                                                                    null);
 
     public static final CertificateTypeDto CERT_TYPE_6_DTO = new CertificateTypeDto(CERT_TYPE_6_ID,
                                                                                     CERT_TYPE_6.getName(),
@@ -119,7 +135,15 @@ public class TestDataDTOs {
                                                                                             .getTags()
                                                                                             .stream()
                                                                                             .map(Tag::getName)
-                                                                                            .toList());
+                                                                                            .toList(),
+                                                                                    CERT_TYPE_1.getEffort(),
+                                                                                    CERT_TYPE_1.getExamDuration(),
+                                                                                    CERT_TYPE_1.getLink(),
+                                                                                    CERT_TYPE_1.getExamType(),
+                                                                                    CERT_TYPE_1.getPublisher(),
+                                                                                    true,
+                                                                                    0,
+                                                                                    null);
 
     public static final CertificateTypeDto CERT_TYPE_5_Input = new CertificateTypeDto(null,
                                                                                       CERT_TYPE_5.getName(),
@@ -129,7 +153,15 @@ public class TestDataDTOs {
                                                                                               .getTags()
                                                                                               .stream()
                                                                                               .map(Tag::getName)
-                                                                                              .toList());
+                                                                                              .toList(),
+                                                                                      CERT_TYPE_1.getEffort(),
+                                                                                      CERT_TYPE_1.getExamDuration(),
+                                                                                      CERT_TYPE_1.getLink(),
+                                                                                      CERT_TYPE_1.getExamType(),
+                                                                                      CERT_TYPE_1.getPublisher(),
+                                                                                      true,
+                                                                                      0,
+                                                                                      null);
 
     public static final LeadershipExperienceTypeDto LEADERSHIP_TYPE_1_DTO = new LeadershipExperienceTypeDto(LEADERSHIP_TYPE_1_ID,
                                                                                                             LEADERSHIP_TYPE_1
