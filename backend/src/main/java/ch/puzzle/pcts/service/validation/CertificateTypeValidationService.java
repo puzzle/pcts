@@ -8,6 +8,7 @@ import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
+import ch.puzzle.pcts.model.certificatetype.ExamType;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
 import ch.puzzle.pcts.service.validation.util.UniqueNameValidationUtil;
 import java.util.List;
@@ -91,6 +92,15 @@ public class CertificateTypeValidationService extends ValidationBase<Certificate
                                     List
                                             .of(new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE,
                                                                     Map.of(FieldKey.FIELD, "name & publisher"))));
+        }
+    }
+
+    public void validateThatDurationIsNullWhenExamTypeIsNone(ExamType examType, Integer duration) {
+        if (examType == ExamType.NONE && duration != null) {
+            throw new PCTSException(HttpStatus.BAD_REQUEST,
+                                    List
+                                            .of(new GenericErrorDto(ErrorKey.ATTRIBUTE_NOT_NULL,
+                                                                    Map.of(FieldKey.FIELD, "duration"))));
         }
     }
 }
