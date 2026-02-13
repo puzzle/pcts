@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.validator.constraints.URL;
 
 @Entity
 @SQLDelete(sql = "UPDATE certificate_type SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
@@ -41,8 +42,10 @@ public class CertificateType implements Model {
     @PositiveOrZero(message = "{attribute.not.negative}")
     private double effort;
 
+    @Min(value = 0, message = "{attribute.not.negative}")
     private Integer examDuration;
 
+    @URL(message = "{attribute.not.url}")
     private String link;
 
     @Enumerated(EnumType.STRING)
@@ -207,6 +210,7 @@ public class CertificateType implements Model {
     }
 
     public boolean isLinkValid() {
+        // If the attribute is set to 0, the link check is disabled entirely
         if (maxRetriesFromConfig == 0) {
             return true;
         }
@@ -216,8 +220,9 @@ public class CertificateType implements Model {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof CertificateType that))
+        if (!(o instanceof CertificateType that)) {
             return false;
+        }
         return Double.compare(getEffort(), that.getEffort()) == 0 && getLinkErrorCount() == that.getLinkErrorCount()
                && Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName())
                && Objects.equals(getPoints(), that.getPoints()) && Objects.equals(getComment(), that.getComment())

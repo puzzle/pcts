@@ -81,7 +81,11 @@ public class CertificateTypeBusinessService extends BusinessBase<CertificateType
         tagBusinessService.deleteUnusedTags();
     }
 
-    public void setMaxRetries(CertificateType certificateType) {
+    public List<CertificateType> findAllWhereLinkIsNotNull() {
+        return certificateTypePersistenceService.findAllWhereLinkIsNotNull();
+    }
+
+    private void setMaxRetries(CertificateType certificateType) {
         certificateType.setMaxRetriesFromConfig(maxRetries);
     }
 }
