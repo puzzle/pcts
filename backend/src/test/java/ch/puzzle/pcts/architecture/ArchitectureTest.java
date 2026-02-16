@@ -97,7 +97,7 @@ class ArchitectureTest {
                 .resideInAPackage("..service.business..")
                 .should()
                 .onlyBeAccessed()
-                .byAnyPackage("..controller..", "..mapper..", "..service.business..");
+                .byAnyPackage("..controller..", "..mapper..", "..service.business..", "..service.scheduled");
 
         rule.check(importedClasses);
     }
@@ -163,7 +163,8 @@ class ArchitectureTest {
                 .areNotAnonymousClasses()
                 .and()
                 .resideInAPackage("ch.puzzle.pcts.service..")
-                .and(not(resideInAPackage("ch.puzzle.pcts.service.validation.util..")))
+                .and(not(resideInAnyPackage("ch.puzzle.pcts.service.validation.util..",
+                                            "ch.puzzle.pcts.service.scheduled")))
                 .should()
                 .beAnnotatedWith(Service.class)
                 .andShould()
@@ -354,7 +355,7 @@ class ArchitectureTest {
                 .layer("Controller")
                 .definedBy("..controller..") //
                 .layer("BusinessService")
-                .definedBy("..service.business..") //
+                .definedBy("..service.business..", "..service.scheduled..") //
                 .layer("ValidationService")
                 .definedBy("..service.validation..") //
                 .layer("PersistenceService")
