@@ -1,9 +1,9 @@
 ALTER TABLE certificate_type
-    ADD COLUMN effort decimal NOT NULL DEFAULT 0,
+    ADD COLUMN effort decimal DEFAULT 0, -- TODO: Add NOT NULL once leadership_type is separated
     ADD COLUMN exam_duration int,
     ADD COLUMN link text,
-    ADD COLUMN exam_type TEXT NOT NULL DEFAULT 'NONE',
-    ADD COLUMN publisher TEXT NOT NULL DEFAULT 'CHANGE ME',
+    ADD COLUMN exam_type TEXT DEFAULT 'NONE', -- TODO: Add NOT NULL once leadership_type is separated
+    ADD COLUMN publisher TEXT DEFAULT 'CHANGE ME', -- TODO: Add NOT NULL once leadership_type is separated
     ADD COLUMN link_error_count int,
     ADD COLUMN link_last_checked_at timestamp;
 

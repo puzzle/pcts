@@ -38,7 +38,9 @@ public class CertificateType implements Model {
     @NotNull(message = "{attribute.not.null}")
     private CertificateKind certificateKind;
 
-    @NotNull(message = "{attribute.not.null}")
+    // TODO: Add this back after certificate_type and leadership_type have been
+    // separated
+    // @NotNull(message = "{attribute.not.null}")
     @PositiveOrZero(message = "{attribute.not.negative}")
     private Double effort;
 
@@ -48,8 +50,10 @@ public class CertificateType implements Model {
     @URL(message = "{attribute.not.url}")
     private String link;
 
+    // TODO: Add this back after certificate_type and leadership_type have been
+    // separated
+    // @NotNull(message = "{attribute.not.null}")
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "{attribute.not.null}")
     private ExamType examType;
 
     @PCTSStringValidation
