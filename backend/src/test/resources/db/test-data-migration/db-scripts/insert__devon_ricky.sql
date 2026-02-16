@@ -5,13 +5,14 @@ VALUES ('M1 Project Manager', TRUE),
 INSERT INTO member(first_name, last_name, abbreviation, employment_state, date_of_hire, birth_date, organisation_unit)
 VALUES ('Devon', 'Ricky', 'DR', 'MEMBER', '2015-03-17', '1979-11-05', 1);
 
-INSERT INTO certificate_type(name, points, certificate_kind)
-VALUES ('Scrum Master', 0.5, 'CERTIFICATE'),
-       ('Hermes Foundation', 0.5, 'CERTIFICATE'),
-       ('Customer Experience Facilitator', 0.5, 'CERTIFICATE'),
-       ('Leadership Handball', 0.5, 'YOUTH_AND_SPORT'),
-       ('Periodic Leadership', 0.2, 'YOUTH_AND_SPORT'),
-       ('Expert', 1.5, 'YOUTH_AND_SPORT');
+-- TODO: Remove 'link_error_count' here after LeadershipExperiences are treated separately
+INSERT INTO certificate_type(name, points, certificate_kind, link_error_count)
+VALUES ('Scrum Master', 0.5, 'CERTIFICATE', 0),
+       ('Hermes Foundation', 0.5, 'CERTIFICATE', 0),
+       ('Customer Experience Facilitator', 0.5, 'CERTIFICATE', 0),
+       ('Leadership Handball', 0.5, 'YOUTH_AND_SPORT', 0),
+       ('Periodic Leadership', 0.2, 'YOUTH_AND_SPORT', 0),
+       ('Expert', 1.5, 'YOUTH_AND_SPORT', 0);
 
 INSERT INTO certificate(member_id, certificate_type_id, completed_at, valid_until)
 VALUES (1000, 1000, '2021-08-01', null),
