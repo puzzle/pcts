@@ -17,7 +17,7 @@ TRUNCATE TABLE certificate_type CASCADE;
 
 INSERT INTO certificate_type (name, points, deleted_at, comment, certificate_kind, effort, exam_duration, link, exam_type, publisher, link_error_count, link_last_checked_at)
 VALUES
-    ('Certificate Type 1', 5.5, null, 'This is Certificate 1', 'CERTIFICATE', 10, 120, 'https://example.com/', 'MULTIPLE_CHOICE', 'Example Publisher', 0, null),
+    ('Certificate Type 1', 5.5, null, 'This is Certificate 1', 'CERTIFICATE', 10, 120, 'http://localhost:8443/valid-cert', 'MULTIPLE_CHOICE', 'Example Publisher', 0, null),
     ('Certificate Type 2', 1, null, 'This is Certificate 2', 'CERTIFICATE', 10, 120, 'https://example.com/', 'MULTIPLE_CHOICE', 'Example Publisher', 0, null),
     ('Certificate Type 3', 3, null, 'This is Certificate 3', 'CERTIFICATE', 10, 120, null, 'MULTIPLE_CHOICE', 'Example Publisher', 0, null),
     ('Certificate Type 4', 0.5, null, 'This is Certificate 4', 'CERTIFICATE', 10, 120, null, 'MULTIPLE_CHOICE', 'Example Publisher', 0, null);
