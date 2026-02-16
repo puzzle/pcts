@@ -71,9 +71,9 @@ public class CertificateTypeLinkCleanupJob {
             log.warn("Job interrupted while checking link for ID {}: {}", cert.getId(), url);
         } catch (IOException | IllegalArgumentException e) {
             cert.recordLinkFailure();
-            log.error("Link unreachable for ID {}: {}", cert.getId(), e.getMessage());
+            log.error("Link unreachable for ID {}: {}", cert.getId(), e.toString());
         }
 
-        certificateTypeBusinessService.create(cert);
+        certificateTypeBusinessService.update(cert.getId(), cert);
     }
 }
