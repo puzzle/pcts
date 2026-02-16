@@ -134,6 +134,11 @@ public class TestDataModels {
             .withComment("This is Certificate 2")
             .withTags(Set.of(TAG_2))
             .withCertificateKind(CertificateKind.CERTIFICATE)
+            .withEffort(10D)
+            .withExamDuration(120)
+            .withLink("https://example.com/")
+            .withExamType(ExamType.MULTIPLE_CHOICE)
+            .withPublisher("Example Publisher")
             .build();
 
     public static final CertificateType CERT_TYPE_3 = CertificateType.Builder
@@ -144,6 +149,10 @@ public class TestDataModels {
             .withComment("This is Certificate 3")
             .withTags(Set.of())
             .withCertificateKind(CertificateKind.CERTIFICATE)
+            .withEffort(10D)
+            .withExamDuration(120)
+            .withExamType(ExamType.MULTIPLE_CHOICE)
+            .withPublisher("Example Publisher")
             .build();
 
     public static final CertificateType CERT_TYPE_4 = CertificateType.Builder
@@ -154,6 +163,10 @@ public class TestDataModels {
             .withComment("This is Certificate 4")
             .withTags(Set.of())
             .withCertificateKind(CertificateKind.CERTIFICATE)
+            .withEffort(10D)
+            .withExamDuration(120)
+            .withExamType(ExamType.MULTIPLE_CHOICE)
+            .withPublisher("Example Publisher")
             .build();
 
     public static final CertificateType CERT_TYPE_5 = CertificateType.Builder
