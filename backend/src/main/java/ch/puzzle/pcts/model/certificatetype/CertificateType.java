@@ -56,7 +56,8 @@ public class CertificateType implements Model {
     @Enumerated(EnumType.STRING)
     private ExamType examType;
 
-    @PCTSStringValidation
+    // TODO: Add this back after certificate_type and leadership_type have been
+    // @PCTSStringValidation
     private String publisher;
 
     private int linkErrorCount = 0;
@@ -78,9 +79,9 @@ public class CertificateType implements Model {
         this.certificateKind = builder.certificateKind;
         this.effort = builder.effort;
         this.examDuration = builder.examDuration;
-        this.link = builder.link;
+        this.link = trim(builder.link);
         this.examType = builder.examType;
-        this.publisher = builder.publisher;
+        this.publisher = trim(builder.publisher);
     }
 
     public CertificateType() {
@@ -155,7 +156,7 @@ public class CertificateType implements Model {
     }
 
     public void setLink(String link) {
-        this.link = link;
+        this.link = trim(link);
     }
 
     public ExamType getExamType() {
@@ -171,7 +172,7 @@ public class CertificateType implements Model {
     }
 
     public void setPublisher(String publisher) {
-        this.publisher = publisher;
+        this.publisher = trim(publisher);
     }
 
     public int getLinkErrorCount() {
@@ -227,10 +228,12 @@ public class CertificateType implements Model {
         if (!(o instanceof CertificateType that)) {
             return false;
         }
-        return Double.compare(getEffort(), that.getEffort()) == 0 && getLinkErrorCount() == that.getLinkErrorCount()
-               && Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName())
-               && Objects.equals(getPoints(), that.getPoints()) && Objects.equals(getComment(), that.getComment())
-               && Objects.equals(getTags(), that.getTags()) && getCertificateKind() == that.getCertificateKind()
+        // TODO: Re-implement effort here once LeadershipexperienceType is treated
+        // seperately
+        return getLinkErrorCount() == that.getLinkErrorCount() && Objects.equals(getId(), that.getId())
+               && Objects.equals(getName(), that.getName()) && Objects.equals(getPoints(), that.getPoints())
+               && Objects.equals(getComment(), that.getComment()) && Objects.equals(getTags(), that.getTags())
+               && getCertificateKind() == that.getCertificateKind()
                && Objects.equals(getExamDuration(), that.getExamDuration()) && Objects.equals(getLink(), that.getLink())
                && Objects.equals(getExamType(), that.getExamType())
                && Objects.equals(getPublisher(), that.getPublisher())
@@ -328,7 +331,7 @@ public class CertificateType implements Model {
         }
 
         public Builder withLink(String link) {
-            this.link = link;
+            this.link = trim(link);
             return this;
         }
 
@@ -338,7 +341,7 @@ public class CertificateType implements Model {
         }
 
         public Builder withPublisher(String publisher) {
-            this.publisher = publisher;
+            this.publisher = trim(publisher);
             return this;
         }
 
