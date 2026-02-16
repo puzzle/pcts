@@ -131,4 +131,42 @@ class CertificateTypePersistenceServiceIT
                                                      FieldKey.ENTITY,
                                                      CERTIFICATE_TYPE)));
     }
+
+    @DisplayName("Should only return certificateTypes that are not null")
+    @Test
+    void shouldOnlyReturnNotNullCertificateTypes() {
+        List<CertificateType> result = persistenceService.findAllWhereLinkIsNotNull();
+
+        assertThat(result).hasSize(2);
+        assertThat(result)
+                .extracting(CertificateType::getName)
+                .containsExactlyInAnyOrder("Certificate Type 1", "Certificate Type 2");
+    }
+
+    @DisplayName("Should return ture when name + publisher already exists")
+    @Test
+    void shouldReturnTrueWhenNameAndPublisherAlreadyExists() {
+        boolean result = persistenceService
+                .nameAndPublisherExcludingIdAlreadyUsed("Certificate Type 1", "Example Publisher", 100L);
+
+        assertThat(result).isTrue();
+    }
+
+    @DisplayName("Should return false when name + publisher does not exist yet")
+    @Test
+    void shouldReturnFalseWhenNameAndPublisherDoesNotExist() {
+        boolean result = persistenceService
+                .nameAndPublisherExcludingIdAlreadyUsed("A new name!", "A new publisher!", 100L);
+
+        assertThat(result).isFalse();
+    }
+
+    @DisplayName("Should return false when name + publisher already exists, but id matches")
+    @Test
+    void shouldReturnFalseWhenNameAndPublisherAlreadyExistsButIdMatches() {
+        boolean result = persistenceService
+                .nameAndPublisherExcludingIdAlreadyUsed("Certificate Type 2", "Example Publisher", 2L);
+
+        assertThat(result).isFalse();
+    }
 }
