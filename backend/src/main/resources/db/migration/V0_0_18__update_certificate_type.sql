@@ -4,7 +4,7 @@ ALTER TABLE certificate_type
     ADD COLUMN link text,
     ADD COLUMN exam_type TEXT DEFAULT 'NONE', -- TODO: Add NOT NULL once leadership_type is separated
     ADD COLUMN publisher TEXT DEFAULT 'CHANGE ME', -- TODO: Add NOT NULL once leadership_type is separated
-    ADD COLUMN link_error_count int,
+    ADD COLUMN link_error_count int DEFAULT 0,
     ADD COLUMN link_last_checked_at timestamp;
 
 ALTER TABLE certificate_type
