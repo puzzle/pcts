@@ -2,23 +2,32 @@ package ch.puzzle.pcts.architecture;
 
 import static ch.puzzle.pcts.architecture.CustomTransformers.annotations;
 import static ch.puzzle.pcts.architecture.CustomTransformers.packages;
+import static ch.puzzle.pcts.architecture.condition.AnnotationConditions.havePrefix;
 import static ch.puzzle.pcts.architecture.condition.AnnotationConditions.haveSuffix;
 import static ch.puzzle.pcts.architecture.condition.AnnotationConditions.haveValuePrefix;
 import static ch.puzzle.pcts.architecture.condition.AnnotationConditions.shouldBeValidDescription;
+import static ch.puzzle.pcts.architecture.condition.ClassConditions.beAnnotatedWithOneOf;
 import static ch.puzzle.pcts.architecture.condition.ClassConditions.followPattern;
 import static ch.puzzle.pcts.architecture.condition.ClassConditions.overrideEqualsMethod;
 import static ch.puzzle.pcts.architecture.condition.ClassConditions.overrideHashCodeMethod;
 import static ch.puzzle.pcts.architecture.condition.ClassConditions.overrideToStringMethod;
 import static ch.puzzle.pcts.architecture.condition.CodeUnitConditions.trimAssignedStringFields;
 import static com.tngtech.archunit.base.DescribedPredicate.not;
-import static com.tngtech.archunit.core.domain.JavaClass.Predicates.*;
+import static com.tngtech.archunit.core.domain.JavaClass.Predicates.equivalentTo;
+import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAPackage;
+import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAnyPackage;
+import static com.tngtech.archunit.core.domain.JavaClass.Predicates.type;
 import static com.tngtech.archunit.lang.conditions.ArchConditions.and;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 
+import ch.puzzle.pcts.controller.ConfigurationController;
 import ch.puzzle.pcts.model.Model;
+import ch.puzzle.pcts.security.annotation.IsAdmin;
+import ch.puzzle.pcts.security.annotation.IsAdminOrOwner;
+import ch.puzzle.pcts.security.annotation.IsAuthenticated;
 import com.tngtech.archunit.core.domain.*;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
@@ -32,8 +41,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.stereotype.*;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -97,7 +108,7 @@ class ArchitectureTest {
                 .resideInAPackage("..service.business..")
                 .should()
                 .onlyBeAccessed()
-                .byAnyPackage("..controller..", "..mapper..", "..service.business..");
+                .byAnyPackage("..controller..", "..mapper..", "..service.business..", "..service");
 
         rule.check(importedClasses);
     }
@@ -190,10 +201,28 @@ class ArchitectureTest {
         rule.check(importedClasses);
     }
 
+    @DisplayName("Controller classes should be annotated with at least one security annotation")
+    @Test
+    void controllersShouldBeAnnotatedWithIsAdmin() {
+        JavaClasses importedClasses = getMainSourceClasses();
+
+        ArchRule rule = classes()
+                .that()
+                .areNotAnonymousClasses()
+                .and()
+                .resideInAPackage("ch.puzzle.pcts.controller..")
+                .and(not(equivalentTo(ConfigurationController.class)))
+                .should(beAnnotatedWithOneOf(IsAdmin.class, IsAdminOrOwner.class, IsAuthenticated.class))
+                .andShould()
+                .notBeInterfaces();
+
+        rule.check(importedClasses);
+    }
+
     @DisplayName("@RequestMappings should have common pre- and suffix")
     @Test
     void controllersShouldDefineCorrectRequestMapping() {
-        JavaClasses importedClasses = getMainSourceClasses();
+        JavaClasses importedClasses = getMainSourceClasses().that(not(equivalentTo(ConfigurationController.class)));
 
         ArchCondition<JavaAnnotation<JavaClass>> combinedCondition = and(haveSuffix("value", "s"),
                                                                          haveValuePrefix("/api/v1/"));
@@ -206,7 +235,7 @@ class ArchitectureTest {
     @DisplayName("Controller @Tags should be valid")
     @Test
     void controllerTagsShouldBeCompleteSentences() {
-        JavaClasses importedClasses = getMainSourceClasses();
+        JavaClasses importedClasses = getMainSourceClasses().that(not(equivalentTo(ConfigurationController.class)));;
 
         ArchCondition<JavaAnnotation<JavaClass>> combinedCondition = and(shouldBeValidDescription("description"),
                                                                          haveSuffix("name", "s"));
@@ -349,31 +378,35 @@ class ArchitectureTest {
     @Test
     void serviceLayerCheck() {
         JavaClasses importedClasses = getMainSourceClasses();
-        Architectures.LayeredArchitecture layeredArchitecture = layeredArchitecture()
-                .consideringAllDependencies() //
-                .layer("Controller")
-                .definedBy("..controller..") //
-                .layer("BusinessService")
-                .definedBy("..service.business..") //
-                .layer("ValidationService")
-                .definedBy("..service.validation..") //
-                .layer("PersistenceService")
-                .definedBy("..service.persistence..") //
-                .layer("Repository")
-                .definedBy("..repository..") //
-                .layer("Mapper")
-                .definedBy("..mapper..") //
 
+        Architectures.LayeredArchitecture layeredArchitecture = layeredArchitecture()
+                .consideringAllDependencies()
+                .layer("Controller")
+                .definedBy("..controller..")
+                .layer("ServiceUtils")
+                .definedBy("ch.puzzle.pcts.service")
+                .layer("BusinessService")
+                .definedBy("..service.business..")
+                .layer("ValidationService")
+                .definedBy("..service.validation..")
+                .layer("PersistenceService")
+                .definedBy("..service.persistence..")
+                .layer("Repository")
+                .definedBy("..repository..")
+                .layer("Mapper")
+                .definedBy("..mapper..")
                 .whereLayer("Controller")
-                .mayNotBeAccessedByAnyLayer() //
+                .mayNotBeAccessedByAnyLayer()
                 .whereLayer("BusinessService")
-                .mayOnlyBeAccessedByLayers("Controller", "Mapper", "BusinessService") //
+                .mayOnlyBeAccessedByLayers("Controller", "Mapper", "BusinessService", "ServiceUtils")
                 .whereLayer("ValidationService")
-                .mayOnlyBeAccessedByLayers("BusinessService") //
+                .mayOnlyBeAccessedByLayers("BusinessService")
+                .whereLayer("ServiceUtils")
+                .mayOnlyBeAccessedByLayers("BusinessService", "PersistenceService", "Controller")
                 .whereLayer("PersistenceService")
-                .mayOnlyBeAccessedByLayers("BusinessService", "PersistenceService", "ValidationService") //
+                .mayOnlyBeAccessedByLayers("BusinessService", "PersistenceService", "ValidationService")
                 .whereLayer("Repository")
-                .mayOnlyBeAccessedByLayers("PersistenceService", "BusinessService"); //
+                .mayOnlyBeAccessedByLayers("PersistenceService", "BusinessService");
 
         layeredArchitecture.check(importedClasses);
     }
@@ -397,12 +430,6 @@ class ArchitectureTest {
 
         methodRule.check(importedClasses);
         constructorRule.check(importedClasses);
-    }
-
-    private static JavaClasses getMainSourceClasses() {
-        return new ClassFileImporter()
-                .withImportOption(new ImportOption.DoNotIncludeTests())
-                .importPackages("ch.puzzle.pcts");
     }
 
     @DisplayName("All packages must contain only lowercase letters and dots, and cannot end on a dot")
@@ -430,5 +457,40 @@ class ArchitectureTest {
                 .haveFullyQualifiedName("org.mockito.BDDMockito");
 
         noBddMockito.check(importedClasses);
+    }
+    @DisplayName("All configurations must be records and correctly annotated")
+    @Test
+    void configurationsMustBeRecordsAndCorrectlyAnnotated() {
+        JavaClasses importedClasses = getMainSourceClasses();
+
+        ArchRule rule = classes()
+                .that()
+                .resideInAnyPackage("ch.puzzle.pcts.configuration")
+                .should()
+                .beRecords()
+                .andShould()
+                .beAnnotatedWith(ConfigurationProperties.class)
+                .andShould()
+                .beAnnotatedWith(Validated.class);
+
+        rule.check(importedClasses);
+
+    }
+
+    @DisplayName("Configurations should be prefixed with 'pcts.'")
+    @Test
+    void configurationsShouldBePrefixedCorrectly() {
+        JavaClasses importedClasses = getMainSourceClasses();
+
+        ArchCondition<JavaAnnotation<JavaClass>> combinedCondition = havePrefix("prefix", "pcts.");
+        ArchRule rule = all(annotations(ConfigurationProperties.class)).should(combinedCondition);
+
+        rule.check(importedClasses);
+    }
+
+    private static JavaClasses getMainSourceClasses() {
+        return new ClassFileImporter()
+                .withImportOption(new ImportOption.DoNotIncludeTests())
+                .importPackages("ch.puzzle.pcts");
     }
 }

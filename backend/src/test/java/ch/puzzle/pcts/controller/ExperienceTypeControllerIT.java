@@ -7,11 +7,13 @@ import static ch.puzzle.pcts.util.TestDataModels.EXP_TYPE_1;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.experiencetype.ExperienceTypeDto;
 import ch.puzzle.pcts.mapper.ExperienceTypeMapper;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
@@ -20,21 +22,14 @@ import ch.puzzle.pcts.util.JsonDtoMatcher;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.json.JsonMapper;
 
-@Import(SpringSecurityConfig.class)
-@ExtendWith(MockitoExtension.class)
-@WebMvcTest(ExperienceTypeController.class)
-class ExperienceTypeControllerIT {
+@ControllerIT(ExperienceTypeController.class)
+class ExperienceTypeControllerIT extends ControllerITBase {
 
     private static final String BASEURL = "/api/v1/experience-types";
     @MockitoBean
@@ -52,9 +47,7 @@ class ExperienceTypeControllerIT {
         when(service.getAll()).thenReturn(List.of(EXP_TYPE_1));
         when(mapper.toDto(any(List.class))).thenReturn(List.of(EXP_TYPE_1_DTO));
         mvc
-                .perform(get(BASEURL)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
-                        .accept(MediaType.APPLICATION_JSON))
+                .perform(get(BASEURL).with(csrf()).with(adminJwt()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(JsonDtoMatcher.matchesDto(EXP_TYPE_1_DTO, "$[0]"));
@@ -70,7 +63,8 @@ class ExperienceTypeControllerIT {
 
         mvc
                 .perform(get(BASEURL + "/" + EXP_TYPE_1_ID)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .with(csrf())
+                        .with(adminJwt())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(EXP_TYPE_1, "$"));
@@ -88,7 +82,8 @@ class ExperienceTypeControllerIT {
 
         mvc
                 .perform(post(BASEURL)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .with(csrf())
+                        .with(adminJwt())
                         .content(jsonMapper.writeValueAsString(EXP_TYPE_1_INPUT))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -108,7 +103,8 @@ class ExperienceTypeControllerIT {
 
         mvc
                 .perform(put(BASEURL + "/" + EXP_TYPE_1_ID)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .with(csrf())
+                        .with(adminJwt())
                         .content(jsonMapper.writeValueAsString(EXP_TYPE_1_INPUT))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -127,7 +123,8 @@ class ExperienceTypeControllerIT {
         mvc
                 .perform(delete(BASEURL + "/" + EXP_TYPE_1_ID)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().is(204))
                 .andExpect(jsonPath("$").doesNotExist());
 

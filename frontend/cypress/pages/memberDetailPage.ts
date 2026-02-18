@@ -6,11 +6,13 @@ class MemberDetailPage extends Page {
     return this;
   }
 
-  withTabIndex(tabIndex: number) {
-    cy.location()
-      .then((location) => {
-        cy.visit(`${location.pathname}?tabIndex=${tabIndex}`);
-      });
+  switchTab(tabLabel: string) {
+    cy.getByTestId('cv-tab')
+      .find('.mdc-tab')
+      .contains(tabLabel)
+      .click();
+
+    return this;
   }
 
   openModalButton(mode: string, modelName: string) {

@@ -8,6 +8,9 @@ import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.mapper.MemberMapper;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.security.annotation.IsAdmin;
+import ch.puzzle.pcts.security.annotation.IsAdminOrOwner;
+import ch.puzzle.pcts.security.annotation.IsAuthenticated;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -18,8 +21,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
+@IsAdmin
 @RestController
 @RequestMapping("/api/v1/members")
 @Tag(name = "members", description = "Manage the members of the organisation, including status and organisation unit")
@@ -46,8 +51,9 @@ public class MemberController {
     @ApiResponse(responseCode = "200", description = "Successfully retrieved the member.", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = MemberDto.class)) })
     @GetMapping("{memberId}")
+    @IsAdminOrOwner
     public ResponseEntity<MemberDto> getMemberById(@Parameter(description = "ID of the member to retrieve.", required = true)
-    @PathVariable Long memberId) {
+    @PathVariable @P("id") Long memberId) {
         Member member = service.getById(memberId);
         return ResponseEntity.ok(mapper.toDto(member));
     }
@@ -63,9 +69,10 @@ public class MemberController {
 
     @Operation(summary = "Get roles and points for a member")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved the roles and points.", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = RolePointDto.class))))
+    @IsAdminOrOwner
     @GetMapping("{memberId}/role-points")
     public ResponseEntity<List<RolePointDto>> getPointsForActiveCalculationsForRoleByMemberId(@Parameter(description = "ID of the member.", required = true)
-    @PathVariable Long memberId) {
+    @PathVariable @P("id") Long memberId) {
         List<Calculation> calculationList = service.getAllActiveCalculationsByMemberId(memberId);
         return ResponseEntity.ok(calculationMapper.toRolePointDto(calculationList));
     }
@@ -98,5 +105,15 @@ public class MemberController {
     @PathVariable Long memberId) {
         service.delete(memberId);
         return ResponseEntity.status(204).build();
+    }
+
+    @Operation(summary = "Get the currently logged in member")
+    @ApiResponse(responseCode = "200", description = "The currently logged in member", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = MemberDto.class)) })
+    @GetMapping("myself")
+    @IsAuthenticated
+    public ResponseEntity<MemberDto> getMyself() {
+        Member member = service.getLoggedInMember();
+        return ResponseEntity.ok(mapper.toDto(member));
     }
 }

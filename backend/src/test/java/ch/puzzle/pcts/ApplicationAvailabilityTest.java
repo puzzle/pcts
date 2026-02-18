@@ -20,6 +20,7 @@ class ApplicationAvailabilityTest {
     private static final String BASEURL = "/actuator/health/";
     @Container
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17-alpine");
+
     @Autowired
     private MockMvc mvc;
 

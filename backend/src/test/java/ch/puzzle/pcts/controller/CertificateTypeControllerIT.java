@@ -5,11 +5,11 @@ import static ch.puzzle.pcts.util.TestDataDTOs.CERT_TYPE_5_DTO;
 import static ch.puzzle.pcts.util.TestDataDTOs.CERT_TYPE_5_Input;
 import static ch.puzzle.pcts.util.TestDataModels.CERT_TYPE_5;
 import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.certificatetype.CertificateTypeDto;
 import ch.puzzle.pcts.mapper.CertificateTypeMapper;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
@@ -18,21 +18,14 @@ import ch.puzzle.pcts.util.JsonDtoMatcher;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.json.JsonMapper;
 
-@Import(SpringSecurityConfig.class)
-@ExtendWith(MockitoExtension.class)
-@WebMvcTest(CertificateTypeController.class)
-class CertificateTypeControllerIT {
+@ControllerIT(CertificateTypeController.class)
+class CertificateTypeControllerIT extends ControllerITBase {
 
     @MockitoBean
     private CertificateTypeBusinessService service;
@@ -55,9 +48,7 @@ class CertificateTypeControllerIT {
         when(mapper.toDto(any(List.class))).thenReturn(List.of(CERT_TYPE_5_DTO));
 
         mvc
-                .perform(get(BASEURL)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
-                        .accept(MediaType.APPLICATION_JSON))
+                .perform(get(BASEURL).with(csrf()).with(adminJwt()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(JsonDtoMatcher.matchesDto(CERT_TYPE_5_DTO, "$[0]"));
@@ -73,7 +64,7 @@ class CertificateTypeControllerIT {
         when(mapper.toDto(any(CertificateType.class))).thenReturn(CERT_TYPE_5_DTO);
 
         mvc
-                .perform(get(BASEURL + "/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .perform(get(BASEURL + "/1").with(csrf()).with(adminJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(CERT_TYPE_5_DTO, "$"));
 
@@ -92,7 +83,8 @@ class CertificateTypeControllerIT {
                 .perform(post(BASEURL)
                         .content(jsonMapper.writeValueAsString(CERT_TYPE_5_Input))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isCreated())
                 .andExpect(JsonDtoMatcher.matchesDto(CERT_TYPE_5_DTO, "$"));
 
@@ -112,7 +104,8 @@ class CertificateTypeControllerIT {
                 .perform(put(BASEURL + "/" + CERT_TYPE_5_ID)
                         .content(jsonMapper.writeValueAsString(CERT_TYPE_5_Input))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(CERT_TYPE_5_DTO, "$"));
 
@@ -129,7 +122,8 @@ class CertificateTypeControllerIT {
         mvc
                 .perform(delete(BASEURL + "/" + CERT_TYPE_5_ID)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().is(204))
                 .andExpect(jsonPath("$").doesNotExist());
 

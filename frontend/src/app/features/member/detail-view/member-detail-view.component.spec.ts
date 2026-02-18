@@ -12,10 +12,13 @@ import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import { CertificateService } from '../../certificates/certificate.service';
 import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
 
+import { AuthService } from '../../../core/auth/auth.service';
+
 describe('MemberDetailViewComponent (Jest)', () => {
   let memberServiceMock: Partial<jest.Mocked<MemberService>>;
   let certificateService: Partial<jest.Mocked<CertificateService>>;
   let modalService: Partial<jest.Mocked<PctsModalService>>;
+  let authServiceMock: jest.Mocked<AuthService>;
   let routerMock: jest.Mocked<Router>;
   let routeMock: ActivatedRoute;
 
@@ -25,6 +28,10 @@ describe('MemberDetailViewComponent (Jest)', () => {
       getPointsForActiveCalculationsForRoleByMemberId: jest.fn(),
       getCalculationsByMemberIdAndOptionalRoleId: jest.fn()
     } as Partial<jest.Mocked<MemberService>>;
+
+    authServiceMock = {
+      isAdmin: jest.fn()
+    } as unknown as jest.Mocked<AuthService>;
 
     routerMock = {
       navigate: jest.fn(),
@@ -64,6 +71,10 @@ describe('MemberDetailViewComponent (Jest)', () => {
           useValue: modalService },
         { provide: CertificateService,
           useValue: certificateService },
+        {
+          provide: AuthService,
+          useValue: authServiceMock
+        },
         provideTranslateService(),
         DatePipe
       ]

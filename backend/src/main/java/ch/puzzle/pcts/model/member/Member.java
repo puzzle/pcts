@@ -4,7 +4,8 @@ import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
-import ch.puzzle.pcts.util.PCTSStringValidation;
+import ch.puzzle.pcts.util.validation.PCTSEmailValidation;
+import ch.puzzle.pcts.util.validation.PCTSStringValidation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
@@ -26,6 +27,9 @@ public class Member implements Model {
     @PCTSStringValidation
     private String lastName;
 
+    @PCTSEmailValidation
+    private String preferredUsername;
+
     @Enumerated(EnumType.STRING)
     @NotNull(message = "{attribute.not.null}")
     private EmploymentState employmentState;
@@ -33,6 +37,9 @@ public class Member implements Model {
     private String abbreviation;
 
     private LocalDate dateOfHire;
+
+    @PCTSEmailValidation
+    private String email;
 
     @NotNull(message = "{attribute.not.null}")
     @Past(message = "{attribute.date.past}")
@@ -49,10 +56,12 @@ public class Member implements Model {
         this.id = builder.id;
         this.firstName = trim(builder.firstName);
         this.lastName = trim(builder.lastName);
+        this.preferredUsername = trim(builder.preferredUsername);
         this.employmentState = builder.employmentState;
         this.abbreviation = trim(builder.abbreviation);
         this.dateOfHire = builder.dateOfHire;
         this.birthDate = builder.birthDate;
+        this.email = builder.email;
         this.organisationUnit = builder.organisationUnit;
         this.deletedAt = null;
     }
@@ -132,16 +141,34 @@ public class Member implements Model {
         this.deletedAt = deletedAt;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = trim(email);
+    }
+
+    public String getPreferredUsername() {
+        return preferredUsername;
+    }
+
+    public void setPreferredUsername(String preferredUsername) {
+        this.preferredUsername = preferredUsername;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Member member))
+        if (!(o instanceof Member member)) {
             return false;
+        }
         return Objects.equals(getId(), member.getId()) && Objects.equals(getFirstName(), member.getFirstName())
                && Objects.equals(getLastName(), member.getLastName())
+               && Objects.equals(getPreferredUsername(), member.getPreferredUsername())
                && getEmploymentState() == member.getEmploymentState()
                && Objects.equals(getAbbreviation(), member.getAbbreviation())
                && Objects.equals(getDateOfHire(), member.getDateOfHire())
-               && Objects.equals(getBirthDate(), member.getBirthDate())
+               && Objects.equals(getEmail(), member.getEmail()) && Objects.equals(getBirthDate(), member.getBirthDate())
                && Objects.equals(getDeletedAt(), member.getDeletedAt())
                && Objects.equals(getOrganisationUnit(), member.getOrganisationUnit());
     }
@@ -152,9 +179,11 @@ public class Member implements Model {
                 .hash(getId(),
                       getFirstName(),
                       getLastName(),
+                      getPreferredUsername(),
                       getEmploymentState(),
                       getAbbreviation(),
                       getDateOfHire(),
+                      getEmail(),
                       getBirthDate(),
                       getDeletedAt(),
                       getOrganisationUnit());
@@ -163,19 +192,22 @@ public class Member implements Model {
     @Override
     public String toString() {
         return "Member{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\''
-               + ", employmentState=" + employmentState + ", abbreviation='" + abbreviation + '\'' + ", dateOfHire="
-               + dateOfHire + ", birthDate=" + birthDate + ", deletedAt=" + deletedAt + ", organisationUnit="
-               + organisationUnit + '}';
+               + ", preferredUsername='" + preferredUsername + '\'' + ", employmentState=" + employmentState
+               + ", abbreviation='" + abbreviation + '\'' + ", dateOfHire=" + dateOfHire + ", email='" + email + '\''
+               + ", birthDate=" + birthDate + ", deletedAt=" + deletedAt + ", organisationUnit=" + organisationUnit
+               + '}';
     }
 
     public static final class Builder {
         private Long id;
         private String firstName;
         private String lastName;
+        private String preferredUsername;
         private EmploymentState employmentState;
         private String abbreviation;
         private LocalDate dateOfHire;
         private LocalDate birthDate;
+        private String email;
         private OrganisationUnit organisationUnit;
 
         private Builder() {
@@ -222,6 +254,16 @@ public class Member implements Model {
 
         public Builder withOrganisationUnit(OrganisationUnit organisationUnit) {
             this.organisationUnit = organisationUnit;
+            return this;
+        }
+
+        public Builder withEmail(String email) {
+            this.email = trim(email);
+            return this;
+        }
+
+        public Builder withPreferredUsername(String preferredUsername) {
+            this.preferredUsername = trim(preferredUsername);
             return this;
         }
 

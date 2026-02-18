@@ -6,11 +6,13 @@ import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.calculation.CalculationDto;
 import ch.puzzle.pcts.dto.calculation.RolePointDto;
 import ch.puzzle.pcts.dto.member.MemberInputDto;
@@ -23,21 +25,14 @@ import ch.puzzle.pcts.util.JsonDtoMatcher;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.json.JsonMapper;
 
-@Import(SpringSecurityConfig.class)
-@ExtendWith(MockitoExtension.class)
-@WebMvcTest(MemberController.class)
-class MemberControllerIT {
+@ControllerIT(MemberController.class)
+class MemberControllerIT extends ControllerITBase {
 
     @MockitoBean
     private MemberBusinessService service;
@@ -63,9 +58,7 @@ class MemberControllerIT {
         when(mapper.toDto(any(List.class))).thenReturn(List.of(MEMBER_1_DTO));
 
         mvc
-                .perform(get(BASEURL)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
-                        .accept(MediaType.APPLICATION_JSON))
+                .perform(get(BASEURL).with(csrf()).with(adminJwt()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(JsonDtoMatcher.matchesDto(MEMBER_1_DTO, "$[0]"));
@@ -74,14 +67,29 @@ class MemberControllerIT {
         verify(mapper, times(1)).toDto(any(List.class));
     }
 
-    @DisplayName("Should successfully get member by id")
+    @DisplayName("Should successfully get member by id as an admin")
     @Test
-    void shouldGetMemberById() throws Exception {
+    void shouldGetMemberByIdAsAnAdmin() throws Exception {
         when(service.getById(anyLong())).thenReturn(MEMBER_1);
         when(mapper.toDto(any(Member.class))).thenReturn(MEMBER_1_DTO);
 
         mvc
-                .perform(get(BASEURL + "/" + MEMBER_1_ID).with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .perform(get(BASEURL + "/" + MEMBER_1_ID).with(csrf()).with(adminJwt()))
+                .andExpect(status().isOk())
+                .andExpect(JsonDtoMatcher.matchesDto(MEMBER_1_DTO, "$"));
+
+        verify(service, times(1)).getById(MEMBER_1_ID);
+        verify(mapper, times(1)).toDto(any(Member.class));
+    }
+
+    @DisplayName("Should successfully get member by id as the owner")
+    @Test
+    void shouldGetMemberByIdAsOwner() throws Exception {
+        when(service.getById(anyLong())).thenReturn(MEMBER_1);
+        when(mapper.toDto(any(Member.class))).thenReturn(MEMBER_1_DTO);
+
+        mvc
+                .perform(get(BASEURL + "/" + MEMBER_1_ID).with(csrf()).with(ownerJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(MEMBER_1_DTO, "$"));
 
@@ -100,7 +108,8 @@ class MemberControllerIT {
                 .perform(post(BASEURL)
                         .content(jsonMapper.writeValueAsString(MEMBER_1_INPUT))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isCreated())
                 .andExpect(JsonDtoMatcher.matchesDto(MEMBER_1_DTO, "$"));
 
@@ -120,7 +129,8 @@ class MemberControllerIT {
                 .perform(put(BASEURL + "/" + MEMBER_1_ID)
                         .content(jsonMapper.writeValueAsString(MEMBER_1_INPUT))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(MEMBER_1_DTO, "$"));
 
@@ -137,7 +147,8 @@ class MemberControllerIT {
         mvc
                 .perform(delete(BASEURL + "/" + MEMBER_1_ID)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                        .with(csrf())
+                        .with(adminJwt()))
                 .andExpect(status().isNoContent())
                 .andExpect(jsonPath("$").doesNotExist());
 
@@ -160,7 +171,8 @@ class MemberControllerIT {
         mvc
                 .perform(get(BASEURL + "/" + memberId + "/calculations")
                         .param("roleId", String.valueOf(roleId))
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .with(csrf())
+                        .with(adminJwt())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1));
@@ -183,7 +195,8 @@ class MemberControllerIT {
 
         mvc
                 .perform(get(BASEURL + "/" + memberId + "/calculations")
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .with(csrf())
+                        .with(adminJwt())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1));
@@ -205,12 +218,28 @@ class MemberControllerIT {
 
         mvc
                 .perform(get(BASEURL + "/" + memberId + "/role-points")
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .with(csrf())
+                        .with(ownerJwt())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1));
 
         verify(service, times(1)).getAllActiveCalculationsByMemberId(memberId);
         verify(calculationMapper, times(1)).toRolePointDto(List.of(calculation));
+    }
+
+    @DisplayName("Should successfully get myself as a member")
+    @Test
+    void shouldSuccessfullyGetMyselfAsAMember() throws Exception {
+        when(service.getLoggedInMember()).thenReturn(MEMBER_1);
+        when(mapper.toDto(any(Member.class))).thenReturn(MEMBER_1_DTO);
+
+        mvc
+                .perform(get(BASEURL + "/myself").with(csrf()).with(ownerJwt()))
+                .andExpect(status().isOk())
+                .andExpect(JsonDtoMatcher.matchesDto(MEMBER_1_DTO, "$"));
+
+        verify(service, times(1)).getLoggedInMember();
+        verify(mapper, times(1)).toDto(any(Member.class));
     }
 }

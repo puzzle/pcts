@@ -96,6 +96,7 @@ public class TestDataModels {
             .withDateOfHire(LocalDate.of(2020, 6, 1))
             .withBirthDate(LocalDate.of(1998, 3, 3))
             .withOrganisationUnit(ORG_UNIT_2)
+            .withEmail("member2@puzzle.ch")
             .build();
 
     public static final Member MEMBER_3 = Member.Builder
@@ -103,6 +104,7 @@ public class TestDataModels {
             .withId(MEMBER_3_ID)
             .withFirstName("Member 3")
             .withLastName("Test")
+            .withEmail("member3@puzzle.ch")
             .withEmploymentState(EmploymentState.MEMBER)
             .withAbbreviation("M3")
             .withDateOfHire(LocalDate.of(2020, 6, 1))

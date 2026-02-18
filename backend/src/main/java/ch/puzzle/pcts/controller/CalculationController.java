@@ -4,6 +4,7 @@ import ch.puzzle.pcts.dto.calculation.CalculationDto;
 import ch.puzzle.pcts.dto.calculation.CalculationInputDto;
 import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.model.calculation.Calculation;
+import ch.puzzle.pcts.security.annotation.IsAdmin;
 import ch.puzzle.pcts.service.business.CalculationBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@IsAdmin
 @RestController
 @RequestMapping("/api/v1/calculations")
 @Tag(name = "calculations", description = "Manage the calculations which are associated with a member")

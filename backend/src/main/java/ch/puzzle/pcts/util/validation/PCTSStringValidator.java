@@ -1,4 +1,4 @@
-package ch.puzzle.pcts.util;
+package ch.puzzle.pcts.util.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
