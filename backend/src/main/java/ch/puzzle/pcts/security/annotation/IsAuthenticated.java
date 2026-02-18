@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
- * Validates that the user is authenticated but has not further requirements.
+ * Validates that the user is authenticated but has no further requirements.
  */
 @Documented
 @Target({ ElementType.METHOD, ElementType.TYPE })
