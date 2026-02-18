@@ -15,4 +15,5 @@ public interface MemberRepository extends SoftDeleteRepository<Member, Long> {
     Optional<Member> findMemberByEmail(String email);
 
     Optional<Member> findMemberByEmailAndEmailIsNotNull(String email);
+    Optional<Member> findMemberByPreferredUsername(String preferredUsername);
 }
