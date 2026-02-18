@@ -27,6 +27,9 @@ public class Member implements Model {
     @PCTSStringValidation
     private String lastName;
 
+    @PCTSEmailValidation
+    private String preferredUsername;
+
     @Enumerated(EnumType.STRING)
     @NotNull(message = "{attribute.not.null}")
     private EmploymentState employmentState;
@@ -53,6 +56,7 @@ public class Member implements Model {
         this.id = builder.id;
         this.firstName = trim(builder.firstName);
         this.lastName = trim(builder.lastName);
+        this.preferredUsername = trim(builder.preferredUsername);
         this.employmentState = builder.employmentState;
         this.abbreviation = trim(builder.abbreviation);
         this.dateOfHire = builder.dateOfHire;
@@ -145,6 +149,14 @@ public class Member implements Model {
         this.email = trim(email);
     }
 
+    public String getPreferredUsername() {
+        return preferredUsername;
+    }
+
+    public void setPreferredUsername(String preferredUsername) {
+        this.preferredUsername = preferredUsername;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Member member)) {
@@ -152,6 +164,7 @@ public class Member implements Model {
         }
         return Objects.equals(getId(), member.getId()) && Objects.equals(getFirstName(), member.getFirstName())
                && Objects.equals(getLastName(), member.getLastName())
+               && Objects.equals(getPreferredUsername(), member.getPreferredUsername())
                && getEmploymentState() == member.getEmploymentState()
                && Objects.equals(getAbbreviation(), member.getAbbreviation())
                && Objects.equals(getDateOfHire(), member.getDateOfHire())
@@ -166,6 +179,7 @@ public class Member implements Model {
                 .hash(getId(),
                       getFirstName(),
                       getLastName(),
+                      getPreferredUsername(),
                       getEmploymentState(),
                       getAbbreviation(),
                       getDateOfHire(),
@@ -178,15 +192,17 @@ public class Member implements Model {
     @Override
     public String toString() {
         return "Member{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\''
-               + ", employmentState=" + employmentState + ", abbreviation='" + abbreviation + '\'' + ", dateOfHire="
-               + dateOfHire + ", email='" + email + '\'' + ", birthDate=" + birthDate + ", deletedAt=" + deletedAt
-               + ", organisationUnit=" + organisationUnit + '}';
+               + ", preferredUsername='" + preferredUsername + '\'' + ", employmentState=" + employmentState
+               + ", abbreviation='" + abbreviation + '\'' + ", dateOfHire=" + dateOfHire + ", email='" + email + '\''
+               + ", birthDate=" + birthDate + ", deletedAt=" + deletedAt + ", organisationUnit=" + organisationUnit
+               + '}';
     }
 
     public static final class Builder {
         private Long id;
         private String firstName;
         private String lastName;
+        private String preferredUsername;
         private EmploymentState employmentState;
         private String abbreviation;
         private LocalDate dateOfHire;
@@ -243,6 +259,11 @@ public class Member implements Model {
 
         public Builder withEmail(String email) {
             this.email = trim(email);
+            return this;
+        }
+
+        public Builder withPreferredUsername(String preferredUsername) {
+            this.preferredUsername = trim(preferredUsername);
             return this;
         }
 
