@@ -28,7 +28,6 @@ import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.security.annotation.IsAdmin;
 import ch.puzzle.pcts.security.annotation.IsAdminOrOwner;
 import ch.puzzle.pcts.security.annotation.IsAuthenticated;
-import ch.puzzle.pcts.security.annotation.IsOwner;
 import com.tngtech.archunit.core.domain.*;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
@@ -213,7 +212,7 @@ class ArchitectureTest {
                 .and()
                 .resideInAPackage("ch.puzzle.pcts.controller..")
                 .and(not(equivalentTo(ConfigurationController.class)))
-                .should(beAnnotatedWithOneOf(IsAdmin.class, IsOwner.class, IsAdminOrOwner.class, IsAuthenticated.class))
+                .should(beAnnotatedWithOneOf(IsAdmin.class, IsAdminOrOwner.class, IsAuthenticated.class))
                 .andShould()
                 .notBeInterfaces();
 

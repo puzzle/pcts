@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
  * annotations such as:
  * <ul>
  * <li>{@link ch.puzzle.pcts.security.annotation.IsAdmin}</li>
- * <li>{@link ch.puzzle.pcts.security.annotation.IsOwner}</li>
  * <li>{@link ch.puzzle.pcts.security.annotation.IsAdminOrOwner}</li>
  * </ul>
  * <p>
