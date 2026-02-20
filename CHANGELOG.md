@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.5.1](https://github.com/puzzle/pcts/compare/0.5.0...0.5.1) (2026-02-20)
+
+
+### Bug Fixes
+
+* change faulty translations [#471](https://github.com/puzzle/pcts/issues/471) ([285da37](https://github.com/puzzle/pcts/commit/285da37c96dc4c3866650625b31fa8e8a5e44217))
+
+
+### Miscellaneous Chores
+
+* **config:** migrate config renovate.json ([983d3d7](https://github.com/puzzle/pcts/commit/983d3d77acde384a210c523372ef8d2d1a4b0594))
+* **config:** migrate Renovate config ([983d3d7](https://github.com/puzzle/pcts/commit/983d3d77acde384a210c523372ef8d2d1a4b0594))
+* **deps:** update all devdependencies (minor and patch) ([bd5d464](https://github.com/puzzle/pcts/commit/bd5d4643b76adf0f3c8b904cccb0d6110c009562))
+* **deps:** update angularmaterial monorepo to v21.1.3 ([4372962](https://github.com/puzzle/pcts/commit/4372962ecff79bfb08a1f210560886a35ef5c722))
+* **deps:** update angularmaterial monorepo to v21.1.4 ([5e28991](https://github.com/puzzle/pcts/commit/5e289913612cdaf1e1223588091a798703ed8b91))
+* **deps:** update angularmaterial monorepo to v21.1.5 ([#518](https://github.com/puzzle/pcts/issues/518)) ([7be22e8](https://github.com/puzzle/pcts/commit/7be22e8472a6b8cedae47362f2562a075fd0ded1))
+* **deps:** update dependency cypress to v15.10.0 ([c75aedb](https://github.com/puzzle/pcts/commit/c75aedb7b1ce2410f69c0908d10be5e710169ef5))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v12.0.1 ([2eff439](https://github.com/puzzle/pcts/commit/2eff43997ccf7b89f906c21f9920aefd6e04734f))
+* **deps:** update dependency typescript-eslint to v8.55.0 ([#504](https://github.com/puzzle/pcts/issues/504)) ([f114c77](https://github.com/puzzle/pcts/commit/f114c77cf83bbcc96f769d7e12042434f84f3d6f))
+* **deps:** update dependency typescript-eslint to v8.56.0 ([#515](https://github.com/puzzle/pcts/issues/515)) ([4de4ae0](https://github.com/puzzle/pcts/commit/4de4ae0d68ad96a97badcb1e958029d258fa2ca3))
+* **deps:** update eclipse-temurin docker tag to v25.0.2_10-jre-alpine ([cbb6132](https://github.com/puzzle/pcts/commit/cbb6132445af70596c44ff989b220b0fcd647cca))
+* **deps:** update spring boot to v4.0.3 ([#519](https://github.com/puzzle/pcts/issues/519)) ([1ec4a7f](https://github.com/puzzle/pcts/commit/1ec4a7f36a9953c3fdab30a15048c4be7010d74c))
+
 ## [0.5.0](https://github.com/puzzle/pcts/compare/0.4.0...0.5.0) (2026-02-04)
 
 
