@@ -3,6 +3,7 @@ package ch.puzzle.pcts.service.business;
 import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.service.persistence.TagPersistenceService;
 import ch.puzzle.pcts.service.validation.TagValidationService;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class TagBusinessService {
 
     public Set<Tag> resolveTags(Set<Tag> rawTags) {
         if (rawTags == null || rawTags.isEmpty()) {
-            return Set.of();
+            return new HashSet<>();
         }
 
         return rawTags.stream().map(tag -> {

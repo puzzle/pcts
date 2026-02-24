@@ -25,7 +25,15 @@ public class CertificateTypeMapper {
                                       model.getPoints(),
                                       model.getComment(),
                                       model.getTags() == null ? List.of()
-                                              : model.getTags().stream().map(Tag::getName).toList());
+                                              : model.getTags().stream().map(Tag::getName).toList(),
+                                      model.getEffort(),
+                                      model.getExamDuration(),
+                                      model.getLink(),
+                                      model.getExamType(),
+                                      model.getPublisher(),
+                                      model.isLinkValid(),
+                                      model.getLinkErrorCount(),
+                                      model.getLinkLastCheckedAt());
     }
 
     public CertificateType fromDto(CertificateTypeDto dto) {
@@ -48,6 +56,11 @@ public class CertificateTypeMapper {
                 .withComment(dto.comment())
                 .withTags(rawTags)
                 .withCertificateKind(CertificateKind.CERTIFICATE)
+                .withEffort(dto.effort())
+                .withExamDuration(dto.examDuration())
+                .withLink(dto.link())
+                .withExamType(dto.examType())
+                .withPublisher(dto.publisher())
                 .build();
     }
 }

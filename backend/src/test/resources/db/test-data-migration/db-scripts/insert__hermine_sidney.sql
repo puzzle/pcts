@@ -4,12 +4,13 @@ VALUES ('M2 Division Manager', TRUE);
 INSERT INTO member(first_name, last_name, abbreviation, employment_state, date_of_hire, birth_date, organisation_unit)
 VALUES (' Hermine', 'Sidney', 'HS', 'MEMBER', '2014-08-01', '1973-06-22', 2);
 
-INSERT INTO certificate_type(name, points, certificate_kind)
-VALUES ('Coaching (single)', 1, 'LEADERSHIP_TRAINING'),
-       ('Coaching (team)', 0.5, 'LEADERSHIP_TRAINING'),
-       ('Integral Coach Living Sense', 1, 'LEADERSHIP_TRAINING'),
-       ('Life Coach', 1, 'LEADERSHIP_TRAINING'),
-       ('Leadership training', 0.5, 'YOUTH_AND_SPORT');
+-- TODO: Remove 'link_error_count' here after LeadershipExperiences are treated separately
+INSERT INTO certificate_type(name, points, certificate_kind, link_error_count)
+VALUES ('Coaching (single)', 1, 'LEADERSHIP_TRAINING', 0),
+       ('Coaching (team)', 0.5, 'LEADERSHIP_TRAINING', 0),
+       ('Integral Coach Living Sense', 1, 'LEADERSHIP_TRAINING', 0),
+       ('Life Coach', 1, 'LEADERSHIP_TRAINING', 0),
+       ('Leadership training', 0.5, 'YOUTH_AND_SPORT', 0);
 
 INSERT INTO certificate(member_id, certificate_type_id)
 VALUES (1000, 1000),

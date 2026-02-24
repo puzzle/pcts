@@ -11,6 +11,7 @@ import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculat
 import ch.puzzle.pcts.model.certificate.Certificate;
 import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
+import ch.puzzle.pcts.model.certificatetype.ExamType;
 import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.model.degree.Degree;
 import ch.puzzle.pcts.model.degreetype.DegreeType;
@@ -118,6 +119,11 @@ public class TestDataModels {
             .withComment("This is Certificate 1")
             .withTags(Set.of(TAG_1))
             .withCertificateKind(CertificateKind.CERTIFICATE)
+            .withEffort(10D)
+            .withExamDuration(120)
+            .withLink("http://localhost:8443/valid-cert")
+            .withExamType(ExamType.MULTIPLE_CHOICE)
+            .withPublisher("Example Publisher")
             .build();
 
     public static final CertificateType CERT_TYPE_2 = CertificateType.Builder
@@ -128,6 +134,11 @@ public class TestDataModels {
             .withComment("This is Certificate 2")
             .withTags(Set.of(TAG_2))
             .withCertificateKind(CertificateKind.CERTIFICATE)
+            .withEffort(10D)
+            .withExamDuration(120)
+            .withLink("https://example.com/")
+            .withExamType(ExamType.MULTIPLE_CHOICE)
+            .withPublisher("Example Publisher")
             .build();
 
     public static final CertificateType CERT_TYPE_3 = CertificateType.Builder
@@ -138,6 +149,10 @@ public class TestDataModels {
             .withComment("This is Certificate 3")
             .withTags(Set.of())
             .withCertificateKind(CertificateKind.CERTIFICATE)
+            .withEffort(10D)
+            .withExamDuration(120)
+            .withExamType(ExamType.MULTIPLE_CHOICE)
+            .withPublisher("Example Publisher")
             .build();
 
     public static final CertificateType CERT_TYPE_4 = CertificateType.Builder
@@ -148,6 +163,10 @@ public class TestDataModels {
             .withComment("This is Certificate 4")
             .withTags(Set.of())
             .withCertificateKind(CertificateKind.CERTIFICATE)
+            .withEffort(10D)
+            .withExamDuration(120)
+            .withExamType(ExamType.MULTIPLE_CHOICE)
+            .withPublisher("Example Publisher")
             .build();
 
     public static final CertificateType CERT_TYPE_5 = CertificateType.Builder
@@ -158,6 +177,11 @@ public class TestDataModels {
             .withComment("This is Certificate 5")
             .withTags(Set.of(TAG_3, TAG_4))
             .withCertificateKind(CertificateKind.CERTIFICATE)
+            .withEffort(10D)
+            .withExamDuration(120)
+            .withLink("http://localhost:8443/valid-cert")
+            .withExamType(ExamType.MULTIPLE_CHOICE)
+            .withPublisher("Example Publisher")
             .build();
 
     public static final CertificateType CERT_TYPE_6 = CertificateType.Builder
@@ -168,6 +192,11 @@ public class TestDataModels {
             .withComment("This is Certificate 6")
             .withTags(Set.of(TAG_3, TAG_4))
             .withCertificateKind(CertificateKind.CERTIFICATE)
+            .withEffort(10D)
+            .withExamDuration(120)
+            .withLink("http://localhost:8443/valid-cert")
+            .withExamType(ExamType.MULTIPLE_CHOICE)
+            .withPublisher("Example Publisher")
             .build();
 
     public static final CertificateType LEADERSHIP_TYPE_1 = CertificateType.Builder

@@ -15,18 +15,20 @@ VALUES
 
 TRUNCATE TABLE certificate_type CASCADE;
 
-INSERT INTO certificate_type (name, points, deleted_at, comment, certificate_kind)
+INSERT INTO certificate_type (name, points, deleted_at, comment, certificate_kind, effort, exam_duration, link, exam_type, publisher, link_error_count, link_last_checked_at)
 VALUES
-    ('Certificate Type 1', 5.5, null, 'This is Certificate 1', 'CERTIFICATE'),
-    ('Certificate Type 2', 1, null, 'This is Certificate 2', 'CERTIFICATE'),
-    ('Certificate Type 3', 3, null, 'This is Certificate 3', 'CERTIFICATE'),
-    ('Certificate Type 4', 0.5, null, 'This is Certificate 4', 'CERTIFICATE');
+    ('Certificate Type 1', 5.5, null, 'This is Certificate 1', 'CERTIFICATE', 10, 120, 'http://localhost:8443/valid-cert', 'MULTIPLE_CHOICE', 'Example Publisher', 0, null),
+    ('Certificate Type 2', 1, null, 'This is Certificate 2', 'CERTIFICATE', 10, 120, 'https://example.com/', 'MULTIPLE_CHOICE', 'Example Publisher', 0, null),
+    ('Certificate Type 3', 3, null, 'This is Certificate 3', 'CERTIFICATE', 10, 120, null, 'MULTIPLE_CHOICE', 'Example Publisher', 0, null),
+    ('Certificate Type 4', 0.5, null, 'This is Certificate 4', 'CERTIFICATE', 10, 120, null, 'MULTIPLE_CHOICE', 'Example Publisher', 0, null);
 
-INSERT INTO certificate_type (name, points, deleted_at, comment, certificate_kind)
+-- TODO: Remove 'link_error_count' here after LeadershipExperiences are treated separately
+
+INSERT INTO certificate_type (name, points, deleted_at, comment, certificate_kind, link_error_count)
 VALUES
-    ('LeadershipExperience Type 1', 5.5, null, 'This is LeadershipExperience 1', 'MILITARY_FUNCTION'),
-    ('LeadershipExperience Type 2', 1, null, 'This is LeadershipExperience 2', 'YOUTH_AND_SPORT'),
-    ('LeadershipExperience Type 3', 3, null, 'This is LeadershipExperience 3', 'LEADERSHIP_TRAINING');
+    ('LeadershipExperience Type 1', 5.5, null, 'This is LeadershipExperience 1', 'MILITARY_FUNCTION', 0),
+    ('LeadershipExperience Type 2', 1, null, 'This is LeadershipExperience 2', 'YOUTH_AND_SPORT', 0),
+    ('LeadershipExperience Type 3', 3, null, 'This is LeadershipExperience 3', 'LEADERSHIP_TRAINING', 0);
 
 TRUNCATE TABLE experience_type CASCADE;
 

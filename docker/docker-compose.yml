@@ -11,6 +11,14 @@ services:
     ports:
       - "5432:5432"
     profiles: ['', backend, db]
+  pcts-wiremock:
+    container_name: pcts-wiremock
+    image: wiremock/wiremock:latest
+    ports:
+      - "8443:8080"
+    volumes:
+      - ./wiremock:/home/wiremock
+    profiles: ['', backend]
   pcts-backend:
     container_name: pcts-backend
     build:
@@ -19,6 +27,7 @@ services:
     ports:
       - "8080:8080"
     depends_on:
+      - pcts-wiremock
       - pcts-db
     environment:
       PCTS_SPRING_DATASOURCE_URL: pcts-db

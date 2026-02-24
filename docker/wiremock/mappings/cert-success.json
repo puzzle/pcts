@@ -1,0 +1,12 @@
+{
+  "request": {
+    "method": "ANY",
+    "url": "/valid-cert"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "text/html"
+    }
+  }
+}
