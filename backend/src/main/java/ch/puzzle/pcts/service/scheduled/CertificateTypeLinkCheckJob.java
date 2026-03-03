@@ -36,11 +36,10 @@ public class CertificateTypeLinkCheckJob {
     public void validateCertificateLinks() {
         List<CertificateType> certificatesWithLinks = certificateTypeBusinessService.findAllWhereLinkIsNotNull();
 
-        int total = certificatesWithLinks.size();
         int successCount = 0;
         int failureCount = 0;
 
-        log.info("The link check has started. Checking {} links.", total);
+        log.info("The link check has started. Checking {} links.", certificatesWithLinks.size());
 
         for (CertificateType cert : certificatesWithLinks) {
             String url = cert.getLink();
@@ -58,7 +57,11 @@ public class CertificateTypeLinkCheckJob {
             }
         }
 
-        log.info("The link check has finished. Total: {}, Success: {}, Failed: {}.", total, successCount, failureCount);
+        log
+                .info("The link check has finished. Total: {}, Success: {}, Failed: {}.",
+                      successCount + failureCount,
+                      successCount,
+                      failureCount);
     }
 
     private boolean checkSingleCertificate(CertificateType cert, String url) {
