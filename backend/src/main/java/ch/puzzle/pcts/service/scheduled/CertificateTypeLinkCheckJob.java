@@ -16,13 +16,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CertificateTypeLinkCleanupJob {
+public class CertificateTypeLinkCheckJob {
 
     private final CertificateTypeBusinessService certificateTypeBusinessService;
     private final HttpClient httpClient;
-    private static final Logger log = LoggerFactory.getLogger(CertificateTypeLinkCleanupJob.class);
+    private static final Logger log = LoggerFactory.getLogger(CertificateTypeLinkCheckJob.class);
 
-    public CertificateTypeLinkCleanupJob(CertificateTypeBusinessService certificateTypeBusinessService) {
+    public CertificateTypeLinkCheckJob(CertificateTypeBusinessService certificateTypeBusinessService) {
         this.certificateTypeBusinessService = certificateTypeBusinessService;
         this.httpClient = HttpClient
                 .newBuilder()
@@ -36,6 +36,12 @@ public class CertificateTypeLinkCleanupJob {
     public void validateCertificateLinks() {
         List<CertificateType> certificatesWithLinks = certificateTypeBusinessService.findAllWhereLinkIsNotNull();
 
+        int total = certificatesWithLinks.size();
+        int successCount = 0;
+        int failureCount = 0;
+
+        log.info("The link check has started. Checking {} links.", total);
+
         for (CertificateType cert : certificatesWithLinks) {
             String url = cert.getLink();
 
@@ -43,11 +49,20 @@ public class CertificateTypeLinkCleanupJob {
                 continue;
             }
 
-            checkSingleCertificate(cert, url);
+            boolean isSuccess = checkSingleCertificate(cert, url);
+
+            if (isSuccess) {
+                successCount++;
+            } else {
+                failureCount++;
+            }
         }
+
+        log.info("The link check has finished. Total: {}, Success: {}, Failed: {}.", total, successCount, failureCount);
     }
 
-    private void checkSingleCertificate(CertificateType cert, String url) {
+    private boolean checkSingleCertificate(CertificateType cert, String url) {
+        boolean success = false;
         try {
             HttpRequest request = HttpRequest
                     .newBuilder()
@@ -60,20 +75,26 @@ public class CertificateTypeLinkCleanupJob {
 
             if (status >= 200 && status < 300) {
                 cert.resetLinkStatus();
-                log.debug("Link valid for ID {}: {}", cert.getId(), url);
+                log.info("Link valid for ID {}: {}", cert.getId(), url);
+                success = true;
             } else {
                 cert.recordLinkFailure();
                 log.warn("Link broken (Status {}) for ID {}: {}", status, cert.getId(), url);
             }
 
+        } catch (IllegalArgumentException e) {
+            cert.recordLinkFailure();
+            log.warn("Skipping malformed URL for ID {}: '{}'. Reason: {}", cert.getId(), url, e.getMessage());
         } catch (InterruptedException _) {
             Thread.currentThread().interrupt();
             log.warn("Job interrupted while checking link for ID {}: {}", cert.getId(), url);
-        } catch (IOException | IllegalArgumentException e) {
+        } catch (IOException e) {
             cert.recordLinkFailure();
-            log.error("Link unreachable for ID {}: {}", cert.getId(), e.toString());
+            log.error("Link unreachable (Network/IO) for ID {}: {}", cert.getId(), e.toString());
         }
 
         certificateTypeBusinessService.update(cert.getId(), cert);
+
+        return success;
     }
 }

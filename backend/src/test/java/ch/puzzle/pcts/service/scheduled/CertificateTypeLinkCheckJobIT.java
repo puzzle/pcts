@@ -19,12 +19,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 @IT
-class CertificateTypeLinkCleanupJobIT {
+class CertificateTypeLinkCheckJobIT {
     @Value("${wiremock.base-url}")
     private String wiremockBaseUrl;
 
     @Autowired
-    private CertificateTypeLinkCleanupJob cleanupJob;
+    private CertificateTypeLinkCheckJob cleanupJob;
 
     @Autowired
     private CertificateTypeBusinessService certificateTypeBusinessService;
