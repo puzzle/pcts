@@ -1,0 +1,12 @@
+{
+  "request": {
+    "method": "ANY",
+    "url": "/failure-cert"
+  },
+  "response": {
+    "status": 404,
+    "headers": {
+      "Content-Type": "text/html"
+    }
+  }
+}
