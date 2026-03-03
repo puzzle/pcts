@@ -6,13 +6,11 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.junit.Assert.*;
 
-import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
-import ch.puzzle.pcts.model.certificatetype.ExamType;
 import ch.puzzle.pcts.service.business.CertificateTypeBusinessService;
 import ch.puzzle.pcts.util.IT;
+import ch.puzzle.pcts.util.TestDataModels;
 import com.github.tomakehurst.wiremock.client.WireMock;
-import java.math.BigDecimal;
 import java.net.URI;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,16 +34,10 @@ class CertificateTypeLinkCheckJobIT {
 
         stubFor(head(urlEqualTo("/valid-cert")).willReturn(aResponse().withStatus(200)));
 
-        CertificateType cert = new CertificateType();
-        cert.setName("Test Certificate");
-        cert.setPoints(BigDecimal.ONE);
-        cert.setCertificateKind(CertificateKind.CERTIFICATE);
-        cert.setPublisher("Test Publisher");
-        cert.setExamType(ExamType.PRACTICAL);
+        CertificateType cert = TestDataModels.CERT_TYPE_1;
         cert.setLink(wiremockBaseUrl + "/valid-cert");
-        cert.setTags(new java.util.HashSet<>());
 
-        certificateTypeBusinessService.create(cert);
+        certificateTypeBusinessService.update(cert.getId(), cert);
 
         cleanupJob.validateCertificateLinks();
 
@@ -65,15 +57,10 @@ class CertificateTypeLinkCheckJobIT {
 
         stubFor(head(urlEqualTo("/target-cert")).willReturn(aResponse().withStatus(200)));
 
-        CertificateType cert = new CertificateType();
-        cert.setName("Redirect Certificate");
-        cert.setPoints(BigDecimal.ONE);
-        cert.setCertificateKind(CertificateKind.CERTIFICATE);
-        cert.setPublisher("Test Publisher");
-        cert.setExamType(ExamType.PRACTICAL);
-        cert.setTags(new java.util.HashSet<>());
+        CertificateType cert = TestDataModels.CERT_TYPE_1;
         cert.setLink(wiremockBaseUrl + "/redirect-cert");
-        certificateTypeBusinessService.create(cert);
+
+        certificateTypeBusinessService.update(cert.getId(), cert);
 
         cleanupJob.validateCertificateLinks();
 
@@ -90,16 +77,10 @@ class CertificateTypeLinkCheckJobIT {
 
         stubFor(head(urlEqualTo("/not-found-cert")).willReturn(aResponse().withStatus(404)));
 
-        CertificateType cert = new CertificateType();
-        cert.setName("Broken Certificate");
-        cert.setPoints(BigDecimal.ONE);
-        cert.setCertificateKind(CertificateKind.CERTIFICATE);
-        cert.setPublisher("Test Publisher");
-        cert.setExamType(ExamType.PRACTICAL);
-        cert.setTags(new java.util.HashSet<>());
+        CertificateType cert = TestDataModels.CERT_TYPE_1;
         cert.setLink(wiremockBaseUrl + "/not-found-cert");
-        certificateTypeBusinessService.create(cert);
 
+        certificateTypeBusinessService.update(cert.getId(), cert);
         cleanupJob.validateCertificateLinks();
 
         CertificateType updatedCert = certificateTypeBusinessService.getById(cert.getId());
