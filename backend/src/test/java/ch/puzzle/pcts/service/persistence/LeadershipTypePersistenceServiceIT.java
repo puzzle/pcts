@@ -25,10 +25,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class LeadershipTypePersistenceServiceIT
         extends
-            PersistenceBaseIT<CertificateType, CertificateTypeRepository, LeadershipTypePersistenceService> {
+            PersistenceBaseIT<CertificateType, CertificateTypeRepository, LeadershipExperienceTypePersistenceService> {
 
     @Autowired
-    LeadershipTypePersistenceServiceIT(LeadershipTypePersistenceService service) {
+    LeadershipTypePersistenceServiceIT(LeadershipExperienceTypePersistenceService service) {
         super(service);
     }
 

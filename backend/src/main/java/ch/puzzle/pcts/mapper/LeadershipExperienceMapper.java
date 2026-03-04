@@ -2,7 +2,7 @@ package ch.puzzle.pcts.mapper;
 
 import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceDto;
 import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceInputDto;
-import ch.puzzle.pcts.model.certificate.Certificate;
+import ch.puzzle.pcts.model.leadershipexperience.LeadershipExperience;
 import ch.puzzle.pcts.service.business.LeadershipExperienceTypeBusinessService;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import java.util.List;
@@ -25,26 +25,27 @@ public class LeadershipExperienceMapper {
         this.memberBusinessService = memberBusinessService;
     }
 
-    public List<LeadershipExperienceDto> toDto(List<Certificate> models) {
+    public List<LeadershipExperienceDto> toDto(List<LeadershipExperience> models) {
         return models.stream().map(this::toDto).toList();
     }
 
-    public List<Certificate> fromDto(List<LeadershipExperienceInputDto> dtos) {
+    public List<LeadershipExperience> fromDto(List<LeadershipExperienceInputDto> dtos) {
         return dtos.stream().map(this::fromDto).toList();
     }
 
-    public LeadershipExperienceDto toDto(Certificate model) {
+    public LeadershipExperienceDto toDto(LeadershipExperience model) {
         return new LeadershipExperienceDto(model.getId(),
                                            memberMapper.toDto(model.getMember()),
-                                           leadershipExperienceTypeMapper.toDto(model.getCertificateType()),
+                                           leadershipExperienceTypeMapper.toDto(model.getLeadershipExperienceType()),
                                            model.getComment());
     }
 
-    public Certificate fromDto(LeadershipExperienceInputDto dto) {
-        return Certificate.Builder
+    public LeadershipExperience fromDto(LeadershipExperienceInputDto dto) {
+        return LeadershipExperience.Builder
                 .builder()
                 .withMember(memberBusinessService.getById(dto.memberId()))
-                .withCertificateType(leadershipExperienceTypeBusinessService.getById(dto.leadershipExperienceTypeId()))
+                .withLeadershipExperienceType(leadershipExperienceTypeBusinessService
+                        .getById(dto.leadershipExperienceTypeId()))
                 .withComment(dto.comment())
                 .build();
     }

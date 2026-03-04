@@ -9,7 +9,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
-import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.repository.CertificateTypeRepository;
@@ -46,10 +45,7 @@ class CertificateTypePersistenceServiceIT
     @DisplayName("Should get all entities")
     @Test
     void shouldGetAllEntities() {
-        List<CertificateType> expectedCertificates = getAll()
-                .stream()
-                .filter(ct -> ct.getCertificateKind() == CertificateKind.CERTIFICATE)
-                .toList();
+        List<CertificateType> expectedCertificates = getAll().stream().toList();
 
         List<CertificateType> all = persistenceService.getAll();
 
@@ -75,7 +71,6 @@ class CertificateTypePersistenceServiceIT
                 .withPoints(BigDecimal.valueOf(3))
                 .withComment("This is a updated certificate")
                 .withTags(Set.of(TAG_3, TAG_4))
-                .withCertificateKind(CertificateKind.CERTIFICATE)
                 .build();
 
         persistenceService.save(updatePayload);
@@ -85,7 +80,6 @@ class CertificateTypePersistenceServiceIT
         assertThat(certificateResult.getName()).isEqualTo("Updated certificate type");
         assertThat(certificateResult.getPoints()).isEqualByComparingTo(BigDecimal.valueOf(3));
         assertThat(certificateResult.getComment()).isEqualTo("This is a updated certificate");
-        assertThat(certificateResult.getCertificateKind()).isEqualTo(CertificateKind.CERTIFICATE);
         assertThat(certificateResult.getTags())
                 .extracting(Tag::getName)
                 .containsExactlyInAnyOrder(TAG_3.getName(), TAG_4.getName());
@@ -112,7 +106,6 @@ class CertificateTypePersistenceServiceIT
 
         assertThat(result.getId()).isEqualTo(CERTIFICATE_1_ID);
         assertThat(result.getName()).isEqualTo("Certificate Type 1");
-        assertThat(result.getCertificateKind()).isEqualTo(CertificateKind.CERTIFICATE);
     }
 
     @DisplayName("Should not get leadership experience with certificate method")

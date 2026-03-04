@@ -31,7 +31,7 @@ public class LeadershipExperienceCalculationMapper {
     public CertificateCalculation fromDto(LeadershipExperienceCalculationInputDto dto) {
         return new CertificateCalculation(dto.id(),
                                           null,
-                                          leadershipExperienceBusinessService.getById(dto.leadershipExperienceId()));
+                                          leadershipExperienceBusinessService.getByIda(dto.leadershipExperienceId()));
     }
 
     public LeadershipExperienceCalculationDto toDto(CertificateCalculation model) {

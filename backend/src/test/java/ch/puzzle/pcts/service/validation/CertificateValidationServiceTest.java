@@ -11,7 +11,6 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.certificate.Certificate;
-import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
@@ -73,7 +72,6 @@ class CertificateValidationServiceTest extends ValidationBaseServiceTest<Certifi
                 .withPoints(BigDecimal.valueOf(10))
                 .withComment("Comment")
                 .withTags(Set.of(TAG_3))
-                .withCertificateKind(CertificateKind.CERTIFICATE)
                 .build();
     }
 

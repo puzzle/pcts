@@ -3,7 +3,7 @@ package ch.puzzle.pcts.controller;
 import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceDto;
 import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceInputDto;
 import ch.puzzle.pcts.mapper.LeadershipExperienceMapper;
-import ch.puzzle.pcts.model.certificate.Certificate;
+import ch.puzzle.pcts.model.leadershipexperience.LeadershipExperience;
 import ch.puzzle.pcts.service.business.LeadershipExperienceBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -34,8 +34,8 @@ public class LeadershipExperienceController {
     @GetMapping("{leadershipExperienceId}")
     public ResponseEntity<LeadershipExperienceDto> getLeadershipExperience(@Parameter(description = "ID of the leadership experience to retrieve.", required = true)
     @PathVariable Long leadershipExperienceId) {
-        Certificate certificate = businessService.getById(leadershipExperienceId);
-        return ResponseEntity.ok(mapper.toDto(certificate));
+        LeadershipExperience leadershipExperience = businessService.getById(leadershipExperienceId);
+        return ResponseEntity.ok(mapper.toDto(leadershipExperience));
     }
 
     @Operation(summary = "Create a new leadership experience")
@@ -44,8 +44,8 @@ public class LeadershipExperienceController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = LeadershipExperienceDto.class)) })
     @PostMapping
     public ResponseEntity<LeadershipExperienceDto> createLeadershipExperience(@RequestBody LeadershipExperienceInputDto dto) {
-        Certificate certificate = businessService.create(mapper.fromDto(dto));
-        return ResponseEntity.status(201).body(mapper.toDto(certificate));
+        LeadershipExperience leadershipExperience = businessService.create(mapper.fromDto(dto));
+        return ResponseEntity.status(201).body(mapper.toDto(leadershipExperience));
     }
 
     @Operation(summary = "Update a leadership experience")
@@ -55,8 +55,8 @@ public class LeadershipExperienceController {
     @PutMapping("{leadershipExperienceId}")
     public ResponseEntity<LeadershipExperienceDto> updateLeadershipExperience(@Parameter(description = "ID of the leadership experience to update.", required = true)
     @PathVariable Long leadershipExperienceId, @RequestBody LeadershipExperienceInputDto dto) {
-        Certificate certificate = businessService.update(leadershipExperienceId, mapper.fromDto(dto));
-        return ResponseEntity.ok(mapper.toDto(certificate));
+        LeadershipExperience leadershipExperience = businessService.update(leadershipExperienceId, mapper.fromDto(dto));
+        return ResponseEntity.ok(mapper.toDto(leadershipExperience));
     }
 
     @Operation(summary = "Delete a leadership experience")
