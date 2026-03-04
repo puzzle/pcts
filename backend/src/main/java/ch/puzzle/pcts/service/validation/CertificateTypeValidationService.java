@@ -6,7 +6,6 @@ import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
-import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.certificatetype.ExamType;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
@@ -28,7 +27,6 @@ public class CertificateTypeValidationService extends ValidationBase<Certificate
     @Override
     public void validateOnUpdate(Long id, CertificateType certificateType) {
         super.validateOnUpdate(id, certificateType);
-        validateCertificateKind(certificateType.getCertificateKind());
         validateUniquenessOfNameAndPublisherExcludingId(certificateType.getName(), certificateType.getPublisher(), id);
         validateThatDurationIsNullWhenExamTypeIsNone(certificateType.getExamType(), certificateType.getExamDuration());
         if (UniqueNameValidationUtil
@@ -51,7 +49,6 @@ public class CertificateTypeValidationService extends ValidationBase<Certificate
     @Override
     public void validateOnCreate(CertificateType certificateType) {
         super.validateOnCreate(certificateType);
-        validateCertificateKind(certificateType.getCertificateKind());
         validateUniquenessOfNameAndPublisherExcludingId(certificateType.getName(),
                                                         certificateType.getPublisher(),
                                                         certificateType.getId());
@@ -68,23 +65,6 @@ public class CertificateTypeValidationService extends ValidationBase<Certificate
             GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE, attributes);
 
             throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
-        }
-    }
-
-    public void validateCertificateKind(CertificateKind certificateKind) {
-        if (certificateKind != CertificateKind.CERTIFICATE) {
-            Map<FieldKey, String> attributes = Map
-                    .of(FieldKey.ENTITY,
-                        CERTIFICATE_TYPE,
-                        FieldKey.FIELD,
-                        "certificateKind",
-                        FieldKey.IS,
-                        certificateKind.toString());
-
-            GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_WRONG_KIND, attributes);
-
-            throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
-
         }
     }
 

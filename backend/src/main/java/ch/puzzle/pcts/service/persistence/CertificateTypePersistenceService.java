@@ -2,7 +2,6 @@ package ch.puzzle.pcts.service.persistence;
 
 import static ch.puzzle.pcts.Constants.*;
 
-import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.repository.CertificateTypeRepository;
 import java.util.List;
@@ -23,7 +22,7 @@ public class CertificateTypePersistenceService extends PersistenceBase<Certifica
     }
 
     public List<CertificateType> findAllWhereLinkIsNotNull() {
-        return repository.findAllByCertificateKindAndLinkNotNullAndDeletedAtIsNull(CertificateKind.CERTIFICATE);
+        return repository.findAllByLinkNotNullAndDeletedAtIsNull();
     }
 
     public boolean nameAndPublisherExcludingIdAlreadyUsed(String name, String publisher, Long id) {
@@ -31,17 +30,7 @@ public class CertificateTypePersistenceService extends PersistenceBase<Certifica
     }
 
     @Override
-    public List<CertificateType> getAll() {
-        return repository.findAllOfCertificateType();
-    }
-
-    @Override
     public String entityName() {
         return CERTIFICATE_TYPE;
-    }
-
-    @Override
-    public CertificateType getById(Long id) {
-        return repository.findByIdOfCertificateType(id).orElseThrow(() -> throwNotFoundError(id.toString()));
     }
 }

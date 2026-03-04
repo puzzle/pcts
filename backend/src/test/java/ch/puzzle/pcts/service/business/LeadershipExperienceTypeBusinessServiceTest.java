@@ -5,7 +5,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
-import ch.puzzle.pcts.service.persistence.LeadershipTypePersistenceService;
+import ch.puzzle.pcts.service.persistence.LeadershipExperienceTypePersistenceService;
 import ch.puzzle.pcts.service.validation.LeadershipExperienceTypeValidationService;
 import java.util.Collections;
 import java.util.List;
@@ -19,7 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class LeadershipExperienceTypeBusinessServiceTest
         extends
-            BaseBusinessTest<CertificateType, LeadershipTypePersistenceService, LeadershipExperienceTypeValidationService, LeadershipExperienceTypeBusinessService> {
+            BaseBusinessTest<CertificateType, LeadershipExperienceTypePersistenceService, LeadershipExperienceTypeValidationService, LeadershipExperienceTypeBusinessService> {
 
     @Mock
     private CertificateType certificateType;
@@ -28,7 +28,7 @@ class LeadershipExperienceTypeBusinessServiceTest
     private List<CertificateType> certificateTypes;
 
     @Mock
-    private LeadershipTypePersistenceService persistenceService;
+    private LeadershipExperienceTypePersistenceService persistenceService;
 
     @Mock
     private LeadershipExperienceTypeValidationService validationService;
@@ -42,7 +42,7 @@ class LeadershipExperienceTypeBusinessServiceTest
     }
 
     @Override
-    LeadershipTypePersistenceService getPersistenceService() {
+    LeadershipExperienceTypePersistenceService getPersistenceService() {
         return persistenceService;
     }
 

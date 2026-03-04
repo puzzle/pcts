@@ -40,11 +40,7 @@ public class CertificateCalculationBusinessService extends BusinessBase<Certific
     private boolean isEligibleForPoints(CertificateCalculation certificateCalculation) {
         boolean hasManagementRole = certificateCalculation.getCalculation().getRole().getIsManagement();
 
-        boolean isLeadership = certificateCalculation
-                .getCertificate()
-                .getCertificateType()
-                .getCertificateKind()
-                .isLeadershipExperienceType();
+        boolean isLeadership = false;
 
         return hasManagementRole || !isLeadership;
     }

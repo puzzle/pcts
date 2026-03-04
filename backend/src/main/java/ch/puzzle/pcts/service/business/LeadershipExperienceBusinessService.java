@@ -1,23 +1,15 @@
 package ch.puzzle.pcts.service.business;
 
-import ch.puzzle.pcts.model.certificate.Certificate;
-import ch.puzzle.pcts.service.persistence.CertificatePersistenceService;
+import ch.puzzle.pcts.model.leadershipexperience.LeadershipExperience;
+import ch.puzzle.pcts.service.persistence.LeadershipExperiencePersistenceService;
 import ch.puzzle.pcts.service.validation.LeadershipExperienceValidationService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LeadershipExperienceBusinessService extends BusinessBase<Certificate> {
-    private final CertificatePersistenceService certificatePersistenceService;
+public class LeadershipExperienceBusinessService extends BusinessBase<LeadershipExperience> {
 
-    LeadershipExperienceBusinessService(CertificatePersistenceService certificatePersistenceService,
+    LeadershipExperienceBusinessService(LeadershipExperiencePersistenceService leadershipExperiencePersistenceService,
                                         LeadershipExperienceValidationService validationService) {
-        super(validationService, certificatePersistenceService);
-        this.certificatePersistenceService = certificatePersistenceService;
-    }
-
-    @Override
-    public Certificate getById(Long id) {
-        validationService.validateOnGetById(id);
-        return certificatePersistenceService.findLeadershipExperience(id);
+        super(validationService, leadershipExperiencePersistenceService);
     }
 }

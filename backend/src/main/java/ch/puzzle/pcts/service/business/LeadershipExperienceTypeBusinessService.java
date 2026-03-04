@@ -1,23 +1,23 @@
 package ch.puzzle.pcts.service.business;
 
-import ch.puzzle.pcts.model.certificatetype.CertificateType;
-import ch.puzzle.pcts.service.persistence.LeadershipTypePersistenceService;
+import ch.puzzle.pcts.model.leadershipexperiencetype.LeadershipExperienceType;
+import ch.puzzle.pcts.service.persistence.LeadershipExperienceTypePersistenceService;
 import ch.puzzle.pcts.service.validation.LeadershipExperienceTypeValidationService;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LeadershipExperienceTypeBusinessService extends BusinessBase<CertificateType> {
+public class LeadershipExperienceTypeBusinessService extends BusinessBase<LeadershipExperienceType> {
 
-    private final LeadershipTypePersistenceService leadershipTypePersistenceService;
+    private final LeadershipExperienceTypePersistenceService leadershipTypePersistenceService;
 
     public LeadershipExperienceTypeBusinessService(LeadershipExperienceTypeValidationService leadershipExperienceTypeValidationService,
-                                                   LeadershipTypePersistenceService leadershipTypePersistenceService) {
+                                                   LeadershipExperienceTypePersistenceService leadershipTypePersistenceService) {
         super(leadershipExperienceTypeValidationService, leadershipTypePersistenceService);
         this.leadershipTypePersistenceService = leadershipTypePersistenceService;
     }
 
-    public List<CertificateType> getAll() {
+    public List<LeadershipExperienceType> getAll() {
         return leadershipTypePersistenceService.getAll();
     }
 }

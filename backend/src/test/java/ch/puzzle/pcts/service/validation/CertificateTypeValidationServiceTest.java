@@ -46,7 +46,6 @@ class CertificateTypeValidationServiceTest
                 .withPoints(BigDecimal.valueOf(10))
                 .withComment("Comment")
                 .withTags(Set.of(TAG_3))
-                .withCertificateKind(CertificateKind.CERTIFICATE)
                 .withEffort(6D)
                 .withExamDuration(60)
                 .withLink("https://www.example.com")
@@ -68,7 +67,6 @@ class CertificateTypeValidationServiceTest
         c.setPoints(points);
         c.setComment("Comment");
         c.setTags(Set.of(TAG_1));
-        c.setCertificateKind(CertificateKind.CERTIFICATE);
         c.setEffort(effort);
         c.setExamDuration(examDuration);
         c.setLink(link);

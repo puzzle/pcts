@@ -34,10 +34,6 @@ public class CertificateType implements Model {
     @JoinTable(name = "certificate_type_tag", joinColumns = @JoinColumn(name = "certificate_type_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags;
 
-    @Enumerated(EnumType.STRING)
-    @NotNull(message = "{attribute.not.null}")
-    private CertificateKind certificateKind;
-
     // TODO: Add this back after certificate_type and leadership_type have been
     // separated
     // @NotNull(message = "{attribute.not.null}")
@@ -76,7 +72,6 @@ public class CertificateType implements Model {
         this.points = builder.points;
         this.comment = trim(builder.comment);
         this.tags = builder.tags;
-        this.certificateKind = builder.certificateKind;
         this.effort = builder.effort;
         this.examDuration = builder.examDuration;
         this.link = trim(builder.link);
@@ -125,14 +120,6 @@ public class CertificateType implements Model {
 
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
-    }
-
-    public CertificateKind getCertificateKind() {
-        return certificateKind;
-    }
-
-    public void setCertificateKind(CertificateKind certificateKind) {
-        this.certificateKind = certificateKind;
     }
 
     public Double getEffort() {
@@ -233,7 +220,6 @@ public class CertificateType implements Model {
         return getLinkErrorCount() == that.getLinkErrorCount() && Objects.equals(getId(), that.getId())
                && Objects.equals(getName(), that.getName()) && Objects.equals(getPoints(), that.getPoints())
                && Objects.equals(getComment(), that.getComment()) && Objects.equals(getTags(), that.getTags())
-               && getCertificateKind() == that.getCertificateKind()
                && Objects.equals(getExamDuration(), that.getExamDuration()) && Objects.equals(getLink(), that.getLink())
                && Objects.equals(getExamType(), that.getExamType())
                && Objects.equals(getPublisher(), that.getPublisher())
@@ -249,7 +235,6 @@ public class CertificateType implements Model {
                       getPoints(),
                       getComment(),
                       getTags(),
-                      getCertificateKind(),
                       getEffort(),
                       getExamDuration(),
                       getLink(),
@@ -263,11 +248,10 @@ public class CertificateType implements Model {
     @Override
     public String toString() {
         return "CertificateType{" + "id=" + getId() + ", name='" + getName() + '\'' + ", points=" + getPoints()
-               + ", comment='" + getComment() + '\'' + ", tags=" + getTags() + ", certificateKind="
-               + getCertificateKind() + ", effort=" + getEffort() + ", duration=" + getExamDuration() + ", link='"
-               + getLink() + '\'' + ", examType='" + getExamType() + '\'' + ", publisher='" + getPublisher() + '\''
-               + ", linkErrorCount=" + getLinkErrorCount() + ", linkLastCheckedAt=" + getLinkLastCheckedAt()
-               + ", deletedAt=" + getDeletedAt() + '}';
+               + ", comment='" + getComment() + '\'' + ", tags=" + getTags() + ", effort=" + getEffort() + ", duration="
+               + getExamDuration() + ", link='" + getLink() + '\'' + ", examType='" + getExamType() + '\''
+               + ", publisher='" + getPublisher() + '\'' + ", linkErrorCount=" + getLinkErrorCount()
+               + ", linkLastCheckedAt=" + getLinkLastCheckedAt() + ", deletedAt=" + getDeletedAt() + '}';
     }
 
     public static final class Builder {
@@ -276,7 +260,6 @@ public class CertificateType implements Model {
         private BigDecimal points;
         private String comment;
         private Set<Tag> tags;
-        private CertificateKind certificateKind;
         private Double effort;
         private Integer examDuration;
         private String link;
@@ -312,11 +295,6 @@ public class CertificateType implements Model {
 
         public Builder withTags(Set<Tag> tags) {
             this.tags = tags;
-            return this;
-        }
-
-        public Builder withCertificateKind(CertificateKind certificateKind) {
-            this.certificateKind = certificateKind;
             return this;
         }
 
