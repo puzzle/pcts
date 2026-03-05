@@ -33,7 +33,7 @@ public class Member implements Model {
     @Size(min = 1, message = "{attribute.not.blank}")
     private String ldapName;
 
-    @PCTSEmailValidation
+    @PCTSStringValidation
     private String preferredUsername;
 
     @Enumerated(EnumType.STRING)
