@@ -27,7 +27,7 @@ public class Member implements Model {
     @PCTSStringValidation
     private String lastName;
 
-    @PCTSEmailValidation
+    @PCTSStringValidation
     private String preferredUsername;
 
     @Enumerated(EnumType.STRING)

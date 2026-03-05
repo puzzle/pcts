@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface MemberRepository extends SoftDeleteRepository<Member, Long> {
     Optional<Member> findMemberByEmailAndEmailIsNotNull(String email);
     Optional<Member> findMemberByPreferredUsername(String preferredUsername);
+    Optional<Member> findMemberByPreferredUsernameOrEmail(String preferredUsername, String email);
 }

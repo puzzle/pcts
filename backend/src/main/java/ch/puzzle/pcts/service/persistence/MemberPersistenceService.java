@@ -19,6 +19,10 @@ public class MemberPersistenceService extends PersistenceBase<Member, MemberRepo
         super(repository);
     }
 
+    public Optional<Member> findByPreferredUsernameOrEmail(String preferredUsername, String email) {
+        return this.repository.findMemberByPreferredUsernameOrEmail(preferredUsername, email);
+    }
+
     public Optional<Member> findByPreferredUsername(String preferredUsername) {
         return this.repository.findMemberByPreferredUsername(preferredUsername);
     }

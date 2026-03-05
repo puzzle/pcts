@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.security;
 
+import ch.puzzle.pcts.service.JwtService;
+import ch.puzzle.pcts.service.business.MemberBusinessService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,14 +15,23 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.ExpressionJwtGrantedAuthoritiesConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SpringSecurityConfig {
+    private final JwtService jwtService;
+    private final MemberBusinessService memberBusinessService;
+
     @Value("${pcts.authentication.authorities-path:[pitc][roles]}")
     private String authoritiesPath;
+
+    public SpringSecurityConfig(JwtService jwtService, MemberBusinessService memberBusinessService) {
+        this.jwtService = jwtService;
+        this.memberBusinessService = memberBusinessService;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) {
@@ -38,6 +49,8 @@ public class SpringSecurityConfig {
                         .authenticated())
                 .oauth2ResourceServer((oauth2) -> oauth2
                         .jwt(jwtConfigurer -> jwtConfigurer.jwtAuthenticationConverter(jwtConverter())))
+                .addFilterAfter(new UserUpkeepFilter(jwtService, memberBusinessService),
+                                BearerTokenAuthenticationFilter.class)
                 .build();
     }
 
