@@ -18,7 +18,7 @@ public class LeadershipExperienceTypeMapper {
 
     public LeadershipExperienceTypeDto toDto(LeadershipExperienceType model) {
         return new LeadershipExperienceTypeDto(model
-                .getId(), model.getName(), model.getPoints(), model.getComment(), model.getCertificateKind());
+                .getId(), model.getName(), model.getPoints(), model.getComment(), model.getLeadershipExperienceKind());
 
     }
 
@@ -29,7 +29,7 @@ public class LeadershipExperienceTypeMapper {
                 .withName(dto.name())
                 .withPoints(dto.points())
                 .withComment(dto.comment())
-                .withCertificateKind(dto.experienceKind())
+                .withCertificateKind(dto.leadershipExperienceKind())
                 .build();
     }
 }

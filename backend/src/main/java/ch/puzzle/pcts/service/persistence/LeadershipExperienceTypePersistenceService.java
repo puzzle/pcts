@@ -21,7 +21,7 @@ public class LeadershipExperienceTypePersistenceService
     }
 
     public Optional<LeadershipExperienceType> getByName(String name) {
-        return repository.findByNameOfLeadershipExperienceType(name);
+        return repository.findByName(name);
     }
 
     @Override
