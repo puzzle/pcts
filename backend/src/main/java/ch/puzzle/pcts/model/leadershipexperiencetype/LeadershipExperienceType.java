@@ -3,7 +3,6 @@ package ch.puzzle.pcts.model.leadershipexperiencetype;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
-import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.util.PCTSPointsValidation;
 import ch.puzzle.pcts.util.PCTSStringValidation;
 import jakarta.persistence.*;
@@ -31,7 +30,7 @@ public class LeadershipExperienceType implements Model {
 
     @Enumerated(EnumType.STRING)
     @NotNull(message = "{attribute.not.null}")
-    private CertificateKind certificateKind;
+    private LeadershipExperienceKind leadershipExperienceKind;
 
     @Column(name = "deleted_at", insertable = false, updatable = false)
     private LocalDateTime deletedAt;
@@ -41,7 +40,7 @@ public class LeadershipExperienceType implements Model {
         this.name = trim(builder.name);
         this.points = builder.points;
         this.comment = trim(builder.comment);
-        this.certificateKind = builder.certificateKind;
+        this.leadershipExperienceKind = builder.leadershipExperienceKind;
     }
 
     public LeadershipExperienceType() {
@@ -81,12 +80,12 @@ public class LeadershipExperienceType implements Model {
         this.comment = comment;
     }
 
-    public CertificateKind getCertificateKind() {
-        return certificateKind;
+    public LeadershipExperienceKind getLeadershipExperienceKind() {
+        return leadershipExperienceKind;
     }
 
-    public void setCertificateKind(CertificateKind certificateKind) {
-        this.certificateKind = certificateKind;
+    public void setLeadershipExperienceKin(LeadershipExperienceKind leadershipExperienceKind) {
+        this.leadershipExperienceKind = leadershipExperienceKind;
     }
 
     public LocalDateTime getDeletedAt() {
@@ -104,13 +103,14 @@ public class LeadershipExperienceType implements Model {
         }
         return Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName())
                && Objects.equals(getPoints(), that.getPoints()) && Objects.equals(getComment(), that.getComment())
-               && getCertificateKind() == that.getCertificateKind()
+               && getLeadershipExperienceKind() == that.getLeadershipExperienceKind()
                && Objects.equals(getDeletedAt(), that.getDeletedAt());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getPoints(), getComment(), getCertificateKind(), getDeletedAt());
+        return Objects
+                .hash(getId(), getName(), getPoints(), getComment(), getLeadershipExperienceKind(), getDeletedAt());
     }
 
     public static final class Builder {
@@ -118,7 +118,7 @@ public class LeadershipExperienceType implements Model {
         private String name;
         private BigDecimal points;
         private String comment;
-        private CertificateKind certificateKind;
+        private LeadershipExperienceKind leadershipExperienceKind;
 
         private Builder() {
         }
@@ -147,8 +147,8 @@ public class LeadershipExperienceType implements Model {
             return this;
         }
 
-        public Builder withCertificateKind(CertificateKind certificateKind) {
-            this.certificateKind = certificateKind;
+        public Builder withCertificateKind(LeadershipExperienceKind leadershipExperienceKind) {
+            this.leadershipExperienceKind = leadershipExperienceKind;
             return this;
         }
 

@@ -1,4 +1,4 @@
-package ch.puzzle.pcts.model.certificatetype;
+package ch.puzzle.pcts.model.leadershipexperiencetype;
 
 public enum LeadershipExperienceKind {
     MILITARY_FUNCTION,
