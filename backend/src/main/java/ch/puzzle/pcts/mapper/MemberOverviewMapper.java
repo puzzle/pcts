@@ -28,7 +28,8 @@ public class MemberOverviewMapper {
         for (MemberOverview row : memberOverviews) {
             handleDegree(row, degreeMap);
             handleExperience(row, experienceMap);
-            handleCertificate(row, certificateMap, leadershipMap);
+            handleCertificate(row, certificateMap);
+            handleLeadershipExperiences(row, leadershipMap);
         }
 
         MemberOverviewCvDto cvDto = new MemberOverviewCvDto(List.copyOf(degreeMap.values()),
@@ -76,7 +77,9 @@ public class MemberOverviewMapper {
     private MemberOverviewLeadershipExperienceDto mapToLeadershipExperience(MemberOverview e) {
         return new MemberOverviewLeadershipExperienceDto(e.getCertificateId(),
                                                          new MemberOverviewLeadershipExperienceTypeDto(e
-                                                                 .getCertificateTypeName(), e.getLeadershipTypeKind()),
+                                                                 .getCertificateTypeName(),
+                                                                                                       e
+                                                                                                               .getLeadershipExperienceKind()),
                                                          e.getCertificateComment());
     }
 
@@ -94,18 +97,19 @@ public class MemberOverviewMapper {
         experienceMap.putIfAbsent(row.getExperienceId(), mapToExperience(row));
     }
 
-    private void handleCertificate(MemberOverview row, Map<Long, MemberOverviewCertificateDto> certificateMap,
-                                   Map<Long, MemberOverviewLeadershipExperienceDto> leadershipMap) {
-
+    private void handleCertificate(MemberOverview row, Map<Long, MemberOverviewCertificateDto> certificateMap) {
         if (!hasValidId(row.getCertificateId())) {
             return;
         }
+        certificateMap.putIfAbsent(row.getCertificateId(), mapToCertificate(row));
+    }
 
-        if (row.getLeadershipTypeKind().isLeadershipExperienceType()) {
-            leadershipMap.putIfAbsent(row.getCertificateId(), mapToLeadershipExperience(row));
-        } else {
-            certificateMap.putIfAbsent(row.getCertificateId(), mapToCertificate(row));
+    private void handleLeadershipExperiences(MemberOverview row,
+                                             Map<Long, MemberOverviewLeadershipExperienceDto> leadershipMap) {
+        if (!hasValidId(row.getLeadershipExperienceId())) {
+            return;
         }
+        leadershipMap.putIfAbsent(row.getLeadershipExperienceId(), mapToLeadershipExperience(row));
     }
 
     private boolean hasValidId(Long id) {

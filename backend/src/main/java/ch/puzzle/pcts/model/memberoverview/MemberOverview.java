@@ -2,7 +2,7 @@ package ch.puzzle.pcts.model.memberoverview;
 
 import static org.apache.commons.lang3.StringUtils.trim;
 
-import ch.puzzle.pcts.model.certificatetype.CertificateKind;
+import ch.puzzle.pcts.model.leadershipexperiencetype.LeadershipExperienceKind;
 import ch.puzzle.pcts.model.member.EmploymentState;
 import jakarta.persistence.*;
 import java.time.LocalDate;
@@ -29,10 +29,12 @@ public class MemberOverview {
     private Long certificateId;
     private LocalDate certificateCompletedAt;
     private String certificateComment;
-
     private String certificateTypeName;
-    @Enumerated(EnumType.STRING)
-    private CertificateKind leadershipTypeKind;
+
+    private Long leadershipExperienceId;
+    private String leadershipExperienceComment;
+    private String leadershipExperienceTypeName;
+    private LeadershipExperienceKind leadershipExperienceKind;
 
     @Id
     private Long degreeId;
@@ -69,8 +71,11 @@ public class MemberOverview {
         degreeName = trim(builder.degreeName);
         degreeStartDate = builder.degreeStartDate;
         degreeEndDate = builder.degreeEndDate;
-        leadershipTypeKind = builder.leadershipTypeKind;
         degreeTypeName = trim(builder.degreeTypeName);
+        leadershipExperienceId = builder.leadershipExperienceId;
+        leadershipExperienceComment = trim(builder.leadershipExperienceComment);
+        leadershipExperienceTypeName = trim(builder.leadershipExperienceTypeName);
+        leadershipExperienceKind = builder.leadershipExperienceKind;
         experienceId = builder.experienceId;
         experienceName = trim(builder.experienceName);
         experienceEmployer = trim(builder.experienceEmployer);
@@ -180,6 +185,38 @@ public class MemberOverview {
         this.certificateTypeName = trim(certificateTypeName);
     }
 
+    public Long getLeadershipExperienceId() {
+        return leadershipExperienceId;
+    }
+
+    public void setLeadershipExperienceId(Long leadershipExperienceId) {
+        this.leadershipExperienceId = leadershipExperienceId;
+    }
+
+    public String getLeadershipExperienceComment() {
+        return leadershipExperienceComment;
+    }
+
+    public void setLeadershipExperienceComment(String leadershipExperienceComment) {
+        this.leadershipExperienceComment = leadershipExperienceComment;
+    }
+
+    public String getLeadershipExperienceTypeName() {
+        return leadershipExperienceTypeName;
+    }
+
+    public void setLeadershipExperienceTypeName(String leadershipExperienceTypeName) {
+        this.leadershipExperienceTypeName = leadershipExperienceTypeName;
+    }
+
+    public LeadershipExperienceKind getLeadershipExperienceKind() {
+        return leadershipExperienceKind;
+    }
+
+    public void setLeadershipExperienceKind(LeadershipExperienceKind leadershipExperienceKind) {
+        this.leadershipExperienceKind = leadershipExperienceKind;
+    }
+
     public Long getDegreeId() {
         return degreeId;
     }
@@ -210,14 +247,6 @@ public class MemberOverview {
 
     public void setDegreeEndDate(LocalDate degreeEndDate) {
         this.degreeEndDate = degreeEndDate;
-    }
-
-    public CertificateKind getLeadershipTypeKind() {
-        return leadershipTypeKind;
-    }
-
-    public void setLeadershipTypeKind(CertificateKind leadershipTypeKind) {
-        this.leadershipTypeKind = leadershipTypeKind;
     }
 
     public String getDegreeTypeName() {
@@ -300,7 +329,10 @@ public class MemberOverview {
                && Objects.equals(getCertificateCompletedAt(), that.getCertificateCompletedAt())
                && Objects.equals(getCertificateComment(), that.getCertificateComment())
                && Objects.equals(getCertificateTypeName(), that.getCertificateTypeName())
-               && getLeadershipTypeKind() == that.getLeadershipTypeKind()
+               && Objects.equals(getLeadershipExperienceId(), that.getLeadershipExperienceId())
+               && Objects.equals(getLeadershipExperienceComment(), that.getLeadershipExperienceComment())
+               && Objects.equals(getLeadershipExperienceTypeName(), that.getLeadershipExperienceTypeName())
+               && Objects.equals(getLeadershipExperienceKind(), that.getLeadershipExperienceKind())
                && Objects.equals(getDegreeId(), that.getDegreeId())
                && Objects.equals(getDegreeName(), that.getDegreeName())
                && Objects.equals(getDegreeStartDate(), that.getDegreeStartDate())
@@ -330,7 +362,10 @@ public class MemberOverview {
                       getCertificateCompletedAt(),
                       getCertificateComment(),
                       getCertificateTypeName(),
-                      getLeadershipTypeKind(),
+                      getLeadershipExperienceId(),
+                      getLeadershipExperienceComment(),
+                      getLeadershipExperienceTypeName(),
+                      getLeadershipExperienceKind(),
                       getDegreeId(),
                       getDegreeName(),
                       getDegreeStartDate(),
@@ -353,13 +388,16 @@ public class MemberOverview {
                + ", organisationUnitName='" + getOrganisationUnitName() + '\'' + ", certificateId=" + getCertificateId()
                + ", certificateCompletedAt=" + getCertificateCompletedAt() + ", certificateComment='"
                + getCertificateComment() + '\'' + ", certificateTypeName='" + getCertificateTypeName() + '\''
-               + ", leadershipTypeKind=" + getLeadershipTypeKind() + ", degreeId=" + getDegreeId() + ", degreeName='"
-               + getDegreeName() + '\'' + ", degreeStartDate=" + getDegreeStartDate() + ", degreeEndDate="
-               + getDegreeEndDate() + ", degreeTypeName='" + getDegreeTypeName() + '\'' + ", experienceId="
-               + getExperienceId() + ", experienceName='" + getExperienceName() + '\'' + ", experienceEmployer='"
-               + getExperienceEmployer() + '\'' + ", experienceStartDate=" + getExperienceStartDate()
-               + ", experienceEndDate=" + getExperienceEndDate() + ", experienceComment='" + getExperienceComment()
-               + '\'' + ", experienceTypeName='" + getExperienceTypeName() + '\'' + '}';
+               + ", leadershipExperienceId=" + getLeadershipExperienceId() + ", leadershipExperienceComment='"
+               + getLeadershipExperienceComment() + '\'' + ", leadershipExperienceTypeName='"
+               + getLeadershipExperienceTypeName() + '\'' + ", leadershipExperienceKind="
+               + getLeadershipExperienceKind() + ", degreeId=" + getDegreeId() + ", degreeName='" + getDegreeName()
+               + '\'' + ", degreeStartDate=" + getDegreeStartDate() + ", degreeEndDate=" + getDegreeEndDate()
+               + ", degreeTypeName='" + getDegreeTypeName() + '\'' + ", experienceId=" + getExperienceId()
+               + ", experienceName='" + getExperienceName() + '\'' + ", experienceEmployer='" + getExperienceEmployer()
+               + '\'' + ", experienceStartDate=" + getExperienceStartDate() + ", experienceEndDate="
+               + getExperienceEndDate() + ", experienceComment='" + getExperienceComment() + '\''
+               + ", experienceTypeName='" + getExperienceTypeName() + '\'' + '}';
     }
 
     public static final class Builder {
@@ -383,10 +421,12 @@ public class MemberOverview {
         private String degreeName;
         private LocalDate degreeStartDate;
         private LocalDate degreeEndDate;
-
-        private CertificateKind leadershipTypeKind;
-
         private String degreeTypeName;
+
+        private Long leadershipExperienceId;
+        private String leadershipExperienceComment;
+        private String leadershipExperienceTypeName;
+        private LeadershipExperienceKind leadershipExperienceKind;
 
         private Long experienceId;
         private String experienceName;
@@ -464,8 +504,23 @@ public class MemberOverview {
             return this;
         }
 
-        public Builder withleadershipTypeKind(CertificateKind leadershipTypeKind) {
-            this.leadershipTypeKind = leadershipTypeKind;
+        public Builder withLeadershipExperienceId(Long leadershipExperienceId) {
+            this.leadershipExperienceId = leadershipExperienceId;
+            return this;
+        }
+
+        public Builder withLeadershipExperienceComment(String leadershipExperienceComment) {
+            this.leadershipExperienceComment = trim(leadershipExperienceComment);
+            return this;
+        }
+
+        public Builder withLeadershipExperienceTypeName(String leadershipExperienceTypeName) {
+            this.leadershipExperienceTypeName = trim(leadershipExperienceTypeName);
+            return this;
+        }
+
+        public Builder withLeadershipExperienceTypeKind(LeadershipExperienceKind leadershipExperienceKind) {
+            this.leadershipExperienceKind = leadershipExperienceKind;
             return this;
         }
 
