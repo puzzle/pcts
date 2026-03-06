@@ -8,15 +8,18 @@ public class MemberOverviewId implements Serializable {
     private Long memberId;
     private Long certificateId;
     private Long degreeId;
+    private Long leadershipExperienceId;
     private Long experienceId;
 
     public MemberOverviewId() {
     }
 
-    public MemberOverviewId(Long memberId, Long certificateId, Long degreeId, Long experienceId) {
+    public MemberOverviewId(Long memberId, Long certificateId, Long degreeId, Long experienceId,
+                            Long leadershipExperienceId) {
         this.memberId = memberId;
         this.certificateId = certificateId;
         this.degreeId = degreeId;
+        this.leadershipExperienceId = leadershipExperienceId;
         this.experienceId = experienceId;
     }
 
@@ -44,6 +47,14 @@ public class MemberOverviewId implements Serializable {
         this.degreeId = degreeId;
     }
 
+    public Long getLeadershipExperienceId() {
+        return leadershipExperienceId;
+    }
+
+    public void setLeadershipExperienceId(Long leadershipExperienceId) {
+        this.leadershipExperienceId = leadershipExperienceId;
+    }
+
     public Long getExperienceId() {
         return experienceId;
     }
@@ -60,17 +71,19 @@ public class MemberOverviewId implements Serializable {
         return Objects.equals(getMemberId(), that.getMemberId())
                && Objects.equals(getCertificateId(), that.getCertificateId())
                && Objects.equals(getDegreeId(), that.getDegreeId())
+               && Objects.equals(getLeadershipExperienceId(), that.getLeadershipExperienceId())
                && Objects.equals(getExperienceId(), that.getExperienceId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getMemberId(), getCertificateId(), getDegreeId(), getExperienceId());
+        return Objects.hash(getMemberId(), getCertificateId(), getDegreeId(), getCertificateId(), getExperienceId());
     }
 
     @Override
     public String toString() {
-        return "MemberOverviewId{" + "memberId=" + memberId + ", certificateId=" + certificateId + ", degreeId="
-               + degreeId + ", experienceId=" + experienceId + '}';
+        return "MemberOverviewId{" + "memberId=" + getMemberId() + ", certificateId=" + getCertificateId()
+               + ", degreeId=" + getDegreeId() + ", leadershipExperienceId=" + getLeadershipExperienceId()
+               + ", experienceId=" + getExperienceId() + '}';
     }
 }
