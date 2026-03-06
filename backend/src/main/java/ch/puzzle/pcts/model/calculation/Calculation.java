@@ -6,6 +6,7 @@ import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
 import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
 import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
+import ch.puzzle.pcts.model.calculation.leadershipexperiencecalculation.LeadershipExperienceCalculation;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.role.Role;
 import jakarta.persistence.*;
@@ -48,6 +49,9 @@ public class Calculation implements Model {
 
     @OneToMany(mappedBy = "calculation", fetch = FetchType.LAZY)
     private List<CertificateCalculation> certificatesCalculations;
+
+    @OneToMany(mappedBy = "calculation", fetch = FetchType.LAZY)
+    private List<LeadershipExperienceCalculation> leadershipExperienceCalculations;
 
     @Transient
     private BigDecimal points;

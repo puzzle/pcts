@@ -57,10 +57,6 @@ public class CertificateCalculation implements CalculationChildInterface, Model 
         return Objects.hash(getId(), getCalculation() != null ? getCalculation().getId() : null, getCertificate());
     }
 
-    public boolean isLeadershipExperience() {
-        return this.getCertificate().getCertificateType().getCertificateKind().isLeadershipExperienceType();
-    }
-
     public Long getId() {
         return id;
     }
