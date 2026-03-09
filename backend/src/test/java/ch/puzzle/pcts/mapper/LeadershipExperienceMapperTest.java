@@ -59,11 +59,11 @@ class LeadershipExperienceMapperTest {
         when(memberMapper.toDto(MEMBER_1)).thenReturn(MEMBER_1_DTO);
         when(leadershipExperienceTypeMapper.toDto(LEADERSHIP_TYPE_1)).thenReturn(LEADERSHIP_TYPE_1_DTO);
 
-        LeadershipExperienceDto resultDto = leadershipExperienceMapper.toDto(LEADERSHIP_CERT_1);
+        LeadershipExperienceDto resultDto = leadershipExperienceMapper.toDto(LEADERSHIP_EXPERIENCE_1);
 
         assertNotNull(resultDto);
         assertEquals(LEADERSHIP_CERT_1_ID, resultDto.id());
-        assertEquals(LEADERSHIP_CERT_1.getComment(), resultDto.comment());
+        assertEquals(LEADERSHIP_EXPERIENCE_1.getComment(), resultDto.comment());
         assertEquals(MEMBER_1_DTO, resultDto.member());
         assertEquals(LEADERSHIP_TYPE_1_DTO, resultDto.experience());
 
@@ -94,7 +94,7 @@ class LeadershipExperienceMapperTest {
     @DisplayName("Should return a list of LeadershipExperienceDto")
     @Test
     void shouldGetListOfLeadershipExperienceDto() {
-        List<Certificate> certificateList = List.of(LEADERSHIP_CERT_1, LEADERSHIP_CERT_2);
+        List<Certificate> certificateList = List.of(LEADERSHIP_EXPERIENCE_1, LEADERSHIP_EXPERIENCE_2);
 
         when(memberMapper.toDto(any(Member.class))).thenReturn(mock(MemberDto.class));
         when(leadershipExperienceTypeMapper.toDto(any(CertificateType.class)))
@@ -104,8 +104,8 @@ class LeadershipExperienceMapperTest {
 
         assertNotNull(dtoList);
         assertEquals(2, dtoList.size());
-        assertEquals(LEADERSHIP_CERT_1.getId(), dtoList.get(0).id());
-        assertEquals(LEADERSHIP_CERT_2.getId(), dtoList.get(1).id());
+        assertEquals(LEADERSHIP_EXPERIENCE_1.getId(), dtoList.get(0).id());
+        assertEquals(LEADERSHIP_EXPERIENCE_2.getId(), dtoList.get(1).id());
 
         verify(memberMapper, times(2)).toDto(any(Member.class));
         verify(leadershipExperienceTypeMapper, times(2)).toDto(any(CertificateType.class));
@@ -125,8 +125,8 @@ class LeadershipExperienceMapperTest {
 
         assertNotNull(resultList);
         assertEquals(2, resultList.size());
-        assertEquals(LEADERSHIP_CERT_1.getComment(), resultList.get(0).getComment());
-        assertEquals(LEADERSHIP_CERT_2.getComment(), resultList.get(1).getComment());
+        assertEquals(LEADERSHIP_EXPERIENCE_1.getComment(), resultList.get(0).getComment());
+        assertEquals(LEADERSHIP_EXPERIENCE_2.getComment(), resultList.get(1).getComment());
 
         verify(memberBusinessService).getById(MEMBER_1_ID);
         verify(memberBusinessService).getById(MEMBER_2_ID);

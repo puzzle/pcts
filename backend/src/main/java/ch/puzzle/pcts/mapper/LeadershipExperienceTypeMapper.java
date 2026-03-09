@@ -29,7 +29,7 @@ public class LeadershipExperienceTypeMapper {
                 .withName(dto.name())
                 .withPoints(dto.points())
                 .withComment(dto.comment())
-                .withCertificateKind(dto.leadershipExperienceKind())
+                .withExperienceKind(dto.leadershipExperienceKind())
                 .build();
     }
 }

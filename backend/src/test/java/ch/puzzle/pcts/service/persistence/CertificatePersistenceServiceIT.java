@@ -34,7 +34,7 @@ class CertificatePersistenceServiceIT
     @DisplayName("Should get leadership experience when kind is not CERTIFICATE")
     @Transactional
     void shouldGetLeadershipExperience() {
-        Certificate savedCertificate = persistenceService.save(LEADERSHIP_CERT_1);
+        Certificate savedCertificate = persistenceService.save(LEADERSHIP_EXPERIENCE_1);
         Certificate result = assertDoesNotThrow(() -> persistenceService
                 .findLeadershipExperience(savedCertificate.getId()));
 

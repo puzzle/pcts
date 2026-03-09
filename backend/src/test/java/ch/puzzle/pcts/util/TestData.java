@@ -87,6 +87,9 @@ public class TestData {
     public static final Long CERTIFICATE_CALC_2_ID = 2L;
     public static final Long CERTIFICATE_CALC_3_ID = 3L;
 
+    public static final Long LEADERSHIP_EXPERIENCE_CALC_1_ID = 1L;
+    public static final Long LEADERSHIP_EXPERIENCE_CALC_2_ID = 2L;
+
     public static final Long CALCULATION_1_ID = 1L;
     public static final Long CALCULATION_2_ID = 2L;
     public static final Long CALCULATION_3_ID = 3L;

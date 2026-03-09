@@ -191,8 +191,8 @@ class CalculationMapperTest {
     @DisplayName("Should map Calculations to RolePointDto list")
     @Test
     void shouldReturnListOfRolePointDto() {
-        Calculation calculation1 = GET_CALCULATIN();
-        Calculation calculation2 = GET_CALCULATIN();
+        Calculation calculation1 = GET_CALCULATION();
+        Calculation calculation2 = GET_CALCULATION();
         calculation1.setPoints(BigDecimal.TEN);
         calculation2.setPoints(BigDecimal.TWO);
 

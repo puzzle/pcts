@@ -235,16 +235,16 @@ public class TestDataDTOs {
     public static final LeadershipExperienceDto LEADERSHIP_CERT_1_DTO = new LeadershipExperienceDto(LEADERSHIP_CERT_1_ID,
                                                                                                     MEMBER_1_DTO,
                                                                                                     LEADERSHIP_TYPE_1_DTO,
-                                                                                                    LEADERSHIP_CERT_1
+                                                                                                    LEADERSHIP_EXPERIENCE_1
                                                                                                             .getComment());
 
-    public static final LeadershipExperienceInputDto LEADERSHIP_CERT_1_INPUT = new LeadershipExperienceInputDto(LEADERSHIP_CERT_1
+    public static final LeadershipExperienceInputDto LEADERSHIP_CERT_1_INPUT = new LeadershipExperienceInputDto(LEADERSHIP_EXPERIENCE_1
             .getMember()
-            .getId(), LEADERSHIP_CERT_1.getCertificateType().getId(), LEADERSHIP_CERT_1.getComment());
+            .getId(), LEADERSHIP_EXPERIENCE_1.getCertificateType().getId(), LEADERSHIP_EXPERIENCE_1.getComment());
 
-    public static final LeadershipExperienceInputDto LEADERSHIP_CERT_2_INPUT = new LeadershipExperienceInputDto(LEADERSHIP_CERT_2
+    public static final LeadershipExperienceInputDto LEADERSHIP_CERT_2_INPUT = new LeadershipExperienceInputDto(LEADERSHIP_EXPERIENCE_2
             .getMember()
-            .getId(), LEADERSHIP_CERT_2.getCertificateType().getId(), LEADERSHIP_CERT_2.getComment());
+            .getId(), LEADERSHIP_EXPERIENCE_2.getCertificateType().getId(), LEADERSHIP_EXPERIENCE_2.getComment());
 
     public static final DegreeTypeDto DEGREE_TYPE_1_DTO = new DegreeTypeDto(DEGREE_TYPE_1_ID,
                                                                             DEGREE_TYPE_1.getName(),
@@ -422,17 +422,17 @@ public class TestDataDTOs {
 
                                                                                                                         ),
                                                                                                                 List
-                                                                                                                        .of(new MemberOverviewLeadershipExperienceDto(LEADERSHIP_CERT_1
+                                                                                                                        .of(new MemberOverviewLeadershipExperienceDto(LEADERSHIP_EXPERIENCE_1
                                                                                                                                 .getId(),
-                                                                                                                                                                      new MemberOverviewLeadershipExperienceTypeDto(LEADERSHIP_CERT_1
+                                                                                                                                                                      new MemberOverviewLeadershipExperienceTypeDto(LEADERSHIP_EXPERIENCE_1
                                                                                                                                                                               .getCertificateType()
                                                                                                                                                                               .getName(),
-                                                                                                                                                                                                                    LEADERSHIP_CERT_1
+                                                                                                                                                                                                                    LEADERSHIP_EXPERIENCE_1
                                                                                                                                                                                                                             .getCertificateType()
                                                                                                                                                                                                                             .getCertificateKind()
 
                                                                                                                                                                       ),
-                                                                                                                                                                      LEADERSHIP_CERT_1
+                                                                                                                                                                      LEADERSHIP_EXPERIENCE_1
                                                                                                                                                                               .getComment()))));
 
     public static final MemberOverviewDto MEMBER_2_OVERVIEW_DTO = new MemberOverviewDto(new MemberOverviewMemberDto(MEMBER_2
