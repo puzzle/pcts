@@ -3,13 +3,9 @@ package ch.puzzle.pcts.mapper;
 import ch.puzzle.pcts.dto.calculation.CalculationDto;
 import ch.puzzle.pcts.dto.calculation.CalculationInputDto;
 import ch.puzzle.pcts.dto.calculation.RolePointDto;
-import ch.puzzle.pcts.dto.calculation.calculationleadershipexperience.LeadershipExperienceCalculationInputDto;
-import ch.puzzle.pcts.dto.calculation.certificatecalculation.CertificateCalculationInputDto;
 import ch.puzzle.pcts.model.calculation.Calculation;
-import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import ch.puzzle.pcts.service.business.RoleBusinessService;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Component;
 
@@ -61,10 +57,9 @@ public class CalculationMapper {
                                   model.getPublicationDate(),
                                   model.getPublicizedBy(),
                                   model.getPoints(),
-                                  certificateCalculationMapper
-                                          .toDto(model.getCertificateCalculationsWithCertificateType()),
+                                  certificateCalculationMapper.toDto(model.getCertificateCalculations()),
                                   leadershipExperienceCalculationMapper
-                                          .toDto(model.getCertificatesCalculationsWithLeadershipExperienceType()),
+                                          .toDto(model.getLeadershipExperienceCalculations()),
                                   degreeCalculationMapper.toDto(model.getDegreeCalculations()),
                                   experienceCalculationMapper.toDto(model.getExperienceCalculations()));
     }
@@ -79,16 +74,9 @@ public class CalculationMapper {
                 .withPublicizedBy(null)
                 .withDegreeCalculations(this.degreeCalculationMapper.fromDto(dto.degreeCalculations()))
                 .withExperienceCalculations(this.experienceCalculationMapper.fromDto(dto.experienceCalculations()))
-                .withCertificateCalculations(mergeCertificates(dto.leadershipExperienceCalculations(),
-                                                               dto.certificateCalculations()))
+                .withCertificateCalculations(this.certificateCalculationMapper.fromDto(dto.certificateCalculations()))
+                .withLeadershipExperienceCalculations(this.leadershipExperienceCalculationMapper
+                        .fromDto(dto.leadershipExperienceCalculations()))
                 .build();
-    }
-
-    private List<CertificateCalculation> mergeCertificates(List<LeadershipExperienceCalculationInputDto> leadershipExperiences,
-                                                           List<CertificateCalculationInputDto> certificates) {
-        List<CertificateCalculation> certificateCalculations = new ArrayList<>();
-        certificateCalculations.addAll(certificateCalculationMapper.fromDto(certificates));
-        certificateCalculations.addAll(leadershipExperienceCalculationMapper.fromDto(leadershipExperiences));
-        return certificateCalculations;
     }
 }

@@ -49,7 +49,7 @@ VALUES
     ('Project Management Professional (PMP)', 8.5, NULL, 'Globally recognized project management certification', 5, 120, 'https://example.com/', 'MULTIPLE_CHOICE', 'Puzzle ITC', 0, null),
     ('Microsoft Certified: Azure Administrator Associate', 7.5, NULL, 'Managing Azure cloud services and resources', 5, 120, 'https://example.com/', 'MULTIPLE_CHOICE', 'Puzzle ITC', 0, null);
 
-INSERT INTO leadership_experience_type (name, points, comment, leadership_experience_kind, deleted_at)
+INSERT INTO leadership_experience_type (name, points, comment, experience_kind, deleted_at)
 VALUES
     ('Leadership Training', 5, 'Leadership training', 'LEADERSHIP_TRAINING', NULL),
     ('Youth and Sport', 2, 'Youth and sport', 'YOUTH_AND_SPORT', NULL),

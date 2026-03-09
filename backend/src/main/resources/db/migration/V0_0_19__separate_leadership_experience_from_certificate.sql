@@ -5,8 +5,7 @@ CREATE TABLE IF NOT EXISTS leadership_experience_type
     name                            TEXT NOT NULL UNIQUE,
     points                          NUMERIC NOT NULL,
     comment                         TEXT,
-    experience_kind      TEXT NOT NULL
-    ,
+    experience_kind                 TEXT NOT NULL,
     deleted_at                      TIMESTAMP DEFAULT NULL
 );
 
