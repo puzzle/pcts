@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class CalculationBusinessService extends BusinessBase<Calculation> {
     private final ExperienceCalculationBusinessService experienceCalculationBusinessService;
     private final CertificateCalculationBusinessService certificateCalculationBusinessService;
+    private final LeadershipExperienceCalculationBusinessService leadershipExperienceCalculationBusinessService;
     private final DegreeCalculationBusinessService degreeCalculationBusinessService;
     private final CalculationPersistenceService calculationPersistenceService;
 
@@ -25,11 +26,13 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
                                       CalculationPersistenceService persistenceService,
                                       ExperienceCalculationBusinessService experienceCalculationBusinessService,
                                       CertificateCalculationBusinessService certificateCalculationBusinessService,
+                                      LeadershipExperienceCalculationBusinessService leadershipExperienceCalculationBusinessService,
                                       DegreeCalculationBusinessService degreeCalculationBusinessService) {
         super(validationService, persistenceService);
         this.experienceCalculationBusinessService = experienceCalculationBusinessService;
         this.certificateCalculationBusinessService = certificateCalculationBusinessService;
         this.degreeCalculationBusinessService = degreeCalculationBusinessService;
+        this.leadershipExperienceCalculationBusinessService = leadershipExperienceCalculationBusinessService;
         this.calculationPersistenceService = persistenceService;
     }
 
@@ -112,7 +115,8 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
         return BigDecimal.ZERO
                 .add(experienceCalculationBusinessService.getExperiencePoints(calculationId))
                 .add(degreeCalculationBusinessService.getDegreePoints(calculationId))
-                .add(certificateCalculationBusinessService.getCertificatePoints(calculationId));
+                .add(certificateCalculationBusinessService.getCertificatePoints(calculationId))
+                .add(leadershipExperienceCalculationBusinessService.getLeadershipExperiencePoints(calculationId));
     }
 
     private void setPointsForCalculations(List<Calculation> calculations) {
