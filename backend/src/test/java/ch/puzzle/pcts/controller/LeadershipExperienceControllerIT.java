@@ -50,7 +50,7 @@ class LeadershipExperienceControllerIT {
     @DisplayName("Should successfully get leadership experience by ID")
     @Test
     void shouldGetLeadershipExperienceById() throws Exception {
-        when(businessService.getById(LEADERSHIP_CERT_1_ID)).thenReturn(LEADERSHIP_CERT_1);
+        when(businessService.getById(LEADERSHIP_CERT_1_ID)).thenReturn(LEADERSHIP_EXPERIENCE_1);
         when(mapper.toDto(any(Certificate.class))).thenReturn(LEADERSHIP_CERT_1_DTO);
 
         mvc
@@ -65,8 +65,8 @@ class LeadershipExperienceControllerIT {
     @DisplayName("Should successfully create leadership experience")
     @Test
     void shouldCreateLeadershipExperience() throws Exception {
-        when(mapper.fromDto(any(LeadershipExperienceInputDto.class))).thenReturn(LEADERSHIP_CERT_1);
-        when(businessService.create(any(Certificate.class))).thenReturn(LEADERSHIP_CERT_1);
+        when(mapper.fromDto(any(LeadershipExperienceInputDto.class))).thenReturn(LEADERSHIP_EXPERIENCE_1);
+        when(businessService.create(any(Certificate.class))).thenReturn(LEADERSHIP_EXPERIENCE_1);
         when(mapper.toDto(any(Certificate.class))).thenReturn(LEADERSHIP_CERT_1_DTO);
 
         mvc
@@ -85,8 +85,8 @@ class LeadershipExperienceControllerIT {
     @DisplayName("Should successfully update leadership experience")
     @Test
     void shouldUpdateLeadershipExperience() throws Exception {
-        when(mapper.fromDto(any(LeadershipExperienceInputDto.class))).thenReturn(LEADERSHIP_CERT_1);
-        when(businessService.update(eq(LEADERSHIP_CERT_1_ID), any(Certificate.class))).thenReturn(LEADERSHIP_CERT_1);
+        when(mapper.fromDto(any(LeadershipExperienceInputDto.class))).thenReturn(LEADERSHIP_EXPERIENCE_1);
+        when(businessService.update(eq(LEADERSHIP_CERT_1_ID), any(Certificate.class))).thenReturn(LEADERSHIP_EXPERIENCE_1);
         when(mapper.toDto(any(Certificate.class))).thenReturn(LEADERSHIP_CERT_1_DTO);
 
         mvc

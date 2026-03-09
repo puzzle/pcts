@@ -146,7 +146,7 @@ public class LeadershipExperienceType implements Model {
             return this;
         }
 
-        public Builder withCertificateKind(LeadershipExperienceKind experienceKind) {
+        public Builder withExperienceKind(LeadershipExperienceKind experienceKind) {
             this.experienceKind = experienceKind;
             return this;
         }

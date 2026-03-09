@@ -8,8 +8,8 @@ import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
 import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
 import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
+import ch.puzzle.pcts.model.calculation.leadershipexperiencecalculation.LeadershipExperienceCalculation;
 import ch.puzzle.pcts.model.certificate.Certificate;
-import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.certificatetype.ExamType;
 import ch.puzzle.pcts.model.certificatetype.Tag;
@@ -17,6 +17,9 @@ import ch.puzzle.pcts.model.degree.Degree;
 import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.model.experience.Experience;
 import ch.puzzle.pcts.model.experiencetype.ExperienceType;
+import ch.puzzle.pcts.model.leadershipexperience.LeadershipExperience;
+import ch.puzzle.pcts.model.leadershipexperiencetype.LeadershipExperienceKind;
+import ch.puzzle.pcts.model.leadershipexperiencetype.LeadershipExperienceType;
 import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.memberoverview.MemberOverview;
@@ -202,49 +205,49 @@ public class TestDataModels {
             .withPublisher("Example Publisher")
             .build();
 
-    public static final CertificateType LEADERSHIP_TYPE_1 = CertificateType.Builder
+    public static final LeadershipExperienceType LEADERSHIP_TYPE_1 = LeadershipExperienceType.Builder
             .builder()
             .withId(LEADERSHIP_TYPE_1_ID)
             .withName("LeadershipExperience Type 1")
             .withPoints(BigDecimal.valueOf(5.5))
             .withComment("This is LeadershipExperience 1")
-            .withTags(Set.of())
+            .withExperienceKind(LeadershipExperienceKind.LEADERSHIP_TRAINING)
             .build();
 
-    public static final CertificateType LEADERSHIP_TYPE_2 = CertificateType.Builder
+    public static final LeadershipExperienceType LEADERSHIP_TYPE_2 = LeadershipExperienceType.Builder
             .builder()
             .withId(LEADERSHIP_TYPE_2_ID)
             .withName("LeadershipExperience Type 2")
             .withPoints(BigDecimal.valueOf(1))
             .withComment("This is LeadershipExperience 2")
-            .withTags(Set.of())
+            .withExperienceKind(LeadershipExperienceKind.LEADERSHIP_TRAINING)
             .build();
 
-    public static final CertificateType LEADERSHIP_TYPE_3 = CertificateType.Builder
+    public static final LeadershipExperienceType LEADERSHIP_TYPE_3 = LeadershipExperienceType.Builder
             .builder()
             .withId(LEADERSHIP_TYPE_3_ID)
             .withName("LeadershipExperience Type 3")
             .withPoints(BigDecimal.valueOf(3))
             .withComment("This is LeadershipExperience 3")
-            .withTags(Set.of())
+            .withExperienceKind(LeadershipExperienceKind.LEADERSHIP_TRAINING)
             .build();
 
-    public static final CertificateType LEADERSHIP_TYPE_4 = CertificateType.Builder
+    public static final LeadershipExperienceType LEADERSHIP_TYPE_4 = LeadershipExperienceType.Builder
             .builder()
             .withId(LEADERSHIP_TYPE_4_ID)
             .withName("LeadershipExperience Type 4")
             .withPoints(BigDecimal.valueOf(4))
             .withComment("This is a comment.")
-            .withTags(null)
+            .withExperienceKind(LeadershipExperienceKind.MILITARY_FUNCTION)
             .build();
 
-    public static final CertificateType LEADERSHIP_TYPE_5 = CertificateType.Builder
+    public static final LeadershipExperienceType LEADERSHIP_TYPE_5 = LeadershipExperienceType.Builder
             .builder()
             .withId(LEADERSHIP_TYPE_5_ID)
             .withName("LeadershipExperience Type 5")
             .withPoints(BigDecimal.valueOf(2))
             .withComment("This is a comment.")
-            .withTags(null)
+            .withExperienceKind(LeadershipExperienceKind.YOUTH_AND_SPORT)
             .build();
 
     public static final Certificate CERTIFICATE_1 = Certificate.Builder
@@ -287,23 +290,19 @@ public class TestDataModels {
             .withComment("Left organization.")
             .build();
 
-    public static final Certificate LEADERSHIP_CERT_1 = Certificate.Builder
+    public static final LeadershipExperience LEADERSHIP_EXPERIENCE_1 = LeadershipExperience.Builder
             .builder()
             .withId(LEADERSHIP_CERT_1_ID)
             .withMember(MEMBER_1)
-            .withCertificateType(LEADERSHIP_TYPE_1)
-            .withCompletedAt(LocalDate.of(2010, 8, 12))
-            .withValidUntil(LocalDate.of(2023, 3, 25))
+            .withLeadershipExperienceType(LEADERSHIP_TYPE_1)
             .withComment("Left organization.")
             .build();
 
-    public static final Certificate LEADERSHIP_CERT_2 = Certificate.Builder
+    public static final LeadershipExperience LEADERSHIP_EXPERIENCE_2 = LeadershipExperience.Builder
             .builder()
             .withId(LEADERSHIP_CERT_2_ID)
             .withMember(MEMBER_2)
-            .withCertificateType(LEADERSHIP_TYPE_2)
-            .withCompletedAt(DATE_NOW)
-            .withValidUntil(DATE_NOW)
+            .withLeadershipExperienceType(LEADERSHIP_TYPE_2)
             .withComment("This is a comment.")
             .build();
 
@@ -424,7 +423,12 @@ public class TestDataModels {
                     .withCertificateCompletedAt(CERTIFICATE_1.getCompletedAt())
                     .withCertificateComment(CERTIFICATE_1.getComment())
                     .withCertificateTypeName(CERTIFICATE_1.getCertificateType().getName())
-                    .withleadershipTypeKind(CertificateKind.CERTIFICATE)
+                    .withLeadershipExperienceId(LEADERSHIP_EXPERIENCE_1.getId())
+                    .withLeadershipExperienceComment(LEADERSHIP_EXPERIENCE_1.getComment())
+                    .withLeadershipExperienceTypeName(LEADERSHIP_EXPERIENCE_1.getLeadershipExperienceType().getName())
+                    .withLeadershipExperienceTypeKind(LEADERSHIP_EXPERIENCE_1
+                            .getLeadershipExperienceType()
+                            .getExperienceKind())
                     .withDegreeId(DEGREE_1.getId())
                     .withDegreeName(DEGREE_1.getName())
                     .withDegreeStartDate(DEGREE_1.getStartDate())
@@ -453,7 +457,14 @@ public class TestDataModels {
                         .withCertificateCompletedAt(CERTIFICATE_1.getCompletedAt())
                         .withCertificateComment(CERTIFICATE_1.getComment())
                         .withCertificateTypeName(CERTIFICATE_1.getCertificateType().getName())
-                        .withleadershipTypeKind(CertificateKind.CERTIFICATE)
+                        .withLeadershipExperienceId(LEADERSHIP_EXPERIENCE_1.getId())
+                        .withLeadershipExperienceComment(LEADERSHIP_EXPERIENCE_1.getComment())
+                        .withLeadershipExperienceTypeName(LEADERSHIP_EXPERIENCE_1
+                                .getLeadershipExperienceType()
+                                .getName())
+                        .withLeadershipExperienceTypeKind(LEADERSHIP_EXPERIENCE_1
+                                .getLeadershipExperienceType()
+                                .getExperienceKind())
                         .withDegreeId(DEGREE_1.getId())
                         .withDegreeName(DEGREE_1.getName())
                         .withDegreeStartDate(DEGREE_1.getStartDate())
@@ -482,7 +493,6 @@ public class TestDataModels {
                         .withCertificateCompletedAt(CERTIFICATE_4.getCompletedAt())
                         .withCertificateComment(CERTIFICATE_4.getComment())
                         .withCertificateTypeName(CERTIFICATE_4.getCertificateType().getName())
-                        .withleadershipTypeKind(CertificateKind.CERTIFICATE)
                         .withDegreeId(DEGREE_1.getId())
                         .withDegreeName(DEGREE_1.getName())
                         .withDegreeStartDate(DEGREE_1.getStartDate())
@@ -511,7 +521,6 @@ public class TestDataModels {
                         .withCertificateCompletedAt(CERTIFICATE_4.getCompletedAt())
                         .withCertificateComment(CERTIFICATE_4.getComment())
                         .withCertificateTypeName(CERTIFICATE_4.getCertificateType().getName())
-                        .withleadershipTypeKind(CertificateKind.CERTIFICATE)
                         .withDegreeId(DEGREE_1.getId())
                         .withDegreeName(DEGREE_1.getName())
                         .withDegreeStartDate(DEGREE_1.getStartDate())
@@ -535,11 +544,14 @@ public class TestDataModels {
                         .withDateOfHire(MEMBER_1.getDateOfHire())
                         .withBirthDate(MEMBER_1.getBirthDate())
                         .withOrganisationUnitName(MEMBER_1.getOrganisationUnit().getName())
-                        .withCertificateId(LEADERSHIP_CERT_1.getId())
-                        .withCertificateCompletedAt(LEADERSHIP_CERT_1.getCompletedAt())
-                        .withCertificateComment(LEADERSHIP_CERT_1.getComment())
-                        .withCertificateTypeName(LEADERSHIP_CERT_1.getCertificateType().getName())
-                        .withleadershipTypeKind(LEADERSHIP_CERT_1.getCertificateType().getCertificateKind())
+                        .withLeadershipExperienceId(LEADERSHIP_EXPERIENCE_1.getId())
+                        .withLeadershipExperienceComment(LEADERSHIP_EXPERIENCE_1.getComment())
+                        .withLeadershipExperienceTypeName(LEADERSHIP_EXPERIENCE_1
+                                .getLeadershipExperienceType()
+                                .getName())
+                        .withLeadershipExperienceTypeKind(LEADERSHIP_EXPERIENCE_1
+                                .getLeadershipExperienceType()
+                                .getExperienceKind())
                         .withDegreeId(DEGREE_1.getId())
                         .withDegreeName(DEGREE_1.getName())
                         .withDegreeStartDate(DEGREE_1.getStartDate())
@@ -563,11 +575,14 @@ public class TestDataModels {
                         .withDateOfHire(MEMBER_1.getDateOfHire())
                         .withBirthDate(MEMBER_1.getBirthDate())
                         .withOrganisationUnitName(MEMBER_1.getOrganisationUnit().getName())
-                        .withCertificateId(LEADERSHIP_CERT_1.getId())
-                        .withCertificateCompletedAt(LEADERSHIP_CERT_1.getCompletedAt())
-                        .withCertificateComment(LEADERSHIP_CERT_1.getComment())
-                        .withCertificateTypeName(LEADERSHIP_CERT_1.getCertificateType().getName())
-                        .withleadershipTypeKind(LEADERSHIP_CERT_1.getCertificateType().getCertificateKind())
+                        .withLeadershipExperienceId(LEADERSHIP_EXPERIENCE_2.getId())
+                        .withLeadershipExperienceComment(LEADERSHIP_EXPERIENCE_2.getComment())
+                        .withLeadershipExperienceTypeName(LEADERSHIP_EXPERIENCE_2
+                                .getLeadershipExperienceType()
+                                .getName())
+                        .withLeadershipExperienceTypeKind(LEADERSHIP_EXPERIENCE_2
+                                .getLeadershipExperienceType()
+                                .getExperienceKind())
                         .withDegreeId(DEGREE_1.getId())
                         .withDegreeName(DEGREE_1.getName())
                         .withDegreeStartDate(DEGREE_1.getStartDate())
@@ -597,7 +612,12 @@ public class TestDataModels {
                     .withCertificateCompletedAt(CERTIFICATE_2.getCompletedAt())
                     .withCertificateComment(CERTIFICATE_2.getComment())
                     .withCertificateTypeName(CERTIFICATE_2.getCertificateType().getName())
-                    .withleadershipTypeKind(CertificateKind.CERTIFICATE)
+                    .withLeadershipExperienceId(LEADERSHIP_EXPERIENCE_1.getId())
+                    .withLeadershipExperienceComment(LEADERSHIP_EXPERIENCE_1.getComment())
+                    .withLeadershipExperienceTypeName(LEADERSHIP_EXPERIENCE_1.getLeadershipExperienceType().getName())
+                    .withLeadershipExperienceTypeKind(LEADERSHIP_EXPERIENCE_1
+                            .getLeadershipExperienceType()
+                            .getExperienceKind())
                     .withDegreeId(DEGREE_2.getId())
                     .withDegreeName(DEGREE_2.getName())
                     .withDegreeStartDate(DEGREE_2.getStartDate())
@@ -626,7 +646,14 @@ public class TestDataModels {
                         .withCertificateCompletedAt(CERTIFICATE_3.getCompletedAt())
                         .withCertificateComment(CERTIFICATE_3.getComment())
                         .withCertificateTypeName(CERTIFICATE_3.getCertificateType().getName())
-                        .withleadershipTypeKind(CertificateKind.CERTIFICATE)
+                        .withLeadershipExperienceId(LEADERSHIP_EXPERIENCE_2.getId())
+                        .withLeadershipExperienceComment(LEADERSHIP_EXPERIENCE_2.getComment())
+                        .withLeadershipExperienceTypeName(LEADERSHIP_EXPERIENCE_2
+                                .getLeadershipExperienceType()
+                                .getName())
+                        .withLeadershipExperienceTypeKind(LEADERSHIP_EXPERIENCE_2
+                                .getLeadershipExperienceType()
+                                .getExperienceKind())
                         .withDegreeId(DEGREE_2.getId())
                         .withDegreeName(DEGREE_2.getName())
                         .withDegreeStartDate(DEGREE_2.getStartDate())
@@ -707,7 +734,15 @@ public class TestDataModels {
 
     public static final CertificateCalculation CERT_CALC_3 = new CertificateCalculation(CERTIFICATE_CALC_3_ID,
                                                                                         null,
-                                                                                        LEADERSHIP_CERT_1);
+                                                                                        CERTIFICATE_3);
+
+    public static final LeadershipExperienceCalculation LEADERSHIP_EXPERIENCE_CALC_1 = new LeadershipExperienceCalculation(LEADERSHIP_EXPERIENCE_CALC_1_ID,
+                                                                                                                           null,
+                                                                                                                           LEADERSHIP_EXPERIENCE_1);
+
+    public static final LeadershipExperienceCalculation LEADERSHIP_EXPERIENCE_CALC_2 = new LeadershipExperienceCalculation(LEADERSHIP_EXPERIENCE_CALC_2_ID,
+                                                                                                                           null,
+                                                                                                                           LEADERSHIP_EXPERIENCE_2);
 
     public static final Calculation CALCULATION_1;
     public static final Calculation CALCULATION_2;
@@ -715,7 +750,7 @@ public class TestDataModels {
     public static final Calculation CALCULATION_4;
     public static final Calculation CALCULATION_5;
 
-    public static Calculation GET_CALCULATIN() {
+    public static Calculation GET_CALCULATION() {
         Calculation calc1 = Calculation.Builder
                 .builder()
                 .withId(CALCULATION_1_ID)
@@ -828,11 +863,14 @@ public class TestDataModels {
     public static final List<CertificateType> CERTIFICATE_TYPES = List
             .of(CERT_TYPE_1, CERT_TYPE_2, CERT_TYPE_3, CERT_TYPE_4);
 
-    public static final List<CertificateType> LEADERSHIP_EXPERIENCE_TYPES = List
+    public static final List<LeadershipExperienceType> LEADERSHIP_EXPERIENCE_TYPES = List
             .of(LEADERSHIP_TYPE_1, LEADERSHIP_TYPE_2, LEADERSHIP_TYPE_3);
 
     public static final List<Certificate> CERTIFICATES = List
-            .of(CERTIFICATE_1, CERTIFICATE_2, CERTIFICATE_3, CERTIFICATE_4, LEADERSHIP_CERT_1);
+            .of(CERTIFICATE_1, CERTIFICATE_2, CERTIFICATE_3, CERTIFICATE_4);
+
+    public static final List<LeadershipExperience> LEADERSHIP_EXPERIENCES = List
+            .of(LEADERSHIP_EXPERIENCE_1, LEADERSHIP_EXPERIENCE_2);
 
     public static final List<DegreeType> DEGREE_TYPES = List.of(DEGREE_TYPE_1, DEGREE_TYPE_2);
 
