@@ -15,7 +15,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Predicate;
 
 @Entity
 public class Calculation implements Model {
@@ -183,15 +182,12 @@ public class Calculation implements Model {
         this.certificatesCalculations = certificatesCalculations;
     }
 
-    public List<CertificateCalculation> getCertificatesCalculationsWithLeadershipExperienceType() {
-        return this.certificatesCalculations.stream().filter(CertificateCalculation::isLeadershipExperience).toList();
+    public List<LeadershipExperienceCalculation> getLeadershipExperienceCalculations() {
+        return leadershipExperienceCalculations;
     }
 
-    public List<CertificateCalculation> getCertificateCalculationsWithCertificateType() {
-        return this.certificatesCalculations
-                .stream()
-                .filter(Predicate.not(CertificateCalculation::isLeadershipExperience))
-                .toList();
+    public void setLeadershipExperienceCalculations(List<LeadershipExperienceCalculation> leadershipExperienceCalculations) {
+        this.leadershipExperienceCalculations = leadershipExperienceCalculations;
     }
 
     public BigDecimal getPoints() {
@@ -212,6 +208,7 @@ public class Calculation implements Model {
         private List<DegreeCalculation> degreeCalculations;
         private List<ExperienceCalculation> experienceCalculations;
         private List<CertificateCalculation> certificatesCalculations;
+        private List<LeadershipExperienceCalculation> leadershipExperienceCalculations;
         private BigDecimal points;
 
         private Builder() {
@@ -263,6 +260,11 @@ public class Calculation implements Model {
 
         public Builder withCertificateCalculations(List<CertificateCalculation> certificatesCalculations) {
             this.certificatesCalculations = certificatesCalculations;
+            return this;
+        }
+
+        public Builder withLeadershipExperienceCalculations(List<LeadershipExperienceCalculation> leadershipExperienceCalculations) {
+            this.leadershipExperienceCalculations = leadershipExperienceCalculations;
             return this;
         }
 

@@ -22,6 +22,10 @@ public class LeadershipExperienceCalculationPersistenceService
         return repository.findByCalculationId(calculationId);
     }
 
+    public List<LeadershipExperienceCalculation> getByLeadershipExperienceId(Long leadershipExperienceId) {
+        return repository.findByLeadershipExperienceId(leadershipExperienceId);
+    }
+
     @Override
     public String entityName() {
         return LEADERSHIP_EXPERIENCE_CALCULATION;

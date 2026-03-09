@@ -9,16 +9,22 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class LeadershipExperienceCalculationBusinessService extends BusinessBase<LeadershipExperienceCalculation> {
+    private final LeadershipExperienceCalculationValidationService leadershipExperienceCalculationValidationService;
     private final LeadershipExperienceCalculationPersistenceService leadershipExperienceCalculationPersistenceService;
 
-    public LeadershipExperienceCalculationBusinessService(LeadershipExperienceCalculationValidationService validationService,
-                                                          LeadershipExperienceCalculationPersistenceService persistenceService) {
+    protected LeadershipExperienceCalculationBusinessService(LeadershipExperienceCalculationValidationService validationService,
+                                                             LeadershipExperienceCalculationPersistenceService persistenceService) {
         super(validationService, persistenceService);
+        this.leadershipExperienceCalculationValidationService = validationService;
         this.leadershipExperienceCalculationPersistenceService = persistenceService;
     }
 
     public List<LeadershipExperienceCalculation> getByCalculationId(Long calculationId) {
         return leadershipExperienceCalculationPersistenceService.getByCalculationId(calculationId);
+    }
+
+    public List<LeadershipExperienceCalculation> getByLeadershipExperienceId(Long leadershipExperienceId) {
+        return leadershipExperienceCalculationPersistenceService.getByLeadershipExperienceId(leadershipExperienceId);
     }
 
     public BigDecimal getLeadershipExperiencePoints(Long calculationId) {
@@ -37,5 +43,28 @@ public class LeadershipExperienceCalculationBusinessService extends BusinessBase
 
     private BigDecimal extractPoints(LeadershipExperienceCalculation calculation) {
         return calculation.getLeadershipExperience().getLeadershipExperienceType().getPoints();
+    }
+
+    @Override
+    public LeadershipExperienceCalculation update(Long id,
+                                                  LeadershipExperienceCalculation leadershipExperienceCalculation) {
+        leadershipExperienceCalculationValidationService.validateOnUpdate(id, leadershipExperienceCalculation);
+        List<LeadershipExperienceCalculation> existing = getByLeadershipExperienceId(leadershipExperienceCalculation
+                .getLeadershipExperience()
+                .getId());
+        leadershipExperienceCalculationValidationService
+                .validateDuplicateLeadershipExperienceId(leadershipExperienceCalculation, existing);
+        return leadershipExperienceCalculationPersistenceService.save(leadershipExperienceCalculation);
+    }
+
+    @Override
+    public LeadershipExperienceCalculation create(LeadershipExperienceCalculation leadershipExperienceCalculation) {
+        leadershipExperienceCalculationValidationService.validateOnCreate(leadershipExperienceCalculation);
+        List<LeadershipExperienceCalculation> existing = getByLeadershipExperienceId(leadershipExperienceCalculation
+                .getLeadershipExperience()
+                .getId());
+        leadershipExperienceCalculationValidationService
+                .validateDuplicateLeadershipExperienceId(leadershipExperienceCalculation, existing);
+        return leadershipExperienceCalculationPersistenceService.save(leadershipExperienceCalculation);
     }
 }
