@@ -34,6 +34,7 @@ public class MemberOverview {
     private Long leadershipExperienceId;
     private String leadershipExperienceComment;
     private String leadershipExperienceTypeName;
+    @Enumerated(EnumType.STRING)
     private LeadershipExperienceKind leadershipExperienceKind;
 
     @Id
