@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.model.calculation.leadershipexperiencecalculation;
 
+import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationChildInterface;
 import ch.puzzle.pcts.model.leadershipexperience.LeadershipExperience;
@@ -8,7 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity
-public class LeadershipExperienceCalculation implements CalculationChildInterface {
+public class LeadershipExperienceCalculation implements CalculationChildInterface, Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
