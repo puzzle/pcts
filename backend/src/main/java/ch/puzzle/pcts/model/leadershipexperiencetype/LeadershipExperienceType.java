@@ -30,7 +30,7 @@ public class LeadershipExperienceType implements Model {
 
     @Enumerated(EnumType.STRING)
     @NotNull(message = "{attribute.not.null}")
-    private LeadershipExperienceKind leadershipExperienceKind;
+    private LeadershipExperienceKind experienceKind;
 
     @Column(name = "deleted_at", insertable = false, updatable = false)
     private LocalDateTime deletedAt;
@@ -40,7 +40,7 @@ public class LeadershipExperienceType implements Model {
         this.name = trim(builder.name);
         this.points = builder.points;
         this.comment = trim(builder.comment);
-        this.leadershipExperienceKind = builder.leadershipExperienceKind;
+        this.experienceKind = builder.experienceKind;
     }
 
     public LeadershipExperienceType() {
@@ -80,12 +80,12 @@ public class LeadershipExperienceType implements Model {
         this.comment = comment;
     }
 
-    public LeadershipExperienceKind getLeadershipExperienceKind() {
-        return leadershipExperienceKind;
+    public LeadershipExperienceKind getExperienceKind() {
+        return experienceKind;
     }
 
     public void setLeadershipExperienceKin(LeadershipExperienceKind leadershipExperienceKind) {
-        this.leadershipExperienceKind = leadershipExperienceKind;
+        this.experienceKind = leadershipExperienceKind;
     }
 
     public LocalDateTime getDeletedAt() {
@@ -103,14 +103,13 @@ public class LeadershipExperienceType implements Model {
         }
         return Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName())
                && Objects.equals(getPoints(), that.getPoints()) && Objects.equals(getComment(), that.getComment())
-               && getLeadershipExperienceKind() == that.getLeadershipExperienceKind()
+               && getExperienceKind() == that.getExperienceKind()
                && Objects.equals(getDeletedAt(), that.getDeletedAt());
     }
 
     @Override
     public int hashCode() {
-        return Objects
-                .hash(getId(), getName(), getPoints(), getComment(), getLeadershipExperienceKind(), getDeletedAt());
+        return Objects.hash(getId(), getName(), getPoints(), getComment(), getExperienceKind(), getDeletedAt());
     }
 
     public static final class Builder {
@@ -118,7 +117,7 @@ public class LeadershipExperienceType implements Model {
         private String name;
         private BigDecimal points;
         private String comment;
-        private LeadershipExperienceKind leadershipExperienceKind;
+        private LeadershipExperienceKind experienceKind;
 
         private Builder() {
         }
@@ -147,8 +146,8 @@ public class LeadershipExperienceType implements Model {
             return this;
         }
 
-        public Builder withCertificateKind(LeadershipExperienceKind leadershipExperienceKind) {
-            this.leadershipExperienceKind = leadershipExperienceKind;
+        public Builder withCertificateKind(LeadershipExperienceKind experienceKind) {
+            this.experienceKind = experienceKind;
             return this;
         }
 
