@@ -26,7 +26,7 @@ public class LeadershipExperienceTypePersistenceService
 
     @Override
     public List<LeadershipExperienceType> getAll() {
-        return repository.findAllOfLeadershipExperienceType();
+        return repository.findAll();
     }
 
     @Override
