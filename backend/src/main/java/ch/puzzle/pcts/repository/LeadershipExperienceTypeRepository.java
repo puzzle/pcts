@@ -8,9 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface LeadershipExperienceTypeRepository extends SoftDeleteRepository<LeadershipExperienceType, Long> {
     Optional<LeadershipExperienceType> findByName(String name);
 
-    Optional<LeadershipExperienceType> findByIdNotAndDeletedAtIsNull(Long id);
-
-    default Optional<LeadershipExperienceType> findByIdOfLeadershipExperienceType(Long id) {
-        return findByIdNotAndDeletedAtIsNull(id);
-    }
+    Optional<LeadershipExperienceType> findByIdAndDeletedAtIsNull(Long id);
 }

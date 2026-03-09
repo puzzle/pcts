@@ -31,7 +31,7 @@ public class LeadershipExperienceTypePersistenceService
 
     @Override
     public LeadershipExperienceType getById(Long id) {
-        return repository.findByIdOfLeadershipExperienceType(id).orElseThrow(() -> throwNotFoundError(id.toString()));
+        return repository.findByIdAndDeletedAtIsNull(id).orElseThrow(() -> throwNotFoundError(id.toString()));
     }
 
     @Override

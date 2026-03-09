@@ -18,7 +18,7 @@ public class LeadershipExperienceTypeMapper {
 
     public LeadershipExperienceTypeDto toDto(LeadershipExperienceType model) {
         return new LeadershipExperienceTypeDto(model
-                .getId(), model.getName(), model.getPoints(), model.getComment(), model.getLeadershipExperienceKind());
+                .getId(), model.getName(), model.getPoints(), model.getComment(), model.getExperienceKind());
 
     }
 
