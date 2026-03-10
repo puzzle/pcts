@@ -199,7 +199,7 @@ public class MemberOverview {
     }
 
     public void setLeadershipExperienceComment(String leadershipExperienceComment) {
-        this.leadershipExperienceComment = leadershipExperienceComment;
+        this.leadershipExperienceComment = trim(leadershipExperienceComment);
     }
 
     public String getLeadershipExperienceTypeName() {
@@ -207,7 +207,7 @@ public class MemberOverview {
     }
 
     public void setLeadershipExperienceTypeName(String leadershipExperienceTypeName) {
-        this.leadershipExperienceTypeName = leadershipExperienceTypeName;
+        this.leadershipExperienceTypeName = trim(leadershipExperienceTypeName);
     }
 
     public LeadershipExperienceKind getLeadershipExperienceKind() {

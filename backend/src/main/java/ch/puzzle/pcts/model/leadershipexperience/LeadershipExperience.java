@@ -73,7 +73,7 @@ public class LeadershipExperience implements Model {
     }
 
     public void setComment(String comment) {
-        this.comment = comment;
+        this.comment = trim(comment);
     }
 
     public Timestamp getDeletedAt() {
@@ -98,6 +98,13 @@ public class LeadershipExperience implements Model {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getMember(), getLeadershipExperienceType(), getComment(), getDeletedAt());
+    }
+
+    @Override
+    public String toString() {
+        return "LeadershipExperience{" + "id=" + getId() + ", member=" + getMember() + ", leadershipExperienceType="
+               + getLeadershipExperienceType() + ", comment='" + getComment() + '\'' + ", deletedAt=" + getDeletedAt()
+               + '}';
     }
 
     public static final class Builder {

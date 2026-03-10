@@ -61,7 +61,7 @@ public class LeadershipExperienceType implements Model {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = trim(name);
     }
 
     public BigDecimal getPoints() {
@@ -77,7 +77,7 @@ public class LeadershipExperienceType implements Model {
     }
 
     public void setComment(String comment) {
-        this.comment = comment;
+        this.comment = trim(comment);
     }
 
     public LeadershipExperienceKind getExperienceKind() {
@@ -110,6 +110,13 @@ public class LeadershipExperienceType implements Model {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getName(), getPoints(), getComment(), getExperienceKind(), getDeletedAt());
+    }
+
+    @Override
+    public String toString() {
+        return "LeadershipExperienceType{" + "id=" + getId() + ", name='" + getName() + '\'' + ", points=" + getPoints()
+               + ", comment='" + getComment() + '\'' + ", experienceKind=" + getExperienceKind() + ", deletedAt="
+               + getDeletedAt() + '}';
     }
 
     public static final class Builder {
