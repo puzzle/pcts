@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.puzzle.pcts.model.certificatetype.CertificateType;
+import ch.puzzle.pcts.model.leadershipexperiencetype.LeadershipExperienceType;
 import ch.puzzle.pcts.service.persistence.LeadershipExperienceTypePersistenceService;
 import ch.puzzle.pcts.service.validation.LeadershipExperienceTypeValidationService;
 import java.util.Collections;
@@ -19,13 +19,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class LeadershipExperienceTypeBusinessServiceTest
         extends
-            BaseBusinessTest<CertificateType, LeadershipExperienceTypePersistenceService, LeadershipExperienceTypeValidationService, LeadershipExperienceTypeBusinessService> {
+            BaseBusinessTest<LeadershipExperienceType, LeadershipExperienceTypePersistenceService, LeadershipExperienceTypeValidationService, LeadershipExperienceTypeBusinessService> {
 
     @Mock
-    private CertificateType certificateType;
+    private LeadershipExperienceType leadershipExperienceType;
 
     @Mock
-    private List<CertificateType> certificateTypes;
+    private List<LeadershipExperienceType> leadershipExperiencesTypes;
 
     @Mock
     private LeadershipExperienceTypePersistenceService persistenceService;
@@ -37,8 +37,8 @@ class LeadershipExperienceTypeBusinessServiceTest
     private LeadershipExperienceTypeBusinessService businessService;
 
     @Override
-    CertificateType getModel() {
-        return certificateType;
+    LeadershipExperienceType getModel() {
+        return leadershipExperienceType;
     }
 
     @Override
@@ -59,13 +59,13 @@ class LeadershipExperienceTypeBusinessServiceTest
     @DisplayName("Should get all")
     @Test
     void shouldGetAll() {
-        when(persistenceService.getAll()).thenReturn(certificateTypes);
-        when(certificateTypes.size()).thenReturn(2);
+        when(persistenceService.getAll()).thenReturn(leadershipExperiencesTypes);
+        when(leadershipExperiencesTypes.size()).thenReturn(2);
 
-        List<CertificateType> result = businessService.getAll();
+        List<LeadershipExperienceType> result = businessService.getAll();
 
         assertEquals(2, result.size());
-        assertEquals(certificateTypes, result);
+        assertEquals(leadershipExperiencesTypes, result);
         verify(persistenceService).getAll();
     }
 
@@ -74,7 +74,7 @@ class LeadershipExperienceTypeBusinessServiceTest
     void shouldGetEmptyList() {
         when(persistenceService.getAll()).thenReturn(Collections.emptyList());
 
-        List<CertificateType> result = businessService.getAll();
+        List<LeadershipExperienceType> result = businessService.getAll();
 
         assertEquals(0, result.size());
     }
