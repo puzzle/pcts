@@ -61,9 +61,9 @@ class CalculationMapperTest {
                 .thenReturn(CALCULATION_DTO_1.degreeCalculations());
         when(experienceCalculationMapper.toDto(CALCULATION_1.getExperienceCalculations()))
                 .thenReturn(CALCULATION_DTO_1.experienceCalculations());
-        when(certificateCalculationMapper.toDto(CALCULATION_1.getCertificateCalculationsWithCertificateType()))
+        when(certificateCalculationMapper.toDto(CALCULATION_1.getCertificateCalculations()))
                 .thenReturn(CALCULATION_DTO_1.certificateCalculations());
-        when(leadershipExperienceCalculationMapper.toDto(CALCULATION_1.getCertificatesCalculationsWithLeadershipExperienceType()))
+        when(leadershipExperienceCalculationMapper.toDto(CALCULATION_1.getLeadershipExperienceCalculations()))
                 .thenReturn(CALCULATION_DTO_1.leadershipExperienceCalculations());
 
         CalculationDto result = calculationMapper.toDto(CALCULATION_1);

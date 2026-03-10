@@ -19,8 +19,4 @@ public class CertificatePersistenceService extends PersistenceBase<Certificate, 
     public String entityName() {
         return CERTIFICATE;
     }
-
-    public Certificate findLeadershipExperience(Long id) {
-        return repository.findById(id).orElseThrow(() -> throwNotFoundError(id.toString()));
-    }
 }

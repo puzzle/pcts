@@ -5,7 +5,7 @@ import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ch.puzzle.pcts.dto.leadershipexperiencetype.LeadershipExperienceTypeDto;
-import ch.puzzle.pcts.model.certificatetype.CertificateType;
+import ch.puzzle.pcts.model.leadershipexperiencetype.LeadershipExperienceType;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ class LeadershipExperienceTypeMapperTest {
     @DisplayName("Should return certificate type")
     @Test
     void shouldReturnCertificate() {
-        CertificateType result = mapper.fromDto(LEADERSHIP_TYPE_4_DTO);
+        LeadershipExperienceType result = mapper.fromDto(LEADERSHIP_TYPE_4_DTO);
         assertEquals(LEADERSHIP_TYPE_4, result);
     }
 
@@ -37,18 +37,18 @@ class LeadershipExperienceTypeMapperTest {
     @DisplayName("Should return list of certificate type")
     @Test
     void shouldReturnListOfCertificates() {
-        List<CertificateType> certificates = List.of(LEADERSHIP_TYPE_4, LEADERSHIP_TYPE_5);
+        List<LeadershipExperienceType> certificates = List.of(LEADERSHIP_TYPE_4, LEADERSHIP_TYPE_5);
 
         List<LeadershipExperienceTypeDto> dtos = List.of(LEADERSHIP_TYPE_4_DTO, LEADERSHIP_TYPE_5_DTO);
 
-        List<CertificateType> result = mapper.fromDto(dtos);
+        List<LeadershipExperienceType> result = mapper.fromDto(dtos);
         assertEquals(certificates, result);
     }
 
     @DisplayName("Should return list of leadershipExperienceTypeDtos")
     @Test
     void shouldReturnListOfLeadershipExperienceDtos() {
-        List<CertificateType> certificates = List.of(LEADERSHIP_TYPE_4, LEADERSHIP_TYPE_5);
+        List<LeadershipExperienceType> certificates = List.of(LEADERSHIP_TYPE_4, LEADERSHIP_TYPE_5);
 
         List<LeadershipExperienceTypeDto> dtos = List.of(LEADERSHIP_TYPE_4_DTO, LEADERSHIP_TYPE_5_DTO);
 
