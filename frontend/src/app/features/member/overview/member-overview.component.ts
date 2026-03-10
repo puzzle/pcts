@@ -147,7 +147,7 @@ export class MemberOverviewComponent implements OnInit {
       relativeTo: this.route,
       queryParams: {
         q: this.searchControl.value ? encodeURIComponent(this.searchControl.value) : null,
-        status: statusFilterValue !== '' ? statusFilterValue : null
+        status: statusFilterValue === '' ? null : statusFilterValue
       },
       queryParamsHandling: 'merge',
       replaceUrl: true
