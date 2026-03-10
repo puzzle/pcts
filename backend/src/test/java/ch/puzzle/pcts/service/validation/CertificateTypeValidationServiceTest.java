@@ -9,7 +9,6 @@ import static org.mockito.Mockito.*;
 import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
-import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.certificatetype.ExamType;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
@@ -286,24 +285,6 @@ class CertificateTypeValidationServiceTest
                 // FieldKey.IS,
                 // TOO_LONG_STRING)))
                 );
-    }
-
-    @DisplayName("Should throw exception on validateOnGetById() when certificate kind is not certificate")
-    @Test
-    void shouldThrowExceptionOnValidateOnGetByIdWhenCertificateKindIsNotCertificate() {
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> service
-                                                       .validateCertificateKind(CertificateKind.LEADERSHIP_TRAINING));
-        assertEquals(List.of(ErrorKey.ATTRIBUTE_WRONG_KIND), exception.getErrorKeys());
-        assertEquals(List
-                .of(Map
-                        .of(FieldKey.FIELD,
-                            "certificateKind",
-                            FieldKey.IS,
-                            "LEADERSHIP_TRAINING",
-                            FieldKey.ENTITY,
-                            CERTIFICATE_TYPE)),
-                     exception.getErrorAttributes());
     }
 
     @DisplayName("Should throw exception on validateOnCreate() when name already exists")

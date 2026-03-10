@@ -2,21 +2,19 @@ package ch.puzzle.pcts.service.validation;
 
 import static ch.puzzle.pcts.Constants.LEADERSHIP_EXPERIENCE_TYPE;
 import static ch.puzzle.pcts.util.TestData.*;
-import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
-import ch.puzzle.pcts.model.certificatetype.CertificateKind;
-import ch.puzzle.pcts.model.certificatetype.CertificateType;
-import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
+import ch.puzzle.pcts.model.leadershipexperiencetype.LeadershipExperienceKind;
+import ch.puzzle.pcts.model.leadershipexperiencetype.LeadershipExperienceType;
+import ch.puzzle.pcts.service.persistence.LeadershipExperienceTypePersistenceService;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,23 +27,22 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class LeadershipExperienceTypeValidationServiceTest
         extends
-            ValidationBaseServiceTest<CertificateType, LeadershipExperienceTypeValidationService> {
+            ValidationBaseServiceTest<LeadershipExperienceType, LeadershipExperienceTypeValidationService> {
 
     @InjectMocks
     LeadershipExperienceTypeValidationService service;
 
     @Mock
-    private CertificateTypePersistenceService persistenceService;
+    private LeadershipExperienceTypePersistenceService persistenceService;
 
     @Override
-    CertificateType getValidModel() {
-        return CertificateType.Builder
+    LeadershipExperienceType getValidModel() {
+        return LeadershipExperienceType.Builder
                 .builder()
                 .withName("Leadership Experience Type")
                 .withPoints(BigDecimal.valueOf(10))
                 .withComment("Comment")
-                .withTags(Set.of(TAG_3))
-                .withCertificateKind(CertificateKind.YOUTH_AND_SPORT)
+                .withExperienceKind(LeadershipExperienceKind.LEADERSHIP_TRAINING)
                 .build();
     }
 
@@ -54,34 +51,42 @@ class LeadershipExperienceTypeValidationServiceTest
         return service;
     }
 
-    private static CertificateType createCertificate(String name, BigDecimal points, CertificateKind certificateKind) {
-        CertificateType c = new CertificateType();
-        c.setName(name);
-        c.setPoints(points);
-        c.setComment("Comment");
-        c.setTags(Set.of(TAG_1));
-        c.setCertificateKind(certificateKind);
-
-        return c;
+    private static LeadershipExperienceType createLeadershipExperienceType(String name, BigDecimal points,
+                                                                           LeadershipExperienceKind experienceKind) {
+        return LeadershipExperienceType.Builder
+                .builder()
+                .withName(name)
+                .withPoints(points)
+                .withComment("Comment")
+                .withExperienceKind(experienceKind)
+                .build();
     }
 
     static Stream<Arguments> invalidModelProvider() {
         return Stream
                 .of(Arguments
-                        .of(createCertificate(null, POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
-                            List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "name"))),
+                        .of(createLeadershipExperienceType(null,
+                                                           POSITIVE_BIG_DECIMAL,
+                                                           LeadershipExperienceKind.LEADERSHIP_TRAINING),
+                            List.of(Map.of(FieldKey.CLASS, "LeadershipExperienceType", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createCertificate("", POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
-                                List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "name"))),
+                            .of(createLeadershipExperienceType("",
+                                                               POSITIVE_BIG_DECIMAL,
+                                                               LeadershipExperienceKind.LEADERSHIP_TRAINING),
+                                List.of(Map.of(FieldKey.CLASS, "LeadershipExperienceType", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createCertificate("  ", POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
-                                List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "name"))),
+                            .of(createLeadershipExperienceType("  ",
+                                                               POSITIVE_BIG_DECIMAL,
+                                                               LeadershipExperienceKind.LEADERSHIP_TRAINING),
+                                List.of(Map.of(FieldKey.CLASS, "LeadershipExperienceType", FieldKey.FIELD, "name"))),
                     Arguments
-                            .of(createCertificate("S", POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
+                            .of(createLeadershipExperienceType("S",
+                                                               POSITIVE_BIG_DECIMAL,
+                                                               LeadershipExperienceKind.LEADERSHIP_TRAINING),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
-                                                    "CertificateType",
+                                                    "LeadershipExperienceType",
                                                     FieldKey.FIELD,
                                                     "name",
                                                     FieldKey.MIN,
@@ -92,11 +97,13 @@ class LeadershipExperienceTypeValidationServiceTest
                                                     "S"))),
 
                     Arguments
-                            .of(createCertificate("  S ", POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
+                            .of(createLeadershipExperienceType("  S ",
+                                                               POSITIVE_BIG_DECIMAL,
+                                                               LeadershipExperienceKind.LEADERSHIP_TRAINING),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
-                                                    "CertificateType",
+                                                    "LeadershipExperienceType",
                                                     FieldKey.FIELD,
                                                     "name",
                                                     FieldKey.MIN,
@@ -107,11 +114,13 @@ class LeadershipExperienceTypeValidationServiceTest
                                                     "S"))),
 
                     Arguments
-                            .of(createCertificate(TOO_LONG_STRING, POSITIVE_BIG_DECIMAL, CertificateKind.CERTIFICATE),
+                            .of(createLeadershipExperienceType(TOO_LONG_STRING,
+                                                               POSITIVE_BIG_DECIMAL,
+                                                               LeadershipExperienceKind.LEADERSHIP_TRAINING),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
-                                                    "CertificateType",
+                                                    "LeadershipExperienceType",
                                                     FieldKey.FIELD,
                                                     "name",
                                                     FieldKey.MIN,
@@ -122,51 +131,40 @@ class LeadershipExperienceTypeValidationServiceTest
                                                     TOO_LONG_STRING))),
 
                     Arguments
-                            .of(createCertificate("LeadershipExperience", null, CertificateKind.CERTIFICATE),
-                                List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "points"))),
+                            .of(createLeadershipExperienceType("LeadershipExperience",
+                                                               null,
+                                                               LeadershipExperienceKind.LEADERSHIP_TRAINING),
+                                List.of(Map.of(FieldKey.CLASS, "LeadershipExperienceType", FieldKey.FIELD, "points"))),
 
                     Arguments
-                            .of(createCertificate("LeadershipExperience",
-                                                  NEGATIVE_BIG_DECIMAL,
-                                                  CertificateKind.CERTIFICATE),
+                            .of(createLeadershipExperienceType("LeadershipExperience",
+                                                               NEGATIVE_BIG_DECIMAL,
+                                                               LeadershipExperienceKind.LEADERSHIP_TRAINING),
                                 List
                                         .of(Map
                                                 .of(FieldKey.CLASS,
-                                                    "CertificateType",
+                                                    "LeadershipExperienceType",
                                                     FieldKey.FIELD,
                                                     "points",
                                                     FieldKey.IS,
                                                     "-1"))),
                     Arguments
-                            .of(createCertificate("LeadershipExperience", POSITIVE_BIG_DECIMAL, null),
-                                List.of(Map.of(FieldKey.CLASS, "CertificateType", FieldKey.FIELD, "certificateKind"))));
-    }
-
-    @DisplayName("Should throw exception on validateCertificateKind() when certificate type is not leadership experience")
-    @Test
-    void shouldThrowExceptionOnValidateOnGetByIdWhenCertificateTypeIsNotCertificate() {
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> service.validateCertificateKind(CertificateKind.CERTIFICATE));
-
-        assertEquals(List.of(ErrorKey.ATTRIBUTE_WRONG_KIND), exception.getErrorKeys());
-        assertEquals(List
-                .of(Map
-                        .of(FieldKey.FIELD,
-                            "certificateKind",
-                            FieldKey.IS,
-                            "CERTIFICATE",
-                            FieldKey.ENTITY,
-                            LEADERSHIP_EXPERIENCE_TYPE)),
-                     exception.getErrorAttributes());
+                            .of(createLeadershipExperienceType("LeadershipExperience", POSITIVE_BIG_DECIMAL, null),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.CLASS,
+                                                    "LeadershipExperienceType",
+                                                    FieldKey.FIELD,
+                                                    "experienceKind"))));
     }
 
     @DisplayName("Should throw exception on validateOnCreate() when name already exists")
     @Test
     void shouldThrowExceptionOnValidateOnCreateWhenNameAlreadyExists() {
-        CertificateType leadershipExperienceType = getValidModel();
+        LeadershipExperienceType leadershipExperienceType = getValidModel();
 
         when(persistenceService.getByName(leadershipExperienceType.getName()))
-                .thenReturn(Optional.of(new CertificateType()));
+                .thenReturn(Optional.of(new LeadershipExperienceType()));
 
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> service.validateOnCreate(leadershipExperienceType));
@@ -186,8 +184,8 @@ class LeadershipExperienceTypeValidationServiceTest
     @DisplayName("Should throw Exception on validateOnUpdate() when name already exists")
     @Test
     void shouldThrowExceptionOnValidateOnUpdateWhenNameAlreadyExists() {
-        CertificateType newLeadershipExperience = getValidModel();
-        CertificateType leadershipExperience = getValidModel();
+        LeadershipExperienceType newLeadershipExperience = getValidModel();
+        LeadershipExperienceType leadershipExperience = getValidModel();
         leadershipExperience.setId(LEADERSHIP_TYPE_2_ID);
 
         when(persistenceService.getByName(newLeadershipExperience.getName()))
@@ -213,10 +211,10 @@ class LeadershipExperienceTypeValidationServiceTest
     @DisplayName("Should call correct validate method on validateOnCreate()")
     @Test
     void shouldCallAllMethodsOnValidateOnCreateWhenValid() {
-        CertificateType leadershipExperienceType = getValidModel();
+        LeadershipExperienceType leadershipExperienceType = getValidModel();
 
         LeadershipExperienceTypeValidationService spyService = spy(service);
-        doNothing().when((ValidationBase<CertificateType>) spyService).validateOnCreate(any());
+        doNothing().when((ValidationBase<LeadershipExperienceType>) spyService).validateOnCreate(any());
 
         spyService.validateOnCreate(leadershipExperienceType);
 
@@ -227,10 +225,10 @@ class LeadershipExperienceTypeValidationServiceTest
     @DisplayName("Should call correct validate method on validateOnUpdate()")
     @Test
     void shouldCallAllMethodsOnValidateOnUpdateWhenValid() {
-        CertificateType leadershipExperience = getValidModel();
+        LeadershipExperienceType leadershipExperience = getValidModel();
 
         LeadershipExperienceTypeValidationService spyService = spy(service);
-        doNothing().when((ValidationBase<CertificateType>) spyService).validateOnUpdate(anyLong(), any());
+        doNothing().when((ValidationBase<LeadershipExperienceType>) spyService).validateOnUpdate(anyLong(), any());
 
         spyService.validateOnUpdate(LEADERSHIP_TYPE_1_ID, leadershipExperience);
 

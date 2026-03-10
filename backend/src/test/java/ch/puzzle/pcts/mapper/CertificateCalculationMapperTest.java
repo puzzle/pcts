@@ -1,4 +1,3 @@
-
 package ch.puzzle.pcts.mapper;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,7 +8,6 @@ import ch.puzzle.pcts.dto.calculation.certificatecalculation.CertificateCalculat
 import ch.puzzle.pcts.dto.certificate.CertificateDto;
 import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
 import ch.puzzle.pcts.model.certificate.Certificate;
-import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.service.business.CertificateBusinessService;
 import java.util.List;
@@ -38,11 +36,10 @@ class CertificateCalculationMapperTest {
     @InjectMocks
     private CertificateCalculationMapper mapper;
 
-    private Certificate createCertificate(CertificateKind kind) {
+    private Certificate createCertificate() {
         Certificate cert = new Certificate();
         cert.setId(CERT_ID);
         CertificateType type = new CertificateType();
-        type.setCertificateKind(kind);
         cert.setCertificateType(type);
         return cert;
     }
@@ -58,7 +55,7 @@ class CertificateCalculationMapperTest {
     @DisplayName("Should map CertificateCalculation to CertificateCalculationDto")
     @Test
     void shouldMapToDto() {
-        Certificate certificate = createCertificate(CertificateKind.CERTIFICATE);
+        Certificate certificate = createCertificate();
         CertificateCalculation model = createCertificateCalculation(certificate);
 
         CertificateDto mockedDto = mockCertificateDto();
@@ -73,11 +70,10 @@ class CertificateCalculationMapperTest {
         verify(certificateMapper).toDto(certificate);
     }
 
-    @DisplayName("Should map List<CertificateCalculation> to List<CertificateCalculationDto> and remove LeadershipExperiences")
+    @DisplayName("Should map List<CertificateCalculation> to List<CertificateCalculationDto>")
     @Test
     void shouldMapListToDto() {
-        Certificate certificate = createCertificate(CertificateKind.CERTIFICATE);
-
+        Certificate certificate = createCertificate();
         CertificateCalculation certificateCalculation = createCertificateCalculation(certificate);
 
         CertificateDto mockedDto = mockCertificateDto();
@@ -87,13 +83,14 @@ class CertificateCalculationMapperTest {
 
         assertEquals(1, result.size());
         assertEquals(mockedDto, result.getFirst().certificate());
+
         verify(certificateMapper).toDto(certificate);
     }
 
-    @DisplayName("Should map ID to CertificateCalculation")
+    @DisplayName("Should map CertificateCalculationInputDto to CertificateCalculation")
     @Test
-    void shouldMapFromId() {
-        Certificate certificate = createCertificate(CertificateKind.CERTIFICATE);
+    void shouldMapFromDto() {
+        Certificate certificate = createCertificate();
 
         when(certificateBusinessService.getById(CERT_ID)).thenReturn(certificate);
         when(dto.id()).thenReturn(null);
@@ -108,10 +105,10 @@ class CertificateCalculationMapperTest {
         verify(certificateBusinessService).getById(CERT_ID);
     }
 
-    @DisplayName("Should map List<Long> to List<CertificateCalculation>")
+    @DisplayName("Should map List<CertificateCalculationInputDto> to List<CertificateCalculation>")
     @Test
-    void shouldMapListFromIds() {
-        when(certificateBusinessService.getById(CERT_ID)).thenReturn(createCertificate(CertificateKind.CERTIFICATE));
+    void shouldMapListFromDto() {
+        when(certificateBusinessService.getById(CERT_ID)).thenReturn(createCertificate());
         when(dto.id()).thenReturn(null);
         when(dto.certificateId()).thenReturn(CERT_ID);
 
