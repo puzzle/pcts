@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.leadershipexperiencetype.LeadershipExperienceTypeDto;
 import ch.puzzle.pcts.mapper.LeadershipExperienceTypeMapper;
-import ch.puzzle.pcts.model.certificatetype.CertificateType;
+import ch.puzzle.pcts.model.leadershipexperiencetype.LeadershipExperienceType;
 import ch.puzzle.pcts.service.business.LeadershipExperienceTypeBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import java.util.List;
@@ -70,7 +70,7 @@ class LeadershipExperienceTypeControllerIT {
     @Test
     void shouldGetLeadershipExperienceById() throws Exception {
         when(service.getById(anyLong())).thenReturn(LEADERSHIP_TYPE_1);
-        when(mapper.toDto(any(CertificateType.class))).thenReturn(LEADERSHIP_TYPE_1_DTO);
+        when(mapper.toDto(any(LeadershipExperienceType.class))).thenReturn(LEADERSHIP_TYPE_1_DTO);
 
         mvc
                 .perform(get(BASEURL + "/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -78,15 +78,15 @@ class LeadershipExperienceTypeControllerIT {
                 .andExpect(JsonDtoMatcher.matchesDto(LEADERSHIP_TYPE_1_DTO, "$"));
 
         verify(service, times(1)).getById((1L));
-        verify(mapper, times(1)).toDto(any(CertificateType.class));
+        verify(mapper, times(1)).toDto(any(LeadershipExperienceType.class));
     }
 
     @DisplayName("Should successfully create new leadershipExperience type")
     @Test
     void shouldCreateNewLeadershipExperience() throws Exception {
         when(mapper.fromDto(any(LeadershipExperienceTypeDto.class))).thenReturn(LEADERSHIP_TYPE_1);
-        when(service.create(any(CertificateType.class))).thenReturn(LEADERSHIP_TYPE_1);
-        when(mapper.toDto(any(CertificateType.class))).thenReturn(LEADERSHIP_TYPE_1_DTO);
+        when(service.create(any(LeadershipExperienceType.class))).thenReturn(LEADERSHIP_TYPE_1);
+        when(mapper.toDto(any(LeadershipExperienceType.class))).thenReturn(LEADERSHIP_TYPE_1_DTO);
 
         mvc
                 .perform(post(BASEURL)
@@ -97,16 +97,16 @@ class LeadershipExperienceTypeControllerIT {
                 .andExpect(JsonDtoMatcher.matchesDto(LEADERSHIP_TYPE_1_DTO, "$"));
 
         verify(mapper, times(1)).fromDto(any(LeadershipExperienceTypeDto.class));
-        verify(service, times(1)).create(any(CertificateType.class));
-        verify(mapper, times(1)).toDto(any(CertificateType.class));
+        verify(service, times(1)).create(any(LeadershipExperienceType.class));
+        verify(mapper, times(1)).toDto(any(LeadershipExperienceType.class));
     }
 
     @DisplayName("Should successfully update leadershipExperience type")
     @Test
     void shouldUpdateLeadershipExperience() throws Exception {
         when(mapper.fromDto(any(LeadershipExperienceTypeDto.class))).thenReturn(LEADERSHIP_TYPE_1);
-        when(service.update(any(Long.class), any(CertificateType.class))).thenReturn(LEADERSHIP_TYPE_1);
-        when(mapper.toDto(any(CertificateType.class))).thenReturn(LEADERSHIP_TYPE_1_DTO);
+        when(service.update(any(Long.class), any(LeadershipExperienceType.class))).thenReturn(LEADERSHIP_TYPE_1);
+        when(mapper.toDto(any(LeadershipExperienceType.class))).thenReturn(LEADERSHIP_TYPE_1_DTO);
 
         mvc
                 .perform(put(BASEURL + "/" + LEADERSHIP_TYPE_1_ID)
@@ -117,8 +117,8 @@ class LeadershipExperienceTypeControllerIT {
                 .andExpect(JsonDtoMatcher.matchesDto(LEADERSHIP_TYPE_1_DTO, "$"));
 
         verify(mapper, times(1)).fromDto(any(LeadershipExperienceTypeDto.class));
-        verify(service, times(1)).update(any(Long.class), any(CertificateType.class));
-        verify(mapper, times(1)).toDto(any(CertificateType.class));
+        verify(service, times(1)).update(any(Long.class), any(LeadershipExperienceType.class));
+        verify(mapper, times(1)).toDto(any(LeadershipExperienceType.class));
     }
 
     @DisplayName("Should successfully delete leadershipExperience type")

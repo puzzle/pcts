@@ -6,10 +6,10 @@ import static org.mockito.Mockito.*;
 import ch.puzzle.pcts.dto.calculation.calculationleadershipexperience.LeadershipExperienceCalculationDto;
 import ch.puzzle.pcts.dto.calculation.calculationleadershipexperience.LeadershipExperienceCalculationInputDto;
 import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceDto;
-import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
-import ch.puzzle.pcts.model.certificate.Certificate;
-import ch.puzzle.pcts.model.certificatetype.CertificateKind;
-import ch.puzzle.pcts.model.certificatetype.CertificateType;
+import ch.puzzle.pcts.model.calculation.leadershipexperiencecalculation.LeadershipExperienceCalculation;
+import ch.puzzle.pcts.model.leadershipexperience.LeadershipExperience;
+import ch.puzzle.pcts.model.leadershipexperiencetype.LeadershipExperienceType;
+import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.business.LeadershipExperienceBusinessService;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -36,34 +36,28 @@ class LeadershipExperienceCalculationMapperTest {
     @InjectMocks
     private LeadershipExperienceCalculationMapper mapper;
 
-    private Certificate createCertificate(CertificateKind kind, Long id) {
-        Certificate certificate = new Certificate();
-        certificate.setId(id);
-
-        CertificateType type = new CertificateType();
-        type.setCertificateKind(kind);
-        certificate.setCertificateType(type);
-
-        return certificate;
+    private LeadershipExperience createLeadershipExperience() {
+        LeadershipExperience experience = new LeadershipExperience();
+        experience.setId(1L);
+        experience.setMember(new Member());
+        LeadershipExperienceType type = new LeadershipExperienceType();
+        experience.setLeadershipExperienceType(type);
+        return experience;
     }
 
-    private Certificate createLeadershipExperience() {
-        return createCertificate(CertificateKind.LEADERSHIP_TRAINING, EXPERIENCE_ID);
-    }
-
-    private CertificateCalculation createCertificateCalculation(Certificate certificate) {
-        return new CertificateCalculation(5L, null, certificate);
+    private LeadershipExperienceCalculation createLeadershipExperienceCalculation(LeadershipExperience leadershipExperience) {
+        return new LeadershipExperienceCalculation(5L, null, leadershipExperience);
     }
 
     private LeadershipExperienceDto mockLeadershipExperienceDto() {
         return mock(LeadershipExperienceDto.class);
     }
 
-    @DisplayName("Should map CertificateCalculation to LeadershipExperienceCalculationDto")
+    @DisplayName("Should map LeadershipExperienceCalculation to LeadershipExperienceCalculationDto")
     @Test
     void shouldMapToDto() {
-        Certificate experience = createLeadershipExperience();
-        CertificateCalculation model = createCertificateCalculation(experience);
+        LeadershipExperience experience = createLeadershipExperience();
+        LeadershipExperienceCalculation model = createLeadershipExperienceCalculation(experience);
 
         LeadershipExperienceDto mockedDto = mockLeadershipExperienceDto();
         when(leadershipExperienceMapper.toDto(experience)).thenReturn(mockedDto);
@@ -77,12 +71,11 @@ class LeadershipExperienceCalculationMapperTest {
         verify(leadershipExperienceMapper).toDto(experience);
     }
 
-    @DisplayName("Should map List<CertificateCalculation> to List<LeadershipExperienceCalculationDto> and remove Certificates")
+    @DisplayName("Should map List<LeadershipExperienceCalculation> to List<LeadershipExperienceCalculationDto>")
     @Test
     void shouldMapListToDto() {
-        Certificate leadershipExperience = createLeadershipExperience();
-
-        CertificateCalculation leadershipCalc = createCertificateCalculation(leadershipExperience);
+        LeadershipExperience leadershipExperience = createLeadershipExperience();
+        LeadershipExperienceCalculation leadershipCalc = createLeadershipExperienceCalculation(leadershipExperience);
 
         LeadershipExperienceDto mockedDto = mockLeadershipExperienceDto();
         when(leadershipExperienceMapper.toDto(leadershipExperience)).thenReturn(mockedDto);
@@ -93,35 +86,35 @@ class LeadershipExperienceCalculationMapperTest {
         assertEquals(mockedDto, result.getFirst().experience());
 
         verify(leadershipExperienceMapper).toDto(leadershipExperience);
-
     }
 
-    @DisplayName("Should map ID to CertificateCalculation")
+    @DisplayName("Should map LeadershipExperienceCalculationInputDto to LeadershipExperienceCalculation")
     @Test
-    void shouldMapFromId() {
-        Certificate experience = createLeadershipExperience();
+    void shouldMapFromDto() {
+        LeadershipExperience experience = createLeadershipExperience();
+
         when(leadershipExperienceBusinessService.getById(EXPERIENCE_ID)).thenReturn(experience);
         when(dto.id()).thenReturn(null);
         when(dto.leadershipExperienceId()).thenReturn(EXPERIENCE_ID);
 
-        CertificateCalculation result = mapper.fromDto(dto);
+        LeadershipExperienceCalculation result = mapper.fromDto(dto);
 
         assertNotNull(result);
         assertNull(result.getId());
-        assertEquals(experience, result.getCertificate());
+        assertEquals(experience, result.getLeadershipExperience());
 
         verify(leadershipExperienceBusinessService).getById(EXPERIENCE_ID);
     }
 
-    @DisplayName("Should map List<Long> to List<CertificateCalculation>")
+    @DisplayName("Should map List<LeadershipExperienceCalculationInputDto> to List<LeadershipExperienceCalculation>")
     @Test
-    void shouldMapListFromIds() {
+    void shouldMapListFromDto() {
         when(dto.id()).thenReturn(null);
         when(dto.leadershipExperienceId()).thenReturn(EXPERIENCE_ID);
         when(leadershipExperienceBusinessService.getById(EXPERIENCE_ID))
                 .thenReturn(createLeadershipExperience());
 
-        List<CertificateCalculation> result = mapper.fromDto(List.of(dto));
+        List<LeadershipExperienceCalculation> result = mapper.fromDto(List.of(dto));
 
         assertEquals(1, result.size());
         verify(leadershipExperienceBusinessService).getById(EXPERIENCE_ID);
