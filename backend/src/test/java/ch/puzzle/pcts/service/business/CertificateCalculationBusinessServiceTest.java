@@ -66,10 +66,9 @@ class CertificateCalculationBusinessServiceTest
 
     static Stream<Arguments> certificatePointsProvider() {
         return Stream
-                .of(Arguments.of(false, BigDecimal.TEN, BigDecimal.TEN),
-                    Arguments.of(false, BigDecimal.TEN, BigDecimal.TEN),
-                    Arguments.of(true, BigDecimal.ONE, BigDecimal.ONE),
-                    Arguments.of(false, BigDecimal.TWO, BigDecimal.ZERO));
+                .of(Arguments.of(BigDecimal.TEN, BigDecimal.TEN),
+                    Arguments.of(BigDecimal.TEN, BigDecimal.TEN),
+                    Arguments.of(BigDecimal.ONE, BigDecimal.ONE));
     }
 
     @Test
@@ -100,13 +99,11 @@ class CertificateCalculationBusinessServiceTest
     @DisplayName("Should calculate certificate points correctly")
     @ParameterizedTest
     @MethodSource("certificatePointsProvider")
-    void shouldCalculateCertificatePoints(boolean isManagement, BigDecimal certificatePoints,
-                                          BigDecimal expectedResult) {
+    void shouldCalculateCertificatePoints(BigDecimal certificatePoints, BigDecimal expectedResult) {
         Calculation calculation = mock(Calculation.class);
         Role role = mock(Role.class);
 
         when(calculation.getRole()).thenReturn(role);
-        when(role.getIsManagement()).thenReturn(isManagement);
 
         CertificateType type = mock(CertificateType.class);
         when(type.getPoints()).thenReturn(certificatePoints);

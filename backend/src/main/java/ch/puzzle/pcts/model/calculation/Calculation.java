@@ -65,6 +65,7 @@ public class Calculation implements Model {
         this.degreeCalculations = builder.degreeCalculations;
         this.experienceCalculations = builder.experienceCalculations;
         this.certificatesCalculations = builder.certificatesCalculations;
+        this.leadershipExperienceCalculations = builder.leadershipExperienceCalculations;
         this.points = builder.points;
     }
 
