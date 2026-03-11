@@ -7,7 +7,7 @@ import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.leadershipexperiencetype.LeadershipExperienceType;
-import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
+import ch.puzzle.pcts.service.persistence.LeadershipExperienceTypePersistenceService;
 import ch.puzzle.pcts.service.validation.util.UniqueNameValidationUtil;
 import java.util.List;
 import java.util.Map;
@@ -17,9 +17,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class LeadershipExperienceTypeValidationService extends ValidationBase<LeadershipExperienceType> {
 
-    private final CertificateTypePersistenceService persistenceService;
+    private final LeadershipExperienceTypePersistenceService persistenceService;
 
-    public LeadershipExperienceTypeValidationService(CertificateTypePersistenceService persistenceService) {
+    public LeadershipExperienceTypeValidationService(LeadershipExperienceTypePersistenceService persistenceService) {
         this.persistenceService = persistenceService;
     }
 

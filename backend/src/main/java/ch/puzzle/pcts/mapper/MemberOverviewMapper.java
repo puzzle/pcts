@@ -75,12 +75,12 @@ public class MemberOverviewMapper {
     }
 
     private MemberOverviewLeadershipExperienceDto mapToLeadershipExperience(MemberOverview e) {
-        return new MemberOverviewLeadershipExperienceDto(e.getCertificateId(),
+        return new MemberOverviewLeadershipExperienceDto(e.getLeadershipExperienceId(),
                                                          new MemberOverviewLeadershipExperienceTypeDto(e
-                                                                 .getCertificateTypeName(),
+                                                                 .getLeadershipExperienceTypeName(),
                                                                                                        e
                                                                                                                .getLeadershipExperienceKind()),
-                                                         e.getCertificateComment());
+                                                         e.getLeadershipExperienceComment());
     }
 
     private void handleDegree(MemberOverview row, Map<Long, MemberOverviewDegreeDto> degreeMap) {

@@ -26,6 +26,10 @@ public class LeadershipExperienceCalculationPersistenceService
         return repository.findByLeadershipExperienceId(leadershipExperienceId);
     }
 
+    public void deleteAllByIdInBatch(List<Long> ids) {
+        repository.deleteAllByIdInBatch(ids);
+    }
+
     @Override
     public String entityName() {
         return LEADERSHIP_EXPERIENCE_CALCULATION;

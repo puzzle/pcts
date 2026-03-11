@@ -783,11 +783,14 @@ public class TestDataModels {
                 .withDegreeCalculations(List.of(DEGREE_CALC_1, DEGREE_CALC_3))
                 .withExperienceCalculations(List.of(EXP_CALC_1, EXP_CALC_3))
                 .withCertificateCalculations(List.of(CERT_CALC_1, CERT_CALC_3))
+                .withLeadershipExperienceCalculations(List
+                        .of(LEADERSHIP_EXPERIENCE_CALC_1, LEADERSHIP_EXPERIENCE_CALC_2))
                 .build();
 
         calc1.getDegreeCalculations().forEach(d -> d.setCalculation(calc1));
         calc1.getExperienceCalculations().forEach(e -> e.setCalculation(calc1));
         calc1.getCertificateCalculations().forEach(c -> c.setCalculation(calc1));
+        calc1.getLeadershipExperienceCalculations().forEach(l -> l.setCalculation(calc1));
         CALCULATION_1 = calc1;
 
         Calculation calc2 = Calculation.Builder
