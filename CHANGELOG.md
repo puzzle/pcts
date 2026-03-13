@@ -1,5 +1,51 @@
 # Changelog
 
+## [0.6.0](https://github.com/puzzle/pcts/compare/0.5.0...0.6.0) (2026-03-13)
+
+
+### Features
+
+* **backend:** Add attributes to certificate-type [#493](https://github.com/puzzle/pcts/issues/493) ([f33c0cb](https://github.com/puzzle/pcts/commit/f33c0cb8c747167d2f704885bbab5176f7959317))
+
+
+### Bug Fixes
+
+* change faulty translations [#471](https://github.com/puzzle/pcts/issues/471) ([285da37](https://github.com/puzzle/pcts/commit/285da37c96dc4c3866650625b31fa8e8a5e44217))
+
+
+### Miscellaneous Chores
+
+* **config:** migrate config renovate.json ([983d3d7](https://github.com/puzzle/pcts/commit/983d3d77acde384a210c523372ef8d2d1a4b0594))
+* **config:** migrate Renovate config ([983d3d7](https://github.com/puzzle/pcts/commit/983d3d77acde384a210c523372ef8d2d1a4b0594))
+* **deps:** update actions/upload-artifact action to v7 ([#528](https://github.com/puzzle/pcts/issues/528)) ([62b624f](https://github.com/puzzle/pcts/commit/62b624fc21360c9db93dfe7cefc43240bc7d1af2))
+* **deps:** update all devdependencies (minor and patch) ([d5a5fd9](https://github.com/puzzle/pcts/commit/d5a5fd9da32728bff0c6b1fefd9816568d153364))
+* **deps:** update all devdependencies (minor and patch) ([bd5d464](https://github.com/puzzle/pcts/commit/bd5d4643b76adf0f3c8b904cccb0d6110c009562))
+* **deps:** update all eslint packages ([#520](https://github.com/puzzle/pcts/issues/520)) ([6cda942](https://github.com/puzzle/pcts/commit/6cda942377f62c62b00cd0dc2d6896a525d5c939))
+* **deps:** update all eslint packages ([#535](https://github.com/puzzle/pcts/issues/535)) ([d43d192](https://github.com/puzzle/pcts/commit/d43d1922896e99efd0a14797c95dad7829b4a313))
+* **deps:** update angularmaterial monorepo to v21.1.3 ([4372962](https://github.com/puzzle/pcts/commit/4372962ecff79bfb08a1f210560886a35ef5c722))
+* **deps:** update angularmaterial monorepo to v21.1.4 ([5e28991](https://github.com/puzzle/pcts/commit/5e289913612cdaf1e1223588091a798703ed8b91))
+* **deps:** update angularmaterial monorepo to v21.1.5 ([#518](https://github.com/puzzle/pcts/issues/518)) ([7be22e8](https://github.com/puzzle/pcts/commit/7be22e8472a6b8cedae47362f2562a075fd0ded1))
+* **deps:** update angularmaterial monorepo to v21.2.1 ([#526](https://github.com/puzzle/pcts/issues/526)) ([098c1da](https://github.com/puzzle/pcts/commit/098c1da6c0b4f670622bacb7d9b18c5ca57d0ab3))
+* **deps:** update dependency com.diffplug.spotless:spotless-maven-plugin to v3.3.0 ([#531](https://github.com/puzzle/pcts/issues/531)) ([dbfa519](https://github.com/puzzle/pcts/commit/dbfa519600ebe0ef1dde221e78d65f1ccf2ef1c9))
+* **deps:** update dependency cypress to v15.10.0 ([c75aedb](https://github.com/puzzle/pcts/commit/c75aedb7b1ce2410f69c0908d10be5e710169ef5))
+* **deps:** update dependency cypress to v15.11.0 ([#527](https://github.com/puzzle/pcts/issues/527)) ([b816d03](https://github.com/puzzle/pcts/commit/b816d0311fe696e2b150a490a93b66229e06a288))
+* **deps:** update dependency jest-environment-jsdom to v30.3.0 ([#539](https://github.com/puzzle/pcts/issues/539)) ([d334f07](https://github.com/puzzle/pcts/commit/d334f075b34955d85fdd05db8d2fa03077707a42))
+* **deps:** update dependency maven to v3.9.14 ([#536](https://github.com/puzzle/pcts/issues/536)) ([827f168](https://github.com/puzzle/pcts/commit/827f168db57886eb78ce91fa9db0aade1d0d6da9))
+* **deps:** update dependency org.apache.maven.plugins:maven-failsafe-plugin to v3.5.5 ([f1bafd7](https://github.com/puzzle/pcts/commit/f1bafd7de892cb6bbebf0c508de6057e844a5343))
+* **deps:** update dependency org.apache.maven.plugins:maven-surefire-plugin to v3.5.5 ([30be4c1](https://github.com/puzzle/pcts/commit/30be4c1fc4eed341b0825855c37b469715a1205f))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v12.0.1 ([2eff439](https://github.com/puzzle/pcts/commit/2eff43997ccf7b89f906c21f9920aefd6e04734f))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v12.0.3 ([#521](https://github.com/puzzle/pcts/issues/521)) ([6fe737e](https://github.com/puzzle/pcts/commit/6fe737e899a71a7b1094d806bba258fc52b8a2ae))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v12.1.0 ([#538](https://github.com/puzzle/pcts/issues/538)) ([601a061](https://github.com/puzzle/pcts/commit/601a061ecee4ab20dd792cb65ee92d8746e22288))
+* **deps:** update dependency org.springdoc:springdoc-openapi-starter-webmvc-ui to v3.0.2 ([94bd03b](https://github.com/puzzle/pcts/commit/94bd03b92caae5c01ed6a9e15cc2b276786f6b57))
+* **deps:** update dependency typescript-eslint to v8.55.0 ([#504](https://github.com/puzzle/pcts/issues/504)) ([f114c77](https://github.com/puzzle/pcts/commit/f114c77cf83bbcc96f769d7e12042434f84f3d6f))
+* **deps:** update dependency typescript-eslint to v8.56.0 ([#515](https://github.com/puzzle/pcts/issues/515)) ([4de4ae0](https://github.com/puzzle/pcts/commit/4de4ae0d68ad96a97badcb1e958029d258fa2ca3))
+* **deps:** update docker/build-push-action action to v7 ([d70e11b](https://github.com/puzzle/pcts/commit/d70e11b3f6bf39f0ba6879b5299785b4ae8fad9f))
+* **deps:** update docker/login-action action to v4 ([24b77b7](https://github.com/puzzle/pcts/commit/24b77b7f9c1f8ee06d339e4d5074f30cb7637171))
+* **deps:** update docker/metadata-action action to v6 ([#537](https://github.com/puzzle/pcts/issues/537)) ([1dea220](https://github.com/puzzle/pcts/commit/1dea2203fd57557232aa6b27d27f506667400faa))
+* **deps:** update eclipse-temurin docker tag to v25.0.2_10-jre-alpine ([cbb6132](https://github.com/puzzle/pcts/commit/cbb6132445af70596c44ff989b220b0fcd647cca))
+* **deps:** update node.js to v24.14.0 ([#525](https://github.com/puzzle/pcts/issues/525)) ([3a11470](https://github.com/puzzle/pcts/commit/3a1147073544fe153463058c827161ded8ebdffd))
+* **deps:** update spring boot to v4.0.3 ([#519](https://github.com/puzzle/pcts/issues/519)) ([1ec4a7f](https://github.com/puzzle/pcts/commit/1ec4a7f36a9953c3fdab30a15048c4be7010d74c))
+
 ## [0.5.0](https://github.com/puzzle/pcts/compare/0.4.0...0.5.0) (2026-02-04)
 
 
