@@ -5,6 +5,7 @@ import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
 import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
 import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
+import ch.puzzle.pcts.model.calculation.leadershipexperiencecalculation.LeadershipExperienceCalculation;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.persistence.CalculationPersistenceService;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class CalculationBusinessService extends BusinessBase<Calculation> {
     private final ExperienceCalculationBusinessService experienceCalculationBusinessService;
     private final CertificateCalculationBusinessService certificateCalculationBusinessService;
+    private final LeadershipExperienceCalculationBusinessService leadershipExperienceCalculationBusinessService;
     private final DegreeCalculationBusinessService degreeCalculationBusinessService;
     private final CalculationPersistenceService calculationPersistenceService;
 
@@ -25,11 +27,13 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
                                       CalculationPersistenceService persistenceService,
                                       ExperienceCalculationBusinessService experienceCalculationBusinessService,
                                       CertificateCalculationBusinessService certificateCalculationBusinessService,
+                                      LeadershipExperienceCalculationBusinessService leadershipExperienceCalculationBusinessService,
                                       DegreeCalculationBusinessService degreeCalculationBusinessService) {
         super(validationService, persistenceService);
         this.experienceCalculationBusinessService = experienceCalculationBusinessService;
         this.certificateCalculationBusinessService = certificateCalculationBusinessService;
         this.degreeCalculationBusinessService = degreeCalculationBusinessService;
+        this.leadershipExperienceCalculationBusinessService = leadershipExperienceCalculationBusinessService;
         this.calculationPersistenceService = persistenceService;
     }
 
@@ -45,11 +49,14 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
         List<DegreeCalculation> degCalc = degreeCalculationBusinessService.createDegreeCalculations(calculation);
         List<CertificateCalculation> certCalc = certificateCalculationBusinessService
                 .createCertificateCalculations(calculation);
+        List<LeadershipExperienceCalculation> leadershipExpCalc = leadershipExperienceCalculationBusinessService
+                .createLeadershipExperienceCalculations(calculation);
 
         // set relations to return a fully-populated object
         baseCalc.setExperienceCalculations(expCalc);
         baseCalc.setDegreeCalculations(degCalc);
         baseCalc.setCertificateCalculations(certCalc);
+        baseCalc.setLeadershipExperienceCalculations(leadershipExpCalc);
         baseCalc.setPoints(getPointsOfCalculation(calculation));
 
         return baseCalc;
@@ -73,10 +80,14 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
         List<CertificateCalculation> certCalc = certificateCalculationBusinessService
                 .updateCertificateCalculations(calculation);
 
+        List<LeadershipExperienceCalculation> leadershipExpCalc = leadershipExperienceCalculationBusinessService
+                .updateLeadershipExperienceCalculations(calculation);
+
         // set relations to return a fully-populated object
         baseCalc.setExperienceCalculations(expCalc);
         baseCalc.setDegreeCalculations(degCalc);
         baseCalc.setCertificateCalculations(certCalc);
+        baseCalc.setLeadershipExperienceCalculations(leadershipExpCalc);
         baseCalc.setPoints(getPointsOfCalculation(calculation));
 
         return baseCalc;
@@ -112,7 +123,8 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
         return BigDecimal.ZERO
                 .add(experienceCalculationBusinessService.getExperiencePoints(calculationId))
                 .add(degreeCalculationBusinessService.getDegreePoints(calculationId))
-                .add(certificateCalculationBusinessService.getCertificatePoints(calculationId));
+                .add(certificateCalculationBusinessService.getCertificatePoints(calculationId))
+                .add(leadershipExperienceCalculationBusinessService.getLeadershipExperiencePoints(calculationId));
     }
 
     private void setPointsForCalculations(List<Calculation> calculations) {

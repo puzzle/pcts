@@ -3,7 +3,6 @@ package ch.puzzle.pcts.service.persistence;
 import static ch.puzzle.pcts.Constants.CERTIFICATE;
 
 import ch.puzzle.pcts.model.certificate.Certificate;
-import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.repository.CertificateRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +18,5 @@ public class CertificatePersistenceService extends PersistenceBase<Certificate, 
     @Override
     public String entityName() {
         return CERTIFICATE;
-    }
-
-    public Certificate findLeadershipExperience(Long id) {
-        return repository
-                .findByIdAndCertificateType_CertificateKindNot(id, CertificateKind.CERTIFICATE)
-                .orElseThrow(() -> throwNotFoundError(id.toString()));
     }
 }

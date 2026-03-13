@@ -6,6 +6,7 @@ import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
 import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
 import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
+import ch.puzzle.pcts.model.calculation.leadershipexperiencecalculation.LeadershipExperienceCalculation;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.role.Role;
 import jakarta.persistence.*;
@@ -14,7 +15,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Predicate;
 
 @Entity
 public class Calculation implements Model {
@@ -49,6 +49,9 @@ public class Calculation implements Model {
     @OneToMany(mappedBy = "calculation", fetch = FetchType.LAZY)
     private List<CertificateCalculation> certificatesCalculations;
 
+    @OneToMany(mappedBy = "calculation", fetch = FetchType.LAZY)
+    private List<LeadershipExperienceCalculation> leadershipExperienceCalculations;
+
     @Transient
     private BigDecimal points;
 
@@ -62,6 +65,7 @@ public class Calculation implements Model {
         this.degreeCalculations = builder.degreeCalculations;
         this.experienceCalculations = builder.experienceCalculations;
         this.certificatesCalculations = builder.certificatesCalculations;
+        this.leadershipExperienceCalculations = builder.leadershipExperienceCalculations;
         this.points = builder.points;
     }
 
@@ -179,15 +183,12 @@ public class Calculation implements Model {
         this.certificatesCalculations = certificatesCalculations;
     }
 
-    public List<CertificateCalculation> getCertificatesCalculationsWithLeadershipExperienceType() {
-        return this.certificatesCalculations.stream().filter(CertificateCalculation::isLeadershipExperience).toList();
+    public List<LeadershipExperienceCalculation> getLeadershipExperienceCalculations() {
+        return leadershipExperienceCalculations;
     }
 
-    public List<CertificateCalculation> getCertificateCalculationsWithCertificateType() {
-        return this.certificatesCalculations
-                .stream()
-                .filter(Predicate.not(CertificateCalculation::isLeadershipExperience))
-                .toList();
+    public void setLeadershipExperienceCalculations(List<LeadershipExperienceCalculation> leadershipExperienceCalculations) {
+        this.leadershipExperienceCalculations = leadershipExperienceCalculations;
     }
 
     public BigDecimal getPoints() {
@@ -208,6 +209,7 @@ public class Calculation implements Model {
         private List<DegreeCalculation> degreeCalculations;
         private List<ExperienceCalculation> experienceCalculations;
         private List<CertificateCalculation> certificatesCalculations;
+        private List<LeadershipExperienceCalculation> leadershipExperienceCalculations;
         private BigDecimal points;
 
         private Builder() {
@@ -259,6 +261,11 @@ public class Calculation implements Model {
 
         public Builder withCertificateCalculations(List<CertificateCalculation> certificatesCalculations) {
             this.certificatesCalculations = certificatesCalculations;
+            return this;
+        }
+
+        public Builder withLeadershipExperienceCalculations(List<LeadershipExperienceCalculation> leadershipExperienceCalculations) {
+            this.leadershipExperienceCalculations = leadershipExperienceCalculations;
             return this;
         }
 

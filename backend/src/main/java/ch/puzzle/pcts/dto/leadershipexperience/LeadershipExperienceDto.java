@@ -9,7 +9,7 @@ public record LeadershipExperienceDto(
 
         @Schema(description = "The member associated with this leadership experience.", requiredMode = Schema.RequiredMode.REQUIRED) MemberDto member,
 
-        @Schema(description = "The type of leadership experience awarded to the member.", requiredMode = Schema.RequiredMode.REQUIRED) LeadershipExperienceTypeDto experience,
+        @Schema(description = "The type of leadership experience awarded to the member.", requiredMode = Schema.RequiredMode.REQUIRED) LeadershipExperienceTypeDto leadershipExperienceType,
 
         @Schema(description = "An optional comment for the leadership experience.", example = "Completed via fast-track program", requiredMode = Schema.RequiredMode.NOT_REQUIRED, nullable = true) String comment) {
 }

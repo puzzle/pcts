@@ -40,6 +40,9 @@ class CalculationBusinessServiceTest
     private CertificateCalculationBusinessService certificateBusinessService;
 
     @Mock
+    private LeadershipExperienceCalculationBusinessService leadershipExperienceBusinessService;
+
+    @Mock
     private Calculation calculation;
 
     @InjectMocks
@@ -76,16 +79,18 @@ class CalculationBusinessServiceTest
         when(experienceBusinessService.getExperiencePoints(CALCULATION_1_ID)).thenReturn(BigDecimal.ONE);
         when(degreeBusinessService.getDegreePoints(CALCULATION_1_ID)).thenReturn(BigDecimal.ONE);
         when(certificateBusinessService.getCertificatePoints(CALCULATION_1_ID)).thenReturn(BigDecimal.ONE);
+        when(leadershipExperienceBusinessService.getLeadershipExperiencePoints(CALCULATION_1_ID))
+                .thenReturn(BigDecimal.ONE);
 
         Calculation result = businessService.getById(CALCULATION_1_ID);
 
         assertEquals(calc, result);
-        assertEquals(BigDecimal.valueOf(3), result.getPoints());
+        assertEquals(BigDecimal.valueOf(4), result.getPoints());
         verify(persistenceService).getById(CALCULATION_1_ID);
         verify(experienceBusinessService).getExperiencePoints(CALCULATION_1_ID);
         verify(degreeBusinessService).getDegreePoints(CALCULATION_1_ID);
         verify(certificateBusinessService).getCertificatePoints(CALCULATION_1_ID);
-
+        verify(leadershipExperienceBusinessService).getLeadershipExperiencePoints(CALCULATION_1_ID);
     }
 
     @Override
@@ -95,13 +100,19 @@ class CalculationBusinessServiceTest
         when(experienceBusinessService.getExperiencePoints(anyLong())).thenReturn(BigDecimal.ONE);
         when(degreeBusinessService.getDegreePoints(anyLong())).thenReturn(BigDecimal.ONE);
         when(certificateBusinessService.getCertificatePoints(anyLong())).thenReturn(BigDecimal.ONE);
+        when(leadershipExperienceBusinessService.getLeadershipExperiencePoints(anyLong())).thenReturn(BigDecimal.ONE);
+
         super.shouldCreate();
+
         verify(experienceBusinessService).createExperienceCalculations(calculation);
         verify(certificateBusinessService).createCertificateCalculations(calculation);
         verify(degreeBusinessService).createDegreeCalculations(calculation);
+        verify(leadershipExperienceBusinessService).createLeadershipExperienceCalculations(calculation);
+
         verify(experienceBusinessService).getExperiencePoints(anyLong());
         verify(degreeBusinessService).getDegreePoints(anyLong());
         verify(certificateBusinessService).getCertificatePoints(anyLong());
+        verify(leadershipExperienceBusinessService).getLeadershipExperiencePoints(anyLong());
     }
 
     @Override
@@ -111,14 +122,20 @@ class CalculationBusinessServiceTest
         when(experienceBusinessService.getExperiencePoints(anyLong())).thenReturn(BigDecimal.ONE);
         when(degreeBusinessService.getDegreePoints(anyLong())).thenReturn(BigDecimal.ONE);
         when(certificateBusinessService.getCertificatePoints(anyLong())).thenReturn(BigDecimal.ONE);
+        when(leadershipExperienceBusinessService.getLeadershipExperiencePoints(anyLong())).thenReturn(BigDecimal.ONE);
+
         super.shouldUpdate();
+
         verify(validationService).validateOnUpdate(CALCULATION_1_ID, calculation);
         verify(experienceBusinessService).updateExperienceCalculations(calculation);
         verify(certificateBusinessService).updateCertificateCalculations(calculation);
         verify(degreeBusinessService).updateDegreeCalculations(calculation);
+        verify(leadershipExperienceBusinessService).updateLeadershipExperienceCalculations(calculation);
+
         verify(experienceBusinessService).getExperiencePoints(anyLong());
         verify(degreeBusinessService).getDegreePoints(anyLong());
         verify(certificateBusinessService).getCertificatePoints(anyLong());
+        verify(leadershipExperienceBusinessService).getLeadershipExperiencePoints(anyLong());
     }
 
     @DisplayName("Should get all calculations by member and set points")
@@ -133,18 +150,23 @@ class CalculationBusinessServiceTest
         List<Calculation> calculations = List.of(calc1, calc2);
 
         when(persistenceService.getAllByMember(member)).thenReturn(calculations);
+
         when(experienceBusinessService.getExperiencePoints(calc1.getId())).thenReturn(BigDecimal.ONE);
         when(degreeBusinessService.getDegreePoints(calc1.getId())).thenReturn(BigDecimal.ONE);
         when(certificateBusinessService.getCertificatePoints(calc1.getId())).thenReturn(BigDecimal.ONE);
+        when(leadershipExperienceBusinessService.getLeadershipExperiencePoints(calc1.getId()))
+                .thenReturn(BigDecimal.ONE);
 
         when(experienceBusinessService.getExperiencePoints(calc2.getId())).thenReturn(BigDecimal.TEN);
         when(degreeBusinessService.getDegreePoints(calc2.getId())).thenReturn(BigDecimal.ONE);
         when(certificateBusinessService.getCertificatePoints(calc2.getId())).thenReturn(BigDecimal.ZERO);
+        when(leadershipExperienceBusinessService.getLeadershipExperiencePoints(calc2.getId()))
+                .thenReturn(BigDecimal.ZERO);
 
         List<Calculation> result = businessService.getAllByMember(member);
 
         assertEquals(2, result.size());
-        assertEquals(BigDecimal.valueOf(3), result.get(0).getPoints());
+        assertEquals(BigDecimal.valueOf(4), result.get(0).getPoints());
         assertEquals(BigDecimal.valueOf(11), result.get(1).getPoints());
 
         verify(persistenceService).getAllByMember(member);
@@ -163,11 +185,13 @@ class CalculationBusinessServiceTest
         when(experienceBusinessService.getExperiencePoints(calc1.getId())).thenReturn(BigDecimal.ONE);
         when(degreeBusinessService.getDegreePoints(calc1.getId())).thenReturn(BigDecimal.ZERO);
         when(certificateBusinessService.getCertificatePoints(calc1.getId())).thenReturn(BigDecimal.ONE);
+        when(leadershipExperienceBusinessService.getLeadershipExperiencePoints(calc1.getId()))
+                .thenReturn(BigDecimal.ONE);
 
         List<Calculation> result = businessService.getAllByMemberAndRole(member, role);
 
         assertEquals(1, result.size());
-        assertEquals(BigDecimal.valueOf(2), result.getFirst().getPoints());
+        assertEquals(BigDecimal.valueOf(3), result.getFirst().getPoints());
 
         verify(persistenceService).getAllByMemberAndRole(member, role);
     }

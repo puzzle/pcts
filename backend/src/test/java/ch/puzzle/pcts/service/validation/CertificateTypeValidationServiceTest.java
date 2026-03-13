@@ -9,7 +9,6 @@ import static org.mockito.Mockito.*;
 import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
-import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.certificatetype.ExamType;
 import ch.puzzle.pcts.service.persistence.CertificateTypePersistenceService;
@@ -46,7 +45,6 @@ class CertificateTypeValidationServiceTest
                 .withPoints(BigDecimal.valueOf(10))
                 .withComment("Comment")
                 .withTags(Set.of(TAG_3))
-                .withCertificateKind(CertificateKind.CERTIFICATE)
                 .withEffort(6D)
                 .withExamDuration(60)
                 .withLink("https://www.example.com")
@@ -68,7 +66,6 @@ class CertificateTypeValidationServiceTest
         c.setPoints(points);
         c.setComment("Comment");
         c.setTags(Set.of(TAG_1));
-        c.setCertificateKind(CertificateKind.CERTIFICATE);
         c.setEffort(effort);
         c.setExamDuration(examDuration);
         c.setLink(link);
@@ -288,24 +285,6 @@ class CertificateTypeValidationServiceTest
                 // FieldKey.IS,
                 // TOO_LONG_STRING)))
                 );
-    }
-
-    @DisplayName("Should throw exception on validateOnGetById() when certificate kind is not certificate")
-    @Test
-    void shouldThrowExceptionOnValidateOnGetByIdWhenCertificateKindIsNotCertificate() {
-        PCTSException exception = assertThrows(PCTSException.class,
-                                               () -> service
-                                                       .validateCertificateKind(CertificateKind.LEADERSHIP_TRAINING));
-        assertEquals(List.of(ErrorKey.ATTRIBUTE_WRONG_KIND), exception.getErrorKeys());
-        assertEquals(List
-                .of(Map
-                        .of(FieldKey.FIELD,
-                            "certificateKind",
-                            FieldKey.IS,
-                            "LEADERSHIP_TRAINING",
-                            FieldKey.ENTITY,
-                            CERTIFICATE_TYPE)),
-                     exception.getErrorAttributes());
     }
 
     @DisplayName("Should throw exception on validateOnCreate() when name already exists")
