@@ -85,6 +85,9 @@ public class TestDataModels {
             .withDateOfHire(LocalDate.of(2021, 7, 15))
             .withBirthDate(LocalDate.of(1999, 8, 10))
             .withOrganisationUnit(ORG_UNIT_1)
+            .withPtimeId(1L)
+            .withLastSuccessfulSync(LocalDateTime.of(2025, 12, 1, 1, 1))
+            .withSyncErrorCount(0)
             .build();
 
     public static final Member MEMBER_2 = Member.Builder
@@ -97,6 +100,9 @@ public class TestDataModels {
             .withDateOfHire(LocalDate.of(2020, 6, 1))
             .withBirthDate(LocalDate.of(1998, 3, 3))
             .withOrganisationUnit(ORG_UNIT_2)
+            .withPtimeId(2L)
+            .withLastSuccessfulSync(LocalDateTime.of(2025, 12, 1, 1, 1))
+            .withSyncErrorCount(0)
             .build();
 
     public static final Member MEMBER_3 = Member.Builder
@@ -109,6 +115,9 @@ public class TestDataModels {
             .withDateOfHire(LocalDate.of(2020, 6, 1))
             .withBirthDate(LocalDate.of(1998, 3, 3))
             .withOrganisationUnit(ORG_UNIT_2)
+            .withPtimeId(3L)
+            .withLastSuccessfulSync(LocalDateTime.of(2025, 12, 1, 1, 1))
+            .withSyncErrorCount(0)
             .build();
 
     public static final CertificateType CERT_TYPE_1 = CertificateType.Builder

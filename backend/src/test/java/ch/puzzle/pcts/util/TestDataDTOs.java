@@ -64,7 +64,10 @@ public class TestDataDTOs {
                                                                MEMBER_1.getAbbreviation(),
                                                                MEMBER_1.getDateOfHire(),
                                                                MEMBER_1.getBirthDate(),
-                                                               ORG_UNIT_1_DTO);
+                                                               ORG_UNIT_1_DTO,
+                                                               MEMBER_1.getPtimeId(),
+                                                               MEMBER_1.getLastSuccessfulSync(),
+                                                               MEMBER_1.getSyncErrorCount());
 
     public static final MemberDto MEMBER_2_DTO = new MemberDto(MEMBER_2_ID,
                                                                MEMBER_2.getFirstName(),
@@ -73,7 +76,10 @@ public class TestDataDTOs {
                                                                MEMBER_2.getAbbreviation(),
                                                                MEMBER_2.getDateOfHire(),
                                                                MEMBER_2.getBirthDate(),
-                                                               ORG_UNIT_2_DTO);
+                                                               ORG_UNIT_2_DTO,
+                                                               MEMBER_1.getPtimeId(),
+                                                               MEMBER_1.getLastSuccessfulSync(),
+                                                               MEMBER_1.getSyncErrorCount());
 
     public static final MemberInputDto MEMBER_1_INPUT = new MemberInputDto(MEMBER_1.getFirstName(),
                                                                            MEMBER_1.getLastName(),
