@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class MemberBusinessService extends BusinessBase<Member> {
     RoleBusinessService roleBusinessService;
     CalculationBusinessService calculationBusinessService;
+    MemberPersistenceService persistenceService;
 
     public MemberBusinessService(MemberValidationService validationService, MemberPersistenceService persistenceService,
                                  RoleBusinessService roleBusinessService,
@@ -20,6 +21,7 @@ public class MemberBusinessService extends BusinessBase<Member> {
         super(validationService, persistenceService);
         this.roleBusinessService = roleBusinessService;
         this.calculationBusinessService = calculationBusinessService;
+        this.persistenceService = persistenceService;
     }
 
     public List<Member> getAll() {
@@ -54,5 +56,9 @@ public class MemberBusinessService extends BusinessBase<Member> {
                               toBeUpdated.getSyncErrorCount());
 
         return persistenceService.save(member);
+    }
+
+    public Member getByPtimeId(Long id) {
+        return persistenceService.findByPtimeId(id);
     }
 }

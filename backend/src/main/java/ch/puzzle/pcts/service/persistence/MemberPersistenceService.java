@@ -8,12 +8,19 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MemberPersistenceService extends PersistenceBase<Member, MemberRepository> {
+    MemberRepository repository;
+
     public MemberPersistenceService(MemberRepository repository) {
         super(repository);
+        this.repository = repository;
     }
 
     @Override
     public String entityName() {
         return MEMBER;
+    }
+
+    public Member findByPtimeId(Long ptimeId) {
+        return repository.findByPtimeId(ptimeId).orElseThrow(() -> throwNotFoundError(ptimeId.toString()));
     }
 }
