@@ -168,6 +168,12 @@ public class Member implements Model {
         this.syncErrorCount = syncErrorCount;
     }
 
+    public void keepSyncData(Long ptimeId, LocalDateTime lastSuccessfulSync, Integer syncErrorCount) {
+        this.ptimeId = ptimeId;
+        this.lastSuccessfulSync = lastSuccessfulSync;
+        this.syncErrorCount = syncErrorCount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Member member))

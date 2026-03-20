@@ -41,4 +41,18 @@ public class MemberBusinessService extends BusinessBase<Member> {
         return calculationBusinessService.getAllByMemberAndState(member, CalculationState.ACTIVE);
     }
 
+    @Override
+    public Member update(Long id, Member member) {
+        Member toBeUpdated = getById(id);
+
+        validationService.validateOnUpdate(id, member);
+
+        member.setId(id);
+        member
+                .keepSyncData(toBeUpdated.getPtimeId(),
+                              toBeUpdated.getLastSuccessfulSync(),
+                              toBeUpdated.getSyncErrorCount());
+
+        return persistenceService.save(member);
+    }
 }
