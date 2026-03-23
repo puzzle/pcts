@@ -58,7 +58,11 @@ public class MemberBusinessService extends BusinessBase<Member> {
         return persistenceService.save(member);
     }
 
-    public Member getByPtimeId(Long id) {
+    public Member findByPtimeId(Long id) {
         return persistenceService.findByPtimeId(id);
+    }
+
+    public Member findByAbbreviation(String abbreviation) {
+        return persistenceService.findByAbbreviation(abbreviation);
     }
 }

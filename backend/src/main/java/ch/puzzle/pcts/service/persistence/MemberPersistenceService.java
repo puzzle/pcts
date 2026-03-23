@@ -23,4 +23,8 @@ public class MemberPersistenceService extends PersistenceBase<Member, MemberRepo
     public Member findByPtimeId(Long ptimeId) {
         return repository.findByPtimeId(ptimeId).orElseThrow(() -> throwNotFoundError(ptimeId.toString()));
     }
+
+    public Member findByAbbreviation(String abbreviation) {
+        return repository.findByAbbreviation(abbreviation).orElseThrow(() -> throwNotFoundError(abbreviation));
+    }
 }

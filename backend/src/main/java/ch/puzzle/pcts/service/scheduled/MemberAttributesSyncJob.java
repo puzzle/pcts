@@ -3,11 +3,11 @@ package ch.puzzle.pcts.service.scheduled;
 import ch.puzzle.pcts.dto.puzzletime.EmployeeAttributes;
 import ch.puzzle.pcts.dto.puzzletime.EmployeeData;
 import ch.puzzle.pcts.dto.puzzletime.PuzzleTimeResponseDto;
+import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
@@ -18,13 +18,11 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class MemberAttributesSyncJob {
@@ -37,13 +35,13 @@ public class MemberAttributesSyncJob {
     private final ObjectMapper objectMapper;
     private final MemberBusinessService memberBusinessService;
 
-    public MemberAttributesSyncJob(ObjectMapper objectMapper, MemberBusinessService memberBusinessService,
+    public MemberAttributesSyncJob(MemberBusinessService memberBusinessService,
                                    @Value("${app.member-sync.enabled:false}") boolean enabled,
                                    @Value("${app.member-sync.url}") String apiUrl,
                                    @Value("${app.member-sync.username}") String username,
                                    @Value("${app.member-sync.password}") String password) {
 
-        this.objectMapper = objectMapper;
+        this.objectMapper = new ObjectMapper();
         this.memberBusinessService = memberBusinessService;
         this.enabled = enabled;
         this.apiUrl = apiUrl;
@@ -56,7 +54,6 @@ public class MemberAttributesSyncJob {
         }).build();
     }
 
-    @Transactional
     @Scheduled(cron = "${app.member-sync.cron}")
     public void syncMemberAttributes() {
         if (!enabled) {
@@ -122,29 +119,29 @@ public class MemberAttributesSyncJob {
             Long apiPtimeId = apiEmployee.id();
 
             if (apiEmployee.attributes() == null) {
-                log.warn("API Datensatz mit ID {} hat keine Attribute. Wird übersprungen.", apiPtimeId);
+                log.info("API record with id {} has no existing attributes. Skipping", apiPtimeId);
                 continue;
             }
 
-            String kuerzel = apiEmployee.attributes().shortname();
+            String abbreviation = apiEmployee.attributes().shortname();
             Member member;
 
             try {
-                member = memberBusinessService.getByPtimeId(apiPtimeId);
+                member = memberBusinessService.findByPtimeId(apiPtimeId);
 
-            } catch (EntityNotFoundException e) {
+            } catch (PCTSException _) {
 
-                Optional<Member> fallbackOpt = memberBusinessService.findByShortnameIgnoreCase(kuerzel);
+                try {
+                    member = memberBusinessService.findByAbbreviation(abbreviation);
 
-                if (fallbackOpt.isPresent()) {
-                    member = fallbackOpt.get();
                     member.setPtimeId(apiPtimeId);
-                    log.info("Nutzer {} über Kürzel gefunden. ptime_id {} wurde nachgetragen.", kuerzel, apiPtimeId);
-                } else {
+                    log.info("Member {} found using abbreviation. ptime_id {} was added.", abbreviation, apiPtimeId);
+
+                } catch (PCTSException _) {
                     log
-                            .warn("API Datensatz ignoriert: Nutzer mit ptime_id {} und Kürzel {} nicht im PCTS gefunden.",
+                            .warn("API record ignored: user with ptime_id {} and abbreviation {} was not found.",
                                   apiPtimeId,
-                                  kuerzel);
+                                  abbreviation);
                     continue;
                 }
             }
@@ -157,10 +154,28 @@ public class MemberAttributesSyncJob {
             } else {
                 int currentErrors = member.getSyncErrorCount() != null ? member.getSyncErrorCount() : 0;
                 member.setSyncErrorCount(currentErrors + 1);
-                log.error("Validierung der API-Daten für Member {} fehlgeschlagen.", member.getId());
+                log.warn("API-Daten-Validierung für Member {} fehlgeschlagen. Fehlerzähler erhöht.", member.getId());
             }
 
-            memberBusinessService.update(member.getId(), member);
+            try {
+                memberBusinessService.update(member.getId(), member);
+            } catch (PCTSException e) {
+                log.error("BusinessService lehnte das Speichern von Member {} ab: {}", member.getId(), e.getMessage());
+
+                try {
+                    Member cleanMember = memberBusinessService.findByPtimeId(apiPtimeId);
+
+                    int currentErrors = cleanMember.getSyncErrorCount() != null ? cleanMember.getSyncErrorCount() : 0;
+                    cleanMember.setSyncErrorCount(currentErrors + 1);
+
+                    memberBusinessService.update(cleanMember.getId(), cleanMember);
+                } catch (Exception fallbackEx) {
+                    log
+                            .error("Konnte Fehlerzähler für Member {} im Fallback nicht speichern: {}",
+                                   member.getId(),
+                                   fallbackEx.getMessage());
+                }
+            }
         }
     }
 
