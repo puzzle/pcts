@@ -1,5 +1,8 @@
 package ch.puzzle.pcts.service.scheduled;
 
+import ch.puzzle.pcts.dto.error.ErrorKey;
+import ch.puzzle.pcts.dto.error.FieldKey;
+import ch.puzzle.pcts.dto.error.GenericErrorDto;
 import ch.puzzle.pcts.dto.puzzletime.EmployeeAttributes;
 import ch.puzzle.pcts.dto.puzzletime.EmployeeData;
 import ch.puzzle.pcts.dto.puzzletime.PuzzleTimeResponseDto;
@@ -23,9 +26,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -127,24 +132,24 @@ public class MemberAttributesSyncJob {
             Long apiPtimeId = apiEmployee.id();
 
             if (apiEmployee.attributes() == null) {
-                log.info("API record with id {} has no existing attributes. Skipping", apiPtimeId);
+                log.info("API record with id {} has no existing attributes. Skipping.", apiPtimeId);
                 continue;
             }
 
             String abbreviation = apiEmployee.attributes().shortname();
             Member member;
+            boolean matchedViaAbbreviation = false;
 
             try {
                 member = memberBusinessService.findByPtimeId(apiPtimeId);
-
             } catch (PCTSException _) {
-
                 try {
                     member = memberBusinessService.findByAbbreviation(abbreviation);
-
-                    member.setPtimeId(apiPtimeId);
-                    log.info("Member {} found using abbreviation. ptime_id {} was added.", abbreviation, apiPtimeId);
-
+                    matchedViaAbbreviation = true;
+                    log
+                            .info("Member {} found using abbreviation. ptime_id {} will be added.",
+                                  abbreviation,
+                                  apiPtimeId);
                 } catch (PCTSException _) {
                     log
                             .warn("API record ignored: user with ptime_id {} and abbreviation {} was not found.",
@@ -154,45 +159,39 @@ public class MemberAttributesSyncJob {
                 }
             }
 
-            if (isValidApiData(apiEmployee)) {
-                updateMemberData(member, apiEmployee.attributes());
-                member.setLastSuccessfulSync(LocalDateTime.now());
-                member.setSyncErrorCount(0);
-                log.debug("Member {} erfolgreich synchronisiert.", member.getId());
-            } else {
-                int currentErrors = member.getSyncErrorCount() != null ? member.getSyncErrorCount() : 0;
-                member.setSyncErrorCount(currentErrors + 1);
-                log.warn("API-Daten-Validierung für Member {} fehlgeschlagen. Fehlerzähler erhöht.", member.getId());
+            if (matchedViaAbbreviation) {
+                member.setPtimeId(apiPtimeId);
             }
 
             try {
+                validateAndUpdateMemberData(member, apiEmployee.attributes());
+
+                member.setLastSuccessfulSync(LocalDateTime.now());
+                member.setSyncErrorCount(0);
+
                 memberBusinessService.update(member.getId(), member);
+                log.debug("Member {} successfully synced.", member.getId());
+
             } catch (PCTSException e) {
-                log.error("BusinessService lehnte das Speichern von Member {} ab: {}", member.getId(), e.getMessage());
-
-                try {
-                    Member cleanMember = memberBusinessService.findByPtimeId(apiPtimeId);
-
-                    int currentErrors = cleanMember.getSyncErrorCount() != null ? cleanMember.getSyncErrorCount() : 0;
-                    cleanMember.setSyncErrorCount(currentErrors + 1);
-
-                    memberBusinessService.update(cleanMember.getId(), cleanMember);
-                } catch (Exception fallbackEx) {
-                    log
-                            .error("Konnte Fehlerzähler für Member {} im Fallback nicht speichern: {}",
-                                   member.getId(),
-                                   fallbackEx.getMessage());
-                }
+                log
+                        .warn("Processing failed for member {} (ptime_id {}): {}",
+                              member.getId(),
+                              apiPtimeId,
+                              e.getMessage());
+                incrementErrorCountAndSave(member, apiPtimeId);
             }
         }
     }
 
-    private boolean isValidApiData(EmployeeData apiEmployee) {
-        return apiEmployee.attributes().firstname() != null && !apiEmployee.attributes().firstname().isBlank()
-               && apiEmployee.attributes().lastname() != null && !apiEmployee.attributes().lastname().isBlank();
-    }
+    private void validateAndUpdateMemberData(Member member, EmployeeAttributes attributes) throws PCTSException {
 
-    private void updateMemberData(Member member, EmployeeAttributes attributes) {
+        if (attributes.firstname() == null || attributes.firstname().isBlank() || attributes.lastname() == null
+            || attributes.lastname().isBlank()) {
+            throw new PCTSException(HttpStatus.BAD_REQUEST,
+                                    List
+                                            .of(new GenericErrorDto(ErrorKey.ATTRIBUTE_NOT_NULL,
+                                                                    Map.of(FieldKey.FIELD, "firstname & lastname"))));
+        }
 
         member.setFirstName(attributes.firstname());
         member.setLastName(attributes.lastname());
@@ -202,10 +201,10 @@ public class MemberAttributesSyncJob {
                 LocalDate parsedDate = LocalDate.parse(attributes.birthday());
                 member.setBirthDate(parsedDate);
             } catch (DateTimeParseException _) {
-                log
-                        .warn("Konnte Geburtsdatum '{}' von API für Member {} nicht parsen. Behalte altes Datum.",
-                              attributes.birthday(),
-                              member.getId());
+                throw new PCTSException(HttpStatus.BAD_REQUEST,
+                                        List
+                                                .of(new GenericErrorDto(ErrorKey.ATTRIBUTE_NOT_DATE,
+                                                                        Map.of(FieldKey.FIELD, "birthDate"))));
             }
         }
 
@@ -217,22 +216,42 @@ public class MemberAttributesSyncJob {
 
         String departmentName = attributes.departmentName();
         if (departmentName != null && !departmentName.isBlank()) {
-
             OrganisationUnit ou;
             try {
                 ou = organisationUnitBusinessService.findByName(departmentName);
             } catch (PCTSException _) {
-                log.info("OrganisationUnit '{}' existiert nicht im PCTS. Wird neu erstellt.", departmentName);
-
+                log.info("OrganisationUnit '{}' does not exist in PCTS. Creating new instance.", departmentName);
                 OrganisationUnit newOu = new OrganisationUnit();
                 newOu.setName(departmentName);
                 ou = organisationUnitBusinessService.create(newOu);
             }
-
             member.setOrganisationUnit(ou);
-
         } else {
-            member.setOrganisationUnit(null);
+            throw new PCTSException(HttpStatus.BAD_REQUEST,
+                                    List
+                                            .of(new GenericErrorDto(ErrorKey.ATTRIBUTE_NOT_NULL,
+                                                                    Map.of(FieldKey.FIELD, "organisationUnit"))));
+        }
+    }
+
+    private void incrementErrorCountAndSave(Member dirtyMember, Long apiPtimeId) {
+        try {
+            Member cleanMember = memberBusinessService.findByPtimeId(apiPtimeId);
+
+            int currentErrors = cleanMember.getSyncErrorCount() != null ? cleanMember.getSyncErrorCount() : 0;
+            cleanMember.setSyncErrorCount(currentErrors + 1);
+
+            memberBusinessService.update(cleanMember.getId(), cleanMember);
+            log
+                    .info("Error count for member {} successfully incremented to {}.",
+                          cleanMember.getId(),
+                          currentErrors + 1);
+
+        } catch (PCTSException fallbackEx) {
+            log
+                    .error("Failed to save error count for member {} during fallback: {}",
+                           dirtyMember.getId(),
+                           fallbackEx.getMessage());
         }
     }
 
