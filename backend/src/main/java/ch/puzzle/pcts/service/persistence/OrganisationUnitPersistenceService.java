@@ -24,4 +24,8 @@ public class OrganisationUnitPersistenceService extends PersistenceBase<Organisa
     public Optional<OrganisationUnit> getByName(String name) {
         return repository.findByName(name);
     }
+
+    public OrganisationUnit findByName(String name) {
+        return repository.findByName(name).orElseThrow(() -> throwNotFoundError(name));
+    }
 }

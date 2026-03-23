@@ -4,6 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record EmployeeAttributes(String firstname, String lastname, String shortname,
+public record EmployeeAttributes(String firstname, String lastname, String shortname, String birthday,
         @JsonProperty("is_employed") boolean isEmployed, @JsonProperty("department_name") String departmentName) {
 }

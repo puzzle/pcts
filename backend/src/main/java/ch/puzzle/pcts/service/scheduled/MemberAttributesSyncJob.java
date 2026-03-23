@@ -4,8 +4,11 @@ import ch.puzzle.pcts.dto.puzzletime.EmployeeAttributes;
 import ch.puzzle.pcts.dto.puzzletime.EmployeeData;
 import ch.puzzle.pcts.dto.puzzletime.PuzzleTimeResponseDto;
 import ch.puzzle.pcts.exception.PCTSException;
+import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
+import ch.puzzle.pcts.service.business.OrganisationUnitBusinessService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -16,7 +19,9 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,8 +39,10 @@ public class MemberAttributesSyncJob {
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
     private final MemberBusinessService memberBusinessService;
+    private final OrganisationUnitBusinessService organisationUnitBusinessService;
 
     public MemberAttributesSyncJob(MemberBusinessService memberBusinessService,
+                                   OrganisationUnitBusinessService organisationUnitBusinessService,
                                    @Value("${app.member-sync.enabled:false}") boolean enabled,
                                    @Value("${app.member-sync.url}") String apiUrl,
                                    @Value("${app.member-sync.username}") String username,
@@ -43,6 +50,7 @@ public class MemberAttributesSyncJob {
 
         this.objectMapper = new ObjectMapper();
         this.memberBusinessService = memberBusinessService;
+        this.organisationUnitBusinessService = organisationUnitBusinessService;
         this.enabled = enabled;
         this.apiUrl = apiUrl;
 
@@ -147,7 +155,7 @@ public class MemberAttributesSyncJob {
             }
 
             if (isValidApiData(apiEmployee)) {
-                updateMemberStammdaten(member, apiEmployee.attributes());
+                updateMemberData(member, apiEmployee.attributes());
                 member.setLastSuccessfulSync(LocalDateTime.now());
                 member.setSyncErrorCount(0);
                 log.debug("Member {} erfolgreich synchronisiert.", member.getId());
@@ -184,9 +192,48 @@ public class MemberAttributesSyncJob {
                && apiEmployee.attributes().lastname() != null && !apiEmployee.attributes().lastname().isBlank();
     }
 
-    private void updateMemberStammdaten(Member member, EmployeeAttributes attributes) {
+    private void updateMemberData(Member member, EmployeeAttributes attributes) {
+
         member.setFirstName(attributes.firstname());
         member.setLastName(attributes.lastname());
+
+        if (attributes.birthday() != null && !attributes.birthday().isBlank()) {
+            try {
+                LocalDate parsedDate = LocalDate.parse(attributes.birthday());
+                member.setBirthDate(parsedDate);
+            } catch (DateTimeParseException _) {
+                log
+                        .warn("Konnte Geburtsdatum '{}' von API für Member {} nicht parsen. Behalte altes Datum.",
+                              attributes.birthday(),
+                              member.getId());
+            }
+        }
+
+        if (attributes.isEmployed()) {
+            member.setEmploymentState(EmploymentState.MEMBER);
+        } else {
+            member.setEmploymentState(EmploymentState.EX_MEMBER);
+        }
+
+        String departmentName = attributes.departmentName();
+        if (departmentName != null && !departmentName.isBlank()) {
+
+            OrganisationUnit ou;
+            try {
+                ou = organisationUnitBusinessService.findByName(departmentName);
+            } catch (PCTSException _) {
+                log.info("OrganisationUnit '{}' existiert nicht im PCTS. Wird neu erstellt.", departmentName);
+
+                OrganisationUnit newOu = new OrganisationUnit();
+                newOu.setName(departmentName);
+                ou = organisationUnitBusinessService.create(newOu);
+            }
+
+            member.setOrganisationUnit(ou);
+
+        } else {
+            member.setOrganisationUnit(null);
+        }
     }
 
     private PuzzleTimeResponseDto parseJsonResponse(String jsonBody) throws JsonProcessingException {
