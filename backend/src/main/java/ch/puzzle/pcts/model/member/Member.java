@@ -47,7 +47,7 @@ public class Member implements Model {
     @JoinColumn(name = "organisation_unit")
     private OrganisationUnit organisationUnit;
 
-    @Min(value = 1, message = "{attribute.not.negative}")
+    @Min(value = 1, message = "{attribute.min.value}")
     private Long ptimeId;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)

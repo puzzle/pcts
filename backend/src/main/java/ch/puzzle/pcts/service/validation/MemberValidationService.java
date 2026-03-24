@@ -28,28 +28,31 @@ public class MemberValidationService extends ValidationBase<Member> {
     public void validateOnCreate(Member member) {
         super.validateOnCreate(member);
         validateBirthDateIsBeforeDateOfHire(member.getBirthDate(), member.getDateOfHire());
-        ptimeIdIsUnique(member.getPtimeId());
     }
 
     @Override
     public void validateOnUpdate(Long id, Member member) {
         super.validateOnUpdate(id, member);
         validateBirthDateIsBeforeDateOfHire(member.getBirthDate(), member.getDateOfHire());
-        ptimeIdIsUnique(member.getPtimeId());
+        validatePtimeIdIsUnique(member.getPtimeId());
     }
 
     private void validateBirthDateIsBeforeDateOfHire(LocalDate birthDate, LocalDate dateOfHire) {
         validateDateIsBefore(MEMBER, "dateOfBirth", birthDate, "dateOfHire", dateOfHire);
     }
 
-    private void ptimeIdIsUnique(Long ptimeId) {
+    private void validatePtimeIdIsUnique(Long ptimeId) {
         Optional<Member> result = persistenceService.findByPtimeId(ptimeId);
 
         if (result.isPresent()) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
                                     List
                                             .of(new GenericErrorDto(ErrorKey.ATTRIBUTE_UNIQUE,
-                                                                    Map.of(FieldKey.FIELD, "ptime_id"))));
+                                                                    Map
+                                                                            .of(FieldKey.CLASS,
+                                                                                "Member",
+                                                                                FieldKey.FIELD,
+                                                                                "ptimeId"))));
         }
     }
 }
