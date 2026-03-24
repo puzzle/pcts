@@ -16,6 +16,6 @@ public record MemberDto(
         @Schema(description = "The member's birth date.", example = "1995-02-19", requiredMode = Schema.RequiredMode.REQUIRED) LocalDate birthDate,
         @Schema(description = "The Organisation unit of the member.", requiredMode = Schema.RequiredMode.NOT_REQUIRED) OrganisationUnitDto organisationUnit,
         @Schema(description = "The unique identifier of the member from the PuzzleTime", example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED) Long ptimeId,
-        @Schema(description = "The timestamp of the last time the sync with the PuzzleTime was successful", example = "2024-02-14T10:15:30", requiredMode = Schema.RequiredMode.NOT_REQUIRED) LocalDateTime lastSuccessfulSync,
-        @Schema(description = "The amount of times the sync failed since it was successful ", example = "3", requiredMode = Schema.RequiredMode.NOT_REQUIRED) Integer syncErrorCount) {
+        @Schema(description = "The timestamp of the last time the sync with the PuzzleTime API was successful", example = "2024-02-14T10:15:30", requiredMode = Schema.RequiredMode.NOT_REQUIRED) LocalDateTime lastSuccessfulSync,
+        @Schema(description = "The amount of times the sync failed since it was last successful ", example = "3", requiredMode = Schema.RequiredMode.NOT_REQUIRED) Integer syncErrorCount) {
 }
