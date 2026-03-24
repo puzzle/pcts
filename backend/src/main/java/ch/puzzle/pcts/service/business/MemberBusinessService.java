@@ -14,15 +14,16 @@ import org.springframework.stereotype.Service;
 public class MemberBusinessService extends BusinessBase<Member> {
     RoleBusinessService roleBusinessService;
     CalculationBusinessService calculationBusinessService;
-    MemberPersistenceService persistenceService;
+    MemberPersistenceService memberPersistenceService;
 
-    public MemberBusinessService(MemberValidationService validationService, MemberPersistenceService persistenceService,
+    public MemberBusinessService(MemberValidationService validationService,
+                                 MemberPersistenceService memberPersistenceService,
                                  RoleBusinessService roleBusinessService,
                                  CalculationBusinessService calculationBusinessService) {
-        super(validationService, persistenceService);
+        super(validationService, memberPersistenceService);
         this.roleBusinessService = roleBusinessService;
         this.calculationBusinessService = calculationBusinessService;
-        this.persistenceService = persistenceService;
+        this.memberPersistenceService = memberPersistenceService;
     }
 
     public List<Member> getAll() {
@@ -46,24 +47,21 @@ public class MemberBusinessService extends BusinessBase<Member> {
 
     @Override
     public Member update(Long id, Member member) {
-        Member toBeUpdated = getById(id);
-
         validationService.validateOnUpdate(id, member);
 
+        Member oldEntry = getById(id);
+
         member.setId(id);
-        member
-                .keepSyncData(toBeUpdated.getPtimeId(),
-                              toBeUpdated.getLastSuccessfulSync(),
-                              toBeUpdated.getSyncErrorCount());
+        member.keepSyncData(oldEntry.getPtimeId(), oldEntry.getLastSuccessfulSync(), oldEntry.getSyncErrorCount());
 
         return persistenceService.save(member);
     }
 
     public Optional<Member> findByPtimeId(Long id) {
-        return persistenceService.findByPtimeId(id);
+        return memberPersistenceService.findByPtimeId(id);
     }
 
     public Optional<Member> findByAbbreviation(String abbreviation) {
-        return persistenceService.findByAbbreviation(abbreviation);
+        return memberPersistenceService.findByAbbreviation(abbreviation);
     }
 }
