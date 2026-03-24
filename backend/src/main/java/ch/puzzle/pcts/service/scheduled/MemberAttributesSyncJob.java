@@ -12,27 +12,21 @@ import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import ch.puzzle.pcts.service.business.OrganisationUnitBusinessService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
-import java.net.Authenticator;
-import java.net.PasswordAuthentication;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestClientResponseException;
 
 @Component
 public class MemberAttributesSyncJob {
@@ -40,9 +34,7 @@ public class MemberAttributesSyncJob {
     private static final Logger log = LoggerFactory.getLogger(MemberAttributesSyncJob.class);
 
     private final boolean enabled;
-    private final String apiUrl;
-    private final HttpClient httpClient;
-    private final ObjectMapper objectMapper;
+    private final RestClient restClient;
     private final MemberBusinessService memberBusinessService;
     private final OrganisationUnitBusinessService organisationUnitBusinessService;
 
@@ -53,18 +45,16 @@ public class MemberAttributesSyncJob {
                                    @Value("${app.member-sync.username}") String username,
                                    @Value("${app.member-sync.password}") String password) {
 
-        this.objectMapper = new ObjectMapper();
         this.memberBusinessService = memberBusinessService;
         this.organisationUnitBusinessService = organisationUnitBusinessService;
         this.enabled = enabled;
-        this.apiUrl = apiUrl;
 
-        this.httpClient = HttpClient.newBuilder().authenticator(new Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(username, password.toCharArray());
-            }
-        }).build();
+        this.restClient = RestClient
+                .builder()
+                .baseUrl(apiUrl)
+                .defaultHeaders(headers -> headers.setBasicAuth(username, password))
+                .defaultHeader("Accept", "application/json")
+                .build();
     }
 
     @Scheduled(cron = "${app.member-sync.cron}")
@@ -79,27 +69,11 @@ public class MemberAttributesSyncJob {
 
         while (true) {
             try {
-                URI uri = new URI(apiUrl + "?page=" + page);
-
-                HttpRequest request = HttpRequest
-                        .newBuilder()
-                        .uri(uri)
-                        .header("Accept", "application/json")
-                        .GET()
-                        .build();
-
-                HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-                if (response.statusCode() != 200) {
-                    log
-                            .error("HTTP request failed with status code {} on page {}. Response: {}",
-                                   response.statusCode(),
-                                   page,
-                                   response.body());
-                    break;
-                }
-
-                PuzzleTimeResponseDto apiData = parseJsonResponse(response.body());
+                PuzzleTimeResponseDto apiData = restClient
+                        .get()
+                        .uri("?page={page}", page)
+                        .retrieve()
+                        .body(PuzzleTimeResponseDto.class);
 
                 if (apiData == null || apiData.data() == null || apiData.data().isEmpty()) {
                     log.info("Empty data array received on page {}. Pagination finished.", page);
@@ -111,15 +85,15 @@ public class MemberAttributesSyncJob {
                 log.info("Successfully fetched and processed page {}", page);
                 page++;
 
-            } catch (URISyntaxException e) {
-                log.error("Invalid API URI constructed for page {}: {}", page, e.getMessage(), e);
+            } catch (RestClientResponseException e) {
+                log
+                        .error("HTTP request failed with status code {} on page {}. Response: {}",
+                               e.getStatusCode(),
+                               page,
+                               e.getResponseBodyAsString());
                 break;
-            } catch (IOException e) {
-                log.error("Network or I/O error while fetching page {}: {}", page, e.getMessage(), e);
-                break;
-            } catch (InterruptedException e) {
-                log.error("Sync job was interrupted during execution on page {}", page);
-                Thread.currentThread().interrupt();
+            } catch (RestClientException e) {
+                log.error("Network or mapping error while fetching page {}: {}", page, e.getMessage(), e);
                 break;
             }
         }
@@ -140,17 +114,20 @@ public class MemberAttributesSyncJob {
             Member member;
             boolean matchedViaAbbreviation = false;
 
-            try {
-                member = memberBusinessService.findByPtimeId(apiPtimeId);
-            } catch (PCTSException _) {
-                try {
-                    member = memberBusinessService.findByAbbreviation(abbreviation);
+            Optional<Member> memberOpt = memberBusinessService.findByPtimeId(apiPtimeId);
+
+            if (memberOpt.isPresent()) {
+                member = memberOpt.get();
+            } else {
+                Optional<Member> fallbackOpt = memberBusinessService.findByAbbreviation(abbreviation);
+                if (fallbackOpt.isPresent()) {
+                    member = fallbackOpt.get();
                     matchedViaAbbreviation = true;
                     log
                             .info("Member {} found using abbreviation. ptime_id {} will be added.",
                                   abbreviation,
                                   apiPtimeId);
-                } catch (PCTSException _) {
+                } else {
                     log
                             .warn("API record ignored: user with ptime_id {} and abbreviation {} was not found.",
                                   apiPtimeId,
@@ -216,16 +193,21 @@ public class MemberAttributesSyncJob {
 
         String departmentName = attributes.departmentName();
         if (departmentName != null && !departmentName.isBlank()) {
+
+            Optional<OrganisationUnit> organisationUnitOpt = organisationUnitBusinessService.findByName(departmentName);
             OrganisationUnit ou;
-            try {
-                ou = organisationUnitBusinessService.findByName(departmentName);
-            } catch (PCTSException _) {
+
+            if (organisationUnitOpt.isEmpty()) {
                 log.info("OrganisationUnit '{}' does not exist in PCTS. Creating new instance.", departmentName);
                 OrganisationUnit newOu = new OrganisationUnit();
                 newOu.setName(departmentName);
                 ou = organisationUnitBusinessService.create(newOu);
+            } else {
+                ou = organisationUnitOpt.get();
             }
+
             member.setOrganisationUnit(ou);
+
         } else {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
                                     List
@@ -236,31 +218,29 @@ public class MemberAttributesSyncJob {
 
     private void incrementErrorCountAndSave(Member dirtyMember, Long apiPtimeId) {
         try {
-            Member cleanMember = memberBusinessService.findByPtimeId(apiPtimeId);
+            Optional<Member> cleanMemberOpt = memberBusinessService.findByPtimeId(apiPtimeId);
 
-            int currentErrors = cleanMember.getSyncErrorCount() != null ? cleanMember.getSyncErrorCount() : 0;
-            cleanMember.setSyncErrorCount(currentErrors + 1);
+            if (cleanMemberOpt.isPresent()) {
+                Member cleanMember = cleanMemberOpt.get();
+                int currentErrors = cleanMember.getSyncErrorCount() != null ? cleanMember.getSyncErrorCount() : 0;
+                cleanMember.setSyncErrorCount(currentErrors + 1);
 
-            memberBusinessService.update(cleanMember.getId(), cleanMember);
-            log
-                    .info("Error count for member {} successfully incremented to {}.",
-                          cleanMember.getId(),
-                          currentErrors + 1);
+                memberBusinessService.update(cleanMember.getId(), cleanMember);
+                log
+                        .info("Error count for member {} successfully incremented to {}.",
+                              cleanMember.getId(),
+                              currentErrors + 1);
+            } else {
+                log
+                        .error("Failed to fallback save error count: Member with ptime_id {} not found anymore.",
+                               apiPtimeId);
+            }
 
         } catch (PCTSException fallbackEx) {
             log
                     .error("Failed to save error count for member {} during fallback: {}",
                            dirtyMember.getId(),
                            fallbackEx.getMessage());
-        }
-    }
-
-    private PuzzleTimeResponseDto parseJsonResponse(String jsonBody) throws JsonProcessingException {
-        try {
-            return objectMapper.readValue(jsonBody, PuzzleTimeResponseDto.class);
-        } catch (JsonProcessingException e) {
-            log.error("Failed to parse JSON response: {}", e.getMessage());
-            throw e;
         }
     }
 }

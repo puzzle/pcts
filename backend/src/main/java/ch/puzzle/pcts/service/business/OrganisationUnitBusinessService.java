@@ -4,6 +4,7 @@ import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.persistence.OrganisationUnitPersistenceService;
 import ch.puzzle.pcts.service.validation.OrganisationUnitValidationService;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,7 +21,7 @@ public class OrganisationUnitBusinessService extends BusinessBase<OrganisationUn
         return persistenceService.getAll();
     }
 
-    public OrganisationUnit findByName(String name) {
+    public Optional<OrganisationUnit> findByName(String name) {
         return persistenceService.findByName(name);
     }
 }
