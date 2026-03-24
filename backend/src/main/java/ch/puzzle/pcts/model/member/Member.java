@@ -66,6 +66,9 @@ public class Member implements Model {
         this.dateOfHire = builder.dateOfHire;
         this.birthDate = builder.birthDate;
         this.organisationUnit = builder.organisationUnit;
+        this.ptimeId = builder.ptimeId;
+        this.lastSuccessfulSync = builder.lastSuccessfulSync;
+        this.syncErrorCount = builder.syncErrorCount;
         this.deletedAt = null;
     }
 
