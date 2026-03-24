@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MemberPersistenceService extends PersistenceBase<Member, MemberRepository> {
-    MemberRepository repository;
+    private final MemberRepository repository;
 
     public MemberPersistenceService(MemberRepository repository) {
         super(repository);

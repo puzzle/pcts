@@ -12,9 +12,7 @@ import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import ch.puzzle.pcts.service.business.OrganisationUnitBusinessService;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -111,30 +109,25 @@ public class MemberAttributesSyncJob {
             }
 
             String abbreviation = apiEmployee.attributes().shortname();
-            Member member;
+            Optional<Member> memberOpt = memberBusinessService.findByPtimeId(apiPtimeId);
             boolean matchedViaAbbreviation = false;
 
-            Optional<Member> memberOpt = memberBusinessService.findByPtimeId(apiPtimeId);
+            if (memberOpt.isEmpty()) {
+                memberOpt = memberBusinessService.findByAbbreviation(abbreviation);
 
-            if (memberOpt.isPresent()) {
-                member = memberOpt.get();
-            } else {
-                Optional<Member> fallbackOpt = memberBusinessService.findByAbbreviation(abbreviation);
-                if (fallbackOpt.isPresent()) {
-                    member = fallbackOpt.get();
-                    matchedViaAbbreviation = true;
-                    log
-                            .info("Member {} found using abbreviation. ptime_id {} will be added.",
-                                  abbreviation,
-                                  apiPtimeId);
-                } else {
+                if (memberOpt.isEmpty()) {
                     log
                             .warn("API record ignored: user with ptime_id {} and abbreviation {} was not found.",
                                   apiPtimeId,
                                   abbreviation);
                     continue;
                 }
+
+                matchedViaAbbreviation = true;
+                log.info("Member {} found using abbreviation. ptime_id {} will be added.", abbreviation, apiPtimeId);
             }
+
+            Member member = memberOpt.get();
 
             if (matchedViaAbbreviation) {
                 member.setPtimeId(apiPtimeId);
@@ -173,16 +166,8 @@ public class MemberAttributesSyncJob {
         member.setFirstName(attributes.firstname());
         member.setLastName(attributes.lastname());
 
-        if (attributes.birthday() != null && !attributes.birthday().isBlank()) {
-            try {
-                LocalDate parsedDate = LocalDate.parse(attributes.birthday());
-                member.setBirthDate(parsedDate);
-            } catch (DateTimeParseException _) {
-                throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                        List
-                                                .of(new GenericErrorDto(ErrorKey.ATTRIBUTE_NOT_DATE,
-                                                                        Map.of(FieldKey.FIELD, "birthDate"))));
-            }
+        if (attributes.birthday() != null) {
+            member.setBirthDate(attributes.birthday());
         }
 
         if (attributes.isEmployed()) {
@@ -194,19 +179,7 @@ public class MemberAttributesSyncJob {
         String departmentName = attributes.departmentName();
         if (departmentName != null && !departmentName.isBlank()) {
 
-            Optional<OrganisationUnit> organisationUnitOpt = organisationUnitBusinessService.findByName(departmentName);
-            OrganisationUnit ou;
-
-            if (organisationUnitOpt.isEmpty()) {
-                log.info("OrganisationUnit '{}' does not exist in PCTS. Creating new instance.", departmentName);
-                OrganisationUnit newOu = new OrganisationUnit();
-                newOu.setName(departmentName);
-                ou = organisationUnitBusinessService.create(newOu);
-            } else {
-                ou = organisationUnitOpt.get();
-            }
-
-            member.setOrganisationUnit(ou);
+            member.setOrganisationUnit(findOrCreateOrganisationUnit(departmentName));
 
         } else {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
@@ -214,6 +187,19 @@ public class MemberAttributesSyncJob {
                                             .of(new GenericErrorDto(ErrorKey.ATTRIBUTE_NOT_NULL,
                                                                     Map.of(FieldKey.FIELD, "organisationUnit"))));
         }
+    }
+
+    private OrganisationUnit findOrCreateOrganisationUnit(String departmentName) {
+        Optional<OrganisationUnit> orgUnitOpt = organisationUnitBusinessService.findByName(departmentName);
+
+        if (orgUnitOpt.isEmpty()) {
+            log.info("OrganisationUnit '{}' does not exist in PCTS. Creating new instance.", departmentName);
+            OrganisationUnit newOu = new OrganisationUnit();
+            newOu.setName(departmentName);
+            return organisationUnitBusinessService.create(newOu);
+        }
+
+        return orgUnitOpt.get();
     }
 
     private void incrementErrorCountAndSave(Member dirtyMember, Long apiPtimeId) {
