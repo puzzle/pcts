@@ -144,11 +144,12 @@ public class MemberAttributesSyncJob {
 
             } catch (PCTSException e) {
                 log
-                        .warn("Processing failed for member {} (ptime_id {}): {}",
+                        .warn("Processing failed for member {} (ptime_id {}): {} - Errors: {}",
                               member.getId(),
                               apiPtimeId,
-                              e.getMessage());
-                incrementErrorCountAndSave(member, apiPtimeId);
+                              e.getMessage(),
+                              e.getErrors());
+                incrementErrorCountAndSave(member);
             }
         }
     }
@@ -202,25 +203,18 @@ public class MemberAttributesSyncJob {
         return orgUnitOpt.get();
     }
 
-    private void incrementErrorCountAndSave(Member dirtyMember, Long apiPtimeId) {
+    private void incrementErrorCountAndSave(Member dirtyMember) {
         try {
-            Optional<Member> cleanMemberOpt = memberBusinessService.findByPtimeId(apiPtimeId);
+            Member cleanMember = memberBusinessService.getById(dirtyMember.getId());
 
-            if (cleanMemberOpt.isPresent()) {
-                Member cleanMember = cleanMemberOpt.get();
-                int currentErrors = cleanMember.getSyncErrorCount() != null ? cleanMember.getSyncErrorCount() : 0;
-                cleanMember.setSyncErrorCount(currentErrors + 1);
+            int currentErrors = cleanMember.getSyncErrorCount() != null ? cleanMember.getSyncErrorCount() : 0;
+            cleanMember.setSyncErrorCount(currentErrors + 1);
 
-                memberBusinessService.update(cleanMember.getId(), cleanMember);
-                log
-                        .info("Error count for member {} successfully incremented to {}.",
-                              cleanMember.getId(),
-                              currentErrors + 1);
-            } else {
-                log
-                        .error("Failed to fallback save error count: Member with ptime_id {} not found anymore.",
-                               apiPtimeId);
-            }
+            memberBusinessService.update(cleanMember.getId(), cleanMember);
+            log
+                    .info("Error count for member {} successfully incremented to {}.",
+                          cleanMember.getId(),
+                          currentErrors + 1);
 
         } catch (PCTSException fallbackEx) {
             log

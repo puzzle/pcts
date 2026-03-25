@@ -34,15 +34,15 @@ public class MemberValidationService extends ValidationBase<Member> {
     public void validateOnUpdate(Long id, Member member) {
         super.validateOnUpdate(id, member);
         validateBirthDateIsBeforeDateOfHire(member.getBirthDate(), member.getDateOfHire());
-        validatePtimeIdIsUnique(member.getPtimeId());
+        validatePtimeIdIsUnique(member.getPtimeId(), id);
     }
 
     private void validateBirthDateIsBeforeDateOfHire(LocalDate birthDate, LocalDate dateOfHire) {
         validateDateIsBefore(MEMBER, "dateOfBirth", birthDate, "dateOfHire", dateOfHire);
     }
 
-    private void validatePtimeIdIsUnique(Long ptimeId) {
-        Optional<Member> result = persistenceService.findByPtimeId(ptimeId);
+    private void validatePtimeIdIsUnique(Long ptimeId, Long id) {
+        Optional<Member> result = persistenceService.findByPtimeIdAndIdNot(ptimeId, id);
 
         if (result.isPresent()) {
             throw new PCTSException(HttpStatus.BAD_REQUEST,
