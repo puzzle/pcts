@@ -3,14 +3,11 @@ package ch.puzzle.pcts.service.persistence;
 import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.repository.MemberRepository;
-import jakarta.transaction.Transactional;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,28 +32,24 @@ class MemberPersistenceServiceIT extends PersistenceBaseIT<Member, MemberReposit
         return MEMBERS;
     }
 
-    Member memberWithPtimeId = Member.Builder
-            .builder()
-            .withFirstName("Member 1")
-            .withLastName("Test")
-            .withEmploymentState(EmploymentState.EX_MEMBER)
-            .withBirthDate(LocalDate.ofYearDay(1999, 1))
-            .withPtimeId(1L)
-            .build();
+    @BeforeEach
+    void enrichMembersWithSyncData() {
+        MEMBERS.forEach(expectedMember -> {
+            Optional<Member> dbMemberOpt = persistenceService.findByAbbreviation(expectedMember.getAbbreviation());
 
-    @DisplayName("Should get all entities")
-    @Test
-    @Transactional
-    @Override
-    void shouldGetAllEntities() {
-        List<Member> all = persistenceService.getAll();
-        Assertions.assertThat(all).hasSize(getAll().size());
+            dbMemberOpt.ifPresent(dbMember -> {
+                dbMember.setPtimeId(expectedMember.getPtimeId());
+                dbMember.setLastSuccessfulSync(expectedMember.getLastSuccessfulSync());
+                dbMember.setSyncErrorCount(expectedMember.getSyncErrorCount());
+
+                persistenceService.save(dbMember);
+            });
+        });
     }
 
     @DisplayName("Should return member by ptimeId when found")
     @Test
     void shouldReturnMemberByPtimeID() {
-        persistenceService.save(memberWithPtimeId);
         Optional<Member> result = persistenceService.findByPtimeId(MEMBER_1.getPtimeId());
 
         assertThat(result).isPresent();
