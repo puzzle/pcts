@@ -60,11 +60,11 @@ VALUES
 
 TRUNCATE TABLE member CASCADE;
 
-INSERT INTO member (first_name, last_name, abbreviation, employment_state, date_of_hire, birth_date, organisation_unit)
+INSERT INTO member (first_name, last_name, abbreviation, employment_state, date_of_hire, birth_date, organisation_unit, ptime_id, last_successful_sync, sync_error_count)
 VALUES
-    ('Member 1', 'Test', 'M1', 'MEMBER', '2021-07-15', '1999-08-10', 1),
-    ('Member 2', 'Test', 'M2', 'MEMBER', '2020-06-01', '1998-03-03', 2),
-    ('Member 3', 'Test', 'M3', 'MEMBER', '2020-06-01', '1998-03-03', 2);
+    ('Member 1', 'Test', 'M1', 'MEMBER', '2021-07-15', '1999-08-10', 1, 1, '2025-12-01 01:01:00', 0),
+    ('Member 2', 'Test', 'M2', 'MEMBER', '2020-06-01', '1998-03-03', 2, 2, '2025-12-01 01:01:00', 0),
+    ('Member 3', 'Test', 'M3', 'MEMBER', '2020-06-01', '1998-03-03', 2, 3, '2025-12-01 01:01:00', 0);
 
 TRUNCATE TABLE experience CASCADE;
 
