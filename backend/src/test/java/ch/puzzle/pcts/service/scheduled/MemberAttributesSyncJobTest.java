@@ -109,6 +109,7 @@ class MemberAttributesSyncJobTest {
         int initialErrorCount = MEMBER_3.getSyncErrorCount() != null ? MEMBER_3.getSyncErrorCount() : 0;
 
         when(memberBusinessService.findByPtimeId(3L)).thenReturn(Optional.of(MEMBER_3));
+        when(memberBusinessService.getById(MEMBER_3.getId())).thenReturn(MEMBER_3);
 
         ReflectionTestUtils.invokeMethod(syncJob, "processAndSaveMembers", List.of(apiEmployee));
 

@@ -77,9 +77,9 @@ public class TestDataDTOs {
                                                                MEMBER_2.getDateOfHire(),
                                                                MEMBER_2.getBirthDate(),
                                                                ORG_UNIT_2_DTO,
-                                                               MEMBER_1.getPtimeId(),
-                                                               MEMBER_1.getLastSuccessfulSync(),
-                                                               MEMBER_1.getSyncErrorCount());
+                                                               MEMBER_2.getPtimeId(),
+                                                               MEMBER_2.getLastSuccessfulSync(),
+                                                               MEMBER_2.getSyncErrorCount());
 
     public static final MemberInputDto MEMBER_1_INPUT = new MemberInputDto(MEMBER_1.getFirstName(),
                                                                            MEMBER_1.getLastName(),

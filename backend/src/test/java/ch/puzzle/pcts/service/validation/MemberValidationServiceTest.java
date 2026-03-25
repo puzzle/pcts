@@ -405,7 +405,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
     void shouldFailWhenPtimeIdIsNotUnique() {
         Member member = getValidModel();
         member.setPtimeId(1L);
-        when(persistenceService.findByPtimeId(anyLong())).thenReturn(Optional.of(member));
+        when(persistenceService.findByPtimeIdAndIdNot(anyLong(), anyLong())).thenReturn(Optional.of(member));
 
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> service.validateOnUpdate(MEMBER_1_ID, member));
@@ -451,7 +451,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                       "dateOfHire",
                                       member.getDateOfHire());
 
-        verify(persistenceService).findByPtimeId(member.getPtimeId());
+        verify(persistenceService).findByPtimeIdAndIdNot(member.getPtimeId(), MEMBER_1_ID);
         verifyNoMoreInteractions(persistenceService);
     }
 
