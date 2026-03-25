@@ -57,20 +57,23 @@ class MemberAttributesSyncJobTest {
                                                                "OrganisationUnit 1");
         EmployeeData apiEmployee = new EmployeeData(1L, "employee", attributes);
 
-        when(memberBusinessService.findByPtimeId(1L)).thenReturn(Optional.of(MEMBER_1));
-        when(organisationUnitBusinessService.findByName("OrganisationUnit 1")).thenReturn(Optional.of(ORG_UNIT_1));
+        Member clonedMember1 = cloneMember(MEMBER_1);
+        OrganisationUnit clonedOrgUnit1 = cloneOrgUnit(ORG_UNIT_1);
+
+        when(memberBusinessService.findByPtimeId(1L)).thenReturn(Optional.of(clonedMember1));
+        when(organisationUnitBusinessService.findByName("OrganisationUnit 1")).thenReturn(Optional.of(clonedOrgUnit1));
 
         ReflectionTestUtils.invokeMethod(syncJob, "processAndSaveMembers", List.of(apiEmployee));
 
         ArgumentCaptor<Member> memberCaptor = ArgumentCaptor.forClass(Member.class);
-        verify(memberBusinessService).update(eq(MEMBER_1.getId()), memberCaptor.capture());
+        verify(memberBusinessService).update(eq(clonedMember1.getId()), memberCaptor.capture());
 
         Member savedMember = memberCaptor.getValue();
         assertEquals("Updated", savedMember.getFirstName());
         assertEquals("Name", savedMember.getLastName());
         assertEquals(LocalDate.of(1999, 8, 10), savedMember.getBirthDate());
         assertEquals(EmploymentState.MEMBER, savedMember.getEmploymentState());
-        assertEquals(ORG_UNIT_1, savedMember.getOrganisationUnit());
+        assertEquals(clonedOrgUnit1, savedMember.getOrganisationUnit());
         assertEquals(0, savedMember.getSyncErrorCount());
         assertNotNull(savedMember.getLastSuccessfulSync());
     }
@@ -86,14 +89,17 @@ class MemberAttributesSyncJobTest {
                                                                "OrganisationUnit 2");
         EmployeeData apiEmployee = new EmployeeData(999L, "employee", attributes);
 
+        Member clonedMember2 = cloneMember(MEMBER_2);
+        OrganisationUnit clonedOrgUnit2 = cloneOrgUnit(ORG_UNIT_2);
+
         when(memberBusinessService.findByPtimeId(999L)).thenReturn(Optional.empty());
-        when(memberBusinessService.findByAbbreviation("M2")).thenReturn(Optional.of(MEMBER_2));
-        when(organisationUnitBusinessService.findByName("OrganisationUnit 2")).thenReturn(Optional.of(ORG_UNIT_2));
+        when(memberBusinessService.findByAbbreviation("M2")).thenReturn(Optional.of(clonedMember2));
+        when(organisationUnitBusinessService.findByName("OrganisationUnit 2")).thenReturn(Optional.of(clonedOrgUnit2));
 
         ReflectionTestUtils.invokeMethod(syncJob, "processAndSaveMembers", List.of(apiEmployee));
 
         ArgumentCaptor<Member> memberCaptor = ArgumentCaptor.forClass(Member.class);
-        verify(memberBusinessService).update(eq(MEMBER_2.getId()), memberCaptor.capture());
+        verify(memberBusinessService).update(eq(clonedMember2.getId()), memberCaptor.capture());
 
         Member savedMember = memberCaptor.getValue();
         assertEquals(999L, savedMember.getPtimeId());
@@ -106,15 +112,16 @@ class MemberAttributesSyncJobTest {
         EmployeeAttributes attributes = new EmployeeAttributes("", "Test", "M3", null, true, "OrganisationUnit 2");
         EmployeeData apiEmployee = new EmployeeData(3L, "employee", attributes);
 
-        int initialErrorCount = MEMBER_3.getSyncErrorCount() != null ? MEMBER_3.getSyncErrorCount() : 0;
+        Member clonedMember3 = cloneMember(MEMBER_3);
+        int initialErrorCount = clonedMember3.getSyncErrorCount() != null ? clonedMember3.getSyncErrorCount() : 0;
 
-        when(memberBusinessService.findByPtimeId(3L)).thenReturn(Optional.of(MEMBER_3));
-        when(memberBusinessService.getById(MEMBER_3.getId())).thenReturn(MEMBER_3);
+        when(memberBusinessService.findByPtimeId(3L)).thenReturn(Optional.of(clonedMember3));
+        when(memberBusinessService.getById(clonedMember3.getId())).thenReturn(clonedMember3);
 
         ReflectionTestUtils.invokeMethod(syncJob, "processAndSaveMembers", List.of(apiEmployee));
 
         ArgumentCaptor<Member> errorMemberCaptor = ArgumentCaptor.forClass(Member.class);
-        verify(memberBusinessService).update(eq(MEMBER_3.getId()), errorMemberCaptor.capture());
+        verify(memberBusinessService).update(eq(clonedMember3.getId()), errorMemberCaptor.capture());
 
         Member savedErrorMember = errorMemberCaptor.getValue();
         assertEquals(initialErrorCount + 1, savedErrorMember.getSyncErrorCount());
@@ -157,7 +164,9 @@ class MemberAttributesSyncJobTest {
         newlyCreatedOu.setId(99L);
         newlyCreatedOu.setName("New Department");
 
-        when(memberBusinessService.findByPtimeId(1L)).thenReturn(Optional.of(MEMBER_1));
+        Member clonedMember1 = cloneMember(MEMBER_1);
+
+        when(memberBusinessService.findByPtimeId(1L)).thenReturn(Optional.of(clonedMember1));
         when(organisationUnitBusinessService.findByName("New Department")).thenReturn(Optional.empty());
         when(organisationUnitBusinessService.create(any(OrganisationUnit.class))).thenReturn(newlyCreatedOu);
 
@@ -168,7 +177,45 @@ class MemberAttributesSyncJobTest {
         assertEquals("New Department", ouCaptor.getValue().getName());
 
         ArgumentCaptor<Member> memberCaptor = ArgumentCaptor.forClass(Member.class);
-        verify(memberBusinessService).update(eq(MEMBER_1.getId()), memberCaptor.capture());
+        verify(memberBusinessService).update(eq(clonedMember1.getId()), memberCaptor.capture());
         assertEquals(newlyCreatedOu, memberCaptor.getValue().getOrganisationUnit());
+    }
+
+    // Cloned objects because mocking the static ones causes problems
+    private Member cloneMember(Member original) {
+        if (original == null) {
+            return null;
+        }
+
+        return Member.Builder
+                .builder()
+                .withId(original.getId())
+                .withFirstName(original.getFirstName())
+                .withLastName(original.getLastName())
+                .withEmploymentState(original.getEmploymentState())
+                .withAbbreviation(original.getAbbreviation())
+                .withDateOfHire(original.getDateOfHire())
+                .withBirthDate(original.getBirthDate())
+                .withOrganisationUnit(cloneOrgUnit(original.getOrganisationUnit()))
+                .withPtimeId(original.getPtimeId())
+                .withLastSuccessfulSync(original.getLastSuccessfulSync())
+                .withSyncErrorCount(original.getSyncErrorCount())
+                .build();
+    }
+
+    private OrganisationUnit cloneOrgUnit(OrganisationUnit original) {
+        if (original == null) {
+            return null;
+        }
+
+        OrganisationUnit copy = OrganisationUnit.Builder
+                .builder()
+                .withId(original.getId())
+                .withName(original.getName())
+                .build();
+
+        copy.setDeletedAt(original.getDeletedAt());
+
+        return copy;
     }
 }
