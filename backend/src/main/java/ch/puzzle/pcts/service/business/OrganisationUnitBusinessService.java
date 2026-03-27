@@ -9,19 +9,19 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class OrganisationUnitBusinessService extends BusinessBase<OrganisationUnit> {
-    private final OrganisationUnitPersistenceService persistenceService;
+    private final OrganisationUnitPersistenceService organisationUnitPersistenceService;
 
     public OrganisationUnitBusinessService(OrganisationUnitValidationService validationService,
-                                           OrganisationUnitPersistenceService persistenceService) {
-        super(validationService, persistenceService);
-        this.persistenceService = persistenceService;
+                                           OrganisationUnitPersistenceService organisationUnitPersistenceService) {
+        super(validationService, organisationUnitPersistenceService);
+        this.organisationUnitPersistenceService = organisationUnitPersistenceService;
     }
 
     public List<OrganisationUnit> getAll() {
-        return persistenceService.getAll();
+        return organisationUnitPersistenceService.getAll();
     }
 
     public Optional<OrganisationUnit> findByName(String name) {
-        return persistenceService.findByName(name);
+        return organisationUnitPersistenceService.findByName(name);
     }
 }

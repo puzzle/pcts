@@ -47,8 +47,7 @@ class OrganisationUnitPersistenceServiceIT
     void shouldReturnMemberByName() {
         Optional<OrganisationUnit> result = persistenceService.findByName("OrganisationUnit 1");
 
-        assertThat(result).isPresent();
-        assertThat(result).isEqualTo(Optional.of(ORG_UNIT_1));
+        assertThat(result).isPresent().isEqualTo(Optional.of(ORG_UNIT_1));
     }
 
     @DisplayName("Should not return orgUnit by name when not found")
