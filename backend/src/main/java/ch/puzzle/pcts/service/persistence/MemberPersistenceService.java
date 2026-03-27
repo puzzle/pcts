@@ -22,7 +22,7 @@ public class MemberPersistenceService extends PersistenceBase<Member, MemberRepo
     }
 
     public Optional<Member> findByPtimeIdAndIdNot(Long ptimeId, Long id) {
-        return repository.findByPtimeIdAndIdNot(ptimeId, id);
+        return repository.findByPtimeIdAndIdNotAndPtimeIdNotNull(ptimeId, id);
     }
 
     public Optional<Member> findByPtimeId(Long ptimeId) {

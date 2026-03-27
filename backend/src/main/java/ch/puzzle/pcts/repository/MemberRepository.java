@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MemberRepository extends SoftDeleteRepository<Member, Long> {
-    Optional<Member> findByPtimeIdAndIdNot(Long ptimeId, Long id);
+    Optional<Member> findByPtimeIdAndIdNotAndPtimeIdNotNull(Long ptimeId, Long id);
 
     Optional<Member> findByPtimeId(Long ptimeId);
 
