@@ -12,6 +12,7 @@ import ch.puzzle.pcts.util.IT;
 import ch.puzzle.pcts.util.TestDataModels;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import java.net.URI;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +27,11 @@ class CertificateTypeLinkCheckJobIT {
 
     @Autowired
     private CertificateTypeBusinessService certificateTypeBusinessService;
+
+    @AfterEach
+    void tearDownWireMock() {
+        WireMock.reset();
+    }
 
     @Test
     void shouldMarkLinkAsValidWhenWireMockReturns200() {
