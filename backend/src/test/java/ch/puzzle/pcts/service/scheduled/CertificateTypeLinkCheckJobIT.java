@@ -51,8 +51,6 @@ class CertificateTypeLinkCheckJobIT {
         assertNotEquals(null, updatedCert.getLinkLastCheckedAt());
         assertEquals(0L, updatedCert.getLinkErrorCount());
         assertTrue(updatedCert.isLinkValid());
-
-        certificateTypeBusinessService.update(cert.getId(), TestDataModels.CERT_TYPE_1);
     }
 
     @Test
@@ -76,8 +74,6 @@ class CertificateTypeLinkCheckJobIT {
         assertNotEquals(null, updatedCert.getLinkLastCheckedAt());
         assertEquals(0L, updatedCert.getLinkErrorCount());
         assertTrue(updatedCert.isLinkValid());
-
-        certificateTypeBusinessService.update(cert.getId(), TestDataModels.CERT_TYPE_1);
     }
 
     @Test
@@ -98,7 +94,5 @@ class CertificateTypeLinkCheckJobIT {
 
         assertEquals(1L, updatedCert.getLinkErrorCount());
         assertTrue(updatedCert.isLinkValid());
-
-        certificateTypeBusinessService.update(cert.getId(), TestDataModels.CERT_TYPE_1);
     }
 }
