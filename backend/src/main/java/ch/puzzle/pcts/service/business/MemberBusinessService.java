@@ -6,6 +6,8 @@ import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import ch.puzzle.pcts.service.validation.MemberValidationService;
+import jakarta.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -55,6 +57,25 @@ public class MemberBusinessService extends BusinessBase<Member> {
         member.keepSyncData(oldEntry.getPtimeId(), oldEntry.getLastSuccessfulSync(), oldEntry.getSyncErrorCount());
 
         return persistenceService.save(member);
+    }
+
+    @Transactional
+    public void updateSyncMetadata(Long id, Long ptimeId, LocalDateTime lastSuccessfulSync, Integer syncErrorCount) {
+        Member member = getById(id);
+
+        if (ptimeId != null) {
+            member.setPtimeId(ptimeId);
+        }
+
+        if (lastSuccessfulSync != null) {
+            member.setLastSuccessfulSync(lastSuccessfulSync);
+        }
+
+        if (syncErrorCount != null) {
+            member.setSyncErrorCount(syncErrorCount);
+        }
+
+        persistenceService.save(member);
     }
 
     public Optional<Member> findByPtimeId(Long id) {

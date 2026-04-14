@@ -1,7 +1,6 @@
 package ch.puzzle.pcts.service.business;
 
-import static ch.puzzle.pcts.util.TestData.MEMBER_1_ID;
-import static ch.puzzle.pcts.util.TestData.ROLE_2_ID;
+import static ch.puzzle.pcts.util.TestData.*;
 import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -11,6 +10,7 @@ import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import ch.puzzle.pcts.service.validation.MemberValidationService;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -183,5 +183,22 @@ class MemberBusinessServiceTest
         when(persistenceService.findByAbbreviation("M1")).thenReturn(Optional.of(MEMBER_1));
 
         assertEquals(Optional.of(MEMBER_1), businessService.findByAbbreviation("M1"));
+    }
+
+    @DisplayName("Should update the ptime meta data")
+    @Test
+    void shouldUpdatePtimeMetaData() {
+        Member member = MEMBER_1;
+
+        when(persistenceService.getById(10L)).thenReturn(member);
+
+        LocalDateTime now = LocalDateTime.now();
+        businessService.updateSyncMetadata(10L, 2L, now, 5);
+
+        assertEquals(2L, member.getPtimeId());
+        assertEquals(now, member.getLastSuccessfulSync());
+        assertEquals(5, member.getSyncErrorCount());
+
+        verify(persistenceService).save(member);
     }
 }

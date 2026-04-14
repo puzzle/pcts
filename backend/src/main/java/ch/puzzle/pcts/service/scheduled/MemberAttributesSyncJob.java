@@ -110,7 +110,6 @@ public class MemberAttributesSyncJob {
 
             String abbreviation = apiEmployee.attributes().shortname();
             Optional<Member> memberOpt = memberBusinessService.findByPtimeId(apiPtimeId);
-            boolean matchedViaAbbreviation = false;
 
             if (memberOpt.isEmpty()) {
                 memberOpt = memberBusinessService.findByAbbreviation(abbreviation);
@@ -123,23 +122,20 @@ public class MemberAttributesSyncJob {
                     continue;
                 }
 
-                matchedViaAbbreviation = true;
                 log.info("Member {} found using abbreviation. ptime_id {} will be added.", abbreviation, apiPtimeId);
             }
 
             Member member = memberOpt.get();
 
-            if (matchedViaAbbreviation) {
-                member.setPtimeId(apiPtimeId);
-            }
+            Long ptimeIdToUpdate = (member.getPtimeId() == null) ? apiPtimeId : null;
 
             try {
                 validateAndUpdateMemberData(member, apiEmployee.attributes());
 
-                member.setLastSuccessfulSync(LocalDateTime.now());
-                member.setSyncErrorCount(0);
-
                 memberBusinessService.update(member.getId(), member);
+
+                memberBusinessService.updateSyncMetadata(member.getId(), ptimeIdToUpdate, LocalDateTime.now(), 0);
+
                 log.debug("Member {} successfully synced.", member.getId());
 
             } catch (PCTSException e) {
@@ -210,7 +206,7 @@ public class MemberAttributesSyncJob {
             int currentErrors = cleanMember.getSyncErrorCount() != null ? cleanMember.getSyncErrorCount() : 0;
             cleanMember.setSyncErrorCount(currentErrors + 1);
 
-            memberBusinessService.update(cleanMember.getId(), cleanMember);
+            memberBusinessService.updateSyncMetadata(cleanMember.getId(), null, null, cleanMember.getSyncErrorCount());
             log
                     .info("Error count for member {} successfully incremented to {}.",
                           cleanMember.getId(),

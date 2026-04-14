@@ -14,6 +14,7 @@ import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import ch.puzzle.pcts.service.business.OrganisationUnitBusinessService;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -90,6 +91,7 @@ class MemberAttributesSyncJobTest {
         EmployeeData apiEmployee = new EmployeeData(999L, "employee", attributes);
 
         Member clonedMember2 = cloneMember(MEMBER_2);
+        clonedMember2.setPtimeId(null);
         OrganisationUnit clonedOrgUnit2 = cloneOrgUnit(ORG_UNIT_2);
 
         when(memberBusinessService.findByPtimeId(999L)).thenReturn(Optional.empty());
@@ -102,8 +104,10 @@ class MemberAttributesSyncJobTest {
         verify(memberBusinessService).update(eq(clonedMember2.getId()), memberCaptor.capture());
 
         Member savedMember = memberCaptor.getValue();
-        assertEquals(999L, savedMember.getPtimeId());
         assertEquals(EmploymentState.EX_MEMBER, savedMember.getEmploymentState());
+
+        verify(memberBusinessService)
+                .updateSyncMetadata(eq(clonedMember2.getId()), eq(999L), any(LocalDateTime.class), eq(0));
     }
 
     @DisplayName("Should increment error count when mandatory name fields are missing")
@@ -120,11 +124,10 @@ class MemberAttributesSyncJobTest {
 
         ReflectionTestUtils.invokeMethod(syncJob, "processAndSaveMembers", List.of(apiEmployee));
 
-        ArgumentCaptor<Member> errorMemberCaptor = ArgumentCaptor.forClass(Member.class);
-        verify(memberBusinessService).update(eq(clonedMember3.getId()), errorMemberCaptor.capture());
+        verify(memberBusinessService, never()).update(anyLong(), any(Member.class));
 
-        Member savedErrorMember = errorMemberCaptor.getValue();
-        assertEquals(initialErrorCount + 1, savedErrorMember.getSyncErrorCount());
+        verify(memberBusinessService)
+                .updateSyncMetadata(eq(clonedMember3.getId()), isNull(), isNull(), eq(initialErrorCount + 1));
 
         verifyNoInteractions(organisationUnitBusinessService);
     }
