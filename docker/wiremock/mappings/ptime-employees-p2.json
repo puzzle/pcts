@@ -1,0 +1,75 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/puzzletime/employees",
+    "queryParameters": {
+      "page": {
+        "equalTo": "2"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "data": [
+        {
+          "id": "3",
+          "type": "employee",
+          "attributes": {
+            "shortname": "SK",
+            "firstname": "",
+            "lastname": "Kunz",
+            "email": "kunz@puzzle.ch",
+            "marital_status": "single",
+            "nationalities": [
+              "GB"
+            ],
+            "graduation": "MSc Software Engineering",
+            "city": "Basel",
+            "birthday": "1990-11-03",
+            "is_employed": true,
+            "department_shortname": "ENG",
+            "department_name": "/engineering",
+            "employment_roles": [
+              {
+                "name": "T3 Lead Software Engineer",
+                "percent": 100.0,
+                "role_level": "S7"
+              }
+            ]
+          }
+        },
+        {
+          "id": "208",
+          "type": "employee",
+          "attributes": {
+            "shortname": "BB",
+            "firstname": "Bob",
+            "lastname": "Barker",
+            "email": "barker@puzzle.ch",
+            "marital_status": "married",
+            "nationalities": [
+              "US"
+            ],
+            "graduation": "BSc Information Technology",
+            "city": "Geneva",
+            "birthday": "1988-02-28",
+            "is_employed": true,
+            "department_shortname": "SUP",
+            "department_name": "/support",
+            "employment_roles": [
+              {
+                "name": "T2 Support Engineer",
+                "percent": 100.0,
+                "role_level": "S4"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

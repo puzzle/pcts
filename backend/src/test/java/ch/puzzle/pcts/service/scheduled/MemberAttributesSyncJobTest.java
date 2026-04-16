@@ -202,7 +202,7 @@ class MemberAttributesSyncJobTest {
                 .withOrganisationUnit(cloneOrgUnit(original.getOrganisationUnit()))
                 .withPtimeId(original.getPtimeId())
                 .withLastSuccessfulSync(original.getLastSuccessfulSync())
-                .withSyncErrorCount(original.getSyncErrorCount())
+                .withSyncErrorCount(0)
                 .build();
     }
 
