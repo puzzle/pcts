@@ -163,6 +163,10 @@ public class MemberAttributesSyncJob {
         member.setFirstName(attributes.firstname());
         member.setLastName(attributes.lastname());
 
+        if (attributes.shortname() != null && !attributes.shortname().isBlank()) {
+            member.setAbbreviation(attributes.shortname());
+        }
+
         if (attributes.birthday() != null) {
             member.setBirthDate(attributes.birthday());
         }

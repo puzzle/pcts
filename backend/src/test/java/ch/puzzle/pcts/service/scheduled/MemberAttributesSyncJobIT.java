@@ -60,7 +60,7 @@ class MemberAttributesSyncJobIT {
 
         EmployeeAttributes attr1 = new EmployeeAttributes("Member 1",
                                                           "UpdatedLastName",
-                                                          "M1",
+                                                          "NM1",
                                                           LocalDate.of(1990, 10, 1),
                                                           true,
                                                           "OrganisationUnit 1");
@@ -86,12 +86,10 @@ class MemberAttributesSyncJobIT {
 
         Member result = memberBusinessService.getById(1L);
 
-        System.out.println(result);
-
         assertThat(result.getPtimeId()).isEqualTo(1L);
         assertThat(result.getFirstName()).isEqualTo("Member 1");
         assertThat(result.getLastName()).isEqualTo("UpdatedLastName");
-        assertThat(result.getAbbreviation()).isEqualTo("M1");
+        assertThat(result.getAbbreviation()).isEqualTo("NM1");
         assertThat(result.getBirthDate()).isEqualTo(LocalDate.of(1990, 10, 1));
         assertThat(result.getEmploymentState()).isEqualTo(EmploymentState.MEMBER);
         assertThat(result.getSyncErrorCount()).isZero();
@@ -106,7 +104,6 @@ class MemberAttributesSyncJobIT {
 
     @DisplayName("Should correctly process multiple pages until receiving an empty array")
     @Test
-    @Transactional
     void shouldHandleMultiplePaginationPages() throws Exception {
         EmployeeAttributes attr1 = new EmployeeAttributes("Member 1",
                                                           "UpdatedOne",
@@ -155,8 +152,7 @@ class MemberAttributesSyncJobIT {
     }
 
     @Test
-    @Transactional
-    @DisplayName("IT: Should successfully map JSON and ignore unknown additional attributes")
+    @DisplayName("Should successfully map JSON and ignore unknown additional attributes")
     void shouldIgnoreUnknownAttributesInJson() {
         String rawJsonWithExtraFields = """
                 {
@@ -208,7 +204,6 @@ class MemberAttributesSyncJobIT {
 
     @DisplayName("Should ignore unknown API users without failing the sync")
     @Test
-    @Transactional
     void shouldIgnoreUnknownUserAndContinue() throws Exception {
         EmployeeAttributes unknownAttr = new EmployeeAttributes("Ghost",
                                                                 "User",
@@ -240,8 +235,7 @@ class MemberAttributesSyncJobIT {
     }
 
     @Test
-    @Transactional
-    @DisplayName("IT: Should increment syncErrorCount when API returns faulty data (e.g. missing firstname)")
+    @DisplayName("Should increment syncErrorCount when API returns faulty data (e.g. missing firstname)")
     void shouldIncrementErrorCountOnFaultyApiData() throws Exception {
         EmployeeAttributes faultyAttr = new EmployeeAttributes("",
                                                                "UpdatedLastName",
@@ -277,7 +271,6 @@ class MemberAttributesSyncJobIT {
 
     @DisplayName("Should abort pagination and log error when API returns HTTP 500")
     @Test
-    @Transactional
     void shouldStopAndLogErrorWhenApiReturnsHttpError() {
         stubFor(get(urlEqualTo("/api/employees?page=1"))
                 .willReturn(aResponse().withStatus(500).withBody("Internal Server Error from PuzzleTime API")));
