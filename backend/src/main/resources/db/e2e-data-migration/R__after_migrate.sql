@@ -1,6 +1,7 @@
 TRUNCATE TABLE role CASCADE;
 TRUNCATE TABLE organisation_unit CASCADE;
 TRUNCATE TABLE certificate_type CASCADE;
+TRUNCATE TABLE leadership_experience_type CASCADE;
 TRUNCATE TABLE experience_type CASCADE;
 TRUNCATE TABLE degree_type CASCADE;
 TRUNCATE TABLE tag CASCADE;
@@ -9,6 +10,7 @@ TRUNCATE TABLE member CASCADE;
 TRUNCATE TABLE experience CASCADE;
 TRUNCATE TABLE degree CASCADE;
 TRUNCATE TABLE certificate CASCADE;
+TRUNCATE TABLE leadership_experience CASCADE;
 TRUNCATE TABLE calculation CASCADE;
 TRUNCATE TABLE certificate_calculation CASCADE;
 TRUNCATE TABLE degree_calculation CASCADE;
@@ -40,24 +42,24 @@ VALUES
     ('Extern', FALSE),
     ('Consultant', FALSE);
 
-INSERT INTO certificate_type (name, points, deleted_at, comment, certificate_kind)
+INSERT INTO certificate_type (name, points, deleted_at, comment)
 VALUES
-    ('CompTIA A+', 5.0, NULL, 'Entry-level IT certification covering hardware, software, and troubleshooting', 'CERTIFICATE'),
-    ('Cisco CCNA', 7.5, '2023-06-20 14:21:27.063055', 'Cisco Certified Network Associate – networking fundamentals and routing/switching', 'CERTIFICATE'),
-    ('Microsoft 365 Administrator Associate', 6.0, NULL, 'Cloud and productivity administration in Microsoft 365 environments', 'CERTIFICATE'),
-    ('AWS Certified Solutions Architect – Associate', 8.0, NULL, 'Amazon Web Services cloud design and deployment certification', 'CERTIFICATE'),
-    ('ITIL 4 Foundation', 4.0, NULL, 'Certification in IT service management best practices', 'CERTIFICATE'),
-    ('Google IT Support Professional', 5.5, NULL, 'Foundational IT skills including networking, OS, and security basics', 'CERTIFICATE'),
-    ('Red Hat Certified System Administrator (RHCSA)', 7.0, NULL, 'Linux administration and system management certification', 'CERTIFICATE'),
-    ('Certified Information Systems Security Professional (CISSP)', 9.0, NULL, 'Advanced cybersecurity certification for security leadership roles', 'CERTIFICATE'),
-    ('Project Management Professional (PMP)', 8.5, NULL, 'Globally recognized project management certification', 'CERTIFICATE'),
-    ('Microsoft Certified: Azure Administrator Associate', 7.5, NULL, 'Managing Azure cloud services and resources', 'CERTIFICATE'),
+    ('CompTIA A+', 5.0, NULL, 'Entry-level IT certification covering hardware, software, and troubleshooting'),
+    ('Cisco CCNA', 7.5, '2023-06-20 14:21:27.063055', 'Cisco Certified Network Associate – networking fundamentals and routing/switching'),
+    ('Microsoft 365 Administrator Associate', 6.0, NULL, 'Cloud and productivity administration in Microsoft 365 environments'),
+    ('AWS Certified Solutions Architect – Associate', 8.0, NULL, 'Amazon Web Services cloud design and deployment certification'),
+    ('ITIL 4 Foundation', 4.0, NULL, 'Certification in IT service management best practices'),
+    ('Google IT Support Professional', 5.5, NULL, 'Foundational IT skills including networking, OS, and security basics'),
+    ('Red Hat Certified System Administrator (RHCSA)', 7.0, NULL, 'Linux administration and system management certification'),
+    ('Certified Information Systems Security Professional (CISSP)', 9.0, NULL, 'Advanced cybersecurity certification for security leadership roles'),
+    ('Project Management Professional (PMP)', 8.5, NULL, 'Globally recognized project management certification'),
+    ('Microsoft Certified: Azure Administrator Associate', 7.5, NULL, 'Managing Azure cloud services and resources');
 
-    --     Below are all the LeadershipExperiences
-    ('Soldier', 7.5, NULL, '', 'MILITARY_FUNCTION'),
-    ('Ski Camp Manager', 5, NULL, '', 'YOUTH_AND_SPORT'),
-    ('Leader Essentials', 2, NULL, '', 'LEADERSHIP_TRAINING');
-
+INSERT INTO leadership_experience_type(name, points, comment, experience_kind, deleted_at)
+VALUES
+    ('Soldier', 7.5, '', 'MILITARY_FUNCTION', NULL),
+    ('Ski Camp Manager', 5, '', 'YOUTH_AND_SPORT', NULL),
+    ('Leader Essentials', 2, '', 'LEADERSHIP_TRAINING', NULL);
 
 INSERT INTO experience_type (name, highly_relevant_points, limited_relevant_points, little_relevant_points)
 VALUES
@@ -142,12 +144,14 @@ VALUES
     (2, 2, '2022-11-01', NULL, 'Lifetime certification.', NULL),
     (3, 3, '2020-03-22', '2022-03-21', 'Needs renewal.', NULL),
     (4, 1, '2021-06-10', '2023-06-09', 'Left organization.', '2023-07-01 10:00:00'),
-    (5, 4, '2024-02-01', '2026-02-01', NULL, NULL),
+    (5, 4, '2024-02-01', '2026-02-01', NULL, NULL);
 
-    --     LeadershipExperiences
-    (6, 11, NULL, NULL, NULL, NULL),
-    (2, 12, NULL, NULL, 'This is quite hard', NULL),
-    (4, 13, NULL, NULL, NULL, '2025-01-03 10:43:12');
+INSERT INTO leadership_experience
+(member_id, leadership_experience_type_id, comment, deleted_at)
+VALUES
+    (6, 1, NULL, NULL),
+    (2, 2, 'This is quite hard', NULL),
+    (4, 3, NULL, '2025-01-03 10:43:12');
 
 INSERT INTO calculation (member_id, role_id, state, publication_date, publicized_by)
 VALUES
@@ -168,7 +172,6 @@ VALUES
     (1, 5, 'ACTIVE', '2025-01-28', 'admin_user'),
     (1, 1, 'ARCHIVED', '2025-01-28', 'admin_user');
 
-
 INSERT INTO experience_calculation
 (calculation_id, experience_id, relevancy, comment)
 VALUES
@@ -178,14 +181,12 @@ VALUES
     (15, 2, 'NORMAL', 'Internship experience'),
     (7, 4, 'NORMAL', 'Internship experience');
 
-
 INSERT INTO degree_calculation
 (calculation_id, degree_id, weight, relevancy, comment)
 VALUES
     (2, 2, 40,  'POORLY',  'Low relevance for technical role'),
     (3, 3, 90,  'STRONGLY',  'Directly relevant degree'),
     (4, 3, 70,  'NORMAL', 'Relevant but less practical focus');
-
 
 INSERT INTO certificate_calculation
 (calculation_id, certificate_id)
@@ -198,3 +199,9 @@ VALUES
     (2, 7),
     (4, 8);
 
+INSERT INTO leadership_experience_calculation
+(calculation_id, leadership_experience_id)
+VALUES
+    (1, 1),
+    (2, 2),
+    (4, 3);

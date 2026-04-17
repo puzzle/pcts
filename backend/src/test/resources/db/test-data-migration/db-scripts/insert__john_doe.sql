@@ -4,9 +4,8 @@ VALUES ('T2 Software Engineer', FALSE);
 INSERT INTO member(first_name, last_name, abbreviation, employment_state, date_of_hire, birth_date, organisation_unit)
 VALUES ('John', 'Doe', 'JD', 'MEMBER', '2020-01-01', '1990-01-01', 1);
 
--- TODO: Remove 'link_error_count' here after LeadershipExperiences are treated separately
-INSERT INTO certificate_type(name, points, certificate_kind, link_error_count)
-VALUES ('Certificate', 0.5, 'CERTIFICATE', 0);
+INSERT INTO certificate_type(name, points, link_error_count)
+VALUES ('Certificate', 0.5, 0);
 
 INSERT INTO certificate(member_id, certificate_type_id, completed_at, valid_until)
 VALUES (1000, 1000, '2020-01-05', null);
