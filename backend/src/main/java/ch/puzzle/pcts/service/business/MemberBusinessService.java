@@ -6,6 +6,7 @@ import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import ch.puzzle.pcts.service.validation.MemberValidationService;
+import jakarta.annotation.Nullable;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -60,7 +61,8 @@ public class MemberBusinessService extends BusinessBase<Member> {
     }
 
     @Transactional
-    public void updateSyncMetadata(Long id, Long ptimeId, LocalDateTime lastSuccessfulSync, Integer syncErrorCount) {
+    public void updateSyncMetadata(Long id, @Nullable Long ptimeId, @Nullable LocalDateTime lastSuccessfulSync,
+                                   int syncErrorCount) {
         Member member = getById(id);
 
         if (ptimeId != null) {
@@ -71,9 +73,7 @@ public class MemberBusinessService extends BusinessBase<Member> {
             member.setLastSuccessfulSync(lastSuccessfulSync);
         }
 
-        if (syncErrorCount != null) {
-            member.setSyncErrorCount(syncErrorCount);
-        }
+        member.setSyncErrorCount(syncErrorCount);
 
         persistenceService.save(member);
     }
