@@ -1,7 +1,6 @@
 package ch.puzzle.pcts.service.persistence;
 
-import static ch.puzzle.pcts.util.TestDataModels.ORGANISATION_UNITS;
-import static ch.puzzle.pcts.util.TestDataModels.ORG_UNIT_2;
+import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
@@ -41,5 +40,21 @@ class OrganisationUnitPersistenceServiceIT
 
         assertThat(result).isPresent();
         assertThat(result.get().getName()).isEqualTo("OrganisationUnit 2");
+    }
+
+    @DisplayName("Should return orgUnit by name when found")
+    @Test
+    void shouldReturnMemberByName() {
+        Optional<OrganisationUnit> result = persistenceService.findByName("OrganisationUnit 1");
+
+        assertThat(result).isPresent().isEqualTo(Optional.of(ORG_UNIT_1));
+    }
+
+    @DisplayName("Should not return orgUnit by name when not found")
+    @Test
+    void shouldNotReturnMemberByName() {
+        Optional<OrganisationUnit> result = persistenceService.findByName("Not a valid name");
+
+        assertThat(result).isEmpty();
     }
 }

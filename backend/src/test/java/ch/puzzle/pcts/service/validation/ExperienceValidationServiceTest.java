@@ -17,6 +17,7 @@ import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.persistence.ExperiencePersistenceService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -48,7 +49,14 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
                 .withLittleRelevantPoints(BigDecimal.valueOf(3))
                 .build();
 
-        Member member = createMember(EmploymentState.MEMBER, LocalDate.EPOCH, "Member", "Test", "MT");
+        Member member = createMember(EmploymentState.MEMBER,
+                                     LocalDate.EPOCH,
+                                     "Member",
+                                     "Test",
+                                     "MT",
+                                     1L,
+                                     LocalDateTime.of(2000, 6, 1, 3, 20),
+                                     0);
 
         return new Experience.Builder()
                 .withMember(member)
@@ -129,7 +137,10 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
                                                              LocalDate.EPOCH,
                                                              "Member",
                                                              "Test",
-                                                             "MT"))
+                                                             "MT",
+                                                             1L,
+                                                             LocalDateTime.of(2000, 6, 1, 3, 20),
+                                                             0))
                                     .withName("Experience")
                                     .withEmployer("Employer")
                                     .withPercent(100)

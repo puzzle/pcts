@@ -1,7 +1,6 @@
 package ch.puzzle.pcts.service.business;
 
-import static ch.puzzle.pcts.util.TestData.MEMBER_1_ID;
-import static ch.puzzle.pcts.util.TestData.ROLE_2_ID;
+import static ch.puzzle.pcts.util.TestData.*;
 import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -11,8 +10,10 @@ import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import ch.puzzle.pcts.service.validation.MemberValidationService;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -164,4 +165,40 @@ class MemberBusinessServiceTest
                 .getAllByMemberAndState(MEMBER_1, CalculationState.ACTIVE);
     }
 
+    @DisplayName("Should delegate the finding of a member using the ptimeId to the persistence service")
+    @Test
+    void shouldDelegateFindByPtimeIdToPersistenceService() {
+        businessService.findByPtimeId(1L);
+
+        when(persistenceService.findByPtimeId(1L)).thenReturn(Optional.of(MEMBER_1));
+
+        assertEquals(Optional.of(MEMBER_1), businessService.findByPtimeId(1L));
+    }
+
+    @DisplayName("Should delegate the finding of a member using the abbreviation to the persistence service")
+    @Test
+    void shouldDelegateFindByAbbreviationToPersistenceService() {
+        businessService.findByAbbreviation("M1");
+
+        when(persistenceService.findByAbbreviation("M1")).thenReturn(Optional.of(MEMBER_1));
+
+        assertEquals(Optional.of(MEMBER_1), businessService.findByAbbreviation("M1"));
+    }
+
+    @DisplayName("Should update the ptime meta data")
+    @Test
+    void shouldUpdatePtimeMetaData() {
+        Member member = MEMBER_1;
+
+        when(persistenceService.getById(10L)).thenReturn(member);
+
+        LocalDateTime now = LocalDateTime.now();
+        businessService.updateSyncMetadata(10L, 2L, now, 5);
+
+        assertEquals(2L, member.getPtimeId());
+        assertEquals(now, member.getLastSuccessfulSync());
+        assertEquals(5, member.getSyncErrorCount());
+
+        verify(persistenceService).save(member);
+    }
 }

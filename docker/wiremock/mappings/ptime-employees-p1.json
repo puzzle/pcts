@@ -1,0 +1,75 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/puzzletime/employees",
+    "queryParameters": {
+      "page": {
+        "equalTo": "1"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "data": [
+        {
+          "id": "1",
+          "type": "employee",
+          "attributes": {
+            "shortname": "LM",
+            "firstname": "Lena",
+            "lastname": "Maurer",
+            "email": "maurer@puzzle.ch",
+            "marital_status": "single",
+            "nationalities": [
+              "CH"
+            ],
+            "graduation": "Informatiker EFZ",
+            "city": "Bern",
+            "birthday": "1995-05-20",
+            "is_employed": true,
+            "department_shortname": "MOB",
+            "department_name": "/mobility",
+            "employment_roles": [
+              {
+                "name": "T2 Software Engineer",
+                "percent": 100.0,
+                "role_level": "S5"
+              }
+            ]
+          }
+        },
+        {
+          "id": "2",
+          "type": "employee",
+          "attributes": {
+            "shortname": "JS",
+            "firstname": "Justus",
+            "lastname": "Shaw",
+            "email": "shaw@puzzle.ch",
+            "marital_status": "married",
+            "nationalities": [
+              "CH"
+            ],
+            "graduation": "BSc Computer Science",
+            "city": "Zurich",
+            "birthday": "1992-08-15",
+            "is_employed": true,
+            "department_shortname": "ENG",
+            "department_name": "/engineering",
+            "employment_roles": [
+              {
+                "name": "T3 Senior Software Engineer",
+                "percent": 80.0,
+                "role_level": "S6"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

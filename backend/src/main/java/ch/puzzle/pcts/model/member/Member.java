@@ -6,12 +6,14 @@ import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.util.PCTSStringValidation;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @SQLDelete(sql = "UPDATE member SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
@@ -45,6 +47,16 @@ public class Member implements Model {
     @JoinColumn(name = "organisation_unit")
     private OrganisationUnit organisationUnit;
 
+    @Min(value = 1, message = "{attribute.min.value}")
+    private Long ptimeId;
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @Past(message = "{attribute.date.past}")
+    private LocalDateTime lastSuccessfulSync;
+
+    @Min(value = 0, message = "{attribute.not.negative}")
+    private Integer syncErrorCount;
+
     private Member(Builder builder) {
         this.id = builder.id;
         this.firstName = trim(builder.firstName);
@@ -54,6 +66,9 @@ public class Member implements Model {
         this.dateOfHire = builder.dateOfHire;
         this.birthDate = builder.birthDate;
         this.organisationUnit = builder.organisationUnit;
+        this.ptimeId = builder.ptimeId;
+        this.lastSuccessfulSync = builder.lastSuccessfulSync;
+        this.syncErrorCount = builder.syncErrorCount;
         this.deletedAt = null;
     }
 
@@ -132,6 +147,36 @@ public class Member implements Model {
         this.deletedAt = deletedAt;
     }
 
+    public Long getPtimeId() {
+        return ptimeId;
+    }
+
+    public void setPtimeId(Long ptimeId) {
+        this.ptimeId = ptimeId;
+    }
+
+    public LocalDateTime getLastSuccessfulSync() {
+        return lastSuccessfulSync;
+    }
+
+    public void setLastSuccessfulSync(LocalDateTime lastSuccessfulSync) {
+        this.lastSuccessfulSync = lastSuccessfulSync;
+    }
+
+    public Integer getSyncErrorCount() {
+        return syncErrorCount;
+    }
+
+    public void setSyncErrorCount(Integer syncErrorCount) {
+        this.syncErrorCount = syncErrorCount;
+    }
+
+    public void keepSyncData(Long ptimeId, LocalDateTime lastSuccessfulSync, Integer syncErrorCount) {
+        this.ptimeId = ptimeId;
+        this.lastSuccessfulSync = lastSuccessfulSync;
+        this.syncErrorCount = syncErrorCount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Member member))
@@ -143,7 +188,10 @@ public class Member implements Model {
                && Objects.equals(getDateOfHire(), member.getDateOfHire())
                && Objects.equals(getBirthDate(), member.getBirthDate())
                && Objects.equals(getDeletedAt(), member.getDeletedAt())
-               && Objects.equals(getOrganisationUnit(), member.getOrganisationUnit());
+               && Objects.equals(getOrganisationUnit(), member.getOrganisationUnit())
+               && Objects.equals(getPtimeId(), member.getPtimeId())
+               && Objects.equals(getLastSuccessfulSync(), member.getLastSuccessfulSync())
+               && Objects.equals(getSyncErrorCount(), member.getSyncErrorCount());
     }
 
     @Override
@@ -157,15 +205,19 @@ public class Member implements Model {
                       getDateOfHire(),
                       getBirthDate(),
                       getDeletedAt(),
-                      getOrganisationUnit());
+                      getOrganisationUnit(),
+                      getPtimeId(),
+                      getLastSuccessfulSync(),
+                      getSyncErrorCount());
     }
 
     @Override
     public String toString() {
-        return "Member{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\''
-               + ", employmentState=" + employmentState + ", abbreviation='" + abbreviation + '\'' + ", dateOfHire="
-               + dateOfHire + ", birthDate=" + birthDate + ", deletedAt=" + deletedAt + ", organisationUnit="
-               + organisationUnit + '}';
+        return "Member{" + "id=" + getId() + ", firstName='" + getFirstName() + '\'' + ", lastName='" + getLastName()
+               + '\'' + ", employmentState=" + getEmploymentState() + ", abbreviation='" + getAbbreviation() + '\''
+               + ", dateOfHire=" + getDateOfHire() + ", birthDate=" + getBirthDate() + ", deletedAt=" + getDeletedAt()
+               + ", organisationUnit=" + getOrganisationUnit() + ", ptimeId=" + getPtimeId() + ", lastSuccessfulSync="
+               + getLastSuccessfulSync() + ", syncErrorCount=" + getSyncErrorCount() + '}';
     }
 
     public static final class Builder {
@@ -177,6 +229,9 @@ public class Member implements Model {
         private LocalDate dateOfHire;
         private LocalDate birthDate;
         private OrganisationUnit organisationUnit;
+        private Long ptimeId;
+        private LocalDateTime lastSuccessfulSync;
+        private Integer syncErrorCount;
 
         private Builder() {
         }
@@ -222,6 +277,21 @@ public class Member implements Model {
 
         public Builder withOrganisationUnit(OrganisationUnit organisationUnit) {
             this.organisationUnit = organisationUnit;
+            return this;
+        }
+
+        public Builder withPtimeId(Long ptimeId) {
+            this.ptimeId = ptimeId;
+            return this;
+        }
+
+        public Builder withLastSuccessfulSync(LocalDateTime lastSuccessfulSync) {
+            this.lastSuccessfulSync = lastSuccessfulSync;
+            return this;
+        }
+
+        public Builder withSyncErrorCount(Integer syncErrorCount) {
+            this.syncErrorCount = syncErrorCount;
             return this;
         }
 

@@ -35,7 +35,10 @@ public class MemberMapper {
                              model.getAbbreviation(),
                              model.getDateOfHire(),
                              model.getBirthDate(),
-                             organisationUnitMapper.toDto(model.getOrganisationUnit()));
+                             organisationUnitMapper.toDto(model.getOrganisationUnit()),
+                             model.getPtimeId(),
+                             model.getLastSuccessfulSync(),
+                             model.getSyncErrorCount());
     }
 
     public Member fromDto(MemberInputDto dto) {
