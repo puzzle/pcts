@@ -116,8 +116,8 @@ jobs:
           echo "Checking if $HEAD_BRANCH is rebased on $BASE_BRANCH..."
 
           # Fetch the latest refs to ensure accurate comparison
-          git fetch origin ${{ github.base_ref }}
-          git fetch origin ${{ github.head_ref }}
+          git fetch origin "${{ github.base_ref }}"
+          git fetch origin "${{ github.head_ref }}"
 
           # Check if the base branch is an ancestor of the head branch
           if git merge-base --is-ancestor "$BASE_BRANCH" "$HEAD_BRANCH"; then
