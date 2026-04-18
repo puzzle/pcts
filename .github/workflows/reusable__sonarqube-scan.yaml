@@ -54,6 +54,7 @@ jobs:
       - name: Build and analyze
         run: |
           mvn package org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+          -Fsonar-project.properties \
           -DskipTests \
           -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
           -Dsonar.host.url=${{ vars.SONAR_HOST_URL }} \
