@@ -54,8 +54,8 @@ jobs:
       - name: Debug
         run: tree
 
-      - name: Debug 2
-        run: pwd
+      - name: Debug 3
+        run: cat $GITHUB_WORKSPACE/site/jacoco-merged-test-coverage-report/jacoco.xml
 
       - name: Build and analyze
         run: |
@@ -65,6 +65,9 @@ jobs:
           -Dsonar.host.url=${{ vars.SONAR_HOST_URL }} \
           -Dsonar.javascript.lcov.reportPaths=$GITHUB_WORKSPACE/frontend/coverage/lcov.info \
           -Dsonar.coverage.jacoco.xmlReportPaths=$GITHUB_WORKSPACE/site/jacoco-merged-test-coverage-report/jacoco.xml
+
+      - name: Debug 4
+        run: cat $GITHUB_WORKSPACE/site/jacoco-merged-test-coverage-report/jacoco.xml
 
       - name: SonarQube Quality Gate check
         id: sonarqube-quality-gate-check
