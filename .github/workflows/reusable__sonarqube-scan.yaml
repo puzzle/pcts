@@ -66,7 +66,7 @@ jobs:
           -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
           -Dsonar.host.url=${{ vars.SONAR_HOST_URL }} \
           -Dsonar.javascript.lcov.reportPaths=$GITHUB_WORKSPACE/frontend/coverage/lcov.info \
-          -Dsonar.coverage.jacoco.xmlReportPaths=$GITHUB_WORKSPACE/site/jacoco-merged-test-coverage-report/jacoco.xml
+          -Dsonar.jacoco.reportPath=$GITHUB_WORKSPACE/site/jacoco-merged-test-coverage-report/jacoco.xml
 
       - name: Debug 4
         run: cat $GITHUB_WORKSPACE/site/jacoco-merged-test-coverage-report/jacoco.xml
