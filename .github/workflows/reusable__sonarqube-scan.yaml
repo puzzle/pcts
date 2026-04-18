@@ -54,11 +54,11 @@ jobs:
       - name: Build and analyze
         run: |
           mvn package org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-          -Fsonar-project.properties \
           -DskipTests \
           -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
           -Dsonar.host.url=${{ vars.SONAR_HOST_URL }} \
           -Dsonar.javascript.lcov.reportPaths=$GITHUB_WORKSPACE/frontend/coverage/lcov.info \
+          -Dsonar.coverage.jacoco.xmlReportPaths=$GITHUB_WORKSPACE/backend/target/site/jacoco-merged-test-coverage-report/jacoco.xml \
           -Dsonar.junit.reportPaths=$GITHUB_WORKSPACE/frontend/junit.xml,target/surefire-reports,target/failsafe-reports
 
       - name: SonarQube Quality Gate check
