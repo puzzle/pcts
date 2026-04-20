@@ -94,7 +94,7 @@ TRUNCATE TABLE leadership_experience CASCADE;
 INSERT INTO leadership_experience(member_id, leadership_experience_type_id, comment, deleted_at)
 VALUES
     (1, 1, 'Left organization.', NULL),
-    (1, 2, 'This is a comment.', NULL);
+    (2, 2, 'This is a comment.', NULL);
 
 TRUNCATE TABLE calculation CASCADE;
 

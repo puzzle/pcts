@@ -990,6 +990,9 @@ public class TestDataModels {
     public static final List<CertificateCalculation> CERTIFICATE_CALCULATIONS = List
             .of(CERT_CALC_1, CERT_CALC_2, CERT_CALC_3);
 
+    public static final List<LeadershipExperienceCalculation> LEADERSHIP_EXPERIENCE_CALCULATIONS = List
+            .of(LEADERSHIP_EXPERIENCE_CALC_1, LEADERSHIP_EXPERIENCE_CALC_2);
+
     public static final List<Calculation> CALCULATIONS = List
             .of(CALCULATION_1, CALCULATION_2, CALCULATION_3, CALCULATION_4);
 }

@@ -8,11 +8,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CertificatePersistenceService extends PersistenceBase<Certificate, CertificateRepository> {
-    private final CertificateRepository repository;
 
     public CertificatePersistenceService(CertificateRepository repository) {
         super(repository);
-        this.repository = repository;
     }
 
     @Override
