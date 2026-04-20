@@ -93,7 +93,8 @@ TRUNCATE TABLE leadership_experience CASCADE;
 
 INSERT INTO leadership_experience(member_id, leadership_experience_type_id, comment, deleted_at)
 VALUES
-    (1, 1, 'Comment', NULL);
+    (1, 1, 'Left organization.', NULL),
+    (1, 2, 'This is a comment.', NULL);
 
 TRUNCATE TABLE calculation CASCADE;
 
@@ -129,7 +130,8 @@ INSERT INTO certificate_calculation
 (calculation_id, certificate_id)
 VALUES
     (1, 2),
-    (2, 2);
+    (2, 2),
+    (1, 3);
 
 TRUNCATE TABLE leadership_experience_calculation CASCADE;
 

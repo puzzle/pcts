@@ -211,7 +211,7 @@ public class TestDataModels {
             .withName("LeadershipExperience Type 1")
             .withPoints(BigDecimal.valueOf(5.5))
             .withComment("This is LeadershipExperience 1")
-            .withExperienceKind(LeadershipExperienceKind.LEADERSHIP_TRAINING)
+            .withExperienceKind(LeadershipExperienceKind.MILITARY_FUNCTION)
             .build();
 
     public static final LeadershipExperienceType LEADERSHIP_TYPE_2 = LeadershipExperienceType.Builder
@@ -220,7 +220,7 @@ public class TestDataModels {
             .withName("LeadershipExperience Type 2")
             .withPoints(BigDecimal.valueOf(1))
             .withComment("This is LeadershipExperience 2")
-            .withExperienceKind(LeadershipExperienceKind.LEADERSHIP_TRAINING)
+            .withExperienceKind(LeadershipExperienceKind.YOUTH_AND_SPORT)
             .build();
 
     public static final LeadershipExperienceType LEADERSHIP_TYPE_3 = LeadershipExperienceType.Builder
@@ -493,6 +493,14 @@ public class TestDataModels {
                         .withCertificateCompletedAt(CERTIFICATE_4.getCompletedAt())
                         .withCertificateComment(CERTIFICATE_4.getComment())
                         .withCertificateTypeName(CERTIFICATE_4.getCertificateType().getName())
+                        .withLeadershipExperienceId(LEADERSHIP_EXPERIENCE_1.getId())
+                        .withLeadershipExperienceComment(LEADERSHIP_EXPERIENCE_1.getComment())
+                        .withLeadershipExperienceTypeName(LEADERSHIP_EXPERIENCE_1
+                                .getLeadershipExperienceType()
+                                .getName())
+                        .withLeadershipExperienceTypeKind(LEADERSHIP_EXPERIENCE_1
+                                .getLeadershipExperienceType()
+                                .getExperienceKind())
                         .withDegreeId(DEGREE_1.getId())
                         .withDegreeName(DEGREE_1.getName())
                         .withDegreeStartDate(DEGREE_1.getStartDate())
@@ -521,29 +529,6 @@ public class TestDataModels {
                         .withCertificateCompletedAt(CERTIFICATE_4.getCompletedAt())
                         .withCertificateComment(CERTIFICATE_4.getComment())
                         .withCertificateTypeName(CERTIFICATE_4.getCertificateType().getName())
-                        .withDegreeId(DEGREE_1.getId())
-                        .withDegreeName(DEGREE_1.getName())
-                        .withDegreeStartDate(DEGREE_1.getStartDate())
-                        .withDegreeEndDate(DEGREE_1.getEndDate())
-                        .withDegreeTypeName(DEGREE_1.getDegreeType().getName())
-                        .withExperienceId(EXPERIENCE_2.getId())
-                        .withExperienceName(EXPERIENCE_2.getName())
-                        .withExperienceEmployer(EXPERIENCE_2.getEmployer())
-                        .withExperienceStartDate(EXPERIENCE_2.getStartDate())
-                        .withExperienceEndDate(EXPERIENCE_2.getEndDate())
-                        .withExperienceComment(EXPERIENCE_2.getComment())
-                        .withExperienceTypeName(EXPERIENCE_2.getType().getName())
-                        .build(),
-                MemberOverview.Builder
-                        .builder()
-                        .withMemberId(MEMBER_1.getId())
-                        .withFirstName(MEMBER_1.getFirstName())
-                        .withLastName(MEMBER_1.getLastName())
-                        .withAbbreviation(MEMBER_1.getAbbreviation())
-                        .withEmploymentState(MEMBER_1.getEmploymentState())
-                        .withDateOfHire(MEMBER_1.getDateOfHire())
-                        .withBirthDate(MEMBER_1.getBirthDate())
-                        .withOrganisationUnitName(MEMBER_1.getOrganisationUnit().getName())
                         .withLeadershipExperienceId(LEADERSHIP_EXPERIENCE_1.getId())
                         .withLeadershipExperienceComment(LEADERSHIP_EXPERIENCE_1.getComment())
                         .withLeadershipExperienceTypeName(LEADERSHIP_EXPERIENCE_1
@@ -565,6 +550,7 @@ public class TestDataModels {
                         .withExperienceComment(EXPERIENCE_2.getComment())
                         .withExperienceTypeName(EXPERIENCE_2.getType().getName())
                         .build(),
+
                 MemberOverview.Builder
                         .builder()
                         .withMemberId(MEMBER_1.getId())
@@ -575,6 +561,10 @@ public class TestDataModels {
                         .withDateOfHire(MEMBER_1.getDateOfHire())
                         .withBirthDate(MEMBER_1.getBirthDate())
                         .withOrganisationUnitName(MEMBER_1.getOrganisationUnit().getName())
+                        .withCertificateId(CERTIFICATE_1.getId())
+                        .withCertificateCompletedAt(CERTIFICATE_1.getCompletedAt())
+                        .withCertificateComment(CERTIFICATE_1.getComment())
+                        .withCertificateTypeName(CERTIFICATE_1.getCertificateType().getName())
                         .withLeadershipExperienceId(LEADERSHIP_EXPERIENCE_2.getId())
                         .withLeadershipExperienceComment(LEADERSHIP_EXPERIENCE_2.getComment())
                         .withLeadershipExperienceTypeName(LEADERSHIP_EXPERIENCE_2
@@ -595,6 +585,114 @@ public class TestDataModels {
                         .withExperienceEndDate(EXPERIENCE_1.getEndDate())
                         .withExperienceComment(EXPERIENCE_1.getComment())
                         .withExperienceTypeName(EXPERIENCE_1.getType().getName())
+                        .build(),
+
+                MemberOverview.Builder
+                        .builder()
+                        .withMemberId(MEMBER_1.getId())
+                        .withFirstName(MEMBER_1.getFirstName())
+                        .withLastName(MEMBER_1.getLastName())
+                        .withAbbreviation(MEMBER_1.getAbbreviation())
+                        .withEmploymentState(MEMBER_1.getEmploymentState())
+                        .withDateOfHire(MEMBER_1.getDateOfHire())
+                        .withBirthDate(MEMBER_1.getBirthDate())
+                        .withOrganisationUnitName(MEMBER_1.getOrganisationUnit().getName())
+                        .withCertificateId(CERTIFICATE_1.getId())
+                        .withCertificateCompletedAt(CERTIFICATE_1.getCompletedAt())
+                        .withCertificateComment(CERTIFICATE_1.getComment())
+                        .withCertificateTypeName(CERTIFICATE_1.getCertificateType().getName())
+                        .withLeadershipExperienceId(LEADERSHIP_EXPERIENCE_2.getId())
+                        .withLeadershipExperienceComment(LEADERSHIP_EXPERIENCE_2.getComment())
+                        .withLeadershipExperienceTypeName(LEADERSHIP_EXPERIENCE_2
+                                .getLeadershipExperienceType()
+                                .getName())
+                        .withLeadershipExperienceTypeKind(LEADERSHIP_EXPERIENCE_2
+                                .getLeadershipExperienceType()
+                                .getExperienceKind())
+                        .withDegreeId(DEGREE_1.getId())
+                        .withDegreeName(DEGREE_1.getName())
+                        .withDegreeStartDate(DEGREE_1.getStartDate())
+                        .withDegreeEndDate(DEGREE_1.getEndDate())
+                        .withDegreeTypeName(DEGREE_1.getDegreeType().getName())
+                        .withExperienceId(EXPERIENCE_2.getId())
+                        .withExperienceName(EXPERIENCE_2.getName())
+                        .withExperienceEmployer(EXPERIENCE_2.getEmployer())
+                        .withExperienceStartDate(EXPERIENCE_2.getStartDate())
+                        .withExperienceEndDate(EXPERIENCE_2.getEndDate())
+                        .withExperienceComment(EXPERIENCE_2.getComment())
+                        .withExperienceTypeName(EXPERIENCE_2.getType().getName())
+                        .build(),
+
+                MemberOverview.Builder
+                        .builder()
+                        .withMemberId(MEMBER_1.getId())
+                        .withFirstName(MEMBER_1.getFirstName())
+                        .withLastName(MEMBER_1.getLastName())
+                        .withAbbreviation(MEMBER_1.getAbbreviation())
+                        .withEmploymentState(MEMBER_1.getEmploymentState())
+                        .withDateOfHire(MEMBER_1.getDateOfHire())
+                        .withBirthDate(MEMBER_1.getBirthDate())
+                        .withOrganisationUnitName(MEMBER_1.getOrganisationUnit().getName())
+                        .withCertificateId(CERTIFICATE_4.getId())
+                        .withCertificateCompletedAt(CERTIFICATE_4.getCompletedAt())
+                        .withCertificateComment(CERTIFICATE_4.getComment())
+                        .withCertificateTypeName(CERTIFICATE_4.getCertificateType().getName())
+                        .withLeadershipExperienceId(LEADERSHIP_EXPERIENCE_2.getId())
+                        .withLeadershipExperienceComment(LEADERSHIP_EXPERIENCE_2.getComment())
+                        .withLeadershipExperienceTypeName(LEADERSHIP_EXPERIENCE_2
+                                .getLeadershipExperienceType()
+                                .getName())
+                        .withLeadershipExperienceTypeKind(LEADERSHIP_EXPERIENCE_2
+                                .getLeadershipExperienceType()
+                                .getExperienceKind())
+                        .withDegreeId(DEGREE_1.getId())
+                        .withDegreeName(DEGREE_1.getName())
+                        .withDegreeStartDate(DEGREE_1.getStartDate())
+                        .withDegreeEndDate(DEGREE_1.getEndDate())
+                        .withDegreeTypeName(DEGREE_1.getDegreeType().getName())
+                        .withExperienceId(EXPERIENCE_1.getId())
+                        .withExperienceName(EXPERIENCE_1.getName())
+                        .withExperienceEmployer(EXPERIENCE_1.getEmployer())
+                        .withExperienceStartDate(EXPERIENCE_1.getStartDate())
+                        .withExperienceEndDate(EXPERIENCE_1.getEndDate())
+                        .withExperienceComment(EXPERIENCE_1.getComment())
+                        .withExperienceTypeName(EXPERIENCE_1.getType().getName())
+                        .build(),
+
+                MemberOverview.Builder
+                        .builder()
+                        .withMemberId(MEMBER_1.getId())
+                        .withFirstName(MEMBER_1.getFirstName())
+                        .withLastName(MEMBER_1.getLastName())
+                        .withAbbreviation(MEMBER_1.getAbbreviation())
+                        .withEmploymentState(MEMBER_1.getEmploymentState())
+                        .withDateOfHire(MEMBER_1.getDateOfHire())
+                        .withBirthDate(MEMBER_1.getBirthDate())
+                        .withOrganisationUnitName(MEMBER_1.getOrganisationUnit().getName())
+                        .withCertificateId(CERTIFICATE_4.getId())
+                        .withCertificateCompletedAt(CERTIFICATE_4.getCompletedAt())
+                        .withCertificateComment(CERTIFICATE_4.getComment())
+                        .withCertificateTypeName(CERTIFICATE_4.getCertificateType().getName())
+                        .withLeadershipExperienceId(LEADERSHIP_EXPERIENCE_2.getId())
+                        .withLeadershipExperienceComment(LEADERSHIP_EXPERIENCE_2.getComment())
+                        .withLeadershipExperienceTypeName(LEADERSHIP_EXPERIENCE_2
+                                .getLeadershipExperienceType()
+                                .getName())
+                        .withLeadershipExperienceTypeKind(LEADERSHIP_EXPERIENCE_2
+                                .getLeadershipExperienceType()
+                                .getExperienceKind())
+                        .withDegreeId(DEGREE_1.getId())
+                        .withDegreeName(DEGREE_1.getName())
+                        .withDegreeStartDate(DEGREE_1.getStartDate())
+                        .withDegreeEndDate(DEGREE_1.getEndDate())
+                        .withDegreeTypeName(DEGREE_1.getDegreeType().getName())
+                        .withExperienceId(EXPERIENCE_2.getId())
+                        .withExperienceName(EXPERIENCE_2.getName())
+                        .withExperienceEmployer(EXPERIENCE_2.getEmployer())
+                        .withExperienceStartDate(EXPERIENCE_2.getStartDate())
+                        .withExperienceEndDate(EXPERIENCE_2.getEndDate())
+                        .withExperienceComment(EXPERIENCE_2.getComment())
+                        .withExperienceTypeName(EXPERIENCE_2.getType().getName())
                         .build());
 
     public static final List<MemberOverview> MEMBER_2_OVERVIEWS = List

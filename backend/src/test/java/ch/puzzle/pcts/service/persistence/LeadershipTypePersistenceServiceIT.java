@@ -20,7 +20,7 @@ class LeadershipTypePersistenceServiceIT
 
     @Override
     LeadershipExperienceType getModel() {
-        return LEADERSHIP_TYPE_1;
+        return LEADERSHIP_TYPE_2;
     }
 
     @Override

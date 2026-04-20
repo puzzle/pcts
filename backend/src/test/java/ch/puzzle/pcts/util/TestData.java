@@ -49,19 +49,19 @@ public class TestData {
     public static final Long CERT_TYPE_5_ID = 5L;
     public static final Long CERT_TYPE_6_ID = 6L;
 
-    public static final Long LEADERSHIP_TYPE_1_ID = 5L;
-    public static final Long LEADERSHIP_TYPE_2_ID = 6L;
-    public static final Long LEADERSHIP_TYPE_3_ID = 7L;
-    public static final Long LEADERSHIP_TYPE_4_ID = 8L;
-    public static final Long LEADERSHIP_TYPE_5_ID = 9L;
+    public static final Long LEADERSHIP_TYPE_1_ID = 1L;
+    public static final Long LEADERSHIP_TYPE_2_ID = 2L;
+    public static final Long LEADERSHIP_TYPE_3_ID = 3L;
+    public static final Long LEADERSHIP_TYPE_4_ID = 4L;
+    public static final Long LEADERSHIP_TYPE_5_ID = 5L;
 
     public static final Long CERTIFICATE_1_ID = 1L;
     public static final Long CERTIFICATE_2_ID = 2L;
     public static final Long CERTIFICATE_3_ID = 3L;
     public static final Long CERTIFICATE_4_ID = 4L;
 
-    public static final Long LEADERSHIP_CERT_1_ID = 5L;
-    public static final Long LEADERSHIP_CERT_2_ID = 6L;
+    public static final Long LEADERSHIP_CERT_1_ID = 1L;
+    public static final Long LEADERSHIP_CERT_2_ID = 2L;
 
     public static final Long DEGREE_TYPE_1_ID = 1L;
     public static final Long DEGREE_TYPE_2_ID = 2L;
