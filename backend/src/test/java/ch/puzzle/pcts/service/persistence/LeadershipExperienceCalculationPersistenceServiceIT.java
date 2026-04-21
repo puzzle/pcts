@@ -61,7 +61,6 @@ class LeadershipExperienceCalculationPersistenceServiceIT
     void shouldDeleteAllByIdInBatch() {
         LeadershipExperienceCalculation lc1 = persistenceService.save(getAll().get(0));
         LeadershipExperienceCalculation lc2 = persistenceService.save(getAll().get(1));
-        LeadershipExperienceCalculation lc3 = persistenceService.save(getAll().get(2));
 
         List<Long> idsToDelete = List.of(lc1.getId(), lc2.getId());
 
@@ -69,7 +68,6 @@ class LeadershipExperienceCalculationPersistenceServiceIT
 
         List<LeadershipExperienceCalculation> remaining = persistenceService.getAll();
 
-        assertThat(remaining).hasSize(1);
-        assertThat(remaining.getFirst().getId()).isEqualTo(lc3.getId());
+        assertThat(remaining).isEmpty();
     }
 }

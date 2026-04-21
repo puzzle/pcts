@@ -137,4 +137,5 @@ TRUNCATE TABLE leadership_experience_calculation CASCADE;
 
 INSERT INTO leadership_experience_calculation(calculation_id, leadership_experience_id)
 VALUES
-    (1, 1);
+    (1, 1),
+    (1, 2);

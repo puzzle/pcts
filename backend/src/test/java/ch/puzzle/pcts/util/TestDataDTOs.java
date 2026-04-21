@@ -445,16 +445,6 @@ public class TestDataDTOs {
                                                                                                                                                                                                                             .getLeadershipExperienceType()
                                                                                                                                                                                                                             .getExperienceKind()),
                                                                                                                                                                       LEADERSHIP_EXPERIENCE_1
-                                                                                                                                                                              .getComment()),
-                                                                                                                            new MemberOverviewLeadershipExperienceDto(LEADERSHIP_EXPERIENCE_2
-                                                                                                                                    .getId(),
-                                                                                                                                                                      new MemberOverviewLeadershipExperienceTypeDto(LEADERSHIP_EXPERIENCE_2
-                                                                                                                                                                              .getLeadershipExperienceType()
-                                                                                                                                                                              .getName(),
-                                                                                                                                                                                                                    LEADERSHIP_EXPERIENCE_2
-                                                                                                                                                                                                                            .getLeadershipExperienceType()
-                                                                                                                                                                                                                            .getExperienceKind()),
-                                                                                                                                                                      LEADERSHIP_EXPERIENCE_2
                                                                                                                                                                               .getComment()))));
 
     public static final MemberOverviewDto MEMBER_2_OVERVIEW_DTO = new MemberOverviewDto(new MemberOverviewMemberDto(MEMBER_2
