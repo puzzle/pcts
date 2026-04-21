@@ -4,6 +4,6 @@ import { LeadershipExperienceTypeModel } from './leadership-experiences-type/lea
 export interface LeadershipExperienceModel {
   id: number;
   member: MemberModel;
-  experience: LeadershipExperienceTypeModel;
+  leadershipExperienceType: LeadershipExperienceTypeModel;
   comment: string | null;
 }

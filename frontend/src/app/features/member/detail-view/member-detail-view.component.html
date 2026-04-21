@@ -118,7 +118,9 @@
           [data]="leadershipExperienceData()"
           *appTranslationScope="'LEADERSHIP_EXPERIENCE'"
           [table]="leadershipExperienceTable"
-        />
+        >
+          <app-crud-button crud-button mode="add" [customOnClick]="openLeadershipExperienceDialog" data-testid="add-leadership-experience-button"/>
+        </app-generic-cv-content>
       </mat-tab>
       @for (rolePoints of rolePointList(); track rolePoints.role) {
         <mat-tab *appTranslationScope="'CALCULATION'" [label]='rolePoints.role.name'>

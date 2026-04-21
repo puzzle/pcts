@@ -1,5 +1,4 @@
-export enum CertificateKind {
-  CERTIFICATE = 'CERTIFICATE',
+export enum LeadershipExperienceKind {
   MILITARY_FUNCTION = 'MILITARY_FUNCTION',
   YOUTH_AND_SPORT = 'YOUTH_AND_SPORT',
   LEADERSHIP_TRAINING = 'LEADERSHIP_TRAINING'

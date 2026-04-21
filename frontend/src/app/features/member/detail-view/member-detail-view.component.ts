@@ -27,6 +27,11 @@ import { PctsModalService } from '../../../shared/modal/pcts-modal.service';
 import { RolePointsModel } from './RolePointsModel';
 import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { LeadershipExperienceModel } from '../../leadership-experiences/leadership-experience.model';
+import {
+  AddLeadershipExperienceComponent
+} from '../../leadership-experiences/add-leadership-experience/add-leadership-experience.component';
+import { LeadershipExperienceService } from '../../leadership-experiences/leadership-experience.service';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -54,6 +59,8 @@ export class MemberDetailViewComponent implements OnInit {
   private readonly dialog = inject(PctsModalService);
 
   private readonly certificateService = inject(CertificateService);
+
+  private readonly leadershipExperienceService = inject(LeadershipExperienceService);
 
   readonly experienceTable = getExperienceTable();
 
@@ -140,6 +147,36 @@ export class MemberDetailViewComponent implements OnInit {
         }
         this.certificateService
           .addCertificate(submittedModel)
+          .subscribe(() => this.getData());
+      });
+  };
+
+  openLeadershipExperienceDialog = (model?: LeadershipExperienceModel) => {
+    this.dialog.openModal(AddLeadershipExperienceComponent, { data: model })
+      .afterSubmitted
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(({ modalSubmitMode, submittedModel }) => {
+        const memberId = this.member()?.id;
+        if (memberId) {
+          submittedModel.member = { id: memberId } as MemberModel;
+        } else {
+          // Prevent running if member id is null
+          return;
+        }
+        switch (modalSubmitMode) {
+          case ModalSubmitMode.SAVE:
+            break;
+          case ModalSubmitMode.ENTER_ANOTHER:
+            this.openLeadershipExperienceDialog();
+            break;
+          case ModalSubmitMode.COPY:
+            this.openLeadershipExperienceDialog(submittedModel);
+            break;
+          default:
+            modalSubmitMode satisfies never;
+        }
+        this.leadershipExperienceService
+          .addLeadershipExperience(submittedModel)
           .subscribe(() => this.getData());
       });
   };

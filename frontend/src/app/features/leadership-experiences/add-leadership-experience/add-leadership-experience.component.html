@@ -1,0 +1,41 @@
+<app-base-modal [formGroup]="formGroup" (canceled)="onCancel()">
+  <app-base-form content [formGroup]="formGroup">
+    <ng-container title/>
+    <ng-container content>
+
+      <app-input-field>
+        <input type="text" formControlName="certificateType" matInput [matAutocomplete]="certificateTypeAutoComplete"
+               data-testid="certificateType">
+        <mat-autocomplete autoActiveFirstOption #certificateTypeAutoComplete="matAutocomplete"
+                          [displayWith]="displayLeadershipExperienceTypes"
+        >
+          @for (certificateType of leadershipExperienceTypeFilteredOptions(); track certificateType) {
+            <mat-option [value]="certificateType">{{ displayLeadershipExperienceTypes(certificateType) }}</mat-option>
+          }
+        </mat-autocomplete>
+      </app-input-field>
+
+      <app-input-field>
+        <textarea type="text" formControlName="comment" data-testid="comment" matInput></textarea>
+      </app-input-field>
+
+    </ng-container>
+    <ng-container actions/>
+  </app-base-form>
+
+  <ng-container actions>
+    <div class="d-flex flex-row gap-3">
+
+      <button data-testid="close-modal-button" matButton="text" type="button" (click)="onCancel()">
+        {{ "BUTTONS.CANCEL" | scopedTranslation  }}
+      </button>
+
+      <div class="d-flex">
+        <button [disabled]="!formGroup.valid" (click)="onSubmit(ModalSubmitMode.SAVE)" class="rounded-end-0" matButton="filled" type="submit" data-testid="submit-button">
+          {{ "BUTTONS.ACTION" | scopedTranslation }}
+        </button>
+        <app-menu-button [isValid]="formGroup.valid" [functions]="[ModalSubmitMode.ENTER_ANOTHER, ModalSubmitMode.COPY]" (selected)="onSubmit($event)"/>
+      </div>
+    </div>
+  </ng-container>
+</app-base-modal>

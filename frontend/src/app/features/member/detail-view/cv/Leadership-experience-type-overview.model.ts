@@ -1,6 +1,6 @@
-import { CertificateKind } from '../../../certificates/certificate-type/certificate-kind.enum';
+import { LeadershipExperienceKind } from '../../../leadership-experiences/leadership-experiences-type/leadership-experience-kind.enum';
 
 export interface LeadershipExperienceTypeOverviewModel {
   name: string;
-  certificateKind: CertificateKind;
+  leadershipExperienceKind: LeadershipExperienceKind;
 }
