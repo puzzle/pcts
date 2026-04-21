@@ -67,7 +67,7 @@ jobs:
           node-version: ${{ vars.NODE_VERSION }}
 
       - name: Cypress run e2e tests
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7.1.9
         with:
           working-directory: frontend
           install: true
