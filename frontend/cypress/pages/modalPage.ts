@@ -18,6 +18,10 @@ class ModalPage extends Page {
       .click();
   };
 
+  selectTextField = (textFieldName: string, value: string) => {
+    formPage.type(`${textFieldName}`, value);
+  };
+
   checkModalIconButtonVisible() {
     cy.getByTestId('close-modal-icon-button')
       .should('be.visible')

@@ -194,10 +194,7 @@ VALUES
     (2, 2),
     (3, 3),
     (4, 4),
-    (5, 5),
-    (1, 6),
-    (2, 7),
-    (4, 8);
+    (5, 5);
 
 INSERT INTO leadership_experience_calculation
 (calculation_id, leadership_experience_id)

@@ -2,7 +2,7 @@ import memberDetailPage from '../pages/memberDetailPage';
 import modalPage from '../pages/modalPage';
 import formPage from '../pages/formPage';
 
-describe('Add Certificate Modal', () => {
+describe('Add certificate modal', () => {
   const openCertificateModal = () => {
     memberDetailPage.openModalButton('add', 'certificate')
       .click();
