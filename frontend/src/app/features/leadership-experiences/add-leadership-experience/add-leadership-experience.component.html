@@ -4,13 +4,13 @@
     <ng-container content>
 
       <app-input-field>
-        <input type="text" formControlName="certificateType" matInput [matAutocomplete]="certificateTypeAutoComplete"
-               data-testid="certificateType">
-        <mat-autocomplete autoActiveFirstOption #certificateTypeAutoComplete="matAutocomplete"
+        <input type="text" formControlName="leadershipExperienceType" matInput [matAutocomplete]="leadershipExperienceTypeAutoComplete"
+               data-testid="leadershipExperienceType">
+        <mat-autocomplete autoActiveFirstOption #leadershipExperienceTypeAutoComplete="matAutocomplete"
                           [displayWith]="displayLeadershipExperienceTypes"
         >
-          @for (certificateType of leadershipExperienceTypeFilteredOptions(); track certificateType) {
-            <mat-option [value]="certificateType">{{ displayLeadershipExperienceTypes(certificateType) }}</mat-option>
+          @for (leadershipExperienceType of leadershipExperienceTypeFilteredOptions(); track leadershipExperienceType) {
+            <mat-option [value]="leadershipExperienceType">{{ displayLeadershipExperienceTypes(leadershipExperienceType) }}</mat-option>
           }
         </mat-autocomplete>
       </app-input-field>

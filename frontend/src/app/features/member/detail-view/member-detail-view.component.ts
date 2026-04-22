@@ -32,6 +32,7 @@ import {
   AddLeadershipExperienceComponent
 } from '../../leadership-experiences/add-leadership-experience/add-leadership-experience.component';
 import { LeadershipExperienceService } from '../../leadership-experiences/leadership-experience.service';
+import { concatMap, filter, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -121,65 +122,43 @@ export class MemberDetailViewComponent implements OnInit {
       });
   }
 
-  openCertificateDialog = (model?: CertificateModel) => {
-    this.dialog.openModal(AddCertificateComponent, { data: model })
-      .afterSubmitted
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(({ modalSubmitMode, submittedModel }) => {
-        const memberId = this.member()?.id;
-        if (memberId) {
-          submittedModel.member = { id: memberId } as MemberModel;
-        } else {
-          // Prevent running if member id is null
-          return;
-        }
-        switch (modalSubmitMode) {
-          case ModalSubmitMode.SAVE:
-            break;
-          case ModalSubmitMode.ENTER_ANOTHER:
-            this.openCertificateDialog();
-            break;
-          case ModalSubmitMode.COPY:
-            this.openCertificateDialog(submittedModel);
-            break;
-          default:
-            modalSubmitMode satisfies never;
-        }
-        this.certificateService
-          .addCertificate(submittedModel)
-          .subscribe(() => this.getData());
-      });
+  private readonly createDialogOpener = <T extends { member?: MemberModel }>(
+    component: any,
+    addServiceCall: (model: T) => Observable<any>
+  ) => {
+    const opener = (model?: T) => {
+      this.dialog.openModal(component, { data: model })
+        .afterSubmitted
+        .pipe(takeUntilDestroyed(this.destroyRef), filter(() => !!this.member()?.id), concatMap(({ modalSubmitMode, submittedModel }: { modalSubmitMode: ModalSubmitMode;
+          submittedModel: T; }) => {
+          submittedModel.member = { id: this.member()!.id } as MemberModel;
+
+          switch (modalSubmitMode) {
+            case ModalSubmitMode.SAVE:
+              break;
+            case ModalSubmitMode.ENTER_ANOTHER:
+              opener();
+              break;
+            case ModalSubmitMode.COPY:
+              opener(submittedModel);
+              break;
+            default:
+                modalSubmitMode satisfies never;
+          }
+
+          return addServiceCall(submittedModel);
+        }))
+        .subscribe(() => {
+          this.getData();
+        });
+    };
+
+    return opener;
   };
 
-  openLeadershipExperienceDialog = (model?: LeadershipExperienceModel) => {
-    this.dialog.openModal(AddLeadershipExperienceComponent, { data: model })
-      .afterSubmitted
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(({ modalSubmitMode, submittedModel }) => {
-        const memberId = this.member()?.id;
-        if (memberId) {
-          submittedModel.member = { id: memberId } as MemberModel;
-        } else {
-          // Prevent running if member id is null
-          return;
-        }
-        switch (modalSubmitMode) {
-          case ModalSubmitMode.SAVE:
-            break;
-          case ModalSubmitMode.ENTER_ANOTHER:
-            this.openLeadershipExperienceDialog();
-            break;
-          case ModalSubmitMode.COPY:
-            this.openLeadershipExperienceDialog(submittedModel);
-            break;
-          default:
-            modalSubmitMode satisfies never;
-        }
-        this.leadershipExperienceService
-          .addLeadershipExperience(submittedModel)
-          .subscribe(() => this.getData());
-      });
-  };
+  openCertificateDialog = this.createDialogOpener<CertificateModel>(AddCertificateComponent, (model) => this.certificateService.addCertificate(model));
+
+  openLeadershipExperienceDialog = this.createDialogOpener<LeadershipExperienceModel>(AddLeadershipExperienceComponent, (model) => this.leadershipExperienceService.addLeadershipExperience(model));
 
   onTabIndexChange(index: number) {
     this.router.navigate([], {
