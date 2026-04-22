@@ -80,8 +80,7 @@ public class DegreeCalculationBusinessService extends BusinessBase<DegreeCalcula
         existing.removeAll(updated);
 
         // delete the remaining, which are unused
-        degreeCalculationPersistenceService
-                .deleteAllByIdInBatch(existing.stream().map(DegreeCalculation::getId).toList());
+        degreeCalculationPersistenceService.deleteAllById(existing.stream().map(DegreeCalculation::getId).toList());
     }
 
     /*

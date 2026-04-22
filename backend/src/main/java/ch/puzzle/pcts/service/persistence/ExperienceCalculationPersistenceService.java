@@ -26,9 +26,10 @@ public class ExperienceCalculationPersistenceService
         return repository.findByExperienceId(experienceId);
     }
 
-    public void deleteAllByIdInBatch(List<Long> ids) {
-        repository.deleteAllByIdInBatch(ids);
+    public void deleteAllById(List<Long> ids) {
+        repository.deleteAllById(ids);
     }
+
     @Override
     public String entityName() {
         return EXPERIENCE_CALCULATION;

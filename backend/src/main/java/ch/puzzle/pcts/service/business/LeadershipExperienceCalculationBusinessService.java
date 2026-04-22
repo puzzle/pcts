@@ -98,6 +98,6 @@ public class LeadershipExperienceCalculationBusinessService extends BusinessBase
         existing.removeAll(updated);
 
         leadershipExperienceCalculationPersistenceService
-                .deleteAllByIdInBatch(existing.stream().map(LeadershipExperienceCalculation::getId).toList());
+                .deleteAllById(existing.stream().map(LeadershipExperienceCalculation::getId).toList());
     }
 }

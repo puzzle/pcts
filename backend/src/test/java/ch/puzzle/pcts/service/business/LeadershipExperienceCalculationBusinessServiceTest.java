@@ -195,6 +195,6 @@ class LeadershipExperienceCalculationBusinessServiceTest
 
         verify(validationService).validateOnUpdate(LEADERSHIP_EXP_CALC_ID_1, updated);
         verify(validationService).validateDuplicateLeadershipExperienceId(updated, List.of(updated));
-        verify(persistenceService).deleteAllByIdInBatch(anyList());
+        verify(persistenceService).deleteAllById(anyList());
     }
 }

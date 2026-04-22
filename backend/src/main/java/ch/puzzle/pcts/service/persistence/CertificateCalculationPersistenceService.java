@@ -26,8 +26,8 @@ public class CertificateCalculationPersistenceService
         return repository.findByCertificateId(certificateId);
     }
 
-    public void deleteAllByIdInBatch(List<Long> ids) {
-        repository.deleteAllByIdInBatch(ids);
+    public void deleteAllById(List<Long> ids) {
+        repository.deleteAllById(ids);
     }
 
     @Override

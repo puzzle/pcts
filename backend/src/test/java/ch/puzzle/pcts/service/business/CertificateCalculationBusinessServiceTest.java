@@ -183,6 +183,6 @@ class CertificateCalculationBusinessServiceTest
 
         verify(validationService).validateOnUpdate(CERTIFICATE_CALCULATION_ID_2, updated);
 
-        verify(persistenceService).deleteAllByIdInBatch(anyList());
+        verify(persistenceService).deleteAllById(anyList());
     }
 }

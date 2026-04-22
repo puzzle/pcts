@@ -64,7 +64,7 @@ class LeadershipExperienceCalculationPersistenceServiceIT
 
         List<Long> idsToDelete = List.of(lc1.getId(), lc2.getId());
 
-        persistenceService.deleteAllByIdInBatch(idsToDelete);
+        persistenceService.deleteAllById(idsToDelete);
 
         List<LeadershipExperienceCalculation> remaining = persistenceService.getAll();
 

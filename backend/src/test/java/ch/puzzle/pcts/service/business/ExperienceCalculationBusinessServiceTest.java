@@ -206,7 +206,7 @@ class ExperienceCalculationBusinessServiceTest
 
         verify(validationService).validateOnUpdate(EXPERIENCE_CALCULATION_ID_2, updated);
 
-        verify(persistenceService).deleteAllByIdInBatch(anyList());
+        verify(persistenceService).deleteAllById(anyList());
     }
 
     @Test

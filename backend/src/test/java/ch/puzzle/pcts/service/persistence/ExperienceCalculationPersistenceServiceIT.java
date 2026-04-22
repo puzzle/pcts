@@ -78,7 +78,7 @@ class ExperienceCalculationPersistenceServiceIT
 
         List<Long> idsToDelete = List.of(ec1.getId(), ec3.getId());
 
-        persistenceService.deleteAllByIdInBatch(idsToDelete);
+        persistenceService.deleteAllById(idsToDelete);
 
         List<ExperienceCalculation> remaining = persistenceService.getAll();
 

@@ -84,6 +84,6 @@ public class CertificateCalculationBusinessService extends BusinessBase<Certific
 
         // delete the remaining, which are unused
         certificateCalculationPersistenceService
-                .deleteAllByIdInBatch(existing.stream().map(CertificateCalculation::getId).toList());
+                .deleteAllById(existing.stream().map(CertificateCalculation::getId).toList());
     }
 }

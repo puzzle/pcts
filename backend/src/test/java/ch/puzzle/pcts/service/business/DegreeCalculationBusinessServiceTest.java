@@ -209,7 +209,7 @@ class DegreeCalculationBusinessServiceTest
 
         verify(validationService).validateOnUpdate(DEGREE_CALCULATION_ID_2, updated);
 
-        verify(persistenceService).deleteAllByIdInBatch(anyList());
+        verify(persistenceService).deleteAllById(anyList());
     }
 
     @Test
