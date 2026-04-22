@@ -21,17 +21,12 @@ public class LeadershipExperienceTypePersistenceService
     }
 
     public Optional<LeadershipExperienceType> getByName(String name) {
-        return repository.findByName(name);
+        return repository.findByNameAndDeletedAtIsNull(name);
     }
 
     @Override
     public List<LeadershipExperienceType> getAll() {
         return repository.findAll();
-    }
-
-    @Override
-    public LeadershipExperienceType getById(Long id) {
-        return repository.findByIdAndDeletedAtIsNull(id).orElseThrow(() -> throwNotFoundError(id.toString()));
     }
 
     @Override

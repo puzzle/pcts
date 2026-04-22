@@ -51,9 +51,9 @@ VALUES
 
 INSERT INTO leadership_experience_type (name, points, comment, experience_kind, deleted_at)
 VALUES
-    ('Leadership Training', 5, 'Leadership training', 'LEADERSHIP_TRAINING', NULL),
-    ('Youth and Sport', 2, 'Youth and sport', 'YOUTH_AND_SPORT', NULL),
-    ('Military Function', 7.5, 'Military function', 'MILITARY_FUNCTION', NULL);
+    ('Führungskurs', 5, 'Leadership training', 'LEADERSHIP_TRAINING', NULL),
+    ('Skicamp Leiter', 2, 'Youth and sport', 'YOUTH_AND_SPORT', NULL),
+    ('Soldat', 7.5, 'Military function', 'MILITARY_FUNCTION', NULL);
 
 INSERT INTO experience_type (name, highly_relevant_points, limited_relevant_points, little_relevant_points)
 VALUES
