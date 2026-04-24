@@ -26,7 +26,10 @@ CREATE TABLE IF NOT EXISTS leadership_experience
 ALTER TABLE leadership_experience
     ADD CONSTRAINT fk_leadership_experience_type
         FOREIGN KEY (leadership_experience_type_id)
-            REFERENCES leadership_experience_type (id);
+            REFERENCES leadership_experience_type (id),
+    ADD CONSTRAINT fk_leadership_experience_member
+        FOREIGN KEY (member_id)
+            REFERENCES member (id);
 
 -- Create linking table for calculations
 CREATE TABLE IF NOT EXISTS leadership_experience_calculation
