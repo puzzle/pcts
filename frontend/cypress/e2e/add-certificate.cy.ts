@@ -2,7 +2,7 @@ import memberDetailPage from '../pages/memberDetailPage';
 import modalPage from '../pages/modalPage';
 import formPage from '../pages/formPage';
 
-describe('Add Certificate Modal', () => {
+describe('Add certificate modal', () => {
   const openCertificateModal = () => {
     memberDetailPage.openModalButton('add', 'certificate')
       .click();
@@ -44,7 +44,7 @@ describe('Add Certificate Modal', () => {
       cy.getByTestId('certificateType')
         .focus()
         .blur();
-      formPage.shouldShowValidationError('Muss ausgefühlt sein', 'certificateType');
+      formPage.shouldShowValidationError('Muss ausgefüllt sein', 'certificateType');
 
       formPage.type('certificateType', 'invalid entry');
       cy.getByTestId('certificateType')
@@ -53,7 +53,7 @@ describe('Add Certificate Modal', () => {
     });
 
     const fields = {
-      completedAt: ['Muss ausgefühlt sein',
+      completedAt: ['Muss ausgefüllt sein',
         'Ungültiges Datum'],
       validUntil: ['Ungültiges Datum']
     };

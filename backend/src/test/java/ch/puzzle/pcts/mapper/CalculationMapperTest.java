@@ -61,9 +61,9 @@ class CalculationMapperTest {
                 .thenReturn(CALCULATION_DTO_1.degreeCalculations());
         when(experienceCalculationMapper.toDto(CALCULATION_1.getExperienceCalculations()))
                 .thenReturn(CALCULATION_DTO_1.experienceCalculations());
-        when(certificateCalculationMapper.toDto(CALCULATION_1.getCertificateCalculationsWithCertificateType()))
+        when(certificateCalculationMapper.toDto(CALCULATION_1.getCertificateCalculations()))
                 .thenReturn(CALCULATION_DTO_1.certificateCalculations());
-        when(leadershipExperienceCalculationMapper.toDto(CALCULATION_1.getCertificatesCalculationsWithLeadershipExperienceType()))
+        when(leadershipExperienceCalculationMapper.toDto(CALCULATION_1.getLeadershipExperienceCalculations()))
                 .thenReturn(CALCULATION_DTO_1.leadershipExperienceCalculations());
 
         CalculationDto result = calculationMapper.toDto(CALCULATION_1);
@@ -191,8 +191,8 @@ class CalculationMapperTest {
     @DisplayName("Should map Calculations to RolePointDto list")
     @Test
     void shouldReturnListOfRolePointDto() {
-        Calculation calculation1 = GET_CALCULATIN();
-        Calculation calculation2 = GET_CALCULATIN();
+        Calculation calculation1 = GET_CALCULATION();
+        Calculation calculation2 = GET_CALCULATION();
         calculation1.setPoints(BigDecimal.TEN);
         calculation2.setPoints(BigDecimal.TWO);
 

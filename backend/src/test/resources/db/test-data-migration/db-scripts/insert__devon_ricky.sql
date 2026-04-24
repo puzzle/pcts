@@ -5,22 +5,25 @@ VALUES ('M1 Project Manager', TRUE),
 INSERT INTO member(first_name, last_name, abbreviation, employment_state, date_of_hire, birth_date, organisation_unit)
 VALUES ('Devon', 'Ricky', 'DR', 'MEMBER', '2015-03-17', '1979-11-05', 1);
 
--- TODO: Remove 'link_error_count' here after LeadershipExperiences are treated separately
-INSERT INTO certificate_type(name, points, certificate_kind, link_error_count)
-VALUES ('Scrum Master', 0.5, 'CERTIFICATE', 0),
-       ('Hermes Foundation', 0.5, 'CERTIFICATE', 0),
-       ('Customer Experience Facilitator', 0.5, 'CERTIFICATE', 0),
-       ('Leadership Handball', 0.5, 'YOUTH_AND_SPORT', 0),
-       ('Periodic Leadership', 0.2, 'YOUTH_AND_SPORT', 0),
-       ('Expert', 1.5, 'YOUTH_AND_SPORT', 0);
+INSERT INTO certificate_type(name, points, link_error_count)
+VALUES ('Scrum Master', 0.5, 0),
+       ('Hermes Foundation', 0.5, 0),
+       ('Customer Experience Facilitator', 0.5, 0);
+
+INSERT INTO leadership_experience_type(name, points, experience_kind)
+VALUES ('Leadership Handball', 0.5, 'YOUTH_AND_SPORT'),
+       ('Periodic Leadership', 0.2,  'YOUTH_AND_SPORT'),
+       ('Expert', 1.5, 'YOUTH_AND_SPORT');
 
 INSERT INTO certificate(member_id, certificate_type_id, completed_at, valid_until)
 VALUES (1000, 1000, '2021-08-01', null),
        (1000, 1001, '2022-02-01', null),
-       (1000, 1002, '2023-12-01', null),
-       (1000, 1003, '2023-12-01', null),
-       (1000, 1004, '2023-12-01', null),
-       (1000, 1005, '2023-12-01', null);
+       (1000, 1002, '2023-12-01', null);
+
+INSERT INTO leadership_experience(member_id, leadership_experience_type_id)
+VALUES (1000, 1000),
+       (1000, 1001),
+       (1000, 1002);
 
 INSERT INTO experience_type(name, highly_relevant_points, limited_relevant_points, little_relevant_points)
 VALUES ('Work experience', 3, 2, 1),
@@ -75,16 +78,19 @@ INSERT INTO certificate_calculation(calculation_id, certificate_id)
 VALUES (1000, 1000),
        (1000, 1001),
        (1000, 1002),
-       (1000, 1003),
-       (1000, 1004),
-       (1000, 1005),
 
        (1001, 1000),
        (1001, 1001),
-       (1001, 1002),
-       (1001, 1003),
-       (1001, 1004),
-       (1001, 1005);
+       (1001, 1002);
+
+INSERT INTO leadership_experience_calculation(calculation_id, leadership_experience_id)
+VALUES (1000, 1000),
+       (1000, 1001),
+       (1000, 1002),
+
+       (1001, 1000),
+       (1001, 1001),
+       (1001, 1002);
 
 INSERT INTO experience_calculation(calculation_id, experience_id, relevancy)
 VALUES (1000, 1000, 'NORMAL'),

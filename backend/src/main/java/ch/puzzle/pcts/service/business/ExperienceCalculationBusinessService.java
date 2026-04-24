@@ -85,7 +85,7 @@ public class ExperienceCalculationBusinessService extends BusinessBase<Experienc
 
         // delete the remaining, which are unused
         experienceCalculationPersistenceService
-                .deleteAllByIdInBatch(existing.stream().map(ExperienceCalculation::getId).toList());
+                .deleteAllById(existing.stream().map(ExperienceCalculation::getId).toList());
     }
 
     /*

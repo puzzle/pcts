@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.leadershipexperience.LeadershipExperienceInputDto;
 import ch.puzzle.pcts.mapper.LeadershipExperienceMapper;
-import ch.puzzle.pcts.model.certificate.Certificate;
+import ch.puzzle.pcts.model.leadershipexperience.LeadershipExperience;
 import ch.puzzle.pcts.service.business.LeadershipExperienceBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import org.junit.jupiter.api.DisplayName;
@@ -50,8 +50,8 @@ class LeadershipExperienceControllerIT {
     @DisplayName("Should successfully get leadership experience by ID")
     @Test
     void shouldGetLeadershipExperienceById() throws Exception {
-        when(businessService.getById(LEADERSHIP_CERT_1_ID)).thenReturn(LEADERSHIP_CERT_1);
-        when(mapper.toDto(any(Certificate.class))).thenReturn(LEADERSHIP_CERT_1_DTO);
+        when(businessService.getById(LEADERSHIP_CERT_1_ID)).thenReturn(LEADERSHIP_EXPERIENCE_1);
+        when(mapper.toDto(any(LeadershipExperience.class))).thenReturn(LEADERSHIP_CERT_1_DTO);
 
         mvc
                 .perform(get(BASEURL + "/{id}", LEADERSHIP_CERT_1_ID).with(csrf()).accept(MediaType.APPLICATION_JSON))
@@ -59,15 +59,15 @@ class LeadershipExperienceControllerIT {
                 .andExpect(JsonDtoMatcher.matchesDto(LEADERSHIP_CERT_1_DTO, "$"));
 
         verify(businessService, times(1)).getById(LEADERSHIP_CERT_1_ID);
-        verify(mapper, times(1)).toDto(any(Certificate.class));
+        verify(mapper, times(1)).toDto(any(LeadershipExperience.class));
     }
 
     @DisplayName("Should successfully create leadership experience")
     @Test
     void shouldCreateLeadershipExperience() throws Exception {
-        when(mapper.fromDto(any(LeadershipExperienceInputDto.class))).thenReturn(LEADERSHIP_CERT_1);
-        when(businessService.create(any(Certificate.class))).thenReturn(LEADERSHIP_CERT_1);
-        when(mapper.toDto(any(Certificate.class))).thenReturn(LEADERSHIP_CERT_1_DTO);
+        when(mapper.fromDto(any(LeadershipExperienceInputDto.class))).thenReturn(LEADERSHIP_EXPERIENCE_1);
+        when(businessService.create(any(LeadershipExperience.class))).thenReturn(LEADERSHIP_EXPERIENCE_1);
+        when(mapper.toDto(any(LeadershipExperience.class))).thenReturn(LEADERSHIP_CERT_1_DTO);
 
         mvc
                 .perform(post(BASEURL)
@@ -78,16 +78,16 @@ class LeadershipExperienceControllerIT {
                 .andExpect(JsonDtoMatcher.matchesDto(LEADERSHIP_CERT_1_DTO, "$"));
 
         verify(mapper, times(1)).fromDto(any(LeadershipExperienceInputDto.class));
-        verify(businessService, times(1)).create(any(Certificate.class));
-        verify(mapper, times(1)).toDto(any(Certificate.class));
+        verify(businessService, times(1)).create(any(LeadershipExperience.class));
+        verify(mapper, times(1)).toDto(any(LeadershipExperience.class));
     }
 
     @DisplayName("Should successfully update leadership experience")
     @Test
     void shouldUpdateLeadershipExperience() throws Exception {
-        when(mapper.fromDto(any(LeadershipExperienceInputDto.class))).thenReturn(LEADERSHIP_CERT_1);
-        when(businessService.update(eq(LEADERSHIP_CERT_1_ID), any(Certificate.class))).thenReturn(LEADERSHIP_CERT_1);
-        when(mapper.toDto(any(Certificate.class))).thenReturn(LEADERSHIP_CERT_1_DTO);
+        when(mapper.fromDto(any(LeadershipExperienceInputDto.class))).thenReturn(LEADERSHIP_EXPERIENCE_1);
+        when(businessService.update(eq(LEADERSHIP_CERT_1_ID), any(LeadershipExperience.class))).thenReturn(LEADERSHIP_EXPERIENCE_1);
+        when(mapper.toDto(any(LeadershipExperience.class))).thenReturn(LEADERSHIP_CERT_1_DTO);
 
         mvc
                 .perform(put(BASEURL + "/{id}", LEADERSHIP_CERT_1_ID)
@@ -98,8 +98,8 @@ class LeadershipExperienceControllerIT {
                 .andExpect(JsonDtoMatcher.matchesDto(LEADERSHIP_CERT_1_DTO, "$"));
 
         verify(mapper, times(1)).fromDto(any(LeadershipExperienceInputDto.class));
-        verify(businessService, times(1)).update(eq(LEADERSHIP_CERT_1_ID), any(Certificate.class));
-        verify(mapper, times(1)).toDto(any(Certificate.class));
+        verify(businessService, times(1)).update(eq(LEADERSHIP_CERT_1_ID), any(LeadershipExperience.class));
+        verify(mapper, times(1)).toDto(any(LeadershipExperience.class));
     }
 
     @DisplayName("Should successfully delete leadership experience")

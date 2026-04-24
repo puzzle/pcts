@@ -27,6 +27,12 @@ import { PctsModalService } from '../../../shared/modal/pcts-modal.service';
 import { RolePointsModel } from './RolePointsModel';
 import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { LeadershipExperienceModel } from '../../leadership-experiences/leadership-experience.model';
+import {
+  AddLeadershipExperienceComponent
+} from '../../leadership-experiences/add-leadership-experience/add-leadership-experience.component';
+import { LeadershipExperienceService } from '../../leadership-experiences/leadership-experience.service';
+import { concatMap, filter, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -54,6 +60,8 @@ export class MemberDetailViewComponent implements OnInit {
   private readonly dialog = inject(PctsModalService);
 
   private readonly certificateService = inject(CertificateService);
+
+  private readonly leadershipExperienceService = inject(LeadershipExperienceService);
 
   readonly experienceTable = getExperienceTable();
 
@@ -114,35 +122,43 @@ export class MemberDetailViewComponent implements OnInit {
       });
   }
 
-  openCertificateDialog = (model?: CertificateModel) => {
-    this.dialog.openModal(AddCertificateComponent, { data: model })
-      .afterSubmitted
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(({ modalSubmitMode, submittedModel }) => {
-        const memberId = this.member()?.id;
-        if (memberId) {
-          submittedModel.member = { id: memberId } as MemberModel;
-        } else {
-          // Prevent running if member id is null
-          return;
-        }
-        switch (modalSubmitMode) {
-          case ModalSubmitMode.SAVE:
-            break;
-          case ModalSubmitMode.ENTER_ANOTHER:
-            this.openCertificateDialog();
-            break;
-          case ModalSubmitMode.COPY:
-            this.openCertificateDialog(submittedModel);
-            break;
-          default:
-            modalSubmitMode satisfies never;
-        }
-        this.certificateService
-          .addCertificate(submittedModel)
-          .subscribe(() => this.getData());
-      });
+  private readonly createDialogOpener = <T extends { member?: MemberModel }>(
+    component: any,
+    addServiceCall: (model: T) => Observable<any>
+  ) => {
+    const opener = (model?: T) => {
+      this.dialog.openModal(component, { data: model })
+        .afterSubmitted
+        .pipe(takeUntilDestroyed(this.destroyRef), filter(() => !!this.member()?.id), concatMap(({ modalSubmitMode, submittedModel }: { modalSubmitMode: ModalSubmitMode;
+          submittedModel: T; }) => {
+          submittedModel.member = { id: this.member()!.id } as MemberModel;
+
+          switch (modalSubmitMode) {
+            case ModalSubmitMode.SAVE:
+              break;
+            case ModalSubmitMode.ENTER_ANOTHER:
+              opener();
+              break;
+            case ModalSubmitMode.COPY:
+              opener(submittedModel);
+              break;
+            default:
+                modalSubmitMode satisfies never;
+          }
+
+          return addServiceCall(submittedModel);
+        }))
+        .subscribe(() => {
+          this.getData();
+        });
+    };
+
+    return opener;
   };
+
+  openCertificateDialog = this.createDialogOpener<CertificateModel>(AddCertificateComponent, (model) => this.certificateService.addCertificate(model));
+
+  openLeadershipExperienceDialog = this.createDialogOpener<LeadershipExperienceModel>(AddLeadershipExperienceComponent, (model) => this.leadershipExperienceService.addLeadershipExperience(model));
 
   onTabIndexChange(index: number) {
     this.router.navigate([], {

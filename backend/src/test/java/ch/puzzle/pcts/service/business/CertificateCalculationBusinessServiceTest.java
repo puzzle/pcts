@@ -6,7 +6,6 @@ import static org.mockito.Mockito.*;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
 import ch.puzzle.pcts.model.certificate.Certificate;
-import ch.puzzle.pcts.model.certificatetype.CertificateKind;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.persistence.CertificateCalculationPersistenceService;
@@ -67,10 +66,9 @@ class CertificateCalculationBusinessServiceTest
 
     static Stream<Arguments> certificatePointsProvider() {
         return Stream
-                .of(Arguments.of(false, CertificateKind.CERTIFICATE, BigDecimal.TEN, BigDecimal.TEN),
-                    Arguments.of(false, CertificateKind.CERTIFICATE, BigDecimal.TEN, BigDecimal.TEN),
-                    Arguments.of(true, CertificateKind.MILITARY_FUNCTION, BigDecimal.ONE, BigDecimal.ONE),
-                    Arguments.of(false, CertificateKind.LEADERSHIP_TRAINING, BigDecimal.TWO, BigDecimal.ZERO));
+                .of(Arguments.of(BigDecimal.TEN, BigDecimal.TEN),
+                    Arguments.of(BigDecimal.TEN, BigDecimal.TEN),
+                    Arguments.of(BigDecimal.ONE, BigDecimal.ONE));
     }
 
     @Test
@@ -101,16 +99,13 @@ class CertificateCalculationBusinessServiceTest
     @DisplayName("Should calculate certificate points correctly")
     @ParameterizedTest
     @MethodSource("certificatePointsProvider")
-    void shouldCalculateCertificatePoints(boolean isManagement, CertificateKind kind, BigDecimal certificatePoints,
-                                          BigDecimal expectedResult) {
+    void shouldCalculateCertificatePoints(BigDecimal certificatePoints, BigDecimal expectedResult) {
         Calculation calculation = mock(Calculation.class);
         Role role = mock(Role.class);
 
         when(calculation.getRole()).thenReturn(role);
-        when(role.getIsManagement()).thenReturn(isManagement);
 
         CertificateType type = mock(CertificateType.class);
-        when(type.getCertificateKind()).thenReturn(kind);
         when(type.getPoints()).thenReturn(certificatePoints);
 
         Certificate certificate = mock(Certificate.class);
@@ -188,6 +183,6 @@ class CertificateCalculationBusinessServiceTest
 
         verify(validationService).validateOnUpdate(CERTIFICATE_CALCULATION_ID_2, updated);
 
-        verify(persistenceService).deleteAllByIdInBatch(anyList());
+        verify(persistenceService).deleteAllById(anyList());
     }
 }

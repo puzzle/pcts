@@ -59,7 +59,7 @@
   },
 
   "VALIDATION": {
-    "REQUIRED": "Muss ausgefühlt sein",
+    "REQUIRED": "Muss ausgefüllt sein",
     "DATE_IS_IN_FUTURE": "Datum muss in der Vergangenheit oder Gegenwart liegen.",
     "DATE_IS_NOT_IN_PAST": "Datum muss in der Vergangenheit liegen",
     "INVALID_ENTRY": "Ungültige Eingabe",

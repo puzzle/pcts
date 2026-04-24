@@ -15,20 +15,20 @@ VALUES
 
 TRUNCATE TABLE certificate_type CASCADE;
 
-INSERT INTO certificate_type (name, points, deleted_at, comment, certificate_kind, effort, exam_duration, link, exam_type, publisher, link_error_count, link_last_checked_at)
+INSERT INTO certificate_type (name, points, deleted_at, comment, effort, exam_duration, link, exam_type, publisher, link_error_count, link_last_checked_at)
 VALUES
-    ('Certificate Type 1', 5.5, null, 'This is Certificate 1', 'CERTIFICATE', 10, 120, 'http://localhost:8443/valid-cert', 'MULTIPLE_CHOICE', 'Example Publisher', 0, null),
-    ('Certificate Type 2', 1, null, 'This is Certificate 2', 'CERTIFICATE', 10, 120, 'https://example.com/', 'MULTIPLE_CHOICE', 'Example Publisher', 0, null),
-    ('Certificate Type 3', 3, null, 'This is Certificate 3', 'CERTIFICATE', 10, 120, null, 'MULTIPLE_CHOICE', 'Example Publisher', 0, null),
-    ('Certificate Type 4', 0.5, null, 'This is Certificate 4', 'CERTIFICATE', 10, 120, null, 'MULTIPLE_CHOICE', 'Example Publisher', 0, null);
+    ('Certificate Type 1', 5.5, null, 'This is Certificate 1', 10, 120, 'http://localhost:8443/valid-cert', 'MULTIPLE_CHOICE', 'Example Publisher', 0, null),
+    ('Certificate Type 2', 1, null, 'This is Certificate 2', 10, 120, 'https://example.com/', 'MULTIPLE_CHOICE', 'Example Publisher', 0, null),
+    ('Certificate Type 3', 3, null, 'This is Certificate 3', 10, 120, null, 'MULTIPLE_CHOICE', 'Example Publisher', 0, null),
+    ('Certificate Type 4', 0.5, null, 'This is Certificate 4', 10, 120, null, 'MULTIPLE_CHOICE', 'Example Publisher', 0, null);
 
--- TODO: Remove 'link_error_count' here after LeadershipExperiences are treated separately
+TRUNCATE TABLE leadership_experience_type CASCADE;
 
-INSERT INTO certificate_type (name, points, deleted_at, comment, certificate_kind, link_error_count)
+INSERT INTO leadership_experience_type (name, points, deleted_at, comment, experience_kind)
 VALUES
-    ('LeadershipExperience Type 1', 5.5, null, 'This is LeadershipExperience 1', 'MILITARY_FUNCTION', 0),
-    ('LeadershipExperience Type 2', 1, null, 'This is LeadershipExperience 2', 'YOUTH_AND_SPORT', 0),
-    ('LeadershipExperience Type 3', 3, null, 'This is LeadershipExperience 3', 'LEADERSHIP_TRAINING', 0);
+    ('LeadershipExperience Type 1', 5.5, null, 'This is LeadershipExperience 1', 'MILITARY_FUNCTION'),
+    ('LeadershipExperience Type 2', 1, null, 'This is LeadershipExperience 2', 'YOUTH_AND_SPORT'),
+    ('LeadershipExperience Type 3', 3, null, 'This is LeadershipExperience 3', 'LEADERSHIP_TRAINING');
 
 TRUNCATE TABLE experience_type CASCADE;
 
@@ -82,14 +82,19 @@ VALUES (1, 'Degree 1','Institution',TRUE,1,'2015-09-01','2020-06-01','Comment'),
 
 TRUNCATE TABLE certificate CASCADE;
 
-INSERT INTO certificate
-(member_id, certificate_type_id, completed_at, valid_until, comment)
+INSERT INTO certificate(member_id, certificate_type_id, completed_at, valid_until, comment)
 VALUES
     (1, 1, '2023-01-15', '2025-01-14', 'Completed first aid training.'),
     (2, 2, '2022-11-01', NULL, 'Completed first aid training.'),
     (2, 1, '2023-01-15', '2025-01-14', NULL),
-    (1, 2, '2010-08-12', '2023-03-25', 'Left organization.'),
-    (1, 5, '2010-08-12', '2023-03-25', 'Left organization.');
+    (1, 2, '2010-08-12', '2023-03-25', 'Left organization.');
+
+TRUNCATE TABLE leadership_experience CASCADE;
+
+INSERT INTO leadership_experience(member_id, leadership_experience_type_id, comment, deleted_at)
+VALUES
+    (1, 1, 'Left organization.', NULL),
+    (2, 2, 'This is a comment.', NULL);
 
 TRUNCATE TABLE calculation CASCADE;
 
@@ -126,4 +131,11 @@ INSERT INTO certificate_calculation
 VALUES
     (1, 2),
     (2, 2),
-    (1, 5);
+    (1, 3);
+
+TRUNCATE TABLE leadership_experience_calculation CASCADE;
+
+INSERT INTO leadership_experience_calculation(calculation_id, leadership_experience_id)
+VALUES
+    (1, 1),
+    (1, 2);

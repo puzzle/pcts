@@ -4,15 +4,14 @@ VALUES ('M2 Division Manager', TRUE);
 INSERT INTO member(first_name, last_name, abbreviation, employment_state, date_of_hire, birth_date, organisation_unit)
 VALUES (' Hermine', 'Sidney', 'HS', 'MEMBER', '2014-08-01', '1973-06-22', 2);
 
--- TODO: Remove 'link_error_count' here after LeadershipExperiences are treated separately
-INSERT INTO certificate_type(name, points, certificate_kind, link_error_count)
-VALUES ('Coaching (single)', 1, 'LEADERSHIP_TRAINING', 0),
-       ('Coaching (team)', 0.5, 'LEADERSHIP_TRAINING', 0),
-       ('Integral Coach Living Sense', 1, 'LEADERSHIP_TRAINING', 0),
-       ('Life Coach', 1, 'LEADERSHIP_TRAINING', 0),
-       ('Leadership training', 0.5, 'YOUTH_AND_SPORT', 0);
+INSERT INTO leadership_experience_type(name, points, experience_kind)
+VALUES ('Coaching (single)', 1, 'LEADERSHIP_TRAINING'),
+       ('Coaching (team)', 0.5, 'LEADERSHIP_TRAINING'),
+       ('Integral Coach Living Sense', 1, 'LEADERSHIP_TRAINING'),
+       ('Life Coach', 1, 'LEADERSHIP_TRAINING'),
+       ('Leadership training', 0.5, 'YOUTH_AND_SPORT');
 
-INSERT INTO certificate(member_id, certificate_type_id)
+INSERT INTO leadership_experience(member_id, leadership_experience_type_id)
 VALUES (1000, 1000),
        (1000, 1001),
        (1000, 1002),
@@ -58,7 +57,7 @@ VALUES (1000, 'Apprenticeship', 'AnzuLabs', true, 1000, '2000-02-03', null),
 INSERT INTO calculation(member_id, role_id, state, publication_date, publicized_by)
 VALUES (1000, 1000, 'ACTIVE', '2020-01-01', 'root');
 
-INSERT INTO certificate_calculation(calculation_id, certificate_id)
+INSERT INTO leadership_experience_calculation(calculation_id, leadership_experience_id)
 VALUES (1000, 1000),
        (1000, 1001),
        (1000, 1002),

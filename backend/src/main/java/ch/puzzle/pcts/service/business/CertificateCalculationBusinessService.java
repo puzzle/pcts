@@ -30,23 +30,7 @@ public class CertificateCalculationBusinessService extends BusinessBase<Certific
 
     public BigDecimal getCertificatePoints(Long id) {
         List<CertificateCalculation> certificateCalculations = getByCalculationId(id);
-        return certificateCalculations
-                .stream()
-                .filter(this::isEligibleForPoints)
-                .map(this::extractPoints)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    private boolean isEligibleForPoints(CertificateCalculation certificateCalculation) {
-        boolean hasManagementRole = certificateCalculation.getCalculation().getRole().getIsManagement();
-
-        boolean isLeadership = certificateCalculation
-                .getCertificate()
-                .getCertificateType()
-                .getCertificateKind()
-                .isLeadershipExperienceType();
-
-        return hasManagementRole || !isLeadership;
+        return certificateCalculations.stream().map(this::extractPoints).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     private BigDecimal extractPoints(CertificateCalculation certificateCalculation) {
@@ -100,6 +84,6 @@ public class CertificateCalculationBusinessService extends BusinessBase<Certific
 
         // delete the remaining, which are unused
         certificateCalculationPersistenceService
-                .deleteAllByIdInBatch(existing.stream().map(CertificateCalculation::getId).toList());
+                .deleteAllById(existing.stream().map(CertificateCalculation::getId).toList());
     }
 }

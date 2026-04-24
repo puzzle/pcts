@@ -4,7 +4,7 @@ import { OrganisationUnitModel } from '../../features/organisation-unit/organisa
 import { MemberDto } from '../../features/member/dto/member.dto';
 import { TagModel } from '../../features/certificates/certificate-type/tag.model';
 import { CertificateTypeModel } from '../../features/certificates/certificate-type/certificate-type.model';
-import { CertificateKind } from '../../features/certificates/certificate-type/certificate-kind.enum';
+import { LeadershipExperienceKind } from '../../features/leadership-experiences/leadership-experiences-type/leadership-experience-kind.enum';
 import { CertificateModel } from '../../features/certificates/certificate.model';
 import { CertificateDto } from '../../features/certificates/dto/certificate.dto';
 import { ExperienceTypeModel } from '../../features/experiences/experience-type/experience-type.model';
@@ -146,8 +146,7 @@ export const certificateType1: CertificateTypeModel = {
   points: 10,
   comment: null,
   tags: [tag1,
-    tag2],
-  certificateKind: CertificateKind.CERTIFICATE
+    tag2]
 };
 
 export const certificateType2: CertificateTypeModel = {
@@ -155,8 +154,7 @@ export const certificateType2: CertificateTypeModel = {
   name: 'Ruby Certificate',
   points: 15,
   comment: null,
-  tags: [tag3],
-  certificateKind: CertificateKind.CERTIFICATE
+  tags: [tag3]
 };
 
 export const certificate1: CertificateModel = {
@@ -261,7 +259,7 @@ export const leadershipExperienceType1: LeadershipExperienceTypeModel = {
   name: 'Expert',
   points: 1,
   comment: 'J+S Expert',
-  experienceKind: CertificateKind.YOUTH_AND_SPORT
+  experienceKind: LeadershipExperienceKind.YOUTH_AND_SPORT
 };
 
 export const leadershipExperienceType2: LeadershipExperienceTypeModel = {
@@ -269,20 +267,20 @@ export const leadershipExperienceType2: LeadershipExperienceTypeModel = {
   name: 'Officer',
   points: 2,
   comment: null,
-  experienceKind: CertificateKind.MILITARY_FUNCTION
+  experienceKind: LeadershipExperienceKind.MILITARY_FUNCTION
 };
 
 export const leadershipExperience1: LeadershipExperienceModel = {
   id: 1,
   member: member1,
-  experience: leadershipExperienceType1,
+  leadershipExperienceType: leadershipExperienceType1,
   comment: 'J+S Expert and Leader'
 };
 
 export const leadershipExperience2: LeadershipExperienceModel = {
   id: 2,
   member: member2,
-  experience: leadershipExperienceType2,
+  leadershipExperienceType: leadershipExperienceType2,
   comment: null
 };
 
@@ -375,7 +373,7 @@ export const memberOverview1: MemberCvOverviewModel = {
       comment: 'LeadershipExperience',
       leadershipExperienceType: {
         name: 'Leadership Experience',
-        certificateKind: CertificateKind.LEADERSHIP_TRAINING
+        leadershipExperienceKind: LeadershipExperienceKind.LEADERSHIP_TRAINING
       }
     }]
   }

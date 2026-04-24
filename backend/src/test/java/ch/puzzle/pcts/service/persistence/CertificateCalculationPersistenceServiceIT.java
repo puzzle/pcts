@@ -65,7 +65,7 @@ class CertificateCalculationPersistenceServiceIT
         assertThat(persistenceService.getAll()).contains(saved);
     }
 
-    @DisplayName("Should delete all CertificateCalculations by IDs in batch")
+    @DisplayName("Should delete all CertificateCalculations by IDs")
     @Transactional
     @Test
     void shouldDeleteAllByIdInBatch() {
@@ -75,7 +75,7 @@ class CertificateCalculationPersistenceServiceIT
 
         List<Long> idsToDelete = List.of(cc1.getId(), cc3.getId());
 
-        persistenceService.deleteAllByIdInBatch(idsToDelete);
+        persistenceService.deleteAllById(idsToDelete);
 
         List<CertificateCalculation> remaining = persistenceService.getAll();
 

@@ -82,7 +82,7 @@ class DegreeCalculationPersistenceServiceIT
 
         List<Long> idsToDelete = List.of(dc1.getId(), dc3.getId());
 
-        persistenceService.deleteAllByIdInBatch(idsToDelete);
+        persistenceService.deleteAllById(idsToDelete);
 
         List<DegreeCalculation> remaining = persistenceService.getAll();
 

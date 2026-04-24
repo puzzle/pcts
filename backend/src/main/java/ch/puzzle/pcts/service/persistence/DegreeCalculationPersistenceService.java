@@ -26,8 +26,8 @@ public class DegreeCalculationPersistenceService
         return repository.findByDegreeId(degreeId);
     }
 
-    public void deleteAllByIdInBatch(List<Long> ids) {
-        repository.deleteAllByIdInBatch(ids);
+    public void deleteAllById(List<Long> ids) {
+        repository.deleteAllById(ids);
     }
 
     @Override
