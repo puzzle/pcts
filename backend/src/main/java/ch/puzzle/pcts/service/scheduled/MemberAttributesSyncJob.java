@@ -78,7 +78,7 @@ public class MemberAttributesSyncJob {
             throw new IllegalStateException("Startup failed: 'app.member-sync.username' and 'app.member-sync.password' must either both be provided or both be left blank.");
         }
 
-        if (cron.isBlank() || !CronExpression.isValidExpression(cron)) {
+        if (!CronExpression.isValidExpression(cron) || cron.isBlank()) {
             throw new IllegalStateException("Startup failed: 'app.member-sync.cron' must be a valid Spring cron expression.");
         }
     }
