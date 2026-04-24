@@ -24,16 +24,21 @@ jobs:
         with:
           ref: ${{ inputs.COMMIT_HASH || github.head_ref }}
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: ${{ vars.NODE_VERSION }}
+          cache: 'pnpm'
+          cache-dependency-path: frontend/pnpm-lock.yaml
 
-      - name: Npm install
-        run: npm ci
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Run unit tests
-        run: npm run test:ci
+        run: pnpm run test:ci
 
       - name: Publish test results
         uses: EnricoMi/publish-unit-test-result-action@v2
