@@ -44,7 +44,8 @@ class MemberAttributesSyncJobTest {
                                               true,
                                               "https://dummy-url.ch",
                                               "dummyUser",
-                                              "dummyPass");
+                                              "dummyPass",
+                                              "0 0 0 * 11 6");
     }
 
     @DisplayName("Should successfully update member when found by PTime ID")
