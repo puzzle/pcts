@@ -1,7 +1,9 @@
 ---
 services:
   pcts-backend:
-    container_name: pcts-e2e-backend
+    build:
+      context: ..
+      dockerfile: ./backend/Dockerfile
     environment:
       SPRING_PROFILES_ACTIVE: e2e-test
 
