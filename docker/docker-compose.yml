@@ -1,4 +1,12 @@
 ---
+include:
+  - path: docker-compose.e2e.yml
+    profiles:
+      - e2e
+  - path: docker-compose.prod.yml
+    profiles:
+      - prod
+
 services:
   pcts-db:
     container_name: pcts-db
@@ -10,7 +18,7 @@ services:
       POSTGRES_DB: pcts
     ports:
       - "5432:5432"
-    profiles: ['', backend, db]
+
   pcts-wiremock:
     container_name: pcts-wiremock
     image: wiremock/wiremock:latest
@@ -18,29 +26,20 @@ services:
       - "8443:8080"
     volumes:
       - ./wiremock:/home/wiremock
-    profiles: ['', backend]
+
   pcts-backend:
     container_name: pcts-backend
-    build:
-      context: ..
-      dockerfile: ./backend/Dockerfile
     ports:
       - "8080:8080"
-    depends_on:
-      - pcts-wiremock
-      - pcts-db
     environment:
       PCTS_SPRING_DATASOURCE_URL: pcts-db
-      SPRING_PROFILES_ACTIVE: dev
-    profiles: ['', backend]
+    depends_on:
+      - pcts-db
+      - pcts-wiremock
 
   pcts-frontend:
     container_name: pcts-frontend
-    depends_on:
-      - pcts-backend
-    build:
-      context: ..
-      dockerfile: ./frontend/Dockerfile
     ports:
       - "4200:4200"
-    profiles: ['']
+    depends_on:
+      - pcts-backend

@@ -1,0 +1,18 @@
+---
+services:
+  pcts-backend:
+    build:
+      context: ..
+      dockerfile: ./backend/Dockerfile
+    environment:
+      SPRING_PROFILES_ACTIVE: production
+
+  pcts-frontend:
+    container_name: pcts-frontend
+    build:
+      context: ..
+      dockerfile: ./frontend/Dockerfile
+    ports:
+      - "4200:4200"
+    depends_on:
+      - pcts-backend
