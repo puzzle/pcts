@@ -1,0 +1,32 @@
+---
+services:
+  pcts-backend:
+    image: maven:3-eclipse-temurin-25-alpine
+    working_dir: /workspace
+    command: mvn -f backend/pom.xml spring-boot:run -Pdev
+    volumes:
+      - ..:/workspace
+      - m2-cache:/root/.m2
+    ports:
+      - "5005:5005"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+
+  pcts-frontend:
+    container_name: pcts-frontend
+    image: node:24.15-alpine
+    working_dir: /app
+    command: sh -c "npm install && npm start -- --host 0.0.0.0"
+    volumes:
+      - ../frontend:/app
+      - frontend-node-modules:/app/node_modules
+    ports:
+      - "4200:4200"
+    environment:
+      API_URL: http://pcts-backend:8080
+    depends_on:
+      - pcts-backend
+
+volumes:
+  m2-cache:
+  frontend-node-modules:
