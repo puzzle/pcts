@@ -8,9 +8,7 @@ CREATE TABLE IF NOT EXISTS leadership_experience_type
     points                          NUMERIC NOT NULL,
     comment                         TEXT,
     experience_kind                 TEXT NOT NULL,
-    deleted_at                      TIMESTAMP DEFAULT NULL,
-    -- TEMPORARY COLUMN FOR MIGRATION
-    legacy_certificate_id           BIGINT
+    deleted_at                      TIMESTAMP DEFAULT NULL
 );
 
 -- Create table for leadership experiences
@@ -20,7 +18,9 @@ CREATE TABLE IF NOT EXISTS leadership_experience
     member_id                           BIGINT NOT NULL,
     leadership_experience_type_id       BIGINT NOT NULL,
     comment                             TEXT,
-    deleted_at                          TIMESTAMP DEFAULT NULL
+    deleted_at                          TIMESTAMP DEFAULT NULL,
+    -- TEMPORARY COLUMN FOR MIGRATION
+    legacy_certificate_id               BIGINT
 );
 
 ALTER TABLE leadership_experience

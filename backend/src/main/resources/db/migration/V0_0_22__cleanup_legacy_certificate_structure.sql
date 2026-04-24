@@ -20,7 +20,7 @@ WHERE certificate_kind != 'CERTIFICATE';
 ALTER TABLE certificate_type
     DROP COLUMN certificate_kind CASCADE;
 
-ALTER TABLE leadership_experience_type
+ALTER TABLE leadership_experience
     DROP COLUMN legacy_certificate_id;
 
 -- Reconstruct member view
