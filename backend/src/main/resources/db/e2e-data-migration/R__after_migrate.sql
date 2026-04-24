@@ -23,7 +23,7 @@ VALUES
 
 INSERT INTO member (first_name, last_name, abbreviation, employment_state, date_of_hire, birth_date, organisation_unit)
 VALUES
-    ('Lena', 'Müller', 'LM', 'MEMBER', '2021-07-15', '1999-08-10', 1),
+    ('Lenae2e', 'Müller', 'LM', 'MEMBER', '2021-07-15', '1999-08-10', 1),
     ('Jonas', 'Schmidt', 'JS', 'MEMBER', '2020-06-01', '1998-03-03', 2),
     ('Sophie', 'Keller', null, 'APPLICANT', null, '1999-02-28', null),
     ('Tobias', 'Weber', 'TW', 'APPLICANT', '2022-02-14', '2000-07-06', 4),
