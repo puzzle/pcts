@@ -12,8 +12,17 @@
     "* 23,0-4 * * *"
   ],
   "automergeType": "pr",
+  "prCreation": "not-pending",
   "timezone": "Europe/Zurich",
+  "platformAutomerge": true,
+  "minimumReleaseAge": "3 days",
   "packageRules": [
+    {
+      "description": "Automerge patch updates after they are 3 days old",
+      "matchUpdateTypes": ["patch"],
+      "automerge": true,
+      "automergeType": "pr"
+    },
     {
       "groupName": "All Angular packages",
       "matchPackageNames": [
