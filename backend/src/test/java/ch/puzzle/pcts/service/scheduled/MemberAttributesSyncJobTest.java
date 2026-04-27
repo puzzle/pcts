@@ -54,6 +54,8 @@ class MemberAttributesSyncJobTest {
     void setUp() {
         objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
+        // Further information:
+        // https://docs.spring.io/spring-framework/reference/testing/spring-mvc-test-client.html
         RestClient.Builder builder = RestClient.builder();
         mockServer = MockRestServiceServer.bindTo(builder).build();
 
