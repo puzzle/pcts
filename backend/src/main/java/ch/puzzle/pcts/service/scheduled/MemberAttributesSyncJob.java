@@ -39,6 +39,7 @@ public class MemberAttributesSyncJob {
 
     public MemberAttributesSyncJob(MemberBusinessService memberBusinessService,
                                    OrganisationUnitBusinessService organisationUnitBusinessService,
+                                   RestClient.Builder restClientBuilder,
                                    @Value("${app.member-sync.enabled:false}") boolean enabled,
                                    @Value("${app.member-sync.url:#{null}}") String apiUrl,
                                    @Value("${app.member-sync.username:#{null}}") String username,
@@ -51,7 +52,7 @@ public class MemberAttributesSyncJob {
 
         validateProperties(enabled, apiUrl, username, password, cron);
 
-        this.restClient = this.enabled ? buildRestClient(apiUrl, username, password) : null;
+        this.restClient = this.enabled ? buildRestClient(restClientBuilder, apiUrl, username, password) : null;
     }
 
     private void validateProperties(boolean enabled, String apiUrl, String username, String password, String cron) {
@@ -76,8 +77,8 @@ public class MemberAttributesSyncJob {
         }
     }
 
-    private RestClient buildRestClient(String apiUrl, String username, String password) {
-        return RestClient.builder().baseUrl(apiUrl).defaultHeaders(headers -> {
+    private RestClient buildRestClient(RestClient.Builder builder, String apiUrl, String username, String password) {
+        return builder.baseUrl(apiUrl).defaultHeaders(headers -> {
             if (username != null && !username.isBlank()) {
                 headers.setBasicAuth(username, password);
             }

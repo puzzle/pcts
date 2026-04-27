@@ -66,9 +66,9 @@ class MemberAttributesSyncJobIT {
                                                           "OrganisationUnit 1");
         EmployeeData emp1 = new EmployeeData(1L, "employee", attr1);
 
-        PuzzleTimeResponseDto page1Response = new PuzzleTimeResponseDto(List.of(emp1), null);
+        PuzzleTimeResponseDto page1Response = new PuzzleTimeResponseDto(List.of(emp1));
 
-        PuzzleTimeResponseDto emptyPageResponse = new PuzzleTimeResponseDto(List.of(), null);
+        PuzzleTimeResponseDto emptyPageResponse = new PuzzleTimeResponseDto(List.of());
 
         stubFor(get(urlEqualTo("/api/employees?page=1"))
                 .willReturn(aResponse()
@@ -118,9 +118,9 @@ class MemberAttributesSyncJobIT {
                                                           true,
                                                           "OrganisationUnit 2");
 
-        PuzzleTimeResponseDto page1 = new PuzzleTimeResponseDto(List.of(new EmployeeData(1L, "employee", attr1)), null);
-        PuzzleTimeResponseDto page2 = new PuzzleTimeResponseDto(List.of(new EmployeeData(2L, "employee", attr2)), null);
-        PuzzleTimeResponseDto page3 = new PuzzleTimeResponseDto(List.of(), null); // Stoppt die Schleife
+        PuzzleTimeResponseDto page1 = new PuzzleTimeResponseDto(List.of(new EmployeeData(1L, "employee", attr1)));
+        PuzzleTimeResponseDto page2 = new PuzzleTimeResponseDto(List.of(new EmployeeData(2L, "employee", attr2)));
+        PuzzleTimeResponseDto page3 = new PuzzleTimeResponseDto(List.of());
 
         stubFor(get(urlEqualTo("/api/employees?page=1"))
                 .willReturn(aResponse()
@@ -213,8 +213,8 @@ class MemberAttributesSyncJobIT {
                                                                 "OrganisationUnit 1");
         EmployeeData unknownEmp = new EmployeeData(9999L, "employee", unknownAttr);
 
-        PuzzleTimeResponseDto page1 = new PuzzleTimeResponseDto(List.of(unknownEmp), null);
-        PuzzleTimeResponseDto page2 = new PuzzleTimeResponseDto(List.of(), null);
+        PuzzleTimeResponseDto page1 = new PuzzleTimeResponseDto(List.of(unknownEmp));
+        PuzzleTimeResponseDto page2 = new PuzzleTimeResponseDto(List.of());
 
         stubFor(get(urlEqualTo("/api/employees?page=1"))
                 .willReturn(aResponse()
@@ -245,8 +245,8 @@ class MemberAttributesSyncJobIT {
                                                                "OrganisationUnit 1");
         EmployeeData faultyEmp = new EmployeeData(1L, "employee", faultyAttr);
 
-        PuzzleTimeResponseDto page1 = new PuzzleTimeResponseDto(List.of(faultyEmp), null);
-        PuzzleTimeResponseDto emptyPage = new PuzzleTimeResponseDto(List.of(), null);
+        PuzzleTimeResponseDto page1 = new PuzzleTimeResponseDto(List.of(faultyEmp));
+        PuzzleTimeResponseDto emptyPage = new PuzzleTimeResponseDto(List.of());
 
         stubFor(get(urlEqualTo("/api/employees?page=1"))
                 .willReturn(aResponse()
