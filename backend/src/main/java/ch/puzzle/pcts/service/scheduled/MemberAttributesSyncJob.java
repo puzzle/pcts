@@ -40,7 +40,7 @@ public class MemberAttributesSyncJob {
     public MemberAttributesSyncJob(MemberBusinessService memberBusinessService,
                                    OrganisationUnitBusinessService organisationUnitBusinessService,
                                    @Value("${app.member-sync.enabled:false}") boolean enabled,
-                                   @Value("${app.member-sync.url:#{null}") String apiUrl,
+                                   @Value("${app.member-sync.url:#{null}}") String apiUrl,
                                    @Value("${app.member-sync.username:#{null}}") String username,
                                    @Value("${app.member-sync.password:#{null}}") String password,
                                    @Value("${app.member-sync.cron:0 0 3 * * ?}") String cron) {

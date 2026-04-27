@@ -189,6 +189,7 @@ class MemberAttributesSyncJobTest {
         assertEquals(newlyCreatedOu, memberCaptor.getValue().getOrganisationUnit());
     }
 
+    @DisplayName("Should not start job when used properties are invalid or not set at all")
     @ParameterizedTest(name = "{index} - {0}")
     @MethodSource("provideInvalidProperties")
     void shouldFailWithInvalidProperties(String testName, String apiUrl, String username, String password, String cron,
