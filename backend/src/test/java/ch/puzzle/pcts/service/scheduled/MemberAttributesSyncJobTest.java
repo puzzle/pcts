@@ -228,6 +228,82 @@ class MemberAttributesSyncJobTest {
                                                                           + exception.getMessage() + "'");
     }
 
+    @DisplayName("Should successfully skip validation when enabled is false")
+    @Test
+    void shouldNotFailWhenDisabled() {
+        assertDoesNotThrow(() -> {
+            initalizeSyncJob(false, null, "", "invalid-pass", "not-a-cron-string");
+        }, "Expected no exception to be thrown because enabled is false");
+    }
+
+    @DisplayName("Should skip execution entirely when job is disabled")
+    @Test
+    void shouldSkipExecutionWhenDisabled() {
+        MemberAttributesSyncJob disabledJob = initalizeSyncJob(false,
+                                                               "https://dummy-url.ch",
+                                                               "dummyUser",
+                                                               "dummyPass",
+                                                               "0 0 0 * 11 6");
+
+        disabledJob.syncMemberAttributes();
+
+        verifyNoInteractions(memberBusinessService);
+        verifyNoInteractions(organisationUnitBusinessService);
+    }
+
+    @DisplayName("Should skip API record entirely when attributes are null")
+    @Test
+    void shouldSkipRecordWhenAttributesAreNull() throws Exception {
+        EmployeeData apiEmployee = new EmployeeData(777L, "employee", null);
+
+        mockServerForPages(new PuzzleTimeResponseDto(List.of(apiEmployee)));
+
+        syncJob.syncMemberAttributes();
+
+        mockServer.verify();
+
+        verifyNoInteractions(memberBusinessService);
+        verifyNoInteractions(organisationUnitBusinessService);
+    }
+
+    @DisplayName("Should increment error count when department name is null or blank")
+    @ParameterizedTest(name = "{index} - Department name: ''{0}''")
+    @MethodSource("provideInvalidDepartmentNames")
+    void shouldIncrementErrorCountWhenDepartmentNameIsInvalid(String invalidDepartmentName) throws Exception {
+        EmployeeAttributes attributes = new EmployeeAttributes("Valid",
+                                                               "Name",
+                                                               "val",
+                                                               null,
+                                                               true,
+                                                               invalidDepartmentName);
+        EmployeeData apiEmployee = new EmployeeData(4L, "employee", attributes);
+
+        mockServer.reset();
+        mockServerForPages(new PuzzleTimeResponseDto(List.of(apiEmployee)));
+
+        Member clonedMember = cloneMember(MEMBER_1);
+        int initialErrorCount = clonedMember.getSyncErrorCount() != null ? clonedMember.getSyncErrorCount() : 0;
+
+        when(memberBusinessService.findByPtimeId(4L)).thenReturn(Optional.of(clonedMember));
+
+        lenient().when(memberBusinessService.getById(clonedMember.getId())).thenReturn(clonedMember);
+
+        syncJob.syncMemberAttributes();
+
+        mockServer.verify();
+
+        verify(memberBusinessService, never()).update(anyLong(), any(Member.class));
+
+        verify(memberBusinessService)
+                .updateSyncMetadata(eq(clonedMember.getId()), isNull(), isNull(), eq(initialErrorCount + 1));
+
+        verifyNoInteractions(organisationUnitBusinessService);
+    }
+
+    private static Stream<Arguments> provideInvalidDepartmentNames() {
+        return Stream.of(Arguments.of((String) null), Arguments.of(""), Arguments.of("   "));
+    }
+
     // --- Helper Methods ---
     private void mockServerForPages(PuzzleTimeResponseDto page1Data) throws JsonProcessingException {
         mockServer
@@ -253,8 +329,9 @@ class MemberAttributesSyncJobTest {
 
     // Cloned objects because mocking the static ones causes problems
     private Member cloneMember(Member original) {
-        if (original == null)
+        if (original == null) {
             return null;
+        }
         return Member.Builder
                 .builder()
                 .withId(original.getId())
@@ -272,8 +349,9 @@ class MemberAttributesSyncJobTest {
     }
 
     private OrganisationUnit cloneOrgUnit(OrganisationUnit original) {
-        if (original == null)
+        if (original == null) {
             return null;
+        }
         OrganisationUnit copy = OrganisationUnit.Builder
                 .builder()
                 .withId(original.getId())
