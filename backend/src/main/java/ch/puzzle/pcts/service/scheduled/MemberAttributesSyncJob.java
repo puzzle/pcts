@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.support.CronExpression;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
@@ -39,23 +40,51 @@ public class MemberAttributesSyncJob {
     public MemberAttributesSyncJob(MemberBusinessService memberBusinessService,
                                    OrganisationUnitBusinessService organisationUnitBusinessService,
                                    @Value("${app.member-sync.enabled:false}") boolean enabled,
-                                   @Value("${app.member-sync.url}") String apiUrl,
-                                   @Value("${app.member-sync.username}") String username,
-                                   @Value("${app.member-sync.password}") String password) {
+                                   @Value("${app.member-sync.url:#{null}}") String apiUrl,
+                                   @Value("${app.member-sync.username:#{null}}") String username,
+                                   @Value("${app.member-sync.password:#{null}}") String password,
+                                   @Value("${app.member-sync.cron:0 0 3 * * ?}") String cron) {
 
         this.memberBusinessService = memberBusinessService;
         this.organisationUnitBusinessService = organisationUnitBusinessService;
         this.enabled = enabled;
 
-        this.restClient = RestClient
-                .builder()
-                .baseUrl(apiUrl)
-                .defaultHeaders(headers -> headers.setBasicAuth(username, password))
-                .defaultHeader("Accept", "application/json")
-                .build();
+        validateProperties(enabled, apiUrl, username, password, cron);
+
+        this.restClient = this.enabled ? buildRestClient(apiUrl, username, password) : null;
     }
 
-    @Scheduled(cron = "${app.member-sync.cron}")
+    private void validateProperties(boolean enabled, String apiUrl, String username, String password, String cron) {
+        if (!enabled) {
+            return;
+        }
+
+        if (apiUrl == null || apiUrl.isBlank() || (!apiUrl.startsWith("http://") && !apiUrl.startsWith("https://"))) {
+            throw new IllegalStateException("Startup failed: 'app.member-sync.url' must start with http:// or https:// and cannot be blank.");
+        }
+
+        boolean hasUsername = username != null && !username.isBlank();
+        boolean hasPassword = password != null && !password.isBlank();
+
+        // XOR operator: If both or neither are provided, the validation passes
+        if (hasUsername ^ hasPassword) {
+            throw new IllegalStateException("Startup failed: 'app.member-sync.username' and 'app.member-sync.password' must either both be provided or both be left blank.");
+        }
+
+        if (!CronExpression.isValidExpression(cron) || cron.isBlank()) {
+            throw new IllegalStateException("Startup failed: 'app.member-sync.cron' must be a valid Spring cron expression.");
+        }
+    }
+
+    private RestClient buildRestClient(String apiUrl, String username, String password) {
+        return RestClient.builder().baseUrl(apiUrl).defaultHeaders(headers -> {
+            if (username != null && !username.isBlank()) {
+                headers.setBasicAuth(username, password);
+            }
+        }).defaultHeader("Accept", "application/json").build();
+    }
+
+    @Scheduled(cron = "${app.member-sync.cron:0 0 3 * * ?}")
     public void syncMemberAttributes() {
         if (!enabled) {
             log.info("Member sync is disabled; skipping execution.");

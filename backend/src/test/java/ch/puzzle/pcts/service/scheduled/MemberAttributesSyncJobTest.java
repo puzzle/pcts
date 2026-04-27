@@ -17,10 +17,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -44,7 +48,8 @@ class MemberAttributesSyncJobTest {
                                               true,
                                               "https://dummy-url.ch",
                                               "dummyUser",
-                                              "dummyPass");
+                                              "dummyPass",
+                                              "0 0 0 * 11 6");
     }
 
     @DisplayName("Should successfully update member when found by PTime ID")
@@ -182,6 +187,94 @@ class MemberAttributesSyncJobTest {
         ArgumentCaptor<Member> memberCaptor = ArgumentCaptor.forClass(Member.class);
         verify(memberBusinessService).update(eq(clonedMember1.getId()), memberCaptor.capture());
         assertEquals(newlyCreatedOu, memberCaptor.getValue().getOrganisationUnit());
+    }
+
+    @DisplayName("Should not start job when used properties are invalid or not set at all")
+    @ParameterizedTest(name = "{index} - {0}")
+    @MethodSource("provideInvalidProperties")
+    void shouldFailWithInvalidProperties(String testName, String apiUrl, String username, String password, String cron,
+                                         String expectedErrorSnippet) {
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+            initalizeSyncJob(true, apiUrl, username, password, cron);
+        });
+
+        assertTrue(exception.getMessage().contains(expectedErrorSnippet),
+                   "Expected error message containing: '" + expectedErrorSnippet + "' but got: '"
+                                                                          + exception.getMessage() + "'");
+    }
+
+    private static Stream<Arguments> provideInvalidProperties() {
+        String validUrl = "https://example.com/api";
+        String validUser = "admin";
+        String validPass = "secret123";
+        String validCron = "0 0 * * * *";
+
+        return Stream
+                .of(Arguments
+                        .of("Null URL", null, validUser, validPass, validCron, "must start with http:// or https://"),
+                    Arguments
+                            .of("Blank URL",
+                                "   ",
+                                validUser,
+                                validPass,
+                                validCron,
+                                "must start with http:// or https://"),
+                    Arguments
+                            .of("Invalid Scheme",
+                                "ftp://example.com",
+                                validUser,
+                                validPass,
+                                validCron,
+                                "must start with http:// or https://"),
+
+                    Arguments
+                            .of("Missing Password",
+                                validUrl,
+                                validUser,
+                                "",
+                                validCron,
+                                "must either both be provided or both be left blank"),
+                    Arguments
+                            .of("Missing Username",
+                                validUrl,
+                                null,
+                                validPass,
+                                validCron,
+                                "must either both be provided or both be left blank"),
+
+                    Arguments
+                            .of("Null Cron",
+                                validUrl,
+                                validUser,
+                                validPass,
+                                null,
+                                "must be a valid Spring cron expression"),
+                    Arguments
+                            .of("Blank Cron",
+                                validUrl,
+                                validUser,
+                                validPass,
+                                "   ",
+                                "must be a valid Spring cron expression"),
+                    Arguments
+                            .of("Invalid Cron String",
+                                validUrl,
+                                validUser,
+                                validPass,
+                                "not-a-cron-string",
+                                "must be a valid Spring cron expression"));
+    }
+
+    private MemberAttributesSyncJob initalizeSyncJob(Boolean enabled, String apiURL, String username, String password,
+                                                     String cron) {
+        return new MemberAttributesSyncJob(memberBusinessService,
+                                           organisationUnitBusinessService,
+                                           enabled,
+                                           apiURL,
+                                           username,
+                                           password,
+                                           cron);
     }
 
     // Cloned objects because mocking the static ones causes problems
