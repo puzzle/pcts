@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -39,6 +40,9 @@ public class MemberAttributesSyncJob {
 
     public MemberAttributesSyncJob(MemberBusinessService memberBusinessService,
                                    OrganisationUnitBusinessService organisationUnitBusinessService,
+                                   // Injected primarily so we can pass a MockRestServiceServer-bound builder
+                                   // during testing.
+                                   @Autowired(required = false) RestClient.Builder restClientBuilder,
                                    @Value("${app.member-sync.enabled:false}") boolean enabled,
                                    @Value("${app.member-sync.url:#{null}}") String apiUrl,
                                    @Value("${app.member-sync.username:#{null}}") String username,
@@ -51,7 +55,11 @@ public class MemberAttributesSyncJob {
 
         validateProperties(enabled, apiUrl, username, password, cron);
 
-        this.restClient = this.enabled ? buildRestClient(apiUrl, username, password) : null;
+        // Fallback: Use the injected builder if available (e.g., from tests), otherwise
+        // create a standard one for production.
+        RestClient.Builder actualBuilder = restClientBuilder != null ? restClientBuilder : RestClient.builder();
+
+        this.restClient = this.enabled ? buildRestClient(actualBuilder, apiUrl, username, password) : null;
     }
 
     private void validateProperties(boolean enabled, String apiUrl, String username, String password, String cron) {
@@ -76,8 +84,8 @@ public class MemberAttributesSyncJob {
         }
     }
 
-    private RestClient buildRestClient(String apiUrl, String username, String password) {
-        return RestClient.builder().baseUrl(apiUrl).defaultHeaders(headers -> {
+    private RestClient buildRestClient(RestClient.Builder builder, String apiUrl, String username, String password) {
+        return builder.baseUrl(apiUrl).defaultHeaders(headers -> {
             if (username != null && !username.isBlank()) {
                 headers.setBasicAuth(username, password);
             }
