@@ -19,7 +19,7 @@ import org.testcontainers.junit.jupiter.Container;
 class ApplicationAvailabilityTest {
     private static final String BASEURL = "/actuator/health/";
     @Container
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17-alpine");
+    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:18-alpine");
     @Autowired
     private MockMvc mvc;
 
