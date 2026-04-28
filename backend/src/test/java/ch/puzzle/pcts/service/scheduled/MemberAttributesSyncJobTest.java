@@ -30,6 +30,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -268,7 +270,8 @@ class MemberAttributesSyncJobTest {
 
     @DisplayName("Should increment error count when department name is null or blank")
     @ParameterizedTest(name = "{index} - Department name: ''{0}''")
-    @MethodSource("provideInvalidDepartmentNames")
+    @NullAndEmptySource
+    @ValueSource(strings = { "     " })
     void shouldIncrementErrorCountWhenDepartmentNameIsInvalid(String invalidDepartmentName) throws Exception {
         EmployeeAttributes attributes = new EmployeeAttributes("Valid",
                                                                "Name",
@@ -298,10 +301,6 @@ class MemberAttributesSyncJobTest {
                 .updateSyncMetadata(eq(clonedMember.getId()), isNull(), isNull(), eq(initialErrorCount + 1));
 
         verifyNoInteractions(organisationUnitBusinessService);
-    }
-
-    private static Stream<Arguments> provideInvalidDepartmentNames() {
-        return Stream.of(Arguments.of((String) null), Arguments.of(""), Arguments.of("   "));
     }
 
     // --- Helper Methods ---
