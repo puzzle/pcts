@@ -1,5 +1,84 @@
 # Changelog
 
+## [0.6.0](https://github.com/puzzle/pcts/compare/0.5.0...0.6.0) (2026-04-28)
+
+
+### Features
+
+* **backend:** Add attributes to certificate-type [#493](https://github.com/puzzle/pcts/issues/493) ([f33c0cb](https://github.com/puzzle/pcts/commit/f33c0cb8c747167d2f704885bbab5176f7959317))
+* **backend:** add automatic ptime user sync [#543](https://github.com/puzzle/pcts/issues/543) ([318e071](https://github.com/puzzle/pcts/commit/318e071639844b12c63e05a8bac0703fc4a0ba00))
+* **scheduled:** Add validation for syncjob properties [#587](https://github.com/puzzle/pcts/issues/587) ([9a40d11](https://github.com/puzzle/pcts/commit/9a40d118f7a53d572241a4a509c52c6ae8ed6895))
+
+
+### Bug Fixes
+
+* change faulty translations [#471](https://github.com/puzzle/pcts/issues/471) ([285da37](https://github.com/puzzle/pcts/commit/285da37c96dc4c3866650625b31fa8e8a5e44217))
+
+
+### Miscellaneous Chores
+
+* add missing apastrophes to allow for ()[] etc in branch name ([3e127fd](https://github.com/puzzle/pcts/commit/3e127fdca4a4b638d9f416d14fafae405ff6c5ac))
+* **config:** migrate config renovate.json ([983d3d7](https://github.com/puzzle/pcts/commit/983d3d77acde384a210c523372ef8d2d1a4b0594))
+* **config:** migrate Renovate config ([983d3d7](https://github.com/puzzle/pcts/commit/983d3d77acde384a210c523372ef8d2d1a4b0594))
+* **deps:** update actions/configure-pages action to v6 ([8001cf1](https://github.com/puzzle/pcts/commit/8001cf193cdda417a658151ccc3cbb00ea5c16a7))
+* **deps:** update actions/deploy-pages action to v5 ([b2ea14c](https://github.com/puzzle/pcts/commit/b2ea14cb37dc9954af6ab79eeab9763b3d8ad635))
+* **deps:** update actions/upload-artifact action to v7 ([#528](https://github.com/puzzle/pcts/issues/528)) ([62b624f](https://github.com/puzzle/pcts/commit/62b624fc21360c9db93dfe7cefc43240bc7d1af2))
+* **deps:** update actions/upload-pages-artifact action to v5 ([7034a34](https://github.com/puzzle/pcts/commit/7034a34e90f6c526c1cc5cd119b29868e44bc39e))
+* **deps:** update all devdependencies (minor and patch) ([2ea9248](https://github.com/puzzle/pcts/commit/2ea924856ded5b232429e6375c763b05f77dcaa5))
+* **deps:** update all devdependencies (minor and patch) ([d5a5fd9](https://github.com/puzzle/pcts/commit/d5a5fd9da32728bff0c6b1fefd9816568d153364))
+* **deps:** update all devdependencies (minor and patch) ([bd5d464](https://github.com/puzzle/pcts/commit/bd5d4643b76adf0f3c8b904cccb0d6110c009562))
+* **deps:** update all devdependencies (minor and patch) to v21.2.8 ([#596](https://github.com/puzzle/pcts/issues/596)) ([79ba409](https://github.com/puzzle/pcts/commit/79ba409e1c3434ca951e2d4905fa8026677dea5c))
+* **deps:** update all eslint packages ([#520](https://github.com/puzzle/pcts/issues/520)) ([6cda942](https://github.com/puzzle/pcts/commit/6cda942377f62c62b00cd0dc2d6896a525d5c939))
+* **deps:** update all eslint packages ([#535](https://github.com/puzzle/pcts/issues/535)) ([d43d192](https://github.com/puzzle/pcts/commit/d43d1922896e99efd0a14797c95dad7829b4a313))
+* **deps:** update angularmaterial monorepo to v21.1.3 ([4372962](https://github.com/puzzle/pcts/commit/4372962ecff79bfb08a1f210560886a35ef5c722))
+* **deps:** update angularmaterial monorepo to v21.1.4 ([5e28991](https://github.com/puzzle/pcts/commit/5e289913612cdaf1e1223588091a798703ed8b91))
+* **deps:** update angularmaterial monorepo to v21.1.5 ([#518](https://github.com/puzzle/pcts/issues/518)) ([7be22e8](https://github.com/puzzle/pcts/commit/7be22e8472a6b8cedae47362f2562a075fd0ded1))
+* **deps:** update angularmaterial monorepo to v21.2.1 ([#526](https://github.com/puzzle/pcts/issues/526)) ([098c1da](https://github.com/puzzle/pcts/commit/098c1da6c0b4f670622bacb7d9b18c5ca57d0ab3))
+* **deps:** update angularmaterial monorepo to v21.2.7 ([6348ff2](https://github.com/puzzle/pcts/commit/6348ff269aba88c73b39ff792f6725f659ad8d5f))
+* **deps:** update angularmaterial monorepo to v21.2.8 ([65b0cd1](https://github.com/puzzle/pcts/commit/65b0cd1818d880a4fa729a3018c7f76368b04f60))
+* **deps:** update cypress-io/github-action action to v7 ([f3b3d7e](https://github.com/puzzle/pcts/commit/f3b3d7e1581b278f63b6f9c0de2aa46811fa05a7))
+* **deps:** update dependency @puzzleitc/puzzle-shell to v5.1.2 ([e31f497](https://github.com/puzzle/pcts/commit/e31f4975f698b27fa296170b54f7ef3aa1b3d988))
+* **deps:** update dependency com.diffplug.spotless:spotless-maven-plugin to v3.3.0 ([#531](https://github.com/puzzle/pcts/issues/531)) ([dbfa519](https://github.com/puzzle/pcts/commit/dbfa519600ebe0ef1dde221e78d65f1ccf2ef1c9))
+* **deps:** update dependency com.diffplug.spotless:spotless-maven-plugin to v3.4.0 ([4282619](https://github.com/puzzle/pcts/commit/4282619a6d14f3c4709b9e9f8df8c93808b06871))
+* **deps:** update dependency com.tngtech.archunit:archunit-junit5 to v1.4.2 ([776bc3a](https://github.com/puzzle/pcts/commit/776bc3ae5b7e27fcef85bff9b962d65157ede50b))
+* **deps:** update dependency cypress to v15.10.0 ([c75aedb](https://github.com/puzzle/pcts/commit/c75aedb7b1ce2410f69c0908d10be5e710169ef5))
+* **deps:** update dependency cypress to v15.11.0 ([#527](https://github.com/puzzle/pcts/issues/527)) ([b816d03](https://github.com/puzzle/pcts/commit/b816d0311fe696e2b150a490a93b66229e06a288))
+* **deps:** update dependency cypress to v15.12.0 ([#558](https://github.com/puzzle/pcts/issues/558)) ([dcedf6f](https://github.com/puzzle/pcts/commit/dcedf6f760ba5fda72ecf96081fafcbe76da27e8))
+* **deps:** update dependency cypress to v15.14.0 ([5deb45b](https://github.com/puzzle/pcts/commit/5deb45b089905a6bde0de68aecdd476ebbbd6bf6))
+* **deps:** update dependency cypress to v15.14.1 ([8e131d2](https://github.com/puzzle/pcts/commit/8e131d2dc6aedab5fadac93924dafae90643b239))
+* **deps:** update dependency jest-environment-jsdom to v30.3.0 ([#539](https://github.com/puzzle/pcts/issues/539)) ([d334f07](https://github.com/puzzle/pcts/commit/d334f075b34955d85fdd05db8d2fa03077707a42))
+* **deps:** update dependency jest-junit to v17 ([8a05e2b](https://github.com/puzzle/pcts/commit/8a05e2bb3bfc9d745d7f189189def932867c83d1))
+* **deps:** update dependency maven to v3.9.14 ([#536](https://github.com/puzzle/pcts/issues/536)) ([827f168](https://github.com/puzzle/pcts/commit/827f168db57886eb78ce91fa9db0aade1d0d6da9))
+* **deps:** update dependency maven to v3.9.15 ([3d8ade1](https://github.com/puzzle/pcts/commit/3d8ade1b984bab24dfe197b009f53a48f3893fcb))
+* **deps:** update dependency org.apache.maven.plugins:maven-failsafe-plugin to v3.5.5 ([f1bafd7](https://github.com/puzzle/pcts/commit/f1bafd7de892cb6bbebf0c508de6057e844a5343))
+* **deps:** update dependency org.apache.maven.plugins:maven-surefire-plugin to v3.5.5 ([30be4c1](https://github.com/puzzle/pcts/commit/30be4c1fc4eed341b0825855c37b469715a1205f))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v12.0.1 ([2eff439](https://github.com/puzzle/pcts/commit/2eff43997ccf7b89f906c21f9920aefd6e04734f))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v12.0.3 ([#521](https://github.com/puzzle/pcts/issues/521)) ([6fe737e](https://github.com/puzzle/pcts/commit/6fe737e899a71a7b1094d806bba258fc52b8a2ae))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v12.1.0 ([#538](https://github.com/puzzle/pcts/issues/538)) ([601a061](https://github.com/puzzle/pcts/commit/601a061ecee4ab20dd792cb65ee92d8746e22288))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v12.1.1 ([#560](https://github.com/puzzle/pcts/issues/560)) ([aa97326](https://github.com/puzzle/pcts/commit/aa973269aecddd54a7105b3dc5c1c0cdbc4b28d8))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v12.2.0 ([#568](https://github.com/puzzle/pcts/issues/568)) ([fa5c7ac](https://github.com/puzzle/pcts/commit/fa5c7ac3589eb4ed26f21f5331b28f9f8faed78d))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v12.4.0 ([a328ddb](https://github.com/puzzle/pcts/commit/a328ddb7d8486f3d8613d46efdab3712d66755e5))
+* **deps:** update dependency org.sonarsource.scanner.maven:sonar-maven-plugin to v5.6.0.6792 ([f8c4373](https://github.com/puzzle/pcts/commit/f8c437312029dbe2a0b266399cacdbb2691dc1e6))
+* **deps:** update dependency org.springdoc:springdoc-openapi-starter-webmvc-ui to v3.0.2 ([94bd03b](https://github.com/puzzle/pcts/commit/94bd03b92caae5c01ed6a9e15cc2b276786f6b57))
+* **deps:** update dependency org.springdoc:springdoc-openapi-starter-webmvc-ui to v3.0.3 ([071d015](https://github.com/puzzle/pcts/commit/071d015f93cfe9da8554c74dc8313880cca1c401))
+* **deps:** update dependency typescript-eslint to v8.55.0 ([#504](https://github.com/puzzle/pcts/issues/504)) ([f114c77](https://github.com/puzzle/pcts/commit/f114c77cf83bbcc96f769d7e12042434f84f3d6f))
+* **deps:** update dependency typescript-eslint to v8.56.0 ([#515](https://github.com/puzzle/pcts/issues/515)) ([4de4ae0](https://github.com/puzzle/pcts/commit/4de4ae0d68ad96a97badcb1e958029d258fa2ca3))
+* **deps:** update dependency typescript-eslint to v8.57.1 ([#559](https://github.com/puzzle/pcts/issues/559)) ([4500ec5](https://github.com/puzzle/pcts/commit/4500ec5a847c923d0b159ed54497ff40a302f9c3))
+* **deps:** update dependency typescript-eslint to v8.58.2 ([#562](https://github.com/puzzle/pcts/issues/562)) ([e355a7d](https://github.com/puzzle/pcts/commit/e355a7dd86f45d7ddb39024ddab0c173e292152c))
+* **deps:** update dependency typescript-eslint to v8.59.0 ([#585](https://github.com/puzzle/pcts/issues/585)) ([549b204](https://github.com/puzzle/pcts/commit/549b2043adcec21a68f5c732c4ef4f6a2895548d))
+* **deps:** update docker/build-push-action action to v7 ([d70e11b](https://github.com/puzzle/pcts/commit/d70e11b3f6bf39f0ba6879b5299785b4ae8fad9f))
+* **deps:** update docker/login-action action to v4 ([24b77b7](https://github.com/puzzle/pcts/commit/24b77b7f9c1f8ee06d339e4d5074f30cb7637171))
+* **deps:** update docker/metadata-action action to v6 ([#537](https://github.com/puzzle/pcts/issues/537)) ([1dea220](https://github.com/puzzle/pcts/commit/1dea2203fd57557232aa6b27d27f506667400faa))
+* **deps:** update eclipse-temurin docker tag to v25.0.2_10-jre-alpine ([cbb6132](https://github.com/puzzle/pcts/commit/cbb6132445af70596c44ff989b220b0fcd647cca))
+* **deps:** update googleapis/release-please-action action to v5 ([#597](https://github.com/puzzle/pcts/issues/597)) ([121f40c](https://github.com/puzzle/pcts/commit/121f40c7f39949bba1524862e0f950d3dc3a3776))
+* **deps:** update nginxinc/nginx-unprivileged docker tag to v1.30 ([7355225](https://github.com/puzzle/pcts/commit/735522582b0daf912378032890bec575fbaeec06))
+* **deps:** update node.js to v24.14.0 ([#525](https://github.com/puzzle/pcts/issues/525)) ([3a11470](https://github.com/puzzle/pcts/commit/3a1147073544fe153463058c827161ded8ebdffd))
+* **deps:** update node.js to v24.15.0 ([2fa0b38](https://github.com/puzzle/pcts/commit/2fa0b38039b4e54bb461eda4f9a917a51e656cf2))
+* **deps:** update spring boot to v4.0.3 ([#519](https://github.com/puzzle/pcts/issues/519)) ([1ec4a7f](https://github.com/puzzle/pcts/commit/1ec4a7f36a9953c3fdab30a15048c4be7010d74c))
+* **deps:** update spring boot to v4.0.5 ([74c09b8](https://github.com/puzzle/pcts/commit/74c09b8ecd6d71fe522794ad02dcc7fe90e01101))
+* **deps:** update spring boot to v4.0.6 ([cc4ddbc](https://github.com/puzzle/pcts/commit/cc4ddbcccdda7c7ff7b3111bbf1cd30bb7fa2361))
+* make renovate wait 3 days and automerge patches ([745726d](https://github.com/puzzle/pcts/commit/745726d61022fc917bf656f19e2aa2661d21cfec))
+
 ## [0.5.0](https://github.com/puzzle/pcts/compare/0.4.0...0.5.0) (2026-02-04)
 
 
