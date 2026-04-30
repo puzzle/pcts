@@ -53,9 +53,12 @@ public class MemberBusinessService extends BusinessBase<Member> {
         validationService.validateOnUpdate(id, member);
 
         Member oldEntry = getById(id);
-
         member.setId(id);
-        member.keepSyncData(oldEntry.getPtimeId(), oldEntry.getLastSuccessfulSync(), oldEntry.getSyncErrorCount());
+        member
+                .keepSyncData(oldEntry.getPtimeId(),
+                              oldEntry.getLastSuccessfulSync(),
+                              oldEntry.getSyncErrorCount(),
+                              oldEntry.getLdapName());
 
         return persistenceService.save(member);
     }
