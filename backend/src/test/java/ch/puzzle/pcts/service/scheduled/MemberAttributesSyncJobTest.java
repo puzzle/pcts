@@ -99,6 +99,7 @@ class MemberAttributesSyncJobTest {
         Member savedMember = memberCaptor.getValue();
         assertEquals("Updated", savedMember.getFirstName());
         assertEquals("Name", savedMember.getLastName());
+        assertEquals("newLdapName", savedMember.getLdapName());
         assertEquals(LocalDate.of(1999, 8, 10), savedMember.getBirthDate());
         assertEquals(EmploymentState.MEMBER, savedMember.getEmploymentState());
         assertEquals(clonedOrgUnit1, savedMember.getOrganisationUnit());

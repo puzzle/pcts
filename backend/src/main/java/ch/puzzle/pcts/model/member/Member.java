@@ -29,7 +29,7 @@ public class Member implements Model {
     @PCTSStringValidation
     private String lastName;
 
-    @Size(min = 1)
+    @Size(min = 1, message = "{attribute.not.blank}")
     private String ldapName;
 
     @Enumerated(EnumType.STRING)
