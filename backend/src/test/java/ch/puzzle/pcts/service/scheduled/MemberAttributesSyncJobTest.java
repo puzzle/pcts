@@ -76,7 +76,7 @@ class MemberAttributesSyncJobTest {
     void shouldSuccessfullyUpdateMember() throws Exception {
         EmployeeAttributes attributes = new EmployeeAttributes("Updated",
                                                                "Name",
-                                                               "uname",
+                                                               "newLdapName",
                                                                "M1",
                                                                LocalDate.of(1999, 8, 10),
                                                                true,
@@ -99,7 +99,6 @@ class MemberAttributesSyncJobTest {
         Member savedMember = memberCaptor.getValue();
         assertEquals("Updated", savedMember.getFirstName());
         assertEquals("Name", savedMember.getLastName());
-        assertEquals("uname", savedMember.getLdapName());
         assertEquals(LocalDate.of(1999, 8, 10), savedMember.getBirthDate());
         assertEquals(EmploymentState.MEMBER, savedMember.getEmploymentState());
         assertEquals(clonedOrgUnit1, savedMember.getOrganisationUnit());
@@ -146,7 +145,7 @@ class MemberAttributesSyncJobTest {
     void shouldIncrementErrorCountWhenNameIsMissing() throws Exception {
         EmployeeAttributes attributes = new EmployeeAttributes("",
                                                                "Test",
-                                                               "test",
+                                                               "mtest3",
                                                                "M3",
                                                                null,
                                                                true,
@@ -348,6 +347,7 @@ class MemberAttributesSyncJobTest {
                 .withId(original.getId())
                 .withFirstName(original.getFirstName())
                 .withLastName(original.getLastName())
+                .withLdapName(original.getLdapName())
                 .withEmploymentState(original.getEmploymentState())
                 .withAbbreviation(original.getAbbreviation())
                 .withDateOfHire(original.getDateOfHire())
