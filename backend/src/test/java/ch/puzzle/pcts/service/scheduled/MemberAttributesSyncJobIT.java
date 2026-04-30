@@ -60,6 +60,7 @@ class MemberAttributesSyncJobIT {
 
         EmployeeAttributes attr1 = new EmployeeAttributes("Member 1",
                                                           "UpdatedLastName",
+                                                          "mupdatedlastname",
                                                           "NM1",
                                                           LocalDate.of(1990, 10, 1),
                                                           true,
@@ -89,6 +90,7 @@ class MemberAttributesSyncJobIT {
         assertThat(result.getPtimeId()).isEqualTo(1L);
         assertThat(result.getFirstName()).isEqualTo("Member 1");
         assertThat(result.getLastName()).isEqualTo("UpdatedLastName");
+        assertThat(result.getLdapName()).isEqualTo("mupdatedlastname");
         assertThat(result.getAbbreviation()).isEqualTo("NM1");
         assertThat(result.getBirthDate()).isEqualTo(LocalDate.of(1990, 10, 1));
         assertThat(result.getEmploymentState()).isEqualTo(EmploymentState.MEMBER);
@@ -107,12 +109,14 @@ class MemberAttributesSyncJobIT {
     void shouldHandleMultiplePaginationPages() throws Exception {
         EmployeeAttributes attr1 = new EmployeeAttributes("Member 1",
                                                           "UpdatedOne",
+                                                          "mupdatedone",
                                                           "M1",
                                                           LocalDate.of(1990, 1, 1),
                                                           true,
                                                           "OrganisationUnit 1");
         EmployeeAttributes attr2 = new EmployeeAttributes("Member 2",
                                                           "UpdatedTwo",
+                                                          "mupdatedtwo",
                                                           "M2",
                                                           LocalDate.of(1995, 5, 5),
                                                           true,
@@ -207,6 +211,7 @@ class MemberAttributesSyncJobIT {
     void shouldIgnoreUnknownUserAndContinue() throws Exception {
         EmployeeAttributes unknownAttr = new EmployeeAttributes("Ghost",
                                                                 "User",
+                                                                "guser",
                                                                 "GHO",
                                                                 LocalDate.of(1999, 1, 1),
                                                                 true,
@@ -239,6 +244,7 @@ class MemberAttributesSyncJobIT {
     void shouldIncrementErrorCountOnFaultyApiData() throws Exception {
         EmployeeAttributes faultyAttr = new EmployeeAttributes("",
                                                                "UpdatedLastName",
+                                                               "updatedLastName",
                                                                "M1",
                                                                LocalDate.of(1990, 10, 1),
                                                                true,

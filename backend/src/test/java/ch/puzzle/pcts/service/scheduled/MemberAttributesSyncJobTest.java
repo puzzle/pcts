@@ -76,6 +76,7 @@ class MemberAttributesSyncJobTest {
     void shouldSuccessfullyUpdateMember() throws Exception {
         EmployeeAttributes attributes = new EmployeeAttributes("Updated",
                                                                "Name",
+                                                               "uname",
                                                                "M1",
                                                                LocalDate.of(1999, 8, 10),
                                                                true,
@@ -98,6 +99,7 @@ class MemberAttributesSyncJobTest {
         Member savedMember = memberCaptor.getValue();
         assertEquals("Updated", savedMember.getFirstName());
         assertEquals("Name", savedMember.getLastName());
+        assertEquals("uname", savedMember.getLdapName());
         assertEquals(LocalDate.of(1999, 8, 10), savedMember.getBirthDate());
         assertEquals(EmploymentState.MEMBER, savedMember.getEmploymentState());
         assertEquals(clonedOrgUnit1, savedMember.getOrganisationUnit());
@@ -110,6 +112,7 @@ class MemberAttributesSyncJobTest {
     void shouldSetMissingPtimeIdWhenMatchedByAbbreviation() throws Exception {
         EmployeeAttributes attributes = new EmployeeAttributes("Member 2",
                                                                "Test",
+                                                               "mtest",
                                                                "M2",
                                                                null,
                                                                false,
@@ -141,7 +144,13 @@ class MemberAttributesSyncJobTest {
     @DisplayName("Should increment error count when mandatory name fields are missing")
     @Test
     void shouldIncrementErrorCountWhenNameIsMissing() throws Exception {
-        EmployeeAttributes attributes = new EmployeeAttributes("", "Test", "M3", null, true, "OrganisationUnit 2");
+        EmployeeAttributes attributes = new EmployeeAttributes("",
+                                                               "Test",
+                                                               "test",
+                                                               "M3",
+                                                               null,
+                                                               true,
+                                                               "OrganisationUnit 2");
         EmployeeData apiEmployee = new EmployeeData(3L, "employee", attributes);
         mockServerForPages(new PuzzleTimeResponseDto(List.of(apiEmployee)));
 
@@ -165,6 +174,7 @@ class MemberAttributesSyncJobTest {
     void shouldIgnoreRecordWhenUserIsNotMatched() throws Exception {
         EmployeeAttributes attributes = new EmployeeAttributes("Ghost",
                                                                "User",
+                                                               "guser",
                                                                "gho",
                                                                null,
                                                                true,
@@ -187,6 +197,7 @@ class MemberAttributesSyncJobTest {
     void shouldCreateNewOrgUnitIfNotExists() throws Exception {
         EmployeeAttributes attributes = new EmployeeAttributes("Updated",
                                                                "Name",
+                                                               "uname",
                                                                "M1",
                                                                LocalDate.of(1999, 8, 10),
                                                                true,
@@ -275,6 +286,7 @@ class MemberAttributesSyncJobTest {
     void shouldIncrementErrorCountWhenDepartmentNameIsInvalid(String invalidDepartmentName) throws Exception {
         EmployeeAttributes attributes = new EmployeeAttributes("Valid",
                                                                "Name",
+                                                               "vname",
                                                                "val",
                                                                null,
                                                                true,

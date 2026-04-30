@@ -181,14 +181,14 @@ public class Member implements Model {
     }
 
     public void setLdapName(String ldapName) {
-        this.ldapName = ldapName;
+        this.ldapName = trim(ldapName);
     }
 
     public void keepSyncData(Long ptimeId, LocalDateTime lastSuccessfulSync, Integer syncErrorCount, String ldapName) {
         this.ptimeId = ptimeId;
         this.lastSuccessfulSync = lastSuccessfulSync;
         this.syncErrorCount = syncErrorCount;
-        this.ldapName = ldapName;
+        this.ldapName = trim(ldapName);
     }
 
     @Override
@@ -314,7 +314,7 @@ public class Member implements Model {
         }
 
         public Builder withLdapName(String ldapName) {
-            this.ldapName = ldapName;
+            this.ldapName = trim(ldapName);
             return this;
         }
 
