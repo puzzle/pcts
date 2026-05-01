@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -27,6 +28,9 @@ public class Member implements Model {
 
     @PCTSStringValidation
     private String lastName;
+
+    @Size(min = 1, message = "{attribute.not.blank}")
+    private String ldapName;
 
     @Enumerated(EnumType.STRING)
     @NotNull(message = "{attribute.not.null}")
@@ -61,6 +65,7 @@ public class Member implements Model {
         this.id = builder.id;
         this.firstName = trim(builder.firstName);
         this.lastName = trim(builder.lastName);
+        this.ldapName = trim(builder.ldapName);
         this.employmentState = builder.employmentState;
         this.abbreviation = trim(builder.abbreviation);
         this.dateOfHire = builder.dateOfHire;
@@ -171,16 +176,26 @@ public class Member implements Model {
         this.syncErrorCount = syncErrorCount;
     }
 
-    public void keepSyncData(Long ptimeId, LocalDateTime lastSuccessfulSync, Integer syncErrorCount) {
+    public String getLdapName() {
+        return ldapName;
+    }
+
+    public void setLdapName(String ldapName) {
+        this.ldapName = trim(ldapName);
+    }
+
+    public void keepSyncData(Long ptimeId, LocalDateTime lastSuccessfulSync, Integer syncErrorCount, String ldapName) {
         this.ptimeId = ptimeId;
         this.lastSuccessfulSync = lastSuccessfulSync;
         this.syncErrorCount = syncErrorCount;
+        this.ldapName = trim(ldapName);
     }
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Member member))
+        if (!(o instanceof Member member)) {
             return false;
+        }
         return Objects.equals(getId(), member.getId()) && Objects.equals(getFirstName(), member.getFirstName())
                && Objects.equals(getLastName(), member.getLastName())
                && getEmploymentState() == member.getEmploymentState()
@@ -191,7 +206,8 @@ public class Member implements Model {
                && Objects.equals(getOrganisationUnit(), member.getOrganisationUnit())
                && Objects.equals(getPtimeId(), member.getPtimeId())
                && Objects.equals(getLastSuccessfulSync(), member.getLastSuccessfulSync())
-               && Objects.equals(getSyncErrorCount(), member.getSyncErrorCount());
+               && Objects.equals(getSyncErrorCount(), member.getSyncErrorCount())
+               && Objects.equals(getLdapName(), member.getLdapName());
     }
 
     @Override
@@ -208,22 +224,24 @@ public class Member implements Model {
                       getOrganisationUnit(),
                       getPtimeId(),
                       getLastSuccessfulSync(),
-                      getSyncErrorCount());
+                      getSyncErrorCount(),
+                      getLdapName());
     }
 
     @Override
     public String toString() {
-        return "Member{" + "id=" + getId() + ", firstName='" + getFirstName() + '\'' + ", lastName='" + getLastName()
-               + '\'' + ", employmentState=" + getEmploymentState() + ", abbreviation='" + getAbbreviation() + '\''
-               + ", dateOfHire=" + getDateOfHire() + ", birthDate=" + getBirthDate() + ", deletedAt=" + getDeletedAt()
-               + ", organisationUnit=" + getOrganisationUnit() + ", ptimeId=" + getPtimeId() + ", lastSuccessfulSync="
-               + getLastSuccessfulSync() + ", syncErrorCount=" + getSyncErrorCount() + '}';
+        return "Member{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\''
+               + ", ldapName='" + ldapName + '\'' + ", employmentState=" + employmentState + ", abbreviation='"
+               + abbreviation + '\'' + ", dateOfHire=" + dateOfHire + ", birthDate=" + birthDate + ", deletedAt="
+               + deletedAt + ", organisationUnit=" + organisationUnit + ", ptimeId=" + ptimeId + ", lastSuccessfulSync="
+               + lastSuccessfulSync + ", syncErrorCount=" + syncErrorCount + '}';
     }
 
     public static final class Builder {
         private Long id;
         private String firstName;
         private String lastName;
+        private String ldapName;
         private EmploymentState employmentState;
         private String abbreviation;
         private LocalDate dateOfHire;
@@ -292,6 +310,11 @@ public class Member implements Model {
 
         public Builder withSyncErrorCount(Integer syncErrorCount) {
             this.syncErrorCount = syncErrorCount;
+            return this;
+        }
+
+        public Builder withLdapName(String ldapName) {
+            this.ldapName = trim(ldapName);
             return this;
         }
 

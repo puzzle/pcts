@@ -1,0 +1,2 @@
+ALTER TABLE member
+    ADD COLUMN ldap_name TEXT DEFAULT NULL;

@@ -163,7 +163,7 @@ public class MemberAttributesSyncJob {
             }
 
             Member member = memberOpt.get();
-
+            String ldapName = apiEmployee.attributes().ldapName();
             Long ptimeIdToUpdate = (member.getPtimeId() == null) ? apiPtimeId : null;
 
             try {
@@ -212,6 +212,10 @@ public class MemberAttributesSyncJob {
             member.setEmploymentState(EmploymentState.MEMBER);
         } else {
             member.setEmploymentState(EmploymentState.EX_MEMBER);
+        }
+
+        if (attributes.ldapName() != null) {
+            member.setLdapName(attributes.ldapName());
         }
 
         String departmentName = attributes.departmentName();

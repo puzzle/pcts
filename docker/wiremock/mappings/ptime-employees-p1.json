@@ -22,6 +22,7 @@
             "shortname": "LM",
             "firstname": "Lena",
             "lastname": "Maurer",
+            "ldapname": "lmaurer",
             "email": "maurer@puzzle.ch",
             "marital_status": "single",
             "nationalities": [
@@ -49,6 +50,7 @@
             "shortname": "JS",
             "firstname": "Justus",
             "lastname": "Shaw",
+            "ldapname": "jshaw",
             "email": "shaw@puzzle.ch",
             "marital_status": "married",
             "nationalities": [

@@ -47,6 +47,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                             LocalDate.EPOCH,
                             "Member",
                             "Test",
+                            "mtest",
                             "MT",
                             1L,
                             LocalDateTime.of(2000, 6, 1, 3, 20),
@@ -59,13 +60,14 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
     }
 
     protected static Member createMember(EmploymentState employmentState, LocalDate birthDate, String firstName,
-                                         String lastName, String abbreviation, Long ptimeId,
+                                         String lastName, String ldapName, String abbreviation, Long ptimeId,
                                          LocalDateTime lastSuccessfulSync, Integer syncErrorCount) {
         Member m = new Member();
         m.setEmploymentState(employmentState);
         m.setBirthDate(birthDate);
         m.setFirstName(firstName);
         m.setLastName(lastName);
+        m.setLdapName(ldapName);
         m.setAbbreviation(abbreviation);
         m.setDateOfHire(LocalDate.EPOCH);
         m.setOrganisationUnit(ORG_UNIT_1);
@@ -82,6 +84,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                          DATE_YESTERDAY,
                                          null,
                                          "Test",
+                                         "mtest",
                                          "MT",
                                          1L,
                                          LocalDateTime.of(2000, 6, 1, 3, 20),
@@ -92,6 +95,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              DATE_YESTERDAY,
                                              "",
                                              "Test",
+                                             "mtest",
                                              "MT",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
@@ -102,6 +106,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              DATE_YESTERDAY,
                                              "  ",
                                              "Test",
+                                             "mtest",
                                              "MT",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
@@ -112,6 +117,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              DATE_YESTERDAY,
                                              "S",
                                              "Test",
+                                             "mtest",
                                              "MT",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
@@ -133,6 +139,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              DATE_YESTERDAY,
                                              "  S ",
                                              "Test",
+                                             "mtest",
                                              "MT",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
@@ -154,6 +161,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              DATE_YESTERDAY,
                                              TOO_LONG_STRING,
                                              "Test",
+                                             "mtest",
                                              "MT",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
@@ -175,6 +183,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              DATE_YESTERDAY,
                                              "Member",
                                              null,
+                                             "mtest",
                                              "MT",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
@@ -185,6 +194,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              DATE_YESTERDAY,
                                              "Member",
                                              "",
+                                             "mtest",
                                              "MT",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
@@ -195,6 +205,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              DATE_YESTERDAY,
                                              "Member",
                                              "  ",
+                                             "mtest",
                                              "MT",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
@@ -205,6 +216,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              DATE_YESTERDAY,
                                              "Member",
                                              "S",
+                                             "mtest",
                                              "MT",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
@@ -226,6 +238,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              DATE_YESTERDAY,
                                              "Member",
                                              "  S ",
+                                             "mtest",
                                              "MT",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
@@ -247,6 +260,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              DATE_YESTERDAY,
                                              "Member",
                                              TOO_LONG_STRING,
+                                             "mtest",
                                              "MT",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
@@ -268,6 +282,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              DATE_YESTERDAY,
                                              "Member",
                                              "Test",
+                                             "mtest",
                                              "MT",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
@@ -278,6 +293,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              null,
                                              "Member",
                                              "Test",
+                                             "mtest",
                                              "MT",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
@@ -288,6 +304,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              DATE_TOMORROW,
                                              "Member",
                                              "Test",
+                                             "mtest",
                                              "MT",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
@@ -298,6 +315,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              DATE_TOMORROW,
                                              "Member",
                                              "Test",
+                                             "mtest",
                                              "MT",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
@@ -308,6 +326,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              DATE_YESTERDAY,
                                              "Member",
                                              "Test",
+                                             "mtest",
                                              "MT",
                                              0L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
@@ -318,6 +337,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              DATE_YESTERDAY,
                                              "Member",
                                              "Test",
+                                             "mtest",
                                              "MT",
                                              1L,
                                              LocalDateTime.of(30000, 11, 1, 1, 1),
@@ -328,6 +348,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              DATE_YESTERDAY,
                                              "Member",
                                              "Test",
+                                             "mtest",
                                              "MT",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
@@ -339,7 +360,18 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                                     FieldKey.FIELD,
                                                     "syncErrorCount",
                                                     FieldKey.IS,
-                                                    "-1")))
+                                                    "-1"))),
+                    Arguments
+                            .of(createMember(EmploymentState.MEMBER,
+                                             LocalDate.EPOCH,
+                                             "Member",
+                                             "Test",
+                                             "  ",
+                                             "MT",
+                                             1L,
+                                             LocalDateTime.of(2000, 6, 1, 3, 20),
+                                             0),
+                                List.of(Map.of(FieldKey.CLASS, "Member", FieldKey.FIELD, "ldapName")))
 
                 );
     }

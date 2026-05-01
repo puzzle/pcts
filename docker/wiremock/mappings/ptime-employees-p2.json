@@ -22,6 +22,7 @@
             "shortname": "SK",
             "firstname": "",
             "lastname": "Kunz",
+            "ldapname": "skunz",
             "email": "kunz@puzzle.ch",
             "marital_status": "single",
             "nationalities": [
