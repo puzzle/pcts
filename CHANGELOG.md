@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.7.0](https://github.com/puzzle/pcts/compare/0.6.0...0.7.0) (2026-05-03)
+
+
+### Features
+
+* (WIP squash later) ([007c5c8](https://github.com/puzzle/pcts/commit/007c5c8284a0b283831a08e6ad17e53661c0b33d))
+* add ldap name to ptime sync ([007c5c8](https://github.com/puzzle/pcts/commit/007c5c8284a0b283831a08e6ad17e53661c0b33d))
+
+
+### Bug Fixes
+
+* remove unused variable ([6663341](https://github.com/puzzle/pcts/commit/6663341f802299a99007cd08ad946fef2b24cb24))
+* **sonar:** remove unused variable ([6663341](https://github.com/puzzle/pcts/commit/6663341f802299a99007cd08ad946fef2b24cb24))
+
+
+### Miscellaneous Chores
+
+* **deps:** update cypress-io/github-action action to v7.1.10 ([#608](https://github.com/puzzle/pcts/issues/608)) ([51961e5](https://github.com/puzzle/pcts/commit/51961e50c1ec1060713bb8b835afa9199218d9be))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v12.5.0 ([2a9b5f4](https://github.com/puzzle/pcts/commit/2a9b5f4430ad385d7caf512bc81a2d482ed57938))
+* **deps:** update dependency typescript-eslint to v8.59.1 ([#609](https://github.com/puzzle/pcts/issues/609)) ([7fe0d34](https://github.com/puzzle/pcts/commit/7fe0d34ee346cc75baca6e4425ef968c87ff3505))
+
 ## [0.6.0](https://github.com/puzzle/pcts/compare/0.5.0...0.6.0) (2026-04-28)
 
 
