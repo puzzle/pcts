@@ -63,6 +63,8 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
+        with:
+          package_json_file: ./frontend/package.json
 
       - name: Set up node for Cypress
         uses: actions/setup-node@v6
