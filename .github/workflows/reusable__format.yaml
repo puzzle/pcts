@@ -42,16 +42,23 @@ jobs:
         with:
           ref: ${{ inputs.COMMIT_HASH }}
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          package_json_file: ./frontend/package.json
+
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: ${{ vars.NODE_VERSION }}
+          cache: 'pnpm'
+          cache-dependency-path: frontend/pnpm-lock.yaml
 
-      - name: Npm install
-        run: npm ci
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Format frontend
-        run: npm run check-linting:all
+        run: pnpm run check-linting:all
 
   markdownlint:
     runs-on: ubuntu-latest

@@ -15,16 +15,23 @@ jobs:
           java-version: ${{ vars.JAVA_VERSION }}
           distribution: 'temurin'
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          package_json_file: ./frontend/package.json
+
       - name: Set up node ${{ vars.NODE_VERSION }}
         uses: actions/setup-node@v6
         with:
           node-version: ${{ vars.NODE_VERSION }}
+          cache: 'pnpm'
+          cache-dependency-path: frontend/pnpm-lock.yaml
 
       - name: Install frontend dependencies
-        run: cd frontend && npm ci
+        run: cd frontend && pnpm install --frozen-lockfile
 
       - name: Generate frontend test coverage
-        run: cd frontend && npm run test -- --coverage
+        run: cd frontend && pnpm run test -- --coverage
 
       - name: Build and analyze
         run: mvn clean verify sonar:sonar

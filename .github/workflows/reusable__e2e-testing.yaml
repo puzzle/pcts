@@ -61,16 +61,24 @@ jobs:
       - name: Start application stack with Docker Compose
         run: docker compose -f docker/docker-compose.yml -f docker/docker-compose.e2e.yml up -d
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          package_json_file: ./frontend/package.json
+
       - name: Set up node for Cypress
         uses: actions/setup-node@v6
         with:
           node-version: ${{ vars.NODE_VERSION }}
+          cache: 'pnpm'
+          cache-dependency-path: frontend/pnpm-lock.yaml
 
       - name: Cypress run e2e tests
         uses: cypress-io/github-action@v7.1.10
         with:
           working-directory: frontend
           install: true
+          package-manager: pnpm
           wait-on: 'http://localhost:4200/'
           wait-on-timeout: 300
           browser: chrome
