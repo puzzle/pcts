@@ -2,6 +2,7 @@
   "name": "pcts",
   "version": "0.6.0",
   "packageManager": "pnpm@10.33.2",
+  "private": true,
   "scripts": {
     "ng": "ng",
     "start": "ng serve --hmr --host 0.0.0.0",
@@ -20,8 +21,6 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run"
   },
-  "packageManager": "pnpm@10.33.0",
-  "private": true,
   "dependencies": {
     "@angular/cdk": "^21.0.3",
     "@angular/common": "^21.0.4",
