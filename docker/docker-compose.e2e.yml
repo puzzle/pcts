@@ -1,8 +1,13 @@
 ---
 services:
   pcts-backend:
-    build:
-      context: ..
-      dockerfile: ./backend/Dockerfile
+    image: maven:3-eclipse-temurin-25-alpine
+    working_dir: /workspace
+    command: mvn -f backend/pom.xml spring-boot:run -Pe2e-test
+    volumes:
+      - ..:/workspace
+      - m2-cache:/root/.m2
+    ports:
+      - "5005:5005"
     environment:
       SPRING_PROFILES_ACTIVE: e2e-test
