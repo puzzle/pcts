@@ -4,6 +4,10 @@ name: "On push"
 on:
   push:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   format:
     uses: ./.github/workflows/reusable__format.yaml
