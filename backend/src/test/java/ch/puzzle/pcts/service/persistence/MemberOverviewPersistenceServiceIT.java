@@ -74,4 +74,23 @@ class MemberOverviewPersistenceServiceIT extends PersistenceCoreIT {
         assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
         assertEquals(List.of(expectedAttributes), exception.getErrorAttributes());
     }
+
+    @DisplayName("Should not retrieve deleted members")
+    @Test
+    void shouldNotRetrieveMemberWhenIsDeleted() {
+        Map<FieldKey, String> expectedAttributes = Map
+                .of(FieldKey.FIELD,
+                    "id",
+                    FieldKey.IS,
+                    String.valueOf(DELETED_MEMBER_4_ID),
+                    FieldKey.ENTITY,
+                    service.entityName());
+
+        PCTSException exception = assertThrows(PCTSException.class, () -> service.getById(DELETED_MEMBER_4_ID));
+
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
+
+        assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
+        assertEquals(List.of(expectedAttributes), exception.getErrorAttributes());
+    }
 }

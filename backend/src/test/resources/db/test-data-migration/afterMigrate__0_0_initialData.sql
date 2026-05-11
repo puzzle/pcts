@@ -60,11 +60,12 @@ VALUES
 
 TRUNCATE TABLE member CASCADE;
 
-INSERT INTO member (first_name, last_name, ldap_name, abbreviation, employment_state, date_of_hire, birth_date, organisation_unit, ptime_id, last_successful_sync, sync_error_count)
+INSERT INTO member (first_name, last_name, ldap_name, abbreviation, employment_state, date_of_hire, birth_date, organisation_unit, ptime_id, last_successful_sync, sync_error_count, deleted_at)
 VALUES
-    ('Member 1', 'Test', 'mtest1', 'M1', 'MEMBER', '2021-07-15', '1999-08-10', 1, 1, '2025-12-01 01:01:00', 0),
-    ('Member 2', 'Test', 'mtest2','M2', 'MEMBER', '2020-06-01', '1998-03-03', 2, 2, '2025-12-01 01:01:00', 0),
-    ('Member 3', 'Test', 'mtest3', 'M3', 'MEMBER', '2020-06-01', '1998-03-03', 2, 3, '2025-12-01 01:01:00', 0);
+    ('Member 1', 'Test', 'mtest1', 'M1', 'MEMBER', '2021-07-15', '1999-08-10', 1, 1, '2025-12-01 01:01:00', 0, null),
+    ('Member 2', 'Test', 'mtest2','M2', 'MEMBER', '2020-06-01', '1998-03-03', 2, 2, '2025-12-01 01:01:00', 0, null),
+    ('Member 3', 'Test', 'mtest3', 'M3', 'MEMBER', '2020-06-01', '1998-03-03', 2, 3, '2025-12-01 01:01:00', 0, null),
+    ('Member 4', 'Test', 'mtest4', 'M4', 'MEMBER', '2020-06-01', '1998-03-03', 2, 4, '2025-12-01 01:01:00', 0, '2025-12-01 01:01:00');
 
 TRUNCATE TABLE experience CASCADE;
 
