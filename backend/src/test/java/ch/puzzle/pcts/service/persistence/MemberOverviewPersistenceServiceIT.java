@@ -102,16 +102,19 @@ class MemberOverviewPersistenceServiceIT extends PersistenceCoreIT {
     static Stream<Arguments> deletedRelationsProvider() {
         return Stream
                 .of(Arguments
-                        .of(MEMBER_5_ID,
+                        .of(MEMBER_5_DELETED_CERT_ID,
                             "Certificate",
                             (Function<MemberOverview, Long>) MemberOverview::getCertificateId),
-                    Arguments.of(MEMBER_6_ID, "Degree", (Function<MemberOverview, Long>) MemberOverview::getDegreeId),
                     Arguments
-                            .of(MEMBER_7_ID,
+                            .of(MEMBER_6_DELETED_DEG_ID,
+                                "Degree",
+                                (Function<MemberOverview, Long>) MemberOverview::getDegreeId),
+                    Arguments
+                            .of(MEMBER_7_DELETED_EXP_ID,
                                 "Experience",
                                 (Function<MemberOverview, Long>) MemberOverview::getExperienceId),
                     Arguments
-                            .of(MEMBER_8_ID,
+                            .of(MEMBER_8_DELETED_LEXP_ID,
                                 "Leadership Experience",
                                 (Function<MemberOverview, Long>) MemberOverview::getLeadershipExperienceId));
     }

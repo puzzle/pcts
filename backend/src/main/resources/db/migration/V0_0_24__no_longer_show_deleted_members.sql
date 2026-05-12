@@ -42,34 +42,29 @@ SELECT m.id                AS member_id,
 FROM member m
          LEFT JOIN organisation_unit ou
                    ON ou.id = m.organisation_unit
-                       AND ou.deleted_at IS NULL
 
          LEFT JOIN certificate c
                    ON c.member_id = m.id
                        AND c.deleted_at IS NULL
          LEFT JOIN certificate_type ct
                    ON ct.id = c.certificate_type_id
-                       AND ct.deleted_at IS NULL
 
          LEFT JOIN leadership_experience le
                    ON le.member_id = m.id
                        AND le.deleted_at IS NULL
          LEFT JOIN leadership_experience_type let
                    ON let.id = le.leadership_experience_type_id
-                       AND let.deleted_at IS NULL
 
          LEFT JOIN degree d
                    ON d.member_id = m.id
                        AND d.deleted_at IS NULL
          LEFT JOIN degree_type dt
                    ON dt.id = d.degree_type_id
-                       AND dt.deleted_at IS NULL
 
          LEFT JOIN experience e
                    ON e.member_id = m.id
                        AND e.deleted_at IS NULL
          LEFT JOIN experience_type et
                    ON et.id = e.experience_type_id
-                       AND et.deleted_at IS NULL
 
 WHERE m.deleted_at IS NULL;

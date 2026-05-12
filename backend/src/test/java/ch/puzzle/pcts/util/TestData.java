@@ -46,13 +46,13 @@ public class TestData {
     // Members that only contain one deleted relation each
 
     // Only deleted certificate
-    public static final Long MEMBER_5_ID = 5L;
+    public static final Long MEMBER_5_DELETED_CERT_ID = 5L;
     // Only deleted degree
-    public static final Long MEMBER_6_ID = 6L;
+    public static final Long MEMBER_6_DELETED_DEG_ID = 6L;
     // Only deleted experience
-    public static final Long MEMBER_7_ID = 7L;
+    public static final Long MEMBER_7_DELETED_EXP_ID = 7L;
     // Only deleted leadership experience
-    public static final Long MEMBER_8_ID = 8L;
+    public static final Long MEMBER_8_DELETED_LEXP_ID = 8L;
 
     public static final Long CERT_TYPE_1_ID = 1L;
     public static final Long CERT_TYPE_2_ID = 2L;
