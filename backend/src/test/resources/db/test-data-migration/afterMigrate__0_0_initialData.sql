@@ -65,7 +65,11 @@ VALUES
     ('Member 1', 'Test', 'mtest1', 'M1', 'MEMBER', '2021-07-15', '1999-08-10', 1, 1, '2025-12-01 01:01:00', 0, null),
     ('Member 2', 'Test', 'mtest2','M2', 'MEMBER', '2020-06-01', '1998-03-03', 2, 2, '2025-12-01 01:01:00', 0, null),
     ('Member 3', 'Test', 'mtest3', 'M3', 'MEMBER', '2020-06-01', '1998-03-03', 2, 3, '2025-12-01 01:01:00', 0, null),
-    ('Member 4', 'Test', 'mtest4', 'M4', 'MEMBER', '2020-06-01', '1998-03-03', 2, 4, '2025-12-01 01:01:00', 0, '2025-12-01 01:01:00');
+    ('Member 4', 'Test', 'mtest4', 'M4', 'MEMBER', '2020-06-01', '1998-03-03', 2, 4, '2025-12-01 01:01:00', 0, '2025-12-01 01:01:00'),
+    ('Member 5', 'Test', 'mtest5', 'M5', 'MEMBER', '2020-06-01', '1998-03-03', 2, 5, '2025-12-01 01:01:00', 0, null),
+    ('Member 6', 'Test', 'mtest6', 'M6', 'MEMBER', '2020-06-01', '1998-03-03', 2, 6, '2025-12-01 01:01:00', 0, null),
+    ('Member 7', 'Test', 'mtest7', 'M7', 'MEMBER', '2020-06-01', '1998-03-03', 2, 7, '2025-12-01 01:01:00', 0, null),
+    ('Member 8', 'Test', 'mtest8', 'M8', 'MEMBER', '2020-06-01', '1998-03-03', 2, 8, '2025-12-01 01:01:00', 0, null);
 
 TRUNCATE TABLE experience CASCADE;
 
@@ -73,29 +77,33 @@ INSERT INTO experience (member_id, name, employer, percent, experience_type_id, 
 VALUES
     (1, 'Experience 1', 'Employer 1', 100, 1, 'Comment test 1', '2021-07-15', '2022-07-15', '1970-01-01 00:00:00'),
     (1, 'Experience 2', 'Employer 2', 80, 2, 'Comment test 2', '2022-07-16', '2023-07-15', NULL),
-    (2, 'Experience 3', 'Employer 3', 60, 1, 'Comment test 3', '2023-07-16', '2024-07-15', NULL);
+    (2, 'Experience 3', 'Employer 3', 60, 1, 'Comment test 3', '2023-07-16', '2024-07-15', NULL),
+    (7, 'Experience 4', 'Employer 4', 100, 1, 'Soft deleted experience test', '2022-01-01', '2023-01-01', '2026-05-12 10:00:00');
 
 TRUNCATE TABLE degree CASCADE;
 
-INSERT INTO degree (member_id, name, institution, completed, degree_type_id, start_date, end_date, comment)
-VALUES (1, 'Degree 1','Institution',TRUE,1,'2015-09-01','2020-06-01','Comment'),
-       (2, 'Degree 2','Institution',FALSE,2,'2016-09-01','2019-06-30','Comment');
+INSERT INTO degree (member_id, name, institution, completed, degree_type_id, start_date, end_date, comment, deleted_at)
+VALUES (1, 'Degree 1','Institution',TRUE,1,'2015-09-01','2020-06-01','Comment', NULL),
+       (2, 'Degree 2','Institution',FALSE,2,'2016-09-01','2019-06-30','Comment', NULL),
+       (6, 'Degree 3','Institution',TRUE,1,'2015-09-01','2020-06-01','Soft deleted degree test', '2026-05-12 10:00:00');
 
 TRUNCATE TABLE certificate CASCADE;
 
-INSERT INTO certificate(member_id, certificate_type_id, completed_at, valid_until, comment)
+INSERT INTO certificate(member_id, certificate_type_id, completed_at, valid_until, comment, deleted_at)
 VALUES
-    (1, 1, '2023-01-15', '2025-01-14', 'Completed first aid training.'),
-    (2, 2, '2022-11-01', NULL, 'Completed first aid training.'),
-    (2, 1, '2023-01-15', '2025-01-14', NULL),
-    (1, 2, '2010-08-12', '2023-03-25', 'Left organization.');
+    (1, 1, '2023-01-15', '2025-01-14', 'Completed first aid training.', NULL),
+    (2, 2, '2022-11-01', NULL, 'Completed first aid training.', NULL),
+    (2, 1, '2023-01-15', '2025-01-14', NULL, NULL),
+    (1, 2, '2010-08-12', '2023-03-25', 'Left organization.', NULL),
+    (5, 1, '2023-01-15', '2025-01-14', 'Soft deleted certificate test', '2026-05-12 10:00:00');
 
 TRUNCATE TABLE leadership_experience CASCADE;
 
 INSERT INTO leadership_experience(member_id, leadership_experience_type_id, comment, deleted_at)
 VALUES
     (1, 1, 'Left organization.', NULL),
-    (2, 2, 'This is a comment.', NULL);
+    (2, 2, 'This is a comment.', NULL),
+    (8, 1, 'Soft deleted leadership experience test', '2026-05-12 10:00:00');
 
 TRUNCATE TABLE calculation CASCADE;
 

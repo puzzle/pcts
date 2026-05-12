@@ -12,8 +12,13 @@ import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.memberoverview.MemberOverview;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
@@ -92,5 +97,37 @@ class MemberOverviewPersistenceServiceIT extends PersistenceCoreIT {
 
         assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
         assertEquals(List.of(expectedAttributes), exception.getErrorAttributes());
+    }
+
+    static Stream<Arguments> deletedRelationsProvider() {
+        return Stream
+                .of(Arguments
+                        .of(MEMBER_5_ID,
+                            "Certificate",
+                            (Function<MemberOverview, Long>) MemberOverview::getCertificateId),
+                    Arguments.of(MEMBER_6_ID, "Degree", (Function<MemberOverview, Long>) MemberOverview::getDegreeId),
+                    Arguments
+                            .of(MEMBER_7_ID,
+                                "Experience",
+                                (Function<MemberOverview, Long>) MemberOverview::getExperienceId),
+                    Arguments
+                            .of(MEMBER_8_ID,
+                                "Leadership Experience",
+                                (Function<MemberOverview, Long>) MemberOverview::getLeadershipExperienceId));
+    }
+
+    @DisplayName("Should evaluate soft-deleted relations as 0")
+    @ParameterizedTest(name = "Member {0} should have no {1} (id = 0)")
+    @MethodSource("deletedRelationsProvider")
+    void shouldNotRetrieveDeletedRelations(Long memberId, String relationName,
+                                           Function<MemberOverview, Long> idExtractor) {
+        List<MemberOverview> memberOverviews = service.getById(memberId);
+
+        assertThat(memberOverviews).isNotEmpty();
+
+        assertThat(memberOverviews)
+                .as("The deleted %s should result in a 0L due to COALESCE in the view", relationName)
+                .extracting(idExtractor)
+                .containsOnly(0L);
     }
 }
