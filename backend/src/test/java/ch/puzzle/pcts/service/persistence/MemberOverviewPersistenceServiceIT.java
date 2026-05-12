@@ -12,8 +12,13 @@ import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.memberoverview.MemberOverview;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
@@ -26,7 +31,7 @@ class MemberOverviewPersistenceServiceIT extends PersistenceCoreIT {
         this.service = service;
     }
 
-    @DisplayName("Should get all member overview with member id 1")
+    @DisplayName("Should get all member overviews with member id 1")
     @Test
     void shouldGetAllMemberOverviewRowsForMember1() {
         List<MemberOverview> memberOverviews = service.getById(MEMBER_1_ID);
@@ -39,17 +44,13 @@ class MemberOverviewPersistenceServiceIT extends PersistenceCoreIT {
             assertThat(row.getOrganisationUnitName()).isEqualTo("OrganisationUnit 1");
         });
 
-        assertThat(memberOverviews)
-                .extracting(MemberOverview::getCertificateId)
-                .containsExactlyInAnyOrder(1L, 1L, 4L, 4L);
+        assertThat(memberOverviews).extracting(MemberOverview::getCertificateId).containsExactlyInAnyOrder(1L, 4L);
 
         assertThat(memberOverviews).extracting(MemberOverview::getLeadershipExperienceId).containsOnly(1L);
 
         assertThat(memberOverviews).extracting(MemberOverview::getDegreeId).containsOnly(1L);
 
-        assertThat(memberOverviews)
-                .extracting(MemberOverview::getExperienceId)
-                .containsExactlyInAnyOrder(1L, 1L, 2L, 2L);
+        assertThat(memberOverviews).extracting(MemberOverview::getExperienceId).containsExactlyInAnyOrder(2L, 2L);
 
         assertThat(memberOverviews)
                 .usingRecursiveFieldByFieldElementComparator()
@@ -73,5 +74,59 @@ class MemberOverviewPersistenceServiceIT extends PersistenceCoreIT {
 
         assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
         assertEquals(List.of(expectedAttributes), exception.getErrorAttributes());
+    }
+
+    @DisplayName("Should not retrieve deleted members")
+    @Test
+    void shouldNotRetrieveMemberWhenIsDeleted() {
+        Map<FieldKey, String> expectedAttributes = Map
+                .of(FieldKey.FIELD,
+                    "id",
+                    FieldKey.IS,
+                    String.valueOf(DELETED_MEMBER_4_ID),
+                    FieldKey.ENTITY,
+                    service.entityName());
+
+        PCTSException exception = assertThrows(PCTSException.class, () -> service.getById(DELETED_MEMBER_4_ID));
+
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
+
+        assertEquals(List.of(ErrorKey.NOT_FOUND), exception.getErrorKeys());
+        assertEquals(List.of(expectedAttributes), exception.getErrorAttributes());
+    }
+
+    static Stream<Arguments> deletedRelationsProvider() {
+        return Stream
+                .of(Arguments
+                        .of(MEMBER_5_DELETED_CERT_ID,
+                            "Certificate",
+                            (Function<MemberOverview, Long>) MemberOverview::getCertificateId),
+                    Arguments
+                            .of(MEMBER_6_DELETED_DEG_ID,
+                                "Degree",
+                                (Function<MemberOverview, Long>) MemberOverview::getDegreeId),
+                    Arguments
+                            .of(MEMBER_7_DELETED_EXP_ID,
+                                "Experience",
+                                (Function<MemberOverview, Long>) MemberOverview::getExperienceId),
+                    Arguments
+                            .of(MEMBER_8_DELETED_LEXP_ID,
+                                "Leadership Experience",
+                                (Function<MemberOverview, Long>) MemberOverview::getLeadershipExperienceId));
+    }
+
+    @DisplayName("Should evaluate soft-deleted relations as 0")
+    @ParameterizedTest(name = "Member {0} should have no {1} (id = 0)")
+    @MethodSource("deletedRelationsProvider")
+    void shouldNotRetrieveDeletedRelations(Long memberId, String relationName,
+                                           Function<MemberOverview, Long> idExtractor) {
+        List<MemberOverview> memberOverviews = service.getById(memberId);
+
+        assertThat(memberOverviews).isNotEmpty();
+
+        assertThat(memberOverviews)
+                .as("The deleted %s should result in a 0L due to COALESCE in the view", relationName)
+                .extracting(idExtractor)
+                .containsOnly(0L);
     }
 }

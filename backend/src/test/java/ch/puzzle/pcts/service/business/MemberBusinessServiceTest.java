@@ -72,7 +72,7 @@ class MemberBusinessServiceTest
 
         List<Member> result = businessService.getAll();
 
-        assertEquals(3, result.size());
+        assertEquals(7, result.size());
         assertEquals(MEMBERS, result);
         verify(persistenceService).getAll();
     }

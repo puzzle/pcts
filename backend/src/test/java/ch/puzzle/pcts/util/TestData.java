@@ -41,6 +41,18 @@ public class TestData {
     public static final Long MEMBER_1_ID = 1L;
     public static final Long MEMBER_2_ID = 2L;
     public static final Long MEMBER_3_ID = 3L;
+    public static final Long DELETED_MEMBER_4_ID = 4L;
+
+    // Members that only contain one deleted relation each
+
+    // Only deleted certificate
+    public static final Long MEMBER_5_DELETED_CERT_ID = 5L;
+    // Only deleted degree
+    public static final Long MEMBER_6_DELETED_DEG_ID = 6L;
+    // Only deleted experience
+    public static final Long MEMBER_7_DELETED_EXP_ID = 7L;
+    // Only deleted leadership experience
+    public static final Long MEMBER_8_DELETED_LEXP_ID = 8L;
 
     public static final Long CERT_TYPE_1_ID = 1L;
     public static final Long CERT_TYPE_2_ID = 2L;
@@ -59,15 +71,18 @@ public class TestData {
     public static final Long CERTIFICATE_2_ID = 2L;
     public static final Long CERTIFICATE_3_ID = 3L;
     public static final Long CERTIFICATE_4_ID = 4L;
+    public static final Long DELETED_CERTIFICATE_5_ID = 5L;
 
     public static final Long LEADERSHIP_CERT_1_ID = 1L;
     public static final Long LEADERSHIP_CERT_2_ID = 2L;
+    public static final Long DELETED_LEADERSHIP_CERT_3_ID = 3L;
 
     public static final Long DEGREE_TYPE_1_ID = 1L;
     public static final Long DEGREE_TYPE_2_ID = 2L;
 
     public static final Long DEGREE_1_ID = 1L;
     public static final Long DEGREE_2_ID = 2L;
+    public static final Long DELETED_DEGREE_3_ID = 3L;
 
     public static final Long EXP_TYPE_1_ID = 1L;
     public static final Long EXP_TYPE_2_ID = 2L;
@@ -75,6 +90,8 @@ public class TestData {
     public static final Long EXPERIENCE_1_ID = 1L;
     public static final Long EXPERIENCE_2_ID = 2L;
     public static final Long EXPERIENCE_3_ID = 3L;
+    public static final Long DELETED_EXPERIENCE_4_ID = 4L;
+
     public static final Long DEGREE_CALC_1_ID = 1L;
     public static final Long DEGREE_CALC_2_ID = 2L;
     public static final Long DEGREE_CALC_3_ID = 3L;
