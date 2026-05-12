@@ -386,23 +386,8 @@ public class TestDataDTOs {
                                                                                                                                 DEGREE_1
                                                                                                                                         .getEndDate())),
                                                                                                                 List
-                                                                                                                        .of(new MemberOverviewExperienceDto(EXPERIENCE_1
+                                                                                                                        .of(new MemberOverviewExperienceDto(EXPERIENCE_2
                                                                                                                                 .getId(),
-                                                                                                                                                            EXPERIENCE_1
-                                                                                                                                                                    .getName(),
-                                                                                                                                                            EXPERIENCE_1
-                                                                                                                                                                    .getEmployer(),
-                                                                                                                                                            EXPERIENCE_1
-                                                                                                                                                                    .getType()
-                                                                                                                                                                    .getName(),
-                                                                                                                                                            EXPERIENCE_1
-                                                                                                                                                                    .getComment(),
-                                                                                                                                                            EXPERIENCE_1
-                                                                                                                                                                    .getStartDate(),
-                                                                                                                                                            EXPERIENCE_1
-                                                                                                                                                                    .getEndDate()),
-                                                                                                                            new MemberOverviewExperienceDto(EXPERIENCE_2
-                                                                                                                                    .getId(),
                                                                                                                                                             EXPERIENCE_2
                                                                                                                                                                     .getName(),
                                                                                                                                                             EXPERIENCE_2
