@@ -126,6 +126,70 @@ public class TestDataModels {
             .withSyncErrorCount(0)
             .build();
 
+    public static final Member MEMBER_5 = Member.Builder
+            .builder()
+            .withId(MEMBER_5_DELETED_CERT_ID)
+            .withFirstName("Member 5")
+            .withLastName("Test")
+            .withLdapName("mtest5")
+            .withEmploymentState(EmploymentState.MEMBER)
+            .withAbbreviation("M5")
+            .withDateOfHire(LocalDate.of(2020, 6, 1))
+            .withBirthDate(LocalDate.of(1998, 3, 3))
+            .withOrganisationUnit(ORG_UNIT_2)
+            .withPtimeId(5L)
+            .withLastSuccessfulSync(LocalDateTime.of(2025, 12, 1, 1, 1))
+            .withSyncErrorCount(0)
+            .build();
+
+    public static final Member MEMBER_6 = Member.Builder
+            .builder()
+            .withId(MEMBER_6_DELETED_DEG_ID)
+            .withFirstName("Member 6")
+            .withLastName("Test")
+            .withLdapName("mtest6")
+            .withEmploymentState(EmploymentState.MEMBER)
+            .withAbbreviation("M6")
+            .withDateOfHire(LocalDate.of(2020, 6, 1))
+            .withBirthDate(LocalDate.of(1998, 3, 3))
+            .withOrganisationUnit(ORG_UNIT_2)
+            .withPtimeId(6L)
+            .withLastSuccessfulSync(LocalDateTime.of(2025, 12, 1, 1, 1))
+            .withSyncErrorCount(0)
+            .build();
+
+    public static final Member MEMBER_7 = Member.Builder
+            .builder()
+            .withId(MEMBER_7_DELETED_EXP_ID)
+            .withFirstName("Member 7")
+            .withLastName("Test")
+            .withLdapName("mtest7")
+            .withEmploymentState(EmploymentState.MEMBER)
+            .withAbbreviation("M7")
+            .withDateOfHire(LocalDate.of(2020, 6, 1))
+            .withBirthDate(LocalDate.of(1998, 3, 3))
+            .withOrganisationUnit(ORG_UNIT_2)
+            .withPtimeId(7L)
+            .withLastSuccessfulSync(LocalDateTime.of(2025, 12, 1, 1, 1))
+            .withSyncErrorCount(0)
+            .build();
+
+    public static final Member MEMBER_8 = Member.Builder
+            .builder()
+            .withId(MEMBER_8_DELETED_LEXP_ID)
+            .withFirstName("Member 8")
+            .withLastName("Test")
+            .withLdapName("mtest8")
+            .withEmploymentState(EmploymentState.MEMBER)
+            .withAbbreviation("M8")
+            .withDateOfHire(LocalDate.of(2020, 6, 1))
+            .withBirthDate(LocalDate.of(1998, 3, 3))
+            .withOrganisationUnit(ORG_UNIT_2)
+            .withPtimeId(8L)
+            .withLastSuccessfulSync(LocalDateTime.of(2025, 12, 1, 1, 1))
+            .withSyncErrorCount(0)
+            .build();
+
     public static final CertificateType CERT_TYPE_1 = CertificateType.Builder
             .builder()
             .withId(CERT_TYPE_1_ID)
@@ -413,44 +477,7 @@ public class TestDataModels {
 
     public static final List<MemberOverview> MEMBER_1_OVERVIEWS = List
             .of(
-                // 1. Cert 1, Lead 1, Exp 1
-                MemberOverview.Builder
-                        .builder()
-                        .withMemberId(MEMBER_1.getId())
-                        .withFirstName(MEMBER_1.getFirstName())
-                        .withLastName(MEMBER_1.getLastName())
-                        .withAbbreviation(MEMBER_1.getAbbreviation())
-                        .withEmploymentState(MEMBER_1.getEmploymentState())
-                        .withDateOfHire(MEMBER_1.getDateOfHire())
-                        .withBirthDate(MEMBER_1.getBirthDate())
-                        .withOrganisationUnitName(MEMBER_1.getOrganisationUnit().getName())
-                        .withCertificateId(CERTIFICATE_1.getId())
-                        .withCertificateCompletedAt(CERTIFICATE_1.getCompletedAt())
-                        .withCertificateComment(CERTIFICATE_1.getComment())
-                        .withCertificateTypeName(CERTIFICATE_1.getCertificateType().getName())
-                        .withLeadershipExperienceId(LEADERSHIP_EXPERIENCE_1.getId())
-                        .withLeadershipExperienceComment(LEADERSHIP_EXPERIENCE_1.getComment())
-                        .withLeadershipExperienceTypeName(LEADERSHIP_EXPERIENCE_1
-                                .getLeadershipExperienceType()
-                                .getName())
-                        .withLeadershipExperienceTypeKind(LEADERSHIP_EXPERIENCE_1
-                                .getLeadershipExperienceType()
-                                .getExperienceKind())
-                        .withDegreeId(DEGREE_1.getId())
-                        .withDegreeName(DEGREE_1.getName())
-                        .withDegreeStartDate(DEGREE_1.getStartDate())
-                        .withDegreeEndDate(DEGREE_1.getEndDate())
-                        .withDegreeTypeName(DEGREE_1.getDegreeType().getName())
-                        .withExperienceId(EXPERIENCE_1.getId())
-                        .withExperienceName(EXPERIENCE_1.getName())
-                        .withExperienceEmployer(EXPERIENCE_1.getEmployer())
-                        .withExperienceStartDate(EXPERIENCE_1.getStartDate())
-                        .withExperienceEndDate(EXPERIENCE_1.getEndDate())
-                        .withExperienceComment(EXPERIENCE_1.getComment())
-                        .withExperienceTypeName(EXPERIENCE_1.getType().getName())
-                        .build(),
-
-                // 2. Cert 1, Lead 1, Exp 2
+                // 1. Cert 1, Lead 1, Exp 2
                 MemberOverview.Builder
                         .builder()
                         .withMemberId(MEMBER_1.getId())
@@ -487,44 +514,7 @@ public class TestDataModels {
                         .withExperienceTypeName(EXPERIENCE_2.getType().getName())
                         .build(),
 
-                // 3. Cert 4, Lead 1, Exp 1
-                MemberOverview.Builder
-                        .builder()
-                        .withMemberId(MEMBER_1.getId())
-                        .withFirstName(MEMBER_1.getFirstName())
-                        .withLastName(MEMBER_1.getLastName())
-                        .withAbbreviation(MEMBER_1.getAbbreviation())
-                        .withEmploymentState(MEMBER_1.getEmploymentState())
-                        .withDateOfHire(MEMBER_1.getDateOfHire())
-                        .withBirthDate(MEMBER_1.getBirthDate())
-                        .withOrganisationUnitName(MEMBER_1.getOrganisationUnit().getName())
-                        .withCertificateId(CERTIFICATE_4.getId())
-                        .withCertificateCompletedAt(CERTIFICATE_4.getCompletedAt())
-                        .withCertificateComment(CERTIFICATE_4.getComment())
-                        .withCertificateTypeName(CERTIFICATE_4.getCertificateType().getName())
-                        .withLeadershipExperienceId(LEADERSHIP_EXPERIENCE_1.getId())
-                        .withLeadershipExperienceComment(LEADERSHIP_EXPERIENCE_1.getComment())
-                        .withLeadershipExperienceTypeName(LEADERSHIP_EXPERIENCE_1
-                                .getLeadershipExperienceType()
-                                .getName())
-                        .withLeadershipExperienceTypeKind(LEADERSHIP_EXPERIENCE_1
-                                .getLeadershipExperienceType()
-                                .getExperienceKind())
-                        .withDegreeId(DEGREE_1.getId())
-                        .withDegreeName(DEGREE_1.getName())
-                        .withDegreeStartDate(DEGREE_1.getStartDate())
-                        .withDegreeEndDate(DEGREE_1.getEndDate())
-                        .withDegreeTypeName(DEGREE_1.getDegreeType().getName())
-                        .withExperienceId(EXPERIENCE_1.getId())
-                        .withExperienceName(EXPERIENCE_1.getName())
-                        .withExperienceEmployer(EXPERIENCE_1.getEmployer())
-                        .withExperienceStartDate(EXPERIENCE_1.getStartDate())
-                        .withExperienceEndDate(EXPERIENCE_1.getEndDate())
-                        .withExperienceComment(EXPERIENCE_1.getComment())
-                        .withExperienceTypeName(EXPERIENCE_1.getType().getName())
-                        .build(),
-
-                // 4. Cert 4, Lead 1, Exp 2
+                // 2. Cert 4, Lead 1, Exp 2
                 MemberOverview.Builder
                         .builder()
                         .withMemberId(MEMBER_1.getId())
@@ -825,7 +815,8 @@ public class TestDataModels {
 
     public static final List<Tag> TAGS_1 = List.of(TAG_1, TAG_2);
 
-    public static final List<Member> MEMBERS = List.of(MEMBER_1, MEMBER_2, MEMBER_3);
+    public static final List<Member> MEMBERS = List
+            .of(MEMBER_1, MEMBER_2, MEMBER_3, MEMBER_5, MEMBER_6, MEMBER_7, MEMBER_8);
 
     public static final List<CertificateType> CERTIFICATE_TYPES = List
             .of(CERT_TYPE_1, CERT_TYPE_2, CERT_TYPE_3, CERT_TYPE_4);

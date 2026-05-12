@@ -31,7 +31,7 @@ class MemberOverviewPersistenceServiceIT extends PersistenceCoreIT {
         this.service = service;
     }
 
-    @DisplayName("Should get all member overview with member id 1")
+    @DisplayName("Should get all member overviews with member id 1")
     @Test
     void shouldGetAllMemberOverviewRowsForMember1() {
         List<MemberOverview> memberOverviews = service.getById(MEMBER_1_ID);
@@ -44,17 +44,13 @@ class MemberOverviewPersistenceServiceIT extends PersistenceCoreIT {
             assertThat(row.getOrganisationUnitName()).isEqualTo("OrganisationUnit 1");
         });
 
-        assertThat(memberOverviews)
-                .extracting(MemberOverview::getCertificateId)
-                .containsExactlyInAnyOrder(1L, 1L, 4L, 4L);
+        assertThat(memberOverviews).extracting(MemberOverview::getCertificateId).containsExactlyInAnyOrder(1L, 4L);
 
         assertThat(memberOverviews).extracting(MemberOverview::getLeadershipExperienceId).containsOnly(1L);
 
         assertThat(memberOverviews).extracting(MemberOverview::getDegreeId).containsOnly(1L);
 
-        assertThat(memberOverviews)
-                .extracting(MemberOverview::getExperienceId)
-                .containsExactlyInAnyOrder(1L, 1L, 2L, 2L);
+        assertThat(memberOverviews).extracting(MemberOverview::getExperienceId).containsExactlyInAnyOrder(2L, 2L);
 
         assertThat(memberOverviews)
                 .usingRecursiveFieldByFieldElementComparator()
