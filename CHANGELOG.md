@@ -1,5 +1,39 @@
 # Changelog
 
+## [0.7.0](https://github.com/puzzle/pcts/compare/0.6.0...0.7.0) (2026-05-15)
+
+
+### Features
+
+* (WIP squash later) ([007c5c8](https://github.com/puzzle/pcts/commit/007c5c8284a0b283831a08e6ad17e53661c0b33d))
+* add ldap name to ptime sync ([007c5c8](https://github.com/puzzle/pcts/commit/007c5c8284a0b283831a08e6ad17e53661c0b33d))
+
+
+### Bug Fixes
+
+* do not display deleted member in overview [#590](https://github.com/puzzle/pcts/issues/590) ([#621](https://github.com/puzzle/pcts/issues/621)) ([c9cc50a](https://github.com/puzzle/pcts/commit/c9cc50acb40f3a1e4ce286e5e23267dd31a48fe3))
+* remove unused variable ([6663341](https://github.com/puzzle/pcts/commit/6663341f802299a99007cd08ad946fef2b24cb24))
+* **sonar:** remove unused variable ([6663341](https://github.com/puzzle/pcts/commit/6663341f802299a99007cd08ad946fef2b24cb24))
+
+
+### Miscellaneous Chores
+
+* Add functionality to cancel runs conditionally ([0646164](https://github.com/puzzle/pcts/commit/0646164b0e00ae441d601273c3263a81921d5ddd))
+* **deps:** update all devdependencies (minor and patch) ([#613](https://github.com/puzzle/pcts/issues/613)) ([7c16d3d](https://github.com/puzzle/pcts/commit/7c16d3d15bfac78898782cfe391bfcfae688a858))
+* **deps:** update angularmaterial monorepo to v21.2.10 ([#622](https://github.com/puzzle/pcts/issues/622)) ([b3388c0](https://github.com/puzzle/pcts/commit/b3388c0e594ce4d4e15eac53a7021675e6806321))
+* **deps:** update angularmaterial monorepo to v21.2.9 ([#615](https://github.com/puzzle/pcts/issues/615)) ([1069fab](https://github.com/puzzle/pcts/commit/1069fab01b25d64bf9ab690768066de769d20b59))
+* **deps:** update cypress-io/github-action action to v7.1.10 ([#608](https://github.com/puzzle/pcts/issues/608)) ([51961e5](https://github.com/puzzle/pcts/commit/51961e50c1ec1060713bb8b835afa9199218d9be))
+* **deps:** update cypress-io/github-action action to v7.3.0 ([277ed06](https://github.com/puzzle/pcts/commit/277ed069f412a303fb5942bb60560272a8b551bf))
+* **deps:** update dependency cypress to v15.14.2 ([#616](https://github.com/puzzle/pcts/issues/616)) ([c4e9413](https://github.com/puzzle/pcts/commit/c4e9413912b51a22f9980eb68aae83b61862a5a4))
+* **deps:** update dependency jest-environment-jsdom to v30.4.1 ([#623](https://github.com/puzzle/pcts/issues/623)) ([c68ad68](https://github.com/puzzle/pcts/commit/c68ad68534216cf7d2c5d1b1efcc9668cd8af66b))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v12.5.0 ([2a9b5f4](https://github.com/puzzle/pcts/commit/2a9b5f4430ad385d7caf512bc81a2d482ed57938))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v12.6.1 ([#624](https://github.com/puzzle/pcts/issues/624)) ([4eac700](https://github.com/puzzle/pcts/commit/4eac7008ad3a8832f88a7457001c703c0475cad6))
+* **deps:** update dependency typescript-eslint to v8.59.1 ([#609](https://github.com/puzzle/pcts/issues/609)) ([7fe0d34](https://github.com/puzzle/pcts/commit/7fe0d34ee346cc75baca6e4425ef968c87ff3505))
+* **deps:** update dependency typescript-eslint to v8.59.2 ([#619](https://github.com/puzzle/pcts/issues/619)) ([4bbb4ba](https://github.com/puzzle/pcts/commit/4bbb4ba9955d00b9634005ad0882454f6728ae84))
+* **deps:** update eclipse-temurin docker tag to v25.0.3_9-jre-alpine ([#617](https://github.com/puzzle/pcts/issues/617)) ([77103a4](https://github.com/puzzle/pcts/commit/77103a4f8b9abc807ff7d69c525fa2e9db329dce))
+* Update postgres image tag to 18  [#580](https://github.com/puzzle/pcts/issues/580) ([5a7f4a0](https://github.com/puzzle/pcts/commit/5a7f4a0bc7b99dc4e84fdd65a0cb03034639a3f2))
+* Update postgres image tags to 18 [#580](https://github.com/puzzle/pcts/issues/580) ([5a7f4a0](https://github.com/puzzle/pcts/commit/5a7f4a0bc7b99dc4e84fdd65a0cb03034639a3f2))
+
 ## [0.6.0](https://github.com/puzzle/pcts/compare/0.5.0...0.6.0) (2026-04-28)
 
 
