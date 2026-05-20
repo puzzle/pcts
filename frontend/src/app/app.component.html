@@ -18,9 +18,11 @@
           {{ userService.name() }}
         </div>
         <div slot="items">
-          <pzsh-menu-dropdown-item href="#" (click)="handleLogout()" data-testid="logout">
-            <pzsh-icon name="sign-out-alt"></pzsh-icon>
-            {{ "LOGOUT" | translate }}
+          <pzsh-menu-dropdown-item href="#">
+            <span (click)="handleLogout(); $event.preventDefault()" data-testid="logout">
+              <pzsh-icon name="sign-out-alt"></pzsh-icon>
+              {{ "LOGOUT" | translate }}
+            </span>
           </pzsh-menu-dropdown-item>
         </div>
       </pzsh-menu-dropdown>
