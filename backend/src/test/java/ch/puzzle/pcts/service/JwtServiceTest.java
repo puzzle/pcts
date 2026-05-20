@@ -5,7 +5,6 @@ import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.configuration.AuthenticationConfiguration;
 import ch.puzzle.pcts.exception.PCTSException;
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,39 +35,6 @@ class JwtServiceTest {
 
     @InjectMocks
     private JwtService jwtService;
-
-    @Test
-    @DisplayName("Should return email when claim is present in JWT")
-    void shouldReturnEmailFromJwtClaim() {
-        try (MockedStatic<SecurityContextHolder> mockedContext = mockStatic(SecurityContextHolder.class)) {
-            setupSecurityContext(mockedContext);
-
-            String emailClaim = "email";
-            String emailValue = "user@puzzle.ch";
-
-            when(authConfiguration.emailClaim()).thenReturn(emailClaim);
-            when(authentication.getCredentials()).thenReturn(jwt);
-            when(jwt.getClaimAsString(emailClaim)).thenReturn(emailValue);
-
-            Optional<String> result = jwtService.getEmail();
-
-            assertTrue(result.isPresent());
-            assertEquals(emailValue, result.get());
-        }
-    }
-
-    @Test
-    @DisplayName("Should return empty when no authentication exists")
-    void shouldReturnEmptyWhenNoAuth() {
-        try (MockedStatic<SecurityContextHolder> mockedContext = mockStatic(SecurityContextHolder.class)) {
-            mockedContext.when(SecurityContextHolder::getContext).thenReturn(securityContext);
-            when(securityContext.getAuthentication()).thenReturn(null);
-
-            Optional<String> result = jwtService.getEmail();
-
-            assertTrue(result.isEmpty());
-        }
-    }
 
     @Test
     @DisplayName("Should return username claim if present")

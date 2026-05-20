@@ -8,6 +8,5 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @ConfigurationProperties(prefix = "pcts.security.authentication")
 public record AuthenticationConfiguration(@NotBlank @DefaultValue("name") String usernameClaim,
-        @NotBlank @DefaultValue("email") String emailClaim,
         @NotBlank @DefaultValue("preferred_username") String preferredUsernameClaim) {
 }

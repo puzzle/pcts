@@ -10,12 +10,10 @@ class AuthenticationConfigurationTest {
     @Test
     void shouldStorePropertiesCorrectly() {
         String expectedUsername = "preferred_username";
-        String expectedEmail = "user_email";
         String expectedPreferredUsername = "preferred_username";
 
-        var config = new AuthenticationConfiguration(expectedUsername, expectedEmail, expectedPreferredUsername);
+        var config = new AuthenticationConfiguration(expectedUsername, expectedPreferredUsername);
 
         assertEquals(expectedUsername, config.usernameClaim(), "Username claim should match input");
-        assertEquals(expectedEmail, config.emailClaim(), "Email claim should match input"); // TODO
     }
 }
