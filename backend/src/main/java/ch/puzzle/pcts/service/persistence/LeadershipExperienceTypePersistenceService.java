@@ -13,20 +13,20 @@ public class LeadershipExperienceTypePersistenceService
         extends
             PersistenceBase<LeadershipExperienceType, LeadershipExperienceTypeRepository> {
 
-    private final LeadershipExperienceTypeRepository repository;
+    private final LeadershipExperienceTypeRepository leadershipExperienceTypeRepository;
 
     protected LeadershipExperienceTypePersistenceService(LeadershipExperienceTypeRepository leadershipExperienceTypeRepository) {
         super(leadershipExperienceTypeRepository);
-        repository = leadershipExperienceTypeRepository;
+        this.leadershipExperienceTypeRepository = leadershipExperienceTypeRepository;
     }
 
     public Optional<LeadershipExperienceType> getByName(String name) {
-        return repository.findByNameAndDeletedAtIsNull(name);
+        return leadershipExperienceTypeRepository.findByNameAndDeletedAtIsNull(name);
     }
 
     @Override
     public List<LeadershipExperienceType> getAll() {
-        return repository.findAll();
+        return leadershipExperienceTypeRepository.findAll();
     }
 
     @Override

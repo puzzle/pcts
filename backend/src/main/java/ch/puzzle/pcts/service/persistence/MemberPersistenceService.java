@@ -15,19 +15,19 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MemberPersistenceService extends PersistenceBase<Member, MemberRepository> {
-    private final MemberRepository repository;
+    private final MemberRepository memberRepository;
 
-    public MemberPersistenceService(MemberRepository repository) {
-        super(repository);
-        this.repository = repository;
+    public MemberPersistenceService(MemberRepository memberRepository) {
+        super(memberRepository);
+        this.memberRepository = memberRepository;
     }
 
     public Optional<Member> findById(Long id) {
-        return this.repository.findById(id);
+        return this.memberRepository.findById(id);
     }
 
     public Optional<Member> findByLdapName(String ldapName) {
-        return this.repository.findMemberByLdapName(ldapName);
+        return this.memberRepository.findMemberByLdapName(ldapName);
     }
 
     public Member getByLdapName(String ldapName) {
@@ -43,14 +43,14 @@ public class MemberPersistenceService extends PersistenceBase<Member, MemberRepo
     }
 
     public Optional<Member> findByPtimeIdAndIdNot(Long ptimeId, Long id) {
-        return repository.findByPtimeIdAndIdNotAndPtimeIdNotNull(ptimeId, id);
+        return memberRepository.findByPtimeIdAndIdNotAndPtimeIdNotNull(ptimeId, id);
     }
 
     public Optional<Member> findByPtimeId(Long ptimeId) {
-        return repository.findByPtimeId(ptimeId);
+        return memberRepository.findByPtimeId(ptimeId);
     }
 
     public Optional<Member> findByAbbreviation(String abbreviation) {
-        return repository.findByAbbreviation(abbreviation);
+        return memberRepository.findByAbbreviation(abbreviation);
     }
 }

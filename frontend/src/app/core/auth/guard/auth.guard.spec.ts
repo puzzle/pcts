@@ -13,10 +13,10 @@ describe('authGuard', () => {
   let routerMock: Partial<Router>;
   const mockConfig = { adminAuthorities: ['ADMIN_ROLE'] };
 
-  const executeGuard = (config?: { scope: 'admin' | 'user' },
+  const executeGuard = (scope?: 'admin' | 'user',
     route: Partial<ActivatedRouteSnapshot> = {},
     state: Partial<RouterStateSnapshot> = { url: '/test' }) => {
-    return TestBed.runInInjectionContext(() => authGuard(config)(route as ActivatedRouteSnapshot, state as RouterStateSnapshot));
+    return TestBed.runInInjectionContext(() => authGuard(scope)(route as ActivatedRouteSnapshot, state as RouterStateSnapshot));
   };
 
   beforeEach(() => {
@@ -59,7 +59,7 @@ describe('authGuard', () => {
   });
 
   it('should allow access if scope is "user"', () => {
-    const result = executeGuard({ scope: 'user' });
+    const result = executeGuard('user');
     expect(result)
       .toBe(true);
   });
@@ -67,7 +67,7 @@ describe('authGuard', () => {
   it('should allow access if scope is "admin" and user has admin role', () => {
     (userServiceMock.isAdmin as jest.Mock).mockReturnValue(true);
 
-    const result = executeGuard({ scope: 'admin' });
+    const result = executeGuard('admin');
 
     expect(result)
       .toBe(true);
@@ -82,7 +82,7 @@ describe('authGuard', () => {
     });
 
     it('should redirect to /member/:id if user is not an admin', async() => {
-      const result$ = executeGuard({ scope: 'admin' });
+      const result$ = executeGuard('admin');
 
       await lastValueFrom(result$);
 
@@ -91,7 +91,7 @@ describe('authGuard', () => {
     });
 
     it('should allow access if non-admin is already on their target personal URL', async() => {
-      const result$ = executeGuard({ scope: 'admin' }, {}, { url: '/member/7' });
+      const result$ = executeGuard('admin', {}, { url: '/member/7' });
 
       const result = await lastValueFrom(result$);
 
