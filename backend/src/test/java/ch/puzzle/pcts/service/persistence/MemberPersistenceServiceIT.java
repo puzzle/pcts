@@ -2,18 +2,16 @@ package ch.puzzle.pcts.service.persistence;
 
 import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.repository.MemberRepository;
 import jakarta.transaction.Transactional;
-
 import java.util.List;
 import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 
 class MemberPersistenceServiceIT extends PersistenceBaseIT<Member, MemberRepository, MemberPersistenceService> {
@@ -68,61 +66,21 @@ class MemberPersistenceServiceIT extends PersistenceBaseIT<Member, MemberReposit
         assertThat(result.isEmpty());
     }
 
-    @DisplayName("Should return member by abbreviation when found")
+    @DisplayName("Should return member by LDAP name when found")
     @Test
-    void shouldReturnMemberByAbbreviation() {
-        Optional<Member> result = persistenceService.findByAbbreviation("M1");
+    void shouldReturnMemberByLdapName() {
+        Optional<Member> result = persistenceService.findByLdapName("mtest1");
 
         assertThat(result).isPresent();
-        assertThat(result.get().getAbbreviation()).isEqualTo(MEMBER_1.getAbbreviation());
+        assertThat(result.get().getLdapName()).isEqualTo(MEMBER_1.getLdapName());
     }
 
-    @DisplayName("Should not return member by abbreviation when not found")
-    @Test
-    void shouldNotReturnMemberByAbbreviation() {
-        Optional<Member> result = persistenceService.findByAbbreviation("Not an Abbreviation");
-
-        assertThat(result.isEmpty());
-    }
-
-    @DisplayName("Should get member by email")
+    @DisplayName("Should throw exception when LDAP name does not exist")
     @Transactional
     @Test
-    void shouldGetMemberByEmail() {
-        String email = "member2@puzzle.ch";
+    void shouldReturnEmptyWhenLdapNameDoesNotExist() {
+        Optional<Member> result = persistenceService.findByLdapName("non-existent");
 
-        Member result = persistenceService.getByEmail(email);
-
-        assertThat(result.getEmail()).isEqualTo(email);
-        assertThat(result.getFirstName()).isEqualTo("Member 2");
-    }
-
-    @DisplayName("Should throw exception when email does not exist")
-    @Transactional
-    @Test
-    void shouldReturnEmptyWhenEmailDoesNotExistForGet() {
-        assertThrows(PCTSException.class, () -> persistenceService.getByEmail("non-existent@puzzle.ch"));
-    }
-
-    @DisplayName("Should find member by email")
-    @Transactional
-    @Test
-    void shouldFindMemberByEmail() {
-        String email = "member2@puzzle.ch";
-
-        Optional<Member> result = persistenceService.findByEmail(email);
-
-        assertThat(result).isPresent();
-        assertThat(result.get().getEmail()).isEqualTo(email);
-        assertThat(result.get().getFirstName()).isEqualTo("Member 2");
-    }
-
-    @DisplayName("Should return empty when email does not exist")
-    @Transactional
-    @Test
-    void shouldReturnEmptyWhenEmailDoesNotExistForFind() {
-        Optional<Member> result = persistenceService.findByEmail("non-existent@puzzle.ch");
-
-        assertThat(result).isNotPresent();
+        assertTrue(result.isEmpty());
     }
 }

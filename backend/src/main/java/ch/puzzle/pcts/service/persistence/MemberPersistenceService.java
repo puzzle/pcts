@@ -22,19 +22,8 @@ public class MemberPersistenceService extends PersistenceBase<Member, MemberRepo
         this.repository = repository;
     }
 
-    public Optional<Member> findByEmail(String email) {
-        return this.repository.findMemberByEmailAndEmailIsNotNull(email);
-    }
-
     public Optional<Member> findById(Long id) {
         return this.repository.findById(id);
-    }
-
-    public Member getByEmail(String email) {
-        return findByEmail(email).orElseThrow(() -> {
-            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, Map.of());
-            return new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
-        });
     }
 
     public Optional<Member> findByLdapName(String ldapName) {

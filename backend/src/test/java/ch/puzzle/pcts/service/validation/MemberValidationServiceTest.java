@@ -48,7 +48,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                             "Test",
                             "mtest",
                             "MT",
-                            "test@puzzle.ch",
                             1L,
                             LocalDateTime.of(2000, 6, 1, 3, 20),
                             0);
@@ -60,8 +59,8 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
     }
 
     protected static Member createMember(EmploymentState employmentState, LocalDate birthDate, String firstName,
-                                         String lastName, String ldapName, String abbreviation, String email,
-                                         Long ptimeId, LocalDateTime lastSuccessfulSync, Integer syncErrorCount) {
+                                         String lastName, String ldapName, String abbreviation, Long ptimeId,
+                                         LocalDateTime lastSuccessfulSync, Integer syncErrorCount) {
         Member m = new Member();
         m.setEmploymentState(employmentState);
         m.setBirthDate(birthDate);
@@ -71,11 +70,9 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
         m.setAbbreviation(abbreviation);
         m.setDateOfHire(LocalDate.EPOCH);
         m.setOrganisationUnit(ORG_UNIT_1);
-        m.setEmail(email);
         m.setPtimeId(ptimeId);
         m.setLastSuccessfulSync(lastSuccessfulSync);
         m.setSyncErrorCount(syncErrorCount);
-        m.setPreferredUsername("testuser");
         return m;
     }
 
@@ -88,7 +85,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                          "Test",
                                          "mtest",
                                          "MT",
-                                         "test@puzzle.ch",
                                          1L,
                                          LocalDateTime.of(2000, 6, 1, 3, 20),
                                          0),
@@ -100,7 +96,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              "Test",
                                              "mtest",
                                              "MT",
-                                             "test@puzzle.ch",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
                                              0),
@@ -112,7 +107,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              "Test",
                                              "mtest",
                                              "MT",
-                                             "test@puzzle.ch",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
                                              0),
@@ -124,7 +118,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              "Test",
                                              "mtest",
                                              "MT",
-                                             "test@puzzle.ch",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
                                              0),
@@ -147,7 +140,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              "Test",
                                              "mtest",
                                              "MT",
-                                             "test@puzzle.ch",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
                                              0),
@@ -170,7 +162,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              "Test",
                                              "mtest",
                                              "MT",
-                                             "test@puzzle.ch",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
                                              0),
@@ -193,7 +184,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              null,
                                              "mtest",
                                              "MT",
-                                             "test@puzzle.ch",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
                                              0),
@@ -205,7 +195,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              "",
                                              "mtest",
                                              "MT",
-                                             "test@puzzle.ch",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
                                              0),
@@ -217,7 +206,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              "  ",
                                              "mtest",
                                              "MT",
-                                             "test@puzzle.ch",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
                                              0),
@@ -229,7 +217,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              "S",
                                              "mtest",
                                              "MT",
-                                             "test@puzzle.ch",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
                                              0),
@@ -252,7 +239,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              "  S ",
                                              "mtest",
                                              "MT",
-                                             "test@puzzle.ch",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
                                              0),
@@ -275,7 +261,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              TOO_LONG_STRING,
                                              "mtest",
                                              "MT",
-                                             "test@puzzle.ch",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
                                              0),
@@ -298,7 +283,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              "Test",
                                              "mtest",
                                              "MT",
-                                             "test@puzzle.ch",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
                                              0),
@@ -310,7 +294,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              "Test",
                                              "mtest",
                                              "MT",
-                                             "test@puzzle.ch",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
                                              0),
@@ -322,7 +305,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              "Test",
                                              "mtest",
                                              "MT",
-                                             "test@puzzle.ch",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
                                              0),
@@ -334,7 +316,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              "Test",
                                              "mtest",
                                              "MT",
-                                             "test@puzzle.ch",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
                                              0),
@@ -346,7 +327,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              "Test",
                                              "mtest",
                                              "MT",
-                                             "test@puzzle.ch",
                                              0L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
                                              0),
@@ -358,7 +338,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              "Test",
                                              "mtest",
                                              "MT",
-                                             "test@puzzle.ch",
                                              1L,
                                              LocalDateTime.of(30000, 11, 1, 1, 1),
                                              0),
@@ -370,7 +349,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              "Test",
                                              "mtest",
                                              "MT",
-                                             "test@puzzle.ch",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
                                              -1),
@@ -389,7 +367,6 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              "Test",
                                              "  ",
                                              "MT",
-                                             "test@puzzle.ch",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
                                              0),

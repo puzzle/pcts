@@ -16,11 +16,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MemberBusinessService extends BusinessBase<Member> {
-
     private final JwtService jwtService;
     private final MemberPersistenceService memberPersistenceService;
-    RoleBusinessService roleBusinessService;
-    CalculationBusinessService calculationBusinessService;
+    private final RoleBusinessService roleBusinessService;
+    private final CalculationBusinessService calculationBusinessService;
 
     public MemberBusinessService(MemberValidationService validationService,
                                  MemberPersistenceService memberPersistenceService,
