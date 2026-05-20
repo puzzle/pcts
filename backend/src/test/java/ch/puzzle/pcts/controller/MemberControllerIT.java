@@ -20,7 +20,6 @@ import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.mapper.MemberMapper;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.member.Member;
-import ch.puzzle.pcts.service.business.MemberBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -33,9 +32,6 @@ import tools.jackson.databind.json.JsonMapper;
 
 @ControllerIT(MemberController.class)
 class MemberControllerIT extends ControllerITBase {
-
-    @MockitoBean
-    private MemberBusinessService service;
 
     @MockitoBean
     private MemberMapper mapper;
@@ -54,7 +50,7 @@ class MemberControllerIT extends ControllerITBase {
     @DisplayName("Should successfully get all members")
     @Test
     void shouldGetAllMembers() throws Exception {
-        when(service.getAll()).thenReturn(List.of(MEMBER_1));
+        when(memberBusinessService.getAll()).thenReturn(List.of(MEMBER_1));
         when(mapper.toDto(any(List.class))).thenReturn(List.of(MEMBER_1_DTO));
 
         mvc
@@ -63,14 +59,14 @@ class MemberControllerIT extends ControllerITBase {
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(JsonDtoMatcher.matchesDto(MEMBER_1_DTO, "$[0]"));
 
-        verify(service, times(1)).getAll();
+        verify(memberBusinessService, times(1)).getAll();
         verify(mapper, times(1)).toDto(any(List.class));
     }
 
     @DisplayName("Should successfully get member by id as an admin")
     @Test
     void shouldGetMemberByIdAsAnAdmin() throws Exception {
-        when(service.getById(anyLong())).thenReturn(MEMBER_1);
+        when(memberBusinessService.getById(anyLong())).thenReturn(MEMBER_1);
         when(mapper.toDto(any(Member.class))).thenReturn(MEMBER_1_DTO);
 
         mvc
@@ -78,14 +74,14 @@ class MemberControllerIT extends ControllerITBase {
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(MEMBER_1_DTO, "$"));
 
-        verify(service, times(1)).getById(MEMBER_1_ID);
+        verify(memberBusinessService, times(1)).getById(MEMBER_1_ID);
         verify(mapper, times(1)).toDto(any(Member.class));
     }
 
     @DisplayName("Should successfully get member by id as the owner")
     @Test
     void shouldGetMemberByIdAsOwner() throws Exception {
-        when(service.getById(anyLong())).thenReturn(MEMBER_1);
+        when(memberBusinessService.getById(anyLong())).thenReturn(MEMBER_1);
         when(mapper.toDto(any(Member.class))).thenReturn(MEMBER_1_DTO);
 
         mvc
@@ -93,7 +89,7 @@ class MemberControllerIT extends ControllerITBase {
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(MEMBER_1_DTO, "$"));
 
-        verify(service, times(1)).getById(MEMBER_1_ID);
+        verify(memberBusinessService, times(1)).getById(MEMBER_1_ID);
         verify(mapper, times(1)).toDto(any(Member.class));
     }
 
@@ -101,7 +97,7 @@ class MemberControllerIT extends ControllerITBase {
     @Test
     void shouldCreateNewMember() throws Exception {
         when(mapper.fromDto(any(MemberInputDto.class))).thenReturn(MEMBER_1);
-        when(service.create(any(Member.class))).thenReturn(MEMBER_1);
+        when(memberBusinessService.create(any(Member.class))).thenReturn(MEMBER_1);
         when(mapper.toDto(any(Member.class))).thenReturn(MEMBER_1_DTO);
 
         mvc
@@ -114,7 +110,7 @@ class MemberControllerIT extends ControllerITBase {
                 .andExpect(JsonDtoMatcher.matchesDto(MEMBER_1_DTO, "$"));
 
         verify(mapper, times(1)).fromDto(any(MemberInputDto.class));
-        verify(service, times(1)).create(any(Member.class));
+        verify(memberBusinessService, times(1)).create(any(Member.class));
         verify(mapper, times(1)).toDto(any(Member.class));
     }
 
@@ -122,7 +118,7 @@ class MemberControllerIT extends ControllerITBase {
     @Test
     void shouldUpdateMember() throws Exception {
         when(mapper.fromDto(any(MemberInputDto.class))).thenReturn(MEMBER_1);
-        when(service.update(any(Long.class), any(Member.class))).thenReturn(MEMBER_1);
+        when(memberBusinessService.update(any(Long.class), any(Member.class))).thenReturn(MEMBER_1);
         when(mapper.toDto(any(Member.class))).thenReturn(MEMBER_1_DTO);
 
         mvc
@@ -135,14 +131,14 @@ class MemberControllerIT extends ControllerITBase {
                 .andExpect(JsonDtoMatcher.matchesDto(MEMBER_1_DTO, "$"));
 
         verify(mapper, times(1)).fromDto(any(MemberInputDto.class));
-        verify(service, times(1)).update(any(Long.class), any(Member.class));
+        verify(memberBusinessService, times(1)).update(any(Long.class), any(Member.class));
         verify(mapper, times(1)).toDto(any(Member.class));
     }
 
     @DisplayName("Should successfully delete member")
     @Test
     void shouldDeleteMember() throws Exception {
-        doNothing().when(service).delete(anyLong());
+        doNothing().when(memberBusinessService).delete(anyLong());
 
         mvc
                 .perform(delete(BASEURL + "/" + MEMBER_1_ID)
@@ -152,7 +148,7 @@ class MemberControllerIT extends ControllerITBase {
                 .andExpect(status().isNoContent())
                 .andExpect(jsonPath("$").doesNotExist());
 
-        verify(service, times(1)).delete(any(Long.class));
+        verify(memberBusinessService, times(1)).delete(any(Long.class));
     }
 
     @DisplayName("Should successfully get calculations of member with optional roleId")
@@ -164,7 +160,8 @@ class MemberControllerIT extends ControllerITBase {
         Calculation calculation = mock(Calculation.class);
         CalculationDto calculationDto = mock(CalculationDto.class);
 
-        when(service.getAllCalculationsByMemberIdAndRoleId(memberId, roleId)).thenReturn(List.of(calculation));
+        when(memberBusinessService.getAllCalculationsByMemberIdAndRoleId(memberId, roleId))
+                .thenReturn(List.of(calculation));
 
         when(calculationMapper.toDto(anyList())).thenReturn(List.of(calculationDto));
 
@@ -177,7 +174,7 @@ class MemberControllerIT extends ControllerITBase {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1));
 
-        verify(service, times(1)).getAllCalculationsByMemberIdAndRoleId(memberId, roleId);
+        verify(memberBusinessService, times(1)).getAllCalculationsByMemberIdAndRoleId(memberId, roleId);
         verify(calculationMapper, times(1)).toDto(anyList());
     }
 
@@ -189,7 +186,8 @@ class MemberControllerIT extends ControllerITBase {
         Calculation calculation = mock(Calculation.class);
         CalculationDto calculationDto = mock(CalculationDto.class);
 
-        when(service.getAllCalculationsByMemberIdAndRoleId(memberId, null)).thenReturn(List.of(calculation));
+        when(memberBusinessService.getAllCalculationsByMemberIdAndRoleId(memberId, null))
+                .thenReturn(List.of(calculation));
 
         when(calculationMapper.toDto(anyList())).thenReturn(List.of(calculationDto));
 
@@ -201,7 +199,7 @@ class MemberControllerIT extends ControllerITBase {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1));
 
-        verify(service, times(1)).getAllCalculationsByMemberIdAndRoleId(memberId, null);
+        verify(memberBusinessService, times(1)).getAllCalculationsByMemberIdAndRoleId(memberId, null);
         verify(calculationMapper, times(1)).toDto(anyList());
     }
 
@@ -213,7 +211,7 @@ class MemberControllerIT extends ControllerITBase {
         RolePointDto rolePointDto = mock(RolePointDto.class);
         Calculation calculation = mock(Calculation.class);
 
-        when(service.getAllActiveCalculationsByMemberId(memberId)).thenReturn(List.of(calculation));
+        when(memberBusinessService.getAllActiveCalculationsByMemberId(memberId)).thenReturn(List.of(calculation));
         when(calculationMapper.toRolePointDto(List.of(calculation))).thenReturn(List.of(rolePointDto));
 
         mvc
@@ -224,14 +222,14 @@ class MemberControllerIT extends ControllerITBase {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1));
 
-        verify(service, times(1)).getAllActiveCalculationsByMemberId(memberId);
+        verify(memberBusinessService, times(1)).getAllActiveCalculationsByMemberId(memberId);
         verify(calculationMapper, times(1)).toRolePointDto(List.of(calculation));
     }
 
     @DisplayName("Should successfully get myself as a member")
     @Test
     void shouldSuccessfullyGetMyselfAsAMember() throws Exception {
-        when(service.getLoggedInMember()).thenReturn(MEMBER_1);
+        when(memberBusinessService.getLoggedInMember()).thenReturn(MEMBER_1);
         when(mapper.toDto(any(Member.class))).thenReturn(MEMBER_1_DTO);
 
         mvc
@@ -239,7 +237,7 @@ class MemberControllerIT extends ControllerITBase {
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(MEMBER_1_DTO, "$"));
 
-        verify(service, times(1)).getLoggedInMember();
+        verify(memberBusinessService, times(1)).getLoggedInMember();
         verify(mapper, times(1)).toDto(any(Member.class));
     }
 }

@@ -213,7 +213,17 @@ public class Member implements Model {
     }
 
     public void setPreferredUsername(String preferredUsername) {
-        this.preferredUsername = preferredUsername;
+        this.preferredUsername = trim(preferredUsername);
+    }
+
+    @Override
+    public String toString() {
+        return "Member{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\''
+               + ", preferredUsername='" + preferredUsername + '\'' + ", employmentState=" + employmentState
+               + ", abbreviation='" + abbreviation + '\'' + ", dateOfHire=" + dateOfHire + ", email='" + email + '\''
+               + ", birthDate=" + birthDate + ", deletedAt=" + deletedAt + ", organisationUnit=" + organisationUnit
+               + ", ptimeId=" + ptimeId + ", lastSuccessfulSync=" + lastSuccessfulSync + ", syncErrorCount="
+               + syncErrorCount + '}';
     }
 
     @Override

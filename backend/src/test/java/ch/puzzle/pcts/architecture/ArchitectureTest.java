@@ -108,7 +108,12 @@ class ArchitectureTest {
                 .resideInAPackage("..service.business..")
                 .should()
                 .onlyBeAccessed()
-                .byAnyPackage("..controller..", "..mapper..", "..service.business..", "..service", "..service.scheduled");
+                .byAnyPackage("..controller..",
+                              "..mapper..",
+                              "..service.business..",
+                              "..service",
+                              "..service.scheduled",
+                              "..security..");
 
         rule.check(importedClasses);
     }
@@ -396,14 +401,16 @@ class ArchitectureTest {
                 .definedBy("..repository..")
                 .layer("Mapper")
                 .definedBy("..mapper..")
+                .layer("Security")
+                .definedBy("..security..")
                 .whereLayer("Controller")
                 .mayNotBeAccessedByAnyLayer()
                 .whereLayer("BusinessService")
-                .mayOnlyBeAccessedByLayers("Controller", "Mapper", "BusinessService", "ServiceUtils")
+                .mayOnlyBeAccessedByLayers("Controller", "Mapper", "BusinessService", "ServiceUtils", "Security")
                 .whereLayer("ValidationService")
                 .mayOnlyBeAccessedByLayers("BusinessService")
                 .whereLayer("ServiceUtils")
-                .mayOnlyBeAccessedByLayers("BusinessService", "PersistenceService", "Controller")
+                .mayOnlyBeAccessedByLayers("BusinessService", "PersistenceService", "Controller", "Security")
                 .whereLayer("PersistenceService")
                 .mayOnlyBeAccessedByLayers("BusinessService", "PersistenceService", "ValidationService")
                 .whereLayer("Repository")

@@ -18,6 +18,7 @@ public class MemberMapper {
         this.organisationUnitBusinessService = organisationUnitBusinessService;
         this.organisationUnitMapper = organisationUnitMapper;
     }
+
     public List<MemberDto> toDto(List<Member> models) {
         return models.stream().map(this::toDto).toList();
     }
@@ -35,11 +36,11 @@ public class MemberMapper {
                              model.getAbbreviation(),
                              model.getDateOfHire(),
                              model.getBirthDate(),
+                             model.getEmail(),
+                             organisationUnitMapper.toDto(model.getOrganisationUnit()),
                              model.getPtimeId(),
                              model.getLastSuccessfulSync(),
-                             model.getSyncErrorCount()),
-                             model.getEmail(),
-                             organisationUnitMapper.toDto(model.getOrganisationUnit()));
+                             model.getSyncErrorCount());
     }
 
     public Member fromDto(MemberInputDto dto) {
