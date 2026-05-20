@@ -60,16 +60,16 @@ VALUES
 
 TRUNCATE TABLE member CASCADE;
 
-INSERT INTO member (first_name, last_name, email, ldap_name, abbreviation, employment_state, date_of_hire, birth_date, organisation_unit, ptime_id, last_successful_sync, sync_error_count, deleted_at)
+INSERT INTO member (first_name, last_name, email, ldap_name, preferred_username, abbreviation, employment_state, date_of_hire, birth_date, organisation_unit, ptime_id, last_successful_sync, sync_error_count, deleted_at)
 VALUES
-    ('Member 1', 'Test', null, 'mtest1', 'M1', 'MEMBER', '2021-07-15', '1999-08-10', 1, 1, '2025-12-01 01:01:00', 0, null),
-    ('Member 2', 'Test', 'member2@puzzle.ch', 'mtest2','M2', 'MEMBER', '2020-06-01', '1998-03-03', 2, 2, '2025-12-01 01:01:00', 0, null),
-    ('Member 3', 'Test', 'member3@puzzle.ch', 'mtest3', 'M3', 'MEMBER', '2020-06-01', '1998-03-03', 2, 3, '2025-12-01 01:01:00', 0, null),
-    ('Member 4', 'Test', 'member4@puzzle.ch', 'mtest4', 'M4', 'MEMBER', '2020-06-01', '1998-03-03', 2, 4, '2025-12-01 01:01:00', 0, '2025-12-01 01:01:00'),
-    ('Member 5', 'Test', 'member5@puzzle.ch', 'mtest5', 'M5', 'MEMBER', '2020-06-01', '1998-03-03', 2, 5, '2025-12-01 01:01:00', 0, null),
-    ('Member 6', 'Test', 'member6@puzzle.ch', 'mtest6', 'M6', 'MEMBER', '2020-06-01', '1998-03-03', 2, 6, '2025-12-01 01:01:00', 0, null),
-    ('Member 7', 'Test', 'member7@puzzle.ch', 'mtest7', 'M7', 'MEMBER', '2020-06-01', '1998-03-03', 2, 7, '2025-12-01 01:01:00', 0, null),
-    ('Member 8', 'Test', 'member8@puzzle.ch', 'mtest8', 'M8', 'MEMBER', '2020-06-01', '1998-03-03', 2, 8, '2025-12-01 01:01:00', 0, null);
+    ('Member 1', 'Test', null, 'mtest1', 'member1', 'M1', 'MEMBER', '2021-07-15', '1999-08-10', 1, 1, '2025-12-01 01:01:00', 0, null),
+    ('Member 2', 'Test', 'member2@puzzle.ch', 'mtest2', 'member2', 'M2', 'MEMBER', '2020-06-01', '1998-03-03', 2, 2, '2025-12-01 01:01:00', 0, null),
+    ('Member 3', 'Test', 'member3@puzzle.ch', 'mtest3', 'member3', 'M3', 'MEMBER', '2020-06-01', '1998-03-03', 2, 3, '2025-12-01 01:01:00', 0, null),
+    ('Member 4', 'Test', 'member4@puzzle.ch', 'mtest4', null, 'M4', 'MEMBER', '2020-06-01', '1998-03-03', 2, 4, '2025-12-01 01:01:00', 0, '2025-12-01 01:01:00'),
+    ('Member 5', 'Test', 'member5@puzzle.ch', 'mtest5', null, 'M5', 'MEMBER', '2020-06-01', '1998-03-03', 2, 5, '2025-12-01 01:01:00', 0, null),
+    ('Member 6', 'Test', 'member6@puzzle.ch', 'mtest6', null, 'M6', 'MEMBER', '2020-06-01', '1998-03-03', 2, 6, '2025-12-01 01:01:00', 0, null),
+    ('Member 7', 'Test', 'member7@puzzle.ch', 'mtest7', null, 'M7', 'MEMBER', '2020-06-01', '1998-03-03', 2, 7, '2025-12-01 01:01:00', 0, null),
+    ('Member 8', 'Test', 'member8@puzzle.ch', 'mtest8', null, 'M8', 'MEMBER', '2020-06-01', '1998-03-03', 2, 8, '2025-12-01 01:01:00', 0, null);
 
 TRUNCATE TABLE experience CASCADE;
 

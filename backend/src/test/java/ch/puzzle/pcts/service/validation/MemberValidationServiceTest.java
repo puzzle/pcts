@@ -60,8 +60,8 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
     }
 
     protected static Member createMember(EmploymentState employmentState, LocalDate birthDate, String firstName,
-                                         String lastName, String ldapName, String abbreviation, String email, Long ptimeId,
-                                         LocalDateTime lastSuccessfulSync, Integer syncErrorCount) {
+                                         String lastName, String ldapName, String abbreviation, String email,
+                                         Long ptimeId, LocalDateTime lastSuccessfulSync, Integer syncErrorCount) {
         Member m = new Member();
         m.setEmploymentState(employmentState);
         m.setBirthDate(birthDate);
@@ -389,6 +389,7 @@ class MemberValidationServiceTest extends ValidationBaseServiceTest<Member, Memb
                                              "Test",
                                              "  ",
                                              "MT",
+                                             "test@puzzle.ch",
                                              1L,
                                              LocalDateTime.of(2000, 6, 1, 3, 20),
                                              0),
