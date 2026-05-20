@@ -31,10 +31,6 @@ public class JwtService {
         return ldapName.orElseThrow(() -> new PCTSException(HttpStatus.INTERNAL_SERVER_ERROR, List.of()));
     }
 
-    public Optional<String> getEmail() {
-        return this.getProperty(authConfiguration.emailClaim());
-    }
-
     private Optional<String> getProperty(String propertyName) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 

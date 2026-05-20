@@ -8,14 +8,7 @@ import ch.puzzle.pcts.service.validation.ValidationBase;
 public class CustomValidationTestBase {
     private static DummyClass createValid() {
         DummyClass dummy = new DummyClass();
-        dummy.setEmail("email@example.com");
         dummy.setString("This is a valid string");
-        return dummy;
-    }
-
-    protected static DummyClass withEmail(String email) {
-        DummyClass dummy = createValid();
-        dummy.setEmail(email);
         return dummy;
     }
 
@@ -28,13 +21,6 @@ public class CustomValidationTestBase {
     protected static class DummyClass implements Model {
         @PCTSStringValidation
         String string;
-
-        @PCTSEmailValidation
-        String email;
-
-        public void setEmail(String email) {
-            this.email = trim(email);
-        }
 
         public void setString(String string) {
             this.string = trim(string);
