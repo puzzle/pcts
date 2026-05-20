@@ -13,6 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 @Documented
 @Target({ ElementType.METHOD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-@PreAuthorize("@SecurityService.isAdmin()")
+@PreAuthorize("@securityService.isAdmin()")
 public @interface IsAdmin {
 }

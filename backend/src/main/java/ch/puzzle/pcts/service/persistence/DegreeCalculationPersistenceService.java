@@ -11,23 +11,23 @@ import org.springframework.stereotype.Service;
 public class DegreeCalculationPersistenceService
         extends
             PersistenceBase<DegreeCalculation, DegreeCalculationRepository> {
-    private final DegreeCalculationRepository repository;
+    private final DegreeCalculationRepository degreeCalculationRepository;
 
-    public DegreeCalculationPersistenceService(DegreeCalculationRepository repository) {
-        super(repository);
-        this.repository = repository;
+    public DegreeCalculationPersistenceService(DegreeCalculationRepository degreeCalculationRepository) {
+        super(degreeCalculationRepository);
+        this.degreeCalculationRepository = degreeCalculationRepository;
     }
 
     public List<DegreeCalculation> getByCalculationId(Long calculationId) {
-        return repository.findByCalculationId(calculationId);
+        return degreeCalculationRepository.findByCalculationId(calculationId);
     }
 
     public List<DegreeCalculation> getByDegreeId(Long degreeId) {
-        return repository.findByDegreeId(degreeId);
+        return degreeCalculationRepository.findByDegreeId(degreeId);
     }
 
     public void deleteAllById(List<Long> ids) {
-        repository.deleteAllById(ids);
+        degreeCalculationRepository.deleteAllById(ids);
     }
 
     @Override

@@ -13,7 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 @Documented
 @Target({ ElementType.METHOD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-@PreAuthorize("@SecurityService.isAdmin() or @SecurityService.isOwner(#id)")
+@PreAuthorize("@securityService.isAdmin() or @securityService.isOwner(#id)")
 public @interface IsAdminOrOwner {
     String id() default "id";
 }
