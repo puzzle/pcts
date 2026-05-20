@@ -53,9 +53,8 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
                                      LocalDate.EPOCH,
                                      "Member",
                                      "Test",
-                                    "test@puzzle.ch",
+                                     "test@puzzle.ch",
                                      "mtest",
-                                     "MT",
                                      1L,
                                      LocalDateTime.of(2000, 6, 1, 3, 20),
                                      0);
@@ -142,7 +141,6 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
                                                              "mtest",
                                                              "MT",
 
-                                            "test@puzzle.ch",
                                                              1L,
                                                              LocalDateTime.of(2000, 6, 1, 3, 20),
                                                              0))

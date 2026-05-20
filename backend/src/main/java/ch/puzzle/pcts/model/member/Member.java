@@ -4,7 +4,6 @@ import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
-import ch.puzzle.pcts.util.validation.PCTSEmailValidation;
 import ch.puzzle.pcts.util.validation.PCTSStringValidation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
@@ -33,9 +32,6 @@ public class Member implements Model {
     @Size(min = 1, message = "{attribute.not.blank}")
     private String ldapName;
 
-    @PCTSStringValidation
-    private String preferredUsername;
-
     @Enumerated(EnumType.STRING)
     @NotNull(message = "{attribute.not.null}")
     private EmploymentState employmentState;
@@ -43,9 +39,6 @@ public class Member implements Model {
     private String abbreviation;
 
     private LocalDate dateOfHire;
-
-    @PCTSEmailValidation
-    private String email;
 
     @NotNull(message = "{attribute.not.null}")
     @Past(message = "{attribute.date.past}")
@@ -72,13 +65,11 @@ public class Member implements Model {
         this.id = builder.id;
         this.firstName = trim(builder.firstName);
         this.lastName = trim(builder.lastName);
-        this.preferredUsername = trim(builder.preferredUsername);
         this.ldapName = trim(builder.ldapName);
         this.employmentState = builder.employmentState;
         this.abbreviation = trim(builder.abbreviation);
         this.dateOfHire = builder.dateOfHire;
         this.birthDate = builder.birthDate;
-        this.email = builder.email;
         this.organisationUnit = builder.organisationUnit;
         this.ptimeId = builder.ptimeId;
         this.lastSuccessfulSync = builder.lastSuccessfulSync;
@@ -200,30 +191,13 @@ public class Member implements Model {
         this.ldapName = trim(ldapName);
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = trim(email);
-    }
-
-    public String getPreferredUsername() {
-        return preferredUsername;
-    }
-
-    public void setPreferredUsername(String preferredUsername) {
-        this.preferredUsername = trim(preferredUsername);
-    }
-
     @Override
     public String toString() {
         return "Member{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\''
-               + ", preferredUsername='" + preferredUsername + '\'' + ", employmentState=" + employmentState
-               + ", abbreviation='" + abbreviation + '\'' + ", dateOfHire=" + dateOfHire + ", email='" + email + '\''
-               + ", birthDate=" + birthDate + ", deletedAt=" + deletedAt + ", organisationUnit=" + organisationUnit
-               + ", ptimeId=" + ptimeId + ", lastSuccessfulSync=" + lastSuccessfulSync + ", syncErrorCount="
-               + syncErrorCount + '}';
+               + ", ldapName='" + ldapName + '\'' + ", employmentState=" + employmentState + ", abbreviation='"
+               + abbreviation + '\'' + ", dateOfHire=" + dateOfHire + ", birthDate=" + birthDate + ", deletedAt="
+               + deletedAt + ", organisationUnit=" + organisationUnit + ", ptimeId=" + ptimeId + ", lastSuccessfulSync="
+               + lastSuccessfulSync + ", syncErrorCount=" + syncErrorCount + '}';
     }
 
     @Override
@@ -233,11 +207,10 @@ public class Member implements Model {
         }
         return Objects.equals(getId(), member.getId()) && Objects.equals(getFirstName(), member.getFirstName())
                && Objects.equals(getLastName(), member.getLastName())
-               && Objects.equals(getPreferredUsername(), member.getPreferredUsername())
                && getEmploymentState() == member.getEmploymentState()
                && Objects.equals(getAbbreviation(), member.getAbbreviation())
                && Objects.equals(getDateOfHire(), member.getDateOfHire())
-               && Objects.equals(getEmail(), member.getEmail()) && Objects.equals(getBirthDate(), member.getBirthDate())
+               && Objects.equals(getBirthDate(), member.getBirthDate())
                && Objects.equals(getDeletedAt(), member.getDeletedAt())
                && Objects.equals(getOrganisationUnit(), member.getOrganisationUnit())
                && Objects.equals(getPtimeId(), member.getPtimeId())
@@ -252,11 +225,9 @@ public class Member implements Model {
                 .hash(getId(),
                       getFirstName(),
                       getLastName(),
-                      getPreferredUsername(),
                       getEmploymentState(),
                       getAbbreviation(),
                       getDateOfHire(),
-                      getEmail(),
                       getBirthDate(),
                       getDeletedAt(),
                       getOrganisationUnit(),
@@ -271,12 +242,10 @@ public class Member implements Model {
         private String firstName;
         private String lastName;
         private String ldapName;
-        private String preferredUsername;
         private EmploymentState employmentState;
         private String abbreviation;
         private LocalDate dateOfHire;
         private LocalDate birthDate;
-        private String email;
         private OrganisationUnit organisationUnit;
         private Long ptimeId;
         private LocalDateTime lastSuccessfulSync;
@@ -326,16 +295,6 @@ public class Member implements Model {
 
         public Builder withOrganisationUnit(OrganisationUnit organisationUnit) {
             this.organisationUnit = organisationUnit;
-            return this;
-        }
-
-        public Builder withEmail(String email) {
-            this.email = trim(email);
-            return this;
-        }
-
-        public Builder withPreferredUsername(String preferredUsername) {
-            this.preferredUsername = trim(preferredUsername);
             return this;
         }
 

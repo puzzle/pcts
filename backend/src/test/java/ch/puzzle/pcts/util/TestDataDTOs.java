@@ -64,7 +64,6 @@ public class TestDataDTOs {
                                                                MEMBER_1.getAbbreviation(),
                                                                MEMBER_1.getDateOfHire(),
                                                                MEMBER_1.getBirthDate(),
-                                                               MEMBER_1.getEmail(),
                                                                ORG_UNIT_1_DTO,
                                                                MEMBER_1.getPtimeId(),
                                                                MEMBER_1.getLastSuccessfulSync(),
@@ -77,7 +76,6 @@ public class TestDataDTOs {
                                                                MEMBER_2.getAbbreviation(),
                                                                MEMBER_2.getDateOfHire(),
                                                                MEMBER_2.getBirthDate(),
-                                                               MEMBER_2.getEmail(),
                                                                ORG_UNIT_2_DTO,
                                                                MEMBER_2.getPtimeId(),
                                                                MEMBER_2.getLastSuccessfulSync(),
@@ -89,7 +87,6 @@ public class TestDataDTOs {
                                                                            MEMBER_1.getAbbreviation(),
                                                                            MEMBER_1.getDateOfHire(),
                                                                            MEMBER_1.getBirthDate(),
-                                                                           MEMBER_1.getEmail(),
                                                                            MEMBER_1.getOrganisationUnit().getId());
 
     public static final MemberInputDto MEMBER_2_INPUT = new MemberInputDto(MEMBER_2.getFirstName(),
@@ -98,7 +95,6 @@ public class TestDataDTOs {
                                                                            MEMBER_2.getAbbreviation(),
                                                                            MEMBER_2.getDateOfHire(),
                                                                            MEMBER_2.getBirthDate(),
-                                                                           MEMBER_2.getEmail(),
                                                                            MEMBER_2.getOrganisationUnit().getId());
 
     public static final CertificateTypeDto CERT_TYPE_1_DTO = new CertificateTypeDto(CERT_TYPE_1_ID,
