@@ -4,7 +4,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import ch.puzzle.pcts.security.SpringSecurityConfig;
+import ch.puzzle.pcts.service.JwtService;
 import ch.puzzle.pcts.service.SecurityService;
+import ch.puzzle.pcts.service.business.MemberBusinessService;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -18,6 +20,12 @@ public class ControllerITBase {
 
     @MockitoBean("SecurityService")
     protected SecurityService securityService;
+
+    @MockitoBean
+    protected JwtService jwtService;
+
+    @MockitoBean
+    protected MemberBusinessService memberBusinessService;
 
     protected SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor adminJwt() {
         when(securityService.isAdmin()).thenReturn(true);
