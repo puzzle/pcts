@@ -249,40 +249,30 @@ class MemberBusinessServiceTest
         verify(persistenceService).save(member);
     }
 
-    @DisplayName("Should throw exception if current user has no email")
+    @DisplayName("Should throw exception if no user for ldap name can be found")
     @Test
-    void shouldThrowExceptionIfCurrentUserHasNoEmail(){
-        when(jwtService.getEmail()).thenReturn(Optional.empty());
+    void shouldThrowExceptionIfNoUserForLdapNameCanBeFound() {
+        String ldapName = "mtest1";
+        when(jwtService.getLdapName()).thenReturn(ldapName);
+        when(persistenceService.getByLdapName(ldapName)).thenThrow(new PCTSException(HttpStatus.NOT_FOUND, List.of()));
 
         assertThrows(PCTSException.class, () -> businessService.getLoggedInMember());
 
-        verify(jwtService).getEmail();
-    }
-
-    @DisplayName("Should rethrow exception if no user for email can be found")
-    @Test
-    void shouldThrowExceptionIfNoUserForEmailCanBeFound() {
-        String email = "example@puzzle.ch";
-        when(jwtService.getEmail()).thenReturn(Optional.of(email));
-        when(persistenceService.getByEmail(email)).thenThrow(new PCTSException(HttpStatus.NOT_FOUND, List.of()));
-
-        assertThrows(PCTSException.class, () -> businessService.getLoggedInMember());
-
-        verify(jwtService).getEmail();
-        verify(persistenceService).getByEmail(email);
+        verify(jwtService).getLdapName();
+        verify(persistenceService).getByLdapName(ldapName);
     }
 
     @DisplayName("Should return current user")
     @Test
     void shouldReturnCurrentUser() {
-        String email = "example@puzzle.ch";
-        when(jwtService.getEmail()).thenReturn(Optional.of(email));
-        when(persistenceService.getByEmail(email)).thenReturn(member);
+        String ldapName = "mtest1";
+        when(jwtService.getLdapName()).thenReturn(ldapName);
+        when(persistenceService.getByLdapName(ldapName)).thenReturn(member);
 
         Member result = businessService.getLoggedInMember();
 
         assertEquals(member, result);
-        verify(jwtService).getEmail();
-        verify(persistenceService).getByEmail(email);
+        verify(jwtService).getLdapName();
+        verify(persistenceService).getByLdapName(ldapName);
     }
 }
