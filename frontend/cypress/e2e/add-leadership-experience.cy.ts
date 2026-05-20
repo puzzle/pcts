@@ -1,6 +1,7 @@
 import memberDetailPage from '../pages/memberDetailPage';
 import modalPage from '../pages/modalPage';
 import formPage from '../pages/formPage';
+import * as users from '../fixtures/users.json';
 
 describe('Add leadershipExperience modal', () => {
   const openLeadershipExModal = () => {
@@ -11,6 +12,7 @@ describe('Add leadershipExperience modal', () => {
   };
 
   beforeEach(() => {
+    cy.loginAsUser(users.gl);
     memberDetailPage.visit(1);
   });
 
