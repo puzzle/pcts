@@ -96,26 +96,24 @@ class SecurityServiceTest {
     }
 
     @Test
-    @DisplayName("Should return false if current user email is empty")
-    void shouldReturnFalseIfUserEmailIsEmpty() {
+    @DisplayName("Should return false if member has no ldap name")
+    void shouldReturnFalseIfMemberHasNoLdapName() {
         Member member = new Member();
-        member.setEmail("test@puzzle.ch");
 
         when(memberBusinessService.findIfExists(1L)).thenReturn(Optional.of(member));
-        when(jwtService.getEmail()).thenReturn(Optional.empty());
 
         assertFalse(service.isOwner(1L));
     }
 
     @Test
-    @DisplayName("Should return true if member email matches user email")
-    void shouldReturnTrueIfEmailsMatch() {
-        String email = "dev@puzzle.ch";
+    @DisplayName("Should return true if member ldap name matches jwt ldap name")
+    void shouldReturnTrueIfLdapNamesMatch() {
+        String ldapName = "mtest1";
         Member member = new Member();
-        member.setEmail(email);
+        member.setLdapName(ldapName);
 
         when(memberBusinessService.findIfExists(1L)).thenReturn(Optional.of(member));
-        when(jwtService.getEmail()).thenReturn(Optional.of(email));
+        when(jwtService.getLdapName()).thenReturn(ldapName);
 
         assertTrue(service.isOwner(1L));
     }

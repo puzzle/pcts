@@ -50,16 +50,11 @@ public class SecurityService {
             return false;
         }
 
-        Optional<String> email = this.jwtService.getEmail();
-        if (email.isEmpty()) {
+        if (member.get().getLdapName() == null) {
             return false;
         }
 
-        if (member.get().getEmail() == null) {
-            return false;
-        }
-
-        return member.get().getEmail().equals(email.get());
+        return member.get().getLdapName().equals(jwtService.getLdapName());
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities() {
