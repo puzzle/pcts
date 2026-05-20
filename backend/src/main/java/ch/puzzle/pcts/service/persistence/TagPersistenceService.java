@@ -10,12 +10,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TagPersistenceService extends PersistenceBase<Tag, TagRepository> {
+    private final TagRepository tagRepository;
 
-    private final TagRepository repository;
-
-    public TagPersistenceService(TagRepository repository) {
-        super(repository);
-        this.repository = repository;
+    public TagPersistenceService(TagRepository tagRepository) {
+        super(tagRepository);
+        this.tagRepository = tagRepository;
     }
 
     @Override
@@ -24,14 +23,14 @@ public class TagPersistenceService extends PersistenceBase<Tag, TagRepository> {
     }
 
     public Optional<Tag> findWithIgnoreCase(String tagName) {
-        return repository.findByNameIgnoreCase(tagName);
+        return tagRepository.findByNameIgnoreCase(tagName);
     }
 
     public Set<Tag> findAllUnusedTags() {
-        return repository.findAllUnusedTags();
+        return tagRepository.findAllUnusedTags();
     }
 
     public void deleteAll(Set<Tag> tags) {
-        repository.deleteAll(tags);
+        tagRepository.deleteAll(tags);
     }
 }

@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class OrganisationUnitPersistenceService extends PersistenceBase<OrganisationUnit, OrganisationUnitRepository> {
-    private final OrganisationUnitRepository repository;
+    private final OrganisationUnitRepository organisationUnitRepository;
 
-    public OrganisationUnitPersistenceService(OrganisationUnitRepository repository) {
-        super(repository);
-        this.repository = repository;
+    public OrganisationUnitPersistenceService(OrganisationUnitRepository organisationUnitRepository) {
+        super(organisationUnitRepository);
+        this.organisationUnitRepository = organisationUnitRepository;
     }
 
     @Override
@@ -22,10 +22,10 @@ public class OrganisationUnitPersistenceService extends PersistenceBase<Organisa
     }
 
     public Optional<OrganisationUnit> getByName(String name) {
-        return repository.findByName(name);
+        return organisationUnitRepository.findByName(name);
     }
 
     public Optional<OrganisationUnit> findByName(String name) {
-        return repository.findByName(name);
+        return organisationUnitRepository.findByName(name);
     }
 }

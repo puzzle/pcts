@@ -5,17 +5,17 @@ import { MemberService } from '../../../features/member/member.service';
 import { map } from 'rxjs';
 
 
-export const authGuard = (config: { scope: 'admin' | 'user' } = { scope: 'admin' }): CanActivateFn => {
+export const authGuard = (scope: 'admin' | 'user' = 'admin'): CanActivateFn => {
   return (route, state) => {
     const userService = inject(AuthService);
     const memberService = inject(MemberService);
     const router = inject(Router);
 
-    if (config.scope === 'user') {
+    if (scope === 'user') {
       return true;
     }
 
-    if (config.scope === 'admin' && userService.isAdmin()) {
+    if (scope === 'admin' && userService.isAdmin()) {
       return true;
     }
 

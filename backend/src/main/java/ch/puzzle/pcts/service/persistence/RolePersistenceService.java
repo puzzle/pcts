@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RolePersistenceService extends PersistenceBase<Role, RoleRepository> {
-    private final RoleRepository repository;
+    private final RoleRepository roleRepository;
 
-    public RolePersistenceService(RoleRepository repository) {
-        super(repository);
-        this.repository = repository;
+    public RolePersistenceService(RoleRepository roleRepository) {
+        super(roleRepository);
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -22,6 +22,6 @@ public class RolePersistenceService extends PersistenceBase<Role, RoleRepository
     }
 
     public Optional<Role> getByName(String name) {
-        return repository.findByName(name);
+        return roleRepository.findByName(name);
     }
 }

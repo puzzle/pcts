@@ -21,33 +21,33 @@ export const routes: Routes = [{
     {
       path: '',
       component: MemberOverviewComponent,
-      canActivate: [authGuard({ scope: 'admin' })],
+      canActivate: [authGuard('admin')],
       resolve: { filters: memberOverviewResolver },
       providers: [provideI18nPrefix('OVERVIEW')]
     },
     {
       path: 'add',
       component: MemberFormComponent,
-      canActivate: [authGuard({ scope: 'admin' })],
+      canActivate: [authGuard('admin')],
       providers: [provideI18nPrefix('FORM.ADD')]
     },
     {
       path: ':id',
       component: MemberDetailViewComponent,
-      canActivate: [authGuard({ scope: 'user' })],
+      canActivate: [authGuard('user')],
       resolve: { member: memberDataResolver }
     },
     {
       path: ':id/edit',
       component: MemberFormComponent,
-      canActivate: [authGuard({ scope: 'admin' })],
+      canActivate: [authGuard('admin')],
       resolve: { member: memberDataResolver },
       providers: [provideI18nPrefix('FORM.EDIT')]
     },
     {
       path: ':id',
       component: MemberDetailViewComponent,
-      canActivate: [authGuard({ scope: 'user' })],
+      canActivate: [authGuard('user')],
       resolve:
         { member: memberDataResolver,
           tabIndex: tabResolver }
