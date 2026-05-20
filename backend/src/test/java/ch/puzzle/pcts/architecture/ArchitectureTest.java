@@ -241,7 +241,7 @@ class ArchitectureTest {
     @DisplayName("Controller @Tags should be valid")
     @Test
     void controllerTagsShouldBeCompleteSentences() {
-        JavaClasses importedClasses = getMainSourceClasses().that(not(equivalentTo(ConfigurationController.class)));;
+        JavaClasses importedClasses = getMainSourceClasses().that(not(equivalentTo(ConfigurationController.class)));
 
         ArchCondition<JavaAnnotation<JavaClass>> combinedCondition = and(shouldBeValidDescription("description"),
                                                                          haveSuffix("name", "s"));

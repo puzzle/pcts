@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
  * </ul>
  * <p>
  */
-@Service("SecurityService")
+@Service("securityService")
 public class SecurityService {
     private final JwtService jwtService;
     private final MemberBusinessService memberService;

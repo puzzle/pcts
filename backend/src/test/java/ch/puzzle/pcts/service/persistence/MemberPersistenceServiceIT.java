@@ -63,7 +63,7 @@ class MemberPersistenceServiceIT extends PersistenceBaseIT<Member, MemberReposit
     void shouldNotReturnMemberByPtimeID() {
         Optional<Member> result = persistenceService.findByPtimeId(999L);
 
-        assertThat(result.isEmpty());
+        assertTrue(result.isEmpty());
     }
 
     @DisplayName("Should return member by LDAP name when found")

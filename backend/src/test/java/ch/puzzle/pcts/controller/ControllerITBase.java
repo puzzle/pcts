@@ -18,7 +18,7 @@ public class ControllerITBase {
     @MockitoBean
     protected JwtDecoder jwtDecoder;
 
-    @MockitoBean("SecurityService")
+    @MockitoBean("securityService")
     protected SecurityService securityService;
 
     @MockitoBean

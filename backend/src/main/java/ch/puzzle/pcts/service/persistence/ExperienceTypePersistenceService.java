@@ -9,12 +9,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ExperienceTypePersistenceService extends PersistenceBase<ExperienceType, ExperienceTypeRepository> {
+    private final ExperienceTypeRepository experienceTypeRepository;
 
-    private final ExperienceTypeRepository repository;
-
-    public ExperienceTypePersistenceService(ExperienceTypeRepository repository) {
-        super(repository);
-        this.repository = repository;
+    public ExperienceTypePersistenceService(ExperienceTypeRepository experienceTypeRepository) {
+        super(experienceTypeRepository);
+        this.experienceTypeRepository = experienceTypeRepository;
     }
 
     @Override
@@ -23,6 +22,6 @@ public class ExperienceTypePersistenceService extends PersistenceBase<Experience
     }
 
     public Optional<ExperienceType> getByName(String name) {
-        return repository.findByName(name);
+        return experienceTypeRepository.findByName(name);
     }
 }

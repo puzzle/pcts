@@ -25,7 +25,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -235,18 +234,16 @@ class MemberBusinessServiceTest
     @DisplayName("Should update the ptime meta data")
     @Test
     void shouldUpdatePtimeMetaData() {
-        Member member = MEMBER_1;
-
-        when(persistenceService.getById(10L)).thenReturn(member);
+        when(persistenceService.getById(10L)).thenReturn(MEMBER_1);
 
         LocalDateTime now = LocalDateTime.now();
         businessService.updateSyncMetadata(10L, 2L, now, 5);
 
-        assertEquals(2L, member.getPtimeId());
-        assertEquals(now, member.getLastSuccessfulSync());
-        assertEquals(5, member.getSyncErrorCount());
+        assertEquals(2L, MEMBER_1.getPtimeId());
+        assertEquals(now, MEMBER_1.getLastSuccessfulSync());
+        assertEquals(5, MEMBER_1.getSyncErrorCount());
 
-        verify(persistenceService).save(member);
+        verify(persistenceService).save(MEMBER_1);
     }
 
     @DisplayName("Should throw exception if no user for ldap name can be found")

@@ -15,12 +15,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class CalculationPersistenceService extends PersistenceBase<Calculation, CalculationRepository> {
     private final JwtService jwtService;
-    private final CalculationRepository repository;
+    private final CalculationRepository calculationRepository;
 
-    public CalculationPersistenceService(JwtService jwtService, CalculationRepository repository) {
-        super(repository);
+    public CalculationPersistenceService(JwtService jwtService, CalculationRepository calculationRepository) {
+        super(calculationRepository);
         this.jwtService = jwtService;
-        this.repository = repository;
+        this.calculationRepository = calculationRepository;
     }
 
     @Override
@@ -43,27 +43,27 @@ public class CalculationPersistenceService extends PersistenceBase<Calculation, 
     }
 
     private void setStateOfOldActiveCalculationsToArchived(Calculation calculation) {
-        List<Calculation> activeCalculations = repository
+        List<Calculation> activeCalculations = calculationRepository
                 .getAllByMemberIdAndRoleIdAndState(calculation.getMember().getId(),
                                                    calculation.getRole().getId(),
                                                    CalculationState.ACTIVE);
         activeCalculations.forEach(activeCalculation -> {
             if (!activeCalculation.getId().equals(calculation.getId())) {
                 activeCalculation.setState(CalculationState.ARCHIVED);
-                repository.save(activeCalculation);
+                calculationRepository.save(activeCalculation);
             }
         });
     }
 
     public List<Calculation> getAllByMember(Member member) {
-        return repository.findAllByMember(member);
+        return calculationRepository.findAllByMember(member);
     }
 
     public List<Calculation> getAllByMemberAndState(Member member, CalculationState state) {
-        return repository.findAllByMemberAndState(member, state);
+        return calculationRepository.findAllByMemberAndState(member, state);
     }
 
     public List<Calculation> getAllByMemberAndRole(Member member, Role role) {
-        return repository.findAllByMemberAndRole(member, role);
+        return calculationRepository.findAllByMemberAndRole(member, role);
     }
 }
