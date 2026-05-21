@@ -22,12 +22,12 @@ public class JwtService {
     }
 
     public String getDisplayName() {
-        Optional<String> name = this.getProperty(authConfiguration.usernameClaim());
+        Optional<String> name = this.getProperty(authConfiguration.displayNameClaim());
         return name.orElseThrow(() -> new PCTSException(HttpStatus.INTERNAL_SERVER_ERROR, List.of()));
     }
 
     public String getLdapName() {
-        Optional<String> ldapName = this.getProperty(authConfiguration.preferredUsernameClaim());
+        Optional<String> ldapName = this.getProperty(authConfiguration.uniqueIdentifierClaim());
         return ldapName.orElseThrow(() -> new PCTSException(HttpStatus.INTERNAL_SERVER_ERROR, List.of()));
     }
 

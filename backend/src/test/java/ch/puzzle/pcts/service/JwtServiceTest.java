@@ -42,7 +42,7 @@ class JwtServiceTest {
         try (MockedStatic<SecurityContextHolder> mockedContext = mockStatic(SecurityContextHolder.class)) {
             setupSecurityContext(mockedContext);
 
-            when(authConfiguration.usernameClaim()).thenReturn("preferred_username");
+            when(authConfiguration.displayNameClaim()).thenReturn("preferred_username");
             when(authentication.getCredentials()).thenReturn(jwt);
             when(jwt.getClaimAsString("preferred_username")).thenReturn("tester");
 
@@ -56,7 +56,7 @@ class JwtServiceTest {
         try (MockedStatic<SecurityContextHolder> mockedContext = mockStatic(SecurityContextHolder.class)) {
             setupSecurityContext(mockedContext);
 
-            when(authConfiguration.usernameClaim()).thenReturn("preferred_username");
+            when(authConfiguration.displayNameClaim()).thenReturn("preferred_username");
             when(authentication.getCredentials()).thenReturn(jwt);
             when(jwt.getClaimAsString("preferred_username")).thenReturn(null);
 
