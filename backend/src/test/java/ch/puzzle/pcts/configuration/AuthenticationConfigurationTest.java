@@ -14,6 +14,6 @@ class AuthenticationConfigurationTest {
 
         var config = new AuthenticationConfiguration(expectedUsername, expectedPreferredUsername);
 
-        assertEquals(expectedUsername, config.usernameClaim(), "Username claim should match input");
+        assertEquals(expectedUsername, config.displayNameClaim(), "Username claim should match input");
     }
 }
