@@ -7,7 +7,7 @@ import angular from 'angular-eslint'
 import angularTemplateParser from '@angular-eslint/template-parser'
 import angularTemplate from '@angular-eslint/eslint-plugin-template'
 import checkFile from 'eslint-plugin-check-file'
-import cspellPlugin from '@cspell/eslint-plugin';
+import cspellPlugin from '@cspell/eslint-plugin'
 import { configs } from 'eslint-plugin-jsonc'
 export default tsEslint.config(
   ...configs['flat/recommended-with-json'],
@@ -33,7 +33,7 @@ export default tsEslint.config(
           checkStrings: true,
           checkIdentifiers: false,
           cspell: {
-            words: ['PCTS'],
+            words: ['PCTS', 'MATDATEPICKERPARSE'],
           },
         },
       ],
