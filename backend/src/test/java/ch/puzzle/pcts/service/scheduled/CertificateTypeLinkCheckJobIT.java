@@ -40,7 +40,8 @@ class CertificateTypeLinkCheckJobIT {
 
         stubFor(head(urlEqualTo("/valid-cert")).willReturn(aResponse().withStatus(200)));
 
-        CertificateType cert = TestDataModels.CERT_TYPE_1;
+        CertificateType cert = certificateTypeBusinessService.getById(TestDataModels.CERT_TYPE_1.getId());
+        cert.setTags(TestDataModels.CERT_TYPE_1.getTags());
         cert.setLink(wiremockBaseUrl + "/valid-cert");
 
         certificateTypeBusinessService.update(cert.getId(), cert);
@@ -63,7 +64,8 @@ class CertificateTypeLinkCheckJobIT {
 
         stubFor(head(urlEqualTo("/target-cert")).willReturn(aResponse().withStatus(200)));
 
-        CertificateType cert = TestDataModels.CERT_TYPE_1;
+        CertificateType cert = certificateTypeBusinessService.getById(TestDataModels.CERT_TYPE_1.getId());
+        cert.setTags(TestDataModels.CERT_TYPE_1.getTags());
         cert.setLink(wiremockBaseUrl + "/redirect-cert");
 
         certificateTypeBusinessService.update(cert.getId(), cert);
@@ -83,7 +85,8 @@ class CertificateTypeLinkCheckJobIT {
 
         stubFor(head(urlEqualTo("/not-found-cert")).willReturn(aResponse().withStatus(404)));
 
-        CertificateType cert = TestDataModels.CERT_TYPE_1;
+        CertificateType cert = certificateTypeBusinessService.getById(TestDataModels.CERT_TYPE_1.getId());
+        cert.setTags(TestDataModels.CERT_TYPE_1.getTags());
         cert.setLink(wiremockBaseUrl + "/not-found-cert");
 
         certificateTypeBusinessService.update(cert.getId(), cert);
