@@ -22,9 +22,9 @@ export class AppComponent {
 
   private readonly translateService = inject(TranslateService);
 
-  private document = inject(DOCUMENT);
+  private readonly document = inject(DOCUMENT);
 
-  private currentLang = toSignal(this.translateService.onLangChange.pipe(map((event: LangChangeEvent) => event.lang)), {
+  private readonly currentLang = toSignal(this.translateService.onLangChange.pipe(map((event: LangChangeEvent) => event.lang)), {
     initialValue: this.translateService.getCurrentLang() || this.translateService.getFallbackLang() || this.translateService.getBrowserLang() || 'en'
   });
 
@@ -39,7 +39,7 @@ export class AppComponent {
   }
 
   private setHtmlLangAttribute(lang: string): void {
-    if (lang && this.document && this.document.documentElement) {
+    if (lang && this.document?.documentElement) {
       this.document.documentElement.setAttribute('lang', lang);
     }
   }
