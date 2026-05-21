@@ -19,12 +19,10 @@
         </div>
         <div slot="items">
           <pzsh-menu-dropdown-item href="#">
-            <span (click)="handleLogout(); $event.preventDefault()"
-                  (keydown.enter)="handleLogout(); $event.preventDefault()"
-                  (keydown.space)="handleLogout(); $event.preventDefault()" data-testid="logout">
+            <button class="bg-transparent border-0 p-0 shadow-none text-reset d-inline-flex align-items-center" (click)="handleLogout()" data-testid="logout">
               <pzsh-icon name="sign-out-alt"></pzsh-icon>
               {{ "LOGOUT" | translate }}
-            </span>
+            </button>
           </pzsh-menu-dropdown-item>
         </div>
       </pzsh-menu-dropdown>
