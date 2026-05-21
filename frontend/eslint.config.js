@@ -29,7 +29,6 @@ export default tsEslint.config(
       '@cspell/spellchecker': [
         'warn',
         {
-          autoFix: true,
           checkStrings: true,
           checkIdentifiers: false,
           cspell: {
