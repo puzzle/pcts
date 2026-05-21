@@ -7,7 +7,10 @@ import angular from 'angular-eslint'
 import angularTemplateParser from '@angular-eslint/template-parser'
 import angularTemplate from '@angular-eslint/eslint-plugin-template'
 import checkFile from 'eslint-plugin-check-file'
+import cspellPlugin from '@cspell/eslint-plugin';
+import { configs } from 'eslint-plugin-jsonc'
 export default tsEslint.config(
+  ...configs['flat/recommended-with-json'],
   {
     files: ['src/app/shared/types/**/*'],
     rules: {
@@ -20,12 +23,31 @@ export default tsEslint.config(
     },
   },
   {
+    files: ['public/i18n/**/*.json'],
+    plugins: { '@cspell': cspellPlugin },
+    rules: {
+      '@cspell/spellchecker': [
+        'warn',
+        {
+          autoFix: true,
+          checkStrings: true,
+          checkIdentifiers: false,
+          cspell: {
+            words: ['PCTS'],
+          },
+        },
+      ],
+    },
+  },
+  {
+    // Globally ignored files
     ignores: [
       'cypress/downloads/**/*',
       'dist/**',
       '.angular/**',
       'node_modules/**',
       'src/app/app.component.html',
+      '**/tsconfig*.json',
     ], // #TODO: Match cypress path to project #12- E2E setup
   },
   {
