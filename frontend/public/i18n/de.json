@@ -13,7 +13,8 @@
     "MODEL_NAME": "Zertifikat",
     "COMPLETED_AT": "Abgeschlossen am",
     "CERTIFICATE_TYPE": "Art des Zertifikats",
-    "VALID_UNTIL": "Gültig bis"
+    "VALID_UNTIL": "Gültig bis",
+    "COMMENT": "Beschreibung"
   },
   "LEADERSHIP_EXPERIENCE": {
     "MODEL_NAME": "Führungserfahrung",
