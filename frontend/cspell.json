@@ -1,0 +1,9 @@
+{
+  "import": ["@cspell/dict-de-ch/cspell-ext.json"],
+  "overrides": [
+    {
+      "filename": "**/de.json",
+      "language": "de,en"
+    }
+  ]
+}

@@ -198,7 +198,7 @@ describe('show toaster message member form (parameterised)', () => {
   {
     input: 'John',
     field: 'firstName',
-    expectedMessage: 'Member wurde erforlgreich aktualisiert.',
+    expectedMessage: 'Member wurde erfolgreich aktualisiert.',
     expectError: false
   }];
 
