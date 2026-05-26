@@ -27,15 +27,11 @@ export class AppComponent {
 
   private readonly document = inject(DOCUMENT);
 
-  protected userName: string | null;
-
   private readonly currentLang = toSignal(this.translateService.onLangChange.pipe(map((event: LangChangeEvent) => event.lang)), {
     initialValue: this.translateService.getCurrentLang() || this.translateService.getFallbackLang() || this.translateService.getBrowserLang() || 'en'
   });
 
   constructor() {
-    this.userName = this.userService.getName();
-
     effect(() => {
       this.setHtmlLangAttribute(this.currentLang());
     });
