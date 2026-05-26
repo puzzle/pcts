@@ -31,8 +31,10 @@ describe('AppComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [AppComponent, TranslateModule.forRoot()],
-      providers: [provideTranslateService(),
+      imports: [AppComponent,
+        TranslateModule.forRoot()],
+      providers: [
+        provideTranslateService(),
         provideRouter([]),
         {
           provide: Router,
@@ -41,7 +43,8 @@ describe('AppComponent', () => {
         {
           provide: AuthService,
           useValue: authServiceMock
-        }]
+        }
+      ]
     })
       .compileComponents();
 
