@@ -64,7 +64,7 @@ export class AddCertificateComponent extends StrictlyTypedDialog<CertificateMode
     member: [null as MemberModel | null],
     certificateType: [null as CertificateTypeModel | null,
       [Validators.required,
-        isValueInListSignal(this.certificateTypeOptions)]],
+        isValueInListSignal(this.certificateTypeOptions, (a, b) => a.id === b.id)]],
     completedAt: [null as Date | null,
       Validators.required],
     validUntil: [null as Date | null],

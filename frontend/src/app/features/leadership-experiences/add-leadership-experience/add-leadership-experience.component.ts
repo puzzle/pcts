@@ -50,7 +50,7 @@ export class AddLeadershipExperienceComponent extends StrictlyTypedDialog<Leader
     member: [null as MemberModel | null],
     leadershipExperienceType: [null as LeadershipExperienceTypeModel | null,
       [Validators.required,
-        isValueInListSignal(this.leadershipExperienceTypeOptions)]],
+        isValueInListSignal(this.leadershipExperienceTypeOptions, (a, b) => a.id === b.id)]],
     comment: ['' as string | null]
   });
 

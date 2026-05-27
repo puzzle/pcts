@@ -78,9 +78,9 @@ export class MemberFormComponent implements OnInit {
     dateOfHire: [''],
     employmentState: [null,
       [Validators.required,
-        isValueInList(this.employmentStateOptions)]],
+        isValueInList(this.employmentStateOptions, (a, b) => a == b)]],
     organisationUnit: [null,
-      isValueInListSignal(this.organisationUnitsOptions)]
+      isValueInListSignal(this.organisationUnitsOptions, (a, b) => a.id === b.id)]
   });
 
   protected employmentStateControlSignal = toSignal(this.memberForm.get('employmentState')!.valueChanges.pipe(map((value) => value ?? '')), {
