@@ -21,7 +21,7 @@ export class AppComponent {
 
   private readonly router = inject(Router);
 
-  private readonly userService = inject(AuthService);
+  protected readonly authService = inject(AuthService);
 
   private readonly translateService = inject(TranslateService);
 
@@ -42,7 +42,7 @@ export class AppComponent {
   }
 
   handleLogout() {
-    this.userService.logout();
+    this.authService.logout();
   }
 
   private setHtmlLangAttribute(lang: string): void {
