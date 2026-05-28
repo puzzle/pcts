@@ -46,7 +46,7 @@ export function isDateInPast(): ValidatorFn {
   };
 }
 
-export function isValueInList<T>(validOptions: T[], comparator?: (a: T, b: T) => boolean): ValidatorFn {
+export function isValueInList<T>(validOptions: T[], comparator: (a: T, b: T) => boolean = (a, b) => a === b): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const value: any = control.value;
 
@@ -54,15 +54,13 @@ export function isValueInList<T>(validOptions: T[], comparator?: (a: T, b: T) =>
       return null;
     }
 
-    const isValidOption: boolean = comparator
-      ? validOptions.some((option) => comparator(option, value))
-      : validOptions.includes(value);
+    const isValidOption: boolean = validOptions.some((option) => comparator(option, value));
 
     return isValidOption ? null : { invalid_entry: true };
   };
 }
 
-export function isValueInListSignal<T>(validOptionsSignal: Signal<T[]>, comparator?: (a: T, b: T) => boolean): ValidatorFn {
+export function isValueInListSignal<T>(validOptionsSignal: Signal<T[]>, comparator: (a: T, b: T) => boolean = (a, b) => a === b): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const value: any = control.value;
     const validOptions: T[] = validOptionsSignal();
@@ -70,9 +68,7 @@ export function isValueInListSignal<T>(validOptionsSignal: Signal<T[]>, comparat
       return null;
     }
 
-    const isValidOption: boolean = comparator
-      ? validOptions.some((option) => comparator(option, value))
-      : validOptions.includes(value);
+    const isValidOption: boolean = validOptions.some((option) => comparator(option, value));
 
     return isValidOption ? null : { invalid_entry: true };
   };
