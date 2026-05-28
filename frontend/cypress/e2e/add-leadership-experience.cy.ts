@@ -20,7 +20,7 @@ describe('Add leadershipExperience modal', () => {
       .should('include.text', 'Führungserfahrung hinzufügen');
   });
 
-  it.only('should create leadershipExperience', () => {
+  it('should create leadershipExperience', () => {
     openLeadershipExModal();
 
     formPage.submitButtonShouldBe('disabled');
