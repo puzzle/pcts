@@ -11,23 +11,23 @@ import org.springframework.stereotype.Service;
 public class LeadershipExperienceCalculationPersistenceService
         extends
             PersistenceBase<LeadershipExperienceCalculation, LeadershipExperienceCalculationRepository> {
-    private final LeadershipExperienceCalculationRepository repository;
+    private final LeadershipExperienceCalculationRepository leadershipExperienceCalculationRepository;
 
-    protected LeadershipExperienceCalculationPersistenceService(LeadershipExperienceCalculationRepository repository) {
-        super(repository);
-        this.repository = repository;
+    protected LeadershipExperienceCalculationPersistenceService(LeadershipExperienceCalculationRepository leadershipExperienceCalculationRepository) {
+        super(leadershipExperienceCalculationRepository);
+        this.leadershipExperienceCalculationRepository = leadershipExperienceCalculationRepository;
     }
 
     public List<LeadershipExperienceCalculation> getByCalculationId(Long calculationId) {
-        return repository.findByCalculationId(calculationId);
+        return leadershipExperienceCalculationRepository.findByCalculationId(calculationId);
     }
 
     public List<LeadershipExperienceCalculation> getByLeadershipExperienceId(Long leadershipExperienceId) {
-        return repository.findByLeadershipExperienceId(leadershipExperienceId);
+        return leadershipExperienceCalculationRepository.findByLeadershipExperienceId(leadershipExperienceId);
     }
 
     public void deleteAllById(List<Long> ids) {
-        repository.deleteAllById(ids);
+        leadershipExperienceCalculationRepository.deleteAllById(ids);
     }
 
     @Override

@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MemberValidationService extends ValidationBase<Member> {
-
     private final MemberPersistenceService persistenceService;
 
     public MemberValidationService(MemberPersistenceService persistenceService) {

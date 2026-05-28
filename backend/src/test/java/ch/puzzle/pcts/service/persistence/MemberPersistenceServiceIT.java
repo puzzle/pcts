@@ -1,10 +1,12 @@
 package ch.puzzle.pcts.service.persistence;
 
 import static ch.puzzle.pcts.util.TestDataModels.*;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.repository.MemberRepository;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 class MemberPersistenceServiceIT extends PersistenceBaseIT<Member, MemberRepository, MemberPersistenceService> {
-
     private final MemberPersistenceService persistenceService;
 
     @Autowired
@@ -61,23 +62,24 @@ class MemberPersistenceServiceIT extends PersistenceBaseIT<Member, MemberReposit
     void shouldNotReturnMemberByPtimeID() {
         Optional<Member> result = persistenceService.findByPtimeId(999L);
 
-        assertThat(result.isEmpty());
+        assertTrue(result.isEmpty());
     }
 
-    @DisplayName("Should return member by abbreviation when found")
+    @DisplayName("Should return member by LDAP name when found")
     @Test
-    void shouldReturnMemberByAbbreviation() {
-        Optional<Member> result = persistenceService.findByAbbreviation("M1");
+    void shouldReturnMemberByLdapName() {
+        Optional<Member> result = persistenceService.findByLdapName("mtest1");
 
         assertThat(result).isPresent();
-        assertThat(result.get().getAbbreviation()).isEqualTo(MEMBER_1.getAbbreviation());
+        assertThat(result.get().getLdapName()).isEqualTo(MEMBER_1.getLdapName());
     }
 
-    @DisplayName("Should not return member by abbreviation when not found")
+    @DisplayName("Should throw exception when LDAP name does not exist")
+    @Transactional
     @Test
-    void shouldNotReturnMemberByAbbreviation() {
-        Optional<Member> result = persistenceService.findByAbbreviation("Not an Abbreviation");
+    void shouldReturnEmptyWhenLdapNameDoesNotExist() {
+        Optional<Member> result = persistenceService.findByLdapName("non-existent");
 
-        assertThat(result.isEmpty());
+        assertTrue(result.isEmpty());
     }
 }

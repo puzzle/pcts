@@ -3,11 +3,18 @@ package ch.puzzle.pcts.service.business;
 import static ch.puzzle.pcts.util.TestData.*;
 import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.model.role.Role;
+import ch.puzzle.pcts.service.JwtService;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import ch.puzzle.pcts.service.validation.MemberValidationService;
 import java.time.LocalDateTime;
@@ -23,6 +30,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 
 @ExtendWith(MockitoExtension.class)
 class MemberBusinessServiceTest
@@ -30,7 +38,13 @@ class MemberBusinessServiceTest
             BaseBusinessTest<Member, MemberPersistenceService, MemberValidationService, MemberBusinessService> {
 
     @Mock
-    private MemberPersistenceService persistenceService;
+    private Member member;
+
+    @Mock
+    private List<Member> members;
+
+    @Mock
+    private JwtService jwtService;
 
     @Mock
     private MemberValidationService validationService;
@@ -40,6 +54,15 @@ class MemberBusinessServiceTest
 
     @Mock
     private CalculationBusinessService calculationBusinessService;
+
+    @Mock
+    private List<Calculation> calculations;
+
+    @Mock
+    private Role role;
+
+    @Mock
+    private MemberPersistenceService persistenceService;
 
     @InjectMocks
     @Spy
@@ -85,6 +108,29 @@ class MemberBusinessServiceTest
         List<Member> result = businessService.getAll();
 
         assertEquals(0, result.size());
+    }
+
+    @DisplayName("Should find member if it exists")
+    @Test
+    void shouldFindIfExists() {
+        when(persistenceService.findById(1L)).thenReturn(Optional.of(member));
+
+        Optional<Member> result = businessService.findIfExists(1L);
+
+        assertTrue(result.isPresent());
+        assertEquals(member, result.get());
+        verify(persistenceService).findById(1L);
+    }
+
+    @DisplayName("Should return empty optional if member does not exist")
+    @Test
+    void shouldReturnEmptyIfDoesNotExist() {
+        when(persistenceService.findById(1L)).thenReturn(Optional.empty());
+
+        Optional<Member> result = businessService.findIfExists(1L);
+
+        assertFalse(result.isPresent());
+        verify(persistenceService).findById(1L);
     }
 
     @DisplayName("Should get calculations by memberId and roleId")
@@ -188,17 +234,42 @@ class MemberBusinessServiceTest
     @DisplayName("Should update the ptime meta data")
     @Test
     void shouldUpdatePtimeMetaData() {
-        Member member = MEMBER_1;
-
-        when(persistenceService.getById(10L)).thenReturn(member);
+        when(persistenceService.getById(10L)).thenReturn(MEMBER_1);
 
         LocalDateTime now = LocalDateTime.now();
         businessService.updateSyncMetadata(10L, 2L, now, 5);
 
-        assertEquals(2L, member.getPtimeId());
-        assertEquals(now, member.getLastSuccessfulSync());
-        assertEquals(5, member.getSyncErrorCount());
+        assertEquals(2L, MEMBER_1.getPtimeId());
+        assertEquals(now, MEMBER_1.getLastSuccessfulSync());
+        assertEquals(5, MEMBER_1.getSyncErrorCount());
 
-        verify(persistenceService).save(member);
+        verify(persistenceService).save(MEMBER_1);
+    }
+
+    @DisplayName("Should throw exception if no user for ldap name can be found")
+    @Test
+    void shouldThrowExceptionIfNoUserForLdapNameCanBeFound() {
+        String ldapName = "mtest1";
+        when(jwtService.getLdapName()).thenReturn(ldapName);
+        when(persistenceService.getByLdapName(ldapName)).thenThrow(new PCTSException(HttpStatus.NOT_FOUND, List.of()));
+
+        assertThrows(PCTSException.class, () -> businessService.getLoggedInMember());
+
+        verify(jwtService).getLdapName();
+        verify(persistenceService).getByLdapName(ldapName);
+    }
+
+    @DisplayName("Should return current user")
+    @Test
+    void shouldReturnCurrentUser() {
+        String ldapName = "mtest1";
+        when(jwtService.getLdapName()).thenReturn(ldapName);
+        when(persistenceService.getByLdapName(ldapName)).thenReturn(member);
+
+        Member result = businessService.getLoggedInMember();
+
+        assertEquals(member, result);
+        verify(jwtService).getLdapName();
+        verify(persistenceService).getByLdapName(ldapName);
     }
 }

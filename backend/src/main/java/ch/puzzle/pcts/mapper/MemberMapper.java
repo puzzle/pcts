@@ -18,6 +18,7 @@ public class MemberMapper {
         this.organisationUnitBusinessService = organisationUnitBusinessService;
         this.organisationUnitMapper = organisationUnitMapper;
     }
+
     public List<MemberDto> toDto(List<Member> models) {
         return models.stream().map(this::toDto).toList();
     }

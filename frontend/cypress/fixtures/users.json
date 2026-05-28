@@ -1,0 +1,14 @@
+{
+  "gl": {
+    "username": "gl",
+    "password": "gl",
+    "name": "Jaya Norris",
+    "databaseId": 7
+  },
+  "member": {
+    "username": "member",
+    "password": "member",
+    "name": "Abraham Woodard",
+    "databaseId": 8
+  }
+}

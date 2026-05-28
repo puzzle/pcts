@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Dev-Up" type="CompoundRunConfigurationType">
-    <toRun name="DB_UP" type="docker-deploy" />
+    <toRun name="INFRA_UP" type="docker-deploy" />
     <toRun name="Frontend-Start" type="js.build_tools.npm" />
     <toRun name="PctsApplication" type="SpringBootApplicationConfigurationType" />
     <method v="2" />

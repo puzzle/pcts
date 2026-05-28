@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DegreeTypePersistenceService extends PersistenceBase<DegreeType, DegreeTypeRepository> {
-    private final DegreeTypeRepository repository;
+    private final DegreeTypeRepository degreeTypeRepository;
 
-    public DegreeTypePersistenceService(DegreeTypeRepository repository) {
-        super(repository);
-        this.repository = repository;
+    public DegreeTypePersistenceService(DegreeTypeRepository degreeTypeRepository) {
+        super(degreeTypeRepository);
+        this.degreeTypeRepository = degreeTypeRepository;
     }
 
     @Override
@@ -21,7 +21,7 @@ public class DegreeTypePersistenceService extends PersistenceBase<DegreeType, De
     }
 
     public Optional<DegreeType> getByName(String name) {
-        return repository.findByName(name);
+        return degreeTypeRepository.findByName(name);
     }
 
 }

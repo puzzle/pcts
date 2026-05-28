@@ -8,6 +8,7 @@ import { MemberCvOverviewModel } from './member-cv-overview.model';
 import { CalculationModel } from '../calculations/calculation.model';
 import { RolePointsModel } from './detail-view/RolePointsModel';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -44,6 +45,11 @@ export class MemberService {
     return this.httpClient.get<CalculationModel[]>(`${this.API_URL}/${memberId}/calculations`, {
       params: roleIdParam
     });
+  }
+
+  getMyself() {
+    return this.httpClient.get<MemberModel>(`${this.API_URL}/myself`)
+      .pipe(map((dto) => this.mapDates(dto)));
   }
 
   private mapDates(dto: MemberModel): MemberModel {

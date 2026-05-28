@@ -5,6 +5,7 @@ import { LangChangeEvent, TranslatePipe, TranslateService } from '@ngx-translate
 import { NgOptimizedImage } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
+import { AuthService } from './core/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,8 @@ export class AppComponent {
 
   private readonly router = inject(Router);
 
+  protected readonly authService = inject(AuthService);
+
   private readonly translateService = inject(TranslateService);
 
   private readonly document = inject(DOCUMENT);
@@ -34,8 +37,12 @@ export class AppComponent {
     });
   }
 
-  protected visitRoot(): void {
-    this.router.navigate(['/member']);
+  visitRoot(): void {
+    this.router.navigate(['']);
+  }
+
+  handleLogout() {
+    this.authService.logout();
   }
 
   private setHtmlLangAttribute(lang: string): void {

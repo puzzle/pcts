@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.puzzle.pcts.SpringSecurityConfig;
 import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.dto.error.GenericErrorDto;
@@ -25,20 +24,14 @@ import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-@Import(SpringSecurityConfig.class)
-@ExtendWith(MockitoExtension.class)
-@WebMvcTest(MemberOverviewController.class)
-class MemberOverviewControllerIT {
+@ControllerIT(MemberOverviewController.class)
+class MemberOverviewControllerIT extends ControllerITBase {
 
     @MockitoBean
     private MemberOverviewBusinessService service;
@@ -61,7 +54,10 @@ class MemberOverviewControllerIT {
         when(mapper.toDto(memberOverviews)).thenReturn(expectedDto);
 
         mvc
-                .perform(get(BASEURL + "/" + MEMBER_1_ID).with(csrf()).accept(MediaType.APPLICATION_JSON))
+                .perform(get(BASEURL + "/" + MEMBER_1_ID)
+                        .with(csrf())
+                        .with(adminJwt())
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(expectedDto, "$"));
 
@@ -80,7 +76,10 @@ class MemberOverviewControllerIT {
         when(service.getById(INVALID_ID)).thenThrow(new PCTSException(HttpStatus.NOT_FOUND, List.of(error)));
 
         mvc
-                .perform(get(BASEURL + "/" + INVALID_ID).with(csrf()).accept(MediaType.APPLICATION_JSON))
+                .perform(get(BASEURL + "/" + INVALID_ID)
+                        .with(csrf())
+                        .with(adminJwt())
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$[0].key").value("NOT_FOUND"))

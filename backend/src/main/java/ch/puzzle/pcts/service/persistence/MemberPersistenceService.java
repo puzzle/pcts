@@ -2,18 +2,39 @@ package ch.puzzle.pcts.service.persistence;
 
 import static ch.puzzle.pcts.Constants.MEMBER;
 
+import ch.puzzle.pcts.dto.error.ErrorKey;
+import ch.puzzle.pcts.dto.error.GenericErrorDto;
+import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.repository.MemberRepository;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MemberPersistenceService extends PersistenceBase<Member, MemberRepository> {
-    private final MemberRepository repository;
+    private final MemberRepository memberRepository;
 
-    public MemberPersistenceService(MemberRepository repository) {
-        super(repository);
-        this.repository = repository;
+    public MemberPersistenceService(MemberRepository memberRepository) {
+        super(memberRepository);
+        this.memberRepository = memberRepository;
+    }
+
+    public Optional<Member> findById(Long id) {
+        return this.memberRepository.findById(id);
+    }
+
+    public Optional<Member> findByLdapName(String ldapName) {
+        return this.memberRepository.findMemberByLdapName(ldapName);
+    }
+
+    public Member getByLdapName(String ldapName) {
+        return findByLdapName(ldapName).orElseThrow(() -> {
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.NOT_FOUND, Map.of());
+            return new PCTSException(HttpStatus.NOT_FOUND, List.of(error));
+        });
     }
 
     @Override
@@ -22,14 +43,14 @@ public class MemberPersistenceService extends PersistenceBase<Member, MemberRepo
     }
 
     public Optional<Member> findByPtimeIdAndIdNot(Long ptimeId, Long id) {
-        return repository.findByPtimeIdAndIdNotAndPtimeIdNotNull(ptimeId, id);
+        return memberRepository.findByPtimeIdAndIdNotAndPtimeIdNotNull(ptimeId, id);
     }
 
     public Optional<Member> findByPtimeId(Long ptimeId) {
-        return repository.findByPtimeId(ptimeId);
+        return memberRepository.findByPtimeId(ptimeId);
     }
 
     public Optional<Member> findByAbbreviation(String abbreviation) {
-        return repository.findByAbbreviation(abbreviation);
+        return memberRepository.findByAbbreviation(abbreviation);
     }
 }

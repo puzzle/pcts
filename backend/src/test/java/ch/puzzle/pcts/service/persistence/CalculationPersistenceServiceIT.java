@@ -4,12 +4,14 @@ import static ch.puzzle.pcts.util.TestData.*;
 import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.repository.CalculationRepository;
+import ch.puzzle.pcts.service.JwtService;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -17,10 +19,15 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 class CalculationPersistenceServiceIT
         extends
             PersistenceBaseIT<Calculation, CalculationRepository, CalculationPersistenceService> {
+
+    @MockitoBean
+    private JwtService jwtService;
+
     @Autowired
     CalculationPersistenceServiceIT(CalculationPersistenceService service) {
         super(service);
@@ -55,6 +62,7 @@ class CalculationPersistenceServiceIT
     @Transactional
     @Test
     void shouldOnlyHaveOneActiveCalculationAfterSave() {
+        when(jwtService.getDisplayName()).thenReturn("PersistenceIT User");
         Calculation oldActiveCalculation = getModel();
         Calculation activeCalculation = getModel();
         activeCalculation.setPublicationDate(null);
@@ -65,7 +73,7 @@ class CalculationPersistenceServiceIT
         Calculation result = persistenceService.save(activeCalculation);
 
         assertEquals(LocalDate.now(), result.getPublicationDate());
-        assertEquals("Ldap User", result.getPublicizedBy());
+        assertEquals("PersistenceIT User", result.getPublicizedBy());
         assertThat(getActiveCalculationsOfMember(activeCalculation.getRole(), activeCalculation.getMember()))
                 .containsExactly(activeCalculation);
     }
@@ -74,6 +82,7 @@ class CalculationPersistenceServiceIT
     @Transactional
     @Test
     void shouldOnlyHaveOneActiveCalculationAfterUpdate() {
+        when(jwtService.getDisplayName()).thenReturn("PersistenceIT User");
         Calculation oldActiveCalculation = getModel();
         Calculation activeCalculation = getModel();
         activeCalculation.setPublicationDate(null);
@@ -86,7 +95,7 @@ class CalculationPersistenceServiceIT
         Calculation result = persistenceService.save(activeCalculation);
 
         assertEquals(LocalDate.now(), result.getPublicationDate());
-        assertEquals("Ldap User", result.getPublicizedBy());
+        assertEquals("PersistenceIT User", result.getPublicizedBy());
         assertThat(getActiveCalculationsOfMember(activeCalculation.getRole(), activeCalculation.getMember()))
                 .containsExactly(result);
     }

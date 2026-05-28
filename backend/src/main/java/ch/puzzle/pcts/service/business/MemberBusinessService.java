@@ -4,6 +4,7 @@ import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.role.Role;
+import ch.puzzle.pcts.service.JwtService;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import ch.puzzle.pcts.service.validation.MemberValidationService;
 import jakarta.annotation.Nullable;
@@ -15,22 +16,32 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MemberBusinessService extends BusinessBase<Member> {
-    RoleBusinessService roleBusinessService;
-    CalculationBusinessService calculationBusinessService;
-    MemberPersistenceService memberPersistenceService;
+    private final JwtService jwtService;
+    private final MemberPersistenceService memberPersistenceService;
+    private final RoleBusinessService roleBusinessService;
+    private final CalculationBusinessService calculationBusinessService;
 
     public MemberBusinessService(MemberValidationService validationService,
                                  MemberPersistenceService memberPersistenceService,
                                  RoleBusinessService roleBusinessService,
-                                 CalculationBusinessService calculationBusinessService) {
+                                 CalculationBusinessService calculationBusinessService, JwtService jwtService) {
         super(validationService, memberPersistenceService);
+        this.jwtService = jwtService;
         this.roleBusinessService = roleBusinessService;
         this.calculationBusinessService = calculationBusinessService;
         this.memberPersistenceService = memberPersistenceService;
     }
 
+    public Optional<Member> findIfExists(Long id) {
+        return memberPersistenceService.findById(id);
+    }
+
     public List<Member> getAll() {
         return persistenceService.getAll();
+    }
+
+    public Member getLoggedInMember() {
+        return memberPersistenceService.getByLdapName(jwtService.getLdapName());
     }
 
     public List<Calculation> getAllCalculationsByMemberIdAndRoleId(Long memberId, Long roleId) {

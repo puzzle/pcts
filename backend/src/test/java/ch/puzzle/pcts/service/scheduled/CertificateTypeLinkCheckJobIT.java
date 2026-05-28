@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.scheduled;
 
+import static ch.puzzle.pcts.util.TestData.CERT_TYPE_1_ID;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.head;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
@@ -9,15 +10,16 @@ import static org.junit.Assert.*;
 import ch.puzzle.pcts.model.certificatetype.CertificateType;
 import ch.puzzle.pcts.service.business.CertificateTypeBusinessService;
 import ch.puzzle.pcts.util.IT;
-import ch.puzzle.pcts.util.TestDataModels;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import java.net.URI;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.transaction.annotation.Transactional;
 
 @IT
+@Transactional
 class CertificateTypeLinkCheckJobIT {
     @Value("${wiremock.base-url}")
     private String wiremockBaseUrl;
@@ -40,8 +42,7 @@ class CertificateTypeLinkCheckJobIT {
 
         stubFor(head(urlEqualTo("/valid-cert")).willReturn(aResponse().withStatus(200)));
 
-        CertificateType cert = certificateTypeBusinessService.getById(TestDataModels.CERT_TYPE_1.getId());
-        cert.setTags(TestDataModels.CERT_TYPE_1.getTags());
+        CertificateType cert = certificateTypeBusinessService.getById(CERT_TYPE_1_ID);
         cert.setLink(wiremockBaseUrl + "/valid-cert");
 
         certificateTypeBusinessService.update(cert.getId(), cert);
@@ -64,8 +65,7 @@ class CertificateTypeLinkCheckJobIT {
 
         stubFor(head(urlEqualTo("/target-cert")).willReturn(aResponse().withStatus(200)));
 
-        CertificateType cert = certificateTypeBusinessService.getById(TestDataModels.CERT_TYPE_1.getId());
-        cert.setTags(TestDataModels.CERT_TYPE_1.getTags());
+        CertificateType cert = certificateTypeBusinessService.getById(CERT_TYPE_1_ID);
         cert.setLink(wiremockBaseUrl + "/redirect-cert");
 
         certificateTypeBusinessService.update(cert.getId(), cert);
@@ -85,8 +85,7 @@ class CertificateTypeLinkCheckJobIT {
 
         stubFor(head(urlEqualTo("/not-found-cert")).willReturn(aResponse().withStatus(404)));
 
-        CertificateType cert = certificateTypeBusinessService.getById(TestDataModels.CERT_TYPE_1.getId());
-        cert.setTags(TestDataModels.CERT_TYPE_1.getTags());
+        CertificateType cert = certificateTypeBusinessService.getById(CERT_TYPE_1_ID);
         cert.setLink(wiremockBaseUrl + "/not-found-cert");
 
         certificateTypeBusinessService.update(cert.getId(), cert);
