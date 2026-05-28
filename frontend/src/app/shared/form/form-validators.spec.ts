@@ -78,6 +78,8 @@ describe('isValueInList', () => {
     'Banana',
     'Cherry'];
 
+  const comparator = (a, b) => a === b;
+
   it('should return null if value is empty', () => {
     const control = new FormControl('');
     expect(isValueInList(options)(control))
@@ -95,6 +97,24 @@ describe('isValueInList', () => {
     expect(isValueInList(options)(control))
       .toEqual({ invalid_entry: true });
   });
+
+  it('should return null if value is empty with comparator', () => {
+    const control = new FormControl('');
+    expect(isValueInList(options, comparator)(control))
+      .toBeNull();
+  });
+
+  it('should return null if value is allowed with comparator', () => {
+    const control = new FormControl('Banana');
+    expect(isValueInList(options, comparator)(control))
+      .toBeNull();
+  });
+
+  it('should return invalid_entry if value is not allowed with comparator', () => {
+    const control = new FormControl('Orange');
+    expect(isValueInList(options, comparator)(control))
+      .toEqual({ invalid_entry: true });
+  });
 });
 
 
@@ -102,6 +122,8 @@ describe('isValueInListSignal', () => {
   const optionsSignal = signal(['Red',
     'Green',
     'Blue']);
+
+  const comparator = (a, b) => a === b;
 
   it('should return null if value is empty', () => {
     const control = new FormControl('');
@@ -118,6 +140,24 @@ describe('isValueInListSignal', () => {
   it('should return invalid_entry if value is not in the signal list', () => {
     const control = new FormControl('Yellow');
     expect(isValueInListSignal(optionsSignal)(control))
+      .toEqual({ invalid_entry: true });
+  });
+
+  it('should return null if value is empty with comparator', () => {
+    const control = new FormControl('');
+    expect(isValueInListSignal(optionsSignal, comparator)(control))
+      .toBeNull();
+  });
+
+  it('should return null if value is in the signal list with comparator', () => {
+    const control = new FormControl('Green');
+    expect(isValueInListSignal(optionsSignal, comparator)(control))
+      .toBeNull();
+  });
+
+  it('should return invalid_entry if value is not in the signal list with comparator', () => {
+    const control = new FormControl('Yellow');
+    expect(isValueInListSignal(optionsSignal, comparator)(control))
       .toEqual({ invalid_entry: true });
   });
 

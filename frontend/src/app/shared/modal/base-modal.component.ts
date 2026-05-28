@@ -1,5 +1,5 @@
 import { Component, input, output } from '@angular/core';
-import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } from '@angular/material/dialog';
+import { MatDialogActions, MatDialogContent, MatDialogTitle } from '@angular/material/dialog';
 import { MatDivider } from '@angular/material/divider';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -17,7 +17,6 @@ import { FormGroup } from '@angular/forms';
     MatDialogContent,
     MatDialogActions,
     MatIcon,
-    MatDialogClose,
     MatIconButton,
     ScopedTranslationPipe,
     BaseFormActionsComponent
