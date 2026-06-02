@@ -4,3 +4,8 @@ services:
     container_name: pcts-e2e-backend
     environment:
       SPRING_PROFILES_ACTIVE: e2e-test
+
+  pcts-frontend:
+    build:
+      args:
+        BUILD_CONFIGURATION: development
