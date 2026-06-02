@@ -33,6 +33,7 @@ import {
 } from '../../leadership-experiences/add-leadership-experience/add-leadership-experience.component';
 import { LeadershipExperienceService } from '../../leadership-experiences/leadership-experience.service';
 import { concatMap, filter, Observable } from 'rxjs';
+import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin.directive';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -45,7 +46,8 @@ import { concatMap, filter, Observable } from 'rxjs';
     MatTabGroup,
     MatTab,
     TranslationScopeDirective,
-    MemberCalculationTableComponent
+    MemberCalculationTableComponent,
+    ShowIfAdminDirective
   ],
   templateUrl: './member-detail-view.component.html',
   styleUrls: ['./member-detail-view.component.scss']

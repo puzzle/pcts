@@ -4,7 +4,7 @@ import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
-import ch.puzzle.pcts.util.PCTSStringValidation;
+import ch.puzzle.pcts.util.validation.PCTSStringValidation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -192,6 +192,15 @@ public class Member implements Model {
     }
 
     @Override
+    public String toString() {
+        return "Member{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\''
+               + ", ldapName='" + ldapName + '\'' + ", employmentState=" + employmentState + ", abbreviation='"
+               + abbreviation + '\'' + ", dateOfHire=" + dateOfHire + ", birthDate=" + birthDate + ", deletedAt="
+               + deletedAt + ", organisationUnit=" + organisationUnit + ", ptimeId=" + ptimeId + ", lastSuccessfulSync="
+               + lastSuccessfulSync + ", syncErrorCount=" + syncErrorCount + '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (!(o instanceof Member member)) {
             return false;
@@ -226,15 +235,6 @@ public class Member implements Model {
                       getLastSuccessfulSync(),
                       getSyncErrorCount(),
                       getLdapName());
-    }
-
-    @Override
-    public String toString() {
-        return "Member{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\''
-               + ", ldapName='" + ldapName + '\'' + ", employmentState=" + employmentState + ", abbreviation='"
-               + abbreviation + '\'' + ", dateOfHire=" + dateOfHire + ", birthDate=" + birthDate + ", deletedAt="
-               + deletedAt + ", organisationUnit=" + organisationUnit + ", ptimeId=" + ptimeId + ", lastSuccessfulSync="
-               + lastSuccessfulSync + ", syncErrorCount=" + syncErrorCount + '}';
     }
 
     public static final class Builder {

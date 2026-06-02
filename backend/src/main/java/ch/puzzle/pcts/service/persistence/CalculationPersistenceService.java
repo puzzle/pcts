@@ -7,18 +7,20 @@ import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.repository.CalculationRepository;
+import ch.puzzle.pcts.service.JwtService;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CalculationPersistenceService extends PersistenceBase<Calculation, CalculationRepository> {
+    private final JwtService jwtService;
+    private final CalculationRepository calculationRepository;
 
-    private final CalculationRepository repository;
-
-    public CalculationPersistenceService(CalculationRepository repository) {
-        super(repository);
-        this.repository = repository;
+    public CalculationPersistenceService(JwtService jwtService, CalculationRepository calculationRepository) {
+        super(calculationRepository);
+        this.jwtService = jwtService;
+        this.calculationRepository = calculationRepository;
     }
 
     @Override
@@ -37,32 +39,31 @@ public class CalculationPersistenceService extends PersistenceBase<Calculation, 
 
     private void setPublicationFields(Calculation calculation) {
         calculation.setPublicationDate(LocalDate.now());
-        // TODO: Replace this with the Ldap's username executing the request
-        calculation.setPublicizedBy("Ldap User");
+        calculation.setPublicizedBy(this.jwtService.getDisplayName());
     }
 
     private void setStateOfOldActiveCalculationsToArchived(Calculation calculation) {
-        List<Calculation> activeCalculations = repository
+        List<Calculation> activeCalculations = calculationRepository
                 .getAllByMemberIdAndRoleIdAndState(calculation.getMember().getId(),
                                                    calculation.getRole().getId(),
                                                    CalculationState.ACTIVE);
         activeCalculations.forEach(activeCalculation -> {
             if (!activeCalculation.getId().equals(calculation.getId())) {
                 activeCalculation.setState(CalculationState.ARCHIVED);
-                repository.save(activeCalculation);
+                calculationRepository.save(activeCalculation);
             }
         });
     }
 
     public List<Calculation> getAllByMember(Member member) {
-        return repository.findAllByMember(member);
+        return calculationRepository.findAllByMember(member);
     }
 
     public List<Calculation> getAllByMemberAndState(Member member, CalculationState state) {
-        return repository.findAllByMemberAndState(member, state);
+        return calculationRepository.findAllByMemberAndState(member, state);
     }
 
     public List<Calculation> getAllByMemberAndRole(Member member, Role role) {
-        return repository.findAllByMemberAndRole(member, role);
+        return calculationRepository.findAllByMemberAndRole(member, role);
     }
 }

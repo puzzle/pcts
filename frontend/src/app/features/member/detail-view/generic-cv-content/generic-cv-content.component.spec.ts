@@ -3,16 +3,26 @@ import { GenericCvContentComponent } from './generic-cv-content.component';
 import { degreeOverviewList } from '../../../../shared/test/test-data';
 import { provideRouter } from '@angular/router';
 import { GenericTableDataSource } from '../../../../shared/generic-table/generic-table-data-source';
+import { AuthService } from '../../../../core/auth/auth.service';
 
 describe('GenericCvContentComponent', () => {
   let component: GenericCvContentComponent<any>;
   let fixture: ComponentFixture<GenericCvContentComponent<any>>;
   let mockTableSource: GenericTableDataSource<any>;
+  let authServiceMock: jest.Mocked<AuthService>;
 
   beforeEach(async() => {
+    authServiceMock = {
+      isAdmin: jest.fn()
+    } as unknown as jest.Mocked<AuthService>;
+
     await TestBed.configureTestingModule({
       imports: [GenericCvContentComponent],
-      providers: [provideRouter([])]
+      providers: [provideRouter([]),
+        {
+          provide: AuthService,
+          useValue: authServiceMock
+        }]
     })
       .compileComponents();
 

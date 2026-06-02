@@ -11,23 +11,23 @@ import org.springframework.stereotype.Service;
 public class CertificateCalculationPersistenceService
         extends
             PersistenceBase<CertificateCalculation, CertificateCalculationRepository> {
-    private final CertificateCalculationRepository repository;
+    private final CertificateCalculationRepository certificateCalculationRepository;
 
-    public CertificateCalculationPersistenceService(CertificateCalculationRepository repository) {
-        super(repository);
-        this.repository = repository;
+    public CertificateCalculationPersistenceService(CertificateCalculationRepository certificateCalculationRepository) {
+        super(certificateCalculationRepository);
+        this.certificateCalculationRepository = certificateCalculationRepository;
     }
 
     public List<CertificateCalculation> getByCalculationId(Long calculationId) {
-        return repository.findByCalculationId(calculationId);
+        return certificateCalculationRepository.findByCalculationId(calculationId);
     }
 
     public List<CertificateCalculation> getByCertificateId(Long certificateId) {
-        return repository.findByCertificateId(certificateId);
+        return certificateCalculationRepository.findByCertificateId(certificateId);
     }
 
     public void deleteAllById(List<Long> ids) {
-        repository.deleteAllById(ids);
+        certificateCalculationRepository.deleteAllById(ids);
     }
 
     @Override
