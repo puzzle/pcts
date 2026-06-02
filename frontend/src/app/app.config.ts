@@ -44,7 +44,8 @@ export const appConfig: ApplicationConfig = {
         clientId: environment.keycloak.clientId
       },
       initOptions: {
-        onLoad: 'login-required'
+        onLoad: 'login-required',
+        checkLoginIframe: false
       }
     }),
     {
