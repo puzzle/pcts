@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.8.0](https://github.com/puzzle/pcts/compare/0.7.0...0.8.0) (2026-06-09)
+
+
+### Features
+
+* **auth:** add keycloak and auth Logic [#44](https://github.com/puzzle/pcts/issues/44) ([0560c38](https://github.com/puzzle/pcts/commit/0560c38fd85f6bc5d0c921d796b88a8d5a2ad430))
+
+
+### Bug Fixes
+
+* **auth:** add SSO domain to allowed frame-src [#44](https://github.com/puzzle/pcts/issues/44) ([2b553a1](https://github.com/puzzle/pcts/commit/2b553a18c39019e1374c30901e61ea1ded95cc83))
+* **auth:** set correct Keycloak configurations for the Frontend [#44](https://github.com/puzzle/pcts/issues/44) ([7f6d8ac](https://github.com/puzzle/pcts/commit/7f6d8acc631f59c5ece6cb4ef1eab5f97fedafd0))
+* correct keycloak URL [#44](https://github.com/puzzle/pcts/issues/44) ([41d49f0](https://github.com/puzzle/pcts/commit/41d49f0bf347e6d97e2ad3ff63e5c425bebd5905))
+
+
+### Miscellaneous Chores
+
+* **deps:** update all eslint packages to v10 ([#502](https://github.com/puzzle/pcts/issues/502)) ([faa7d29](https://github.com/puzzle/pcts/commit/faa7d2971b78f1aa7de87553916024ab321133b6))
+* **deps:** update all eslint packages to v8.60.1 ([#656](https://github.com/puzzle/pcts/issues/656)) ([67b1bf8](https://github.com/puzzle/pcts/commit/67b1bf80594cd6a67e771632b76a1738213b1ab3))
+* **deps:** update angularmaterial monorepo to v21.2.14 ([#660](https://github.com/puzzle/pcts/issues/660)) ([f27f32e](https://github.com/puzzle/pcts/commit/f27f32e2bec43a011229807e29a4005cd4962d48))
+* **deps:** update cypress-io/github-action action to v7.4.0 ([b776fb7](https://github.com/puzzle/pcts/commit/b776fb7f1836cdef17b096d464d4f383833addb9))
+* **deps:** update dependency date-fns to v4.4.0 ([2e7c32f](https://github.com/puzzle/pcts/commit/2e7c32f139e86ecc7712024470e243beafd1a847))
+* **deps:** update dependency keycloak-js to v26.2.4 ([#653](https://github.com/puzzle/pcts/issues/653)) ([6812ad9](https://github.com/puzzle/pcts/commit/6812ad9a82e724c5a859f62b192bf43d487bac68))
+* **deps:** update flyway to v12.8.1 ([2e588c3](https://github.com/puzzle/pcts/commit/2e588c3efd738ebde678c661f982d58062d1ed65))
+
 ## [0.7.0](https://github.com/puzzle/pcts/compare/0.6.0...0.7.0) (2026-06-02)
 
 
