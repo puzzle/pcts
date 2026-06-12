@@ -44,4 +44,3 @@ target/
 .history
 .ionide
 /frontend/cypress/screenshots/
-frontend/.pnpm-store

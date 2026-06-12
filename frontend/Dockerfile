@@ -1,8 +1,7 @@
 FROM node:24.16-alpine AS builder
 WORKDIR /app
-RUN corepack enable
-COPY frontend/package.json frontend/pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+COPY frontend/package.json frontend/package-lock.json ./
+RUN npm ci
 COPY frontend ./
 ARG BUILD_CONFIGURATION=production
 RUN npm run build -- --output-path=./dist/ --configuration=${BUILD_CONFIGURATION}
