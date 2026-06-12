@@ -78,7 +78,7 @@ jobs:
         with:
           working-directory: frontend
           install: true
-          package-manager: pnpm
+          package-manager-cache: pnpm
           wait-on: 'http://localhost:4200/'
           wait-on-timeout: 300
           browser: chrome
