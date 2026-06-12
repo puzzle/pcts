@@ -1,6 +1,12 @@
 {
   "name": "pcts",
   "version": "0.7.0",
+  "packageManager": "pnpm@10.32.1",
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=10",
+    "npm": ">=99999"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve --hmr",
@@ -8,8 +14,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "jest --silent --runInBand",
     "test:ci": "jest --ci --reporters=default --reporters=jest-junit",
-    "format:all": "npm run lint:format && npm run prettier:lint:format",
-    "check-linting:all": "npm run lint && npm run prettier:lint",
+    "format:all": "pnpm run lint:format && pnpm run prettier:lint:format",
+    "check-linting:all": "pnpm run lint && pnpm run prettier:lint",
     "lint:format:specific": "eslint --fix  --no-warn-ignored",
     "lint:format": "eslint --fix .",
     "lint": "eslint .",
@@ -81,10 +87,21 @@
     "typescript": "~5.9.0",
     "typescript-eslint": "8.60.1"
   },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "cypress",
+      "esbuild",
+      "lmdb",
+      "msgpackr-extract",
+      "unrs-resolver"
+    ]
+  },
   "jest": {
     "preset": "jest-preset-angular",
     "transformIgnorePatterns": [
-      "node_modules/(?!(.*.mjs$|keycloak.js))"
+      "node_modules/\\.pnpm/(?!keycloak-js@).*(?<!\\.mjs)$",
+      "node_modules/(?!(\\.pnpm|keycloak-js)).*(?<!\\.mjs)$"
     ],
     "setupFilesAfterEnv": [
       "<rootDir>/setup-jest.ts"

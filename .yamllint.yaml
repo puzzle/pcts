@@ -4,6 +4,7 @@ extends: default
 ignore: |
   node_modules
   frontend/node_modules/
+  frontend/pnpm-lock.yaml
 
 rules:
   truthy:
