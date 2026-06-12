@@ -63,13 +63,15 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
+        with:
+          package_json_file: frontend/package.json
+          cache: true
+          cache_dependency_path: frontend/pnpm-lock.yaml
 
       - name: Set up node for Cypress
         uses: actions/setup-node@v6
         with:
           node-version: ${{ vars.NODE_VERSION }}
-          cache: pnpm
-          cache-dependency-path: frontend/pnpm-lock.yaml
 
       - name: Cypress run e2e tests
         uses: cypress-io/github-action@v7.4.0
