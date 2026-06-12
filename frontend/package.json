@@ -4,10 +4,10 @@
   "packageManager": "pnpm@10.32.1",
   "engines": {
     "node": ">=22",
-    "pnpm": ">=10"
+    "pnpm": ">=10",
+    "npm": ">=99999"
   },
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
     "ng": "ng",
     "start": "ng serve --hmr",
     "build": "ng build",
