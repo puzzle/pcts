@@ -46,7 +46,7 @@ By default, the production build optimizes your application for performance and 
 We use [Jest](https://jestjs.io/) for frontend testing.
 
 ```bash
-npm run test
+pnpm run test
 ```
 
 ## End-to-end tests
@@ -61,11 +61,11 @@ To run the backend for Cypress testing, you need to start the application with t
 
 **To run all tests headless use:**
 
-- `npm run cypress:run`
+- `pnpm run cypress:run`
 
 **To only run selected tests handful use:**
 
-- `npm run cypress:open`
+- `pnpm run cypress:open`
 
 ### In case of failing tests
 
@@ -78,12 +78,12 @@ To run the backend for Cypress testing, you need to start the application with t
 
 ```bash
 # Check code formatting:
-npm run check-linting:all
+pnpm run check-linting:all
 ```
 
 ```bash
 # Format the code:
-npm run format:all
+pnpm run format:all
 ```
 
 Angular CLI does not come with an end-to-end testing framework by default.

@@ -9,6 +9,29 @@ Note: When running the backend image, make sure to specify a Spring Profile to c
 
 ## Development
 
+### Prerequisites: pnpm
+
+This project uses [pnpm](https://pnpm.io) as the frontend package manager. **npm and yarn are not supported** — the `preinstall` script will block them.
+
+Install pnpm via [corepack](https://nodejs.org/api/corepack.html) (bundled with Node.js ≥ 16):
+
+```shell
+corepack enable
+corepack prepare pnpm@10.32.1 --activate
+```
+
+Or via standalone install:
+
+```shell
+npm install -g pnpm@10.32.1
+```
+
+Then install frontend dependencies:
+
+```shell
+cd frontend && pnpm install
+```
+
 ### Git Hooks
 
 There are some hooks, which are strongly encouraged to use. Simply execute the following command:
