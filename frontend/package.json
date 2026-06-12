@@ -90,8 +90,8 @@
   "jest": {
     "preset": "jest-preset-angular",
     "transformIgnorePatterns": [
-      "node_modules/\\.pnpm/(?!(keycloak-js)@)",
-      "node_modules/(?!(\\.pnpm|keycloak-js)|.+\\.mjs$)"
+      "node_modules/\\.pnpm/(?!keycloak-js@).*(?<!\\.mjs)$",
+      "node_modules/(?!(\\.pnpm|keycloak-js)).*(?<!\\.mjs)$"
     ],
     "setupFilesAfterEnv": [
       "<rootDir>/setup-jest.ts"
