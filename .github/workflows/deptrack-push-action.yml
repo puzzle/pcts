@@ -37,6 +37,7 @@ jobs:
           docker run --rm -v $(pwd):/data cyclonedx/cyclonedx-cli merge \
           --hierarchical \
           --name PCTS --version latest \
+          --output-version v1_6 \
           --input-files data/backend/target/bom.xml data/sbom-npm.json  \
           --output-format json --output-file data/sbom.json
 
