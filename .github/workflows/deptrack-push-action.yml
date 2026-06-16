@@ -7,7 +7,6 @@ on:
       - closed
       - opened
     branches:
-      - main
       - bug/deptrack-not-running
 
 jobs:
