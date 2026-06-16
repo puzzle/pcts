@@ -5,15 +5,12 @@ on:
   pull_request:
     types:
       - closed
-      - opened
     branches:
       - main
-      - bug/deptrack-not-running
-  workflow_dispatch:
 
 jobs:
   generate-and-push-sbom:
-    # if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     environment: STAGING
     steps:
