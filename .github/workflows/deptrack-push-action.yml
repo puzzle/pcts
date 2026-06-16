@@ -7,7 +7,9 @@ on:
       - closed
       - opened
     branches:
+      - main
       - bug/deptrack-not-running
+  workflow_dispatch:
 
 jobs:
   generate-and-push-sbom:
