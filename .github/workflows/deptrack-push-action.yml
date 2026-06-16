@@ -5,7 +5,7 @@ on:
   pull_request:
     types:
       - closed
-      - opened
+      - converted_to_draft
     branches:
       - main
       - bug/deptrack-not-running
