@@ -44,6 +44,7 @@ jobs:
           --input-format json \
           --input-version v1_6 \
           --input-file data/sbom.json \
+          --fail-on-errors
 
       - name: 'Push merged SBOM to dependency track'
         env:
