@@ -22,11 +22,11 @@ import {
   INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG, IncludeBearerTokenCondition, includeBearerTokenInterceptor,
   provideKeycloak
 } from 'keycloak-angular';
-import { environment } from '../environments/environment';
 import { provideDateFnsAdapter } from '@angular/material-date-fns-adapter';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { de } from 'date-fns/locale/de';
 import { provideAppConfiguration } from './features/configuration/configuration.token';
+import { RuntimeConfig, RUNTIME_CONFIG } from './core/runtime-config.model';
 
 registerLocaleData(localeDeCH);
 
@@ -35,56 +35,60 @@ const urlCondition = createInterceptorCondition<IncludeBearerTokenCondition>({
   bearerPrefix: 'Bearer'
 });
 
-export const appConfig: ApplicationConfig = {
-  providers: [
-    provideKeycloak({
-      config: {
-        url: environment.keycloak.url,
-        realm: environment.keycloak.realm,
-        clientId: environment.keycloak.clientId
+export function buildAppConfig(config: RuntimeConfig): ApplicationConfig {
+  return {
+    providers: [
+      { provide: RUNTIME_CONFIG,
+        useValue: config },
+      provideKeycloak({
+        config: {
+          url: config.keycloak.url,
+          realm: config.keycloak.realm,
+          clientId: config.keycloak.clientId
+        },
+        initOptions: {
+          onLoad: 'login-required',
+          checkLoginIframe: false
+        }
+      }),
+      {
+        provide: INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG,
+        useValue: [urlCondition]
       },
-      initOptions: {
-        onLoad: 'login-required',
-        checkLoginIframe: false
-      }
-    }),
-    {
-      provide: INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG,
-      useValue: [urlCondition]
-    },
-    provideBrowserGlobalErrorListeners(),
-    provideZonelessChangeDetection(),
-    provideRouter(routes, withComponentInputBinding()),
-    importProvidersFrom(MatSnackBarModule),
-    provideHttpClient(withInterceptors([errorInterceptor,
-      successInterceptor,
-      includeBearerTokenInterceptor])),
-    provideTranslateService({
-      fallbackLang: 'de',
-      loader: provideTranslateHttpLoader({
-        prefix: '/i18n/',
-        suffix: '.json'
-      })
-    }),
-    provideDateFnsAdapter(),
-    {
-      provide: MAT_DATE_LOCALE,
-      useValue: de
-    },
-    provideAppInitializer(() => {
-      const translate = inject(TranslateService);
-      const lang = 'de';
-      return lastValueFrom(translate.use(lang));
-    }),
-    provideI18nPrefix(''),
-    {
-      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-      useValue: { appearance: 'outline' }
-    },
-    {
-      provide: LOCALE_ID,
-      useValue: 'de-CH'
-    },
-    provideAppConfiguration()
-  ]
-};
+      provideBrowserGlobalErrorListeners(),
+      provideZonelessChangeDetection(),
+      provideRouter(routes, withComponentInputBinding()),
+      importProvidersFrom(MatSnackBarModule),
+      provideHttpClient(withInterceptors([errorInterceptor,
+        successInterceptor,
+        includeBearerTokenInterceptor])),
+      provideTranslateService({
+        fallbackLang: 'de',
+        loader: provideTranslateHttpLoader({
+          prefix: '/i18n/',
+          suffix: '.json'
+        })
+      }),
+      provideDateFnsAdapter(),
+      {
+        provide: MAT_DATE_LOCALE,
+        useValue: de
+      },
+      provideAppInitializer(() => {
+        const translate = inject(TranslateService);
+        const lang = 'de';
+        return lastValueFrom(translate.use(lang));
+      }),
+      provideI18nPrefix(''),
+      {
+        provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+        useValue: { appearance: 'outline' }
+      },
+      {
+        provide: LOCALE_ID,
+        useValue: 'de-CH'
+      },
+      provideAppConfiguration()
+    ]
+  };
+}
