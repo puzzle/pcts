@@ -6,6 +6,7 @@ export interface RuntimeConfig {
     url: string;
     realm: string;
     clientId: string;
+    adminAuthorities: string[];
   };
 }
 

@@ -13,7 +13,6 @@ import static ch.puzzle.pcts.architecture.condition.ClassConditions.overrideHash
 import static ch.puzzle.pcts.architecture.condition.ClassConditions.overrideToStringMethod;
 import static ch.puzzle.pcts.architecture.condition.CodeUnitConditions.trimAssignedStringFields;
 import static com.tngtech.archunit.base.DescribedPredicate.not;
-import static com.tngtech.archunit.core.domain.JavaClass.Predicates.equivalentTo;
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAPackage;
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAnyPackage;
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.type;
@@ -23,7 +22,6 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 
-import ch.puzzle.pcts.controller.ConfigurationController;
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.security.annotation.IsAdmin;
 import ch.puzzle.pcts.security.annotation.IsAdminOrOwner;
@@ -217,7 +215,6 @@ class ArchitectureTest {
                 .areNotAnonymousClasses()
                 .and()
                 .resideInAPackage("ch.puzzle.pcts.controller..")
-                .and(not(equivalentTo(ConfigurationController.class)))
                 .should(beAnnotatedWithOneOf(IsAdmin.class, IsAdminOrOwner.class, IsAuthenticated.class))
                 .andShould()
                 .notBeInterfaces();
@@ -228,7 +225,7 @@ class ArchitectureTest {
     @DisplayName("@RequestMappings should have common pre- and suffix")
     @Test
     void controllersShouldDefineCorrectRequestMapping() {
-        JavaClasses importedClasses = getMainSourceClasses().that(not(equivalentTo(ConfigurationController.class)));
+        JavaClasses importedClasses = getMainSourceClasses();
 
         ArchCondition<JavaAnnotation<JavaClass>> combinedCondition = and(haveSuffix("value", "s"),
                                                                          haveValuePrefix("/api/v1/"));
@@ -241,7 +238,7 @@ class ArchitectureTest {
     @DisplayName("Controller @Tags should be valid")
     @Test
     void controllerTagsShouldBeCompleteSentences() {
-        JavaClasses importedClasses = getMainSourceClasses().that(not(equivalentTo(ConfigurationController.class)));
+        JavaClasses importedClasses = getMainSourceClasses();
 
         ArchCondition<JavaAnnotation<JavaClass>> combinedCondition = and(shouldBeValidDescription("description"),
                                                                          haveSuffix("name", "s"));

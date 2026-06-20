@@ -7,7 +7,8 @@ cat > /usr/share/nginx/html/config.json <<EOF
   "keycloak": {
     "url": "${KEYCLOAK_URL:-https://sso.puzzle.ch/auth}",
     "realm": "${KEYCLOAK_REALM:-pitc}",
-    "clientId": "${KEYCLOAK_CLIENT_ID:-pitc_pcts_staging}"
+    "clientId": "${KEYCLOAK_CLIENT_ID:-pitc_pcts_staging}",
+    "adminAuthorities": ${KEYCLOAK_ADMIN_AUTHORITIES:-[]}
   }
 }
 EOF
