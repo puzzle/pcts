@@ -25,7 +25,6 @@ import {
 import { provideDateFnsAdapter } from '@angular/material-date-fns-adapter';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { de } from 'date-fns/locale/de';
-import { provideAppConfiguration } from './features/configuration/configuration.token';
 import { RuntimeConfig, RUNTIME_CONFIG } from './core/runtime-config.model';
 
 registerLocaleData(localeDeCH);
@@ -87,8 +86,7 @@ export function buildAppConfig(config: RuntimeConfig): ApplicationConfig {
       {
         provide: LOCALE_ID,
         useValue: 'de-CH'
-      },
-      provideAppConfiguration()
+      }
     ]
   };
 }
