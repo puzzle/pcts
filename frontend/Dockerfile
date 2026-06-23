@@ -1,10 +1,11 @@
 FROM node:24.16-alpine AS builder
 WORKDIR /app
-COPY frontend/package.json frontend/package-lock.json ./
-RUN npm ci
+RUN corepack enable && corepack prepare pnpm@10.32.1 --activate
+COPY frontend/package.json frontend/pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
 COPY frontend ./
 ARG BUILD_CONFIGURATION=production
-RUN npm run build -- --output-path=./dist/ --configuration=${BUILD_CONFIGURATION}
+RUN pnpm run build --output-path=./dist/ --configuration=${BUILD_CONFIGURATION}
 
 FROM nginxinc/nginx-unprivileged:1.31-alpine AS runner
 COPY frontend/nginx.conf /etc/nginx/

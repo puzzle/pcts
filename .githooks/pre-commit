@@ -47,7 +47,7 @@ if ! has_changed "$frontend_files"; then
   echo "No files found to format. Skipping."
 else
   echo "Formatting changed frontend files..."
-  npm run prettier:lint:format:specific $frontend_files || exit 1
+  pnpm run prettier:lint:format:specific $frontend_files || exit 1
 fi
 echo "*****Finish running prettier******"
 
@@ -60,7 +60,7 @@ if ! has_changed "$frontend_files"; then
   echo "No files found to format. Skipping."
 else
   echo "Formatting changed frontend files..."
-  npm run lint:format:specific $frontend_files || exit 1
+  pnpm run lint:format:specific $frontend_files || exit 1
 fi
 
 echo "*****Finish running eslint******"
