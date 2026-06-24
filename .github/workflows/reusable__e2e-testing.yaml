@@ -73,6 +73,14 @@ jobs:
         with:
           node-version: ${{ vars.NODE_VERSION }}
 
+      - name: Cache Cypress binary
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-binary-${{ runner.os }}-${{ hashFiles('frontend/pnpm-lock.yaml') }}
+          restore-keys: |
+            cypress-binary-${{ runner.os }}-
+
       - name: Cypress run e2e tests
         uses: cypress-io/github-action@v7.4.0
         with:
