@@ -39,7 +39,7 @@
     "@angular/router": "^21.0.4",
     "@eslint/js": "^10.0.0",
     "@ngx-translate/core": "^17.0.0",
-    "@ngx-translate/http-loader": "^17.0.0",
+    "@ngx-translate/http-loader": "^18.0.0",
     "@puzzleitc/puzzle-shell": "^5.1.0",
     "bootstrap": "^5.3.7",
     "cypress": "^15.2.0",
