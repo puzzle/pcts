@@ -4,3 +4,4 @@ dist/
 # The following files are already getting formatted by eslint
 **/*.html
 **/*.ts
+pnpm-lock.yaml
