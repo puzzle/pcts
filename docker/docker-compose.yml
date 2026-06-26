@@ -51,11 +51,6 @@ services:
       dockerfile: ./frontend/Dockerfile
     ports:
       - "4200:4200"
-    environment:
-      KEYCLOAK_URL: http://localhost:8544
-      KEYCLOAK_REALM: pitc
-      KEYCLOAK_CLIENT_ID: pcts-dev
-      API_URL: http://pcts-backend:8080
     profiles: ['']
 
   pcts-keycloak:
