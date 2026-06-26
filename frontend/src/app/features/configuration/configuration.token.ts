@@ -19,7 +19,10 @@ export function provideAppConfiguration() {
     return lastValueFrom(configService.getConfiguration()
       .pipe(catchError(() => {
         console.error('Could not load configuration, using defaults.');
-        return of({ adminAuthorities: [] });
+        return of({ keycloak: { url: '',
+          realm: '',
+          clientId: '',
+          adminAuthorities: [] } });
       }), tap((config) => {
         configState = config;
       })));
