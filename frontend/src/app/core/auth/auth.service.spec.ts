@@ -12,8 +12,11 @@ describe('AuthService', () => {
   let keycloakMock: MockKeycloak;
   let mockEventSignal: WritableSignal<KeycloakEvent>;
   const appConfigMock = {
-    adminAuthorities: ['ADMIN_ROLE',
-      'HR_ROLE']
+    keycloak: { url: '',
+      realm: '',
+      clientId: '',
+      adminAuthorities: ['ADMIN_ROLE',
+        'HR_ROLE'] }
   };
 
   beforeEach(() => {
