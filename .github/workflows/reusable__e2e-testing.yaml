@@ -62,7 +62,7 @@ jobs:
         run: docker compose -f docker/docker-compose.yml -f docker/docker-compose.e2e.yml up -d
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           package_json_file: frontend/package.json
           cache: true
