@@ -15,7 +15,7 @@ jobs:
     environment: STAGING
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Install cdxgen
         working-directory: frontend

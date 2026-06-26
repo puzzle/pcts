@@ -22,7 +22,7 @@ jobs:
       REPO: "${{ github.repository }}"
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       # --- STEP 1: Check Assignee ---
       - name: Check Assignee
@@ -103,7 +103,7 @@ jobs:
           fi
 
       - name: Checkout Code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
