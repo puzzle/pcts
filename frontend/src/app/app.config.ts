@@ -26,7 +26,7 @@ import { provideDateFnsAdapter } from '@angular/material-date-fns-adapter';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { de } from 'date-fns/locale/de';
 import { provideAppConfiguration } from './features/configuration/configuration.token';
-import { RuntimeConfig, RUNTIME_CONFIG } from './core/runtime-config.model';
+import { ConfigurationModel } from './features/configuration/configuration.model';
 
 registerLocaleData(localeDeCH);
 
@@ -35,11 +35,9 @@ const urlCondition = createInterceptorCondition<IncludeBearerTokenCondition>({
   bearerPrefix: 'Bearer'
 });
 
-export function buildAppConfig(config: RuntimeConfig): ApplicationConfig {
+export function buildAppConfig(config: ConfigurationModel): ApplicationConfig {
   return {
     providers: [
-      { provide: RUNTIME_CONFIG,
-        useValue: config },
       provideKeycloak({
         config: {
           url: config.keycloak.url,
