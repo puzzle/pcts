@@ -55,7 +55,7 @@ services:
 
   pcts-keycloak:
     container_name: pcts-keycloak
-    image: quay.io/keycloak/keycloak:26.3.3
+    image: quay.io/keycloak/keycloak:26.6.3
     environment:
       - KC_BOOTSTRAP_ADMIN_USERNAME=admin26
       - KC_BOOTSTRAP_ADMIN_PASSWORD=keycloak26
