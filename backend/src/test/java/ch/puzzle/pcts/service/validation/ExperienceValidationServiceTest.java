@@ -182,7 +182,6 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
                     assertThrows(PCTSException.class, () -> service.validateOnCreate(experience)));
 
         exceptions
-                .stream()
                 .forEach(exception -> assertEquals(List
                         .of(Map
                                 .of(FieldKey.ENTITY,
