@@ -28,7 +28,7 @@ importers:
         version: 21.2.9(3c300e200b104da286cc4b6d7332ab8b)
       '@angular/material-date-fns-adapter':
         specifier: ^21.0.3
-        version: 21.2.9(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/material@21.2.9(3c300e200b104da286cc4b6d7332ab8b))(date-fns@4.1.0)
+        version: 21.2.9(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/material@21.2.9(3c300e200b104da286cc4b6d7332ab8b))(date-fns@4.4.0)
       '@angular/material-luxon-adapter':
         specifier: ^21.0.3
         version: 21.2.9(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/material@21.2.9(3c300e200b104da286cc4b6d7332ab8b))(luxon@3.7.2)
@@ -58,7 +58,7 @@ importers:
         version: 15.17.0
       date-fns:
         specifier: ^4.1.0
-        version: 4.1.0
+        version: 4.4.0
       jest-environment-jsdom:
         specifier: ^30.2.0
         version: 30.3.0
@@ -3045,8 +3045,8 @@ packages:
     resolution: {integrity: sha512-ZYP5VBHshaDAiVZxjbRVcFJpc+4xGgT0bK3vzy1HLN8jTO975HEbuYzZJcHoQEY5K1a0z8YayJkyVETa08eNTg==}
     engines: {node: '>=18'}
 
-  date-fns@4.1.0:
-    resolution: {integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==}
+  date-fns@4.4.0:
+    resolution: {integrity: sha512-+1UMbeh68lH1SegH83CGWwpb6OHHbpSgr3+s5Eww5M4CAgswBpoWS0AjTOfEJ33HiYKz1hdj/KTFprzXHmq/6w==}
 
   date-format@4.0.14:
     resolution: {integrity: sha512-39BOQLs9ZjKh0/patS9nrT8wc3ioX3/eA/zgbKNopnF2wCqJEoxywwwElATYvRsXdnOxA/OQeQoFZ3rFjVajhg==}
@@ -5941,11 +5941,11 @@ snapshots:
       rxjs: 7.8.2
       tslib: 2.8.1
 
-  '@angular/material-date-fns-adapter@21.2.9(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/material@21.2.9(3c300e200b104da286cc4b6d7332ab8b))(date-fns@4.1.0)':
+  '@angular/material-date-fns-adapter@21.2.9(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/material@21.2.9(3c300e200b104da286cc4b6d7332ab8b))(date-fns@4.4.0)':
     dependencies:
       '@angular/core': 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/material': 21.2.9(3c300e200b104da286cc4b6d7332ab8b)
-      date-fns: 4.1.0
+      date-fns: 4.4.0
       tslib: 2.8.1
 
   '@angular/material-luxon-adapter@21.2.9(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/material@21.2.9(3c300e200b104da286cc4b6d7332ab8b))(luxon@3.7.2)':
@@ -8545,7 +8545,7 @@ snapshots:
       whatwg-mimetype: 4.0.0
       whatwg-url: 14.2.0
 
-  date-fns@4.1.0: {}
+  date-fns@4.4.0: {}
 
   date-format@4.0.14: {}
 
