@@ -2,4 +2,8 @@
 allowBuilds:
   esbuild: true
   cypress: true
+  '@parcel/watcher': false
+  lmdb: false
+  msgpackr-extract: false
+  unrs-resolver: false
 minimumReleaseAge: 1440
