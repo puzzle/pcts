@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { provideRouter, Router } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { DOCUMENT } from '@angular/common';
 
 import { Router } from '@angular/router';
@@ -31,8 +31,7 @@ describe('AppComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [AppComponent,
-        TranslateModule.forRoot()],
+      imports: [AppComponent],
       providers: [
         provideTranslateService(),
         provideRouter([]),
