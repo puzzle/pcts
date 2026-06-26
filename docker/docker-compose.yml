@@ -55,7 +55,6 @@ services:
       KEYCLOAK_URL: http://localhost:8544
       KEYCLOAK_REALM: pitc
       KEYCLOAK_CLIENT_ID: pcts-dev
-      KEYCLOAK_ADMIN_AUTHORITIES: '["org_hr", "org_gl"]'
       API_URL: http://pcts-backend:8080
     profiles: ['']
 

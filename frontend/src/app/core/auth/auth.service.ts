@@ -1,14 +1,14 @@
 import { computed, inject, Injectable, Signal } from '@angular/core';
 import Keycloak from 'keycloak-js';
 import { PuzzleTokenModel } from './puzzle-token.model';
+import { APP_CONFIG } from '../../features/configuration/configuration.token';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
-import { RUNTIME_CONFIG } from '../runtime-config.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly appConfig = inject(RUNTIME_CONFIG);
+  private readonly appConfig = inject(APP_CONFIG);
 
   private readonly keycloak = inject(Keycloak);
 
@@ -21,7 +21,7 @@ export class AuthService {
 
   isAdmin(): boolean {
     const roles = this.getRoles();
-    const adminRoles = this.appConfig.keycloak.adminAuthorities;
+    const adminRoles = this.appConfig.adminAuthorities;
     return roles.some((role) => adminRoles.includes(role));
   }
 
