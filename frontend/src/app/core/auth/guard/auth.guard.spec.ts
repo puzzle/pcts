@@ -5,13 +5,13 @@ import { lastValueFrom, of } from 'rxjs';
 import { authGuard } from './auth.guard';
 import { AuthService } from '../auth.service';
 import { MemberService } from '../../../features/member/member.service';
-import { RUNTIME_CONFIG } from '../../runtime-config.model';
+import { APP_CONFIG } from '../../../features/configuration/configuration.token';
 
 describe('authGuard', () => {
   let userServiceMock: Partial<AuthService>;
   let memberServiceMock: Partial<MemberService>;
   let routerMock: Partial<Router>;
-  const mockConfig = { keycloak: { adminAuthorities: ['ADMIN_ROLE'] } };
+  const mockConfig = { adminAuthorities: ['ADMIN_ROLE'] };
 
   const executeGuard = (scope?: 'admin' | 'user',
     route: Partial<ActivatedRouteSnapshot> = {},
@@ -51,7 +51,7 @@ describe('authGuard', () => {
           useValue: routerMock
         },
         {
-          provide: RUNTIME_CONFIG,
+          provide: APP_CONFIG,
           useValue: mockConfig
         }
       ]

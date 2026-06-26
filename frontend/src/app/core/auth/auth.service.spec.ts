@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { AuthService } from './auth.service';
 import Keycloak from 'keycloak-js';
+import { APP_CONFIG } from '../../features/configuration/configuration.token';
 import { KEYCLOAK_EVENT_SIGNAL, KeycloakEvent, KeycloakEventType } from 'keycloak-angular';
 import { signal, WritableSignal } from '@angular/core';
-import { RUNTIME_CONFIG } from '../runtime-config.model';
 
 type MockKeycloak = Partial<Keycloak> & { tokenParsed?: any };
 
@@ -12,10 +12,8 @@ describe('AuthService', () => {
   let keycloakMock: MockKeycloak;
   let mockEventSignal: WritableSignal<KeycloakEvent>;
   const appConfigMock = {
-    keycloak: {
-      adminAuthorities: ['ADMIN_ROLE',
-        'HR_ROLE']
-    }
+    adminAuthorities: ['ADMIN_ROLE',
+      'HR_ROLE']
   };
 
   beforeEach(() => {
@@ -34,7 +32,7 @@ describe('AuthService', () => {
         useValue: keycloakMock
       },
       {
-        provide: RUNTIME_CONFIG,
+        provide: APP_CONFIG,
         useValue: appConfigMock
       },
       {
