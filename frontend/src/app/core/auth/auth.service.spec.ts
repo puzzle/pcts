@@ -105,6 +105,79 @@ describe('AuthService', () => {
       expect(result)
         .toBeNull();
     });
+
+    it('should return preferred_username if name and given/family name are missing', () => {
+      keycloakMock.tokenParsed = {
+        preferred_username: 'jdoe'
+      };
+      mockEventSignal.set({ type: KeycloakEventType.AuthRefreshSuccess,
+        args: true });
+
+      const result = service.name();
+
+      expect(result)
+        .toBe('jdoe');
+    });
+  });
+
+  describe('getRoles', () => {
+    it('should return an empty array if token is undefined', () => {
+      keycloakMock.tokenParsed = undefined;
+
+      expect(service.getRoles())
+        .toEqual([]);
+    });
+
+    it('should return roles from the token', () => {
+      keycloakMock.tokenParsed = {
+        pitc: { uid: 'jdoe',
+          roles: ['ADMIN_ROLE',
+            'USER_ROLE'] }
+      };
+
+      expect(service.getRoles())
+        .toEqual(['ADMIN_ROLE',
+          'USER_ROLE']);
+    });
+
+    it('should return an empty array if pitc roles are not set', () => {
+      keycloakMock.tokenParsed = {
+        pitc: { uid: 'jdoe',
+          roles: [] }
+      };
+
+      expect(service.getRoles())
+        .toEqual([]);
+    });
+  });
+
+  describe('isAdmin', () => {
+    it('should return true if the user has an admin role', () => {
+      keycloakMock.tokenParsed = {
+        pitc: { uid: 'jdoe',
+          roles: ['ADMIN_ROLE'] }
+      };
+
+      expect(service.isAdmin())
+        .toBe(true);
+    });
+
+    it('should return false if the user has no admin role', () => {
+      keycloakMock.tokenParsed = {
+        pitc: { uid: 'jdoe',
+          roles: ['USER_ROLE'] }
+      };
+
+      expect(service.isAdmin())
+        .toBe(false);
+    });
+
+    it('should return false if the user has no roles', () => {
+      keycloakMock.tokenParsed = undefined;
+
+      expect(service.isAdmin())
+        .toBe(false);
+    });
   });
 
   it('should call keycloak logout', () => {
