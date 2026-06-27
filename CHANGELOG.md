@@ -1,5 +1,59 @@
 # Changelog
 
+## [0.8.0](https://github.com/puzzle/pcts/compare/0.7.0...0.8.0) (2026-06-27)
+
+
+### Features
+
+* **auth:** add keycloak and auth Logic [#44](https://github.com/puzzle/pcts/issues/44) ([0560c38](https://github.com/puzzle/pcts/commit/0560c38fd85f6bc5d0c921d796b88a8d5a2ad430))
+* **frontend:** migrate to pnpm ([40674ca](https://github.com/puzzle/pcts/commit/40674ca5d249b37da580d2b8fef9f365ec9ad368))
+
+
+### Bug Fixes
+
+* **auth:** add SSO domain to allowed frame-src [#44](https://github.com/puzzle/pcts/issues/44) ([2b553a1](https://github.com/puzzle/pcts/commit/2b553a18c39019e1374c30901e61ea1ded95cc83))
+* **auth:** set correct Keycloak configurations for the Frontend [#44](https://github.com/puzzle/pcts/issues/44) ([7f6d8ac](https://github.com/puzzle/pcts/commit/7f6d8acc631f59c5ece6cb4ef1eab5f97fedafd0))
+* correct keycloak URL [#44](https://github.com/puzzle/pcts/issues/44) ([41d49f0](https://github.com/puzzle/pcts/commit/41d49f0bf347e6d97e2ad3ff63e5c425bebd5905))
+* **frontend:** add pnpm-lock.yaml to prettierignore ([#683](https://github.com/puzzle/pcts/issues/683)) ([c87f232](https://github.com/puzzle/pcts/commit/c87f232abc9a92e904594830eea542756312d069))
+
+
+### Miscellaneous Chores
+
+* also cache Cypress binary for e2e test ([a38ecdb](https://github.com/puzzle/pcts/commit/a38ecdb6f40df05d6045d3b3f5cbffd5f4d5f49b))
+* **deps:** update actions/checkout action to v7 ([91d5c4a](https://github.com/puzzle/pcts/commit/91d5c4a1b566fc1c02c3c67aac4bc541376d705d))
+* **deps:** update all eslint packages to v10 ([#502](https://github.com/puzzle/pcts/issues/502)) ([faa7d29](https://github.com/puzzle/pcts/commit/faa7d2971b78f1aa7de87553916024ab321133b6))
+* **deps:** update all eslint packages to v8.60.1 ([#656](https://github.com/puzzle/pcts/issues/656)) ([67b1bf8](https://github.com/puzzle/pcts/commit/67b1bf80594cd6a67e771632b76a1738213b1ab3))
+* **deps:** update all eslint packages to v8.61.0 ([#668](https://github.com/puzzle/pcts/issues/668)) ([e7153ec](https://github.com/puzzle/pcts/commit/e7153ec8b3455417d3d8b64f33460009c6b03263))
+* **deps:** update all eslint packages to v8.61.1 ([#674](https://github.com/puzzle/pcts/issues/674)) ([064313b](https://github.com/puzzle/pcts/commit/064313b3574fe98b63e6ed42a496b22f3ca5b582))
+* **deps:** update angular monorepo to v21.2.17 ([#678](https://github.com/puzzle/pcts/issues/678)) ([0a6bbdd](https://github.com/puzzle/pcts/commit/0a6bbddc674983f5daacfcc22c753c6a59264a45))
+* **deps:** update angular-eslint monorepo to v22 ([3479273](https://github.com/puzzle/pcts/commit/34792730ebcd8f0420693db3ca8a861c2a2db2b8))
+* **deps:** update angularmaterial monorepo to v21.2.14 ([b51532c](https://github.com/puzzle/pcts/commit/b51532c5ca100dc3af9239c62ff7200930530946))
+* **deps:** update angularmaterial monorepo to v21.2.14 ([#660](https://github.com/puzzle/pcts/issues/660)) ([f27f32e](https://github.com/puzzle/pcts/commit/f27f32e2bec43a011229807e29a4005cd4962d48))
+* **deps:** update cypress-io/github-action action to v7.4.0 ([b776fb7](https://github.com/puzzle/pcts/commit/b776fb7f1836cdef17b096d464d4f383833addb9))
+* **deps:** update dependency @ngx-translate/core to v18 ([d29fbcc](https://github.com/puzzle/pcts/commit/d29fbcce411cb33d79cab083b1aa17c22ed14238))
+* **deps:** update dependency @ngx-translate/http-loader to v18 ([f32cb55](https://github.com/puzzle/pcts/commit/f32cb5596af3bf711f5b57df4ce6e90cf8b5067e))
+* **deps:** update dependency @puzzleitc/puzzle-shell to v5.1.3 ([bc1d6b7](https://github.com/puzzle/pcts/commit/bc1d6b7d7ee6ab83ac7a7a7c6f8aeef179b0de1e))
+* **deps:** update dependency com.diffplug.spotless:spotless-maven-plugin to v3.7.0 ([2fdd521](https://github.com/puzzle/pcts/commit/2fdd521a085199a3f3914a80d772f53297955cc6))
+* **deps:** update dependency cypress to v15.17.0 ([8f1d517](https://github.com/puzzle/pcts/commit/8f1d517288025998d384c5e1c7810e80be57578d))
+* **deps:** update dependency cypress to v15.17.0 ([c2bb732](https://github.com/puzzle/pcts/commit/c2bb732ff31cfc307bfb02a1416a7032c560c8dc))
+* **deps:** update dependency cypress to v15.18.0 ([624779a](https://github.com/puzzle/pcts/commit/624779ae04bc457f5f2d4b60d9f615d415d0a5d4))
+* **deps:** update dependency date-fns to v4.4.0 ([0a88fa1](https://github.com/puzzle/pcts/commit/0a88fa1f62760bf00e3434ca913054ccd5243abc))
+* **deps:** update dependency date-fns to v4.4.0 ([2e7c32f](https://github.com/puzzle/pcts/commit/2e7c32f139e86ecc7712024470e243beafd1a847))
+* **deps:** update dependency keycloak-angular to v22 ([d7de574](https://github.com/puzzle/pcts/commit/d7de5742df9352ae06cc1d1bd27a2493975a9f64))
+* **deps:** update dependency keycloak-js to v26.2.4 ([#653](https://github.com/puzzle/pcts/issues/653)) ([6812ad9](https://github.com/puzzle/pcts/commit/6812ad9a82e724c5a859f62b192bf43d487bac68))
+* **deps:** update dependency org.cyclonedx:cyclonedx-maven-plugin to v2.9.2 ([#681](https://github.com/puzzle/pcts/issues/681)) ([709862f](https://github.com/puzzle/pcts/commit/709862fd19305e49df64e46153bb223421c29ebf))
+* **deps:** update dependency org.jacoco:jacoco-maven-plugin to v0.8.15 ([#662](https://github.com/puzzle/pcts/issues/662)) ([e308782](https://github.com/puzzle/pcts/commit/e308782bce2bb0a392141f14202eac6b23a19c64))
+* **deps:** update dependency prettier-eslint to v17 ([be40e82](https://github.com/puzzle/pcts/commit/be40e822b7a25bd7f2bc2f042ccb04b1bd72c35d))
+* **deps:** update flyway ([eb0c81e](https://github.com/puzzle/pcts/commit/eb0c81e66f98355cf33635bfd2554f3597a37645))
+* **deps:** update flyway to v12.8.1 ([2e588c3](https://github.com/puzzle/pcts/commit/2e588c3efd738ebde678c661f982d58062d1ed65))
+* **deps:** update node.js to v24.17.0 ([d44ece9](https://github.com/puzzle/pcts/commit/d44ece94bca9f28fcc3c5b0e7b76063ca1349b5a))
+* **deps:** update pnpm to v10.34.4 ([d14f263](https://github.com/puzzle/pcts/commit/d14f263b9c0b5b045013f7cfdd832516b344ca1f))
+* **deps:** update pnpm to v11 ([e0ac359](https://github.com/puzzle/pcts/commit/e0ac3599abc9076014d5897c21f36dfc79e912b6))
+* **deps:** update pnpm to v11.9.0 ([3143a5c](https://github.com/puzzle/pcts/commit/3143a5c16253e9aca2cfb17d6b5de8b810b3fec0))
+* **deps:** update pnpm/action-setup action to v6 ([7beaec1](https://github.com/puzzle/pcts/commit/7beaec15129a0a59f17d6b40d997037f27e58ba9))
+* **deps:** update spring boot to v4.1.0 ([b1b6777](https://github.com/puzzle/pcts/commit/b1b6777cd2c84d3c0e93fbf8360987af0b66851f))
+* **deptrack:** Fix sbom not being valid ([#671](https://github.com/puzzle/pcts/issues/671)) ([df601d2](https://github.com/puzzle/pcts/commit/df601d2a0ccc7ac078ef8dbc6da0527082206b8b))
+
 ## [0.7.0](https://github.com/puzzle/pcts/compare/0.6.0...0.7.0) (2026-06-02)
 
 
