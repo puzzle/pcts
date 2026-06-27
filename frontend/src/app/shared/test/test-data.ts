@@ -528,6 +528,9 @@ export const calculation3: CalculationModel = {
 };
 
 export const configuration: ConfigurationModel = {
-  adminAuthorities: ['org_hr',
-    'org_gl']
+  keycloak: { url: 'http://localhost:8544',
+    realm: 'pitc',
+    clientId: 'pcts-dev',
+    adminAuthorities: ['org_hr',
+      'org_gl'] }
 };

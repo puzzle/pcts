@@ -250,3 +250,16 @@ We use nginx to configure `Content-Security-Policy` and managing the nonce flow.
 - **Header Configuration**: Nginx sets the `script-src` and `style-src` directive in the `Content-Security-Policy` header to `nonce-${request_id}`.
 - **Inline Styles**: Angular's Critical CSS Inlining feature (used to improve initial load speed)
   has been disabled. This is because every inline style requires the nonce, which cannot easily be applied to Angular's generated styles.
+
+## Runtime Configuration
+
+It is possible to configure to frontend via environment variables. To do so, at startup a `config.json` file is created, where env variables are being set.
+This can then be used during the app initialization and even later on.
+
+### Adding new options
+
+If you want to add new configuration options, you need to do the following:
+
+1. Update the model at `src/app/core/runtime-config.model.ts`
+1. Add some default value to `public/config.json`
+1. Update the entrypoint at `docker-entrypoint.sh`

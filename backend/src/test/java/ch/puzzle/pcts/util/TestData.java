@@ -2,11 +2,18 @@ package ch.puzzle.pcts.util;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 public class TestData {
 
     private TestData() {
     }
+
+    public static final String KEYCLOAK_URL = "https://keycloak.example.com";
+    public static final String KEYCLOAK_REALM = "test-realm";
+    public static final String KEYCLOAK_CLIENT_ID = "test-client";
+    public static final String AUTHORITIES_SP_EL_EXPRESSION = "[pitc][roles]";
+    public static final List<String> ADMIN_AUTHORITIES = List.of("org_hr", "org_admin");
 
     public static final LocalDate DATE_NOW = LocalDate.now();
     public static final LocalDate DATE_YESTERDAY = DATE_NOW.minusDays(1);
