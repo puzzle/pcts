@@ -35,7 +35,10 @@ class ConfigurationControllerIT extends ControllerITBase {
 
     @BeforeEach
     void setUp() {
-        this.configurationDto = new ConfigurationDto(List.of("ADMIN_1", "ADMIN_2"));
+        this.configurationDto = new ConfigurationDto(new ConfigurationDto.KeycloakDto("http://localhost:8544",
+                                                                                      "pitc",
+                                                                                      "pcts-dev",
+                                                                                      List.of("ADMIN_1", "ADMIN_2")));
     }
 
     @DisplayName("Should successfully get configuration")
