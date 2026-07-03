@@ -3,7 +3,7 @@
 
 # File-based project format
 *.iws
-
+parent.iml
 # IntelliJ
 out/
 
