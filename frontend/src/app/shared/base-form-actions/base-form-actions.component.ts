@@ -2,8 +2,8 @@ import { Component, input, output } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
 import { FormGroup } from '@angular/forms';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { map } from 'rxjs';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { filter, map, startWith, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-form-actions',
@@ -13,9 +13,11 @@ import { map } from 'rxjs';
   templateUrl: './base-form-actions.component.html'
 })
 export class BaseFormActionsComponent {
-  formGroup = input.required<FormGroup>();
+  formGroup = input.required<FormGroup | undefined>();
 
   canceled = output();
 
-  isInvalid = toSignal(this.formGroup().statusChanges.pipe(map((f) => f === 'INVALID')));
+  private formGroup$ = toObservable(this.formGroup);
+
+  isInvalid = toSignal(this.formGroup$.pipe(filter((e): e is FormGroup => !!e), switchMap((form) => form.statusChanges.pipe(startWith(form.status))), map((status) => status === 'INVALID')), { initialValue: false });
 }
