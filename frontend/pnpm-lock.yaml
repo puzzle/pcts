@@ -80,16 +80,16 @@ importers:
         version: 22.0.0(@angular-eslint/template-parser@22.0.0(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3))(@typescript-eslint/types@8.61.1)(@typescript-eslint/utils@8.62.1(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3))(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3)
       '@angular-eslint/schematics':
         specifier: ^22.0.0
-        version: 22.0.0(@angular-eslint/template-parser@22.0.0(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3))(@angular/cli@22.0.5(@types/node@26.0.1)(chokidar@5.0.0))(@typescript-eslint/types@8.61.1)(@typescript-eslint/utils@8.62.1(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3))(chokidar@5.0.0)(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3)
+        version: 22.0.0(@angular-eslint/template-parser@22.0.0(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3))(@angular/cli@22.0.5(@types/node@26.0.1)(chokidar@5.0.0)(supports-color@8.1.1))(@typescript-eslint/types@8.61.1)(@typescript-eslint/utils@8.62.1(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3))(chokidar@5.0.0)(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3)
       '@angular-eslint/template-parser':
         specifier: ^22.0.0
         version: 22.0.0(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3)
       '@angular/build':
         specifier: ^22.0.5
-        version: 22.0.5(@angular/compiler-cli@22.0.5(@angular/compiler@22.0.5)(typescript@6.0.3))(@angular/compiler@22.0.5)(@angular/core@22.0.5(@angular/compiler@22.0.5)(rxjs@7.8.2))(@angular/platform-browser@22.0.5(@angular/common@22.0.5(@angular/core@22.0.5(@angular/compiler@22.0.5)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.0.5(@angular/compiler@22.0.5)(rxjs@7.8.2)))(@types/node@26.0.1)(chokidar@5.0.0)(istanbul-lib-instrument@6.0.3)(karma@6.4.4(supports-color@8.1.1))(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(yaml@2.9.0)
+        version: 22.0.5(@angular/compiler-cli@22.0.5(@angular/compiler@22.0.5)(typescript@6.0.3))(@angular/compiler@22.0.5)(@angular/core@22.0.5(@angular/compiler@22.0.5)(rxjs@7.8.2))(@angular/platform-browser@22.0.5(@angular/common@22.0.5(@angular/core@22.0.5(@angular/compiler@22.0.5)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.0.5(@angular/compiler@22.0.5)(rxjs@7.8.2)))(@types/node@26.0.1)(chokidar@5.0.0)(istanbul-lib-instrument@6.0.3)(karma@6.4.4(supports-color@8.1.1))(postcss@8.5.15)(supports-color@8.1.1)(tslib@2.8.1)(typescript@6.0.3)(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.0.5
-        version: 22.0.5(@types/node@26.0.1)(chokidar@5.0.0)
+        version: 22.0.5(@types/node@26.0.1)(chokidar@5.0.0)(supports-color@8.1.1)
       '@angular/compiler-cli':
         specifier: ^22.0.5
         version: 22.0.5(@angular/compiler@22.0.5)(typescript@6.0.3)
@@ -97,6 +97,9 @@ importers:
         specifier: ^1.3.2
         version: 1.3.2
       '@cspell/eslint-plugin':
+        specifier: ^10.0.0
+        version: 10.0.1(eslint@10.6.0(supports-color@8.1.1))
+      '@eslint/js':
         specifier: ^10.0.0
         version: 10.0.1(eslint@10.6.0(supports-color@8.1.1))
       '@eslint/js':
@@ -119,7 +122,7 @@ importers:
         version: 3.7.2
       angular-eslint:
         specifier: ^22.0.0
-        version: 22.0.0(@angular/cli@22.0.5(@types/node@26.0.1)(chokidar@5.0.0))(chokidar@5.0.0)(eslint@10.6.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript-eslint@8.62.1(eslint@10.6.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3))(typescript@6.0.3)
+        version: 22.0.0(@angular/cli@22.0.5(@types/node@26.0.1)(chokidar@5.0.0)(supports-color@8.1.1))(chokidar@5.0.0)(eslint@10.6.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript-eslint@8.62.1(eslint@10.6.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3))(typescript@6.0.3)
       cypress:
         specifier: ^15.2.0
         version: 15.18.0
@@ -5882,11 +5885,11 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@angular-eslint/builder@22.0.0(@angular/cli@22.0.5(@types/node@26.0.1)(chokidar@5.0.0))(chokidar@5.0.0)(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3)':
+  '@angular-eslint/builder@22.0.0(@angular/cli@22.0.5(@types/node@26.0.1)(chokidar@5.0.0)(supports-color@8.1.1))(chokidar@5.0.0)(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3)':
     dependencies:
       '@angular-devkit/architect': 0.2200.4(chokidar@5.0.0)
       '@angular-devkit/core': 22.0.4(chokidar@5.0.0)
-      '@angular/cli': 22.0.5(@types/node@26.0.1)(chokidar@5.0.0)
+      '@angular/cli': 22.0.5(@types/node@26.0.1)(chokidar@5.0.0)(supports-color@8.1.1)
       eslint: 10.6.0(supports-color@8.1.1)
       typescript: 6.0.3
     transitivePeerDependencies:
@@ -5936,13 +5939,13 @@ snapshots:
       ts-api-utils: 2.5.0(typescript@6.0.3)
       typescript: 6.0.3
 
-  '@angular-eslint/schematics@22.0.0(@angular-eslint/template-parser@22.0.0(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3))(@angular/cli@22.0.5(@types/node@26.0.1)(chokidar@5.0.0))(@typescript-eslint/types@8.61.1)(@typescript-eslint/utils@8.61.1(eslint@10.6.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3))(chokidar@5.0.0)(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3)':
+  '@angular-eslint/schematics@22.0.0(@angular-eslint/template-parser@22.0.0(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3))(@angular/cli@22.0.5(@types/node@26.0.1)(chokidar@5.0.0)(supports-color@8.1.1))(@typescript-eslint/types@8.61.1)(@typescript-eslint/utils@8.61.1(eslint@10.6.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3))(chokidar@5.0.0)(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3)':
     dependencies:
       '@angular-devkit/core': 22.0.4(chokidar@5.0.0)
       '@angular-devkit/schematics': 22.0.4(chokidar@5.0.0)
       '@angular-eslint/eslint-plugin': 22.0.0(@typescript-eslint/utils@8.61.1(eslint@10.6.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3))(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3)
       '@angular-eslint/eslint-plugin-template': 22.0.0(@angular-eslint/template-parser@22.0.0(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3))(@typescript-eslint/types@8.61.1)(@typescript-eslint/utils@8.61.1(eslint@10.6.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3))(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3)
-      '@angular/cli': 22.0.5(@types/node@26.0.1)(chokidar@5.0.0)
+      '@angular/cli': 22.0.5(@types/node@26.0.1)(chokidar@5.0.0)(supports-color@8.1.1)
       ignore: 7.0.5
       semver: 7.8.0
       strip-json-comments: 3.1.1
@@ -5954,13 +5957,13 @@ snapshots:
       - eslint
       - typescript
 
-  '@angular-eslint/schematics@22.0.0(@angular-eslint/template-parser@22.0.0(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3))(@angular/cli@22.0.5(@types/node@26.0.1)(chokidar@5.0.0))(@typescript-eslint/types@8.61.1)(@typescript-eslint/utils@8.62.1(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3))(chokidar@5.0.0)(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3)':
+  '@angular-eslint/schematics@22.0.0(@angular-eslint/template-parser@22.0.0(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3))(@angular/cli@22.0.5(@types/node@26.0.1)(chokidar@5.0.0)(supports-color@8.1.1))(@typescript-eslint/types@8.61.1)(@typescript-eslint/utils@8.62.1(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3))(chokidar@5.0.0)(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3)':
     dependencies:
       '@angular-devkit/core': 22.0.4(chokidar@5.0.0)
       '@angular-devkit/schematics': 22.0.4(chokidar@5.0.0)
       '@angular-eslint/eslint-plugin': 22.0.0(@typescript-eslint/utils@8.62.1(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3))(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3)
       '@angular-eslint/eslint-plugin-template': 22.0.0(@angular-eslint/template-parser@22.0.0(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3))(@typescript-eslint/types@8.61.1)(@typescript-eslint/utils@8.62.1(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3))(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3)
-      '@angular/cli': 22.0.5(@types/node@26.0.1)(chokidar@5.0.0)
+      '@angular/cli': 22.0.5(@types/node@26.0.1)(chokidar@5.0.0)(supports-color@8.1.1)
       ignore: 7.0.5
       semver: 7.8.0
       strip-json-comments: 3.1.1
@@ -5993,13 +5996,13 @@ snapshots:
       eslint: 10.6.0(supports-color@8.1.1)
       typescript: 6.0.3
 
-  '@angular/build@22.0.5(@angular/compiler-cli@22.0.5(@angular/compiler@22.0.5)(typescript@6.0.3))(@angular/compiler@22.0.5)(@angular/core@22.0.5(@angular/compiler@22.0.5)(rxjs@7.8.2))(@angular/platform-browser@22.0.5(@angular/common@22.0.5(@angular/core@22.0.5(@angular/compiler@22.0.5)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.0.5(@angular/compiler@22.0.5)(rxjs@7.8.2)))(@types/node@26.0.1)(chokidar@5.0.0)(istanbul-lib-instrument@6.0.3)(karma@6.4.4(supports-color@8.1.1))(postcss@8.5.15)(tslib@2.8.1)(typescript@6.0.3)(yaml@2.9.0)':
+  '@angular/build@22.0.5(@angular/compiler-cli@22.0.5(@angular/compiler@22.0.5)(typescript@6.0.3))(@angular/compiler@22.0.5)(@angular/core@22.0.5(@angular/compiler@22.0.5)(rxjs@7.8.2))(@angular/platform-browser@22.0.5(@angular/common@22.0.5(@angular/core@22.0.5(@angular/compiler@22.0.5)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.0.5(@angular/compiler@22.0.5)(rxjs@7.8.2)))(@types/node@26.0.1)(chokidar@5.0.0)(istanbul-lib-instrument@6.0.3)(karma@6.4.4(supports-color@8.1.1))(postcss@8.5.15)(supports-color@8.1.1)(tslib@2.8.1)(typescript@6.0.3)(yaml@2.9.0)':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@angular-devkit/architect': 0.2200.5(chokidar@5.0.0)
       '@angular/compiler': 22.0.5
       '@angular/compiler-cli': 22.0.5(@angular/compiler@22.0.5)(typescript@6.0.3)
-      '@babel/core': 7.29.0
+      '@babel/core': 7.29.0(supports-color@8.1.1)
       '@babel/helper-annotate-as-pure': 7.27.3
       '@babel/helper-split-export-declaration': 7.24.7
       '@inquirer/confirm': 6.0.12(@types/node@26.0.1)
@@ -6007,7 +6010,7 @@ snapshots:
       beasties: 0.4.2
       browserslist: 4.28.4
       esbuild: 0.28.1
-      https-proxy-agent: 9.0.0
+      https-proxy-agent: 9.0.0(supports-color@8.1.1)
       jsonc-parser: 3.3.1
       listr2: 10.2.1
       magic-string: 0.30.21
@@ -6053,14 +6056,14 @@ snapshots:
       rxjs: 7.8.2
       tslib: 2.8.1
 
-  '@angular/cli@22.0.5(@types/node@26.0.1)(chokidar@5.0.0)':
+  '@angular/cli@22.0.5(@types/node@26.0.1)(chokidar@5.0.0)(supports-color@8.1.1)':
     dependencies:
       '@angular-devkit/architect': 0.2200.5(chokidar@5.0.0)
       '@angular-devkit/core': 22.0.5(chokidar@5.0.0)
       '@angular-devkit/schematics': 22.0.5(chokidar@5.0.0)
       '@inquirer/prompts': 8.4.2(@types/node@26.0.1)
       '@listr2/prompt-adapter-inquirer': 4.2.3(@inquirer/prompts@8.4.2(@types/node@26.0.1))(@types/node@26.0.1)(listr2@10.2.1)
-      '@modelcontextprotocol/sdk': 1.29.0(zod@4.4.2)
+      '@modelcontextprotocol/sdk': 1.29.0(supports-color@8.1.1)(zod@4.4.2)
       '@schematics/angular': 22.0.5(chokidar@5.0.0)
       '@yarnpkg/lockfile': 1.1.0
       algoliasearch: 5.52.0
@@ -6068,7 +6071,7 @@ snapshots:
       jsonc-parser: 3.3.1
       listr2: 10.2.1
       npm-package-arg: 13.0.2
-      pacote: 21.5.1
+      pacote: 21.5.1(supports-color@8.1.1)
       parse5-html-rewriting-stream: 8.0.1
       semver: 7.7.4
       yargs: 18.0.0
@@ -6176,12 +6179,12 @@ snapshots:
 
   '@babel/compat-data@7.29.7': {}
 
-  '@babel/core@7.29.0':
+  '@babel/core@7.29.0(supports-color@8.1.1)':
     dependencies:
       '@babel/code-frame': 7.29.7
       '@babel/generator': 7.29.7
       '@babel/helper-compilation-targets': 7.29.7
-      '@babel/helper-module-transforms': 7.29.7(@babel/core@7.29.0)
+      '@babel/helper-module-transforms': 7.29.7(@babel/core@7.29.0(supports-color@8.1.1))
       '@babel/helpers': 7.29.7
       '@babel/parser': 7.29.7
       '@babel/template': 7.29.7
@@ -6245,9 +6248,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@babel/helper-module-transforms@7.29.7(@babel/core@7.29.0)':
+  '@babel/helper-module-transforms@7.29.7(@babel/core@7.29.0(supports-color@8.1.1))':
     dependencies:
-      '@babel/core': 7.29.0
+      '@babel/core': 7.29.0(supports-color@8.1.1)
       '@babel/helper-module-imports': 7.29.7
       '@babel/helper-validator-identifier': 7.29.7
       '@babel/traverse': 7.29.7
@@ -7367,7 +7370,7 @@ snapshots:
   '@lmdb/lmdb-win32-x64@3.5.4':
     optional: true
 
-  '@modelcontextprotocol/sdk@1.29.0(zod@4.4.2)':
+  '@modelcontextprotocol/sdk@1.29.0(supports-color@8.1.1)(zod@4.4.2)':
     dependencies:
       '@hono/node-server': 1.19.14(hono@4.12.27)
       ajv: 8.20.0
@@ -7377,8 +7380,8 @@ snapshots:
       cross-spawn: 7.0.6
       eventsource: 3.0.7
       eventsource-parser: 3.1.0
-      express: 5.2.1
-      express-rate-limit: 8.5.2(express@5.2.1)
+      express: 5.2.1(supports-color@8.1.1)
+      express-rate-limit: 8.5.2(express@5.2.1(supports-color@8.1.1))
       hono: 4.12.27
       jose: 6.2.3
       json-schema-typed: 8.0.2
@@ -7814,10 +7817,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@sigstore/tuf@4.0.2':
+  '@sigstore/tuf@4.0.2(supports-color@8.1.1)':
     dependencies:
       '@sigstore/protobuf-specs': 0.5.1
-      tuf-js: 4.1.0
+      tuf-js: 4.1.0(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -8252,16 +8255,16 @@ snapshots:
       '@algolia/requester-fetch': 5.52.0
       '@algolia/requester-node-http': 5.52.0
 
-  angular-eslint@22.0.0(@angular/cli@22.0.5(@types/node@26.0.1)(chokidar@5.0.0))(chokidar@5.0.0)(eslint@10.6.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript-eslint@8.62.1(eslint@10.6.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3))(typescript@6.0.3):
+  angular-eslint@22.0.0(@angular/cli@22.0.5(@types/node@26.0.1)(chokidar@5.0.0)(supports-color@8.1.1))(chokidar@5.0.0)(eslint@10.6.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript-eslint@8.62.1(eslint@10.6.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3))(typescript@6.0.3):
     dependencies:
       '@angular-devkit/core': 22.0.4(chokidar@5.0.0)
       '@angular-devkit/schematics': 22.0.4(chokidar@5.0.0)
-      '@angular-eslint/builder': 22.0.0(@angular/cli@22.0.5(@types/node@26.0.1)(chokidar@5.0.0))(chokidar@5.0.0)(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3)
+      '@angular-eslint/builder': 22.0.0(@angular/cli@22.0.5(@types/node@26.0.1)(chokidar@5.0.0)(supports-color@8.1.1))(chokidar@5.0.0)(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3)
       '@angular-eslint/eslint-plugin': 22.0.0(@typescript-eslint/utils@8.61.1(eslint@10.6.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3))(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3)
       '@angular-eslint/eslint-plugin-template': 22.0.0(@angular-eslint/template-parser@22.0.0(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3))(@typescript-eslint/types@8.61.1)(@typescript-eslint/utils@8.61.1(eslint@10.6.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3))(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3)
-      '@angular-eslint/schematics': 22.0.0(@angular-eslint/template-parser@22.0.0(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3))(@angular/cli@22.0.5(@types/node@26.0.1)(chokidar@5.0.0))(@typescript-eslint/types@8.61.1)(@typescript-eslint/utils@8.61.1(eslint@10.6.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3))(chokidar@5.0.0)(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3)
+      '@angular-eslint/schematics': 22.0.0(@angular-eslint/template-parser@22.0.0(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3))(@angular/cli@22.0.5(@types/node@26.0.1)(chokidar@5.0.0)(supports-color@8.1.1))(@typescript-eslint/types@8.61.1)(@typescript-eslint/utils@8.61.1(eslint@10.6.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3))(chokidar@5.0.0)(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3)
       '@angular-eslint/template-parser': 22.0.0(eslint@10.6.0(supports-color@8.1.1))(typescript@6.0.3)
-      '@angular/cli': 22.0.5(@types/node@26.0.1)(chokidar@5.0.0)
+      '@angular/cli': 22.0.5(@types/node@26.0.1)(chokidar@5.0.0)(supports-color@8.1.1)
       '@typescript-eslint/types': 8.61.1
       '@typescript-eslint/utils': 8.61.1(eslint@10.6.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)
       eslint: 10.6.0(supports-color@8.1.1)
@@ -8427,7 +8430,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  body-parser@2.3.0:
+  body-parser@2.3.0(supports-color@8.1.1):
     dependencies:
       bytes: 3.1.2
       content-type: 2.0.0
@@ -9219,15 +9222,15 @@ snapshots:
 
   exponential-backoff@3.1.3: {}
 
-  express-rate-limit@8.5.2(express@5.2.1):
+  express-rate-limit@8.5.2(express@5.2.1(supports-color@8.1.1)):
     dependencies:
-      express: 5.2.1
+      express: 5.2.1(supports-color@8.1.1)
       ip-address: 10.2.0
 
-  express@5.2.1:
+  express@5.2.1(supports-color@8.1.1):
     dependencies:
       accepts: 2.0.0
-      body-parser: 2.3.0
+      body-parser: 2.3.0(supports-color@8.1.1)
       content-disposition: 1.1.0
       content-type: 1.0.5
       cookie: 0.7.2
@@ -9237,7 +9240,7 @@ snapshots:
       encodeurl: 2.0.0
       escape-html: 1.0.3
       etag: 1.8.1
-      finalhandler: 2.1.1
+      finalhandler: 2.1.1(supports-color@8.1.1)
       fresh: 2.0.0
       http-errors: 2.0.1
       merge-descriptors: 2.0.0
@@ -9248,8 +9251,8 @@ snapshots:
       proxy-addr: 2.0.7
       qs: 6.15.3
       range-parser: 1.3.0
-      router: 2.2.0
-      send: 1.2.1
+      router: 2.2.0(supports-color@8.1.1)
+      send: 1.2.1(supports-color@8.1.1)
       serve-static: 2.2.1
       statuses: 2.0.2
       type-is: 2.1.0
@@ -9311,7 +9314,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  finalhandler@2.1.1:
+  finalhandler@2.1.1(supports-color@8.1.1):
     dependencies:
       debug: 4.4.3(supports-color@8.1.1)
       encodeurl: 2.0.0
@@ -9560,7 +9563,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  https-proxy-agent@9.0.0:
+  https-proxy-agent@9.0.0(supports-color@8.1.1):
     dependencies:
       agent-base: 9.0.0
       debug: 4.4.3(supports-color@8.1.1)
@@ -10731,7 +10734,7 @@ snapshots:
 
   package-json-from-dist@1.0.1: {}
 
-  pacote@21.5.1:
+  pacote@21.5.1(supports-color@8.1.1):
     dependencies:
       '@gar/promise-retry': 1.0.3
       '@npmcli/git': 7.0.2
@@ -10747,7 +10750,7 @@ snapshots:
       npm-pick-manifest: 11.0.3
       npm-registry-fetch: 19.1.1
       proc-log: 6.1.0
-      sigstore: 4.1.1
+      sigstore: 4.1.1(supports-color@8.1.1)
       ssri: 13.0.1
       tar: 7.5.17
     transitivePeerDependencies:
@@ -11028,7 +11031,7 @@ snapshots:
       '@rollup/rollup-win32-x64-msvc': 4.62.2
       fsevents: 2.3.3
 
-  router@2.2.0:
+  router@2.2.0(supports-color@8.1.1):
     dependencies:
       debug: 4.4.3(supports-color@8.1.1)
       depd: 2.0.0
@@ -11074,7 +11077,7 @@ snapshots:
 
   semver@7.8.5: {}
 
-  send@1.2.1:
+  send@1.2.1(supports-color@8.1.1):
     dependencies:
       debug: 4.4.3(supports-color@8.1.1)
       encodeurl: 2.0.0
@@ -11095,7 +11098,7 @@ snapshots:
       encodeurl: 2.0.0
       escape-html: 1.0.3
       parseurl: 1.3.3
-      send: 1.2.1
+      send: 1.2.1(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -11147,13 +11150,13 @@ snapshots:
 
   signal-exit@4.1.0: {}
 
-  sigstore@4.1.1:
+  sigstore@4.1.1(supports-color@8.1.1):
     dependencies:
       '@sigstore/bundle': 4.0.0
       '@sigstore/core': 3.2.1
       '@sigstore/protobuf-specs': 0.5.1
       '@sigstore/sign': 4.1.1
-      '@sigstore/tuf': 4.0.2
+      '@sigstore/tuf': 4.0.2(supports-color@8.1.1)
       '@sigstore/verify': 3.1.1
     transitivePeerDependencies:
       - supports-color
@@ -11431,7 +11434,7 @@ snapshots:
 
   tslib@2.8.1: {}
 
-  tuf-js@4.1.0:
+  tuf-js@4.1.0(supports-color@8.1.1):
     dependencies:
       '@tufjs/models': 4.1.0
       debug: 4.4.3(supports-color@8.1.1)
