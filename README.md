@@ -84,24 +84,31 @@ The commands are also run automatic in the precommit hook.
 
 ### Docker
 
-To start the application with Docker, navigate to the `/docker` directory.
+Navigate to the `/docker` directory. All stacks share the project name `pcts`, so `docker compose down` stops whichever stack is running.
 
-There are different profiles available.
-
-**Full-stack:**
+**Dev stack** (default — Maven + pnpm with hot reload):
 
 ```shell
   docker compose up
 ```
 
-**Backend and DB:**
+**E2E stack:**
 
 ```shell
-  docker compose --profile backend up
+  docker compose --profile e2e up --build
 ```
 
-**Only DB:**
+**Prod stack:**
 
 ```shell
-  docker compose --profile db up
+  docker compose --profile prod up --build
 ```
+
+#### Live reload in dev stack (IntelliJ)
+
+Spring Boot DevTools watches compiled `.class` files, not source files. IntelliJ must compile on save so DevTools can pick up the changes.
+
+1. Settings → Build, Execution, Deployment → Compiler → enable **Build project automatically**
+2. Settings → Advanced Settings → enable **Allow auto-make to start even if developed application is currently running**
+
+With both enabled, saving a `.java` file triggers IntelliJ compilation into `backend/target/classes/`, which the container sees via the volume mount, and DevTools restarts the app automatically.
