@@ -7,8 +7,3 @@ allowBuilds:
   msgpackr-extract: false
   unrs-resolver: false
 minimumReleaseAge: 1440
-minimumReleaseAgeExclude:
-  - '@angular/cdk@22.0.3'
-  - '@angular/material-date-fns-adapter@22.0.3'
-  - '@angular/material-luxon-adapter@22.0.3'
-  - '@angular/material@22.0.3'
