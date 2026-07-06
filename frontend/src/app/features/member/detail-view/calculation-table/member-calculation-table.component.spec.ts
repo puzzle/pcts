@@ -70,7 +70,7 @@ describe('MemberCalculationTableComponent (Jest)', () => {
     fixture.componentRef.setInput('memberId', 1);
     fixture.detectChanges();
 
-    expect(component.calculationTable.data)
+    expect(component.calculationTable().data)
       .toEqual(calcData);
   });
 
@@ -88,7 +88,7 @@ describe('MemberCalculationTableComponent (Jest)', () => {
     expect(memberServiceMock.getCalculationsByMemberIdAndOptionalRoleId)
       .toHaveBeenCalledWith(5, 10);
 
-    expect(component.calculationTable.data)
+    expect(component.calculationTable().data)
       .toEqual(newData);
   });
 });
