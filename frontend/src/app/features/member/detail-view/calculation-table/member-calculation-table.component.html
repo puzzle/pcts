@@ -4,7 +4,7 @@
     <app-crud-button mode="add" />
   </div>
   @if (calculations(); as c){
-    <app-generic-table crudBasePath="calculation" idAttr="id" [dataSource]="calculationTable"/>
+    <app-generic-table crudBasePath="calculation" idAttr="id" [dataSource]="calculationTable()"/>
   }
 </div>
 

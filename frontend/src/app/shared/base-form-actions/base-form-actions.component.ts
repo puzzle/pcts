@@ -17,7 +17,7 @@ export class BaseFormActionsComponent {
 
   canceled = output();
 
-  private formGroup$ = toObservable(this.formGroup);
+  private readonly formGroup$ = toObservable(this.formGroup);
 
   isInvalid = toSignal(this.formGroup$.pipe(filter((e): e is FormGroup => !!e), switchMap((form) => form.statusChanges.pipe(startWith(form.status))), map((status) => status === 'INVALID')), { initialValue: false });
 }
