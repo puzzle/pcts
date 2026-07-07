@@ -7,7 +7,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.puzzle.pcts.configuration.AuthorizationConfiguration;
 import ch.puzzle.pcts.dto.configuration.ConfigurationDto;
+import ch.puzzle.pcts.dto.support.SupportDto;
 import ch.puzzle.pcts.mapper.ConfigurationMapper;
+import ch.puzzle.pcts.mapper.SupportMapper;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,30 +25,48 @@ class ConfigurationControllerIT extends ControllerITBase {
     @MockitoBean
     private AuthorizationConfiguration authorizationConfiguration;
 
+    private static final String supportUrl = "https://example.com";
+
     @MockitoBean
-    private ConfigurationMapper mapper;
+    private ConfigurationMapper configMapper;
+
+    @MockitoBean
+    private SupportMapper supportMapper;
 
     @Autowired
     private MockMvc mvc;
 
-    private static final String BASEURL = "/api/v1/configuration/authorization";
+    private static final String BASEURL = "/api/v1/configuration";
 
     private ConfigurationDto configurationDto;
+    private SupportDto supportDto;
 
     @BeforeEach
     void setUp() {
         this.configurationDto = new ConfigurationDto(List.of("ADMIN_1", "ADMIN_2"));
+        this.supportDto = new SupportDto("https://example.com");
     }
 
     @DisplayName("Should successfully get configuration")
     @Test
     void shouldSuccessfullyGetConfiguration() throws Exception {
-        when(mapper.toDto(authorizationConfiguration)).thenReturn(configurationDto);
+        when(configMapper.toDto(authorizationConfiguration)).thenReturn(configurationDto);
 
         mvc
-                .perform(get(BASEURL).with(csrf()).accept(MediaType.APPLICATION_JSON))
+                .perform(get(BASEURL + "/authorization").with(csrf()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(JsonDtoMatcher.matchesDto(configurationDto, "$"));
+    }
+
+    @DisplayName("Should successfully get support page url")
+    @Test
+    void shouldSuccessfullyGetSupportPageUrl() throws Exception {
+        when(supportMapper.toDto(supportUrl)).thenReturn(supportDto);
+
+        mvc
+                .perform(get(BASEURL + "/help").with(csrf()).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(JsonDtoMatcher.matchesDto(supportDto, "$"));
     }
 
 }
