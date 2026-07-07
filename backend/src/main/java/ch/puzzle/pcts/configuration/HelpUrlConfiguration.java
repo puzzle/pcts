@@ -8,6 +8,14 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "app.help")
 public record HelpUrlConfiguration(@NotBlank String url) {
     public String helpUrl() {
-        return url;
+        if (isValid()) {
+            return url;
+        } else {
+            throw new IllegalStateException("Invalid support url configurated");
+        }
+    }
+
+    private boolean isValid() {
+        return !url.substring(8).isBlank() && url.startsWith("https://") && url.length() > 8;
     }
 }
