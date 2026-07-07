@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, DOCUMENT, effect, inject } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, DOCUMENT, effect, inject, signal } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import '@puzzleitc/puzzle-shell';
 import { LangChangeEvent, TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -6,6 +6,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { AuthService } from './core/auth/auth.service';
+import { ConfigurationService } from './features/configuration/configuration.service';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +24,8 @@ export class AppComponent {
 
   protected readonly authService = inject(AuthService);
 
+  protected readonly configService = inject(ConfigurationService);
+
   private readonly translateService = inject(TranslateService);
 
   private readonly document = inject(DOCUMENT);
@@ -31,10 +34,17 @@ export class AppComponent {
     initialValue: this.translateService.getCurrentLang() || this.translateService.getFallbackLang() || this.translateService.getBrowserLang() || 'en'
   });
 
+  protected readonly url = signal<string>('');
+
   constructor() {
     effect(() => {
       this.setHtmlLangAttribute(this.currentLang());
     });
+
+    this.configService.getHelpUrl()
+      .subscribe((response) => {
+        this.url.set(response.url);
+      });
   }
 
   visitRoot(): void {
@@ -51,4 +61,3 @@ export class AppComponent {
     }
   }
 }
-
