@@ -9,7 +9,7 @@ import { configuration } from '../../shared/test/test-data';
 describe('configurationService', () => {
   let httpMock: HttpTestingController;
   let service: ConfigurationService;
-  const API_URL = '/api/v1/configuration';
+  const API_URL = '/api/v1/configuration/authorization';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
