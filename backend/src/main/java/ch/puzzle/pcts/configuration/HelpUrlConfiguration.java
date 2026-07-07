@@ -16,6 +16,6 @@ public record HelpUrlConfiguration(@NotBlank String url) {
     }
 
     private boolean isValid() {
-        return !url.substring(8).isBlank() && url.startsWith("https://") && url.length() > 8;
+        return !url.substring(7).isBlank() && url.startsWith("https://") && url.length() > 8 && !url.contains(" ");
     }
 }
