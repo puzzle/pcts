@@ -4,7 +4,8 @@ import { ConfigurationService } from './configuration.service';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { ConfigurationModel } from './configuration.model';
-import { configuration } from '../../shared/test/test-data';
+import { configuration, helpUrl } from '../../shared/test/test-data';
+import { HelpUrlModel } from './HelpUrl.model';
 
 describe('configurationService', () => {
   let httpMock: HttpTestingController;
@@ -45,6 +46,23 @@ describe('configurationService', () => {
       expect(req.request.method)
         .toBe('GET');
       req.flush(mockConfig);
+    });
+  });
+
+  describe('Supportpageurl endpoint', () => {
+    it('should fetch url', () => {
+      const mockUrl: HelpUrlModel = helpUrl;
+
+      service.getConfiguration()
+        .subscribe((response) => {
+          expect(response)
+            .toEqual(mockUrl);
+        });
+
+      const req = httpMock.expectOne(API_URL);
+      expect(req.request.method)
+        .toBe('GET');
+      req.flush(mockUrl);
     });
   });
 });
