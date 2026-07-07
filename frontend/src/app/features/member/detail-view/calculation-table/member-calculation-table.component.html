@@ -3,8 +3,7 @@
     <h3>{{ "MODEL_NAME" | scopedTranslation }}</h3>
     <app-crud-button mode="add" />
   </div>
-  @if (calculations(); as c){
-    <app-generic-table crudBasePath="calculation" idAttr="id" [dataSource]="calculationTable()"/>
+  @if (calculationTable(); as c){
+    <app-generic-table crudBasePath="calculation" idAttr="id" [dataSource]="c"/>
   }
 </div>
-

@@ -4,8 +4,7 @@ import { MemberService } from '../../member.service';
 import { getCalculationTable } from '../cv/member-detail-cv-table-definition';
 import { CrudButtonComponent } from '../../../../shared/crud-button/crud-button.component';
 import { ScopedTranslationPipe } from '../../../../shared/pipes/scoped-translation-pipe';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { switchMap } from 'rxjs';
+import { rxResource } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-member-calculation-table',
@@ -21,16 +20,18 @@ export class MemberCalculationTableComponent {
 
   roleId = input<number>();
 
-  private readonly calculationsRequest$ = toObservable(computed(() => ({
-    memberId: this.memberId(),
-    roleId: this.roleId()
-  })));
+  calculationsResource = rxResource({
+    params: () => ({ memberId: this.memberId(),
+      roleId: this.roleId() }),
 
-  calculations = toSignal(this.calculationsRequest$.pipe(switchMap((params) => this.memberService.getCalculationsByMemberIdAndOptionalRoleId(params.memberId, params.roleId))), { initialValue: [] });
+    stream: ({ params }) => this.memberService.getCalculationsByMemberIdAndOptionalRoleId(params.memberId, params.roleId),
+
+    defaultValue: []
+  });
 
   calculationTable = computed(() => {
     const table = getCalculationTable();
-    table.data = this.calculations();
+    table.data = this.calculationsResource.value();
     return table;
   });
 }

@@ -26,14 +26,10 @@ describe('MemberCalculationTableComponent (Jest)', () => {
       imports: [MemberCalculationTableComponent],
       providers: [{ provide: MemberService,
         useValue: memberServiceMock },
-      {
-        provide: Router,
-        useValue: routerMock
-      },
-      {
-        provide: ActivatedRoute,
-        useValue: {}
-      }]
+      { provide: Router,
+        useValue: routerMock },
+      { provide: ActivatedRoute,
+        useValue: {} }]
     })
       .compileComponents();
 
@@ -44,22 +40,24 @@ describe('MemberCalculationTableComponent (Jest)', () => {
 
   it('should create', () => {
     fixture.componentRef.setInput('memberId', 42);
-
     fixture.detectChanges();
+
     expect(component)
       .toBeTruthy();
   });
 
-  it('should call service with provided memberId and roleId', () => {
+  it('should call service with provided memberId and roleId', async() => {
     fixture.componentRef.setInput('memberId', 42);
     fixture.componentRef.setInput('roleId', 7);
     fixture.detectChanges();
+
+    await fixture.whenStable();
 
     expect(memberServiceMock.getCalculationsByMemberIdAndOptionalRoleId)
       .toHaveBeenCalledWith(42, 7);
   });
 
-  it('should set calculations and calculationTable.data', () => {
+  it('should set calculations and calculationTable.data', async() => {
     const calcData: CalculationModel[] = [{ id: 1,
       points: 1 },
     { id: 2,
@@ -70,24 +68,31 @@ describe('MemberCalculationTableComponent (Jest)', () => {
     fixture.componentRef.setInput('memberId', 1);
     fixture.detectChanges();
 
+    await fixture.whenStable();
+
     expect(component.calculationTable().data)
       .toEqual(calcData);
   });
 
-  it('should update when roleId changes', () => {
+  // Make the test async
+  it('should update when roleId changes', async() => {
     const newData = [{ id: 99,
       points: 20 } as CalculationModel];
-    memberServiceMock.getCalculationsByMemberIdAndOptionalRoleId?.mockReturnValue(of(newData));
 
+    memberServiceMock.getCalculationsByMemberIdAndOptionalRoleId?.mockReturnValue(of([]));
     fixture.componentRef.setInput('memberId', 5);
     fixture.detectChanges();
+    await fixture.whenStable();
+
+    memberServiceMock.getCalculationsByMemberIdAndOptionalRoleId?.mockReturnValue(of(newData));
 
     fixture.componentRef.setInput('roleId', 10);
     fixture.detectChanges();
 
+    await fixture.whenStable();
+
     expect(memberServiceMock.getCalculationsByMemberIdAndOptionalRoleId)
       .toHaveBeenCalledWith(5, 10);
-
     expect(component.calculationTable().data)
       .toEqual(newData);
   });
