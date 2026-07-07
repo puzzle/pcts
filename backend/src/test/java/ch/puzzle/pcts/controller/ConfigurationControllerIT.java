@@ -29,7 +29,7 @@ class ConfigurationControllerIT extends ControllerITBase {
     @Autowired
     private MockMvc mvc;
 
-    private static final String BASEURL = "/api/v1/configuration";
+    private static final String BASEURL = "/api/v1/configuration/authorization";
 
     private ConfigurationDto configurationDto;
 
