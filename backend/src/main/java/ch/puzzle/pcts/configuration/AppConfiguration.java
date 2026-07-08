@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
 @Validated
-@ConfigurationProperties(prefix = "pcts.app")
+@ConfigurationProperties(prefix = "pcts.app.help")
 public record AppConfiguration(@NotBlank @URL(protocol = "https") String helpurl) {
     public String helpUrl() {
         return helpurl;

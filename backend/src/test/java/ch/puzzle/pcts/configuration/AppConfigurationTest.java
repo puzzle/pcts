@@ -20,8 +20,8 @@ class AppConfigurationTest {
         validator = factory.getValidator();
     }
 
-    @Test
     @DisplayName("Should be valid when URL is a correct https link")
+    @Test
     void shouldBeValidWhenUrlIsCorrect() {
         var config = new AppConfiguration("https://example.com");
         var violations = validator.validate(config);
@@ -29,13 +29,21 @@ class AppConfigurationTest {
         assertTrue(violations.isEmpty(), "Expected no violations for valid URL");
     }
 
+    @DisplayName("Should have violations when URL is invalid")
     @Test
-    @DisplayName("Should have violations when URL is blank or invalid")
     void shouldHaveViolationsWhenUrlIsInvalid() {
         var config = new AppConfiguration("invalid-url");
 
         var violations = validator.validate(config);
 
         assertFalse(violations.isEmpty(), "Expected violations for invalid URL");
+    }
+
+    @DisplayName("Should have violations when URL is blank")
+    @Test
+    void shouldHaveViolationsWhenUrlIsBlank() {
+        var config = new AppConfiguration("");
+        var violations = validator.validate(config);
+        assertFalse(violations.isEmpty(), "Expected violations for blank URL");
     }
 }
