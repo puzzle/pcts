@@ -1,7 +1,7 @@
 package ch.puzzle.pcts.controller;
 
+import ch.puzzle.pcts.configuration.AppConfiguration;
 import ch.puzzle.pcts.configuration.AuthorizationConfiguration;
-import ch.puzzle.pcts.configuration.HelpUrlConfiguration;
 import ch.puzzle.pcts.dto.configuration.ConfigurationDto;
 import ch.puzzle.pcts.dto.support.SupportDto;
 import ch.puzzle.pcts.mapper.ConfigurationMapper;
@@ -19,10 +19,10 @@ public class ConfigurationController {
     private final ConfigurationMapper configMapper;
     private final SupportMapper supportMapper;
     private final AuthorizationConfiguration authConfig;
-    private final HelpUrlConfiguration helpUrlConfig;
+    private final AppConfiguration helpUrlConfig;
 
     public ConfigurationController(ConfigurationMapper configMapper, SupportMapper supportMapper,
-                                   AuthorizationConfiguration authConfig, HelpUrlConfiguration helpUrlConfig) {
+                                   AuthorizationConfiguration authConfig, AppConfiguration helpUrlConfig) {
         this.configMapper = configMapper;
         this.supportMapper = supportMapper;
         this.authConfig = authConfig;

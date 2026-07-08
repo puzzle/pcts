@@ -5,8 +5,8 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.puzzle.pcts.configuration.AppConfiguration;
 import ch.puzzle.pcts.configuration.AuthorizationConfiguration;
-import ch.puzzle.pcts.configuration.HelpUrlConfiguration;
 import ch.puzzle.pcts.dto.configuration.ConfigurationDto;
 import ch.puzzle.pcts.dto.support.SupportDto;
 import ch.puzzle.pcts.mapper.ConfigurationMapper;
@@ -29,7 +29,7 @@ class ConfigurationControllerIT extends ControllerITBase {
     private static final String supportUrl = "https://example.com";
 
     @MockitoBean
-    private HelpUrlConfiguration helpUrlConfiguration;
+    private AppConfiguration appConfiguration;
 
     @MockitoBean
     private ConfigurationMapper configMapper;
@@ -65,7 +65,7 @@ class ConfigurationControllerIT extends ControllerITBase {
     @DisplayName("Should successfully get support page url")
     @Test
     void shouldSuccessfullyGetSupportPageUrl() throws Exception {
-        when(helpUrlConfiguration.helpUrl()).thenReturn(supportUrl);
+        when(appConfiguration.helpUrl()).thenReturn(supportUrl);
         when(supportMapper.toDto(supportUrl)).thenReturn(supportDto);
 
         mvc

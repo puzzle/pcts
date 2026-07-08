@@ -6,13 +6,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class HelpUrlConfigurationTest {
+class AppConfigurationTest {
     @DisplayName("Should throw exception when url does not start with https://")
     @Test
     void shouldThrowExceptionWhenUrlDoesNotStartWithHttps() {
         String url = "http://example.com";
 
-        var config = new HelpUrlConfiguration(url);
+        var config = new AppConfiguration(url);
 
         assertThrows(IllegalStateException.class, () -> config.helpUrl());
     }
@@ -22,7 +22,7 @@ class HelpUrlConfigurationTest {
     void shouldThrowExceptionWhenUrlIsNotLongerThan8Chars() {
         String url = "https://";
 
-        var config = new HelpUrlConfiguration(url);
+        var config = new AppConfiguration(url);
 
         assertThrows(IllegalStateException.class, () -> config.helpUrl());
     }
@@ -32,7 +32,7 @@ class HelpUrlConfigurationTest {
     void shouldThrowExceptionWhenUrlContainsSpace() {
         String url = "https://in validUrl.com";
 
-        var config = new HelpUrlConfiguration(url);
+        var config = new AppConfiguration(url);
 
         assertThrows(IllegalStateException.class, () -> config.helpUrl());
     }
@@ -42,7 +42,7 @@ class HelpUrlConfigurationTest {
     void shouldThrowExceptionWhenUrlIsBlankAfterIndex8() {
         String url = "https://   ";
 
-        var config = new HelpUrlConfiguration(url);
+        var config = new AppConfiguration(url);
 
         assertThrows(IllegalStateException.class, () -> config.helpUrl());
     }
@@ -52,7 +52,7 @@ class HelpUrlConfigurationTest {
     void shouldReturnCorrectUrlWhenUrlIsValid() {
         String url = "https://example.com";
 
-        var config = new HelpUrlConfiguration(url);
+        var config = new AppConfiguration(url);
 
         assertEquals(url, config.helpUrl());
     }
