@@ -7,7 +7,7 @@ import org.springframework.validation.annotation.Validated;
 
 @Validated
 @ConfigurationProperties(prefix = "pcts.app")
-public record AppConfiguration(@NotBlank @URL String helpurl) {
+public record AppConfiguration(@NotBlank @URL(regexp = "") String helpurl) {
     public String helpUrl() {
         return helpurl;
     }
