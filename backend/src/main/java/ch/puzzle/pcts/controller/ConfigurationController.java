@@ -17,15 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "configuration", description = "Retrieve configuration properties for the application")
 public class ConfigurationController {
     private final ConfigurationMapper configMapper;
-    private final AppConfigurationMapper appConfigurationMapper;
     private final AuthorizationConfiguration authConfig;
+    private final AppConfigurationMapper appConfigMapper;
     private final AppConfiguration appConfig;
 
-    public ConfigurationController(ConfigurationMapper configMapper, AppConfigurationMapper appConfigurationMapper,
-                                   AuthorizationConfiguration authConfig, AppConfiguration appConfig) {
+    public ConfigurationController(ConfigurationMapper configMapper, AuthorizationConfiguration authConfig,
+                                   AppConfigurationMapper appConfigMapper, AppConfiguration appConfig) {
         this.configMapper = configMapper;
-        this.appConfigurationMapper = appConfigurationMapper;
         this.authConfig = authConfig;
+        this.appConfigMapper = appConfigMapper;
         this.appConfig = appConfig;
     }
 
@@ -36,6 +36,6 @@ public class ConfigurationController {
 
     @GetMapping("/help")
     public ResponseEntity<SupportDto> getHelpUrl() {
-        return ResponseEntity.ok(appConfigurationMapper.toDto(this.appConfig.helpUrl()));
+        return ResponseEntity.ok(appConfigMapper.toDto(this.appConfig.helpUrl()));
     }
 }
