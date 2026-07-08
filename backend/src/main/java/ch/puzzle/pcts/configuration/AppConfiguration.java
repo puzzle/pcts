@@ -8,7 +8,7 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @ConfigurationProperties(prefix = "pcts.app.help")
 public record AppConfiguration(@NotBlank @URL(protocol = "https") String helpurl) {
-    public String helpUrl() {
+    public String getHelpUrl() {
         return helpurl;
     }
 }

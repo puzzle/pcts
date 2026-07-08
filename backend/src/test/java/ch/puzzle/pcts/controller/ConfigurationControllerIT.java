@@ -65,7 +65,7 @@ class ConfigurationControllerIT extends ControllerITBase {
     @DisplayName("Should successfully get support page url")
     @Test
     void shouldSuccessfullyGetSupportPageUrl() throws Exception {
-        when(appConfiguration.helpUrl()).thenReturn(supportUrl);
+        when(appConfiguration.getHelpUrl()).thenReturn(supportUrl);
         when(appConfigurationMapper.toDto(supportUrl)).thenReturn(supportDto);
 
         mvc

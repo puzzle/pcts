@@ -36,6 +36,6 @@ public class ConfigurationController {
 
     @GetMapping("/help")
     public ResponseEntity<SupportDto> getHelpUrl() {
-        return ResponseEntity.ok(appConfigMapper.toDto(this.appConfig.helpUrl()));
+        return ResponseEntity.ok(appConfigMapper.toDto(this.appConfig.getHelpUrl()));
     }
 }
