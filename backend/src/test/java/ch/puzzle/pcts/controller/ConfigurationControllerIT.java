@@ -9,8 +9,8 @@ import ch.puzzle.pcts.configuration.AppConfiguration;
 import ch.puzzle.pcts.configuration.AuthorizationConfiguration;
 import ch.puzzle.pcts.dto.configuration.ConfigurationDto;
 import ch.puzzle.pcts.dto.support.SupportDto;
+import ch.puzzle.pcts.mapper.AppConfigurationMapper;
 import ch.puzzle.pcts.mapper.ConfigurationMapper;
-import ch.puzzle.pcts.mapper.SupportMapper;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +35,7 @@ class ConfigurationControllerIT extends ControllerITBase {
     private ConfigurationMapper configMapper;
 
     @MockitoBean
-    private SupportMapper supportMapper;
+    private AppConfigurationMapper appConfigurationMapper;
 
     @Autowired
     private MockMvc mvc;
@@ -66,7 +66,7 @@ class ConfigurationControllerIT extends ControllerITBase {
     @Test
     void shouldSuccessfullyGetSupportPageUrl() throws Exception {
         when(appConfiguration.helpUrl()).thenReturn(supportUrl);
-        when(supportMapper.toDto(supportUrl)).thenReturn(supportDto);
+        when(appConfigurationMapper.toDto(supportUrl)).thenReturn(supportDto);
 
         mvc
                 .perform(get(BASEURL + "/help").with(csrf()).accept(MediaType.APPLICATION_JSON))
