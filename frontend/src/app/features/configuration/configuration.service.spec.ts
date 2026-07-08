@@ -10,7 +10,7 @@ import { HelpUrlModel } from './HelpUrl.model';
 describe('configurationService', () => {
   let httpMock: HttpTestingController;
   let service: ConfigurationService;
-  const API_URL = '/api/v1/configuration/authorization';
+  const API_URL = '/api/v1/configuration/';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -42,7 +42,7 @@ describe('configurationService', () => {
             .toEqual(mockConfig);
         });
 
-      const req = httpMock.expectOne(API_URL);
+      const req = httpMock.expectOne(API_URL + 'authorization');
       expect(req.request.method)
         .toBe('GET');
       req.flush(mockConfig);
@@ -53,13 +53,13 @@ describe('configurationService', () => {
     it('should fetch url', () => {
       const mockUrl: HelpUrlModel = helpUrl;
 
-      service.getConfiguration()
+      service.getHelpUrl()
         .subscribe((response) => {
           expect(response)
             .toEqual(mockUrl);
         });
 
-      const req = httpMock.expectOne(API_URL);
+      const req = httpMock.expectOne(API_URL + 'help');
       expect(req.request.method)
         .toBe('GET');
       req.flush(mockUrl);
