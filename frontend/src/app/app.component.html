@@ -12,9 +12,11 @@
   </pzsh-topbar>
   <pzsh-menu class="position-fixed z-3" data-testid="user-options">
     <div slot="actions">
-      <pzsh-menu-action id="support-page-url" data-testid="support-page-url" href="{{ url() }}">
-        <pzsh-icon name="question-circle"></pzsh-icon>
-        {{ "HELP" | translate }}
+      <pzsh-menu-action>
+        <a class="text-reset text-decoration-none d-flex align-items-center" id="support-page-url" data-testid="support-page-url" href="{{ url() }}" target="_blank">
+          <pzsh-icon class="pe-1" name="question-circle"></pzsh-icon>
+          {{ "HELP" | translate }}
+        </a>
       </pzsh-menu-action>
       <pzsh-menu-dropdown href="#">
         <div slot="toggle">
