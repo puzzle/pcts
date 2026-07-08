@@ -34,7 +34,7 @@ export class AppComponent {
     initialValue: this.translateService.getCurrentLang() || this.translateService.getFallbackLang() || this.translateService.getBrowserLang() || 'en'
   });
 
-  protected readonly url = signal<string>('');
+  readonly url = signal<string>('');
 
   constructor() {
     effect(() => {
