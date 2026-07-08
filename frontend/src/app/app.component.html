@@ -13,7 +13,7 @@
   <pzsh-menu class="position-fixed z-3" data-testid="user-options">
     <div slot="actions">
       <pzsh-menu-action>
-        <a class="text-reset text-decoration-none d-flex align-items-center" id="support-page-url" data-testid="support-page-url" href="{{ url() }}" target="_blank">
+        <a class="text-reset text-decoration-none d-flex align-items-center" data-testid="support-page-url" href="{{ url() }}" target="_blank">
           <pzsh-icon class="pe-1" name="question-circle"></pzsh-icon>
           {{ "HELP" | translate }}
         </a>
@@ -25,8 +25,7 @@
         </div>
         <div slot="items">
           <pzsh-menu-dropdown-item href="#">
-            <button class="bg-transparent border-0 p-0 shadow-none text-reset d-inline-flex align-items-center"
-                    (click)="handleLogout()" data-testid="logout">
+            <button class="bg-transparent border-0 p-0 shadow-none text-reset d-inline-flex align-items-center" (click)="handleLogout()" data-testid="logout">
               <pzsh-icon name="sign-out-alt"></pzsh-icon>
               {{ "LOGOUT" | translate }}
             </button>
