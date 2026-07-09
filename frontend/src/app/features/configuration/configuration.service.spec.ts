@@ -6,6 +6,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { ConfigurationModel } from './configuration.model';
 import { configuration, helpUrl } from '../../shared/test/test-data';
 import { HelpUrlModel } from './HelpUrl.model';
+import { firstValueFrom } from 'rxjs';
 
 describe('configurationService', () => {
   let httpMock: HttpTestingController;
@@ -50,19 +51,24 @@ describe('configurationService', () => {
   });
 
   describe('Supportpageurl endpoint', () => {
-    it('should fetch url', () => {
+    it('should fetch url', async() => {
       const mockUrl: HelpUrlModel = helpUrl;
 
-      service.getHelpUrl()
-        .subscribe((response) => {
-          expect(response)
-            .toEqual(mockUrl);
-        });
+      const url = service.getHelpUrl<helpUrl>();
+
+      const urlPromise = firstValueFrom(url);
 
       const req = httpMock.expectOne(API_URL + 'help');
+
       expect(req.request.method)
         .toBe('GET');
+
       req.flush(mockUrl);
+
+      expect(await urlPromise)
+        .toEqual(mockUrl);
+
+      httpMock.verify();
     });
   });
 });
