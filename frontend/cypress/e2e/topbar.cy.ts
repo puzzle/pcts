@@ -3,11 +3,22 @@ import * as users from '../fixtures/users.json';
 describe('Topbar', () => {
   beforeEach(() => {
     cy.loginAsUser(users.gl);
-    cy.visit('/');
   });
 
-  it('should have correct url on help', () => {
+  it('should have correct url set', () => {
+    cy.intercept('GET', 'http://localhost:4200/api/v1/configuration/help')
+      .as('getURL');
+
+    cy.visit('/');
+
+    cy.wait('@getURL');
+
     cy.getByTestId('support-page-url')
-      .should('have.attr', 'href', 'https://dummy-url.test');
+      .invoke('attr', 'href')
+      .then((href: string) => {
+        cy.get('@getURL.1')
+          .its('response.body.url')
+          .should('eq', href);
+      });
   });
 });
