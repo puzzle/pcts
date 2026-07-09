@@ -37,16 +37,21 @@ describe('configurationService', () => {
     it('should fetch configuration', () => {
       const mockConfig: ConfigurationModel = configuration;
 
-      service.getConfiguration()
-        .subscribe((config) => {
-          expect(config)
-            .toEqual(mockConfig);
-        });
+      const config = service.getConfiguration<configuration>();
+
+      const configPromise = firstValueFrom(config);
 
       const req = httpMock.expectOne(API_URL + 'authorization');
+
       expect(req.request.method)
         .toBe('GET');
+
       req.flush(mockConfig);
+
+      expect(await configPromise)
+        .toEqual(mockConfig);
+
+      httpMock.verify();
     });
   });
 
