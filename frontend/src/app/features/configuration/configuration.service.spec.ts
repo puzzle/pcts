@@ -34,7 +34,7 @@ describe('configurationService', () => {
   });
 
   describe('Configuration endpoint', () => {
-    it('should fetch configuration', () => {
+    it('should fetch configuration', async() => {
       const mockConfig: ConfigurationModel = configuration;
 
       const config = service.getConfiguration<configuration>();
