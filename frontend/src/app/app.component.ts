@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, DOCUMENT, effect, inject, signal } from '@angular/core';
+import { Component, computed, CUSTOM_ELEMENTS_SCHEMA, DOCUMENT, effect, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import '@puzzleitc/puzzle-shell';
 import { LangChangeEvent, TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -34,17 +34,10 @@ export class AppComponent {
     initialValue: this.translateService.getCurrentLang() || this.translateService.getFallbackLang() || this.translateService.getBrowserLang() || 'en'
   });
 
-  readonly url = signal<string>('');
-
   constructor() {
     effect(() => {
       this.setHtmlLangAttribute(this.currentLang());
     });
-
-    this.configService.getHelpUrl()
-      .subscribe((response) => {
-        this.url.set(response.url);
-      });
   }
 
   visitRoot(): void {
@@ -60,4 +53,6 @@ export class AppComponent {
       this.document.documentElement.setAttribute('lang', lang);
     }
   }
+
+  url = computed(() => this.configService.helpURL.value()?.url);
 }

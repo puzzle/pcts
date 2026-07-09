@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ConfigurationModel } from './configuration.model';
 import { HelpUrlModel } from './HelpUrl.model';
+import { rxResource } from '@angular/core/rxjs-interop';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,5 @@ export class ConfigurationService {
     return this.httpClient.get<ConfigurationModel>(this.API_URL + '/authorization');
   }
 
-  getHelpUrl(): Observable<HelpUrlModel> {
-    return this.httpClient.get<HelpUrlModel>(this.API_URL + '/help');
-  }
+  helpURL = rxResource({ stream: () => this.httpClient.get<HelpUrlModel>('/api/v1/configuration/help') });
 }
