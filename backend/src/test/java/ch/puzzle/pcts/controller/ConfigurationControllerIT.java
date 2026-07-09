@@ -26,7 +26,7 @@ class ConfigurationControllerIT extends ControllerITBase {
     @MockitoBean
     private AuthorizationConfiguration authorizationConfiguration;
 
-    private static final String supportUrl = "https://example.com";
+    private static final String SUPPORT_URL = "https://example.com";
 
     @MockitoBean
     private AppConfiguration appConfiguration;
@@ -65,8 +65,8 @@ class ConfigurationControllerIT extends ControllerITBase {
     @DisplayName("Should successfully get support page url")
     @Test
     void shouldSuccessfullyGetSupportPageUrl() throws Exception {
-        when(appConfiguration.getHelpUrl()).thenReturn(supportUrl);
-        when(appConfigurationMapper.toDto(supportUrl)).thenReturn(supportDto);
+        when(appConfiguration.getHelpUrl()).thenReturn(SUPPORT_URL);
+        when(appConfigurationMapper.toDto(SUPPORT_URL)).thenReturn(supportDto);
 
         mvc
                 .perform(get(BASEURL + "/help").with(csrf()).accept(MediaType.APPLICATION_JSON))
