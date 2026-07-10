@@ -2,8 +2,8 @@ package ch.puzzle.pcts.controller;
 
 import ch.puzzle.pcts.configuration.AppConfiguration;
 import ch.puzzle.pcts.configuration.AuthorizationConfiguration;
+import ch.puzzle.pcts.dto.appconfiguration.AppConfigurationDto;
 import ch.puzzle.pcts.dto.configuration.ConfigurationDto;
-import ch.puzzle.pcts.dto.support.SupportDto;
 import ch.puzzle.pcts.mapper.AppConfigurationMapper;
 import ch.puzzle.pcts.mapper.ConfigurationMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -34,8 +34,8 @@ public class ConfigurationController {
         return ResponseEntity.ok(configMapper.toDto(this.authConfig));
     }
 
-    @GetMapping("/help")
-    public ResponseEntity<SupportDto> getHelpUrl() {
+    @GetMapping("/app")
+    public ResponseEntity<AppConfigurationDto> getHelpUrl() {
         return ResponseEntity.ok(appConfigMapper.toDto(this.appConfig.getHelpUrl()));
     }
 }

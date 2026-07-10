@@ -7,8 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.puzzle.pcts.configuration.AppConfiguration;
 import ch.puzzle.pcts.configuration.AuthorizationConfiguration;
+import ch.puzzle.pcts.dto.appconfiguration.AppConfigurationDto;
 import ch.puzzle.pcts.dto.configuration.ConfigurationDto;
-import ch.puzzle.pcts.dto.support.SupportDto;
 import ch.puzzle.pcts.mapper.AppConfigurationMapper;
 import ch.puzzle.pcts.mapper.ConfigurationMapper;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
@@ -43,12 +43,12 @@ class ConfigurationControllerIT extends ControllerITBase {
     private static final String BASEURL = "/api/v1/configuration";
 
     private ConfigurationDto configurationDto;
-    private SupportDto supportDto;
+    private AppConfigurationDto appConfigurationDto;
 
     @BeforeEach
     void setUp() {
         this.configurationDto = new ConfigurationDto(List.of("ADMIN_1", "ADMIN_2"));
-        this.supportDto = new SupportDto("https://example.com");
+        this.appConfigurationDto = new AppConfigurationDto("https://example.com");
     }
 
     @DisplayName("Should successfully get configuration")
@@ -66,12 +66,12 @@ class ConfigurationControllerIT extends ControllerITBase {
     @Test
     void shouldSuccessfullyGetSupportPageUrl() throws Exception {
         when(appConfiguration.getHelpUrl()).thenReturn(SUPPORT_URL);
-        when(appConfigurationMapper.toDto(SUPPORT_URL)).thenReturn(supportDto);
+        when(appConfigurationMapper.toDto(SUPPORT_URL)).thenReturn(appConfigurationDto);
 
         mvc
-                .perform(get(BASEURL + "/help").with(csrf()).accept(MediaType.APPLICATION_JSON))
+                .perform(get(BASEURL + "/app").with(csrf()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(JsonDtoMatcher.matchesDto(supportDto, "$"));
+                .andExpect(JsonDtoMatcher.matchesDto(appConfigurationDto, "$"));
     }
 
 }
