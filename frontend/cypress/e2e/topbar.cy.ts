@@ -6,7 +6,7 @@ describe('Topbar', () => {
   });
 
   it('should have correct url set', () => {
-    cy.intercept('GET', 'http://localhost:4200/api/v1/configuration/help')
+    cy.intercept('GET', 'http://localhost:4200/api/v1/configuration/app')
       .as('getURL');
 
     cy.visit('/');
