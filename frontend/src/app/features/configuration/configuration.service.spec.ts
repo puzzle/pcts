@@ -59,19 +59,17 @@ describe('configurationService', () => {
     it('should fetch url', async() => {
       const mockUrl: HelpUrlModel = helpUrl;
 
-      const url = service.getHelpUrl<helpUrl>();
-
-      const urlPromise = firstValueFrom(url);
+      const url = firstValueFrom(service.getAppConfiguration());
 
       const req = httpMock.expectOne(API_URL + 'help');
 
-      expect(req.request.method)
-        .toBe('GET');
-
       req.flush(mockUrl);
 
-      expect(await urlPromise)
+      expect(await url)
         .toEqual(mockUrl);
+
+      expect(req.request.method)
+        .toBe('GET');
 
       httpMock.verify();
     });

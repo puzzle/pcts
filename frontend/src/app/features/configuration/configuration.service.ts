@@ -17,5 +17,9 @@ export class ConfigurationService {
     return this.httpClient.get<ConfigurationModel>(this.API_URL + '/authorization');
   }
 
-  helpURL = rxResource({ stream: () => this.httpClient.get<HelpUrlModel>('/api/v1/configuration/help') });
+  getAppConfiguration(): Observable<HelpUrlModel> {
+    return this.httpClient.get<HelpUrlModel>('/api/v1/configuration/help');
+  }
+
+  helpURL = rxResource({ stream: () => this.getAppConfiguration() });
 }
