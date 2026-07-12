@@ -11,7 +11,10 @@ describe('authGuard', () => {
   let userServiceMock: Partial<AuthService>;
   let memberServiceMock: Partial<MemberService>;
   let routerMock: Partial<Router>;
-  const mockConfig = { adminAuthorities: ['ADMIN_ROLE'] };
+  const mockConfig = { keycloak: { url: '',
+    realm: '',
+    clientId: '',
+    adminAuthorities: ['ADMIN_ROLE'] } };
 
   const executeGuard = (scope?: 'admin' | 'user',
     route: Partial<ActivatedRouteSnapshot> = {},

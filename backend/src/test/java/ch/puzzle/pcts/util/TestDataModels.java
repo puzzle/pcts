@@ -2,6 +2,8 @@ package ch.puzzle.pcts.util;
 
 import static ch.puzzle.pcts.util.TestData.*;
 
+import ch.puzzle.pcts.configuration.AuthorizationConfiguration;
+import ch.puzzle.pcts.configuration.KeycloakConfiguration;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.calculation.Relevancy;
@@ -37,6 +39,13 @@ public class TestDataModels {
 
     private TestDataModels() {
     }
+
+    public static final KeycloakConfiguration KEYCLOAK_CONFIGURATION = new KeycloakConfiguration(KEYCLOAK_URL,
+                                                                                                 KEYCLOAK_REALM,
+                                                                                                 KEYCLOAK_CLIENT_ID);
+
+    public static final AuthorizationConfiguration AUTHORIZATION_CONFIGURATION = new AuthorizationConfiguration(AUTHORITIES_SP_EL_EXPRESSION,
+                                                                                                                ADMIN_AUTHORITIES);
 
     public static final OrganisationUnit ORG_UNIT_1;
     static {

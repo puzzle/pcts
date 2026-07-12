@@ -1,3 +1,8 @@
 export interface ConfigurationModel {
-  adminAuthorities: string[];
+  keycloak: {
+    url: string;
+    realm: string;
+    clientId: string;
+    adminAuthorities: string[];
+  };
 }
