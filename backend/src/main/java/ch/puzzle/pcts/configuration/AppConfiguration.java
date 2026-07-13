@@ -13,7 +13,7 @@ public record AppConfiguration(String helpurl) {
 
     @AssertTrue(message = "Help url is not a valid url")
     public boolean isValid() {
-        return helpurl != null && !helpurl.isBlank() && helpurl.startsWith("https://") && helpurl.length() >= 12
-               && (helpurl.contains(".ch") || helpurl.contains(".com"));
+        return helpurl != null && !helpurl.isBlank() && !helpurl.contains(" ") && helpurl.startsWith("https://")
+               && helpurl.length() >= 12 && (helpurl.contains(".ch") || helpurl.contains(".com"));
     }
 }
