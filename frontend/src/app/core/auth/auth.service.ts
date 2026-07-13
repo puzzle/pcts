@@ -21,7 +21,7 @@ export class AuthService {
 
   isAdmin(): boolean {
     const roles = this.getRoles();
-    const adminRoles = this.appConfig.adminAuthorities;
+    const adminRoles = this.appConfig.keycloak.adminAuthorities;
     return roles.some((role) => adminRoles.includes(role));
   }
 
