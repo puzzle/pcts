@@ -61,7 +61,7 @@ describe('configurationService', () => {
 
       const url = firstValueFrom(service.getAppConfiguration());
 
-      const req = httpMock.expectOne(API_URL + 'help');
+      const req = httpMock.expectOne(API_URL + 'app');
 
       req.flush(mockUrl);
 
