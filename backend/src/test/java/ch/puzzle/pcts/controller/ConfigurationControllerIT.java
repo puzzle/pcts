@@ -10,7 +10,7 @@ import ch.puzzle.pcts.configuration.AuthorizationConfiguration;
 import ch.puzzle.pcts.dto.appconfiguration.AppConfigurationDto;
 import ch.puzzle.pcts.dto.configuration.ConfigurationDto;
 import ch.puzzle.pcts.mapper.AppConfigurationMapper;
-import ch.puzzle.pcts.mapper.ConfigurationMapper;
+import ch.puzzle.pcts.mapper.AuthorizationMapper;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +32,7 @@ class ConfigurationControllerIT extends ControllerITBase {
     private AppConfiguration appConfiguration;
 
     @MockitoBean
-    private ConfigurationMapper configMapper;
+    private AuthorizationMapper configMapper;
 
     @MockitoBean
     private AppConfigurationMapper appConfigurationMapper;
@@ -68,13 +68,14 @@ class ConfigurationControllerIT extends ControllerITBase {
     @DisplayName("Should successfully get support page url")
     @Test
     void shouldSuccessfullyGetSupportPageUrl() throws Exception {
+        AppConfiguration appConfig = new AppConfiguration(SUPPORT_URL);
         when(appConfiguration.getHelpUrl()).thenReturn(SUPPORT_URL);
-        when(appConfigurationMapper.toDto(SUPPORT_URL)).thenReturn(appConfigurationDto);
+        when(appConfigurationMapper.toDto(appConfig)).thenReturn(appConfigurationDto);
 
         mvc
                 .perform(get(BASEURL + "/app").with(csrf()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(JsonDtoMatcher.matchesDto(appConfigurationDto, "$"));
+                .andExpect(JsonDtoMatcher.matchesDto(appConfigurationDto.helpUrl(), "$"));
     }
 
 }
