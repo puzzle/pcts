@@ -6,10 +6,10 @@ import ch.puzzle.pcts.dto.configuration.ConfigurationDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ConfigurationMapper {
+public class AuthorizationMapper {
     private final KeycloakConfiguration keycloakConfig;
 
-    public ConfigurationMapper(KeycloakConfiguration keycloakConfig) {
+    public AuthorizationMapper(KeycloakConfiguration keycloakConfig) {
         this.keycloakConfig = keycloakConfig;
     }
 
