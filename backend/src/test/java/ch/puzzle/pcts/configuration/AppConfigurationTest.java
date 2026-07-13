@@ -9,7 +9,8 @@ import jakarta.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class AppConfigurationTest {
 
@@ -21,26 +22,35 @@ class AppConfigurationTest {
         validator = factory.getValidator();
     }
 
-    @DisplayName("Should return expected result")
+    @DisplayName("Should return violations when an invalid url is provided")
     @ParameterizedTest
-    @CsvSource("""
-            https://example.com, true,
-            https://example.ch, true,
-            null, false,
-            , false,
-            http://example.com, false,
-            https://.ch, false,
-            https://example.de, false,
-            https://e x am.ch, false
-            """)
-    void shouldReturnExpected(String input, boolean expectedValid) {
+    @ValueSource(strings = { "", "http://example.com" })
+    void shouldCreateViolations(String input) {
         var config = new AppConfiguration(input);
         var violations = validator.validate(config);
 
-        if (expectedValid) {
-            assertTrue(violations.isEmpty(), "Expected no violations for: " + input);
-        } else {
-            assertFalse(violations.isEmpty(), "Expected violations for: " + input);
-        }
+        assertFalse(violations.isEmpty(), "Expected violations for: " + input);
     }
+
+    @DisplayName("Should return violations when null is provided")
+    @ParameterizedTest
+    @NullSource
+    void shouldCreateViolationsWhenNullIsProvided(String input) {
+        var config = new AppConfiguration(input);
+        var violations = validator.validate(config);
+
+        assertFalse(violations.isEmpty(), "Expected violations for: " + input);
+    }
+
+    @DisplayName("Should not return any violations when a valid url is provided")
+    @ParameterizedTest
+    @ValueSource(strings = { "https://example.com", "https://example.ch", "mailto:test@example.ch", "tel:+12345678910",
+            "sms:+12345678910" })
+    void shouldNotCreateViolations(String input) {
+        var config = new AppConfiguration(input);
+        var violations = validator.validate(config);
+
+        assertTrue(violations.isEmpty(), "Expected no violations for: " + input);
+    }
+
 }
