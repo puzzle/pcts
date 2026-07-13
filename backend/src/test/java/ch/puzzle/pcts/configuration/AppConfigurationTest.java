@@ -21,7 +21,7 @@ class AppConfigurationTest {
         validator = factory.getValidator();
     }
 
-    @DisplayName("Should be valid when URL is a correct https link ending in com")
+    @DisplayName("Should return expected result")
     @ParameterizedTest
     @CsvSource("""
             https://example.com, true,
