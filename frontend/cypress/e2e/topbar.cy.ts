@@ -14,10 +14,12 @@ describe('Topbar', () => {
     cy.wait('@getURL');
 
     cy.getByTestId('support-page-url')
+      .shadow()
+      .findByTestId('support-page-url')
       .invoke('attr', 'href')
       .then((href: string) => {
         cy.get('@getURL.1')
-          .its('response.body.url')
+          .its('response.body.helpUrl')
           .should('eq', href);
       });
   });
