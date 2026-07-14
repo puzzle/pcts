@@ -537,5 +537,5 @@ export const configuration: ConfigurationModel = {
 };
 
 export const helpUrl: HelpUrlModel = {
-  url: 'https://google.com'
+  helpUrl: 'https://google.com'
 };

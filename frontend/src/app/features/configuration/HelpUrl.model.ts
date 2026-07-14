@@ -1,3 +1,3 @@
 export interface HelpUrlModel {
-  url: string;
+  helpUrl: string;
 }
