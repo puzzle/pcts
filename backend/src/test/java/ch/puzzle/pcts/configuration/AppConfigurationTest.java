@@ -24,7 +24,7 @@ class AppConfigurationTest {
 
     @DisplayName("Should return violations when an invalid url is provided")
     @ParameterizedTest
-    @ValueSource(strings = { "", "http://example.com" })
+    @ValueSource(strings = { "", "http://example.com", "https://s p a c e s.ch" })
     @NullSource
     void shouldCreateViolations(String input) {
         var config = new AppConfiguration(input);
