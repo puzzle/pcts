@@ -26,6 +26,6 @@ public record AppConfiguration(String helpUrl) {
             return false;
         }
 
-        return Stream.of("https://", "mailto:", "tel:", "sms").anyMatch(prefix -> helpUrl.startsWith(prefix));
+        return Stream.of("https://", "mailto:", "tel:", "sms").anyMatch(helpUrl::startsWith);
     }
 }

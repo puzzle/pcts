@@ -25,17 +25,8 @@ class AppConfigurationTest {
     @DisplayName("Should return violations when an invalid url is provided")
     @ParameterizedTest
     @ValueSource(strings = { "", "http://example.com" })
-    void shouldCreateViolations(String input) {
-        var config = new AppConfiguration(input);
-        var violations = validator.validate(config);
-
-        assertFalse(violations.isEmpty(), "Expected violations for: " + input);
-    }
-
-    @DisplayName("Should return violations when null is provided")
-    @ParameterizedTest
     @NullSource
-    void shouldCreateViolationsWhenNullIsProvided(String input) {
+    void shouldCreateViolations(String input) {
         var config = new AppConfiguration(input);
         var violations = validator.validate(config);
 
