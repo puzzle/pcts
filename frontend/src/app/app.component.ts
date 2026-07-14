@@ -54,5 +54,5 @@ export class AppComponent {
     }
   }
 
-  url = computed(() => this.configService.helpURL.value()?.url);
+  url = computed(() => this.configService.helpURL.value()?.helpUrl);
 }
