@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.controller;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -25,8 +26,6 @@ import org.springframework.test.web.servlet.MockMvc;
 class ConfigurationControllerIT extends ControllerITBase {
     @MockitoBean
     private AuthorizationConfiguration authorizationConfiguration;
-
-    private static final String SUPPORT_URL = "https://example.com";
 
     @MockitoBean
     private AppConfiguration appConfiguration;
@@ -68,14 +67,12 @@ class ConfigurationControllerIT extends ControllerITBase {
     @DisplayName("Should successfully get support page url")
     @Test
     void shouldSuccessfullyGetSupportPageUrl() throws Exception {
-        AppConfiguration appConfig = new AppConfiguration(SUPPORT_URL);
-        when(appConfiguration.getHelpUrl()).thenReturn(SUPPORT_URL);
-        when(appConfigurationMapper.toDto(appConfig)).thenReturn(appConfigurationDto);
+        when(appConfigurationMapper.toDto(any())).thenReturn(appConfigurationDto);
 
         mvc
-                .perform(get(BASEURL + "/app").with(csrf()).accept(MediaType.APPLICATION_JSON))
+                .perform(get(BASEURL + "/app").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(JsonDtoMatcher.matchesDto(appConfigurationDto.helpUrl(), "$"));
+                .andExpect(JsonDtoMatcher.matchesDto(appConfigurationDto, "$"));
     }
 
 }
