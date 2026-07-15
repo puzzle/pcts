@@ -36,6 +36,7 @@ public class Member implements Model {
     @NotNull(message = "{attribute.not.null}")
     private EmploymentState employmentState;
 
+    @PCTSStringValidation(nullable = true)
     private String abbreviation;
 
     private LocalDate dateOfHire;

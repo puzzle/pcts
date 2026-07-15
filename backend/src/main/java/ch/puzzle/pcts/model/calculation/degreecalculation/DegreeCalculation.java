@@ -7,6 +7,7 @@ import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationChildInterface;
 import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.degree.Degree;
+import ch.puzzle.pcts.util.validation.PCTSStringValidation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -37,6 +38,7 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
     @Range(min = 1, max = 100, message = "{attribute.size.between}")
     private BigDecimal weight;
 
+    @PCTSStringValidation(nullable = true)
     private String comment;
 
     public DegreeCalculation(Long id, Calculation calculation, Degree degree, Relevancy relevancy, BigDecimal weight,

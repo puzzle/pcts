@@ -7,6 +7,7 @@ import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationChildInterface;
 import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.experience.Experience;
+import ch.puzzle.pcts.util.validation.PCTSStringValidation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.util.Objects;
@@ -31,6 +32,7 @@ public class ExperienceCalculation implements CalculationChildInterface, Model {
     @NotNull(message = "{attribute.not.null}")
     private Relevancy relevancy;
 
+    @PCTSStringValidation(nullable = true)
     private String comment;
 
     public ExperienceCalculation(Long id, Calculation calculation, Experience experience, Relevancy relevancy,
