@@ -4,12 +4,14 @@ import { ConfigurationService } from './configuration.service';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { ConfigurationModel } from './configuration.model';
-import { configuration } from '../../shared/test/test-data';
+import { configuration, helpUrl } from '../../shared/test/test-data';
+import { HelpUrlModel } from './HelpUrl.model';
+import { firstValueFrom } from 'rxjs';
 
 describe('configurationService', () => {
   let httpMock: HttpTestingController;
   let service: ConfigurationService;
-  const API_URL = '/api/v1/configuration';
+  const API_URL = '/api/v1/configuration/';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -32,19 +34,44 @@ describe('configurationService', () => {
   });
 
   describe('Configuration endpoint', () => {
-    it('should fetch configuration', () => {
+    it('should fetch configuration', async() => {
       const mockConfig: ConfigurationModel = configuration;
 
-      service.getConfiguration()
-        .subscribe((config) => {
-          expect(config)
-            .toEqual(mockConfig);
-        });
+      const config = service.getConfiguration<configuration>();
 
-      const req = httpMock.expectOne(API_URL);
+      const configPromise = firstValueFrom(config);
+
+      const req = httpMock.expectOne(API_URL + 'authorization');
+
       expect(req.request.method)
         .toBe('GET');
+
       req.flush(mockConfig);
+
+      expect(await configPromise)
+        .toEqual(mockConfig);
+
+      httpMock.verify();
+    });
+  });
+
+  describe('Supportpageurl endpoint', () => {
+    it('should fetch url', async() => {
+      const mockUrl: HelpUrlModel = helpUrl;
+
+      const url = firstValueFrom(service.getAppConfiguration());
+
+      const req = httpMock.expectOne(API_URL + 'app');
+
+      req.flush(mockUrl);
+
+      expect(await url)
+        .toEqual(mockUrl);
+
+      expect(req.request.method)
+        .toBe('GET');
+
+      httpMock.verify();
     });
   });
 });

@@ -9,19 +9,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class ConfigurationMapperTest {
+class AuthorizationMapperTest {
 
-    private ConfigurationMapper configurationMapper;
+    private AuthorizationMapper authorizationMapper;
 
     @BeforeEach
     void setUp() {
-        configurationMapper = new ConfigurationMapper(KEYCLOAK_CONFIGURATION);
+        authorizationMapper = new AuthorizationMapper(KEYCLOAK_CONFIGURATION);
     }
 
     @DisplayName("Should return configuration dto with keycloak and authorization details")
     @Test
     void shouldReturnConfigurationDto() {
-        ConfigurationDto result = configurationMapper.toDto(AUTHORIZATION_CONFIGURATION);
+        ConfigurationDto result = authorizationMapper.toDto(AUTHORIZATION_CONFIGURATION);
 
         assertNotNull(result);
         assertNotNull(result.keycloak());

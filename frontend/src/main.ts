@@ -5,7 +5,7 @@ import { ConfigurationModel } from './app/features/configuration/configuration.m
 
 // This should be fine, as fetch is always available through the browser
 // eslint-disable-next-line no-undef
-fetch('/api/v1/configuration')
+fetch('/api/v1/configuration/authorization')
   .then((res) => res.json())
   .then((config: ConfigurationModel) => bootstrapApplication(AppComponent, buildAppConfig(config)))
   .catch((err) => console.error(err));

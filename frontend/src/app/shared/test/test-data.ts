@@ -34,6 +34,7 @@ import { DegreeCalculationModel } from '../../features/calculations/degree-calcu
 import {
   ExperienceCalculationModel
 } from '../../features/calculations/experience-calculation/experience-calculation.model';
+import { HelpUrlModel } from '../../features/configuration/HelpUrl.model';
 
 export const url = '/api/v1/data';
 
@@ -533,4 +534,8 @@ export const configuration: ConfigurationModel = {
     clientId: 'pcts-dev',
     adminAuthorities: ['org_hr',
       'org_gl'] }
+};
+
+export const helpUrl: HelpUrlModel = {
+  helpUrl: 'https://google.com'
 };

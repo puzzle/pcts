@@ -32,7 +32,7 @@ public class SpringSecurityConfig {
                         .permitAll()
                         .requestMatchers("/actuator/health/**")
                         .permitAll()
-                        .requestMatchers("/api/v1/configuration")
+                        .requestMatchers("/api/v1/configuration/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated())

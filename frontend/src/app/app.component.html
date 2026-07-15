@@ -12,6 +12,12 @@
   </pzsh-topbar>
   <pzsh-menu class="position-fixed z-3" data-testid="user-options">
     <div slot="actions">
+      @if (url(); as url) {
+        <pzsh-menu-action href="{{ url }}" target="_blank" data-testid="support-page-url">
+          <pzsh-icon class="pe-1" name="question-circle"></pzsh-icon>
+          {{ "HELP" | translate }}
+        </pzsh-menu-action>
+      }
       <pzsh-menu-dropdown href="#">
         <div slot="toggle">
           <pzsh-icon name="user"></pzsh-icon>
@@ -19,7 +25,8 @@
         </div>
         <div slot="items">
           <pzsh-menu-dropdown-item href="#">
-            <button class="bg-transparent border-0 p-0 shadow-none text-reset d-inline-flex align-items-center" (click)="handleLogout()" data-testid="logout">
+            <button class="bg-transparent border-0 p-0 shadow-none text-reset d-inline-flex align-items-center"
+                    (click)="handleLogout()" data-testid="logout">
               <pzsh-icon name="sign-out-alt"></pzsh-icon>
               {{ "LOGOUT" | translate }}
             </button>
