@@ -94,4 +94,11 @@ class PCTSStringValidationTest extends CustomValidationTestBase {
         DummyClass valid = createNullable();
         assertDoesNotThrow(() -> service.validate(valid));
     }
+
+    @DisplayName("Should not throw error when string is blank and is configured to allow blank strings")
+    @Test
+    void shouldntThrowErrorWhenStringIsNullAndConfiguredToAllowBlankStrings() {
+        DummyClass valid = createOnlyWhiteSpacesAllowed();
+        assertDoesNotThrow(() -> service.validate(valid));
+    }
 }

@@ -18,9 +18,15 @@ public class CustomValidationTestBase {
         return dummy;
     }
 
-    private static DummyClass withNullableString(String string) {
+    private static DummyClass withNullableString() {
         DummyClass dummy = createValid();
-        dummy.setNullableString(string);
+        dummy.setNullableString(null);
+        return dummy;
+    }
+
+    private static DummyClass withBlankableString() {
+        DummyClass dummy = createValid();
+        dummy.setBlankAllowedString("");
         return dummy;
     }
 
@@ -29,7 +35,11 @@ public class CustomValidationTestBase {
     }
 
     protected static DummyClass createNullable() {
-        return withNullableString(null);
+        return withNullableString();
+    }
+
+    protected static DummyClass createOnlyWhiteSpacesAllowed() {
+        return withBlankableString();
     }
 
     protected static class DummyClass implements Model {
@@ -39,12 +49,19 @@ public class CustomValidationTestBase {
         @PCTSStringValidation(nullable = true)
         String nullableString;
 
+        @PCTSStringValidation(allowOnlyWhiteSpaces = true)
+        String blankAllowedString;
+
         public void setNonNullableString(String nonNullableString) {
             this.nonNullableString = trim(nonNullableString);
         }
 
         public void setNullableString(String nullableString) {
             this.nullableString = trim(nullableString);
+        }
+
+        public void setBlankAllowedString(String blankAllowedString) {
+            this.blankAllowedString = trim(blankAllowedString);
         }
 
         @Override
