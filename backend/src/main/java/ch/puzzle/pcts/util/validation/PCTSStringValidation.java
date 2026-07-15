@@ -54,6 +54,11 @@ public @interface PCTSStringValidation {
     int max() default 250;
 
     /**
+     * @return The state if it's nullable or not
+     */
+    boolean nullable() default false;
+
+    /**
      * @return The default error message template. (Note: The specific validator
      *         uses only messages like <code>{attribute.not.null}</code>,
      *         <code>{attribute.not.blank}</code>, and

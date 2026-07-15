@@ -16,7 +16,7 @@ public class PCTSStringValidator implements ConstraintValidator<PCTSStringValida
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
         if (value == null) {
-            return buildValidationFailure(context, "{attribute.not.null}");
+            return annotation.nullable() || buildValidationFailure(context, "{attribute.not.null}");
         }
 
         if (value.isBlank()) {
