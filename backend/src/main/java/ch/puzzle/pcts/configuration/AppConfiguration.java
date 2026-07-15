@@ -23,7 +23,7 @@ public record AppConfiguration(String helpUrl) {
         return hasValidUrlPrefix(helpUrl);
     }
 
-    private boolean hasValidUrlPrefix(String helpUrl) {
-        return Stream.of("https://", "mailto:", "tel:", "sms:").anyMatch(helpUrl::startsWith);
+    private boolean hasValidUrlPrefix(String url) {
+        return Stream.of("https://", "mailto:", "tel:", "sms:").anyMatch(url::startsWith);
     }
 }
