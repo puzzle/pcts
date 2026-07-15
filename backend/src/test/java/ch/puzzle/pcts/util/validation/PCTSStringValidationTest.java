@@ -1,7 +1,6 @@
 package ch.puzzle.pcts.util.validation;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 import ch.puzzle.pcts.dto.error.FieldKey;
 import ch.puzzle.pcts.exception.PCTSException;
@@ -21,9 +20,9 @@ class PCTSStringValidationTest extends CustomValidationTestBase {
     @DisplayName("Should throw error when string is null")
     @Test
     void shouldThrowErrorWhenStringIsNull() {
-        DummyClass invalid = withString(null);
+        DummyClass invalid = createNonNullable(null);
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(invalid));
-        assertEquals(List.of(Map.of(FieldKey.FIELD, "string", FieldKey.CLASS, "DummyClass")),
+        assertEquals(List.of(Map.of(FieldKey.FIELD, "nonNullableString", FieldKey.CLASS, "DummyClass")),
                      exception.getErrorAttributes());
     }
 
@@ -31,10 +30,10 @@ class PCTSStringValidationTest extends CustomValidationTestBase {
     @ParameterizedTest
     @ValueSource(strings = { "", "  " })
     void shouldThrowErrorWhenStringIsBlank(String blank) {
-        DummyClass invalid = withString(blank);
+        DummyClass invalid = createNonNullable(blank);
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(invalid));
 
-        assertEquals(List.of(Map.of(FieldKey.FIELD, "string", FieldKey.CLASS, "DummyClass")),
+        assertEquals(List.of(Map.of(FieldKey.FIELD, "nonNullableString", FieldKey.CLASS, "DummyClass")),
                      exception.getErrorAttributes());
     }
 
@@ -42,13 +41,13 @@ class PCTSStringValidationTest extends CustomValidationTestBase {
     @ParameterizedTest
     @ValueSource(strings = { "S", "  S " })
     void shouldThrowErrorWhenStringIsTooShort(String shortString) {
-        DummyClass invalid = withString(shortString);
+        DummyClass invalid = createNonNullable(shortString);
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(invalid));
 
         assertEquals(List
                 .of(Map
                         .of(FieldKey.FIELD,
-                            "string",
+                            "nonNullableString",
                             FieldKey.CLASS,
                             "DummyClass",
                             FieldKey.MIN,
@@ -56,7 +55,7 @@ class PCTSStringValidationTest extends CustomValidationTestBase {
                             FieldKey.MAX,
                             "250",
                             FieldKey.IS,
-                            invalid.string)),
+                            invalid.nonNullableString)),
                      exception.getErrorAttributes());
     }
 
@@ -64,13 +63,13 @@ class PCTSStringValidationTest extends CustomValidationTestBase {
     @Test
     void shouldThrowErrorWhenStringIsTooLong() {
         String longString = "S".repeat(251);
-        DummyClass invalid = withString(longString);
+        DummyClass invalid = createNonNullable(longString);
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(invalid));
 
         assertEquals(List
                 .of(Map
                         .of(FieldKey.FIELD,
-                            "string",
+                            "nonNullableString",
                             FieldKey.CLASS,
                             "DummyClass",
                             FieldKey.MIN,
@@ -78,14 +77,21 @@ class PCTSStringValidationTest extends CustomValidationTestBase {
                             FieldKey.MAX,
                             "250",
                             FieldKey.IS,
-                            invalid.string)),
+                            invalid.nonNullableString)),
                      exception.getErrorAttributes());
     }
 
     @DisplayName("Should not throw error when string is valid")
     @Test
     void shouldNotThrowErrorWhenStringIsValid() {
-        DummyClass valid = withString("This is composed of valid characters");
+        DummyClass valid = createNonNullable("This is composed of valid characters");
         service.validate(valid);
+    }
+
+    @DisplayName("Should not throw error when string is null and is configured as nullable")
+    @Test
+    void shouldntThrowErrorWhenStringIsNullAndConfiguredAsNullable() {
+        DummyClass valid = createNullable();
+        assertDoesNotThrow(() -> service.validate(valid));
     }
 }

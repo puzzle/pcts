@@ -8,22 +8,43 @@ import ch.puzzle.pcts.service.validation.ValidationBase;
 public class CustomValidationTestBase {
     private static DummyClass createValid() {
         DummyClass dummy = new DummyClass();
-        dummy.setString("This is a valid string");
+        dummy.setNonNullableString("This is a valid string");
         return dummy;
     }
 
-    protected static DummyClass withString(String string) {
+    private static DummyClass withNonNullableString(String string) {
         DummyClass dummy = createValid();
-        dummy.setString(string);
+        dummy.setNonNullableString(string);
         return dummy;
+    }
+
+    private static DummyClass withNullableString(String string) {
+        DummyClass dummy = createValid();
+        dummy.setNullableString(string);
+        return dummy;
+    }
+
+    protected static DummyClass createNonNullable(String string) {
+        return withNonNullableString(string);
+    }
+
+    protected static DummyClass createNullable() {
+        return withNullableString(null);
     }
 
     protected static class DummyClass implements Model {
         @PCTSStringValidation
-        String string;
+        String nonNullableString;
 
-        public void setString(String string) {
-            this.string = trim(string);
+        @PCTSStringValidation(nullable = true)
+        String nullableString;
+
+        public void setNonNullableString(String nonNullableString) {
+            this.nonNullableString = trim(nonNullableString);
+        }
+
+        public void setNullableString(String nullableString) {
+            this.nullableString = trim(nullableString);
         }
 
         @Override
