@@ -20,10 +20,10 @@ public record AppConfiguration(String helpUrl) {
             return false;
         }
 
-        return hasValidUrlPrefix();
+        return hasValidUrlPrefix(helpUrl);
     }
 
-    private boolean hasValidUrlPrefix() {
+    private boolean hasValidUrlPrefix(String helpUrl) {
         return Stream.of("https://", "mailto:", "tel:", "sms:").anyMatch(helpUrl::startsWith);
     }
 }
