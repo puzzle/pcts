@@ -34,7 +34,7 @@ public class Certificate implements Model {
 
     private LocalDate validUntil;
 
-    @PCTSStringValidation(nullable = true)
+    @PCTSStringValidation(nullable = true, allowOnlyWhiteSpaces = true)
     private String comment;
 
     @Column(name = "deleted_at", insertable = false, updatable = false)
