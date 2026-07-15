@@ -9,7 +9,7 @@ import jakarta.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class AppConfigurationTest {
@@ -24,8 +24,8 @@ class AppConfigurationTest {
 
     @DisplayName("Should return violations when an invalid url is provided")
     @ParameterizedTest
-    @ValueSource(strings = { "", "http://example.com", "https://s p a c e s.ch" })
-    @NullSource
+    @ValueSource(strings = { " ", "http://example.com", "https://s p a c e s.ch" })
+    @NullAndEmptySource
     void shouldCreateViolations(String input) {
         var config = new AppConfiguration(input);
         var violations = validator.validate(config);

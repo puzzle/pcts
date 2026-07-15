@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class AppConfigurationMapper {
     public AppConfigurationDto toDto(AppConfiguration appConfig) {
-        return new AppConfigurationDto(appConfig.getHelpUrl());
+        return new AppConfigurationDto(appConfig.helpUrl());
     }
 }
