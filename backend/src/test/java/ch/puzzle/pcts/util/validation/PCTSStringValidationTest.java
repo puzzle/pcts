@@ -20,7 +20,8 @@ class PCTSStringValidationTest extends CustomValidationTestBase {
     @DisplayName("Should throw error when string is null")
     @Test
     void shouldThrowErrorWhenStringIsNull() {
-        DummyClass invalid = createNonNullable(null);
+        DummyClass invalid = withNonNullableString(null);
+        invalid.setBlankAllowedString("Not blank");
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(invalid));
         assertEquals(List.of(Map.of(FieldKey.FIELD, "nonNullableString", FieldKey.CLASS, "DummyClass")),
                      exception.getErrorAttributes());
@@ -30,7 +31,8 @@ class PCTSStringValidationTest extends CustomValidationTestBase {
     @ParameterizedTest
     @ValueSource(strings = { "", "  " })
     void shouldThrowErrorWhenStringIsBlank(String blank) {
-        DummyClass invalid = createNonNullable(blank);
+        DummyClass invalid = withNonNullableString(blank);
+        invalid.setBlankAllowedString("Not blank");
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(invalid));
 
         assertEquals(List.of(Map.of(FieldKey.FIELD, "nonNullableString", FieldKey.CLASS, "DummyClass")),
@@ -41,7 +43,8 @@ class PCTSStringValidationTest extends CustomValidationTestBase {
     @ParameterizedTest
     @ValueSource(strings = { "S", "  S " })
     void shouldThrowErrorWhenStringIsTooShort(String shortString) {
-        DummyClass invalid = createNonNullable(shortString);
+        DummyClass invalid = withNonNullableString(shortString);
+        invalid.setBlankAllowedString("Not blank");
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(invalid));
 
         assertEquals(List
@@ -63,7 +66,8 @@ class PCTSStringValidationTest extends CustomValidationTestBase {
     @Test
     void shouldThrowErrorWhenStringIsTooLong() {
         String longString = "S".repeat(251);
-        DummyClass invalid = createNonNullable(longString);
+        DummyClass invalid = withNonNullableString(longString);
+        invalid.setBlankAllowedString("Not blank");
         PCTSException exception = assertThrows(PCTSException.class, () -> service.validate(invalid));
 
         assertEquals(List
@@ -84,21 +88,24 @@ class PCTSStringValidationTest extends CustomValidationTestBase {
     @DisplayName("Should not throw error when string is valid")
     @Test
     void shouldNotThrowErrorWhenStringIsValid() {
-        DummyClass valid = createNonNullable("This is composed of valid characters");
+        DummyClass valid = withNonNullableString("This is composed of valid characters");
+        valid.setBlankAllowedString("Not blank");
         service.validate(valid);
+
     }
 
     @DisplayName("Should not throw error when string is null and is configured as nullable")
     @Test
     void shouldntThrowErrorWhenStringIsNullAndConfiguredAsNullable() {
-        DummyClass valid = createNullable();
+        DummyClass valid = withNullableString();
+        valid.setBlankAllowedString("Not blank");
         assertDoesNotThrow(() -> service.validate(valid));
     }
 
     @DisplayName("Should not throw error when string is blank and is configured to allow blank strings")
     @Test
     void shouldntThrowErrorWhenStringIsNullAndConfiguredToAllowBlankStrings() {
-        DummyClass valid = createOnlyWhiteSpacesAllowed();
+        DummyClass valid = withBlankableString();
         assertDoesNotThrow(() -> service.validate(valid));
     }
 }

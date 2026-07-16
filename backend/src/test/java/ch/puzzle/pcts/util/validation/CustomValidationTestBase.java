@@ -12,34 +12,22 @@ public class CustomValidationTestBase {
         return dummy;
     }
 
-    private static DummyClass withNonNullableString(String string) {
+    protected static DummyClass withNonNullableString(String string) {
         DummyClass dummy = createValid();
         dummy.setNonNullableString(string);
         return dummy;
     }
 
-    private static DummyClass withNullableString() {
+    protected static DummyClass withNullableString() {
         DummyClass dummy = createValid();
         dummy.setNullableString(null);
         return dummy;
     }
 
-    private static DummyClass withBlankableString() {
+    protected static DummyClass withBlankableString() {
         DummyClass dummy = createValid();
         dummy.setBlankAllowedString("");
         return dummy;
-    }
-
-    protected static DummyClass createNonNullable(String string) {
-        return withNonNullableString(string);
-    }
-
-    protected static DummyClass createNullable() {
-        return withNullableString();
-    }
-
-    protected static DummyClass createOnlyWhiteSpacesAllowed() {
-        return withBlankableString();
     }
 
     protected static class DummyClass implements Model {
