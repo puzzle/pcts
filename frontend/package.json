@@ -1,6 +1,6 @@
 {
   "name": "pcts",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "packageManager": "pnpm@11.9.0",
   "engines": {
     "node": ">=22",
