@@ -32,7 +32,7 @@ public class ExperienceCalculation implements CalculationChildInterface, Model {
     @NotNull(message = "{attribute.not.null}")
     private Relevancy relevancy;
 
-    @PCTSStringValidation(nullable = true)
+    @PCTSStringValidation(nullable = true, allowOnlyWhiteSpaces = true)
     private String comment;
 
     public ExperienceCalculation(Long id, Calculation calculation, Experience experience, Relevancy relevancy,

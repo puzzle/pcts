@@ -38,7 +38,7 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
     @Range(min = 1, max = 100, message = "{attribute.size.between}")
     private BigDecimal weight;
 
-    @PCTSStringValidation(nullable = true)
+    @PCTSStringValidation(nullable = true, allowOnlyWhiteSpaces = true)
     private String comment;
 
     public DegreeCalculation(Long id, Calculation calculation, Degree degree, Relevancy relevancy, BigDecimal weight,

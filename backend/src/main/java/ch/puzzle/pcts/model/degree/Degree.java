@@ -29,7 +29,7 @@ public class Degree implements Model {
     @PCTSStringValidation
     private String name;
 
-    @PCTSStringValidation(nullable = true)
+    @PCTSStringValidation(nullable = true, allowOnlyWhiteSpaces = true)
     private String institution;
 
     @NotNull(message = "{attribute.not.null}")
@@ -46,7 +46,7 @@ public class Degree implements Model {
 
     private LocalDate endDate;
 
-    @PCTSStringValidation(nullable = true)
+    @PCTSStringValidation(nullable = true, allowOnlyWhiteSpaces = true)
     private String comment;
 
     @Column(name = "deleted_at", insertable = false, updatable = false)

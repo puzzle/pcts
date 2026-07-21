@@ -28,7 +28,7 @@ public class CertificateType implements Model {
     @PCTSPointsValidation
     private BigDecimal points;
 
-    @PCTSStringValidation(nullable = true)
+    @PCTSStringValidation(nullable = true, allowOnlyWhiteSpaces = true)
     private String comment;
 
     @ManyToMany(cascade = { CascadeType.MERGE })

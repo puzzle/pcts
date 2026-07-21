@@ -30,7 +30,7 @@ public class LeadershipExperience implements Model {
     @JoinColumn(name = "leadership_experience_type_id")
     private LeadershipExperienceType leadershipExperienceType;
 
-    @PCTSStringValidation(nullable = true)
+    @PCTSStringValidation(nullable = true, allowOnlyWhiteSpaces = true)
     private String comment;
 
     @Column(name = "deleted_at", insertable = false, updatable = false)

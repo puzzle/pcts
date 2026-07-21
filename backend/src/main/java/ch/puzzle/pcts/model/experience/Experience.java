@@ -31,7 +31,7 @@ public class Experience implements Model {
     @PCTSStringValidation
     private String name;
 
-    @PCTSStringValidation(nullable = true)
+    @PCTSStringValidation(nullable = true, allowOnlyWhiteSpaces = true)
     private String employer;
 
     @Min(value = 0, message = "{attribute.min.value}")
@@ -43,7 +43,7 @@ public class Experience implements Model {
     @JoinColumn(name = "experience_type_id")
     private ExperienceType type;
 
-    @PCTSStringValidation(nullable = true)
+    @PCTSStringValidation(nullable = true, allowOnlyWhiteSpaces = true)
     private String comment;
 
     @NotNull(message = "{attribute.not.null}")
