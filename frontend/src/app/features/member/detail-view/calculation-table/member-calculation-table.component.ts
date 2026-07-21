@@ -1,11 +1,10 @@
-import { Component, computed, effect, inject, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { GenericTableComponent } from '../../../../shared/generic-table/generic-table.component';
 import { MemberService } from '../../member.service';
 import { getCalculationTable } from '../cv/member-detail-cv-table-definition';
 import { CrudButtonComponent } from '../../../../shared/crud-button/crud-button.component';
 import { ScopedTranslationPipe } from '../../../../shared/pipes/scoped-translation-pipe';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { switchMap } from 'rxjs';
+import { rxResource } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-member-calculation-table',
@@ -15,25 +14,24 @@ import { switchMap } from 'rxjs';
   templateUrl: './member-calculation-table.component.html'
 })
 export class MemberCalculationTableComponent {
-  private readonly memberService: MemberService = inject(MemberService);
-
-  private readonly calculationsRequest$ = toObservable(computed(() => ({
-    memberId: this.memberId(),
-    roleId: this.roleId()
-  })));
+  private readonly memberService = inject(MemberService);
 
   memberId = input.required<number>();
 
   roleId = input<number>();
 
-  calculations = toSignal(this.calculationsRequest$
-    .pipe(switchMap((params) => this.memberService.getCalculationsByMemberIdAndOptionalRoleId(params.memberId, params.roleId))), { initialValue: [] });
+  calculationsResource = rxResource({
+    params: () => ({ memberId: this.memberId(),
+      roleId: this.roleId() }),
 
-  calculationTable = getCalculationTable();
+    stream: ({ params }) => this.memberService.getCalculationsByMemberIdAndOptionalRoleId(params.memberId, params.roleId),
 
-  constructor() {
-    effect(() => {
-      this.calculationTable.data = this.calculations();
-    });
-  }
+    defaultValue: []
+  });
+
+  calculationTable = computed(() => {
+    const table = getCalculationTable();
+    table.data = this.calculationsResource.value();
+    return table;
+  });
 }

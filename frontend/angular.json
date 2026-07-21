@@ -37,6 +37,12 @@
           },
           "configurations": {
             "production": {
+              "optimization": {
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false
+                }
+              },
               "budgets": [
                 {
                   "type": "initial",
@@ -69,12 +75,6 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "optimization": {
-                "styles": {
-                  "minify": true,
-                  "inlineCritical": false
-                }
-              },
               "buildTarget": "pcts:build:production"
             },
             "development": {
