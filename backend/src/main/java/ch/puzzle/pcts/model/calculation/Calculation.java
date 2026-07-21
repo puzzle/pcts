@@ -9,6 +9,7 @@ import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculat
 import ch.puzzle.pcts.model.calculation.leadershipexperiencecalculation.LeadershipExperienceCalculation;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.role.Role;
+import ch.puzzle.pcts.util.validation.PCTSStringValidation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -38,6 +39,7 @@ public class Calculation implements Model {
 
     private LocalDate publicationDate;
 
+    @PCTSStringValidation(nullable = true)
     private String publicizedBy;
 
     @OneToMany(mappedBy = "calculation", fetch = FetchType.LAZY)

@@ -54,6 +54,16 @@ public @interface PCTSStringValidation {
     int max() default 250;
 
     /**
+     * @return If you are allowed to have null or not
+     */
+    boolean nullable() default false;
+
+    /**
+     * @return If you are allowed to only have whitespaces or not
+     */
+    boolean allowOnlyWhiteSpaces() default false;
+
+    /**
      * @return The default error message template. (Note: The specific validator
      *         uses only messages like <code>{attribute.not.null}</code>,
      *         <code>{attribute.not.blank}</code>, and
