@@ -3,11 +3,10 @@ import { AppComponent } from './app.component';
 import { provideRouter, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { DOCUMENT } from '@angular/common';
-
-import { Router } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { AuthService } from './core/auth/auth.service';
 import { signal } from '@angular/core';
+import { ConfigurationService } from './features/configuration/configuration.service';
 
 jest.mock('@puzzleitc/puzzle-shell', () => jest.fn());
 
@@ -18,11 +17,16 @@ describe('AppComponent', () => {
   let document: Document;
   let translateService: TranslateService;
   let authServiceMock: Partial<AuthService>;
+  let configServiceMock: Partial<ConfigurationService>;
 
   beforeEach(async() => {
     authServiceMock = {
       name: signal('Test User'),
       logout: jest.fn()
+    };
+
+    configServiceMock = {
+      helpURL: { value: signal(undefined) } as ConfigurationService['helpURL']
     };
 
     routerMock = {
@@ -42,6 +46,10 @@ describe('AppComponent', () => {
         {
           provide: AuthService,
           useValue: authServiceMock
+        },
+        {
+          provide: ConfigurationService,
+          useValue: configServiceMock
         }
       ]
     })
