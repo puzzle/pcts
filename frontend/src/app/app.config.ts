@@ -45,7 +45,7 @@ export function buildAppConfig(config: ConfigurationModel): ApplicationConfig {
           clientId: config.keycloak.clientId
         },
         initOptions: {
-          onLoad: 'login-required',
+          onLoad: 'check-sso',
           checkLoginIframe: false
         }
       }),
