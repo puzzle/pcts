@@ -142,6 +142,7 @@ jobs:
           requireScope: false
 
   validate-branch-prefix:
+    name: Validate Branch Prefix
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
