@@ -42,18 +42,7 @@ jobs:
             echo "✅ Assignee check passed."
           fi
 
-      # --- STEP 2: Check Conventional Commits ---
-      - name: Check Title Format (Conventional Commits)
-        id: check_title
-        run: |
-          if [[ ! "$TITLE" =~ ^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-z0-9-]+\))?:[[:space:]].+ ]]; then
-            echo "::error::⛔ Invalid Title: Must follow Conventional Commits (e.g., 'feat: Add new button')."
-            exit 1
-          else
-            echo "✅ Title format passed."
-          fi
-
-      # --- STEP 3: Validate Linked Issue in Title ---
+      # --- STEP 2: Validate Linked Issue in Title ---
       - name: Check Linked Issue & Title Match
         id: check_issue
         run: |
@@ -130,10 +119,49 @@ jobs:
             exit 1
           fi
 
+  validate-pr-title:
+    name: Validate PR Title
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enforce Conventional Commits
+        uses: amannn/action-semantic-pull-request@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            build
+            chore
+            ci
+            docs
+            feat
+            fix
+            refactor
+            revert
+            style
+            test
+          requireScope: false
+
+  validate-branch-prefix:
+    name: Validate Branch Prefix
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Check branch name
+        uses: Christian-Schou/branch-name-validation@v1
+        with:
+          branch_pattern: 'feature|fix|chore|docs|renovate'
+          fail_if_invalid_branch_name: true
+          comment_on_success: false
+          ignore_branch_pattern: '^release-please-.+$'
+
   update-project-status:
     name: Update Project Status
     runs-on: ubuntu-latest
-    needs: validate-pr
+    needs:
+      - validate-pr
+      - validate-pr-title
+      - validate-branch-prefix
     if: success()
     env:
       GH_TOKEN: ${{ secrets.RELEASE_PLEASE_GH_TOKEN }}

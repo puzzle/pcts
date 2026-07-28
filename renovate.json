@@ -18,8 +18,8 @@
   "minimumReleaseAge": "3 days",
   "packageRules": [
     {
-      "description": "Automerge patch updates after they are 3 days old",
-      "matchUpdateTypes": ["patch"],
+      "description": "Automerge patch and minor updates",
+      "matchUpdateTypes": ["patch", "minor"],
       "automerge": true,
       "automergeType": "pr"
     },
@@ -69,6 +69,12 @@
       "matchPackageNames": [
         "ch.puzzle.pcts{/,}**"
       ]
+    },
+    {
+      "description": "Automerge GH actions of any type (patch, minor, major, ...)",
+      "matchManagers": ["github-actions"],
+      "automerge": true,
+      "automergeType": "pr"
     }
   ]
 }
