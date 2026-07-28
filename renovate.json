@@ -69,6 +69,12 @@
       "matchPackageNames": [
         "ch.puzzle.pcts{/,}**"
       ]
+    },
+    {
+      "description": "Automerge GH actions of any type (patch, minor, major, ...)",
+      "matchManagers": ["github-actions"],
+      "automerge": true,
+      "automergeType": "pr"
     }
   ]
 }
