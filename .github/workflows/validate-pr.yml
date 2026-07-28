@@ -130,10 +130,34 @@ jobs:
             exit 1
           fi
 
+  validate-pr-title:
+    name: Validate PR Title
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enforce Conventional Commits
+        uses: amannn/action-semantic-pull-request@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            build
+            chore
+            ci
+            docs
+            feat
+            fix
+            refactor
+            revert
+            style
+            test
+          requireScope: false
+
   update-project-status:
     name: Update Project Status
     runs-on: ubuntu-latest
-    needs: validate-pr
+    needs:
+      - validate-pr
+      - validate-pr-title
     if: success()
     env:
       GH_TOKEN: ${{ secrets.RELEASE_PLEASE_GH_TOKEN }}
