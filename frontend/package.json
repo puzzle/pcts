@@ -84,7 +84,7 @@
     "karma-jasmine-html-reporter": "~2.2.0",
     "prettier": "^3.6.2",
     "prettier-eslint": "^17.0.0",
-    "typescript": "~6.0.3",
+    "typescript": "~7.0.0",
     "typescript-eslint": "8.65.0"
   },
   "jest": {
