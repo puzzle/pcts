@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.8.1](https://github.com/puzzle/pcts/compare/0.8.0...0.8.1) (2026-07-31)
+
+
+### Miscellaneous Chores
+
+* **deps:** update all devdependencies (minor and patch) ([#751](https://github.com/puzzle/pcts/issues/751)) ([b063c3d](https://github.com/puzzle/pcts/commit/b063c3d3c444ff9c910da4183b6318f3d5eaa6d9))
+* **deps:** update all devdependencies (minor and patch) to v22.0.8 ([#755](https://github.com/puzzle/pcts/issues/755)) ([59ece34](https://github.com/puzzle/pcts/commit/59ece346ee2b9b4403f8425e0c0a752ac3042cc4))
+* **deps:** update all eslint packages ([#752](https://github.com/puzzle/pcts/issues/752)) ([80aa386](https://github.com/puzzle/pcts/commit/80aa386a5f9572c188fa0f87fa640d3c3cea3cd5))
+* **deps:** update angular monorepo to v22.0.7 ([#749](https://github.com/puzzle/pcts/issues/749)) ([e13e92f](https://github.com/puzzle/pcts/commit/e13e92ffc0dd5b1df27f18278da326d2695f72e0))
+* **deps:** update angular monorepo to v22.0.8 ([#753](https://github.com/puzzle/pcts/issues/753)) ([e48a6f4](https://github.com/puzzle/pcts/commit/e48a6f4bd0fd158986ad372bbc18c6a872f135ff))
+* **deps:** update angularmaterial monorepo to v22.0.5 ([#750](https://github.com/puzzle/pcts/issues/750)) ([181ada1](https://github.com/puzzle/pcts/commit/181ada1787ee104c2ee77116a66cfef2755aa5f2))
+* **deps:** update angularmaterial monorepo to v22.0.6 ([#754](https://github.com/puzzle/pcts/issues/754)) ([d979f08](https://github.com/puzzle/pcts/commit/d979f080b3a7d48ade9c3b3d6792215c7d913e0e))
+* **deps:** update dependency com.diffplug.spotless:spotless-maven-plugin to v3.9.0 ([#760](https://github.com/puzzle/pcts/issues/760)) ([560f011](https://github.com/puzzle/pcts/commit/560f011d4dedddbda6bffd8b1025dd326af38a57))
+* **deps:** update dependency eslint to v10.8.0 ([#757](https://github.com/puzzle/pcts/issues/757)) ([dce865c](https://github.com/puzzle/pcts/commit/dce865cd15dc686d0421ba48b1bbd7ff6d8e82d8))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v13 ([5eebbf2](https://github.com/puzzle/pcts/commit/5eebbf2443b6ddbb26800906f233eb842c766e8c))
+* **deps:** update pnpm to v11.15.1 ([9928e33](https://github.com/puzzle/pcts/commit/9928e330c8b8cec816c74eac7555fed447d82404))
+* **deps:** update pnpm to v11.17.0 ([03a61a2](https://github.com/puzzle/pcts/commit/03a61a2c392fef26d37cda2d7af9916ce22cfffc))
+* **deps:** update quay.io/keycloak/keycloak docker tag to v26.7.0 ([28ed411](https://github.com/puzzle/pcts/commit/28ed4113ed5a78649a05a907492b74df00c4269c))
+* improve various things ([8d9f0c2](https://github.com/puzzle/pcts/commit/8d9f0c2d91e6f8fe406b2ed330b05a48fe84a734))
+* remove unused script ([2eb856e](https://github.com/puzzle/pcts/commit/2eb856e6e9110bbb98cd4b3a985b949eb594097d))
+
 ## [0.8.0](https://github.com/puzzle/pcts/compare/0.7.0...0.8.0) (2026-07-21)
 
 
