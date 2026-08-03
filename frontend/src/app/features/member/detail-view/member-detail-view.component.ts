@@ -34,6 +34,9 @@ import {
 import { LeadershipExperienceService } from '../../leadership-experiences/leadership-experience.service';
 import { concatMap, filter, Observable } from 'rxjs';
 import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin.directive';
+import { DegreeModel } from '../../degrees/degree.model';
+import { AddDegree } from '../../degrees/add-degree/add-degree.component';
+import { DegreeService } from '../../degrees/degree.service';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -62,6 +65,8 @@ export class MemberDetailViewComponent implements OnInit {
   private readonly dialog = inject(PctsModalService);
 
   private readonly certificateService = inject(CertificateService);
+
+  private readonly degreeService = inject(DegreeService);
 
   private readonly leadershipExperienceService = inject(LeadershipExperienceService);
 
@@ -157,6 +162,8 @@ export class MemberDetailViewComponent implements OnInit {
 
     return opener;
   };
+
+  openDegreeDialog = this.createDialogOpener<DegreeModel>(AddDegree, (model) => this.degreeService.addDegree(model));
 
   openCertificateDialog = this.createDialogOpener<CertificateModel>(AddCertificateComponent, (model) => this.certificateService.addCertificate(model));
 
