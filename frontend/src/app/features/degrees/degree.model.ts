@@ -13,14 +13,4 @@ export interface DegreeModel {
   endDate: Date | null;
 }
 
-export interface DegreeInputDto {
-  memberId: number;
-  name: string;
-  institution: string | null;
-  completed: boolean;
-  typeId: number;
-  startDate: Date;
-  endDate: Date | null;
-  comment: string | null;
 
-}
