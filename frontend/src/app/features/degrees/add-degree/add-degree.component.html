@@ -4,7 +4,7 @@
     <ng-container content>
 
       <app-input-field>
-        <input type="text" formControlName="degreeType" matInput [matAutocomplete]="degreeTypeAutoComplete"
+        <input type="text" formControlName="type" matInput [matAutocomplete]="degreeTypeAutoComplete"
                data-testid="degreeType">
         <mat-autocomplete autoActiveFirstOption #degreeTypeAutoComplete="matAutocomplete"
                           [displayWith]="displayDegreeTypes">
@@ -16,7 +16,7 @@
 
       <mat-form-field>
         <mat-label appPctsFormLabel/>
-        <input matInput [matDatepicker]="completedAtPicker" formControlName="completedAt" data-testid="completedAt">
+        <input matInput [matDatepicker]="completedAtPicker" formControlName="startDate" data-testid="startDate">
         <mat-datepicker-toggle matIconSuffix [for]="completedAtPicker"/>
         <mat-datepicker #completedAtPicker/>
         <mat-error appPctsFormError/>
@@ -24,7 +24,7 @@
 
       <mat-form-field>
         <mat-label appPctsFormLabel/>
-        <input matInput [matDatepicker]="validUntilPicker" formControlName="validUntil" data-testid="validUntil">
+        <input matInput [matDatepicker]="validUntilPicker" formControlName="endDate" data-testid="endDate">
         <mat-datepicker-toggle matIconSuffix [for]="validUntilPicker"/>
         <mat-datepicker #validUntilPicker/>
         <mat-error appPctsFormError/>
@@ -33,6 +33,23 @@
       <app-input-field>
         <textarea type="text" formControlName="comment" data-testid="comment" matInput></textarea>
       </app-input-field>
+
+      <app-input-field>
+        <textarea type="text" formControlName="name" data-testid="name" matInput></textarea>
+      </app-input-field>
+
+      <app-input-field>
+        <textarea type="text" formControlName="institution" data-testid="institution" matInput></textarea>
+      </app-input-field>
+
+
+<!--      <mat-form-field>-->
+<!--        <mat-label appPctsFormLabel/>-->
+<!--        <input matInput formControlName="completed" data-testid="validUntil">-->
+        <mat-checkbox formControlName="completed">{{"COMPLETED" | scopedTranslation}}</mat-checkbox>
+<!--        <mat-error appPctsFormError/>-->
+<!--      </mat-form-field>-->
+
 
     </ng-container>
     <ng-container actions/>
