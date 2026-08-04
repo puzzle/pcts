@@ -16,9 +16,12 @@ import { MemberModel } from '../../member/member.model';
 import { isValueInListSignal } from '../../../shared/form/form-validators';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
-import { DegreeInputDto, DegreeModel } from '../degree.model';
+import { DegreeModel } from '../degree.model';
 import { DegreeTypeModel } from '../degree-type/degree-type.model';
 import { DegreeTypeService } from '../degree-type/degree-type.service';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-add-degree',
@@ -42,12 +45,15 @@ import { DegreeTypeService } from '../degree-type/degree-type.service';
     PctsFormErrorDirective,
     PctsFormLabelDirective,
     ReactiveFormsModule,
-    ScopedTranslationPipe
+    ScopedTranslationPipe,
+    MatCheckbox,
+    TranslatePipe
   ],
   templateUrl: './add-degree.component.html',
+  providers: [provideI18nPrefix('DEGREE.FORM.ADD')],
   styleUrl: './add-degree.component.scss'
 })
-export class AddDegreeComponent extends StrictlyTypedDialog<DegreeModel | undefined, DialogResult<DegreeInputDto>> implements OnInit {
+export class AddDegreeComponent extends StrictlyTypedDialog<DegreeModel | undefined, DialogResult<DegreeModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);
 
   protected readonly ModalSubmitMode = ModalSubmitMode;
@@ -58,13 +64,19 @@ export class AddDegreeComponent extends StrictlyTypedDialog<DegreeModel | undefi
 
   formGroup = this.fb.nonNullable.group({
     id: [null as null | number],
+    name: ['' as string | null,
+      Validators.required],
     member: [null as MemberModel | null],
-    degreeType: [null as DegreeTypeModel | null,
+    type: [null as DegreeTypeModel | null,
       [Validators.required,
         isValueInListSignal(this.degreeTypeOptions, (a, b) => a.id === b.id)]],
-    completedAt: [null as Date | null,
+    institution: ['' as string | null,
       Validators.required],
-    validUntil: [null as Date | null],
+    completed: [true as boolean | null],
+    endDate: [null as Date | null,
+      Validators.required],
+    startDate: [null as Date | null,
+      Validators.required],
     comment: ['' as string | null]
   });
 
@@ -94,7 +106,7 @@ export class AddDegreeComponent extends StrictlyTypedDialog<DegreeModel | undefi
     return degreeType?.name ?? '';
   };
 
-  protected degreeTypeControlSignal = toSignal(this.formGroup.get('degreeType')!.valueChanges, { initialValue: this.formGroup.get('degreeType')!.value });
+  protected degreeTypeControlSignal = toSignal(this.formGroup.get('type')!.valueChanges, { initialValue: this.formGroup.get('type')!.value });
 
   protected degreeTypeFilteredOptions = computed(() => {
     const value = this.degreeTypeControlSignal() ?? '';
