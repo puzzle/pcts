@@ -1,4 +1,4 @@
-package ch.puzzle.pctsmigrationpoc.model;
+package ch.puzzle.pctsmigration.model;
 
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import jakarta.validation.constraints.Max;

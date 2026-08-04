@@ -1,9 +1,9 @@
-package ch.puzzle.pctsmigrationpoc.controller;
+package ch.puzzle.pctsmigration.controller;
 
-import ch.puzzle.pctsmigrationpoc.model.MovieReview;
-import ch.puzzle.pctsmigrationpoc.model.OdsAnalysisResult;
-import ch.puzzle.pctsmigrationpoc.service.AiService;
-import ch.puzzle.pctsmigrationpoc.service.OdsParserService;
+import ch.puzzle.pctsmigration.model.MovieReview;
+import ch.puzzle.pctsmigration.model.OdsAnalysisResult;
+import ch.puzzle.pctsmigration.service.AiService;
+import ch.puzzle.pctsmigration.service.OdsParserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;

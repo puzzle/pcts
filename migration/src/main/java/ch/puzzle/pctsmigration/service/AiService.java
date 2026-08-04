@@ -1,14 +1,13 @@
-package ch.puzzle.pctsmigrationpoc.service;
+package ch.puzzle.pctsmigration.service;
 
-import ch.puzzle.pctsmigrationpoc.model.MovieReview;
-import ch.puzzle.pctsmigrationpoc.model.OdsAnalysisResult;
+import ch.puzzle.pctsmigration.model.MovieReview;
+import ch.puzzle.pctsmigration.model.OdsAnalysisResult;
 import jakarta.validation.Validator;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 

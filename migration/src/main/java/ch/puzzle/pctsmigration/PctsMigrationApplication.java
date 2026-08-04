@@ -1,13 +1,13 @@
-package ch.puzzle.pctsmigrationpoc;
+package ch.puzzle.pctsmigration;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PctsMigrationPocApplication {
+public class PctsMigrationApplication {
 
     static void main(String[] args) {
-        SpringApplication.run(PctsMigrationPocApplication.class, args);
+        SpringApplication.run(PctsMigrationApplication.class, args);
     }
 
 }
