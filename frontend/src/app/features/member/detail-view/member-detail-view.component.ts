@@ -35,7 +35,7 @@ import { LeadershipExperienceService } from '../../leadership-experiences/leader
 import { concatMap, filter, Observable } from 'rxjs';
 import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin.directive';
 import { DegreeModel } from '../../degrees/degree.model';
-import { AddDegree } from '../../degrees/add-degree/add-degree.component';
+import { AddDegreeComponent } from '../../degrees/add-degree/add-degree.component';
 import { DegreeService } from '../../degrees/degree.service';
 
 @Component({
@@ -163,7 +163,7 @@ export class MemberDetailViewComponent implements OnInit {
     return opener;
   };
 
-  openDegreeDialog = this.createDialogOpener<DegreeModel>(AddDegree, (model) => this.degreeService.addDegree(model));
+  openDegreeDialog = this.createDialogOpener<DegreeModel>(AddDegreeComponent, (model) => this.degreeService.addDegree(model));
 
   openCertificateDialog = this.createDialogOpener<CertificateModel>(AddCertificateComponent, (model) => this.certificateService.addCertificate(model));
 
