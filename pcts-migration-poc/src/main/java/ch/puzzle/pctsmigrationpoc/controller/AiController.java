@@ -1,0 +1,40 @@
+package ch.puzzle.pctsmigrationpoc.controller;
+
+import ch.puzzle.pctsmigrationpoc.model.MovieReview;
+import ch.puzzle.pctsmigrationpoc.model.OdsAnalysisResult;
+import ch.puzzle.pctsmigrationpoc.service.AiService;
+import ch.puzzle.pctsmigrationpoc.service.OdsParserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+
+@RestController
+@RequestMapping("/api/ai")
+@Tag(name = "AI", description = "Interact with the AI service")
+public class AiController {
+
+    private final AiService aiService;
+    private final OdsParserService odsParserService;
+
+    public AiController(AiService aiService, OdsParserService odsParserService) {
+        this.aiService = aiService;
+        this.odsParserService = odsParserService;
+    }
+
+    @PostMapping(value = "/prompt", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Send a prompt to the AI", description = "Sends a plain-text prompt to the AI model and returns the response.")
+    public MovieReview prompt(@RequestBody String prompt) {
+        return aiService.prompt(prompt);
+    }
+
+    @PostMapping(value = "/analyze-ods", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Analyse an ODS spreadsheet", description = "Upload an .ods file and receive AI-generated structured insights.")
+    public OdsAnalysisResult analyzeOds(@RequestPart("file") MultipartFile file) throws IOException {
+        var parsed = odsParserService.parse(file);
+        return aiService.analyzeOds(odsParserService.toPromptText(parsed));
+    }
+}
