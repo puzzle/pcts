@@ -1,4 +1,4 @@
-package ch.puzzle.pctsmigrationpoc.controller;
+package ch.puzzle.pctsmigration.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;

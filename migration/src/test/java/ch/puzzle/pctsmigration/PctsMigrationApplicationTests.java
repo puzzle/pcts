@@ -1,10 +1,10 @@
-package ch.puzzle.pctsmigrationpoc;
+package ch.puzzle.pctsmigration;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class PctsMigrationPocApplicationTests {
+class PctsMigrationApplicationTests {
 
     @Test
     void contextLoads() {

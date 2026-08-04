@@ -9,10 +9,10 @@
     <relativePath /> <!-- lookup parent from repository -->
   </parent>
   <groupId>ch.puzzle</groupId>
-  <artifactId>pcts-migration-poc</artifactId>
+  <artifactId>pcts-migration</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>pcts-migration-poc</name>
-  <description>pcts-migration-poc</description>
+  <name>pcts-migration</name>
+  <description>pcts-migration</description>
   <url />
   <licenses>
     <license />
