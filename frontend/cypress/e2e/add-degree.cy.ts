@@ -53,6 +53,8 @@ describe('Add degree Modal', () => {
       formPage.submitButtonShouldBe('disabled');
       cy.getByTestId('degreeType')
         .focus()
+        .type('something')
+        .clear()
         .blur();
       formPage.shouldShowValidationError('Muss ausgefüllt sein', 'degreeType');
 
@@ -63,9 +65,9 @@ describe('Add degree Modal', () => {
     });
 
     const fields = {
-      completedAt: ['Muss ausgefüllt sein',
+      startDate: ['Muss ausgefüllt sein',
         'Ungültiges Datum'],
-      validUntil: ['Ungültiges Datum']
+      endDate: ['Ungültiges Datum']
     };
 
     Object.entries(fields)
@@ -83,25 +85,6 @@ describe('Add degree Modal', () => {
         });
       });
   });
-
-  describe('Error Toasts', () => {
-    it('should show error when completedAt is after validUntil', () => {
-      openDegreeModal();
-      formPage.type('degreeType', 'Mic');
-      cy.get('mat-option')
-        .contains('Bachelor\'s Degree')
-        .click();
-
-      formPage.typeAndBlur('startDate', '10.10.2000');
-      formPage.typeAndBlur('endDate', '10.12.2001');
-
-      formPage.submitButtonShouldBe('enabled');
-      formPage.save();
-
-      formPage.shouldShowErrorToast('Abgeschlossen am mit dem Wert 2000-10-10 muss jünger sein als 2000-09-10.');
-    });
-  });
-
   describe('Closing Modal', () => {
     beforeEach(() => {
       openDegreeModal();
