@@ -14,6 +14,15 @@
         </mat-autocomplete>
       </app-input-field>
 
+      <app-input-field>
+        <input type="text" formControlName="name" data-testid="name" matInput>
+      </app-input-field>
+
+      <app-input-field>
+        <input type="text" formControlName="institution" data-testid="institution" matInput>
+      </app-input-field>
+
+
       <mat-form-field>
         <mat-label appPctsFormLabel/>
         <input matInput [matDatepicker]="completedAtPicker" formControlName="startDate" data-testid="startDate">
@@ -34,13 +43,7 @@
         <textarea type="text" formControlName="comment" data-testid="comment" matInput></textarea>
       </app-input-field>
 
-      <app-input-field>
-        <textarea type="text" formControlName="name" data-testid="name" matInput></textarea>
-      </app-input-field>
 
-      <app-input-field>
-        <textarea type="text" formControlName="institution" data-testid="institution" matInput></textarea>
-      </app-input-field>
 
 
 <!--      <mat-form-field>-->
