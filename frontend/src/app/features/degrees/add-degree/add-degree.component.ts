@@ -21,7 +21,6 @@ import { DegreeTypeModel } from '../degree-type/degree-type.model';
 import { DegreeTypeService } from '../degree-type/degree-type.service';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
-import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-add-degree',
@@ -46,8 +45,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     PctsFormLabelDirective,
     ReactiveFormsModule,
     ScopedTranslationPipe,
-    MatCheckbox,
-    TranslatePipe
+    MatCheckbox
   ],
   templateUrl: './add-degree.component.html',
   providers: [provideI18nPrefix('DEGREE.FORM.ADD')],
@@ -70,11 +68,9 @@ export class AddDegreeComponent extends StrictlyTypedDialog<DegreeModel | undefi
     type: [null as DegreeTypeModel | null,
       [Validators.required,
         isValueInListSignal(this.degreeTypeOptions, (a, b) => a.id === b.id)]],
-    institution: ['' as string | null,
-      Validators.required],
+    institution: ['' as string | null],
     completed: [true as boolean | null],
-    endDate: [null as Date | null,
-      Validators.required],
+    endDate: [null as Date | null],
     startDate: [null as Date | null,
       Validators.required],
     comment: ['' as string | null]
