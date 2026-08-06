@@ -13,17 +13,25 @@ public class OpenApiConfiguration {
 
     @Bean
     public OpenAPI customOpenAPI() {
-        final String securitySchemeName = "bearerAuth";
+        final String bearerName = "OIDC Token";
+        final String apiKeyName = "API Key";
 
         return new OpenAPI()
-                .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
+                .addSecurityItem(new SecurityRequirement().addList(bearerName))
+                .addSecurityItem(new SecurityRequirement().addList(apiKeyName))
                 .components(new Components()
-                        .addSecuritySchemes(securitySchemeName,
+                        .addSecuritySchemes(bearerName,
                                             new SecurityScheme()
-                                                    .name(securitySchemeName)
+                                                    .name(bearerName)
                                                     .type(SecurityScheme.Type.HTTP)
                                                     .scheme("bearer")
-                                                    .bearerFormat("JWT")))
+                                                    .bearerFormat("JWT"))
+                        .addSecuritySchemes(apiKeyName,
+                                            new SecurityScheme()
+                                                    .name(apiKeyName)
+                                                    .type(SecurityScheme.Type.APIKEY)
+                                                    .in(SecurityScheme.In.HEADER)
+                                                    .name("X-API-Key")))
                 .info(new Info().title("PCTS API"));
     }
 }
