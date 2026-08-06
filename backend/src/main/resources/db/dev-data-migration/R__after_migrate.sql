@@ -199,3 +199,8 @@ VALUES
     (1, 1),
     (2, 2),
     (4, 3);
+
+INSERT INTO api_key
+    (name, hashed_key)
+VALUES
+    ('Dev Key', '$2b$10$9UtFdznxF6ki9nxDeqJu.uQaSjHc/Z5Xfx5FGkCWm/aYYmFuCc8o.'); -- secret-key
