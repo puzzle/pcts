@@ -2,22 +2,17 @@ package ch.puzzle.pctsmigration.controller;
 
 import ch.puzzle.pctsmigration.model.MovieReview;
 import ch.puzzle.pctsmigration.model.OdsAnalysisResult;
+import ch.puzzle.pctsmigration.model.OdsParseResult;
 import ch.puzzle.pctsmigration.service.AiService;
 import ch.puzzle.pctsmigration.service.CertificateApiService;
 import ch.puzzle.pctsmigration.service.OdsParserService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
-import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.openapitools.client.ApiException;
-import org.openapitools.client.api.CertificatesApi;
 import org.openapitools.client.model.CertificateDto;
+import org.openapitools.client.model.CertificateInputDto;
 import org.openapitools.client.model.CertificateTypeDto;
-import org.openapitools.client.model.DegreeDto;
-import org.openapitools.client.model.DegreeTypeDto;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -52,8 +47,9 @@ public class AiController {
         return aiService.analyzeOds(odsParserService.toPromptText(parsed));
     }
 
-    @PostMapping()
-    public List<CertificateTypeDto> getFromPctsApi(@RequestBody String token) throws ApiException {
-        return certificateApiService.getCertificates(token);
+    @PostMapping(value = "/analyze-ods-certificate", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<CertificateInputDto> getFromPctsApi(@RequestPart("file") MultipartFile file) throws IOException, ApiException {
+        OdsParseResult parsed = odsParserService.parse(file);
+        return aiService.analyzeOdsCertificates(odsParserService.toPromptText(parsed));
     }
 }

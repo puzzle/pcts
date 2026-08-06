@@ -17,7 +17,7 @@ public class CertificateApiService {
         this.apiClientFactory = apiClientFactory;
     }
 
-    public List<CertificateTypeDto> getCertificates(String token) throws ApiException {
+    public List<CertificateTypeDto> getCertificates(String token, String markdown) throws ApiException {
         ApiClient apiClient = this.apiClientFactory.createCertificateApi(token);
         CertificateTypesApi api = new CertificateTypesApi(apiClient);
         return api.getCertificateTypes();
