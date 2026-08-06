@@ -9,7 +9,7 @@ export abstract class StrictlyTypedDialog<DialogData, DialogResult> {
 
   protected abstract formGroup: FormGroup;
 
-  protected dialogRef: MatDialogRef<StrictlyTypedDialog<DialogData, DialogResult>, DialogResult> =
+  dialogRef: MatDialogRef<StrictlyTypedDialog<DialogData, DialogResult>, DialogResult> =
     inject(MatDialogRef);
 }
 

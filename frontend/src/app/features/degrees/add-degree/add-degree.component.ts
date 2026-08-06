@@ -105,23 +105,19 @@ export class AddDegreeComponent extends StrictlyTypedDialog<DegreeModel | undefi
   protected degreeTypeControlSignal = toSignal(this.formGroup.get('type')!.valueChanges, { initialValue: this.formGroup.get('type')!.value });
 
   protected degreeTypeFilteredOptions = computed(() => {
-    const value = this.degreeTypeControlSignal() ?? '';
-    return this.filterDegreeType(value);
+    const model = this.degreeTypeControlSignal() ?? '';
+    const value = typeof model === 'string' ? model : model.name;
+    return this.filterDegreeType(value, this.degreeTypeOptions());
   });
 
-  filterDegreeType(value: DegreeTypeModel | string | null): DegreeTypeModel[] {
-    if (value === null || value === undefined || value === '') {
-      return this.degreeTypeOptions();
+  filterDegreeType(value: string, degreeTypeOptions: DegreeTypeModel[]): DegreeTypeModel[] {
+    if (!value) {
+      return degreeTypeOptions;
     }
 
-    const filterValue = (typeof value === 'string' ? value : value.name).toLowerCase();
-
-    if (filterValue === '') {
-      return this.degreeTypeOptions();
-    }
-    return this.degreeTypeOptions()
+    return degreeTypeOptions
       .filter((option) => option.name.toLowerCase()
-        .includes(filterValue));
+        .includes(value.toLowerCase()));
   }
 
   onSubmit(submitMod: ModalSubmitMode) {
