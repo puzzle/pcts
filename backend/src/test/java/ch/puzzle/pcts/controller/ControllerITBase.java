@@ -3,9 +3,12 @@ package ch.puzzle.pcts.controller;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import ch.puzzle.pcts.configuration.AuthenticationConfiguration;
+import ch.puzzle.pcts.configuration.AuthorizationConfiguration;
 import ch.puzzle.pcts.security.SpringSecurityConfig;
 import ch.puzzle.pcts.service.JwtService;
 import ch.puzzle.pcts.service.SecurityService;
+import ch.puzzle.pcts.service.business.ApiKeyBusinessService;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,6 +18,15 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @Import(SpringSecurityConfig.class)
 public class ControllerITBase {
+    @MockitoBean
+    protected ApiKeyBusinessService apiKeyService;
+
+    @MockitoBean
+    protected AuthenticationConfiguration authenticationConfiguration;
+
+    @MockitoBean
+    protected AuthorizationConfiguration authorizationConfiguration;
+
     @MockitoBean
     protected JwtDecoder jwtDecoder;
 
