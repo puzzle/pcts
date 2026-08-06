@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.puzzle.pcts.configuration.AppConfiguration;
-import ch.puzzle.pcts.configuration.AuthorizationConfiguration;
 import ch.puzzle.pcts.dto.appconfiguration.AppConfigurationDto;
 import ch.puzzle.pcts.dto.configuration.ConfigurationDto;
 import ch.puzzle.pcts.mapper.AppConfigurationMapper;
@@ -24,9 +23,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @ControllerIT(ConfigurationController.class)
 class ConfigurationControllerIT extends ControllerITBase {
-    @MockitoBean
-    private AuthorizationConfiguration authorizationConfiguration;
-
     @MockitoBean
     private AppConfiguration appConfiguration;
 
