@@ -1,9 +1,10 @@
 package ch.puzzle.pcts.model.apikey;
 
+import static org.apache.commons.lang3.StringUtils.trim;
+
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.util.validation.PCTSStringValidation;
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -39,7 +40,7 @@ public class ApiKey implements Model {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = trim(name);
     }
 
     public String getHashedKey() {
@@ -47,7 +48,7 @@ public class ApiKey implements Model {
     }
 
     public void setHashedKey(String hashedKey) {
-        this.hashedKey = hashedKey;
+        this.hashedKey = trim(hashedKey);
     }
 
     public LocalDateTime getLastUsed() {
