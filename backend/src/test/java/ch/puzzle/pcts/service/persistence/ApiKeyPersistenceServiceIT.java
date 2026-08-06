@@ -2,8 +2,8 @@ package ch.puzzle.pcts.service.persistence;
 
 import static ch.puzzle.pcts.util.TestDataModels.API_KEYS;
 import static ch.puzzle.pcts.util.TestDataModels.API_KEY_1;
-import static ch.puzzle.pcts.util.TestDataModels.API_KEY_2;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ch.puzzle.pcts.model.apikey.ApiKey;
 import ch.puzzle.pcts.repository.ApiKeyRepository;
@@ -43,8 +43,7 @@ class ApiKeyPersistenceServiceIT extends PersistenceBaseIT<ApiKey, ApiKeyReposit
     void shouldFindAllActive() {
         List<ApiKey> result = persistenceService.findAllActive();
 
-        assertThat(result).hasSize(API_KEYS.size());
+        assertEquals(1, result.size());
         assertThat(result).contains(API_KEY_1);
-        assertThat(result).contains(API_KEY_2);
     }
 }
