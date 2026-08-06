@@ -52,8 +52,8 @@ public class AiController {
         return aiService.analyzeOds(odsParserService.toPromptText(parsed));
     }
 
-    @GetMapping("pctsApi")
-    public List<DegreeTypeDto> getFromPctsApi() throws ApiException {
-        return certificateApiService.getCertificates();
+    @PostMapping()
+    public List<CertificateTypeDto> getFromPctsApi(@RequestBody String token) throws ApiException {
+        return certificateApiService.getCertificates(token);
     }
 }
