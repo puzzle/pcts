@@ -20,8 +20,8 @@ public class OpenApiClientConfig {
     @Bean
     public ApiClient apiClient() {
         ApiClient apiClient = new ApiClient();
-        apiClient.setBasePath(basePath);
-//        apiClient.setRequestInterceptor(builder -> builder.header("Authorization", "Bearer " + apiToken));
+        apiClient.updateBaseUri(basePath);
+        apiClient.setRequestInterceptor(builder -> builder.header("Authorization", "Bearer " + apiToken));
 
         return apiClient;
     }
