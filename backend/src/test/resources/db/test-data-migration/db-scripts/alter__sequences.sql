@@ -13,3 +13,4 @@ ALTER SEQUENCE experience_calculation_id_seq RESTART WITH 1000;
 ALTER SEQUENCE degree_calculation_id_seq RESTART WITH 1000;
 ALTER SEQUENCE leadership_experience_calculation_id_seq RESTART WITH 1000;
 ALTER SEQUENCE member_id_seq RESTART WITH 1000;
+ALTER SEQUENCE api_key_id_seq RESTART WITH 1000;
