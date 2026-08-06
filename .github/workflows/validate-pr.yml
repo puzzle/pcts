@@ -150,7 +150,7 @@ jobs:
       - name: Check branch name
         uses: Christian-Schou/branch-name-validation@v1
         with:
-          branch_pattern: 'feature|fix|chore|docs|renovate'
+          branch_pattern: 'feature|fix|chore|docs|renovate|refactor'
           fail_if_invalid_branch_name: true
           comment_on_success: false
           ignore_branch_pattern: '^release-please-.+$'
