@@ -148,3 +148,9 @@ INSERT INTO leadership_experience_calculation(calculation_id, leadership_experie
 VALUES
     (1, 1),
     (1, 2);
+
+INSERT INTO api_key
+(name, hashed_key, revoked)
+VALUES
+    ('dev', '$2b$10$9UtFdznxF6ki9nxDeqJu.uQaSjHc/Z5Xfx5FGkCWm/aYYmFuCc8o.', false), -- secret-key
+    ('revoked', '$2b$10$eP8RU8Om2gpyjIruwlxoDOFeHo6wHM2PNeHxMwG2uMwvxnpXPjYhe', true); -- revoked-key
