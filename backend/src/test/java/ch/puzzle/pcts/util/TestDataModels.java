@@ -4,6 +4,7 @@ import static ch.puzzle.pcts.util.TestData.*;
 
 import ch.puzzle.pcts.configuration.AuthorizationConfiguration;
 import ch.puzzle.pcts.configuration.KeycloakConfiguration;
+import ch.puzzle.pcts.model.apikey.ApiKey;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.calculation.Relevancy;
@@ -861,4 +862,24 @@ public class TestDataModels {
 
     public static final List<Calculation> CALCULATIONS = List
             .of(CALCULATION_1, CALCULATION_2, CALCULATION_3, CALCULATION_4);
+
+    public static final ApiKey API_KEY_1;
+    static {
+        API_KEY_1 = new ApiKey();
+        API_KEY_1.setId(API_KEY_1_ID);
+        API_KEY_1.setName("dev");
+        API_KEY_1.setHashedKey("$2b$10$9UtFdznxF6ki9nxDeqJu.uQaSjHc/Z5Xfx5FGkCWm/aYYmFuCc8o.");
+        API_KEY_1.setRevoked(false);
+    }
+
+    public static final ApiKey API_KEY_2;
+    static {
+        API_KEY_2 = new ApiKey();
+        API_KEY_2.setId(API_KEY_2_ID);
+        API_KEY_2.setName("revoked");
+        API_KEY_2.setHashedKey("$2b$10$eP8RU8Om2gpyjIruwlxoDOFeHo6wHM2PNeHxMwG2uMwvxnpXPjYhe");
+        API_KEY_2.setRevoked(true);
+    }
+
+    public static final List<ApiKey> API_KEYS = List.of(API_KEY_1, API_KEY_2);
 }
