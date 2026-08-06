@@ -36,4 +36,9 @@ public class ApiKeyAuthenticationToken extends AbstractAuthenticationToken {
 
         return Objects.equals(apiKeyId, that.apiKeyId);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), apiKeyId);
+    }
 }
