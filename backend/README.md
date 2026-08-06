@@ -74,3 +74,43 @@ As written in the `application.properties` file, the link check can be disabled 
 Additionally, WireMock is also included to serve testing purposes and simulating links in the dev environment.
 You may find a list of all available local links here: [Admin Mappings](http://localhost:8443/__admin/mappings)
 More can be added if needed in the  [mappings](../docker/wiremock/mappings) folder.
+
+## Api Keys
+
+In addition to OIDC, it is also possible to authenticate via API keys. This behavior is by default disabled but can be changed via the corresponding property.
+API keys need to be supplied via the `X-API-Key` header, with no additional content present in the header except for the key itself.
+
+**Beware that all API keys have the admin role!**
+
+### Creating new API Keys
+
+Currently, there is no mechanism to create an API key via the GUI and, until there is demand for it, no such mechanism is planned. If you would like another mechanism for creating API keys, please create an issue.
+
+### 1. Generate a Random Key
+
+```bash
+RAW_KEY=$(openssl rand -base64 32)
+echo "Save this key — it cannot be recovered later: $RAW_KEY"
+```
+
+### 2. Hash it with BCrypt
+
+You might need to install the bcrypt module.
+
+```bash
+HASHED=$(python3 -c "import bcrypt; print(bcrypt.hashpw(b'$RAW_KEY', bcrypt.gensalt(rounds=10)).decode())")
+echo $HASHED
+```
+
+### 3. Insert it into the database
+
+Insert it into the database, using your tool of choice.
+
+```postgresql
+INSERT INTO api_key (name, hashed_key)
+VALUES ('Dev Key', '$2b$10$9UtFdznxF6ki9nxDeqJu.uQaSjHc/Z5Xfx5FGkCWm/aYYmFuCc8o.'); -- secret-key
+```
+
+### Revoking API Keys
+
+To revoke an API key, set the `revoked` property to `true` in the database. No restart is required.
