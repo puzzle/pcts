@@ -1,0 +1,26 @@
+package ch.puzzle.pctsmigration;
+
+import org.openapitools.client.ApiException;
+
+import java.util.function.Function;
+
+public interface ExtractionPipeline<C, R, D> {
+
+    /** Unique identifier used for routing, e.g. "certificates", "degrees" */
+    String name();
+
+    /** Fetch all context needed from PCTS API */
+    C fetchContext() throws ApiException;
+
+    /** Build the system prompt from the fetched context */
+    String systemPrompt(C context, String content);
+
+    /** Run validations on result objects */
+    boolean validate();
+
+    /** The result record class */
+    Class<R> entityClass();
+
+    /** Map result record to effective DTO */
+    Function<R, D> mapToDto();
+}

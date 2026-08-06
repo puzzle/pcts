@@ -123,6 +123,7 @@
               <configOptions>
                 <sourceFolder>src/gen/java/main</sourceFolder>
                 <useJakartaEe>true</useJakartaEe>
+                <openApiNullable>false</openApiNullable>
               </configOptions>
             </configuration>
           </execution>

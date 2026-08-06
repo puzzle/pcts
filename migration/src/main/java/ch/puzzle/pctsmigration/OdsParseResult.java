@@ -1,4 +1,4 @@
-package ch.puzzle.pctsmigration.model;
+package ch.puzzle.pctsmigration;
 
 import java.util.List;
 
