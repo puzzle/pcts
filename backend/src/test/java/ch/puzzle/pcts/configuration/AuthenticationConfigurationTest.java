@@ -12,7 +12,7 @@ class AuthenticationConfigurationTest {
         String expectedUsername = "preferred_username";
         String expectedPreferredUsername = "preferred_username";
 
-        var config = new AuthenticationConfiguration(expectedUsername, expectedPreferredUsername);
+        var config = new AuthenticationConfiguration(expectedUsername, expectedPreferredUsername, false);
 
         assertEquals(expectedUsername, config.displayNameClaim(), "Username claim should match input");
     }

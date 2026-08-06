@@ -8,5 +8,6 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @ConfigurationProperties(prefix = "pcts.security.authentication")
 public record AuthenticationConfiguration(@NotBlank @DefaultValue("name") String displayNameClaim,
-        @NotBlank @DefaultValue("preferred_username") String uniqueIdentifierClaim) {
+        @NotBlank @DefaultValue("preferred_username") String uniqueIdentifierClaim,
+        @DefaultValue("false") boolean enableApiKeys) {
 }

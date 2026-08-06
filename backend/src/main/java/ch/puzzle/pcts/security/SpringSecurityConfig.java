@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.security;
 
+import ch.puzzle.pcts.configuration.AuthenticationConfiguration;
 import ch.puzzle.pcts.configuration.AuthorizationConfiguration;
 import ch.puzzle.pcts.security.apikey.ApiKeyAuthenticationFilter;
 import ch.puzzle.pcts.service.business.ApiKeyBusinessService;
@@ -55,8 +56,11 @@ public class SpringSecurityConfig {
 
     @Bean
     public ApiKeyAuthenticationFilter apiKeyAuthenticationFilter(ApiKeyBusinessService apiKeyBusinessService,
-                                                                 AuthorizationConfiguration authorizationConfiguration) {
-        return new ApiKeyAuthenticationFilter(apiKeyBusinessService, authorizationConfiguration);
+                                                                 AuthorizationConfiguration authorizationConfiguration,
+                                                                 AuthenticationConfiguration authenticationConfiguration) {
+        return new ApiKeyAuthenticationFilter(apiKeyBusinessService,
+                                              authorizationConfiguration,
+                                              authenticationConfiguration);
     }
 
     private Converter<Jwt, ? extends AbstractAuthenticationToken> jwtConverter() {

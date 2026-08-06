@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.security.apikey;
 
+import ch.puzzle.pcts.configuration.AuthenticationConfiguration;
 import ch.puzzle.pcts.configuration.AuthorizationConfiguration;
 import ch.puzzle.pcts.model.apikey.ApiKey;
 import ch.puzzle.pcts.service.business.ApiKeyBusinessService;
@@ -25,11 +26,14 @@ public class ApiKeyAuthenticationFilter extends OncePerRequestFilter {
 
     private final ApiKeyBusinessService apiKeyBusinessService;
     private final AuthorizationConfiguration authorizationConfiguration;
+    private final AuthenticationConfiguration authenticationConfiguration;
 
     public ApiKeyAuthenticationFilter(ApiKeyBusinessService apiKeyBusinessService,
-                                      AuthorizationConfiguration authorizationConfiguration) {
+                                      AuthorizationConfiguration authorizationConfiguration,
+                                      AuthenticationConfiguration authenticationConfiguration) {
         this.apiKeyBusinessService = apiKeyBusinessService;
         this.authorizationConfiguration = authorizationConfiguration;
+        this.authenticationConfiguration = authenticationConfiguration;
     }
 
     @Override
@@ -42,8 +46,13 @@ public class ApiKeyAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        Optional<ApiKey> validKey = apiKeyBusinessService.isValid(rawKey);
+        if (!authenticationConfiguration.enableApiKeys()) {
+            log.warn("Authentication request with an API key but API keys are disabled");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
 
+        Optional<ApiKey> validKey = apiKeyBusinessService.isValid(rawKey);
         if (validKey.isEmpty()) {
             log.warn("Authentication request with an invalid or revoked API key");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
