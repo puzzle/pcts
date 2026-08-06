@@ -75,7 +75,7 @@ jobs:
         run: sudo apt-get install ruby-full
 
       - name: Install markdownlint
-        run: sudo gem install mdl
+        run: sudo gem install mdl -v0.17.0
 
       - name: Markdown linting
         run: |
