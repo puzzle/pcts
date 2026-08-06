@@ -16,7 +16,7 @@ export const successInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req)
     .pipe(tap((event) => {
       if (event instanceof HttpResponse && event.ok) {
-        const message: string = translate.instant(req.method, { OBJECT: translate.instant(`${getObjectKeyFromUrl(req.url)}.MODEL_NAME`) });
+        const message: string = translate.instant('NOTIFICATION.' + req.method, { OBJECT: translate.instant(`${getObjectKeyFromUrl(req.url)}.MODEL_NAME`) });
         toastService.showToasts([message], 'success');
       }
     }));
