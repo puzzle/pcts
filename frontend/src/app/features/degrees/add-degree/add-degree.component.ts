@@ -54,11 +54,11 @@ import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
 export class AddDegreeComponent extends StrictlyTypedDialog<DegreeModel | undefined, DialogResult<DegreeModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);
 
+  private readonly degreeTypeService = inject(DegreeTypeService);
+
   protected readonly ModalSubmitMode = ModalSubmitMode;
 
   private readonly degreeTypeOptions: WritableSignal<DegreeTypeModel[]> = signal([]);
-
-  private readonly degreeTypeService = inject(DegreeTypeService);
 
   formGroup = this.fb.nonNullable.group({
     id: [null as null | number],
