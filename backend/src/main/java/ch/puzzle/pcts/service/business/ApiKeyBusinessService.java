@@ -22,7 +22,7 @@ public class ApiKeyBusinessService extends BusinessBase<ApiKey> {
     }
 
     public Optional<ApiKey> isValid(String rawKey) {
-        if (rawKey == null) {
+        if (rawKey == null || rawKey.isBlank()) {
             return Optional.empty();
         }
 
