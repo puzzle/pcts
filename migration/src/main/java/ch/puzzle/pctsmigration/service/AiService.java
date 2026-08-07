@@ -1,9 +1,12 @@
 package ch.puzzle.pctsmigration.service;
 
+import ch.puzzle.pctsmigration.certificate.CertificateAiResultDto;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AiService {

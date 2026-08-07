@@ -13,7 +13,7 @@ public interface ExtractionPipeline<C, R, D> {
     C fetchContext() throws ApiException;
 
     /** Build the system prompt from the fetched context */
-    String systemPrompt(C context, String content);
+    String systemPrompt(C context);
 
     /** Run validations on result objects */
     boolean validate();
