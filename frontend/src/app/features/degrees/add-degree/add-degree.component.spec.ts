@@ -5,7 +5,7 @@ import { degree1, degreeType1, degreeType2 } from '../../../shared/test/test-dat
 import { provideTranslateService } from '@ngx-translate/core';
 import { DegreeTypeService } from '../degree-type/degree-type.service';
 import { of } from 'rxjs';
-
+import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 
 describe('AddDegree', () => {
   let component: AddDegreeComponent;
@@ -35,7 +35,6 @@ describe('AddDegree', () => {
           provide: DegreeTypeService,
           useValue: degreeTypeServiceMock
         },
-
         provideTranslateService()
       ]
     })
@@ -62,16 +61,41 @@ describe('AddDegree', () => {
      * Arrange
      * - nothing
      */
-
     // Act
     const filteredTypes = component.filterDegreeType('', [degreeType2,
       degreeType1]);
-
     // Assert
     expect(filteredTypes)
       .toStrictEqual([degreeType2,
         degreeType1]);
   });
+
+  it('should close the dialog with form values and save mode', () => {
+    component.formGroup.patchValue(degree1);
+    component.onSubmit(ModalSubmitMode.SAVE);
+    expect(dialogRefMock.close)
+      .toHaveBeenCalledWith({
+        modalSubmitMode: ModalSubmitMode.SAVE,
+        submittedModel: degree1
+      });
+  });
+
+  it('should close the dialog without saving the data', () => {
+    component.onCancel();
+    expect(dialogRefMock.close)
+      .toHaveBeenCalledWith();
+  });
+
+  it('should set the correct value from formGroup', () => {
+    expect(component.formGroup.getRawValue())
+      .toEqual(degree1);
+  });
+
+  it('should load degreeTypes', () => {
+    expect(component['degreeTypeOptions']())
+      .toEqual([degreeType1,
+        degreeType2]);
+    expect(degreeTypeServiceMock.getAllDegreeTypes)
+      .toHaveBeenCalledTimes(1);
+  });
 });
-
-
