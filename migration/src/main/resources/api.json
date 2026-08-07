@@ -1,0 +1,3668 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "PCTS API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Default Server URL"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "experience-types",
+      "description": "Manage the types of professional experience"
+    },
+    {
+      "name": "organisation-units",
+      "description": "Manage departments, teams, or other subdivisions of the organisation"
+    },
+    {
+      "name": "configuration",
+      "description": "Retrieve configuration properties for the application"
+    },
+    {
+      "name": "experiences",
+      "description": "Manage the experiences of members which are associated with one member"
+    },
+    {
+      "name": "leadership-experience-types",
+      "description": "Manage leadership experience types"
+    },
+    {
+      "name": "member-overviews",
+      "description": "Get the member and everything associated with the member"
+    },
+    {
+      "name": "certificates",
+      "description": "Manage the certificates of members which are associated with a member"
+    },
+    {
+      "name": "certificate-types",
+      "description": "Manage professional certificate types and qualifications"
+    },
+    {
+      "name": "degree-types",
+      "description": "Manage the types of academic degrees"
+    },
+    {
+      "name": "roles",
+      "description": "Manage user roles within the organisation"
+    },
+    {
+      "name": "calculations",
+      "description": "Manage the calculations which are associated with a member"
+    },
+    {
+      "name": "degrees",
+      "description": "Manage the degrees which are associated with any one member"
+    },
+    {
+      "name": "leadership-experiences",
+      "description": "Manage the leadership experience of members which are associated with a member"
+    },
+    {
+      "name": "Actuator",
+      "description": "Monitor and interact",
+      "externalDocs": {
+        "description": "Spring Boot Actuator Web API Documentation",
+        "url": "https://docs.spring.io/spring-boot/docs/current/actuator-api/html/"
+      }
+    },
+    {
+      "name": "members",
+      "description": "Manage the members of the organisation, including status and organisation unit"
+    }
+  ],
+  "paths": {
+    "/api/v1/roles/{roleId}": {
+      "get": {
+        "tags": [
+          "roles"
+        ],
+        "summary": "Get a role by ID",
+        "operationId": "getRoleById",
+        "parameters": [
+          {
+            "name": "roleId",
+            "in": "path",
+            "description": "ID of the role to retrieve.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single role.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "roles"
+        ],
+        "summary": "Update a role",
+        "operationId": "updateRole",
+        "parameters": [
+          {
+            "name": "roleId",
+            "in": "path",
+            "description": "ID of the role to update.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoleDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Role updated successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "roles"
+        ],
+        "summary": "Delete a role",
+        "operationId": "deleteRole",
+        "parameters": [
+          {
+            "name": "roleId",
+            "in": "path",
+            "description": "ID of the role to delete.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Role deleted successfully."
+          }
+        }
+      }
+    },
+    "/api/v1/organisation-units/{organisationUnitId}": {
+      "get": {
+        "tags": [
+          "organisation-units"
+        ],
+        "summary": "Get an organisation unit by ID",
+        "operationId": "getOrganisationUnitById",
+        "parameters": [
+          {
+            "name": "organisationUnitId",
+            "in": "path",
+            "description": "ID of the organisation unit to retrieve.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the organisation unit.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganisationUnitDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "organisation-units"
+        ],
+        "summary": "Update an organisation unit",
+        "operationId": "updateOrganisationUnit",
+        "parameters": [
+          {
+            "name": "organisationUnitId",
+            "in": "path",
+            "description": "ID of the organisation unit to update.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The updated organisation unit data.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrganisationUnitDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Organisation unit updated successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganisationUnitDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "organisation-units"
+        ],
+        "summary": "Delete an organisation unit",
+        "operationId": "deleteOrganisationUnit",
+        "parameters": [
+          {
+            "name": "organisationUnitId",
+            "in": "path",
+            "description": "ID of the organisation unit to delete.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Organisation unit deleted successfully"
+          }
+        }
+      }
+    },
+    "/api/v1/members/{memberId}": {
+      "get": {
+        "tags": [
+          "members"
+        ],
+        "summary": "Get a member by ID",
+        "operationId": "getMemberById",
+        "parameters": [
+          {
+            "name": "memberId",
+            "in": "path",
+            "description": "ID of the member to retrieve.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the member.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "members"
+        ],
+        "summary": "Update a member",
+        "operationId": "updateMember",
+        "parameters": [
+          {
+            "name": "memberId",
+            "in": "path",
+            "description": "ID of the member to update.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The updated member data.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberInputDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "member updated successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberInputDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "members"
+        ],
+        "summary": "Delete a member",
+        "operationId": "deleteMember",
+        "parameters": [
+          {
+            "name": "memberId",
+            "in": "path",
+            "description": "ID of the member to delete.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "member deleted successfully"
+          }
+        }
+      }
+    },
+    "/api/v1/leadership-experiences/{leadershipExperienceId}": {
+      "get": {
+        "tags": [
+          "leadership-experiences"
+        ],
+        "summary": "Get a leadership experience by ID",
+        "operationId": "getLeadershipExperience",
+        "parameters": [
+          {
+            "name": "leadershipExperienceId",
+            "in": "path",
+            "description": "ID of the leadership experience to retrieve.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the leadership experience.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeadershipExperienceDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "leadership-experiences"
+        ],
+        "summary": "Update a leadership experience",
+        "operationId": "updateLeadershipExperience",
+        "parameters": [
+          {
+            "name": "leadershipExperienceId",
+            "in": "path",
+            "description": "ID of the leadership experience to update.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The updated leadership experience data.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LeadershipExperienceInputDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Leadership experience updated successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeadershipExperienceDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "leadership-experiences"
+        ],
+        "summary": "Delete a leadership experience",
+        "operationId": "deleteLeadershipExperience",
+        "parameters": [
+          {
+            "name": "leadershipExperienceId",
+            "in": "path",
+            "description": "ID of the leadership experience to delete.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Leadership experience deleted successfully."
+          }
+        }
+      }
+    },
+    "/api/v1/leadership-experience-types/{leadershipExperienceTypeId}": {
+      "get": {
+        "tags": [
+          "leadership-experience-types"
+        ],
+        "summary": "Get leadership-experience type by ID",
+        "operationId": "getLeadershipExperienceTypeById",
+        "parameters": [
+          {
+            "name": "leadershipExperienceTypeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single leadership-experience type.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeadershipExperienceTypeDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "leadership-experience-types"
+        ],
+        "summary": "Update a leadership-experience type by ID",
+        "operationId": "updateLeadershipExperienceType",
+        "parameters": [
+          {
+            "name": "leadershipExperienceTypeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The LeadershipExperience type as json to update an existing LeadershipExperience.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LeadershipExperienceTypeDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "LeadershipExperience type updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeadershipExperienceTypeDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "leadership-experience-types"
+        ],
+        "summary": "Delete a leadership-experience type by ID",
+        "operationId": "deleteLeadershipExperienceType",
+        "parameters": [
+          {
+            "name": "leadershipExperienceTypeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "LeadershipExperience type deleted successfully"
+          }
+        }
+      }
+    },
+    "/api/v1/experiences/{experienceId}": {
+      "get": {
+        "tags": [
+          "experiences"
+        ],
+        "summary": "Get an experience by ID",
+        "operationId": "getExperienceById",
+        "parameters": [
+          {
+            "name": "experienceId",
+            "in": "path",
+            "description": "ID of the experience to retrieve.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single experience.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExperienceDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "experiences"
+        ],
+        "summary": "Update an experience",
+        "operationId": "updateExperience",
+        "parameters": [
+          {
+            "name": "experienceId",
+            "in": "path",
+            "description": "ID of the experience to update.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The updated experience data.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExperienceInputDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "experience updated successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExperienceDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "experiences"
+        ],
+        "summary": "Delete an experience",
+        "operationId": "deleteExperience",
+        "parameters": [
+          {
+            "name": "experienceId",
+            "in": "path",
+            "description": "ID of the experience to delete.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "experience deleted successfully."
+          }
+        }
+      }
+    },
+    "/api/v1/experience-types/{experienceTypeId}": {
+      "get": {
+        "tags": [
+          "experience-types"
+        ],
+        "summary": "Get an experience-type by ID",
+        "operationId": "getExperienceTypeById",
+        "parameters": [
+          {
+            "name": "experienceTypeId",
+            "in": "path",
+            "description": "ID of the experience-type to retrieve.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single experience-type.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExperienceTypeDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "experience-types"
+        ],
+        "summary": "Update an experience-type",
+        "operationId": "updateExperienceType",
+        "parameters": [
+          {
+            "name": "experienceTypeId",
+            "in": "path",
+            "description": "ID of the experience-type to update.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The updated experience type data.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExperienceTypeDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "experience-type updated successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExperienceTypeDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "experience-types"
+        ],
+        "summary": "Delete an experience-type",
+        "operationId": "deleteExperienceType",
+        "parameters": [
+          {
+            "name": "experienceTypeId",
+            "in": "path",
+            "description": "ID of the experience-type to delete.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "experience-type deleted successfully."
+          }
+        }
+      }
+    },
+    "/api/v1/degrees/{degreeId}": {
+      "get": {
+        "tags": [
+          "degrees"
+        ],
+        "summary": "Get a single degree by ID",
+        "operationId": "getById",
+        "parameters": [
+          {
+            "name": "degreeId",
+            "in": "path",
+            "description": "ID of the degree to retrieve.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested degree.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DegreeDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "degrees"
+        ],
+        "summary": "Update a degree",
+        "operationId": "update",
+        "parameters": [
+          {
+            "name": "degreeId",
+            "in": "path",
+            "description": "ID of the degree to update.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The degree object to be updated.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DegreeInputDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Degree updated successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DegreeDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "degrees"
+        ],
+        "summary": "Delete a degree",
+        "operationId": "delete",
+        "parameters": [
+          {
+            "name": "degreeId",
+            "in": "path",
+            "description": "ID of the degree to delete.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Degree deleted successfully."
+          }
+        }
+      }
+    },
+    "/api/v1/degree-types/{id}": {
+      "get": {
+        "tags": [
+          "degree-types"
+        ],
+        "summary": "Get a single degree type by ID",
+        "operationId": "getById_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the degree type to retrieve.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested degree type.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DegreeTypeDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "degree-types"
+        ],
+        "summary": "Update a degree type",
+        "operationId": "update_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the degree type to update.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The degree-type object to be updated.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DegreeTypeDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Degree type updated successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DegreeTypeDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "degree-types"
+        ],
+        "summary": "Delete a degree type",
+        "operationId": "delete_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the degree type to delete.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Degree type deleted successfully."
+          }
+        }
+      }
+    },
+    "/api/v1/certificates/{certificateId}": {
+      "get": {
+        "tags": [
+          "certificates"
+        ],
+        "summary": "Get a certificate by ID",
+        "operationId": "getCertificate",
+        "parameters": [
+          {
+            "name": "certificateId",
+            "in": "path",
+            "description": "ID of the certificate to retrieve.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the certificates.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CertificateDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "certificates"
+        ],
+        "summary": "Update a certificate",
+        "operationId": "updateCertificate",
+        "parameters": [
+          {
+            "name": "certificateId",
+            "in": "path",
+            "description": "ID of the certificate to update.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The updated certificate data.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CertificateInputDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Certificate updated successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CertificateInputDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "certificates"
+        ],
+        "summary": "Delete a certificate",
+        "operationId": "deleteCertificate",
+        "parameters": [
+          {
+            "name": "certificateId",
+            "in": "path",
+            "description": "ID of the certificate to delete.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Certificate deleted successfully."
+          }
+        }
+      }
+    },
+    "/api/v1/certificate-types/{certificateTypeId}": {
+      "get": {
+        "tags": [
+          "certificate-types"
+        ],
+        "summary": "Get Certificate type by ID",
+        "operationId": "getCertificateTypeById",
+        "parameters": [
+          {
+            "name": "certificateTypeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single certificate type.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CertificateTypeDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "certificate-types"
+        ],
+        "summary": "Update a Certificate type by ID",
+        "operationId": "updateCertificateType",
+        "parameters": [
+          {
+            "name": "certificateTypeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The Certificate type as json to update an existing Certificate type.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CertificateTypeDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Certificate type updated successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CertificateTypeDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "certificate-types"
+        ],
+        "summary": "Delete a Certificate type by ID",
+        "operationId": "deleteCertificateType",
+        "parameters": [
+          {
+            "name": "certificateTypeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Certificate type deleted successfully."
+          }
+        }
+      }
+    },
+    "/api/v1/calculations/{calculationId}": {
+      "get": {
+        "tags": [
+          "calculations"
+        ],
+        "summary": "Get a calculation by ID",
+        "operationId": "getCalculation",
+        "parameters": [
+          {
+            "name": "calculationId",
+            "in": "path",
+            "description": "ID of the calculation to retrieve.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single calculation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CalculationDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "calculations"
+        ],
+        "summary": "Update a calculation",
+        "operationId": "updateCalculation",
+        "parameters": [
+          {
+            "name": "calculationId",
+            "in": "path",
+            "description": "ID of the calculation to update.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The updated calculation data.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CalculationInputDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Calculation updated successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CalculationInputDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/roles": {
+      "get": {
+        "tags": [
+          "roles"
+        ],
+        "summary": "List all roles",
+        "operationId": "getRole",
+        "responses": {
+          "200": {
+            "description": "A list of roles.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RoleDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "roles"
+        ],
+        "summary": "Create a new role",
+        "operationId": "createRole",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoleDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Role created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/organisation-units": {
+      "get": {
+        "tags": [
+          "organisation-units"
+        ],
+        "summary": "List all organisation units",
+        "operationId": "getOrganisationUnit",
+        "responses": {
+          "200": {
+            "description": "A list of organisation units.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrganisationUnitDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "organisation-units"
+        ],
+        "summary": "Create a new organisation unit",
+        "operationId": "createOrganisationUnit",
+        "requestBody": {
+          "description": "The organisation unit object to be created.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrganisationUnitDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Organisation unit created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganisationUnitDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/members": {
+      "get": {
+        "tags": [
+          "members"
+        ],
+        "summary": "List all members",
+        "operationId": "getMember",
+        "responses": {
+          "200": {
+            "description": "A list of members.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MemberDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "members"
+        ],
+        "summary": "Create a new member",
+        "operationId": "createMember",
+        "requestBody": {
+          "description": "The member object to be created.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberInputDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "member created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/leadership-experiences": {
+      "post": {
+        "tags": [
+          "leadership-experiences"
+        ],
+        "summary": "Create a new leadership experience",
+        "operationId": "createLeadershipExperience",
+        "requestBody": {
+          "description": "The leadership experience object to be created.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LeadershipExperienceInputDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Leadership experience created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeadershipExperienceDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/leadership-experience-types": {
+      "get": {
+        "tags": [
+          "leadership-experience-types"
+        ],
+        "summary": "List all leadership-experience types",
+        "operationId": "getLeadershipExperienceTypes",
+        "responses": {
+          "200": {
+            "description": "A list off leadership-experience types.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LeadershipExperienceTypeDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "leadership-experience-types"
+        ],
+        "summary": "Create a new leadership-experience type",
+        "operationId": "createNewLeadershipExperienceType",
+        "requestBody": {
+          "description": "The LeadershipExperience type as json to create a new LeadershipExperience.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LeadershipExperienceTypeDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "leadership-experience type created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeadershipExperienceTypeDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/experiences": {
+      "post": {
+        "tags": [
+          "experiences"
+        ],
+        "summary": "Create a new experience",
+        "operationId": "createExperience",
+        "requestBody": {
+          "description": "The experience object to be created.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExperienceInputDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "experience created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExperienceDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/experience-types": {
+      "get": {
+        "tags": [
+          "experience-types"
+        ],
+        "summary": "List all experience-types",
+        "operationId": "getExperienceTypes",
+        "responses": {
+          "200": {
+            "description": "A list of experience-types.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExperienceTypeDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "experience-types"
+        ],
+        "summary": "Create a new experience-type",
+        "operationId": "createExperienceType",
+        "requestBody": {
+          "description": "The experience-type object to be created.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExperienceTypeDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "experience-type created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExperienceTypeDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/degrees": {
+      "post": {
+        "tags": [
+          "degrees"
+        ],
+        "summary": "Create a degree which is associated with a member",
+        "operationId": "createNew",
+        "requestBody": {
+          "description": "The degree object to be created.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DegreeInputDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Degree created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DegreeDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/degree-types": {
+      "get": {
+        "tags": [
+          "degree-types"
+        ],
+        "summary": "List all degree types",
+        "operationId": "getDegreeType",
+        "responses": {
+          "200": {
+            "description": "A list of degree types.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DegreeTypeDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "degree-types"
+        ],
+        "summary": "Create a degree type",
+        "operationId": "createNew_1",
+        "requestBody": {
+          "description": "The degree-type object to be created.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DegreeTypeDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Degree type created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DegreeTypeDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certificates": {
+      "post": {
+        "tags": [
+          "certificates"
+        ],
+        "summary": "Create a new certificate",
+        "operationId": "createCertificate",
+        "requestBody": {
+          "description": "The certificate object to be created.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CertificateInputDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Certificate created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CertificateDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/certificate-types": {
+      "get": {
+        "tags": [
+          "certificate-types"
+        ],
+        "summary": "List all Certificate types",
+        "operationId": "getCertificateTypes",
+        "responses": {
+          "200": {
+            "description": "A list off certificate types.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CertificateTypeDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "certificate-types"
+        ],
+        "summary": "Create a new Certificate type",
+        "operationId": "createNewCertificateType",
+        "requestBody": {
+          "description": "The data to create a new certificate type.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CertificateTypeDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Certificate type created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CertificateTypeDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/calculations": {
+      "post": {
+        "tags": [
+          "calculations"
+        ],
+        "summary": "Create a new calculation",
+        "operationId": "createCalculation",
+        "requestBody": {
+          "description": "The calculation object to be created.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CalculationInputDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Calculation created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CalculationDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/members/{memberId}/role-points": {
+      "get": {
+        "tags": [
+          "members"
+        ],
+        "summary": "Get roles and points for a member",
+        "operationId": "getPointsForActiveCalculationsForRoleByMemberId",
+        "parameters": [
+          {
+            "name": "memberId",
+            "in": "path",
+            "description": "ID of the member.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the roles and points.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RolePointDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/members/{memberId}/calculations": {
+      "get": {
+        "tags": [
+          "members"
+        ],
+        "summary": "Get calculations for a member, optionally filtered by role",
+        "operationId": "getMemberCalculations",
+        "parameters": [
+          {
+            "name": "memberId",
+            "in": "path",
+            "description": "ID of the member.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "roleId",
+            "in": "query",
+            "description": "Optional role ID to filter calculations.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the calculations.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CalculationDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/members/myself": {
+      "get": {
+        "tags": [
+          "members"
+        ],
+        "summary": "Get the currently logged in member",
+        "operationId": "getMyself",
+        "responses": {
+          "200": {
+            "description": "The currently logged in member",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/member-overviews/{memberId}": {
+      "get": {
+        "tags": [
+          "member-overviews"
+        ],
+        "summary": "Get the member-overview by memberId",
+        "operationId": "getMemberOverviewByMemberId",
+        "parameters": [
+          {
+            "name": "memberId",
+            "in": "path",
+            "description": "The ID of the member whose overview should be retrieved.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the member-overview.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberOverviewDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/configuration/authorization": {
+      "get": {
+        "tags": [
+          "configuration"
+        ],
+        "operationId": "getAuthorizationConfiguration",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfigurationDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/configuration/app": {
+      "get": {
+        "tags": [
+          "configuration"
+        ],
+        "operationId": "getAppConfiguration",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppConfigurationDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "summary": "Actuator root web endpoint",
+        "operationId": "links",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/components/schemas/Link"
+                    }
+                  }
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/components/schemas/Link"
+                    }
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/components/schemas/Link"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/health": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "summary": "Actuator web endpoint 'health'",
+        "operationId": "health",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RoleDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The unique identifier of the role.",
+            "example": 1,
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the role. Must be unique.",
+            "example": "Management",
+            "minLength": 1
+          },
+          "isManagement": {
+            "type": "boolean",
+            "description": "Shows whether this is a people manager role.",
+            "example": true
+          }
+        },
+        "required": [
+          "id",
+          "isManagement",
+          "name"
+        ]
+      },
+      "OrganisationUnitDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The unique identifier of the organisation unit.",
+            "example": 1,
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the organisation unit. Must be unique.",
+            "example": "/mobility",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
+      "MemberInputDto": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "description": "The first name of member.",
+            "example": "Susi",
+            "minLength": 1
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The last name of the member.",
+            "example": "Miller",
+            "minLength": 1
+          },
+          "employmentState": {
+            "type": "string",
+            "description": "The employment state of the member.",
+            "enum": [
+              "EX_MEMBER",
+              "MEMBER",
+              "APPLICANT"
+            ],
+            "example": "APPLICANT",
+            "minLength": 1
+          },
+          "abbreviation": {
+            "type": "string",
+            "description": "The abbreviation of the member.",
+            "example": "SM"
+          },
+          "dateOfHire": {
+            "type": "string",
+            "format": "date",
+            "description": "The date of hire of the member.",
+            "example": "2025-09-24"
+          },
+          "birthDate": {
+            "type": "string",
+            "format": "date",
+            "description": "The birth date of the member",
+            "example": "1995-02-19"
+          },
+          "organisationUnitId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The Organisation unit id of the member.",
+            "example": 1
+          }
+        },
+        "required": [
+          "birthDate",
+          "employmentState",
+          "firstName",
+          "lastName"
+        ]
+      },
+      "LeadershipExperienceInputDto": {
+        "type": "object",
+        "properties": {
+          "memberId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The member id that associated with this leadership experience.",
+            "example": 1
+          },
+          "leadershipExperienceTypeId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The type of leadership experience awarded to the member.",
+            "example": 11
+          },
+          "comment": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "An optional comment for the members leadership experience.",
+            "example": "Completed via fast-track program"
+          }
+        },
+        "required": [
+          "leadershipExperienceTypeId",
+          "memberId"
+        ]
+      },
+      "LeadershipExperienceDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The unique identifier of the leadership experience.",
+            "example": 1,
+            "readOnly": true
+          },
+          "member": {
+            "$ref": "#/components/schemas/MemberDto",
+            "description": "The member associated with this leadership experience."
+          },
+          "leadershipExperienceType": {
+            "$ref": "#/components/schemas/LeadershipExperienceTypeDto",
+            "description": "The type of leadership experience awarded to the member."
+          },
+          "comment": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "An optional comment for the leadership experience.",
+            "example": "Completed via fast-track program"
+          }
+        },
+        "required": [
+          "id",
+          "leadershipExperienceType",
+          "member"
+        ]
+      },
+      "LeadershipExperienceTypeDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "description": "The unique identifier of leadership-experience-type.",
+            "example": 1,
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the leadership-experience-type.",
+            "minLength": 1
+          },
+          "points": {
+            "type": "number",
+            "description": "The amount of points the leadership-experience-type grants.",
+            "example": 1,
+            "minLength": 1
+          },
+          "comment": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "A optional comment for the leadership-experience-type.",
+            "example": "This is an awesome leadership-experience-type!"
+          },
+          "leadershipExperienceKind": {
+            "type": "string",
+            "description": "The kind of leadership-experience-type which is either MILITARY_FUNCTION, YOUTH_AND_SPORT or LEADERSHIP_TRAINING",
+            "enum": [
+              "MILITARY_FUNCTION",
+              "YOUTH_AND_SPORT",
+              "LEADERSHIP_TRAINING"
+            ],
+            "example": "LEADERSHIP_TRAINING"
+          }
+        },
+        "required": [
+          "id",
+          "leadershipExperienceKind",
+          "name",
+          "points"
+        ]
+      },
+      "MemberDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The unique identifier of the member.",
+            "example": 1,
+            "readOnly": true
+          },
+          "firstName": {
+            "type": "string",
+            "description": "The first name of member.",
+            "example": "Susi",
+            "minLength": 1
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The last name of the member.",
+            "example": "Miller",
+            "minLength": 1
+          },
+          "employmentState": {
+            "type": "string",
+            "description": "The employment state of the member.",
+            "enum": [
+              "EX_MEMBER",
+              "MEMBER",
+              "APPLICANT"
+            ],
+            "example": "APPLICANT",
+            "minLength": 1
+          },
+          "abbreviation": {
+            "type": "string",
+            "description": "The abbreviation of the member.",
+            "example": "SM"
+          },
+          "dateOfHire": {
+            "type": "string",
+            "format": "date",
+            "description": "The member's hire date.",
+            "example": "2025-09-24"
+          },
+          "birthDate": {
+            "type": "string",
+            "format": "date",
+            "description": "The member's birth date.",
+            "example": "1995-02-19"
+          },
+          "organisationUnit": {
+            "$ref": "#/components/schemas/OrganisationUnitDto",
+            "description": "The Organisation unit of the member."
+          },
+          "ptimeId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The unique identifier of the member from the PuzzleTime",
+            "example": 1
+          },
+          "lastSuccessfulSync": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The timestamp of the last time the sync with the PuzzleTime API was successful",
+            "example": "2024-02-14T10:15:30"
+          },
+          "syncErrorCount": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The amount of times the sync failed since it was last successful ",
+            "example": 3
+          }
+        },
+        "required": [
+          "birthDate",
+          "employmentState",
+          "firstName",
+          "id",
+          "lastName"
+        ]
+      },
+      "ExperienceInputDto": {
+        "type": "object",
+        "properties": {
+          "memberId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The id of the member associated with this experience.",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "The name or title of the experience",
+            "example": "Software Engineer Intern",
+            "minLength": 1
+          },
+          "employer": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The employer or organization where the experience took place.",
+            "example": "TechCorp Inc."
+          },
+          "percent": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The percentage of workload or effort associated with this experience.",
+            "example": 100,
+            "maximum": 100,
+            "minimum": 0
+          },
+          "experienceTypeId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The id of the type of the experience.",
+            "example": 1
+          },
+          "comment": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Additional comments about the experience.",
+            "example": "Worked on backend API development using Spring Boot."
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date",
+            "description": "The start date of the experience.",
+            "example": "2021-06-01"
+          },
+          "endDate": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date",
+            "description": "The end date of the experience.",
+            "example": "2021-12-31"
+          }
+        },
+        "required": [
+          "experienceTypeId",
+          "memberId",
+          "name",
+          "percent",
+          "startDate"
+        ]
+      },
+      "ExperienceDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The unique identifier of the experience.",
+            "example": 1,
+            "readOnly": true
+          },
+          "member": {
+            "$ref": "#/components/schemas/MemberDto",
+            "description": "The member associated with this experience."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name or title of the experience",
+            "example": "Software Engineer Intern",
+            "minLength": 1
+          },
+          "employer": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The employer or organization where the experience took place.",
+            "example": "TechCorp Inc."
+          },
+          "percent": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The percentage of workload or effort associated with this experience.",
+            "example": 100,
+            "maximum": 100,
+            "minimum": 0
+          },
+          "type": {
+            "$ref": "#/components/schemas/ExperienceTypeDto",
+            "description": "The type or category of the experience."
+          },
+          "comment": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Additional comments about the experience.",
+            "example": "Worked on backend API development using Spring Boot."
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date",
+            "description": "The start date of the experience.",
+            "example": "2021-06-01"
+          },
+          "endDate": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date",
+            "description": "The end date of the experience.",
+            "example": "2021-12-31"
+          }
+        },
+        "required": [
+          "id",
+          "member",
+          "name",
+          "percent",
+          "startDate",
+          "type"
+        ]
+      },
+      "ExperienceTypeDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The unique identifier of the experience-type.",
+            "example": 1,
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the experience-type.",
+            "example": "Management",
+            "minLength": 1
+          },
+          "highlyRelevantPoints": {
+            "type": "number",
+            "description": "The amount of points of the experience-type if the experience has high relevancy.",
+            "example": 10,
+            "minimum": 0
+          },
+          "limitedRelevantPoints": {
+            "type": "number",
+            "description": "The amount of points of the experience-type if the experience has limited relevancy.",
+            "example": 3,
+            "minimum": 0
+          },
+          "littleRelevantPoints": {
+            "type": "number",
+            "description": "The amount of points of the experience-type if the experience has little relevancy.",
+            "example": 8,
+            "minimum": 0
+          }
+        },
+        "required": [
+          "highlyRelevantPoints",
+          "id",
+          "limitedRelevantPoints",
+          "littleRelevantPoints",
+          "name"
+        ]
+      },
+      "DegreeInputDto": {
+        "type": "object",
+        "description": "DTO representing a degree input.",
+        "properties": {
+          "memberId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The unique identifier of the member associated with the degree.",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the degree.",
+            "example": "Master of Science in Mathematics",
+            "minLength": 1
+          },
+          "institution": {
+            "type": "string",
+            "description": "The institution granting the degree.",
+            "example": "Harvard University"
+          },
+          "completed": {
+            "type": "boolean",
+            "description": "Indicates whether the degree has been completed.",
+            "example": true
+          },
+          "typeId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The unique identifier of the degree type.",
+            "example": 3
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date",
+            "description": "The start date of the degree program.",
+            "example": "2019-09-01"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date",
+            "description": "The end date of the degree program.",
+            "example": "2021-06-30"
+          },
+          "comment": {
+            "type": "string",
+            "description": "Additional comments about the degree.",
+            "example": "Graduated with honors."
+          }
+        },
+        "required": [
+          "completed",
+          "memberId",
+          "name",
+          "startDate",
+          "typeId"
+        ]
+      },
+      "DegreeDto": {
+        "type": "object",
+        "description": "DTO representing a degree, including the associated member and degree type.",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The unique identifier of the degree.",
+            "example": 1,
+            "readOnly": true
+          },
+          "member": {
+            "$ref": "#/components/schemas/MemberDto",
+            "description": "The member associated with this degree."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the degree.",
+            "example": "Master of Computer Science",
+            "minLength": 1
+          },
+          "institution": {
+            "type": "string",
+            "description": "The institution granting the degree.",
+            "example": "ETH Zürich"
+          },
+          "completed": {
+            "type": "boolean",
+            "description": "Indicates whether the degree has been completed.",
+            "example": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/DegreeTypeDto",
+            "description": "The type of the degree"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date",
+            "description": "The start date of the degree program.",
+            "example": "2018-09-01"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date",
+            "description": "The end date of the degree program.",
+            "example": "2022-06-30"
+          },
+          "comment": {
+            "type": "string",
+            "description": "Additional comments or notes about the degree.",
+            "example": "Graduated summa cum laude."
+          }
+        },
+        "required": [
+          "completed",
+          "member",
+          "name",
+          "startDate",
+          "type"
+        ]
+      },
+      "DegreeTypeDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The unique identifier of the degree-type.",
+            "example": 1,
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the degree-type.",
+            "example": "Bachelor of Science",
+            "minLength": 1
+          },
+          "highlyRelevantPoints": {
+            "type": "number",
+            "description": "The amount of points of the degree-type if the degree has high relevancy.",
+            "example": 10,
+            "minimum": 0
+          },
+          "limitedRelevantPoints": {
+            "type": "number",
+            "description": "The amount of points of the degree-type if the degree has limited relevancy.",
+            "example": 7.67,
+            "minimum": 0
+          },
+          "littleRelevantPoints": {
+            "type": "number",
+            "description": "The amount of points of the degree-type if the degree has little relevancy.",
+            "example": 3.5,
+            "minimum": 0
+          }
+        },
+        "required": [
+          "highlyRelevantPoints",
+          "id",
+          "limitedRelevantPoints",
+          "littleRelevantPoints",
+          "name"
+        ]
+      },
+      "CertificateInputDto": {
+        "type": "object",
+        "properties": {
+          "memberId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The member id that associated with this certificate.",
+            "example": 1
+          },
+          "certificateTypeId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The type of certificate awarded to the member.",
+            "example": 1
+          },
+          "completedAt": {
+            "type": "string",
+            "format": "date",
+            "description": "The date when the member completed the certificate.",
+            "example": "2025-09-24"
+          },
+          "validUntil": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date",
+            "description": "The date until which the certificate is valid.",
+            "example": "2028-02-12"
+          },
+          "comment": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "An optional comment for the member certificate.",
+            "example": "Completed via fast-track program"
+          }
+        },
+        "required": [
+          "certificateTypeId",
+          "completedAt",
+          "memberId"
+        ]
+      },
+      "CertificateTypeDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "description": "The unique identifier of certificate-type.",
+            "example": 1,
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the certificate-type.",
+            "example": "Certified GitOps Associate",
+            "minLength": 1
+          },
+          "points": {
+            "type": "number",
+            "description": "The amount of points the certificate-type provides.",
+            "example": 1,
+            "minLength": 1
+          },
+          "comment": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "An optional comment for the certificate-type.",
+            "example": "This is an awesome certificate-type."
+          },
+          "tags": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "description": "Case insensitive tags that provide additional information about the certificate-type.",
+            "example": [
+              "Important Tag",
+              "GitLab",
+              "Exam"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "minLength": 1
+          },
+          "effort": {
+            "type": "number",
+            "format": "double",
+            "description": "The time the course takes and the learning time combined in days",
+            "example": 5
+          },
+          "examDuration": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int32",
+            "description": "The duration of the exam in minutes, should be null when no exam is conducted",
+            "example": 120
+          },
+          "link": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "An optional URL containing more information",
+            "example": "https://example.com"
+          },
+          "examType": {
+            "type": "string",
+            "description": "A predefined list of exam types",
+            "enum": [
+              "MULTIPLE_CHOICE",
+              "THEORETICAL",
+              "PRACTICAL",
+              "CASE_STUDY",
+              "WRITTEN_ASSIGNMENT",
+              "NONE"
+            ],
+            "example": "THEORETICAL"
+          },
+          "publisher": {
+            "type": "string",
+            "description": "The name of the publisher",
+            "example": "Puzzle ITC"
+          },
+          "linkValid": {
+            "type": "boolean",
+            "description": "Calculated status. False if link failed too often.",
+            "example": true,
+            "readOnly": true
+          },
+          "linkErrorCount": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Current number of failed retries.",
+            "example": 0,
+            "readOnly": true
+          },
+          "linkLastCheckedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp of the last check.",
+            "example": "2024-02-14T10:15:30",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "effort",
+          "examType",
+          "id",
+          "name",
+          "points",
+          "publisher"
+        ]
+      },
+      "CalculationInputDto": {
+        "type": "object",
+        "properties": {
+          "memberId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The member id associated with this calculation.",
+            "example": 1
+          },
+          "state": {
+            "type": "string",
+            "description": "The current state of the calculation.",
+            "enum": [
+              "DRAFT",
+              "ACTIVE",
+              "ARCHIVED"
+            ],
+            "example": "ACTIVE"
+          },
+          "roleId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The role id for this calculation.",
+            "example": 1
+          },
+          "certificateCalculations": {
+            "type": "array",
+            "description": "Certificates associated with the calculation.",
+            "items": {
+              "$ref": "#/components/schemas/CertificateCalculationInputDto"
+            }
+          },
+          "leadershipExperienceCalculations": {
+            "type": "array",
+            "description": "Leadership experiences associated with the calculation.",
+            "items": {
+              "$ref": "#/components/schemas/LeadershipExperienceCalculationInputDto"
+            }
+          },
+          "degreeCalculations": {
+            "type": "array",
+            "description": "Degrees associated with the calculation.",
+            "items": {
+              "$ref": "#/components/schemas/DegreeCalculationInputDto"
+            }
+          },
+          "experienceCalculations": {
+            "type": "array",
+            "description": "Experiences associated with the calculation.",
+            "items": {
+              "$ref": "#/components/schemas/ExperienceCalculationInputDto"
+            }
+          }
+        }
+      },
+      "CertificateCalculationInputDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "description": "Unique identifier of the certificate calculation",
+            "example": null
+          },
+          "certificateId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Id of the certificate associated with the calculation",
+            "example": 1
+          }
+        }
+      },
+      "DegreeCalculationInputDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "description": "Unique identifier of the degree calculation",
+            "example": null
+          },
+          "degreeId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "ID of the degree being evaluated",
+            "example": 1
+          },
+          "weight": {
+            "type": "number",
+            "description": "Weight of the degree in percent (1–100)",
+            "example": 25,
+            "maximum": 100,
+            "minimum": 1
+          },
+          "relevancy": {
+            "type": "string",
+            "description": "Relevancy level of the degree",
+            "enum": [
+              "STRONGLY",
+              "NORMAL",
+              "POORLY",
+              "NONE"
+            ],
+            "example": "STRONGLY"
+          },
+          "comment": {
+            "type": "string",
+            "description": "Optional comment explaining the relevancy and weight decision",
+            "example": "It's highly relevant because it matches the current position."
+          }
+        },
+        "required": [
+          "degreeId",
+          "relevancy",
+          "weight"
+        ]
+      },
+      "ExperienceCalculationInputDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "description": "Unique identifier of the experience calculation",
+            "example": null
+          },
+          "experienceId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "ID of the experience to be linked",
+            "example": 1
+          },
+          "relevancy": {
+            "type": "string",
+            "description": "Relevancy of the experience",
+            "enum": [
+              "STRONGLY",
+              "NORMAL",
+              "POORLY",
+              "NONE"
+            ],
+            "example": "STRONGLY"
+          },
+          "comment": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Optional justification for the selected relevancy",
+            "example": "It's highly relevant because it is the same job."
+          }
+        },
+        "required": [
+          "experienceId",
+          "relevancy"
+        ]
+      },
+      "LeadershipExperienceCalculationInputDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "description": "Unique identifier of the certificate calculation",
+            "example": null
+          },
+          "leadershipExperienceId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Id of the leadershipExperience associated with the calculation",
+            "example": 6
+          }
+        }
+      },
+      "CertificateDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The unique identifier of the member certificate.",
+            "example": 1,
+            "readOnly": true
+          },
+          "member": {
+            "$ref": "#/components/schemas/MemberDto",
+            "description": "The member associated with this certificate."
+          },
+          "certificate": {
+            "$ref": "#/components/schemas/CertificateTypeDto",
+            "description": "The type of certificate awarded to the member."
+          },
+          "completedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date",
+            "description": "The date when the member completed the certificate.",
+            "example": "2025-09-24"
+          },
+          "validUntil": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date",
+            "description": "The date until which the certificate is valid.",
+            "example": "2028-02-12"
+          },
+          "comment": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "An optional comment for the member certificate.",
+            "example": "Completed via fast-track program"
+          }
+        },
+        "required": [
+          "certificate",
+          "id",
+          "member"
+        ]
+      },
+      "CalculationDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The unique identifier of this calculation.",
+            "example": 1,
+            "readOnly": true
+          },
+          "member": {
+            "$ref": "#/components/schemas/MemberDto",
+            "description": "The member associated with this calculation."
+          },
+          "role": {
+            "$ref": "#/components/schemas/RoleDto",
+            "description": "The role assigned to this calculation."
+          },
+          "state": {
+            "type": "string",
+            "description": "The current state of the calculation.",
+            "enum": [
+              "DRAFT",
+              "ACTIVE",
+              "ARCHIVED"
+            ],
+            "example": "ACTIVE"
+          },
+          "publicationDate": {
+            "type": "string",
+            "format": "date",
+            "description": "The publication date of the calculation.",
+            "example": "2025-03-10"
+          },
+          "publicizedBy": {
+            "type": "string",
+            "description": "The user who publicized the calculation.",
+            "example": "admin_user"
+          },
+          "points": {
+            "type": "number",
+            "description": "Total points of the calculation.",
+            "example": 0.1
+          },
+          "certificateCalculations": {
+            "type": "array",
+            "description": "Certificates used in the calculation.",
+            "items": {
+              "$ref": "#/components/schemas/CertificateCalculationDto"
+            }
+          },
+          "leadershipExperienceCalculations": {
+            "type": "array",
+            "description": "Leadership experiences used in the calculation.",
+            "items": {
+              "$ref": "#/components/schemas/LeadershipExperienceCalculationDto"
+            }
+          },
+          "degreeCalculations": {
+            "type": "array",
+            "description": "Degrees used in the calculation.",
+            "items": {
+              "$ref": "#/components/schemas/DegreeCalculationDto"
+            }
+          },
+          "experienceCalculations": {
+            "type": "array",
+            "description": "Experiences used in the calculation.",
+            "items": {
+              "$ref": "#/components/schemas/ExperienceCalculationDto"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "member",
+          "points",
+          "role",
+          "state"
+        ]
+      },
+      "CertificateCalculationDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Unique identifier of the certificate calculation",
+            "example": 15
+          },
+          "certificate": {
+            "$ref": "#/components/schemas/CertificateDto",
+            "description": "Certificate associated with the calculation"
+          }
+        }
+      },
+      "DegreeCalculationDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Unique identifier of the degree calculation",
+            "example": 42
+          },
+          "degree": {
+            "$ref": "#/components/schemas/DegreeDto",
+            "description": "Degree that is evaluated in the calculation"
+          },
+          "weight": {
+            "type": "number",
+            "description": "Weight of the degree in percent (1–100)",
+            "example": 50,
+            "maximum": 100,
+            "minimum": 1
+          },
+          "relevancy": {
+            "type": "string",
+            "description": "Relevancy level of the degree",
+            "enum": [
+              "STRONGLY",
+              "NORMAL",
+              "POORLY",
+              "NONE"
+            ],
+            "example": "STRONGLY"
+          },
+          "comment": {
+            "type": "string",
+            "description": "Optional comment explaining the relevancy",
+            "example": "Degree matches the job requirements exactly."
+          }
+        },
+        "required": [
+          "degree",
+          "id",
+          "relevancy",
+          "weight"
+        ]
+      },
+      "ExperienceCalculationDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Unique identifier of the experience calculation",
+            "example": 42
+          },
+          "experience": {
+            "$ref": "#/components/schemas/ExperienceDto",
+            "description": "Referenced experience"
+          },
+          "relevancy": {
+            "type": "string",
+            "description": "Relevancy of the experience for the calculation",
+            "enum": [
+              "STRONGLY",
+              "NORMAL",
+              "POORLY",
+              "NONE"
+            ],
+            "example": "STRONGLY"
+          },
+          "comment": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Optional comment explaining the relevancy",
+            "example": "Same job role and technology stack"
+          }
+        }
+      },
+      "LeadershipExperienceCalculationDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Unique identifier of the leadership experience calculation",
+            "example": 42
+          },
+          "experience": {
+            "$ref": "#/components/schemas/LeadershipExperienceDto",
+            "description": "Leadership experience associated with the calculation"
+          }
+        }
+      },
+      "Role": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "isManagement": {
+            "type": "boolean"
+          },
+          "deletedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "RolePointDto": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "$ref": "#/components/schemas/Role",
+            "description": "The role associated with the points",
+            "example": 1
+          },
+          "points": {
+            "type": "number",
+            "description": "The points form all the calculations of the role",
+            "example": "ACTIVE"
+          }
+        }
+      },
+      "MemberOverviewCertificateDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The unique identifier of the member certificate.",
+            "example": 1,
+            "readOnly": true
+          },
+          "certificateTypeName": {
+            "type": "string",
+            "description": "The name of the certificate-type.",
+            "example": "Certified GitOps Associate",
+            "minLength": 1
+          },
+          "completedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date",
+            "description": "The date when the member completed the certificate.",
+            "example": "2025-09-24"
+          },
+          "comment": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "An optional comment for the member certificate.",
+            "example": "Completed via fast-track program"
+          }
+        },
+        "required": [
+          "certificateTypeName",
+          "id"
+        ]
+      },
+      "MemberOverviewCvDto": {
+        "type": "object",
+        "properties": {
+          "degrees": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemberOverviewDegreeDto"
+            }
+          },
+          "experiences": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemberOverviewExperienceDto"
+            }
+          },
+          "certificates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemberOverviewCertificateDto"
+            }
+          },
+          "leadershipExperiences": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemberOverviewLeadershipExperienceDto"
+            }
+          }
+        }
+      },
+      "MemberOverviewDegreeDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The unique identifier of the degree.",
+            "example": 1,
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the degree.",
+            "example": "Master of Computer Science",
+            "minLength": 1
+          },
+          "degreeTypeName": {
+            "type": "string",
+            "description": "The name of the degree-type.",
+            "example": "Bachelor of Science",
+            "minLength": 1
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date",
+            "description": "The start date of the degree program.",
+            "example": "2018-09-01"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date",
+            "description": "The end date of the degree program.",
+            "example": "2022-06-30"
+          }
+        },
+        "required": [
+          "degreeTypeName",
+          "name",
+          "startDate"
+        ]
+      },
+      "MemberOverviewDto": {
+        "type": "object",
+        "properties": {
+          "member": {
+            "$ref": "#/components/schemas/MemberOverviewMemberDto"
+          },
+          "cv": {
+            "$ref": "#/components/schemas/MemberOverviewCvDto"
+          }
+        }
+      },
+      "MemberOverviewExperienceDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The unique identifier of the experience.",
+            "example": 1,
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "description": "The name or title of the experience",
+            "example": "Software Engineer Intern",
+            "minLength": 1
+          },
+          "employer": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The employer or organization where the experience took place.",
+            "example": "TechCorp Inc."
+          },
+          "experienceTypeName": {
+            "type": "string",
+            "description": "The name of the experience-type.",
+            "example": "Management",
+            "minLength": 1
+          },
+          "comment": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Additional comments about the experience.",
+            "example": "Worked on backend API development using Spring Boot."
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date",
+            "description": "The start date of the experience.",
+            "example": "2021-06-01"
+          },
+          "endDate": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date",
+            "description": "The end date of the experience.",
+            "example": "2021-12-31"
+          }
+        },
+        "required": [
+          "experienceTypeName",
+          "id",
+          "name",
+          "startDate"
+        ]
+      },
+      "MemberOverviewLeadershipExperienceDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The unique identifier of the leadership experience.",
+            "example": 1,
+            "readOnly": true
+          },
+          "leadershipExperienceType": {
+            "$ref": "#/components/schemas/MemberOverviewLeadershipExperienceTypeDto",
+            "description": "The type of leadership experience awarded to the member."
+          },
+          "comment": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "An optional comment for the leadership experience.",
+            "example": "Completed via fast-track program"
+          }
+        },
+        "required": [
+          "id",
+          "leadershipExperienceType"
+        ]
+      },
+      "MemberOverviewLeadershipExperienceTypeDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the leadership-experience-type.",
+            "minLength": 1
+          },
+          "leadershipExperienceKind": {
+            "type": "string",
+            "description": "The kind of leadership-experience-type which is either MILITARY_FUNCTION, YOUTH_AND_SPORT or LEADERSHIP_TRAINING",
+            "enum": [
+              "MILITARY_FUNCTION",
+              "YOUTH_AND_SPORT",
+              "LEADERSHIP_TRAINING"
+            ],
+            "example": "LEADERSHIP_TRAINING"
+          }
+        },
+        "required": [
+          "leadershipExperienceKind",
+          "name"
+        ]
+      },
+      "MemberOverviewMemberDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The unique identifier of the member.",
+            "example": 1,
+            "readOnly": true
+          },
+          "firstName": {
+            "type": "string",
+            "description": "The first name of member.",
+            "example": "Susi",
+            "minLength": 1
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The last name of the member.",
+            "example": "Miller",
+            "minLength": 1
+          },
+          "employmentState": {
+            "type": "string",
+            "description": "The employment state of the member.",
+            "enum": [
+              "EX_MEMBER",
+              "MEMBER",
+              "APPLICANT"
+            ],
+            "example": "APPLICANT",
+            "minLength": 1
+          },
+          "abbreviation": {
+            "type": "string",
+            "description": "The abbreviation of the member.",
+            "example": "SM"
+          },
+          "dateOfHire": {
+            "type": "string",
+            "format": "date",
+            "description": "The member's hire date.",
+            "example": "2025-09-24"
+          },
+          "birthDate": {
+            "type": "string",
+            "format": "date",
+            "description": "The member's birth date.",
+            "example": "1995-02-19"
+          },
+          "organisationUnitName": {
+            "type": "string",
+            "description": "The organisation unit name of the member.",
+            "example": "/dev"
+          }
+        },
+        "required": [
+          "birthDate",
+          "employmentState",
+          "firstName",
+          "id",
+          "lastName"
+        ]
+      },
+      "ConfigurationDto": {
+        "type": "object",
+        "properties": {
+          "keycloak": {
+            "$ref": "#/components/schemas/KeycloakDto",
+            "description": "Keycloak configuration for frontend authentication"
+          }
+        }
+      },
+      "KeycloakDto": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "realm": {
+            "type": "string"
+          },
+          "clientId": {
+            "type": "string"
+          },
+          "adminAuthorities": {
+            "type": "array",
+            "description": "All roles that are allowed to access admin functionality in the frontend",
+            "example": "org_hr",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "AppConfigurationDto": {
+        "type": "object",
+        "properties": {
+          "helpUrl": {
+            "type": "string",
+            "description": "Provides the URL the help button should lead to"
+          }
+        }
+      },
+      "Link": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string"
+          },
+          "templated": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "name": "bearerAuth",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
