@@ -23,9 +23,11 @@ public class ExtractorService {
     }
 
     public <C, R, D> void extract(MultipartFile file, ExtractionPipeline<C, R, D> pipeline) throws IOException, ApiException {
+        System.out.println(pipeline.systemPrompt(pipeline.fetchContext()));
+
         String parsedToMarkdown = this.odsParserService.toPromptText(this.odsParserService.parse(file));
         String abbreviation = Objects.requireNonNull(file.getOriginalFilename()).split("_")[0];
-        R result = this.aiService.extractCertificateData(parsedToMarkdown, pipeline.systemPrompt(pipeline.fetchContext(), "Helloi"));
+        R result = this.aiService.extractCertificateData(parsedToMarkdown, pipeline.systemPrompt(pipeline.fetchContext()));
 
         if (pipeline.validate()) {
             var violations = validator.validate(result);

@@ -16,11 +16,15 @@ public class ApiClientConfig {
     @Value("${backend.api.key}")
     private String apiKey;
 
+    @Value("${backend.api.token}")
+    private String token;
+
     @Bean
     public ApiClient apiClient() {
         ApiClient apiClient = new ApiClient();
         apiClient.updateBaseUri(basePath);
-        apiClient.setRequestInterceptor(builder -> builder.header("X-API-Key", apiKey));
+//        apiClient.setRequestInterceptor(builder -> builder.header("X-API-Key", apiKey));
+        apiClient.setRequestInterceptor(builder -> builder.header("Authorization", "Bearer " + token));
 
         return apiClient;
     }
