@@ -23,6 +23,7 @@ public class AiService {
                     """)
                         .param("content", parsedMarkdownContent))
                 .call()
-                .entity(new ParameterizedTypeReference<R>() {});
+                .entity(new ParameterizedTypeReference<R>() {
+                });
     }
 }

@@ -35,7 +35,17 @@ public class CertificateExtractionPipeline implements ExtractionPipeline<Certifi
 
     @Override
     public String systemPrompt(CertificateContextModel context, String content) {
-        return "";
+        return """
+            You are a highly precise data extraction assistant. Your task is to process parsed spreadsheet data and extract a LIST of certificate records into a strict JSON array.
+
+            CRITICAL EXTRACTION RULES:
+            1. Output Format: Respond ONLY with a valid JSON array of objects matching the requested schema. No conversational text before or after the JSON.
+            2. Each data row under the 'Zertifikat' column represents exactly ONE certificate object in the resulting array.
+            3. The name of a certificate is always listed in the "Zertifikat" column
+            4. Points are calculated in the input as follows: There are columns for the possible point values (0, 0.5, 1, 1.5, 2). The actual point value for a row is indicated by a '1' in the corresponding column. For example, if a row contains a '1' in the '0.5' column, this means that this certificate is worth 0.5 points.
+            CONTEXT:
+            
+            """;
     }
 
     @Override
