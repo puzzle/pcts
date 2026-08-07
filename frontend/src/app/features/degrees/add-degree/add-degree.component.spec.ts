@@ -111,4 +111,8 @@ describe('AddDegree', () => {
     expect(component['displayDegreeTypes'](undefined as any))
       .toBe('');
   });
+
+  it('should set the value from degreeType', () => {
+    expect(degreeTypeServiceMock.getAllDegreeTypes);
+  });
 });
