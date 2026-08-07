@@ -78,17 +78,14 @@ export class AddDegreeComponent extends StrictlyTypedDialog<DegreeModel | undefi
 
   constructor() {
     super();
-    if (this.data) {
-      this.formGroup.patchValue({
-        ...this.data
-      });
-    }
   }
 
   ngOnInit(): void {
+    this.formGroup.patchValue(this.data ?? {});
+
     this.degreeTypeService.getAllDegreeTypes()
-      .subscribe((organisationUnits) => {
-        this.degreeTypeOptions.set(organisationUnits);
+      .subscribe((degreeTypes) => {
+        this.degreeTypeOptions.set(degreeTypes);
         this.formGroup.get('degreeType')
           ?.updateValueAndValidity();
       });
