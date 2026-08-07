@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.8.2](https://github.com/puzzle/pcts/compare/0.8.1...0.8.2) (2026-08-07)
+
+
+### Miscellaneous Chores
+
+* **deps:** update all devdependencies (minor and patch) to v22.1.2 ([#766](https://github.com/puzzle/pcts/issues/766)) ([60d88f8](https://github.com/puzzle/pcts/commit/60d88f8945a5e8976feb4aa3b2cc04fa6b2d4da8))
+* **deps:** update angularmaterial monorepo to v22.1.0 ([#764](https://github.com/puzzle/pcts/issues/764)) ([60218e9](https://github.com/puzzle/pcts/commit/60218e92ee97344c8bcf3038682fdbde47e61d8b))
+* **deps:** update dependency org.cyclonedx:cyclonedx-maven-plugin to v2.9.3 ([#765](https://github.com/puzzle/pcts/issues/765)) ([480926a](https://github.com/puzzle/pcts/commit/480926a0e623b987188c403d482a4156e909b2af))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v13.1.0 ([#770](https://github.com/puzzle/pcts/issues/770)) ([d1e609d](https://github.com/puzzle/pcts/commit/d1e609d498a9f0a55a6553a6aa3af3a63894ff9f))
+* **deps:** update dependency org.springdoc:springdoc-openapi-starter-webmvc-ui to v3.1.0 ([#776](https://github.com/puzzle/pcts/issues/776)) ([b044dea](https://github.com/puzzle/pcts/commit/b044dea1b662cf69dec9cb45ecea154b6b486c68))
+* **deps:** update dependency typescript-eslint to v8.66.0 ([#784](https://github.com/puzzle/pcts/issues/784)) ([826b862](https://github.com/puzzle/pcts/commit/826b8624d84e6658f00a3e6b51aa50d837de6b8d))
+* **deps:** update pnpm to v11.18.0 ([#762](https://github.com/puzzle/pcts/issues/762)) ([ca59674](https://github.com/puzzle/pcts/commit/ca59674450a72820f53bc7721ba191d054c9da59))
+* **deps:** update pnpm to v11.19.0 ([#771](https://github.com/puzzle/pcts/issues/771)) ([dcabe3f](https://github.com/puzzle/pcts/commit/dcabe3f7567ea597c5a5f99cbda461a04f08f47a))
+* **deps:** update pnpm to v11.20.0 ([#783](https://github.com/puzzle/pcts/issues/783)) ([80dd349](https://github.com/puzzle/pcts/commit/80dd349a9d3421ae9fb72ecbceee3f47fd17f800))
+* **frontend:** have one targetable job to verify all e2e tests passed ([edc113e](https://github.com/puzzle/pcts/commit/edc113e71e8cb10e483aceda173a4eede158a798))
+* pin mdl version to fix pipeline ([a6c2524](https://github.com/puzzle/pcts/commit/a6c252498461a413b9ce226069c313b4accc0c39))
+
 ## [0.8.1](https://github.com/puzzle/pcts/compare/0.8.0...0.8.1) (2026-07-31)
 
 
