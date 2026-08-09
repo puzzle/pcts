@@ -45,7 +45,7 @@ jobs:
 
       - name: SonarQube Quality Gate check
         id: sonarqube-quality-gate-check
-        uses: SonarSource/sonarqube-quality-gate-action@v1.2.0
+        uses: SonarSource/sonarqube-quality-gate-action@v1.2.1
         with:
           scanMetadataReportFile: target/sonar/report-task.txt
         env:
