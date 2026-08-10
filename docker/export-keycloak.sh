@@ -1,3 +1,6 @@
+#!/usr/bin/env bash
+# Stop keycloak, export current configuration and restart keycloak again
+
 docker compose stop pcts-keycloak
 docker commit pcts-keycloak kc-export-tmp
 

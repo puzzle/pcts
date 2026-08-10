@@ -1,15 +1,11 @@
 package ch.puzzle.pctsmigration;
 
-import ch.puzzle.pctsmigration.certificate.CertificateExtractionPipeline;
-import ch.puzzle.pctsmigration.service.pcts.CertificateTypeService;
 import ch.puzzle.pctsmigration.certificates.CertificateExtractionPipeline;
 import ch.puzzle.pctsmigration.extractor.ExtractorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.openapitools.client.ApiException;
 import org.openapitools.client.model.CertificateInputDto;
-import org.openapitools.client.model.Link;
-import org.openapitools.client.model.CertificateTypeDto;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,13 +20,10 @@ public class MigrationController {
 
     private final ExtractorService service;
     private final CertificateExtractionPipeline certificateExtractionPipeline;
-    private final CertificateTypeService certificateTypeService;
 
-    public MigrationController(ExtractorService service, CertificateExtractionPipeline certificateExtractionPipeline,
-                        CertificateTypeService certificateTypeService) {
+    public MigrationController(ExtractorService service, CertificateExtractionPipeline certificateExtractionPipeline) {
         this.service = service;
         this.certificateExtractionPipeline = certificateExtractionPipeline;
-        this.certificateTypeService = certificateTypeService;
     }
 
     @PostMapping(value = "/certificates", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -39,11 +32,5 @@ public class MigrationController {
         List<CertificateInputDto> result = service.extract(file, certificateExtractionPipeline);
         certificateExtractionPipeline.create(result);
         return service.extract(file, certificateExtractionPipeline);
-    }
-
-    @PostMapping("/pcts/certificate")
-    @Operation(summary = "Analyse an ODS certificate sheet", description = "get all certificate Types")
-    public List<CertificateTypeDto> getFromPctsApi() throws ApiException {
-        return this.certificateTypeService.getCertificateTypes();
     }
 }

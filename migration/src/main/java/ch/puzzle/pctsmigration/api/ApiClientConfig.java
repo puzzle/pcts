@@ -1,5 +1,6 @@
 package ch.puzzle.pctsmigration.api;
 
+import ch.puzzle.pctsmigration.TokenSupplier;
 import org.openapitools.client.ApiClient;
 import org.openapitools.client.api.CertificateTypesApi;
 import org.openapitools.client.api.CertificatesApi;
