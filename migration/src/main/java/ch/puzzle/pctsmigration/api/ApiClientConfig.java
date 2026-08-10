@@ -1,5 +1,6 @@
 package ch.puzzle.pctsmigration.api;
 
+import ch.puzzle.pctsmigration.TokenSupplier;
 import org.openapitools.client.ApiClient;
 import org.openapitools.client.api.CertificateTypesApi;
 import org.openapitools.client.api.CertificatesApi;
@@ -21,11 +22,12 @@ public class ApiClientConfig {
     private String token;
 
     @Bean
-    public ApiClient apiClient() {
+    public ApiClient apiClient(TokenSupplier tokens) {
         ApiClient apiClient = new ApiClient();
         apiClient.updateBaseUri(basePath);
-//        apiClient.setRequestInterceptor(builder -> builder.header("X-API-Key", apiKey));
-        apiClient.setRequestInterceptor(builder -> builder.header("Authorization", "Bearer " + token));
+        System.out.println("Bearer " + tokens.get());
+        apiClient.setRequestInterceptor(builder ->
+                                             builder.setHeader("Authorization", "Bearer " + tokens.get()));
 
         return apiClient;
     }
