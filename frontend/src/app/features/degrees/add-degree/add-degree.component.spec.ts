@@ -104,4 +104,12 @@ describe('AddDegree', () => {
   it('should set the value from degreeType', () => {
     expect(degreeTypeServiceMock.getAllDegreeTypes);
   });
+
+  it('should get the value from getAllDegreeTypes', () => {
+    degreeTypeServiceMock.getAllDegreeTypes.mockReturnValue(of([degreeType2]));
+    const degreeTypeOptionsSpy = jest.spyOn(component['degreeTypeOptions'], 'set');
+    component.ngOnInit();
+    expect(degreeTypeOptionsSpy)
+      .toHaveBeenCalledWith([degreeType2]);
+  });
 });

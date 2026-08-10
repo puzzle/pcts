@@ -52,3 +52,5 @@ target/
 .~lock.*.ods#
 *.~ods
 *.ods#
+/frontend/**/*.spec.js
+/frontend/**/setup-jest.js
