@@ -7,5 +7,6 @@ export interface MemberDto {
   abbreviation: string | null;
   employmentState: EmploymentState;
   organisationUnitId: number | undefined;
+  roleId: number | undefined;
   dateOfHire: string | null;
 }
