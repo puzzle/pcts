@@ -7,7 +7,9 @@ import org.openapitools.client.ApiException;
 import org.openapitools.client.model.CertificateInputDto;
 import org.openapitools.client.model.CertificateTypeDto;
 import org.springframework.stereotype.Component;
+import org.apache.commons.text.similarity.LevenshteinDistance;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 public class CertificateExtractionPipeline implements ExtractionPipeline<CertificateContextModel, CertificateWrapper, CertificateInputDto> {
     private final CertificateTypeService certificateTypeService;
     private final MemberService memberService;
+    private final LevenshteinDistance distance = LevenshteinDistance.getDefaultInstance();
 
     public CertificateExtractionPipeline(CertificateTypeService certificateTypeService, MemberService memberService) {
         this.certificateTypeService = certificateTypeService;
@@ -30,41 +33,23 @@ public class CertificateExtractionPipeline implements ExtractionPipeline<Certifi
     }
 
     @Override
-    public CertificateContextModel fetchContext() throws ApiException {
-        List<CertificateTypeDto> types = this.certificateTypeService.getCertificateTypes();
-        LocalDate currentDate = LocalDate.now();
-
-        return new CertificateContextModel(types, currentDate);
+    public CertificateContextModel fetchContext() {
+        return new CertificateContextModel(LocalDate.now());
     }
 
     @Override
     public String systemPrompt(CertificateContextModel context) {
-        String certificatesInfo = (context.types() == null || context.types().isEmpty())
-                ? "No known certificates in context."
-                : context.types().stream()
-                .map(CertificateTypeDto::toString)
-                .collect(Collectors.joining("\n---\n"));
-
-        String currentDateInfo = context.currentDate() != null ? context.currentDate().toString() : "Unknown";
+        String currentDateInfo = context.currentDate().toString();
 
         return """
-        You are a highly precise data extraction assistant. Your task is to process parsed spreadsheet data and extract a LIST of certificate records into a strict JSON array.
-
-        CRITICAL EXTRACTION RULES:
-        1. Output Format: Respond ONLY with a valid JSON array of objects matching the requested schema. No conversational text before or after the JSON.
-        2. Each data row under the 'Zertifikat' column represents exactly ONE certificate object in the resulting array.
-        3. The name of a certificate is always listed in the "Zertifikat" column
-        4. Points are calculated in the input as follows: There are columns for the possible point values (0, 0.5, 1, 1.5, 2). The actual point value for a row is indicated by a '1' in the corresponding column. For example, if a row contains a '1' in the '0.5' column, this means that this certificate is worth 0.5 points.
-        NEVER RETURN EMPTY OUTPUT OTHERWISE RETURN DUMMY DATA
-        
-        === CONTEXT ===
-        Current Date: %s
-        
-        Known Certificate Types:
-        %s
-        """.formatted(
-                currentDateInfo,
-                certificatesInfo
+                You are a high-precision assistant for data extraction. Your task is to process parsed spreadsheet data and extract a LIST of certificate records into a strictly formatted JSON array.
+                
+                IMPORTANT EXTRACTION RULES:
+                1. Output format: Return ONLY a valid JSON array with objects that conform to the requested schema. No conversation text may appear before or after the JSON.
+                2. Each data row in the 'Zertifikat' column corresponds to exactly ONE certificate object in the resulting array.
+                === CONTEXT ===
+                Current date: %s
+                """.formatted(currentDateInfo
         );
     }
 
@@ -81,15 +66,23 @@ public class CertificateExtractionPipeline implements ExtractionPipeline<Certifi
     @Override
     public Function<CertificateWrapper, List<CertificateInputDto>> mapToDto(String abbreviation) {
         return wrapper -> {
-            if (wrapper ==  null) {
+            if (wrapper == null) {
                 return Collections.emptyList();
             }
 
             return wrapper.items().stream()
                     .map(aiResult -> {
                         CertificateInputDto dto = new CertificateInputDto();
-                        dto.setMemberId(this.memberService.getMemberIdBy(abbreviation));
-                        dto.setCertificateTypeId(aiResult.certificateTypeId());
+                        try {
+                            dto.setMemberId(this.memberService.getMemberIdBy(abbreviation));
+                        } catch (ApiException e) {
+                            throw new RuntimeException(e);
+                        }
+                        try {
+                            dto.setCertificateTypeId(mapCertificateTypeId(aiResult.name(), aiResult.points()));
+                        } catch (ApiException e) {
+                            throw new RuntimeException(e);
+                        }
                         dto.setValidUntil(null);
                         dto.setComment(aiResult.comment());
                         dto.setCompletedAt(aiResult.completedAt());
@@ -97,5 +90,25 @@ public class CertificateExtractionPipeline implements ExtractionPipeline<Certifi
                         return dto;
                     }).collect(Collectors.toList());
         };
+    }
+
+    private Long mapCertificateTypeId(String name, BigDecimal points) throws ApiException {
+        List<CertificateTypeDto> dtos = this.certificateTypeService.getCertificateTypes();
+
+        Long bestId = null;
+        int minDistance = Integer.MAX_VALUE;
+
+        for (CertificateTypeDto dto : dtos) {
+            Integer distanceOfName = this.distance.apply(dto.getName(), name);
+            Integer distanceOfPoints = this.distance.apply(dto.getPoints().toString(), points.toString());
+            Integer distanceOfDto = distanceOfName + distanceOfPoints;
+
+            if (distanceOfDto < minDistance) {
+                minDistance = distanceOfDto;
+                bestId = dto.getId();
+            }
+        }
+
+        return bestId;
     }
 }
