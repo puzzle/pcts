@@ -15,17 +15,10 @@ public class ApiClientConfig {
     @Value("${backend.api.base-url}")
     private String basePath;
 
-    @Value("${backend.api.key}")
-    private String apiKey;
-
-    @Value("${backend.api.token}")
-    private String token;
-
     @Bean
     public ApiClient apiClient(TokenSupplier tokens) {
         ApiClient apiClient = new ApiClient();
         apiClient.updateBaseUri(basePath);
-        System.out.println("Bearer " + tokens.get());
         apiClient.setRequestInterceptor(builder ->
                                              builder.setHeader("Authorization", "Bearer " + tokens.get()));
 
