@@ -29,6 +29,8 @@ public class MigrationController {
     @PostMapping(value = "/certificates", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Analyse an ODS certificate sheet", description = "Upload an .ods file and receive AI-generated CertificateInputDtos")
     public List<CertificateInputDto> certificates(@RequestPart("file") MultipartFile file) throws IOException, ApiException {
+        List<CertificateInputDto> result = service.extract(file, certificateExtractionPipeline);
+        certificateExtractionPipeline.create(result);
         return service.extract(file, certificateExtractionPipeline);
     }
 }

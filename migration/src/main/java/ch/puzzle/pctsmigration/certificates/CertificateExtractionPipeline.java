@@ -1,5 +1,6 @@
 package ch.puzzle.pctsmigration.certificates;
 
+import ch.puzzle.pctsmigration.api.CertificateService;
 import ch.puzzle.pctsmigration.extractor.ExtractionPipeline;
 import ch.puzzle.pctsmigration.api.CertificateTypeService;
 import ch.puzzle.pctsmigration.api.MemberService;
@@ -20,11 +21,13 @@ public class CertificateExtractionPipeline implements ExtractionPipeline<Certifi
 
     private final CertificateTypeService certificateTypeService;
     private final MemberService memberService;
+    private final CertificateService certificateService;
     private final LevenshteinDistance distance = LevenshteinDistance.getDefaultInstance();
 
-    public CertificateExtractionPipeline(CertificateTypeService certificateTypeService, MemberService memberService) {
+    public CertificateExtractionPipeline(CertificateTypeService certificateTypeService, MemberService memberService, CertificateService certificateService) {
         this.certificateTypeService = certificateTypeService;
         this.memberService = memberService;
+        this.certificateService = certificateService;
     }
 
     @Override
@@ -102,5 +105,10 @@ public class CertificateExtractionPipeline implements ExtractionPipeline<Certifi
         int distanceOfName = this.distance.apply(dto.getName(), name);
         int distanceOfPoints = this.distance.apply(dto.getPoints().toString(), points.toString());
         return distanceOfName + distanceOfPoints;
+    }
+
+    @Override
+    public void create(List<CertificateInputDto> dtos) throws ApiException {
+        this.certificateService.create(dtos);
     }
 }
