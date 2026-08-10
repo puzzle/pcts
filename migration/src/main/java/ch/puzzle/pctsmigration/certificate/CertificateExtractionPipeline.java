@@ -2,10 +2,10 @@ package ch.puzzle.pctsmigration.certificate;
 
 import ch.puzzle.pctsmigration.ExtractionPipeline;
 import ch.puzzle.pctsmigration.service.pcts.CertificateTypeService;
+import ch.puzzle.pctsmigration.service.pcts.MemberService;
 import org.openapitools.client.ApiException;
 import org.openapitools.client.model.CertificateInputDto;
 import org.openapitools.client.model.CertificateTypeDto;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -17,9 +17,11 @@ import java.util.stream.Collectors;
 @Component
 public class CertificateExtractionPipeline implements ExtractionPipeline<CertificateContextModel, CertificateWrapper, CertificateInputDto> {
     private final CertificateTypeService certificateTypeService;
+    private final MemberService memberService;
 
-    public CertificateExtractionPipeline(CertificateTypeService certificateTypeService) {
+    public CertificateExtractionPipeline(CertificateTypeService certificateTypeService, MemberService memberService) {
         this.certificateTypeService = certificateTypeService;
+        this.memberService = memberService;
     }
 
     @Override
@@ -77,7 +79,7 @@ public class CertificateExtractionPipeline implements ExtractionPipeline<Certifi
     }
 
     @Override
-    public Function<CertificateWrapper, List<CertificateInputDto>> mapToDto() {
+    public Function<CertificateWrapper, List<CertificateInputDto>> mapToDto(String abbreviation) {
         return wrapper -> {
             if (wrapper ==  null) {
                 return Collections.emptyList();
@@ -86,6 +88,7 @@ public class CertificateExtractionPipeline implements ExtractionPipeline<Certifi
             return wrapper.items().stream()
                     .map(aiResult -> {
                         CertificateInputDto dto = new CertificateInputDto();
+                        dto.setMemberId(this.memberService.getMemberIdBy(abbreviation));
                         dto.setCertificateTypeId(aiResult.certificateTypeId());
                         dto.setValidUntil(null);
                         dto.setComment(aiResult.comment());

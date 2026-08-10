@@ -7,6 +7,7 @@ import org.openapitools.client.model.MemberDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class MemberService {
@@ -18,5 +19,20 @@ public class MemberService {
 
     public List<MemberDto> getMembers() throws ApiException {
         return this.membersApi.getMember();
+    }
+
+    public Long getMemberIdBy(String abbreviation) {
+        try {
+            List<MemberDto> members = getMembers();
+
+            for (MemberDto member : members) {
+                if (Objects.equals(member.getAbbreviation(), abbreviation)) {
+                    return member.getId();
+                }
+            }
+        } catch (ApiException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 }
