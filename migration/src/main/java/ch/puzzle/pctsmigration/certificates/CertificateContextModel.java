@@ -1,4 +1,4 @@
-package ch.puzzle.pctsmigration.certificate;
+package ch.puzzle.pctsmigration.certificates;
 
 import org.openapitools.client.model.CertificateTypeDto;
 

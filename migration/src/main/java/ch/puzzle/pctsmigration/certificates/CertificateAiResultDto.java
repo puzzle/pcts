@@ -1,8 +1,7 @@
-package ch.puzzle.pctsmigration.certificate;
+package ch.puzzle.pctsmigration.certificates;
 
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import jakarta.annotation.Nullable;
-import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.PositiveOrZero;
 

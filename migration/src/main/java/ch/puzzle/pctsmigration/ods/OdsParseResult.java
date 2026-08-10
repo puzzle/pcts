@@ -1,4 +1,4 @@
-package ch.puzzle.pctsmigration;
+package ch.puzzle.pctsmigration.ods;
 
 import java.util.List;
 
