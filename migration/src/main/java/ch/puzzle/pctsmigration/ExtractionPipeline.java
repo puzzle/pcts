@@ -1,9 +1,6 @@
 package ch.puzzle.pctsmigration;
 
-import ch.puzzle.pctsmigration.certificate.CertificateAiResultDto;
 import org.openapitools.client.ApiException;
-import org.openapitools.client.model.CertificateInputDto;
-import org.springframework.core.ParameterizedTypeReference;
 
 import java.util.List;
 import java.util.function.Function;
@@ -25,8 +22,6 @@ public interface ExtractionPipeline<C, R, D> {
     /** The result record class */
     Class<R> entityClass();
 
-    /**
-     * Map result record to effective DTO
-     */
-    Function<R, List<D>> mapToDto();
+    /** Map result record to effective DTO */
+    Function<R, List<D>> mapToDto(String abbreviation);
 }

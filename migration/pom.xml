@@ -125,6 +125,12 @@
                 <useJakartaEe>true</useJakartaEe>
                 <openApiNullable>false</openApiNullable>
               </configOptions>
+              <typeMappings>
+                <typeMapping>OffsetDateTime=LocalDateTime</typeMapping>
+              </typeMappings>
+              <importMappings>
+                <importMapping>java.time.OffsetDateTime=java.time.LocalDateTime</importMapping>
+              </importMappings>
             </configuration>
           </execution>
         </executions>
