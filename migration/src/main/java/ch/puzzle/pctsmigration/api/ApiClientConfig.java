@@ -2,6 +2,7 @@ package ch.puzzle.pctsmigration.api;
 
 import org.openapitools.client.ApiClient;
 import org.openapitools.client.api.CertificateTypesApi;
+import org.openapitools.client.api.CertificatesApi;
 import org.openapitools.client.api.MembersApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -37,5 +38,10 @@ public class ApiClientConfig {
     @Bean
     public MembersApi membersApi(ApiClient apiClient) {
         return new MembersApi(apiClient);
+    }
+
+    @Bean
+    public CertificatesApi certificatesApi(ApiClient apiClient) {
+        return new CertificatesApi(apiClient);
     }
 }

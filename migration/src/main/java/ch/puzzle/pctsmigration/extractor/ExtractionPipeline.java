@@ -20,4 +20,7 @@ public interface ExtractionPipeline<C, R, D> {
 
     /** Map result record to effective DTO */
     List<D> mapToDto(String filename, R wrapper);
+
+    /** send result to the pcts-api to create */
+    void create(List<D> dtos) throws ApiException;
 }
