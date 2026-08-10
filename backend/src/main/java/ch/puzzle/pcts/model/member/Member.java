@@ -4,6 +4,7 @@ import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
+import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.util.validation.PCTSStringValidation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
@@ -12,6 +13,7 @@ import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -50,6 +52,11 @@ public class Member implements Model {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organisation_unit")
     private OrganisationUnit organisationUnit;
+
+    @ManyToMany()
+    @JoinTable(name = "member_role", joinColumns = { @JoinColumn(name = "member_id") }, inverseJoinColumns = {
+            @JoinColumn(name = "role_id") })
+    private List<Role> roles;
 
     @Min(value = 1, message = "{attribute.min.value}")
     private Long ptimeId;
