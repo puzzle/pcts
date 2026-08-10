@@ -40,6 +40,5 @@ public class ExtractorService {
         }
 
         return finalResult;
-
     }
 }

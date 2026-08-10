@@ -21,17 +21,13 @@ public class MemberService {
         return this.membersApi.getMember();
     }
 
-    public Long getMemberIdBy(String abbreviation) {
-        try {
-            List<MemberDto> members = getMembers();
+    public Long getMemberIdBy(String abbreviation) throws ApiException {
+        List<MemberDto> members = getMembers();
 
-            for (MemberDto member : members) {
-                if (Objects.equals(member.getAbbreviation(), abbreviation)) {
-                    return member.getId();
-                }
+        for (MemberDto member : members) {
+            if (Objects.equals(member.getAbbreviation(), abbreviation)) {
+                return member.getId();
             }
-        } catch (ApiException e) {
-            System.out.println(e.getMessage());
         }
         return null;
     }
