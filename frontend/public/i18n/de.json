@@ -91,6 +91,7 @@
     "EMAIL": "Email",
     "BIRTH_DATE": "Geburtsdatum",
     "DATE_OF_HIRE": "Anstellungsdatum",
+    "ROLE": "Rolle",
     "ORGANISATION_UNIT": "Division",
     "EMPLOYMENT_STATE": "Anstellungsstatus",
     "ATTRIBUTE_NULL": "-",

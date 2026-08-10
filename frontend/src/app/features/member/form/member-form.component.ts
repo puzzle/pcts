@@ -22,6 +22,8 @@ import { isDateInPast, isValueInList, isValueInListSignal } from '../../../share
 import { BaseFormComponent } from '../../../shared/form/base-form.component';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { Location } from '@angular/common';
+import { RoleModel } from '../../roles/RoleModel';
+import { RoleService } from '../../roles/role.service';
 
 @Component({
   selector: 'app-member-form',
@@ -47,6 +49,8 @@ export class MemberFormComponent implements OnInit {
 
   private readonly memberService = inject(MemberService);
 
+  private readonly roleService = inject(RoleService);
+
   private readonly organisationUnitService = inject(OrganisationUnitService);
 
   private readonly router = inject(Router);
@@ -62,6 +66,8 @@ export class MemberFormComponent implements OnInit {
   });
 
   private readonly employmentStateOptions: string[] = Object.values(EmploymentState);
+
+  private readonly roleOptions: WritableSignal<RoleModel[]> = signal([]);
 
   private readonly organisationUnitsOptions: WritableSignal<OrganisationUnitModel[]> = signal([]);
 
@@ -79,6 +85,9 @@ export class MemberFormComponent implements OnInit {
     employmentState: [null,
       [Validators.required,
         isValueInList(this.employmentStateOptions, (a, b) => a == b)]],
+    role: [null,
+      [Validators.required,
+        isValueInListSignal(this.roleOptions, (a, b) => a.id === b.id)]],
     organisationUnit: [null,
       isValueInListSignal(this.organisationUnitsOptions, (a, b) => a.id === b.id)]
   });
@@ -90,6 +99,13 @@ export class MemberFormComponent implements OnInit {
   protected employmentStateFilteredOptions = computed(() => {
     const value = this.employmentStateControlSignal() ?? '';
     return this.filterEmploymentState(value);
+  });
+
+  protected roleControlSignal = toSignal(this.memberForm.get('role')!.valueChanges, { initialValue: this.memberForm.get('role')!.value });
+
+  protected roleFilteredOptions = computed(() => {
+    const value = this.roleControlSignal();
+    return this.filterRole(value);
   });
 
   protected organisationUnitControlSignal = toSignal(this.memberForm.get('organisationUnit')!.valueChanges, { initialValue: this.memberForm.get('organisationUnit')!.value });
@@ -104,6 +120,13 @@ export class MemberFormComponent implements OnInit {
       .subscribe((organisationUnits) => {
         this.organisationUnitsOptions.set(organisationUnits);
         this.memberForm.get('organisationUnit')
+          ?.updateValueAndValidity();
+      });
+
+    this.roleService.getAllRoles()
+      .subscribe((roles) => {
+        this.roleOptions.set(roles);
+        this.memberForm.get('role')
           ?.updateValueAndValidity();
       });
   }
@@ -128,6 +151,7 @@ export class MemberFormComponent implements OnInit {
       return;
     }
     const memberToSave = this.memberForm.getRawValue() as MemberModel;
+    console.log(memberToSave);
     if (this.isEdit()) {
       this.memberService.updateMember(this.memberForm.get('id')?.value, memberToSave)
         .subscribe(() => {
@@ -154,6 +178,13 @@ export class MemberFormComponent implements OnInit {
     return this.translateService.instant(translationKey);
   };
 
+  protected displayRole(role: RoleModel): string {
+    if (!role) {
+      return '';
+    }
+    return role?.name ?? '';
+  }
+
   protected displayOrganisationUnit(organisationUnit: OrganisationUnitModel): string {
     if (!organisationUnit) {
       return '';
@@ -170,6 +201,22 @@ export class MemberFormComponent implements OnInit {
       return translatedValue.toLowerCase()
         .includes(filterValue);
     });
+  }
+
+  private filterRole(value: RoleModel | string | null): RoleModel[] {
+    if (value === null || value === undefined || value === '') {
+      return this.roleOptions();
+    }
+
+
+    const filterValue = (typeof value === 'string' ? value : value.name).toLowerCase();
+
+    if (filterValue === '') {
+      return this.roleOptions();
+    }
+    return this.roleOptions()
+      .filter((option) => option.name.toLowerCase()
+        .includes(filterValue));
   }
 
   private filterOrganisationUnit(value: OrganisationUnitModel | string | null): OrganisationUnitModel[] {

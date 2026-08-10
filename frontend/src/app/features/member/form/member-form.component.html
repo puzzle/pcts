@@ -45,6 +45,17 @@
       </app-input-field>
 
       <app-input-field>
+        <input type="text" formControlName="role" matInput
+               [matAutocomplete]="roleAutoComplete" data-testid="role">
+        <mat-autocomplete autoActiveFirstOption #roleAutoComplete="matAutocomplete"
+                          [displayWith]="displayRole">
+          @for (roleUnit of roleFilteredOptions(); track roleUnit) {
+            <mat-option [value]="roleUnit">{{ displayRole(roleUnit) }}</mat-option>
+          }
+        </mat-autocomplete>
+      </app-input-field>
+
+      <app-input-field>
         <input type="text" formControlName="organisationUnit" matInput
                [matAutocomplete]="organisationUnitAutoComplete" data-testid="organisationUnit">
         <mat-autocomplete autoActiveFirstOption #organisationUnitAutoComplete="matAutocomplete"
