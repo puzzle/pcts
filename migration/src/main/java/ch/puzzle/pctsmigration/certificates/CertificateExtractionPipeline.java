@@ -12,12 +12,12 @@ import org.apache.commons.text.similarity.LevenshteinDistance;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Component
 public class CertificateExtractionPipeline implements ExtractionPipeline<CertificateContextModel, CertificateWrapper, CertificateInputDto> {
+
     private final CertificateTypeService certificateTypeService;
     private final MemberService memberService;
     private final LevenshteinDistance distance = LevenshteinDistance.getDefaultInstance();
@@ -28,19 +28,12 @@ public class CertificateExtractionPipeline implements ExtractionPipeline<Certifi
     }
 
     @Override
-    public String name() {
-        return "certificates";
-    }
-
-    @Override
     public CertificateContextModel fetchContext() {
         return new CertificateContextModel(LocalDate.now());
     }
 
     @Override
     public String systemPrompt(CertificateContextModel context) {
-        String currentDateInfo = context.currentDate().toString();
-
         return """
                 You are a high-precision assistant for data extraction. Your task is to process parsed spreadsheet data and extract a LIST of certificate records into a strictly formatted JSON array.
                 
@@ -49,8 +42,7 @@ public class CertificateExtractionPipeline implements ExtractionPipeline<Certifi
                 2. Each data row in the 'Zertifikat' column corresponds to exactly ONE certificate object in the resulting array.
                 === CONTEXT ===
                 Current date: %s
-                """.formatted(currentDateInfo
-        );
+                """.formatted(context.currentDate());
     }
 
     @Override
@@ -64,51 +56,51 @@ public class CertificateExtractionPipeline implements ExtractionPipeline<Certifi
     }
 
     @Override
-    public Function<CertificateWrapper, List<CertificateInputDto>> mapToDto(String abbreviation) {
-        return wrapper -> {
-            if (wrapper == null) {
-                return Collections.emptyList();
-            }
+    public List<CertificateInputDto> mapToDto(String filename, CertificateWrapper wrapper) {
+        if (wrapper == null || wrapper.items() == null) {
+            return Collections.emptyList();
+        }
 
-            return wrapper.items().stream()
-                    .map(aiResult -> {
-                        CertificateInputDto dto = new CertificateInputDto();
-                        try {
-                            dto.setMemberId(this.memberService.getMemberIdBy(abbreviation));
-                        } catch (ApiException e) {
-                            throw new RuntimeException(e);
-                        }
-                        try {
-                            dto.setCertificateTypeId(mapCertificateTypeId(aiResult.name(), aiResult.points()));
-                        } catch (ApiException e) {
-                            throw new RuntimeException(e);
-                        }
-                        dto.setValidUntil(null);
-                        dto.setComment(aiResult.comment());
-                        dto.setCompletedAt(aiResult.completedAt());
+        String abbreviation = extractAbbreviation(filename);
 
-                        return dto;
-                    }).collect(Collectors.toList());
-        };
+        return wrapper.items().stream()
+                .map(aiResult -> createCertificateInputDto(abbreviation, aiResult))
+                .toList();
+    }
+
+    private String extractAbbreviation(String filename) {
+        if (filename.contains("_")) {
+            return filename.split("_")[0].toUpperCase();
+        }
+        return null;
+    }
+
+    private CertificateInputDto createCertificateInputDto(String abbreviation, CertificateAiResultDto aiResult) {
+        try {
+            CertificateInputDto dto = new CertificateInputDto();
+            dto.setMemberId(this.memberService.getMemberIdBy(abbreviation));
+            dto.setCertificateTypeId(mapCertificateTypeId(aiResult.name(), aiResult.points()));
+            dto.setValidUntil(null);
+            dto.setComment(aiResult.comment());
+            dto.setCompletedAt(aiResult.completedAt());
+            return dto;
+        } catch (ApiException e) {
+            throw new IllegalStateException("Failed to map AI result to DTO: " + abbreviation, e);
+        }
     }
 
     private Long mapCertificateTypeId(String name, BigDecimal points) throws ApiException {
         List<CertificateTypeDto> dtos = this.certificateTypeService.getCertificateTypes();
 
-        Long bestId = null;
-        int minDistance = Integer.MAX_VALUE;
+        return dtos.stream()
+                .min(Comparator.comparingInt(dto -> calculateDistance(dto, name, points)))
+                .map(CertificateTypeDto::getId)
+                .orElse(null);
+    }
 
-        for (CertificateTypeDto dto : dtos) {
-            Integer distanceOfName = this.distance.apply(dto.getName(), name);
-            Integer distanceOfPoints = this.distance.apply(dto.getPoints().toString(), points.toString());
-            Integer distanceOfDto = distanceOfName + distanceOfPoints;
-
-            if (distanceOfDto < minDistance) {
-                minDistance = distanceOfDto;
-                bestId = dto.getId();
-            }
-        }
-
-        return bestId;
+    private int calculateDistance(CertificateTypeDto dto, String name, BigDecimal points) {
+        int distanceOfName = this.distance.apply(dto.getName(), name);
+        int distanceOfPoints = this.distance.apply(dto.getPoints().toString(), points.toString());
+        return distanceOfName + distanceOfPoints;
     }
 }

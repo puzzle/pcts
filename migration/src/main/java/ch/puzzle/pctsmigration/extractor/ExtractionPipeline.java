@@ -3,12 +3,8 @@ package ch.puzzle.pctsmigration.extractor;
 import org.openapitools.client.ApiException;
 
 import java.util.List;
-import java.util.function.Function;
 
 public interface ExtractionPipeline<C, R, D> {
-
-    /** Unique identifier used for routing, e.g. "certificates", "degrees" */
-    String name();
 
     /** Fetch all context needed from PCTS API */
     C fetchContext() throws ApiException;
@@ -23,5 +19,5 @@ public interface ExtractionPipeline<C, R, D> {
     Class<R> entityClass();
 
     /** Map result record to effective DTO */
-    Function<R, List<D>> mapToDto(String abbreviation);
+    List<D> mapToDto(String filename, R wrapper);
 }
