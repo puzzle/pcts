@@ -1,8 +1,8 @@
-package ch.puzzle.pctsmigration.certificate;
+package ch.puzzle.pctsmigration.certificates;
 
-import ch.puzzle.pctsmigration.ExtractionPipeline;
-import ch.puzzle.pctsmigration.service.pcts.CertificateTypeService;
-import ch.puzzle.pctsmigration.service.pcts.MemberService;
+import ch.puzzle.pctsmigration.extractor.ExtractionPipeline;
+import ch.puzzle.pctsmigration.api.CertificateTypeService;
+import ch.puzzle.pctsmigration.api.MemberService;
 import org.openapitools.client.ApiException;
 import org.openapitools.client.model.CertificateInputDto;
 import org.openapitools.client.model.CertificateTypeDto;

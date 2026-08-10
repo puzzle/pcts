@@ -1,7 +1,6 @@
-package ch.puzzle.pctsmigration;
+package ch.puzzle.pctsmigration.extractor;
 
-import ch.puzzle.pctsmigration.service.AiService;
-import ch.puzzle.pctsmigration.service.OdsParserService;
+import ch.puzzle.pctsmigration.ods.OdsParserService;
 import org.openapitools.client.ApiException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,10 +13,10 @@ import java.util.Objects;
 @Service
 public class ExtractorService {
     private final OdsParserService odsParserService;
-    private final AiService aiService;
+    private final ExtractorAiService aiService;
     private final Validator validator;
 
-    public ExtractorService(OdsParserService odsParserService, AiService aiService, Validator validator) {
+    public ExtractorService(OdsParserService odsParserService, ExtractorAiService aiService, Validator validator) {
         this.odsParserService = odsParserService;
         this.aiService = aiService;
         this.validator = validator;

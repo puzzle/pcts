@@ -1,14 +1,14 @@
-package ch.puzzle.pctsmigration.service;
+package ch.puzzle.pctsmigration.extractor;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AiService {
+public class ExtractorAiService {
     private final ChatClient client;
 
-    public AiService(ChatClient.Builder builder) {
+    public ExtractorAiService(ChatClient.Builder builder) {
         this.client = builder.defaultAdvisors(new SimpleLoggerAdvisor()).build();
     }
 

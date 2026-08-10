@@ -1,6 +1,5 @@
-package ch.puzzle.pctsmigration.service;
+package ch.puzzle.pctsmigration.ods;
 
-import ch.puzzle.pctsmigration.OdsParseResult;
 import org.odftoolkit.odfdom.doc.OdfSpreadsheetDocument;
 import org.odftoolkit.odfdom.doc.table.OdfTable;
 import org.odftoolkit.odfdom.doc.table.OdfTableCell;

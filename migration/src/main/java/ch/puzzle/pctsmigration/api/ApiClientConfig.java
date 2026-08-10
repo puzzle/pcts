@@ -1,4 +1,4 @@
-package ch.puzzle.pctsmigration;
+package ch.puzzle.pctsmigration.api;
 
 import org.openapitools.client.ApiClient;
 import org.openapitools.client.api.CertificateTypesApi;

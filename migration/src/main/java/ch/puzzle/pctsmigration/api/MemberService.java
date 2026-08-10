@@ -1,4 +1,4 @@
-package ch.puzzle.pctsmigration.service.pcts;
+package ch.puzzle.pctsmigration.api;
 
 
 import org.openapitools.client.ApiException;
