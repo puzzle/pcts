@@ -44,3 +44,11 @@ target/
 .history
 .ionide
 /frontend/cypress/screenshots/
+
+
+### ODS & Office Files ###
+# Standard OpenDocument Spreadsheets
+*.ods
+.~lock.*.ods#
+*.~ods
+*.ods#

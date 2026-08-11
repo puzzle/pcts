@@ -35,7 +35,9 @@ export const routes: Routes = [{
       path: ':id',
       component: MemberDetailViewComponent,
       canActivate: [authGuard('user')],
-      resolve: { member: memberDataResolver }
+      resolve:
+        { member: memberDataResolver,
+          tabIndex: tabResolver }
     },
     {
       path: ':id/edit',
@@ -43,14 +45,6 @@ export const routes: Routes = [{
       canActivate: [authGuard('admin')],
       resolve: { member: memberDataResolver },
       providers: [provideI18nPrefix('FORM.EDIT')]
-    },
-    {
-      path: ':id',
-      component: MemberDetailViewComponent,
-      canActivate: [authGuard('user')],
-      resolve:
-        { member: memberDataResolver,
-          tabIndex: tabResolver }
     }
   ]
 },

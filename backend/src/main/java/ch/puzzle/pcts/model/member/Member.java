@@ -38,6 +38,7 @@ public class Member implements Model {
     @NotNull(message = "{attribute.not.null}")
     private EmploymentState employmentState;
 
+    @NotNull
     private String abbreviation;
 
     private LocalDate dateOfHire;

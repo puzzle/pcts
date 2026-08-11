@@ -2,7 +2,7 @@
   <button matButton="text" type="button" (click)="canceled.emit()">
     {{ "BUTTONS.CANCEL" | scopedTranslation  }}
   </button>
-  <button matButton="filled" type="submit" data-testid="submit-button" [disabled]="!formGroup().valid">
+  <button matButton="filled" type="submit" data-testid="submit-button" [disabled]="isInvalid()">
     {{ "BUTTONS.ACTION" | scopedTranslation }}
   </button>
 </div>

@@ -69,7 +69,7 @@ jobs:
           cache_dependency_path: frontend/pnpm-lock.yaml
 
       - name: Set up node for Cypress
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: ${{ vars.NODE_VERSION }}
 
@@ -106,3 +106,12 @@ jobs:
         with:
           name: cypress-screenshots for ${{ matrix.file }}
           path: frontend/cypress/screenshots
+
+
+  all-e2e-tests-pass:
+    if: always()
+    needs: [e2e]
+    runs-on: ubuntu-latest
+    steps:
+      - if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
+        run: exit 1

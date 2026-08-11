@@ -16,11 +16,13 @@ public class PCTSStringValidator implements ConstraintValidator<PCTSStringValida
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
         if (value == null) {
-            return buildValidationFailure(context, "{attribute.not.null}");
+            // returns true if null and nullable (is valid) to prevent further validations
+            return annotation.nullable() || buildValidationFailure(context, "{attribute.not.null}");
         }
 
         if (value.isBlank()) {
-            return buildValidationFailure(context, "{attribute.not.blank}");
+            // returns true if blank and blank is allowed to prevent further validations
+            return annotation.allowOnlyWhiteSpaces() || buildValidationFailure(context, "{attribute.not.blank}");
         }
 
         if (value.length() < annotation.min() || value.length() > annotation.max()) {

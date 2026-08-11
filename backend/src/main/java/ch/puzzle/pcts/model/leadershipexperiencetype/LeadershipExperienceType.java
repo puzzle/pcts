@@ -26,6 +26,7 @@ public class LeadershipExperienceType implements Model {
     @PCTSPointsValidation
     private BigDecimal points;
 
+    @PCTSStringValidation(nullable = true)
     private String comment;
 
     @Enumerated(EnumType.STRING)
