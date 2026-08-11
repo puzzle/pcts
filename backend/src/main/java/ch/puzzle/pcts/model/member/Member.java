@@ -79,6 +79,7 @@ public class Member implements Model {
         this.dateOfHire = builder.dateOfHire;
         this.birthDate = builder.birthDate;
         this.organisationUnit = builder.organisationUnit;
+        this.roles = builder.roles;
         this.ptimeId = builder.ptimeId;
         this.lastSuccessfulSync = builder.lastSuccessfulSync;
         this.syncErrorCount = builder.syncErrorCount;
@@ -160,6 +161,14 @@ public class Member implements Model {
         this.deletedAt = deletedAt;
     }
 
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
     public Long getPtimeId() {
         return ptimeId;
     }
@@ -204,8 +213,8 @@ public class Member implements Model {
         return "Member{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\''
                + ", ldapName='" + ldapName + '\'' + ", employmentState=" + employmentState + ", abbreviation='"
                + abbreviation + '\'' + ", dateOfHire=" + dateOfHire + ", birthDate=" + birthDate + ", deletedAt="
-               + deletedAt + ", organisationUnit=" + organisationUnit + ", ptimeId=" + ptimeId + ", lastSuccessfulSync="
-               + lastSuccessfulSync + ", syncErrorCount=" + syncErrorCount + '}';
+               + deletedAt + ", organisationUnit=" + organisationUnit + ", roles=" + roles + ", ptimeId=" + ptimeId
+               + ", lastSuccessfulSync=" + lastSuccessfulSync + ", syncErrorCount=" + syncErrorCount + '}';
     }
 
     @Override
@@ -221,7 +230,7 @@ public class Member implements Model {
                && Objects.equals(getBirthDate(), member.getBirthDate())
                && Objects.equals(getDeletedAt(), member.getDeletedAt())
                && Objects.equals(getOrganisationUnit(), member.getOrganisationUnit())
-               && Objects.equals(getPtimeId(), member.getPtimeId())
+               && Objects.equals(getRoles(), member.getRoles()) && Objects.equals(getPtimeId(), member.getPtimeId())
                && Objects.equals(getLastSuccessfulSync(), member.getLastSuccessfulSync())
                && Objects.equals(getSyncErrorCount(), member.getSyncErrorCount())
                && Objects.equals(getLdapName(), member.getLdapName());
@@ -239,6 +248,7 @@ public class Member implements Model {
                       getBirthDate(),
                       getDeletedAt(),
                       getOrganisationUnit(),
+                      getRoles(),
                       getPtimeId(),
                       getLastSuccessfulSync(),
                       getSyncErrorCount(),
@@ -255,6 +265,7 @@ public class Member implements Model {
         private LocalDate dateOfHire;
         private LocalDate birthDate;
         private OrganisationUnit organisationUnit;
+        private List<Role> roles;
         private Long ptimeId;
         private LocalDateTime lastSuccessfulSync;
         private Integer syncErrorCount;
@@ -303,6 +314,11 @@ public class Member implements Model {
 
         public Builder withOrganisationUnit(OrganisationUnit organisationUnit) {
             this.organisationUnit = organisationUnit;
+            return this;
+        }
+
+        public Builder withRoles(List<Role> roles) {
+            this.roles = roles;
             return this;
         }
 
