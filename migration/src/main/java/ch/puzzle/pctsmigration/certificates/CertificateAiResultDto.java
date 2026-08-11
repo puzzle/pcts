@@ -16,7 +16,10 @@ public record CertificateAiResultDto(@NotNull @NotBlank
         @JsonPropertyDescription("This date indicates when the certificate was completed. It is always listed in the “Datum” column.") LocalDate completedAt,
 
         @Nullable
-        @JsonPropertyDescription("This is a comment on the certificate. This is always the farthest to the right field in a certificate line. If it is empty, set the comment to “null.”") String comment,
+        @JsonPropertyDescription("This is a comment on the certificate. This is always the farthest to the right field in a certificate line. "
+                                 + "                 If it is empty, set the comment to “null. "
+                                 + "                 It's also possible that you won't always get a properly formatted date. "
+                                 + "                 If only the month and year are specified, use the first day of the month.”") String comment,
 
         @NotNull
         @JsonPropertyDescription("When processing the provided dataset to determine the point value of a certificate, please interpret the scoring columns as a binary indicator system. \n"
