@@ -112,4 +112,16 @@ describe('AddDegree', () => {
     expect(degreeTypeOptionsSpy)
       .toHaveBeenCalledWith([degreeType2]);
   });
+
+  it('should return the name of the type', () => {
+    expect(component['displayDegreeTypes'](degreeType2))
+      .toBe('Master');
+  });
+
+  it('should return an empty string if type is null/undefined', () => {
+    expect(component['displayDegreeTypes'](null as any))
+      .toBe('');
+    expect(component['displayDegreeTypes'](undefined as any))
+      .toBe('');
+  });
 });
