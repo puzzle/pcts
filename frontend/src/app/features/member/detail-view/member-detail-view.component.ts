@@ -34,6 +34,7 @@ import {
 import { LeadershipExperienceService } from '../../leadership-experiences/leadership-experience.service';
 import { concatMap, filter, Observable } from 'rxjs';
 import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin.directive';
+import { MatFormField } from '@angular/material/input';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -47,7 +48,8 @@ import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin
     MatTab,
     TranslationScopeDirective,
     MemberCalculationTableComponent,
-    ShowIfAdminDirective
+    ShowIfAdminDirective,
+    MatFormField
   ],
   templateUrl: './member-detail-view.component.html',
   styleUrls: ['./member-detail-view.component.scss']
