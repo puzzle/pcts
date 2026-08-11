@@ -81,6 +81,7 @@
     "BIRTH_DATE": "Geburtsdatum",
     "DATE_OF_HIRE": "Anstellungsdatum",
     "ROLE": "Rolle",
+    "ADD_ROLE": "Rolle hinzufügen",
     "ORGANISATION_UNIT": "Division",
     "EMPLOYMENT_STATE": "Anstellungsstatus",
     "ATTRIBUTE_NULL": "-",
