@@ -1,4 +1,5 @@
 import { EmploymentState } from '../../../shared/enum/employment-state.enum';
+import { RoleModel } from '../../roles/RoleModel';
 
 export interface MemberDto {
   firstName: string;
@@ -7,6 +8,6 @@ export interface MemberDto {
   abbreviation: string | null;
   employmentState: EmploymentState;
   organisationUnitId: number | undefined;
-  roleId: number | undefined;
+  roles: RoleModel[] | undefined;
   dateOfHire: string | null;
 }

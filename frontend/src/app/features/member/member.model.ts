@@ -9,7 +9,7 @@ export interface MemberModel {
   birthDate: Date;
   abbreviation: string | null;
   employmentState: EmploymentState;
-  role: RoleModel;
+  roles: RoleModel[];
   organisationUnit: OrganisationUnitModel;
   dateOfHire: Date | null;
 }

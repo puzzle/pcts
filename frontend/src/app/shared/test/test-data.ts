@@ -86,7 +86,7 @@ export const member1: MemberModel = {
   employmentState: EmploymentState.MEMBER,
   dateOfHire: new Date('2018-12-01'),
   organisationUnit: organisationUnit1,
-  role: role1
+  roles: [role1]
 };
 
 export const member2: MemberModel = {
@@ -98,7 +98,7 @@ export const member2: MemberModel = {
   employmentState: EmploymentState.MEMBER,
   dateOfHire: new Date('2018-12-01'),
   organisationUnit: organisationUnit2,
-  role: role2
+  roles: [role2]
 };
 
 export const member3: MemberModel = {
@@ -110,7 +110,7 @@ export const member3: MemberModel = {
   employmentState: EmploymentState.EX_MEMBER,
   dateOfHire: new Date('2018-12-01'),
   organisationUnit: organisationUnit3,
-  role: role3
+  roles: [role3]
 };
 
 export const member4: MemberModel = {
@@ -122,7 +122,7 @@ export const member4: MemberModel = {
   employmentState: EmploymentState.APPLICANT,
   dateOfHire: null,
   organisationUnit: organisationUnit4,
-  role: role3
+  roles: [role3]
 };
 
 export const memberDto1: MemberDto = {
@@ -133,7 +133,7 @@ export const memberDto1: MemberDto = {
   employmentState: EmploymentState.MEMBER,
   dateOfHire: '2018-12-01',
   organisationUnitId: 1,
-  roleId: 1
+  roles: [role1]
 };
 
 export const memberDto2: MemberDto = {
@@ -144,7 +144,7 @@ export const memberDto2: MemberDto = {
   employmentState: EmploymentState.APPLICANT,
   dateOfHire: null,
   organisationUnitId: 4,
-  roleId: 2
+  roles: [role2]
 };
 
 export const tag1: TagModel = {
