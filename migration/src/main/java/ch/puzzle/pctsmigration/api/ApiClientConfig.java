@@ -16,11 +16,11 @@ public class ApiClientConfig {
     private String basePath;
 
     @Bean
-    public ApiClient apiClient(TokenSupplier tokens) {
+    public ApiClient apiClient(TokenSupplier tokenSupplier) {
         ApiClient apiClient = new ApiClient();
         apiClient.updateBaseUri(basePath);
         apiClient.setRequestInterceptor(builder ->
-                                             builder.setHeader("Authorization", "Bearer " + tokens.get()));
+                                             builder.setHeader("Authorization", "Bearer " + tokenSupplier.get()));
 
         return apiClient;
     }
