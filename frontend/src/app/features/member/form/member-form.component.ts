@@ -35,7 +35,7 @@ import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-
 import { Location } from '@angular/common';
 import { RoleModel } from '../../roles/RoleModel';
 import { RoleService } from '../../roles/role.service';
-import { MatChipGrid, MatChipInput, MatChipInputEvent, MatChipRow } from '@angular/material/chips';
+import { MatChipGrid, MatChipInput, MatChipInputEvent, MatChipRemove, MatChipRow } from '@angular/material/chips';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 
@@ -57,7 +57,8 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
     ScopedTranslationPipe,
     MatChipGrid,
     MatChipRow,
-    MatChipInput
+    MatChipInput,
+    MatChipRemove
   ],
   templateUrl: './member-form.component.html'
 })
@@ -109,9 +110,8 @@ export class MemberFormComponent implements OnInit {
     employmentState: [null,
       [Validators.required,
         isValueInList(this.employmentStateOptions, (a, b) => a == b)]],
-    roles: [null,
-      [Validators.required,
-        isValueInListSignal(this.roleOptions, (a, b) => a.id === b.id)]],
+    roles: [[] as RoleModel[],
+      [isValueInListSignal(this.roleOptions, (a, b) => a.id === b.id)]],
     organisationUnit: [null,
       isValueInListSignal(this.organisationUnitsOptions, (a, b) => a.id === b.id)]
   });
@@ -175,7 +175,6 @@ export class MemberFormComponent implements OnInit {
       return;
     }
     const memberToSave = this.memberForm.getRawValue() as MemberModel;
-    console.log(memberToSave);
     if (this.isEdit()) {
       this.memberService.updateMember(this.memberForm.get('id')?.value, memberToSave)
         .subscribe(() => {
@@ -233,7 +232,7 @@ export class MemberFormComponent implements OnInit {
     }
 
 
-    const filterValue = (typeof value === 'string' ? value : value.name).toLowerCase();
+    const filterValue = (typeof value === 'string' ? value : value?.name)?.toLowerCase();
 
     if (filterValue === '') {
       return this.roleOptions();
@@ -262,7 +261,6 @@ export class MemberFormComponent implements OnInit {
   readonly announcer = inject(LiveAnnouncer);
 
   remove(role: RoleModel): void {
-    console.log('asdf');
     this.roles.update((roles) => {
       const index = roles.indexOf(role);
       if (index < 0) {
