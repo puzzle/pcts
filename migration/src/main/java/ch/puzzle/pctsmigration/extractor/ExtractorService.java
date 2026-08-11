@@ -25,7 +25,7 @@ public class ExtractorService {
         String parsedToMarkdown = this.odsParserService.toPromptText(this.odsParserService.parse(file));
 
         R result = this.aiService
-                .extractCertificateData(parsedToMarkdown,
+                .aiExtractFrom(parsedToMarkdown,
                                         pipeline.systemPrompt(pipeline.fetchContext()),
                                         pipeline.entityClass());
 

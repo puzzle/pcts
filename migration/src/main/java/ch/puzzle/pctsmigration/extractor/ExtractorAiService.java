@@ -12,7 +12,7 @@ public class ExtractorAiService {
         this.client = builder.defaultAdvisors(new SimpleLoggerAdvisor()).build();
     }
 
-    public <R> R extractCertificateData(String parsedMarkdownContent, String prompt, Class<R> typeRef) {
+    public <R> R aiExtractFrom(String parsedMarkdownContent, String prompt, Class<R> typeRef) {
         return this.client.prompt().system(prompt).user(u -> u.text("""
                 Extract the records from the following parsed spreadsheet content:
 
