@@ -26,7 +26,10 @@ describe('Add degree Modal', () => {
       .should('include.text', 'Ausbildung hinzufügen');
   });
 
-  it('should create degree', () => {
+
+  it.only('should create degree', () => {
+    cy.intercept('api/v1/degrees')
+      .as('degrees');
     openDegreeModal();
 
     formPage.submitButtonShouldBe('disabled');
@@ -39,10 +42,31 @@ describe('Add degree Modal', () => {
     formPage.submitButtonShouldBe('enabled');
     formPage.save();
 
-
     formPage.shouldShowSuccessToast('Ausbildung wurde erfolgreich erstellt.');
+    /*
+     * check request is made with the proper request body
+     *  https://docs.cypress.io/api/commands/request#Alias-the-request-using-as
+     */
+    cy.get('@degrees')
+      .then((interception) => {
+        const body = interception.request.body;
+
+        const expectedValue = {
+          name: 'Mathematik',
+          memberId: 1,
+          typeId: 1,
+          institution: 'GIBB',
+          completed: true,
+          comment: '',
+          startDate: '2000-10-10',
+          endDate: '2001-12-10'
+        };
+        expect(body).to.contain(expectedValue);
+      });
     modalPage.checkModalIsClosed();
   });
+
+  // test both alternative save buttons
 
   describe('Validation Errors', () => {
     beforeEach(() => {
@@ -100,3 +124,4 @@ describe('Add degree Modal', () => {
     });
   });
 });
+
