@@ -44,16 +44,46 @@
         </mat-autocomplete>
       </app-input-field>
 
-      <app-input-field>
-        <input type="text" formControlName="role" matInput
-               [matAutocomplete]="roleAutoComplete" data-testid="role">
-        <mat-autocomplete autoActiveFirstOption #roleAutoComplete="matAutocomplete"
-                          [displayWith]="displayRole">
-          @for (roleUnit of roleFilteredOptions(); track roleUnit) {
-            <mat-option [value]="roleUnit">{{ displayRole(roleUnit) }}</mat-option>
+<!--      <app-input-field>-->
+<!--        <input type="text" formControlName="role" matInput-->
+<!--               [matAutocomplete]="roleAutoComplete" data-testid="role">-->
+<!--        <mat-autocomplete autoActiveFirstOption #roleAutoComplete="matAutocomplete"-->
+<!--                          [displayWith]="displayRole">-->
+<!--          @for (role of roleFilteredOptions(); track role) {-->
+<!--            <mat-option [value]="role">{{ displayRole(role) }}</mat-option>-->
+<!--          }-->
+<!--        </mat-autocomplete>-->
+<!--      </app-input-field>-->
+      <mat-form-field>
+<!--        <mat-label appPctsFormLabel/>-->
+        <mat-label>test</mat-label>
+        <mat-chip-grid #chipGrid aria-label="Role selection">
+          @for (role of roles(); track role.name) {
+            <mat-chip-row (removed)="remove(role)"  [removable]="true">
+              {{role.name}}
+                <button matChipRemove [attr.aria-label]="'remove ' + role">
+                  <mat-icon>cancel</mat-icon>
+                  asdf
+                </button>
+            </mat-chip-row>
+          }
+        </mat-chip-grid>
+        <input name="currentRole"
+               placeholder='{{ "ROLE" | scopedTranslation }}'
+               #roleInput
+               formControlName="roles"
+               [matChipInputFor]="chipGrid"
+               [matAutocomplete]="roleAutoComplete"
+               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+               (matChipInputTokenEnd)="add($event)"
+               type="text"
+        >
+        <mat-autocomplete autoActiveFirstOption #roleAutoComplete="matAutocomplete" (optionSelected)="selected($event); roleInput.value= ''">
+          @for (role of roleFilteredOptions(); track role) {
+            <mat-option [value]="role">{{displayRole(role)}}</mat-option>
           }
         </mat-autocomplete>
-      </app-input-field>
+      </mat-form-field>
 
       <app-input-field>
         <input type="text" formControlName="organisationUnit" matInput

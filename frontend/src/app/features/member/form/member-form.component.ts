@@ -1,11 +1,22 @@
-import { Component, computed, effect, inject, input, OnInit, signal, WritableSignal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  model,
+  ModelSignal,
+  OnInit,
+  signal,
+  WritableSignal
+} from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Router } from '@angular/router';
 import { MemberService } from '../member.service';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { TranslateService } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -24,6 +35,9 @@ import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-
 import { Location } from '@angular/common';
 import { RoleModel } from '../../roles/RoleModel';
 import { RoleService } from '../../roles/role.service';
+import { MatChipGrid, MatChipInput, MatChipInputEvent, MatChipRow } from '@angular/material/chips';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-member-form',
@@ -40,7 +54,10 @@ import { RoleService } from '../../roles/role.service';
     PctsFormLabelDirective,
     InputFieldComponent,
     BaseFormComponent,
-    ScopedTranslationPipe
+    ScopedTranslationPipe,
+    MatChipGrid,
+    MatChipRow,
+    MatChipInput
   ],
   templateUrl: './member-form.component.html'
 })
@@ -71,6 +88,13 @@ export class MemberFormComponent implements OnInit {
 
   private readonly organisationUnitsOptions: WritableSignal<OrganisationUnitModel[]> = signal([]);
 
+  readonly separatorKeysCodes: number[] = [ENTER,
+    COMMA];
+
+  readonly roles: WritableSignal<RoleModel[]> = signal([]);
+
+  readonly currentRole: ModelSignal<RoleModel | undefined> = model();
+
   protected memberForm: FormGroup = this.fb.group({
     id: [null],
     firstName: ['',
@@ -85,7 +109,7 @@ export class MemberFormComponent implements OnInit {
     employmentState: [null,
       [Validators.required,
         isValueInList(this.employmentStateOptions, (a, b) => a == b)]],
-    role: [null,
+    roles: [null,
       [Validators.required,
         isValueInListSignal(this.roleOptions, (a, b) => a.id === b.id)]],
     organisationUnit: [null,
@@ -101,7 +125,7 @@ export class MemberFormComponent implements OnInit {
     return this.filterEmploymentState(value);
   });
 
-  protected roleControlSignal = toSignal(this.memberForm.get('role')!.valueChanges, { initialValue: this.memberForm.get('role')!.value });
+  protected roleControlSignal = toSignal(this.memberForm.get('roles')!.valueChanges, { initialValue: this.memberForm.get('roles')!.value });
 
   protected roleFilteredOptions = computed(() => {
     const value = this.roleControlSignal();
@@ -126,7 +150,7 @@ export class MemberFormComponent implements OnInit {
     this.roleService.getAllRoles()
       .subscribe((roles) => {
         this.roleOptions.set(roles);
-        this.memberForm.get('role')
+        this.memberForm.get('roles')
           ?.updateValueAndValidity();
       });
   }
@@ -142,7 +166,7 @@ export class MemberFormComponent implements OnInit {
 
       this.memberForm.get('organisationUnit')
         ?.setValue(this.organisationUnitsOptions()
-          .find((orgUnit) => orgUnit.id === this.member().organisationUnit.id));
+          .find((orgUnit) => orgUnit.id === this.member()?.organisationUnit?.id));
     });
   }
 
@@ -233,5 +257,39 @@ export class MemberFormComponent implements OnInit {
     return this.organisationUnitsOptions()
       .filter((option) => option.name.toLowerCase()
         .includes(filterValue));
+  }
+
+  readonly announcer = inject(LiveAnnouncer);
+
+  remove(role: RoleModel): void {
+    console.log('asdf');
+    this.roles.update((roles) => {
+      const index = roles.indexOf(role);
+      if (index < 0) {
+        return roles;
+      }
+
+      roles.splice(index, 1);
+      this.announcer.announce(`Removed ${role}`);
+      return [...roles];
+    });
+  }
+
+  add(event: MatChipInputEvent): void {
+    const value: RoleModel = this.filterRole(event.value)[0];
+
+    if (value) {
+      this.roles.update((roles) => [...roles,
+        value]);
+    }
+
+    this.currentRole.set(undefined);
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.roles.update((roles) => [...roles,
+      event.option.value]);
+    this.currentRole.set(undefined);
+    event.option.deselect();
   }
 }
