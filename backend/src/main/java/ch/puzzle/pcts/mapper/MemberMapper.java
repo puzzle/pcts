@@ -37,6 +37,7 @@ public class MemberMapper {
                              model.getDateOfHire(),
                              model.getBirthDate(),
                              organisationUnitMapper.toDto(model.getOrganisationUnit()),
+                             model.getRoles(),
                              model.getPtimeId(),
                              model.getLastSuccessfulSync(),
                              model.getSyncErrorCount());
@@ -49,6 +50,7 @@ public class MemberMapper {
                 .withLastName(dto.lastName())
                 .withEmploymentState(dto.employmentState())
                 .withAbbreviation(dto.abbreviation())
+                .withRoles(dto.roles())
                 .withDateOfHire(dto.dateOfHire())
                 .withBirthDate(dto.birthDate())
                 .withOrganisationUnit(organisationUnitFromId(dto.organisationUnitId()))
