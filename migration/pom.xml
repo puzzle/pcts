@@ -114,6 +114,29 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>3.9.0</version>
+        <executions>
+          <execution>
+            <id>code-format</id>
+            <goals>
+              <goal>apply</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <java>
+            <eclipse>
+              <version>4.26</version>
+              <file>${project.basedir}/src/main/resources/formatting.xml</file>
+            </eclipse>
+            <removeUnusedImports/>
+            <importOrder/>
+          </java>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.openapitools</groupId>
         <artifactId>openapi-generator-maven-plugin</artifactId>
         <version>7.24.0</version>

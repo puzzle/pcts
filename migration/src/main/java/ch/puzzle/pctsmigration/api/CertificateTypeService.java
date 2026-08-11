@@ -1,11 +1,10 @@
 package ch.puzzle.pctsmigration.api;
 
+import java.util.List;
 import org.openapitools.client.ApiException;
 import org.openapitools.client.api.CertificateTypesApi;
 import org.openapitools.client.model.CertificateTypeDto;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class CertificateTypeService {

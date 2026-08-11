@@ -1,5 +1,6 @@
 package ch.puzzle.pctsmigration;
 
+import java.util.List;
 import org.springframework.boot.security.oauth2.client.autoconfigure.OAuth2ClientProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
@@ -7,8 +8,6 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
 
 @Component
 public class TokenSupplier {
@@ -22,13 +21,17 @@ public class TokenSupplier {
         this.oAuth2ClientProperties = oAuth2ClientProperties;
     }
 
-
     public String get() {
-        List<OAuth2ClientProperties.Registration> registrationList = oAuth2ClientProperties.getRegistration().values().stream().toList();
+        List<OAuth2ClientProperties.Registration> registrationList = oAuth2ClientProperties
+                .getRegistration()
+                .values()
+                .stream()
+                .toList();
         String clientId = registrationList.getFirst().getClientId();
 
-        if (clientId == null){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not resolve clientId from application.properties");
+        if (clientId == null) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                                              "Could not resolve clientId from application.properties");
         }
 
         OAuth2AuthorizeRequest request = OAuth2AuthorizeRequest

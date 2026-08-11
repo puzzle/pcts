@@ -13,15 +13,10 @@ public class ExtractorAiService {
     }
 
     public <R> R extractCertificateData(String parsedMarkdownContent, String prompt, Class<R> typeRef) {
-        return this.client.prompt()
-                .system(prompt)
-                .user(u -> u.text("""
-                    Extract the records from the following parsed spreadsheet content:
-                    
-                    {content}
-                    """)
-                        .param("content", parsedMarkdownContent))
-                .call()
-                .entity(typeRef);
+        return this.client.prompt().system(prompt).user(u -> u.text("""
+                Extract the records from the following parsed spreadsheet content:
+
+                {content}
+                """).param("content", parsedMarkdownContent)).call().entity(typeRef);
     }
 }

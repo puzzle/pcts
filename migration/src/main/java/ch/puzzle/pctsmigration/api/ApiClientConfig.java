@@ -19,8 +19,7 @@ public class ApiClientConfig {
     public ApiClient apiClient(TokenSupplier tokenSupplier) {
         ApiClient apiClient = new ApiClient();
         apiClient.updateBaseUri(basePath);
-        apiClient.setRequestInterceptor(builder ->
-                                             builder.setHeader("Authorization", "Bearer " + tokenSupplier.get()));
+        apiClient.setRequestInterceptor(builder -> builder.setHeader("Authorization", "Bearer " + tokenSupplier.get()));
 
         return apiClient;
     }

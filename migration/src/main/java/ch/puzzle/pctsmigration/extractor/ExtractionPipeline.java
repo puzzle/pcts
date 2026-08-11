@@ -1,8 +1,7 @@
 package ch.puzzle.pctsmigration.extractor;
 
-import org.openapitools.client.ApiException;
-
 import java.util.List;
+import org.openapitools.client.ApiException;
 
 public interface ExtractionPipeline<C, R, D> {
 

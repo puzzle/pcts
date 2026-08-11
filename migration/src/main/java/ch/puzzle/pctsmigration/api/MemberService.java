@@ -1,13 +1,11 @@
 package ch.puzzle.pctsmigration.api;
 
-
+import java.util.List;
+import java.util.Objects;
 import org.openapitools.client.ApiException;
 import org.openapitools.client.api.MembersApi;
 import org.openapitools.client.model.MemberDto;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Objects;
 
 @Service
 public class MemberService {
