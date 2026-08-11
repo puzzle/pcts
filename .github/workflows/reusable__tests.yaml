@@ -107,4 +107,4 @@ jobs:
           check_name: "Migration Test Results"
           comment_mode: 'changes in failures'
           files: |
-            migration/target/surefire-reports/*.xml  
+            migration/target/surefire-reports/*.xml
