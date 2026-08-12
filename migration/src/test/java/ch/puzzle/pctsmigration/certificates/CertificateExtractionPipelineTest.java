@@ -1,9 +1,14 @@
 package ch.puzzle.pctsmigration.certificates;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
+
 import ch.puzzle.pctsmigration.api.CertificateService;
 import ch.puzzle.pctsmigration.api.CertificateTypeService;
 import ch.puzzle.pctsmigration.api.MemberService;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -17,12 +22,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.openapitools.client.ApiException;
 import org.openapitools.client.model.CertificateInputDto;
 import org.openapitools.client.model.CertificateTypeDto;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CertificateExtractionPipelineTest {
@@ -38,7 +37,6 @@ class CertificateExtractionPipelineTest {
 
     @InjectMocks
     private CertificateExtractionPipeline pipeline;
-
 
     @Test
     @DisplayName("fetchContext should return the current date")
@@ -60,17 +58,10 @@ class CertificateExtractionPipelineTest {
     }
 
     @Test
-    @DisplayName("`validate` should always return `true`")
-    void validate_returnsTrue() {
-        assertThat(pipeline.validate()).isTrue();
-    }
-
-    @Test
     @DisplayName("entityClass should return CertificateWrapper.class")
     void entityClass_returnsCertificateWrapperClass() {
         assertThat(pipeline.entityClass()).isEqualTo(CertificateWrapper.class);
     }
-
 
     @Test
     @DisplayName("Should return an empty list if `wrapper` or `items` are null")
@@ -159,7 +150,6 @@ class CertificateExtractionPipelineTest {
                 .hasMessageContaining("Failed to map AI result to DTO: AW")
                 .hasCauseInstanceOf(ApiException.class);
     }
-
 
     @Test
     @DisplayName("Should delegate creation to the CertificateService")

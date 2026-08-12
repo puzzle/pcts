@@ -1,5 +1,8 @@
 package ch.puzzle.pctsmigration.api;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
+
 import ch.puzzle.pctsmigration.TokenSupplier;
 import java.net.URI;
 import java.net.http.HttpRequest;
@@ -15,9 +18,6 @@ import org.openapitools.client.api.CertificateTypesApi;
 import org.openapitools.client.api.CertificatesApi;
 import org.openapitools.client.api.MembersApi;
 import org.springframework.test.util.ReflectionTestUtils;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ApiClientConfigTest {
@@ -52,9 +52,7 @@ class ApiClientConfigTest {
         interceptor.accept(requestBuilder);
         HttpRequest builtRequest = requestBuilder.build();
 
-        assertThat(builtRequest.headers().firstValue("Authorization"))
-                .isPresent()
-                .hasValue("Bearer " + expectedToken);
+        assertThat(builtRequest.headers().firstValue("Authorization")).isPresent().hasValue("Bearer " + expectedToken);
 
         verify(tokenSupplier, times(1)).get();
     }

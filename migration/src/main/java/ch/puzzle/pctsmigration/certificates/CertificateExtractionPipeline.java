@@ -6,7 +6,6 @@ import ch.puzzle.pctsmigration.api.MemberService;
 import ch.puzzle.pctsmigration.extractor.ExtractionPipeline;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import org.apache.commons.text.similarity.LevenshteinDistance;
@@ -52,8 +51,7 @@ public class CertificateExtractionPipeline
     }
 
     @Override
-    public boolean validate() {
-        return true;
+    public void additionalValidations(CertificateWrapper toValidate) {
     }
 
     @Override
@@ -63,12 +61,7 @@ public class CertificateExtractionPipeline
 
     @Override
     public List<CertificateInputDto> mapToDto(String filename, CertificateWrapper wrapper) {
-        if (wrapper == null || wrapper.items() == null) {
-            return Collections.emptyList();
-        }
-
         String abbreviation = extractAbbreviation(filename);
-
         return wrapper.items().stream().map(aiResult -> createCertificateInputDto(abbreviation, aiResult)).toList();
     }
 

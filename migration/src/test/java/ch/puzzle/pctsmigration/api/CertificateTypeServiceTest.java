@@ -1,5 +1,9 @@
 package ch.puzzle.pctsmigration.api;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.*;
+
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,10 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.openapitools.client.ApiException;
 import org.openapitools.client.api.CertificateTypesApi;
 import org.openapitools.client.model.CertificateTypeDto;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CertificateTypeServiceTest {
@@ -39,10 +39,7 @@ class CertificateTypeServiceTest {
 
         List<CertificateTypeDto> actualTypes = certificateTypeService.getCertificateTypes();
 
-        assertThat(actualTypes)
-                .isNotNull()
-                .hasSize(2)
-                .containsExactlyElementsOf(expectedTypes);
+        assertThat(actualTypes).isNotNull().hasSize(2).containsExactlyElementsOf(expectedTypes);
 
         verify(certificateTypesApi, times(1)).getCertificateTypes();
     }

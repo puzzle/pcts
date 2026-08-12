@@ -1,5 +1,8 @@
 package ch.puzzle.pctsmigration.api;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.*;
+
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -13,9 +16,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.openapitools.client.ApiException;
 import org.openapitools.client.api.CertificatesApi;
 import org.openapitools.client.model.CertificateInputDto;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CertificateServiceTest {
@@ -66,8 +66,7 @@ class CertificateServiceTest {
             CertificateInputDto dto2 = new CertificateInputDto();
             List<CertificateInputDto> dtos = List.of(dto1, dto2);
 
-            doThrow(new ApiException("HTTP 400: Bad Request"))
-                    .when(certificatesApi).createCertificate(dto1);
+            doThrow(new ApiException("HTTP 400: Bad Request")).when(certificatesApi).createCertificate(dto1);
 
             assertThatThrownBy(() -> certificateService.create(dtos))
                     .isInstanceOf(ApiException.class)

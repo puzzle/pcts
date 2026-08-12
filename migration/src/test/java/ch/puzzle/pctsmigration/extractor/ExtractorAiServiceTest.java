@@ -1,5 +1,10 @@
 package ch.puzzle.pctsmigration.extractor;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
+
 import java.util.function.Consumer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -11,11 +16,6 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.ChatClient.CallResponseSpec;
 import org.springframework.ai.chat.client.ChatClient.ChatClientRequestSpec;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ExtractorAiServiceTest {
@@ -56,11 +56,7 @@ class ExtractorAiServiceTest {
         when(requestSpec.call()).thenReturn(callResponseSpec);
         when(callResponseSpec.entity(eq(DummyResult.class))).thenReturn(expectedResult);
 
-        DummyResult actualResult = aiService.aiExtractFrom(
-                markdown,
-                systemPrompt,
-                DummyResult.class
-        );
+        DummyResult actualResult = aiService.aiExtractFrom(markdown, systemPrompt, DummyResult.class);
 
         assertThat(actualResult).isEqualTo(expectedResult);
         verify(chatClient, times(1)).prompt();
@@ -68,5 +64,6 @@ class ExtractorAiServiceTest {
         verify(callResponseSpec).entity(DummyResult.class);
     }
 
-    record DummyResult(String value) {}
+    record DummyResult(String value) {
+    }
 }

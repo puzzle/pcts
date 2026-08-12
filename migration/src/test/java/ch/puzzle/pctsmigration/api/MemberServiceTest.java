@@ -1,7 +1,10 @@
 package ch.puzzle.pctsmigration.api;
 
-import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.*;
 
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,10 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.openapitools.client.ApiException;
 import org.openapitools.client.api.MembersApi;
 import org.openapitools.client.model.MemberDto;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
@@ -36,10 +35,7 @@ class MemberServiceTest {
 
         List<MemberDto> actualMembers = memberService.getMembers();
 
-        assertThat(actualMembers)
-                .isNotNull()
-                .hasSize(2)
-                .containsExactlyElementsOf(expectedMembers);
+        assertThat(actualMembers).isNotNull().hasSize(2).containsExactlyElementsOf(expectedMembers);
 
         verify(membersApi, times(1)).getMember();
     }
@@ -53,7 +49,6 @@ class MemberServiceTest {
                 .isInstanceOf(ApiException.class)
                 .hasMessage("API Error");
     }
-
 
     @Test
     @DisplayName("Should return the member's ID if the abbreviation matches")
