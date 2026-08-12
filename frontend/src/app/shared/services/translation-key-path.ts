@@ -3,7 +3,7 @@ const SEGMENT_SEPARATOR = '.';
 /** A prefix, or any truncation of one, as ordered segments. */
 type Scopes = readonly string[];
 
-function qualify(scope: Scopes, key: string): string {
+function pathOf(scope: Scopes, key: string): string {
   return [...scope,
     key].join(SEGMENT_SEPARATOR);
 }
@@ -34,12 +34,12 @@ class TranslatePathSegment {
 
   /** Sheds the outermost segments: MEMBER.CV.DEGREE -> CV.DEGREE -> DEGREE */
   public hoistedCandidate(key: string): string {
-    return qualify(this.scope.slice(this.index), key);
+    return pathOf(this.scope.slice(this.index), key);
   }
 
   /** Sheds the innermost segments: MEMBER.CV.DEGREE -> MEMBER.CV -> MEMBER */
   public generalizedCandidate(key: string): string {
-    return qualify(this.scope.slice(0, this.survivingCount), key);
+    return pathOf(this.scope.slice(0, this.survivingCount), key);
   }
 }
 
@@ -80,15 +80,16 @@ export class TranslationKeyPath {
    * appended last: no segment survives there, so no position can represent it.
    */
   public candidatesFor(key: string): readonly string[] {
-    const candidates = [...this.segments.flatMap((segment) => [segment.hoistedCandidate(key),
-      segment.generalizedCandidate(key)]),
-    key];
+    const candidatesBySegment = this.segments.map((segment) => [segment.hoistedCandidate(key),
+      segment.generalizedCandidate(key)]);
+    const candidates = candidatesBySegment.flat();
+    candidates.push(key);
 
     return Object.freeze([...new Set(candidates)]);
   }
 
   /** The unabbreviated key, rendered verbatim when nothing resolves. */
   public fullyQualified(key: string): string {
-    return qualify(this.scope, key);
+    return pathOf(this.scope, key);
   }
 }

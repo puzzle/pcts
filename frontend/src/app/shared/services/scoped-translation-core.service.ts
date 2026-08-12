@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, isDevMode } from '@angular/core';
 import { InterpolationParameters, TranslateService } from '@ngx-translate/core';
 import { TranslationKeyPath } from './translation-key-path';
 
@@ -16,7 +16,7 @@ export class ScopedTranslationCoreService {
       return translation;
     }
 
-    // this.reportMiss(candidates);
+    this.reportMiss(path.fullyQualified(key), candidates);
     return path.fullyQualified(key);
   }
 
@@ -31,6 +31,12 @@ export class ScopedTranslationCoreService {
     }
 
     return undefined;
+  }
+
+  private reportMiss(fullyQualified: string, candidates: readonly string[]): void {
+    if (isDevMode()) {
+      console.warn(`[i18n] unresolved key (${fullyQualified}). Tried, in order:`, candidates.map((c) => ({ [c]: this.lookup(c) })));
+    }
   }
 
   /**

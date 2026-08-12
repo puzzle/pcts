@@ -32,17 +32,22 @@
     "MODEL_NAME": "Role"
   },
   "CALCULATION": {
-    "POINTS": "Punkte"
+    "MODEL_NAME": "PCTS-Berechnung",
+    "POINTS": "PCTS-Punkte",
+    "STATE": "Status",
+    "ACTIVE": "Aktiv",
+    "DRAFT": "Entwurf",
+    "ARCHIVED": "Archiviert",
+    "PUBLICIZED_BY": "Veröffentlicht von",
+    "PUBLICATION_DATE": "Veröffentlicht am"
   },
 
   "FORM": {
-    "BUTTONS": {
-      "CANCEL": "Abbrechen"
-    },
     "ADD": {
       "ACTION": "hinzufügen",
       "BUTTONS": {
         "ACTION": "Hinzufügen",
+        "CANCEL": "Abbrechen",
         "ENTER_ANOTHER": "Hinzufügen + weiteren Eintrag erfassen",
         "COPY": "Hinzufügen + Inhalt kopieren"
       }
@@ -50,7 +55,8 @@
     "EDIT": {
       "ACTION": "bearbeiten",
       "BUTTONS": {
-        "ACTION": "Speichern"
+        "ACTION": "Speichern",
+        "CANCEL": "Abbrechen"
       }
     },
     "DELETE": {
@@ -97,25 +103,17 @@
       "EX_MEMBER": "Ex-Member"
     },
     "CV": {
-      "DATE_RANGE": "Zeitraum",
-      "ADD_ENTRY": "Eintrag hinzufügen",
-      "EXPERIENCE": {
-        "WORK_NAME": "Position",
-        "EXPERIENCE_TYPE_NAME": "Erfahrungsart"
-      },
-      "CERTIFICATE": {
-        "CERTIFICATE_TYPE_NAME": "Zertifikatstyp"
+      "CUSTOM_TABLE_ATTRIBUTES": {
+        "DATE_RANGE": "Zeitraum",
+        "ADD_ENTRY": "Eintrag hinzufügen",
+        "EXPERIENCE": {
+          "WORK_NAME": "Position",
+          "EXPERIENCE_TYPE_NAME": "Erfahrungsart"
+        },
+        "CERTIFICATE": {
+          "CERTIFICATE_TYPE_NAME": "Zertifikatstyp"
+        }
       }
-    },
-    "CALCULATION": {
-      "MODEL_NAME": "PCTS-Berechnung",
-      "POINTS": "PCTS-Punkte",
-      "STATE": "Status",
-      "ACTIVE": "Aktiv",
-      "DRAFT": "Entwurf",
-      "ARCHIVED": "Archiviert",
-      "PUBLICIZED_BY": "Veröffentlicht von",
-      "PUBLICATION_DATE": "Veröffentlicht am"
     }
   },
 
