@@ -27,45 +27,51 @@ describe('Add degree Modal', () => {
   });
 
 
-  it.only('should create degree', () => {
-    cy.intercept('api/v1/degrees')
-      .as('degrees');
-    openDegreeModal();
+  ['ENTER_ANOTHER',
+    'COPY'].forEach((buttonType: string) => {
+    it.only(`should create degree via ${buttonType}`, () => {
+      cy.intercept('api/v1/degrees')
+        .as('degrees');
+      openDegreeModal();
 
-    formPage.submitButtonShouldBe('disabled');
-    modalPage.selectAutoCompleteValue('degreeType', 'Bachelor\'s Degree');
+      formPage.submitButtonShouldBe('disabled');
 
-    formPage.typeAndBlur('startDate', '10.10.2000');
-    formPage.typeAndBlur('endDate', '10.12.2001');
-    formPage.typeAndBlur('name', 'Mathematik');
-    formPage.typeAndBlur('institution', 'GIBB');
-    formPage.submitButtonShouldBe('enabled');
-    formPage.save();
+      modalPage.selectAutoCompleteValue('degreeType', 'Bachelor\'s Degree');
 
-    formPage.shouldShowSuccessToast('Ausbildung wurde erfolgreich erstellt.');
-    /*
-     * check request is made with the proper request body
-     *  https://docs.cypress.io/api/commands/request#Alias-the-request-using-as
-     */
-    cy.get('@degrees')
-      .then((interception) => {
-        const body = interception.request.body;
+      formPage.typeAndBlur('startDate', '10.10.2000');
+      formPage.typeAndBlur('endDate', '10.12.2001');
+      formPage.typeAndBlur('name', 'Mathematik');
+      formPage.typeAndBlur('institution', 'GIBB');
+      formPage.submitButtonShouldBe('enabled');
 
-        const expectedValue = {
-          name: 'Mathematik',
-          memberId: 1,
-          typeId: 1,
-          institution: 'GIBB',
-          completed: true,
-          comment: '',
-          startDate: '2000-10-10',
-          endDate: '2001-12-10'
-        };
-        expect(body).to.contain(expectedValue);
-      });
-    modalPage.checkModalIsClosed();
+      cy.getByTestId('menu-button')
+        .click();
+      cy.getByTestId(`menu-item-${buttonType}`)
+        .click();
+
+      cy.contains('Ausbildung hinzufügen');
+
+      formPage.shouldShowSuccessToast('Ausbildung wurde erfolgreich erstellt.');
+      /*
+       * check request is made with the proper request body
+       *  https://docs.cypress.io/api/commands/request#Alias-the-request-using-as
+       */
+      cy.get('@degrees')
+        .then((interception) => {
+          expect(interception.request.body).to.contain({
+            name: 'Mathematik',
+            memberId: 1,
+            typeId: 1,
+            institution: 'GIBB',
+            completed: true,
+            comment: '',
+            startDate: '2000-10-10',
+            endDate: '2001-12-10'
+          });
+        });
+      modalPage.checkModalIsClosed();
+    });
   });
-
   // test both alternative save buttons
 
   describe('Validation Errors', () => {
@@ -81,7 +87,6 @@ describe('Add degree Modal', () => {
         .clear()
         .blur();
       formPage.shouldShowValidationError('Muss ausgefüllt sein', 'degreeType');
-
       formPage.type('degreeType', 'invalid entry');
       cy.getByTestId('degreeType')
         .blur();
@@ -99,9 +104,7 @@ describe('Add degree Modal', () => {
         errors]) => {
         it(`shows error for invalid date in: ${fieldName}`, () => {
           formPage.submitButtonShouldBe('disabled');
-
           formPage.typeAndBlur(fieldName, 'invalid entry');
-
           errors.forEach((error) => {
             formPage.shouldShowValidationError(error, fieldName);
           });
@@ -124,4 +127,5 @@ describe('Add degree Modal', () => {
     });
   });
 });
+// });
 
