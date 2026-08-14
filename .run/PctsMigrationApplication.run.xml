@@ -1,5 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="PctsMigrationApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <option name="ACTIVE_PROFILES" value="dev" />
     <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
     <module name="pcts-migration" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="ch.puzzle.pctsmigration.PctsMigrationApplication" />
@@ -10,7 +11,7 @@
       </pattern>
     </extension>
     <method v="2">
-      <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/pom.xml" goal="compile" />
+      <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/migration/pom.xml" goal="clean compile" />
       <option name="Make" enabled="true" />
     </method>
   </configuration>

@@ -29,7 +29,7 @@ class ExtractorServiceTest {
     private OdsParserService odsParserService;
 
     @Mock
-    private ExtractorAiService aiService;
+    private AiService aiService;
 
     @Mock
     private Validator validator;
@@ -62,7 +62,7 @@ class ExtractorServiceTest {
         when(pipeline.fetchContext()).thenReturn("Context");
         when(pipeline.systemPrompt("Context")).thenReturn("System Prompt");
         when(pipeline.entityClass()).thenReturn(DummyResult.class);
-        when(aiService.aiExtractFrom(eq(markdown), eq("System Prompt"), eq(DummyResult.class))).thenReturn(aiResult);
+        when(aiService.extract(eq(markdown), eq("System Prompt"), eq(DummyResult.class))).thenReturn(aiResult);
         when(pipeline.mapToDto(eq("test.ods"), eq(aiResult))).thenReturn(List.of(expectedDto));
 
         List<DummyDto> result = extractorService.extract(sampleFile, pipeline);
@@ -80,7 +80,7 @@ class ExtractorServiceTest {
         when(odsParserService.parse(sampleFile)).thenReturn(new OdsParseResult(List.of()));
         when(odsParserService.toPromptText(any())).thenReturn("markdown");
         when(pipeline.entityClass()).thenReturn(DummyResult.class);
-        when(aiService.aiExtractFrom(anyString(), any(), eq(DummyResult.class))).thenReturn(aiResult);
+        when(aiService.extract(anyString(), any(), eq(DummyResult.class))).thenReturn(aiResult);
 
         when(validator.validate(aiResult)).thenReturn(Collections.emptySet());
         when(pipeline.mapToDto(eq("test.ods"), eq(aiResult))).thenReturn(List.of(expectedDto));
@@ -100,7 +100,7 @@ class ExtractorServiceTest {
         when(odsParserService.parse(sampleFile)).thenReturn(new OdsParseResult(List.of()));
         when(odsParserService.toPromptText(any())).thenReturn("markdown");
         when(pipeline.entityClass()).thenReturn(DummyResult.class);
-        when(aiService.aiExtractFrom(anyString(), any(), eq(DummyResult.class))).thenReturn(aiResult);
+        when(aiService.extract(anyString(), any(), eq(DummyResult.class))).thenReturn(aiResult);
 
         when(validator.validate(aiResult)).thenReturn(Set.of(violation));
 
@@ -120,7 +120,7 @@ class ExtractorServiceTest {
         when(odsParserService.parse(fileWithoutName)).thenReturn(new OdsParseResult(List.of()));
         when(odsParserService.toPromptText(any())).thenReturn("markdown");
         when(pipeline.entityClass()).thenReturn(DummyResult.class);
-        when(aiService.aiExtractFrom(anyString(), any(), eq(DummyResult.class))).thenReturn(aiResult);
+        when(aiService.extract(anyString(), any(), eq(DummyResult.class))).thenReturn(aiResult);
         when(pipeline.mapToDto(eq(""), eq(aiResult))).thenReturn(List.of());
 
         extractorService.extract(fileWithoutName, pipeline);

@@ -5,7 +5,7 @@ import org.openapitools.client.ApiException;
 
 public interface ExtractionPipeline<C, R, D> {
 
-    /** Fetch all context needed from PCTS API */
+    /** Fetch all context needed from the PCTS API or other places */
     C fetchContext();
 
     /** Build the system prompt from the fetched context */
@@ -23,6 +23,6 @@ public interface ExtractionPipeline<C, R, D> {
     /** Map result record to effective DTO */
     List<D> mapToDto(String filename, R wrapper);
 
-    /** send result to the pcts-api to create */
+    /** Send the results to the PCTS API to create a new resource */
     void create(List<D> dtos) throws ApiException;
 }

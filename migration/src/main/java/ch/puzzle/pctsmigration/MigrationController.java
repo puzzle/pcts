@@ -3,6 +3,7 @@ package ch.puzzle.pctsmigration;
 import ch.puzzle.pctsmigration.certificates.CertificateExtractionPipeline;
 import ch.puzzle.pctsmigration.extractor.ExtractorService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,8 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/api/ai")
-@Tag(name = "AI", description = "Interact with the AI service")
+@RequestMapping("/api/migration")
+@Tag(name = "Migration", description = "Endpoints for migrating legacy PCTS sheets into the new PCTS tool. Provides AI-assisted data extraction and automatic record creation.")
 public class MigrationController {
 
     private final ExtractorService service;
@@ -29,11 +30,11 @@ public class MigrationController {
     }
 
     @PostMapping(value = "/certificates", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Analyse an ODS certificate sheet and create entries in pcts-api", description = "Upload an .ods file, receive AI-generated CertificateInputDtos, and create them in pcts-api.")
+    @Operation(summary = "Extract and migrate certificates from an ODS file", description = "Uploads a legacy .ods spreadsheet containing certificate data. The system uses an AI-based extraction pipeline to parse the file, generate the corresponding `CertificateInputDto` objects, and automatically persists them in the upstream pcts-api.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Certificates successfully created in pcts-api") })
-    public ResponseEntity<List<CertificateInputDto>> certificates(@RequestPart("file") MultipartFile file)
-            throws IOException, ApiException {
+            @ApiResponse(responseCode = "201", description = "Certificates successfully extracted and created in pcts-api.") })
+    public ResponseEntity<List<CertificateInputDto>> certificates(@Parameter(description = "The .ods file containing the certificate data to be migrated. Must be a valid OpenDocument Spreadsheet.", required = true)
+    @RequestPart("file") MultipartFile file) throws IOException, ApiException {
         List<CertificateInputDto> result = service.extract(file, certificateExtractionPipeline);
         certificateExtractionPipeline.create(result);
 

@@ -3,6 +3,8 @@ package ch.puzzle.pctsmigration.certificates;
 import ch.puzzle.pctsmigration.api.CertificateService;
 import ch.puzzle.pctsmigration.api.CertificateTypeService;
 import ch.puzzle.pctsmigration.api.MemberService;
+import ch.puzzle.pctsmigration.exception.Error;
+import ch.puzzle.pctsmigration.exception.MigrationException;
 import ch.puzzle.pctsmigration.extractor.ExtractionPipeline;
 
 import java.time.LocalDate;
@@ -13,6 +15,9 @@ import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.openapitools.client.ApiException;
 import org.openapitools.client.model.CertificateInputDto;
 import org.openapitools.client.model.CertificateTypeDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -24,6 +29,7 @@ public class CertificateExtractionPipeline
     private final MemberService memberService;
     private final CertificateService certificateService;
     private final LevenshteinDistance distance = LevenshteinDistance.getDefaultInstance();
+    private final Logger logger = LoggerFactory.getLogger(CertificateExtractionPipeline.class);
 
     public CertificateExtractionPipeline(CertificateTypeService certificateTypeService, MemberService memberService,
                                          CertificateService certificateService) {
@@ -70,7 +76,8 @@ public class CertificateExtractionPipeline
         if (filename.contains("_")) {
             return filename.split("_")[0].toUpperCase();
         }
-        return null;
+        throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
+                                               "Invalid filename: can not extract abbreviation" + filename));
     }
 
     private CertificateInputDto createCertificateInputDto(String abbreviation, CertificateAiResultDto aiResult) {
@@ -93,8 +100,11 @@ public class CertificateExtractionPipeline
                 .orElse(null);
     }
 
-    private int calculateDistance(CertificateTypeDto dto, String name) {
-        return this.distance.apply(dto.getName(), name);
+    private Integer calculateDistance(CertificateTypeDto dto, String name) {
+        Integer distance = this.distance.apply(dto.getName(), name);
+        this.logger.info("Input name: {}, Actual name: {}, Distance: {}", name, dto.getName(), distance);
+
+        return distance;
     }
 
     @Override

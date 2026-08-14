@@ -13,10 +13,10 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class ExtractorService {
     private final OdsParserService odsParserService;
-    private final ExtractorAiService aiService;
+    private final AiService aiService;
     private final Validator validator;
 
-    public ExtractorService(OdsParserService odsParserService, ExtractorAiService aiService, Validator validator) {
+    public ExtractorService(OdsParserService odsParserService, AiService aiService, Validator validator) {
         this.odsParserService = odsParserService;
         this.aiService = aiService;
         this.validator = validator;
@@ -26,10 +26,9 @@ public class ExtractorService {
         String parsedToMarkdown = getMarkdownTableFrom(file);
         C context = pipeline.fetchContext();
         R result = this.aiService
-                .aiExtractFrom(parsedToMarkdown, pipeline.systemPrompt(context), pipeline.entityClass());
+                .extract(parsedToMarkdown, pipeline.systemPrompt(context), pipeline.entityClass());
         jakartaValidation(result);
         pipeline.additionalValidations(result);
-
         String filename = file.getOriginalFilename() != null ? file.getOriginalFilename() : "";
         return pipeline.mapToDto(filename, result);
     }

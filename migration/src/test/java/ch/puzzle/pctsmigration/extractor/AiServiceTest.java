@@ -18,7 +18,7 @@ import org.springframework.ai.chat.client.ChatClient.ChatClientRequestSpec;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
 
 @ExtendWith(MockitoExtension.class)
-class ExtractorAiServiceTest {
+class AiServiceTest {
 
     @Mock
     private ChatClient.Builder builder;
@@ -32,14 +32,14 @@ class ExtractorAiServiceTest {
     @Mock
     private CallResponseSpec callResponseSpec;
 
-    private ExtractorAiService aiService;
+    private AiService aiService;
 
     @BeforeEach
     void setUp() {
         when(builder.defaultAdvisors(any(Advisor[].class))).thenReturn(builder);
         when(builder.build()).thenReturn(chatClient);
 
-        aiService = new ExtractorAiService(builder);
+        aiService = new AiService(builder);
     }
 
     @Test
@@ -56,7 +56,7 @@ class ExtractorAiServiceTest {
         when(requestSpec.call()).thenReturn(callResponseSpec);
         when(callResponseSpec.entity(eq(DummyResult.class))).thenReturn(expectedResult);
 
-        DummyResult actualResult = aiService.aiExtractFrom(markdown, systemPrompt, DummyResult.class);
+        DummyResult actualResult = aiService.extract(markdown, systemPrompt, DummyResult.class);
 
         assertThat(actualResult).isEqualTo(expectedResult);
         verify(chatClient, times(1)).prompt();
