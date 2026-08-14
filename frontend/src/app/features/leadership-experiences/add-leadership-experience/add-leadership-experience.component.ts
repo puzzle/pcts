@@ -87,7 +87,15 @@ export class AddLeadershipExperienceComponent extends StrictlyTypedDialog<Leader
 
   protected leadershipExperienceTypeFilteredOptions = computed(() => {
     const value = this.leadershipExperienceTypeControlSignal() ?? '';
-    return Map.groupBy(this.filterLeadershipExperienceType(value), (type) => type.leadershipExperienceKind);
+    const experienceTypesSorted = this.filterLeadershipExperienceType(value)
+      .sort((a, b) => {
+        if (a.leadershipExperienceKind !== b.leadershipExperienceKind) {
+          return a.leadershipExperienceKind.localeCompare(b.leadershipExperienceKind);
+        }
+        return a.name.toLowerCase()
+          .localeCompare(b.name.toLowerCase());
+      });
+    return Map.groupBy(experienceTypesSorted, (type) => type.leadershipExperienceKind);
   });
 
   filterLeadershipExperienceType(value: LeadershipExperienceTypeModel | string | null): LeadershipExperienceTypeModel[] {
