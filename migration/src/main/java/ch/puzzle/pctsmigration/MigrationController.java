@@ -1,7 +1,7 @@
 package ch.puzzle.pctsmigration;
 
 import ch.puzzle.pctsmigration.certificates.CertificateExtractionPipeline;
-import ch.puzzle.pctsmigration.certificates.MigrationResultDto;
+import ch.puzzle.pctsmigration.certificates.MultipleFileResultDto;
 import ch.puzzle.pctsmigration.exception.FileError;
 import ch.puzzle.pctsmigration.exception.MigrationException;
 import ch.puzzle.pctsmigration.extractor.ExtractorService;
@@ -46,9 +46,9 @@ public class MigrationController {
     @PostMapping(value = "/certificates", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Extract and migrate certificates from ODS files", description = "Uploads multiple legacy .ods spreadsheet containing certificate data. The system uses an AI-based extraction pipeline to parse the file, generate the corresponding `CertificateInputDto` objects, and automatically persists them in the upstream pcts-api.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Certificates successfully extracted and created in pcts-api.")})
-    public ResponseEntity<MigrationResultDto> certificates(@RequestPart("files") List<MultipartFile> files) {
-        MigrationResultDto result = new MigrationResultDto();
+            @ApiResponse(responseCode = "201", description = "Certificates successfully extracted and created in pcts-api.") })
+    public ResponseEntity<MultipleFileResultDto> certificates(@RequestPart("files") List<MultipartFile> files) {
+        MultipleFileResultDto result = new MultipleFileResultDto();
 
         for (MultipartFile file : files) {
             String filename = file.getOriginalFilename();

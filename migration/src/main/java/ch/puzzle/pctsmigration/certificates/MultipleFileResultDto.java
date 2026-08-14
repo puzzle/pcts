@@ -1,12 +1,11 @@
 package ch.puzzle.pctsmigration.certificates;
 
 import ch.puzzle.pctsmigration.exception.FileError;
-import org.openapitools.client.model.CertificateInputDto;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.openapitools.client.model.CertificateInputDto;
 
-public class MigrationResultDto {
+public class MultipleFileResultDto {
     private final List<CertificateInputDto> successfulCertificates = new ArrayList<>();
     private final List<FileError> failedFiles = new ArrayList<>();
 

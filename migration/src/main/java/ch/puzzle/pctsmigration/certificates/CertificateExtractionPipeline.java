@@ -12,7 +12,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.text.similarity.LevenshteinDistance;
-import org.openapitools.client.ApiException;
 import org.openapitools.client.model.CertificateInputDto;
 import org.openapitools.client.model.CertificateTypeDto;
 import org.slf4j.Logger;
