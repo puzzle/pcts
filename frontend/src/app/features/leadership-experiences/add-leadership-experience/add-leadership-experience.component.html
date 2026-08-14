@@ -4,13 +4,23 @@
     <ng-container content>
 
       <app-input-field>
-        <input type="text" formControlName="leadershipExperienceType" matInput [matAutocomplete]="leadershipExperienceTypeAutoComplete"
+        <input type="text" formControlName="leadershipExperienceType" matInput
+               [matAutocomplete]="leadershipExperienceTypeAutoComplete"
                data-testid="leadershipExperienceType">
         <mat-autocomplete autoActiveFirstOption #leadershipExperienceTypeAutoComplete="matAutocomplete"
                           [displayWith]="displayLeadershipExperienceTypes"
         >
-          @for (leadershipExperienceType of leadershipExperienceTypeFilteredOptions(); track leadershipExperienceType) {
-            <mat-option [value]="leadershipExperienceType">{{ displayLeadershipExperienceTypes(leadershipExperienceType) }}</mat-option>
+          @for (entry of leadershipExperienceTypeFilteredOptions(); track entry[0]) {
+            @let kind = entry[0];
+            @let experienceTypes = entry[1];
+
+            <mat-optgroup class="fw-bold" label="{{ `LEADERSHIP_EXPERIENCE.TYPES.${kind}` | translate  }}">
+              @for (experienceType of experienceTypes; track experienceType.id) {
+                <mat-option
+                  [value]="experienceType">{{ displayLeadershipExperienceTypes(experienceType) }}
+                </mat-option>
+              }
+            </mat-optgroup>
           }
         </mat-autocomplete>
       </app-input-field>
@@ -27,14 +37,16 @@
     <div class="d-flex flex-row gap-3">
 
       <button data-testid="close-modal-button" matButton="text" type="button" (click)="onCancel()">
-        {{ "BUTTONS.CANCEL" | scopedTranslation  }}
+        {{ "BUTTONS.CANCEL" | scopedTranslation }}
       </button>
 
       <div class="d-flex">
-        <button [disabled]="!formGroup.valid" (click)="onSubmit(ModalSubmitMode.SAVE)" class="rounded-end-0" matButton="filled" type="submit" data-testid="submit-button">
+        <button [disabled]="!formGroup.valid" (click)="onSubmit(ModalSubmitMode.SAVE)" class="rounded-end-0"
+                matButton="filled" type="submit" data-testid="submit-button">
           {{ "BUTTONS.ACTION" | scopedTranslation }}
         </button>
-        <app-menu-button [isValid]="formGroup.valid" [functions]="[ModalSubmitMode.ENTER_ANOTHER, ModalSubmitMode.COPY]" (selected)="onSubmit($event)"/>
+        <app-menu-button [isValid]="formGroup.valid" [functions]="[ModalSubmitMode.ENTER_ANOTHER, ModalSubmitMode.COPY]"
+                         (selected)="onSubmit($event)"/>
       </div>
     </div>
   </ng-container>

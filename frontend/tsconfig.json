@@ -13,6 +13,7 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "ES2022",
+    "lib": ["dom", "ES2024"],
     "module": "preserve",
     "types": ["jest"]
   },
