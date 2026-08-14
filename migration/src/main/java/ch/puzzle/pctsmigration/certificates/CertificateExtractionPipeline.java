@@ -108,7 +108,7 @@ public class CertificateExtractionPipeline
     }
 
     @Override
-    public void create(List<CertificateInputDto> dtos) throws ApiException {
+    public void create(List<CertificateInputDto> dtos) {
         this.certificateService.create(dtos);
     }
 }

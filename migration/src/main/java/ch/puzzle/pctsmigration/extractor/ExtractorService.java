@@ -25,8 +25,7 @@ public class ExtractorService {
     public <C, R, D> List<D> extract(MultipartFile file, ExtractionPipeline<C, R, D> pipeline) {
         String parsedToMarkdown = getMarkdownTableFrom(file);
         C context = pipeline.fetchContext();
-        R result = this.aiService
-                .extract(parsedToMarkdown, pipeline.systemPrompt(context), pipeline.entityClass());
+        R result = this.aiService.extract(parsedToMarkdown, pipeline.systemPrompt(context), pipeline.entityClass());
         jakartaValidation(result);
         pipeline.additionalValidations(result);
         String filename = file.getOriginalFilename() != null ? file.getOriginalFilename() : "";
