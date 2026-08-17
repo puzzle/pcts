@@ -30,15 +30,15 @@ describe('MenuButtonComponent', () => {
   it('should emit selected value when a menu item is clicked', async() => {
     const emitSpy = jest.spyOn(component.selected, 'emit');
 
-    const triggerButton = fixture.debugElement.query(By.css('[data-testid="menu-button"]'));
-    expect(triggerButton)
+    const dropdownButton = fixture.debugElement.query(By.css('[data-testid="menu-button"]'));
+    expect(dropdownButton)
       .toBeTruthy();
-    triggerButton.nativeElement.click();
+    dropdownButton.nativeElement.click();
     fixture.detectChanges();
 
     await fixture.whenStable();
 
-    const menuItems = fixture.debugElement.queryAll(By.css('[data-testid="menu-item"]'));
+    const menuItems = fixture.debugElement.queryAll(By.css('[data-testid="menu-item-SAVE"]'));
     expect(menuItems.length)
       .toBeGreaterThan(0);
 

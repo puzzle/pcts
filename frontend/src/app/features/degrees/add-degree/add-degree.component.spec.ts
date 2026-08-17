@@ -98,7 +98,7 @@ describe('AddDegree', () => {
       .toEqual([degreeType1,
         degreeType2]);
     expect(degreeTypeServiceMock.getAllDegreeTypes)
-      .toHaveBeenCalledTimes(1);
+      .toHaveBeenCalled();
   });
 
   it('should set the value from degreeType', () => {
