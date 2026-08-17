@@ -61,9 +61,7 @@
                #roleInput
                [matChipInputFor]="chipGrid"
                [matAutocomplete]="roleAutoComplete"
-               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-               (matChipInputTokenEnd)="add($event)"
-        >
+               [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
         <mat-autocomplete autoActiveFirstOption #roleAutoComplete="matAutocomplete"
                           (optionSelected)="selected($event); roleInput.value= ''">
           @for (role of this.filterRole(roleInput.value); track role) {
