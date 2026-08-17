@@ -39,13 +39,14 @@ public class OdsParserService {
         }
     }
 
-    private OdsParseResult extractData(OdfSpreadsheetDocument doc) {
-        List<OdfTable> tables = doc.getTableList();
-        List<OdsParseResult.Sheet> sheets = new ArrayList<>();
-        int sheetCount = Math.min(tables.size(), MAX_SHEETS);
+    private OdsParseResult extractData(OdfSpreadsheetDocument doc) throws Exception {
+        List<OdsParseResult.Sheet> sheets = doc.getTableList().stream().filter(table -> {
+            String name = table.getTableName();
+            return name.equals(name.toLowerCase());
+        }).limit(MAX_SHEETS).map(this::extractSheet).toList();
 
-        for (int s = 0; s < sheetCount; s++) {
-            sheets.add(extractSheet(tables.get(s)));
+        if (sheets.isEmpty()) {
+            throw new Exception("No valid sheets found");
         }
         return new OdsParseResult(sheets);
     }

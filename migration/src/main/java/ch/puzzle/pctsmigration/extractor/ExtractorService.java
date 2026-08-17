@@ -4,7 +4,6 @@ import ch.puzzle.pctsmigration.exception.Error;
 import ch.puzzle.pctsmigration.exception.MigrationException;
 import ch.puzzle.pctsmigration.ods.OdsParserService;
 import jakarta.validation.Validator;
-import java.io.IOException;
 import java.util.List;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
