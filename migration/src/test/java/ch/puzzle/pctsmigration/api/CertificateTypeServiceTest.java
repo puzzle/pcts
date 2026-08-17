@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
+import ch.puzzle.pctsmigration.exception.MigrationException;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -51,8 +52,8 @@ class CertificateTypeServiceTest {
         when(certificateTypesApi.getCertificateTypes()).thenThrow(apiException);
 
         assertThatThrownBy(() -> certificateTypeService.getCertificateTypes())
-                .isInstanceOf(ApiException.class)
-                .hasMessage("HTTP 500: Internal Server Error");
+                .isInstanceOf(MigrationException.class)
+                .hasMessage("400 BAD_REQUEST");
 
         verify(certificateTypesApi, times(1)).getCertificateTypes();
     }

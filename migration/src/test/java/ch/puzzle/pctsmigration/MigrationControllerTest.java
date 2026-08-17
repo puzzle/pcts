@@ -1,129 +1,113 @@
-// package ch.puzzle.pctsmigration;
-//
-// import ch.puzzle.pctsmigration.certificates.CertificateExtractionPipeline;
-// import ch.puzzle.pctsmigration.extractor.ExtractorService;
-// import java.util.List;
-// import org.junit.jupiter.api.DisplayName;
-// import org.junit.jupiter.api.Nested;
-// import org.junit.jupiter.api.Test;
-// import org.openapitools.client.ApiException;
-// import org.openapitools.client.model.CertificateInputDto;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-// import org.springframework.http.MediaType;
-// import org.springframework.mock.web.MockMultipartFile;
-// import org.springframework.test.context.bean.override.mockito.MockitoBean;
-// import org.springframework.test.web.servlet.MockMvc;
-//
-// import static org.mockito.ArgumentMatchers.eq;
-// import static org.mockito.Mockito.*;
-// import static
-// org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
-// import static
-// org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-//
-// @WebMvcTest(MigrationController.class)
-// class MigrationControllerTest {
-//
-// @Autowired
-// private MockMvc mockMvc;
-//
-// // Hinweis: @MockitoBean ersetzt seit Spring Boot 3.4 das alte @MockBean aus
-// Spring Boot Test
-// @MockitoBean
-// private ExtractorService extractorService;
-//
-// @MockitoBean
-// private CertificateExtractionPipeline certificateExtractionPipeline;
-//
-// @Nested
-// @DisplayName("POST /api/ai/certificates")
-// class CertificatesEndpointTests {
-//
-// @Test
-// @DisplayName("Sollte Datei extrahieren, Zertifikate anlegen und HTTP 201
-// Created mit JSON-Body zurückgeben")
-// void certificates_whenValidFileUploaded_extractsCreatesAndReturns201() throws
-// Exception {
-// // Given
-// MockMultipartFile file = new MockMultipartFile(
-// "file",
-// "sbb_certificates.ods",
-// "application/vnd.oasis.opendocument.spreadsheet",
-// "dummy ods content".getBytes()
-// );
-//
-// CertificateInputDto dto1 = new CertificateInputDto();
-// dto1.setMemberId(1L);
-// dto1.setComment("Erstes Zertifikat");
-//
-// CertificateInputDto dto2 = new CertificateInputDto();
-// dto2.setMemberId(2L);
-// dto2.setComment("Zweites Zertifikat");
-//
-// List<CertificateInputDto> extractedDtos = List.of(dto1, dto2);
-//
-// when(extractorService.extract(eq(file), eq(certificateExtractionPipeline)))
-// .thenReturn(extractedDtos);
-//
-// // When / Then: Request abschicken und Response prüfen
-// mockMvc.perform(multipart("/api/ai/certificates")
-// .file(file)
-// .contentType(MediaType.MULTIPART_FORM_DATA))
-// .andExpect(status().isCreated()) // HTTP 201
-// .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-// .andExpect(jsonPath("$.length()").value(2))
-// .andExpect(jsonPath("$[0].memberId").value(1))
-// .andExpect(jsonPath("$[0].comment").value("Erstes Zertifikat"))
-// .andExpect(jsonPath("$[1].memberId").value(2))
-// .andExpect(jsonPath("$[1].comment").value("Zweites Zertifikat"));
-//
-// // Sicherstellen, dass extract(...) UND create(...) im Hintergrund ausgeführt
-// wurden
-// verify(extractorService, times(1)).extract(eq(file),
-// eq(certificateExtractionPipeline));
-// verify(certificateExtractionPipeline, times(1)).create(eq(extractedDtos));
-// }
-//
-// @Test
-// @DisplayName("Sollte Fehler weiterwerfen und create nicht aufrufen, wenn die
-// Extraktion fehlschlägt")
-// void certificates_whenExtractionFails_throwsExceptionAndDoesNotCreate()
-// throws Exception {
-// // Given
-// MockMultipartFile file = new MockMultipartFile(
-// "file",
-// "corrupted.ods",
-// "application/vnd.oasis.opendocument.spreadsheet",
-// "bad content".getBytes()
-// );
-//
-// when(extractorService.extract(eq(file), eq(certificateExtractionPipeline)))
-// .thenThrow(new ApiException("API Error during extraction"));
-//
-// // When / Then: Erwartet den Status-Code aus deinem GlobalExceptionHandler
-// // (Standard für ApiException im GlobalExceptionHandler ist HTTP 502)
-// mockMvc.perform(multipart("/api/ai/certificates")
-// .file(file)
-// .contentType(MediaType.MULTIPART_FORM_DATA))
-// .andExpect(status().isBadGateway()); // HTTP 502 gemäß handleApiException
-//
-// verify(extractorService, times(1)).extract(eq(file),
-// eq(certificateExtractionPipeline));
-// verify(certificateExtractionPipeline, never()).create(any());
-// }
-//
-// @Test
-// @DisplayName("Sollte HTTP 400 Bad Request zurückgeben, wenn der Request kein
-// 'file'-Part enthält")
-// void certificates_whenFilePartMissing_returns400() throws Exception {
-// // When / Then: Multipart-Request völlig ohne angehängte Datei senden
-// mockMvc.perform(multipart("/api/ai/certificates")
-// .contentType(MediaType.MULTIPART_FORM_DATA))
-// .andExpect(status().isBadRequest());
-//
-// verifyNoInteractions(extractorService);
-// verifyNoInteractions(certificateExtractionPipeline);
-// }
-// }
-// }
+package ch.puzzle.pctsmigration;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import ch.puzzle.pctsmigration.certificates.CertificateExtractionPipeline;
+import ch.puzzle.pctsmigration.exception.MigrationException;
+import ch.puzzle.pctsmigration.extractor.ExtractorService;
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.openapitools.client.model.CertificateInputDto;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+@ExtendWith(MockitoExtension.class)
+class MigrationControllerTest {
+
+    private MockMvc mockMvc;
+
+    @Mock
+    private ExtractorService extractorService;
+
+    @Mock
+    private CertificateExtractionPipeline pipeline;
+
+    @InjectMocks
+    private MigrationController migrationController;
+
+    @BeforeEach
+    void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(migrationController).build();
+    }
+
+    @Test
+    void testCertificate_Success() throws Exception {
+        MockMultipartFile mockFile = new MockMultipartFile("file",
+                                                           "data.ods",
+                                                           "application/vnd.oasis.opendocument.spreadsheet",
+                                                           "dummy content".getBytes());
+
+        CertificateInputDto dummyDto = new CertificateInputDto();
+        when(extractorService.extract(any(), eq(pipeline))).thenReturn(List.of(dummyDto));
+
+        mockMvc
+                .perform(multipart("/api/migration/certificate").file(mockFile))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(1));
+
+        verify(extractorService, times(1)).extract(any(), eq(pipeline));
+        verify(pipeline, times(1)).create(anyList());
+    }
+
+    @Test
+    void testCertificates_AllFilesSuccessful() throws Exception {
+        MockMultipartFile file1 = new MockMultipartFile("files", "file1.ods", "text/plain", "content1".getBytes());
+        MockMultipartFile file2 = new MockMultipartFile("files", "file2.ods", "text/plain", "content2".getBytes());
+
+        CertificateInputDto dummyDto1 = new CertificateInputDto();
+        CertificateInputDto dummyDto2 = new CertificateInputDto();
+
+        when(extractorService.extract(any(), eq(pipeline)))
+                .thenReturn(List.of(dummyDto1))
+                .thenReturn(List.of(dummyDto2));
+
+        mockMvc
+                .perform(multipart("/api/migration/certificates").file(file1).file(file2))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.successfulCertificates").isArray())
+                .andExpect(jsonPath("$.successfulCertificates.length()").value(2))
+                .andExpect(jsonPath("$.failedFiles").isArray())
+                .andExpect(jsonPath("$.failedFiles.length()").value(0));
+
+        verify(extractorService, times(2)).extract(any(), eq(pipeline));
+        verify(pipeline, times(2)).create(anyList());
+    }
+
+    @Test
+    void testCertificates_PartialFailureAndSuccess() throws Exception {
+        MockMultipartFile successFile = new MockMultipartFile("files", "success.ods", "text/plain", "good".getBytes());
+        MockMultipartFile errorFile = new MockMultipartFile("files", "error.ods", "text/plain", "bad".getBytes());
+
+        CertificateInputDto dummyDto = new CertificateInputDto();
+
+        MigrationException mockException = mock(MigrationException.class);
+        when(mockException.getMessage()).thenReturn("Parsing failed miserably");
+
+        when(extractorService.extract(any(), eq(pipeline))).thenReturn(List.of(dummyDto)).thenThrow(mockException);
+
+        mockMvc
+                .perform(multipart("/api/migration/certificates").file(successFile).file(errorFile))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.successfulCertificates.length()").value(1))
+                .andExpect(jsonPath("$.failedFiles.length()").value(1))
+                .andExpect(jsonPath("$.failedFiles[0].filename").value("error.ods"));
+        verify(pipeline, times(1)).create(anyList());
+    }
+
+    @Test
+    void testCertificates_MissingFileReturns400() throws Exception {
+        mockMvc.perform(multipart("/api/migration/certificate")).andExpect(status().isBadRequest());
+    }
+}

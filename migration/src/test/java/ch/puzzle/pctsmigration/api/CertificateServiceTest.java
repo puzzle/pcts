@@ -1,20 +1,22 @@
 package ch.puzzle.pctsmigration.api;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import java.util.Collections;
+import ch.puzzle.pctsmigration.exception.MigrationException;
+import java.util.Arrays;
 import java.util.List;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openapitools.client.ApiException;
 import org.openapitools.client.api.CertificatesApi;
+import org.openapitools.client.model.CertificateDto;
 import org.openapitools.client.model.CertificateInputDto;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,53 +28,74 @@ class CertificateServiceTest {
     @InjectMocks
     private CertificateService certificateService;
 
-    @Nested
-    @DisplayName("create(List<CertificateInputDto>)")
-    class CreateTests {
+    private CertificateInputDto inputDto1;
+    private CertificateInputDto inputDto2;
+    private CertificateDto createdDto1;
+    private CertificateDto createdDto2;
 
-        @Test
-        @DisplayName("Should call createCertificate for each DTO in the list in the correct order")
-        void create_withMultipleDtos_callsApiForEachDto() throws Exception {
-            CertificateInputDto dto1 = new CertificateInputDto();
-            dto1.setComment("Zertifikat 1");
+    @BeforeEach
+    void setUp() {
+        inputDto1 = new CertificateInputDto();
+        inputDto1.setComment("cert 1");
 
-            CertificateInputDto dto2 = new CertificateInputDto();
-            dto2.setComment("Zertifikat 2");
+        inputDto2 = new CertificateInputDto();
+        inputDto2.setComment("cert 2");
 
-            List<CertificateInputDto> dtos = List.of(dto1, dto2);
+        createdDto1 = new CertificateDto(101L);
+        createdDto2 = new CertificateDto(102L);
+    }
 
-            certificateService.create(dtos);
+    @Test
+    void testCreate_Success() throws ApiException {
+        List<CertificateInputDto> dtoList = Arrays.asList(inputDto1, inputDto2);
 
-            InOrder inOrder = inOrder(certificatesApi);
-            inOrder.verify(certificatesApi, times(1)).createCertificate(dto1);
-            inOrder.verify(certificatesApi, times(1)).createCertificate(dto2);
-            inOrder.verifyNoMoreInteractions();
-        }
+        when(certificatesApi.createCertificate(inputDto1)).thenReturn(createdDto1);
+        when(certificatesApi.createCertificate(inputDto2)).thenReturn(createdDto2);
 
-        @Test
-        @DisplayName("Should not make an API call if the passed list is empty")
-        void create_withEmptyList_doesNotCallApi() throws Exception {
-            List<CertificateInputDto> emptyList = Collections.emptyList();
+        certificateService.create(dtoList);
 
-            certificateService.create(emptyList);
+        verify(certificatesApi, times(1)).createCertificate(inputDto1);
+        verify(certificatesApi, times(1)).createCertificate(inputDto2);
+        verify(certificatesApi, never()).deleteCertificate(any());
+    }
 
-            verifyNoInteractions(certificatesApi);
-        }
+    @Test
+    void testCreate_ThrowsApiException_TriggersRollback() throws ApiException {
+        List<CertificateInputDto> dtoList = Arrays.asList(inputDto1, inputDto2);
 
-        @Test
-        @DisplayName("Should terminate immediately and throw an ApiException if an API call fails")
-        void create_whenApiThrowsException_throwsApiExceptionAndStopsProcessing() throws Exception {
-            CertificateInputDto dto1 = new CertificateInputDto();
-            CertificateInputDto dto2 = new CertificateInputDto();
-            List<CertificateInputDto> dtos = List.of(dto1, dto2);
+        when(certificatesApi.createCertificate(inputDto1)).thenReturn(createdDto1);
+        when(certificatesApi.createCertificate(inputDto2)).thenThrow(new ApiException("Simulated API Error"));
 
-            doThrow(new ApiException("HTTP 400: Bad Request")).when(certificatesApi).createCertificate(dto1);
+        MigrationException exception = assertThrows(MigrationException.class, () -> {
+            certificateService.create(dtoList);
+        });
 
-            assertThatThrownBy(() -> certificateService.create(dtos))
-                    .isInstanceOf(ApiException.class)
-                    .hasMessage("HTTP 400: Bad Request");
+        assertEquals("Migration aborted. Reason: Simulated API Error", exception.getError().message());
 
-            verify(certificatesApi, times(1)).createCertificate(dto1);
-        }
+        verify(certificatesApi, times(1)).createCertificate(inputDto1);
+        verify(certificatesApi, times(1)).createCertificate(inputDto2);
+
+        verify(certificatesApi, times(1)).deleteCertificate(101L);
+        verify(certificatesApi, never()).deleteCertificate(102L);
+    }
+
+    @Test
+    void testCreate_RollbackFails_LogsErrorAndStillThrowsMigrationException() throws ApiException {
+        List<CertificateInputDto> dtoList = Arrays.asList(inputDto1, inputDto2);
+
+        when(certificatesApi.createCertificate(inputDto1)).thenReturn(createdDto1);
+        when(certificatesApi.createCertificate(inputDto2)).thenThrow(new ApiException("Simulated API Error"));
+
+        doThrow(new ApiException("Rollback failed")).when(certificatesApi).deleteCertificate(101L);
+
+        MigrationException exception = assertThrows(MigrationException.class, () -> {
+            certificateService.create(dtoList);
+        });
+
+        assertEquals("Migration aborted. Reason: Simulated API Error", exception.getError().message());
+
+        verify(certificatesApi, times(1)).createCertificate(inputDto1);
+        verify(certificatesApi, times(1)).createCertificate(inputDto2);
+        verify(certificatesApi, times(1)).deleteCertificate(101L);
     }
 }

@@ -1,11 +1,14 @@
 package ch.puzzle.pctsmigration.api;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
+import ch.puzzle.pctsmigration.exception.MigrationException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,91 +27,78 @@ class MemberServiceTest {
     @InjectMocks
     private MemberService memberService;
 
+    private MemberDto member1;
+    private MemberDto member2;
+    private List<MemberDto> memberList;
+
+    @BeforeEach
+    void setUp() {
+        member1 = new MemberDto(10L);
+        member1.setAbbreviation("PUZ");
+
+        member2 = new MemberDto(20L);
+        member2.setAbbreviation("MIG");
+
+        memberList = Arrays.asList(member1, member2);
+    }
+
     @Test
-    @DisplayName("It should retrieve the member list from the MembersAPI and return it")
-    void getMembers_returnsListFromApi() throws Exception {
-        MemberDto member1 = createMember(1L, "AW");
-        MemberDto member2 = createMember(2L, "JN");
-        List<MemberDto> expectedMembers = List.of(member1, member2);
+    void testGetMembers_Success() throws ApiException {
+        when(membersApi.getMember()).thenReturn(memberList);
 
-        when(membersApi.getMember()).thenReturn(expectedMembers);
+        List<MemberDto> result = memberService.getMembers();
 
-        List<MemberDto> actualMembers = memberService.getMembers();
-
-        assertThat(actualMembers).isNotNull().hasSize(2).containsExactlyElementsOf(expectedMembers);
-
+        assertEquals(2, result.size());
+        assertEquals(memberList, result);
         verify(membersApi, times(1)).getMember();
     }
 
     @Test
-    @DisplayName("Should ApiException be rethrown if the API call fails?")
-    void getMembers_whenApiThrowsException_throwsApiException() throws Exception {
-        when(membersApi.getMember()).thenThrow(new ApiException("API Error"));
+    void testGetMembers_ThrowsApiException() throws ApiException {
+        when(membersApi.getMember()).thenThrow(new ApiException("API Error details"));
 
-        assertThatThrownBy(() -> memberService.getMembers())
-                .isInstanceOf(ApiException.class)
-                .hasMessage("API Error");
-    }
+        MigrationException exception = assertThrows(MigrationException.class, () -> {
+            memberService.getMembers();
+        });
 
-    @Test
-    @DisplayName("Should return the member's ID if the abbreviation matches")
-    void getMemberIdBy_whenAbbreviationMatches_returnsMemberId() throws Exception {
-        MemberDto member1 = createMember(10L, "AW");
-        MemberDto member2 = createMember(20L, "RR");
-        when(membersApi.getMember()).thenReturn(List.of(member1, member2));
-
-        Long resultId = memberService.getMemberIdBy("RR");
-
-        assertThat(resultId).isEqualTo(20L);
+        assertEquals(400, exception.getError().status().value());
+        assertEquals("API Error details", exception.getError().message());
         verify(membersApi, times(1)).getMember();
     }
 
     @Test
-    @DisplayName("Should return null if no abbreviation matches")
-    void getMemberIdBy_whenAbbreviationNotFound_returnsNull() throws Exception {
-        MemberDto member1 = createMember(10L, "AW");
-        when(membersApi.getMember()).thenReturn(List.of(member1));
+    void testGetMemberIdBy_MatchFound() throws ApiException {
+        when(membersApi.getMember()).thenReturn(memberList);
 
-        Long resultId = memberService.getMemberIdBy("UNKNOWN");
+        Long id = memberService.getMemberIdBy("MIG");
 
-        assertThat(resultId).isNull();
+        assertEquals(20L, id);
+        verify(membersApi, times(1)).getMember();
     }
 
     @Test
-    @DisplayName("Should return null if null is passed as a shorthand and no member has a value of null")
-    void getMemberIdBy_whenSearchingForNull_returnsNull() throws Exception {
-        MemberDto member1 = createMember(10L, "AW");
-        when(membersApi.getMember()).thenReturn(List.of(member1));
+    void testGetMemberIdBy_NoMatchFound_ThrowsMigrationException() throws ApiException {
+        when(membersApi.getMember()).thenReturn(memberList);
+        String unknownAbbreviation = "XYZ";
 
-        Long resultId = memberService.getMemberIdBy(null);
+        MigrationException exception = assertThrows(MigrationException.class, () -> {
+            memberService.getMemberIdBy(unknownAbbreviation);
+        });
 
-        assertThat(resultId).isNull();
+        assertEquals(404, exception.getError().status().value());
+        assertEquals("Member with abbreviation XYZ not found", exception.getError().message());
+        verify(membersApi, times(1)).getMember();
     }
 
     @Test
-    @DisplayName("Should ID be found when searching for null and a member has a null abbreviation?")
-    void getMemberIdBy_whenMemberHasNullAbbreviationAndSearchingForNull_returnsMemberId() throws Exception {
-        MemberDto memberWithNullAbbr = createMember(99L, null);
-        when(membersApi.getMember()).thenReturn(List.of(memberWithNullAbbr));
+    void testGetMemberIdBy_EmptyList_ThrowsMigrationException() throws ApiException {
+        when(membersApi.getMember()).thenReturn(Collections.emptyList());
 
-        Long resultId = memberService.getMemberIdBy(null);
+        MigrationException exception = assertThrows(MigrationException.class, () -> {
+            memberService.getMemberIdBy("PUZ");
+        });
 
-        assertThat(resultId).isEqualTo(99L);
-    }
-
-    @Test
-    @DisplayName("Should ApiException be rethrown if the internal call to getMembers() fails?")
-    void getMemberIdBy_whenApiThrowsException_throwsApiException() throws Exception {
-        when(membersApi.getMember()).thenThrow(new ApiException("HTTP 404"));
-
-        assertThatThrownBy(() -> memberService.getMemberIdBy("AW"))
-                .isInstanceOf(ApiException.class)
-                .hasMessage("HTTP 404");
-    }
-
-    private MemberDto createMember(Long id, String abbreviation) {
-        MemberDto dto = new MemberDto(id);
-        dto.setAbbreviation(abbreviation);
-        return dto;
+        assertEquals(404, exception.getError().status().value());
+        assertEquals("Member with abbreviation PUZ not found", exception.getError().message());
     }
 }

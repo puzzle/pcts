@@ -7,6 +7,7 @@ import jakarta.validation.Validator;
 import java.util.List;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -27,7 +28,7 @@ public class ExtractorService {
         R result = this.aiService.extract(parsedToMarkdown, pipeline.systemPrompt(context), pipeline.entityClass());
         jakartaValidation(result);
         pipeline.additionalValidations(result);
-        String filename = file.getOriginalFilename() != null ? file.getOriginalFilename() : "";
+        String filename = getFileName(file);
         return pipeline.mapToDto(filename, result);
     }
 
@@ -36,5 +37,15 @@ public class ExtractorService {
         if (!violations.isEmpty()) {
             throw new MigrationException(new Error(HttpStatusCode.valueOf(400), violations.toString()));
         }
+    }
+
+    private String getFileName(MultipartFile file) {
+        String fileName = file.getOriginalFilename();
+
+        if (!StringUtils.hasText(fileName)) {
+            throw new MigrationException(new Error(HttpStatusCode.valueOf(400), "File name is empty"));
+        }
+
+        return fileName;
     }
 }

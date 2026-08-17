@@ -76,7 +76,7 @@ public class CertificateExtractionPipeline
             return filename.split("_")[0].toUpperCase();
         }
         throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
-                                               "Invalid filename: can not extract abbreviation" + filename));
+                                               "Invalid filename: can not extract abbreviation " + filename));
     }
 
     private CertificateInputDto createCertificateInputDto(String abbreviation, CertificateAiResultDto aiResult) {
