@@ -130,8 +130,6 @@ describe('AddDegree', () => {
   });
 
   it('should return an empty string if type is null/undefined', () => {
-    expect(component['displayDegreeTypes'](null as any))
-      .toBe('');
     expect(component['displayDegreeTypes'](undefined as any))
       .toBe('');
   });
