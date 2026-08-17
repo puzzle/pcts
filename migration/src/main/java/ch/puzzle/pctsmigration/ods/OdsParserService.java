@@ -1,12 +1,14 @@
 package ch.puzzle.pctsmigration.ods;
 
-import java.io.IOException;
+import ch.puzzle.pctsmigration.exception.Error;
+import ch.puzzle.pctsmigration.exception.MigrationException;
 import java.util.ArrayList;
 import java.util.List;
 import org.odftoolkit.odfdom.doc.OdfSpreadsheetDocument;
 import org.odftoolkit.odfdom.doc.table.OdfTable;
 import org.odftoolkit.odfdom.doc.table.OdfTableCell;
 import org.odftoolkit.odfdom.doc.table.OdfTableRow;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,61 +19,88 @@ public class OdsParserService {
     private static final int MAX_ROWS = 500;
     private static final int MAX_COLS = 50;
 
-    public OdsParseResult parse(MultipartFile file) throws IOException {
-        if (file.isEmpty()) {
-            throw new IllegalArgumentException("Uploaded file is empty");
-        }
+    public String parseToPromptText(MultipartFile file) {
+        validateFile(file);
+
         try {
             OdfSpreadsheetDocument doc = OdfSpreadsheetDocument.loadDocument(file.getInputStream());
-            List<OdfTable> tables = doc.getTableList();
-            List<OdsParseResult.Sheet> sheets = new ArrayList<>();
+            OdsParseResult result = extractData(doc);
+            return generateMarkdown(result);
 
-            int sheetCount = Math.min(tables.size(), MAX_SHEETS);
-            for (int s = 0; s < sheetCount; s++) {
-                OdfTable table = tables.get(s);
-                int rowCount = Math.min(table.getRowCount(), MAX_ROWS);
-                int colCount = Math.min(table.getColumnCount(), MAX_COLS);
-                List<List<String>> rows = new ArrayList<>();
-
-                for (int r = 0; r < rowCount; r++) {
-                    OdfTableRow row = table.getRowByIndex(r);
-                    List<String> cells = new ArrayList<>();
-                    for (int c = 0; c < colCount; c++) {
-                        OdfTableCell cell = row.getCellByIndex(c);
-                        cells.add(cell.getDisplayText().trim());
-                    }
-                    while (!cells.isEmpty() && cells.getLast().isEmpty()) {
-                        cells.removeLast();
-                    }
-                    if (!cells.isEmpty()) {
-                        rows.add(cells);
-                    }
-                }
-                sheets.add(new OdsParseResult.Sheet(table.getTableName(), rows));
-            }
-            return new OdsParseResult(sheets);
         } catch (Exception e) {
-            throw new IOException("Failed to parse ODS file: " + e.getMessage(), e);
+            throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
+                                                   "Failed to parse ODS file: " + e.getMessage()));
         }
     }
 
-    public String toPromptText(OdsParseResult result) {
+    private void validateFile(MultipartFile file) {
+        if (file.isEmpty()) {
+            throw new MigrationException(new Error(HttpStatusCode.valueOf(400), "Uploaded file is empty"));
+        }
+    }
+
+    private OdsParseResult extractData(OdfSpreadsheetDocument doc) {
+        List<OdfTable> tables = doc.getTableList();
+        List<OdsParseResult.Sheet> sheets = new ArrayList<>();
+        int sheetCount = Math.min(tables.size(), MAX_SHEETS);
+
+        for (int s = 0; s < sheetCount; s++) {
+            sheets.add(extractSheet(tables.get(s)));
+        }
+        return new OdsParseResult(sheets);
+    }
+
+    private OdsParseResult.Sheet extractSheet(OdfTable table) {
+        int rowCount = Math.min(table.getRowCount(), MAX_ROWS);
+        int colCount = Math.min(table.getColumnCount(), MAX_COLS);
+        List<List<String>> rows = new ArrayList<>();
+
+        for (int r = 0; r < rowCount; r++) {
+            List<String> cells = extractRow(table.getRowByIndex(r), colCount);
+            if (!cells.isEmpty()) {
+                rows.add(cells);
+            }
+        }
+        return new OdsParseResult.Sheet(table.getTableName(), rows);
+    }
+
+    private List<String> extractRow(OdfTableRow row, int colCount) {
+        List<String> cells = new ArrayList<>();
+        for (int c = 0; c < colCount; c++) {
+            OdfTableCell cell = row.getCellByIndex(c);
+            cells.add(cell.getDisplayText().trim());
+        }
+
+        while (!cells.isEmpty() && cells.getLast().isEmpty()) {
+            cells.removeLast();
+        }
+        return cells;
+    }
+
+    private String generateMarkdown(OdsParseResult result) {
         StringBuilder sb = new StringBuilder();
         for (OdsParseResult.Sheet sheet : result.sheets()) {
-            sb.append("## Sheet: ").append(sheet.name()).append("\n\n");
-            List<List<String>> rows = sheet.rows();
-            if (rows.isEmpty()) {
-                sb.append("_(empty sheet)_\n\n");
-                continue;
-            }
-            appendMarkdownRow(sb, rows.getFirst());
-            appendMarkdownSeparator(sb, rows.getFirst().size());
-            for (int i = 1; i < rows.size(); i++) {
-                appendMarkdownRow(sb, rows.get(i));
-            }
-            sb.append("\n");
+            appendSheetMarkdown(sb, sheet);
         }
         return sb.toString();
+    }
+
+    private void appendSheetMarkdown(StringBuilder sb, OdsParseResult.Sheet sheet) {
+        sb.append("## Sheet: ").append(sheet.name()).append("\n\n");
+        List<List<String>> rows = sheet.rows();
+
+        if (rows.isEmpty()) {
+            sb.append("_(empty sheet)_\n\n");
+            return;
+        }
+
+        appendMarkdownRow(sb, rows.getFirst());
+        appendMarkdownSeparator(sb, rows.getFirst().size());
+
+        for (int i = 1; i < rows.size(); i++) {
+            appendMarkdownRow(sb, rows.get(i));
+        }
+        sb.append("\n");
     }
 
     private void appendMarkdownRow(StringBuilder sb, List<String> cells) {

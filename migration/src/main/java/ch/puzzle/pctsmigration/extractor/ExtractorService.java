@@ -23,21 +23,13 @@ public class ExtractorService {
     }
 
     public <C, R, D> List<D> extract(MultipartFile file, ExtractionPipeline<C, R, D> pipeline) {
-        String parsedToMarkdown = getMarkdownTableFrom(file);
+        String parsedToMarkdown = this.odsParserService.parseToPromptText(file);
         C context = pipeline.fetchContext();
         R result = this.aiService.extract(parsedToMarkdown, pipeline.systemPrompt(context), pipeline.entityClass());
         jakartaValidation(result);
         pipeline.additionalValidations(result);
         String filename = file.getOriginalFilename() != null ? file.getOriginalFilename() : "";
         return pipeline.mapToDto(filename, result);
-    }
-
-    private String getMarkdownTableFrom(MultipartFile file) {
-        try {
-            return this.odsParserService.toPromptText(this.odsParserService.parse(file));
-        } catch (IOException e) {
-            throw new MigrationException(new Error(HttpStatusCode.valueOf(400), e.getMessage()));
-        }
     }
 
     private <R> void jakartaValidation(R result) {
