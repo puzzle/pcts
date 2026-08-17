@@ -34,6 +34,7 @@ import {
 import { LeadershipExperienceService } from '../../leadership-experiences/leadership-experience.service';
 import { concatMap, filter, Observable } from 'rxjs';
 import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin.directive';
+import { CalculationService } from '../../calculations/calculation.service';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -54,6 +55,8 @@ import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin
 })
 export class MemberDetailViewComponent implements OnInit {
   private readonly service = inject(MemberService);
+
+  private readonly calculationService = inject(CalculationService);
 
   private readonly route = inject(ActivatedRoute);
 
@@ -112,13 +115,32 @@ export class MemberDetailViewComponent implements OnInit {
           this.leadershipExperienceData.set(memberOverview.cv.leadershipExperiences);
         }
       });
-    this.service.getPointsForActiveCalculationsForRoleByMemberId(Number(id))
+    /*
+     * this.service.getPointsForActiveCalculationsForRoleByMemberId(Number(id))
+     *   .subscribe({
+     *     next: (RolePoints) => {
+     *       this.rolePointList.set(RolePoints);
+     *       const tabGroup = this.tabGroup();
+     *       if (tabGroup) {
+     *         tabGroup.selectedIndex = this.tabIndex();
+     *       }
+     *     }
+     *   });
+     */
+    this.service.getRolesByMemberId(Number(id))
       .subscribe({
-        next: (RolePoints) => {
-          this.rolePointList.set(RolePoints);
-          const tabGroup = this.tabGroup();
-          if (tabGroup) {
-            tabGroup.selectedIndex = this.tabIndex();
+        next: (roles) => {
+          for (const role of roles) {
+            this.calculationService.getAllCalculationsByRoleId(role.id)
+              .subscribe({
+                next: (result) => {
+                  this.rolePointList.set(result);
+                  const tabGroup = this.tabGroup();
+                  if (tabGroup) {
+                    tabGroup.selectedIndex = this.tabIndex();
+                  }
+                }
+              });
           }
         }
       });
