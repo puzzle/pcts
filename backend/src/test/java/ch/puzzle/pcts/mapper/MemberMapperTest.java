@@ -11,6 +11,7 @@ import ch.puzzle.pcts.dto.member.MemberDto;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.OrganisationUnitBusinessService;
+import ch.puzzle.pcts.service.business.RoleBusinessService;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,12 +23,14 @@ class MemberMapperTest {
     private MemberMapper mapper;
     private OrganisationUnitBusinessService organisationUnitBusinessService;
     private OrganisationUnitMapper organisationUnitMapper;
+    private RoleBusinessService roleBusinessService;
 
     @BeforeEach
     void setUp() {
         organisationUnitBusinessService = Mockito.mock(OrganisationUnitBusinessService.class);
         organisationUnitMapper = Mockito.mock(OrganisationUnitMapper.class);
-        mapper = new MemberMapper(organisationUnitBusinessService, organisationUnitMapper);
+        roleBusinessService = Mockito.mock(RoleBusinessService.class);
+        mapper = new MemberMapper(organisationUnitBusinessService, organisationUnitMapper, roleBusinessService);
 
         when(organisationUnitMapper.toDto(ORG_UNIT_1)).thenReturn(ORG_UNIT_1_DTO);
         when(organisationUnitMapper.toDto(ORG_UNIT_2)).thenReturn(ORG_UNIT_2_DTO);
