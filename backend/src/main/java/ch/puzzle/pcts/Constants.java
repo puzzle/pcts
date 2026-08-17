@@ -19,6 +19,7 @@ public class Constants {
     public static final String LEADERSHIP_EXPERIENCE_CALCULATION = "leadershipExperienceCalculation";
     public static final String DEGREE_CALCULATION = "degreeCalculation";
     public static final String MEMBER_OVERVIEW = "memberOverview";
+    public static final String MEMBER_ROLE = "memberRole";
 
     private Constants() {
     }
