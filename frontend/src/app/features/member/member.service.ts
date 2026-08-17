@@ -69,7 +69,7 @@ export class MemberService {
       abbreviation: model.abbreviation,
       employmentState: model.employmentState,
       organisationUnitId: model.organisationUnit?.id,
-      roles: model.roles,
+      roleIds: model.roleIds,
       dateOfHire: model.dateOfHire ? DateTime.fromJSDate(model.dateOfHire)
         .toISODate() : null
     };
