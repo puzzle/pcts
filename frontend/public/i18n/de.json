@@ -4,7 +4,7 @@
   "HELP": "Hilfe",
   "DEGREE": {
     "MODEL_NAME": "Ausbildung",
-    "NAME": "Ausbilungsname",
+    "NAME": "Bezeichnung",
     "END_DATE": "Abgeschlossen am",
     "TYPE": "Art der Ausbildung",
     "START_DATE": "Begonnen am",
@@ -103,7 +103,7 @@
     "CV": {
       "DEGREE": {
         "MODEL_NAME": "Ausbildung",
-        "DEGREE_TYPE_NAME": "Ausbildungstyp",
+        "DEGREE_TYPE_NAME": "Ausbildungsart",
         "DATE_RANGE": "Zeitraum"
       },
       "EXPERIENCE": {
