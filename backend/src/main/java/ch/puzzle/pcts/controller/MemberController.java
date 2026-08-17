@@ -4,6 +4,7 @@ import ch.puzzle.pcts.dto.calculation.CalculationDto;
 import ch.puzzle.pcts.dto.calculation.RolePointDto;
 import ch.puzzle.pcts.dto.member.MemberDto;
 import ch.puzzle.pcts.dto.member.MemberInputDto;
+import ch.puzzle.pcts.dto.role.RoleDto;
 import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.mapper.MemberMapper;
 import ch.puzzle.pcts.model.calculation.Calculation;
@@ -12,6 +13,7 @@ import ch.puzzle.pcts.security.annotation.IsAdmin;
 import ch.puzzle.pcts.security.annotation.IsAdminOrOwner;
 import ch.puzzle.pcts.security.annotation.IsAuthenticated;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
+import ch.puzzle.pcts.service.business.RoleBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -32,11 +34,14 @@ public class MemberController {
     private final MemberMapper mapper;
     private final CalculationMapper calculationMapper;
     private final MemberBusinessService service;
+    private final RoleBusinessService roleBusinessService;
 
-    public MemberController(MemberMapper mapper, CalculationMapper calculationMapper, MemberBusinessService service) {
+    public MemberController(MemberMapper mapper, CalculationMapper calculationMapper, MemberBusinessService service,
+                            RoleBusinessService roleBusinessService) {
         this.mapper = mapper;
         this.calculationMapper = calculationMapper;
         this.service = service;
+        this.roleBusinessService = roleBusinessService;
     }
 
     @Operation(summary = "List all members")
@@ -115,5 +120,15 @@ public class MemberController {
     public ResponseEntity<MemberDto> getMyself() {
         Member member = service.getLoggedInMember();
         return ResponseEntity.ok(mapper.toDto(member));
+    }
+
+    @Operation(summary = "Get all roles by member id")
+    @ApiResponse(responseCode = "200", description = "The roles which this member fulfills", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = MemberDto.class)) })
+    @GetMapping("{memberId}/roles")
+    @IsAuthenticated
+    public ResponseEntity<List<RoleDto>> getAllRoles(@PathVariable Long memberId) {
+        List<RoleDto> roles = roleBusinessService.toDtos(service.getAllRolesByMemberId(memberId));
+        return ResponseEntity.ok(roles);
     }
 }
