@@ -95,7 +95,7 @@ export class AddDegreeComponent extends StrictlyTypedDialog<DegreeModel | undefi
     this.dialogRef.close();
   }
 
-  protected displayDegreeTypes = (degreeType: DegreeTypeModel): string => {
+  protected displayDegreeTypes = (degreeType: DegreeTypeModel | null | undefined): string => {
     return degreeType?.name ?? '';
   };
 
