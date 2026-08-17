@@ -10,7 +10,7 @@ import {
   signal,
   WritableSignal
 } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -96,6 +96,8 @@ export class MemberFormComponent implements OnInit {
 
   readonly currentRole: ModelSignal<RoleModel | undefined> = model();
 
+  roleSearchControl = new FormControl('');
+
   protected memberForm: FormGroup = this.fb.group({
     id: [null],
     firstName: ['',
@@ -125,12 +127,7 @@ export class MemberFormComponent implements OnInit {
     return this.filterEmploymentState(value);
   });
 
-  protected roleControlSignal = toSignal(this.memberForm.get('roles')!.valueChanges, { initialValue: this.memberForm.get('roles')!.value });
-
-  protected roleFilteredOptions = computed(() => {
-    const value = this.roleControlSignal();
-    return this.filterRole(value);
-  });
+  protected roleFilteredOptions: RoleModel[] = [];
 
   protected organisationUnitControlSignal = toSignal(this.memberForm.get('organisationUnit')!.valueChanges, { initialValue: this.memberForm.get('organisationUnit')!.value });
 
@@ -168,13 +165,28 @@ export class MemberFormComponent implements OnInit {
         ?.setValue(this.organisationUnitsOptions()
           .find((orgUnit) => orgUnit.id === this.member()?.organisationUnit?.id));
     });
+    this.roleSearchControl.valueChanges.subscribe((searchText) => {
+      this.roleFilteredOptions = this.filterRole(searchText);
+    });
   }
 
   onSubmit() {
     if (this.memberForm.invalid) {
       return;
     }
-    const memberToSave = this.memberForm.getRawValue() as MemberModel;
+
+    const chosenRoles: RoleModel[] = this.memberForm.get('roles')?.value;
+
+    console.log(chosenRoles);
+
+    const roleIds = this.convertRolesToIds(chosenRoles);
+
+    const formData = this.memberForm.getRawValue() as MemberModel;
+
+    const memberToSave = { ...formData,
+      roleIds: roleIds };
+
+    console.log(memberToSave);
     if (this.isEdit()) {
       this.memberService.updateMember(this.memberForm.get('id')?.value, memberToSave)
         .subscribe(() => {
@@ -226,7 +238,7 @@ export class MemberFormComponent implements OnInit {
     });
   }
 
-  private filterRole(value: RoleModel | string | null): RoleModel[] {
+  protected filterRole(value: RoleModel | string | null): RoleModel[] {
     if (value === null || value === undefined || value === '') {
       return this.roleOptions();
     }
@@ -274,12 +286,19 @@ export class MemberFormComponent implements OnInit {
   }
 
   add(event: MatChipInputEvent): void {
-    const value: RoleModel = this.filterRole(event.value)[0];
+    const selected = this.memberForm.get('roles')?.value || [];
+    this.memberForm.get('roles')
+      ?.setValue([...selected,
+        event.value]);
 
-    if (value) {
-      this.roles.update((roles) => [...roles,
-        value]);
-    }
+    /*
+     * const value: RoleModel = this.filterRole(event.value)[0];
+     *
+     * if (value) {
+     *   this.roles.update((roles) => [...roles,
+     *     value]);
+     * }
+     */
 
     this.currentRole.set(undefined);
   }
@@ -289,5 +308,13 @@ export class MemberFormComponent implements OnInit {
       event.option.value]);
     this.currentRole.set(undefined);
     event.option.deselect();
+  }
+
+  convertRolesToIds(roles: RoleModel[]): number[] {
+    const ids: number[] = [];
+    for (const role of roles) {
+      ids.push(role.id);
+    }
+    return ids;
   }
 }
