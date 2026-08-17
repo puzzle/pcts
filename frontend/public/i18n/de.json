@@ -20,6 +20,11 @@
   "LEADERSHIP_EXPERIENCE": {
     "MODEL_NAME": "Führungserfahrung",
     "LEADERSHIP_EXPERIENCE_TYPE": "Art der Führungserfahrung",
+    "TYPES": {
+      "MILITARY_FUNCTION": "Militärdienst",
+      "YOUTH_AND_SPORT": "J+S oder andere Spezialisierungen",
+      "LEADERSHIP_TRAINING": "Führungsausbildungen"
+    },
     "COMMENT": "Beschreibung"
   },
   "ROLE": {

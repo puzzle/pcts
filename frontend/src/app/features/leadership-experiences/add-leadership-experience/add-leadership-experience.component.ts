@@ -2,7 +2,7 @@ import { Component, computed, inject, OnInit, signal, WritableSignal } from '@an
 import { BaseFormComponent } from '../../../shared/form/base-form.component';
 import { BaseModalComponent } from '../../../shared/modal/base-modal.component';
 import { InputFieldComponent } from '../../../shared/input-field/input-field.component';
-import { MatAutocomplete, MatAutocompleteTrigger, MatOption } from '@angular/material/autocomplete';
+import { MatAutocomplete, MatAutocompleteTrigger, MatOptgroup, MatOption } from '@angular/material/autocomplete';
 import { MatButton } from '@angular/material/button';
 import { MatInput } from '@angular/material/input';
 import { MenuButtonComponent } from '../../../shared/menu-button/menu-button.component';
@@ -17,6 +17,7 @@ import { LeadershipExperienceModel } from '../leadership-experience.model';
 import { LeadershipExperienceTypeService } from '../leadership-experiences-type/leadership-experience-type.service';
 import { LeadershipExperienceTypeModel } from '../leadership-experiences-type/leadership-experience-type.model';
 import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-add-leadership-experience.component',
@@ -31,7 +32,9 @@ import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
     MatOption,
     MenuButtonComponent,
     ReactiveFormsModule,
-    ScopedTranslationPipe
+    ScopedTranslationPipe,
+    MatOptgroup,
+    TranslatePipe
   ],
   templateUrl: './add-leadership-experience.component.html',
   providers: [provideI18nPrefix('LEADERSHIP_EXPERIENCE.FORM.ADD')]
@@ -65,8 +68,8 @@ export class AddLeadershipExperienceComponent extends StrictlyTypedDialog<Leader
 
   ngOnInit(): void {
     this.leadershipExperienceTypeService.getAllLeadershipExperienceTypes()
-      .subscribe((organisationUnits) => {
-        this.leadershipExperienceTypeOptions.set(organisationUnits);
+      .subscribe((leadershipExperienceTypes) => {
+        this.leadershipExperienceTypeOptions.set(leadershipExperienceTypes);
         this.formGroup.get('leadershipExperienceType')
           ?.updateValueAndValidity();
       });
@@ -84,7 +87,15 @@ export class AddLeadershipExperienceComponent extends StrictlyTypedDialog<Leader
 
   protected leadershipExperienceTypeFilteredOptions = computed(() => {
     const value = this.leadershipExperienceTypeControlSignal() ?? '';
-    return this.filterLeadershipExperienceType(value);
+    const experienceTypesSorted = this.filterLeadershipExperienceType(value)
+      .sort((a, b) => {
+        if (a.leadershipExperienceKind !== b.leadershipExperienceKind) {
+          return a.leadershipExperienceKind.localeCompare(b.leadershipExperienceKind);
+        }
+        return a.name.toLowerCase()
+          .localeCompare(b.name.toLowerCase());
+      });
+    return Map.groupBy(experienceTypesSorted, (type) => type.leadershipExperienceKind);
   });
 
   filterLeadershipExperienceType(value: LeadershipExperienceTypeModel | string | null): LeadershipExperienceTypeModel[] {
