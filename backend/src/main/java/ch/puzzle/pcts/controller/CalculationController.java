@@ -2,6 +2,7 @@ package ch.puzzle.pcts.controller;
 
 import ch.puzzle.pcts.dto.calculation.CalculationDto;
 import ch.puzzle.pcts.dto.calculation.CalculationInputDto;
+import ch.puzzle.pcts.dto.calculation.RolePointDto;
 import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.security.annotation.IsAdmin;
@@ -15,6 +16,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @IsAdmin
 @RestController
@@ -58,5 +61,15 @@ public class CalculationController {
     @PathVariable Long calculationId, @RequestBody CalculationInputDto dto) {
         Calculation updatedCalculation = businessService.update(calculationId, mapper.fromDto(dto));
         return ResponseEntity.ok(mapper.toDto(updatedCalculation));
+    }
+
+    @Operation(summary = "Get calculations by roleID")
+    @ApiResponse(responseCode = "200", description = "The calculations.", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = List.class)) })
+    @GetMapping("{roleId}/calcs")
+    public ResponseEntity<List<RolePointDto>> getCalculationsByRoleId(@Parameter(description = "Role ID of the calculations to retrieve.", required = true)
+                                                         @PathVariable Long roleId) {
+        List<Calculation> calculations = businessService.getAllByRoleId(roleId);
+        return ResponseEntity.ok(mapper.toRolePointDto(calculations));
     }
 }
