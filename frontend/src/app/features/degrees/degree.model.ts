@@ -12,5 +12,3 @@ export interface DegreeModel {
   startDate: Date;
   endDate: Date | null;
 }
-
-
