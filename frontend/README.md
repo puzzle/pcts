@@ -178,10 +178,9 @@ The true power of this system is its automatic fallback. When you request a key,
 
 If your component has the prefix `MEMBER.FORM.ADD` and you request the key `TITLE`, the service will search for a valid translation in this exact order:
 
-1. `MEMBER.FORM.ADD.TITLE`
-2. `MEMBER.FORM.TITLE`
-3. `MEMBER.TITLE`
-4. `TITLE`
+1. `MEMBER.FORM.ADD.TITLE` 1.`MEMBER.FORM.TITLE`
+1. `MEMBER.TITLE`
+1. `TITLE`
 
 This allows you to define common translations at a high level and override them only when necessary.
 
