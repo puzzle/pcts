@@ -29,7 +29,7 @@ describe('Add degree Modal', () => {
 
   ['ENTER_ANOTHER',
     'COPY'].forEach((buttonType: string) => {
-    it.only(`should create degree via ${buttonType}`, () => {
+    it(`should create degree via ${buttonType}`, () => {
       cy.intercept('api/v1/degrees')
         .as('degrees');
       openDegreeModal();
@@ -43,13 +43,10 @@ describe('Add degree Modal', () => {
       formPage.typeAndBlur('name', 'Mathematik');
       formPage.typeAndBlur('institution', 'GIBB');
       formPage.submitButtonShouldBe('enabled');
+      formPage.clickSubmitMenuItem(buttonType);
 
-      cy.getByTestId('menu-button')
-        .click();
-      cy.getByTestId(`menu-item-${buttonType}`)
-        .click();
-
-      cy.contains('Ausbildung hinzufügen');
+      modalPage.modalTitle()
+        .should('include.text', 'Ausbildung hinzufügen');
 
       formPage.shouldShowSuccessToast('Ausbildung wurde erfolgreich erstellt.');
       /*
@@ -81,15 +78,12 @@ describe('Add degree Modal', () => {
 
     it('validates degree type requirement and input', () => {
       formPage.submitButtonShouldBe('disabled');
+      modalPage.selectAutoCompleteValue('degreeType', 'Bachelor\'s Degree');
       cy.getByTestId('degreeType')
-        .focus()
-        .type('something')
         .clear()
         .blur();
       formPage.shouldShowValidationError('Muss ausgefüllt sein', 'degreeType');
-      formPage.type('degreeType', 'invalid entry');
-      cy.getByTestId('degreeType')
-        .blur();
+      formPage.typeAndBlur('degreeType', 'invalid entry');
       formPage.shouldShowValidationError('Ungültige Eingabe', 'degreeType');
     });
 
@@ -127,5 +121,4 @@ describe('Add degree Modal', () => {
     });
   });
 });
-// });
 
