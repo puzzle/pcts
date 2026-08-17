@@ -35,7 +35,7 @@ import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-
 import { Location } from '@angular/common';
 import { RoleModel } from '../../roles/RoleModel';
 import { RoleService } from '../../roles/role.service';
-import { MatChipGrid, MatChipInput, MatChipInputEvent, MatChipRemove, MatChipRow } from '@angular/material/chips';
+import { MatChipGrid, MatChipInput, MatChipRemove, MatChipRow } from '@angular/material/chips';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 
@@ -112,8 +112,7 @@ export class MemberFormComponent implements OnInit {
     employmentState: [null,
       [Validators.required,
         isValueInList(this.employmentStateOptions, (a, b) => a == b)]],
-    roles: [[] as RoleModel[],
-      [isValueInListSignal(this.roleOptions, (a, b) => a.id === b.id)]],
+    roles: [[] as RoleModel[]],
     organisationUnit: [null,
       isValueInListSignal(this.organisationUnitsOptions, (a, b) => a.id === b.id)]
   });
@@ -175,18 +174,11 @@ export class MemberFormComponent implements OnInit {
       return;
     }
 
-    const chosenRoles: RoleModel[] = this.memberForm.get('roles')?.value;
-
-    console.log(chosenRoles);
-
-    const roleIds = this.convertRolesToIds(chosenRoles);
-
     const formData = this.memberForm.getRawValue() as MemberModel;
 
     const memberToSave = { ...formData,
-      roleIds: roleIds };
+      roleIds: this.convertRolesToIds(this.roles()) };
 
-    console.log(memberToSave);
     if (this.isEdit()) {
       this.memberService.updateMember(this.memberForm.get('id')?.value, memberToSave)
         .subscribe(() => {
@@ -285,27 +277,15 @@ export class MemberFormComponent implements OnInit {
     });
   }
 
-  add(event: MatChipInputEvent): void {
-    const selected = this.memberForm.get('roles')?.value || [];
-    this.memberForm.get('roles')
-      ?.setValue([...selected,
-        event.value]);
-
-    /*
-     * const value: RoleModel = this.filterRole(event.value)[0];
-     *
-     * if (value) {
-     *   this.roles.update((roles) => [...roles,
-     *     value]);
-     * }
-     */
-
-    this.currentRole.set(undefined);
-  }
-
   selected(event: MatAutocompleteSelectedEvent): void {
-    this.roles.update((roles) => [...roles,
-      event.option.value]);
+    const values: RoleModel = event.option.value;
+    if (values) {
+      this.roles.update((roles) => [...roles,
+        values]);
+      this.memberForm.get('roles')
+        ?.setValue(this.roles());
+    }
+    console.log(this.memberForm.get('roles')?.value);
     this.currentRole.set(undefined);
     event.option.deselect();
   }
