@@ -63,7 +63,7 @@ class OdsParserServiceTest {
         OdfSpreadsheetDocument mockDoc = mock(OdfSpreadsheetDocument.class);
         OdfTable uppercaseTable = mock(OdfTable.class);
         when(uppercaseTable.getTableName()).thenReturn("UPPERCASE_SHEET");
-        when(mockDoc.getTableList()).thenReturn(Collections.singletonList(uppercaseTable));
+        when(mockDoc.getSpreadsheetTables()).thenReturn(Collections.singletonList(uppercaseTable));
 
         try (MockedStatic<OdfSpreadsheetDocument> mockedStatic = mockStatic(OdfSpreadsheetDocument.class)) {
             mockedStatic.when(() -> OdfSpreadsheetDocument.loadDocument(any(InputStream.class))).thenReturn(mockDoc);
@@ -87,7 +87,7 @@ class OdsParserServiceTest {
         when(mockTable.getTableName()).thenReturn("sheet1");
         when(mockTable.getRowCount()).thenReturn(2);
         when(mockTable.getColumnCount()).thenReturn(2);
-        when(mockDoc.getTableList()).thenReturn(List.of(mockTable));
+        when(mockDoc.getSpreadsheetTables()).thenReturn(List.of(mockTable));
 
         mockRow(mockTable, 0, "Header1", "Header2|");
         mockRow(mockTable, 1, "Value1", "Value2");
@@ -116,7 +116,7 @@ class OdsParserServiceTest {
         when(mockTable.getTableName()).thenReturn("data");
         when(mockTable.getRowCount()).thenReturn(1);
         when(mockTable.getColumnCount()).thenReturn(3);
-        when(mockDoc.getTableList()).thenReturn(List.of(mockTable));
+        when(mockDoc.getSpreadsheetTables()).thenReturn(List.of(mockTable));
 
         mockRow(mockTable, 0, "Data1", "Data2", "");
 

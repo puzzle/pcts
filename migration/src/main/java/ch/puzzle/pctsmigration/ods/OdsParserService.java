@@ -40,9 +40,9 @@ public class OdsParserService {
     }
 
     private OdsParseResult extractData(OdfSpreadsheetDocument doc) throws Exception {
-        List<OdsParseResult.Sheet> sheets = doc.getTableList().stream().filter(table -> {
+        List<OdsParseResult.Sheet> sheets = doc.getSpreadsheetTables().stream().filter(table -> {
             String name = table.getTableName();
-            return name.equals(name.toLowerCase());
+            return !name.equals(name.toUpperCase());
         }).limit(MAX_SHEETS).map(this::extractSheet).toList();
 
         if (sheets.isEmpty()) {
