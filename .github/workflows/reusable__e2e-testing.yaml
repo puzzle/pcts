@@ -90,7 +90,7 @@ jobs:
         run: pnpm exec cypress install
 
       - name: Cypress run e2e tests
-        uses: cypress-io/github-action@v7.4.1
+        uses: cypress-io/github-action@v7.4.2
         with:
           working-directory: frontend
           install: false
