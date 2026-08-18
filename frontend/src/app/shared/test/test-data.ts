@@ -122,7 +122,7 @@ export const member4: MemberModel = {
   employmentState: EmploymentState.APPLICANT,
   dateOfHire: null,
   organisationUnit: organisationUnit4,
-  roleIds: [role3.id]
+  roleIds: [role2.id]
 };
 
 export const memberDto1: MemberDto = {
@@ -441,6 +441,12 @@ export const rolePointsList2: RolePointsModel[] = [{
   role: role2,
   points: 20
 }];
+
+export const roleList1: RoleModel[] = [role1,
+  role2];
+
+export const roleList2: RoleModel[] = [role3,
+  role1];
 
 export const certificateCalculation1: CertificateCalculationModel = {
   id: 1,
