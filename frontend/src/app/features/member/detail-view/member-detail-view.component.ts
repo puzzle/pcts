@@ -60,8 +60,6 @@ import { CalculationService } from '../../calculations/calculation.service';
 export class MemberDetailViewComponent implements OnInit {
   private readonly service = inject(MemberService);
 
-  private readonly calculationService = inject(CalculationService);
-
   private readonly route = inject(ActivatedRoute);
 
   private readonly router = inject(Router);
@@ -121,32 +119,29 @@ export class MemberDetailViewComponent implements OnInit {
           this.leadershipExperienceData.set(memberOverview.cv.leadershipExperiences);
         }
       });
-    /*
-     * this.service.getPointsForActiveCalculationsForRoleByMemberId(Number(id))
-     *   .subscribe({
-     *     next: (RolePoints) => {
-     *       this.rolePointList.set(RolePoints);
-     *       const tabGroup = this.tabGroup();
-     *       if (tabGroup) {
-     *         tabGroup.selectedIndex = this.tabIndex();
-     *       }
-     *     }
-     *   });
-     */
+
+    this.service.getPointsForActiveCalculationsForRoleByMemberId(Number(id))
+      .subscribe({
+        next: (RolePoints) => {
+          this.rolePointList.set(RolePoints);
+          const tabGroup = this.tabGroup();
+          if (tabGroup) {
+            tabGroup.selectedIndex = this.tabIndex();
+          }
+        }
+      });
+
     this.service.getRolesByMemberId(Number(id))
       .subscribe({
         next: (roles) => {
+          const rolePoints: RolePointsModel[] = [];
           for (const role of roles) {
-            this.calculationService.getAllCalculationsByRoleId(role.id)
-              .subscribe({
-                next: (result) => {
-                  this.rolePointList.set(result);
-                  const tabGroup = this.tabGroup();
-                  if (tabGroup) {
-                    tabGroup.selectedIndex = this.tabIndex();
-                  }
-                }
-              });
+            rolePoints.push(this.service.toRolePointsModel(role));
+          }
+          this.rolePointList.set(rolePoints);
+          const tabGroup = this.tabGroup();
+          if (tabGroup) {
+            tabGroup.selectedIndex = this.tabIndex();
           }
         }
       });
