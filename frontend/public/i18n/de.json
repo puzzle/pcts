@@ -2,16 +2,21 @@
   "PCTS_LOGO_ALT": "Puzzle PCTS Logo",
   "LOGOUT": "Abmelden",
   "HELP": "Hilfe",
+
   "DEGREE": {
     "MODEL_NAME": "Ausbildung",
-    "NAME": "Bezeichnung"
+    "MODEL_NAME_PLURAL": "Ausbildungen",
+    "NAME": "Bezeichnung",
+    "DEGREE_TYPE_NAME": "Ausbildungsart"
   },
   "EXPERIENCE": {
     "MODEL_NAME": "Berufs- und Lebenserfahrung",
+    "MODEL_NAME_PLURAL": "Berufs- und Lebenserfahrungen",
     "COMMENT": "Beschreibung"
   },
   "CERTIFICATE": {
     "MODEL_NAME": "Zertifikat",
+    "MODEL_NAME_PLURAL": "Zertifikate",
     "COMPLETED_AT": "Abgeschlossen am",
     "CERTIFICATE_TYPE": "Art des Zertifikats",
     "VALID_UNTIL": "Gültig bis",
@@ -19,6 +24,7 @@
   },
   "LEADERSHIP_EXPERIENCE": {
     "MODEL_NAME": "Führungserfahrung",
+    "MODEL_NAME_PLURAL": "Führungserfahrungen",
     "LEADERSHIP_EXPERIENCE_TYPE": "Art der Führungserfahrung",
     "TYPES": {
       "MILITARY_FUNCTION": "Militärdienst",
@@ -31,7 +37,14 @@
     "MODEL_NAME": "Role"
   },
   "CALCULATION": {
-    "POINTS": "Punkte"
+    "MODEL_NAME": "PCTS-Berechnung",
+    "POINTS": "PCTS-Punkte",
+    "STATE": "Status",
+    "ACTIVE": "Aktiv",
+    "DRAFT": "Entwurf",
+    "ARCHIVED": "Archiviert",
+    "PUBLICIZED_BY": "Veröffentlicht von",
+    "PUBLICATION_DATE": "Veröffentlicht am"
   },
 
   "FORM": {
@@ -95,37 +108,20 @@
       "EX_MEMBER": "Ex-Member"
     },
     "CV": {
-      "DEGREE": {
-        "MODEL_NAME": "Ausbildung",
-        "DEGREE_TYPE_NAME": "Ausbildungsart",
-        "DATE_RANGE": "Zeitraum"
-      },
-      "EXPERIENCE": {
-        "MODEL_NAME": "Berufs- und Lebenserfahrung",
+      "CUSTOM_TABLE_ATTRIBUTES": {
         "DATE_RANGE": "Zeitraum",
-        "WORK_NAME": "Position",
-        "EXPERIENCE_TYPE_NAME": "Erfahrungsart"
-      },
-      "CERTIFICATE": {
-        "MODEL_NAME": "Zertifikate",
-        "CERTIFICATE_TYPE_NAME": "Zertifikatstyp"
-      },
-      "LEADERSHIP_EXPERIENCE": {
-        "MODEL_NAME": "Führungserfahrung"
-      },
-      "ADD_ENTRY": "Eintrag hinzufügen"
-    },
-    "CALCULATION": {
-      "MODEL_NAME": "PCTS-Berechnung",
-      "POINTS": "PCTS-Punkte",
-      "STATE": "Status",
-      "ACTIVE": "Aktiv",
-      "DRAFT": "Entwurf",
-      "ARCHIVED": "Archiviert",
-      "PUBLICIZED_BY": "Veröffentlicht von",
-      "PUBLICATION_DATE": "Veröffentlicht am"
+        "ADD_ENTRY": "Eintrag hinzufügen",
+        "EXPERIENCE": {
+          "WORK_NAME": "Position",
+          "EXPERIENCE_TYPE_NAME": "Erfahrungsart"
+        },
+        "CERTIFICATE": {
+          "CERTIFICATE_TYPE_NAME": "Zertifikatstyp"
+        }
+      }
     }
   },
+
   "ERROR": {
     "NOT_AUTHENTICATED": "Benutzer ist nicht oder falsch angemeldet.",
     "NOT_ALLOWED": "Der angemeldete Benutzer hat keine Berechtigung diese Aktion auszuführen.",
@@ -144,8 +140,11 @@
     "DEFAULT": "Ein unerwarteter Fehler ist aufgetreten.",
     "CLOSE": "Schliessen"
   },
-  "POST": "{{OBJECT}} wurde erfolgreich erstellt.",
-  "PUT": "{{OBJECT}} wurde erfolgreich aktualisiert.",
-  "DELETE": "{{OBJECT}} wurde erfolgreich gelöscht.",
-  "Object": "Objekt"
+
+  "NOTIFICATION": {
+    "POST": "{{OBJECT}} wurde erfolgreich erstellt.",
+    "PUT": "{{OBJECT}} wurde erfolgreich aktualisiert.",
+    "DELETE": "{{OBJECT}} wurde erfolgreich gelöscht.",
+    "Object": "Objekt"
+  }
 }
