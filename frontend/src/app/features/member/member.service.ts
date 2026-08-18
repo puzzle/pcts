@@ -80,6 +80,13 @@ export class MemberService {
     };
   }
 
+  toRolePointsModel(model: RoleModel): RolePointsModel {
+    return {
+      role: model,
+      points: 0
+    };
+  }
+
   getMemberOverviewByMemberId(id: number): Observable<MemberCvOverviewModel> {
     return this.httpClient.get<MemberCvOverviewModel>(`api/v1/member-overviews/${id}`);
   }
