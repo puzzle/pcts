@@ -29,8 +29,7 @@ public class MemberMapper {
     }
 
     public List<Member> fromDto(List<MemberInputDto> dtos) {
-        // return dtos.stream().map(this::fromDto).toList();
-        return List.of();
+        return dtos.stream().map(this::fromDto).toList();
     }
 
     public MemberDto toDto(Member model) {
