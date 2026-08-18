@@ -13,11 +13,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @IsAdmin
 @RestController
@@ -68,7 +67,7 @@ public class CalculationController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = List.class)) })
     @GetMapping("{roleId}/calcs")
     public ResponseEntity<List<RolePointDto>> getCalculationsByRoleId(@Parameter(description = "Role ID of the calculations to retrieve.", required = true)
-                                                         @PathVariable Long roleId) {
+    @PathVariable Long roleId) {
         List<Calculation> calculations = businessService.getAllByRoleId(roleId);
         return ResponseEntity.ok(mapper.toRolePointDto(calculations));
     }
