@@ -14,7 +14,7 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, 
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MemberService } from '../member.service';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { TranslateService } from '@ngx-translate/core';
@@ -98,6 +98,8 @@ export class MemberFormComponent implements OnInit {
 
   roleSearchControl = new FormControl('');
 
+  private activatedRoute = inject(ActivatedRoute);
+
   protected memberForm: FormGroup = this.fb.group({
     id: [null],
     firstName: ['',
@@ -149,6 +151,14 @@ export class MemberFormComponent implements OnInit {
         this.memberForm.get('roles')
           ?.updateValueAndValidity();
       });
+    if (this.isEdit()) {
+      const id = this.activatedRoute.snapshot.paramMap.get('id');
+      const idAsNum = Number(id?.split('?')[0]);
+      this.memberService.getRolesByMemberId(idAsNum)
+        .subscribe((roles) => {
+          this.roles.set(roles);
+        });
+    }
   }
 
   constructor() {
@@ -285,7 +295,6 @@ export class MemberFormComponent implements OnInit {
       this.memberForm.get('roles')
         ?.setValue(this.roles());
     }
-    console.log(this.memberForm.get('roles')?.value);
     this.currentRole.set(undefined);
     event.option.deselect();
   }
