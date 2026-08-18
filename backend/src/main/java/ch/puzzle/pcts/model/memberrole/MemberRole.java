@@ -68,4 +68,10 @@ public class MemberRole implements Model {
     public int hashCode() {
         return Objects.hash(getMemberId(), getRoleId());
     }
+
+    @Override
+    public String toString() {
+        return "MemberRole{" + "id=" + id + ", memberId=" + memberId + ", roleId=" + roleId + ", deletedAt=" + deletedAt
+               + '}';
+    }
 }
