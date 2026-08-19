@@ -14,7 +14,14 @@
   },
   "EXPERIENCE": {
     "MODEL_NAME": "Berufs- und Lebenserfahrung",
-    "COMMENT": "Beschreibung"
+    "COMMENT": "Beschreibung",
+    "NAME": "Bezeichnung",
+    "END_DATE": "Bis",
+    "EXPERIENCE_TYPE": "Art der Ausbildung",
+    "START_DATE": "Von",
+    "EMPLOYER": "Arbeitgeber",
+    "PERCENT": "Stellenprozente",
+    "COMPLETED": "Abgeschlossen"
   },
   "CERTIFICATE": {
     "MODEL_NAME": "Zertifikat",
