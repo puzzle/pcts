@@ -6,7 +6,6 @@ import { MatAutocomplete, MatAutocompleteTrigger, MatOption } from '@angular/mat
 import { MatButton } from '@angular/material/button';
 import { MatDatepicker, MatDatepickerInput, MatDatepickerToggle } from '@angular/material/datepicker';
 import { MatError, MatFormField, MatInput, MatLabel, MatSuffix } from '@angular/material/input';
-import { MenuButtonComponent } from '../../../shared/menu-button/menu-button.component';
 import { PctsFormErrorDirective } from '../../../shared/pcts-form-error/pcts-form-error.directive';
 import { PctsFormLabelDirective } from '../../../shared/pcts-form-label/pcts-form-label.directive';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -21,6 +20,7 @@ import { DegreeTypeModel } from '../degree-type/degree-type.model';
 import { DegreeTypeService } from '../degree-type/degree-type.service';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
+import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
 
 @Component({
   selector: 'app-add-degree',
@@ -40,16 +40,15 @@ import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
     MatLabel,
     MatOption,
     MatSuffix,
-    MenuButtonComponent,
     PctsFormErrorDirective,
     PctsFormLabelDirective,
     ReactiveFormsModule,
     ScopedTranslationPipe,
-    MatCheckbox
+    MatCheckbox,
+    ModalActionsComponent
   ],
   templateUrl: './add-degree.component.html',
-  providers: [provideI18nPrefix('DEGREE.FORM.ADD')],
-  styleUrl: './add-degree.component.scss'
+  providers: [provideI18nPrefix('DEGREE.FORM.ADD')]
 })
 export class AddDegreeComponent extends StrictlyTypedDialog<DegreeModel | undefined, DialogResult<DegreeModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);

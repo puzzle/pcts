@@ -31,6 +31,28 @@ jobs:
       - name: Format backend
         run: mvn spotless:check
 
+  migration:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: migration
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.COMMIT_HASH }}
+
+      - name: Set up JDK ${{ vars.JAVA_VERSION }}
+        uses: actions/setup-java@v5
+        with:
+          java-version: ${{ vars.JAVA_VERSION }}
+          distribution: adopt
+          server-id: github
+          settings-path: ${{ github.workspace }}
+
+      - name: Format migration
+        run: mvn spotless:check
+
   frontend:
     runs-on: ubuntu-latest
     defaults:

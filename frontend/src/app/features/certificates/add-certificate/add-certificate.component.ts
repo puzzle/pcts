@@ -10,17 +10,15 @@ import { PctsFormLabelDirective } from '../../../shared/pcts-form-label/pcts-for
 import { toSignal } from '@angular/core/rxjs-interop';
 import { isValueInListSignal } from '../../../shared/form/form-validators';
 import { MatButton } from '@angular/material/button';
-import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import { CertificateTypeModel } from '../certificate-type/certificate-type.model';
 import { CertificateTypeService } from '../certificate-type/certificate-type.service';
 import { MatDatepicker, MatDatepickerInput, MatDatepickerToggle } from '@angular/material/datepicker';
-import { MenuButtonComponent } from '../../../shared/menu-button/menu-button.component';
 import { CertificateModel } from '../certificate.model';
 import { MemberModel } from '../../member/member.model';
 import { DialogResult, StrictlyTypedDialog } from '../../../shared/modal/strictly-typed-dialog.helper';
 import { InputFieldComponent } from '../../../shared/input-field/input-field.component';
-
+import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
 
 @Component({
   selector: 'app-add-certificate',
@@ -39,13 +37,12 @@ import { InputFieldComponent } from '../../../shared/input-field/input-field.com
     PctsFormErrorDirective,
     PctsFormLabelDirective,
     MatButton,
-    ScopedTranslationPipe,
     MatDatepicker,
     MatDatepickerInput,
     MatDatepickerToggle,
     MatSuffix,
-    MenuButtonComponent,
-    InputFieldComponent
+    InputFieldComponent,
+    ModalActionsComponent
   ],
   templateUrl: './add-certificate.component.html',
   providers: [provideI18nPrefix('CERTIFICATE.FORM.ADD')]

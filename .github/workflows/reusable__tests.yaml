@@ -79,3 +79,32 @@ jobs:
           comment_mode: 'changes in failures'
           files: |
             backend/target/surefire-reports/*.xml
+
+  migration-tests:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: migration
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.COMMIT_HASH || github.head_ref }}
+
+      - name: Set up JDK ${{ vars.JAVA_VERSION }}
+        uses: actions/setup-java@v5
+        with:
+          java-version: ${{ vars.JAVA_VERSION }}
+          distribution: adopt
+
+      - name: Use Maven to run unit and integration tests
+        run: mvn clean verify
+
+      - name: Publish test results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: (!cancelled())
+        with:
+          check_name: "Migration Test Results"
+          comment_mode: 'changes in failures'
+          files: |
+            migration/target/surefire-reports/*.xml

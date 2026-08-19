@@ -1,0 +1,28 @@
+<div class="d-flex flex-row gap-3">
+  <button
+    data-testid="close-modal-button"
+    matButton="text"
+    type="button"
+    (click)="onCancel()"
+  >
+    {{ cancelKey | scopedTranslation }}
+  </button>
+
+  <div class="d-flex">
+    <button
+      [disabled]="!isValid"
+      (click)="onSubmit(ModalSubmitMode.SAVE)"
+      class="rounded-end-0"
+      matButton="filled"
+      type="submit"
+      data-testid="submit-button"
+    >
+      {{ submitKey | scopedTranslation }}
+    </button>
+
+    <app-menu-button
+      [isValid]="isValid"
+      [functions]="[ModalSubmitMode.ENTER_ANOTHER, ModalSubmitMode.COPY]"
+      (selected)="onSubmit($event)" />
+  </div>
+</div>

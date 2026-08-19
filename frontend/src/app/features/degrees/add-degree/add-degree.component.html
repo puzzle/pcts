@@ -50,18 +50,9 @@
   </app-base-form>
 
   <ng-container actions>
-    <div class="d-flex flex-row gap-3">
-
-      <button data-testid="close-modal-button" matButton="text" type="button" (click)="onCancel()">
-        {{ "BUTTONS.CANCEL" | scopedTranslation  }}
-      </button>
-
-      <div class="d-flex">
-        <button [disabled]="!formGroup.valid" (click)="onSubmit(ModalSubmitMode.SAVE)" class="rounded-end-0" matButton="filled" type="submit" data-testid="submit-button">
-          {{ "BUTTONS.ACTION" | scopedTranslation }}
-        </button>
-        <app-menu-button [isValid]="formGroup.valid" [functions]="[ModalSubmitMode.ENTER_ANOTHER, ModalSubmitMode.COPY]" (selected)="onSubmit($event)"/>
-      </div>
-    </div>
+    <app-modal-actions
+      [isValid]="formGroup.valid"
+      (cancelAction)="onCancel()"
+      (submitAction)="onSubmit($event)" />
   </ng-container>
 </app-base-modal>
