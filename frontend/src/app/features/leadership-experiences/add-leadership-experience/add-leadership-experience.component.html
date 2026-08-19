@@ -36,8 +36,7 @@
   <ng-container actions>
     <app-modal-actions
       [isValid]="formGroup.valid"
-      (cancel)="onCancel()"
-      (submitAction)="onSubmit($event)">
-    </app-modal-actions>
+      (cancelAction)="onCancel()"
+      (submitAction)="onSubmit($event)" />
   </ng-container>
 </app-base-modal>

@@ -20,7 +20,7 @@ import { DegreeTypeModel } from '../degree-type/degree-type.model';
 import { DegreeTypeService } from '../degree-type/degree-type.service';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
-import {ModalActionsComponent} from '../../../shared/modal/modal-actions.component';
+import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
 
 @Component({
   selector: 'app-add-degree',

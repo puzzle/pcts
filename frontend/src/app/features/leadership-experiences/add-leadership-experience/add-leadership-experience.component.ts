@@ -18,7 +18,7 @@ import { LeadershipExperienceTypeService } from '../leadership-experiences-type/
 import { LeadershipExperienceTypeModel } from '../leadership-experiences-type/leadership-experience-type.model';
 import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
 import { TranslatePipe } from '@ngx-translate/core';
-import {ModalActionsComponent} from '../../../shared/modal/modal-actions.component';
+import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
 
 @Component({
   selector: 'app-add-leadership-experience.component',
