@@ -53,6 +53,13 @@ class FormPage {
     this.submitButton.should(`be.${state}`);
   }
 
+  clickSubmitMenuItem(buttonType: string) {
+    cy.getByTestId('menu-button')
+      .click();
+    cy.getByTestId(`menu-item-${buttonType}`)
+      .click();
+  }
+
   shouldShowValidationError(message: string, fieldName: string) {
     cy.getByTestId('validation-error')
       .should('include.text', message)

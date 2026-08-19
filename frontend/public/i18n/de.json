@@ -4,7 +4,13 @@
   "HELP": "Hilfe",
   "DEGREE": {
     "MODEL_NAME": "Ausbildung",
-    "NAME": "Bezeichnung"
+    "NAME": "Bezeichnung",
+    "END_DATE": "Abgeschlossen am",
+    "TYPE": "Art der Ausbildung",
+    "START_DATE": "Begonnen am",
+    "COMMENT": "Beschreibung",
+    "INSTITUTION": "Ausbildungsort",
+    "COMPLETED": "Abgeschlossen"
   },
   "EXPERIENCE": {
     "MODEL_NAME": "Berufs- und Lebenserfahrung",

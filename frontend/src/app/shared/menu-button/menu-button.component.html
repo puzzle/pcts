@@ -6,6 +6,6 @@
 
 <mat-menu #submitMenu="matMenu">
   @for (submitMode of functions(); track submitMode) {
-    <button type="submit" data-testid="menu-item" (click)="selected.emit(submitMode)" class="d-flex" mat-menu-item>{{ "BUTTONS." + submitMode | scopedTranslation}}</button>
+    <button type="submit" [attr.data-testid]="'menu-item-'+submitMode" (click)="selected.emit(submitMode)" class="d-flex" mat-menu-item>{{ "BUTTONS." + submitMode | scopedTranslation}}</button>
   }
 </mat-menu>
