@@ -1,1 +1,71 @@
-<p>add-experience works!</p>
+<app-base-modal [formGroup]="formGroup" (canceled)="onCancel()">
+  <app-base-form content [formGroup]="formGroup">
+    <ng-container title/>
+    <ng-container content>
+
+      <app-input-field>
+        <input experienceType="text" formControlName="experienceType" matInput [matAutocomplete]="experienceTypeAutoComplete"
+               data-testid="experienceType">
+        <mat-autocomplete autoActiveFirstOption #experienceTypeAutoComplete="matAutocomplete"
+                          [displayWith]="displayExperienceTypes">
+          @for (experienceType of experienceTypeFilteredOptions(); track experienceType) {
+            <mat-option [value]="experienceType">{{ displayExperienceTypes(experienceType) }}</mat-option>
+          }
+        </mat-autocomplete>
+      </app-input-field>
+
+      <app-input-field>
+        <input experienceType="text" formControlName="name" data-testid="name" matInput>
+      </app-input-field>
+
+      <app-input-field>
+        <input experienceType="text" formControlName="employer" data-testid="employer" matInput>
+      </app-input-field>
+
+      <app-input-field>
+        <input experienceType="text" formControlName="percent" data-testid="percent" matInput>
+      </app-input-field>
+
+      <mat-form-field>
+        <mat-label appPctsFormLabel/>
+        <input matInput [matDatepicker]="completedAtPicker" formControlName="startDate" data-testid="startDate">
+        <mat-datepicker-toggle matIconSuffix [for]="completedAtPicker"/>
+        <mat-datepicker #completedAtPicker/>
+        <mat-error appPctsFormError/>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label appPctsFormLabel/>
+        <input matInput [matDatepicker]="validUntilPicker" formControlName="endDate" data-testid="endDate">
+        <mat-datepicker-toggle matIconSuffix [for]="validUntilPicker"/>
+        <mat-datepicker #validUntilPicker/>
+        <mat-error appPctsFormError/>
+      </mat-form-field>
+
+      <app-input-field>
+        <textarea experienceType="text" formControlName="comment" data-testid="comment" matInput></textarea>
+      </app-input-field>
+
+      <mat-checkbox formControlName="completed">{{"COMPLETED" | scopedTranslation}}</mat-checkbox>
+
+    </ng-container>
+    <ng-container actions/>
+  </app-base-form>
+
+  <ng-container actions>
+    <div class="d-flex flex-row gap-3">
+
+      <button data-testid="close-modal-button" matButton="text" experienceType="button" (click)="onCancel()">
+        {{ "BUTTONS.CANCEL" | scopedTranslation  }}
+      </button>
+
+      <div class="d-flex">
+        <button [disabled]="!formGroup.valid" (click)="onSubmit(ModalSubmitMode.SAVE)" class="rounded-end-0" matButton="filled" type="submit" data-testid="submit-button">
+          {{ "BUTTONS.ACTION" | scopedTranslation }}
+        </button>
+
+        <app-menu-button [isValid]="formGroup.valid" [functions]="[ModalSubmitMode.ENTER_ANOTHER, ModalSubmitMode.COPY]" (selected)="onSubmit($event)"/>
+      </div>
+    </div>
+  </ng-container>
+</app-base-modal>
