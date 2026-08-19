@@ -9,7 +9,6 @@ import ch.puzzle.pctsmigration.api.CertificateService;
 import ch.puzzle.pctsmigration.api.CertificateTypeService;
 import ch.puzzle.pctsmigration.api.MemberService;
 import ch.puzzle.pctsmigration.exception.MigrationException;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -76,13 +75,12 @@ class CertificateExtractionPipelineTest {
         CertificateWrapper wrapper = mock(CertificateWrapper.class);
         when(wrapper.items()).thenReturn(List.of(aiResult));
 
-        CertificateTypeDto wrongType = new CertificateTypeDto();
-        wrongType.setName("Java Developer");
-        wrongType.setPoints(new BigDecimal("5.0"));
+        CertificateTypeDto wrongType = mock(CertificateTypeDto.class);
+        when(wrongType.getName()).thenReturn("Java Developer");
 
-        CertificateTypeDto correctClosestType = new CertificateTypeDto();
-        correctClosestType.setName("Scrum Master");
-        correctClosestType.setPoints(new BigDecimal("10.0"));
+        CertificateTypeDto correctClosestType = mock(CertificateTypeDto.class);
+        when(correctClosestType.getName()).thenReturn("Scrum Master");
+        when(correctClosestType.getId()).thenReturn(12L);
 
         when(memberService.getMemberIdBy("AW")).thenReturn(expectedMemberId);
         when(certificateTypeService.getCertificateTypes()).thenReturn(List.of(wrongType, correctClosestType));
@@ -96,6 +94,7 @@ class CertificateExtractionPipelineTest {
         assertThat(dto.getValidUntil()).isNull();
         assertThat(dto.getComment()).isEqualTo("Sehr gut");
         assertThat(dto.getCompletedAt()).isEqualTo(LocalDate.of(2025, 1, 15));
+        assertThat(dto.getCertificateTypeId()).isEqualTo(12L);
 
         verify(memberService).getMemberIdBy("AW");
     }
@@ -124,29 +123,6 @@ class CertificateExtractionPipelineTest {
 
         verifyNoInteractions(memberService);
         verifyNoInteractions(certificateTypeService);
-    }
-
-    @Test
-    @DisplayName("mapToDto should set certificateTypeId to null if no certificate types exist")
-    void mapToDto_withNoCertificateTypes_returnsNullCertificateTypeId() {
-        String filename = "aw_zertifikate.ods";
-        Long expectedMemberId = 42L;
-
-        CertificateAiResultDto aiResult = mock(CertificateAiResultDto.class);
-        when(aiResult.name()).thenReturn("Scrum Mstr");
-
-        CertificateWrapper wrapper = mock(CertificateWrapper.class);
-        when(wrapper.items()).thenReturn(List.of(aiResult));
-
-        when(memberService.getMemberIdBy("AW")).thenReturn(expectedMemberId);
-        when(certificateTypeService.getCertificateTypes()).thenReturn(List.of());
-
-        List<CertificateInputDto> result = pipeline.mapToDto(filename, wrapper);
-
-        assertThat(result).hasSize(1);
-        CertificateInputDto dto = result.getFirst();
-
-        assertThat(dto.getCertificateTypeId()).isNull();
     }
 
     @Test

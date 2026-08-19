@@ -48,7 +48,7 @@ import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
     MatCheckbox
   ],
   templateUrl: './add-degree.component.html',
-  providers: [provideI18nPrefix('DEGREE.FORM.ADD')],
+  providers: [provideI18nPrefix('DEGREE.FORM.ADD')]
 })
 export class AddDegreeComponent extends StrictlyTypedDialog<DegreeModel | undefined, DialogResult<DegreeModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);
