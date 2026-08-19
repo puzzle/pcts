@@ -49,7 +49,6 @@ import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
   ],
   templateUrl: './add-degree.component.html',
   providers: [provideI18nPrefix('DEGREE.FORM.ADD')],
-  styleUrl: './add-degree.component.scss'
 })
 export class AddDegreeComponent extends StrictlyTypedDialog<DegreeModel | undefined, DialogResult<DegreeModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);

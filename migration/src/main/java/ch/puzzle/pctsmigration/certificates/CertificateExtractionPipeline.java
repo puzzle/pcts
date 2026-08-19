@@ -97,7 +97,7 @@ public class CertificateExtractionPipeline
                 .stream()
                 .min(Comparator.comparingInt(dto -> calculateDistance(dto, name)))
                 .map(CertificateTypeDto::getId)
-                .orElse(null);
+                .orElseThrow();
     }
 
     private Integer calculateDistance(CertificateTypeDto dto, String name) {
