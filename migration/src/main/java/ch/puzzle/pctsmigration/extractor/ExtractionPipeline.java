@@ -11,11 +11,15 @@ public interface ExtractionPipeline<C, R, D> {
     /** Build the system prompt from the fetched context */
     String systemPrompt(C context);
 
+    /** defines which sheets will be extracted in OdsParserService */
+    List<String> tableNames();
+
     /**
      * Run validations on result objects throw MigrationException when something is
      * wrong
      */
-    void additionalValidations(R toValidate);
+    default void additionalValidations(R toValidate) {
+    }
 
     /** The result record class */
     Class<R> entityClass();

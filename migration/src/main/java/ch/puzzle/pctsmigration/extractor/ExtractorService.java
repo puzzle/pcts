@@ -23,11 +23,13 @@ public class ExtractorService {
     }
 
     public <C, R, D> List<D> extract(MultipartFile file, ExtractionPipeline<C, R, D> pipeline) {
-        String parsedToMarkdown = this.odsParserService.parseToPromptText(file);
+        String parsedToMarkdown = this.odsParserService.parseToPromptText(file, pipeline.tableNames());
         C context = pipeline.fetchContext();
         R result = this.aiService.extract(parsedToMarkdown, pipeline.systemPrompt(context), pipeline.entityClass());
+
         jakartaValidation(result);
         pipeline.additionalValidations(result);
+
         String filename = getFileName(file);
         return pipeline.mapToDto(filename, result);
     }

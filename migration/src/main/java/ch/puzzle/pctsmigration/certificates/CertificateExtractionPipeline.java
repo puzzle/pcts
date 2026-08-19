@@ -23,12 +23,12 @@ import org.springframework.stereotype.Component;
 public class CertificateExtractionPipeline
         implements
             ExtractionPipeline<CertificateContextModel, CertificateWrapper, CertificateInputDto> {
+    private final static Logger logger = LoggerFactory.getLogger(CertificateExtractionPipeline.class);
 
     private final CertificateTypeService certificateTypeService;
     private final MemberService memberService;
     private final CertificateService certificateService;
-    private final LevenshteinDistance distance = LevenshteinDistance.getDefaultInstance();
-    private final Logger logger = LoggerFactory.getLogger(CertificateExtractionPipeline.class);
+    private final LevenshteinDistance levenshtein = LevenshteinDistance.getDefaultInstance();
 
     public CertificateExtractionPipeline(CertificateTypeService certificateTypeService, MemberService memberService,
                                          CertificateService certificateService) {
@@ -57,7 +57,8 @@ public class CertificateExtractionPipeline
     }
 
     @Override
-    public void additionalValidations(CertificateWrapper toValidate) {
+    public List<String> tableNames() {
+        return List.of("Zertifikat", "Zertifikate");
     }
 
     @Override
@@ -100,8 +101,8 @@ public class CertificateExtractionPipeline
     }
 
     private Integer calculateDistance(CertificateTypeDto dto, String name) {
-        Integer distance = this.distance.apply(dto.getName(), name);
-        this.logger.info("Input name: {}, Actual name: {}, Distance: {}", name, dto.getName(), distance);
+        Integer distance = this.levenshtein.apply(dto.getName(), name);
+        logger.info("Input name: {}, Actual name: {}, Distance: {}", name, dto.getName(), distance);
 
         return distance;
     }

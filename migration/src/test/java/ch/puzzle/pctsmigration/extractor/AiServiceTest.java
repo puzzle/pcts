@@ -43,7 +43,7 @@ class AiServiceTest {
     }
 
     @Test
-    @DisplayName("extractCertificateData sollte System-Prompt, Markdown im User-Prompt und Ziel-Klasse an Spring AI übergeben")
+    @DisplayName("extractCertificateData should pass the system prompt, Markdown in the user prompt, and the target class to Spring AI")
     void extractCertificateData_callsChatClientWithCorrectPromptsAndReturnsEntity() {
         // Given
         String markdown = "| A | B |";

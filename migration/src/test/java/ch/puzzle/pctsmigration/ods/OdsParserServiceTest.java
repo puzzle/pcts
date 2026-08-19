@@ -24,10 +24,12 @@ import org.springframework.web.multipart.MultipartFile;
 class OdsParserServiceTest {
 
     private OdsParserService odsParserService;
+    private static List<String> tableNames;
 
     @BeforeEach
     void setUp() {
         odsParserService = new OdsParserService();
+        tableNames = List.of("Zertifikat", "Zertifikate");
     }
 
     @Test
@@ -36,10 +38,9 @@ class OdsParserServiceTest {
         when(mockFile.isEmpty()).thenReturn(true);
 
         MigrationException exception = assertThrows(MigrationException.class,
-                                                    () -> odsParserService.parseToPromptText(mockFile));
+                                                    () -> odsParserService.parseToPromptText(mockFile, tableNames));
 
-        assertTrue(exception.getMessage().contains("Uploaded file is empty")
-                   || exception.getError().message().contains("Uploaded file is empty"));
+        assertTrue(exception.getError().message().contains("Uploaded file is empty"));
     }
 
     @Test
@@ -49,7 +50,7 @@ class OdsParserServiceTest {
         when(mockFile.getInputStream()).thenThrow(new IOException("Stream error"));
 
         MigrationException exception = assertThrows(MigrationException.class,
-                                                    () -> odsParserService.parseToPromptText(mockFile));
+                                                    () -> odsParserService.parseToPromptText(mockFile, tableNames));
 
         assertTrue(exception.getError().message().contains("Failed to parse ODS file: Stream error"));
     }
@@ -62,14 +63,14 @@ class OdsParserServiceTest {
 
         OdfSpreadsheetDocument mockDoc = mock(OdfSpreadsheetDocument.class);
         OdfTable uppercaseTable = mock(OdfTable.class);
-        when(uppercaseTable.getTableName()).thenReturn("UPPERCASE_SHEET");
+        when(uppercaseTable.getTableName()).thenReturn("NoValidSheets");
         when(mockDoc.getSpreadsheetTables()).thenReturn(Collections.singletonList(uppercaseTable));
 
         try (MockedStatic<OdfSpreadsheetDocument> mockedStatic = mockStatic(OdfSpreadsheetDocument.class)) {
             mockedStatic.when(() -> OdfSpreadsheetDocument.loadDocument(any(InputStream.class))).thenReturn(mockDoc);
 
             MigrationException exception = assertThrows(MigrationException.class,
-                                                        () -> odsParserService.parseToPromptText(mockFile));
+                                                        () -> odsParserService.parseToPromptText(mockFile, tableNames));
 
             assertTrue(exception.getError().message().contains("No valid sheets found"));
         }
@@ -84,7 +85,7 @@ class OdsParserServiceTest {
         OdfSpreadsheetDocument mockDoc = mock(OdfSpreadsheetDocument.class);
 
         OdfTable mockTable = mock(OdfTable.class);
-        when(mockTable.getTableName()).thenReturn("sheet1");
+        when(mockTable.getTableName()).thenReturn("Zertifikat");
         when(mockTable.getRowCount()).thenReturn(2);
         when(mockTable.getColumnCount()).thenReturn(2);
         when(mockDoc.getSpreadsheetTables()).thenReturn(List.of(mockTable));
@@ -95,10 +96,10 @@ class OdsParserServiceTest {
         try (MockedStatic<OdfSpreadsheetDocument> mockedStatic = mockStatic(OdfSpreadsheetDocument.class)) {
             mockedStatic.when(() -> OdfSpreadsheetDocument.loadDocument(any(InputStream.class))).thenReturn(mockDoc);
 
-            String markdown = odsParserService.parseToPromptText(mockFile);
+            String markdown = odsParserService.parseToPromptText(mockFile, tableNames);
 
             assertNotNull(markdown);
-            assertTrue(markdown.contains("## Sheet: sheet1"));
+            assertTrue(markdown.contains("## Sheet: Zertifikat"));
             assertTrue(markdown.contains("| Header1 | Header2\\| |"));
             assertTrue(markdown.contains("| --- | --- |"));
             assertTrue(markdown.contains("| Value1 | Value2 |"));
@@ -113,7 +114,7 @@ class OdsParserServiceTest {
 
         OdfSpreadsheetDocument mockDoc = mock(OdfSpreadsheetDocument.class);
         OdfTable mockTable = mock(OdfTable.class);
-        when(mockTable.getTableName()).thenReturn("data");
+        when(mockTable.getTableName()).thenReturn("Zertifikat");
         when(mockTable.getRowCount()).thenReturn(1);
         when(mockTable.getColumnCount()).thenReturn(3);
         when(mockDoc.getSpreadsheetTables()).thenReturn(List.of(mockTable));
@@ -123,7 +124,7 @@ class OdsParserServiceTest {
         try (MockedStatic<OdfSpreadsheetDocument> mockedStatic = mockStatic(OdfSpreadsheetDocument.class)) {
             mockedStatic.when(() -> OdfSpreadsheetDocument.loadDocument(any(InputStream.class))).thenReturn(mockDoc);
 
-            String markdown = odsParserService.parseToPromptText(mockFile);
+            String markdown = odsParserService.parseToPromptText(mockFile, tableNames);
 
             assertTrue(markdown.contains("| Data1 | Data2 |"));
             assertFalse(markdown.contains("--- | --- | --- |"));

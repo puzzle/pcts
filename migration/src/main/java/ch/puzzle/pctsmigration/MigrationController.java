@@ -40,7 +40,7 @@ public class MigrationController {
         List<CertificateInputDto> result = service.extract(file, certificateExtractionPipeline);
         certificateExtractionPipeline.create(result);
 
-        return ResponseEntity.status(201).body(result);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
     @PostMapping(value = "/certificates", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -56,11 +56,10 @@ public class MigrationController {
             try {
                 List<CertificateInputDto> extracted = service.extract(file, certificateExtractionPipeline);
                 certificateExtractionPipeline.create(extracted);
-
-                result.getSuccessfulCertificates().addAll(extracted);
+                result.addToSuccessfulCertificates(filename, extracted);
 
             } catch (MigrationException e) {
-                result.getFailedFiles().add(new FileError(filename, e.getMessage()));
+                result.addToFailedFiles(new FileError(filename, e.getMessage()));
             }
         }
 

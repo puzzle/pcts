@@ -19,36 +19,40 @@ public class OdsParserService {
     private static final int MAX_ROWS = 500;
     private static final int MAX_COLS = 50;
 
-    public String parseToPromptText(MultipartFile file) {
-        validateFile(file);
+    public String parseToPromptText(MultipartFile file, List<String> tableNames) {
+        if (file.isEmpty()) {
+            throw new MigrationException(new Error(HttpStatusCode.valueOf(400), "Uploaded file is empty"));
+        }
 
         try {
             OdfSpreadsheetDocument doc = OdfSpreadsheetDocument.loadDocument(file.getInputStream());
-            OdsParseResult result = extractData(doc);
+            OdsParseResult result = extractData(doc, tableNames);
             return generateMarkdown(result);
-
         } catch (Exception e) {
             throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
                                                    "Failed to parse ODS file: " + e.getMessage()));
         }
     }
 
-    private void validateFile(MultipartFile file) {
-        if (file.isEmpty()) {
-            throw new MigrationException(new Error(HttpStatusCode.valueOf(400), "Uploaded file is empty"));
-        }
-    }
-
-    private OdsParseResult extractData(OdfSpreadsheetDocument doc) throws Exception {
-        List<OdsParseResult.Sheet> sheets = doc.getSpreadsheetTables().stream().filter(table -> {
-            String name = table.getTableName();
-            return !name.equals(name.toUpperCase());
-        }).limit(MAX_SHEETS).map(this::extractSheet).toList();
+    private OdsParseResult extractData(OdfSpreadsheetDocument doc, List<String> tableNames) throws Exception {
+        List<OdsParseResult.Sheet> sheets = doc
+                .getSpreadsheetTables()
+                .stream()
+                .filter(table -> isValidTableName(tableNames, table.getTableName()))
+                .limit(MAX_SHEETS)
+                .map(this::extractSheet)
+                .toList();
 
         if (sheets.isEmpty()) {
             throw new Exception("No valid sheets found");
         }
         return new OdsParseResult(sheets);
+    }
+
+    private boolean isValidTableName(List<String> tableNames, String name) {
+        String actualName = name.trim().toLowerCase();
+        List<String> cleanTableNames = tableNames.stream().map(t -> t.trim().toLowerCase()).toList();
+        return cleanTableNames.contains(actualName);
     }
 
     private OdsParseResult.Sheet extractSheet(OdfTable table) {

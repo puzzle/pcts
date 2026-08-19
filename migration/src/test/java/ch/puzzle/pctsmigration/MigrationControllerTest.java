@@ -76,7 +76,7 @@ class MigrationControllerTest {
         mockMvc
                 .perform(multipart("/api/migration/certificates").file(file1).file(file2))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.successfulCertificates").isArray())
+                .andExpect(jsonPath("$.successfulCertificates").isMap())
                 .andExpect(jsonPath("$.successfulCertificates.length()").value(2))
                 .andExpect(jsonPath("$.failedFiles").isArray())
                 .andExpect(jsonPath("$.failedFiles.length()").value(0));
