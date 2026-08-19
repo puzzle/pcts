@@ -1,0 +1,32 @@
+import { Component } from '@angular/core';
+import { EventEmitter, Input, Output } from '@angular/core';
+import { ModalSubmitMode } from '../enum/modal-submit-mode.enum';
+import {ScopedTranslationPipe} from '../pipes/scoped-translation-pipe';
+import {MenuButtonComponent} from '../menu-button/menu-button.component';
+
+@Component({
+  selector: 'app-modal-actions',
+  imports: [
+    ScopedTranslationPipe,
+    MenuButtonComponent
+  ],
+  templateUrl: './modal-actions.component.html'
+})
+export class ModalActionsComponent {
+  @Input() isValid = false;
+  @Input() cancelKey = 'BUTTONS.CANCEL';
+  @Input() submitKey = 'BUTTONS.ACTION';
+
+  @Output() cancel = new EventEmitter<void>();
+  @Output() submitAction = new EventEmitter<ModalSubmitMode>();
+
+  public readonly ModalSubmitMode = ModalSubmitMode;
+
+  onCancel(): void {
+    this.cancel.emit();
+  }
+
+  onSubmit(mode: ModalSubmitMode): void {
+    this.submitAction.emit(mode);
+  }
+}
