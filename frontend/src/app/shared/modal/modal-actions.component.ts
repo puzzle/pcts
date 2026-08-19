@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ModalSubmitMode } from '../enum/modal-submit-mode.enum';
 import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
 import { MenuButtonComponent } from '../menu-button/menu-button.component';
