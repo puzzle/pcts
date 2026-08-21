@@ -26,6 +26,15 @@ services:
     build:
       context: ..
       dockerfile: ./backend/Dockerfile
+
+    develop:
+      watch:
+        - action: rebuild
+          path: ../backend/src
+          target: app/src
+        - action: rebuild
+          path: ../backend/pom.xml
+
     ports:
       - "8080:8080"
     extra_hosts:
