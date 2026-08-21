@@ -6,8 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-modal-actions',
-  imports: [
-    MatButtonModule,
+  imports: [MatButtonModule,
     ScopedTranslationPipe,
     MenuButtonComponent],
   templateUrl: './modal-actions.component.html'
