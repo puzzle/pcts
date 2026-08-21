@@ -199,6 +199,26 @@ public class TestDataModels {
             .withSyncErrorCount(0)
             .build();
 
+    public static final Member DELETED_MEMBER_4;
+    static {
+        DELETED_MEMBER_4 = Member.Builder
+                .builder()
+                .withId(DELETED_MEMBER_4_ID)
+                .withFirstName("Member 4")
+                .withLastName("Test")
+                .withLdapName("mtest4")
+                .withEmploymentState(EmploymentState.MEMBER)
+                .withAbbreviation("M4")
+                .withDateOfHire(LocalDate.of(2020, 6, 1))
+                .withBirthDate(LocalDate.of(1998, 3, 3))
+                .withOrganisationUnit(ORG_UNIT_2)
+                .withPtimeId(4L)
+                .withLastSuccessfulSync(LocalDateTime.of(2025, 12, 1, 1, 1))
+                .withSyncErrorCount(0)
+                .build();
+        DELETED_MEMBER_4.setDeletedAt(LocalDateTime.of(2025, 12, 1, 1, 1));
+    }
+
     public static final CertificateType CERT_TYPE_1 = CertificateType.Builder
             .builder()
             .withId(CERT_TYPE_1_ID)
