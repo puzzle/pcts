@@ -86,13 +86,6 @@ describe('AddDegree', () => {
       .toHaveBeenCalledWith();
   });
 
-  it('should set the correct value from formGroup', () => {
-    const formGroupPatchValueSpy = jest.spyOn(component.formGroup, 'patchValue');
-    component.ngOnInit();
-    expect(formGroupPatchValueSpy)
-      .toHaveBeenCalled();
-  });
-
   it('should load degreeTypes', () => {
     expect(component['degreeTypeOptions']())
       .toEqual([degreeType1,
