@@ -138,6 +138,7 @@ class CertificateCalculationValidationServiceTest
         member.setLastName(lastName);
         member.setAbbreviation("AA");
         member.setDateOfHire(LocalDate.EPOCH);
+        member.setRoles(List.of());
         member
                 .setOrganisationUnit(OrganisationUnit.Builder
                         .builder()

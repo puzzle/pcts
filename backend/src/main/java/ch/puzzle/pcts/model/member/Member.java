@@ -230,7 +230,7 @@ public class Member implements Model {
                && Objects.equals(getBirthDate(), member.getBirthDate())
                && Objects.equals(getDeletedAt(), member.getDeletedAt())
                && Objects.equals(getOrganisationUnit(), member.getOrganisationUnit())
-               && Objects.equals(getRoles(), member.getRoles()) && Objects.equals(getPtimeId(), member.getPtimeId())
+               && member.getRoles().equals(getRoles()) && Objects.equals(getPtimeId(), member.getPtimeId())
                && Objects.equals(getLastSuccessfulSync(), member.getLastSuccessfulSync())
                && Objects.equals(getSyncErrorCount(), member.getSyncErrorCount())
                && Objects.equals(getLdapName(), member.getLdapName());
