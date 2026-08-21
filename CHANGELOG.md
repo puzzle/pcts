@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.10.0](https://github.com/puzzle/pcts/compare/0.9.0...0.10.0) (2026-08-21)
+
+
+### Features
+
+* CLI module scaffolding & Spring wiring [#712](https://github.com/puzzle/pcts/issues/712) ([7bf0919](https://github.com/puzzle/pcts/commit/7bf0919b675c52065ba2dcaa0b34810818767843))
+* **frontend:** add modal to add degree to member [#305](https://github.com/puzzle/pcts/issues/305) ([6a69d2c](https://github.com/puzzle/pcts/commit/6a69d2c873ab139ff40ec3d8dc3ee4df5f25f907))
+* group leadership experience types in dropdown ([1a50dbe](https://github.com/puzzle/pcts/commit/1a50dbe50f113e949af679058e8a3705ec9b4d9a))
+
+
+### Miscellaneous Chores
+
+* **deps:** update all devdependencies (minor and patch) to v22.1.4 ([#807](https://github.com/puzzle/pcts/issues/807)) ([f044a45](https://github.com/puzzle/pcts/commit/f044a45e2bdb3c879465821a21c6fd332e1851f8))
+* **deps:** update angular monorepo to v22.1.2 ([#808](https://github.com/puzzle/pcts/issues/808)) ([cb04253](https://github.com/puzzle/pcts/commit/cb042532ebed527c5c1413f47367927fb5e2a80f))
+* **deps:** update angularmaterial monorepo to v22.1.2 ([#806](https://github.com/puzzle/pcts/issues/806)) ([098f387](https://github.com/puzzle/pcts/commit/098f38729d724aae5f2abdfdec2777cbb5a82f3f))
+* **deps:** update cypress-io/github-action action to v7.4.2 ([#809](https://github.com/puzzle/pcts/issues/809)) ([384ac7f](https://github.com/puzzle/pcts/commit/384ac7fb6e7aa2dc6c4a5a2eee62756de68ca8f0))
+* **deps:** update dependency cypress to v15.20.1 ([#801](https://github.com/puzzle/pcts/issues/801)) ([5b292df](https://github.com/puzzle/pcts/commit/5b292df403369a4e72350107ae663593d966c87b))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v13.3.0 ([#810](https://github.com/puzzle/pcts/issues/810)) ([d4f55da](https://github.com/puzzle/pcts/commit/d4f55dabb8d5e44370e83519c78f05049ba0b40c))
+* **deps:** update dependency org.odftoolkit:odfdom-java to v0.13.0 ([#812](https://github.com/puzzle/pcts/issues/812)) ([b4aa0a5](https://github.com/puzzle/pcts/commit/b4aa0a53c2c39d814670ced08b6d1c5cc8cfd062))
+* **deps:** update dependency org.openapitools:jackson-databind-nullable to v0.2.11 ([#811](https://github.com/puzzle/pcts/issues/811)) ([86c5fb1](https://github.com/puzzle/pcts/commit/86c5fb1e0a233082b29dec14748418aafebbc30f))
+* **deps:** update dependency org.springdoc:springdoc-openapi-starter-webmvc-ui to v2.9.0 ([#817](https://github.com/puzzle/pcts/issues/817)) ([a1f38c8](https://github.com/puzzle/pcts/commit/a1f38c8cc4b523cf1ca9b0f2603cc9fa643d41b0))
+* **deps:** update dependency typescript-eslint to v8.67.0 ([#802](https://github.com/puzzle/pcts/issues/802)) ([57fd317](https://github.com/puzzle/pcts/commit/57fd3170aa34443a3ff3fdf084b795e502f11d68))
+* **deps:** update pnpm to v11.21.0 ([#805](https://github.com/puzzle/pcts/issues/805)) ([fbac804](https://github.com/puzzle/pcts/commit/fbac8049522933cec1c61e7fed65f9e164c3d6b3))
+* **deps:** update pnpm to v11.22.0 ([#818](https://github.com/puzzle/pcts/issues/818)) ([f19e0af](https://github.com/puzzle/pcts/commit/f19e0af7aa015472539b358122f8a290199ec160))
+
 ## [0.9.0](https://github.com/puzzle/pcts/compare/0.8.1...0.9.0) (2026-08-13)
 
 
