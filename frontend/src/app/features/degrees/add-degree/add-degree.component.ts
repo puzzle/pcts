@@ -78,7 +78,7 @@ export class AddDegreeComponent extends StrictlyTypedDialog<DegreeModel | undefi
     if (this.data) {
       this.formGroup.patchValue({
         ...this.data
-      })
+      });
     }
   }
 
