@@ -3,7 +3,6 @@ import { BaseFormComponent } from '../../../shared/form/base-form.component';
 import { BaseModalComponent } from '../../../shared/modal/base-modal.component';
 import { InputFieldComponent } from '../../../shared/input-field/input-field.component';
 import { MatAutocomplete, MatAutocompleteTrigger, MatOption } from '@angular/material/autocomplete';
-import { MatButton } from '@angular/material/button';
 import { MatDatepicker, MatDatepickerInput, MatDatepickerToggle } from '@angular/material/datepicker';
 import { MatError, MatFormField, MatInput, MatLabel, MatSuffix } from '@angular/material/input';
 import { PctsFormErrorDirective } from '../../../shared/pcts-form-error/pcts-form-error.directive';
@@ -30,7 +29,6 @@ import { ModalActionsComponent } from '../../../shared/modal/modal-actions.compo
     InputFieldComponent,
     MatAutocomplete,
     MatAutocompleteTrigger,
-    MatButton,
     MatDatepicker,
     MatDatepickerInput,
     MatDatepickerToggle,
@@ -77,11 +75,14 @@ export class AddDegreeComponent extends StrictlyTypedDialog<DegreeModel | undefi
 
   constructor() {
     super();
+    if (this.data) {
+      this.formGroup.patchValue({
+        ...this.data
+      });
+    }
   }
 
   ngOnInit(): void {
-    this.formGroup.patchValue(this.data ?? {});
-
     this.degreeTypeService.getAllDegreeTypes()
       .subscribe((degreeTypes) => {
         this.degreeTypeOptions.set(degreeTypes);

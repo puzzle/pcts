@@ -9,7 +9,6 @@ import { PctsFormErrorDirective } from '../../../shared/pcts-form-error/pcts-for
 import { PctsFormLabelDirective } from '../../../shared/pcts-form-label/pcts-form-label.directive';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { isValueInListSignal } from '../../../shared/form/form-validators';
-import { MatButton } from '@angular/material/button';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import { CertificateTypeModel } from '../certificate-type/certificate-type.model';
 import { CertificateTypeService } from '../certificate-type/certificate-type.service';
@@ -36,7 +35,6 @@ import { ModalActionsComponent } from '../../../shared/modal/modal-actions.compo
     MatOption,
     PctsFormErrorDirective,
     PctsFormLabelDirective,
-    MatButton,
     MatDatepicker,
     MatDatepickerInput,
     MatDatepickerToggle,
