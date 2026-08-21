@@ -2,10 +2,13 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ModalSubmitMode } from '../enum/modal-submit-mode.enum';
 import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
 import { MenuButtonComponent } from '../menu-button/menu-button.component';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-modal-actions',
-  imports: [ScopedTranslationPipe,
+  imports: [
+    MatButtonModule,
+    ScopedTranslationPipe,
     MenuButtonComponent],
   templateUrl: './modal-actions.component.html'
 })

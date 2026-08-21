@@ -3,11 +3,8 @@ import { BaseFormComponent } from '../../../shared/form/base-form.component';
 import { BaseModalComponent } from '../../../shared/modal/base-modal.component';
 import { InputFieldComponent } from '../../../shared/input-field/input-field.component';
 import { MatAutocomplete, MatAutocompleteTrigger, MatOptgroup, MatOption } from '@angular/material/autocomplete';
-import { MatButton } from '@angular/material/button';
 import { MatInput } from '@angular/material/input';
-import { MenuButtonComponent } from '../../../shared/menu-button/menu-button.component';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import { MemberModel } from '../../member/member.model';
 import { isValueInListSignal } from '../../../shared/form/form-validators';
@@ -28,12 +25,9 @@ import { ModalActionsComponent } from '../../../shared/modal/modal-actions.compo
     InputFieldComponent,
     MatAutocomplete,
     MatAutocompleteTrigger,
-    MatButton,
     MatInput,
     MatOption,
-    MenuButtonComponent,
     ReactiveFormsModule,
-    ScopedTranslationPipe,
     MatOptgroup,
     TranslatePipe,
     ModalActionsComponent
