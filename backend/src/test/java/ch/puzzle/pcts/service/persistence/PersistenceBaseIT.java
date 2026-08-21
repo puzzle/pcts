@@ -1,7 +1,6 @@
 package ch.puzzle.pcts.service.persistence;
 
-import static ch.puzzle.pcts.util.TestData.GENERIC_2_ID;
-import static ch.puzzle.pcts.util.TestData.INVALID_ID;
+import static ch.puzzle.pcts.util.TestData.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

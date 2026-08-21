@@ -20,6 +20,7 @@ import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.mapper.MemberMapper;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.service.business.RoleBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -38,6 +39,9 @@ class MemberControllerIT extends ControllerITBase {
 
     @MockitoBean
     private CalculationMapper calculationMapper;
+
+    @MockitoBean
+    private RoleBusinessService roleBusinessService;
 
     @Autowired
     private MockMvc mvc;
