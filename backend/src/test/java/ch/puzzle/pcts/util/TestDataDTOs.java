@@ -35,6 +35,7 @@ import ch.puzzle.pcts.dto.memberoverview.leadershipexperience.MemberOverviewLead
 import ch.puzzle.pcts.dto.organisationunit.OrganisationUnitDto;
 import ch.puzzle.pcts.dto.role.RoleDto;
 import ch.puzzle.pcts.model.certificatetype.Tag;
+import ch.puzzle.pcts.model.role.Role;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -65,6 +66,7 @@ public class TestDataDTOs {
                                                                MEMBER_1.getDateOfHire(),
                                                                MEMBER_1.getBirthDate(),
                                                                ORG_UNIT_1_DTO,
+                                                               MEMBER_1.getRoles(),
                                                                MEMBER_1.getPtimeId(),
                                                                MEMBER_1.getLastSuccessfulSync(),
                                                                MEMBER_1.getSyncErrorCount());
@@ -77,6 +79,7 @@ public class TestDataDTOs {
                                                                MEMBER_2.getDateOfHire(),
                                                                MEMBER_2.getBirthDate(),
                                                                ORG_UNIT_2_DTO,
+                                                               MEMBER_2.getRoles(),
                                                                MEMBER_2.getPtimeId(),
                                                                MEMBER_2.getLastSuccessfulSync(),
                                                                MEMBER_2.getSyncErrorCount());
@@ -87,7 +90,12 @@ public class TestDataDTOs {
                                                                            MEMBER_1.getAbbreviation(),
                                                                            MEMBER_1.getDateOfHire(),
                                                                            MEMBER_1.getBirthDate(),
-                                                                           MEMBER_1.getOrganisationUnit().getId());
+                                                                           MEMBER_1.getOrganisationUnit().getId(),
+                                                                           MEMBER_1
+                                                                                   .getRoles()
+                                                                                   .stream()
+                                                                                   .map(Role::getId)
+                                                                                   .toList());
 
     public static final MemberInputDto MEMBER_2_INPUT = new MemberInputDto(MEMBER_2.getFirstName(),
                                                                            MEMBER_2.getLastName(),
@@ -95,7 +103,12 @@ public class TestDataDTOs {
                                                                            MEMBER_2.getAbbreviation(),
                                                                            MEMBER_2.getDateOfHire(),
                                                                            MEMBER_2.getBirthDate(),
-                                                                           MEMBER_2.getOrganisationUnit().getId());
+                                                                           MEMBER_2.getOrganisationUnit().getId(),
+                                                                           MEMBER_2
+                                                                                   .getRoles()
+                                                                                   .stream()
+                                                                                   .map(Role::getId)
+                                                                                   .toList());
 
     public static final CertificateTypeDto CERT_TYPE_1_DTO = new CertificateTypeDto(CERT_TYPE_1_ID,
                                                                                     CERT_TYPE_1.getName(),

@@ -117,10 +117,26 @@ export class MemberDetailViewComponent implements OnInit {
           this.leadershipExperienceData.set(memberOverview.cv.leadershipExperiences);
         }
       });
+
     this.service.getPointsForActiveCalculationsForRoleByMemberId(Number(id))
       .subscribe({
         next: (RolePoints) => {
           this.rolePointList.set(RolePoints);
+          const tabGroup = this.tabGroup();
+          if (tabGroup) {
+            tabGroup.selectedIndex = this.tabIndex();
+          }
+        }
+      });
+
+    this.service.getRolesByMemberId(Number(id))
+      .subscribe({
+        next: (roles) => {
+          const rolePoints: RolePointsModel[] = [];
+          for (const role of roles) {
+            rolePoints.push(this.service.toRolePointsModel(role));
+          }
+          this.rolePointList.set(rolePoints);
           const tabGroup = this.tabGroup();
           if (tabGroup) {
             tabGroup.selectedIndex = this.tabIndex();

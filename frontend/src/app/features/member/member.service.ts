@@ -7,6 +7,7 @@ import { DateTime } from 'luxon';
 import { MemberCvOverviewModel } from './member-cv-overview.model';
 import { CalculationModel } from '../calculations/calculation.model';
 import { RolePointsModel } from './detail-view/RolePointsModel';
+import { RoleModel } from '../roles/RoleModel';
 
 
 @Injectable({
@@ -35,6 +36,10 @@ export class MemberService {
   updateMember(id: number, member: MemberModel): Observable<MemberModel> {
     return this.httpClient.put<MemberModel>(`${this.API_URL}/${id}`, this.toDto(member))
       .pipe(map((dto) => this.mapDates(dto)));
+  }
+
+  getRolesByMemberId(memberId: number): Observable<RoleModel[]> {
+    return this.httpClient.get<RoleModel[]>(`${this.API_URL}/${memberId}/roles`);
   }
 
   getCalculationsByMemberIdAndOptionalRoleId(memberId: number, roleId?: number): Observable<CalculationModel[]> {
@@ -69,8 +74,16 @@ export class MemberService {
       abbreviation: model.abbreviation,
       employmentState: model.employmentState,
       organisationUnitId: model.organisationUnit?.id,
+      roleIds: model.roleIds,
       dateOfHire: model.dateOfHire ? DateTime.fromJSDate(model.dateOfHire)
         .toISODate() : null
+    };
+  }
+
+  toRolePointsModel(model: RoleModel): RolePointsModel {
+    return {
+      role: model,
+      points: 0
     };
   }
 

@@ -3,6 +3,7 @@ package ch.puzzle.pcts.dto.member;
 import ch.puzzle.pcts.model.member.EmploymentState;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
+import java.util.List;
 
 public record MemberInputDto(
         @Schema(description = "The first name of member.", example = "Susi", requiredMode = Schema.RequiredMode.REQUIRED, minLength = 1) String firstName,
@@ -11,5 +12,6 @@ public record MemberInputDto(
         @Schema(description = "The abbreviation of the member.", example = "SM", requiredMode = Schema.RequiredMode.NOT_REQUIRED) String abbreviation,
         @Schema(description = "The date of hire of the member.", example = "2025-09-24", requiredMode = Schema.RequiredMode.NOT_REQUIRED) LocalDate dateOfHire,
         @Schema(description = "The birth date of the member", example = "1995-02-19", requiredMode = Schema.RequiredMode.REQUIRED) LocalDate birthDate,
-        @Schema(description = "The Organisation unit id of the member.", example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED) Long organisationUnitId) {
+        @Schema(description = "The Organisation unit id of the member.", example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED) Long organisationUnitId,
+        @Schema(description = "The roles a member fulfills.", example = "[1, 3, 5]", requiredMode = Schema.RequiredMode.NOT_REQUIRED) List<Long> roleIds) {
 }

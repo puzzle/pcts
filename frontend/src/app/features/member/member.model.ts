@@ -10,4 +10,5 @@ export interface MemberModel {
   employmentState: EmploymentState;
   organisationUnit: OrganisationUnitModel;
   dateOfHire: Date | null;
+  roleIds: number[];
 }
