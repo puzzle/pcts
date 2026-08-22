@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.1](https://github.com/puzzle/pcts/compare/0.10.0...0.10.1) (2026-08-22)
+
+
+### Miscellaneous Chores
+
+* **deps:** update dependency com.diffplug.spotless:spotless-maven-plugin to v3.10.0 ([#822](https://github.com/puzzle/pcts/issues/822)) ([0df9e55](https://github.com/puzzle/pcts/commit/0df9e554b95dbbb692bcdf87ec949b0b5c5ca774))
+
 ## [0.10.0](https://github.com/puzzle/pcts/compare/0.9.0...0.10.0) (2026-08-21)
 
 
