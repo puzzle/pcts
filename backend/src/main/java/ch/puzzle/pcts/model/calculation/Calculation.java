@@ -88,14 +88,16 @@ public class Calculation implements Model {
         if (!(object instanceof Calculation that)) {
             return false;
         }
-        return Objects.equals(getId(), that.getId()) && Objects.equals(getMember(), that.getMember())
-               && Objects.equals(getRole(), that.getRole()) && getState() == that.getState()
-               && Objects.equals(getPublicationDate(), that.getPublicationDate())
-               && Objects.equals(getPublicizedBy(), that.getPublicizedBy())
-               && Objects.equals(getDegreeCalculations(), that.getDegreeCalculations())
-               && Objects.equals(getExperienceCalculations(), that.getExperienceCalculations())
-               && Objects.equals(getCertificateCalculations(), that.getCertificateCalculations())
-               && Objects.equals(getPoints(), that.getPoints());
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getMember(), that.getMember());
+        // && Objects.equals(getRole(), that.getRole()) && getState() == that.getState()
+        // && Objects.equals(getPublicationDate(), that.getPublicationDate())
+        // && Objects.equals(getPublicizedBy(), that.getPublicizedBy())
+        // && Objects.equals(getDegreeCalculations(), that.getDegreeCalculations())
+        // && Objects.equals(getExperienceCalculations(),
+        // that.getExperienceCalculations())
+        // && Objects.equals(getCertificateCalculations(),
+        // that.getCertificateCalculations())
+        // && Objects.equals(getPoints(), that.getPoints());
     }
 
     @Override

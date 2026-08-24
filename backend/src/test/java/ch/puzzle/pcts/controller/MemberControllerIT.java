@@ -18,6 +18,7 @@ import ch.puzzle.pcts.dto.calculation.RolePointDto;
 import ch.puzzle.pcts.dto.member.MemberInputDto;
 import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.mapper.MemberMapper;
+import ch.puzzle.pcts.mapper.RoleMapper;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.business.RoleBusinessService;
@@ -42,6 +43,9 @@ class MemberControllerIT extends ControllerITBase {
 
     @MockitoBean
     private RoleBusinessService roleBusinessService;
+
+    @MockitoBean
+    private RoleMapper roleMapper;
 
     @Autowired
     private MockMvc mvc;
