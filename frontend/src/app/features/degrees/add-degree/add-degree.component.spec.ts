@@ -111,26 +111,4 @@ describe('AddDegree', () => {
     expect(component['displayDegreeTypes'](undefined as any))
       .toBe('');
   });
-
-  it('should set the value from degreeType', () => {
-    expect(degreeTypeServiceMock.getAllDegreeTypes);
-  });
-
-  it('should get the value from getAllDegreeTypes', () => {
-    degreeTypeServiceMock.getAllDegreeTypes.mockReturnValue(of([degreeType2]));
-    const degreeTypeOptionsSpy = jest.spyOn(component['degreeTypeOptions'], 'set');
-    component.ngOnInit();
-    expect(degreeTypeOptionsSpy)
-      .toHaveBeenCalledWith([degreeType2]);
-  });
-
-  it('should return the name of the type', () => {
-    expect(component['displayDegreeTypes'](degreeType2))
-      .toBe('Master');
-  });
-
-  it('should return an empty string if type is null/undefined', () => {
-    expect(component['displayDegreeTypes'](undefined as any))
-      .toBe('');
-  });
 });
