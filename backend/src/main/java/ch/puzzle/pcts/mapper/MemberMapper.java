@@ -7,8 +7,10 @@ import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.business.OrganisationUnitBusinessService;
 import ch.puzzle.pcts.service.business.RoleBusinessService;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -66,11 +68,9 @@ public class MemberMapper {
         return organisationUnitId == null ? null : organisationUnitBusinessService.getById(organisationUnitId);
     }
 
-    protected List<Role> rolesFromIds(List<Long> roleIds) {
-        List<Role> roles = new ArrayList<>();
-        for (Long roleId : roleIds) {
-            roles.add(roleBusinessService.getById(roleId));
-        }
+    private Set<Role> rolesFromIds(Set<Long> roleIds) {
+        Set<Role> roles = new HashSet<>();
+        roleIds.stream().forEach(roleId -> roles.add(roleBusinessService.getById(roleId)));
         return roles;
     }
 }

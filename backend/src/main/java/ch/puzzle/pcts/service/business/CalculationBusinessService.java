@@ -118,12 +118,6 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
         return calculations;
     }
 
-    public List<Calculation> getAllByRoleId(Long roleId) {
-        List<Calculation> calculations = calculationPersistenceService.getAllByRoleId(roleId);
-        setPointsForCalculations(calculations);
-        return calculations;
-    }
-
     private BigDecimal getPointsOfCalculation(Calculation calculation) {
         Long calculationId = calculation.getId();
         return BigDecimal.ZERO

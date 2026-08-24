@@ -58,10 +58,11 @@ public class MemberRole implements Model {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass())
+        if (!(o instanceof MemberRole that)) {
             return false;
-        MemberRole that = (MemberRole) o;
-        return Objects.equals(getMemberId(), that.getMemberId()) && Objects.equals(getRoleId(), that.getRoleId());
+        }
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getMemberId(), that.getMemberId())
+               && Objects.equals(getRoleId(), that.getRoleId()) && Objects.equals(deletedAt, that.deletedAt);
     }
 
     @Override

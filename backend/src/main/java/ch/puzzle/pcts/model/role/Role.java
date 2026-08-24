@@ -3,11 +3,9 @@ package ch.puzzle.pcts.model.role;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 import ch.puzzle.pcts.model.Model;
-import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.util.validation.PCTSStringValidation;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 import org.hibernate.annotations.SQLDelete;
 
@@ -26,9 +24,6 @@ public class Role implements Model {
 
     @Column(name = "deleted_at", insertable = false, updatable = false)
     private LocalDateTime deletedAt;
-
-    @ManyToMany(mappedBy = "roles")
-    private List<Member> members;
 
     private Role(Builder builder) {
         this.id = builder.id;

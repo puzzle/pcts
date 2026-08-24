@@ -38,6 +38,7 @@ import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.model.role.Role;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TestDataDTOs {
 
@@ -95,7 +96,7 @@ public class TestDataDTOs {
                                                                                    .getRoles()
                                                                                    .stream()
                                                                                    .map(Role::getId)
-                                                                                   .toList());
+                                                                                   .collect(Collectors.toSet()));
 
     public static final MemberInputDto MEMBER_2_INPUT = new MemberInputDto(MEMBER_2.getFirstName(),
                                                                            MEMBER_2.getLastName(),
@@ -108,7 +109,7 @@ public class TestDataDTOs {
                                                                                    .getRoles()
                                                                                    .stream()
                                                                                    .map(Role::getId)
-                                                                                   .toList());
+                                                                                   .collect(Collectors.toSet()));
 
     public static final CertificateTypeDto CERT_TYPE_1_DTO = new CertificateTypeDto(CERT_TYPE_1_ID,
                                                                                     CERT_TYPE_1.getName(),

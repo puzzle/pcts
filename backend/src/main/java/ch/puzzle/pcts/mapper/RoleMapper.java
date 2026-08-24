@@ -2,7 +2,11 @@ package ch.puzzle.pcts.mapper;
 
 import ch.puzzle.pcts.dto.role.RoleDto;
 import ch.puzzle.pcts.model.role.Role;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -27,5 +31,13 @@ public class RoleMapper {
                 .withName(dto.name())
                 .withIsManagement(dto.isManagement())
                 .build();
+    }
+
+    public Set<RoleDto> toDtos(Set<Role> roles) {
+        Set<RoleDto> dtos = new HashSet<>();
+        for (Role role : roles) {
+            dtos.add(new RoleDto(role.getId(), role.getName(), role.getIsManagement()));
+        }
+        return dtos;
     }
 }
