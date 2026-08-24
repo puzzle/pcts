@@ -13,8 +13,8 @@ import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import org.hibernate.annotations.SQLDelete;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -57,7 +57,7 @@ public class Member implements Model {
     @ManyToMany()
     @JoinTable(name = "member_role", joinColumns = { @JoinColumn(name = "member_id") }, inverseJoinColumns = {
             @JoinColumn(name = "role_id") })
-    private List<Role> roles;
+    private Set<Role> roles;
 
     @Min(value = 1, message = "{attribute.min.value}")
     private Long ptimeId;
@@ -161,11 +161,11 @@ public class Member implements Model {
         this.deletedAt = deletedAt;
     }
 
-    public List<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
@@ -265,7 +265,7 @@ public class Member implements Model {
         private LocalDate dateOfHire;
         private LocalDate birthDate;
         private OrganisationUnit organisationUnit;
-        private List<Role> roles;
+        private Set<Role> roles;
         private Long ptimeId;
         private LocalDateTime lastSuccessfulSync;
         private Integer syncErrorCount;
@@ -317,7 +317,7 @@ public class Member implements Model {
             return this;
         }
 
-        public Builder withRoles(List<Role> roles) {
+        public Builder withRoles(Set<Role> roles) {
             this.roles = roles;
             return this;
         }
