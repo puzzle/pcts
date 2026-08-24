@@ -4,7 +4,7 @@
     <ng-container content>
 
       <app-input-field>
-        <input experienceType="text" formControlName="experienceType" matInput [matAutocomplete]="experienceTypeAutoComplete"
+        <input type="text" formControlName="experienceType" matInput [matAutocomplete]="experienceTypeAutoComplete"
                data-testid="experienceType">
         <mat-autocomplete autoActiveFirstOption #experienceTypeAutoComplete="matAutocomplete"
                           [displayWith]="displayExperienceTypes">
@@ -15,15 +15,15 @@
       </app-input-field>
 
       <app-input-field>
-        <input experienceType="text" formControlName="name" data-testid="name" matInput>
+        <input type="text" formControlName="name" data-testid="name" matInput>
       </app-input-field>
 
       <app-input-field>
-        <input experienceType="text" formControlName="employer" data-testid="employer" matInput>
+        <input type="text" formControlName="employer" data-testid="employer" matInput>
       </app-input-field>
 
       <app-input-field>
-        <input experienceType="text" formControlName="percent" data-testid="percent" matInput>
+        <input type="number" formControlName="percent" data-testid="percent" matInput>
       </app-input-field>
 
       <mat-form-field>
@@ -43,7 +43,7 @@
       </mat-form-field>
 
       <app-input-field>
-        <textarea experienceType="text" formControlName="comment" data-testid="comment" matInput></textarea>
+        <textarea type="text" formControlName="comment" data-testid="comment" matInput></textarea>
       </app-input-field>
 
       <mat-checkbox formControlName="completed">{{"COMPLETED" | scopedTranslation}}</mat-checkbox>
