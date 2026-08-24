@@ -21,6 +21,7 @@ import { ExperienceTypeModel } from '../experience-type/experience-type.model';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
 import { ExperienceTypeService } from '../experience-type/experience-type.service';
+import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
 
 @Component({
   selector: 'app-add-experience',
@@ -45,7 +46,8 @@ import { ExperienceTypeService } from '../experience-type/experience-type.servic
     PctsFormLabelDirective,
     ReactiveFormsModule,
     ScopedTranslationPipe,
-    MatCheckbox
+    MatCheckbox,
+    ModalActionsComponent
   ],
 
   templateUrl: './add-experience.component.html',
