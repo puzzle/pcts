@@ -70,7 +70,7 @@ export class AddExperienceComponent extends StrictlyTypedDialog<ExperienceModel 
       [Validators.required,
         isValueInListSignal(this.experienceTypeOptions, (a, b) => a.id === b.id)]],
     employer: ['' as string | null],
-    percent: [null as null | number,
+    percent: [null as number | null,
       Validators.required],
     endDate: [null as Date | null],
     completed: [true as boolean | null],
