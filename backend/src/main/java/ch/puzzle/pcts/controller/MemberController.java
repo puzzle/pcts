@@ -7,6 +7,7 @@ import ch.puzzle.pcts.dto.member.MemberInputDto;
 import ch.puzzle.pcts.dto.role.RoleDto;
 import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.mapper.MemberMapper;
+import ch.puzzle.pcts.mapper.RoleMapper;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.security.annotation.IsAdmin;
@@ -22,6 +23,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import java.util.Set;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
@@ -35,13 +38,15 @@ public class MemberController {
     private final CalculationMapper calculationMapper;
     private final MemberBusinessService service;
     private final RoleBusinessService roleBusinessService;
+    private final RoleMapper roleMapper;
 
     public MemberController(MemberMapper mapper, CalculationMapper calculationMapper, MemberBusinessService service,
-                            RoleBusinessService roleBusinessService) {
+                            RoleBusinessService roleBusinessService, RoleMapper roleMapper) {
         this.mapper = mapper;
         this.calculationMapper = calculationMapper;
         this.service = service;
         this.roleBusinessService = roleBusinessService;
+        this.roleMapper = roleMapper;
     }
 
     @Operation(summary = "List all members")
@@ -124,11 +129,11 @@ public class MemberController {
 
     @Operation(summary = "Get all roles by member id")
     @ApiResponse(responseCode = "200", description = "The roles which this member fulfills", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = MemberDto.class)) })
+            @Content(mediaType = "application/json", schema = @Schema(implementation = RoleDto.class)) })
     @GetMapping("{memberId}/roles")
     @IsAuthenticated
-    public ResponseEntity<List<RoleDto>> getAllRoles(@PathVariable Long memberId) {
-        List<RoleDto> roles = roleBusinessService.toDtos(service.getAllRolesByMemberId(memberId));
+    public ResponseEntity<Set<RoleDto>> getAllRoles(@PathVariable Long memberId) {
+        Set<RoleDto> roles = roleMapper.toDtos(service.getAllRolesByMemberId(memberId));
         return ResponseEntity.ok(roles);
     }
 }

@@ -3,7 +3,6 @@ package ch.puzzle.pcts.service.business;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.member.Member;
-import ch.puzzle.pcts.model.memberrole.MemberRole;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.JwtService;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
@@ -13,9 +12,9 @@ import jakarta.annotation.Nullable;
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -52,15 +51,8 @@ public class MemberBusinessService extends BusinessBase<Member> {
         return memberPersistenceService.getByLdapName(jwtService.getLdapName());
     }
 
-    public List<Role> getAllRolesByMemberId(Long memberId) {
-        Optional<List<MemberRole>> memberRoles = this.memberRolePersistenceService.findByMemberId(memberId);
-        List<Role> roles = new ArrayList<>();
-        if (memberRoles.isPresent()) {
-            for (MemberRole memberRole : memberRoles.get()) {
-                roles.add(roleBusinessService.getById(memberRole.getRoleId()));
-            }
-        }
-        return roles;
+    public Set<Role> getAllRolesByMemberId(Long memberId) {
+        return this.getById(memberId).getRoles();
     }
 
     public List<Calculation> getAllCalculationsByMemberIdAndRoleId(Long memberId, Long roleId) {
