@@ -4,7 +4,7 @@
     <ng-content *appShowIfAdmin select="[crud-button]"/>
   </div>
     @if (table(); as ds) {
-          <app-generic-table [dataSource]="ds" [idAttr]="idAttr()" [crudBasePath]="crudBasePath()">
+          <app-generic-table [dataSource]="ds" [data]="data()" [idAttr]="idAttr()" [crudBasePath]="crudBasePath()">
             <ng-template [appTypedTemplate]="ds.data"/>
 
             <ng-template
