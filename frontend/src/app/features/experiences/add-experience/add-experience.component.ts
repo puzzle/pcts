@@ -3,10 +3,8 @@ import { BaseFormComponent } from '../../../shared/form/base-form.component';
 import { BaseModalComponent } from '../../../shared/modal/base-modal.component';
 import { InputFieldComponent } from '../../../shared/input-field/input-field.component';
 import { MatAutocomplete, MatAutocompleteTrigger, MatOption } from '@angular/material/autocomplete';
-import { MatButton } from '@angular/material/button';
 import { MatDatepicker, MatDatepickerInput, MatDatepickerToggle } from '@angular/material/datepicker';
 import { MatError, MatFormField, MatInput, MatLabel, MatSuffix } from '@angular/material/input';
-import { MenuButtonComponent } from '../../../shared/menu-button/menu-button.component';
 import { PctsFormErrorDirective } from '../../../shared/pcts-form-error/pcts-form-error.directive';
 import { PctsFormLabelDirective } from '../../../shared/pcts-form-label/pcts-form-label.directive';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -31,7 +29,6 @@ import { ModalActionsComponent } from '../../../shared/modal/modal-actions.compo
     InputFieldComponent,
     MatAutocomplete,
     MatAutocompleteTrigger,
-    MatButton,
     MatDatepicker,
     MatDatepickerInput,
     MatDatepickerToggle,
@@ -41,7 +38,6 @@ import { ModalActionsComponent } from '../../../shared/modal/modal-actions.compo
     MatLabel,
     MatOption,
     MatSuffix,
-    MenuButtonComponent,
     PctsFormErrorDirective,
     PctsFormLabelDirective,
     ReactiveFormsModule,
@@ -108,20 +104,23 @@ export class AddExperienceComponent extends StrictlyTypedDialog<ExperienceModel 
   });
 
   protected experienceTypeFilteredOptions = computed(() => {
-    const model = this.experienceTypeControlSignal();
-    const value = model?.name ?? '';
-
-    return this.filterExperienceType(value, this.experienceTypeOptions());
+    const value = this.experienceTypeControlSignal() ?? '';
+    return this.filterExperienceType(value);
   });
 
-  filterExperienceType(value: string, experienceTypeOptions: ExperienceTypeModel[]): ExperienceTypeModel[] {
-    if (!value) {
-      return experienceTypeOptions;
+  filterExperienceType(value: ExperienceTypeModel | string | null): ExperienceTypeModel[] {
+    if (value === null || value === undefined || value === '') {
+      return this.experienceTypeOptions();
     }
 
-    return experienceTypeOptions
+    const filterValue = (typeof value === 'string' ? value : value.name).toLowerCase();
+
+    if (filterValue === '') {
+      return this.experienceTypeOptions();
+    }
+    return this.experienceTypeOptions()
       .filter((option) => option.name.toLowerCase()
-        .includes(value.toLowerCase()));
+        .includes(filterValue));
   }
 
   onSubmit(submitMod: ModalSubmitMode) {
