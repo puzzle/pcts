@@ -784,7 +784,7 @@ public class TestDataModels {
         CALCULATION_3 = Calculation.Builder
                 .builder()
                 .withId(CALCULATION_3_ID)
-                .withMember(MEMBER_1)
+                .withMember(MEMBER_2)
                 .withRole(ROLE_2)
                 .withState(CalculationState.ACTIVE)
                 .withDegreeCalculations(List.of())
