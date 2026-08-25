@@ -14,7 +14,6 @@ import ch.puzzle.pcts.security.annotation.IsAdmin;
 import ch.puzzle.pcts.security.annotation.IsAdminOrOwner;
 import ch.puzzle.pcts.security.annotation.IsAuthenticated;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
-import ch.puzzle.pcts.service.business.RoleBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -37,15 +36,13 @@ public class MemberController {
     private final MemberMapper mapper;
     private final CalculationMapper calculationMapper;
     private final MemberBusinessService service;
-    private final RoleBusinessService roleBusinessService;
     private final RoleMapper roleMapper;
 
     public MemberController(MemberMapper mapper, CalculationMapper calculationMapper, MemberBusinessService service,
-                            RoleBusinessService roleBusinessService, RoleMapper roleMapper) {
+                            RoleMapper roleMapper) {
         this.mapper = mapper;
         this.calculationMapper = calculationMapper;
         this.service = service;
-        this.roleBusinessService = roleBusinessService;
         this.roleMapper = roleMapper;
     }
 

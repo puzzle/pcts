@@ -40,7 +40,7 @@ class MemberRolePersistenceServiceIT
     void shouldReturnMemberByPtimeID() {
         Optional<List<MemberRole>> result = persistenceService.findByMemberId(MEMBER_1.getId());
 
-        assertThat(result.isPresent());
+        assertTrue(result.isPresent());
         assertThat(result.get().getFirst().getMemberId()).isEqualTo(MEMBER_1.getId());
     }
 
@@ -56,8 +56,8 @@ class MemberRolePersistenceServiceIT
     void shouldReturnMemberByLdapName() {
         MemberRole result = persistenceService.getById(1L);
 
-        assertThat(result != null);
-        assertThat(result.getId().equals(1L));
+        assertNotNull(result);
+        assertEquals(1L, (long) result.getId());
     }
 
     @DisplayName("Should throw exception when LDAP name does not exist")
@@ -66,6 +66,6 @@ class MemberRolePersistenceServiceIT
     void shouldReturnEmptyWhenLdapNameDoesNotExist() {
         Optional<List<MemberRole>> result = persistenceService.findByMemberId(999L);
 
-        assert (result.get().isEmpty());
+        assertTrue(result.get().isEmpty());
     }
 }

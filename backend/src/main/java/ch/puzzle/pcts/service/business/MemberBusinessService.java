@@ -6,7 +6,6 @@ import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.JwtService;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
-import ch.puzzle.pcts.service.persistence.MemberRolePersistenceService;
 import ch.puzzle.pcts.service.validation.MemberValidationService;
 import jakarta.annotation.Nullable;
 import jakarta.transaction.Transactional;
@@ -24,19 +23,16 @@ public class MemberBusinessService extends BusinessBase<Member> {
     private final MemberPersistenceService memberPersistenceService;
     private final RoleBusinessService roleBusinessService;
     private final CalculationBusinessService calculationBusinessService;
-    private final MemberRolePersistenceService memberRolePersistenceService;
 
     public MemberBusinessService(MemberValidationService validationService,
                                  MemberPersistenceService memberPersistenceService,
                                  RoleBusinessService roleBusinessService,
-                                 CalculationBusinessService calculationBusinessService, JwtService jwtService,
-                                 MemberRolePersistenceService memberRolePersistenceService) {
+                                 CalculationBusinessService calculationBusinessService, JwtService jwtService) {
         super(validationService, memberPersistenceService);
         this.jwtService = jwtService;
         this.roleBusinessService = roleBusinessService;
         this.calculationBusinessService = calculationBusinessService;
         this.memberPersistenceService = memberPersistenceService;
-        this.memberRolePersistenceService = memberRolePersistenceService;
     }
 
     public Optional<Member> findIfExists(Long id) {
