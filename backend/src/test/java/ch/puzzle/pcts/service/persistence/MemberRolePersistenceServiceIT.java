@@ -27,7 +27,7 @@ class MemberRolePersistenceServiceIT
 
     @Override
     MemberRole getModel() {
-        return MEMBERROLE_3;
+        return MEMBERROLE_2;
     }
 
     @Override
