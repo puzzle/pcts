@@ -133,7 +133,7 @@ public class MemberController {
     @GetMapping("{memberId}/roles")
     @IsAuthenticated
     public ResponseEntity<Set<RoleDto>> getAllRoles(@PathVariable Long memberId) {
-        Set<RoleDto> roles = roleMapper.toDtos(service.getAllRolesByMemberId(memberId));
+        Set<RoleDto> roles = roleMapper.toDto(service.getAllRolesByMemberId(memberId));
         return ResponseEntity.ok(roles);
     }
 }
