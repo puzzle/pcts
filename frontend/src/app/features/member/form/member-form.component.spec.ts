@@ -7,7 +7,7 @@ import {
   organisationUnit1,
   organisationUnit2,
   organisationUnit3,
-  organisationUnit4
+  organisationUnit4, role1, role2
 } from '../../../shared/test/test-data';
 import { provideRouter, Router } from '@angular/router';
 import { MemberFormComponent } from './member-form.component';
@@ -33,7 +33,9 @@ describe('MemberFormComponent', () => {
       addMember: jest.fn()
         .mockReturnValue(of(member1)),
       updateMember: jest.fn()
-        .mockReturnValue(of(member1))
+        .mockReturnValue(of(member1)),
+      getRolesByMemberId: jest.fn()
+        .mockReturnValue(of([role1]))
     };
 
     organisationUnitServiceMock = {
@@ -89,24 +91,40 @@ describe('MemberFormComponent', () => {
 
     it('should call addMember', () => {
       const addSpy = jest.spyOn(memberServiceMock, 'addMember');
-      const memberWithoutId = {
+      const { roleIds, ...memberWithoutId } = {
         ...member1,
-        id: 0
+        id: 0,
+        roles: [role1,
+          role2]
       };
+
+      // Usage for roleids so lint is happy :)
+      if (roleIds.length > 0) {
+        roleIds[0] = roleIds[1];
+      }
 
       component['memberForm'].setValue(memberWithoutId);
 
       component.onSubmit();
 
       expect(addSpy)
-        .toHaveBeenCalledWith(memberWithoutId);
+        .toHaveBeenCalledWith({ ...memberWithoutId,
+          roleIds: [] });
     });
 
     it('should navigate after adding a member', () => {
-      const memberWithoutId = {
+      const { roleIds, ...memberWithoutId } = {
         ...member1,
-        id: 0
+        id: 0,
+        roles: [role1,
+          role2]
       };
+
+      // Usage for roleids so lint is happy :)
+      if (roleIds.length > 0) {
+        roleIds[0] = roleIds[1];
+      }
+
       const router = TestBed.inject(Router);
       const navigateSpy = jest.spyOn(router, 'navigate');
       component['memberForm'].setValue(memberWithoutId);
@@ -135,15 +153,26 @@ describe('MemberFormComponent', () => {
     });
 
     it('should load member data', () => {
+      const { roleIds, ...member } = {
+        ...member1,
+        roles: []
+      };
+
+      // Usage for roleids so lint is happy :)
+      if (roleIds.length > 0) {
+        roleIds[0] = roleIds[1];
+      }
+
       expect(component['memberForm'].getRawValue())
-        .toEqual(member1);
+        .toEqual(member);
     });
 
     it('should call updateMember', () => {
       component.onSubmit();
 
       expect(memberServiceMock.updateMember)
-        .toHaveBeenCalledWith(1, member1);
+        .toHaveBeenCalledWith(1, { ...member1,
+          roles: [] });
     });
   });
 });

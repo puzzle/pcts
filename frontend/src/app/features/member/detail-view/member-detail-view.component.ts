@@ -122,29 +122,27 @@ export class MemberDetailViewComponent implements OnInit {
 
     this.service.getPointsForActiveCalculationsForRoleByMemberId(Number(id))
       .subscribe({
-        next: (RolePoints) => {
-          this.rolePointList.set(RolePoints);
-          const tabGroup = this.tabGroup();
-          if (tabGroup) {
-            tabGroup.selectedIndex = this.tabIndex();
-          }
+        next: (rolePoints) => {
+          this.rolePointList.set(rolePoints);
+          this.setTabGroup();
         }
       });
 
     this.service.getRolesByMemberId(Number(id))
       .subscribe({
         next: (roles) => {
-          const rolePoints: RolePointsModel[] = [];
-          for (const role of roles) {
-            rolePoints.push(this.service.toRolePointsModel(role));
-          }
+          const rolePoints: RolePointsModel[] = roles.map((role) => this.service.toRolePointsModel(role));
           this.rolePointList.set(rolePoints);
-          const tabGroup = this.tabGroup();
-          if (tabGroup) {
-            tabGroup.selectedIndex = this.tabIndex();
-          }
+          this.setTabGroup();
         }
       });
+  }
+
+  setTabGroup() {
+    const tabGroup = this.tabGroup();
+    if (tabGroup) {
+      tabGroup.selectedIndex = this.tabIndex();
+    }
   }
 
   private readonly createDialogOpener = <T extends { member?: MemberModel }>(
