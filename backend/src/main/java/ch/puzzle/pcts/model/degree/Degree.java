@@ -8,7 +8,6 @@ import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.util.validation.PCTSStringValidation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -41,7 +40,7 @@ public class Degree implements Model {
     private DegreeType degreeType;
 
     @NotNull(message = "{attribute.not.null}")
-    @PastOrPresent(message = "{attribute.date.past.present}")
+    // @PastOrPresent(message = "{attribute.date.past.present}")
     private LocalDate startDate;
 
     private LocalDate endDate;
