@@ -856,7 +856,8 @@ public class TestDataModels {
     public static final List<Member> MEMBERS = List
             .of(MEMBER_1, MEMBER_2, MEMBER_3, MEMBER_5, MEMBER_6, MEMBER_7, MEMBER_8);
 
-    public static final List<MemberRole> MEMBER_ROLES = List.of(MEMBERROLE_1, MEMBERROLE_2, MEMBERROLE_3);
+    public static final List<MemberRole> MEMBER_ROLES = List
+            .of(new MemberRole(1L, 1L, 1L), new MemberRole(2L, 2L, 2L), new MemberRole(3L, 3L, 3L));
 
     public static final List<CertificateType> CERTIFICATE_TYPES = List
             .of(CERT_TYPE_1, CERT_TYPE_2, CERT_TYPE_3, CERT_TYPE_4);
