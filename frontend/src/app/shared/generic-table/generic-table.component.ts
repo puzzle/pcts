@@ -61,6 +61,8 @@ export class GenericTableComponent<T extends object> {
 
   dataSource = input.required<GenericTableDataSource<T>>();
 
+  data = computed(() => this.dataSource().data);
+
   isExpanded = false;
 
   isFilterApplied = () => {
