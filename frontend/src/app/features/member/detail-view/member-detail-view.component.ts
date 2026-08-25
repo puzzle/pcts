@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, input, OnInit, signal, viewChild, WritableSignal } from '@angular/core';
+import { Component, inject, input, OnInit, signal, viewChild, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberService } from '../member.service';
@@ -11,32 +11,23 @@ import { ExperienceOverviewModel } from './cv/experience-overview.model';
 import { CertificateOverviewModel } from './cv/certificate-overview.model';
 import { LeadershipExperienceOverviewModel } from './cv/leadership-experience-overview.model';
 import { TranslationScopeDirective } from '../../../shared/translation-scope/translation-scope.directive';
-import {
-  getCertificateTable,
-  getDegreeTable,
-  getExperienceTable,
-  getLeadershipExperienceTable
-} from './cv/member-detail-cv-table-definition';
 import { MemberOverviewModel } from '../member-overview.model';
-import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import { CertificateService } from '../../certificates/certificate.service';
-import { MemberModel } from '../member.model';
 import { CertificateModel } from '../../certificates/certificate.model';
 import { AddCertificateComponent } from '../../certificates/add-certificate/add-certificate.component';
 import { PctsModalService } from '../../../shared/modal/pcts-modal.service';
 import { RolePointsModel } from './RolePointsModel';
 import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LeadershipExperienceModel } from '../../leadership-experiences/leadership-experience.model';
 import {
   AddLeadershipExperienceComponent
 } from '../../leadership-experiences/add-leadership-experience/add-leadership-experience.component';
 import { LeadershipExperienceService } from '../../leadership-experiences/leadership-experience.service';
-import { concatMap, filter, Observable } from 'rxjs';
 import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin.directive';
 import { DegreeModel } from '../../degrees/degree.model';
 import { AddDegreeComponent } from '../../degrees/add-degree/add-degree.component';
 import { DegreeService } from '../../degrees/degree.service';
+import { GenericTableDataSourceService } from '../../../shared/generic-table/generic-table-data-source.service';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -56,6 +47,12 @@ import { DegreeService } from '../../degrees/degree.service';
   styleUrls: ['./member-detail-view.component.scss']
 })
 export class MemberDetailViewComponent implements OnInit {
+  readonly member: WritableSignal<MemberOverviewModel | null> = signal<MemberOverviewModel | null>(null);
+
+  private readonly modalService = inject(PctsModalService);
+
+  private readonly genericTableDataSourceService = inject(GenericTableDataSourceService);
+
   private readonly service = inject(MemberService);
 
   private readonly route = inject(ActivatedRoute);
@@ -70,15 +67,14 @@ export class MemberDetailViewComponent implements OnInit {
 
   private readonly leadershipExperienceService = inject(LeadershipExperienceService);
 
-  readonly experienceTable = getExperienceTable();
+  readonly experienceTable = this.genericTableDataSourceService.getExperienceTable();
 
-  readonly certificateTable = getCertificateTable();
+  readonly certificateTable = this.genericTableDataSourceService.getCertificateTable(this.member());
 
-  readonly degreeTable = getDegreeTable();
+  readonly degreeTable = this.genericTableDataSourceService.getDegreeTable(this.member());
 
-  readonly leadershipExperienceTable = getLeadershipExperienceTable();
+  readonly leadershipExperienceTable = this.genericTableDataSourceService.getLeadershipExperienceTable(this.member());
 
-  readonly member: WritableSignal<MemberOverviewModel | null> = signal<MemberOverviewModel | null>(null);
 
   readonly rolePointList = signal<RolePointsModel[]>([]);
 
@@ -94,7 +90,6 @@ export class MemberDetailViewComponent implements OnInit {
 
   tabIndex = input.required<number>();
 
-  private readonly destroyRef = inject(DestroyRef);
 
   ngOnInit(): void {
     this.getData();
@@ -129,45 +124,11 @@ export class MemberDetailViewComponent implements OnInit {
       });
   }
 
-  private readonly createDialogOpener = <T extends { member?: MemberModel }>(
-    component: any,
-    addServiceCall: (model: T) => Observable<any>
-  ) => {
-    const opener = (model?: T) => {
-      this.dialog.openModal(component, { data: model })
-        .afterSubmitted
-        .pipe(takeUntilDestroyed(this.destroyRef), filter(() => !!this.member()?.id), concatMap(({ modalSubmitMode, submittedModel }: { modalSubmitMode: ModalSubmitMode;
-          submittedModel: T; }) => {
-          submittedModel.member = { id: this.member()!.id } as MemberModel;
+  openDegreeDialog = this.modalService.createDialogOpener<DegreeModel>(AddDegreeComponent, (model) => this.degreeService.addDegree(model), this.member());
 
-          switch (modalSubmitMode) {
-            case ModalSubmitMode.SAVE:
-              break;
-            case ModalSubmitMode.ENTER_ANOTHER:
-              opener();
-              break;
-            case ModalSubmitMode.COPY:
-              opener(submittedModel);
-              break;
-            default:
-                modalSubmitMode satisfies never;
-          }
+  openCertificateDialog = this.modalService.createDialogOpener<CertificateModel>(AddCertificateComponent, (model) => this.certificateService.addCertificate(model), this.member());
 
-          return addServiceCall(submittedModel);
-        }))
-        .subscribe(() => {
-          this.getData();
-        });
-    };
-
-    return opener;
-  };
-
-  openDegreeDialog = this.createDialogOpener<DegreeModel>(AddDegreeComponent, (model) => this.degreeService.addDegree(model));
-
-  openCertificateDialog = this.createDialogOpener<CertificateModel>(AddCertificateComponent, (model) => this.certificateService.addCertificate(model));
-
-  openLeadershipExperienceDialog = this.createDialogOpener<LeadershipExperienceModel>(AddLeadershipExperienceComponent, (model) => this.leadershipExperienceService.addLeadershipExperience(model));
+  openLeadershipExperienceDialog = this.modalService.createDialogOpener<LeadershipExperienceModel>(AddLeadershipExperienceComponent, (model) => this.leadershipExperienceService.addLeadershipExperience(model), this.member());
 
   onTabIndexChange(index: number) {
     this.router.navigate([], {
