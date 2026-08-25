@@ -41,7 +41,7 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
 
   private _ignorePredicate = false;
 
-  public editModal: () => void = () => {};
+  public editModal: (model?: T) => void = () => {};
 
   shouldLink = false;
 
