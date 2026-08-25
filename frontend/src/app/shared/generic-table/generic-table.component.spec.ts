@@ -31,9 +31,7 @@ describe('GenericTableComponent', () => {
 
     dataSource = new GenericTableDataSource(columns, degreeOverviewList);
 
-    fixture.componentRef.setInput('data', degreeOverviewList)
     fixture.componentRef.setInput('dataSource', dataSource);
-
     fixture.detectChanges();
   });
 

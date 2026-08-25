@@ -60,6 +60,7 @@ export class GenericTableComponent<T extends object> {
   crudBasePath = input<string>('');
 
   dataSource = input.required<GenericTableDataSource<T>>();
+
   data = computed(() => this.dataSource().data);
 
   isExpanded = false;
