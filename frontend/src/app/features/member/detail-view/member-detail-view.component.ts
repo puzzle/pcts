@@ -34,11 +34,9 @@ import {
 import { LeadershipExperienceService } from '../../leadership-experiences/leadership-experience.service';
 import { concatMap, filter, Observable } from 'rxjs';
 import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin.directive';
-import { MatFormField } from '@angular/material/input';
 import { DegreeModel } from '../../degrees/degree.model';
 import { AddDegreeComponent } from '../../degrees/add-degree/add-degree.component';
 import { DegreeService } from '../../degrees/degree.service';
-import { CalculationService } from '../../calculations/calculation.service';
 
 @Component({
   selector: 'app-member-detail-view',
