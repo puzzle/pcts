@@ -2,8 +2,10 @@ package ch.puzzle.pcts.model.memberrole;
 
 import ch.puzzle.pcts.model.Model;
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
+
 import org.hibernate.annotations.SQLDelete;
 
 @Entity
@@ -30,6 +32,9 @@ public class MemberRole implements Model {
     }
 
     public MemberRole() {
+    }
+
+    public MemberRole(Builder builder) {
     }
 
     public Long getId() {
@@ -74,5 +79,37 @@ public class MemberRole implements Model {
     public String toString() {
         return "MemberRole{" + "id=" + id + ", memberId=" + memberId + ", roleId=" + roleId + ", deletedAt=" + deletedAt
                + '}';
+    }
+
+    public static final class Builder {
+        private Long id;
+        private Long memberid;
+        private Long roleid;
+
+        private Builder() {
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder withMemberId(Long memberid) {
+            this.memberid = memberid;
+            return this;
+        }
+
+        public Builder withRoleId(Long roleid) {
+            this.roleid = roleid;
+            return this;
+        }
+
+        public MemberRole build() {
+            return new MemberRole(this);
+        }
     }
 }
