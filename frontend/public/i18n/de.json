@@ -86,7 +86,9 @@
     "INVALID_ENTRY": "Ungültige Eingabe",
     "MATDATEPICKERPARSE": "Ungültiges Datum",
     "NOT_AVAILABLE": "\"{{value}}\" nicht verfügbar",
-    "EMAIL": "Muss eine gültige Email-Adresse sein"
+    "EMAIL": "Muss eine gültige Email-Adresse sein",
+    "MIN": "Ungültige Eingabe",
+    "MAX": "Ungültige Eingabe"
   },
 
   "MEMBER": {
