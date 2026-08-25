@@ -118,22 +118,38 @@ export class MemberDetailViewComponent implements OnInit {
         }
       });
 
-    this.service.getPointsForActiveCalculationsForRoleByMemberId(Number(id))
-      .subscribe({
-        next: (rolePoints) => {
-          this.rolePointList.set(rolePoints);
-          this.setTabGroup();
-        }
-      });
+    const uniqueRoles: RolePointsModel[] = [];
 
     this.service.getRolesByMemberId(Number(id))
       .subscribe({
         next: (roles) => {
           const rolePoints: RolePointsModel[] = roles.map((role) => this.service.toRolePointsModel(role));
-          this.rolePointList.set(rolePoints);
+          for (const rolePoint of rolePoints) {
+            uniqueRoles.push(rolePoint);
+          }
+          this.getRolePoints(Number(id), uniqueRoles);
+        }
+      });
+  }
+
+  getRolePoints(id: number, uniqueRoles: RolePointsModel[]) {
+    this.service.getPointsForActiveCalculationsForRoleByMemberId(Number(id))
+      .subscribe({
+        next: (rolePoints) => {
+          this.rolePointList.set(this.setUniqueRoles(rolePoints, uniqueRoles));
           this.setTabGroup();
         }
       });
+  }
+
+  setUniqueRoles(rolePoints: RolePointsModel[], uniqueRoles: RolePointsModel[]): RolePointsModel[] {
+    for (const rolePoint of rolePoints) {
+      if (uniqueRoles.includes(rolePoint)) {
+        const index = uniqueRoles.indexOf(rolePoint);
+        uniqueRoles[index] = rolePoint;
+      }
+    }
+    return uniqueRoles;
   }
 
   setTabGroup() {
