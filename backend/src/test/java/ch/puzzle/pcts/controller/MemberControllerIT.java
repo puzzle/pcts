@@ -24,6 +24,7 @@ import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.business.RoleBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -247,5 +248,19 @@ class MemberControllerIT extends ControllerITBase {
 
         verify(memberBusinessService, times(1)).getLoggedInMember();
         verify(mapper, times(1)).toDto(any(Member.class));
+    }
+
+    @DisplayName("Should successfully get all Roles by a member")
+    @Test
+    void shouldSuccessfullyGetAllRolesByMember() throws Exception {
+        when(memberBusinessService.getAllRolesByMemberId(anyLong())).thenReturn(Set.of(ROLE_1, ROLE_2));
+        when(roleMapper.toDto(any(Set.class))).thenReturn(Set.of(ROLE_1_DTO, ROLE_2_DTO));
+
+        mvc
+                .perform(get(BASEURL + "/1/roles").with(csrf()).with(ownerJwt()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2));
+
+        verify(memberBusinessService, times(1)).getAllRolesByMemberId(anyLong());
     }
 }
