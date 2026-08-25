@@ -49,6 +49,8 @@ public class TestDataDTOs {
 
     public static final RoleDto ROLE_2_DTO = new RoleDto(ROLE_2.getId(), ROLE_2.getName(), ROLE_2.getIsManagement());
 
+    public static final RoleDto ROLE_1_DTO = new RoleDto(ROLE_1.getId(), ROLE_1.getName(), ROLE_1.getIsManagement());
+
     public static final RoleDto ROLE_2_INPUT = new RoleDto(null, ROLE_2.getName(), ROLE_2.getIsManagement());
 
     public static final OrganisationUnitDto ORG_UNIT_1_DTO = new OrganisationUnitDto(ORG_UNIT_1_ID,
