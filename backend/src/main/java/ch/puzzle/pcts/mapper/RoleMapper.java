@@ -3,9 +3,9 @@ package ch.puzzle.pcts.mapper;
 import ch.puzzle.pcts.dto.role.RoleDto;
 import ch.puzzle.pcts.model.role.Role;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -20,6 +20,14 @@ public class RoleMapper {
         return dtos.stream().map(this::fromDto).toList();
     }
 
+    public Set<RoleDto> toDto(Set<Role> models) {
+        return models.stream().map(this::toDto).collect(Collectors.toSet());
+    }
+
+    public Set<Role> fromDto(Set<RoleDto> dtos) {
+        return dtos.stream().map(this::fromDto).collect(Collectors.toSet());
+    }
+
     public RoleDto toDto(Role model) {
         return new RoleDto(model.getId(), model.getName(), model.getIsManagement());
     }
@@ -31,13 +39,5 @@ public class RoleMapper {
                 .withName(dto.name())
                 .withIsManagement(dto.isManagement())
                 .build();
-    }
-
-    public Set<RoleDto> toDtos(Set<Role> roles) {
-        Set<RoleDto> dtos = new HashSet<>();
-        for (Role role : roles) {
-            dtos.add(new RoleDto(role.getId(), role.getName(), role.getIsManagement()));
-        }
-        return dtos;
     }
 }
