@@ -36,7 +36,6 @@ import { Location } from '@angular/common';
 import { RoleModel } from '../../roles/RoleModel';
 import { RoleService } from '../../roles/role.service';
 import { MatChipGrid, MatChipInput, MatChipRemove, MatChipRow } from '@angular/material/chips';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 
 @Component({
@@ -98,7 +97,7 @@ export class MemberFormComponent implements OnInit {
 
   roleSearchControl = new FormControl('');
 
-  private activatedRoute = inject(ActivatedRoute);
+  private readonly activatedRoute = inject(ActivatedRoute);
 
   protected memberForm: FormGroup = this.fb.group({
     id: [null],
@@ -151,6 +150,7 @@ export class MemberFormComponent implements OnInit {
         this.memberForm.get('roles')
           ?.updateValueAndValidity();
       });
+
     if (this.isEdit()) {
       const id = this.activatedRoute.snapshot.paramMap.get('id');
       const idAsNum = Number(id?.split('?')[0]);
@@ -215,10 +215,7 @@ export class MemberFormComponent implements OnInit {
     return this.translateService.instant(translationKey);
   };
 
-  protected displayRole(role: RoleModel): string {
-    if (!role) {
-      return '';
-    }
+  protected formatRoleName(role: RoleModel): string {
     return role?.name ?? '';
   }
 
@@ -241,10 +238,9 @@ export class MemberFormComponent implements OnInit {
   }
 
   protected filterRole(value: RoleModel | string | null): RoleModel[] {
-    if (value === null || value === undefined || value === '') {
+    if (!value) {
       return this.roleOptions();
     }
-
 
     const filterValue = (typeof value === 'string' ? value : value?.name)?.toLowerCase();
 
@@ -257,7 +253,7 @@ export class MemberFormComponent implements OnInit {
   }
 
   private filterOrganisationUnit(value: OrganisationUnitModel | string | null): OrganisationUnitModel[] {
-    if (value === null || value === undefined || value === '') {
+    if (!value) {
       return this.organisationUnitsOptions();
     }
 
@@ -272,9 +268,7 @@ export class MemberFormComponent implements OnInit {
         .includes(filterValue));
   }
 
-  readonly announcer = inject(LiveAnnouncer);
-
-  remove(role: RoleModel): void {
+  removeRole(role: RoleModel): void {
     this.roles.update((roles) => {
       const index = roles.indexOf(role);
       if (index < 0) {
@@ -282,12 +276,11 @@ export class MemberFormComponent implements OnInit {
       }
 
       roles.splice(index, 1);
-      this.announcer.announce(`Removed ${role}`);
       return [...roles];
     });
   }
 
-  selected(event: MatAutocompleteSelectedEvent): void {
+  selectRole(event: MatAutocompleteSelectedEvent): void {
     const values: RoleModel = event.option.value;
     if (values) {
       this.roles.update((roles) => [...roles,
@@ -301,9 +294,9 @@ export class MemberFormComponent implements OnInit {
 
   convertRolesToIds(roles: RoleModel[]): number[] {
     const ids: number[] = [];
-    for (const role of roles) {
+    roles.map((role) => {
       ids.push(role.id);
-    }
+    });
     return ids;
   }
 }
