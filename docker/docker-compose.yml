@@ -10,7 +10,7 @@ services:
       POSTGRES_DB: pcts
     ports:
       - "5432:5432"
-    profiles: ['', backend, infra, db]
+    profiles: ['', backend, infra, db, migration]
 
   pcts-wiremock:
     container_name: pcts-wiremock
@@ -19,7 +19,7 @@ services:
       - "8443:8080"
     volumes:
       - ./wiremock:/home/wiremock
-    profiles: ['', backend]
+    profiles: ['', backend, migration]
 
   pcts-backend:
     container_name: pcts-backend
@@ -39,7 +39,7 @@ services:
       SPRING_PROFILES_ACTIVE: dev
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://localhost:8544/realms/pitc
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://pcts-keycloak:8080/realms/pitc/protocol/openid-connect/certs
-    profiles: ['', backend]
+    profiles: ['', backend, migration]
 
   pcts-frontend:
     container_name: pcts-frontend
@@ -71,4 +71,21 @@ services:
       - --import-realm
     ports:
       - "8544:8080"
-    profiles: ['', backend, infra]
+    profiles: ['', backend, infra, migration]
+
+  pcts-migration:
+    container_name: pcts-migration
+    build:
+      context: ..
+      dockerfile: ./migration/Dockerfile
+    ports:
+      - "8081:8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - pcts-backend
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://localhost:8544/realms/pitc
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://pcts-keycloak:8080/realms/pitc/protocol/openid-connect/certs
+    profiles: [migration]
