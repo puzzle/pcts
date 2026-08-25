@@ -172,6 +172,7 @@ describe('MemberFormComponent', () => {
 
       expect(memberServiceMock.updateMember)
         .toHaveBeenCalledWith(1, { ...member1,
+          roleIds: [role1.id],
           roles: [] });
     });
   });
