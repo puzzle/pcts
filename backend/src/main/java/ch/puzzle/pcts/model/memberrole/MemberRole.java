@@ -25,16 +25,14 @@ public class MemberRole implements Model {
     @Column(name = "deleted_at", insertable = false, updatable = false)
     private LocalDateTime deletedAt;
 
-    public MemberRole(Long id, Long memberId, Long roleId) {
-        this.id = id;
-        this.memberId = memberId;
-        this.roleId = roleId;
+    private MemberRole(Builder builder) {
+        this.id = builder.id;
+        this.memberId = builder.memberid;
+        this.roleId = builder.roleid;
+        this.deletedAt = null;
     }
 
     public MemberRole() {
-    }
-
-    public MemberRole(Builder builder) {
     }
 
     public Long getId() {
