@@ -40,7 +40,6 @@ public class Degree implements Model {
     private DegreeType degreeType;
 
     @NotNull(message = "{attribute.not.null}")
-    // @PastOrPresent(message = "{attribute.date.past.present}")
     private LocalDate startDate;
 
     private LocalDate endDate;
