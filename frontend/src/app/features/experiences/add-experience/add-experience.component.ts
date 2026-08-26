@@ -11,7 +11,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { DialogResult, StrictlyTypedDialog } from '../../../shared/modal/strictly-typed-dialog.helper';
 import { MemberModel } from '../../member/member.model';
-import { isValueInListSignal } from '../../../shared/form/form-validators';
+import { isInteger, isValueInListSignal } from '../../../shared/form/form-validators';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import { ExperienceModel } from '../experience.model';
@@ -47,8 +47,8 @@ import { ModalActionsComponent } from '../../../shared/modal/modal-actions.compo
   ],
 
   templateUrl: './add-experience.component.html',
-  providers: [provideI18nPrefix('EXPERIENCE.FORM.ADD')],
-  styleUrl: './add-experience.component.scss'
+  providers: [provideI18nPrefix('EXPERIENCE.FORM.ADD')]
+
 })
 export class AddExperienceComponent extends StrictlyTypedDialog<ExperienceModel | undefined, DialogResult<ExperienceModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);
@@ -69,9 +69,12 @@ export class AddExperienceComponent extends StrictlyTypedDialog<ExperienceModel 
         isValueInListSignal(this.experienceTypeOptions, (a, b) => a.id === b.id)]],
     employer: ['' as string | null],
     percent: [null as number | null,
-      [Validators.required,
+      [
+        Validators.required,
         Validators.min(0),
-        Validators.max(120)]],
+        Validators.max(120),
+        isInteger()
+      ]],
     endDate: [null as Date | null],
     completed: [true as boolean | null],
     startDate: [null as Date | null,
