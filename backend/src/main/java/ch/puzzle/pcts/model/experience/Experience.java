@@ -46,7 +46,6 @@ public class Experience implements Model {
     private String comment;
 
     @NotNull(message = "{attribute.not.null}")
-    // @PastOrPresent(message = "{attribute.date.past.present}")
     private LocalDate startDate;
 
     private LocalDate endDate;
