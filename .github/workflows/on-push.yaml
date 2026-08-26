@@ -2,9 +2,7 @@
 name: "On push"
 
 on:
-  pull_request:
-    types: [opened, reopened, synchronized]
-
+  push:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
