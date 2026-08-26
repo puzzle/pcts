@@ -73,3 +73,16 @@ export function isValueInListSignal<T>(validOptionsSignal: Signal<T[]>, comparat
     return isValidOption ? null : { invalid_entry: true };
   };
 }
+
+export function isInteger(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+    if (value === '') {
+      return null;
+    }
+    if ((/^-?\d+$/).test(value)) {
+      return null;
+    }
+    return { invalid_integer: true };
+  };
+}
