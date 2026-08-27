@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit, signal, viewChild, WritableSignal } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberService } from '../member.service';
@@ -6,17 +6,11 @@ import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
 import { GenericCvContentComponent } from './generic-cv-content/generic-cv-content.component';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
-import { DegreeOverviewModel } from './cv/degree-overview.model';
-import { ExperienceOverviewModel } from './cv/experience-overview.model';
-import { CertificateOverviewModel } from './cv/certificate-overview.model';
-import { LeadershipExperienceOverviewModel } from './cv/leadership-experience-overview.model';
 import { TranslationScopeDirective } from '../../../shared/translation-scope/translation-scope.directive';
-import { MemberOverviewModel } from '../member-overview.model';
 import { CertificateService } from '../../certificates/certificate.service';
 import { CertificateModel } from '../../certificates/certificate.model';
 import { AddCertificateComponent } from '../../certificates/add-certificate/add-certificate.component';
 import { PctsModalService } from '../../../shared/modal/pcts-modal.service';
-import { RolePointsModel } from './RolePointsModel';
 import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
 import { LeadershipExperienceModel } from '../../leadership-experiences/leadership-experience.model';
 import {
@@ -28,6 +22,8 @@ import { DegreeModel } from '../../degrees/degree.model';
 import { AddDegreeComponent } from '../../degrees/add-degree/add-degree.component';
 import { DegreeService } from '../../degrees/degree.service';
 import { GenericTableDataSourceService } from '../../../shared/generic-table/generic-table-data-source.service';
+import { rxResource, toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -46,9 +42,7 @@ import { GenericTableDataSourceService } from '../../../shared/generic-table/gen
   templateUrl: './member-detail-view.component.html',
   styleUrls: ['./member-detail-view.component.scss']
 })
-export class MemberDetailViewComponent implements OnInit {
-  readonly member: WritableSignal<MemberOverviewModel | null> = signal<MemberOverviewModel | null>(null);
-
+export class MemberDetailViewComponent {
   private readonly modalService = inject(PctsModalService);
 
   private readonly genericTableDataSourceService = inject(GenericTableDataSourceService);
@@ -59,76 +53,57 @@ export class MemberDetailViewComponent implements OnInit {
 
   private readonly router = inject(Router);
 
-  private readonly dialog = inject(PctsModalService);
-
   private readonly certificateService = inject(CertificateService);
 
   private readonly degreeService = inject(DegreeService);
 
   private readonly leadershipExperienceService = inject(LeadershipExperienceService);
 
-  readonly experienceTable = this.genericTableDataSourceService.getExperienceTable();
+  private readonly memberId = toSignal(this.route.paramMap.pipe(map((params) => Number(params.get('id')))), { initialValue: 0 });
 
-  readonly certificateTable = this.genericTableDataSourceService.getCertificateTable(this.member());
+  readonly memberResource = rxResource({
+    params: () => this.memberId(),
+    stream: ({ params: id }) => this.service.getMemberOverviewByMemberId(Number(id))
+  });
 
-  readonly degreeTable = this.genericTableDataSourceService.getDegreeTable(this.member());
+  readonly rolePointsResource = rxResource({
+    params: () => this.memberId(),
+    stream: ({ params: id }) => this.service.getPointsForActiveCalculationsForRoleByMemberId(Number(id))
+  });
 
-  readonly leadershipExperienceTable = this.genericTableDataSourceService.getLeadershipExperienceTable(this.member());
+  readonly member = computed(() => this.memberResource.value()?.member ?? null);
 
+  readonly rolePointList = computed(() => this.rolePointsResource.value() ?? []);
 
-  readonly rolePointList = signal<RolePointsModel[]>([]);
+  degreeData = computed(() => this.memberResource.value()?.cv.degrees ?? []);
 
-  degreeData = signal<DegreeOverviewModel[]>([]);
+  experienceData = computed(() => this.memberResource.value()?.cv.experiences ?? []);
 
-  experienceData = signal<ExperienceOverviewModel[]>([]);
+  certificateData = computed(() => this.memberResource.value()?.cv.certificates ?? []);
 
-  certificateData = signal<CertificateOverviewModel[]>([]);
-
-  leadershipExperienceData = signal<LeadershipExperienceOverviewModel[]>([]);
-
-  tabGroup = viewChild(MatTabGroup);
+  leadershipExperienceData = computed(() => this.memberResource.value()?.cv.leadershipExperiences ?? []);
 
   tabIndex = input.required<number>();
 
+  readonly experienceTable = this.genericTableDataSourceService.getExperienceTable();
 
-  ngOnInit(): void {
-    this.getData();
-  }
+  readonly certificateTable = this.genericTableDataSourceService.getCertificateTable(this.member, () => this.memberResource.reload());
 
-  getData() {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (!id) {
-      this.router.navigate(['/member']);
-      return;
-    }
+  readonly degreeTable = this.genericTableDataSourceService.getDegreeTable(this.member, () => this.memberResource.reload());
 
-    this.service.getMemberOverviewByMemberId(Number(id))
-      .subscribe({
-        next: (memberOverview) => {
-          this.member.set(memberOverview.member);
-          this.degreeData.set(memberOverview.cv.degrees);
-          this.experienceData.set(memberOverview.cv.experiences);
-          this.certificateData.set(memberOverview.cv.certificates);
-          this.leadershipExperienceData.set(memberOverview.cv.leadershipExperiences);
-        }
-      });
-    this.service.getPointsForActiveCalculationsForRoleByMemberId(Number(id))
-      .subscribe({
-        next: (RolePoints) => {
-          this.rolePointList.set(RolePoints);
-          const tabGroup = this.tabGroup();
-          if (tabGroup) {
-            tabGroup.selectedIndex = this.tabIndex();
-          }
-        }
-      });
-  }
+  readonly leadershipExperienceTable = this.genericTableDataSourceService.getLeadershipExperienceTable(this.member, () => this.memberResource.reload());
 
-  openDegreeDialog = this.modalService.createDialogOpener<DegreeModel>(AddDegreeComponent, (model) => this.degreeService.addDegree(model), this.member());
+  openDegreeDialog = this.modalService.createDialogOpener<DegreeModel>(
+    AddDegreeComponent, (model) => this.degreeService.addDegree(model), this.member, () => this.memberResource.reload()
+  );
 
-  openCertificateDialog = this.modalService.createDialogOpener<CertificateModel>(AddCertificateComponent, (model) => this.certificateService.addCertificate(model), this.member());
+  openCertificateDialog = this.modalService.createDialogOpener<CertificateModel>(
+    AddCertificateComponent, (model) => this.certificateService.addCertificate(model), this.member, () => this.memberResource.reload()
+  );
 
-  openLeadershipExperienceDialog = this.modalService.createDialogOpener<LeadershipExperienceModel>(AddLeadershipExperienceComponent, (model) => this.leadershipExperienceService.addLeadershipExperience(model), this.member());
+  openLeadershipExperienceDialog = this.modalService.createDialogOpener<LeadershipExperienceModel>(
+    AddLeadershipExperienceComponent, (model) => this.leadershipExperienceService.addLeadershipExperience(model), this.member, () => this.memberResource.reload()
+  );
 
   onTabIndexChange(index: number) {
     this.router.navigate([], {
