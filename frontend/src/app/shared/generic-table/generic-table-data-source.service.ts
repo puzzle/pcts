@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, Signal } from '@angular/core';
 import { GenCol, GenericTableDataSource } from './generic-table-data-source';
 import { DegreeOverviewModel } from '../../features/member/detail-view/cv/degree-overview.model';
 import { ExperienceOverviewModel } from '../../features/member/detail-view/cv/experience-overview.model';
@@ -36,8 +36,10 @@ export class GenericTableDataSourceService {
 
   private readonly leadershipExperienceService = inject(LeadershipExperienceService);
 
-  public getDegreeTable(member: MemberOverviewModel | null) {
-    const editDegree = this.modalService.createDialogOpener<DegreeModel>(AddDegreeComponent, (model) => this.degreeService.updateDegree(model?.id, model), member);
+  public getDegreeTable(member: Signal<MemberOverviewModel | null>, onSuccess: () => void) {
+    const editDegree = this.modalService.createDialogOpener<DegreeModel>(
+      AddDegreeComponent, (model) => this.degreeService.updateDegree(model?.id, model), member, onSuccess
+    );
 
     return new GenericTableDataSource(this.getDegreeColumns(), editDegree)
       .withLimit(10)
@@ -50,16 +52,20 @@ export class GenericTableDataSourceService {
       .withDetailViewLink();
   }
 
-  public getCertificateTable(member: MemberOverviewModel | null) {
-    const editCertificate = this.modalService.createDialogOpener<CertificateModel>(AddCertificateComponent, (model) => this.certificateService.updateCertificate(model?.id, model), member);
+  public getCertificateTable(member: Signal<MemberOverviewModel | null>, onSuccess: () => void) {
+    const editCertificate = this.modalService.createDialogOpener<CertificateModel>(
+      AddCertificateComponent, (model) => this.certificateService.updateCertificate(model?.id, model), member, onSuccess
+    );
 
     return new GenericTableDataSource(this.getCertificateColumns(), editCertificate)
       .withLimit(10)
       .withDetailViewLink();
   }
 
-  public getLeadershipExperienceTable(member: MemberOverviewModel | null) {
-    const editLeadershipExperience = this.modalService.createDialogOpener<LeadershipExperienceModel>(AddLeadershipExperienceComponent, (model) => this.leadershipExperienceService.updateLeadershipExperience(model?.id, model), member);
+  public getLeadershipExperienceTable(member: Signal<MemberOverviewModel | null>, onSuccess: () => void) {
+    const editLeadershipExperience = this.modalService.createDialogOpener<LeadershipExperienceModel>(
+      AddLeadershipExperienceComponent, (model) => this.leadershipExperienceService.updateLeadershipExperience(model?.id, model), member, onSuccess
+    );
 
     return new GenericTableDataSource(this.getLeadershipExperienceColumns(), editLeadershipExperience)
       .withLimit(10)
