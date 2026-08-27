@@ -1,4 +1,4 @@
-import { DestroyRef, inject, Injectable, Injector, Type } from '@angular/core';
+import { DestroyRef, inject, Injectable, Injector, Signal, Type } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { defaultSize } from './base-modal.component';
 import { enrichMatDialogRef, StrictlyTypedDialog, TypedMatDialogRef } from './strictly-typed-dialog.helper';
@@ -68,14 +68,15 @@ export class PctsModalService {
   public createDialogOpener = <T extends { member?: MemberModel }>(
     component: any,
     addServiceCall: (model: T) => Observable<any>,
-    member: MemberOverviewModel | null
+    member: Signal<MemberOverviewModel | null>,
+    onSuccess: () => void
   ) => {
     const opener = (model?: T) => {
       this.openModal(component, { data: model })
         .afterSubmitted
-        .pipe(takeUntilDestroyed(this.destroyRef), filter(() => !!member?.id), concatMap(({ modalSubmitMode, submittedModel }: { modalSubmitMode: ModalSubmitMode;
+        .pipe(takeUntilDestroyed(this.destroyRef), filter(() => !!member()?.id), concatMap(({ modalSubmitMode, submittedModel }: { modalSubmitMode: ModalSubmitMode;
           submittedModel: T; }) => {
-          submittedModel.member = { id: member!.id } as MemberModel;
+          submittedModel.member = { id: member()!.id } as MemberModel;
 
           switch (modalSubmitMode) {
             case ModalSubmitMode.SAVE:
@@ -93,7 +94,8 @@ export class PctsModalService {
           return addServiceCall(submittedModel);
         }))
         .subscribe(() => {
-
+          console.log('reloading');
+          onSuccess();
         });
     };
 
