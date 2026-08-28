@@ -152,12 +152,7 @@ export class MemberFormComponent implements OnInit {
       });
 
     if (this.isEdit()) {
-      const id = this.activatedRoute.snapshot.paramMap.get('id');
-      const idAsNum = Number(id?.split('?')[0]);
-      this.memberService.getRolesByMemberId(idAsNum)
-        .subscribe((roles) => {
-          this.roles.set(roles);
-        });
+      this.roles.set(this.member().roles);
     }
   }
 
@@ -187,7 +182,7 @@ export class MemberFormComponent implements OnInit {
     const formData = this.memberForm.getRawValue() as MemberModel;
 
     const memberToSave = { ...formData,
-      roleIds: this.convertRolesToIds(this.roles()) };
+      roles: this.roles() };
 
     if (this.isEdit()) {
       this.memberService.updateMember(this.memberForm.get('id')?.value, memberToSave)
@@ -268,35 +263,26 @@ export class MemberFormComponent implements OnInit {
         .includes(filterValue));
   }
 
-  removeRole(role: RoleModel): void {
+  removeRole(roleToRemove: RoleModel): void {
     this.roles.update((roles) => {
-      const index = roles.indexOf(role);
-      if (index < 0) {
-        return roles;
-      }
-
-      roles.splice(index, 1);
-      return [...roles];
+      return roles.filter((role) => role !== roleToRemove);
     });
   }
 
   selectRole(event: MatAutocompleteSelectedEvent): void {
-    const values: RoleModel = event.option.value;
-    if (values) {
-      this.roles.update((roles) => [...roles,
-        values]);
-      this.memberForm.get('roles')
-        ?.setValue(this.roles());
+    const choosenRole: RoleModel = event.option.value;
+
+    if (!choosenRole) {
+      this.currentRole.set(undefined);
+      event.option.deselect();
+      return;
     }
+
+    this.roles.update((roles) => [...roles,
+      choosenRole]);
+    this.memberForm.get('roles')
+      ?.setValue(this.roles());
     this.currentRole.set(undefined);
     event.option.deselect();
-  }
-
-  convertRolesToIds(roles: RoleModel[]): number[] {
-    const ids: number[] = [];
-    roles.map((role) => {
-      ids.push(role.id);
-    });
-    return ids;
   }
 }
