@@ -74,7 +74,7 @@ export class MemberService {
       abbreviation: model.abbreviation,
       employmentState: model.employmentState,
       organisationUnitId: model.organisationUnit?.id,
-      roleIds: model.roleIds,
+      roleIds: model.roles.map((entry) => entry.id),
       dateOfHire: model.dateOfHire ? DateTime.fromJSDate(model.dateOfHire)
         .toISODate() : null
     };
