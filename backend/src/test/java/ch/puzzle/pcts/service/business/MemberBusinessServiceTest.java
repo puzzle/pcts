@@ -279,7 +279,7 @@ class MemberBusinessServiceTest
     void shouldGetAllRolesByMemberId() {
         when(businessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
 
-        Set<Role>  result = businessService.getAllRolesByMemberId(MEMBER_1_ID);
+        Set<Role> result = businessService.getAllRolesByMemberId(MEMBER_1_ID);
 
         assertEquals(MEMBER_1.getRoles(), result);
     }
