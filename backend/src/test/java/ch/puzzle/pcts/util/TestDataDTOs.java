@@ -38,6 +38,7 @@ import ch.puzzle.pcts.model.certificatetype.Tag;
 import ch.puzzle.pcts.model.role.Role;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class TestDataDTOs {
@@ -69,7 +70,7 @@ public class TestDataDTOs {
                                                                MEMBER_1.getDateOfHire(),
                                                                MEMBER_1.getBirthDate(),
                                                                ORG_UNIT_1_DTO,
-                                                               MEMBER_1.getRoles(),
+                                                               Set.of(ROLE_1_DTO),
                                                                MEMBER_1.getPtimeId(),
                                                                MEMBER_1.getLastSuccessfulSync(),
                                                                MEMBER_1.getSyncErrorCount());
@@ -82,7 +83,7 @@ public class TestDataDTOs {
                                                                MEMBER_2.getDateOfHire(),
                                                                MEMBER_2.getBirthDate(),
                                                                ORG_UNIT_2_DTO,
-                                                               MEMBER_2.getRoles(),
+                                                               Set.of(ROLE_2_DTO),
                                                                MEMBER_2.getPtimeId(),
                                                                MEMBER_2.getLastSuccessfulSync(),
                                                                MEMBER_2.getSyncErrorCount());
