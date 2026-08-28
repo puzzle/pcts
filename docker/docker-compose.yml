@@ -86,6 +86,4 @@ services:
       - pcts-backend
     environment:
       SPRING_PROFILES_ACTIVE: dev
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://localhost:8544/realms/pitc
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://pcts-keycloak:8080/realms/pitc/protocol/openid-connect/certs
     profiles: [migration]
