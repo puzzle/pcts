@@ -25,7 +25,6 @@ import ch.puzzle.pcts.model.leadershipexperiencetype.LeadershipExperienceType;
 import ch.puzzle.pcts.model.member.EmploymentState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.memberoverview.MemberOverview;
-import ch.puzzle.pcts.model.memberrole.MemberRole;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.model.role.Role;
 import java.math.BigDecimal;
@@ -205,27 +204,6 @@ public class TestDataModels {
             .withPtimeId(8L)
             .withLastSuccessfulSync(LocalDateTime.of(2025, 12, 1, 1, 1))
             .withSyncErrorCount(0)
-            .build();
-
-    public static final MemberRole MEMBERROLE_1 = MemberRole.Builder
-            .builder()
-            .withId(1L)
-            .withMemberId(MEMBER_1_ID)
-            .withRoleId(ROLE_1_ID)
-            .build();
-
-    public static final MemberRole MEMBERROLE_2 = MemberRole.Builder
-            .builder()
-            .withId(2L)
-            .withMemberId(MEMBER_2_ID)
-            .withRoleId(ROLE_2_ID)
-            .build();
-
-    public static final MemberRole MEMBERROLE_3 = MemberRole.Builder
-            .builder()
-            .withId(3L)
-            .withMemberId(MEMBER_3_ID)
-            .withRoleId(ROLE_3_ID)
             .build();
 
     public static final CertificateType CERT_TYPE_1 = CertificateType.Builder
@@ -855,8 +833,6 @@ public class TestDataModels {
 
     public static final List<Member> MEMBERS = List
             .of(MEMBER_1, MEMBER_2, MEMBER_3, MEMBER_5, MEMBER_6, MEMBER_7, MEMBER_8);
-
-    public static final List<MemberRole> MEMBER_ROLES = List.of(MEMBERROLE_1, MEMBERROLE_2, MEMBERROLE_3);
 
     public static final List<CertificateType> CERTIFICATE_TYPES = List
             .of(CERT_TYPE_1, CERT_TYPE_2, CERT_TYPE_3, CERT_TYPE_4);
