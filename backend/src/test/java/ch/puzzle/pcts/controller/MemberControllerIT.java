@@ -250,7 +250,7 @@ class MemberControllerIT extends ControllerITBase {
         verify(mapper, times(1)).toDto(any(Member.class));
     }
 
-    @DisplayName("Should successfully get all Roles by a member")
+    @DisplayName("Should successfully get all Roles associated with a member")
     @Test
     void shouldSuccessfullyGetAllRolesByMember() throws Exception {
         when(memberBusinessService.getAllRolesByMemberId(anyLong())).thenReturn(Set.of(ROLE_1, ROLE_2));
