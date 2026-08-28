@@ -10,6 +10,7 @@ import ch.puzzle.pcts.mapper.MemberMapper;
 import ch.puzzle.pcts.mapper.RoleMapper;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.security.annotation.IsAdmin;
 import ch.puzzle.pcts.security.annotation.IsAdminOrOwner;
 import ch.puzzle.pcts.security.annotation.IsAuthenticated;
@@ -126,11 +127,12 @@ public class MemberController {
 
     @Operation(summary = "Get all roles by member id")
     @ApiResponse(responseCode = "200", description = "The roles which this member fulfills", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = RoleDto.class)) })
+            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = RoleDto.class))) })
+
     @GetMapping("{memberId}/roles")
     @IsAuthenticated
     public ResponseEntity<Set<RoleDto>> getAllRoles(@PathVariable Long memberId) {
-        Set<RoleDto> roles = roleMapper.toDto(service.getAllRolesByMemberId(memberId));
-        return ResponseEntity.ok(roles);
+        Set<Role> roles = service.getAllRolesByMemberId(memberId);
+        return ResponseEntity.ok(roleMapper.toDto(roles));
     }
 }
