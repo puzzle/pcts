@@ -118,11 +118,11 @@ export class MemberDetailViewComponent implements OnInit {
         }
       });
 
-    const uniqueRoles: RolePointsModel[] = [];
 
     this.service.getRolesByMemberId(Number(id))
       .subscribe({
         next: (roles) => {
+          const uniqueRoles: RolePointsModel[] = [];
           const rolePoints: RolePointsModel[] = roles.map((role) => this.service.toRolePointsModel(role));
           for (const rolePoint of rolePoints) {
             uniqueRoles.push(rolePoint);
@@ -147,6 +147,8 @@ export class MemberDetailViewComponent implements OnInit {
       if (uniqueRoles.includes(rolePoint)) {
         const index = uniqueRoles.indexOf(rolePoint);
         uniqueRoles[index] = rolePoint;
+      } else {
+        uniqueRoles.push(rolePoint);
       }
     }
     return uniqueRoles;
