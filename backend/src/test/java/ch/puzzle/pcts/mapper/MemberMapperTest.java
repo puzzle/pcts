@@ -24,13 +24,18 @@ class MemberMapperTest {
     private OrganisationUnitBusinessService organisationUnitBusinessService;
     private OrganisationUnitMapper organisationUnitMapper;
     private RoleBusinessService roleBusinessService;
+    private RoleMapper roleMapper;
 
     @BeforeEach
     void setUp() {
         organisationUnitBusinessService = Mockito.mock(OrganisationUnitBusinessService.class);
         organisationUnitMapper = Mockito.mock(OrganisationUnitMapper.class);
         roleBusinessService = Mockito.mock(RoleBusinessService.class);
-        mapper = new MemberMapper(organisationUnitBusinessService, organisationUnitMapper, roleBusinessService);
+        roleMapper = Mockito.mock(RoleMapper.class);
+        mapper = new MemberMapper(organisationUnitBusinessService,
+                                  organisationUnitMapper,
+                                  roleBusinessService,
+                                  roleMapper);
 
         when(organisationUnitMapper.toDto(ORG_UNIT_1)).thenReturn(ORG_UNIT_1_DTO);
         when(organisationUnitMapper.toDto(ORG_UNIT_2)).thenReturn(ORG_UNIT_2_DTO);
