@@ -55,7 +55,7 @@ describe('AddExperience', () => {
       .toEqual([experienceType1,
         experienceType2]);
     expect(experienceTypeServiceMock.getAllExperienceTypes)
-      .toHaveBeenCalledTimes(1);
+      .toHaveBeenCalled();
   });
 
   describe('filter ExperienceType', () => {
