@@ -46,7 +46,7 @@
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-database-postgresql</artifactId>
-			<version>13.3.0</version>
+			<version>13.4.0</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
@@ -69,7 +69,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-testcontainers</artifactId>
-			<version>4.1.0</version>
+			<version>4.1.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

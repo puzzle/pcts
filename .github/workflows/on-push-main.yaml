@@ -40,6 +40,10 @@ jobs:
             dockerfile: frontend/Dockerfile
             context: .
             image_name: frontend
+          - service: migration
+            dockerfile: migration/Dockerfile
+            context: .
+            image_name: migration
     uses: ./.github/workflows/reusable__upload-to-ghcr.yaml
     with:
       dockerfile: ${{ matrix.dockerfile }}
