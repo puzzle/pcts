@@ -130,6 +130,36 @@ describe('Add experience Modal', () => {
     });
   });
 
+  describe('Validation Errors', () => {
+    beforeEach(() => {
+      openExperienceModal();
+    });
+
+    it('validates percent requirement and integer input', () => {
+      formPage.submitButtonShouldBe('disabled');
+
+      cy.getByTestId('percent')
+        .focus()
+        .blur();
+
+      formPage.typeAndBlur('percent', '0.9');
+      formPage.shouldShowValidationError('Die Eingabe muss eine Ganzzahl sein', 'percent');
+      formPage.submitButtonShouldBe('disabled');
+    });
+
+    it('validates percent requirement and integer input', () => {
+      formPage.submitButtonShouldBe('disabled');
+
+      cy.getByTestId('percent')
+        .focus()
+        .blur();
+
+      formPage.typeAndBlur('percent', '130');
+      formPage.shouldShowValidationError('Die Eingabe muss maximal 120 sein', 'percent');
+      formPage.submitButtonShouldBe('disabled');
+    });
+  });
+
   describe('Closing Modal', () => {
     beforeEach(() => {
       openExperienceModal();
