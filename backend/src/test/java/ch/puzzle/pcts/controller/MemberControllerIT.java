@@ -220,8 +220,11 @@ class MemberControllerIT extends ControllerITBase {
         RolePointDto rolePointDto = mock(RolePointDto.class);
         Calculation calculation = mock(Calculation.class);
 
-        when(memberBusinessService.getAllActiveCalculationsByMemberId(memberId)).thenReturn(List.of(calculation));
-        when(calculationMapper.toRolePointDto(List.of(calculation))).thenReturn(List.of(rolePointDto));
+        doReturn(List.of(calculation)).when(memberBusinessService).getAllActiveCalculationsByMemberId(memberId);
+
+        doReturn(List.of(rolePointDto))
+                .when(calculationMapper)
+                .mergeListsToUniqueRoleEntriesOnly(List.of(calculation), Set.of());
 
         mvc
                 .perform(get(BASEURL + "/" + memberId + "/role-points")
@@ -232,7 +235,7 @@ class MemberControllerIT extends ControllerITBase {
                 .andExpect(jsonPath("$.length()").value(1));
 
         verify(memberBusinessService, times(1)).getAllActiveCalculationsByMemberId(memberId);
-        verify(calculationMapper, times(1)).toRolePointDto(List.of(calculation));
+        verify(calculationMapper, times(1)).mergeListsToUniqueRoleEntriesOnly(List.of(calculation), Set.of());
     }
 
     @DisplayName("Should successfully get myself as a member")
