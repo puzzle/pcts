@@ -17,7 +17,6 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 class MemberMapperTest {
@@ -38,7 +37,6 @@ class MemberMapperTest {
                                   organisationUnitMapper,
                                   roleBusinessService,
                                   roleMapper);
-        Mockito.res
         when(organisationUnitMapper.toDto(ORG_UNIT_1)).thenReturn(ORG_UNIT_1_DTO);
         when(organisationUnitMapper.toDto(ORG_UNIT_2)).thenReturn(ORG_UNIT_2_DTO);
         when(roleMapper.toDto(ROLE_1)).thenReturn(ROLE_1_DTO);
