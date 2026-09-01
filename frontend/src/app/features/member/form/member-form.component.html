@@ -47,8 +47,8 @@
       <mat-form-field>
         <mat-label>{{ "ROLE" | scopedTranslation }}</mat-label>
         <mat-chip-grid formControlName="roles" #chipGrid>
-          @for (role of roles(); track role.name) {
-            <mat-chip-row (removed)="removeRole(role)">
+          @for (role of choosenRoles(); track role.name) {
+            <mat-chip-row (removed)="removeRole(role)" [value]="role">
               {{ role.name }}
               <button matChipRemove aria-label="{{ 'REMOVE_ROLE' | scopedTranslation }}">
                 <mat-icon>cancel</mat-icon>
