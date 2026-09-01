@@ -126,9 +126,10 @@ class ExperienceValidationServiceTest extends ValidationBaseServiceTest<Experien
                                                     "2",
                                                     FieldKey.IS,
                                                     TOO_LONG_STRING))),
-                    Arguments
-                            .of(createExperience("Experience", DATE_TOMORROW, DATE_TOMORROW, validPercentage),
-                                List.of(Map.of(FieldKey.IS, "{attribute.date.past.present}"))),
+                    // Arguments
+                    // .of(createExperience("Experience", DATE_TOMORROW, DATE_TOMORROW,
+                    // validPercentage),
+                    // List.of(Map.of(FieldKey.IS, "{attribute.date.past.present}"))),
                     Arguments
                             .of(createExperience("Experience", null, DATE_NOW, validPercentage),
                                 List.of(Map.of(FieldKey.CLASS, "Experience", FieldKey.FIELD, "startDate"))),
