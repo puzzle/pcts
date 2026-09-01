@@ -21,9 +21,15 @@ import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin
 import { DegreeModel } from '../../degrees/degree.model';
 import { AddDegreeComponent } from '../../degrees/add-degree/add-degree.component';
 import { DegreeService } from '../../degrees/degree.service';
-import { GenericTableDataSourceService } from '../../../shared/generic-table/generic-table-data-source.service';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
+import {
+  getCertificateTable,
+  getDegreeTable,
+  getExperienceTable,
+  getLeadershipExperienceTable
+} from './cv/member-detail-cv-table-definition';
+import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -44,8 +50,6 @@ import { map } from 'rxjs';
 })
 export class MemberDetailViewComponent {
   private readonly modalService = inject(PctsModalService);
-
-  private readonly genericTableDataSourceService = inject(GenericTableDataSourceService);
 
   private readonly service = inject(MemberService);
 
@@ -85,24 +89,27 @@ export class MemberDetailViewComponent {
 
   tabIndex = input.required<number>();
 
-  readonly experienceTable = this.genericTableDataSourceService.getExperienceTable();
+  readonly experienceTable = getExperienceTable();
 
-  readonly certificateTable = this.genericTableDataSourceService.getCertificateTable(this.member, () => this.memberResource.reload());
+  readonly certificateTable = getCertificateTable();
 
-  readonly degreeTable = this.genericTableDataSourceService.getDegreeTable(this.member, () => this.memberResource.reload());
+  readonly degreeTable = getDegreeTable();
 
-  readonly leadershipExperienceTable = this.genericTableDataSourceService.getLeadershipExperienceTable(this.member, () => this.memberResource.reload());
+  readonly leadershipExperienceTable = getLeadershipExperienceTable();
 
   openDegreeDialog = this.modalService.createDialogOpener<DegreeModel>(
-    AddDegreeComponent, (model) => this.degreeService.addDegree(model), this.member, () => this.memberResource.reload()
+    AddDegreeComponent, this.member, (model: DegreeModel) => this.degreeService.addDegree(model), () => this.memberResource.reload(), [ModalSubmitMode.ENTER_ANOTHER,
+      ModalSubmitMode.COPY]
   );
 
   openCertificateDialog = this.modalService.createDialogOpener<CertificateModel>(
-    AddCertificateComponent, (model) => this.certificateService.addCertificate(model), this.member, () => this.memberResource.reload()
+    AddCertificateComponent, this.member, (model: CertificateModel) => this.certificateService.addCertificate(model), () => this.memberResource.reload(), [ModalSubmitMode.ENTER_ANOTHER,
+      ModalSubmitMode.COPY]
   );
 
   openLeadershipExperienceDialog = this.modalService.createDialogOpener<LeadershipExperienceModel>(
-    AddLeadershipExperienceComponent, (model) => this.leadershipExperienceService.addLeadershipExperience(model), this.member, () => this.memberResource.reload()
+    AddLeadershipExperienceComponent, this.member, (model: LeadershipExperienceModel) => this.leadershipExperienceService.addLeadershipExperience(model), () => this.memberResource.reload(), [ModalSubmitMode.ENTER_ANOTHER,
+      ModalSubmitMode.COPY]
   );
 
   onTabIndexChange(index: number) {
