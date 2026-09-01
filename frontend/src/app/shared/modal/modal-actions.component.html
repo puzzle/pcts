@@ -22,7 +22,7 @@
 
     <app-menu-button
       [isValid]="isValid"
-      [functions]="[ModalSubmitMode.ENTER_ANOTHER, ModalSubmitMode.COPY]"
+      [functions]="submitModes()"
       (selected)="onSubmit($event)" />
   </div>
 </div>
