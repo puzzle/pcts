@@ -37,7 +37,6 @@ import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin
 import { DegreeModel } from '../../degrees/degree.model';
 import { AddDegreeComponent } from '../../degrees/add-degree/add-degree.component';
 import { DegreeService } from '../../degrees/degree.service';
-import { RoleModel } from '../../roles/RoleModel';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -119,43 +118,13 @@ export class MemberDetailViewComponent implements OnInit {
         }
       });
 
-    this.service.getRolesByMemberId(Number(id))
+    this.service.getPointsForActiveCalculationsForRoleByMemberId(Number(id))
       .subscribe({
-        next: (roles) => {
-          const rolesWithoutPoints = roles.map((role) => this.createRolePointWithZeroPoints(role));
-          this.service.getPointsForActiveCalculationsForRoleByMemberId(Number(id))
-            .subscribe({
-              next: (rolePoints) => {
-                this.mergeListsToUniqueEntriesOnly(rolePoints, rolesWithoutPoints);
-                this.setTabGroup();
-              }
-            });
+        next: (rolePoints) => {
+          this.rolePointList.set(rolePoints);
+          this.setTabGroup();
         }
       });
-  }
-
-  private mergeListsToUniqueEntriesOnly(rolePoints: RolePointsModel[], rolesWithoutPoints: RolePointsModel[]) {
-    rolesWithoutPoints.forEach((role) => {
-      rolePoints = this.insertOrUpdate(rolePoints, role);
-    });
-    this.rolePointList.set(rolePoints);
-  }
-
-  private insertOrUpdate(rolePoints: RolePointsModel[], role: RolePointsModel) {
-    if (rolePoints.some((rolePoint) => role.role.id === rolePoint.role.id)) {
-      const index = rolePoints.indexOf(role);
-      rolePoints[index] = role;
-    } else {
-      rolePoints.push(role);
-    }
-    return rolePoints;
-  }
-
-  private createRolePointWithZeroPoints(role: RoleModel) {
-    return {
-      role: role,
-      points: 0
-    } as RolePointsModel;
   }
 
   private setTabGroup() {
