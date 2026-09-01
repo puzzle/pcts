@@ -84,10 +84,14 @@ export class AddExperienceComponent extends StrictlyTypedDialog<ExperienceModel 
 
   constructor() {
     super();
+    if (this.data) {
+      this.formGroup.patchValue({
+        ...this.data
+      });
+    }
   }
 
   ngOnInit(): void {
-    this.formGroup.patchValue(this.data ?? {});
     this.experienceTypeService.getAllExperienceTypes()
       .subscribe((experienceTypes) => {
         this.experienceTypeOptions.set(experienceTypes);
