@@ -1,4 +1,4 @@
-FROM node:24.19-alpine AS builder
+FROM node:24.20-alpine AS builder
 WORKDIR /app
 RUN corepack enable && corepack prepare pnpm@10.32.1 --activate
 ENV CI="true"
