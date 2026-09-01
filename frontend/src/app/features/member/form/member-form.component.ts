@@ -176,14 +176,6 @@ export class MemberFormComponent implements OnInit {
 
   onSubmit() {
     if (this.memberForm.invalid) {
-      const invalid = [];
-      const controls = this.memberForm.controls;
-      for (const name in controls) {
-        if (controls[name].invalid) {
-          invalid.push(name);
-        }
-      }
-      console.log(invalid);
       return;
     }
 
@@ -279,7 +271,6 @@ export class MemberFormComponent implements OnInit {
 
   selectRole(event: MatAutocompleteSelectedEvent): void {
     const choosenRole: RoleModel = event.option.value;
-    console.log('choosenROle:', choosenRole);
 
     if (!choosenRole) {
       event.option.deselect();
