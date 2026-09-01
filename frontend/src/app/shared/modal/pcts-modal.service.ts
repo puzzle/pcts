@@ -1,13 +1,14 @@
-import { DestroyRef, inject, Injectable, Injector, Signal, Type } from '@angular/core';
+import { DestroyRef, inject, Injectable, Injector, Type } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { defaultSize } from './base-modal.component';
-import { enrichMatDialogRef, StrictlyTypedDialog, TypedMatDialogRef } from './strictly-typed-dialog.helper';
-import { MemberModel } from '../../features/member/member.model';
+import { DialogResult, enrichMatDialogRef, StrictlyTypedDialog, TypedMatDialogRef } from './strictly-typed-dialog.helper';
 import { concatMap, filter, Observable } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ModalSubmitMode } from '../enum/modal-submit-mode.enum';
-import { MemberOverviewModel } from '../../features/member/member-overview.model';
-
+export interface PCTSDialogConfig<T> {
+  model: T | undefined;
+  submitOptions: ModalSubmitMode[];
+}
 // Extract the Data type from the component
 type ExtractData<C> = C extends StrictlyTypedDialog<infer D, any> ? D : never;
 // Extract the Result type from the component
@@ -65,19 +66,24 @@ export class PctsModalService {
     return enrichMatDialogRef(ref);
   }
 
-  public createDialogOpener = <T extends { member?: MemberModel }>(
-    component: any,
-    addServiceCall: (model: T) => Observable<any>,
-    member: Signal<MemberOverviewModel | null>,
-    onSuccess: () => void
+  public createDialogOpener = <T extends { id: number }>(
+    component: Type<StrictlyTypedDialog<PCTSDialogConfig<T>, DialogResult<T>>>,
+    model: T,
+    onSubmitMethod: (model: T) => Observable<T>,
+    onSuccess: () => void,
+    submitOptions: ModalSubmitMode[]
   ) => {
-    const opener = (model?: T) => {
-      this.openModal(component, { data: model })
-        .afterSubmitted
-        .pipe(takeUntilDestroyed(this.destroyRef), filter(() => !!member()?.id), concatMap(({ modalSubmitMode, submittedModel }: { modalSubmitMode: ModalSubmitMode;
-          submittedModel: T; }) => {
-          submittedModel.member = { id: member()!.id } as MemberModel;
+    const opener = (m?: T) => {
+      const config: PCTSDialogConfig<T> = {
+        model: m,
+        submitOptions: submitOptions
+      };
 
+      this.openModal(component, { data: config })
+        .afterSubmitted
+        // todo evaluate if we need to filter here
+        .pipe(takeUntilDestroyed(this.destroyRef), filter(() => !!model.id), concatMap(({ modalSubmitMode, submittedModel }: { modalSubmitMode: ModalSubmitMode;
+          submittedModel: T; }) => {
           switch (modalSubmitMode) {
             case ModalSubmitMode.SAVE:
               break;
@@ -91,10 +97,9 @@ export class PctsModalService {
               modalSubmitMode satisfies never;
           }
 
-          return addServiceCall(submittedModel);
+          return onSubmitMethod(submittedModel);
         }))
         .subscribe(() => {
-          console.log('reloading');
           onSuccess();
         });
     };
