@@ -199,3 +199,14 @@ VALUES
     (1, 1),
     (2, 2),
     (4, 3);
+
+INSERT INTO member_role
+(member_id, role_id)
+VALUES
+    (1, 1),
+    (2, 2),
+    (3, 3),
+    (4, 4),
+    (5, 5),
+    (1, 5),
+    (5, 5);
