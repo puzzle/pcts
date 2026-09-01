@@ -4,8 +4,6 @@ import {
   effect,
   inject,
   input,
-  model,
-  ModelSignal,
   OnInit,
   signal,
   WritableSignal
@@ -14,7 +12,7 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, 
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { MemberService } from '../member.service';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { TranslateService } from '@ngx-translate/core';
@@ -29,7 +27,12 @@ import { PctsFormErrorDirective } from '../../../shared/pcts-form-error/pcts-for
 import { PctsFormLabelDirective } from '../../../shared/pcts-form-label/pcts-form-label.directive';
 import { InputFieldComponent } from '../../../shared/input-field/input-field.component';
 import { map } from 'rxjs';
-import { isDateInPast, isValueInList, isValueInListSignal } from '../../../shared/form/form-validators';
+import {
+  isDateInPast,
+  isListInListSignal,
+  isValueInList,
+  isValueInListSignal
+} from '../../../shared/form/form-validators';
 import { BaseFormComponent } from '../../../shared/form/base-form.component';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { Location } from '@angular/common';
@@ -91,13 +94,9 @@ export class MemberFormComponent implements OnInit {
   readonly separatorKeysCodes: number[] = [ENTER,
     COMMA];
 
-  readonly roles: WritableSignal<RoleModel[]> = signal([]);
-
-  readonly currentRole: ModelSignal<RoleModel | undefined> = model();
+  readonly choosenRoles: WritableSignal<RoleModel[]> = signal([]);
 
   roleSearchControl = new FormControl('');
-
-  private readonly activatedRoute = inject(ActivatedRoute);
 
   protected memberForm: FormGroup = this.fb.group({
     id: [null],
@@ -113,7 +112,8 @@ export class MemberFormComponent implements OnInit {
     employmentState: [null,
       [Validators.required,
         isValueInList(this.employmentStateOptions, (a, b) => a == b)]],
-    roles: [[] as RoleModel[]],
+    roles: [[] as RoleModel[],
+      isListInListSignal(this.roleOptions, (a, b) => b.includes(a))],
     organisationUnit: [null,
       isValueInListSignal(this.organisationUnitsOptions, (a, b) => a.id === b.id)]
   });
@@ -152,7 +152,7 @@ export class MemberFormComponent implements OnInit {
       });
 
     if (this.isEdit()) {
-      this.roles.set(this.member().roles);
+      this.choosenRoles.set(this.member().roles);
     }
   }
 
@@ -176,13 +176,21 @@ export class MemberFormComponent implements OnInit {
 
   onSubmit() {
     if (this.memberForm.invalid) {
+      const invalid = [];
+      const controls = this.memberForm.controls;
+      for (const name in controls) {
+        if (controls[name].invalid) {
+          invalid.push(name);
+        }
+      }
+      console.log(invalid);
       return;
     }
 
     const formData = this.memberForm.getRawValue() as MemberModel;
 
     const memberToSave = { ...formData,
-      roles: this.roles() };
+      roles: this.choosenRoles() };
 
     if (this.isEdit()) {
       this.memberService.updateMember(this.memberForm.get('id')?.value, memberToSave)
@@ -264,25 +272,32 @@ export class MemberFormComponent implements OnInit {
   }
 
   removeRole(roleToRemove: RoleModel): void {
-    this.roles.update((roles) => {
+    this.choosenRoles.update((roles) => {
       return roles.filter((role) => role !== roleToRemove);
     });
   }
 
   selectRole(event: MatAutocompleteSelectedEvent): void {
     const choosenRole: RoleModel = event.option.value;
+    console.log('choosenROle:', choosenRole);
 
     if (!choosenRole) {
-      this.currentRole.set(undefined);
       event.option.deselect();
       return;
     }
 
-    this.roles.update((roles) => [...roles,
+    if (this.choosenRoles()
+      .some((role) => role.id === choosenRole.id)) {
+      event.option.deselect();
+      return;
+    }
+
+    this.choosenRoles.update((roles) => [...roles,
       choosenRole]);
     this.memberForm.get('roles')
-      ?.setValue(this.roles());
-    this.currentRole.set(undefined);
+      ?.setValue(this.choosenRoles());
+    this.memberForm.get('roles')
+      ?.updateValueAndValidity();
     event.option.deselect();
   }
 }
