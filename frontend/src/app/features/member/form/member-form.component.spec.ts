@@ -33,9 +33,7 @@ describe('MemberFormComponent', () => {
       addMember: jest.fn()
         .mockReturnValue(of(member1)),
       updateMember: jest.fn()
-        .mockReturnValue(of(member1)),
-      getRolesByMemberId: jest.fn()
-        .mockReturnValue(of([role1]))
+        .mockReturnValue(of(member1))
     };
 
     organisationUnitServiceMock = {
