@@ -91,17 +91,12 @@ describe('MemberFormComponent', () => {
 
     it('should call addMember', () => {
       const addSpy = jest.spyOn(memberServiceMock, 'addMember');
-      const { roleIds, ...memberWithoutId } = {
+      const { ...memberWithoutId } = {
         ...member1,
         id: 0,
         roles: [role1,
           role2]
       };
-
-      // Usage for roleids so lint is happy :)
-      if (roleIds.length > 0) {
-        roleIds[0] = roleIds[1];
-      }
 
       component['memberForm'].setValue(memberWithoutId);
 
@@ -113,17 +108,12 @@ describe('MemberFormComponent', () => {
     });
 
     it('should navigate after adding a member', () => {
-      const { roleIds, ...memberWithoutId } = {
+      const memberWithoutId = {
         ...member1,
         id: 0,
         roles: [role1,
           role2]
       };
-
-      // Usage for roleids so lint is happy :)
-      if (roleIds.length > 0) {
-        roleIds[0] = roleIds[1];
-      }
 
       const router = TestBed.inject(Router);
       const navigateSpy = jest.spyOn(router, 'navigate');
@@ -153,15 +143,10 @@ describe('MemberFormComponent', () => {
     });
 
     it('should load member data', () => {
-      const { roleIds, ...member } = {
+      const member = {
         ...member1,
         roles: []
       };
-
-      // Usage for roleids so lint is happy :)
-      if (roleIds.length > 0) {
-        roleIds[0] = roleIds[1];
-      }
 
       expect(component['memberForm'].getRawValue())
         .toEqual(member);
@@ -172,7 +157,6 @@ describe('MemberFormComponent', () => {
 
       expect(memberServiceMock.updateMember)
         .toHaveBeenCalledWith(1, { ...member1,
-          roleIds: [role1.id],
           roles: [] });
     });
   });
