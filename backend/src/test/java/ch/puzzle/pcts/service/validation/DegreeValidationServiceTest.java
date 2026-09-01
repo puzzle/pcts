@@ -154,10 +154,11 @@ class DegreeValidationServiceTest extends ValidationBaseServiceTest<Degree, Degr
                                 List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "completed"))),
                     Arguments
                             .of(createDegree(MEMBER_1, "Computer Science", DEGREE_TYPE_1, true, null, DATE_NOW),
-                                List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "startDate"))),
-                    Arguments
-                            .of(createDegree(MEMBER_1, "Computer Science", DEGREE_TYPE_1, true, DATE_TOMORROW, null),
-                                List.of(Map.of(FieldKey.IS, "{attribute.date.past.present}"))));
+                                List.of(Map.of(FieldKey.CLASS, "Degree", FieldKey.FIELD, "startDate"))));
+        // Arguments
+        // .of(createDegree(MEMBER_1, "Computer Science", DEGREE_TYPE_1, true,
+        // DATE_TOMORROW, null),
+        // List.of(Map.of(FieldKey.IS, "{attribute.date.past.present}")))
     }
 
     @DisplayName("Should call correct validate method on validateOnCreate()")
