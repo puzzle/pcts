@@ -89,7 +89,11 @@ describe('MemberFormComponent', () => {
 
     it('should call addMember', () => {
       const addSpy = jest.spyOn(memberServiceMock, 'addMember');
-      const { ...memberWithoutId } = {
+      (component as any).roleOptions.set([role1,
+        role2]);
+      component['choosenRoles'].set([role1,
+        role2]);
+      const memberWithoutId = {
         ...member1,
         id: 0,
         roles: [role1,
@@ -101,8 +105,7 @@ describe('MemberFormComponent', () => {
       component.onSubmit();
 
       expect(addSpy)
-        .toHaveBeenCalledWith({ ...memberWithoutId,
-          roleIds: [] });
+        .toHaveBeenCalledWith(memberWithoutId);
     });
 
     it('should navigate after adding a member', () => {
@@ -115,6 +118,10 @@ describe('MemberFormComponent', () => {
 
       const router = TestBed.inject(Router);
       const navigateSpy = jest.spyOn(router, 'navigate');
+      (component as any).roleOptions.set([role1,
+        role2]);
+      component['choosenRoles'].set([role1,
+        role2]);
       component['memberForm'].setValue(memberWithoutId);
 
       component.onSubmit();
@@ -141,13 +148,8 @@ describe('MemberFormComponent', () => {
     });
 
     it('should load member data', () => {
-      const member = {
-        ...member1,
-        roles: []
-      };
-
       expect(component['memberForm'].getRawValue())
-        .toEqual(member);
+        .toEqual(member1);
     });
 
     it('should call updateMember', () => {
