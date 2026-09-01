@@ -41,17 +41,14 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
 
   private _ignorePredicate = false;
 
-  public editModal: (model?: T) => void = () => {};
-
   shouldLink = false;
 
   sortedBy: string;
 
-  constructor(columnDefs: GenCol<T>[], editModal: () => void = () => {}, initialData?: T[]) {
+  constructor(columnDefs: GenCol<T>[], initialData?: T[]) {
     super(initialData);
     this.columnDefs = columnDefs;
     this.sortedBy = this.columnDefs.map((e) => e.columnName)[0];
-    this.editModal = editModal;
   }
 
   get columnDefs(): GenCol<T>[] {
