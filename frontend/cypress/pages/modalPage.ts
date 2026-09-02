@@ -27,6 +27,11 @@ class ModalPage extends Page {
       .should('be.visible')
       .and('be.focused');
   }
+
+  checkModalIconButtonFocused() {
+    cy.getByTestId('close-modal-icon-button')
+      .should('be.focused');
+  }
 }
 
 export default new ModalPage();
