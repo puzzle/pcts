@@ -85,8 +85,7 @@ describe('AddExperience', () => {
       .toHaveBeenCalledWith({
         modalSubmitMode: ModalSubmitMode.SAVE,
         submittedModel: {
-          ...experience1,
-          completed: true
+          ...experience1
         }
       });
   });

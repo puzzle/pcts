@@ -76,7 +76,6 @@ export class AddExperienceComponent extends StrictlyTypedDialog<ExperienceModel 
         isInteger()
       ]],
     endDate: [null as Date | null],
-    completed: [true as boolean | null],
     startDate: [null as Date | null,
       Validators.required],
     comment: ['' as string | null]
