@@ -44,8 +44,10 @@ describe('MemberFormComponent', () => {
     TestBed.configureTestingModule({
       imports: [MemberFormComponent],
       providers: [
-        provideRouter([{ path: 'member/:id',
-          component: MemberDetailViewComponent }]),
+        provideRouter([{
+          path: 'member/:id',
+          component: MemberDetailViewComponent
+        }]),
         provideTranslateService(),
         {
           provide: MemberService,
@@ -153,11 +155,19 @@ describe('MemberFormComponent', () => {
     });
 
     it('should call updateMember', () => {
+      jest.spyOn(component['memberForm'], 'invalid', 'get')
+        .mockReturnValue(false);
+
       component.onSubmit();
 
+      expect(component['memberForm'].invalid)
+        .toBeFalsy();
+
+      expect(component['isEdit']())
+        .toBeTruthy();
+
       expect(memberServiceMock.updateMember)
-        .toHaveBeenCalledWith(1, { ...member1,
-          roles: [] });
+        .toHaveBeenCalledWith(1, { ...member1 });
     });
   });
 });
