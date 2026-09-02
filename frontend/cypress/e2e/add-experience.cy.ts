@@ -6,6 +6,7 @@ import formPage from '../pages/formPage';
 describe('Add experience Modal', () => {
   beforeEach(() => {
     cy.loginAsUser(users.gl);
+    memberDetailPage.visit(1);
   });
 
   const openExperienceModal = () => {
@@ -13,14 +14,12 @@ describe('Add experience Modal', () => {
       .click();
 
     modalPage.checkModalIconButtonVisible();
+    modalPage.checkModalIconButtonFocused();
   };
 
-  beforeEach(() => {
-    cy.loginAsUser(users.gl);
-    memberDetailPage.visit(1);
-  });
   it('should open correct modal', () => {
     openExperienceModal();
+
     modalPage.modalTitle()
       .should('include.text', 'Berufs- und Lebenserfahrung hinzufügen');
   });
@@ -33,17 +32,12 @@ describe('Add experience Modal', () => {
 
       openExperienceModal();
 
-
       formPage.submitButtonShouldBe('disabled');
+
       modalPage.modalTitle()
         .should('include.text', 'Berufs- und Lebenserfahrung hinzufügen');
 
-      cy.getByTestId('experienceType')
-        .type('Pra');
-
-      cy.get('mat-option')
-        .contains('Praktikum')
-        .click();
+      modalPage.selectAutoCompleteValue('experienceType', 'Pra', 'Praktikum');
 
       formPage.typeAndBlur('startDate', '10.10.2023');
       formPage.typeAndBlur('endDate', '10.12.2027');
@@ -51,9 +45,9 @@ describe('Add experience Modal', () => {
       formPage.typeAndBlur('employer', 'TechNova Solutions');
       formPage.typeAndBlur('percent', '100');
       formPage.typeAndBlur('comment', 'Worked on backend APIs and DevOps tasks.');
+
       formPage.submitButtonShouldBe('enabled');
       formPage.clickSubmitMenuItem(buttonType);
-
 
       formPage.shouldShowSuccessToast('Berufs- und Lebenserfahrung wurde erfolgreich erstellt.');
 
@@ -69,10 +63,10 @@ describe('Add experience Modal', () => {
             endDate: '2027-12-10'
           });
         });
+
       modalPage.checkModalIsClosed();
     });
   });
-  // test both alternative save buttons
 
   describe('Validation Errors', () => {
     beforeEach(() => {
@@ -81,11 +75,13 @@ describe('Add experience Modal', () => {
 
     it('validates experience type requirement and input', () => {
       formPage.submitButtonShouldBe('disabled');
-      cy.getByTestId('experienceType')
-        .clear()
-        .blur();
+
+      formPage.clearAndBlur('experienceType');
+
       formPage.shouldShowValidationError('Muss ausgefüllt sein', 'experienceType');
+
       formPage.typeAndBlur('experienceType', 'invalid entry');
+
       formPage.shouldShowValidationError('Ungültige Eingabe', 'experienceType');
     });
 
@@ -100,22 +96,47 @@ describe('Add experience Modal', () => {
         errors]) => {
         it(`shows error for invalid date in: ${fieldName}`, () => {
           formPage.submitButtonShouldBe('disabled');
+
           formPage.typeAndBlur(fieldName, 'invalid entry');
+
           errors.forEach((error) => {
             formPage.shouldShowValidationError(error, fieldName);
           });
+
           formPage.submitButtonShouldBe('disabled');
         });
       });
+
+    it('validates percent requirement and integer input', () => {
+      formPage.submitButtonShouldBe('disabled');
+
+      formPage.typeAndBlur('percent', '0.9');
+
+      formPage.shouldShowValidationError('Die Eingabe muss eine Ganzzahl sein', 'percent');
+
+      formPage.submitButtonShouldBe('disabled');
+    });
+
+    it('validates percent maximum value', () => {
+      formPage.submitButtonShouldBe('disabled');
+
+      formPage.typeAndBlur('percent', '130');
+
+      formPage.shouldShowValidationError('Die Eingabe muss maximal 120 sein', 'percent');
+
+      formPage.submitButtonShouldBe('disabled');
+    });
   });
 
   describe('Error Toasts', () => {
-    it('should show error when startDate is after endDate', () => {
+    beforeEach(() => {
       openExperienceModal();
-      formPage.type('experienceType', 'Pra');
-      cy.get('mat-option')
-        .contains('Praktikum')
-        .click();
+
+      formPage.submitButtonShouldBe('disabled');
+    });
+
+    it('should show error when startDate is after endDate', () => {
+      modalPage.selectAutoCompleteValue('experienceType', 'Pra', 'Praktikum');
 
       formPage.typeAndBlur('name', 'Software Engineer');
       formPage.typeAndBlur('employer', 'TechNova Solutions');
@@ -124,39 +145,10 @@ describe('Add experience Modal', () => {
       formPage.typeAndBlur('endDate', '10.09.2000');
 
       formPage.submitButtonShouldBe('enabled');
+
       formPage.save();
 
       formPage.shouldShowErrorToast('Von mit dem Wert 2000-10-10 muss jünger sein als 2000-09-10.');
-    });
-  });
-
-  describe('Validation Errors', () => {
-    beforeEach(() => {
-      openExperienceModal();
-    });
-
-    it('validates percent requirement and integer input', () => {
-      formPage.submitButtonShouldBe('disabled');
-
-      cy.getByTestId('percent')
-        .focus()
-        .blur();
-
-      formPage.typeAndBlur('percent', '0.9');
-      formPage.shouldShowValidationError('Die Eingabe muss eine Ganzzahl sein', 'percent');
-      formPage.submitButtonShouldBe('disabled');
-    });
-
-    it('validates percent requirement and integer input', () => {
-      formPage.submitButtonShouldBe('disabled');
-
-      cy.getByTestId('percent')
-        .focus()
-        .blur();
-
-      formPage.typeAndBlur('percent', '130');
-      formPage.shouldShowValidationError('Die Eingabe muss maximal 120 sein', 'percent');
-      formPage.submitButtonShouldBe('disabled');
     });
   });
 
@@ -170,6 +162,7 @@ describe('Add experience Modal', () => {
       it(`closes via ${buttonType}`, () => {
         cy.getByTestId(`close-modal-${buttonType}`)
           .click();
+
         modalPage.checkModalIsClosed();
       });
     });
