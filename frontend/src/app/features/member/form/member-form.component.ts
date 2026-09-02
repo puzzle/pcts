@@ -186,10 +186,8 @@ export class MemberFormComponent implements OnInit {
 
     if (this.isEdit()) {
       this.memberService.updateMember(this.memberForm.get('id')?.value, memberToSave)
-        .subscribe(() => {
-          this.router.navigate(['/member',
-            this.memberForm.getRawValue().id]);
-        });
+        .subscribe(() => this.router.navigate(['/member',
+          this.memberForm.getRawValue().id]));
     } else {
       this.memberService.addMember(memberToSave)
         .subscribe(() => {
