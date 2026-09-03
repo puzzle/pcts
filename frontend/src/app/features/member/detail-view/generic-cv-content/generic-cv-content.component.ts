@@ -1,4 +1,4 @@
-import { Component, effect, input } from '@angular/core';
+import { Component, effect, input, output } from '@angular/core';
 import { GenericTableDataSource } from '../../../../shared/generic-table/generic-table-data-source';
 import { GenericTableComponent } from '../../../../shared/generic-table/generic-table.component';
 import { ScopedTranslationPipe } from '../../../../shared/pipes/scoped-translation-pipe';
@@ -30,6 +30,8 @@ export class GenericCvContentComponent<T extends object> {
 
   crudBasePath = input<string>('');
 
+  rowClicked = output<T>();
+
   constructor() {
     effect(() => {
       const tableValue = this.table();
@@ -39,5 +41,9 @@ export class GenericCvContentComponent<T extends object> {
         tableValue.data = dataValue;
       }
     });
+  }
+
+  setRowClicked(row: T) {
+    this.rowClicked.emit(row);
   }
 }

@@ -18,6 +18,7 @@ import { MemberModel } from '../../member/member.model';
 import { DialogResult, StrictlyTypedDialog } from '../../../shared/modal/strictly-typed-dialog.helper';
 import { InputFieldComponent } from '../../../shared/input-field/input-field.component';
 import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
+import { PCTSDialogConfig } from '../../../shared/modal/pcts-modal.service';
 import { filterType } from '../../../shared/utils/typeFilter';
 
 @Component({
@@ -46,7 +47,7 @@ import { filterType } from '../../../shared/utils/typeFilter';
   templateUrl: './add-certificate.component.html',
   providers: [provideI18nPrefix('CERTIFICATE.FORM.ADD')]
 })
-export class AddCertificateComponent extends StrictlyTypedDialog<CertificateModel | undefined, DialogResult<CertificateModel>> implements OnInit {
+export class AddCertificateComponent extends StrictlyTypedDialog<PCTSDialogConfig<CertificateModel>, DialogResult<CertificateModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);
 
   protected readonly ModalSubmitMode = ModalSubmitMode;
@@ -69,6 +70,11 @@ export class AddCertificateComponent extends StrictlyTypedDialog<CertificateMode
 
   constructor() {
     super();
+    if (this.data) {
+      this.formGroup.patchValue({
+        ...this.data.model
+      });
+    }
   }
 
   ngOnInit(): void {
