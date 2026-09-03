@@ -3,7 +3,7 @@ import {
   computed,
   contentChildren,
   effect, inject, Injector,
-  input, runInInjectionContext,
+  input, output, runInInjectionContext,
   TemplateRef,
   viewChild
 } from '@angular/core';
@@ -64,6 +64,8 @@ export class GenericTableComponent<T extends object> {
   data = computed(() => this.dataSource().data);
 
   isExpanded = false;
+
+  rowClicked = output<T>();
 
   isFilterApplied = () => {
     return this.dataSource().filteredData.length !== this.dataSource().data.length || this.isExpanded;
