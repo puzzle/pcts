@@ -51,6 +51,7 @@
 
   <ng-container actions>
     <app-modal-actions
+      [submitModes]="this.data.submitOptions"
       [isValid]="formGroup.valid"
       (cancelAction)="onCancel()"
       (submitAction)="onSubmit($event)" />

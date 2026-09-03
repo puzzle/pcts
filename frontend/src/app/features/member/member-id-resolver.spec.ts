@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { ResolveFn } from '@angular/router';
-import { rolePointsResolver } from './role-points-resolver';
+import { memberIdResolver } from './member-id-resolver';
 
-describe('rolePointsResolver', () => {
-  const executeResolver: ResolveFn<boolean> = (...resolverParameters) => TestBed.runInInjectionContext(() => rolePointsResolver(...resolverParameters));
+describe('memberIdResolver', () => {
+  const executeResolver: ResolveFn<boolean> = (...resolverParameters) => TestBed.runInInjectionContext(() => memberIdResolver(...resolverParameters));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});

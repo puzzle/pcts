@@ -27,8 +27,11 @@ import {
   getLeadershipExperienceTable
 } from './cv/member-detail-cv-table-definition';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
-import { RolePointsModel } from './RolePointsModel';
-import { MemberCvOverviewModel } from '../member-cv-overview.model';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { MemberService } from '../member.service';
+import { DegreeOverviewModel } from './cv/degree-overview.model';
+import { CertificateOverviewModel } from './cv/certificate-overview.model';
+import { LeadershipExperienceOverviewModel } from './cv/leadership-experience-overview.model';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -50,6 +53,8 @@ import { MemberCvOverviewModel } from '../member-cv-overview.model';
 export class MemberDetailViewComponent {
   private readonly modalService = inject(PctsModalService);
 
+  private readonly memberService = inject(MemberService);
+
   private readonly router = inject(Router);
 
   private readonly route = inject(ActivatedRoute);
@@ -62,19 +67,27 @@ export class MemberDetailViewComponent {
 
   tabIndex = input.required<number>();
 
-  memberOverview = input.required<MemberCvOverviewModel>();
+  memberId = input.required<number>();
 
-  rolePoints = input<RolePointsModel[]>();
+  readonly memberResource = rxResource({
+    params: () => this.memberId(),
+    stream: ({ params: id }) => this.memberService.getMemberOverviewByMemberId(id)
+  });
 
-  rolePointList = computed(() => this.rolePoints() ?? []);
+  readonly rolePointsResource = rxResource({
+    params: () => this.memberId(),
+    stream: ({ params: id }) => this.memberService.getPointsForActiveCalculationsForRoleByMemberId(id)
+  });
 
-  degreeData = computed(() => this.memberOverview().cv.degrees ?? []);
+  rolePointList = computed(() => this.rolePointsResource.value() ?? []);
 
-  experienceData = computed(() => this.memberOverview().cv.experiences ?? []);
+  degreeData = computed(() => this.memberResource.value()?.cv.degrees ?? []);
 
-  certificateData = computed(() => this.memberOverview().cv.certificates ?? []);
+  experienceData = computed(() => this.memberResource.value()?.cv.experiences ?? []);
 
-  leadershipExperienceData = computed(() => this.memberOverview().cv.leadershipExperiences ?? []);
+  certificateData = computed(() => this.memberResource.value()?.cv.certificates ?? []);
+
+  leadershipExperienceData = computed(() => this.memberResource.value()?.cv.leadershipExperiences ?? []);
 
   readonly experienceTable = getExperienceTable();
 
@@ -84,20 +97,56 @@ export class MemberDetailViewComponent {
 
   readonly leadershipExperienceTable = getLeadershipExperienceTable();
 
-  openDegreeDialog = this.modalService.createDialogOpener<DegreeModel>(
-    AddDegreeComponent, this.member, (model: DegreeModel) => this.degreeService.addDegree(model), () => this.memberResource.reload(), [ModalSubmitMode.ENTER_ANOTHER,
+  addDegreeDialog = this.modalService.createDialogOpener<DegreeModel>(
+    AddDegreeComponent, (model: DegreeModel) => this.degreeService.addDegree(model), () => this.memberResource.reload(), [ModalSubmitMode.ENTER_ANOTHER,
       ModalSubmitMode.COPY]
   );
 
-  openCertificateDialog = this.modalService.createDialogOpener<CertificateModel>(
-    AddCertificateComponent, this.member, (model: CertificateModel) => this.certificateService.addCertificate(model), () => this.memberResource.reload(), [ModalSubmitMode.ENTER_ANOTHER,
+  addCertificateDialog = this.modalService.createDialogOpener<CertificateModel>(
+    AddCertificateComponent, (model: CertificateModel) => this.certificateService.addCertificate(model), () => this.memberResource.reload(), [ModalSubmitMode.ENTER_ANOTHER,
       ModalSubmitMode.COPY]
   );
 
-  openLeadershipExperienceDialog = this.modalService.createDialogOpener<LeadershipExperienceModel>(
-    AddLeadershipExperienceComponent, this.member, (model: LeadershipExperienceModel) => this.leadershipExperienceService.addLeadershipExperience(model), () => this.memberResource.reload(), [ModalSubmitMode.ENTER_ANOTHER,
+  addLeadershipExperienceDialog = this.modalService.createDialogOpener<LeadershipExperienceModel>(
+    AddLeadershipExperienceComponent, (model: LeadershipExperienceModel) => this.leadershipExperienceService.addLeadershipExperience(model), () => this.memberResource.reload(), [ModalSubmitMode.ENTER_ANOTHER,
       ModalSubmitMode.COPY]
   );
+
+  private createEditDegreeDialog = this.modalService.createDialogOpener<DegreeModel>(
+    AddDegreeComponent, (model: DegreeModel) => this.degreeService.updateDegree(model.id, model), () => this.memberResource.reload(), [ModalSubmitMode.ENTER_ANOTHER,
+      ModalSubmitMode.COPY]
+  );
+
+  editDegreeDialog(row: DegreeOverviewModel) {
+    this.degreeService.getDegreeById(row.id)
+      .subscribe((degree: DegreeModel) => {
+        this.createEditDegreeDialog(degree);
+      });
+  }
+
+  private createEditCertificateDialog = this.modalService.createDialogOpener<CertificateModel>(
+    AddCertificateComponent, (model: CertificateModel) => this.certificateService.updateCertificate(model.id, model), () => this.memberResource.reload(), [ModalSubmitMode.ENTER_ANOTHER,
+      ModalSubmitMode.COPY]
+  );
+
+  editCertificateDialog(row: CertificateOverviewModel) {
+    this.certificateService.getCertificateById(row.id)
+      .subscribe((certificate: CertificateModel) => {
+        this.createEditCertificateDialog(certificate);
+      });
+  }
+
+  private createEditLeadershipExperienceDialog = this.modalService.createDialogOpener<LeadershipExperienceModel>(
+    AddLeadershipExperienceComponent, (model: LeadershipExperienceModel) => this.leadershipExperienceService.updateLeadershipExperience(model.id, model), () => this.memberResource.reload(), [ModalSubmitMode.ENTER_ANOTHER,
+      ModalSubmitMode.COPY]
+  );
+
+  editLeadershipExperienceDialog(row: LeadershipExperienceOverviewModel) {
+    this.leadershipExperienceService.getLeadershipExperienceById(row.id)
+      .subscribe((leadershipExperience: LeadershipExperienceModel) => {
+        this.createEditLeadershipExperienceDialog(leadershipExperience);
+      });
+  }
 
   onTabIndexChange(index: number) {
     this.router.navigate([], {

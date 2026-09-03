@@ -35,7 +35,7 @@
     <tr
       mat-row
       *matRowDef="let row; columns: columnNames();"
-      (click)="this.dataSource().editModal(row);"
+      (click)="this.rowClicked.emit(row)"
       [class.cursor-pointer]="dataSource().shouldLink"
       data-testid="generic-table-row">
     </tr>
