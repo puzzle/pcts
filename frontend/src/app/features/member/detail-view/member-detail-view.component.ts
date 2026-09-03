@@ -1,7 +1,6 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MemberService } from '../member.service';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
 import { GenericCvContentComponent } from './generic-cv-content/generic-cv-content.component';
@@ -21,8 +20,6 @@ import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin
 import { DegreeModel } from '../../degrees/degree.model';
 import { AddDegreeComponent } from '../../degrees/add-degree/add-degree.component';
 import { DegreeService } from '../../degrees/degree.service';
-import { rxResource, toSignal } from '@angular/core/rxjs-interop';
-import { map } from 'rxjs';
 import {
   getCertificateTable,
   getDegreeTable,
@@ -30,6 +27,8 @@ import {
   getLeadershipExperienceTable
 } from './cv/member-detail-cv-table-definition';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
+import { RolePointsModel } from './RolePointsModel';
+import { MemberCvOverviewModel } from '../member-cv-overview.model';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -51,11 +50,9 @@ import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 export class MemberDetailViewComponent {
   private readonly modalService = inject(PctsModalService);
 
-  private readonly service = inject(MemberService);
+  private readonly router = inject(Router);
 
   private readonly route = inject(ActivatedRoute);
-
-  private readonly router = inject(Router);
 
   private readonly certificateService = inject(CertificateService);
 
@@ -63,31 +60,21 @@ export class MemberDetailViewComponent {
 
   private readonly leadershipExperienceService = inject(LeadershipExperienceService);
 
-  private readonly memberId = toSignal(this.route.paramMap.pipe(map((params) => Number(params.get('id')))), { initialValue: 0 });
-
-  readonly memberResource = rxResource({
-    params: () => this.memberId(),
-    stream: ({ params: id }) => this.service.getMemberOverviewByMemberId(Number(id))
-  });
-
-  readonly rolePointsResource = rxResource({
-    params: () => this.memberId(),
-    stream: ({ params: id }) => this.service.getPointsForActiveCalculationsForRoleByMemberId(Number(id))
-  });
-
-  readonly member = computed(() => this.memberResource.value()?.member ?? null);
-
-  readonly rolePointList = computed(() => this.rolePointsResource.value() ?? []);
-
-  degreeData = computed(() => this.memberResource.value()?.cv.degrees ?? []);
-
-  experienceData = computed(() => this.memberResource.value()?.cv.experiences ?? []);
-
-  certificateData = computed(() => this.memberResource.value()?.cv.certificates ?? []);
-
-  leadershipExperienceData = computed(() => this.memberResource.value()?.cv.leadershipExperiences ?? []);
-
   tabIndex = input.required<number>();
+
+  memberOverview = input.required<MemberCvOverviewModel>();
+
+  rolePoints = input<RolePointsModel[]>();
+
+  rolePointList = computed(() => this.rolePoints() ?? []);
+
+  degreeData = computed(() => this.memberOverview().cv.degrees ?? []);
+
+  experienceData = computed(() => this.memberOverview().cv.experiences ?? []);
+
+  certificateData = computed(() => this.memberOverview().cv.certificates ?? []);
+
+  leadershipExperienceData = computed(() => this.memberOverview().cv.leadershipExperiences ?? []);
 
   readonly experienceTable = getExperienceTable();
 
