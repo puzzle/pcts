@@ -4,7 +4,7 @@ import { MemberService } from '../../member.service';
 import { CrudButtonComponent } from '../../../../shared/crud-button/crud-button.component';
 import { ScopedTranslationPipe } from '../../../../shared/pipes/scoped-translation-pipe';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { GenericTableDataSourceService } from '../../../../shared/generic-table/generic-table-data-source.service';
+import { getCalculationTable } from '../cv/member-detail-cv-table-definition';
 
 @Component({
   selector: 'app-member-calculation-table',
@@ -15,8 +15,6 @@ import { GenericTableDataSourceService } from '../../../../shared/generic-table/
 })
 export class MemberCalculationTableComponent {
   private readonly memberService = inject(MemberService);
-
-  private readonly genericTableDataSourceService = inject(GenericTableDataSourceService);
 
   memberId = input.required<number>();
 
@@ -32,7 +30,7 @@ export class MemberCalculationTableComponent {
   });
 
   calculationTable = computed(() => {
-    const table = this.genericTableDataSourceService.getCalculationTable();
+    const table = getCalculationTable();
     table.data = this.calculationsResource.value();
     return table;
   });
