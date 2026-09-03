@@ -7,7 +7,7 @@ import { provideI18nPrefix } from './shared/i18n-prefix.provider';
 import { MemberDetailViewComponent } from './features/member/detail-view/member-detail-view.component';
 import { tabResolver } from './features/member/detail-view/tab-resolver';
 import { authGuard } from './core/auth/guard/auth.guard';
-import { rolePointsResolver } from './features/calculations/role-points-resolver';
+import { memberIdResolver } from './features/member/member-id-resolver';
 
 export const routes: Routes = [{
   path: '',
@@ -34,13 +34,11 @@ export const routes: Routes = [{
     },
     {
       path: ':id',
-      runGuardsAndResolvers: 'always',
       component: MemberDetailViewComponent,
       canActivate: [authGuard('user')],
       resolve:
         { member: memberDataResolver,
-          memberOverview: memberOverviewResolver,
-          rolePoints: rolePointsResolver,
+          memberId: memberIdResolver,
           tabIndex: tabResolver }
     },
     {

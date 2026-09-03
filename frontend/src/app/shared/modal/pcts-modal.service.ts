@@ -68,7 +68,6 @@ export class PctsModalService {
 
   public createDialogOpener = <T extends { id: number }>(
     component: Type<StrictlyTypedDialog<PCTSDialogConfig<T>, DialogResult<T>>>,
-    model: T,
     onSubmitMethod: (model: T) => Observable<T>,
     onSuccess: () => void,
     submitOptions: ModalSubmitMode[]
@@ -82,7 +81,7 @@ export class PctsModalService {
       this.openModal(component, { data: config })
         .afterSubmitted
         // todo evaluate if we need to filter here
-        .pipe(takeUntilDestroyed(this.destroyRef), filter(() => !!model.id), concatMap(({ modalSubmitMode, submittedModel }: { modalSubmitMode: ModalSubmitMode;
+        .pipe(takeUntilDestroyed(this.destroyRef), filter(() => !!m?.id), concatMap(({ modalSubmitMode, submittedModel }: { modalSubmitMode: ModalSubmitMode;
           submittedModel: T; }) => {
           switch (modalSubmitMode) {
             case ModalSubmitMode.SAVE:
