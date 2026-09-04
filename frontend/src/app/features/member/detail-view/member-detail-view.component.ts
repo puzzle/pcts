@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, input, OnInit, signal, viewChild, WritableSignal } from '@angular/core';
+import { Component, DestroyRef, effect, inject, input, OnInit, signal, viewChild, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberService } from '../member.service';
@@ -98,6 +98,12 @@ export class MemberDetailViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.getData();
+    effect(() => {
+      const tabGroup = this.tabGroup();
+      if (tabGroup) {
+        tabGroup.selectedIndex = this.tabIndex();
+      }
+    });
   }
 
   getData() {
@@ -122,16 +128,8 @@ export class MemberDetailViewComponent implements OnInit {
       .subscribe({
         next: (rolePoints) => {
           this.rolePointList.set(rolePoints);
-          this.setTabGroup();
         }
       });
-  }
-
-  private setTabGroup() {
-    const tabGroup = this.tabGroup();
-    if (tabGroup) {
-      tabGroup.selectedIndex = this.tabIndex();
-    }
   }
 
   private readonly createDialogOpener = <T extends { member?: MemberModel }>(
