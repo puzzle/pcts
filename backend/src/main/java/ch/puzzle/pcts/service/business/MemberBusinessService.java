@@ -67,7 +67,6 @@ public class MemberBusinessService extends BusinessBase<Member> {
 
     public List<Calculation> getAllActiveCalculationsByMemberId(Long memberId) {
         Member member = getById(memberId);
-
         return calculationBusinessService.getAllByMemberAndState(member, CalculationState.ACTIVE);
     }
 
