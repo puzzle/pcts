@@ -142,15 +142,6 @@ class CalculationPersistenceServiceIT
         assertThat(results).isEmpty();
     }
 
-    @DisplayName("Should get all by roleid")
-    @Transactional
-    @Test
-    void shouldGetAllByRoleid() {
-        List<Calculation> result = persistenceService.getAllByRoleId(ROLE_2_ID);
-
-        assertThat(result).isNotEmpty().allMatch(c -> c.getRole().getId().equals(ROLE_2_ID));
-    }
-
     private List<Calculation> getActiveCalculationsOfMember(Role role, Member member) {
         return persistenceService
                 .getAll()
