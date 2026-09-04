@@ -67,7 +67,4 @@ public class CalculationPersistenceService extends PersistenceBase<Calculation, 
         return calculationRepository.findAllByMemberAndRole(member, role);
     }
 
-    public List<Calculation> getAllByRoleId(Long roleId) {
-        return calculationRepository.findAllByRoleId(roleId);
-    }
 }

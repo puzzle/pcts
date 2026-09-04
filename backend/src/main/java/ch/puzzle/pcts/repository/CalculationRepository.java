@@ -17,6 +17,4 @@ public interface CalculationRepository extends JpaRepository<Calculation, Long> 
     List<Calculation> findAllByMemberAndState(Member member, CalculationState state);
 
     List<Calculation> findAllByMemberAndRole(Member member, Role role);
-
-    List<Calculation> findAllByRoleId(Long roleId);
 }
