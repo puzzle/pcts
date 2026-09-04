@@ -12,7 +12,7 @@ class ModalPage extends Page {
   }
 
   selectAutoCompleteValue = (modelName: string, value: string) => {
-    formPage.type(`${modelName}`, modelName.slice(0, 3));
+    formPage.type(`${modelName}`, value.slice(0, 3));
     cy.get('mat-option')
       .contains(value)
       .click();

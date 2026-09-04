@@ -37,7 +37,7 @@ describe('Add experience Modal', () => {
       modalPage.modalTitle()
         .should('include.text', 'Berufs- und Lebenserfahrung hinzufügen');
 
-      modalPage.selectAutoCompleteValue('experienceType', 'Pra', 'Praktikum');
+      modalPage.selectAutoCompleteValue('experienceType', 'Praktikum',);
 
       formPage.typeAndBlur('startDate', '10.10.2023');
       formPage.typeAndBlur('endDate', '10.12.2027');
@@ -136,7 +136,7 @@ describe('Add experience Modal', () => {
     });
 
     it('should show error when startDate is after endDate', () => {
-      modalPage.selectAutoCompleteValue('experienceType', 'Pra', 'Praktikum');
+      modalPage.selectAutoCompleteValue('experienceType', 'Praktikum');
 
       formPage.typeAndBlur('name', 'Software Engineer');
       formPage.typeAndBlur('employer', 'TechNova Solutions');
