@@ -1,10 +1,10 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { GenericTableComponent } from '../../../../shared/generic-table/generic-table.component';
 import { MemberService } from '../../member.service';
-import { getCalculationTable } from '../cv/member-detail-cv-table-definition';
 import { CrudButtonComponent } from '../../../../shared/crud-button/crud-button.component';
 import { ScopedTranslationPipe } from '../../../../shared/pipes/scoped-translation-pipe';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { getCalculationTable } from '../cv/member-detail-cv-table-definition';
 
 @Component({
   selector: 'app-member-calculation-table',

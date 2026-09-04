@@ -16,6 +16,7 @@ import { LeadershipExperienceTypeModel } from '../leadership-experiences-type/le
 import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
+import { PCTSDialogConfig } from '../../../shared/modal/pcts-modal.service';
 
 @Component({
   selector: 'app-add-leadership-experience.component',
@@ -35,7 +36,7 @@ import { ModalActionsComponent } from '../../../shared/modal/modal-actions.compo
   templateUrl: './add-leadership-experience.component.html',
   providers: [provideI18nPrefix('LEADERSHIP_EXPERIENCE.FORM.ADD')]
 })
-export class AddLeadershipExperienceComponent extends StrictlyTypedDialog<LeadershipExperienceModel | undefined, DialogResult<LeadershipExperienceModel>> implements OnInit {
+export class AddLeadershipExperienceComponent extends StrictlyTypedDialog<PCTSDialogConfig<LeadershipExperienceModel>, DialogResult<LeadershipExperienceModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);
 
   protected readonly ModalSubmitMode = ModalSubmitMode;
@@ -57,7 +58,7 @@ export class AddLeadershipExperienceComponent extends StrictlyTypedDialog<Leader
     super();
     if (this.data) {
       this.formGroup.patchValue({
-        ...this.data
+        ...this.data.model
       });
     }
   }

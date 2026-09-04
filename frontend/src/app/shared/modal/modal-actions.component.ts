@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, input, Input, Output } from '@angular/core';
 import { ModalSubmitMode } from '../enum/modal-submit-mode.enum';
 import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
 import { MenuButtonComponent } from '../menu-button/menu-button.component';
@@ -17,6 +17,8 @@ export class ModalActionsComponent {
   @Input() cancelKey = 'BUTTONS.CANCEL';
 
   @Input() submitKey = 'BUTTONS.ACTION';
+
+  submitModes = input.required<ModalSubmitMode[]>();
 
   @Output() cancelAction = new EventEmitter<void>();
 

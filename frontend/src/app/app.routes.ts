@@ -7,6 +7,7 @@ import { provideI18nPrefix } from './shared/i18n-prefix.provider';
 import { MemberDetailViewComponent } from './features/member/detail-view/member-detail-view.component';
 import { tabResolver } from './features/member/detail-view/tab-resolver';
 import { authGuard } from './core/auth/guard/auth.guard';
+import { memberIdResolver } from './features/member/member-id-resolver';
 
 export const routes: Routes = [{
   path: '',
@@ -37,6 +38,7 @@ export const routes: Routes = [{
       canActivate: [authGuard('user')],
       resolve:
         { member: memberDataResolver,
+          memberId: memberIdResolver,
           tabIndex: tabResolver }
     },
     {

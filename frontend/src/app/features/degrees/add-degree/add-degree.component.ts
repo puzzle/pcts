@@ -20,6 +20,7 @@ import { DegreeTypeService } from '../degree-type/degree-type.service';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
 import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
+import { PCTSDialogConfig } from '../../../shared/modal/pcts-modal.service';
 
 @Component({
   selector: 'app-add-degree',
@@ -48,7 +49,7 @@ import { ModalActionsComponent } from '../../../shared/modal/modal-actions.compo
   templateUrl: './add-degree.component.html',
   providers: [provideI18nPrefix('DEGREE.FORM.ADD')]
 })
-export class AddDegreeComponent extends StrictlyTypedDialog<DegreeModel | undefined, DialogResult<DegreeModel>> implements OnInit {
+export class AddDegreeComponent extends StrictlyTypedDialog<PCTSDialogConfig<DegreeModel>, DialogResult<DegreeModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);
 
   private readonly degreeTypeService = inject(DegreeTypeService);
@@ -77,7 +78,7 @@ export class AddDegreeComponent extends StrictlyTypedDialog<DegreeModel | undefi
     super();
     if (this.data) {
       this.formGroup.patchValue({
-        ...this.data
+        ...this.data.model
       });
     }
   }
