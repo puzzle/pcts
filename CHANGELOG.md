@@ -1,5 +1,51 @@
 # Changelog
 
+## [0.11.0](https://github.com/puzzle/pcts/compare/0.10.0...0.11.0) (2026-09-04)
+
+
+### Features
+
+* add livenessProbe dependency for migration tool and enable it [#796](https://github.com/puzzle/pcts/issues/796) ([a120187](https://github.com/puzzle/pcts/commit/a120187540f13e89637e8deb0c4e574d12cb7273))
+
+
+### Bug Fixes
+
+* modal buttons are unstyled and member view is not updated [#814](https://github.com/puzzle/pcts/issues/814) [#797](https://github.com/puzzle/pcts/issues/797) ([9ef21b4](https://github.com/puzzle/pcts/commit/9ef21b4f81e27035ca89e0fbef9d7f66c178ae40))
+
+
+### Miscellaneous Chores
+
+* add DoD to template ([3b84ca5](https://github.com/puzzle/pcts/commit/3b84ca5f468fac72fde36897c2e27387c9b1b851))
+* add livenessProbe dependency for migration tool and enable itl [#796](https://github.com/puzzle/pcts/issues/796) ([a120187](https://github.com/puzzle/pcts/commit/a120187540f13e89637e8deb0c4e574d12cb7273))
+* **deps:** update actions/setup-java action to v6 ([#854](https://github.com/puzzle/pcts/issues/854)) ([4e24ed7](https://github.com/puzzle/pcts/commit/4e24ed7a3fd9be6f4799b91b820776cde6697934))
+* **deps:** update all devdependencies (minor and patch) ([#826](https://github.com/puzzle/pcts/issues/826)) ([7480754](https://github.com/puzzle/pcts/commit/7480754662c0e9b304f4caa6cf8bb5267fb8dca3))
+* **deps:** update all devdependencies (minor and patch) ([#837](https://github.com/puzzle/pcts/issues/837)) ([9c7b733](https://github.com/puzzle/pcts/commit/9c7b7337f0680a4115cc1b7814d568201b7ca799))
+* **deps:** update all devdependencies (minor and patch) ([#845](https://github.com/puzzle/pcts/issues/845)) ([867a3b7](https://github.com/puzzle/pcts/commit/867a3b720558f429ac5c90a4b32dbb972e92187d))
+* **deps:** update all devdependencies (minor and patch) ([#858](https://github.com/puzzle/pcts/issues/858)) ([891a069](https://github.com/puzzle/pcts/commit/891a06912064f1790436ededa406429b0ae29b4b))
+* **deps:** update all devdependencies (minor and patch) to v30.5.0 ([#851](https://github.com/puzzle/pcts/issues/851)) ([c91feaa](https://github.com/puzzle/pcts/commit/c91feaa4fa4e8c349034c22f1997cb678c124c69))
+* **deps:** update all eslint packages ([#838](https://github.com/puzzle/pcts/issues/838)) ([738057f](https://github.com/puzzle/pcts/commit/738057f62d3e48d3265bfddef30cbd92f89c5b71))
+* **deps:** update angular monorepo to v22.1.3 ([#827](https://github.com/puzzle/pcts/issues/827)) ([2c6e03b](https://github.com/puzzle/pcts/commit/2c6e03b41e283346c93b4295e8f7ed684c6e1be7))
+* **deps:** update angular monorepo to v22.1.4 ([#846](https://github.com/puzzle/pcts/issues/846)) ([1eabfb6](https://github.com/puzzle/pcts/commit/1eabfb608306de43ca0ae0dcb7102a4c70fb36b1))
+* **deps:** update angularmaterial monorepo to v22.1.3 ([#828](https://github.com/puzzle/pcts/issues/828)) ([2070823](https://github.com/puzzle/pcts/commit/2070823d08b5c553c78fecbcb6199ced59e22c1e))
+* **deps:** update angularmaterial monorepo to v22.1.4 ([#843](https://github.com/puzzle/pcts/issues/843)) ([3827a5f](https://github.com/puzzle/pcts/commit/3827a5f35d5bd75befd283546e8aaa200caf9c6b))
+* **deps:** update cypress-io/github-action action to v7.4.3 ([#833](https://github.com/puzzle/pcts/issues/833)) ([bc7f418](https://github.com/puzzle/pcts/commit/bc7f4187d65d811b5191650d4b4a849471c7d81b))
+* **deps:** update dependency com.diffplug.spotless:spotless-maven-plugin to v3.10.0 ([#822](https://github.com/puzzle/pcts/issues/822)) ([0df9e55](https://github.com/puzzle/pcts/commit/0df9e554b95dbbb692bcdf87ec949b0b5c5ca774))
+* **deps:** update dependency com.diffplug.spotless:spotless-maven-plugin to v3.10.1 ([#850](https://github.com/puzzle/pcts/issues/850)) ([ac0b848](https://github.com/puzzle/pcts/commit/ac0b84894be9dcabedb01f07c2371447c8551b2f))
+* **deps:** update dependency jasmine-core to v7 ([7ad4ec9](https://github.com/puzzle/pcts/commit/7ad4ec9e2bf2188804ee53313ee37149ccac6cf5))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v13.4.0 ([#844](https://github.com/puzzle/pcts/issues/844)) ([7f82490](https://github.com/puzzle/pcts/commit/7f82490bea9537053054433d592c1035d8627e4c))
+* **deps:** update dependency org.openapitools:openapi-generator-maven-plugin to v7.25.0 ([#842](https://github.com/puzzle/pcts/issues/842)) ([16253ce](https://github.com/puzzle/pcts/commit/16253ce1a11141534e7cf9d8ba759de8f689e25e))
+* **deps:** update dependency org.springdoc:springdoc-openapi-starter-webmvc-ui to v3 ([d94f8f3](https://github.com/puzzle/pcts/commit/d94f8f39087f184af6b34a9fcdc30158d23643e6))
+* **deps:** update dependency org.springframework.ai:spring-ai-bom to v2.0.1 ([#834](https://github.com/puzzle/pcts/issues/834)) ([6e32d9d](https://github.com/puzzle/pcts/commit/6e32d9dc6eedd266570cb53141cc37cc865fc59c))
+* **deps:** update eclipse-temurin docker tag to v25.0.4_7-jre-alpine ([c31e69d](https://github.com/puzzle/pcts/commit/c31e69dc5e7151ccb8a9cfd6cc0c2ee3f3cdeb8f))
+* **deps:** update eclipse-temurin docker tag to v25.0.4_7-jre-alpine ([#835](https://github.com/puzzle/pcts/issues/835)) ([f2d49fc](https://github.com/puzzle/pcts/commit/f2d49fc6c902bfb4bf21d8760431a252decb010c))
+* **deps:** update node.js to v24.20.0 ([#853](https://github.com/puzzle/pcts/issues/853)) ([c446f55](https://github.com/puzzle/pcts/commit/c446f557f15de93591bccf874e5d651c76ce27c9))
+* **deps:** update pnpm to v11.25.0 ([#855](https://github.com/puzzle/pcts/issues/855)) ([ad56b7d](https://github.com/puzzle/pcts/commit/ad56b7dbc72bacb3c016394c6a4c5df6b2881977))
+* **deps:** update spring boot to v4.1.1 ([#836](https://github.com/puzzle/pcts/issues/836)) ([717f09d](https://github.com/puzzle/pcts/commit/717f09d9e298ba81f57a18f0120ac11678dc2816))
+* dockerize migration tool  [#795](https://github.com/puzzle/pcts/issues/795) ([c8638fa](https://github.com/puzzle/pcts/commit/c8638fa0284ab2bdd2cd9df457a2c89f5ad7197a))
+* execute tests also for forks ([8af7790](https://github.com/puzzle/pcts/commit/8af77900d334f5359708666bede1b101d4f28f40))
+* update properties for migration tool deployment [#796](https://github.com/puzzle/pcts/issues/796) ([e739239](https://github.com/puzzle/pcts/commit/e739239716403e48dc2d59f3dec4d0fc78716757))
+* use JAVA_DISTRIBUTION variable ([c469eda](https://github.com/puzzle/pcts/commit/c469edac2e16ff3eb0690048117048fc3bc22843))
+
 ## [0.10.0](https://github.com/puzzle/pcts/compare/0.9.0...0.10.0) (2026-08-21)
 
 
