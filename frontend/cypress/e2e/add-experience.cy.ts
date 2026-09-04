@@ -37,7 +37,7 @@ describe('Add experience Modal', () => {
       modalPage.modalTitle()
         .should('include.text', 'Berufs- und Lebenserfahrung hinzufügen');
 
-      modalPage.selectAutoCompleteValue('experienceType', 'Praktikum',);
+      modalPage.selectAutoCompleteValue('experienceType', 'Praktikum');
 
       formPage.typeAndBlur('startDate', '10.10.2023');
       formPage.typeAndBlur('endDate', '10.12.2027');
