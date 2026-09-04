@@ -4,11 +4,9 @@ import ch.puzzle.pcts.dto.calculation.CalculationDto;
 import ch.puzzle.pcts.dto.calculation.CalculationInputDto;
 import ch.puzzle.pcts.dto.calculation.RolePointDto;
 import ch.puzzle.pcts.model.calculation.Calculation;
-import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import ch.puzzle.pcts.service.business.RoleBusinessService;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 import org.springframework.stereotype.Component;
@@ -82,23 +80,5 @@ public class CalculationMapper {
                 .withLeadershipExperienceCalculations(this.leadershipExperienceCalculationMapper
                         .fromDto(dto.leadershipExperienceCalculations()))
                 .build();
-    }
-
-    public List<RolePointDto> mergeListsToUniqueRoleEntriesOnly(List<Calculation> models, Set<Role> roles) {
-        List<RolePointDto> rolePointDtos = this.toRolePointDto(models);
-
-        HashMap<Role, BigDecimal> rolePointDtoMap = new HashMap<>();
-
-        roles.forEach(role -> rolePointDtoMap.put(role, BigDecimal.ZERO));
-
-        rolePointDtos.forEach(rolePointDto -> rolePointDtoMap.put(rolePointDto.role(), rolePointDto.points()));
-
-        List<RolePointDto> mergedList = new ArrayList<>();
-
-        for (Map.Entry<Role, BigDecimal> entry : rolePointDtoMap.entrySet()) {
-            mergedList.add(new RolePointDto(entry.getKey(), entry.getValue()));
-        }
-
-        return mergedList;
     }
 }
