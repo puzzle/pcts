@@ -3,9 +3,7 @@ package ch.puzzle.pcts.service.business;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.persistence.RolePersistenceService;
 import ch.puzzle.pcts.service.validation.RoleValidationService;
-
 import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 @Service
