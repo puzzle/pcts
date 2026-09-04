@@ -4,13 +4,11 @@ import ch.puzzle.pcts.dto.calculation.CalculationDto;
 import ch.puzzle.pcts.dto.calculation.RolePointDto;
 import ch.puzzle.pcts.dto.member.MemberDto;
 import ch.puzzle.pcts.dto.member.MemberInputDto;
-import ch.puzzle.pcts.dto.role.RoleDto;
 import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.mapper.MemberMapper;
 import ch.puzzle.pcts.mapper.RoleMapper;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.member.Member;
-import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.security.annotation.IsAdmin;
 import ch.puzzle.pcts.security.annotation.IsAdminOrOwner;
 import ch.puzzle.pcts.security.annotation.IsAuthenticated;
@@ -23,7 +21,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
@@ -124,16 +121,5 @@ public class MemberController {
     public ResponseEntity<MemberDto> getMyself() {
         Member member = service.getLoggedInMember();
         return ResponseEntity.ok(mapper.toDto(member));
-    }
-
-    @Operation(summary = "Get all roles by member id")
-    @ApiResponse(responseCode = "200", description = "The roles which this member fulfills", content = {
-            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = RoleDto.class))) })
-
-    @GetMapping("{memberId}/roles")
-    @IsAuthenticated
-    public ResponseEntity<Set<RoleDto>> getAllRoles(@PathVariable Long memberId) {
-        Set<Role> roles = service.getAllRolesByMemberId(memberId);
-        return ResponseEntity.ok(roleMapper.toDto(roles));
     }
 }
