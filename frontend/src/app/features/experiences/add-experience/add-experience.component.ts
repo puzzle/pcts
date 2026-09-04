@@ -8,7 +8,6 @@ import { MatError, MatFormField, MatInput, MatLabel, MatSuffix } from '@angular/
 import { PctsFormErrorDirective } from '../../../shared/pcts-form-error/pcts-form-error.directive';
 import { PctsFormLabelDirective } from '../../../shared/pcts-form-label/pcts-form-label.directive';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { DialogResult, StrictlyTypedDialog } from '../../../shared/modal/strictly-typed-dialog.helper';
 import { MemberModel } from '../../member/member.model';
 import { isInteger, isValueInListSignal } from '../../../shared/form/form-validators';
@@ -16,7 +15,6 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import { ExperienceModel } from '../experience.model';
 import { ExperienceTypeModel } from '../experience-type/experience-type.model';
-import { MatCheckbox } from '@angular/material/checkbox';
 import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
 import { ExperienceTypeService } from '../experience-type/experience-type.service';
 import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
@@ -41,8 +39,6 @@ import { ModalActionsComponent } from '../../../shared/modal/modal-actions.compo
     PctsFormErrorDirective,
     PctsFormLabelDirective,
     ReactiveFormsModule,
-    ScopedTranslationPipe,
-    MatCheckbox,
     ModalActionsComponent
   ],
 
@@ -107,28 +103,22 @@ export class AddExperienceComponent extends StrictlyTypedDialog<ExperienceModel 
     return experienceType?.name ?? '';
   };
 
-  protected experienceTypeControlSignal = toSignal(this.formGroup.get('experienceType')!.valueChanges, {
-    initialValue: this.formGroup.get('experienceType')!.value
-  });
+  protected experienceTypeControlSignal = toSignal(this.formGroup.get('experienceType')!.valueChanges, { initialValue: this.formGroup.get('experienceType')!.value });
 
   protected experienceTypeFilteredOptions = computed(() => {
-    const value = this.experienceTypeControlSignal() ?? '';
-    return this.filterExperienceType(value);
+    const model = this.experienceTypeControlSignal() ?? '';
+    const value = typeof model === 'string' ? model : model.name;
+    return this.filterExperienceType(value, this.experienceTypeOptions());
   });
 
-  filterExperienceType(value: ExperienceTypeModel | string | null): ExperienceTypeModel[] {
-    if (value === null || value === undefined || value === '') {
-      return this.experienceTypeOptions();
+  filterExperienceType(value: string, experienceTypeOptions: ExperienceTypeModel[]): ExperienceTypeModel[] {
+    if (!value) {
+      return experienceTypeOptions;
     }
 
-    const filterValue = (typeof value === 'string' ? value : value.name).toLowerCase();
-
-    if (filterValue === '') {
-      return this.experienceTypeOptions();
-    }
-    return this.experienceTypeOptions()
+    return experienceTypeOptions
       .filter((option) => option.name.toLowerCase()
-        .includes(filterValue));
+        .includes(value.toLowerCase()));
   }
 
   onSubmit(submitMod: ModalSubmitMode) {
@@ -138,5 +128,3 @@ export class AddExperienceComponent extends StrictlyTypedDialog<ExperienceModel 
     });
   }
 }
-
-
