@@ -20,10 +20,6 @@ public class RoleMapper {
         return models.stream().map(this::toDto).collect(Collectors.toSet());
     }
 
-    public Set<Role> fromDto(Set<RoleDto> dtos) {
-        return dtos.stream().map(this::fromDto).collect(Collectors.toSet());
-    }
-
     public RoleDto toDto(Role model) {
         return new RoleDto(model.getId(), model.getName(), model.getIsManagement());
     }
