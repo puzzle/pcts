@@ -37,8 +37,8 @@ class CalculationPersistenceServiceIT
     Calculation getModel() {
         return Calculation.Builder
                 .builder()
-                .withMember(MEMBER_1)
-                .withRole(ROLE_1)
+                .withMember(MEMBER_2)
+                .withRole(ROLE_2)
                 .withState(CalculationState.ACTIVE)
                 .withPublicationDate(LocalDate.of(2021, 12, 9))
                 .withPublicizedBy("Ldap User")

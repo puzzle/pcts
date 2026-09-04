@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import ch.puzzle.pcts.dto.role.RoleDto;
 import ch.puzzle.pcts.model.role.Role;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,9 +19,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = RoleMapper.class)
 class RoleMapperTest {
-    private final List<Role> models = List.of(ROLE_3, ROLE_2);
+    private final List<Role> modelList = List.of(ROLE_3, ROLE_2);
 
-    private final List<RoleDto> dtos = List.of(ROLE_3_DTO, ROLE_2_DTO);
+    private final Set<Role> modelSet = Set.of(ROLE_3, ROLE_2);
+
+    private final List<RoleDto> dtoList = List.of(ROLE_3_DTO, ROLE_2_DTO);
+
+    private final Set<RoleDto> dtoSet = Set.of(ROLE_3_DTO, ROLE_2_DTO);
 
     @Autowired
     private RoleMapper mapper;
@@ -39,17 +44,17 @@ class RoleMapperTest {
         assertEquals(ROLE_2_DTO, result);
     }
 
-    @DisplayName("Should return list of roles")
-    @Test
-    void shouldGetListOfRoles() {
-        List<Role> result = mapper.fromDto(dtos);
-        assertEquals(models, result);
-    }
-
     @DisplayName("Should return list of role dtos")
     @Test
     void shouldGetListOfRoleDtos() {
-        List<RoleDto> result = mapper.toDto(models);
-        assertEquals(dtos, result);
+        List<RoleDto> result = mapper.toDto(modelList);
+        assertEquals(dtoList, result);
+    }
+
+    @DisplayName("Should map roles to dtos")
+    @Test
+    void shouldMapRolesToDto() {
+        Set<RoleDto> result = mapper.toDto(modelSet);
+        assertEquals(dtoSet, result);
     }
 }

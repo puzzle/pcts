@@ -5,7 +5,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { provideTranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
-import { certificate1, leadershipExperience1, memberOverview1, rolePointsList1 } from '../../../shared/test/test-data';
+import {
+  certificate1,
+  leadershipExperience1,
+  memberOverview1, roleList2,
+  rolePointsList1
+} from '../../../shared/test/test-data';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
 import { PctsModalService } from '../../../shared/modal/pcts-modal.service';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
@@ -28,7 +33,8 @@ describe('MemberDetailViewComponent (Jest)', () => {
     memberServiceMock = {
       getMemberOverviewByMemberId: jest.fn(),
       getPointsForActiveCalculationsForRoleByMemberId: jest.fn(),
-      getCalculationsByMemberIdAndOptionalRoleId: jest.fn()
+      getCalculationsByMemberIdAndOptionalRoleId: jest.fn(),
+      getRolesByMemberId: jest.fn()
     } as Partial<jest.Mocked<MemberService>>;
 
     authServiceMock = {
@@ -94,6 +100,7 @@ describe('MemberDetailViewComponent (Jest)', () => {
     memberServiceMock.getCalculationsByMemberIdAndOptionalRoleId?.mockReturnValue(of([]));
 
     memberServiceMock.getPointsForActiveCalculationsForRoleByMemberId?.mockReturnValue(of(rolePointsList1));
+    memberServiceMock.getRolesByMemberId?.mockReturnValue(of(roleList2));
     fixture.detectChanges();
     return {
       fixture,

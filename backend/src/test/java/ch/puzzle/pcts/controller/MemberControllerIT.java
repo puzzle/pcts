@@ -18,8 +18,10 @@ import ch.puzzle.pcts.dto.calculation.RolePointDto;
 import ch.puzzle.pcts.dto.member.MemberInputDto;
 import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.mapper.MemberMapper;
+import ch.puzzle.pcts.mapper.RoleMapper;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.service.business.RoleBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -38,6 +40,12 @@ class MemberControllerIT extends ControllerITBase {
 
     @MockitoBean
     private CalculationMapper calculationMapper;
+
+    @MockitoBean
+    private RoleBusinessService roleBusinessService;
+
+    @MockitoBean
+    private RoleMapper roleMapper;
 
     @Autowired
     private MockMvc mvc;
@@ -211,8 +219,8 @@ class MemberControllerIT extends ControllerITBase {
         RolePointDto rolePointDto = mock(RolePointDto.class);
         Calculation calculation = mock(Calculation.class);
 
-        when(memberBusinessService.getAllActiveCalculationsByMemberId(memberId)).thenReturn(List.of(calculation));
-        when(calculationMapper.toRolePointDto(List.of(calculation))).thenReturn(List.of(rolePointDto));
+        doReturn(List.of(calculation)).when(memberBusinessService).getAllActiveCalculationsByMemberId(memberId);
+        doReturn(List.of(rolePointDto)).when(memberBusinessService).mergeListsToUniqueRoleEntriesOnly(memberId);
 
         mvc
                 .perform(get(BASEURL + "/" + memberId + "/role-points")
@@ -222,8 +230,7 @@ class MemberControllerIT extends ControllerITBase {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1));
 
-        verify(memberBusinessService, times(1)).getAllActiveCalculationsByMemberId(memberId);
-        verify(calculationMapper, times(1)).toRolePointDto(List.of(calculation));
+        verify(memberBusinessService, times(1)).mergeListsToUniqueRoleEntriesOnly(memberId);
     }
 
     @DisplayName("Should successfully get myself as a member")

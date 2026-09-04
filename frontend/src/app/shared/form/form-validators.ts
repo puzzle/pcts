@@ -73,3 +73,22 @@ export function isValueInListSignal<T>(validOptionsSignal: Signal<T[]>, comparat
     return isValidOption ? null : { invalid_entry: true };
   };
 }
+
+export function isListInListSignal<T>(validOptionsSignal: Signal<T[]>, comparator: (a: T, b: T[]) => boolean = (a, b) => b.includes(a)): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const values: any[] = control.value;
+    const validOptions: T[] = validOptionsSignal();
+    if (!values) {
+      return null;
+    }
+
+    if (values.length === 0) {
+      return null;
+    }
+
+
+    const isValidOption: boolean = values.some((option) => comparator(option, validOptions));
+
+    return isValidOption ? null : { invalid_entry: true };
+  };
+}

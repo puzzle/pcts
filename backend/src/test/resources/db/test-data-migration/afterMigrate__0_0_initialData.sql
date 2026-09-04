@@ -148,3 +148,9 @@ INSERT INTO leadership_experience_calculation(calculation_id, leadership_experie
 VALUES
     (1, 1),
     (1, 2);
+
+INSERT INTO member_role(member_id, role_id)
+VALUES
+    (1, 1),
+    (2, 2),
+    (3, 3);

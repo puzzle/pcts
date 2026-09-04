@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -271,5 +272,15 @@ class MemberBusinessServiceTest
         assertEquals(member, result);
         verify(jwtService).getLdapName();
         verify(persistenceService).getByLdapName(ldapName);
+    }
+
+    @DisplayName("Should get all roles by member id")
+    @Test
+    void shouldGetAllRolesByMemberId() {
+        when(businessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
+
+        Set<Role> result = businessService.getAllRolesByMemberId(MEMBER_1_ID);
+
+        assertEquals(MEMBER_1.getRoles(), result);
     }
 }

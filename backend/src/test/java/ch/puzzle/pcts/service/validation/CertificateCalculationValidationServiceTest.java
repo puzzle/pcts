@@ -17,6 +17,7 @@ import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -138,6 +139,7 @@ class CertificateCalculationValidationServiceTest
         member.setLastName(lastName);
         member.setAbbreviation("AA");
         member.setDateOfHire(LocalDate.EPOCH);
+        member.setRoles(Set.of());
         member
                 .setOrganisationUnit(OrganisationUnit.Builder
                         .builder()

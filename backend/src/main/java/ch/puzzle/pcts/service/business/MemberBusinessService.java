@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.service.business;
 
+import ch.puzzle.pcts.dto.calculation.RolePointDto;
+import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.member.Member;
@@ -9,9 +11,11 @@ import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import ch.puzzle.pcts.service.validation.MemberValidationService;
 import jakarta.annotation.Nullable;
 import jakarta.transaction.Transactional;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,16 +24,19 @@ public class MemberBusinessService extends BusinessBase<Member> {
     private final MemberPersistenceService memberPersistenceService;
     private final RoleBusinessService roleBusinessService;
     private final CalculationBusinessService calculationBusinessService;
+    private final CalculationMapper calculationMapper;
 
     public MemberBusinessService(MemberValidationService validationService,
                                  MemberPersistenceService memberPersistenceService,
                                  RoleBusinessService roleBusinessService,
-                                 CalculationBusinessService calculationBusinessService, JwtService jwtService) {
+                                 CalculationBusinessService calculationBusinessService, JwtService jwtService,
+                                 CalculationMapper calculationMapper) {
         super(validationService, memberPersistenceService);
         this.jwtService = jwtService;
         this.roleBusinessService = roleBusinessService;
         this.calculationBusinessService = calculationBusinessService;
         this.memberPersistenceService = memberPersistenceService;
+        this.calculationMapper = calculationMapper;
     }
 
     public Optional<Member> findIfExists(Long id) {
@@ -42,6 +49,10 @@ public class MemberBusinessService extends BusinessBase<Member> {
 
     public Member getLoggedInMember() {
         return memberPersistenceService.getByLdapName(jwtService.getLdapName());
+    }
+
+    public Set<Role> getAllRolesByMemberId(Long memberId) {
+        return this.getById(memberId).getRoles();
     }
 
     public List<Calculation> getAllCalculationsByMemberIdAndRoleId(Long memberId, Long roleId) {
@@ -98,5 +109,24 @@ public class MemberBusinessService extends BusinessBase<Member> {
 
     public Optional<Member> findByAbbreviation(String abbreviation) {
         return memberPersistenceService.findByAbbreviation(abbreviation);
+    }
+
+    public List<RolePointDto> mergeListsToUniqueRoleEntriesOnly(Long memberId) {
+        List<RolePointDto> rolePointDtos = calculationMapper
+                .toRolePointDto(this.getAllActiveCalculationsByMemberId(memberId));
+
+        HashMap<Role, BigDecimal> rolePointDtoMap = new HashMap<>();
+
+        this.getAllRolesByMemberId(memberId).forEach(role -> rolePointDtoMap.put(role, BigDecimal.ZERO));
+
+        rolePointDtos.forEach(rolePointDto -> rolePointDtoMap.put(rolePointDto.role(), rolePointDto.points()));
+
+        List<RolePointDto> mergedList = new ArrayList<>();
+
+        for (Map.Entry<Role, BigDecimal> entry : rolePointDtoMap.entrySet()) {
+            mergedList.add(new RolePointDto(entry.getKey(), entry.getValue()));
+        }
+
+        return mergedList;
     }
 }

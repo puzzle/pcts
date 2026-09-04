@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, input, OnInit, signal, viewChild, WritableSignal } from '@angular/core';
+import { Component, DestroyRef, effect, inject, input, OnInit, signal, viewChild, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberService } from '../member.service';
@@ -98,6 +98,12 @@ export class MemberDetailViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.getData();
+    effect(() => {
+      const tabGroup = this.tabGroup();
+      if (tabGroup) {
+        tabGroup.selectedIndex = this.tabIndex();
+      }
+    });
   }
 
   getData() {
@@ -117,14 +123,11 @@ export class MemberDetailViewComponent implements OnInit {
           this.leadershipExperienceData.set(memberOverview.cv.leadershipExperiences);
         }
       });
+
     this.service.getPointsForActiveCalculationsForRoleByMemberId(Number(id))
       .subscribe({
-        next: (RolePoints) => {
-          this.rolePointList.set(RolePoints);
-          const tabGroup = this.tabGroup();
-          if (tabGroup) {
-            tabGroup.selectedIndex = this.tabIndex();
-          }
+        next: (rolePoints) => {
+          this.rolePointList.set(rolePoints);
         }
       });
   }

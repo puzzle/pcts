@@ -1,11 +1,20 @@
-import { Component, computed, effect, inject, input, OnInit, signal, WritableSignal } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  OnInit,
+  signal,
+  WritableSignal
+} from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Router } from '@angular/router';
 import { MemberService } from '../member.service';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { TranslateService } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -18,10 +27,19 @@ import { PctsFormErrorDirective } from '../../../shared/pcts-form-error/pcts-for
 import { PctsFormLabelDirective } from '../../../shared/pcts-form-label/pcts-form-label.directive';
 import { InputFieldComponent } from '../../../shared/input-field/input-field.component';
 import { map } from 'rxjs';
-import { isDateInPast, isValueInList, isValueInListSignal } from '../../../shared/form/form-validators';
+import {
+  isDateInPast,
+  isListInListSignal,
+  isValueInList,
+  isValueInListSignal
+} from '../../../shared/form/form-validators';
 import { BaseFormComponent } from '../../../shared/form/base-form.component';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { Location } from '@angular/common';
+import { RoleModel } from '../../roles/RoleModel';
+import { RoleService } from '../../roles/role.service';
+import { MatChipGrid, MatChipInput, MatChipRemove, MatChipRow } from '@angular/material/chips';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-member-form',
@@ -38,7 +56,11 @@ import { Location } from '@angular/common';
     PctsFormLabelDirective,
     InputFieldComponent,
     BaseFormComponent,
-    ScopedTranslationPipe
+    ScopedTranslationPipe,
+    MatChipGrid,
+    MatChipRow,
+    MatChipInput,
+    MatChipRemove
   ],
   templateUrl: './member-form.component.html'
 })
@@ -46,6 +68,8 @@ export class MemberFormComponent implements OnInit {
   private readonly translateService = inject(TranslateService);
 
   private readonly memberService = inject(MemberService);
+
+  private readonly roleService = inject(RoleService);
 
   private readonly organisationUnitService = inject(OrganisationUnitService);
 
@@ -63,7 +87,16 @@ export class MemberFormComponent implements OnInit {
 
   private readonly employmentStateOptions: string[] = Object.values(EmploymentState);
 
+  private readonly roleOptions: WritableSignal<RoleModel[]> = signal([]);
+
   private readonly organisationUnitsOptions: WritableSignal<OrganisationUnitModel[]> = signal([]);
+
+  readonly separatorKeysCodes: number[] = [ENTER,
+    COMMA];
+
+  readonly choosenRoles: WritableSignal<RoleModel[]> = signal([]);
+
+  roleSearchControl = new FormControl('');
 
   protected memberForm: FormGroup = this.fb.group({
     id: [null],
@@ -79,6 +112,8 @@ export class MemberFormComponent implements OnInit {
     employmentState: [null,
       [Validators.required,
         isValueInList(this.employmentStateOptions, (a, b) => a == b)]],
+    roles: [[] as RoleModel[],
+      isListInListSignal(this.roleOptions, (a, b) => b.includes(a))],
     organisationUnit: [null,
       isValueInListSignal(this.organisationUnitsOptions, (a, b) => a.id === b.id)]
   });
@@ -91,6 +126,8 @@ export class MemberFormComponent implements OnInit {
     const value = this.employmentStateControlSignal() ?? '';
     return this.filterEmploymentState(value);
   });
+
+  protected roleFilteredOptions: RoleModel[] = [];
 
   protected organisationUnitControlSignal = toSignal(this.memberForm.get('organisationUnit')!.valueChanges, { initialValue: this.memberForm.get('organisationUnit')!.value });
 
@@ -106,6 +143,17 @@ export class MemberFormComponent implements OnInit {
         this.memberForm.get('organisationUnit')
           ?.updateValueAndValidity();
       });
+
+    this.roleService.getAllRoles()
+      .subscribe((roles) => {
+        this.roleOptions.set(roles);
+        this.memberForm.get('roles')
+          ?.updateValueAndValidity();
+      });
+
+    if (this.isEdit()) {
+      this.choosenRoles.set(this.member().roles);
+    }
   }
 
   constructor() {
@@ -119,7 +167,10 @@ export class MemberFormComponent implements OnInit {
 
       this.memberForm.get('organisationUnit')
         ?.setValue(this.organisationUnitsOptions()
-          .find((orgUnit) => orgUnit.id === this.member().organisationUnit.id));
+          .find((orgUnit) => orgUnit.id === this.member()?.organisationUnit?.id));
+    });
+    this.roleSearchControl.valueChanges.subscribe((searchText) => {
+      this.roleFilteredOptions = this.filterRole(searchText);
     });
   }
 
@@ -127,13 +178,16 @@ export class MemberFormComponent implements OnInit {
     if (this.memberForm.invalid) {
       return;
     }
-    const memberToSave = this.memberForm.getRawValue() as MemberModel;
+
+    const formData = this.memberForm.getRawValue() as MemberModel;
+
+    const memberToSave = { ...formData,
+      roles: this.choosenRoles() };
+
     if (this.isEdit()) {
       this.memberService.updateMember(this.memberForm.get('id')?.value, memberToSave)
-        .subscribe(() => {
-          this.router.navigate(['/member',
-            this.memberForm.getRawValue().id]);
-        });
+        .subscribe(() => this.router.navigate(['/member',
+          this.memberForm.getRawValue().id]));
     } else {
       this.memberService.addMember(memberToSave)
         .subscribe(() => {
@@ -154,6 +208,10 @@ export class MemberFormComponent implements OnInit {
     return this.translateService.instant(translationKey);
   };
 
+  protected formatRoleName(role: RoleModel): string {
+    return role?.name ?? '';
+  }
+
   protected displayOrganisationUnit(organisationUnit: OrganisationUnitModel): string {
     if (!organisationUnit) {
       return '';
@@ -172,8 +230,23 @@ export class MemberFormComponent implements OnInit {
     });
   }
 
+  protected filterRole(value: RoleModel | string | null): RoleModel[] {
+    if (!value) {
+      return this.roleOptions();
+    }
+
+    const filterValue = (typeof value === 'string' ? value : value?.name)?.toLowerCase();
+
+    if (filterValue === '') {
+      return this.roleOptions();
+    }
+    return this.roleOptions()
+      .filter((option) => option.name.toLowerCase()
+        .includes(filterValue));
+  }
+
   private filterOrganisationUnit(value: OrganisationUnitModel | string | null): OrganisationUnitModel[] {
-    if (value === null || value === undefined || value === '') {
+    if (!value) {
       return this.organisationUnitsOptions();
     }
 
@@ -186,5 +259,34 @@ export class MemberFormComponent implements OnInit {
     return this.organisationUnitsOptions()
       .filter((option) => option.name.toLowerCase()
         .includes(filterValue));
+  }
+
+  removeRole(roleToRemove: RoleModel): void {
+    this.choosenRoles.update((roles) => {
+      return roles.filter((role) => role !== roleToRemove);
+    });
+  }
+
+  selectRole(event: MatAutocompleteSelectedEvent): void {
+    const choosenRole: RoleModel = event.option.value;
+
+    if (!choosenRole) {
+      event.option.deselect();
+      return;
+    }
+
+    if (this.choosenRoles()
+      .some((role) => role.id === choosenRole.id)) {
+      event.option.deselect();
+      return;
+    }
+
+    this.choosenRoles.update((roles) => [...roles,
+      choosenRole]);
+    this.memberForm.get('roles')
+      ?.setValue(this.choosenRoles());
+    this.memberForm.get('roles')
+      ?.updateValueAndValidity();
+    event.option.deselect();
   }
 }

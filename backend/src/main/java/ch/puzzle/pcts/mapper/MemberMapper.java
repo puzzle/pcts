@@ -4,19 +4,29 @@ import ch.puzzle.pcts.dto.member.MemberDto;
 import ch.puzzle.pcts.dto.member.MemberInputDto;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
+import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.business.OrganisationUnitBusinessService;
+import ch.puzzle.pcts.service.business.RoleBusinessService;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Component;
 
 @Component
 public class MemberMapper {
+    private final RoleBusinessService roleBusinessService;
+    private final RoleMapper roleMapper;
     OrganisationUnitBusinessService organisationUnitBusinessService;
     OrganisationUnitMapper organisationUnitMapper;
 
     public MemberMapper(OrganisationUnitBusinessService organisationUnitBusinessService,
-                        OrganisationUnitMapper organisationUnitMapper) {
+                        OrganisationUnitMapper organisationUnitMapper, RoleBusinessService roleBusinessService,
+                        RoleMapper roleMapper) {
         this.organisationUnitBusinessService = organisationUnitBusinessService;
         this.organisationUnitMapper = organisationUnitMapper;
+        this.roleBusinessService = roleBusinessService;
+        this.roleMapper = roleMapper;
     }
 
     public List<MemberDto> toDto(List<Member> models) {
@@ -37,6 +47,7 @@ public class MemberMapper {
                              model.getDateOfHire(),
                              model.getBirthDate(),
                              organisationUnitMapper.toDto(model.getOrganisationUnit()),
+                             roleMapper.toDto(model.getRoles()),
                              model.getPtimeId(),
                              model.getLastSuccessfulSync(),
                              model.getSyncErrorCount());
@@ -49,6 +60,7 @@ public class MemberMapper {
                 .withLastName(dto.lastName())
                 .withEmploymentState(dto.employmentState())
                 .withAbbreviation(dto.abbreviation())
+                .withRoles(rolesFromIds(dto.roleIds()))
                 .withDateOfHire(dto.dateOfHire())
                 .withBirthDate(dto.birthDate())
                 .withOrganisationUnit(organisationUnitFromId(dto.organisationUnitId()))
@@ -57,5 +69,9 @@ public class MemberMapper {
 
     protected OrganisationUnit organisationUnitFromId(Long organisationUnitId) {
         return organisationUnitId == null ? null : organisationUnitBusinessService.getById(organisationUnitId);
+    }
+
+    private Set<Role> rolesFromIds(Set<Long> roleIds) {
+        return roleIds.stream().map(roleBusinessService::getById).collect(Collectors.toSet());
     }
 }

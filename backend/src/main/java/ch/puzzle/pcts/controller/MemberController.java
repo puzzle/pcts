@@ -6,6 +6,7 @@ import ch.puzzle.pcts.dto.member.MemberDto;
 import ch.puzzle.pcts.dto.member.MemberInputDto;
 import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.mapper.MemberMapper;
+import ch.puzzle.pcts.mapper.RoleMapper;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.security.annotation.IsAdmin;
@@ -20,6 +21,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
@@ -32,11 +34,14 @@ public class MemberController {
     private final MemberMapper mapper;
     private final CalculationMapper calculationMapper;
     private final MemberBusinessService service;
+    private final RoleMapper roleMapper;
 
-    public MemberController(MemberMapper mapper, CalculationMapper calculationMapper, MemberBusinessService service) {
+    public MemberController(MemberMapper mapper, CalculationMapper calculationMapper, MemberBusinessService service,
+                            RoleMapper roleMapper) {
         this.mapper = mapper;
         this.calculationMapper = calculationMapper;
         this.service = service;
+        this.roleMapper = roleMapper;
     }
 
     @Operation(summary = "List all members")
@@ -73,8 +78,9 @@ public class MemberController {
     @GetMapping("{memberId}/role-points")
     public ResponseEntity<List<RolePointDto>> getPointsForActiveCalculationsForRoleByMemberId(@Parameter(description = "ID of the member.", required = true)
     @PathVariable @P("id") Long memberId) {
-        List<Calculation> calculationList = service.getAllActiveCalculationsByMemberId(memberId);
-        return ResponseEntity.ok(calculationMapper.toRolePointDto(calculationList));
+        List<RolePointDto> rolePointDtos = service.mergeListsToUniqueRoleEntriesOnly(memberId);
+
+        return ResponseEntity.ok(rolePointDtos);
     }
 
     @Operation(summary = "Create a new member")
