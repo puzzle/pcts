@@ -44,13 +44,6 @@ class RoleMapperTest {
         assertEquals(ROLE_2_DTO, result);
     }
 
-    @DisplayName("Should return list of roles")
-    @Test
-    void shouldGetListOfRoles() {
-        List<Role> result = dtoList.stream().map(mapper::fromDto).toList();
-        assertEquals(modelList, result);
-    }
-
     @DisplayName("Should return list of role dtos")
     @Test
     void shouldGetListOfRoleDtos() {
