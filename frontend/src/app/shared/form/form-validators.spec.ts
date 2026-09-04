@@ -1,5 +1,5 @@
 import { FormControl } from '@angular/forms';
-import { isDateInPast, isDateInPastOrPresent, isValueInList, isValueInListSignal } from './form-validators';
+import { isDateInPast, isDateInPastOrPresent, isInteger, isValueInList, isValueInListSignal } from './form-validators';
 import { signal } from '@angular/core';
 import { add, sub } from 'date-fns';
 
@@ -170,5 +170,26 @@ describe('isValueInListSignal', () => {
     optionsSignal.set(['Purple']);
     expect(isValueInListSignal(optionsSignal)(control))
       .toBeNull();
+  });
+
+  describe('isInteger', () => {
+    const validator = isInteger();
+    it('should return null if value is empty', () => {
+      const control = new FormControl('');
+      expect(validator(control))
+        .toBeNull();
+    });
+  });
+
+  it('should return null if value is allowed', () => {
+    const control = new FormControl('100');
+    expect(isInteger()(control))
+      .toBeNull();
+  });
+
+  it('should return invalid_integer if number is not valid', () => {
+    const control = new FormControl('not-a-integer');
+    expect(isInteger()(control))
+      .toEqual({ invalid_integer: true });
   });
 });

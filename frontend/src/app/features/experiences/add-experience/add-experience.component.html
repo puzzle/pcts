@@ -1,0 +1,59 @@
+<app-base-modal [formGroup]="formGroup" (canceled)="onCancel()">
+  <app-base-form content [formGroup]="formGroup">
+    <ng-container title/>
+    <ng-container content>
+
+      <app-input-field>
+        <input type="text" formControlName="experienceType" matInput [matAutocomplete]="experienceTypeAutoComplete"
+               data-testid="experienceType">
+        <mat-autocomplete autoActiveFirstOption #experienceTypeAutoComplete="matAutocomplete"
+                          [displayWith]="displayExperienceTypes">
+          @for (experienceType of experienceTypeFilteredOptions(); track experienceType) {
+            <mat-option [value]="experienceType">{{ displayExperienceTypes(experienceType) }}</mat-option>
+          }
+        </mat-autocomplete>
+      </app-input-field>
+
+      <app-input-field>
+        <input type="text" formControlName="name" data-testid="name" matInput>
+      </app-input-field>
+
+      <app-input-field>
+        <input type="text" formControlName="employer" data-testid="employer" matInput>
+      </app-input-field>
+
+      <app-input-field>
+        <input type="number" formControlName="percent" data-testid="percent" matInput>
+      </app-input-field>
+
+      <mat-form-field>
+        <mat-label appPctsFormLabel/>
+        <input matInput [matDatepicker]="completedAtPicker" formControlName="startDate" data-testid="startDate">
+        <mat-datepicker-toggle matIconSuffix [for]="completedAtPicker"/>
+        <mat-datepicker #completedAtPicker/>
+        <mat-error appPctsFormError/>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label appPctsFormLabel/>
+        <input matInput [matDatepicker]="validUntilPicker" formControlName="endDate" data-testid="endDate">
+        <mat-datepicker-toggle matIconSuffix [for]="validUntilPicker"/>
+        <mat-datepicker #validUntilPicker/>
+        <mat-error appPctsFormError/>
+      </mat-form-field>
+
+      <app-input-field>
+        <textarea type="text" formControlName="comment" data-testid="comment" matInput></textarea>
+      </app-input-field>
+
+    </ng-container>
+    <ng-container actions/>
+  </app-base-form>
+
+  <ng-container actions>
+    <app-modal-actions
+      [isValid]="formGroup.valid"
+      (cancelAction)="onCancel()"
+      (submitAction)="onSubmit($event)" />
+  </ng-container>
+</app-base-modal>

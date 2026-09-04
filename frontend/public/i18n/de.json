@@ -14,7 +14,14 @@
   },
   "EXPERIENCE": {
     "MODEL_NAME": "Berufs- und Lebenserfahrung",
-    "COMMENT": "Beschreibung"
+    "COMMENT": "Beschreibung",
+    "NAME": "Bezeichnung",
+    "END_DATE": "Bis",
+    "EXPERIENCE_TYPE": "Art der Erfahrung",
+    "START_DATE": "Von",
+    "EMPLOYER": "Arbeitsort",
+    "PERCENT": "Stellenprozente",
+    "COMPLETED": "Abgeschlossen"
   },
   "CERTIFICATE": {
     "MODEL_NAME": "Zertifikat",
@@ -74,12 +81,15 @@
 
   "VALIDATION": {
     "REQUIRED": "Muss ausgefüllt sein",
-    "DATE_IS_IN_FUTURE": "Datum muss in der Vergangenheit oder Gegenwart liegen.",
+    "DATE_IS_IN_FUTURE": "Datum muss in der Vergangenheit oder Gegenwart liegen",
     "DATE_IS_NOT_IN_PAST": "Datum muss in der Vergangenheit liegen",
     "INVALID_ENTRY": "Ungültige Eingabe",
     "MATDATEPICKERPARSE": "Ungültiges Datum",
     "NOT_AVAILABLE": "\"{{value}}\" nicht verfügbar",
-    "EMAIL": "Muss eine gültige Email-Adresse sein"
+    "EMAIL": "Muss eine gültige Email-Adresse sein",
+    "MIN": "Die Eingabe muss mindestens 0 sein",
+    "MAX": "Die Eingabe muss maximal 120 sein",
+    "INVALID_INTEGER": "Die Eingabe muss eine Ganzzahl sein"
   },
 
   "MEMBER": {
