@@ -72,6 +72,8 @@ export class PctsModalService {
     onSuccess: () => void,
     submitOptions: ModalSubmitMode[]
   ) => {
+
+    return new Builder(=> )
     const opener = (m?: T) => {
       const config: PCTSDialogConfig<T> = {
         model: m,
