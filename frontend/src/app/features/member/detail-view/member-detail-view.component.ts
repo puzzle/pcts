@@ -125,8 +125,7 @@ export class MemberDetailViewComponent {
   openExperienceDialog = this.createDialogOpener<ExperienceModel>(AddExperienceComponent, (model) => this.experienceService.addExperience(model));
 
   private createEditDegreeDialog = this.modalService.createDialogOpener<DegreeModel>(
-    AddDegreeComponent, (model: DegreeModel) => this.degreeService.updateDegree(model.id, model), () => this.memberResource.reload(), [ModalSubmitMode.ENTER_ANOTHER,
-      ModalSubmitMode.COPY]
+    AddDegreeComponent, (model: DegreeModel) => this.degreeService.updateDegree(model.id, model), () => this.memberResource.reload(), []
   );
 
   editDegreeDialog(row: DegreeOverviewModel) {
@@ -137,8 +136,7 @@ export class MemberDetailViewComponent {
   }
 
   private createEditCertificateDialog = this.modalService.createDialogOpener<CertificateModel>(
-    AddCertificateComponent, (model: CertificateModel) => this.certificateService.updateCertificate(model.id, model), () => this.memberResource.reload(), [ModalSubmitMode.ENTER_ANOTHER,
-      ModalSubmitMode.COPY]
+    AddCertificateComponent, (model: CertificateModel) => this.certificateService.updateCertificate(model.id, model), () => this.memberResource.reload(), []
   );
 
   editCertificateDialog(row: CertificateOverviewModel) {
@@ -149,8 +147,7 @@ export class MemberDetailViewComponent {
   }
 
   private createEditLeadershipExperienceDialog = this.modalService.createDialogOpener<LeadershipExperienceModel>(
-    AddLeadershipExperienceComponent, (model: LeadershipExperienceModel) => this.leadershipExperienceService.updateLeadershipExperience(model.id, model), () => this.memberResource.reload(), [ModalSubmitMode.ENTER_ANOTHER,
-      ModalSubmitMode.COPY]
+    AddLeadershipExperienceComponent, (model: LeadershipExperienceModel) => this.leadershipExperienceService.updateLeadershipExperience(model.id, model), () => this.memberResource.reload(), []
   );
 
   editLeadershipExperienceDialog(row: LeadershipExperienceOverviewModel) {
