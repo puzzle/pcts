@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.11.1](https://github.com/puzzle/pcts/compare/0.11.0...0.11.1) (2026-09-05)
+
+
+### Miscellaneous Chores
+
+* **deps:** update all devdependencies (minor and patch) to v30.5.1 ([#864](https://github.com/puzzle/pcts/issues/864)) ([91ffd97](https://github.com/puzzle/pcts/commit/91ffd97492446841915a7247ba6b1722364bef90))
+* **deps:** update dependency org.apache.maven.plugins:maven-surefire-plugin to v3.6.0 ([#865](https://github.com/puzzle/pcts/issues/865)) ([5a4011e](https://github.com/puzzle/pcts/commit/5a4011e444ef2d2420061b3ee1632df8b8061dfa))
+
 ## [0.11.0](https://github.com/puzzle/pcts/compare/0.10.0...0.11.0) (2026-09-04)
 
 
