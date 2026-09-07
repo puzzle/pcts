@@ -27,9 +27,8 @@ import { MemberModel } from '../member.model';
 import { CertificateModel } from '../../certificates/certificate.model';
 import { AddCertificateComponent } from '../../certificates/add-certificate/add-certificate.component';
 import { PctsModalService } from '../../../shared/modal/pcts-modal.service';
-import { RolePointsModel } from './RolePointsModel';
 import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LeadershipExperienceModel } from '../../leadership-experiences/leadership-experience.model';
 import {
   AddLeadershipExperienceComponent
@@ -86,8 +85,6 @@ export class MemberDetailViewComponent implements OnInit {
 
   readonly member: WritableSignal<MemberOverviewModel | null> = signal<MemberOverviewModel | null>(null);
 
-  readonly rolePointList = signal<RolePointsModel[]>([]);
-
   degreeData = signal<DegreeOverviewModel[]>([]);
 
   experienceData = signal<ExperienceOverviewModel[]>([]);
@@ -103,6 +100,8 @@ export class MemberDetailViewComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
 
   private injector = inject(Injector);
+
+  protected rolePointsResource: any;
 
   ngOnInit(): void {
     this.getData();
@@ -134,12 +133,12 @@ export class MemberDetailViewComponent implements OnInit {
         }
       });
 
-    this.service.getPointsForActiveCalculationsForRoleByMemberId(Number(id))
-      .subscribe({
-        next: (rolePoints) => {
-          this.rolePointList.set(rolePoints);
-        }
+    runInInjectionContext(this.injector, () => {
+      this.rolePointsResource = rxResource({
+        stream: () => this.service.getPointsForActiveCalculationsForRoleByMemberId(Number(id)),
+        defaultValue: []
       });
+    });
   }
 
   private readonly createDialogOpener = <T extends { member?: MemberModel }>(
