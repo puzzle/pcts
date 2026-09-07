@@ -14,6 +14,8 @@ import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
@@ -108,18 +110,16 @@ public class MemberBusinessService extends BusinessBase<Member> {
     }
 
     public List<RolePointDto> mergeListsToUniqueRoleEntriesOnly(Long memberId, List<RolePointDto> rolePoints) {
-        HashMap<Role, BigDecimal> rolePointDtoMap = new HashMap<>();
 
-        this.getAllRolesByMemberId(memberId).forEach(role -> rolePointDtoMap.put(role, BigDecimal.ZERO));
+        List<RolePointDto> roles = new ArrayList<>();
 
-        rolePoints.forEach(rolePointDto -> rolePointDtoMap.put(rolePointDto.role(), rolePointDto.points()));
+        this.getAllRolesByMemberId(memberId).forEach((role -> roles.add(new RolePointDto(role, BigDecimal.ZERO))));
 
-        List<RolePointDto> mergedList = new ArrayList<>();
-
-        for (Map.Entry<Role, BigDecimal> entry : rolePointDtoMap.entrySet()) {
-            mergedList.add(new RolePointDto(entry.getKey(), entry.getValue()));
-        }
-
-        return mergedList;
+        return Stream
+                .concat(roles.stream(), rolePoints.stream())
+                .collect((Collectors.toMap(dto -> dto, dto -> dto, (element1, element2) -> element2)))
+                .values()
+                .stream()
+                .toList();
     }
 }
