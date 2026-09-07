@@ -1,7 +1,6 @@
 package ch.puzzle.pcts.service.business;
 
 import ch.puzzle.pcts.dto.calculation.RolePointDto;
-import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.member.Member;
@@ -24,19 +23,16 @@ public class MemberBusinessService extends BusinessBase<Member> {
     private final MemberPersistenceService memberPersistenceService;
     private final RoleBusinessService roleBusinessService;
     private final CalculationBusinessService calculationBusinessService;
-    private final CalculationMapper calculationMapper;
 
     public MemberBusinessService(MemberValidationService validationService,
                                  MemberPersistenceService memberPersistenceService,
                                  RoleBusinessService roleBusinessService,
-                                 CalculationBusinessService calculationBusinessService, JwtService jwtService,
-                                 CalculationMapper calculationMapper) {
+                                 CalculationBusinessService calculationBusinessService, JwtService jwtService) {
         super(validationService, memberPersistenceService);
         this.jwtService = jwtService;
         this.roleBusinessService = roleBusinessService;
         this.calculationBusinessService = calculationBusinessService;
         this.memberPersistenceService = memberPersistenceService;
-        this.calculationMapper = calculationMapper;
     }
 
     public Optional<Member> findIfExists(Long id) {
@@ -111,15 +107,12 @@ public class MemberBusinessService extends BusinessBase<Member> {
         return memberPersistenceService.findByAbbreviation(abbreviation);
     }
 
-    public List<RolePointDto> mergeListsToUniqueRoleEntriesOnly(Long memberId) {
-        List<RolePointDto> rolePointDtos = calculationMapper
-                .toRolePointDto(this.getAllActiveCalculationsByMemberId(memberId));
-
+    public List<RolePointDto> mergeListsToUniqueRoleEntriesOnly(Long memberId, List<RolePointDto> rolePoints) {
         HashMap<Role, BigDecimal> rolePointDtoMap = new HashMap<>();
 
         this.getAllRolesByMemberId(memberId).forEach(role -> rolePointDtoMap.put(role, BigDecimal.ZERO));
 
-        rolePointDtos.forEach(rolePointDto -> rolePointDtoMap.put(rolePointDto.role(), rolePointDto.points()));
+        rolePoints.forEach(rolePointDto -> rolePointDtoMap.put(rolePointDto.role(), rolePointDto.points()));
 
         List<RolePointDto> mergedList = new ArrayList<>();
 
