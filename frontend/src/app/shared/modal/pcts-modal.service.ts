@@ -1,10 +1,10 @@
 import { DestroyRef, inject, Injectable, Injector, Type } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { defaultSize } from './base-modal.component';
-import { DialogResult, enrichMatDialogRef, StrictlyTypedDialog, TypedMatDialogRef } from './strictly-typed-dialog.helper';
-import { concatMap, filter, Observable } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { enrichMatDialogRef, StrictlyTypedDialog, TypedMatDialogRef } from './strictly-typed-dialog.helper';
 import { ModalSubmitMode } from '../enum/modal-submit-mode.enum';
+import { PctsModalBuilder } from './pcts-modal-builder';
+
 export interface PCTSDialogConfig<T> {
   model: T | undefined;
   submitOptions: ModalSubmitMode[];
@@ -66,43 +66,7 @@ export class PctsModalService {
     return enrichMatDialogRef(ref);
   }
 
-  public createDialogOpener = <T extends { id: number }>(
-    component: Type<StrictlyTypedDialog<PCTSDialogConfig<T>, DialogResult<T>>>,
-    onSubmitMethod: (model: T) => Observable<T>,
-    onSuccess: () => void,
-    submitOptions: ModalSubmitMode[]
-  ) => {
-    const opener = (m?: T) => {
-      const config: PCTSDialogConfig<T> = {
-        model: m,
-        submitOptions: submitOptions
-      };
-
-      this.openModal(component, { data: config })
-        .afterSubmitted
-        // todo evaluate if we need to filter here
-        .pipe(takeUntilDestroyed(this.destroyRef), filter(() => !!m?.id), concatMap(({ modalSubmitMode, submittedModel }: { modalSubmitMode: ModalSubmitMode;
-          submittedModel: T; }) => {
-          switch (modalSubmitMode) {
-            case ModalSubmitMode.SAVE:
-              break;
-            case ModalSubmitMode.ENTER_ANOTHER:
-              opener();
-              break;
-            case ModalSubmitMode.COPY:
-              opener(submittedModel);
-              break;
-            default:
-              modalSubmitMode satisfies never;
-          }
-
-          return onSubmitMethod(submittedModel);
-        }))
-        .subscribe(() => {
-          onSuccess();
-        });
-    };
-
-    return opener;
-  };
+  public getBuilder<T extends { id: number }>() {
+    return new PctsModalBuilder<T>(this.destroyRef, this.openModal.bind(this));
+  }
 }
