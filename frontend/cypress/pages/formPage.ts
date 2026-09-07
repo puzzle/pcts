@@ -39,6 +39,8 @@ class FormPage {
 
   type(fieldName: string, text: string) {
     cy.getByTestId(fieldName)
+      .focus();
+    cy.getByTestId(fieldName)
       .type(text);
     return this;
   }
