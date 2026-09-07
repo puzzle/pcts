@@ -63,7 +63,7 @@
                [matAutocomplete]="roleAutoComplete">
         <mat-autocomplete autoActiveFirstOption #roleAutoComplete="matAutocomplete"
                           (optionSelected)="selectRole($event); roleInput.value= ''">
-          @for (role of this.filterRole(roleInput.value); track role.id) {
+          @for (role of this.filterList(roleInput.value, this.roleOptions(), "name"); track role.id) {
             <mat-option [value]="role">{{ formatRoleName(role) }}</mat-option>
           }
         </mat-autocomplete>
