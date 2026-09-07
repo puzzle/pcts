@@ -92,8 +92,8 @@ public abstract class ValidationBase<T extends Model> implements ValidationServi
         }
     }
 
-    public void validate(T member) {
-        Set<ConstraintViolation<T>> violations = validator.validate(member);
+    public void validate(T model) {
+        Set<ConstraintViolation<T>> violations = validator.validate(model);
         processViolations(violations);
     }
 
