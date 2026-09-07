@@ -6,7 +6,7 @@ COPY pom.xml .
 COPY migration/pom.xml migration/
 COPY migration/src migration/src
 
-RUN mvn -f migration/pom.xml clean install -DskipTests
+RUN mvn -f migration/pom.xml clean install -DskipTests -DskipITs
 
 FROM eclipse-temurin:25.0.4_7-jre-alpine AS runner
 RUN apk update && apk add --upgrade curl
