@@ -87,7 +87,8 @@ export function isInteger(): ValidatorFn {
   };
 }
 
-export function isListInListSignal<T>(validOptionsSignal: Signal<T[]>, comparator: (a: T, b: T[]) => boolean = (a, b) => b.includes(a)): ValidatorFn {
+
+export function areListEntriesInListSignal<T>(validOptionsSignal: Signal<T[]>, comparator: (a: T, b: T[]) => boolean = (a, b) => b.includes(a)): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const values: any[] = control.value;
     const validOptions: T[] = validOptionsSignal();

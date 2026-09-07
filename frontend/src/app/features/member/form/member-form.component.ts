@@ -29,7 +29,7 @@ import { InputFieldComponent } from '../../../shared/input-field/input-field.com
 import { map } from 'rxjs';
 import {
   isDateInPast,
-  isListInListSignal,
+  areListEntriesInListSignal,
   isValueInList,
   isValueInListSignal
 } from '../../../shared/form/form-validators';
@@ -107,7 +107,7 @@ export class MemberFormComponent implements OnInit {
       [Validators.required,
         isValueInList(this.employmentStateOptions, (a, b) => a == b)]],
     roles: [[] as RoleModel[],
-      isListInListSignal(this.roleOptions, (a, b) => b.includes(a))],
+      areListEntriesInListSignal(this.roleOptions, (a, b) => b.includes(a))],
     organisationUnit: [null,
       isValueInListSignal(this.organisationUnitsOptions, (a, b) => a.id === b.id)]
   });
