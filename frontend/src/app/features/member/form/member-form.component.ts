@@ -125,7 +125,7 @@ export class MemberFormComponent implements OnInit {
 
   protected organisationUnitFilteredOptions = computed(() => {
     const value = this.organisationUnitControlSignal();
-    return this.filterList(value, this.organisationUnitsOptions(), 'name');
+    return this.filterList(value?.name, this.organisationUnitsOptions(), 'name');
   });
 
   ngOnInit() {
@@ -224,14 +224,11 @@ export class MemberFormComponent implements OnInit {
       return options;
     }
 
-    const searchTerm = value.toLowerCase();
-
     return options.filter((option) => {
       const propertyValue = option[optionsIdentifier];
-
-      return propertyValue != null &&
-        String(propertyValue)
-          .toLowerCase() === searchTerm;
+      return propertyValue != null && String(propertyValue)
+        .toLowerCase()
+        .includes(value.toLowerCase());
     });
   }
 
@@ -260,8 +257,6 @@ export class MemberFormComponent implements OnInit {
       choosenRole]);
     this.memberForm.get('roles')
       ?.setValue(this.choosenRoles());
-    this.memberForm.get('roles')
-      ?.updateValueAndValidity();
     event.option.deselect();
   }
 }
