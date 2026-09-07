@@ -54,17 +54,76 @@ describe('AddLeadershipExperienceComponent', () => {
       .toBeTruthy();
   });
 
-  it('should load leadershipExperienceTypes on init', () => {
-    expect(component['leadershipExperienceTypeOptions']())
-      .toEqual([leadershipExperienceType1,
-        leadershipExperienceType2]);
-    expect(leadershipExperienceTypeServiceMock.getAllLeadershipExperienceTypes)
-      .toHaveBeenCalledTimes(1);
+  describe('ngOnInit / Initialization', () => {
+    it('should load leadershipExperienceTypes on init', () => {
+      expect(component['leadershipExperienceTypeOptions']())
+        .toEqual([leadershipExperienceType1,
+          leadershipExperienceType2]);
+      expect(leadershipExperienceTypeServiceMock.getAllLeadershipExperienceTypes)
+        .toHaveBeenCalledTimes(1);
+    });
+
+    it('should set formgroup value correctly from data provided in constructor', () => {
+      expect(component.formGroup.getRawValue())
+        .toEqual(leadershipExperience1);
+    });
+
+    it('should initialize empty form if no data is provided', () => {
+      (component as any).data = undefined;
+      component.formGroup.reset();
+
+      component.ngOnInit();
+
+      expect(component.formGroup.getRawValue().id)
+        .toBeNull();
+    });
   });
 
-  it('should set formgroup value correctly from data provided in constructor', () => {
-    expect(component.formGroup.getRawValue())
-      .toEqual(leadershipExperience1);
+  describe('Form Validation', () => {
+    it('should be invalid if leadershipExperienceType is null', () => {
+      component.formGroup.controls.leadershipExperienceType.setValue(null);
+
+      expect(component.formGroup.controls.leadershipExperienceType.hasError('required'))
+        .toBeTruthy();
+      expect(component.formGroup.valid)
+        .toBeFalsy();
+    });
+  });
+
+  describe('leadershipExperienceTypeFilteredOptions (Computed Signal)', () => {
+    it('should sort by kind then by name, and group by kind', () => {
+      component['leadershipExperienceTypeOptions'].set([leadershipExperienceType1,
+        leadershipExperienceType2]);
+
+      component.formGroup.controls.leadershipExperienceType.setValue('' as any);
+      fixture.detectChanges();
+
+      const groupedMap = component['leadershipExperienceTypeFilteredOptions']();
+
+      expect(groupedMap.has(leadershipExperienceType1.leadershipExperienceKind))
+        .toBeTruthy();
+      expect(groupedMap.has(leadershipExperienceType2.leadershipExperienceKind))
+        .toBeTruthy();
+
+      const kindBArray = groupedMap.get(leadershipExperienceType2.leadershipExperienceKind)!;
+      expect(kindBArray.length)
+        .toBe(1);
+      expect(kindBArray[0].name)
+        .toBe('Officer');
+    });
+
+    it('should handle object value correctly (when option is selected)', () => {
+      component['leadershipExperienceTypeOptions'].set([leadershipExperienceType1]);
+
+      component.formGroup.controls.leadershipExperienceType.setValue(leadershipExperienceType1);
+      fixture.detectChanges();
+
+      const groupedMap = component['leadershipExperienceTypeFilteredOptions']();
+      expect(groupedMap.has(leadershipExperienceType1.leadershipExperienceKind))
+        .toBeTruthy();
+      expect(groupedMap.get(leadershipExperienceType1.leadershipExperienceKind)![0].name)
+        .toBe('Expert');
+    });
   });
 
   describe('onSubmit', () => {
@@ -76,6 +135,18 @@ describe('AddLeadershipExperienceComponent', () => {
       expect(dialogRefMock.close)
         .toHaveBeenCalledWith({
           modalSubmitMode: ModalSubmitMode.SAVE,
+          submittedModel: leadershipExperience1
+        });
+    });
+
+    it('should close the dialog with form values and ENTER_ANOTHER mode', () => {
+      component.formGroup.patchValue(leadershipExperience1);
+
+      component.onSubmit(ModalSubmitMode.ENTER_ANOTHER);
+
+      expect(dialogRefMock.close)
+        .toHaveBeenCalledWith({
+          modalSubmitMode: ModalSubmitMode.ENTER_ANOTHER,
           submittedModel: leadershipExperience1
         });
     });
@@ -92,7 +163,7 @@ describe('AddLeadershipExperienceComponent', () => {
   describe('displayLeadershipExperienceTypes', () => {
     it('should return the name of the type', () => {
       expect(component['displayLeadershipExperienceTypes'](leadershipExperienceType2))
-        .toBe('Officer');
+        .toBe(leadershipExperienceType2.name);
     });
 
     it('should return an empty string if type is null/undefined', () => {
