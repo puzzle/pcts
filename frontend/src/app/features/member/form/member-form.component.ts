@@ -8,7 +8,7 @@ import {
   signal,
   WritableSignal
 } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -39,7 +39,6 @@ import { Location } from '@angular/common';
 import { RoleModel } from '../../roles/RoleModel';
 import { RoleService } from '../../roles/role.service';
 import { MatChipGrid, MatChipInput, MatChipRemove, MatChipRow } from '@angular/material/chips';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-member-form',
@@ -91,12 +90,7 @@ export class MemberFormComponent implements OnInit {
 
   private readonly organisationUnitsOptions: WritableSignal<OrganisationUnitModel[]> = signal([]);
 
-  readonly separatorKeysCodes: number[] = [ENTER,
-    COMMA];
-
   readonly choosenRoles: WritableSignal<RoleModel[]> = signal([]);
-
-  roleSearchControl = new FormControl('');
 
   protected memberForm: FormGroup = this.fb.group({
     id: [null],
@@ -126,8 +120,6 @@ export class MemberFormComponent implements OnInit {
     const value = this.employmentStateControlSignal() ?? '';
     return this.filterEmploymentState(value);
   });
-
-  protected roleFilteredOptions: RoleModel[] = [];
 
   protected organisationUnitControlSignal = toSignal(this.memberForm.get('organisationUnit')!.valueChanges, { initialValue: this.memberForm.get('organisationUnit')!.value });
 
@@ -168,9 +160,6 @@ export class MemberFormComponent implements OnInit {
       this.memberForm.get('organisationUnit')
         ?.setValue(this.organisationUnitsOptions()
           .find((orgUnit) => orgUnit.id === this.member()?.organisationUnit?.id));
-    });
-    this.roleSearchControl.valueChanges.subscribe((searchText) => {
-      this.roleFilteredOptions = this.filterRole(searchText);
     });
   }
 
