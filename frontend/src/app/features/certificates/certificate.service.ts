@@ -40,4 +40,10 @@ export class CertificateService {
       comment: model.comment
     };
   }
+
+  parseDates(certificate: CertificateModel) {
+    certificate.completedAt = new Date(certificate.completedAt ?? '');
+    certificate.validUntil = new Date(certificate.validUntil ?? '');
+    return certificate;
+  }
 }
