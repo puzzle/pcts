@@ -43,4 +43,11 @@ export class DegreeService {
         .toISODate() : null
     };
   }
+
+  parseDates(degree: DegreeModel) {
+    degree.startDate = new Date(degree.startDate ?? '');
+    degree.endDate = new Date(degree.endDate ?? '');
+
+    return degree;
+  }
 }
