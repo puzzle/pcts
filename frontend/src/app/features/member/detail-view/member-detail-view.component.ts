@@ -33,13 +33,11 @@ import {
   getExperienceTable,
   getLeadershipExperienceTable
 } from './cv/member-detail-cv-table-definition';
-import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { MemberService } from '../member.service';
 import { DegreeOverviewModel } from './cv/degree-overview.model';
 import { CertificateOverviewModel } from './cv/certificate-overview.model';
 import { LeadershipExperienceOverviewModel } from './cv/leadership-experience-overview.model';
-
 
 @Component({
   selector: 'app-member-detail-view',
@@ -79,9 +77,14 @@ export class MemberDetailViewComponent {
 
   memberId = input.required<number>();
 
-  readonly memberResource = rxResource({
+  readonly memberOverviewResource = rxResource({
     params: () => this.memberId(),
     stream: ({ params: id }) => this.memberService.getMemberOverviewByMemberId(id)
+  });
+
+  readonly memberResource = rxResource({
+    params: () => this.memberId(),
+    stream: ({ params: id }) => this.memberService.getMemberById(id)
   });
 
   readonly rolePointsResource = rxResource({
@@ -91,13 +94,13 @@ export class MemberDetailViewComponent {
 
   rolePointList = computed(() => this.rolePointsResource.value() ?? []);
 
-  degreeData = computed(() => this.memberResource.value()?.cv.degrees ?? []);
+  degreeData = computed(() => this.memberOverviewResource.value()?.cv.degrees ?? []);
 
-  experienceData = computed(() => this.memberResource.value()?.cv.experiences ?? []);
+  experienceData = computed(() => this.memberOverviewResource.value()?.cv.experiences ?? []);
 
-  certificateData = computed(() => this.memberResource.value()?.cv.certificates ?? []);
+  certificateData = computed(() => this.memberOverviewResource.value()?.cv.certificates ?? []);
 
-  leadershipExperienceData = computed(() => this.memberResource.value()?.cv.leadershipExperiences ?? []);
+  leadershipExperienceData = computed(() => this.memberOverviewResource.value()?.cv.leadershipExperiences ?? []);
 
   readonly experienceTable = getExperienceTable();
 
@@ -107,48 +110,87 @@ export class MemberDetailViewComponent {
 
   readonly leadershipExperienceTable = getLeadershipExperienceTable();
 
-  addDegreeDialog = this.modalService.createDialogOpener<DegreeModel>(
-    AddDegreeComponent, (model: DegreeModel) => this.degreeService.addDegree(model), () => this.memberResource.reload(), [ModalSubmitMode.ENTER_ANOTHER,
-      ModalSubmitMode.COPY]
-  );
+  addDegreeDialog = this.modalService.getBuilder<DegreeModel>()
+    .withComponent(AddDegreeComponent)
+    .withOnSubmitMethod((model: DegreeModel) => {
+      const currentMember = this.memberResource.value();
 
-  addCertificateDialog = this.modalService.createDialogOpener<CertificateModel>(
-    AddCertificateComponent, (model: CertificateModel) => this.certificateService.addCertificate(model), () => this.memberResource.reload(), [ModalSubmitMode.ENTER_ANOTHER,
-      ModalSubmitMode.COPY]
-  );
+      if (currentMember) {
+        model.member = currentMember;
+      }
 
-  addLeadershipExperienceDialog = this.modalService.createDialogOpener<LeadershipExperienceModel>(
-    AddLeadershipExperienceComponent, (model: LeadershipExperienceModel) => this.leadershipExperienceService.addLeadershipExperience(model), () => this.memberResource.reload(), [ModalSubmitMode.ENTER_ANOTHER,
-      ModalSubmitMode.COPY]
-  );
+      return this.degreeService.addDegree(model);
+    })
+    .withOnSuccessMethod(() => this.memberOverviewResource.reload())
+    .withSubmitOptionsForAdd()
+    .build();
+
+  addCertificateDialog = this.modalService.getBuilder<CertificateModel>()
+    .withComponent(AddCertificateComponent)
+    .withOnSubmitMethod((model: CertificateModel) => {
+      const currentMember = this.memberResource.value();
+
+      if (currentMember) {
+        model.member = currentMember;
+      }
+
+
+      return this.certificateService.addCertificate(model);
+    })
+    .withOnSuccessMethod(() => this.memberOverviewResource.reload())
+    .withSubmitOptionsForAdd()
+    .build();
+
+  addLeadershipExperienceDialog = this.modalService.getBuilder<LeadershipExperienceModel>()
+    .withComponent(AddLeadershipExperienceComponent)
+    .withOnSubmitMethod((model: LeadershipExperienceModel) => {
+      const currentMember = this.memberResource.value();
+
+      if (currentMember) {
+        model.member = currentMember;
+      }
+
+
+      return this.leadershipExperienceService.addLeadershipExperience(model);
+    })
+    .withOnSuccessMethod(() => this.memberOverviewResource.reload())
+    .withSubmitOptionsForAdd()
+    .build();
 
   openExperienceDialog = this.createDialogOpener<ExperienceModel>(AddExperienceComponent, (model) => this.experienceService.addExperience(model));
 
-  private createEditDegreeDialog = this.modalService.createDialogOpener<DegreeModel>(
-    AddDegreeComponent, (model: DegreeModel) => this.degreeService.updateDegree(model.id, model), () => this.memberResource.reload(), []
-  );
+  private readonly createEditDegreeDialog = this.modalService.getBuilder<DegreeModel>()
+    .withComponent(AddDegreeComponent)
+    .withOnSubmitMethod((model: DegreeModel) => this.degreeService.updateDegree(model.id, model))
+    .withOnSuccessMethod(() => this.memberOverviewResource.reload())
+    .build();
 
   editDegreeDialog(row: DegreeOverviewModel) {
     this.degreeService.getDegreeById(row.id)
       .subscribe((degree: DegreeModel) => {
-        this.createEditDegreeDialog(degree);
+        console.log(degree);
+        this.createEditDegreeDialog(this.degreeService.parseDates(degree));
       });
   }
 
-  private createEditCertificateDialog = this.modalService.createDialogOpener<CertificateModel>(
-    AddCertificateComponent, (model: CertificateModel) => this.certificateService.updateCertificate(model.id, model), () => this.memberResource.reload(), []
-  );
+  private readonly createEditCertificateDialog = this.modalService.getBuilder<CertificateModel>()
+    .withComponent(AddCertificateComponent)
+    .withOnSubmitMethod((model: CertificateModel) => this.certificateService.updateCertificate(model.id, model))
+    .withOnSuccessMethod(() => this.memberOverviewResource.reload())
+    .build();
 
   editCertificateDialog(row: CertificateOverviewModel) {
     this.certificateService.getCertificateById(row.id)
       .subscribe((certificate: CertificateModel) => {
-        this.createEditCertificateDialog(certificate);
+        this.createEditCertificateDialog(this.certificateService.parseDates(certificate));
       });
   }
 
-  private createEditLeadershipExperienceDialog = this.modalService.createDialogOpener<LeadershipExperienceModel>(
-    AddLeadershipExperienceComponent, (model: LeadershipExperienceModel) => this.leadershipExperienceService.updateLeadershipExperience(model.id, model), () => this.memberResource.reload(), []
-  );
+  private readonly createEditLeadershipExperienceDialog = this.modalService.getBuilder<LeadershipExperienceModel>()
+    .withComponent(AddLeadershipExperienceComponent)
+    .withOnSubmitMethod((model: LeadershipExperienceModel) => this.leadershipExperienceService.updateLeadershipExperience(model.id, model))
+    .withOnSuccessMethod(() => this.memberOverviewResource.reload())
+    .build();
 
   editLeadershipExperienceDialog(row: LeadershipExperienceOverviewModel) {
     this.leadershipExperienceService.getLeadershipExperienceById(row.id)
