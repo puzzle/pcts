@@ -86,7 +86,7 @@ export class MemberFormComponent implements OnInit {
 
   private readonly employmentStateOptions: string[] = Object.values(EmploymentState);
 
-  private readonly roleOptions: WritableSignal<RoleModel[]> = signal([]);
+  protected readonly roleOptions: WritableSignal<RoleModel[]> = signal([]);
 
   private readonly organisationUnitsOptions: WritableSignal<OrganisationUnitModel[]> = signal([]);
 
@@ -125,7 +125,7 @@ export class MemberFormComponent implements OnInit {
 
   protected organisationUnitFilteredOptions = computed(() => {
     const value = this.organisationUnitControlSignal();
-    return this.filterOrganisationUnit(value);
+    return this.filterList(value, this.organisationUnitsOptions(), 'name');
   });
 
   ngOnInit() {
@@ -219,36 +219,22 @@ export class MemberFormComponent implements OnInit {
     });
   }
 
-  protected filterRole(value: RoleModel | string | null): RoleModel[] {
+  protected filterList<T>(value: string, options: T[], optionsIdentifier: keyof T): T[] {
     if (!value) {
-      return this.roleOptions();
+      return options;
     }
 
-    const filterValue = (typeof value === 'string' ? value : value?.name)?.toLowerCase();
+    const searchTerm = value.toLowerCase();
 
-    if (filterValue === '') {
-      return this.roleOptions();
-    }
-    return this.roleOptions()
-      .filter((option) => option.name.toLowerCase()
-        .includes(filterValue));
+    return options.filter((option) => {
+      const propertyValue = option[optionsIdentifier];
+
+      return propertyValue != null &&
+        String(propertyValue)
+          .toLowerCase() === searchTerm;
+    });
   }
 
-  private filterOrganisationUnit(value: OrganisationUnitModel | string | null): OrganisationUnitModel[] {
-    if (!value) {
-      return this.organisationUnitsOptions();
-    }
-
-
-    const filterValue = (typeof value === 'string' ? value : value.name).toLowerCase();
-
-    if (filterValue === '') {
-      return this.organisationUnitsOptions();
-    }
-    return this.organisationUnitsOptions()
-      .filter((option) => option.name.toLowerCase()
-        .includes(filterValue));
-  }
 
   removeRole(roleToRemove: RoleModel): void {
     this.choosenRoles.update((roles) => {
