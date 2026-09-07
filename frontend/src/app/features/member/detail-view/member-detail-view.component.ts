@@ -1,4 +1,4 @@
-import { Component, DestroyRef, effect, inject, input, OnInit, signal, viewChild, WritableSignal } from '@angular/core';
+import { Component, DestroyRef, effect, inject, input, OnInit, signal, viewChild, WritableSignal, Injector, runInInjectionContext } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberService } from '../member.service';
@@ -102,13 +102,17 @@ export class MemberDetailViewComponent implements OnInit {
 
   private readonly destroyRef = inject(DestroyRef);
 
+  private injector = inject(Injector);
+
   ngOnInit(): void {
     this.getData();
-    effect(() => {
-      const tabGroup = this.tabGroup();
-      if (tabGroup) {
-        tabGroup.selectedIndex = this.tabIndex();
-      }
+    runInInjectionContext(this.injector, () => {
+      effect(() => {
+        const tabGroup = this.tabGroup();
+        if (tabGroup) {
+          tabGroup.selectedIndex = this.tabIndex();
+        }
+      });
     });
   }
 
