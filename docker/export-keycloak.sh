@@ -5,9 +5,10 @@ docker compose stop pcts-keycloak
 docker commit pcts-keycloak kc-export-tmp
 
 docker run --rm -v "$PWD/config:/out" \
-  --entrypoint /opt/keycloak/bin/kc.sh \
+  --user root \
+  --entrypoint /bin/bash \
   kc-export-tmp \
-  export --file /out/realm-export-pitc.json --realm pitc --users same_file
+  -c "/opt/keycloak/bin/kc.sh export --file /out/realm-export-pitc.json --realm pitc --users same_file && chown $(id -u):$(id -g) /out/realm-export-pitc.json"
 
 docker rmi kc-export-tmp
 docker compose start pcts-keycloak
