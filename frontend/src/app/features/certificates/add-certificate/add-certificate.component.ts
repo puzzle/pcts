@@ -18,6 +18,7 @@ import { MemberModel } from '../../member/member.model';
 import { DialogResult, StrictlyTypedDialog } from '../../../shared/modal/strictly-typed-dialog.helper';
 import { InputFieldComponent } from '../../../shared/input-field/input-field.component';
 import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
+import {filterType} from '../../../shared/utils/typeFilter';
 
 @Component({
   selector: 'app-add-certificate',
@@ -68,14 +69,11 @@ export class AddCertificateComponent extends StrictlyTypedDialog<CertificateMode
 
   constructor() {
     super();
-    if (this.data) {
-      this.formGroup.patchValue({
-        ...this.data
-      });
-    }
   }
 
   ngOnInit(): void {
+    this.formGroup.patchValue(this.data ?? {});
+
     this.certificateTypeService.getAllCertificateTypes()
       .subscribe((organisationUnits) => {
         this.certificateTypeOptions.set(organisationUnits);
@@ -95,24 +93,10 @@ export class AddCertificateComponent extends StrictlyTypedDialog<CertificateMode
   protected certificateTypeControlSignal = toSignal(this.formGroup.get('certificateType')!.valueChanges, { initialValue: this.formGroup.get('certificateType')!.value });
 
   protected certificateTypeFilteredOptions = computed(() => {
-    const value = this.certificateTypeControlSignal() ?? '';
-    return this.filterCertificateType(value);
+    const model = this.certificateTypeControlSignal() ?? '';
+    const value = typeof model === 'string' ? model : model.name;
+    return filterType(value, this.certificateTypeOptions(), "name");
   });
-
-  filterCertificateType(value: CertificateTypeModel | string | null): CertificateTypeModel[] {
-    if (value === null || value === undefined || value === '') {
-      return this.certificateTypeOptions();
-    }
-
-    const filterValue = (typeof value === 'string' ? value : value.name).toLowerCase();
-
-    if (filterValue === '') {
-      return this.certificateTypeOptions();
-    }
-    return this.certificateTypeOptions()
-      .filter((option) => option.name.toLowerCase()
-        .includes(filterValue));
-  }
 
   onSubmit(submitMod: ModalSubmitMode) {
     this.dialogRef.close({

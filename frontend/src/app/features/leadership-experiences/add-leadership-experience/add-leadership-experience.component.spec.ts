@@ -102,27 +102,4 @@ describe('AddLeadershipExperienceComponent', () => {
         .toBe('');
     });
   });
-
-  describe('filterLeadershipExperienceType', () => {
-    [
-      { ...leadershipExperienceType1,
-        name: '' },
-      '',
-      null,
-      undefined
-    ].forEach((value) => {
-      it(`should return default leadership experience types when value is ${JSON.stringify(value)}`, () => {
-        const result = component.filterLeadershipExperienceType(value as any);
-        expect(result)
-          .toEqual([leadershipExperienceType1,
-            leadershipExperienceType2]);
-      });
-    });
-
-    it('should return filtered list based on string input', () => {
-      const result = component.filterLeadershipExperienceType('Officer');
-      expect(result)
-        .toEqual([leadershipExperienceType2]);
-    });
-  });
 });

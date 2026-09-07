@@ -20,6 +20,7 @@ import { DegreeTypeService } from '../degree-type/degree-type.service';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
 import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
+import {filterType} from '../../../shared/utils/typeFilter';
 
 @Component({
   selector: 'app-add-degree',
@@ -75,14 +76,11 @@ export class AddDegreeComponent extends StrictlyTypedDialog<DegreeModel | undefi
 
   constructor() {
     super();
-    if (this.data) {
-      this.formGroup.patchValue({
-        ...this.data
-      });
-    }
   }
 
   ngOnInit(): void {
+    this.formGroup.patchValue(this.data ?? {});
+
     this.degreeTypeService.getAllDegreeTypes()
       .subscribe((degreeTypes) => {
         this.degreeTypeOptions.set(degreeTypes);
@@ -104,18 +102,8 @@ export class AddDegreeComponent extends StrictlyTypedDialog<DegreeModel | undefi
   protected degreeTypeFilteredOptions = computed(() => {
     const model = this.degreeTypeControlSignal() ?? '';
     const value = typeof model === 'string' ? model : model.name;
-    return this.filterDegreeType(value, this.degreeTypeOptions());
+    return filterType(value, this.degreeTypeOptions(), "name");
   });
-
-  filterDegreeType(value: string, degreeTypeOptions: DegreeTypeModel[]): DegreeTypeModel[] {
-    if (!value) {
-      return degreeTypeOptions;
-    }
-
-    return degreeTypeOptions
-      .filter((option) => option.name.toLowerCase()
-        .includes(value.toLowerCase()));
-  }
 
   onSubmit(submitMod: ModalSubmitMode) {
     this.dialogRef.close({

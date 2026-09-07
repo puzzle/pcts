@@ -50,26 +50,6 @@ describe('AddDegree', () => {
       .toBeTruthy();
   });
 
-  it('should filter DegreeType', () => {
-    expect(component.filterDegreeType('bachelor', [degreeType2,
-      degreeType1]))
-      .toStrictEqual([degreeType1]);
-  });
-
-  it('should filter DegreeType', () => {
-    /*
-     * Arrange
-     * - nothing
-     */
-    // Act
-    const filteredTypes = component.filterDegreeType('', [degreeType2,
-      degreeType1]);
-    // Assert
-    expect(filteredTypes)
-      .toStrictEqual([degreeType2,
-        degreeType1]);
-  });
-
   it('should close the dialog with form values and save mode', () => {
     component.formGroup.patchValue(degree1);
     component.onSubmit(ModalSubmitMode.SAVE);

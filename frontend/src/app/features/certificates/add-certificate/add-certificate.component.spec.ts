@@ -84,24 +84,4 @@ describe('AddCertificateComponent', () => {
     expect(component.formGroup.getRawValue())
       .toEqual(certificate1);
   });
-
-  describe('filterCertificateType', () => {
-    [{ ...certificateType1,
-      name: '' },
-    '',
-    null].forEach((value) => {
-      it(`should return default certificates when value is ${value}`, () => {
-        const result = component.filterCertificateType(value);
-        expect(result)
-          .toEqual([certificateType1,
-            certificateType2]);
-      });
-    });
-
-    it('should return ', () => {
-      const result = component.filterCertificateType('GitLab');
-      expect(result)
-        .toEqual([certificateType1]);
-    });
-  });
 });

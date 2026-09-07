@@ -58,26 +58,6 @@ describe('AddExperience', () => {
       .toHaveBeenCalled();
   });
 
-  describe('filter ExperienceType', () => {
-    [{ ...experienceType1,
-      name: '' },
-    '',
-    null].forEach((value) => {
-      it(`should return default experiences when value is ${value}`, () => {
-        const result = component.filterExperienceType(value);
-        expect(result)
-          .toEqual([experienceType1,
-            experienceType2]);
-      });
-    });
-
-    it('should return ', () => {
-      const result = component.filterExperienceType('internship');
-      expect(result)
-        .toEqual([experienceType1]);
-    });
-  });
-
   it('should close the dialog with form values and save mode', () => {
     component.formGroup.patchValue(experience1);
     component.onSubmit(ModalSubmitMode.SAVE);
