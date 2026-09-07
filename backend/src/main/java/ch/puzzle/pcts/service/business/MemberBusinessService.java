@@ -117,7 +117,7 @@ public class MemberBusinessService extends BusinessBase<Member> {
 
         return Stream
                 .concat(roles.stream(), rolePoints.stream())
-                .collect((Collectors.toMap(dto -> dto, dto -> dto, (element1, element2) -> element2)))
+                .collect((Collectors.toMap(RolePointDto::role, dto -> dto, (element1, element2) -> element2)))
                 .values()
                 .stream()
                 .toList();

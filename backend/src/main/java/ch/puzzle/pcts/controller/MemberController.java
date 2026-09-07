@@ -79,7 +79,6 @@ public class MemberController {
                                                    calculationMapper
                                                            .toRolePointDto(service
                                                                    .getAllActiveCalculationsByMemberId(memberId)));
-
         return ResponseEntity.ok(rolePointDtos);
     }
 
