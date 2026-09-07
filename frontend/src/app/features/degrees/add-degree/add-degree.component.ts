@@ -20,7 +20,7 @@ import { DegreeTypeService } from '../degree-type/degree-type.service';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
 import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
-import {filterType} from '../../../shared/utils/typeFilter';
+import { filterType } from '../../../shared/utils/typeFilter';
 
 @Component({
   selector: 'app-add-degree',
@@ -102,7 +102,7 @@ export class AddDegreeComponent extends StrictlyTypedDialog<DegreeModel | undefi
   protected degreeTypeFilteredOptions = computed(() => {
     const model = this.degreeTypeControlSignal() ?? '';
     const value = typeof model === 'string' ? model : model.name;
-    return filterType(value, this.degreeTypeOptions(), "name");
+    return filterType(value, this.degreeTypeOptions(), 'name');
   });
 
   onSubmit(submitMod: ModalSubmitMode) {

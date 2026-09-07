@@ -18,7 +18,7 @@ import { MemberModel } from '../../member/member.model';
 import { DialogResult, StrictlyTypedDialog } from '../../../shared/modal/strictly-typed-dialog.helper';
 import { InputFieldComponent } from '../../../shared/input-field/input-field.component';
 import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
-import {filterType} from '../../../shared/utils/typeFilter';
+import { filterType } from '../../../shared/utils/typeFilter';
 
 @Component({
   selector: 'app-add-certificate',
@@ -95,7 +95,7 @@ export class AddCertificateComponent extends StrictlyTypedDialog<CertificateMode
   protected certificateTypeFilteredOptions = computed(() => {
     const model = this.certificateTypeControlSignal() ?? '';
     const value = typeof model === 'string' ? model : model.name;
-    return filterType(value, this.certificateTypeOptions(), "name");
+    return filterType(value, this.certificateTypeOptions(), 'name');
   });
 
   onSubmit(submitMod: ModalSubmitMode) {

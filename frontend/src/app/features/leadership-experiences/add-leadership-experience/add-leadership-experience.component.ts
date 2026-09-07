@@ -16,7 +16,7 @@ import { LeadershipExperienceTypeModel } from '../leadership-experiences-type/le
 import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
-import {filterType} from '../../../shared/utils/typeFilter';
+import { filterType } from '../../../shared/utils/typeFilter';
 
 @Component({
   selector: 'app-add-leadership-experience.component',
@@ -82,7 +82,7 @@ export class AddLeadershipExperienceComponent extends StrictlyTypedDialog<Leader
   protected leadershipExperienceTypeFilteredOptions = computed(() => {
     const model = this.leadershipExperienceTypeControlSignal() ?? '';
     const value = typeof model === 'string' ? model : model.name;
-    const experienceTypesSorted = filterType(value, this.leadershipExperienceTypeOptions(), "name")
+    const experienceTypesSorted = filterType(value, this.leadershipExperienceTypeOptions(), 'name')
       .sort((a, b) => {
         if (a.leadershipExperienceKind !== b.leadershipExperienceKind) {
           return a.leadershipExperienceKind.localeCompare(b.leadershipExperienceKind);

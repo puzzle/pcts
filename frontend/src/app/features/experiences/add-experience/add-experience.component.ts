@@ -18,7 +18,7 @@ import { ExperienceTypeModel } from '../experience-type/experience-type.model';
 import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
 import { ExperienceTypeService } from '../experience-type/experience-type.service';
 import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
-import {filterType} from '../../../shared/utils/typeFilter';
+import { filterType } from '../../../shared/utils/typeFilter';
 
 @Component({
   selector: 'app-add-experience',
@@ -111,7 +111,7 @@ export class AddExperienceComponent extends StrictlyTypedDialog<ExperienceModel 
   protected experienceTypeFilteredOptions = computed(() => {
     const model = this.experienceTypeControlSignal() ?? '';
     const value = typeof model === 'string' ? model : model.name;
-    return filterType(value, this.experienceTypeOptions(), "name");
+    return filterType(value, this.experienceTypeOptions(), 'name');
   });
 
   onSubmit(submitMod: ModalSubmitMode) {
