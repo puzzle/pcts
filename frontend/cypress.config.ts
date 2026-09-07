@@ -8,7 +8,7 @@ export default defineConfig({
     viewportWidth: 1920,
     viewportHeight: 1080
   },
-  env: {
+  expose: {
     LOGIN_URL: 'http://localhost:8544'
   },
   retries: {

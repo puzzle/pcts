@@ -7,7 +7,7 @@ Cypress.Commands.add('loginAsUser', (user: any) => {
     validate() {
       cy.visit('/');
       cy.url()
-        .should('not.include', Cypress.env('LOGIN_URL'));
+        .should('not.include', Cypress.expose('LOGIN_URL'));
     }
   });
 });
@@ -53,7 +53,7 @@ Cypress.Commands.add('findByTestId', { prevSubject: true }, (subject: JQuery<HTM
 function loginWithCredentials(username: string, password: string) {
   cy.visit('/');
 
-  cy.origin(Cypress.env('LOGIN_URL'), { args: { username,
+  cy.origin(Cypress.expose('LOGIN_URL'), { args: { username,
     password } }, ({ username, password }) => {
     cy.get('input[name="username"]')
       .type(username);
