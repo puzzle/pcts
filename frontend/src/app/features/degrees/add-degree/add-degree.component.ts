@@ -90,7 +90,7 @@ export class AddDegreeComponent extends StrictlyTypedDialog<PCTSDialogConfig<Deg
     this.degreeTypeService.getAllDegreeTypes()
       .subscribe((degreeTypes) => {
         this.degreeTypeOptions.set(degreeTypes);
-        this.formGroup.get('degreeType')
+        this.formGroup.get('type')
           ?.updateValueAndValidity();
       });
   }
