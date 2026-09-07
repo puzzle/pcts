@@ -98,7 +98,7 @@ describe('Add degree Modal', () => {
         errors]) => {
         it(`shows error for invalid date in: ${fieldName}`, () => {
           formPage.submitButtonShouldBe('disabled');
-          cy.wait(300)
+          cy.wait(300);
           formPage.typeAndBlur(fieldName, 'invalid entry');
           errors.forEach((error) => {
             formPage.shouldShowValidationError(error, fieldName);
