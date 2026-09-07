@@ -55,7 +55,7 @@
       </div>
 
       <div class="d-flex flex-row gap-2 mb-4">
-        @for (rolePoint of rolePointList(); track rolePoint.role) {
+        @for (rolePoint of rolePointsResource.value(); track rolePoint.role) {
           <div class="role-box d-flex flex-row justify-content-around p-2 gap-3" [attr.data-testid]=`role-points-${rolePoint.role.name}`>
             <span class="d-flex flex-column justify-content-center">
               <p class="mb-0">{{ 'ROLE.MODEL_NAME' | scopedTranslation }}:</p>
@@ -129,7 +129,7 @@
           <app-crud-button crud-button mode="add" [customOnClick]="openLeadershipExperienceDialog" data-testid="add-leadership-experience-button"/>
         </app-generic-cv-content>
       </mat-tab>
-      @for (rolePoints of rolePointList(); track rolePoints.role) {
+      @for (rolePoints of rolePointsResource.value(); track rolePoints.role) {
         <mat-tab *appTranslationScope="'CALCULATION'" [label]='rolePoints.role.name'>
           <app-member-calculation-table data-testid="member-calculation-table" [roleId]="rolePoints.role.id" [memberId]="m.id"/>
         </mat-tab>
