@@ -210,9 +210,8 @@ class MemberControllerIT extends ControllerITBase {
 
         RolePointDto rolePointDto = mock(RolePointDto.class);
 
-        doReturn(List.of(rolePointDto))
-                .when(memberBusinessService)
-                .mergeListsToUniqueRoleEntriesOnly(memberId, List.of());
+        when(memberBusinessService.mergeListsToUniqueRoleEntriesOnly(memberId, List.of()))
+                .thenReturn(List.of(rolePointDto));
 
         mvc
                 .perform(get(BASEURL + "/" + memberId + "/role-points")
