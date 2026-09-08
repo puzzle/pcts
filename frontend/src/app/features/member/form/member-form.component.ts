@@ -255,8 +255,6 @@ export class MemberFormComponent implements OnInit {
 
     this.choosenRoles.update((roles) => [...roles,
       choosenRole]);
-    this.memberForm.get('roles')
-      ?.setValue(this.choosenRoles());
     event.option.deselect();
   }
 }
