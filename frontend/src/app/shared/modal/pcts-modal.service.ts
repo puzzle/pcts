@@ -67,6 +67,6 @@ export class PctsModalService {
   }
 
   public dialogOpener<T extends { id: number }>() {
-    return new PctsModalBuilder<T>(this.destroyRef, this.openModal.bind(this));
+    return new PctsModalBuilder<T>(this.destroyRef, this.openModal.bind(this), this.injector);
   }
 }
