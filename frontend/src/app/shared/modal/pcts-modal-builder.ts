@@ -5,9 +5,9 @@ import { ModalSubmitMode } from '../enum/modal-submit-mode.enum';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DestroyRef, Type } from '@angular/core';
 
-type DialogComponent<T> = StrictlyTypedDialog<PCTSDialogConfig<T>, DialogResult<T>>;
+type DialogComponent<T extends { id: number }> = StrictlyTypedDialog<PCTSDialogConfig<T>, DialogResult<T>>;
 
-type openModalType<T> = (
+type openModalType<T extends { id: number }> = (
   component: Type<DialogComponent<T>>,
   options: { data: PCTSDialogConfig<T> }
 ) => {
