@@ -174,6 +174,7 @@ describe('isValueInListSignal', () => {
 
   describe('isInteger', () => {
     const validator = isInteger();
+
     it('should return null if value is empty', () => {
       const control = new FormControl('');
       expect(validator(control))

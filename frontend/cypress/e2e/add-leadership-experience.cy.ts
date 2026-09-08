@@ -50,6 +50,7 @@ describe('Add leadershipExperience modal', () => {
 
       formPage.type('leadershipExperienceType', 'invalid entry');
       cy.getByTestId('leadershipExperienceType')
+        .focus()
         .blur();
       formPage.shouldShowValidationError('Ungültige Eingabe', 'leadershipExperienceType');
     });
