@@ -7,11 +7,9 @@
  * @param attr - The key of the object to search in (TypeScript restricts this to string properties only).
  * @returns The filtered array.
  */
-export function filterType<T, K extends { [P in keyof T]: T[P] extends string ? P : never }[keyof T]>(
-  value: string,
+export function filterType<T, K extends { [P in keyof T]: T[P] extends string ? P : never }[keyof T]>(value: string,
   options: T[],
-  attr: K
-): T[] {
+  attr: K): T[] {
   if (!value) {
     return options;
   }
