@@ -109,15 +109,20 @@ public class MemberBusinessService extends BusinessBase<Member> {
         return memberPersistenceService.findByAbbreviation(abbreviation);
     }
 
+    // We need to merge 2 lists because members can obtain roles from 2 sources
     public List<RolePointDto> mergeListsToUniqueRoleEntriesOnly(Long memberId, List<RolePointDto> rolePoints) {
 
-        List<RolePointDto> roles = new ArrayList<>();
-
-        this.getAllRolesByMemberId(memberId).forEach((role -> roles.add(new RolePointDto(role, BigDecimal.ZERO))));
+        List<RolePointDto> roles = this
+                .getAllRolesByMemberId(memberId)
+                .stream()
+                .map((role -> new RolePointDto(role, BigDecimal.ZERO)))
+                .toList();
 
         return Stream
-                .concat(roles.stream(), rolePoints.stream())
-                .collect((Collectors.toMap(RolePointDto::role, dto -> dto, (element1, element2) -> element2)))
+                .concat(roles.stream(), rolePoints.stream()) // Merge 2 Collections into a single stream of entries.
+                .collect((Collectors.toMap(RolePointDto::role, dto -> dto, (element1, element2) -> element2))) // Deduplicate
+                                                                                                               // by
+                                                                                                               // role
                 .values()
                 .stream()
                 .toList();
