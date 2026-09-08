@@ -97,7 +97,8 @@ describe('MemberDetailViewComponent (Jest)', () => {
 
     const fixture = TestBed.createComponent(MemberDetailViewComponent, {
       bindings: [inputBinding('tabIndex', () => 0)]
-    }); memberServiceMock.getMemberOverviewByMemberId?.mockReturnValue(of(memberOverview1));
+    });
+    memberServiceMock.getMemberOverviewByMemberId?.mockReturnValue(of(memberOverview1));
     memberServiceMock.getCalculationsByMemberIdAndOptionalRoleId?.mockReturnValue(of([]));
 
     memberServiceMock.getPointsForActiveCalculationsForRoleByMemberId?.mockReturnValue(of(rolePointsList1));
