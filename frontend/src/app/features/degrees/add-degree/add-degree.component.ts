@@ -9,7 +9,7 @@ import { PctsFormErrorDirective } from '../../../shared/pcts-form-error/pcts-for
 import { PctsFormLabelDirective } from '../../../shared/pcts-form-label/pcts-form-label.directive';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
-import { DialogResult, provideModalI18nPrefix, StrictlyTypedDialog } from '../../../shared/modal/strictly-typed-dialog.helper';
+import { DialogResult, StrictlyTypedDialog } from '../../../shared/modal/strictly-typed-dialog.helper';
 import { MemberModel } from '../../member/member.model';
 import { isValueInListSignal } from '../../../shared/form/form-validators';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -46,8 +46,7 @@ import { filterType } from '../../../shared/utils/typeFilter';
     MatCheckbox,
     ModalActionsComponent
   ],
-  templateUrl: './add-degree.component.html',
-  providers: [provideModalI18nPrefix<DegreeModel>('DEGREE.FORM.ADD', 'DEGREE.FORM.EDIT')]
+  templateUrl: './add-degree.component.html'
 })
 export class AddDegreeComponent extends StrictlyTypedDialog<PCTSDialogConfig<DegreeModel>, DialogResult<DegreeModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);

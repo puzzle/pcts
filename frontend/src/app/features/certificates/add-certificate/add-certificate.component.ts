@@ -14,7 +14,7 @@ import { CertificateTypeService } from '../certificate-type/certificate-type.ser
 import { MatDatepicker, MatDatepickerInput, MatDatepickerToggle } from '@angular/material/datepicker';
 import { CertificateModel } from '../certificate.model';
 import { MemberModel } from '../../member/member.model';
-import { DialogResult, provideModalI18nPrefix, StrictlyTypedDialog } from '../../../shared/modal/strictly-typed-dialog.helper';
+import { DialogResult, StrictlyTypedDialog } from '../../../shared/modal/strictly-typed-dialog.helper';
 import { InputFieldComponent } from '../../../shared/input-field/input-field.component';
 import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
 import { PCTSDialogConfig } from '../../../shared/modal/pcts-modal.service';
@@ -43,8 +43,7 @@ import { filterType } from '../../../shared/utils/typeFilter';
     InputFieldComponent,
     ModalActionsComponent
   ],
-  templateUrl: './add-certificate.component.html',
-  providers: [provideModalI18nPrefix<CertificateModel>('CERTIFICATE.FORM.ADD', 'CERTIFICATE.FORM.EDIT')]
+  templateUrl: './add-certificate.component.html'
 })
 export class AddCertificateComponent extends StrictlyTypedDialog<PCTSDialogConfig<CertificateModel>, DialogResult<CertificateModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);
