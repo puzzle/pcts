@@ -69,7 +69,6 @@ describe('Add degree Modal', () => {
       modalPage.checkModalIsClosed();
     });
   });
-  // test both alternative save buttons
 
   describe('Validation Errors', () => {
     beforeEach(() => {
