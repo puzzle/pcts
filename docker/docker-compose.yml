@@ -60,7 +60,7 @@ services:
     container_name: pcts-keycloak
     image: quay.io/keycloak/keycloak:26.7.0
     healthcheck:
-      test: [ "CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/8544 || exit 1" ]
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/8544 || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
