@@ -101,8 +101,8 @@ export function areListEntriesInListSignal<T>(validOptionsSignal: Signal<T[]>, c
     }
 
 
-    const isValidOption: boolean = values.some((option) => comparator(option, validOptions));
+    const invalidEntries = values.filter((option) => !comparator(option, validOptions));
 
-    return isValidOption ? null : { invalid_entry: true };
+    return invalidEntries.length === 0 ? null : { invalid_entries: invalidEntries };
   };
 }
