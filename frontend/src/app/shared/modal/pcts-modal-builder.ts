@@ -1,15 +1,18 @@
-import { PCTSDialogConfig } from './pcts-modal.service';
+import { PCTSDialogConfig, PctsModalService } from './pcts-modal.service';
 import { concatMap, Observable } from 'rxjs';
 import { DialogResult, StrictlyTypedDialog } from './strictly-typed-dialog.helper';
 import { ModalSubmitMode } from '../enum/modal-submit-mode.enum';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { DestroyRef, Type } from '@angular/core';
+import { DestroyRef, Injector, Type } from '@angular/core';
+import { I18N_PREFIX } from '../i18n-prefix.token';
+import { ScopedTranslationService } from '../i18n-prefix.provider';
 
 type DialogComponent<T extends { id: number }> = StrictlyTypedDialog<PCTSDialogConfig<T>, DialogResult<T>>;
 
 type openModalType<T extends { id: number }> = (
   component: Type<DialogComponent<T>>,
-  options: { data: PCTSDialogConfig<T> }
+  options: { data: PCTSDialogConfig<T>;
+    injector: Injector; }
 ) => {
   afterSubmitted: Observable<{
     modalSubmitMode: ModalSubmitMode;
@@ -26,13 +29,18 @@ export class PctsModalBuilder<T extends { id: number }> {
 
   private submitOptions: ModalSubmitMode[] | undefined;
 
+  private i18nPrefix = '';
+
   private readonly destroyRef: DestroyRef;
+
+  private readonly injector: Injector;
 
   private readonly openModal: openModalType<T>;
 
-  constructor(destroyRef: DestroyRef, openModal: openModalType<T>) {
+  constructor(destroyRef: DestroyRef, openModal: openModalType<T>, injector: Injector) {
     this.destroyRef = destroyRef;
     this.openModal = openModal;
+    this.injector = injector;
   }
 
   withComponent(component: Type<DialogComponent<T>>) {
@@ -66,6 +74,11 @@ export class PctsModalBuilder<T extends { id: number }> {
     return this;
   }
 
+  withI18nPrefix(i18nPrefix: string) {
+    this.i18nPrefix = i18nPrefix;
+    return this;
+  }
+
   build() {
     if (!this.component || !this.onSubmitMethod) {
       throw new Error('Component and onSubmitMethod must be provided');
@@ -74,11 +87,16 @@ export class PctsModalBuilder<T extends { id: number }> {
       const onSubmitMethod = this.onSubmitMethod;
 
       const opener = (model?: T) => {
-        const config: PCTSDialogConfig<T> = {
+        const data: PCTSDialogConfig<T> = {
           model: model,
           submitOptions: this.submitOptions ?? []
         };
-        this.openModal(component, { data: config })
+
+        const injector = this.getInjectorForI18nPrefix(this.i18nPrefix);
+
+
+        this.openModal(component, { data: data,
+          injector: injector })
           .afterSubmitted
           .pipe(takeUntilDestroyed(this.destroyRef), concatMap(({ modalSubmitMode, submittedModel }: { modalSubmitMode: ModalSubmitMode;
             submittedModel: T; }) => {
@@ -104,5 +122,12 @@ export class PctsModalBuilder<T extends { id: number }> {
       return opener;
     }
   }
-}
 
+  private getInjectorForI18nPrefix(i18nPrefix: string) {
+    return Injector.create({ providers: [{ provide: I18N_PREFIX,
+      useValue: i18nPrefix },
+    ScopedTranslationService,
+    PctsModalService],
+    parent: this.injector });
+  }
+}

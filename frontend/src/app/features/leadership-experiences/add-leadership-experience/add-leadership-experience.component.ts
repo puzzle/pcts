@@ -9,7 +9,7 @@ import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import { MemberModel } from '../../member/member.model';
 import { isValueInListSignal } from '../../../shared/form/form-validators';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { DialogResult, provideModalI18nPrefix, StrictlyTypedDialog } from '../../../shared/modal/strictly-typed-dialog.helper';
+import { DialogResult, StrictlyTypedDialog } from '../../../shared/modal/strictly-typed-dialog.helper';
 import { LeadershipExperienceModel } from '../leadership-experience.model';
 import { LeadershipExperienceTypeService } from '../leadership-experiences-type/leadership-experience-type.service';
 import { LeadershipExperienceTypeModel } from '../leadership-experiences-type/leadership-experience-type.model';
@@ -17,6 +17,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
 import { PCTSDialogConfig } from '../../../shared/modal/pcts-modal.service';
 import { filterType } from '../../../shared/utils/typeFilter';
+import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 
 @Component({
   selector: 'app-add-leadership-experience.component',
@@ -31,10 +32,10 @@ import { filterType } from '../../../shared/utils/typeFilter';
     ReactiveFormsModule,
     MatOptgroup,
     TranslatePipe,
-    ModalActionsComponent
+    ModalActionsComponent,
+    ScopedTranslationPipe
   ],
-  templateUrl: './add-leadership-experience.component.html',
-  providers: [provideModalI18nPrefix<LeadershipExperienceModel>('LEADERSHIP_EXPERIENCE.FORM.ADD', 'LEADERSHIP_EXPERIENCE.FORM.EDIT')]
+  templateUrl: './add-leadership-experience.component.html'
 })
 export class AddLeadershipExperienceComponent extends StrictlyTypedDialog<PCTSDialogConfig<LeadershipExperienceModel>, DialogResult<LeadershipExperienceModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);
