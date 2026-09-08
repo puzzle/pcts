@@ -24,7 +24,7 @@ export class PctsModalBuilder<T extends { id: number }> {
 
   private onSuccess: (() => void) | undefined;
 
-  private submitOptions: ModalSubmitMode[] = [];
+  private submitOptions: ModalSubmitMode[] | undefined;
 
   private readonly destroyRef: DestroyRef;
 
@@ -47,6 +47,11 @@ export class PctsModalBuilder<T extends { id: number }> {
 
   withOnSuccessMethod(onSuccess: () => void) {
     this.onSuccess = onSuccess;
+    return this;
+  }
+
+  withSubmitOptionsForEdit() {
+    this.submitOptions = [];
     return this;
   }
 
