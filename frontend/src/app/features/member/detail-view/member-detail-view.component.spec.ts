@@ -8,7 +8,7 @@ import { DatePipe } from '@angular/common';
 import {
   certificate1,
   leadershipExperience1,
-  memberOverview1, roleList2,
+  memberOverview1,
   rolePointsList1
 } from '../../../shared/test/test-data';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
@@ -19,6 +19,7 @@ import { MemberCalculationTableComponent } from './calculation-table/member-calc
 import { LeadershipExperienceService } from '../../leadership-experiences/leadership-experience.service';
 
 import { AuthService } from '../../../core/auth/auth.service';
+import { inputBinding } from '@angular/core';
 
 describe('MemberDetailViewComponent (Jest)', () => {
   let memberServiceMock: Partial<jest.Mocked<MemberService>>;
@@ -33,8 +34,7 @@ describe('MemberDetailViewComponent (Jest)', () => {
     memberServiceMock = {
       getMemberOverviewByMemberId: jest.fn(),
       getPointsForActiveCalculationsForRoleByMemberId: jest.fn(),
-      getCalculationsByMemberIdAndOptionalRoleId: jest.fn(),
-      getRolesByMemberId: jest.fn()
+      getCalculationsByMemberIdAndOptionalRoleId: jest.fn()
     } as Partial<jest.Mocked<MemberService>>;
 
     authServiceMock = {
@@ -95,12 +95,12 @@ describe('MemberDetailViewComponent (Jest)', () => {
       ]
     });
 
-    const fixture = TestBed.createComponent(MemberDetailViewComponent);
-    memberServiceMock.getMemberOverviewByMemberId?.mockReturnValue(of(memberOverview1));
+    const fixture = TestBed.createComponent(MemberDetailViewComponent, {
+      bindings: [inputBinding('tabIndex', () => 0)]
+    }); memberServiceMock.getMemberOverviewByMemberId?.mockReturnValue(of(memberOverview1));
     memberServiceMock.getCalculationsByMemberIdAndOptionalRoleId?.mockReturnValue(of([]));
 
     memberServiceMock.getPointsForActiveCalculationsForRoleByMemberId?.mockReturnValue(of(rolePointsList1));
-    memberServiceMock.getRolesByMemberId?.mockReturnValue(of(roleList2));
     fixture.detectChanges();
     return {
       fixture,
@@ -135,7 +135,7 @@ describe('MemberDetailViewComponent (Jest)', () => {
     expect(routerMock.navigate).not.toHaveBeenCalled();
 
     // Role points
-    expect(component.rolePointList())
+    expect(component.rolePointsResource.value())
       .toEqual(rolePointsList1);
   });
 
@@ -152,8 +152,8 @@ describe('MemberDetailViewComponent (Jest)', () => {
 
     expect(component.member())
       .toBeNull();
-    expect(component.rolePointList())
-      .toEqual([]);
+    expect(component.rolePointsResource)
+      .toBeUndefined();
   });
 
   describe('open certificate modal', () => {

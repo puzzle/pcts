@@ -101,7 +101,7 @@ export class MemberDetailViewComponent implements OnInit {
 
   private injector = inject(Injector);
 
-  protected rolePointsResource: any;
+  rolePointsResource: any;
 
   ngOnInit(): void {
     this.getData();
