@@ -38,7 +38,7 @@ services:
       PCTS_SPRING_DATASOURCE_URL: pcts-db
       SPRING_PROFILES_ACTIVE: dev
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://localhost:8544/realms/pitc
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://pcts-keycloak:8080/realms/pitc/protocol/openid-connect/certs
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://pcts-keycloak:8544/realms/pitc/protocol/openid-connect/certs
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_AUDIENCES_0: pcts-dev
     profiles: ['', backend, migration]
 
@@ -59,6 +59,11 @@ services:
   pcts-keycloak:
     container_name: pcts-keycloak
     image: quay.io/keycloak/keycloak:26.7.0
+    healthcheck:
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/8544 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     environment:
       - KC_BOOTSTRAP_ADMIN_USERNAME=admin26
       - KC_BOOTSTRAP_ADMIN_PASSWORD=keycloak26
@@ -70,8 +75,9 @@ services:
     command:
       - start-dev
       - --import-realm
+      - --http-port=8544
     ports:
-      - "8544:8080"
+      - "8544:8544"
     profiles: ['', backend, infra, migration]
 
   pcts-migration:
@@ -83,8 +89,15 @@ services:
       - "8081:8081"
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    links:
+      - "pcts-keycloak:localhost"
     depends_on:
-      - pcts-backend
+      pcts-keycloak:
+        condition: service_healthy
+      pcts-backend:
+        condition: service_started
     environment:
       SPRING_PROFILES_ACTIVE: dev
+      BACKEND_API_BASE_URL: http://pcts-backend:8080
+      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_TOKEN_URI: http://pcts-keycloak:8544/realms/pitc/protocol/openid-connect/token
     profiles: [migration]
