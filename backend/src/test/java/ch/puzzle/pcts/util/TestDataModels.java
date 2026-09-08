@@ -829,6 +829,8 @@ public class TestDataModels {
 
     public static final List<Role> ROLES = List.of(ROLE_2, ROLE_3);
 
+    public static final Set<Role> ROLES_AS_SET = Set.of(ROLE_2, ROLE_3);
+
     public static final List<Tag> TAGS_1 = List.of(TAG_1, TAG_2);
 
     public static final List<Member> MEMBERS = List
