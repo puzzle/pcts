@@ -66,17 +66,8 @@ export class AddCertificateComponent extends StrictlyTypedDialog<PCTSDialogConfi
     comment: ['' as string | null]
   });
 
-  constructor() {
-    super();
-    if (this.data) {
-      this.formGroup.patchValue({
-        ...this.data.model
-      });
-    }
-  }
-
   ngOnInit(): void {
-    this.formGroup.patchValue(this.data ?? {});
+    this.formGroup.patchValue(this.data.model ?? {});
 
     this.certificateTypeService.getAllCertificateTypes()
       .subscribe((organisationUnits) => {
