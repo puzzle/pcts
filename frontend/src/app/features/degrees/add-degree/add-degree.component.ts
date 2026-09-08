@@ -9,7 +9,7 @@ import { PctsFormErrorDirective } from '../../../shared/pcts-form-error/pcts-for
 import { PctsFormLabelDirective } from '../../../shared/pcts-form-label/pcts-form-label.directive';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
-import { DialogResult, StrictlyTypedDialog } from '../../../shared/modal/strictly-typed-dialog.helper';
+import { DialogResult, provideModalI18nPrefix, StrictlyTypedDialog } from '../../../shared/modal/strictly-typed-dialog.helper';
 import { MemberModel } from '../../member/member.model';
 import { isValueInListSignal } from '../../../shared/form/form-validators';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -18,7 +18,6 @@ import { DegreeModel } from '../degree.model';
 import { DegreeTypeModel } from '../degree-type/degree-type.model';
 import { DegreeTypeService } from '../degree-type/degree-type.service';
 import { MatCheckbox } from '@angular/material/checkbox';
-import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
 import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
 import { PCTSDialogConfig } from '../../../shared/modal/pcts-modal.service';
 import { filterType } from '../../../shared/utils/typeFilter';
@@ -48,7 +47,7 @@ import { filterType } from '../../../shared/utils/typeFilter';
     ModalActionsComponent
   ],
   templateUrl: './add-degree.component.html',
-  providers: [provideI18nPrefix('DEGREE.FORM.ADD')]
+  providers: [provideModalI18nPrefix<DegreeModel>('DEGREE.FORM.ADD', 'DEGREE.FORM.EDIT')]
 })
 export class AddDegreeComponent extends StrictlyTypedDialog<PCTSDialogConfig<DegreeModel>, DialogResult<DegreeModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);

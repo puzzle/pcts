@@ -9,11 +9,10 @@ import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import { MemberModel } from '../../member/member.model';
 import { isValueInListSignal } from '../../../shared/form/form-validators';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { DialogResult, StrictlyTypedDialog } from '../../../shared/modal/strictly-typed-dialog.helper';
+import { DialogResult, provideModalI18nPrefix, StrictlyTypedDialog } from '../../../shared/modal/strictly-typed-dialog.helper';
 import { LeadershipExperienceModel } from '../leadership-experience.model';
 import { LeadershipExperienceTypeService } from '../leadership-experiences-type/leadership-experience-type.service';
 import { LeadershipExperienceTypeModel } from '../leadership-experiences-type/leadership-experience-type.model';
-import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
 import { PCTSDialogConfig } from '../../../shared/modal/pcts-modal.service';
@@ -35,7 +34,7 @@ import { filterType } from '../../../shared/utils/typeFilter';
     ModalActionsComponent
   ],
   templateUrl: './add-leadership-experience.component.html',
-  providers: [provideI18nPrefix('LEADERSHIP_EXPERIENCE.FORM.ADD')]
+  providers: [provideModalI18nPrefix<LeadershipExperienceModel>('LEADERSHIP_EXPERIENCE.FORM.ADD', 'LEADERSHIP_EXPERIENCE.FORM.EDIT')]
 })
 export class AddLeadershipExperienceComponent extends StrictlyTypedDialog<PCTSDialogConfig<LeadershipExperienceModel>, DialogResult<LeadershipExperienceModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);
