@@ -110,7 +110,8 @@ export class MemberDetailViewComponent {
 
   readonly leadershipExperienceTable = getLeadershipExperienceTable();
 
-  addDegreeDialog = this.modalService.getBuilder<DegreeModel>()
+  addDegreeDialog = this.modalService
+    .dialogOpener<DegreeModel>()
     .withComponent(AddDegreeComponent)
     .withOnSubmitMethod((model: DegreeModel) => {
       const currentMember = this.memberResource.value();
@@ -125,7 +126,8 @@ export class MemberDetailViewComponent {
     .withSubmitOptionsForAdd()
     .build();
 
-  addCertificateDialog = this.modalService.getBuilder<CertificateModel>()
+  addCertificateDialog = this.modalService
+    .dialogOpener<CertificateModel>()
     .withComponent(AddCertificateComponent)
     .withOnSubmitMethod((model: CertificateModel) => {
       const currentMember = this.memberResource.value();
@@ -141,7 +143,8 @@ export class MemberDetailViewComponent {
     .withSubmitOptionsForAdd()
     .build();
 
-  addLeadershipExperienceDialog = this.modalService.getBuilder<LeadershipExperienceModel>()
+  addLeadershipExperienceDialog = this.modalService
+    .dialogOpener<LeadershipExperienceModel>()
     .withComponent(AddLeadershipExperienceComponent)
     .withOnSubmitMethod((model: LeadershipExperienceModel) => {
       const currentMember = this.memberResource.value();
@@ -159,10 +162,12 @@ export class MemberDetailViewComponent {
 
   openExperienceDialog = this.createDialogOpener<ExperienceModel>(AddExperienceComponent, (model) => this.experienceService.addExperience(model));
 
-  private readonly createEditDegreeDialog = this.modalService.getBuilder<DegreeModel>()
+  private readonly createEditDegreeDialog = this.modalService
+    .dialogOpener<DegreeModel>()
     .withComponent(AddDegreeComponent)
     .withOnSubmitMethod((model: DegreeModel) => this.degreeService.updateDegree(model.id, model))
     .withOnSuccessMethod(() => this.memberOverviewResource.reload())
+    .withSubmitOptionsForEdit()
     .build();
 
   editDegreeDialog(row: DegreeOverviewModel) {
@@ -173,10 +178,12 @@ export class MemberDetailViewComponent {
       });
   }
 
-  private readonly createEditCertificateDialog = this.modalService.getBuilder<CertificateModel>()
+  private readonly createEditCertificateDialog = this.modalService
+    .dialogOpener<CertificateModel>()
     .withComponent(AddCertificateComponent)
     .withOnSubmitMethod((model: CertificateModel) => this.certificateService.updateCertificate(model.id, model))
     .withOnSuccessMethod(() => this.memberOverviewResource.reload())
+    .withSubmitOptionsForEdit()
     .build();
 
   editCertificateDialog(row: CertificateOverviewModel) {
@@ -186,10 +193,12 @@ export class MemberDetailViewComponent {
       });
   }
 
-  private readonly createEditLeadershipExperienceDialog = this.modalService.getBuilder<LeadershipExperienceModel>()
+  private readonly createEditLeadershipExperienceDialog = this.modalService
+    .dialogOpener<LeadershipExperienceModel>()
     .withComponent(AddLeadershipExperienceComponent)
     .withOnSubmitMethod((model: LeadershipExperienceModel) => this.leadershipExperienceService.updateLeadershipExperience(model.id, model))
     .withOnSuccessMethod(() => this.memberOverviewResource.reload())
+    .withSubmitOptionsForEdit()
     .build();
 
   editLeadershipExperienceDialog(row: LeadershipExperienceOverviewModel) {

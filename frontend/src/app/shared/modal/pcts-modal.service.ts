@@ -66,7 +66,7 @@ export class PctsModalService {
     return enrichMatDialogRef(ref);
   }
 
-  public getBuilder<T extends { id: number }>() {
+  public dialogOpener<T extends { id: number }>() {
     return new PctsModalBuilder<T>(this.destroyRef, this.openModal.bind(this));
   }
 }
