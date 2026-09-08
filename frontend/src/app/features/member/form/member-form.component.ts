@@ -139,8 +139,6 @@ export class MemberFormComponent implements OnInit {
     this.roleService.getAllRoles()
       .subscribe((roles) => {
         this.roleOptions.set(roles);
-        this.memberForm.get('roles')
-          ?.updateValueAndValidity();
       });
 
     if (this.isEdit()) {
