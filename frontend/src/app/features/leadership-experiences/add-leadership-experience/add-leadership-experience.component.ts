@@ -13,7 +13,6 @@ import { DialogResult, StrictlyTypedDialog } from '../../../shared/modal/strictl
 import { LeadershipExperienceModel } from '../leadership-experience.model';
 import { LeadershipExperienceTypeService } from '../leadership-experiences-type/leadership-experience-type.service';
 import { LeadershipExperienceTypeModel } from '../leadership-experiences-type/leadership-experience-type.model';
-import { TranslatePipe } from '@ngx-translate/core';
 import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
 import { PCTSDialogConfig } from '../../../shared/modal/pcts-modal.service';
 import { filterType } from '../../../shared/utils/typeFilter';
@@ -31,7 +30,6 @@ import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-
     MatOption,
     ReactiveFormsModule,
     MatOptgroup,
-    TranslatePipe,
     ModalActionsComponent,
     ScopedTranslationPipe
   ],
@@ -55,17 +53,8 @@ export class AddLeadershipExperienceComponent extends StrictlyTypedDialog<PCTSDi
     comment: ['' as string | null]
   });
 
-  constructor() {
-    super();
-    if (this.data) {
-      this.formGroup.patchValue({
-        ...this.data.model
-      });
-    }
-  }
-
   ngOnInit(): void {
-    this.formGroup.patchValue(this.data ?? {});
+    this.formGroup.patchValue(this.data.model ?? {});
 
     this.leadershipExperienceTypeService.getAllLeadershipExperienceTypes()
       .subscribe((leadershipExperienceTypes) => {
