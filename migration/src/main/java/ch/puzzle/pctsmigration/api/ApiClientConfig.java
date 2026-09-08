@@ -2,9 +2,7 @@ package ch.puzzle.pctsmigration.api;
 
 import ch.puzzle.pctsmigration.TokenSupplier;
 import org.openapitools.client.ApiClient;
-import org.openapitools.client.api.CertificateTypesApi;
-import org.openapitools.client.api.CertificatesApi;
-import org.openapitools.client.api.MembersApi;
+import org.openapitools.client.api.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +18,8 @@ public class ApiClientConfig {
         ApiClient apiClient = new ApiClient();
         apiClient.updateBaseUri(basePath);
         apiClient.setRequestInterceptor(builder -> builder.setHeader("Authorization", "Bearer " + tokenSupplier.get()));
+
+        System.out.println(tokenSupplier.get());
 
         return apiClient;
     }
@@ -37,5 +37,15 @@ public class ApiClientConfig {
     @Bean
     public CertificatesApi certificatesApi(ApiClient apiClient) {
         return new CertificatesApi(apiClient);
+    }
+
+    @Bean
+    public LeadershipExperiencesApi leadershipExperiencesApi(ApiClient apiClient) {
+        return new LeadershipExperiencesApi(apiClient);
+    }
+
+    @Bean
+    public LeadershipExperienceTypesApi leadershipExperienceTypesApi(ApiClient apiClient) {
+        return new LeadershipExperienceTypesApi(apiClient);
     }
 }
