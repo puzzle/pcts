@@ -99,7 +99,7 @@ export class MemberDetailViewComponent implements OnInit {
 
   private readonly destroyRef = inject(DestroyRef);
 
-  private injector = inject(Injector);
+  private readonly injector = inject(Injector);
 
   rolePointsResource: any;
 
