@@ -57,6 +57,7 @@
           }
         </mat-chip-grid>
         <input name="currentRole"
+               data-testid="roles"
                placeholder='{{ "ADD_ROLE" | scopedTranslation }}'
                #roleInput
                [matChipInputFor]="chipGrid"
