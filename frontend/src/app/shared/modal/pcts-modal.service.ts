@@ -5,7 +5,7 @@ import { enrichMatDialogRef, StrictlyTypedDialog, TypedMatDialogRef } from './st
 import { ModalSubmitMode } from '../enum/modal-submit-mode.enum';
 import { PctsModalBuilder } from './pcts-modal-builder';
 
-export interface PCTSDialogConfig<T> {
+export interface PCTSDialogConfig<T extends { id: number }> {
   model: T | undefined;
   submitOptions: ModalSubmitMode[];
 }
