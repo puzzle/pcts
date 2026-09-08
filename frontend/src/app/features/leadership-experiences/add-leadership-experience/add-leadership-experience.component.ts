@@ -16,6 +16,7 @@ import { LeadershipExperienceTypeModel } from '../leadership-experiences-type/le
 import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
+import { filterType } from '../../../shared/utils/typeFilter';
 
 @Component({
   selector: 'app-add-leadership-experience.component',
@@ -55,14 +56,11 @@ export class AddLeadershipExperienceComponent extends StrictlyTypedDialog<Leader
 
   constructor() {
     super();
-    if (this.data) {
-      this.formGroup.patchValue({
-        ...this.data
-      });
-    }
   }
 
   ngOnInit(): void {
+    this.formGroup.patchValue(this.data ?? {});
+
     this.leadershipExperienceTypeService.getAllLeadershipExperienceTypes()
       .subscribe((leadershipExperienceTypes) => {
         this.leadershipExperienceTypeOptions.set(leadershipExperienceTypes);
@@ -82,8 +80,9 @@ export class AddLeadershipExperienceComponent extends StrictlyTypedDialog<Leader
   protected leadershipExperienceTypeControlSignal = toSignal(this.formGroup.get('leadershipExperienceType')!.valueChanges, { initialValue: this.formGroup.get('leadershipExperienceType')!.value });
 
   protected leadershipExperienceTypeFilteredOptions = computed(() => {
-    const value = this.leadershipExperienceTypeControlSignal() ?? '';
-    const experienceTypesSorted = this.filterLeadershipExperienceType(value)
+    const model = this.leadershipExperienceTypeControlSignal() ?? '';
+    const value = typeof model === 'string' ? model : model.name;
+    const experienceTypesSorted = filterType(value, this.leadershipExperienceTypeOptions(), 'name')
       .sort((a, b) => {
         if (a.leadershipExperienceKind !== b.leadershipExperienceKind) {
           return a.leadershipExperienceKind.localeCompare(b.leadershipExperienceKind);
@@ -93,21 +92,6 @@ export class AddLeadershipExperienceComponent extends StrictlyTypedDialog<Leader
       });
     return Map.groupBy(experienceTypesSorted, (type) => type.leadershipExperienceKind);
   });
-
-  filterLeadershipExperienceType(value: LeadershipExperienceTypeModel | string | null): LeadershipExperienceTypeModel[] {
-    if (value === null || value === undefined || value === '') {
-      return this.leadershipExperienceTypeOptions();
-    }
-
-    const filterValue = (typeof value === 'string' ? value : value.name).toLowerCase();
-
-    if (filterValue === '') {
-      return this.leadershipExperienceTypeOptions();
-    }
-    return this.leadershipExperienceTypeOptions()
-      .filter((option) => option.name.toLowerCase()
-        .includes(filterValue));
-  }
 
   onSubmit(submitMod: ModalSubmitMode) {
     this.dialogRef.close({

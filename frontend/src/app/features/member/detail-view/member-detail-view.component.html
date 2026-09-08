@@ -99,7 +99,13 @@
           [data]="experienceData()"
           *appTranslationScope="'EXPERIENCE'"
           [table]="experienceTable"
-        />
+        >
+          <app-crud-button
+            crud-button
+            mode="add"
+            [customOnClick]="openExperienceDialog"
+            data-testid="add-experience-button"/>
+        </app-generic-cv-content>
 
         <app-generic-cv-content
           data-testid="cv-table-certificate"

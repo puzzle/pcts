@@ -1,27 +1,27 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AddDegreeComponent } from './add-degree.component';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { degree1, degreeType1, degreeType2 } from '../../../shared/test/test-data';
-import { provideTranslateService } from '@ngx-translate/core';
-import { DegreeTypeService } from '../degree-type/degree-type.service';
+import { AddExperienceComponent } from './add-experience.component';
+import { experience1, experienceType1, experienceType2 } from '../../../shared/test/test-data';
 import { of } from 'rxjs';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { provideTranslateService } from '@ngx-translate/core';
+import { ExperienceTypeService } from '../experience-type/experience-type.service';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 
-describe('AddDegreeComponent', () => {
-  let component: AddDegreeComponent;
-  let fixture: ComponentFixture<AddDegreeComponent>;
+describe('AddExperienceComponent', () => {
+  let component: AddExperienceComponent;
+  let fixture: ComponentFixture<AddExperienceComponent>;
 
-  const dialogData = degree1;
+  const dialogData = experience1;
   const dialogRefMock = { close: jest.fn() };
-  const degreeTypeServiceMock = {
-    getAllDegreeTypes: jest.fn()
-      .mockReturnValue(of([degreeType1,
-        degreeType2]))
+  const experienceTypeServiceMock = {
+    getAllExperienceTypes: jest.fn()
+      .mockReturnValue(of([experienceType1,
+        experienceType2]))
   };
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      imports: [AddDegreeComponent],
+      imports: [AddExperienceComponent],
       providers: [
         {
           provide: MAT_DIALOG_DATA,
@@ -32,15 +32,15 @@ describe('AddDegreeComponent', () => {
           useValue: dialogRefMock
         },
         {
-          provide: DegreeTypeService,
-          useValue: degreeTypeServiceMock
+          provide: ExperienceTypeService,
+          useValue: experienceTypeServiceMock
         },
         provideTranslateService()
       ]
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(AddDegreeComponent);
+    fixture = TestBed.createComponent(AddExperienceComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
@@ -55,22 +55,22 @@ describe('AddDegreeComponent', () => {
   });
 
   describe('Initialization', () => {
-    it('should load degreeTypes on init', () => {
-      expect(component['degreeTypeOptions']())
-        .toEqual([degreeType1,
-          degreeType2]);
-      expect(degreeTypeServiceMock.getAllDegreeTypes)
+    it('should load ExperienceType on init', () => {
+      expect(component['experienceTypeOptions']())
+        .toEqual([experienceType1,
+          experienceType2]);
+      expect(experienceTypeServiceMock.getAllExperienceTypes)
         .toHaveBeenCalled();
     });
 
-    it('should get the value from getAllDegreeTypes and set them', () => {
-      degreeTypeServiceMock.getAllDegreeTypes.mockReturnValue(of([degreeType2]));
-      const degreeTypeOptionsSpy = jest.spyOn(component['degreeTypeOptions'], 'set');
+    it('should get the value from getAllExperienceTypes and set them', () => {
+      experienceTypeServiceMock.getAllExperienceTypes.mockReturnValue(of([experienceType2]));
+      const experienceTypeOptionsSpy = jest.spyOn(component['experienceTypeOptions'], 'set');
 
       component.ngOnInit();
 
-      expect(degreeTypeOptionsSpy)
-        .toHaveBeenCalledWith([degreeType2]);
+      expect(experienceTypeOptionsSpy)
+        .toHaveBeenCalledWith([experienceType2]);
     });
 
     it('should initialize empty form if no data is provided', () => {
@@ -85,71 +85,83 @@ describe('AddDegreeComponent', () => {
   });
 
   describe('Form Validation', () => {
-    it('should be invalid if type is missing', () => {
-      component.formGroup.controls.type.setValue(null);
-      expect(component.formGroup.controls.type.hasError('required'))
+    it('should validate percent correctly (min, max, integer)', () => {
+      const percentControl = component.formGroup.controls.percent;
+
+      percentControl.setValue(-1);
+      expect(percentControl.hasError('min'))
         .toBeTruthy();
-      expect(component.formGroup.valid)
+
+      percentControl.setValue(121);
+      expect(percentControl.hasError('max'))
+        .toBeTruthy();
+
+      percentControl.setValue(50.5);
+      expect(percentControl.valid)
         .toBeFalsy();
+
+      percentControl.setValue(100);
+      expect(percentControl.valid)
+        .toBeTruthy();
     });
   });
 
-  describe('degreeTypeFilteredOptions (Computed Signal)', () => {
+  describe('experienceTypeFilteredOptions (Computed Signal)', () => {
     it('should handle string value correctly (user typing in autocomplete)', () => {
-      component.formGroup.controls.type.setValue('Master' as any);
+      component.formGroup.controls.experienceType.setValue('Some Search' as any);
       fixture.detectChanges();
 
-      const filtered = component['degreeTypeFilteredOptions']();
+      const filtered = component['experienceTypeFilteredOptions']();
       expect(Array.isArray(filtered))
         .toBeTruthy();
     });
 
     it('should handle object value correctly (user selected an option)', () => {
-      component.formGroup.controls.type.setValue(degreeType1);
+      component.formGroup.controls.experienceType.setValue(experienceType1);
       fixture.detectChanges();
 
-      const filtered = component['degreeTypeFilteredOptions']();
+      const filtered = component['experienceTypeFilteredOptions']();
       expect(Array.isArray(filtered))
         .toBeTruthy();
     });
   });
 
-  describe('displayDegreeTypes', () => {
+  describe('displayExperienceTypes', () => {
     it('should return the name of the type', () => {
-      expect(component['displayDegreeTypes'](degreeType2))
-        .toBe(degreeType2.name);
+      expect(component['displayExperienceTypes'](experienceType2))
+        .toBe(experienceType2.name);
     });
 
     it('should return an empty string if type is null/undefined', () => {
-      expect(component['displayDegreeTypes'](undefined as any))
+      expect(component['displayExperienceTypes'](undefined as any))
         .toBe('');
-      expect(component['displayDegreeTypes'](null))
+      expect(component['displayExperienceTypes'](null))
         .toBe('');
     });
   });
 
   describe('Submit and Cancel', () => {
     it('should close the dialog with form values and SAVE mode', () => {
-      component.formGroup.patchValue(degree1);
+      component.formGroup.patchValue(experience1);
 
       component.onSubmit(ModalSubmitMode.SAVE);
 
       expect(dialogRefMock.close)
         .toHaveBeenCalledWith({
           modalSubmitMode: ModalSubmitMode.SAVE,
-          submittedModel: component.formGroup.getRawValue()
+          submittedModel: { ...experience1 }
         });
     });
 
     it('should close the dialog with form values and ENTER_ANOTHER mode', () => {
-      component.formGroup.patchValue(degree1);
+      component.formGroup.patchValue(experience1);
 
       component.onSubmit(ModalSubmitMode.ENTER_ANOTHER);
 
       expect(dialogRefMock.close)
         .toHaveBeenCalledWith({
           modalSubmitMode: ModalSubmitMode.ENTER_ANOTHER,
-          submittedModel: component.formGroup.getRawValue()
+          submittedModel: { ...experience1 }
         });
     });
 

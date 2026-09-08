@@ -8,22 +8,20 @@ import { MatError, MatFormField, MatInput, MatLabel, MatSuffix } from '@angular/
 import { PctsFormErrorDirective } from '../../../shared/pcts-form-error/pcts-form-error.directive';
 import { PctsFormLabelDirective } from '../../../shared/pcts-form-label/pcts-form-label.directive';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { DialogResult, StrictlyTypedDialog } from '../../../shared/modal/strictly-typed-dialog.helper';
 import { MemberModel } from '../../member/member.model';
-import { isValueInListSignal } from '../../../shared/form/form-validators';
+import { isInteger, isValueInListSignal } from '../../../shared/form/form-validators';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
-import { DegreeModel } from '../degree.model';
-import { DegreeTypeModel } from '../degree-type/degree-type.model';
-import { DegreeTypeService } from '../degree-type/degree-type.service';
-import { MatCheckbox } from '@angular/material/checkbox';
+import { ExperienceModel } from '../experience.model';
+import { ExperienceTypeModel } from '../experience-type/experience-type.model';
 import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
+import { ExperienceTypeService } from '../experience-type/experience-type.service';
 import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
 import { filterType } from '../../../shared/utils/typeFilter';
 
 @Component({
-  selector: 'app-add-degree',
+  selector: 'app-add-experience',
   imports: [
     BaseFormComponent,
     BaseModalComponent,
@@ -42,32 +40,38 @@ import { filterType } from '../../../shared/utils/typeFilter';
     PctsFormErrorDirective,
     PctsFormLabelDirective,
     ReactiveFormsModule,
-    ScopedTranslationPipe,
-    MatCheckbox,
     ModalActionsComponent
   ],
-  templateUrl: './add-degree.component.html',
-  providers: [provideI18nPrefix('DEGREE.FORM.ADD')]
+
+  templateUrl: './add-experience.component.html',
+  providers: [provideI18nPrefix('EXPERIENCE.FORM.ADD')]
+
 })
-export class AddDegreeComponent extends StrictlyTypedDialog<DegreeModel | undefined, DialogResult<DegreeModel>> implements OnInit {
+export class AddExperienceComponent extends StrictlyTypedDialog<ExperienceModel | undefined, DialogResult<ExperienceModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);
 
-  private readonly degreeTypeService = inject(DegreeTypeService);
+  private readonly experienceTypeService = inject(ExperienceTypeService);
 
   protected readonly ModalSubmitMode = ModalSubmitMode;
 
-  private readonly degreeTypeOptions: WritableSignal<DegreeTypeModel[]> = signal([]);
+  private readonly experienceTypeOptions: WritableSignal<ExperienceTypeModel[]> = signal([]);
 
   formGroup = this.fb.nonNullable.group({
     id: [null as null | number],
     name: ['' as string | null,
       Validators.required],
     member: [null as MemberModel | null],
-    type: [null as DegreeTypeModel | null,
+    experienceType: [null as ExperienceTypeModel | null,
       [Validators.required,
-        isValueInListSignal(this.degreeTypeOptions, (a, b) => a.id === b.id)]],
-    institution: ['' as string | null],
-    completed: [true as boolean | null],
+        isValueInListSignal(this.experienceTypeOptions, (a, b) => a.id === b.id)]],
+    employer: ['' as string | null],
+    percent: [null as number | null,
+      [
+        Validators.required,
+        Validators.min(0),
+        Validators.max(120),
+        isInteger()
+      ]],
     endDate: [null as Date | null],
     startDate: [null as Date | null,
       Validators.required],
@@ -76,15 +80,18 @@ export class AddDegreeComponent extends StrictlyTypedDialog<DegreeModel | undefi
 
   constructor() {
     super();
+    if (this.data) {
+      this.formGroup.patchValue({
+        ...this.data
+      });
+    }
   }
 
   ngOnInit(): void {
-    this.formGroup.patchValue(this.data ?? {});
-
-    this.degreeTypeService.getAllDegreeTypes()
-      .subscribe((degreeTypes) => {
-        this.degreeTypeOptions.set(degreeTypes);
-        this.formGroup.get('degreeType')
+    this.experienceTypeService.getAllExperienceTypes()
+      .subscribe((experienceTypes) => {
+        this.experienceTypeOptions.set(experienceTypes);
+        this.formGroup.get('experienceType')
           ?.updateValueAndValidity();
       });
   }
@@ -93,22 +100,26 @@ export class AddDegreeComponent extends StrictlyTypedDialog<DegreeModel | undefi
     this.dialogRef.close();
   }
 
-  protected displayDegreeTypes = (degreeType: DegreeTypeModel | null | undefined): string => {
-    return degreeType?.name ?? '';
+  protected displayExperienceTypes = (experienceType: ExperienceTypeModel | null | undefined): string => {
+    return experienceType?.name ?? '';
   };
 
-  protected degreeTypeControlSignal = toSignal(this.formGroup.get('type')!.valueChanges, { initialValue: this.formGroup.get('type')!.value });
+  protected experienceTypeControlSignal = toSignal(this.formGroup.get('experienceType')!.valueChanges, {
+    initialValue: this.formGroup.get('experienceType')!.value
+  });
 
-  protected degreeTypeFilteredOptions = computed(() => {
-    const model = this.degreeTypeControlSignal() ?? '';
+  protected experienceTypeFilteredOptions = computed(() => {
+    const model = this.experienceTypeControlSignal() ?? '';
     const value = typeof model === 'string' ? model : model.name;
-    return filterType(value, this.degreeTypeOptions(), 'name');
+    return filterType(value, this.experienceTypeOptions(), 'name');
   });
 
   onSubmit(submitMod: ModalSubmitMode) {
     this.dialogRef.close({
       modalSubmitMode: submitMod,
-      submittedModel: this.formGroup.getRawValue() as DegreeModel
+      submittedModel: this.formGroup.getRawValue() as ExperienceModel
     });
   }
 }
+
+

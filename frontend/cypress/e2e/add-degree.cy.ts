@@ -69,7 +69,6 @@ describe('Add degree Modal', () => {
       modalPage.checkModalIsClosed();
     });
   });
-  // test both alternative save buttons
 
   describe('Validation Errors', () => {
     beforeEach(() => {
@@ -98,6 +97,7 @@ describe('Add degree Modal', () => {
         errors]) => {
         it(`shows error for invalid date in: ${fieldName}`, () => {
           formPage.submitButtonShouldBe('disabled');
+          cy.wait(300);
           formPage.typeAndBlur(fieldName, 'invalid entry');
           errors.forEach((error) => {
             formPage.shouldShowValidationError(error, fieldName);

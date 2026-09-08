@@ -10,6 +10,9 @@ import { DegreeOverviewModel } from './cv/degree-overview.model';
 import { ExperienceOverviewModel } from './cv/experience-overview.model';
 import { CertificateOverviewModel } from './cv/certificate-overview.model';
 import { LeadershipExperienceOverviewModel } from './cv/leadership-experience-overview.model';
+import { ExperienceService } from '../../experiences/experience.service';
+import { ExperienceModel } from '../../experiences/experience.model';
+import { AddExperienceComponent } from '../../experiences/add-experience/add-experience.component';
 import { TranslationScopeDirective } from '../../../shared/translation-scope/translation-scope.directive';
 import {
   getCertificateTable,
@@ -38,6 +41,7 @@ import { DegreeModel } from '../../degrees/degree.model';
 import { AddDegreeComponent } from '../../degrees/add-degree/add-degree.component';
 import { DegreeService } from '../../degrees/degree.service';
 
+
 @Component({
   selector: 'app-member-detail-view',
   standalone: true,
@@ -65,6 +69,8 @@ export class MemberDetailViewComponent implements OnInit {
   private readonly dialog = inject(PctsModalService);
 
   private readonly certificateService = inject(CertificateService);
+
+  private readonly experienceService = inject(ExperienceService);
 
   private readonly degreeService = inject(DegreeService);
 
@@ -168,6 +174,8 @@ export class MemberDetailViewComponent implements OnInit {
   openCertificateDialog = this.createDialogOpener<CertificateModel>(AddCertificateComponent, (model) => this.certificateService.addCertificate(model));
 
   openLeadershipExperienceDialog = this.createDialogOpener<LeadershipExperienceModel>(AddLeadershipExperienceComponent, (model) => this.leadershipExperienceService.addLeadershipExperience(model));
+
+  openExperienceDialog = this.createDialogOpener<ExperienceModel>(AddExperienceComponent, (model) => this.experienceService.addExperience(model));
 
   onTabIndexChange(index: number) {
     this.router.navigate([], {

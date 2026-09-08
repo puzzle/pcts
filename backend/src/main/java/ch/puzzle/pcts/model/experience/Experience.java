@@ -10,7 +10,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -47,7 +46,6 @@ public class Experience implements Model {
     private String comment;
 
     @NotNull(message = "{attribute.not.null}")
-    @PastOrPresent(message = "{attribute.date.past.present}")
     private LocalDate startDate;
 
     private LocalDate endDate;
