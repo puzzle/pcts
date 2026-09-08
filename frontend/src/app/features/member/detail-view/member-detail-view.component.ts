@@ -124,6 +124,7 @@ export class MemberDetailViewComponent {
     })
     .withOnSuccessMethod(() => this.memberOverviewResource.reload())
     .withSubmitOptionsForAdd()
+    .withI18nPrefix('DEGREE.FORM.ADD')
     .build();
 
   addCertificateDialog = this.modalService
@@ -141,6 +142,7 @@ export class MemberDetailViewComponent {
     })
     .withOnSuccessMethod(() => this.memberOverviewResource.reload())
     .withSubmitOptionsForAdd()
+    .withI18nPrefix('CERTIFICATE.FORM.ADD')
     .build();
 
   addLeadershipExperienceDialog = this.modalService
@@ -158,6 +160,7 @@ export class MemberDetailViewComponent {
     })
     .withOnSuccessMethod(() => this.memberOverviewResource.reload())
     .withSubmitOptionsForAdd()
+    .withI18nPrefix('LEADERSHIP_EXPERIENCE.FORM.ADD')
     .build();
 
   openExperienceDialog = this.createDialogOpener<ExperienceModel>(AddExperienceComponent, (model) => this.experienceService.addExperience(model));
@@ -168,12 +171,12 @@ export class MemberDetailViewComponent {
     .withOnSubmitMethod((model: DegreeModel) => this.degreeService.updateDegree(model.id, model))
     .withOnSuccessMethod(() => this.memberOverviewResource.reload())
     .withSubmitOptionsForEdit()
+    .withI18nPrefix('DEGREE.FORM.EDIT')
     .build();
 
   editDegreeDialog(row: DegreeOverviewModel) {
     this.degreeService.getDegreeById(row.id)
       .subscribe((degree: DegreeModel) => {
-        console.log(degree);
         this.createEditDegreeDialog(this.degreeService.parseDates(degree));
       });
   }
@@ -184,6 +187,7 @@ export class MemberDetailViewComponent {
     .withOnSubmitMethod((model: CertificateModel) => this.certificateService.updateCertificate(model.id, model))
     .withOnSuccessMethod(() => this.memberOverviewResource.reload())
     .withSubmitOptionsForEdit()
+    .withI18nPrefix('CERTIFICATE.FORM.EDIT')
     .build();
 
   editCertificateDialog(row: CertificateOverviewModel) {
@@ -199,6 +203,7 @@ export class MemberDetailViewComponent {
     .withOnSubmitMethod((model: LeadershipExperienceModel) => this.leadershipExperienceService.updateLeadershipExperience(model.id, model))
     .withOnSuccessMethod(() => this.memberOverviewResource.reload())
     .withSubmitOptionsForEdit()
+    .withI18nPrefix('LEADERSHIP_EXPERIENCE.FORM.EDIT')
     .build();
 
   editLeadershipExperienceDialog(row: LeadershipExperienceOverviewModel) {
