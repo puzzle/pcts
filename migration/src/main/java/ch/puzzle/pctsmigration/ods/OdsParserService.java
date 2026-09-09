@@ -19,14 +19,14 @@ public class OdsParserService {
     private static final int MAX_ROWS = 500;
     private static final int MAX_COLS = 50;
 
-    public String parseToPromptText(MultipartFile file, List<String> tableNames, String startMarker) {
+    public String parseToPromptText(MultipartFile file, OdsParseConfig config) {
         if (file.isEmpty()) {
             throw new MigrationException(new Error(HttpStatusCode.valueOf(400), "Uploaded file is empty"));
         }
 
         try {
             OdfSpreadsheetDocument doc = OdfSpreadsheetDocument.loadDocument(file.getInputStream());
-            OdsParseResult result = extractData(doc, tableNames, startMarker);
+            OdsParseResult result = extractData(doc, config.tableNames(), config.startMarker());
             return generateMarkdown(result);
         } catch (Exception e) {
             throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
