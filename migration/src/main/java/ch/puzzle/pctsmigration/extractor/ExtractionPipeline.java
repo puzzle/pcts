@@ -12,6 +12,7 @@ public interface ExtractionPipeline<C, R, D> {
     String systemPrompt(C context);
 
     /** defines which sheets will be extracted in OdsParserService */
+    // TODO: lamda-expression Function interface
     List<String> tableNames();
 
     /**

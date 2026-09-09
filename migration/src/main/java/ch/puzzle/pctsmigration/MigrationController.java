@@ -29,7 +29,8 @@ public class MigrationController {
     private final CertificateExtractionPipeline certificateExtractionPipeline;
     private final LeadershipExperienceExtractionPipeline leadershipExperienceExtractionPipeline;
 
-    public MigrationController(ExtractorService service, CertificateExtractionPipeline certificateExtractionPipeline, LeadershipExperienceExtractionPipeline leadershipExperienceExtractionPipeline) {
+    public MigrationController(ExtractorService service, CertificateExtractionPipeline certificateExtractionPipeline,
+                               LeadershipExperienceExtractionPipeline leadershipExperienceExtractionPipeline) {
         this.service = service;
         this.certificateExtractionPipeline = certificateExtractionPipeline;
         this.leadershipExperienceExtractionPipeline = leadershipExperienceExtractionPipeline;
