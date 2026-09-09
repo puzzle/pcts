@@ -180,7 +180,7 @@ export class MemberDetailViewComponent implements OnInit {
 
   openLeadershipExperienceDialog = this.createDialogOpener<LeadershipExperienceModel>(AddLeadershipExperienceComponent, (model) => this.leadershipExperienceService.addLeadershipExperience(model), () => this.leadershipExperienceService.deleteLeadershipExperience(3));
 
-  openExperienceDialog = this.createDialogOpener<ExperienceModel>(AddExperienceComponent, (model) => this.experienceService.addExperience(model));
+  openExperienceDialog = this.createDialogOpener<ExperienceModel>(AddExperienceComponent, (model) => this.experienceService.addExperience(model), () => this.experienceService.deleteExperience(3));
 
   onTabIndexChange(index: number) {
     this.router.navigate([], {

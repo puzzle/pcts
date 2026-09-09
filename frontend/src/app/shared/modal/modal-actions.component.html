@@ -26,13 +26,16 @@
       (selected)="onSubmit($event)" />
   </div>
 
-  <div class="d-flex">
+  <div class="d-flex flex-row gap-3">
+    <link rel="stylesheet" href="">
     <button
       type="button"
       matButton="text"
+      style="color: red"
       (click)="onDelete(ModalSubmitMode.DELETE)"
     >
       {{ deleteKey | scopedTranslation }}
+      <i class="material-icons">trash</i>
     </button>
   </div>
 </div>
