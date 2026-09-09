@@ -2,13 +2,13 @@ package ch.puzzle.pctsmigration.leadershipexperience;
 
 import ch.puzzle.pctsmigration.api.*;
 import ch.puzzle.pctsmigration.extractor.ExtractionPipeline;
+import java.time.LocalDate;
+import java.util.List;
 import org.openapitools.client.model.LeadershipExperienceInputDto;
+import org.openapitools.client.model.LeadershipExperienceTypeDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Component
 public class LeadershipExperienceExtractionPipeline
@@ -24,26 +24,32 @@ public class LeadershipExperienceExtractionPipeline
 
     @Override
     public LeadershipExperienceContextModel fetchContext() {
-        return new LeadershipExperienceContextModel(LocalDate.now());
+        return new LeadershipExperienceContextModel(LocalDate.now(),
+                                                    List
+                                                            .of(LeadershipExperienceTypeDto.LeadershipExperienceKindEnum.MILITARY_FUNCTION,
+                                                                LeadershipExperienceTypeDto.LeadershipExperienceKindEnum.LEADERSHIP_TRAINING,
+                                                                LeadershipExperienceTypeDto.LeadershipExperienceKindEnum.YOUTH_AND_SPORT));
     }
 
     @Override
     public String systemPrompt(LeadershipExperienceContextModel context) {
         return """
-                You are a high-precision assistant for data extraction. Your task is to process parsed spreadsheet data and extract a LIST of certificate records into a strictly formatted JSON array.
+                You are a high-precision assistant for data extraction. Your task is to process parsed spreadsheet data and extract a LIST of c records into a strictly formatted JSON array.
 
                 IMPORTANT EXTRACTION RULES:
                 1. Output format: Return ONLY a valid JSON array with objects that conform to the requested schema. No conversation text may appear before or after the JSON.
-                2. Each data row in the 'Zertifikat' column corresponds to exactly ONE certificate object in the resulting array.
+                2. Each row of data in the ‘Führungserfahrung’ column corresponds to exactly ONE leadership experience object in the resulting array,
+                   except for the columns whose names match the categories and which are shifted one column to the right.
                 === CONTEXT ===
                 Current date: %s
+                Categories: %s
                 """
-                .formatted(context.currentDate());
+                .formatted(context.currentDate(), context.kinds());
     }
 
     @Override
     public List<String> tableNames() {
-        return List.of("Berufsehrfahrung", "Berufsehrfahrungen");
+        return List.of("M1 Project Manager");
     }
 
     @Override
