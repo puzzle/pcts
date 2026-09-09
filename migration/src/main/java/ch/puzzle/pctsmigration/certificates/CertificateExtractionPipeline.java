@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 
+import ch.puzzle.pctsmigration.ods.OdsParseConfig;
 import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.openapitools.client.model.CertificateInputDto;
 import org.openapitools.client.model.CertificateTypeDto;
@@ -57,8 +58,8 @@ public class CertificateExtractionPipeline
     }
 
     @Override
-    public List<String> tableNames() {
-        return List.of("Zertifikat", "Zertifikate");
+    public OdsParseConfig odsSheetParseConfig() {
+        return new OdsParseConfig(List.of("Zertifikat", "Zertifikate"), null);
     }
 
     @Override

@@ -4,6 +4,8 @@ import ch.puzzle.pctsmigration.api.*;
 import ch.puzzle.pctsmigration.extractor.ExtractionPipeline;
 import java.time.LocalDate;
 import java.util.List;
+
+import ch.puzzle.pctsmigration.ods.OdsParseConfig;
 import org.openapitools.client.model.LeadershipExperienceInputDto;
 import org.openapitools.client.model.LeadershipExperienceTypeDto;
 import org.slf4j.Logger;
@@ -48,8 +50,8 @@ public class LeadershipExperienceExtractionPipeline
     }
 
     @Override
-    public List<String> tableNames() {
-        return List.of("M1 Project Manager");
+    public OdsParseConfig odsSheetParseConfig() {
+        return new OdsParseConfig(List.of("M1 Project Manager"), "Führungserfahrung");
     }
 
     @Override

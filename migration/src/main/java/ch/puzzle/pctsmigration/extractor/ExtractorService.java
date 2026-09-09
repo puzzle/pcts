@@ -23,8 +23,7 @@ public class ExtractorService {
     }
 
     public <C, R, D> List<D> extract(MultipartFile file, ExtractionPipeline<C, R, D> pipeline) {
-        String parsedToMarkdown = this.odsParserService
-                .parseToPromptText(file, pipeline.tableNames(), "Führungserfahrung");
+        String parsedToMarkdown = this.odsParserService.parseToPromptText(file, pipeline.odsSheetParseConfig());
         System.out.println(parsedToMarkdown);
 
         // C context = pipeline.fetchContext();
