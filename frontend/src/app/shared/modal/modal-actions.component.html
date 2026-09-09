@@ -25,4 +25,14 @@
       [functions]="[ModalSubmitMode.ENTER_ANOTHER, ModalSubmitMode.COPY]"
       (selected)="onSubmit($event)" />
   </div>
+
+  <div class="d-flex">
+    <button
+      type="button"
+      matButton="text"
+      (click)="onDelete(ModalSubmitMode.DELETE)"
+    >
+      {{ deleteKey | scopedTranslation }}
+    </button>
+  </div>
 </div>

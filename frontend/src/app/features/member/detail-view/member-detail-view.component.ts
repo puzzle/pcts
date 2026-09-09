@@ -135,15 +135,20 @@ export class MemberDetailViewComponent implements OnInit {
       });
   }
 
-  private readonly createDialogOpener = <T extends { member?: MemberModel }>(
-    component: any,
-    addServiceCall: (model: T) => Observable<any>
+  private readonly createDialogOpener = <T extends { id?: number | null;
+    member?: MemberModel; }>(component: any,
+    addServiceCall: (model: T) => Observable<any>,
+    deleteServiceCall: (id: number) => Observable<any>
   ) => {
     const opener = (model?: T) => {
       this.dialog.openModal(component, { data: model })
         .afterSubmitted
         .pipe(takeUntilDestroyed(this.destroyRef), filter(() => !!this.member()?.id), concatMap(({ modalSubmitMode, submittedModel }: { modalSubmitMode: ModalSubmitMode;
           submittedModel: T; }) => {
+          if (modalSubmitMode === ModalSubmitMode.DELETE) {
+            return deleteServiceCall(submittedModel.id!);
+          }
+
           submittedModel.member = { id: this.member()!.id } as MemberModel;
 
           switch (modalSubmitMode) {
@@ -169,11 +174,11 @@ export class MemberDetailViewComponent implements OnInit {
     return opener;
   };
 
-  openDegreeDialog = this.createDialogOpener<DegreeModel>(AddDegreeComponent, (model) => this.degreeService.addDegree(model));
+  openDegreeDialog = this.createDialogOpener<DegreeModel>(AddDegreeComponent, (model) => this.degreeService.addDegree(model), () => this.degreeService.deleteDegree(1));
 
-  openCertificateDialog = this.createDialogOpener<CertificateModel>(AddCertificateComponent, (model) => this.certificateService.addCertificate(model));
+  openCertificateDialog = this.createDialogOpener<CertificateModel>(AddCertificateComponent, (model) => this.certificateService.addCertificate(model), () => this.certificateService.deleteCertificate(2));
 
-  openLeadershipExperienceDialog = this.createDialogOpener<LeadershipExperienceModel>(AddLeadershipExperienceComponent, (model) => this.leadershipExperienceService.addLeadershipExperience(model));
+  openLeadershipExperienceDialog = this.createDialogOpener<LeadershipExperienceModel>(AddLeadershipExperienceComponent, (model) => this.leadershipExperienceService.addLeadershipExperience(model), () => this.leadershipExperienceService.deleteLeadershipExperience(3));
 
   openExperienceDialog = this.createDialogOpener<ExperienceModel>(AddExperienceComponent, (model) => this.experienceService.addExperience(model));
 

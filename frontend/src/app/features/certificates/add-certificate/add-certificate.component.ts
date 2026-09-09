@@ -86,6 +86,13 @@ export class AddCertificateComponent extends StrictlyTypedDialog<CertificateMode
     this.dialogRef.close();
   }
 
+  onDelete() {
+    this.dialogRef.close({
+      modalSubmitMode: ModalSubmitMode.DELETE,
+      submittedModel: this.formGroup.getRawValue() as CertificateModel
+    });
+  }
+
   protected displayCertificateTypes = (certificateType: CertificateTypeModel): string => {
     return certificateType?.name ?? '';
   };
