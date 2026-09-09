@@ -49,9 +49,7 @@ public class SheetRowCollector {
     }
 
     private boolean isRowWithoutInformation(List<String> cells) {
-        return cells.stream()
-                .map(String::trim)
-                .allMatch(cell -> cell.isEmpty() || cell.equals("0"));
+        return cells.stream().map(String::trim).allMatch(cell -> cell.isEmpty() || cell.equals("0"));
     }
 
     private boolean containsMarker(List<String> cells, String marker) {

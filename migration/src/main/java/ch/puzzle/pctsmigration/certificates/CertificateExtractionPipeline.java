@@ -3,25 +3,21 @@ package ch.puzzle.pctsmigration.certificates;
 import ch.puzzle.pctsmigration.api.CertificateService;
 import ch.puzzle.pctsmigration.api.CertificateTypeService;
 import ch.puzzle.pctsmigration.api.MemberService;
-import ch.puzzle.pctsmigration.exception.Error;
-import ch.puzzle.pctsmigration.exception.MigrationException;
 import ch.puzzle.pctsmigration.extractor.ExtractionPipeline;
-
+import ch.puzzle.pctsmigration.extractor.Pipeline;
+import ch.puzzle.pctsmigration.ods.OdsParseConfig;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
-
-import ch.puzzle.pctsmigration.ods.OdsParseConfig;
 import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.openapitools.client.model.CertificateInputDto;
 import org.openapitools.client.model.CertificateTypeDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CertificateExtractionPipeline
+public class CertificateExtractionPipeline extends Pipeline
         implements
             ExtractionPipeline<CertificateContextModel, CertificateWrapper, CertificateInputDto> {
     private final static Logger logger = LoggerFactory.getLogger(CertificateExtractionPipeline.class);
@@ -73,14 +69,6 @@ public class CertificateExtractionPipeline
         return wrapper.items().stream().map(aiResult -> createCertificateInputDto(abbreviation, aiResult)).toList();
     }
 
-    private String extractAbbreviation(String filename) {
-        if (filename.contains("_")) {
-            return filename.split("_")[0].toUpperCase();
-        }
-        throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
-                                               "Invalid filename: can not extract abbreviation " + filename));
-    }
-
     private CertificateInputDto createCertificateInputDto(String abbreviation, CertificateAiResultDto aiResult) {
         CertificateInputDto dto = new CertificateInputDto();
         dto.setMemberId(this.memberService.getMemberIdBy(abbreviation));
@@ -96,16 +84,9 @@ public class CertificateExtractionPipeline
 
         return dtos
                 .stream()
-                .min(Comparator.comparingInt(dto -> calculateDistance(dto, name)))
+                .min(Comparator.comparingInt(dto -> calculateDistance(dto.getName(), name)))
                 .map(CertificateTypeDto::getId)
                 .orElseThrow();
-    }
-
-    private Integer calculateDistance(CertificateTypeDto dto, String name) {
-        Integer distance = this.levenshtein.apply(dto.getName(), name);
-        logger.info("Input name: {}, Actual name: {}, Distance: {}", name, dto.getName(), distance);
-
-        return distance;
     }
 
     @Override
