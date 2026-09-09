@@ -20,9 +20,13 @@ export class ModalActionsComponent {
 
   submitModes = input.required<ModalSubmitMode[]>();
 
+  @Input() deleteKey = 'BUTTONS.DELETE';
+
   @Output() cancelAction = new EventEmitter<void>();
 
   @Output() submitAction = new EventEmitter<ModalSubmitMode>();
+
+  @Output() deleteAction = new EventEmitter<ModalSubmitMode>();
 
   public readonly ModalSubmitMode = ModalSubmitMode;
 
@@ -32,5 +36,9 @@ export class ModalActionsComponent {
 
   onSubmit(mode: ModalSubmitMode): void {
     this.submitAction.emit(mode);
+  }
+
+  onDelete(mode: ModalSubmitMode): void {
+    this.deleteAction.emit(mode);
   }
 }
