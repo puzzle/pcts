@@ -9,23 +9,18 @@ import ch.puzzle.pctsmigration.ods.OdsParseConfig;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
-import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.openapitools.client.model.CertificateInputDto;
 import org.openapitools.client.model.CertificateTypeDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CertificateExtractionPipeline extends Pipeline
         implements
             ExtractionPipeline<CertificateContextModel, CertificateWrapper, CertificateInputDto> {
-    private final static Logger logger = LoggerFactory.getLogger(CertificateExtractionPipeline.class);
 
     private final CertificateTypeService certificateTypeService;
     private final MemberService memberService;
     private final CertificateService certificateService;
-    private final LevenshteinDistance levenshtein = LevenshteinDistance.getDefaultInstance();
 
     public CertificateExtractionPipeline(CertificateTypeService certificateTypeService, MemberService memberService,
                                          CertificateService certificateService) {
