@@ -1,6 +1,8 @@
 package ch.puzzle.pctsmigration.extractor;
 
 import java.util.List;
+
+import ch.puzzle.pctsmigration.ods.OdsParseConfig;
 import org.openapitools.client.ApiException;
 
 public interface ExtractionPipeline<C, R, D> {
@@ -13,7 +15,7 @@ public interface ExtractionPipeline<C, R, D> {
 
     /** defines which sheets will be extracted in OdsParserService */
     // TODO: lamda-expression Function interface
-    List<String> tableNames();
+    OdsParseConfig odsSheetParseConfig();
 
     /**
      * Run validations on result objects throw MigrationException when something is
