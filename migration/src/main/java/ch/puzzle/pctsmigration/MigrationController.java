@@ -52,8 +52,8 @@ public class MigrationController {
     @Operation(summary = "Extract and migrate certificates from ODS files", description = "Uploads multiple legacy .ods spreadsheet containing certificate data. The system uses an AI-based extraction pipeline to parse the file, generate the corresponding `CertificateInputDto` objects, and automatically persists them in the upstream pcts-api.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Certificates successfully extracted and created in pcts-api.") })
-    public ResponseEntity<MultipleFileResultDto> certificates(@RequestPart("files") List<MultipartFile> files) {
-        MultipleFileResultDto result = new MultipleFileResultDto();
+    public ResponseEntity<MultipleFileResultDto<CertificateInputDto>> certificates(@RequestPart("files") List<MultipartFile> files) {
+        MultipleFileResultDto<CertificateInputDto> result = new MultipleFileResultDto<>();
 
         for (MultipartFile file : files) {
             String filename = file.getOriginalFilename();
@@ -79,6 +79,29 @@ public class MigrationController {
     @RequestPart("file") MultipartFile file) {
         List<LeadershipExperienceInputDto> result = service.extract(file, leadershipExperienceExtractionPipeline);
         leadershipExperienceExtractionPipeline.create(result);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
+    @PostMapping(value = "/leadershipexperiences", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Extract and migrate leadership experience from ODS files", description = "Uploads multiple legacy .ods spreadsheet containing leadership experience data. The system uses an AI-based extraction pipeline to parse the file, generate the corresponding `LeadershipExperienceInputDto` objects, and automatically persists them in the upstream pcts-api.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "leadership experience successfully extracted and created in pcts-api.") })
+    public ResponseEntity<MultipleFileResultDto<LeadershipExperienceInputDto>> leadershipExperiences(@RequestPart("files") List<MultipartFile> files) {
+        MultipleFileResultDto<LeadershipExperienceInputDto> result = new MultipleFileResultDto<>();
+
+        for (MultipartFile file : files) {
+            String filename = file.getOriginalFilename();
+
+            try {
+                List<LeadershipExperienceInputDto> extracted = service.extract(file, leadershipExperienceExtractionPipeline);
+                leadershipExperienceExtractionPipeline.create(extracted);
+                result.addToSuccessfulCertificates(filename, extracted);
+
+            } catch (MigrationException e) {
+                result.addToFailedFiles(new FileError(filename, e.getMessage()));
+            }
+        }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }

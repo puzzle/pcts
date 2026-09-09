@@ -8,23 +8,18 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.openapitools.client.model.LeadershipExperienceInputDto;
 import org.openapitools.client.model.LeadershipExperienceTypeDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
 public class LeadershipExperienceExtractionPipeline extends Pipeline
         implements
             ExtractionPipeline<LeadershipExperienceContextModel, LeadershipExperienceWrapper, LeadershipExperienceInputDto> {
-    private final static Logger logger = LoggerFactory.getLogger(LeadershipExperienceExtractionPipeline.class);
 
     private final LeadershipExperienceService leadershipExperienceService;
     private final LeadershipExperienceTypeService leadershipExperienceTypeService;
     private final MemberService memberService;
-    private final LevenshteinDistance levenshtein = LevenshteinDistance.getDefaultInstance();
 
     public LeadershipExperienceExtractionPipeline(LeadershipExperienceService leadershipExperienceService,
                                                   MemberService memberService,
