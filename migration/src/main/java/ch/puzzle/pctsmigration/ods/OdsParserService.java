@@ -19,14 +19,14 @@ public class OdsParserService {
     private static final int MAX_ROWS = 500;
     private static final int MAX_COLS = 50;
 
-    public String parseToPromptText(MultipartFile file, List<String> tableNames) {
+    public String parseToPromptText(MultipartFile file, List<String> tableNames, String startMarker) {
         if (file.isEmpty()) {
             throw new MigrationException(new Error(HttpStatusCode.valueOf(400), "Uploaded file is empty"));
         }
 
         try {
             OdfSpreadsheetDocument doc = OdfSpreadsheetDocument.loadDocument(file.getInputStream());
-            OdsParseResult result = extractData(doc, tableNames);
+            OdsParseResult result = extractData(doc, tableNames, startMarker);
             return generateMarkdown(result);
         } catch (Exception e) {
             throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
@@ -34,13 +34,11 @@ public class OdsParserService {
         }
     }
 
-    private OdsParseResult extractData(OdfSpreadsheetDocument doc, List<String> tableNames) throws Exception {
-        List<OdsParseResult.Sheet> sheets = doc
-                .getSpreadsheetTables()
-                .stream()
+    private OdsParseResult extractData(OdfSpreadsheetDocument doc, List<String> tableNames, String startMarker) throws Exception {
+        List<OdsParseResult.Sheet> sheets = doc.getSpreadsheetTables().stream()
                 .filter(table -> isValidTableName(tableNames, table.getTableName()))
                 .limit(MAX_SHEETS)
-                .map(this::extractSheet)
+                .map(table -> extractSheet(table, startMarker))
                 .toList();
 
         if (sheets.isEmpty()) {
@@ -55,18 +53,20 @@ public class OdsParserService {
         return cleanTableNames.contains(actualName);
     }
 
-    private OdsParseResult.Sheet extractSheet(OdfTable table) {
+    private OdsParseResult.Sheet extractSheet(OdfTable table, String startMarker) {
+        SheetRowCollector collector = new SheetRowCollector(startMarker);
         int rowCount = Math.min(table.getRowCount(), MAX_ROWS);
         int colCount = Math.min(table.getColumnCount(), MAX_COLS);
-        List<List<String>> rows = new ArrayList<>();
 
         for (int r = 0; r < rowCount; r++) {
             List<String> cells = extractRow(table.getRowByIndex(r), colCount);
-            if (!cells.isEmpty()) {
-                rows.add(cells);
+
+            boolean shouldStop = collector.processRowAndCheckIfDone(cells);
+            if (shouldStop) {
+                break;
             }
         }
-        return new OdsParseResult.Sheet(table.getTableName(), rows);
+        return new OdsParseResult.Sheet(table.getTableName(), collector.getCollectedRows());
     }
 
     private List<String> extractRow(OdfTableRow row, int colCount) {

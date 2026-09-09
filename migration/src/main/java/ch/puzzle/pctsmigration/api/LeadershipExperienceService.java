@@ -32,7 +32,7 @@ public class LeadershipExperienceService {
             } catch (ApiException e) {
                 rollbackCreatedLeadershipExperiences(createdIds);
                 throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
-                        "Migration aborted. Reason: " + e.getMessage()));
+                                                       "Migration aborted. Reason: " + e.getMessage()));
             }
         }
     }
