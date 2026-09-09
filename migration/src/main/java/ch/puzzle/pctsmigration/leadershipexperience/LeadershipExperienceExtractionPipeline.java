@@ -2,10 +2,13 @@ package ch.puzzle.pctsmigration.leadershipexperience;
 
 import ch.puzzle.pctsmigration.api.*;
 import ch.puzzle.pctsmigration.extractor.ExtractionPipeline;
+import ch.puzzle.pctsmigration.extractor.Pipeline;
+import ch.puzzle.pctsmigration.ods.OdsParseConfig;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 
-import ch.puzzle.pctsmigration.ods.OdsParseConfig;
+import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.openapitools.client.model.LeadershipExperienceInputDto;
 import org.openapitools.client.model.LeadershipExperienceTypeDto;
 import org.slf4j.Logger;
@@ -13,15 +16,22 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LeadershipExperienceExtractionPipeline
+public class LeadershipExperienceExtractionPipeline extends Pipeline
         implements
             ExtractionPipeline<LeadershipExperienceContextModel, LeadershipExperienceWrapper, LeadershipExperienceInputDto> {
     private final static Logger logger = LoggerFactory.getLogger(LeadershipExperienceExtractionPipeline.class);
 
     private final LeadershipExperienceService leadershipExperienceService;
+    private final LeadershipExperienceTypeService leadershipExperienceTypeService;
+    private final MemberService memberService;
+    private final LevenshteinDistance levenshtein = LevenshteinDistance.getDefaultInstance();
 
-    public LeadershipExperienceExtractionPipeline(LeadershipExperienceService leadershipExperienceService) {
+    public LeadershipExperienceExtractionPipeline(LeadershipExperienceService leadershipExperienceService,
+                                                  MemberService memberService,
+                                                  LeadershipExperienceTypeService leadershipExperienceTypeService) {
         this.leadershipExperienceService = leadershipExperienceService;
+        this.memberService = memberService;
+        this.leadershipExperienceTypeService = leadershipExperienceTypeService;
     }
 
     @Override
@@ -61,12 +71,31 @@ public class LeadershipExperienceExtractionPipeline
 
     @Override
     public List<LeadershipExperienceInputDto> mapToDto(String filename, LeadershipExperienceWrapper wrapper) {
-        return wrapper.items().stream().map(aiResult -> createLeadershipExperienceInputDto()).toList();
+        String abbreviation = extractAbbreviation(filename);
+        return wrapper
+                .items()
+                .stream()
+                .map(aiResult -> createLeadershipExperienceInputDto(abbreviation, aiResult))
+                .toList();
     }
 
-    private LeadershipExperienceInputDto createLeadershipExperienceInputDto() {
+    private LeadershipExperienceInputDto createLeadershipExperienceInputDto(String abbreviation,
+                                                                            LeadershipExperienceAiResultDto aiResult) {
         LeadershipExperienceInputDto dto = new LeadershipExperienceInputDto();
+        dto.setMemberId(this.memberService.getMemberIdBy(abbreviation));
+        dto.setLeadershipExperienceTypeId(mapLeadershipExperienceTypeId(aiResult.name()));
+        dto.setComment(aiResult.comment());
         return dto;
+    }
+
+    private Long mapLeadershipExperienceTypeId(String name) {
+        List<LeadershipExperienceTypeDto> dtos = this.leadershipExperienceTypeService.getLeadershipExperienceTypes();
+
+        return dtos
+                .stream()
+                .min(Comparator.comparingInt(dto -> calculateDistance(dto.getName(), name)))
+                .map(LeadershipExperienceTypeDto::getId)
+                .orElseThrow();
     }
 
     @Override

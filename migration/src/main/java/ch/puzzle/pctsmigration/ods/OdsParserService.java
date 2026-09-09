@@ -34,8 +34,11 @@ public class OdsParserService {
         }
     }
 
-    private OdsParseResult extractData(OdfSpreadsheetDocument doc, List<String> tableNames, String startMarker) throws Exception {
-        List<OdsParseResult.Sheet> sheets = doc.getSpreadsheetTables().stream()
+    private OdsParseResult extractData(OdfSpreadsheetDocument doc, List<String> tableNames, String startMarker)
+            throws Exception {
+        List<OdsParseResult.Sheet> sheets = doc
+                .getSpreadsheetTables()
+                .stream()
                 .filter(table -> isValidTableName(tableNames, table.getTableName()))
                 .limit(MAX_SHEETS)
                 .map(table -> extractSheet(table, startMarker))
