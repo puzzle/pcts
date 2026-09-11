@@ -19,6 +19,7 @@ import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
 import { ExperienceTypeService } from '../experience-type/experience-type.service';
 import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
 import { filterType } from '../../../shared/utils/typeFilter';
+import {DegreeModel} from '../../degrees/degree.model';
 
 @Component({
   selector: 'app-add-experience',
@@ -98,6 +99,13 @@ export class AddExperienceComponent extends StrictlyTypedDialog<ExperienceModel 
 
   onCancel() {
     this.dialogRef.close();
+  }
+
+  onDelete() {
+    this.dialogRef.close({
+      modalSubmitMode: ModalSubmitMode.DELETE,
+      submittedModel: this.formGroup.getRawValue() as ExperienceModel
+    });
   }
 
   protected displayExperienceTypes = (experienceType: ExperienceTypeModel | null | undefined): string => {

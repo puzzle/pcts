@@ -93,6 +93,13 @@ export class AddDegreeComponent extends StrictlyTypedDialog<DegreeModel | undefi
     this.dialogRef.close();
   }
 
+  onDelete() {
+    this.dialogRef.close({
+      modalSubmitMode: ModalSubmitMode.DELETE,
+      submittedModel: this.formGroup.getRawValue() as DegreeModel
+    });
+  }
+
   protected displayDegreeTypes = (degreeType: DegreeTypeModel | null | undefined): string => {
     return degreeType?.name ?? '';
   };
