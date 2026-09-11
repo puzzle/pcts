@@ -179,6 +179,10 @@ describe('isValueInListSignal', () => {
 });
 
 describe('isInputFieldEmpty', () => {
+  afterEach(() => {
+    document.getElementsByTagName('html')[0].innerHTML = '';
+  });
+
   it('should return null if input is empty', () => {
     const inputField = document.createElement('input') as HTMLInputElement;
     inputField.setAttribute('id', 'uut');
