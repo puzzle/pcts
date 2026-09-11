@@ -27,6 +27,8 @@ public class ExtractorService {
         C context = pipeline.fetchContext();
         R result = this.aiService.extract(parsedToMarkdown, pipeline.systemPrompt(context), pipeline.entityClass());
 
+        System.out.println(result);
+
         jakartaValidation(result);
         pipeline.additionalValidations(result);
 

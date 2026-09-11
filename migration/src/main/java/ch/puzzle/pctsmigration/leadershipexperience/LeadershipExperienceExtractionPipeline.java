@@ -41,12 +41,11 @@ public class LeadershipExperienceExtractionPipeline extends Pipeline
     @Override
     public String systemPrompt(LeadershipExperienceContextModel context) {
         return """
-                You are a high-precision assistant for data extraction. Your task is to process parsed spreadsheet data and extract a LIST of c records into a strictly formatted JSON array.
-
                 IMPORTANT EXTRACTION RULES:
-                1. Output format: Return ONLY a valid JSON array with objects that conform to the requested schema. No conversation text may appear before or after the JSON.
-                2. Each row of data in the ‘Führungserfahrung’ column corresponds to exactly ONE leadership experience object in the resulting array,
-                   except for the columns whose names match the categories and which are shifted one column to the right.
+                1. Each qualifying row must correspond to exactly ONE leadership experience object in the output array.
+                   Skip the main categories in the first column.
+                   To qualify for extraction, an entry must be located in the second column and have an assigned point value (indicated by a number in the 3rd, 4th, or 5th column of the same row).
+                   Ignore all rows without numbers.
                 === CONTEXT ===
                 Current date: %s
                 Categories: %s
@@ -56,7 +55,7 @@ public class LeadershipExperienceExtractionPipeline extends Pipeline
 
     @Override
     public OdsParseConfig odsSheetParseConfig() {
-        return new OdsParseConfig(List.of("M1 Project Manager"), "Führungserfahrung");
+        return new OdsParseConfig(List.of("M2 Division Manager"), "Führungserfahrung");
     }
 
     @Override
