@@ -134,7 +134,6 @@ export class MemberDetailViewComponent {
         model.member = currentMember;
       }
 
-
       return this.certificateService.addCertificate(model);
     })
     .withOnSuccessMethod(() => this.memberOverviewResource.reload())
@@ -152,7 +151,6 @@ export class MemberDetailViewComponent {
         model.member = currentMember;
       }
 
-
       return this.leadershipExperienceService.addLeadershipExperience(model);
     })
     .withOnSuccessMethod(() => this.memberOverviewResource.reload())
@@ -169,7 +167,6 @@ export class MemberDetailViewComponent {
       if (currentMember) {
         model.member = currentMember;
       }
-
 
       return this.experienceService.addExperience(model);
     })
@@ -238,7 +235,6 @@ export class MemberDetailViewComponent {
   editExperienceDialog(row: ExperienceOverviewModel) {
     this.experienceService.getExperienceById(row.id)
       .subscribe((experience: ExperienceModel) => {
-        console.log(experience);
         this.createEditExperienceDialog(experience);
       });
   }
