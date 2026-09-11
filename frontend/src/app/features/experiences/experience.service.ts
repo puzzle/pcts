@@ -44,6 +44,7 @@ export class ExperienceService {
     };
   }
 
+  // TODO this is going to be refactored in #769
   parseDates(experience: ExperienceModel) {
     experience.startDate = new Date(experience.startDate ?? '');
     experience.endDate = new Date(experience.endDate ?? '');
