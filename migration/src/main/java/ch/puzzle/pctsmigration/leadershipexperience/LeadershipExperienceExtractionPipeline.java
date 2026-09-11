@@ -2,7 +2,6 @@ package ch.puzzle.pctsmigration.leadershipexperience;
 
 import ch.puzzle.pctsmigration.api.*;
 import ch.puzzle.pctsmigration.extractor.ExtractionPipeline;
-import ch.puzzle.pctsmigration.extractor.Pipeline;
 import ch.puzzle.pctsmigration.ods.OdsParseConfig;
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -13,8 +12,8 @@ import org.openapitools.client.model.LeadershipExperienceTypeDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LeadershipExperienceExtractionPipeline extends Pipeline
-        implements
+public class LeadershipExperienceExtractionPipeline
+        extends
             ExtractionPipeline<LeadershipExperienceContextModel, LeadershipExperienceWrapper, LeadershipExperienceInputDto> {
 
     private final LeadershipExperienceService leadershipExperienceService;
