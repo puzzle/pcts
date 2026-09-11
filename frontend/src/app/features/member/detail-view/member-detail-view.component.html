@@ -88,7 +88,7 @@
           [data]="degreeData()"
           *appTranslationScope="'DEGREE'"
           [table]="degreeTable"
-          (rowClicked)="editDegreeDialog($event)")
+          (entrySelected)="editDegreeDialog($event)"
         >
           <app-crud-button crud-button mode="add" [customOnClick]="addDegreeDialog" data-testid="add-degree-button"/>
         </app-generic-cv-content>
@@ -100,7 +100,7 @@
           [data]="experienceData()"
           *appTranslationScope="'EXPERIENCE'"
           [table]="experienceTable"
-          (rowClicked)="editExperienceDialog($event)"
+          (entrySelected)="editExperienceDialog($event)"
         >
           <app-crud-button crud-button mode="add" [customOnClick]="addExperienceDialog" data-testid="add-experience-button"/>
         </app-generic-cv-content>
@@ -112,7 +112,7 @@
           [data]="certificateData()"
           *appTranslationScope="'CERTIFICATE'"
           [table]="certificateTable"
-          (rowClicked)="editCertificateDialog($event)"
+          (entrySelected)="editCertificateDialog($event)"
         >
           <app-crud-button crud-button mode="add" [customOnClick]="addCertificateDialog" data-testid="add-certificate-button"/>
         </app-generic-cv-content>
@@ -124,7 +124,7 @@
           [data]="leadershipExperienceData()"
           *appTranslationScope="'LEADERSHIP_EXPERIENCE'"
           [table]="leadershipExperienceTable"
-          (rowClicked)="editLeadershipExperienceDialog($event)"
+          (entrySelected)="editLeadershipExperienceDialog($event)"
         >
           <app-crud-button crud-button mode="add" [customOnClick]="addLeadershipExperienceDialog" data-testid="add-leadership-experience-button"/>
         </app-generic-cv-content>
