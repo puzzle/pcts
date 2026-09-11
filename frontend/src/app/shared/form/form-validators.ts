@@ -87,22 +87,18 @@ export function isInteger(): ValidatorFn {
   };
 }
 
-
-export function areListEntriesInListSignal<T>(validOptionsSignal: Signal<T[]>, comparator: (a: T, b: T[]) => boolean = (a, b) => b.includes(a)): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    const values: any[] = control.value;
-    const validOptions: T[] = validOptionsSignal();
-    if (!values) {
+export function isInputFieldEmpty(inputFieldTagId: string): ValidatorFn {
+  return (): ValidationErrors | null => {
+    if (!inputFieldTagId) {
       return null;
     }
 
-    if (values.length === 0) {
+    const inputfield = document.getElementById(inputFieldTagId) as HTMLInputElement;
+
+    if (!inputfield) {
       return null;
     }
 
-
-    const invalidEntries = values.filter((option) => !comparator(option, validOptions));
-
-    return invalidEntries.length === 0 ? null : { invalid_entries: invalidEntries };
+    return inputfield.value ? { invalidEntries: inputfield.value } : null;
   };
 }
