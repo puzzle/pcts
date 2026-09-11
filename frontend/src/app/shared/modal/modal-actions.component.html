@@ -12,7 +12,8 @@
     <button
       [disabled]="!isValid"
       (click)="onSubmit(ModalSubmitMode.SAVE)"
-      class="rounded-end-0"
+      class="rounded"
+      [class.rounded-end-0]="submitModes().length >= 1"
       matButton="filled"
       type="submit"
       data-testid="submit-button"
@@ -22,7 +23,7 @@
 
     <app-menu-button
       [isValid]="isValid"
-      [functions]="[ModalSubmitMode.ENTER_ANOTHER, ModalSubmitMode.COPY]"
+      [functions]="submitModes()"
       (selected)="onSubmit($event)" />
   </div>
 </div>

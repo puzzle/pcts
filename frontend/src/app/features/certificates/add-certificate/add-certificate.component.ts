@@ -3,7 +3,6 @@ import { BaseModalComponent } from '../../../shared/modal/base-modal.component';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BaseFormComponent } from '../../../shared/form/base-form.component';
 import { MatError, MatFormField, MatInput, MatLabel, MatSuffix } from '@angular/material/input';
-import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
 import { MatAutocomplete, MatAutocompleteTrigger, MatOption } from '@angular/material/autocomplete';
 import { PctsFormErrorDirective } from '../../../shared/pcts-form-error/pcts-form-error.directive';
 import { PctsFormLabelDirective } from '../../../shared/pcts-form-label/pcts-form-label.directive';
@@ -18,6 +17,7 @@ import { MemberModel } from '../../member/member.model';
 import { DialogResult, StrictlyTypedDialog } from '../../../shared/modal/strictly-typed-dialog.helper';
 import { InputFieldComponent } from '../../../shared/input-field/input-field.component';
 import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
+import { FormDialogConfig } from '../../../shared/modal/pcts-modal.service';
 import { filterType } from '../../../shared/utils/typeFilter';
 
 @Component({
@@ -43,10 +43,9 @@ import { filterType } from '../../../shared/utils/typeFilter';
     InputFieldComponent,
     ModalActionsComponent
   ],
-  templateUrl: './add-certificate.component.html',
-  providers: [provideI18nPrefix('CERTIFICATE.FORM.ADD')]
+  templateUrl: './add-certificate.component.html'
 })
-export class AddCertificateComponent extends StrictlyTypedDialog<CertificateModel | undefined, DialogResult<CertificateModel>> implements OnInit {
+export class AddCertificateComponent extends StrictlyTypedDialog<FormDialogConfig<CertificateModel>, DialogResult<CertificateModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);
 
   protected readonly ModalSubmitMode = ModalSubmitMode;
@@ -67,12 +66,8 @@ export class AddCertificateComponent extends StrictlyTypedDialog<CertificateMode
     comment: ['' as string | null]
   });
 
-  constructor() {
-    super();
-  }
-
   ngOnInit(): void {
-    this.formGroup.patchValue(this.data ?? {});
+    this.formGroup.patchValue(this.data.model ?? {});
 
     this.certificateTypeService.getAllCertificateTypes()
       .subscribe((organisationUnits) => {

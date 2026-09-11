@@ -1,46 +1,40 @@
-import { Component, DestroyRef, inject, input, OnInit, signal, viewChild, WritableSignal } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MemberService } from '../member.service';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
 import { GenericCvContentComponent } from './generic-cv-content/generic-cv-content.component';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { DegreeOverviewModel } from './cv/degree-overview.model';
-import { ExperienceOverviewModel } from './cv/experience-overview.model';
 import { CertificateOverviewModel } from './cv/certificate-overview.model';
 import { LeadershipExperienceOverviewModel } from './cv/leadership-experience-overview.model';
 import { ExperienceService } from '../../experiences/experience.service';
 import { ExperienceModel } from '../../experiences/experience.model';
 import { AddExperienceComponent } from '../../experiences/add-experience/add-experience.component';
 import { TranslationScopeDirective } from '../../../shared/translation-scope/translation-scope.directive';
+import { CertificateService } from '../../certificates/certificate.service';
+import { CertificateModel } from '../../certificates/certificate.model';
+import { AddCertificateComponent } from '../../certificates/add-certificate/add-certificate.component';
+import { PctsModalService } from '../../../shared/modal/pcts-modal.service';
+import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
+import { LeadershipExperienceModel } from '../../leadership-experiences/leadership-experience.model';
+import {
+  AddLeadershipExperienceComponent
+} from '../../leadership-experiences/add-leadership-experience/add-leadership-experience.component';
+import { LeadershipExperienceService } from '../../leadership-experiences/leadership-experience.service';
+import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin.directive';
+import { DegreeModel } from '../../degrees/degree.model';
+import { AddDegreeComponent } from '../../degrees/add-degree/add-degree.component';
+import { DegreeService } from '../../degrees/degree.service';
 import {
   getCertificateTable,
   getDegreeTable,
   getExperienceTable,
   getLeadershipExperienceTable
 } from './cv/member-detail-cv-table-definition';
-import { MemberOverviewModel } from '../member-overview.model';
-import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
-import { CertificateService } from '../../certificates/certificate.service';
-import { MemberModel } from '../member.model';
-import { CertificateModel } from '../../certificates/certificate.model';
-import { AddCertificateComponent } from '../../certificates/add-certificate/add-certificate.component';
-import { PctsModalService } from '../../../shared/modal/pcts-modal.service';
-import { RolePointsModel } from './RolePointsModel';
-import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { LeadershipExperienceModel } from '../../leadership-experiences/leadership-experience.model';
-import {
-  AddLeadershipExperienceComponent
-} from '../../leadership-experiences/add-leadership-experience/add-leadership-experience.component';
-import { LeadershipExperienceService } from '../../leadership-experiences/leadership-experience.service';
-import { concatMap, filter, Observable } from 'rxjs';
-import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin.directive';
-import { DegreeModel } from '../../degrees/degree.model';
-import { AddDegreeComponent } from '../../degrees/add-degree/add-degree.component';
-import { DegreeService } from '../../degrees/degree.service';
-
+import { MemberService } from '../member.service';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { ExperienceOverviewModel } from './cv/experience-overview.model';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -59,22 +53,51 @@ import { DegreeService } from '../../degrees/degree.service';
   templateUrl: './member-detail-view.component.html',
   styleUrls: ['./member-detail-view.component.scss']
 })
-export class MemberDetailViewComponent implements OnInit {
-  private readonly service = inject(MemberService);
+export class MemberDetailViewComponent {
+  private readonly modalService = inject(PctsModalService);
 
-  private readonly route = inject(ActivatedRoute);
+  private readonly memberService = inject(MemberService);
 
   private readonly router = inject(Router);
 
-  private readonly dialog = inject(PctsModalService);
+  private readonly route = inject(ActivatedRoute);
 
   private readonly certificateService = inject(CertificateService);
 
-  private readonly experienceService = inject(ExperienceService);
-
   private readonly degreeService = inject(DegreeService);
 
+  private readonly experienceService = inject(ExperienceService);
+
   private readonly leadershipExperienceService = inject(LeadershipExperienceService);
+
+  tabIndex = input.required<number>();
+
+  memberId = input.required<number>();
+
+  readonly memberOverviewResource = rxResource({
+    params: () => this.memberId(),
+    stream: ({ params: id }) => this.memberService.getMemberOverviewByMemberId(id)
+  });
+
+  readonly memberResource = rxResource({
+    params: () => this.memberId(),
+    stream: ({ params: id }) => this.memberService.getMemberById(id)
+  });
+
+  readonly rolePointsResource = rxResource({
+    params: () => this.memberId(),
+    stream: ({ params: id }) => this.memberService.getPointsForActiveCalculationsForRoleByMemberId(id)
+  });
+
+  rolePointList = computed(() => this.rolePointsResource.value() ?? []);
+
+  degreeData = computed(() => this.memberOverviewResource.value()?.cv.degrees ?? []);
+
+  experienceData = computed(() => this.memberOverviewResource.value()?.cv.experiences ?? []);
+
+  certificateData = computed(() => this.memberOverviewResource.value()?.cv.certificates ?? []);
+
+  leadershipExperienceData = computed(() => this.memberOverviewResource.value()?.cv.leadershipExperiences ?? []);
 
   readonly experienceTable = getExperienceTable();
 
@@ -84,98 +107,137 @@ export class MemberDetailViewComponent implements OnInit {
 
   readonly leadershipExperienceTable = getLeadershipExperienceTable();
 
-  readonly member: WritableSignal<MemberOverviewModel | null> = signal<MemberOverviewModel | null>(null);
+  addDegreeDialog = this.modalService
+    .dialogOpener<DegreeModel>()
+    .withComponent(AddDegreeComponent)
+    .withOnSubmitMethod((model: DegreeModel) => {
+      const currentMember = this.memberResource.value();
 
-  readonly rolePointList = signal<RolePointsModel[]>([]);
+      if (currentMember) {
+        model.member = currentMember;
+      }
 
-  degreeData = signal<DegreeOverviewModel[]>([]);
+      return this.degreeService.addDegree(model);
+    })
+    .withOnSuccessMethod(() => this.memberOverviewResource.reload())
+    .withSubmitOptionsForAdd()
+    .withI18nPrefix('DEGREE.FORM.ADD')
+    .build();
 
-  experienceData = signal<ExperienceOverviewModel[]>([]);
+  addCertificateDialog = this.modalService
+    .dialogOpener<CertificateModel>()
+    .withComponent(AddCertificateComponent)
+    .withOnSubmitMethod((model: CertificateModel) => {
+      const currentMember = this.memberResource.value();
 
-  certificateData = signal<CertificateOverviewModel[]>([]);
+      if (currentMember) {
+        model.member = currentMember;
+      }
 
-  leadershipExperienceData = signal<LeadershipExperienceOverviewModel[]>([]);
+      return this.certificateService.addCertificate(model);
+    })
+    .withOnSuccessMethod(() => this.memberOverviewResource.reload())
+    .withSubmitOptionsForAdd()
+    .withI18nPrefix('CERTIFICATE.FORM.ADD')
+    .build();
 
-  tabGroup = viewChild(MatTabGroup);
+  addLeadershipExperienceDialog = this.modalService
+    .dialogOpener<LeadershipExperienceModel>()
+    .withComponent(AddLeadershipExperienceComponent)
+    .withOnSubmitMethod((model: LeadershipExperienceModel) => {
+      const currentMember = this.memberResource.value();
 
-  tabIndex = input.required<number>();
+      if (currentMember) {
+        model.member = currentMember;
+      }
 
-  private readonly destroyRef = inject(DestroyRef);
+      return this.leadershipExperienceService.addLeadershipExperience(model);
+    })
+    .withOnSuccessMethod(() => this.memberOverviewResource.reload())
+    .withSubmitOptionsForAdd()
+    .withI18nPrefix('LEADERSHIP_EXPERIENCE.FORM.ADD')
+    .build();
 
-  ngOnInit(): void {
-    this.getData();
+  addExperienceDialog = this.modalService
+    .dialogOpener<ExperienceModel>()
+    .withComponent(AddExperienceComponent)
+    .withOnSubmitMethod((model: ExperienceModel) => {
+      const currentMember = this.memberResource.value();
+
+      if (currentMember) {
+        model.member = currentMember;
+      }
+
+      return this.experienceService.addExperience(model);
+    })
+    .withOnSuccessMethod(() => this.memberOverviewResource.reload())
+    .withSubmitOptionsForAdd()
+    .withI18nPrefix('EXPERIENCE.FORM.ADD')
+    .build();
+
+  private readonly createEditDegreeDialog = this.modalService
+    .dialogOpener<DegreeModel>()
+    .withComponent(AddDegreeComponent)
+    .withOnSubmitMethod((model: DegreeModel) => this.degreeService.updateDegree(model.id, model))
+    .withOnSuccessMethod(() => this.memberOverviewResource.reload())
+    .withSubmitOptionsForEdit()
+    .withI18nPrefix('DEGREE.FORM.EDIT')
+    .build();
+
+  editDegreeDialog(row: DegreeOverviewModel) {
+    this.degreeService.getDegreeById(row.id)
+      .subscribe((degree: DegreeModel) => {
+        this.createEditDegreeDialog(degree);
+      });
   }
 
-  getData() {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (!id) {
-      this.router.navigate(['/member']);
-      return;
-    }
+  private readonly createEditCertificateDialog = this.modalService
+    .dialogOpener<CertificateModel>()
+    .withComponent(AddCertificateComponent)
+    .withOnSubmitMethod((model: CertificateModel) => this.certificateService.updateCertificate(model.id, model))
+    .withOnSuccessMethod(() => this.memberOverviewResource.reload())
+    .withSubmitOptionsForEdit()
+    .withI18nPrefix('CERTIFICATE.FORM.EDIT')
+    .build();
 
-    this.service.getMemberOverviewByMemberId(Number(id))
-      .subscribe({
-        next: (memberOverview) => {
-          this.member.set(memberOverview.member);
-          this.degreeData.set(memberOverview.cv.degrees);
-          this.experienceData.set(memberOverview.cv.experiences);
-          this.certificateData.set(memberOverview.cv.certificates);
-          this.leadershipExperienceData.set(memberOverview.cv.leadershipExperiences);
-        }
-      });
-    this.service.getPointsForActiveCalculationsForRoleByMemberId(Number(id))
-      .subscribe({
-        next: (RolePoints) => {
-          this.rolePointList.set(RolePoints);
-          const tabGroup = this.tabGroup();
-          if (tabGroup) {
-            tabGroup.selectedIndex = this.tabIndex();
-          }
-        }
+  editCertificateDialog(row: CertificateOverviewModel) {
+    this.certificateService.getCertificateById(row.id)
+      .subscribe((certificate: CertificateModel) => {
+        this.createEditCertificateDialog(certificate);
       });
   }
 
-  private readonly createDialogOpener = <T extends { member?: MemberModel }>(
-    component: any,
-    addServiceCall: (model: T) => Observable<any>
-  ) => {
-    const opener = (model?: T) => {
-      this.dialog.openModal(component, { data: model })
-        .afterSubmitted
-        .pipe(takeUntilDestroyed(this.destroyRef), filter(() => !!this.member()?.id), concatMap(({ modalSubmitMode, submittedModel }: { modalSubmitMode: ModalSubmitMode;
-          submittedModel: T; }) => {
-          submittedModel.member = { id: this.member()!.id } as MemberModel;
+  private readonly createEditLeadershipExperienceDialog = this.modalService
+    .dialogOpener<LeadershipExperienceModel>()
+    .withComponent(AddLeadershipExperienceComponent)
+    .withOnSubmitMethod((model: LeadershipExperienceModel) => this.leadershipExperienceService.updateLeadershipExperience(model.id, model))
+    .withOnSuccessMethod(() => this.memberOverviewResource.reload())
+    .withSubmitOptionsForEdit()
+    .withI18nPrefix('LEADERSHIP_EXPERIENCE.FORM.EDIT')
+    .build();
 
-          switch (modalSubmitMode) {
-            case ModalSubmitMode.SAVE:
-              break;
-            case ModalSubmitMode.ENTER_ANOTHER:
-              opener();
-              break;
-            case ModalSubmitMode.COPY:
-              opener(submittedModel);
-              break;
-            default:
-                modalSubmitMode satisfies never;
-          }
+  editLeadershipExperienceDialog(row: LeadershipExperienceOverviewModel) {
+    this.leadershipExperienceService.getLeadershipExperienceById(row.id)
+      .subscribe((leadershipExperience: LeadershipExperienceModel) => {
+        this.createEditLeadershipExperienceDialog(leadershipExperience);
+      });
+  }
 
-          return addServiceCall(submittedModel);
-        }))
-        .subscribe(() => {
-          this.getData();
-        });
-    };
+  private readonly createEditExperienceDialog = this.modalService
+    .dialogOpener<ExperienceModel>()
+    .withComponent(AddExperienceComponent)
+    .withOnSubmitMethod((model: ExperienceModel) => this.experienceService.updateExperience(model.id, model))
+    .withOnSuccessMethod(() => this.memberOverviewResource.reload())
+    .withSubmitOptionsForEdit()
+    .withI18nPrefix('EXPERIENCE.FORM.EDIT')
+    .build();
 
-    return opener;
-  };
-
-  openDegreeDialog = this.createDialogOpener<DegreeModel>(AddDegreeComponent, (model) => this.degreeService.addDegree(model));
-
-  openCertificateDialog = this.createDialogOpener<CertificateModel>(AddCertificateComponent, (model) => this.certificateService.addCertificate(model));
-
-  openLeadershipExperienceDialog = this.createDialogOpener<LeadershipExperienceModel>(AddLeadershipExperienceComponent, (model) => this.leadershipExperienceService.addLeadershipExperience(model));
-
-  openExperienceDialog = this.createDialogOpener<ExperienceModel>(AddExperienceComponent, (model) => this.experienceService.addExperience(model));
+  editExperienceDialog(row: ExperienceOverviewModel) {
+    this.experienceService.getExperienceById(row.id)
+      .subscribe((experience: ExperienceModel) => {
+        this.createEditExperienceDialog(experience);
+      });
+  }
 
   onTabIndexChange(index: number) {
     this.router.navigate([], {

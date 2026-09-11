@@ -15,10 +15,10 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import { ExperienceModel } from '../experience.model';
 import { ExperienceTypeModel } from '../experience-type/experience-type.model';
-import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
 import { ExperienceTypeService } from '../experience-type/experience-type.service';
 import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
 import { filterType } from '../../../shared/utils/typeFilter';
+import { FormDialogConfig } from '../../../shared/modal/pcts-modal.service';
 
 @Component({
   selector: 'app-add-experience',
@@ -43,11 +43,9 @@ import { filterType } from '../../../shared/utils/typeFilter';
     ModalActionsComponent
   ],
 
-  templateUrl: './add-experience.component.html',
-  providers: [provideI18nPrefix('EXPERIENCE.FORM.ADD')]
-
+  templateUrl: './add-experience.component.html'
 })
-export class AddExperienceComponent extends StrictlyTypedDialog<ExperienceModel | undefined, DialogResult<ExperienceModel>> implements OnInit {
+export class AddExperienceComponent extends StrictlyTypedDialog<FormDialogConfig<ExperienceModel>, DialogResult<ExperienceModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);
 
   private readonly experienceTypeService = inject(ExperienceTypeService);
@@ -69,7 +67,7 @@ export class AddExperienceComponent extends StrictlyTypedDialog<ExperienceModel 
       [
         Validators.required,
         Validators.min(0),
-        Validators.max(120),
+        Validators.max(110),
         isInteger()
       ]],
     endDate: [null as Date | null],
@@ -78,16 +76,9 @@ export class AddExperienceComponent extends StrictlyTypedDialog<ExperienceModel 
     comment: ['' as string | null]
   });
 
-  constructor() {
-    super();
-    if (this.data) {
-      this.formGroup.patchValue({
-        ...this.data
-      });
-    }
-  }
-
   ngOnInit(): void {
+    this.formGroup.patchValue(this.data.model ?? {});
+
     this.experienceTypeService.getAllExperienceTypes()
       .subscribe((experienceTypes) => {
         this.experienceTypeOptions.set(experienceTypes);

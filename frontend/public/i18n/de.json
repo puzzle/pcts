@@ -88,7 +88,7 @@
     "NOT_AVAILABLE": "\"{{value}}\" nicht verfügbar",
     "EMAIL": "Muss eine gültige Email-Adresse sein",
     "MIN": "Die Eingabe muss mindestens 0 sein",
-    "MAX": "Die Eingabe muss maximal 120 sein",
+    "MAX": "Die Eingabe muss maximal 110 sein",
     "INVALID_INTEGER": "Die Eingabe muss eine Ganzzahl sein"
   },
 

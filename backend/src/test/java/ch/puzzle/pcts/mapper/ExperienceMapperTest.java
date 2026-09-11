@@ -62,7 +62,7 @@ class ExperienceMapperTest {
         assertEquals(EXPERIENCE_1.getName(), result.name());
         assertEquals(EXPERIENCE_1.getEmployer(), result.employer());
         assertEquals(EXPERIENCE_1.getPercent(), result.percent());
-        assertEquals(EXP_TYPE_1_DTO, result.type());
+        assertEquals(EXP_TYPE_1_DTO, result.experienceType());
         assertEquals(EXPERIENCE_1.getComment(), result.comment());
         assertEquals(EXPERIENCE_1.getStartDate(), result.startDate());
         assertEquals(EXPERIENCE_1.getEndDate(), result.endDate());

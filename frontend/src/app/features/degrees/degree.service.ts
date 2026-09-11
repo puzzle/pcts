@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { DateTime } from 'luxon';
 import { DegreeModel } from './degree.model';
@@ -14,7 +14,8 @@ export class DegreeService {
   private readonly API_URL = '/api/v1/degrees';
 
   getDegreeById(id: number): Observable<DegreeModel> {
-    return this.httpClient.get<DegreeModel>(`${this.API_URL}/${id}`);
+    return this.httpClient.get<DegreeModel>(`${this.API_URL}/${id}`)
+      .pipe(map((degree) => this.parseDates(degree)));
   }
 
   addDegree(degree: DegreeModel): Observable<DegreeModel> {
@@ -42,5 +43,13 @@ export class DegreeService {
       endDate: model.endDate ? DateTime.fromJSDate(model.endDate)
         .toISODate() : null
     };
+  }
+
+  // TODO this is going to be refactored in #769
+  private parseDates(degree: DegreeModel) {
+    degree.startDate = new Date(degree.startDate ?? '');
+    degree.endDate = new Date(degree.endDate ?? '');
+
+    return degree;
   }
 }

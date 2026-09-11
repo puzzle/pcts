@@ -13,10 +13,10 @@ import { DialogResult, StrictlyTypedDialog } from '../../../shared/modal/strictl
 import { LeadershipExperienceModel } from '../leadership-experience.model';
 import { LeadershipExperienceTypeService } from '../leadership-experiences-type/leadership-experience-type.service';
 import { LeadershipExperienceTypeModel } from '../leadership-experiences-type/leadership-experience-type.model';
-import { provideI18nPrefix } from '../../../shared/i18n-prefix.provider';
-import { TranslatePipe } from '@ngx-translate/core';
 import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
+import { FormDialogConfig } from '../../../shared/modal/pcts-modal.service';
 import { filterType } from '../../../shared/utils/typeFilter';
+import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 
 @Component({
   selector: 'app-add-leadership-experience.component',
@@ -30,13 +30,12 @@ import { filterType } from '../../../shared/utils/typeFilter';
     MatOption,
     ReactiveFormsModule,
     MatOptgroup,
-    TranslatePipe,
-    ModalActionsComponent
+    ModalActionsComponent,
+    ScopedTranslationPipe
   ],
-  templateUrl: './add-leadership-experience.component.html',
-  providers: [provideI18nPrefix('LEADERSHIP_EXPERIENCE.FORM.ADD')]
+  templateUrl: './add-leadership-experience.component.html'
 })
-export class AddLeadershipExperienceComponent extends StrictlyTypedDialog<LeadershipExperienceModel | undefined, DialogResult<LeadershipExperienceModel>> implements OnInit {
+export class AddLeadershipExperienceComponent extends StrictlyTypedDialog<FormDialogConfig<LeadershipExperienceModel>, DialogResult<LeadershipExperienceModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);
 
   protected readonly ModalSubmitMode = ModalSubmitMode;
@@ -54,12 +53,8 @@ export class AddLeadershipExperienceComponent extends StrictlyTypedDialog<Leader
     comment: ['' as string | null]
   });
 
-  constructor() {
-    super();
-  }
-
   ngOnInit(): void {
-    this.formGroup.patchValue(this.data ?? {});
+    this.formGroup.patchValue(this.data.model ?? {});
 
     this.leadershipExperienceTypeService.getAllLeadershipExperienceTypes()
       .subscribe((leadershipExperienceTypes) => {

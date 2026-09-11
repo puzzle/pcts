@@ -1,8 +1,16 @@
-import { inject, Injectable, Injector, Type } from '@angular/core';
+import { DestroyRef, inject, Injectable, Injector, Type } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { defaultSize } from './base-modal.component';
 import { enrichMatDialogRef, StrictlyTypedDialog, TypedMatDialogRef } from './strictly-typed-dialog.helper';
+import { ModalSubmitMode } from '../enum/modal-submit-mode.enum';
+import { PctsModalBuilder } from './pcts-modal-builder';
 
+export interface ModelWithId { id: number }
+
+export interface FormDialogConfig<T extends ModelWithId> {
+  model: T | undefined;
+  submitOptions: ModalSubmitMode[];
+}
 // Extract the Data type from the component
 type ExtractData<C> = C extends StrictlyTypedDialog<infer D, any> ? D : never;
 // Extract the Result type from the component
@@ -32,6 +40,8 @@ export class PctsModalService {
 
   private readonly injector = inject(Injector);
 
+  private readonly destroyRef = inject(DestroyRef);
+
   openModal<C extends StrictlyTypedDialog<any, any>>(component: Type<C>,
     config: WithRequiredData<ExtractData<C>>) {
     return this.open(component, config);
@@ -56,5 +66,9 @@ export class PctsModalService {
     };
     const ref = this.dialog.open(component, finalConfig);
     return enrichMatDialogRef(ref);
+  }
+
+  public dialogOpener<T extends ModelWithId>() {
+    return new PctsModalBuilder<T>(this.destroyRef, this.openModal.bind(this), this.injector);
   }
 }
