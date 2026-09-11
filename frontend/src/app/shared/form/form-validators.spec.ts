@@ -1,9 +1,7 @@
 import { FormControl } from '@angular/forms';
 import {
-  areListEntriesInListSignal,
   isDateInPast,
-  isDateInPastOrPresent,
-  isInteger,
+  isDateInPastOrPresent, isInputFieldEmpty,
   isValueInList,
   isValueInListSignal
 } from './form-validators';
@@ -177,5 +175,37 @@ describe('isValueInListSignal', () => {
     optionsSignal.set(['Purple']);
     expect(isValueInListSignal(optionsSignal)(control))
       .toBeNull();
+  });
+});
+
+describe('isInputFieldEmpty', () => {
+  it('should return null if input is empty', () => {
+    const inputField = document.createElement('input') as HTMLInputElement;
+    inputField.setAttribute('id', 'uut');
+    inputField.value = '';
+    document.querySelector('body')
+      ?.append(inputField);
+    const control = new FormControl('');
+    expect(isInputFieldEmpty('uut')(control))
+      .toBeNull();
+  });
+
+  it('should return null if there is no input field with this id', () => {
+    const inputField = document.createElement('input') as HTMLInputElement;
+    inputField.value = '';
+    const control = new FormControl('');
+    expect(isInputFieldEmpty('uut')(control))
+      .toBeNull();
+  });
+
+  it('should return error if input is not empty', () => {
+    const inputField = document.createElement('input') as HTMLInputElement;
+    inputField.setAttribute('id', 'uut');
+    inputField.value = 'something';
+    document.querySelector('body')
+      ?.append(inputField);
+    const control = new FormControl('');
+    expect(isInputFieldEmpty('uut')(control))
+      .toEqual({ invalidEntries: inputField.value });
   });
 });
