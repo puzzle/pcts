@@ -67,7 +67,7 @@ export class AddExperienceComponent extends StrictlyTypedDialog<PCTSDialogConfig
       [
         Validators.required,
         Validators.min(0),
-        Validators.max(120),
+        Validators.max(110),
         isInteger()
       ]],
     endDate: [null as Date | null],
