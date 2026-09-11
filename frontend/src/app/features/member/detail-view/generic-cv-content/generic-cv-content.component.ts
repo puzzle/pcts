@@ -30,7 +30,7 @@ export class GenericCvContentComponent<T extends object> {
 
   crudBasePath = input<string>('');
 
-  rowClicked = output<T>();
+  entrySelected = output<T>();
 
   constructor() {
     effect(() => {
@@ -43,7 +43,7 @@ export class GenericCvContentComponent<T extends object> {
     });
   }
 
-  setRowClicked(row: T) {
-    this.rowClicked.emit(row);
+  setEntrySelected(row: T) {
+    this.entrySelected.emit(row);
   }
 }

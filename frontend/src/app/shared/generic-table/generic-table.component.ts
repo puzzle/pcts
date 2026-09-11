@@ -65,7 +65,7 @@ export class GenericTableComponent<T extends object> {
 
   isExpanded = false;
 
-  rowClicked = output<T>();
+  entrySelected = output<T>();
 
   isFilterApplied = () => {
     return this.dataSource().filteredData.length !== this.dataSource().data.length || this.isExpanded;
