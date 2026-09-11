@@ -29,9 +29,9 @@ import { InputFieldComponent } from '../../../shared/input-field/input-field.com
 import { map } from 'rxjs';
 import {
   isDateInPast,
-  areListEntriesInListSignal,
   isValueInList,
-  isValueInListSignal
+  isValueInListSignal,
+  isInputFieldEmpty
 } from '../../../shared/form/form-validators';
 import { BaseFormComponent } from '../../../shared/form/base-form.component';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
@@ -107,7 +107,7 @@ export class MemberFormComponent implements OnInit {
       [Validators.required,
         isValueInList(this.employmentStateOptions, (a, b) => a == b)]],
     roles: [[] as RoleModel[],
-      areListEntriesInListSignal(this.roleOptions, (a, b) => b.includes(a))],
+      isInputFieldEmpty('currentRole')],
     organisationUnit: [null,
       isValueInListSignal(this.organisationUnitsOptions, (a, b) => a.id === b.id)]
   });
