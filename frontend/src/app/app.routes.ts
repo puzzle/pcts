@@ -37,8 +37,7 @@ export const routes: Routes = [{
       component: MemberDetailViewComponent,
       canActivate: [authGuard('user')],
       resolve:
-        { member: memberDataResolver,
-          memberId: memberIdResolver,
+        { memberId: memberIdResolver,
           tabIndex: tabResolver }
     },
     {
