@@ -13,14 +13,20 @@ public class AiService {
     }
 
     public <R> R extract(String parsedMarkdownContent, String prompt, Class<R> typeRef) {
-        return this.client.prompt().system(prompt).user(u -> u.text("""
-                You must always return a valid JSON object at the root level, starting with a curly brace
-                Never return a JSON array starting with a bracket at the root level.
-                Ensure your response strictly matches the provided JSON schema
+        return this.client
+                .prompt()
+                .system(prompt)
+                .user(u -> u
+                        .text("""
+                                You are a high-precision assistant for data extraction.
+                                Your task is to process parsed spreadsheet data and extract a LIST of c records into a strictly formatted JSON array.
 
-                Extract the records from the following parsed spreadsheet content:
+                                Extract the records from the following parsed spreadsheet content:
 
-                {content}
-                """).param("content", parsedMarkdownContent)).call().entity(typeRef);
+                                {content}
+                                """)
+                        .param("content", parsedMarkdownContent))
+                .call()
+                .entity(typeRef);
     }
 }

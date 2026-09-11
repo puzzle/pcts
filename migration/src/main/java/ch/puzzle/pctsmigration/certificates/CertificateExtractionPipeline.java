@@ -37,11 +37,8 @@ public class CertificateExtractionPipeline extends Pipeline
     @Override
     public String systemPrompt(CertificateContextModel context) {
         return """
-                You are a high-precision assistant for data extraction. Your task is to process parsed spreadsheet data and extract a LIST of certificate records into a strictly formatted JSON array.
-
                 IMPORTANT EXTRACTION RULES:
-                1. Output format: Return ONLY a valid JSON array with objects that conform to the requested schema. No conversation text may appear before or after the JSON.
-                2. Each data row in the 'Zertifikat' column corresponds to exactly ONE certificate object in the resulting array.
+                1. Each data row in the 'Zertifikat' column corresponds to exactly ONE certificate object in the resulting array.
                 === CONTEXT ===
                 Current date: %s
                 """

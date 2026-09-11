@@ -94,7 +94,8 @@ public class MigrationController {
             String filename = file.getOriginalFilename();
 
             try {
-                List<LeadershipExperienceInputDto> extracted = service.extract(file, leadershipExperienceExtractionPipeline);
+                List<LeadershipExperienceInputDto> extracted = service
+                        .extract(file, leadershipExperienceExtractionPipeline);
                 leadershipExperienceExtractionPipeline.create(extracted);
                 result.addToSuccessfulCertificates(filename, extracted);
 

@@ -76,7 +76,8 @@ public class OdsParserService {
         List<String> cells = new ArrayList<>();
         for (int c = 0; c < colCount; c++) {
             OdfTableCell cell = row.getCellByIndex(c);
-            cells.add(cell.getDisplayText().trim());
+            String cellText = cell.getDisplayText().trim().equals("0") ? "" : cell.getDisplayText().trim();
+            cells.add(cellText);
         }
 
         while (!cells.isEmpty() && cells.getLast().isEmpty()) {
