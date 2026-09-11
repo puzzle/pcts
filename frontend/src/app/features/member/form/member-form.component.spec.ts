@@ -13,12 +13,14 @@ import { provideRouter, Router } from '@angular/router';
 import { MemberFormComponent } from './member-form.component';
 import { provideTranslateService } from '@ngx-translate/core';
 import { MemberDetailViewComponent } from '../detail-view/member-detail-view.component';
+import { RoleService } from '../../roles/role.service';
 
 describe('MemberFormComponent', () => {
   let component: MemberFormComponent;
   let fixture: ComponentFixture<MemberFormComponent>;
   let memberServiceMock: Partial<MemberService>;
   let organisationUnitServiceMock: Partial<OrganisationUnitService>;
+  let roleServiceMock: Partial<RoleService>;
   const organisationUnits = [
     organisationUnit1,
     organisationUnit2,
@@ -41,6 +43,12 @@ describe('MemberFormComponent', () => {
         .mockReturnValue(of(organisationUnits))
     };
 
+    roleServiceMock = {
+      getAllRoles: jest.fn()
+        .mockReturnValue(of([role1,
+          role2]))
+    };
+
     TestBed.configureTestingModule({
       imports: [MemberFormComponent],
       providers: [
@@ -56,6 +64,10 @@ describe('MemberFormComponent', () => {
         {
           provide: OrganisationUnitService,
           useValue: organisationUnitServiceMock
+        },
+        {
+          provide: RoleService,
+          useValue: roleServiceMock
         }
       ]
     })
@@ -65,25 +77,20 @@ describe('MemberFormComponent', () => {
     component = fixture.componentInstance;
 
     fixture.componentRef.setInput('member', null as any);
+    fixture.detectChanges();
   });
 
   it('should create', () => {
-    fixture.detectChanges();
     expect(component)
       .toBeTruthy();
   });
 
   it('should load organisationUnits', () => {
-    fixture.detectChanges();
     expect(component['organisationUnitsOptions']())
       .toStrictEqual(organisationUnits);
   });
 
   describe('addMember', () => {
-    beforeEach(() => {
-      fixture.detectChanges();
-    });
-
     it('should create', () => {
       expect(component)
         .toBeTruthy();
