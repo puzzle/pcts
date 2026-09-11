@@ -5,7 +5,9 @@ import { enrichMatDialogRef, StrictlyTypedDialog, TypedMatDialogRef } from './st
 import { ModalSubmitMode } from '../enum/modal-submit-mode.enum';
 import { PctsModalBuilder } from './pcts-modal-builder';
 
-export interface FormDialogConfig<T extends { id: number }> {
+export interface ModelWithId { id: number }
+
+export interface FormDialogConfig<T extends ModelWithId> {
   model: T | undefined;
   submitOptions: ModalSubmitMode[];
 }
@@ -66,7 +68,7 @@ export class PctsModalService {
     return enrichMatDialogRef(ref);
   }
 
-  public dialogOpener<T extends { id: number }>() {
+  public dialogOpener<T extends ModelWithId>() {
     return new PctsModalBuilder<T>(this.destroyRef, this.openModal.bind(this), this.injector);
   }
 }
