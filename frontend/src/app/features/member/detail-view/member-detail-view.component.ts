@@ -190,7 +190,7 @@ export class MemberDetailViewComponent {
   editDegreeDialog(row: DegreeOverviewModel) {
     this.degreeService.getDegreeById(row.id)
       .subscribe((degree: DegreeModel) => {
-        this.createEditDegreeDialog(this.degreeService.parseDates(degree));
+        this.createEditDegreeDialog(degree);
       });
   }
 
@@ -206,7 +206,7 @@ export class MemberDetailViewComponent {
   editCertificateDialog(row: CertificateOverviewModel) {
     this.certificateService.getCertificateById(row.id)
       .subscribe((certificate: CertificateModel) => {
-        this.createEditCertificateDialog(this.certificateService.parseDates(certificate));
+        this.createEditCertificateDialog(certificate);
       });
   }
 
@@ -239,7 +239,7 @@ export class MemberDetailViewComponent {
     this.experienceService.getExperienceById(row.id)
       .subscribe((experience: ExperienceModel) => {
         console.log(experience);
-        this.createEditExperienceDialog(this.experienceService.parseDates(experience));
+        this.createEditExperienceDialog(experience);
       });
   }
 

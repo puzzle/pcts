@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { CertificateModel } from './certificate.model';
 import { CertificateDto } from './dto/certificate.dto';
@@ -14,7 +14,8 @@ export class CertificateService {
   private readonly API_URL = '/api/v1/certificates';
 
   getCertificateById(id: number): Observable<CertificateModel> {
-    return this.httpClient.get<CertificateModel>(`${this.API_URL}/${id}`);
+    return this.httpClient.get<CertificateModel>(`${this.API_URL}/${id}`)
+      .pipe(map((certificate) => this.parseDates(certificate)));
   }
 
   addCertificate(certificate: CertificateModel): Observable<CertificateModel> {
@@ -42,7 +43,7 @@ export class CertificateService {
   }
 
   // TODO this is going to be refactored in #769
-  parseDates(certificate: CertificateModel) {
+  private parseDates(certificate: CertificateModel) {
     certificate.completedAt = new Date(certificate.completedAt ?? '');
     certificate.validUntil = new Date(certificate.validUntil ?? '');
     return certificate;
