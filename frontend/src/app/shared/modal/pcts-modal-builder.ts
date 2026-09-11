@@ -1,4 +1,4 @@
-import { PCTSDialogConfig, PctsModalService } from './pcts-modal.service';
+import { FormDialogConfig, PctsModalService } from './pcts-modal.service';
 import { concatMap, Observable } from 'rxjs';
 import { DialogResult, StrictlyTypedDialog } from './strictly-typed-dialog.helper';
 import { ModalSubmitMode } from '../enum/modal-submit-mode.enum';
@@ -7,11 +7,11 @@ import { DestroyRef, Injector, Type } from '@angular/core';
 import { I18N_PREFIX } from '../i18n-prefix.token';
 import { ScopedTranslationService } from '../i18n-prefix.provider';
 
-type DialogComponent<T extends { id: number }> = StrictlyTypedDialog<PCTSDialogConfig<T>, DialogResult<T>>;
+type DialogComponent<T extends { id: number }> = StrictlyTypedDialog<FormDialogConfig<T>, DialogResult<T>>;
 
 type openModalType<T extends { id: number }> = (
   component: Type<DialogComponent<T>>,
-  options: { data: PCTSDialogConfig<T>;
+  options: { data: FormDialogConfig<T>;
     injector: Injector; }
 ) => {
   afterSubmitted: Observable<{
@@ -87,7 +87,7 @@ export class PctsModalBuilder<T extends { id: number }> {
       const onSubmitMethod = this.onSubmitMethod;
 
       const opener = (model?: T) => {
-        const data: PCTSDialogConfig<T> = {
+        const data: FormDialogConfig<T> = {
           model: model,
           submitOptions: this.submitOptions ?? []
         };

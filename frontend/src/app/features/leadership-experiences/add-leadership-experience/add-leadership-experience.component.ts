@@ -14,7 +14,7 @@ import { LeadershipExperienceModel } from '../leadership-experience.model';
 import { LeadershipExperienceTypeService } from '../leadership-experiences-type/leadership-experience-type.service';
 import { LeadershipExperienceTypeModel } from '../leadership-experiences-type/leadership-experience-type.model';
 import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
-import { PCTSDialogConfig } from '../../../shared/modal/pcts-modal.service';
+import { FormDialogConfig } from '../../../shared/modal/pcts-modal.service';
 import { filterType } from '../../../shared/utils/typeFilter';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 
@@ -35,7 +35,7 @@ import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-
   ],
   templateUrl: './add-leadership-experience.component.html'
 })
-export class AddLeadershipExperienceComponent extends StrictlyTypedDialog<PCTSDialogConfig<LeadershipExperienceModel>, DialogResult<LeadershipExperienceModel>> implements OnInit {
+export class AddLeadershipExperienceComponent extends StrictlyTypedDialog<FormDialogConfig<LeadershipExperienceModel>, DialogResult<LeadershipExperienceModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);
 
   protected readonly ModalSubmitMode = ModalSubmitMode;
