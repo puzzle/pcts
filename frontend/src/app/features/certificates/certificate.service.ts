@@ -41,6 +41,7 @@ export class CertificateService {
     };
   }
 
+  // TODO this is going to be refactored in #769
   parseDates(certificate: CertificateModel) {
     certificate.completedAt = new Date(certificate.completedAt ?? '');
     certificate.validUntil = new Date(certificate.validUntil ?? '');
