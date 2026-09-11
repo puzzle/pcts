@@ -90,8 +90,6 @@ export class MemberFormComponent implements OnInit {
 
   private readonly organisationUnitsOptions: WritableSignal<OrganisationUnitModel[]> = signal([]);
 
-  readonly choosenRoles: WritableSignal<RoleModel[]> = signal([]);
-
   protected memberForm: FormGroup = this.fb.group({
     id: [null],
     firstName: ['',
@@ -142,7 +140,8 @@ export class MemberFormComponent implements OnInit {
       });
 
     if (this.isEdit()) {
-      this.choosenRoles.set(this.member().roles);
+      this.memberForm.get('roles')
+        ?.setValue(this.member().roles);
     }
   }
 
@@ -168,15 +167,12 @@ export class MemberFormComponent implements OnInit {
 
     const formData = this.memberForm.getRawValue() as MemberModel;
 
-    const memberToSave = { ...formData,
-      roles: this.choosenRoles() };
-
     if (this.isEdit()) {
-      this.memberService.updateMember(this.memberForm.get('id')?.value, memberToSave)
+      this.memberService.updateMember(this.memberForm.get('id')?.value, formData)
         .subscribe(() => this.router.navigate(['/member',
           this.memberForm.getRawValue().id]));
     } else {
-      this.memberService.addMember(memberToSave)
+      this.memberService.addMember(formData)
         .subscribe(() => {
           this.router.navigate(['/']);
         });
@@ -230,29 +226,30 @@ export class MemberFormComponent implements OnInit {
     });
   }
 
-
   removeRole(roleToRemove: RoleModel): void {
-    this.choosenRoles.update((roles) => {
-      return roles.filter((role) => role !== roleToRemove);
-    });
+    const choosenRoles = this.memberForm.get('roles')?.value as RoleModel[];
+
+    this.memberForm.get('roles')
+      ?.setValue(choosenRoles.filter((role: RoleModel) => role !== roleToRemove));
   }
 
   selectRole(event: MatAutocompleteSelectedEvent): void {
     const choosenRole: RoleModel = event.option.value;
+    const choosenRoles = this.memberForm.get('roles')?.value;
 
     if (!choosenRole) {
       event.option.deselect();
       return;
     }
 
-    if (this.choosenRoles()
-      .some((role) => role.id === choosenRole.id)) {
+    if (choosenRoles.some((role: RoleModel) => role.id === choosenRole.id)) {
       event.option.deselect();
       return;
     }
 
-    this.choosenRoles.update((roles) => [...roles,
-      choosenRole]);
+    this.memberForm.get('roles')
+      ?.setValue([...choosenRoles,
+        choosenRole]);
     event.option.deselect();
   }
 }

@@ -93,8 +93,6 @@ describe('MemberFormComponent', () => {
       const addSpy = jest.spyOn(memberServiceMock, 'addMember');
       (component as any).roleOptions.set([role1,
         role2]);
-      component['choosenRoles'].set([role1,
-        role2]);
       const memberWithoutId = {
         ...member1,
         id: 0,
@@ -121,8 +119,6 @@ describe('MemberFormComponent', () => {
       const router = TestBed.inject(Router);
       const navigateSpy = jest.spyOn(router, 'navigate');
       (component as any).roleOptions.set([role1,
-        role2]);
-      component['choosenRoles'].set([role1,
         role2]);
       component['memberForm'].setValue(memberWithoutId);
 
