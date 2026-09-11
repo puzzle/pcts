@@ -4,7 +4,6 @@ import ch.puzzle.pctsmigration.api.CertificateService;
 import ch.puzzle.pctsmigration.api.CertificateTypeService;
 import ch.puzzle.pctsmigration.api.MemberService;
 import ch.puzzle.pctsmigration.extractor.ExtractionPipeline;
-import ch.puzzle.pctsmigration.extractor.Pipeline;
 import ch.puzzle.pctsmigration.ods.OdsParseConfig;
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -14,8 +13,8 @@ import org.openapitools.client.model.CertificateTypeDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CertificateExtractionPipeline extends Pipeline
-        implements
+public class CertificateExtractionPipeline
+        extends
             ExtractionPipeline<CertificateContextModel, CertificateWrapper, CertificateInputDto> {
 
     private final CertificateTypeService certificateTypeService;
