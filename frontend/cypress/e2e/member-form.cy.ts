@@ -159,6 +159,12 @@ describe('MemberFormComponent', () => {
         .contains('Member')
         .click();
 
+      FormPage.clearAndBlur('roles');
+      FormPage.type('roles', 'Intern');
+      cy.get('mat-option')
+        .contains('Intern')
+        .click();
+
       FormPage.clearAndBlur('organisationUnit');
       FormPage.typeAndBlur('organisationUnit', '/zh');
       cy.get('mat-option')
