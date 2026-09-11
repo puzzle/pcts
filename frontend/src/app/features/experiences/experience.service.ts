@@ -43,4 +43,10 @@ export class ExperienceService {
         .toISODate() : null
     };
   }
+
+  parseDates(experience: ExperienceModel) {
+    experience.startDate = new Date(experience.startDate ?? '');
+    experience.endDate = new Date(experience.endDate ?? '');
+    return experience;
+  }
 }
