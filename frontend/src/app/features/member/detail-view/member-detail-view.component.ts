@@ -6,7 +6,6 @@ import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.com
 import { GenericCvContentComponent } from './generic-cv-content/generic-cv-content.component';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { DegreeOverviewModel } from './cv/degree-overview.model';
-import { ExperienceOverviewModel } from './cv/experience-overview.model';
 import { CertificateOverviewModel } from './cv/certificate-overview.model';
 import { LeadershipExperienceOverviewModel } from './cv/leadership-experience-overview.model';
 import { ExperienceService } from '../../experiences/experience.service';
@@ -33,11 +32,9 @@ import {
   getExperienceTable,
   getLeadershipExperienceTable
 } from './cv/member-detail-cv-table-definition';
-import { rxResource } from '@angular/core/rxjs-interop';
 import { MemberService } from '../member.service';
-import { DegreeOverviewModel } from './cv/degree-overview.model';
-import { CertificateOverviewModel } from './cv/certificate-overview.model';
-import { LeadershipExperienceOverviewModel } from './cv/leadership-experience-overview.model';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { ExperienceOverviewModel } from './cv/experience-overview.model';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -67,9 +64,9 @@ export class MemberDetailViewComponent {
 
   private readonly certificateService = inject(CertificateService);
 
-  private readonly experienceService = inject(ExperienceService);
-
   private readonly degreeService = inject(DegreeService);
+
+  private readonly experienceService = inject(ExperienceService);
 
   private readonly leadershipExperienceService = inject(LeadershipExperienceService);
 
@@ -163,7 +160,23 @@ export class MemberDetailViewComponent {
     .withI18nPrefix('LEADERSHIP_EXPERIENCE.FORM.ADD')
     .build();
 
-  openExperienceDialog = this.createDialogOpener<ExperienceModel>(AddExperienceComponent, (model) => this.experienceService.addExperience(model));
+  addExperienceDialog = this.modalService
+    .dialogOpener<ExperienceModel>()
+    .withComponent(AddExperienceComponent)
+    .withOnSubmitMethod((model: ExperienceModel) => {
+      const currentMember = this.memberResource.value();
+
+      if (currentMember) {
+        model.member = currentMember;
+      }
+
+
+      return this.experienceService.addExperience(model);
+    })
+    .withOnSuccessMethod(() => this.memberOverviewResource.reload())
+    .withSubmitOptionsForAdd()
+    .withI18nPrefix('EXPERIENCE.FORM.ADD')
+    .build();
 
   private readonly createEditDegreeDialog = this.modalService
     .dialogOpener<DegreeModel>()
@@ -210,6 +223,23 @@ export class MemberDetailViewComponent {
     this.leadershipExperienceService.getLeadershipExperienceById(row.id)
       .subscribe((leadershipExperience: LeadershipExperienceModel) => {
         this.createEditLeadershipExperienceDialog(leadershipExperience);
+      });
+  }
+
+  private readonly createEditExperienceDialog = this.modalService
+    .dialogOpener<ExperienceModel>()
+    .withComponent(AddExperienceComponent)
+    .withOnSubmitMethod((model: ExperienceModel) => this.experienceService.updateExperience(model.id, model))
+    .withOnSuccessMethod(() => this.memberOverviewResource.reload())
+    .withSubmitOptionsForEdit()
+    .withI18nPrefix('EXPERIENCE.FORM.EDIT')
+    .build();
+
+  editExperienceDialog(row: ExperienceOverviewModel) {
+    this.experienceService.getExperienceById(row.id)
+      .subscribe((experience: ExperienceModel) => {
+        console.log(experience);
+        this.createEditExperienceDialog(this.experienceService.parseDates(experience));
       });
   }
 
