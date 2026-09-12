@@ -3,6 +3,11 @@ name: "On push"
 
 on:
   push:
+    branches:
+      - main
+      - 'release-please--branches--**'
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
