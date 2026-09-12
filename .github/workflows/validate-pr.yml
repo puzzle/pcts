@@ -100,16 +100,19 @@ jobs:
         run: |
           # Define branch names for clarity
           BASE_BRANCH="origin/${{ github.base_ref }}"
-          HEAD_BRANCH="origin/${{ github.head_ref }}"
 
-          echo "Checking if $HEAD_BRANCH is rebased on $BASE_BRANCH..."
+          echo "Checking if PR #${{ github.event.pull_request.number }} is rebased on $BASE_BRANCH..."
 
-          # Fetch the latest refs to ensure accurate comparison
+          # Fetch the latest refs to ensure accurate comparison.
+          # The head branch may live in a contributor's fork, where it isn't
+          # fetchable by name from "origin" (the base repo). GitHub always
+          # mirrors every PR's head commit under refs/pull/<n>/head on the
+          # base repo though, fork or not, so fetch that instead.
           git fetch origin "${{ github.base_ref }}"
-          git fetch origin "${{ github.head_ref }}"
+          git fetch origin "refs/pull/${{ github.event.pull_request.number }}/head:pr-head"
 
           # Check if the base branch is an ancestor of the head branch
-          if git merge-base --is-ancestor "$BASE_BRANCH" "$HEAD_BRANCH"; then
+          if git merge-base --is-ancestor "$BASE_BRANCH" pr-head; then
             echo "✅ Success: The PR branch is fully up-to-date with the base branch."
             exit 0
           else
