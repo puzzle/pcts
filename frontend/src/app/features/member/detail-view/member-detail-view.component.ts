@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, input, OnInit, signal, viewChild, WritableSignal } from '@angular/core';
+import { Component, DestroyRef, effect, inject, input, OnInit, signal, viewChild, WritableSignal, Injector, runInInjectionContext } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberService } from '../member.service';
@@ -27,9 +27,8 @@ import { MemberModel } from '../member.model';
 import { CertificateModel } from '../../certificates/certificate.model';
 import { AddCertificateComponent } from '../../certificates/add-certificate/add-certificate.component';
 import { PctsModalService } from '../../../shared/modal/pcts-modal.service';
-import { RolePointsModel } from './RolePointsModel';
 import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LeadershipExperienceModel } from '../../leadership-experiences/leadership-experience.model';
 import {
   AddLeadershipExperienceComponent
@@ -86,8 +85,6 @@ export class MemberDetailViewComponent implements OnInit {
 
   readonly member: WritableSignal<MemberOverviewModel | null> = signal<MemberOverviewModel | null>(null);
 
-  readonly rolePointList = signal<RolePointsModel[]>([]);
-
   degreeData = signal<DegreeOverviewModel[]>([]);
 
   experienceData = signal<ExperienceOverviewModel[]>([]);
@@ -102,8 +99,20 @@ export class MemberDetailViewComponent implements OnInit {
 
   private readonly destroyRef = inject(DestroyRef);
 
+  private readonly injector = inject(Injector);
+
+  rolePointsResource: any;
+
   ngOnInit(): void {
     this.getData();
+    runInInjectionContext(this.injector, () => {
+      effect(() => {
+        const tabGroup = this.tabGroup();
+        if (tabGroup) {
+          tabGroup.selectedIndex = this.tabIndex();
+        }
+      });
+    });
   }
 
   getData() {
@@ -123,16 +132,13 @@ export class MemberDetailViewComponent implements OnInit {
           this.leadershipExperienceData.set(memberOverview.cv.leadershipExperiences);
         }
       });
-    this.service.getPointsForActiveCalculationsForRoleByMemberId(Number(id))
-      .subscribe({
-        next: (RolePoints) => {
-          this.rolePointList.set(RolePoints);
-          const tabGroup = this.tabGroup();
-          if (tabGroup) {
-            tabGroup.selectedIndex = this.tabIndex();
-          }
-        }
+
+    runInInjectionContext(this.injector, () => {
+      this.rolePointsResource = rxResource({
+        stream: () => this.service.getPointsForActiveCalculationsForRoleByMemberId(Number(id)),
+        defaultValue: []
       });
+    });
   }
 
   private readonly createDialogOpener = <T extends { member?: MemberModel }>(

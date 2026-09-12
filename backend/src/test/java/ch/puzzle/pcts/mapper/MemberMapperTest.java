@@ -11,7 +11,9 @@ import ch.puzzle.pcts.dto.member.MemberDto;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.organisationunit.OrganisationUnit;
 import ch.puzzle.pcts.service.business.OrganisationUnitBusinessService;
+import ch.puzzle.pcts.service.business.RoleBusinessService;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,15 +24,25 @@ class MemberMapperTest {
     private MemberMapper mapper;
     private OrganisationUnitBusinessService organisationUnitBusinessService;
     private OrganisationUnitMapper organisationUnitMapper;
+    private RoleBusinessService roleBusinessService;
+    private RoleMapper roleMapper;
 
     @BeforeEach
     void setUp() {
         organisationUnitBusinessService = Mockito.mock(OrganisationUnitBusinessService.class);
         organisationUnitMapper = Mockito.mock(OrganisationUnitMapper.class);
-        mapper = new MemberMapper(organisationUnitBusinessService, organisationUnitMapper);
-
+        roleBusinessService = Mockito.mock(RoleBusinessService.class);
+        roleMapper = Mockito.mock(RoleMapper.class);
+        mapper = new MemberMapper(organisationUnitBusinessService,
+                                  organisationUnitMapper,
+                                  roleBusinessService,
+                                  roleMapper);
         when(organisationUnitMapper.toDto(ORG_UNIT_1)).thenReturn(ORG_UNIT_1_DTO);
         when(organisationUnitMapper.toDto(ORG_UNIT_2)).thenReturn(ORG_UNIT_2_DTO);
+        when(roleMapper.toDto(ROLE_1)).thenReturn(ROLE_1_DTO);
+        when(roleMapper.toDto(ROLE_2)).thenReturn(ROLE_2_DTO);
+        when(roleMapper.toDto(Set.of(ROLE_1))).thenReturn(Set.of(ROLE_1_DTO));
+        when(roleMapper.toDto(Set.of(ROLE_2))).thenReturn(Set.of(ROLE_2_DTO));
         when(organisationUnitBusinessService.getById(ORG_UNIT_1_ID)).thenReturn(ORG_UNIT_1);
         when(organisationUnitBusinessService.getById(ORG_UNIT_2_ID)).thenReturn(ORG_UNIT_2);
     }

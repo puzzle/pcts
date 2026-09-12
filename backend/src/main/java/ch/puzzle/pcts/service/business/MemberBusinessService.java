@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.business;
 
+import ch.puzzle.pcts.dto.calculation.RolePointDto;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.member.Member;
@@ -9,9 +10,13 @@ import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import ch.puzzle.pcts.service.validation.MemberValidationService;
 import jakarta.annotation.Nullable;
 import jakarta.transaction.Transactional;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -42,6 +47,10 @@ public class MemberBusinessService extends BusinessBase<Member> {
 
     public Member getLoggedInMember() {
         return memberPersistenceService.getByLdapName(jwtService.getLdapName());
+    }
+
+    public Set<Role> getAllRolesByMemberId(Long memberId) {
+        return this.getById(memberId).getRoles();
     }
 
     public List<Calculation> getAllCalculationsByMemberIdAndRoleId(Long memberId, Long roleId) {
@@ -98,5 +107,24 @@ public class MemberBusinessService extends BusinessBase<Member> {
 
     public Optional<Member> findByAbbreviation(String abbreviation) {
         return memberPersistenceService.findByAbbreviation(abbreviation);
+    }
+
+    // We need to merge 2 lists because members can obtain roles from 2 sources
+    public List<RolePointDto> mergeListsToUniqueRoleEntriesOnly(Long memberId, List<RolePointDto> rolePoints) {
+
+        List<RolePointDto> roles = this
+                .getAllRolesByMemberId(memberId)
+                .stream()
+                .map((role -> new RolePointDto(role, BigDecimal.ZERO)))
+                .toList();
+
+        return Stream
+                .concat(roles.stream(), rolePoints.stream()) // Merge 2 Collections into a single stream of entries.
+                .collect((Collectors.toMap(RolePointDto::role, dto -> dto, (element1, element2) -> element2))) // Deduplicate
+                                                                                                               // by
+                                                                                                               // role
+                .values()
+                .stream()
+                .toList();
     }
 }

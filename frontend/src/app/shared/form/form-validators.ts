@@ -86,3 +86,19 @@ export function isInteger(): ValidatorFn {
     return { invalid_integer: true };
   };
 }
+
+export function isInputFieldEmpty(inputFieldTagId: string): ValidatorFn {
+  return (): ValidationErrors | null => {
+    if (!inputFieldTagId) {
+      return null;
+    }
+
+    const inputfield = document.getElementById(inputFieldTagId) as HTMLInputElement;
+
+    if (!inputfield) {
+      return null;
+    }
+
+    return inputfield.value ? { invalidEntries: inputfield.value } : null;
+  };
+}

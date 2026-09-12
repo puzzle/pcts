@@ -44,6 +44,33 @@
         </mat-autocomplete>
       </app-input-field>
 
+      <mat-form-field>
+        <mat-label>{{ "ROLE" | scopedTranslation }}</mat-label>
+        <mat-chip-grid formControlName="roles" #chipGrid>
+          @for (role of memberForm.get("roles")?.value; track role) {
+            <mat-chip-row (removed)="removeRole(role)" [value]="role">
+              {{ role.name }}
+              <button matChipRemove aria-label="{{ 'REMOVE_ROLE' | scopedTranslation }}">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+          }
+        </mat-chip-grid>
+        <input name="currentRole"
+               id="currentRole"
+               data-testid="roles"
+               placeholder='{{ "ADD_ROLE" | scopedTranslation }}'
+               #roleInput
+               [matChipInputFor]="chipGrid"
+               [matAutocomplete]="roleAutoComplete">
+        <mat-autocomplete autoActiveFirstOption #roleAutoComplete="matAutocomplete"
+                          (optionSelected)="selectRole($event); roleInput.value= ''">
+          @for (role of this.filterList(roleInput.value, this.roleOptions(), "name"); track role.id) {
+            <mat-option [value]="role">{{ formatRoleName(role) }}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+
       <app-input-field>
         <input type="text" formControlName="organisationUnit" matInput
                [matAutocomplete]="organisationUnitAutoComplete" data-testid="organisationUnit">

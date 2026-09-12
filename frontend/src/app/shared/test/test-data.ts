@@ -58,6 +58,25 @@ export const organisationUnit4: OrganisationUnitModel = {
   name: '/rookie'
 };
 
+export const role1: RoleModel = {
+  id: 1,
+  name: 'Intern',
+  isManagement: false
+};
+
+export const role2: RoleModel = {
+  id: 2,
+  name: 'Administrator',
+  isManagement: true
+};
+
+
+export const role3: RoleModel = {
+  id: 3,
+  name: 'Department Head',
+  isManagement: true
+};
+
 export const member1: MemberModel = {
   id: 1,
   firstName: 'Lena',
@@ -66,7 +85,8 @@ export const member1: MemberModel = {
   abbreviation: 'LM',
   employmentState: EmploymentState.MEMBER,
   dateOfHire: new Date('2018-12-01'),
-  organisationUnit: organisationUnit1
+  organisationUnit: organisationUnit1,
+  roles: [role1]
 };
 
 export const member2: MemberModel = {
@@ -77,7 +97,8 @@ export const member2: MemberModel = {
   abbreviation: 'SK',
   employmentState: EmploymentState.MEMBER,
   dateOfHire: new Date('2018-12-01'),
-  organisationUnit: organisationUnit2
+  organisationUnit: organisationUnit2,
+  roles: [role2]
 };
 
 export const member3: MemberModel = {
@@ -88,7 +109,8 @@ export const member3: MemberModel = {
   abbreviation: 'BD',
   employmentState: EmploymentState.EX_MEMBER,
   dateOfHire: new Date('2018-12-01'),
-  organisationUnit: organisationUnit3
+  organisationUnit: organisationUnit3,
+  roles: [role3]
 };
 
 export const member4: MemberModel = {
@@ -99,7 +121,8 @@ export const member4: MemberModel = {
   abbreviation: null,
   employmentState: EmploymentState.APPLICANT,
   dateOfHire: null,
-  organisationUnit: organisationUnit4
+  organisationUnit: organisationUnit4,
+  roles: [role2]
 };
 
 export const memberDto1: MemberDto = {
@@ -109,7 +132,8 @@ export const memberDto1: MemberDto = {
   abbreviation: 'LM',
   employmentState: EmploymentState.MEMBER,
   dateOfHire: '2018-12-01',
-  organisationUnitId: 1
+  organisationUnitId: 1,
+  roleIds: [role1.id]
 };
 
 export const memberDto2: MemberDto = {
@@ -119,7 +143,8 @@ export const memberDto2: MemberDto = {
   abbreviation: null,
   employmentState: EmploymentState.APPLICANT,
   dateOfHire: null,
-  organisationUnitId: 4
+  organisationUnitId: 4,
+  roleIds: [role2.id]
 };
 
 export const tag1: TagModel = {
@@ -403,25 +428,6 @@ export const degreeOverviewList: DegreeOverviewModel[] = [{
   endDate: null
 }];
 
-export const role1: RoleModel = {
-  id: 1,
-  name: 'Intern',
-  isManagement: false
-};
-
-export const role2: RoleModel = {
-  id: 2,
-  name: 'Administrator',
-  isManagement: true
-};
-
-
-export const role3: RoleModel = {
-  id: 3,
-  name: 'Department Head',
-  isManagement: true
-};
-
 export const rolePointsList1: RolePointsModel[] = [{
   role: role1,
   points: 15
@@ -435,6 +441,12 @@ export const rolePointsList2: RolePointsModel[] = [{
   role: role2,
   points: 20
 }];
+
+export const roleList1: RoleModel[] = [role1,
+  role2];
+
+export const roleList2: RoleModel[] = [role3,
+  role1];
 
 export const certificateCalculation1: CertificateCalculationModel = {
   id: 1,

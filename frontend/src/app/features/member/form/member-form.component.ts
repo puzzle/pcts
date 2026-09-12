@@ -1,11 +1,20 @@
-import { Component, computed, effect, inject, input, OnInit, signal, WritableSignal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  OnInit,
+  signal,
+  WritableSignal
+} from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Router } from '@angular/router';
 import { MemberService } from '../member.service';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { TranslateService } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -18,10 +27,18 @@ import { PctsFormErrorDirective } from '../../../shared/pcts-form-error/pcts-for
 import { PctsFormLabelDirective } from '../../../shared/pcts-form-label/pcts-form-label.directive';
 import { InputFieldComponent } from '../../../shared/input-field/input-field.component';
 import { map } from 'rxjs';
-import { isDateInPast, isValueInList, isValueInListSignal } from '../../../shared/form/form-validators';
+import {
+  isDateInPast,
+  isValueInList,
+  isValueInListSignal,
+  isInputFieldEmpty
+} from '../../../shared/form/form-validators';
 import { BaseFormComponent } from '../../../shared/form/base-form.component';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { Location } from '@angular/common';
+import { RoleModel } from '../../roles/RoleModel';
+import { RoleService } from '../../roles/role.service';
+import { MatChipGrid, MatChipInput, MatChipRemove, MatChipRow } from '@angular/material/chips';
 
 @Component({
   selector: 'app-member-form',
@@ -38,7 +55,11 @@ import { Location } from '@angular/common';
     PctsFormLabelDirective,
     InputFieldComponent,
     BaseFormComponent,
-    ScopedTranslationPipe
+    ScopedTranslationPipe,
+    MatChipGrid,
+    MatChipRow,
+    MatChipInput,
+    MatChipRemove
   ],
   templateUrl: './member-form.component.html'
 })
@@ -46,6 +67,8 @@ export class MemberFormComponent implements OnInit {
   private readonly translateService = inject(TranslateService);
 
   private readonly memberService = inject(MemberService);
+
+  private readonly roleService = inject(RoleService);
 
   private readonly organisationUnitService = inject(OrganisationUnitService);
 
@@ -63,6 +86,8 @@ export class MemberFormComponent implements OnInit {
 
   private readonly employmentStateOptions: string[] = Object.values(EmploymentState);
 
+  protected readonly roleOptions: WritableSignal<RoleModel[]> = signal([]);
+
   private readonly organisationUnitsOptions: WritableSignal<OrganisationUnitModel[]> = signal([]);
 
   protected memberForm: FormGroup = this.fb.group({
@@ -79,6 +104,8 @@ export class MemberFormComponent implements OnInit {
     employmentState: [null,
       [Validators.required,
         isValueInList(this.employmentStateOptions, (a, b) => a == b)]],
+    roles: [[] as RoleModel[],
+      isInputFieldEmpty('currentRole')],
     organisationUnit: [null,
       isValueInListSignal(this.organisationUnitsOptions, (a, b) => a.id === b.id)]
   });
@@ -96,7 +123,7 @@ export class MemberFormComponent implements OnInit {
 
   protected organisationUnitFilteredOptions = computed(() => {
     const value = this.organisationUnitControlSignal();
-    return this.filterOrganisationUnit(value);
+    return this.filterList(value?.name, this.organisationUnitsOptions(), 'name');
   });
 
   ngOnInit() {
@@ -106,6 +133,16 @@ export class MemberFormComponent implements OnInit {
         this.memberForm.get('organisationUnit')
           ?.updateValueAndValidity();
       });
+
+    this.roleService.getAllRoles()
+      .subscribe((roles) => {
+        this.roleOptions.set(roles);
+      });
+
+    if (this.isEdit()) {
+      this.memberForm.get('roles')
+        ?.setValue(this.member().roles);
+    }
   }
 
   constructor() {
@@ -119,7 +156,7 @@ export class MemberFormComponent implements OnInit {
 
       this.memberForm.get('organisationUnit')
         ?.setValue(this.organisationUnitsOptions()
-          .find((orgUnit) => orgUnit.id === this.member().organisationUnit.id));
+          .find((orgUnit) => orgUnit.id === this.member()?.organisationUnit?.id));
     });
   }
 
@@ -127,15 +164,15 @@ export class MemberFormComponent implements OnInit {
     if (this.memberForm.invalid) {
       return;
     }
-    const memberToSave = this.memberForm.getRawValue() as MemberModel;
+
+    const formData = this.memberForm.getRawValue() as MemberModel;
+
     if (this.isEdit()) {
-      this.memberService.updateMember(this.memberForm.get('id')?.value, memberToSave)
-        .subscribe(() => {
-          this.router.navigate(['/member',
-            this.memberForm.getRawValue().id]);
-        });
+      this.memberService.updateMember(this.memberForm.get('id')?.value, formData)
+        .subscribe(() => this.router.navigate(['/member',
+          this.memberForm.getRawValue().id]));
     } else {
-      this.memberService.addMember(memberToSave)
+      this.memberService.addMember(formData)
         .subscribe(() => {
           this.router.navigate(['/']);
         });
@@ -153,6 +190,10 @@ export class MemberFormComponent implements OnInit {
     const translationKey = 'MEMBER.EMPLOYMENT_STATUS_VALUES.' + employmentState;
     return this.translateService.instant(translationKey);
   };
+
+  protected formatRoleName(role: RoleModel): string {
+    return role?.name ?? '';
+  }
 
   protected displayOrganisationUnit(organisationUnit: OrganisationUnitModel): string {
     if (!organisationUnit) {
@@ -172,19 +213,43 @@ export class MemberFormComponent implements OnInit {
     });
   }
 
-  private filterOrganisationUnit(value: OrganisationUnitModel | string | null): OrganisationUnitModel[] {
-    if (value === null || value === undefined || value === '') {
-      return this.organisationUnitsOptions();
+  protected filterList<T>(value: string, options: T[], optionsIdentifier: keyof T): T[] {
+    if (!value) {
+      return options;
     }
 
+    return options.filter((option) => {
+      const propertyValue = option[optionsIdentifier];
+      return propertyValue != null && String(propertyValue)
+        .toLowerCase()
+        .includes(value.toLowerCase());
+    });
+  }
 
-    const filterValue = (typeof value === 'string' ? value : value.name).toLowerCase();
+  removeRole(roleToRemove: RoleModel): void {
+    const choosenRoles = this.memberForm.get('roles')?.value as RoleModel[];
 
-    if (filterValue === '') {
-      return this.organisationUnitsOptions();
+    this.memberForm.get('roles')
+      ?.setValue(choosenRoles.filter((role: RoleModel) => role !== roleToRemove));
+  }
+
+  selectRole(event: MatAutocompleteSelectedEvent): void {
+    const choosenRole: RoleModel = event.option.value;
+    const choosenRoles = this.memberForm.get('roles')?.value;
+
+    if (!choosenRole) {
+      event.option.deselect();
+      return;
     }
-    return this.organisationUnitsOptions()
-      .filter((option) => option.name.toLowerCase()
-        .includes(filterValue));
+
+    if (choosenRoles.some((role: RoleModel) => role.id === choosenRole.id)) {
+      event.option.deselect();
+      return;
+    }
+
+    this.memberForm.get('roles')
+      ?.setValue([...choosenRoles,
+        choosenRole]);
+    event.option.deselect();
   }
 }
