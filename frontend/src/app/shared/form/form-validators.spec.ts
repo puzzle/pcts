@@ -1,7 +1,7 @@
 import { FormControl } from '@angular/forms';
 import {
   isDateInPast,
-  isDateInPastOrPresent, isInputFieldEmpty,
+  isDateInPastOrPresent, isSearchTermEmpty,
   isValueInList,
   isValueInListSignal
 } from './form-validators';
@@ -178,7 +178,7 @@ describe('isValueInListSignal', () => {
   });
 });
 
-describe('isInputFieldEmpty', () => {
+describe('isSearchTermEmpty', () => {
   afterEach(() => {
     document.getElementsByTagName('html')[0].innerHTML = '';
   });
@@ -190,7 +190,7 @@ describe('isInputFieldEmpty', () => {
     document.querySelector('body')
       ?.append(inputField);
     const control = new FormControl('');
-    expect(isInputFieldEmpty('uut')(control))
+    expect(isSearchTermEmpty('uut')(control))
       .toBeNull();
   });
 
@@ -198,7 +198,7 @@ describe('isInputFieldEmpty', () => {
     const inputField = document.createElement('input') as HTMLInputElement;
     inputField.value = '';
     const control = new FormControl('');
-    expect(isInputFieldEmpty('uut')(control))
+    expect(isSearchTermEmpty('uut')(control))
       .toBeNull();
   });
 
@@ -209,7 +209,7 @@ describe('isInputFieldEmpty', () => {
     document.querySelector('body')
       ?.append(inputField);
     const control = new FormControl('');
-    expect(isInputFieldEmpty('uut')(control))
+    expect(isSearchTermEmpty('uut')(control))
       .toEqual({ invalidEntries: inputField.value });
   });
 });

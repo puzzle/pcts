@@ -31,7 +31,7 @@ import {
   isDateInPast,
   isValueInList,
   isValueInListSignal,
-  isInputFieldEmpty
+  isSearchTermEmpty
 } from '../../../shared/form/form-validators';
 import { BaseFormComponent } from '../../../shared/form/base-form.component';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
@@ -105,7 +105,7 @@ export class MemberFormComponent implements OnInit {
       [Validators.required,
         isValueInList(this.employmentStateOptions, (a, b) => a == b)]],
     roles: [[] as RoleModel[],
-      isInputFieldEmpty('currentRole')],
+      isSearchTermEmpty('currentRole')],
     organisationUnit: [null,
       isValueInListSignal(this.organisationUnitsOptions, (a, b) => a.id === b.id)]
   });

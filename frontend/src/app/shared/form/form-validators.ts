@@ -87,8 +87,8 @@ export function isInteger(): ValidatorFn {
   };
 }
 
-export function isInputFieldEmpty(inputFieldTagId: string): ValidatorFn {
-  return (): ValidationErrors | null => {
+export function isSearchTermEmpty(inputFieldTagId: string): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
     if (!inputFieldTagId) {
       return null;
     }
