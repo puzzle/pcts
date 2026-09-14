@@ -91,6 +91,13 @@ export class ExperienceModalComponent extends StrictlyTypedDialog<FormModalConfi
     this.dialogRef.close();
   }
 
+  onDelete() {
+    this.dialogRef.close({
+      modalSubmitMode: ModalSubmitMode.DELETE,
+      submittedModel: this.formGroup.getRawValue() as ExperienceModel
+    });
+  }
+
   protected displayExperienceTypes = (experienceType: ExperienceTypeModel | null | undefined): string => {
     return experienceType?.name ?? '';
   };
