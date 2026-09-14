@@ -41,7 +41,7 @@
     "COMMENT": "Beschreibung"
   },
   "ROLE": {
-    "MODEL_NAME": "Role"
+    "MODEL_NAME": "Rolle"
   },
   "CALCULATION": {
     "POINTS": "Punkte"
