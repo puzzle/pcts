@@ -112,12 +112,7 @@ public class MemberBusinessService extends BusinessBase<Member> {
     // We need to merge 2 lists because members can obtain roles from calculation
     // table and from memberrole table
     public List<RolePointDto> mergeListsToUniqueRoleEntriesOnly(Long memberId, List<RolePointDto> rolePoints) {
-
-        List<RolePointDto> roles = this
-                .getAllRolesByMemberId(memberId)
-                .stream()
-                .map((role -> new RolePointDto(role, BigDecimal.ZERO)))
-                .toList();
+        List<RolePointDto> roles = getRolePointsByMemberId(memberId);
 
         return Stream
                 .concat(roles.stream(), rolePoints.stream()) // Merge 2 Collections into a single stream of entries.
@@ -126,6 +121,14 @@ public class MemberBusinessService extends BusinessBase<Member> {
                                                                                                                // role
                 .values()
                 .stream()
+                .toList();
+    }
+
+    private List<RolePointDto> getRolePointsByMemberId(Long memberId) {
+        return this
+                .getAllRolesByMemberId(memberId)
+                .stream()
+                .map((role -> new RolePointDto(role, BigDecimal.ZERO)))
                 .toList();
     }
 }
