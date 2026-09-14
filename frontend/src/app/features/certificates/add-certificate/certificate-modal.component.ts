@@ -17,7 +17,7 @@ import { MemberModel } from '../../member/member.model';
 import { DialogResult, StrictlyTypedDialog } from '../../../shared/modal/strictly-typed-dialog.helper';
 import { InputFieldComponent } from '../../../shared/input-field/input-field.component';
 import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
-import { FormDialogConfig } from '../../../shared/modal/pcts-modal.service';
+import { FormModalConfig } from '../../../shared/modal/pcts-modal.service';
 import { filterType } from '../../../shared/utils/typeFilter';
 
 @Component({
@@ -45,7 +45,7 @@ import { filterType } from '../../../shared/utils/typeFilter';
   ],
   templateUrl: './certificate-modal.component.html'
 })
-export class CertificateModalComponent extends StrictlyTypedDialog<FormDialogConfig<CertificateModel>, DialogResult<CertificateModel>> implements OnInit {
+export class CertificateModalComponent extends StrictlyTypedDialog<FormModalConfig<CertificateModel>, DialogResult<CertificateModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);
 
   protected readonly ModalSubmitMode = ModalSubmitMode;
