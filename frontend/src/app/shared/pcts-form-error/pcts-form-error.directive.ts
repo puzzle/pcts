@@ -28,20 +28,23 @@ export class PctsFormErrorDirective implements AfterViewInit {
 
   updateError(): void {
     const messages = this.getErrorMessages() ?? [];
-    const translatedMessages = messages.map((msg) => this.translateService.instant(msg));
+    const translatedMessages = messages.map((error) => this.translateService.instant(error.key, error.params));
     const html = translatedMessages.join('<br>');
     this.renderer2.setProperty(this.elementRef.nativeElement, 'innerHTML', html);
   }
 
-  getErrorMessages(): string[] {
+  getErrorMessages(): { key: string;
+    params: any; }[] {
     const control = this.matFormField?._control?.ngControl;
-    if (!control || control.valid) {
+    if (!control || control.valid || !control.errors) {
       return [];
     }
 
-    return control.errors ? Object.keys(control.errors)
-      .map((key) => `VALIDATION.${key.toUpperCase()}`)
-      .slice(0, Number.MAX_SAFE_INTEGER) : [];
+    return Object.keys(control.errors)
+      .map((key) => ({
+        key: `VALIDATION.${key.toUpperCase()}`,
+        params: control.getError(key)
+      }));
   }
 
   get matFormFieldControl(): NgControl {

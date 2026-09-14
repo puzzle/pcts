@@ -87,8 +87,8 @@
     "MATDATEPICKERPARSE": "Ungültiges Datum",
     "NOT_AVAILABLE": "\"{{value}}\" nicht verfügbar",
     "EMAIL": "Muss eine gültige Email-Adresse sein",
-    "MIN": "Die Eingabe muss mindestens 0 sein",
-    "MAX": "Die Eingabe muss maximal 110 sein",
+    "MIN": "Die Eingabe muss mindestens {{min}} sein",
+    "MAX": "Die Eingabe muss maximal {{max}} sein",
     "INVALID_INTEGER": "Die Eingabe muss eine Ganzzahl sein"
   },
 
