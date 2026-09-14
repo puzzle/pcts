@@ -3,12 +3,16 @@ import { ModalSubmitMode } from '../enum/modal-submit-mode.enum';
 import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
 import { MenuButtonComponent } from '../menu-button/menu-button.component';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-modal-actions',
-  imports: [MatButtonModule,
+  imports: [
+    MatButtonModule,
     ScopedTranslationPipe,
-    MenuButtonComponent],
+    MenuButtonComponent,
+    MatIcon
+  ],
   templateUrl: './modal-actions.component.html'
 })
 export class ModalActionsComponent {
