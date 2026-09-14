@@ -18,41 +18,27 @@ public class SheetRowCollector {
     }
 
     public boolean processRowAndCheckIfDone(List<String> cells) {
-        boolean isNoInfo = isRowWithoutInformation(cells);
+        boolean isNoInfo = cells.stream().allMatch(String::isEmpty);
 
         if (!isCollecting) {
-            checkStartCondition(cells, isNoInfo);
+            if (!isNoInfo && cells.stream().anyMatch(cell -> cell.contains(startMarker))) {
+                isCollecting = true;
+                collectedRows.add(cells);
+            }
             return false;
         }
 
-        return handleCollectedRow(cells, isNoInfo);
-    }
-
-    private void checkStartCondition(List<String> cells, boolean isNoInfo) {
-        if (!isNoInfo && containsMarker(cells, startMarker)) {
-            isCollecting = true;
-            collectedRows.add(cells);
-        }
-    }
-
-    private boolean handleCollectedRow(List<String> cells, boolean isNoInfo) {
         if (isNoInfo) {
-            return shouldCutOff && ++emptyRowCount >= 3;
+            emptyRowCount++;
+            return shouldCutOff && emptyRowCount >= 3;
+        } else {
+            emptyRowCount = 0;
+            collectedRows.add(cells);
+            return false;
         }
-        emptyRowCount = 0;
-        collectedRows.add(cells);
-        return false;
     }
 
     public List<List<String>> getCollectedRows() {
         return collectedRows;
-    }
-
-    private boolean isRowWithoutInformation(List<String> cells) {
-        return cells.stream().map(String::trim).allMatch(cell -> cell.isEmpty() || cell.equals("0"));
-    }
-
-    private boolean containsMarker(List<String> cells, String marker) {
-        return cells.stream().anyMatch(cell -> cell.contains(marker));
     }
 }

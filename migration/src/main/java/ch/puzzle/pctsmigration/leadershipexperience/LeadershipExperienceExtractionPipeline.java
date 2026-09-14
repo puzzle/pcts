@@ -54,7 +54,9 @@ public class LeadershipExperienceExtractionPipeline
 
     @Override
     public OdsParseConfig odsSheetParseConfig() {
-        return new OdsParseConfig((tableName -> tableName.startsWith("M")), "Führungserfahrung");
+        return new OdsParseConfig((tableName -> tableName.startsWith("M")),
+                                  "Führungserfahrung (nur bei M-Rollen)",
+                                  true);
     }
 
     @Override
