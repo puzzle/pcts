@@ -8,7 +8,6 @@ import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.repository.CalculationRepository;
 import ch.puzzle.pcts.service.JwtService;
-import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -66,9 +65,5 @@ public class CalculationPersistenceService extends PersistenceBase<Calculation, 
 
     public List<Calculation> getAllByMemberAndRole(Member member, Role role) {
         return calculationRepository.findAllByMemberAndRole(member, role);
-    }
-
-    public List<Calculation> getAllWhereTheMemberRoleConnectionExists(Long memberId) {
-        return repository.findAllWhereTheMemberRoleConnectionExists(BigInteger.valueOf(memberId));
     }
 }

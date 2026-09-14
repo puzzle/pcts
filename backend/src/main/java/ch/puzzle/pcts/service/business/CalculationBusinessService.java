@@ -12,10 +12,7 @@ import ch.puzzle.pcts.service.persistence.CalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.CalculationValidationService;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import org.springframework.stereotype.Service;
 
 @Service
@@ -135,43 +132,5 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
             BigDecimal points = this.getPointsOfCalculation(calculation);
             calculation.setPoints(points);
         });
-    }
-
-    public List<Calculation> getAllWhereTheMemberRoleConnectionExists(Long memberId) {
-        List<Calculation> calcs = calculationPersistenceService.getAllWhereTheMemberRoleConnectionExists(memberId);
-        calcs = deduplicate(calcs);
-        setPointsForCalculations(calcs);
-        return calcs;
-    }
-
-    private List<Calculation> deduplicate(List<Calculation> calculations) {
-        Map<Role, Calculation> calcs = new HashMap<>();
-
-        for (Calculation current : calculations) {
-            calcs
-                    .merge(current.getRole(),
-                           current,
-                           (existing, replacement) -> compare(replacement, existing) > 0 ? replacement : existing);
-        }
-
-        calculations.clear();
-        calcs.forEach((key, value) -> calculations.add(value));
-
-        return calculations;
-    }
-
-    private int compare(Calculation calculation1, Calculation calculation2) {
-        if (calculation1.getState().equals(calculation2.getState())) {
-            return 0;
-        }
-        if (calculation1.getState().equals(CalculationState.ACTIVE)
-            && !calculation2.getState().equals(CalculationState.ACTIVE)) {
-            return 1;
-        } else if (calculation1.getState().equals(CalculationState.DRAFT)
-                   && calculation2.getState().equals(CalculationState.ARCHIVED)) {
-            return 1;
-        } else {
-            return -1;
-        }
     }
 }

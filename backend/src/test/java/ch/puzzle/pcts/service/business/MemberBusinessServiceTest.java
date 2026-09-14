@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
+import ch.puzzle.pcts.dto.calculation.RolePointDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.model.calculation.Calculation;
@@ -17,6 +18,7 @@ import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.JwtService;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import ch.puzzle.pcts.service.validation.MemberValidationService;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
 import org.junit.jupiter.api.Assertions;
@@ -284,41 +286,35 @@ class MemberBusinessServiceTest
         assertEquals(MEMBER_1.getRoles(), result);
     }
 
-    // @DisplayName("Should merge lists correctly")
-    // @Test
-    // void shouldMergeListsCorrectly() {
-    // when(businessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
-    // when(businessService.getAllRolesByMemberId(MEMBER_1_ID)).thenReturn(ROLES_AS_SET);
-    //
-    // List<RolePointDto> rolePointsFromCalculations =
-    // calculationMapper.toRolePointDto(CALCULATIONS);
-    //
-    // var result = businessService.mergeListsToUniqueRoleEntriesOnly(MEMBER_1_ID,
-    // rolePointsFromCalculations);
-    //
-    // List<RolePointDto> expected = List.of(new RolePointDto(ROLE_3,
-    // BigDecimal.ZERO), new RolePointDto(ROLE_2, BigDecimal.ZERO));
-    //
-    // assertEquals(expected, result);
-    // verify(businessService).mergeListsToUniqueRoleEntriesOnly(MEMBER_1_ID,
-    // rolePointsFromCalculations);
-    // }
-    //
-    // @DisplayName("Should merge empty lists correctly")
-    // @Test
-    // void shouldMergeEmptyListsCorrectly() {
-    // when(businessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
-    // when(businessService.getAllRolesByMemberId(MEMBER_1_ID)).thenReturn(Set.of());
-    //
-    // List<RolePointDto> rolePointsFromCalculations = List.of();
-    //
-    // var result = businessService.mergeListsToUniqueRoleEntriesOnly(MEMBER_1_ID,
-    // rolePointsFromCalculations);
-    //
-    // List<RolePointDto> expected = List.of();
-    //
-    // assertEquals(expected, result);
-    // verify(businessService).mergeListsToUniqueRoleEntriesOnly(MEMBER_1_ID,
-    // rolePointsFromCalculations);
-    // }
+    @DisplayName("Should merge lists correctly")
+    @Test
+    void shouldMergeListsCorrectly() {
+        when(businessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
+        when(businessService.getAllRolesByMemberId(MEMBER_1_ID)).thenReturn(ROLES_AS_SET);
+
+        List<RolePointDto> rolePointsFromCalculations = calculationMapper.toRolePointDto(CALCULATIONS);
+
+        var result = businessService.mergeListsToUniqueRoleEntriesOnly(MEMBER_1_ID, rolePointsFromCalculations);
+
+        List<RolePointDto> expected = List.of(new RolePointDto(ROLE_3, BigDecimal.ZERO), new RolePointDto(ROLE_2, BigDecimal.ZERO));
+
+        assertEquals(expected, result);
+        verify(businessService).mergeListsToUniqueRoleEntriesOnly(MEMBER_1_ID, rolePointsFromCalculations);
+    }
+
+    @DisplayName("Should merge empty lists correctly")
+    @Test
+    void shouldMergeEmptyListsCorrectly() {
+        when(businessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
+        when(businessService.getAllRolesByMemberId(MEMBER_1_ID)).thenReturn(Set.of());
+
+        List<RolePointDto> rolePointsFromCalculations = List.of();
+
+        var result = businessService.mergeListsToUniqueRoleEntriesOnly(MEMBER_1_ID, rolePointsFromCalculations);
+
+        List<RolePointDto> expected = List.of();
+
+        assertEquals(expected, result);
+        verify(businessService).mergeListsToUniqueRoleEntriesOnly(MEMBER_1_ID, rolePointsFromCalculations);
+    }
 }
