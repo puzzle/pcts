@@ -43,9 +43,9 @@ import { FormDialogConfig } from '../../../shared/modal/pcts-modal.service';
     ModalActionsComponent
   ],
 
-  templateUrl: './add-experience.component.html'
+  templateUrl: './experience-modal.component.html'
 })
-export class AddExperienceComponent extends StrictlyTypedDialog<FormDialogConfig<ExperienceModel>, DialogResult<ExperienceModel>> implements OnInit {
+export class ExperienceModalComponent extends StrictlyTypedDialog<FormDialogConfig<ExperienceModel>, DialogResult<ExperienceModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);
 
   private readonly experienceTypeService = inject(ExperienceTypeService);

@@ -46,9 +46,9 @@ import { filterType } from '../../../shared/utils/typeFilter';
     MatCheckbox,
     ModalActionsComponent
   ],
-  templateUrl: './add-degree.component.html'
+  templateUrl: './degree-modal.component.html'
 })
-export class AddDegreeComponent extends StrictlyTypedDialog<FormDialogConfig<DegreeModel>, DialogResult<DegreeModel>> implements OnInit {
+export class DegreeModalComponent extends StrictlyTypedDialog<FormDialogConfig<DegreeModel>, DialogResult<DegreeModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);
 
   private readonly degreeTypeService = inject(DegreeTypeService);

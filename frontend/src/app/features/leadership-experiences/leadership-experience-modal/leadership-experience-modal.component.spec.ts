@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
-import { AddLeadershipExperienceComponent } from './add-leadership-experience.component';
+import { LeadershipExperienceModalComponent } from './leadership-experience-modal.component';
 import { LeadershipExperienceTypeService } from '../leadership-experiences-type/leadership-experience-type.service';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import {
@@ -12,9 +12,9 @@ import {
   leadershipExperienceType2
 } from '../../../shared/test/test-data';
 
-describe('AddLeadershipExperienceComponent', () => {
-  let component: AddLeadershipExperienceComponent;
-  let fixture: ComponentFixture<AddLeadershipExperienceComponent>;
+describe('LeadershipExperienceModalComponent', () => {
+  let component: LeadershipExperienceModalComponent;
+  let fixture: ComponentFixture<LeadershipExperienceModalComponent>;
 
   const dialogRefMock = { close: jest.fn() };
   const leadershipExperienceTypeServiceMock = {
@@ -27,7 +27,7 @@ describe('AddLeadershipExperienceComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      imports: [AddLeadershipExperienceComponent],
+      imports: [LeadershipExperienceModalComponent],
       providers: [
         { provide: MAT_DIALOG_DATA,
           useValue: dialogData },
@@ -40,7 +40,7 @@ describe('AddLeadershipExperienceComponent', () => {
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(AddLeadershipExperienceComponent);
+    fixture = TestBed.createComponent(LeadershipExperienceModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
