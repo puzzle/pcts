@@ -4,6 +4,7 @@ import ch.puzzle.pctsmigration.exception.Error;
 import ch.puzzle.pctsmigration.exception.MigrationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import org.odftoolkit.odfdom.doc.OdfSpreadsheetDocument;
 import org.odftoolkit.odfdom.doc.table.OdfTable;
 import org.odftoolkit.odfdom.doc.table.OdfTableCell;
@@ -24,7 +25,7 @@ public class OdsParserService {
 
         try {
             OdfSpreadsheetDocument doc = OdfSpreadsheetDocument.loadDocument(file.getInputStream());
-            OdsParseResult result = extractData(doc, config.tableNames(), config.startMarker());
+            OdsParseResult result = extractData(doc, config.tableNameConvention(), config.startMarker());
             return generateMarkdown(result);
         } catch (Exception e) {
             throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
@@ -32,12 +33,13 @@ public class OdsParserService {
         }
     }
 
-    private OdsParseResult extractData(OdfSpreadsheetDocument doc, List<String> tableNames, String startMarker)
+    private OdsParseResult extractData(OdfSpreadsheetDocument doc, Function<String, Boolean> tableNameConvention,
+                                       String startMarker)
             throws Exception {
         List<OdsParseResult.Sheet> sheets = doc
                 .getSpreadsheetTables()
                 .stream()
-                .filter(table -> isValidTableName(tableNames, table.getTableName()))
+                .filter(table -> tableNameConvention.apply(table.getTableName()))
                 .limit(MAX_SHEETS)
                 .map(table -> extractSheet(table, startMarker))
                 .toList();
@@ -46,12 +48,6 @@ public class OdsParserService {
             throw new Exception("No valid sheets found");
         }
         return new OdsParseResult(sheets);
-    }
-
-    private boolean isValidTableName(List<String> tableNames, String name) {
-        String actualName = name.trim().toLowerCase();
-        List<String> cleanTableNames = tableNames.stream().map(t -> t.trim().toLowerCase()).toList();
-        return cleanTableNames.contains(actualName);
     }
 
     private OdsParseResult.Sheet extractSheet(OdfTable table, String startMarker) {
@@ -76,13 +72,10 @@ public class OdsParserService {
         List<String> cells = new ArrayList<>();
         for (int c = 0; c < colCount; c++) {
             OdfTableCell cell = row.getCellByIndex(c);
-            String cellText = cell.getDisplayText().trim().equals("0") ? "" : cell.getDisplayText().trim();
+            String cellText = cell.getStringValue().trim().equals("0") ? "" : cell.getDisplayText().trim();
             cells.add(cellText);
         }
 
-        while (!cells.isEmpty() && cells.getLast().isEmpty()) {
-            cells.removeLast();
-        }
         return cells;
     }
 

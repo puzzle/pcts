@@ -54,7 +54,7 @@ public class LeadershipExperienceExtractionPipeline
 
     @Override
     public OdsParseConfig odsSheetParseConfig() {
-        return new OdsParseConfig(List.of("M2 Division Manager"), "Führungserfahrung");
+        return new OdsParseConfig((tableName -> tableName.startsWith("M")), "Führungserfahrung");
     }
 
     @Override
