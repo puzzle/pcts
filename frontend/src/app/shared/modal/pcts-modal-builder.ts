@@ -1,23 +1,22 @@
-import { FormDialogConfig, ModelWithId, PctsModalService, WithRequiredData } from './pcts-modal.service';
+import { FormModalConfig, ModelWithId, PctsModalService, WithRequiredData } from './pcts-modal.service';
 import { concatMap, map, Observable } from 'rxjs';
 import { DialogResult, StrictlyTypedDialog, TypedMatDialogRef } from './strictly-typed-dialog.helper';
 import { ModalSubmitMode } from '../enum/modal-submit-mode.enum';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DestroyRef, Injector, Type } from '@angular/core';
 import { I18N_PREFIX } from '../i18n-prefix.token';
-import { ScopedTranslationService } from '../i18n-prefix.provider';
 
-type DialogComponent<T extends ModelWithId> = StrictlyTypedDialog<FormDialogConfig<T>, DialogResult<T>>;
+type ModalComponent<T extends ModelWithId> = StrictlyTypedDialog<FormModalConfig<T>, DialogResult<T>>;
 
 type openModalType<T extends ModelWithId> = (
-  component: Type<DialogComponent<T>>,
-  options: WithRequiredData<FormDialogConfig<T>>
-) => TypedMatDialogRef<DialogComponent<T>, DialogResult<T>>;
+  component: Type<ModalComponent<T>>,
+  options: WithRequiredData<FormModalConfig<T>>
+) => TypedMatDialogRef<ModalComponent<T>, DialogResult<T>>;
 
 type onSubmitMethodType<T extends ModelWithId> = (model: T) => Observable<T>;
 
 export class PctsModalBuilder<T extends ModelWithId> {
-  private component: Type<DialogComponent<T>> | undefined;
+  private component: Type<ModalComponent<T>> | undefined;
 
   private onSubmitMethod: ((model: T) => Observable<T>) | undefined;
 
@@ -39,7 +38,7 @@ export class PctsModalBuilder<T extends ModelWithId> {
     this.injector = injector;
   }
 
-  withComponent(component: Type<DialogComponent<T>>) {
+  withComponent(component: Type<ModalComponent<T>>) {
     this.component = component;
     return this;
   }
@@ -94,7 +93,6 @@ export class PctsModalBuilder<T extends ModelWithId> {
   private getInjectorForI18nPrefix(i18nPrefix: string) {
     return Injector.create({ providers: [{ provide: I18N_PREFIX,
       useValue: i18nPrefix },
-    ScopedTranslationService,
     PctsModalService],
     parent: this.injector });
   }
@@ -118,14 +116,14 @@ export class PctsModalBuilder<T extends ModelWithId> {
   }
 
   private createOpenerMethod(
-    component: Type<DialogComponent<T>>,
+    component: Type<ModalComponent<T>>,
     onSubmitMethod: onSubmitMethodType<T>,
     submitOptions: ModalSubmitMode[],
     i18nPrefix: string,
     onSuccess?: () => void
   ) {
     const opener = (model?: T) => {
-      const data: FormDialogConfig<T> = {
+      const data: FormModalConfig<T> = {
         model: model,
         submitOptions: submitOptions
       };

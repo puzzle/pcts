@@ -18,7 +18,7 @@ import { ExperienceTypeModel } from '../experience-type/experience-type.model';
 import { ExperienceTypeService } from '../experience-type/experience-type.service';
 import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
 import { filterType } from '../../../shared/utils/typeFilter';
-import { FormDialogConfig } from '../../../shared/modal/pcts-modal.service';
+import { FormModalConfig } from '../../../shared/modal/pcts-modal.service';
 
 @Component({
   selector: 'app-add-experience',
@@ -45,7 +45,7 @@ import { FormDialogConfig } from '../../../shared/modal/pcts-modal.service';
 
   templateUrl: './experience-modal.component.html'
 })
-export class ExperienceModalComponent extends StrictlyTypedDialog<FormDialogConfig<ExperienceModel>, DialogResult<ExperienceModel>> implements OnInit {
+export class ExperienceModalComponent extends StrictlyTypedDialog<FormModalConfig<ExperienceModel>, DialogResult<ExperienceModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);
 
   private readonly experienceTypeService = inject(ExperienceTypeService);

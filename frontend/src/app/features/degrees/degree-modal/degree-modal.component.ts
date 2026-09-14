@@ -19,7 +19,7 @@ import { DegreeTypeModel } from '../degree-type/degree-type.model';
 import { DegreeTypeService } from '../degree-type/degree-type.service';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { ModalActionsComponent } from '../../../shared/modal/modal-actions.component';
-import { FormDialogConfig } from '../../../shared/modal/pcts-modal.service';
+import { FormModalConfig } from '../../../shared/modal/pcts-modal.service';
 import { filterType } from '../../../shared/utils/typeFilter';
 
 @Component({
@@ -48,7 +48,7 @@ import { filterType } from '../../../shared/utils/typeFilter';
   ],
   templateUrl: './degree-modal.component.html'
 })
-export class DegreeModalComponent extends StrictlyTypedDialog<FormDialogConfig<DegreeModel>, DialogResult<DegreeModel>> implements OnInit {
+export class DegreeModalComponent extends StrictlyTypedDialog<FormModalConfig<DegreeModel>, DialogResult<DegreeModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);
 
   private readonly degreeTypeService = inject(DegreeTypeService);

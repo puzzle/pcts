@@ -7,7 +7,7 @@ import { PctsModalBuilder } from './pcts-modal-builder';
 
 export interface ModelWithId { id: number }
 
-export interface FormDialogConfig<T extends ModelWithId> {
+export interface FormModalConfig<T extends ModelWithId> {
   model: T | undefined;
   submitOptions: ModalSubmitMode[];
 }
