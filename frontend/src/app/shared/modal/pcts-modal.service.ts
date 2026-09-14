@@ -17,7 +17,7 @@ type ExtractData<C> = C extends StrictlyTypedDialog<infer D, any> ? D : never;
 type ExtractResult<C> = C extends StrictlyTypedDialog<any, infer R> ? R : never;
 
 // Helper to enforce/relax data requirements in MatDialogConfig
-type WithRequiredData<D> = Omit<MatDialogConfig<D>, 'data'> & { data: D };
+export type WithRequiredData<D> = Omit<MatDialogConfig<D>, 'data'> & { data: D };
 type WithOptionalData<D> = Omit<MatDialogConfig<D>, 'data'> & { data?: D };
 type WithoutData = Omit<MatDialogConfig<never>, 'data'> & { data?: never };
 
