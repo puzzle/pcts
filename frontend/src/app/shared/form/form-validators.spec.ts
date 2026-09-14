@@ -210,6 +210,6 @@ describe('isSearchTermEmpty', () => {
       ?.append(inputField);
     const control = new FormControl('');
     expect(isSearchTermEmpty('uut')(control))
-      .toEqual({ invalidEntries: inputField.value });
+      .toEqual({ invalid_entry: inputField.value });
   });
 });
