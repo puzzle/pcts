@@ -95,12 +95,12 @@ public class OdsParserService {
         List<String> cells = new ArrayList<>(colCount);
         for (int c = 0; c < colCount; c++) {
             OdfTableCell cell = row.getCellByIndex(c);
-            cells.add(cleanCellText(cell, c));
+            cells.add(cleanCellText(cell));
         }
         return cells;
     }
 
-    private String cleanCellText(OdfTableCell cell, int index) {
+    private String cleanCellText(OdfTableCell cell) {
         if (cell == null)
             return "";
 
