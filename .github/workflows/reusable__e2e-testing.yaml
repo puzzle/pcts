@@ -71,7 +71,7 @@ jobs:
       - name: Set up node for Cypress
         uses: actions/setup-node@v7
         with:
-          node-version: "24.13.0"
+          node-version: "24.21.0"
 
       - name: Cache Cypress binary
         uses: actions/cache@v6
