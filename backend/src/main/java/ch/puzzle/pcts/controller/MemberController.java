@@ -74,11 +74,8 @@ public class MemberController {
     @GetMapping("{memberId}/role-points")
     public ResponseEntity<List<RolePointDto>> getPointsForActiveCalculationsForRoleByMemberId(@Parameter(description = "ID of the member.", required = true)
     @PathVariable @P("id") Long memberId) {
-        List<RolePointDto> rolePointDtos = service
-                .mergeListsToUniqueRoleEntriesOnly(memberId,
-                                                   calculationMapper
-                                                           .toRolePointDto(service
-                                                                   .getAllActiveCalculationsByMemberId(memberId)));
+        List<RolePointDto> rolePointDtos = calculationMapper
+                .toRolePointDto(service.getAllWhereTheMemberRoleConnectionExists(memberId));
         return ResponseEntity.ok(rolePointDtos);
     }
 

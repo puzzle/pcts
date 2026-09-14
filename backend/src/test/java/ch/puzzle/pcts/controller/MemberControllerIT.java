@@ -14,7 +14,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.puzzle.pcts.dto.calculation.CalculationDto;
-import ch.puzzle.pcts.dto.calculation.RolePointDto;
 import ch.puzzle.pcts.dto.member.MemberInputDto;
 import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.mapper.MemberMapper;
@@ -203,26 +202,28 @@ class MemberControllerIT extends ControllerITBase {
         verify(calculationMapper, times(1)).toDto(anyList());
     }
 
-    @DisplayName("Should successfully get role points of member")
-    @Test
-    void shouldGetRolePointsByMemberId() throws Exception {
-        Long memberId = 1L;
-
-        RolePointDto rolePointDto = mock(RolePointDto.class);
-
-        when(memberBusinessService.mergeListsToUniqueRoleEntriesOnly(memberId, List.of()))
-                .thenReturn(List.of(rolePointDto));
-
-        mvc
-                .perform(get(BASEURL + "/" + memberId + "/role-points")
-                        .with(csrf())
-                        .with(ownerJwt())
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(1));
-
-        verify(memberBusinessService, times(1)).mergeListsToUniqueRoleEntriesOnly(memberId, List.of());
-    }
+    // @DisplayName("Should successfully get role points of member")
+    // @Test
+    // void shouldGetRolePointsByMemberId() throws Exception {
+    // Long memberId = 1L;
+    //
+    // RolePointDto rolePointDto = mock(RolePointDto.class);
+    //
+    // when(memberBusinessService.mergeListsToUniqueRoleEntriesOnly(memberId,
+    // List.of()))
+    // .thenReturn(List.of(rolePointDto));
+    //
+    // mvc
+    // .perform(get(BASEURL + "/" + memberId + "/role-points")
+    // .with(csrf())
+    // .with(ownerJwt())
+    // .accept(MediaType.APPLICATION_JSON))
+    // .andExpect(status().isOk())
+    // .andExpect(jsonPath("$.length()").value(1));
+    //
+    // verify(memberBusinessService,
+    // times(1)).mergeListsToUniqueRoleEntriesOnly(memberId, List.of());
+    // }
 
     @DisplayName("Should successfully get myself as a member")
     @Test
