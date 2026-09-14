@@ -44,8 +44,7 @@
         </mat-autocomplete>
       </app-input-field>
 
-      <mat-form-field>
-        <mat-label>{{ "ROLE" | scopedTranslation }}</mat-label>
+  <app-input-field>
         <mat-chip-grid formControlName="roles" #chipGrid>
           @for (role of memberForm.get("roles")?.value; track role) {
             <mat-chip-row (removed)="removeRole(role)" [value]="role">
@@ -69,7 +68,7 @@
             <mat-option [value]="role">{{ formatRoleName(role) }}</mat-option>
           }
         </mat-autocomplete>
-      </mat-form-field>
+  </app-input-field>
 
       <app-input-field>
         <input type="text" formControlName="organisationUnit" matInput

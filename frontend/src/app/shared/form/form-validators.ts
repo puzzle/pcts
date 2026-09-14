@@ -99,6 +99,6 @@ export function isInputFieldEmpty(inputFieldTagId: string): ValidatorFn {
       return null;
     }
 
-    return inputfield.value ? { invalidEntries: inputfield.value } : null;
+    return inputfield.value ? { invalid_entry: inputfield.value } : null;
   };
 }

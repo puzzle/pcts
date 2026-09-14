@@ -101,7 +101,7 @@
     "EMAIL": "Email",
     "BIRTH_DATE": "Geburtsdatum",
     "DATE_OF_HIRE": "Anstellungsdatum",
-    "ROLE": "Rolle",
+    "ROLES": "Rollen",
     "ADD_ROLE": "Rolle hinzufügen",
     "REMOVE_ROLE": "Rolle entfernen",
     "ORGANISATION_UNIT": "Division",
