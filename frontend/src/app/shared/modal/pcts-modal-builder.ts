@@ -1,4 +1,4 @@
-import { FormDialogConfig, ModelWithId, PctsModalService } from './pcts-modal.service';
+import { FormDialogConfig, ModelWithId, PctsModalService, WithRequiredData } from './pcts-modal.service';
 import { concatMap, map, Observable } from 'rxjs';
 import { DialogResult, StrictlyTypedDialog, TypedMatDialogRef } from './strictly-typed-dialog.helper';
 import { ModalSubmitMode } from '../enum/modal-submit-mode.enum';
@@ -11,8 +11,7 @@ type DialogComponent<T extends ModelWithId> = StrictlyTypedDialog<FormDialogConf
 
 type openModalType<T extends ModelWithId> = (
   component: Type<DialogComponent<T>>,
-  options: { data: FormDialogConfig<T>;
-    injector: Injector; }
+  options: WithRequiredData<FormDialogConfig<T>>
 ) => TypedMatDialogRef<DialogComponent<T>, DialogResult<T>>;
 
 type onSubmitMethodType<T extends ModelWithId> = (model: T) => Observable<T>;
