@@ -27,13 +27,15 @@
       (selected)="onSubmit($event)" />
   </div>
 
-  <div class="d-flex">
+  <div class="position-absolute bottom-1 end-0">
     <button
-      type="button"
+      class="text-danger"
+    (click)="onDelete(ModalSubmitMode.DELETE)"
+    type="button"
       matButton="text"
-      (click)="onDelete(ModalSubmitMode.DELETE)"
-    >
+  >
       {{ deleteKey | scopedTranslation }}
-    </button>
+    <mat-icon>delete</mat-icon>
+  </button>
   </div>
 </div>
