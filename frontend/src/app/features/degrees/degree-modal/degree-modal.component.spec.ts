@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AddDegreeComponent } from './add-degree.component';
+import { DegreeModalComponent } from './degree-modal.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { degree1, degreeType1, degreeType2 } from '../../../shared/test/test-data';
 import { provideTranslateService } from '@ngx-translate/core';
@@ -7,9 +7,9 @@ import { DegreeTypeService } from '../degree-type/degree-type.service';
 import { of } from 'rxjs';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 
-describe('AddDegreeComponent', () => {
-  let component: AddDegreeComponent;
-  let fixture: ComponentFixture<AddDegreeComponent>;
+describe('DegreeModalComponent', () => {
+  let component: DegreeModalComponent;
+  let fixture: ComponentFixture<DegreeModalComponent>;
 
   const dialogData = degree1;
   const dialogRefMock = { close: jest.fn() };
@@ -21,7 +21,7 @@ describe('AddDegreeComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      imports: [AddDegreeComponent],
+      imports: [DegreeModalComponent],
       providers: [
         {
           provide: MAT_DIALOG_DATA,
@@ -40,7 +40,7 @@ describe('AddDegreeComponent', () => {
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(AddDegreeComponent);
+    fixture = TestBed.createComponent(DegreeModalComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

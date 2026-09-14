@@ -10,21 +10,21 @@ import { CertificateOverviewModel } from './cv/certificate-overview.model';
 import { LeadershipExperienceOverviewModel } from './cv/leadership-experience-overview.model';
 import { ExperienceService } from '../../experiences/experience.service';
 import { ExperienceModel } from '../../experiences/experience.model';
-import { AddExperienceComponent } from '../../experiences/add-experience/add-experience.component';
+import { ExperienceModalComponent } from '../../experiences/./experience-modal/experience-modal.component';
 import { TranslationScopeDirective } from '../../../shared/translation-scope/translation-scope.directive';
 import { CertificateService } from '../../certificates/certificate.service';
 import { CertificateModel } from '../../certificates/certificate.model';
-import { AddCertificateComponent } from '../../certificates/add-certificate/add-certificate.component';
+import { CertificateModalComponent } from '../../certificates/add-certificate/certificate-modal.component';
 import { PctsModalService } from '../../../shared/modal/pcts-modal.service';
 import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
 import { LeadershipExperienceModel } from '../../leadership-experiences/leadership-experience.model';
 import {
-  AddLeadershipExperienceComponent
-} from '../../leadership-experiences/add-leadership-experience/add-leadership-experience.component';
+  LeadershipExperienceModalComponent
+} from '../../leadership-experiences/./leadership-experience-modal/leadership-experience-modal.component';
 import { LeadershipExperienceService } from '../../leadership-experiences/leadership-experience.service';
 import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin.directive';
 import { DegreeModel } from '../../degrees/degree.model';
-import { AddDegreeComponent } from '../../degrees/add-degree/add-degree.component';
+import { DegreeModalComponent } from '../../degrees/./degree-modal/degree-modal.component';
 import { DegreeService } from '../../degrees/degree.service';
 import {
   getCertificateTable,
@@ -109,7 +109,7 @@ export class MemberDetailViewComponent {
 
   addDegreeDialog = this.modalService
     .dialogOpener<DegreeModel>()
-    .withComponent(AddDegreeComponent)
+    .withComponent(DegreeModalComponent)
     .withOnSubmitMethod((model: DegreeModel) => {
       const currentMember = this.memberResource.value();
 
@@ -126,7 +126,7 @@ export class MemberDetailViewComponent {
 
   addCertificateDialog = this.modalService
     .dialogOpener<CertificateModel>()
-    .withComponent(AddCertificateComponent)
+    .withComponent(CertificateModalComponent)
     .withOnSubmitMethod((model: CertificateModel) => {
       const currentMember = this.memberResource.value();
 
@@ -143,7 +143,7 @@ export class MemberDetailViewComponent {
 
   addLeadershipExperienceDialog = this.modalService
     .dialogOpener<LeadershipExperienceModel>()
-    .withComponent(AddLeadershipExperienceComponent)
+    .withComponent(LeadershipExperienceModalComponent)
     .withOnSubmitMethod((model: LeadershipExperienceModel) => {
       const currentMember = this.memberResource.value();
 
@@ -160,7 +160,7 @@ export class MemberDetailViewComponent {
 
   addExperienceDialog = this.modalService
     .dialogOpener<ExperienceModel>()
-    .withComponent(AddExperienceComponent)
+    .withComponent(ExperienceModalComponent)
     .withOnSubmitMethod((model: ExperienceModel) => {
       const currentMember = this.memberResource.value();
 
@@ -177,7 +177,7 @@ export class MemberDetailViewComponent {
 
   private readonly createEditDegreeDialog = this.modalService
     .dialogOpener<DegreeModel>()
-    .withComponent(AddDegreeComponent)
+    .withComponent(DegreeModalComponent)
     .withOnSubmitMethod((model: DegreeModel) => this.degreeService.updateDegree(model.id, model))
     .withOnSuccessMethod(() => this.memberOverviewResource.reload())
     .withSubmitOptionsForEdit()
@@ -193,7 +193,7 @@ export class MemberDetailViewComponent {
 
   private readonly createEditCertificateDialog = this.modalService
     .dialogOpener<CertificateModel>()
-    .withComponent(AddCertificateComponent)
+    .withComponent(CertificateModalComponent)
     .withOnSubmitMethod((model: CertificateModel) => this.certificateService.updateCertificate(model.id, model))
     .withOnSuccessMethod(() => this.memberOverviewResource.reload())
     .withSubmitOptionsForEdit()
@@ -209,7 +209,7 @@ export class MemberDetailViewComponent {
 
   private readonly createEditLeadershipExperienceDialog = this.modalService
     .dialogOpener<LeadershipExperienceModel>()
-    .withComponent(AddLeadershipExperienceComponent)
+    .withComponent(LeadershipExperienceModalComponent)
     .withOnSubmitMethod((model: LeadershipExperienceModel) => this.leadershipExperienceService.updateLeadershipExperience(model.id, model))
     .withOnSuccessMethod(() => this.memberOverviewResource.reload())
     .withSubmitOptionsForEdit()
@@ -225,7 +225,7 @@ export class MemberDetailViewComponent {
 
   private readonly createEditExperienceDialog = this.modalService
     .dialogOpener<ExperienceModel>()
-    .withComponent(AddExperienceComponent)
+    .withComponent(ExperienceModalComponent)
     .withOnSubmitMethod((model: ExperienceModel) => this.experienceService.updateExperience(model.id, model))
     .withOnSuccessMethod(() => this.memberOverviewResource.reload())
     .withSubmitOptionsForEdit()

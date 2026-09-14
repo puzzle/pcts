@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AddExperienceComponent } from './add-experience.component';
+import { ExperienceModalComponent } from './experience-modal.component';
 import { experience1, experienceType1, experienceType2 } from '../../../shared/test/test-data';
 import { of } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -7,9 +7,9 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { ExperienceTypeService } from '../experience-type/experience-type.service';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 
-describe('AddExperienceComponent', () => {
-  let component: AddExperienceComponent;
-  let fixture: ComponentFixture<AddExperienceComponent>;
+describe('ExperienceModalComponent', () => {
+  let component: ExperienceModalComponent;
+  let fixture: ComponentFixture<ExperienceModalComponent>;
 
   const dialogData = experience1;
   const dialogRefMock = { close: jest.fn() };
@@ -21,7 +21,7 @@ describe('AddExperienceComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      imports: [AddExperienceComponent],
+      imports: [ExperienceModalComponent],
       providers: [
         {
           provide: MAT_DIALOG_DATA,
@@ -40,7 +40,7 @@ describe('AddExperienceComponent', () => {
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(AddExperienceComponent);
+    fixture = TestBed.createComponent(ExperienceModalComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
