@@ -1,6 +1,6 @@
 import { FormDialogConfig, ModelWithId, PctsModalService } from './pcts-modal.service';
-import { concatMap, Observable } from 'rxjs';
-import { DialogResult, StrictlyTypedDialog } from './strictly-typed-dialog.helper';
+import { concatMap, map, Observable } from 'rxjs';
+import { DialogResult, StrictlyTypedDialog, TypedMatDialogRef } from './strictly-typed-dialog.helper';
 import { ModalSubmitMode } from '../enum/modal-submit-mode.enum';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DestroyRef, Injector, Type } from '@angular/core';
@@ -13,12 +13,9 @@ type openModalType<T extends ModelWithId> = (
   component: Type<DialogComponent<T>>,
   options: { data: FormDialogConfig<T>;
     injector: Injector; }
-) => {
-  afterSubmitted: Observable<{
-    modalSubmitMode: ModalSubmitMode;
-    submittedModel: T;
-  }>;
-};
+) => TypedMatDialogRef<DialogComponent<T>, DialogResult<T>>;
+
+type onSubmitMethodType<T extends ModelWithId> = (model: T) => Observable<T>;
 
 export class PctsModalBuilder<T extends ModelWithId> {
   private component: Type<DialogComponent<T>> | undefined;
@@ -48,7 +45,7 @@ export class PctsModalBuilder<T extends ModelWithId> {
     return this;
   }
 
-  withOnSubmitMethod(onSubmitMethod: (model: T) => Observable<T>) {
+  withOnSubmitMethod(onSubmitMethod: onSubmitMethodType<T>) {
     this.onSubmitMethod = onSubmitMethod;
     return this;
   }
@@ -83,43 +80,16 @@ export class PctsModalBuilder<T extends ModelWithId> {
     if (!this.component || !this.onSubmitMethod) {
       throw new Error('Component and onSubmitMethod must be provided');
     }
+
     const component = this.component;
     const onSubmitMethod = this.onSubmitMethod;
+    const submitOptions = this.submitOptions ?? [];
+    const i18nPrefix = this.i18nPrefix ?? '';
+    const onSuccess = this.onSuccess;
 
-    const opener = (model?: T) => {
-      const data: FormDialogConfig<T> = {
-        model: model,
-        submitOptions: this.submitOptions ?? []
-      };
-
-      const injector = this.getInjectorForI18nPrefix(this.i18nPrefix ?? '');
-
-
-      this.openModal(component, { data: data,
-        injector: injector })
-        .afterSubmitted
-        .pipe(takeUntilDestroyed(this.destroyRef), concatMap(({ modalSubmitMode, submittedModel }: { modalSubmitMode: ModalSubmitMode;
-          submittedModel: T; }) => {
-          switch (modalSubmitMode) {
-            case ModalSubmitMode.SAVE:
-              break;
-            case ModalSubmitMode.ENTER_ANOTHER:
-              opener();
-              break;
-            case ModalSubmitMode.COPY:
-              opener(submittedModel);
-              break;
-            default:
-              modalSubmitMode satisfies never;
-          }
-
-          return onSubmitMethod(submittedModel);
-        }))
-        .subscribe(() => {
-          this.onSuccess?.();
-        });
-    };
-    return opener;
+    return this.createOpenerMethod(
+      component, onSubmitMethod, submitOptions, i18nPrefix, onSuccess
+    );
   }
 
   private getInjectorForI18nPrefix(i18nPrefix: string) {
@@ -128,5 +98,69 @@ export class PctsModalBuilder<T extends ModelWithId> {
     ScopedTranslationService,
     PctsModalService],
     parent: this.injector });
+  }
+
+  private evaluateSubmitModes(modalSubmitMode: ModalSubmitMode) {
+    switch (modalSubmitMode) {
+      case ModalSubmitMode.SAVE:
+        return { shouldReopen: false,
+          withModal: false };
+      case ModalSubmitMode.ENTER_ANOTHER:
+        return { shouldReopen: true,
+          withModal: false };
+      case ModalSubmitMode.COPY:
+        return { shouldReopen: true,
+          withModal: true };
+      default:
+        modalSubmitMode satisfies never;
+        return { shouldReopen: false,
+          withModal: false };
+    }
+  }
+
+  private createOpenerMethod(
+    component: Type<DialogComponent<T>>,
+    onSubmitMethod: onSubmitMethodType<T>,
+    submitOptions: ModalSubmitMode[],
+    i18nPrefix: string,
+    onSuccess?: () => void
+  ) {
+    const opener = (model?: T) => {
+      const data: FormDialogConfig<T> = {
+        model: model,
+        submitOptions: submitOptions
+      };
+
+      const injector = this.getInjectorForI18nPrefix(i18nPrefix);
+
+      this.openModal(component, {
+        data: data,
+        injector: injector
+      })
+        .afterSubmitted
+        .pipe(takeUntilDestroyed(this.destroyRef), concatMap(({ modalSubmitMode, submittedModel }) => this.onFormSubmit(
+          submittedModel, modalSubmitMode, onSubmitMethod, opener.bind(this)
+        )))
+        .subscribe(() => {
+          onSuccess?.();
+        });
+    };
+    return opener;
+  }
+
+  private onFormSubmit(
+    submittedModel: T,
+    modalSubmitMode: ModalSubmitMode,
+    onSubmitMethod: onSubmitMethodType<T>,
+    opener: (model?: T) => void
+  ) {
+    return onSubmitMethod(submittedModel)
+      .pipe(map(() => {
+        const submitMode = this.evaluateSubmitModes(modalSubmitMode);
+
+        if (submitMode.shouldReopen) {
+          opener(submitMode.withModal ? submittedModel : undefined);
+        }
+      }));
   }
 }
