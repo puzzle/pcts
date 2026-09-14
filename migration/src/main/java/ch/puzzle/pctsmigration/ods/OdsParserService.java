@@ -16,8 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class OdsParserService {
 
     private static final int MAX_SHEETS = 10;
-    private static final int MAX_ROWS = 500;
-    private static final int MAX_COLS = 50;
 
     public String parseToPromptText(MultipartFile file, OdsParseConfig config) {
         if (file.isEmpty()) {
@@ -57,9 +55,11 @@ public class OdsParserService {
     }
 
     private OdsParseResult.Sheet extractSheet(OdfTable table, String startMarker) {
+        int[] dimensions = OdsDimensionsHelper.getDimensions(table);
         SheetRowCollector collector = new SheetRowCollector(startMarker);
-        int rowCount = Math.min(table.getRowCount(), MAX_ROWS);
-        int colCount = Math.min(table.getColumnCount(), MAX_COLS);
+
+        int rowCount = dimensions[0];
+        int colCount = dimensions[1];
 
         for (int r = 0; r < rowCount; r++) {
             List<String> cells = extractRow(table.getRowByIndex(r), colCount);
