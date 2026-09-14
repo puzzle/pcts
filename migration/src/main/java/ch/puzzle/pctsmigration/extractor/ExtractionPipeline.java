@@ -37,7 +37,6 @@ public abstract class ExtractionPipeline<C, R, D> {
     public abstract String systemPrompt(C context);
 
     /** defines which sheets will be extracted in OdsParserService */
-    // TODO: lamda-expression Function interface
     public abstract OdsParseConfig odsSheetParseConfig();
 
     /**
