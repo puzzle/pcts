@@ -26,6 +26,8 @@ export class PctsModalBuilder<T extends ModelWithId> {
 
   private i18nPrefix: string | undefined;
 
+  private onDeleteMethod: (id: number) => Observable<void>;
+
   private readonly destroyRef: DestroyRef;
 
   private readonly injector: Injector;
