@@ -46,7 +46,7 @@ public class CertificateExtractionPipeline
 
     @Override
     public OdsParseConfig odsSheetParseConfig() {
-        return new OdsParseConfig((List.of("Zertifikat", "Zertifikate")::contains), null);
+        return new OdsParseConfig((List.of("Zertifikat", "Zertifikate")::contains), null, false);
     }
 
     @Override
