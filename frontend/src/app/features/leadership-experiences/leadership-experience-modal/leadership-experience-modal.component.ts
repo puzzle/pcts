@@ -33,9 +33,9 @@ import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-
     ModalActionsComponent,
     ScopedTranslationPipe
   ],
-  templateUrl: './add-leadership-experience.component.html'
+  templateUrl: './leadership-experience-modal.component.html'
 })
-export class AddLeadershipExperienceComponent extends StrictlyTypedDialog<FormDialogConfig<LeadershipExperienceModel>, DialogResult<LeadershipExperienceModel>> implements OnInit {
+export class LeadershipExperienceModalComponent extends StrictlyTypedDialog<FormDialogConfig<LeadershipExperienceModel>, DialogResult<LeadershipExperienceModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);
 
   protected readonly ModalSubmitMode = ModalSubmitMode;

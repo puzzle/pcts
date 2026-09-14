@@ -43,9 +43,9 @@ import { filterType } from '../../../shared/utils/typeFilter';
     InputFieldComponent,
     ModalActionsComponent
   ],
-  templateUrl: './add-certificate.component.html'
+  templateUrl: './certificate-modal.component.html'
 })
-export class AddCertificateComponent extends StrictlyTypedDialog<FormDialogConfig<CertificateModel>, DialogResult<CertificateModel>> implements OnInit {
+export class CertificateModalComponent extends StrictlyTypedDialog<FormDialogConfig<CertificateModel>, DialogResult<CertificateModel>> implements OnInit {
   private readonly fb = inject(FormBuilder);
 
   protected readonly ModalSubmitMode = ModalSubmitMode;
