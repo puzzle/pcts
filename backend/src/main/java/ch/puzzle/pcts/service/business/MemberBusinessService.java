@@ -109,7 +109,8 @@ public class MemberBusinessService extends BusinessBase<Member> {
         return memberPersistenceService.findByAbbreviation(abbreviation);
     }
 
-    // We need to merge 2 lists because members can obtain roles from 2 sources
+    // We need to merge 2 lists because members can obtain roles from calculation
+    // table and from memberrole table
     public List<RolePointDto> mergeListsToUniqueRoleEntriesOnly(Long memberId, List<RolePointDto> rolePoints) {
 
         List<RolePointDto> roles = this
