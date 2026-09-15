@@ -1,4 +1,17 @@
-import { Component, DestroyRef, effect, inject, input, OnInit, signal, viewChild, WritableSignal, Injector, runInInjectionContext } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  effect,
+  inject,
+  input,
+  OnInit,
+  signal,
+  viewChild,
+  WritableSignal,
+  Injector,
+  runInInjectionContext,
+  ResourceRef
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberService } from '../member.service';
@@ -39,6 +52,7 @@ import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin
 import { DegreeModel } from '../../degrees/degree.model';
 import { AddDegreeComponent } from '../../degrees/add-degree/add-degree.component';
 import { DegreeService } from '../../degrees/degree.service';
+import { RolePointsModel } from './RolePointsModel';
 
 
 @Component({
@@ -101,7 +115,7 @@ export class MemberDetailViewComponent implements OnInit {
 
   private readonly injector = inject(Injector);
 
-  rolePointsResource: any;
+  rolePointsResource: ResourceRef<RolePointsModel[]> | undefined;
 
   ngOnInit(): void {
     this.getData();
