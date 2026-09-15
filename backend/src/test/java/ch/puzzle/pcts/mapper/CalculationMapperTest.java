@@ -20,6 +20,7 @@ import ch.puzzle.pcts.service.business.RoleBusinessService;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -208,5 +209,18 @@ class CalculationMapperTest {
 
         assertEquals(ROLE_2, result.get(1).role());
         assertEquals(BigDecimal.TWO, result.get(1).points());
+    }
+
+    @DisplayName("Should map a map of Role, Bigdecimal to a list of rolepoints")
+    @Test
+    void shouldReturnListOfRolePoints() {
+        Map<Role, BigDecimal> inputMap = Map.of(ROLE_1, BigDecimal.TEN, ROLE_2, BigDecimal.ONE);
+
+        List<RolePointDto> result = calculationMapper.toRolePointDto(inputMap);
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assert (result.contains(new RolePointDto(ROLE_1, BigDecimal.TEN)));
+        assert (result.contains(new RolePointDto(ROLE_2, BigDecimal.ONE)));
     }
 }
