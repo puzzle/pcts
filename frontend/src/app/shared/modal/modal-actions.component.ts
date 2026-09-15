@@ -50,4 +50,9 @@ export class ModalActionsComponent {
     return this.submitModes()
       .includes(ModalSubmitMode.DELETE);
   }
+
+  menuButtonFunctions() {
+    return this.submitModes()
+      .filter((modelSubmitMode) => modelSubmitMode !== ModalSubmitMode.DELETE);
+  }
 }
