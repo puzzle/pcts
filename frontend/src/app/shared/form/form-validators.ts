@@ -86,3 +86,19 @@ export function isInteger(): ValidatorFn {
     return { invalid_integer: true };
   };
 }
+
+export function isSearchTermEmpty(inputFieldTagId: string): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (!inputFieldTagId) {
+      return null;
+    }
+
+    const inputfield = document.getElementById(inputFieldTagId) as HTMLInputElement;
+
+    if (!inputfield) {
+      return null;
+    }
+
+    return inputfield.value ? { invalid_entry: inputfield.value } : null;
+  };
+}

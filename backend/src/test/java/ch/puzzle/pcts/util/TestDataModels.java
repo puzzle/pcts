@@ -98,6 +98,7 @@ public class TestDataModels {
             .withDateOfHire(LocalDate.of(2021, 7, 15))
             .withBirthDate(LocalDate.of(1999, 8, 10))
             .withOrganisationUnit(ORG_UNIT_1)
+            .withRoles(Set.of(ROLE_1))
             .withPtimeId(1L)
             .withLastSuccessfulSync(LocalDateTime.of(2025, 12, 1, 1, 1))
             .withSyncErrorCount(0)
@@ -114,6 +115,7 @@ public class TestDataModels {
             .withDateOfHire(LocalDate.of(2020, 6, 1))
             .withBirthDate(LocalDate.of(1998, 3, 3))
             .withOrganisationUnit(ORG_UNIT_2)
+            .withRoles(Set.of(ROLE_2))
             .withPtimeId(2L)
             .withLastSuccessfulSync(LocalDateTime.of(2025, 12, 1, 1, 1))
             .withSyncErrorCount(0)
@@ -130,6 +132,7 @@ public class TestDataModels {
             .withDateOfHire(LocalDate.of(2020, 6, 1))
             .withBirthDate(LocalDate.of(1998, 3, 3))
             .withOrganisationUnit(ORG_UNIT_2)
+            .withRoles(Set.of(ROLE_3))
             .withPtimeId(3L)
             .withLastSuccessfulSync(LocalDateTime.of(2025, 12, 1, 1, 1))
             .withSyncErrorCount(0)
@@ -162,6 +165,7 @@ public class TestDataModels {
             .withDateOfHire(LocalDate.of(2020, 6, 1))
             .withBirthDate(LocalDate.of(1998, 3, 3))
             .withOrganisationUnit(ORG_UNIT_2)
+            .withRoles(Set.of())
             .withPtimeId(5L)
             .withLastSuccessfulSync(LocalDateTime.of(2025, 12, 1, 1, 1))
             .withSyncErrorCount(0)
@@ -178,6 +182,7 @@ public class TestDataModels {
             .withDateOfHire(LocalDate.of(2020, 6, 1))
             .withBirthDate(LocalDate.of(1998, 3, 3))
             .withOrganisationUnit(ORG_UNIT_2)
+            .withRoles(Set.of())
             .withPtimeId(6L)
             .withLastSuccessfulSync(LocalDateTime.of(2025, 12, 1, 1, 1))
             .withSyncErrorCount(0)
@@ -194,6 +199,7 @@ public class TestDataModels {
             .withDateOfHire(LocalDate.of(2020, 6, 1))
             .withBirthDate(LocalDate.of(1998, 3, 3))
             .withOrganisationUnit(ORG_UNIT_2)
+            .withRoles(Set.of())
             .withPtimeId(7L)
             .withLastSuccessfulSync(LocalDateTime.of(2025, 12, 1, 1, 1))
             .withSyncErrorCount(0)
@@ -210,6 +216,7 @@ public class TestDataModels {
             .withDateOfHire(LocalDate.of(2020, 6, 1))
             .withBirthDate(LocalDate.of(1998, 3, 3))
             .withOrganisationUnit(ORG_UNIT_2)
+            .withRoles(Set.of())
             .withPtimeId(8L)
             .withLastSuccessfulSync(LocalDateTime.of(2025, 12, 1, 1, 1))
             .withSyncErrorCount(0)
@@ -837,6 +844,8 @@ public class TestDataModels {
     public static final List<OrganisationUnit> ORGANISATION_UNITS = List.of(ORG_UNIT_2);
 
     public static final List<Role> ROLES = List.of(ROLE_2, ROLE_3);
+
+    public static final Set<Role> ROLES_AS_SET = Set.of(ROLE_2, ROLE_3);
 
     public static final List<Tag> TAGS_1 = List.of(TAG_1, TAG_2);
 

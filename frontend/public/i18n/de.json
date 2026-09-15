@@ -41,7 +41,7 @@
     "COMMENT": "Beschreibung"
   },
   "ROLE": {
-    "MODEL_NAME": "Role"
+    "MODEL_NAME": "Rolle"
   },
   "CALCULATION": {
     "POINTS": "Punkte"
@@ -101,6 +101,9 @@
     "EMAIL": "Email",
     "BIRTH_DATE": "Geburtsdatum",
     "DATE_OF_HIRE": "Anstellungsdatum",
+    "ROLES": "Rollen",
+    "ADD_ROLE": "Rolle hinzufügen",
+    "REMOVE_ROLE": "Rolle entfernen",
     "ORGANISATION_UNIT": "Division",
     "EMPLOYMENT_STATE": "Anstellungsstatus",
     "ATTRIBUTE_NULL": "-",

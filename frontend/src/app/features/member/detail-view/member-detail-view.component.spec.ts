@@ -5,7 +5,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { provideTranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
-import { certificate1, leadershipExperience1, memberOverview1, rolePointsList1 } from '../../../shared/test/test-data';
+import {
+  certificate1,
+  leadershipExperience1,
+  memberOverview1,
+  rolePointsList1
+} from '../../../shared/test/test-data';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
 import { PctsModalService } from '../../../shared/modal/pcts-modal.service';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
@@ -14,6 +19,7 @@ import { MemberCalculationTableComponent } from './calculation-table/member-calc
 import { LeadershipExperienceService } from '../../leadership-experiences/leadership-experience.service';
 
 import { AuthService } from '../../../core/auth/auth.service';
+import { inputBinding } from '@angular/core';
 
 describe('MemberDetailViewComponent (Jest)', () => {
   let memberServiceMock: Partial<jest.Mocked<MemberService>>;
@@ -89,7 +95,9 @@ describe('MemberDetailViewComponent (Jest)', () => {
       ]
     });
 
-    const fixture = TestBed.createComponent(MemberDetailViewComponent);
+    const fixture = TestBed.createComponent(MemberDetailViewComponent, {
+      bindings: [inputBinding('tabIndex', () => 0)]
+    });
     memberServiceMock.getMemberOverviewByMemberId?.mockReturnValue(of(memberOverview1));
     memberServiceMock.getCalculationsByMemberIdAndOptionalRoleId?.mockReturnValue(of([]));
 
@@ -128,7 +136,7 @@ describe('MemberDetailViewComponent (Jest)', () => {
     expect(routerMock.navigate).not.toHaveBeenCalled();
 
     // Role points
-    expect(component.rolePointList())
+    expect(component.rolePointsResource.value())
       .toEqual(rolePointsList1);
   });
 
@@ -145,8 +153,8 @@ describe('MemberDetailViewComponent (Jest)', () => {
 
     expect(component.member())
       .toBeNull();
-    expect(component.rolePointList())
-      .toEqual([]);
+    expect(component.rolePointsResource)
+      .toBeUndefined();
   });
 
   describe('open certificate modal', () => {

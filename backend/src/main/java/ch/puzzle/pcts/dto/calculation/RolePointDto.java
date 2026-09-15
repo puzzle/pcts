@@ -6,5 +6,5 @@ import java.math.BigDecimal;
 
 public record RolePointDto(@Schema(description = "The role associated with the points", example = "1") Role role,
 
-        @Schema(description = "The points form all the calculations of the role", example = "ACTIVE") BigDecimal points) {
+        @Schema(description = "The points form all the calculations of the role", example = "38.5") BigDecimal points) {
 }

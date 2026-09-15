@@ -6,10 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.exception.PCTSException;
+import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.member.Member;
@@ -17,10 +17,9 @@ import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.JwtService;
 import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import ch.puzzle.pcts.service.validation.MemberValidationService;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,6 +53,9 @@ class MemberBusinessServiceTest
 
     @Mock
     private CalculationBusinessService calculationBusinessService;
+
+    @Mock
+    private CalculationMapper calculationMapper;
 
     @Mock
     private List<Calculation> calculations;
@@ -271,5 +273,43 @@ class MemberBusinessServiceTest
         assertEquals(member, result);
         verify(jwtService).getLdapName();
         verify(persistenceService).getByLdapName(ldapName);
+    }
+
+    @DisplayName("Should get all roles by member id")
+    @Test
+    void shouldGetAllRolesByMemberId() {
+        when(businessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
+
+        Set<Role> result = businessService.getAllRolesByMemberId(MEMBER_1_ID);
+
+        assertEquals(MEMBER_1.getRoles(), result);
+    }
+
+    @DisplayName("Should merge lists correctly")
+    @Test
+    void shouldMergeListsCorrectly() {
+        when(businessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
+        when(businessService.getAllRolesByMemberId(MEMBER_1_ID)).thenReturn(ROLES_AS_SET);
+
+        var result = businessService.getDeduplicatedRolePoints(MEMBER_1_ID);
+
+        Map<Role, BigDecimal> expected = Map.of(ROLE_3, BigDecimal.ZERO, ROLE_2, BigDecimal.ZERO);
+
+        assertEquals(expected, result);
+        verify(businessService).getDeduplicatedRolePoints(MEMBER_1_ID);
+    }
+
+    @DisplayName("Should merge empty lists correctly")
+    @Test
+    void shouldMergeEmptyListsCorrectly() {
+        when(businessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
+        when(businessService.getAllRolesByMemberId(MEMBER_1_ID)).thenReturn(Set.of());
+
+        var result = businessService.getDeduplicatedRolePoints(MEMBER_1_ID);
+
+        Map<Role, BigDecimal> expected = Map.of();
+
+        assertEquals(expected, result);
+        verify(businessService).getDeduplicatedRolePoints(MEMBER_1_ID);
     }
 }

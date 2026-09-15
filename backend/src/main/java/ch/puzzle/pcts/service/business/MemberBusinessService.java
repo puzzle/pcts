@@ -9,9 +9,11 @@ import ch.puzzle.pcts.service.persistence.MemberPersistenceService;
 import ch.puzzle.pcts.service.validation.MemberValidationService;
 import jakarta.annotation.Nullable;
 import jakarta.transaction.Transactional;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -42,6 +44,10 @@ public class MemberBusinessService extends BusinessBase<Member> {
 
     public Member getLoggedInMember() {
         return memberPersistenceService.getByLdapName(jwtService.getLdapName());
+    }
+
+    public Set<Role> getAllRolesByMemberId(Long memberId) {
+        return this.getById(memberId).getRoles();
     }
 
     public List<Calculation> getAllCalculationsByMemberIdAndRoleId(Long memberId, Long roleId) {
@@ -98,5 +104,25 @@ public class MemberBusinessService extends BusinessBase<Member> {
 
     public Optional<Member> findByAbbreviation(String abbreviation) {
         return memberPersistenceService.findByAbbreviation(abbreviation);
+    }
+
+    /**
+     * We need to deduplicate because a member can have a calculation and a matching
+     * role. Without deduplicating there would be the same role twice, one without
+     * and one with the points.
+     * 
+     * @param memberId
+     *            the id of the rolepoints we want to fetch
+     * @return a map of the rolepoints
+     */
+    public Map<Role, BigDecimal> getDeduplicatedRolePoints(Long memberId) {
+        List<Calculation> calculations = getAllActiveCalculationsByMemberId(memberId);
+
+        Map<Role, BigDecimal> rolePoints = new HashMap<>();
+        // First we assign every role zero points as that's the default value
+        getAllRolesByMemberId(memberId).forEach(role -> rolePoints.put(role, BigDecimal.ZERO));
+        // Then we overwrite those which have an active calculation
+        calculations.forEach(calculation -> rolePoints.put(calculation.getRole(), calculation.getPoints()));
+        return rolePoints;
     }
 }

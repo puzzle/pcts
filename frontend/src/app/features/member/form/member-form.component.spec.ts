@@ -7,18 +7,20 @@ import {
   organisationUnit1,
   organisationUnit2,
   organisationUnit3,
-  organisationUnit4
+  organisationUnit4, role1, role2
 } from '../../../shared/test/test-data';
 import { provideRouter, Router } from '@angular/router';
 import { MemberFormComponent } from './member-form.component';
 import { provideTranslateService } from '@ngx-translate/core';
 import { MemberDetailViewComponent } from '../detail-view/member-detail-view.component';
+import { RoleService } from '../../roles/role.service';
 
 describe('MemberFormComponent', () => {
   let component: MemberFormComponent;
   let fixture: ComponentFixture<MemberFormComponent>;
   let memberServiceMock: Partial<MemberService>;
   let organisationUnitServiceMock: Partial<OrganisationUnitService>;
+  let roleServiceMock: Partial<RoleService>;
   const organisationUnits = [
     organisationUnit1,
     organisationUnit2,
@@ -41,11 +43,19 @@ describe('MemberFormComponent', () => {
         .mockReturnValue(of(organisationUnits))
     };
 
+    roleServiceMock = {
+      getAllRoles: jest.fn()
+        .mockReturnValue(of([role1,
+          role2]))
+    };
+
     TestBed.configureTestingModule({
       imports: [MemberFormComponent],
       providers: [
-        provideRouter([{ path: 'member/:id',
-          component: MemberDetailViewComponent }]),
+        provideRouter([{
+          path: 'member/:id',
+          component: MemberDetailViewComponent
+        }]),
         provideTranslateService(),
         {
           provide: MemberService,
@@ -54,6 +64,10 @@ describe('MemberFormComponent', () => {
         {
           provide: OrganisationUnitService,
           useValue: organisationUnitServiceMock
+        },
+        {
+          provide: RoleService,
+          useValue: roleServiceMock
         }
       ]
     })
@@ -63,25 +77,20 @@ describe('MemberFormComponent', () => {
     component = fixture.componentInstance;
 
     fixture.componentRef.setInput('member', null as any);
+    fixture.detectChanges();
   });
 
   it('should create', () => {
-    fixture.detectChanges();
     expect(component)
       .toBeTruthy();
   });
 
   it('should load organisationUnits', () => {
-    fixture.detectChanges();
     expect(component['organisationUnitsOptions']())
       .toStrictEqual(organisationUnits);
   });
 
   describe('addMember', () => {
-    beforeEach(() => {
-      fixture.detectChanges();
-    });
-
     it('should create', () => {
       expect(component)
         .toBeTruthy();
@@ -89,9 +98,13 @@ describe('MemberFormComponent', () => {
 
     it('should call addMember', () => {
       const addSpy = jest.spyOn(memberServiceMock, 'addMember');
+      (component as any).roleOptions.set([role1,
+        role2]);
       const memberWithoutId = {
         ...member1,
-        id: 0
+        id: 0,
+        roles: [role1,
+          role2]
       };
 
       component['memberForm'].setValue(memberWithoutId);
@@ -105,10 +118,15 @@ describe('MemberFormComponent', () => {
     it('should navigate after adding a member', () => {
       const memberWithoutId = {
         ...member1,
-        id: 0
+        id: 0,
+        roles: [role1,
+          role2]
       };
+
       const router = TestBed.inject(Router);
       const navigateSpy = jest.spyOn(router, 'navigate');
+      (component as any).roleOptions.set([role1,
+        role2]);
       component['memberForm'].setValue(memberWithoutId);
 
       component.onSubmit();
@@ -140,10 +158,19 @@ describe('MemberFormComponent', () => {
     });
 
     it('should call updateMember', () => {
+      jest.spyOn(component['memberForm'], 'invalid', 'get')
+        .mockReturnValue(false);
+
       component.onSubmit();
 
+      expect(component['memberForm'].invalid)
+        .toBeFalsy();
+
+      expect(component['isEdit']())
+        .toBeTruthy();
+
       expect(memberServiceMock.updateMember)
-        .toHaveBeenCalledWith(1, member1);
+        .toHaveBeenCalledWith(1, { ...member1 });
     });
   });
 });

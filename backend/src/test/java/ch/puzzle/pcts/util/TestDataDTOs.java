@@ -35,8 +35,11 @@ import ch.puzzle.pcts.dto.memberoverview.leadershipexperience.MemberOverviewLead
 import ch.puzzle.pcts.dto.organisationunit.OrganisationUnitDto;
 import ch.puzzle.pcts.dto.role.RoleDto;
 import ch.puzzle.pcts.model.certificatetype.Tag;
+import ch.puzzle.pcts.model.role.Role;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class TestDataDTOs {
 
@@ -46,6 +49,8 @@ public class TestDataDTOs {
     public static final RoleDto ROLE_3_DTO = new RoleDto(ROLE_3.getId(), ROLE_3.getName(), ROLE_3.getIsManagement());
 
     public static final RoleDto ROLE_2_DTO = new RoleDto(ROLE_2.getId(), ROLE_2.getName(), ROLE_2.getIsManagement());
+
+    public static final RoleDto ROLE_1_DTO = new RoleDto(ROLE_1.getId(), ROLE_1.getName(), ROLE_1.getIsManagement());
 
     public static final RoleDto ROLE_2_INPUT = new RoleDto(null, ROLE_2.getName(), ROLE_2.getIsManagement());
 
@@ -65,6 +70,7 @@ public class TestDataDTOs {
                                                                MEMBER_1.getDateOfHire(),
                                                                MEMBER_1.getBirthDate(),
                                                                ORG_UNIT_1_DTO,
+                                                               Set.of(ROLE_1_DTO),
                                                                MEMBER_1.getPtimeId(),
                                                                MEMBER_1.getLastSuccessfulSync(),
                                                                MEMBER_1.getSyncErrorCount());
@@ -77,6 +83,7 @@ public class TestDataDTOs {
                                                                MEMBER_2.getDateOfHire(),
                                                                MEMBER_2.getBirthDate(),
                                                                ORG_UNIT_2_DTO,
+                                                               Set.of(ROLE_2_DTO),
                                                                MEMBER_2.getPtimeId(),
                                                                MEMBER_2.getLastSuccessfulSync(),
                                                                MEMBER_2.getSyncErrorCount());
@@ -87,7 +94,12 @@ public class TestDataDTOs {
                                                                            MEMBER_1.getAbbreviation(),
                                                                            MEMBER_1.getDateOfHire(),
                                                                            MEMBER_1.getBirthDate(),
-                                                                           MEMBER_1.getOrganisationUnit().getId());
+                                                                           MEMBER_1.getOrganisationUnit().getId(),
+                                                                           MEMBER_1
+                                                                                   .getRoles()
+                                                                                   .stream()
+                                                                                   .map(Role::getId)
+                                                                                   .collect(Collectors.toSet()));
 
     public static final MemberInputDto MEMBER_2_INPUT = new MemberInputDto(MEMBER_2.getFirstName(),
                                                                            MEMBER_2.getLastName(),
@@ -95,7 +107,12 @@ public class TestDataDTOs {
                                                                            MEMBER_2.getAbbreviation(),
                                                                            MEMBER_2.getDateOfHire(),
                                                                            MEMBER_2.getBirthDate(),
-                                                                           MEMBER_2.getOrganisationUnit().getId());
+                                                                           MEMBER_2.getOrganisationUnit().getId(),
+                                                                           MEMBER_2
+                                                                                   .getRoles()
+                                                                                   .stream()
+                                                                                   .map(Role::getId)
+                                                                                   .collect(Collectors.toSet()));
 
     public static final CertificateTypeDto CERT_TYPE_1_DTO = new CertificateTypeDto(CERT_TYPE_1_ID,
                                                                                     CERT_TYPE_1.getName(),

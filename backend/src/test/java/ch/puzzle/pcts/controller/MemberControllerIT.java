@@ -21,7 +21,9 @@ import ch.puzzle.pcts.mapper.MemberMapper;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -208,11 +210,9 @@ class MemberControllerIT extends ControllerITBase {
     void shouldGetRolePointsByMemberId() throws Exception {
         Long memberId = 1L;
 
-        RolePointDto rolePointDto = mock(RolePointDto.class);
-        Calculation calculation = mock(Calculation.class);
-
-        when(memberBusinessService.getAllActiveCalculationsByMemberId(memberId)).thenReturn(List.of(calculation));
-        when(calculationMapper.toRolePointDto(List.of(calculation))).thenReturn(List.of(rolePointDto));
+        when(memberBusinessService.getDeduplicatedRolePoints(memberId)).thenReturn(Map.of(ROLE_1, BigDecimal.ZERO));
+        when(calculationMapper.toRolePointDto(Map.of(ROLE_1, BigDecimal.ZERO)))
+                .thenReturn(List.of(new RolePointDto(ROLE_1, BigDecimal.ZERO)));
 
         mvc
                 .perform(get(BASEURL + "/" + memberId + "/role-points")
@@ -222,8 +222,7 @@ class MemberControllerIT extends ControllerITBase {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1));
 
-        verify(memberBusinessService, times(1)).getAllActiveCalculationsByMemberId(memberId);
-        verify(calculationMapper, times(1)).toRolePointDto(List.of(calculation));
+        verify(memberBusinessService, times(1)).getDeduplicatedRolePoints(memberId);
     }
 
     @DisplayName("Should successfully get myself as a member")
