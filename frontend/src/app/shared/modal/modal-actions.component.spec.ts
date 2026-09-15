@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ModalActionsComponent } from './modal-actions.component';
 import { ModalSubmitMode } from '../enum/modal-submit-mode.enum';
+import { inputBinding } from '@angular/core';
 
 describe('ModalActionsComponent', () => {
   let component: ModalActionsComponent;
@@ -12,7 +13,9 @@ describe('ModalActionsComponent', () => {
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(ModalActionsComponent);
+    fixture = TestBed.createComponent(ModalActionsComponent, {
+      bindings: [inputBinding('submitModes', () => [])]
+    });
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
