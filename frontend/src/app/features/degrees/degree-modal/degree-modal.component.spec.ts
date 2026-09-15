@@ -162,5 +162,12 @@ describe('DegreeModalComponent', () => {
       expect(dialogRefMock.close)
         .toHaveBeenCalledWith();
     });
+
+    it('should delete the dialog and data with delete button', () => {
+      component.formGroup.patchValue(degree1);
+      component.onDelete();
+      expect(dialogRefMock.close)
+        .toHaveBeenCalledWith();
+    });
   });
 });
