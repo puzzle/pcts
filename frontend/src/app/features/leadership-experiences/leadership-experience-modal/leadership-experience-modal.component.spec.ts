@@ -11,6 +11,8 @@ import {
   leadershipExperienceType1,
   leadershipExperienceType2
 } from '../../../shared/test/test-data';
+import { FormModalConfig } from '../../../shared/modal/pcts-modal.service';
+import { LeadershipExperienceModel } from '../leadership-experience.model';
 
 describe('LeadershipExperienceModalComponent', () => {
   let component: LeadershipExperienceModalComponent;
@@ -23,7 +25,8 @@ describe('LeadershipExperienceModalComponent', () => {
         leadershipExperienceType2]))
   };
 
-  const dialogData = leadershipExperience1;
+  const dialogData: FormModalConfig<LeadershipExperienceModel> = { model: leadershipExperience1,
+    submitOptions: [] };
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
@@ -69,7 +72,7 @@ describe('LeadershipExperienceModalComponent', () => {
     });
 
     it('should initialize empty form if no data is provided', () => {
-      (component as any).data = undefined;
+      (component as any).data.model = undefined;
       component.formGroup.reset();
 
       component.ngOnInit();
