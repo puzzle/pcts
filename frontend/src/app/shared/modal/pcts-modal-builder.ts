@@ -8,12 +8,12 @@ import { I18N_PREFIX } from '../i18n-prefix.token';
 
 type ModalComponent<T extends ModelWithId> = StrictlyTypedDialog<FormModalConfig<T>, DialogResult<T>>;
 
-type openModalType<T extends ModelWithId> = (
+type OpenModalType<T extends ModelWithId> = (
   component: Type<ModalComponent<T>>,
   options: WithRequiredData<FormModalConfig<T>>
 ) => TypedMatDialogRef<ModalComponent<T>, DialogResult<T>>;
 
-type onSubmitMethodType<T extends ModelWithId> = (model: T) => Observable<T>;
+type OnSubmitMethodType<T extends ModelWithId> = (model: T) => Observable<T>;
 
 export class PctsModalBuilder<T extends ModelWithId> {
   private component: Type<ModalComponent<T>> | undefined;
@@ -30,9 +30,9 @@ export class PctsModalBuilder<T extends ModelWithId> {
 
   private readonly injector: Injector;
 
-  private readonly openModal: openModalType<T>;
+  private readonly openModal: OpenModalType<T>;
 
-  constructor(destroyRef: DestroyRef, openModal: openModalType<T>, injector: Injector) {
+  constructor(destroyRef: DestroyRef, openModal: OpenModalType<T>, injector: Injector) {
     this.destroyRef = destroyRef;
     this.openModal = openModal;
     this.injector = injector;
@@ -43,7 +43,7 @@ export class PctsModalBuilder<T extends ModelWithId> {
     return this;
   }
 
-  withOnSubmitMethod(onSubmitMethod: onSubmitMethodType<T>) {
+  withOnSubmitMethod(onSubmitMethod: OnSubmitMethodType<T>) {
     this.onSubmitMethod = onSubmitMethod;
     return this;
   }
@@ -117,7 +117,7 @@ export class PctsModalBuilder<T extends ModelWithId> {
 
   private createOpenerMethod(
     component: Type<ModalComponent<T>>,
-    onSubmitMethod: onSubmitMethodType<T>,
+    onSubmitMethod: OnSubmitMethodType<T>,
     submitOptions: ModalSubmitMode[],
     i18nPrefix: string,
     onSuccess?: () => void
@@ -148,7 +148,7 @@ export class PctsModalBuilder<T extends ModelWithId> {
   private onFormSubmit(
     submittedModel: T,
     modalSubmitMode: ModalSubmitMode,
-    onSubmitMethod: onSubmitMethodType<T>,
+    onSubmitMethod: OnSubmitMethodType<T>,
     opener: (model?: T) => void
   ) {
     return onSubmitMethod(submittedModel)
