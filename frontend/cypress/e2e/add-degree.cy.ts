@@ -3,22 +3,19 @@ import modalPage from '../pages/modalPage';
 import formPage from '../pages/formPage';
 import * as users from '../fixtures/users.json';
 
-describe('Add degree Modal', () => {
+describe('Degree Modal', () => {
   beforeEach(() => {
     cy.loginAsUser(users.gl);
+    memberDetailPage.visit(1);
   });
 
+  describe('Add degree Modal', () => {
   const openDegreeModal = () => {
     memberDetailPage.openModalButton('add', 'degree')
       .click();
 
     modalPage.checkModalIconButtonVisible();
   };
-
-  beforeEach(() => {
-    cy.loginAsUser(users.gl);
-    memberDetailPage.visit(1);
-  });
 
   it('should open correct modal', () => {
     openDegreeModal();
@@ -122,3 +119,64 @@ describe('Add degree Modal', () => {
   });
 });
 
+  describe('Edit degree modal', () => {
+    const openDegreeModal = () => {
+      cy.getByTestId('generic-table-cell')
+        .eq(1)
+        .click();
+
+      modalPage.checkModalIconButtonVisible();
+    };
+
+    beforeEach(() => {
+      openDegreeModal();
+    });
+
+    it('should open correct modal', () => {
+      modalPage.modalTitle()
+        .should('include.text', 'Ausbildung bearbeiten');
+    });
+
+    it('should save changes correctly', () => {
+      cy.intercept('api/v1/degrees')
+        .as('degrees');
+      modalPage.selectAutoCompleteValue('degreeType', 'Bachelor\'s Degree');
+
+      formPage.clearAndBlur('name');
+      formPage.typeAndBlur('name', 'Bachelor in mathematics');
+
+      formPage.clearAndBlur('institution');
+      formPage.typeAndBlur('institution', 'GIBB');
+
+      formPage.clearAndBlur('startDate');
+      formPage.typeAndBlur('startDate', '10.10.2000');
+
+      formPage.clearAndBlur('endDate');
+      formPage.typeAndBlur('endDate', '10.12.2001');
+
+      formPage.submitButtonShouldBe('enabled');
+
+      cy.getByTestId('submit-button')
+        .click();
+
+      formPage.shouldShowSuccessToast('Ausbildung wurde erfolgreich aktualisiert.');
+
+      cy.get('@degrees')
+        .then((interception) => {
+          expect(interception.request.body).to.contain({
+            name: 'Mathematik',
+            memberId: 1,
+            typeId: 1,
+            institution: 'GIBB',
+            completed: true,
+            comment: '',
+            startDate: '2000-10-10',
+            endDate: '2001-12-10'
+          });
+        });
+      modalPage.checkModalIsClosed();
+
+    });
+  });
+
+});
