@@ -17,4 +17,12 @@ public class MultipleFileResultDto<D> {
     public void addToFailedFiles(FileError failedFile) {
         this.failedFiles.add(failedFile);
     }
+
+    public Map<String, List<D>> getSuccessfulCertificates() {
+        return successfulCertificates;
+    }
+
+    public List<FileError> getFailedFiles() {
+        return failedFiles;
+    }
 }
