@@ -106,16 +106,18 @@ public class MemberBusinessService extends BusinessBase<Member> {
         return memberPersistenceService.findByAbbreviation(abbreviation);
     }
 
+    // We need to deduplicate because a member can have a calculation and a matching
+    // role
+    // Without deduplicating there would be the same role twice, one without and one
+    // with points
     public Map<Role, BigDecimal> getDeduplicatedRolePoints(Long memberId) {
         List<Calculation> calculations = getAllActiveCalculationsByMemberId(memberId);
 
         Map<Role, BigDecimal> rolePoints = new HashMap<>();
+        // First we assign every role zero points as that's the default value
         getAllRolesByMemberId(memberId).forEach(role -> rolePoints.put(role, BigDecimal.ZERO));
-        calculations.forEach(calculation -> rolePoints.put(calculation.getRole(), calculation.getPoints())); // Overwrite
-                                                                                                             // existing
-                                                                                                             // roles if
-                                                                                                             // any
-                                                                                                             // exist
+        // Then we overwrite those which have an active calculation
+        calculations.forEach(calculation -> rolePoints.put(calculation.getRole(), calculation.getPoints()));
         return rolePoints;
     }
 }
