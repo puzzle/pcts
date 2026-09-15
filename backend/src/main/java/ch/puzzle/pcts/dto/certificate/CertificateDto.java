@@ -10,7 +10,7 @@ public record CertificateDto(
 
         @Schema(description = "The member associated with this certificate.", requiredMode = Schema.RequiredMode.REQUIRED) MemberDto member,
 
-        @Schema(description = "The type of certificate awarded to the member.", requiredMode = Schema.RequiredMode.REQUIRED) CertificateTypeDto certificate,
+        @Schema(description = "The type of certificate awarded to the member.", requiredMode = Schema.RequiredMode.REQUIRED) CertificateTypeDto certificateType,
 
         @Schema(description = "The date when the member completed the certificate.", example = "2025-09-24", requiredMode = Schema.RequiredMode.NOT_REQUIRED, nullable = true) LocalDate completedAt,
 

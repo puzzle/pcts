@@ -14,7 +14,7 @@
             @let kind = entry[0];
             @let experienceTypes = entry[1];
 
-            <mat-optgroup class="fw-bold" label="{{ `LEADERSHIP_EXPERIENCE.TYPES.${kind}` | translate  }}">
+            <mat-optgroup class="fw-bold" label="{{ `LEADERSHIP_EXPERIENCE.TYPES.${kind}` | scopedTranslation  }}">
               @for (experienceType of experienceTypes; track experienceType.id) {
                 <mat-option
                   [value]="experienceType">{{ displayLeadershipExperienceTypes(experienceType) }}
@@ -35,6 +35,7 @@
 
   <ng-container actions>
     <app-modal-actions
+      [submitModes]="this.data.submitOptions"
       [isValid]="formGroup.valid"
       (cancelAction)="onCancel()"
       (submitAction)="onSubmit($event)" />

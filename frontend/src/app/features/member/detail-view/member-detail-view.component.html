@@ -1,4 +1,4 @@
-@if (member(); as m) {
+@if (memberOverviewResource.value()?.member; as m) {
   <div class="p-4">
     <div class="w-50">
 
@@ -88,8 +88,9 @@
           [data]="degreeData()"
           *appTranslationScope="'DEGREE'"
           [table]="degreeTable"
+          (entrySelected)="editDegreeDialog($event)"
         >
-          <app-crud-button crud-button mode="add" [customOnClick]="openDegreeDialog" data-testid="add-degree-button"/>
+          <app-crud-button crud-button mode="add" [customOnClick]="addDegreeDialog" data-testid="add-degree-button"/>
         </app-generic-cv-content>
 
         <app-generic-cv-content
@@ -99,12 +100,9 @@
           [data]="experienceData()"
           *appTranslationScope="'EXPERIENCE'"
           [table]="experienceTable"
+          (entrySelected)="editExperienceDialog($event)"
         >
-          <app-crud-button
-            crud-button
-            mode="add"
-            [customOnClick]="openExperienceDialog"
-            data-testid="add-experience-button"/>
+          <app-crud-button crud-button mode="add" [customOnClick]="addExperienceDialog" data-testid="add-experience-button"/>
         </app-generic-cv-content>
 
         <app-generic-cv-content
@@ -114,8 +112,9 @@
           [data]="certificateData()"
           *appTranslationScope="'CERTIFICATE'"
           [table]="certificateTable"
+          (entrySelected)="editCertificateDialog($event)"
         >
-          <app-crud-button crud-button mode="add" [customOnClick]="openCertificateDialog" data-testid="add-certificate-button"/>
+          <app-crud-button crud-button mode="add" [customOnClick]="addCertificateDialog" data-testid="add-certificate-button"/>
         </app-generic-cv-content>
 
         <app-generic-cv-content
@@ -125,8 +124,9 @@
           [data]="leadershipExperienceData()"
           *appTranslationScope="'LEADERSHIP_EXPERIENCE'"
           [table]="leadershipExperienceTable"
+          (entrySelected)="editLeadershipExperienceDialog($event)"
         >
-          <app-crud-button crud-button mode="add" [customOnClick]="openLeadershipExperienceDialog" data-testid="add-leadership-experience-button"/>
+          <app-crud-button crud-button mode="add" [customOnClick]="addLeadershipExperienceDialog" data-testid="add-leadership-experience-button"/>
         </app-generic-cv-content>
       </mat-tab>
       @for (rolePoints of rolePointList(); track rolePoints.role) {

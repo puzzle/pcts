@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { DateTime } from 'luxon';
 import { ExperienceModel } from './experience.model';
@@ -14,7 +14,8 @@ export class ExperienceService {
   private readonly API_URL = '/api/v1/experiences';
 
   getExperienceById(id: number): Observable<ExperienceModel> {
-    return this.httpClient.get<ExperienceModel>(`${this.API_URL}/${id}`);
+    return this.httpClient.get<ExperienceModel>(`${this.API_URL}/${id}`)
+      .pipe(map((experience) => this.parseDates(experience)));
   }
 
   addExperience(experience: ExperienceModel): Observable<ExperienceModel> {
@@ -42,5 +43,12 @@ export class ExperienceService {
       endDate: model.endDate ? DateTime.fromJSDate(model.endDate)
         .toISODate() : null
     };
+  }
+
+  // TODO this is going to be refactored in #769
+  private parseDates(experience: ExperienceModel) {
+    experience.startDate = new Date(experience.startDate ?? '');
+    experience.endDate = new Date(experience.endDate ?? '');
+    return experience;
   }
 }

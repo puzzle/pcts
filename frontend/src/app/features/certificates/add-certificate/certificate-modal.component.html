@@ -4,28 +4,19 @@
     <ng-container content>
 
       <app-input-field>
-        <input type="text" formControlName="type" matInput [matAutocomplete]="degreeTypeAutoComplete"
-               data-testid="degreeType">
-        <mat-autocomplete autoActiveFirstOption #degreeTypeAutoComplete="matAutocomplete"
-                          [displayWith]="displayDegreeTypes">
-          @for (degreeType of degreeTypeFilteredOptions(); track degreeType) {
-            <mat-option [value]="degreeType">{{ displayDegreeTypes(degreeType) }}</mat-option>
-          }
-        </mat-autocomplete>
+          <input type="text" formControlName="certificateType" matInput [matAutocomplete]="certificateTypeAutoComplete"
+                 data-testid="certificateType">
+          <mat-autocomplete autoActiveFirstOption #certificateTypeAutoComplete="matAutocomplete"
+                            [displayWith]="displayCertificateTypes">
+            @for (certificateType of certificateTypeFilteredOptions(); track certificateType) {
+              <mat-option [value]="certificateType">{{ displayCertificateTypes(certificateType) }}</mat-option>
+            }
+          </mat-autocomplete>
       </app-input-field>
-
-      <app-input-field>
-        <input type="text" formControlName="name" data-testid="name" matInput>
-      </app-input-field>
-
-      <app-input-field>
-        <input type="text" formControlName="institution" data-testid="institution" matInput>
-      </app-input-field>
-
 
       <mat-form-field>
         <mat-label appPctsFormLabel/>
-        <input matInput [matDatepicker]="completedAtPicker" formControlName="startDate" data-testid="startDate">
+        <input matInput [matDatepicker]="completedAtPicker" formControlName="completedAt" data-testid="completedAt">
         <mat-datepicker-toggle matIconSuffix [for]="completedAtPicker"/>
         <mat-datepicker #completedAtPicker/>
         <mat-error appPctsFormError/>
@@ -33,7 +24,7 @@
 
       <mat-form-field>
         <mat-label appPctsFormLabel/>
-        <input matInput [matDatepicker]="validUntilPicker" formControlName="endDate" data-testid="endDate">
+        <input matInput [matDatepicker]="validUntilPicker" formControlName="validUntil" data-testid="validUntil">
         <mat-datepicker-toggle matIconSuffix [for]="validUntilPicker"/>
         <mat-datepicker #validUntilPicker/>
         <mat-error appPctsFormError/>
@@ -43,14 +34,13 @@
         <textarea type="text" formControlName="comment" data-testid="comment" matInput></textarea>
       </app-input-field>
 
-        <mat-checkbox formControlName="completed">{{"COMPLETED" | scopedTranslation}}</mat-checkbox>
-
     </ng-container>
     <ng-container actions/>
   </app-base-form>
 
   <ng-container actions>
     <app-modal-actions
+      [submitModes]="this.data.submitOptions"
       [isValid]="formGroup.valid"
       (cancelAction)="onCancel()"
       (submitAction)="onSubmit($event)" />
