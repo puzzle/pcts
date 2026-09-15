@@ -55,8 +55,7 @@ public class Member implements Model {
     private OrganisationUnit organisationUnit;
 
     @ManyToMany()
-    @JoinTable(name = "member_role", joinColumns = { @JoinColumn(name = "member_id") }, inverseJoinColumns = {
-            @JoinColumn(name = "role_id") })
+    @JoinTable(name = "member_role", joinColumns = @JoinColumn(name = "member_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
     @Min(value = 1, message = "{attribute.min.value}")
