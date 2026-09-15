@@ -34,7 +34,7 @@ public class Experience implements Model {
     private String employer;
 
     @Min(value = 0, message = "{attribute.min.value}")
-    @Max(value = 110, message = "{attribute.max.value}")
+    @Max(value = 120, message = "{attribute.max.value}")
     private int percent;
 
     @NotNull(message = "{attribute.not.null}")
