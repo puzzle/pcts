@@ -6,18 +6,22 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { DegreeTypeService } from '../degree-type/degree-type.service';
 import { of } from 'rxjs';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
+import { FormModalConfig } from '../../../shared/modal/pcts-modal.service';
+import { DegreeModel } from '../degree.model';
 
 describe('DegreeModalComponent', () => {
   let component: DegreeModalComponent;
   let fixture: ComponentFixture<DegreeModalComponent>;
 
-  const dialogData = degree1;
   const dialogRefMock = { close: jest.fn() };
   const degreeTypeServiceMock = {
     getAllDegreeTypes: jest.fn()
       .mockReturnValue(of([degreeType1,
         degreeType2]))
   };
+
+  const dialogData: FormModalConfig<DegreeModel> = { model: degree1,
+    submitOptions: [] };
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
@@ -74,7 +78,7 @@ describe('DegreeModalComponent', () => {
     });
 
     it('should initialize empty form if no data is provided', () => {
-      (component as any).data = undefined;
+      (component as any).data.model = undefined;
       component.formGroup.reset();
 
       component.ngOnInit();
