@@ -68,6 +68,13 @@ export class LeadershipExperienceModalComponent extends StrictlyTypedDialog<Form
     this.dialogRef.close();
   }
 
+  onDelete() {
+    this.dialogRef.close({
+      modalSubmitMode: ModalSubmitMode.DELETE,
+      submittedModel: this.formGroup.getRawValue() as LeadershipExperienceModel
+    });
+  }
+
   protected displayLeadershipExperienceTypes = (leadershipExperienceType: LeadershipExperienceTypeModel): string => {
     return leadershipExperienceType?.name ?? '';
   };

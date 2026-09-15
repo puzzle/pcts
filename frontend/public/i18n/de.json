@@ -54,14 +54,16 @@
         "ACTION": "Hinzufügen",
         "CANCEL": "Abbrechen",
         "ENTER_ANOTHER": "Hinzufügen + weiteren Eintrag erfassen",
-        "COPY": "Hinzufügen + Inhalt kopieren"
+        "COPY": "Hinzufügen + Inhalt kopieren",
+        "DELETE": "Eintrag löschen"
       }
     },
     "EDIT": {
       "ACTION": "bearbeiten",
       "BUTTONS": {
         "ACTION": "Speichern",
-        "CANCEL": "Abbrechen"
+        "CANCEL": "Abbrechen",
+        "DELETE": "Eintrag löschen"
       }
     },
     "DELETE": {

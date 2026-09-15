@@ -1,29 +1,42 @@
-<div class="d-flex flex-row gap-3">
-  <button
-    data-testid="close-modal-button"
-    matButton="text"
-    type="button"
-    (click)="onCancel()"
-  >
-    {{ cancelKey | scopedTranslation }}
-  </button>
-
-  <div class="d-flex">
+<div class="d-flex justify-content-between">
+  <div class="d-flex flex-row gap-3">
     <button
-      [disabled]="!isValid"
-      (click)="onSubmit(ModalSubmitMode.SAVE)"
-      class="rounded"
-      [class.rounded-end-0]="submitModes().length >= 1"
-      matButton="filled"
-      type="submit"
-      data-testid="submit-button"
+      data-testid="close-modal-button"
+      matButton="text"
+      type="button"
+      (click)="onCancel()"
     >
-      {{ submitKey | scopedTranslation }}
+      {{ cancelKey | scopedTranslation }}
     </button>
 
-    <app-menu-button
-      [isValid]="isValid"
-      [functions]="submitModes()"
-      (selected)="onSubmit($event)" />
+    <div class="d-flex">
+      <button
+        [disabled]="!isValid"
+        (click)="onSubmit(ModalSubmitMode.SAVE)"
+        class="rounded"
+        [class.rounded-end-0]="submitModes().length >= 1"
+        matButton="filled"
+        type="submit"
+        data-testid="submit-button"
+      >
+        {{ submitKey | scopedTranslation }}
+      </button>
+
+      <app-menu-button
+        [isValid]="isValid"
+        [functions]="submitModes()"
+        (selected)="onSubmit($event)" />
+    </div>
   </div>
+  @if (hasDeleteSubmitMode()){
+    <button
+      class="text-danger"
+      (click)="onDelete(ModalSubmitMode.DELETE)"
+      type="button"
+      matButton="text"
+    >
+      {{ deleteKey | scopedTranslation }}
+      <mat-icon>delete</mat-icon>
+    </button>
+  }
 </div>
