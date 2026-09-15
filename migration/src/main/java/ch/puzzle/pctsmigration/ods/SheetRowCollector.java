@@ -4,41 +4,63 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SheetRowCollector {
-    private final String startMarker;
-    private final boolean shouldCutOff;
-    private final List<List<String>> collectedRows = new ArrayList<>();
 
-    private boolean isCollecting;
-    private int emptyRowCount = 0;
+    private static final int MAX_TOLERATED_EMPTY_ROWS = 3;
+
+    private final String requiredStartMarker;
+    private final boolean stopsAfterEmptyRows;
+    private final List<List<String>> validRows = new ArrayList<>();
+
+    private boolean isRecording;
+    private int consecutiveEmptyRows = 0;
 
     public SheetRowCollector(String startMarker) {
-        this.startMarker = startMarker;
-        this.isCollecting = startMarker == null || startMarker.isBlank();
-        this.shouldCutOff = !this.isCollecting;
+        this.requiredStartMarker = startMarker;
+
+        boolean hasNoMarker = startMarker == null || startMarker.isBlank();
+        this.isRecording = hasNoMarker;
+        this.stopsAfterEmptyRows = !hasNoMarker;
     }
 
-    public boolean processRowAndCheckIfDone(List<String> cells) {
-        boolean isNoInfo = cells.stream().allMatch(String::isEmpty);
+    public void processRow(List<String> cells) {
+        boolean isRowEmpty = cells.stream().allMatch(String::isEmpty);
 
-        if (!isCollecting) {
-            if (!isNoInfo && cells.stream().anyMatch(cell -> cell.contains(startMarker))) {
-                isCollecting = true;
-                collectedRows.add(cells);
-            }
-            return false;
-        }
-
-        if (isNoInfo) {
-            emptyRowCount++;
-            return shouldCutOff && emptyRowCount >= 3;
+        if (!isRecording) {
+            searchForStartMarker(cells, isRowEmpty);
         } else {
-            emptyRowCount = 0;
-            collectedRows.add(cells);
-            return false;
+            saveRow(cells, isRowEmpty);
         }
+    }
+
+    public boolean isDone() {
+        return stopsAfterEmptyRows && consecutiveEmptyRows >= MAX_TOLERATED_EMPTY_ROWS;
+    }
+
+    private void searchForStartMarker(List<String> cells, boolean isRowEmpty) {
+        if (isRowEmpty) {
+            return;
+        }
+
+        if (containsStartMarker(cells)) {
+            isRecording = true;
+            validRows.add(cells);
+        }
+    }
+
+    private void saveRow(List<String> cells, boolean isRowEmpty) {
+        if (isRowEmpty) {
+            consecutiveEmptyRows++;
+        } else {
+            consecutiveEmptyRows = 0;
+            validRows.add(cells);
+        }
+    }
+
+    private boolean containsStartMarker(List<String> cells) {
+        return cells.stream().anyMatch(cell -> cell.contains(requiredStartMarker));
     }
 
     public List<List<String>> getCollectedRows() {
-        return collectedRows;
+        return validRows;
     }
 }
