@@ -5,6 +5,7 @@ import { ModalSubmitMode } from '../enum/modal-submit-mode.enum';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DestroyRef, Injector, Type } from '@angular/core';
 import { I18N_PREFIX } from '../i18n-prefix.token';
+import { ScopedTranslationService } from '../i18n-prefix.provider';
 
 type ModalComponent<T extends ModelWithId> = StrictlyTypedDialog<FormModalConfig<T>, DialogResult<T>>;
 
@@ -14,6 +15,7 @@ type openModalType<T extends ModelWithId> = (
 ) => TypedMatDialogRef<ModalComponent<T>, DialogResult<T>>;
 
 type onSubmitMethodType<T extends ModelWithId> = (model: T) => Observable<T>;
+type onDeleteMethodType = (id: number) => Observable<void>;
 
 export class PctsModalBuilder<T extends ModelWithId> {
   private component: Type<ModalComponent<T>> | undefined;
@@ -26,7 +28,7 @@ export class PctsModalBuilder<T extends ModelWithId> {
 
   private i18nPrefix: string | undefined;
 
-  private onDeleteMethod: (id: number) => Observable<void>;
+  private onDeleteMethod: onDeleteMethodType | undefined;
 
   private readonly destroyRef: DestroyRef;
 
@@ -56,7 +58,7 @@ export class PctsModalBuilder<T extends ModelWithId> {
   }
 
   withSubmitOptionsForEdit() {
-    this.submitOptions = [];
+    this.submitOptions = [ModalSubmitMode.DELETE];
     return this;
   }
 
@@ -68,6 +70,11 @@ export class PctsModalBuilder<T extends ModelWithId> {
 
   withSubmitOptions(submitOptions: ModalSubmitMode[]) {
     this.submitOptions = submitOptions;
+    return this;
+  }
+
+  withOnDeleteMethod(onDeleteMethod: onDeleteMethodType) {
+    this.onDeleteMethod = onDeleteMethod;
     return this;
   }
 
@@ -88,14 +95,15 @@ export class PctsModalBuilder<T extends ModelWithId> {
     const onSuccess = this.onSuccess;
 
     return this.createOpenerMethod(
-      component, onSubmitMethod, submitOptions, i18nPrefix, onSuccess
+      component, onSubmitMethod, submitOptions, i18nPrefix, this.onDeleteMethod, onSuccess
     );
   }
 
   private getInjectorForI18nPrefix(i18nPrefix: string) {
     return Injector.create({ providers: [{ provide: I18N_PREFIX,
       useValue: i18nPrefix },
-    PctsModalService],
+    PctsModalService,
+    ScopedTranslationService],
     parent: this.injector });
   }
 
@@ -110,6 +118,9 @@ export class PctsModalBuilder<T extends ModelWithId> {
       case ModalSubmitMode.COPY:
         return { shouldReopen: true,
           withModal: true };
+      case ModalSubmitMode.DELETE:
+        return { shouldReopen: false,
+          withModal: false };
       default:
         modalSubmitMode satisfies never;
         return { shouldReopen: false,
@@ -122,6 +133,7 @@ export class PctsModalBuilder<T extends ModelWithId> {
     onSubmitMethod: onSubmitMethodType<T>,
     submitOptions: ModalSubmitMode[],
     i18nPrefix: string,
+    onDeleteMethod: onDeleteMethodType | undefined,
     onSuccess?: () => void
   ) {
     const opener = (model?: T) => {
@@ -138,7 +150,7 @@ export class PctsModalBuilder<T extends ModelWithId> {
       })
         .afterSubmitted
         .pipe(takeUntilDestroyed(this.destroyRef), concatMap(({ modalSubmitMode, submittedModel }) => this.onFormSubmit(
-          submittedModel, modalSubmitMode, onSubmitMethod, opener.bind(this)
+          submittedModel, modalSubmitMode, onSubmitMethod, onDeleteMethod, opener.bind(this)
         )))
         .subscribe(() => {
           onSuccess?.();
@@ -151,8 +163,14 @@ export class PctsModalBuilder<T extends ModelWithId> {
     submittedModel: T,
     modalSubmitMode: ModalSubmitMode,
     onSubmitMethod: onSubmitMethodType<T>,
+    onDeleteMethod: onDeleteMethodType | undefined,
     opener: (model?: T) => void
   ) {
+    if (modalSubmitMode === ModalSubmitMode.DELETE) {
+      if (onDeleteMethod) {
+        return onDeleteMethod(submittedModel.id);
+      }
+    }
     return onSubmitMethod(submittedModel)
       .pipe(map(() => {
         const submitMode = this.evaluateSubmitModes(modalSubmitMode);
