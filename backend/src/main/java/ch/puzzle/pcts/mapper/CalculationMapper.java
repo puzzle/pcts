@@ -4,9 +4,11 @@ import ch.puzzle.pcts.dto.calculation.CalculationDto;
 import ch.puzzle.pcts.dto.calculation.CalculationInputDto;
 import ch.puzzle.pcts.dto.calculation.RolePointDto;
 import ch.puzzle.pcts.model.calculation.Calculation;
+import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import ch.puzzle.pcts.service.business.RoleBusinessService;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 import org.springframework.stereotype.Component;
@@ -49,6 +51,14 @@ public class CalculationMapper {
 
     public List<RolePointDto> toRolePointDto(List<Calculation> calculations) {
         return calculations.stream().map(c -> new RolePointDto(c.getRole(), c.getPoints())).toList();
+    }
+
+    public List<RolePointDto> toRolePointDto(Map<Role, BigDecimal> rolePointMap) {
+        return rolePointMap
+                .entrySet()
+                .stream()
+                .map(entry -> new RolePointDto(entry.getKey(), entry.getValue()))
+                .toList();
     }
 
     public CalculationDto toDto(Calculation model) {

@@ -1,6 +1,5 @@
 package ch.puzzle.pcts.service.business;
 
-import ch.puzzle.pcts.dto.calculation.RolePointDto;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.member.Member;
@@ -14,8 +13,6 @@ import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
@@ -109,26 +106,16 @@ public class MemberBusinessService extends BusinessBase<Member> {
         return memberPersistenceService.findByAbbreviation(abbreviation);
     }
 
-    // We need to merge 2 lists because members can obtain roles from calculation
-    // table and from memberrole table
-    public List<RolePointDto> mergeListsToUniqueRoleEntriesOnly(Long memberId, List<RolePointDto> rolePoints) {
-        List<RolePointDto> roles = getRolePointsByMemberId(memberId);
+    public Map<Role, BigDecimal> getDeduplicatedRolePoints(Long memberId) {
+        List<Calculation> calculations = getAllActiveCalculationsByMemberId(memberId);
 
-        return Stream
-                .concat(roles.stream(), rolePoints.stream()) // Merge 2 Collections into a single stream of entries.
-                .collect((Collectors.toMap(RolePointDto::role, dto -> dto, (element1, element2) -> element2))) // Deduplicate
-                                                                                                               // by
-                                                                                                               // role
-                .values()
-                .stream()
-                .toList();
-    }
-
-    private List<RolePointDto> getRolePointsByMemberId(Long memberId) {
-        return this
-                .getAllRolesByMemberId(memberId)
-                .stream()
-                .map((role -> new RolePointDto(role, BigDecimal.ZERO)))
-                .toList();
+        Map<Role, BigDecimal> rolePoints = new HashMap<>();
+        getAllRolesByMemberId(memberId).forEach(role -> rolePoints.put(role, BigDecimal.ZERO));
+        calculations.forEach(calculation -> rolePoints.put(calculation.getRole(), calculation.getPoints())); // Overwrite
+                                                                                                             // existing
+                                                                                                             // roles if
+                                                                                                             // any
+                                                                                                             // exist
+        return rolePoints;
     }
 }

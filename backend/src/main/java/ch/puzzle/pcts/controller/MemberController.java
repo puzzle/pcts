@@ -8,6 +8,7 @@ import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.mapper.MemberMapper;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.member.Member;
+import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.security.annotation.IsAdmin;
 import ch.puzzle.pcts.security.annotation.IsAdminOrOwner;
 import ch.puzzle.pcts.security.annotation.IsAuthenticated;
@@ -19,7 +20,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
@@ -74,12 +77,8 @@ public class MemberController {
     @GetMapping("{memberId}/role-points")
     public ResponseEntity<List<RolePointDto>> getPointsForActiveCalculationsForRoleByMemberId(@Parameter(description = "ID of the member.", required = true)
     @PathVariable @P("id") Long memberId) {
-        List<RolePointDto> rolePointDtos = service
-                .mergeListsToUniqueRoleEntriesOnly(memberId,
-                                                   calculationMapper
-                                                           .toRolePointDto(service
-                                                                   .getAllActiveCalculationsByMemberId(memberId)));
-        return ResponseEntity.ok(rolePointDtos);
+        Map<Role, BigDecimal> rolePoints = service.getDeduplicatedRolePoints(memberId);
+        return ResponseEntity.ok(calculationMapper.toRolePointDto(rolePoints));
     }
 
     @Operation(summary = "Create a new member")
