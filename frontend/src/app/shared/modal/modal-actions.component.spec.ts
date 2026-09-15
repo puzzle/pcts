@@ -17,6 +17,7 @@ describe('ModalActionsComponent', () => {
       bindings: [inputBinding('submitModes', () => [])]
     });
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('submitModes', [ModalSubmitMode.SAVE]);
     fixture.detectChanges();
   });
 
@@ -45,6 +46,48 @@ describe('ModalActionsComponent', () => {
         .toHaveBeenCalledTimes(1);
       expect(submitSpy)
         .toHaveBeenCalledWith(testMode);
+    });
+
+    it('should fire the correct mode when onDelete() is called', () => {
+      const deleteSpy = jest.spyOn(component.deleteAction, 'emit');
+      const mode = ModalSubmitMode.DELETE;
+
+      component.onDelete(mode);
+
+      expect(deleteSpy)
+        .toHaveBeenCalledTimes(1);
+      expect(deleteSpy)
+        .toHaveBeenCalledWith(mode);
+    });
+  });
+
+  describe('hasDeleteSubmitMode()', () => {
+    it('should return true when DELETE is included in submitModes', () => {
+      fixture.componentRef.setInput('submitModes', [ModalSubmitMode.SAVE,
+        ModalSubmitMode.DELETE]);
+
+      fixture.detectChanges();
+
+      expect(component.hasDeleteSubmitMode())
+        .toBe(true);
+    });
+
+    it('should return false when DELETE is not included in submitModes', () => {
+      fixture.componentRef.setInput('submitModes', [ModalSubmitMode.SAVE]);
+
+      fixture.detectChanges();
+
+      expect(component.hasDeleteSubmitMode())
+        .toBe(false);
+    });
+  });
+
+  describe('menuButtonFunctions()', () => {
+    it('should not include DELETE', () => {
+      fixture.detectChanges();
+
+      expect(component.menuButtonFunctions())
+        .not.toContain(ModalSubmitMode.DELETE);
     });
   });
 });
