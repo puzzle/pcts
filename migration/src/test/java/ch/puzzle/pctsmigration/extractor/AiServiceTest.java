@@ -45,7 +45,6 @@ class AiServiceTest {
     @Test
     @DisplayName("extractCertificateData should pass the system prompt, Markdown in the user prompt, and the target class to Spring AI")
     void extractCertificateData_callsChatClientWithCorrectPromptsAndReturnsEntity() {
-        // Given
         String markdown = "| A | B |";
         String systemPrompt = "Prompt";
         DummyResult expectedResult = new DummyResult("A, B");

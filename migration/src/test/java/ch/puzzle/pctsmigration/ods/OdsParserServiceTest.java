@@ -25,11 +25,14 @@ class OdsParserServiceTest {
 
     private OdsParserService odsParserService;
     private static List<String> tableNames;
+    private OdsParseConfig config;
 
     @BeforeEach
     void setUp() {
         odsParserService = new OdsParserService();
         tableNames = List.of("Zertifikat", "Zertifikate");
+
+        config = new OdsParseConfig(tableName -> tableNames.contains(tableName), null, false);
     }
 
     @Test
@@ -38,7 +41,7 @@ class OdsParserServiceTest {
         when(mockFile.isEmpty()).thenReturn(true);
 
         MigrationException exception = assertThrows(MigrationException.class,
-                                                    () -> odsParserService.parseToPromptText(mockFile, tableNames));
+                                                    () -> odsParserService.parseToPromptText(mockFile, config));
 
         assertTrue(exception.getError().message().contains("Uploaded file is empty"));
     }
@@ -50,7 +53,7 @@ class OdsParserServiceTest {
         when(mockFile.getInputStream()).thenThrow(new IOException("Stream error"));
 
         MigrationException exception = assertThrows(MigrationException.class,
-                                                    () -> odsParserService.parseToPromptText(mockFile, tableNames));
+                                                    () -> odsParserService.parseToPromptText(mockFile, config));
 
         assertTrue(exception.getError().message().contains("Failed to parse ODS file: Stream error"));
     }
@@ -70,7 +73,7 @@ class OdsParserServiceTest {
             mockedStatic.when(() -> OdfSpreadsheetDocument.loadDocument(any(InputStream.class))).thenReturn(mockDoc);
 
             MigrationException exception = assertThrows(MigrationException.class,
-                                                        () -> odsParserService.parseToPromptText(mockFile, tableNames));
+                                                        () -> odsParserService.parseToPromptText(mockFile, config));
 
             assertTrue(exception.getError().message().contains("No valid sheets found"));
         }
@@ -96,7 +99,7 @@ class OdsParserServiceTest {
         try (MockedStatic<OdfSpreadsheetDocument> mockedStatic = mockStatic(OdfSpreadsheetDocument.class)) {
             mockedStatic.when(() -> OdfSpreadsheetDocument.loadDocument(any(InputStream.class))).thenReturn(mockDoc);
 
-            String markdown = odsParserService.parseToPromptText(mockFile, tableNames);
+            String markdown = odsParserService.parseToPromptText(mockFile, config);
 
             assertNotNull(markdown);
             assertTrue(markdown.contains("## Sheet: Zertifikat"));
@@ -124,11 +127,62 @@ class OdsParserServiceTest {
         try (MockedStatic<OdfSpreadsheetDocument> mockedStatic = mockStatic(OdfSpreadsheetDocument.class)) {
             mockedStatic.when(() -> OdfSpreadsheetDocument.loadDocument(any(InputStream.class))).thenReturn(mockDoc);
 
-            String markdown = odsParserService.parseToPromptText(mockFile, tableNames);
+            String markdown = odsParserService.parseToPromptText(mockFile, config);
 
             assertTrue(markdown.contains("| Data1 | Data2 |"));
             assertFalse(markdown.contains("--- | --- | --- |"));
             assertTrue(markdown.contains("--- | --- |"));
+        }
+    }
+
+    @Test
+    void testParseToPromptText_CutsOffCalculationRowWhenConfigured() throws Exception {
+        OdsParseConfig configWithCalc = new OdsParseConfig(tableName -> tableNames.contains(tableName), null, true);
+
+        MultipartFile mockFile = mock(MultipartFile.class);
+        when(mockFile.isEmpty()).thenReturn(false);
+        when(mockFile.getInputStream()).thenReturn(new ByteArrayInputStream(new byte[0]));
+
+        OdfSpreadsheetDocument mockDoc = mock(OdfSpreadsheetDocument.class);
+        OdfTable mockTable = mock(OdfTable.class);
+        when(mockTable.getTableName()).thenReturn("Zertifikat");
+        when(mockTable.getRowCount()).thenReturn(1);
+        when(mockTable.getColumnCount()).thenReturn(7);
+        when(mockDoc.getSpreadsheetTables()).thenReturn(List.of(mockTable));
+
+        mockRow(mockTable, 0, "Col0", "Col1", "Col2", "Col3", "Col4", "CALC_TO_REMOVE", "Col6");
+
+        try (MockedStatic<OdfSpreadsheetDocument> mockedStatic = mockStatic(OdfSpreadsheetDocument.class)) {
+            mockedStatic.when(() -> OdfSpreadsheetDocument.loadDocument(any(InputStream.class))).thenReturn(mockDoc);
+
+            String markdown = odsParserService.parseToPromptText(mockFile, configWithCalc);
+
+            assertTrue(markdown.contains("| Col0 | Col1 | Col2 | Col3 | Col4 |  | Col6 |"));
+            assertFalse(markdown.contains("CALC_TO_REMOVE"));
+        }
+    }
+
+    @Test
+    void testParseToPromptText_CleansPhantomCharactersAndZeros() throws Exception {
+        MultipartFile mockFile = mock(MultipartFile.class);
+        when(mockFile.isEmpty()).thenReturn(false);
+        when(mockFile.getInputStream()).thenReturn(new ByteArrayInputStream(new byte[0]));
+
+        OdfSpreadsheetDocument mockDoc = mock(OdfSpreadsheetDocument.class);
+        OdfTable mockTable = mock(OdfTable.class);
+        when(mockTable.getTableName()).thenReturn("Zertifikat");
+        when(mockTable.getRowCount()).thenReturn(1);
+        when(mockTable.getColumnCount()).thenReturn(3);
+        when(mockDoc.getSpreadsheetTables()).thenReturn(List.of(mockTable));
+
+        mockRow(mockTable, 0, "0", "\u00A0CleanMe\u200B", "Valid");
+
+        try (MockedStatic<OdfSpreadsheetDocument> mockedStatic = mockStatic(OdfSpreadsheetDocument.class)) {
+            mockedStatic.when(() -> OdfSpreadsheetDocument.loadDocument(any(InputStream.class))).thenReturn(mockDoc);
+
+            String markdown = odsParserService.parseToPromptText(mockFile, config);
+
+            assertTrue(markdown.contains("|  | CleanMe | Valid |"));
         }
     }
 

@@ -1,4 +1,4 @@
-package ch.puzzle.pctsmigration.certificates;
+package ch.puzzle.pctsmigration;
 
 import ch.puzzle.pctsmigration.exception.FileError;
 import java.util.ArrayList;
@@ -6,13 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.openapitools.client.model.CertificateInputDto;
-
-public class MultipleFileResultDto {
-    private final Map<String, List<CertificateInputDto>> successfulCertificates = new HashMap<>();
+public class MultipleFileResultDto<D> {
+    private final Map<String, List<D>> successfulCertificates = new HashMap<>();
     private final List<FileError> failedFiles = new ArrayList<>();
 
-    public void addToSuccessfulCertificates(String fileName, List<CertificateInputDto> successfulCertificates) {
+    public void addToSuccessfulCertificates(String fileName, List<D> successfulCertificates) {
         this.successfulCertificates.put(fileName, successfulCertificates);
     }
 
@@ -20,7 +18,7 @@ public class MultipleFileResultDto {
         this.failedFiles.add(failedFile);
     }
 
-    public Map<String, List<CertificateInputDto>> getSuccessfulCertificates() {
+    public Map<String, List<D>> getSuccessfulCertificates() {
         return successfulCertificates;
     }
 
