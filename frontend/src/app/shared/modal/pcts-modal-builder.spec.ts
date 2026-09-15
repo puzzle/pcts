@@ -12,7 +12,7 @@ describe('PctsModalBuilder', () => {
   let openModalSpy: jest.Mock;
   let afterSubmittedSubjects: Subject<any>[];
   const modelWithId = { id: 1 };
-  class MockModalComponent {} // maybe not: remove this i quess
+  class MockModalComponent {}
 
   beforeEach(() => {
     destroyRefMock = {
