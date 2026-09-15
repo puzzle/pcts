@@ -108,8 +108,8 @@ public class MemberBusinessService extends BusinessBase<Member> {
 
     /**
      * We need to deduplicate because a member can have a calculation and a matching
-     * role Without deduplicating there would be the same role twice, one without
-     * and one with the points
+     * role. Without deduplicating there would be the same role twice, one without
+     * and one with the points.
      * 
      * @param memberId
      *            the id of the rolepoints we want to fetch
