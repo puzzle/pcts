@@ -92,13 +92,21 @@ describe('AddExperienceComponent', () => {
       expect(percentControl.hasError('min'))
         .toBeTruthy();
 
-      percentControl.setValue(121);
+      percentControl.setValue(111);
       expect(percentControl.hasError('max'))
         .toBeTruthy();
 
       percentControl.setValue(50.5);
       expect(percentControl.valid)
         .toBeFalsy();
+
+      percentControl.setValue(0);
+      expect(percentControl.valid)
+        .toBeTruthy();
+
+      percentControl.setValue(110);
+      expect(percentControl.valid)
+        .toBeTruthy();
 
       percentControl.setValue(100);
       expect(percentControl.valid)
