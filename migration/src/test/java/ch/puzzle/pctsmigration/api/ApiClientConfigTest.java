@@ -14,9 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openapitools.client.ApiClient;
-import org.openapitools.client.api.CertificateTypesApi;
-import org.openapitools.client.api.CertificatesApi;
-import org.openapitools.client.api.MembersApi;
+import org.openapitools.client.api.*;
 import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
@@ -83,6 +81,26 @@ class ApiClientConfigTest {
         ApiClient mockClient = mock(ApiClient.class);
 
         CertificatesApi api = config.certificatesApi(mockClient);
+
+        assertThat(api).isNotNull();
+    }
+
+    @Test
+    @DisplayName("The leadershipExperiencesApi bean should be initialized successfully")
+    void leadershipExperiencesApi_createsApiWithGivenClient() {
+        ApiClient mockClient = mock(ApiClient.class);
+
+        LeadershipExperiencesApi api = config.leadershipExperiencesApi(mockClient);
+
+        assertThat(api).isNotNull();
+    }
+
+    @Test
+    @DisplayName("The leadershipExperienceTypesApi bean should be initialized successfully")
+    void leadershipExperienceTypesApi_createsApiWithGivenClient() {
+        ApiClient mockClient = mock(ApiClient.class);
+
+        LeadershipExperienceTypesApi api = config.leadershipExperienceTypesApi(mockClient);
 
         assertThat(api).isNotNull();
     }
