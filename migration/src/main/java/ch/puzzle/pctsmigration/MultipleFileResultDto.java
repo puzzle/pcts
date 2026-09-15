@@ -1,4 +1,4 @@
-package ch.puzzle.pctsmigration.certificates;
+package ch.puzzle.pctsmigration;
 
 import ch.puzzle.pctsmigration.exception.FileError;
 import java.util.ArrayList;

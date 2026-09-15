@@ -1,7 +1,6 @@
 package ch.puzzle.pctsmigration;
 
 import ch.puzzle.pctsmigration.certificates.CertificateExtractionPipeline;
-import ch.puzzle.pctsmigration.certificates.MultipleFileResultDto;
 import ch.puzzle.pctsmigration.exception.FileError;
 import ch.puzzle.pctsmigration.exception.MigrationException;
 import ch.puzzle.pctsmigration.extractor.ExtractorService;
