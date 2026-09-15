@@ -7,6 +7,8 @@ import { CertificateModalComponent } from './certificate-modal.component';
 import { CertificateTypeService } from '../certificate-type/certificate-type.service';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import { certificate1, certificateType1, certificateType2 } from '../../../shared/test/test-data';
+import { FormModalConfig } from '../../../shared/modal/pcts-modal.service';
+import { CertificateModel } from '../certificate.model';
 
 describe('CertificateModalComponent', () => {
   let component: CertificateModalComponent;
@@ -19,7 +21,8 @@ describe('CertificateModalComponent', () => {
         certificateType2]))
   };
 
-  const dialogData = certificate1;
+  const dialogData: FormModalConfig<CertificateModel> = { model: certificate1,
+    submitOptions: [] };
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
@@ -71,7 +74,7 @@ describe('CertificateModalComponent', () => {
     });
 
     it('should initialize empty form if no data is provided', () => {
-      (component as any).data = undefined;
+      (component as any).data.model = undefined;
       component.formGroup.reset();
 
       component.ngOnInit();
