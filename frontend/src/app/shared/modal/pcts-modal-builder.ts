@@ -166,18 +166,17 @@ export class PctsModalBuilder<T extends ModelWithId> {
     onDeleteMethod: onDeleteMethodType | undefined,
     opener: (model?: T) => void
   ) {
-    if (modalSubmitMode === ModalSubmitMode.DELETE) {
-      if (onDeleteMethod) {
-        return onDeleteMethod(submittedModel.id);
-      }
-    }
-    return onSubmitMethod(submittedModel)
-      .pipe(map(() => {
-        const submitMode = this.evaluateSubmitModes(modalSubmitMode);
+    if (modalSubmitMode === ModalSubmitMode.DELETE && onDeleteMethod) {
+      return onDeleteMethod(submittedModel.id);
+    } else {
+      return onSubmitMethod(submittedModel)
+        .pipe(map(() => {
+          const submitMode = this.evaluateSubmitModes(modalSubmitMode);
 
-        if (submitMode.shouldReopen) {
-          opener(submitMode.withModal ? submittedModel : undefined);
-        }
-      }));
+          if (submitMode.shouldReopen) {
+            opener(submitMode.withModal ? submittedModel : undefined);
+          }
+        }));
+    }
   }
 }
