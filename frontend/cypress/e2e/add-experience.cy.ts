@@ -120,9 +120,9 @@ describe('Add experience Modal', () => {
     it('validates percent maximum value', () => {
       formPage.submitButtonShouldBe('disabled');
 
-      formPage.typeAndBlur('percent', '130');
+      formPage.typeAndBlur('percent', '120');
 
-      formPage.shouldShowValidationError('Die Eingabe muss maximal 120 sein', 'percent');
+      formPage.shouldShowValidationError('Die Eingabe muss maximal 110 sein', 'percent');
 
       formPage.submitButtonShouldBe('disabled');
     });
