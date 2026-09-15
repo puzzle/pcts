@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
-import ch.puzzle.pcts.dto.calculation.RolePointDto;
 import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.model.calculation.Calculation;
@@ -292,14 +291,12 @@ class MemberBusinessServiceTest
         when(businessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
         when(businessService.getAllRolesByMemberId(MEMBER_1_ID)).thenReturn(ROLES_AS_SET);
 
-        List<RolePointDto> rolePointsFromCalculations = calculationMapper.toRolePointDto(CALCULATIONS);
+        var result = businessService.getDeduplicatedRolePoints(MEMBER_1_ID);
 
-        var result = businessService.mergeListsToUniqueRoleEntriesOnly(MEMBER_1_ID, rolePointsFromCalculations);
-
-        List<RolePointDto> expected = List.of(new RolePointDto(ROLE_3, BigDecimal.ZERO), new RolePointDto(ROLE_2, BigDecimal.ZERO));
+        Map<Role, BigDecimal> expected = Map.of(ROLE_3, BigDecimal.ZERO, ROLE_2, BigDecimal.ZERO);
 
         assertEquals(expected, result);
-        verify(businessService).mergeListsToUniqueRoleEntriesOnly(MEMBER_1_ID, rolePointsFromCalculations);
+        verify(businessService).getDeduplicatedRolePoints(MEMBER_1_ID);
     }
 
     @DisplayName("Should merge empty lists correctly")
@@ -308,13 +305,11 @@ class MemberBusinessServiceTest
         when(businessService.getById(MEMBER_1_ID)).thenReturn(MEMBER_1);
         when(businessService.getAllRolesByMemberId(MEMBER_1_ID)).thenReturn(Set.of());
 
-        List<RolePointDto> rolePointsFromCalculations = List.of();
+        var result = businessService.getDeduplicatedRolePoints(MEMBER_1_ID);
 
-        var result = businessService.mergeListsToUniqueRoleEntriesOnly(MEMBER_1_ID, rolePointsFromCalculations);
-
-        List<RolePointDto> expected = List.of();
+        Map<Role, BigDecimal> expected = Map.of();
 
         assertEquals(expected, result);
-        verify(businessService).mergeListsToUniqueRoleEntriesOnly(MEMBER_1_ID, rolePointsFromCalculations);
+        verify(businessService).getDeduplicatedRolePoints(MEMBER_1_ID);
     }
 }
