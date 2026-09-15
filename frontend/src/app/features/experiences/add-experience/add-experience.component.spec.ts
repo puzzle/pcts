@@ -100,6 +100,14 @@ describe('AddExperienceComponent', () => {
       expect(percentControl.valid)
         .toBeFalsy();
 
+      percentControl.setValue(0);
+      expect(percentControl.valid)
+        .toBeTruthy();
+
+      percentControl.setValue(110);
+      expect(percentControl.valid)
+        .toBeTruthy();
+
       percentControl.setValue(100);
       expect(percentControl.valid)
         .toBeTruthy();
