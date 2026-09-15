@@ -74,8 +74,10 @@ describe('PctsFormErrorDirective', () => {
     directiveInstance.updateError();
 
     const element = debugEl.nativeElement;
+
     expect(translationMock.instant)
-      .toHaveBeenCalledWith('VALIDATION.REQUIRED');
+      .toHaveBeenCalledWith('VALIDATION.REQUIRED', true);
+
     expect(element.textContent)
       .toContain('VALIDATION.REQUIRED');
   });
@@ -94,7 +96,9 @@ describe('PctsFormErrorDirective', () => {
     const errors = directiveInstance.getErrorMessages();
 
     expect(errors)
-      .toEqual(['VALIDATION.MINLENGTH',
-        'VALIDATION.REQUIRED']);
+      .toEqual([{ key: 'VALIDATION.MINLENGTH',
+        params: true },
+      { key: 'VALIDATION.REQUIRED',
+        params: true }]);
   });
 });
