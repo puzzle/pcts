@@ -2,7 +2,6 @@ package ch.puzzle.pctsmigration.ods;
 
 import ch.puzzle.pctsmigration.exception.Error;
 import ch.puzzle.pctsmigration.exception.MigrationException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -27,8 +26,7 @@ public class OdsParserService {
             throw new MigrationException(new Error(HttpStatusCode.valueOf(400), "Uploaded file is empty"));
         }
 
-        try (InputStream is = file.getInputStream();
-                OdfSpreadsheetDocument doc = OdfSpreadsheetDocument.loadDocument(is)) {
+        try (OdfSpreadsheetDocument doc = OdfSpreadsheetDocument.loadDocument(file.getInputStream())) {
 
             OdsParseResult result = extractData(doc,
                                                 config.tableNameConvention(),
@@ -50,7 +48,6 @@ public class OdsParserService {
                 .filter(table -> tableNameConvention.apply(table.getTableName()))
                 .limit(MAX_SHEETS)
                 .map(table -> extractSheet(table, startMarker, shouldCutOfCalcRow))
-                .filter(sheet -> !sheet.rows().isEmpty())
                 .toList();
 
         if (sheets.isEmpty()) {
@@ -67,16 +64,15 @@ public class OdsParserService {
 
         for (int r = 0; r < rowCount; r++) {
             OdfTableRow row = table.getRowByIndex(r);
-            if (row == null)
-                continue;
-
             List<String> cells = extractRow(row, colCount);
 
             if (shouldCutOfCalcRow) {
                 cutOfCalculationRow(cells);
             }
 
-            if (collector.processRowAndCheckIfDone(cells)) {
+            collector.processRow(cells);
+
+            if (collector.isDone()) {
                 break;
             }
         }
@@ -85,6 +81,8 @@ public class OdsParserService {
         return new OdsParseResult.Sheet(table.getTableName(), optimizedRows);
     }
 
+    // We're overwriting the entire 5th column here because some ODS files have a
+    // calculation column there that we don't want to extract.
     private void cutOfCalculationRow(List<String> cells) {
         if (!Objects.equals(cells.get(5), "")) {
             cells.set(5, "");
@@ -108,6 +106,7 @@ public class OdsParserService {
         if (text == null)
             return "";
 
+        // Removes non-breaking spaces, zero-width spaces, and other phantom characters.
         text = text.replaceAll("[\\u00A0\\u200B\\u200C\\u200D\\uFEFF]", " ").trim();
 
         if (text.isBlank() || text.equals("0")) {
@@ -120,6 +119,7 @@ public class OdsParserService {
         if (rows.isEmpty())
             return rows;
 
+        // Find the rightmost column that still contains data
         int maxCol = 0;
         for (List<String> row : rows) {
             for (int c = row.size() - 1; c >= maxCol; c--) {
@@ -130,6 +130,7 @@ public class OdsParserService {
             }
         }
 
+        // Trim all rows to this maximum width with data
         List<List<String>> optimized = new ArrayList<>(rows.size());
         for (List<String> row : rows) {
             optimized.add(row.subList(0, Math.min(row.size(), maxCol)));
