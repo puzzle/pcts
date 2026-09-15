@@ -1,20 +1,18 @@
 package ch.puzzle.pctsmigration.ods;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class SheetRowCollector {
 
     private static final int MAX_TOLERATED_EMPTY_ROWS = 3;
 
     private final String requiredStartMarker;
     private final boolean stopsAfterEmptyRows;
-    private final List<List<String>> validRows = new ArrayList<>();
+    private final Sheet sheet;
 
     private boolean isRecording;
     private int consecutiveEmptyRows = 0;
 
     public SheetRowCollector(String startMarker) {
+        this.sheet = new Sheet();
         this.requiredStartMarker = startMarker;
 
         boolean hasNoMarker = startMarker == null || startMarker.isBlank();
@@ -22,13 +20,13 @@ public class SheetRowCollector {
         this.stopsAfterEmptyRows = !hasNoMarker;
     }
 
-    public void processRow(List<String> cells) {
-        boolean isRowEmpty = cells.stream().allMatch(String::isEmpty);
+    public void processRow(Row row) {
+        boolean isRowEmpty = row.getCells().stream().allMatch(cell -> cell.getText().isEmpty());
 
         if (!isRecording) {
-            searchForStartMarker(cells, isRowEmpty);
+            searchForStartMarker(row, isRowEmpty);
         } else {
-            saveRow(cells, isRowEmpty);
+            saveRow(row, isRowEmpty);
         }
     }
 
@@ -36,31 +34,27 @@ public class SheetRowCollector {
         return stopsAfterEmptyRows && consecutiveEmptyRows >= MAX_TOLERATED_EMPTY_ROWS;
     }
 
-    private void searchForStartMarker(List<String> cells, boolean isRowEmpty) {
+    private void searchForStartMarker(Row row, boolean isRowEmpty) {
         if (isRowEmpty) {
             return;
         }
 
-        if (containsStartMarker(cells)) {
+        if (row.containsStartMarker(requiredStartMarker)) {
             isRecording = true;
-            validRows.add(cells);
+            sheet.addRow(row);
         }
     }
 
-    private void saveRow(List<String> cells, boolean isRowEmpty) {
+    private void saveRow(Row row, boolean isRowEmpty) {
         if (isRowEmpty) {
             consecutiveEmptyRows++;
         } else {
             consecutiveEmptyRows = 0;
-            validRows.add(cells);
+            sheet.addRow(row);
         }
     }
 
-    private boolean containsStartMarker(List<String> cells) {
-        return cells.stream().anyMatch(cell -> cell.contains(requiredStartMarker));
-    }
-
-    public List<List<String>> getCollectedRows() {
-        return validRows;
+    public Sheet getSheet() {
+        return sheet;
     }
 }
