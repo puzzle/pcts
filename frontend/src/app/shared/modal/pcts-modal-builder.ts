@@ -5,6 +5,7 @@ import { ModalSubmitMode } from '../enum/modal-submit-mode.enum';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DestroyRef, Injector, Type } from '@angular/core';
 import { I18N_PREFIX } from '../i18n-prefix.token';
+import { ScopedTranslationService } from '../i18n-prefix.provider';
 
 type ModalComponent<T extends ModelWithId> = StrictlyTypedDialog<FormModalConfig<T>, DialogResult<T>>;
 
@@ -93,7 +94,8 @@ export class PctsModalBuilder<T extends ModelWithId> {
   private getInjectorForI18nPrefix(i18nPrefix: string) {
     return Injector.create({ providers: [{ provide: I18N_PREFIX,
       useValue: i18nPrefix },
-    PctsModalService],
+    PctsModalService,
+    ScopedTranslationService],
     parent: this.injector });
   }
 
