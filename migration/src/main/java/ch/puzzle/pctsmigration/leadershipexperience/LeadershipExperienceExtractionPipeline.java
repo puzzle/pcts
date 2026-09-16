@@ -6,6 +6,7 @@ import ch.puzzle.pctsmigration.ods.OdsParseConfig;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.openapitools.client.model.LeadershipExperienceInputDto;
 import org.openapitools.client.model.LeadershipExperienceTypeDto;
@@ -30,11 +31,8 @@ public class LeadershipExperienceExtractionPipeline
 
     @Override
     public LeadershipExperienceContextModel fetchContext() {
-        return new LeadershipExperienceContextModel(LocalDate.now(),
-                                                    List
-                                                            .of(LeadershipExperienceTypeDto.LeadershipExperienceKindEnum.MILITARY_FUNCTION,
-                                                                LeadershipExperienceTypeDto.LeadershipExperienceKindEnum.LEADERSHIP_TRAINING,
-                                                                LeadershipExperienceTypeDto.LeadershipExperienceKindEnum.YOUTH_AND_SPORT));
+        return new LeadershipExperienceContextModel(LocalDate
+                .now(), List.of(LeadershipExperienceTypeDto.LeadershipExperienceKindEnum.values()));
     }
 
     @Override
@@ -54,9 +52,9 @@ public class LeadershipExperienceExtractionPipeline
 
     @Override
     public OdsParseConfig odsSheetParseConfig() {
-        return new OdsParseConfig((tableName -> tableName.startsWith("M") && !tableName.equals("Master")),
-                                  "Führungserfahrung (nur bei M-Rollen)",
-                                  true);
+        Predicate<String> isTableStartingWithMAndIsNotMaster = tableName -> tableName.startsWith("M")
+                                                                            && !tableName.equals("Master");
+        return new OdsParseConfig(isTableStartingWithMAndIsNotMaster, "Führungserfahrung (nur bei M-Rollen)", true);
     }
 
     @Override

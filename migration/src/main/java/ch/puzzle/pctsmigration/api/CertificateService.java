@@ -7,7 +7,7 @@ import org.openapitools.client.model.CertificateInputDto;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CertificateService extends CreationBase<CertificateInputDto, CertificateDto> {
+public class CertificateService extends ApiBase<CertificateInputDto, CertificateDto> {
     private final CertificatesApi certificatesApi;
 
     public CertificateService(CertificatesApi certificatesApi) {

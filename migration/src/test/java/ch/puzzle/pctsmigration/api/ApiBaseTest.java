@@ -10,7 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openapitools.client.ApiException;
 
-class CreationBaseTest {
+class ApiBaseTest {
 
     static class DummyInput {
     }
@@ -26,7 +26,7 @@ class CreationBaseTest {
         void delete(Long id) throws ApiException;
     }
 
-    static class DummyService extends CreationBase<DummyInput, DummyEntity> {
+    static class DummyService extends ApiBase<DummyInput, DummyEntity> {
         private final DummyApi api;
 
         DummyService(DummyApi api) {

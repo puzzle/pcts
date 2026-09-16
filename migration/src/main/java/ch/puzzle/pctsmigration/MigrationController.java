@@ -60,7 +60,7 @@ public class MigrationController {
             try {
                 List<CertificateInputDto> extracted = service.extract(file, certificateExtractionPipeline);
                 certificateExtractionPipeline.create(extracted);
-                result.addToSuccessfulCertificates(filename, extracted);
+                result.addToSuccessfulFiles(filename, extracted);
 
             } catch (MigrationException e) {
                 result.addToFailedFiles(new FileError(filename, e.getMessage()));
@@ -96,7 +96,7 @@ public class MigrationController {
                 List<LeadershipExperienceInputDto> extracted = service
                         .extract(file, leadershipExperienceExtractionPipeline);
                 leadershipExperienceExtractionPipeline.create(extracted);
-                result.addToSuccessfulCertificates(filename, extracted);
+                result.addToSuccessfulFiles(filename, extracted);
 
             } catch (MigrationException e) {
                 result.addToFailedFiles(new FileError(filename, e.getMessage()));

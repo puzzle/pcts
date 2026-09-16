@@ -53,7 +53,7 @@ class CertificateTypeServiceTest {
 
         assertThatThrownBy(() -> certificateTypeService.getCertificateTypes())
                 .isInstanceOf(MigrationException.class)
-                .hasMessage("400 BAD_REQUEST");
+                .hasMessage("HTTP 500: Internal Server Error");
 
         verify(certificateTypesApi, times(1)).getCertificateTypes();
     }

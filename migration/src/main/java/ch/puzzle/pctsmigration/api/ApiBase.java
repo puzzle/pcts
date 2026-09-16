@@ -9,7 +9,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatusCode;
 
-public abstract class CreationBase<I, D> {
+/**
+ * Base class for API operations.
+ *
+ * @param <I>
+ *            The type of the input DTO used to create the entity.
+ * @param <D>
+ *            The DTo of the entity that comes from the pcts API
+ */
+public abstract class ApiBase<I, D> {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public void create(List<I> dtos) {

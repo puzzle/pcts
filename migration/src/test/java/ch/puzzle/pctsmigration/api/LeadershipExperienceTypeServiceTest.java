@@ -51,7 +51,7 @@ public class LeadershipExperienceTypeServiceTest {
 
         assertThatThrownBy(() -> leadershipExperienceTypeService.getLeadershipExperienceTypes())
                 .isInstanceOf(MigrationException.class)
-                .hasMessage("400 BAD_REQUEST");
+                .hasMessage("HTTP 500: Internal Server Error");
 
         verify(leadershipExperienceTypesApi, times(1)).getLeadershipExperienceTypes();
     }

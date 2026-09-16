@@ -2,6 +2,8 @@ package ch.puzzle.pctsmigration.ods;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.puzzle.pctsmigration.ods.model.Cell;
+import ch.puzzle.pctsmigration.ods.model.Row;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;

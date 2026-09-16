@@ -2,15 +2,18 @@ package ch.puzzle.pctsmigration.ods;
 
 import ch.puzzle.pctsmigration.exception.Error;
 import ch.puzzle.pctsmigration.exception.MigrationException;
+import ch.puzzle.pctsmigration.ods.model.Cell;
+import ch.puzzle.pctsmigration.ods.model.Row;
+import ch.puzzle.pctsmigration.ods.model.Sheet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
-
 import org.odftoolkit.odfdom.doc.OdfSpreadsheetDocument;
 import org.odftoolkit.odfdom.doc.table.OdfTable;
 import org.odftoolkit.odfdom.doc.table.OdfTableRow;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,10 +33,10 @@ public class OdsParserService {
 
         try (OdfSpreadsheetDocument doc = OdfSpreadsheetDocument.loadDocument(file.getInputStream())) {
 
-            OdsParseResult result = extractData(doc,
-                                                config.tableNameConvention(),
-                                                config.startMarker(),
-                                                config.shouldCutOfCalcRow());
+            List<Sheet> result = extractData(doc,
+                                             config.tableNameConvention(),
+                                             config.startMarker(),
+                                             config.shouldCutOfCalcRow());
             return generateMarkdown(result);
         } catch (Exception e) {
             throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
@@ -41,21 +44,21 @@ public class OdsParserService {
         }
     }
 
-    private OdsParseResult extractData(OdfSpreadsheetDocument doc, Function<String, Boolean> tableNameConvention,
-                                       String startMarker, boolean shouldCutOfCalcRow)
-            throws Exception {
+    private List<Sheet> extractData(OdfSpreadsheetDocument doc, Predicate<String> tableNameConvention,
+                                    String startMarker, boolean shouldCutOfCalcRow)
+            throws MigrationException {
         List<Sheet> sheets = doc
                 .getSpreadsheetTables()
                 .stream()
-                .filter(table -> tableNameConvention.apply(table.getTableName()))
+                .filter(table -> tableNameConvention.test(table.getTableName()))
                 .limit(MAX_SHEETS)
                 .map(table -> extractSheet(table, startMarker, shouldCutOfCalcRow))
                 .toList();
 
         if (sheets.isEmpty()) {
-            throw new Exception("No valid sheets found");
+            throw new MigrationException(new Error(HttpStatus.BAD_REQUEST, "No valid sheets found"));
         }
-        return new OdsParseResult(sheets);
+        return sheets;
     }
 
     private Sheet extractSheet(OdfTable table, String startMarker, boolean shouldCutOfCalcRow) {
@@ -122,9 +125,9 @@ public class OdsParserService {
         return optimized;
     }
 
-    private String generateMarkdown(OdsParseResult result) {
+    private String generateMarkdown(List<Sheet> result) {
         StringBuilder sb = new StringBuilder();
-        for (Sheet sheet : result.sheets()) {
+        for (Sheet sheet : result) {
             appendSheetMarkdown(sb, sheet);
         }
         return sb.toString();

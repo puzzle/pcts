@@ -8,6 +8,8 @@ import ch.puzzle.pctsmigration.ods.OdsParseConfig;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
+
 import org.openapitools.client.model.CertificateInputDto;
 import org.openapitools.client.model.CertificateTypeDto;
 import org.springframework.stereotype.Component;
@@ -46,7 +48,8 @@ public class CertificateExtractionPipeline
 
     @Override
     public OdsParseConfig odsSheetParseConfig() {
-        return new OdsParseConfig((List.of("Zertifikat", "Zertifikate")::contains), null, false);
+        Predicate<String> isCertificateTable = tableName -> List.of("Zertifikat", "Zertifikate").contains(tableName);
+        return new OdsParseConfig(isCertificateTable, null, false);
     }
 
     @Override

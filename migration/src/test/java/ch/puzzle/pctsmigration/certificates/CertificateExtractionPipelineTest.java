@@ -58,9 +58,9 @@ class CertificateExtractionPipelineTest {
     void odsSheetParseConfig_configuresSheetNamesCorrectly() {
         OdsParseConfig config = pipeline.odsSheetParseConfig();
 
-        assertThat(config.tableNameConvention().apply("Zertifikat")).isTrue();
-        assertThat(config.tableNameConvention().apply("Zertifikate")).isTrue();
-        assertThat(config.tableNameConvention().apply("InvalidSheet")).isFalse();
+        assertThat(config.tableNameConvention().test("Zertifikat")).isTrue();
+        assertThat(config.tableNameConvention().test("Zertifikate")).isTrue();
+        assertThat(config.tableNameConvention().test("InvalidSheet")).isFalse();
 
         assertThat(config.startMarker()).isNull();
         assertThat(config.shouldCutOfCalcRow()).isFalse();

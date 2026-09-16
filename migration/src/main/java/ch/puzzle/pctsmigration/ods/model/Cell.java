@@ -1,4 +1,4 @@
-package ch.puzzle.pctsmigration.ods;
+package ch.puzzle.pctsmigration.ods.model;
 
 import org.odftoolkit.odfdom.doc.table.OdfTableCell;
 
@@ -10,8 +10,9 @@ public class Cell {
     }
 
     private String cleanCellText(OdfTableCell cell) {
-        if (cell == null)
+        if (cell == null) {
             return "";
+        }
 
         String text = cell.getDisplayText();
         if (text == null)

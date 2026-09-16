@@ -83,8 +83,8 @@ class MigrationControllerTest {
         mockMvc
                 .perform(multipart("/api/migration/certificates").file(file1).file(file2))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.successfulCertificates").isMap())
-                .andExpect(jsonPath("$.successfulCertificates.length()").value(2))
+                .andExpect(jsonPath("$.successfulFiles").isMap())
+                .andExpect(jsonPath("$.successfulFiles.length()").value(2))
                 .andExpect(jsonPath("$.failedFiles").isArray())
                 .andExpect(jsonPath("$.failedFiles.length()").value(0));
 
@@ -109,7 +109,7 @@ class MigrationControllerTest {
         mockMvc
                 .perform(multipart("/api/migration/certificates").file(successFile).file(errorFile))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.successfulCertificates.length()").value(1))
+                .andExpect(jsonPath("$.successfulFiles.length()").value(1))
                 .andExpect(jsonPath("$.failedFiles.length()").value(1))
                 .andExpect(jsonPath("$.failedFiles[0].filename").value("error.ods"));
         verify(certificatePipeline, times(1)).create(anyList());
@@ -156,8 +156,8 @@ class MigrationControllerTest {
         mockMvc
                 .perform(multipart("/api/migration/leadershipexperiences").file(file1).file(file2))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.successfulCertificates").isMap())
-                .andExpect(jsonPath("$.successfulCertificates.length()").value(2))
+                .andExpect(jsonPath("$.successfulFiles").isMap())
+                .andExpect(jsonPath("$.successfulFiles.length()").value(2))
                 .andExpect(jsonPath("$.failedFiles").isArray())
                 .andExpect(jsonPath("$.failedFiles.length()").value(0));
 
@@ -188,7 +188,7 @@ class MigrationControllerTest {
         mockMvc
                 .perform(multipart("/api/migration/leadershipexperiences").file(successFile).file(errorFile))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.successfulCertificates.length()").value(1))
+                .andExpect(jsonPath("$.successfulFiles.length()").value(1))
                 .andExpect(jsonPath("$.failedFiles.length()").value(1))
                 .andExpect(jsonPath("$.failedFiles[0].filename").value("leadership_error.ods"));
         verify(leadershipExperiencePipeline, times(1)).create(anyList());

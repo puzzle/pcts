@@ -7,7 +7,7 @@ import org.openapitools.client.model.LeadershipExperienceInputDto;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LeadershipExperienceService extends CreationBase<LeadershipExperienceInputDto, LeadershipExperienceDto> {
+public class LeadershipExperienceService extends ApiBase<LeadershipExperienceInputDto, LeadershipExperienceDto> {
     private final LeadershipExperiencesApi leadershipExperiencesApi;
 
     public LeadershipExperienceService(LeadershipExperiencesApi leadershipExperiencesApi) {

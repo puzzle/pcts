@@ -1,5 +1,8 @@
 package ch.puzzle.pctsmigration.ods;
 
+import ch.puzzle.pctsmigration.ods.model.Row;
+import ch.puzzle.pctsmigration.ods.model.Sheet;
+
 public class SheetRowCollector {
 
     private static final int MAX_TOLERATED_EMPTY_ROWS = 3;
