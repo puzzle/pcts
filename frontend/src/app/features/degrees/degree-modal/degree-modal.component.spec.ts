@@ -163,7 +163,7 @@ describe('DegreeModalComponent', () => {
         .toHaveBeenCalledWith();
     });
 
-    it('should close the dialog with delete mode and form data', () => {
+    it('should delete modal when onDelete()', () => {
       component.formGroup.patchValue(degree1);
       component.onDelete();
       expect(dialogRefMock.close)
