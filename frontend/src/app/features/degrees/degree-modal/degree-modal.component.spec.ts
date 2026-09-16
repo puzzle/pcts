@@ -163,11 +163,14 @@ describe('DegreeModalComponent', () => {
         .toHaveBeenCalledWith();
     });
 
-    it('should delete the dialog and data with delete button', () => {
+    it('should close the dialog with delete mode and form data', () => {
       component.formGroup.patchValue(degree1);
       component.onDelete();
       expect(dialogRefMock.close)
-        .toHaveBeenCalledWith();
+        .toHaveBeenCalledWith({
+          modalSubmitMode: ModalSubmitMode.DELETE,
+          submittedModel: component.formGroup.getRawValue()
+        });
     });
   });
 });
