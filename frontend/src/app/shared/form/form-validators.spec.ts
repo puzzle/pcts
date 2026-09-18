@@ -1,215 +1,262 @@
 import { FormControl } from '@angular/forms';
 import {
   isDateInPast,
-  isDateInPastOrPresent, isSearchTermEmpty,
+  isDateInPastOrPresent, isInteger, isSearchTermEmpty,
   isValueInList,
   isValueInListSignal
 } from './form-validators';
 import { signal } from '@angular/core';
 import { add, sub } from 'date-fns';
 
-describe('isDateInPastOrPresent', () => {
-  it('should return null if value is empty', () => {
-    const control = new FormControl('');
-    expect(isDateInPastOrPresent()(control))
-      .toBeNull();
+describe('form-validators', () => {
+  describe('isDateInPastOrPresent', () => {
+    it('should return null if value is empty', () => {
+      const control = new FormControl('');
+      expect(isDateInPastOrPresent()(control))
+        .toBeNull();
+    });
+
+    it('should return invalid_date if date is not valid', () => {
+      const control = new FormControl('not-a-date');
+      expect(isDateInPastOrPresent()(control))
+        .toEqual({ invalid_date: true });
+    });
+
+    it('should return null if date is today', () => {
+      const today = new Date();
+      const control = new FormControl(today);
+      expect(isDateInPastOrPresent()(control))
+        .toBeNull();
+    });
+
+    it('should return date_is_in_future if date is in the future', () => {
+      const futureDate = add(Date.now(), { days: 1 });
+      const control = new FormControl(futureDate);
+      expect(isDateInPastOrPresent()(control))
+        .toEqual({ date_is_in_future: true });
+    });
+
+    it('should return null if date is in the past', () => {
+      const pastDate = sub(Date.now(), { days: 1 });
+      const control = new FormControl(pastDate);
+      expect(isDateInPastOrPresent()(control))
+        .toBeNull();
+    });
   });
 
-  it('should return invalid_date if date is not valid', () => {
-    const control = new FormControl('not-a-date');
-    expect(isDateInPastOrPresent()(control))
-      .toEqual({ invalid_date: true });
+  describe('isDateInPast', () => {
+    it('should return null if value is empty', () => {
+      const control = new FormControl('');
+      expect(isDateInPast()(control))
+        .toBeNull();
+    });
+
+    it('should return invalid_date if date is not valid', () => {
+      const control = new FormControl('not-a-date');
+      expect(isDateInPast()(control))
+        .toEqual({ invalid_date: true });
+    });
+
+    it('should return date_is_not_in_past if date is today', () => {
+      const today = new Date();
+      const control = new FormControl(today);
+      expect(isDateInPast()(control))
+        .toEqual({ date_is_not_in_past: true });
+    });
+
+    it('should return date_is_not_in_past if date is in the future', () => {
+      const futureDate = add(Date.now(), { days: 1 });
+      const control = new FormControl(futureDate);
+      expect(isDateInPast()(control))
+        .toEqual({ date_is_not_in_past: true });
+    });
+
+    it('should return null if date is truly in the past', () => {
+      const pastDate = sub(Date.now(), { days: 1 });
+      const control = new FormControl(pastDate);
+      expect(isDateInPast()(control))
+        .toBeNull();
+    });
   });
 
-  it('should return null if date is today', () => {
-    const today = new Date();
-    const control = new FormControl(today);
-    expect(isDateInPastOrPresent()(control))
-      .toEqual(null);
+  describe('isValueInList', () => {
+    const options = ['Apple',
+      'Banana',
+      'Cherry'];
+
+    const comparator = (a, b) => a === b;
+
+    it('should return null if value is empty', () => {
+      const control = new FormControl('');
+      expect(isValueInList(options)(control))
+        .toBeNull();
+    });
+
+    it('should return null if value is allowed', () => {
+      const control = new FormControl('Banana');
+      expect(isValueInList(options)(control))
+        .toBeNull();
+    });
+
+    it('should return invalid_entry if value is not allowed', () => {
+      const control = new FormControl('Orange');
+      expect(isValueInList(options)(control))
+        .toEqual({ invalid_entry: true });
+    });
+
+    it('should return null if value is empty with comparator', () => {
+      const control = new FormControl('');
+      expect(isValueInList(options, comparator)(control))
+        .toBeNull();
+    });
+
+    it('should return null if value is allowed with comparator', () => {
+      const control = new FormControl('Banana');
+      expect(isValueInList(options, comparator)(control))
+        .toBeNull();
+    });
+
+    it('should return invalid_entry if value is not allowed with comparator', () => {
+      const control = new FormControl('Orange');
+      expect(isValueInList(options, comparator)(control))
+        .toEqual({ invalid_entry: true });
+    });
   });
 
-  it('should return date_is_in_future if date is in the future', () => {
-    const futureDate = add(Date.now(), { days: 1 });
-    const control = new FormControl(futureDate);
-    expect(isDateInPastOrPresent()(control))
-      .toEqual({ date_is_in_future: true });
+
+  describe('isValueInListSignal', () => {
+    const optionsSignal = signal(['Red',
+      'Green',
+      'Blue']);
+
+    const comparator = (a, b) => a === b;
+
+    it('should return null if value is empty', () => {
+      const control = new FormControl('');
+      expect(isValueInListSignal(optionsSignal)(control))
+        .toBeNull();
+    });
+
+    it('should return null if value is in the signal list', () => {
+      const control = new FormControl('Green');
+      expect(isValueInListSignal(optionsSignal)(control))
+        .toBeNull();
+    });
+
+    it('should return invalid_entry if value is not in the signal list', () => {
+      const control = new FormControl('Yellow');
+      expect(isValueInListSignal(optionsSignal)(control))
+        .toEqual({ invalid_entry: true });
+    });
+
+    it('should return null if value is empty with comparator', () => {
+      const control = new FormControl('');
+      expect(isValueInListSignal(optionsSignal, comparator)(control))
+        .toBeNull();
+    });
+
+    it('should return null if value is in the signal list with comparator', () => {
+      const control = new FormControl('Green');
+      expect(isValueInListSignal(optionsSignal, comparator)(control))
+        .toBeNull();
+    });
+
+    it('should return invalid_entry if value is not in the signal list with comparator', () => {
+      const control = new FormControl('Yellow');
+      expect(isValueInListSignal(optionsSignal, comparator)(control))
+        .toEqual({ invalid_entry: true });
+    });
+
+    it('should react to signal value list changes', () => {
+      const control = new FormControl('Purple');
+
+      expect(isValueInListSignal(optionsSignal)(control))
+        .toEqual({ invalid_entry: true });
+
+      optionsSignal.set(['Purple']);
+      expect(isValueInListSignal(optionsSignal)(control))
+        .toBeNull();
+    });
   });
 
-  it('should return null if date is in the past', () => {
-    const pastDate = sub(Date.now(), { days: 1 });
-    const control = new FormControl(pastDate);
-    expect(isDateInPastOrPresent()(control))
-      .toBeNull();
+  describe('isSearchTermEmpty', () => {
+    afterEach(() => {
+      document.getElementsByTagName('html')[0].innerHTML = '';
+    });
+
+    it('should return null if input is empty', () => {
+      const inputField = document.createElement('input') as HTMLInputElement;
+      inputField.setAttribute('id', 'uut');
+      inputField.value = '';
+      document.querySelector('body')
+        ?.append(inputField);
+      const control = new FormControl('');
+      expect(isSearchTermEmpty('uut')(control))
+        .toBeNull();
+    });
+
+    it('should return null if there is no input field with this id', () => {
+      const inputField = document.createElement('input') as HTMLInputElement;
+      inputField.value = '';
+      const control = new FormControl('');
+      expect(isSearchTermEmpty('uut')(control))
+        .toBeNull();
+    });
+
+    it('should return error if input is not empty', () => {
+      const inputField = document.createElement('input') as HTMLInputElement;
+      inputField.setAttribute('id', 'uut');
+      inputField.value = 'something';
+      document.querySelector('body')
+        ?.append(inputField);
+      const control = new FormControl('');
+      expect(isSearchTermEmpty('uut')(control))
+        .toEqual({ invalid_entry: inputField.value });
+    });
+
+    describe('isInteger', () => {
+      it('should return null if value is an empty string', () => {
+        const control = new FormControl('');
+        expect(isInteger()(control))
+          .toBeNull();
+      });
+
+      it('should return null if value is a valid positive integer string', () => {
+        const control = new FormControl('12345');
+        expect(isInteger()(control))
+          .toBeNull();
+      });
+
+      it('should return null if value is a valid negative integer string', () => {
+        const control = new FormControl('-987');
+        expect(isInteger()(control))
+          .toBeNull();
+      });
+
+      it('should return null if value is a valid integer number', () => {
+        const control = new FormControl(42 as any);
+        expect(isInteger()(control))
+          .toBeNull();
+      });
+
+      it('should return invalid_integer if value is a float', () => {
+        const control = new FormControl('12.34');
+        expect(isInteger()(control))
+          .toEqual({ invalid_integer: true });
+      });
+
+      it('should return invalid_integer if value contains letters', () => {
+        const control = new FormControl('123a');
+        expect(isInteger()(control))
+          .toEqual({ invalid_integer: true });
+      });
+
+      it('should return invalid_integer if value is null', () => {
+        const control = new FormControl(null);
+        expect(isInteger()(control))
+          .toEqual({ invalid_integer: true });
+      });
+    });
   });
 });
 
-describe('isDateInPast', () => {
-  it('should return null if value is empty', () => {
-    const control = new FormControl('');
-    expect(isDateInPast()(control))
-      .toBeNull();
-  });
-
-  it('should return invalid_date if date is not valid', () => {
-    const control = new FormControl('not-a-date');
-    expect(isDateInPast()(control))
-      .toEqual({ invalid_date: true });
-  });
-
-  it('should return date_is_not_in_past if date is today', () => {
-    const today = new Date();
-    const control = new FormControl(today);
-    expect(isDateInPast()(control))
-      .toEqual({ date_is_not_in_past: true });
-  });
-
-  it('should return date_is_not_in_past if date is in the future', () => {
-    const futureDate = add(Date.now(), { days: 1 });
-    const control = new FormControl(futureDate);
-    expect(isDateInPast()(control))
-      .toEqual({ date_is_not_in_past: true });
-  });
-
-  it('should return null if date is truly in the past', () => {
-    const pastDate = sub(Date.now(), { days: 1 });
-    const control = new FormControl(pastDate);
-    expect(isDateInPast()(control))
-      .toBeNull();
-  });
-});
-
-describe('isValueInList', () => {
-  const options = ['Apple',
-    'Banana',
-    'Cherry'];
-
-  const comparator = (a, b) => a === b;
-
-  it('should return null if value is empty', () => {
-    const control = new FormControl('');
-    expect(isValueInList(options)(control))
-      .toBeNull();
-  });
-
-  it('should return null if value is allowed', () => {
-    const control = new FormControl('Banana');
-    expect(isValueInList(options)(control))
-      .toBeNull();
-  });
-
-  it('should return invalid_entry if value is not allowed', () => {
-    const control = new FormControl('Orange');
-    expect(isValueInList(options)(control))
-      .toEqual({ invalid_entry: true });
-  });
-
-  it('should return null if value is empty with comparator', () => {
-    const control = new FormControl('');
-    expect(isValueInList(options, comparator)(control))
-      .toBeNull();
-  });
-
-  it('should return null if value is allowed with comparator', () => {
-    const control = new FormControl('Banana');
-    expect(isValueInList(options, comparator)(control))
-      .toBeNull();
-  });
-
-  it('should return invalid_entry if value is not allowed with comparator', () => {
-    const control = new FormControl('Orange');
-    expect(isValueInList(options, comparator)(control))
-      .toEqual({ invalid_entry: true });
-  });
-});
-
-
-describe('isValueInListSignal', () => {
-  const optionsSignal = signal(['Red',
-    'Green',
-    'Blue']);
-
-  const comparator = (a, b) => a === b;
-
-  it('should return null if value is empty', () => {
-    const control = new FormControl('');
-    expect(isValueInListSignal(optionsSignal)(control))
-      .toBeNull();
-  });
-
-  it('should return null if value is in the signal list', () => {
-    const control = new FormControl('Green');
-    expect(isValueInListSignal(optionsSignal)(control))
-      .toBeNull();
-  });
-
-  it('should return invalid_entry if value is not in the signal list', () => {
-    const control = new FormControl('Yellow');
-    expect(isValueInListSignal(optionsSignal)(control))
-      .toEqual({ invalid_entry: true });
-  });
-
-  it('should return null if value is empty with comparator', () => {
-    const control = new FormControl('');
-    expect(isValueInListSignal(optionsSignal, comparator)(control))
-      .toBeNull();
-  });
-
-  it('should return null if value is in the signal list with comparator', () => {
-    const control = new FormControl('Green');
-    expect(isValueInListSignal(optionsSignal, comparator)(control))
-      .toBeNull();
-  });
-
-  it('should return invalid_entry if value is not in the signal list with comparator', () => {
-    const control = new FormControl('Yellow');
-    expect(isValueInListSignal(optionsSignal, comparator)(control))
-      .toEqual({ invalid_entry: true });
-  });
-
-  it('should react to signal value list changes', () => {
-    const control = new FormControl('Purple');
-
-    expect(isValueInListSignal(optionsSignal)(control))
-      .toEqual({ invalid_entry: true });
-
-    optionsSignal.set(['Purple']);
-    expect(isValueInListSignal(optionsSignal)(control))
-      .toBeNull();
-  });
-});
-
-describe('isSearchTermEmpty', () => {
-  afterEach(() => {
-    document.getElementsByTagName('html')[0].innerHTML = '';
-  });
-
-  it('should return null if input is empty', () => {
-    const inputField = document.createElement('input') as HTMLInputElement;
-    inputField.setAttribute('id', 'uut');
-    inputField.value = '';
-    document.querySelector('body')
-      ?.append(inputField);
-    const control = new FormControl('');
-    expect(isSearchTermEmpty('uut')(control))
-      .toBeNull();
-  });
-
-  it('should return null if there is no input field with this id', () => {
-    const inputField = document.createElement('input') as HTMLInputElement;
-    inputField.value = '';
-    const control = new FormControl('');
-    expect(isSearchTermEmpty('uut')(control))
-      .toBeNull();
-  });
-
-  it('should return error if input is not empty', () => {
-    const inputField = document.createElement('input') as HTMLInputElement;
-    inputField.setAttribute('id', 'uut');
-    inputField.value = 'something';
-    document.querySelector('body')
-      ?.append(inputField);
-    const control = new FormControl('');
-    expect(isSearchTermEmpty('uut')(control))
-      .toEqual({ invalid_entry: inputField.value });
-  });
-});
