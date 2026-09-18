@@ -81,7 +81,7 @@ export class CertificateModalComponent extends StrictlyTypedDialog<FormModalConf
     this.dialogRef.close();
   }
 
-  onDelete() {
+  closeModalWithDelete() {
     this.dialogRef.close({
       modalSubmitMode: ModalSubmitMode.DELETE,
       submittedModel: this.formGroup.getRawValue() as CertificateModel
