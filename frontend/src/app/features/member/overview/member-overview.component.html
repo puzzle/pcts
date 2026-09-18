@@ -127,6 +127,7 @@
       [routerLink]="['/member', row.id]"
       class="cursor-pointer"
       data-testid="member-row"
+      (keydown.enter)="router.navigate(['/member', row.id])"
     ></tr>
 
     <tr *matNoDataRow data-testid="no-results-row">

@@ -175,5 +175,15 @@ describe('LeadershipExperienceModalComponent', () => {
       expect(component['displayLeadershipExperienceTypes'](undefined as any))
         .toBe('');
     });
+
+    describe('onDelete', () => {
+      it('should close the dialog with delete mode and form data', () => {
+        component.formGroup.patchValue(leadershipExperience1);
+        component.onDelete();
+        expect(dialogRefMock.close)
+          .toHaveBeenCalledWith({ modalSubmitMode: ModalSubmitMode.DELETE,
+            submittedModel: component.formGroup.getRawValue() });
+      });
+    });
   });
 });

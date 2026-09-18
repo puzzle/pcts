@@ -3,12 +3,16 @@ import { ModalSubmitMode } from '../enum/modal-submit-mode.enum';
 import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
 import { MenuButtonComponent } from '../menu-button/menu-button.component';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-modal-actions',
-  imports: [MatButtonModule,
+  imports: [
+    MatButtonModule,
     ScopedTranslationPipe,
-    MenuButtonComponent],
+    MenuButtonComponent,
+    MatIcon
+  ],
   templateUrl: './modal-actions.component.html'
 })
 export class ModalActionsComponent {
@@ -20,9 +24,13 @@ export class ModalActionsComponent {
 
   submitModes = input.required<ModalSubmitMode[]>();
 
+  @Input() deleteKey = 'BUTTONS.DELETE';
+
   @Output() cancelAction = new EventEmitter<void>();
 
   @Output() submitAction = new EventEmitter<ModalSubmitMode>();
+
+  @Output() deleteAction = new EventEmitter<ModalSubmitMode>();
 
   public readonly ModalSubmitMode = ModalSubmitMode;
 
@@ -32,5 +40,15 @@ export class ModalActionsComponent {
 
   onSubmit(mode: ModalSubmitMode): void {
     this.submitAction.emit(mode);
+  }
+
+  hasDeleteSubmitMode() {
+    return this.submitModes()
+      .includes(ModalSubmitMode.DELETE);
+  }
+
+  menuButtonFunctions() {
+    return this.submitModes()
+      .filter((modelSubmitMode) => modelSubmitMode !== ModalSubmitMode.DELETE);
   }
 }

@@ -162,5 +162,15 @@ describe('DegreeModalComponent', () => {
       expect(dialogRefMock.close)
         .toHaveBeenCalledWith();
     });
+
+    it('should delete modal when onDelete()', () => {
+      component.formGroup.patchValue(degree1);
+      component.onDelete();
+      expect(dialogRefMock.close)
+        .toHaveBeenCalledWith({
+          modalSubmitMode: ModalSubmitMode.DELETE,
+          submittedModel: component.formGroup.getRawValue()
+        });
+    });
   });
 });

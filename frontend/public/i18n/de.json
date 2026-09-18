@@ -61,7 +61,8 @@
       "ACTION": "bearbeiten",
       "BUTTONS": {
         "ACTION": "Speichern",
-        "CANCEL": "Abbrechen"
+        "CANCEL": "Abbrechen",
+        "DELETE": "Eintrag löschen"
       }
     },
     "DELETE": {
