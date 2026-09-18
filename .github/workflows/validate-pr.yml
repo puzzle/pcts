@@ -126,7 +126,7 @@ jobs:
     name: Validate PR Title
     runs-on: ubuntu-latest
     steps:
-      - name: Enforce Conventional Commits
+      - name: Enforce Conventional Commit Like PR Title
         uses: amannn/action-semantic-pull-request@v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -143,6 +143,24 @@ jobs:
             style
             test
           requireScope: false
+
+  ensure-no-wip-commits:
+    name: Ensure no WIP commits are present
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Check if there are any WIP commits
+        run: |
+          commits=$(git log --grep "^wip:" --regexp-ignore-case --oneline)
+          if [ -n "$commits" ]; then
+            echo "Error: found WIP commits!"
+            echo "$commits"
+            exit 1
+          fi
 
   validate-branch-prefix:
     name: Validate Branch Prefix
