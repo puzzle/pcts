@@ -35,7 +35,7 @@ export const routes: Routes = [{
     {
       path: ':id',
       component: MemberDetailViewComponent,
-      canActivate: [authGuard('user')],
+      canActivate: [authGuard('selfOrAdmin')],
       resolve:
         { memberId: memberIdResolver,
           tabIndex: tabResolver }
