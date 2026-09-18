@@ -23,7 +23,7 @@ class ExtractionPipelineTest {
 
     @Test
     @DisplayName("extractAbbreviation should extract and uppercase the prefix before the underscore")
-    void extractAbbreviation_withValidFilename_returnsUppercasePrefix() {
+    void extractAbbreviation_withValidFilenameUnderscore_returnsUppercasePrefix() {
         String result = pipeline.extractAbbreviation("aw_zertifikate.ods");
         assertThat(result).isEqualTo("AW");
 
@@ -32,9 +32,16 @@ class ExtractionPipelineTest {
     }
 
     @Test
-    @DisplayName("extractAbbreviation should throw MigrationException if no underscore is present")
+    @DisplayName("extractAbbreviation should extract and uppercase the prefix before the dot")
+    void extractAbbreviation_withValidFilenameDot_returnsUppercasePrefix() {
+        String result = pipeline.extractAbbreviation("aw.ods");
+        assertThat(result).isEqualTo("AW");
+    }
+
+    @Test
+    @DisplayName("extractAbbreviation should throw MigrationException if no underscore or dot is present")
     void extractAbbreviation_withInvalidFilename_throwsException() {
-        String filename = "invalidfilename.ods";
+        String filename = "invalidfilename";
 
         MigrationException exception = assertThrows(MigrationException.class,
                                                     () -> pipeline.extractAbbreviation(filename));
