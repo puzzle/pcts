@@ -6,18 +6,20 @@ import { authGuard } from './auth.guard';
 import { AuthService } from '../auth.service';
 import { MemberService } from '../../../features/member/member.service';
 import { APP_CONFIG } from '../../../features/configuration/configuration.token';
+import { signal, WritableSignal } from '@angular/core';
 
 describe('authGuard', () => {
   let userServiceMock: Partial<AuthService>;
   let memberServiceMock: Partial<MemberService>;
   let routerMock: Partial<Router>;
+  let mockAppUserSignal: WritableSignal<any>;
   const mockConfig = { keycloak: { url: '',
     realm: '',
     clientId: '',
     adminAuthorities: ['ADMIN_ROLE'] } };
 
-  const executeGuard = (scope?: 'admin' | 'user',
-    route: Partial<ActivatedRouteSnapshot> = {},
+  const executeGuard = (scope?: 'admin' | 'user' | 'selfOrAdmin',
+    route: Partial<ActivatedRouteSnapshot> = { paramMap: { get: () => null } as any },
     state: Partial<RouterStateSnapshot> = { url: '/test' }) => {
     return TestBed.runInInjectionContext(() => authGuard(scope)(route as ActivatedRouteSnapshot, state as RouterStateSnapshot));
   };
@@ -25,9 +27,12 @@ describe('authGuard', () => {
   beforeEach(() => {
     jest.resetAllMocks();
 
+    mockAppUserSignal = signal(undefined);
+
     userServiceMock = {
       getRoles: jest.fn(),
-      isAdmin: jest.fn()
+      isAdmin: jest.fn(),
+      currentAppUser: mockAppUserSignal as any
     };
 
     memberServiceMock = {
@@ -74,6 +79,30 @@ describe('authGuard', () => {
 
     expect(result)
       .toBe(true);
+  });
+
+  describe('should allow access if scope is "selfOrAdmin" and user is admin or self', () => {
+    it('should allow access if scope is "selfOrAdmin" and user is admin', () => {
+      (userServiceMock.isAdmin as jest.Mock).mockReturnValue(true);
+
+      const result = executeGuard('selfOrAdmin');
+
+      expect(result)
+        .toBe(true);
+    });
+
+    it('should allow access if scope is "selfOrAdmin" and user is self', () => {
+      const userId = 1;
+      (userServiceMock.isAdmin as jest.Mock).mockReturnValue(false);
+
+      mockAppUserSignal.set({ id: userId });
+      const mockRoute = { paramMap: { get: () => userId.toString() } as any };
+
+      const result = executeGuard('selfOrAdmin', mockRoute);
+
+      expect(result)
+        .toBe(true);
+    });
   });
 
   describe('Non-Admin redirection', () => {

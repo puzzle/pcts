@@ -30,20 +30,17 @@ export const authGuard = (scope: 'admin' | 'user' | 'selfOrAdmin' = 'admin'): Ca
 
     return routeToDefault(memberService, router, state);
   };
-
-
-  function routeToDefault(memberService: MemberService, router: Router, state: RouterStateSnapshot) {
-    return memberService.getMyself()
-      .pipe(map((member) => {
-        const targetUrl = `/member/${member.id}`;
-
-        if (state.url === targetUrl) {
-          return true;
-        }
-
-        return router.parseUrl(targetUrl);
-      }));
-  }
 };
 
+function routeToDefault(memberService: MemberService, router: Router, state: RouterStateSnapshot) {
+  return memberService.getMyself()
+    .pipe(map((member) => {
+      const targetUrl = `/member/${member.id}`;
 
+      if (state.url === targetUrl) {
+        return true;
+      }
+
+      return router.parseUrl(targetUrl);
+    }));
+}
