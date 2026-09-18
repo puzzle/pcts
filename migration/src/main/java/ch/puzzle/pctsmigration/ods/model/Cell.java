@@ -14,17 +14,18 @@ public class Cell {
             return "";
         }
 
-        String text = cell.getDisplayText();
-        if (text == null)
-            return "";
-
-        // Removes non-breaking spaces, zero-width spaces, and other phantom characters.
-        text = text.replaceAll("[\\u00A0\\u200B\\u200C\\u200D\\uFEFF]", " ").trim();
-
-        if (text.isBlank() || text.equals("0")) {
+        String displayText = cell.getDisplayText();
+        if (displayText == null) {
             return "";
         }
-        return text;
+
+        // Removes non-breaking spaces, zero-width spaces, and other phantom characters.
+        displayText = displayText.replaceAll("[\\u00A0\\u200B\\u200C\\u200D\\uFEFF]", " ").trim();
+        if (displayText.isBlank() || displayText.equals("0")) {
+            return "";
+        }
+
+        return displayText;
     }
 
     public String getText() {
