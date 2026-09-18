@@ -105,6 +105,8 @@ describe('Add leadershipExperience modal', () => {
 
       formPage.shouldShowSuccessToast('Führungserfahrung wurde erfolgreich aktualisiert.');
 
+      cy.wait('@leadershipExperiences');
+
       cy.get('@leadershipExperiences')
         .then((interception) => {
           expect(interception.request.body).to.contain({

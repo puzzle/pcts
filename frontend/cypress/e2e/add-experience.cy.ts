@@ -169,7 +169,7 @@ describe('Add experience Modal', () => {
   });
 
   describe('Edit experience modal', () => {
-    const openDegreeModal = () => {
+    const openExperienceModal = () => {
       cy.getByTestId('cv-table-experience')
         .within(() => {
           cy.getByTestId('generic-table-cell')
@@ -179,7 +179,7 @@ describe('Add experience Modal', () => {
     };
 
     beforeEach(() => {
-      openDegreeModal();
+      openExperienceModal();
     });
 
     it('should open correct modal', () => {
@@ -217,6 +217,8 @@ describe('Add experience Modal', () => {
         .click();
 
       formPage.shouldShowSuccessToast('Berufs- und Lebenserfahrung wurde erfolgreich aktualisiert.');
+
+      cy.wait('@experiences');
 
       cy.get('@experiences')
         .then((interception) => {
