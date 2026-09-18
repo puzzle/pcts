@@ -121,9 +121,12 @@ describe('Degree Modal', () => {
 
   describe('Edit degree modal', () => {
     const openDegreeModal = () => {
-      cy.getByTestId('generic-table-cell')
-        .eq(1)
-        .click();
+      cy.getByTestId('cv-table-degree')
+        .within(() => {
+          cy.getByTestId('generic-table-cell')
+            .eq(1)
+            .click();
+        });
 
       modalPage.checkModalIconButtonVisible();
     };
@@ -138,7 +141,7 @@ describe('Degree Modal', () => {
     });
 
     it('should save changes correctly', () => {
-      cy.intercept('PUT', 'api/v1/degrees/4')
+      cy.intercept('PUT', 'api/v1/degrees/**')
         .as('degrees');
 
       formPage.clearAndBlur('degreeType');
