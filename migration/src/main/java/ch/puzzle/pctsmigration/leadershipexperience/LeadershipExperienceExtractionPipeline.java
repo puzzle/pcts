@@ -43,6 +43,7 @@ public class LeadershipExperienceExtractionPipeline
                    Skip the main categories in the first column.
                    To qualify for extraction, an entry must be located in the second column and have an assigned point value (indicated by a number in the 3rd, 4th, or 5th column of the same row).
                    Ignore all rows without numbers.
+                2. Each leadership experience can only be extracted exactly ONCE at most.
                 === CONTEXT ===
                 Current date: %s
                 Categories: %s
