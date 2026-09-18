@@ -167,4 +167,71 @@ describe('Add experience Modal', () => {
       });
     });
   });
+
+  describe('Edit experience modal', () => {
+    const openDegreeModal = () => {
+      cy.getByTestId('cv-table-experience')
+        .within(() => {
+          cy.getByTestId('generic-table-cell')
+            .eq(1)
+            .click();
+        });
+    };
+
+    beforeEach(() => {
+      openDegreeModal();
+    });
+
+    it('should open correct modal', () => {
+      modalPage.modalTitle()
+        .should('include.text', 'Berufs- und Lebenserfahrung bearbeiten');
+    });
+
+    it('should save changes correctly', () => {
+      cy.intercept('PUT', 'api/v1/experiences/**')
+        .as('experiences');
+
+      formPage.clearAndBlur('experienceType');
+      modalPage.selectAutoCompleteValue('experienceType', 'Pra');
+
+      formPage.clearAndBlur('startDate');
+      formPage.typeAndBlur('startDate', '10.10.2023');
+
+      formPage.clearAndBlur('endDate');
+      formPage.typeAndBlur('endDate', '10.12.2027');
+
+      formPage.clearAndBlur('name');
+      formPage.typeAndBlur('name', 'Software Engineer');
+
+      formPage.clearAndBlur('employer');
+      formPage.typeAndBlur('employer', 'TechNova Solutions');
+
+      formPage.clearAndBlur('percent');
+      formPage.typeAndBlur('percent', '100');
+
+      formPage.clearAndBlur('comment');
+      formPage.typeAndBlur('comment', 'Worked on backend APIs and DevOps tasks.');
+
+
+      cy.getByTestId('submit-button')
+        .click();
+
+      formPage.shouldShowSuccessToast('Berufs- und Lebenserfahrung wurde erfolgreich aktualisiert.');
+
+      cy.get('@experiences')
+        .then((interception) => {
+          expect(interception.request.body).to.contain({
+            name: 'Software Engineer',
+            memberId: 1,
+            experienceTypeId: 1,
+            employer: 'TechNova Solutions',
+            percent: 100,
+            comment: 'Worked on backend APIs and DevOps tasks.',
+            startDate: '2023-10-10',
+            endDate: '2027-12-10'
+          });
+        });
+      modalPage.checkModalIsClosed();
+    });
+  });
 });
