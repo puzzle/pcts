@@ -175,7 +175,7 @@ describe('CertificateModalComponent', () => {
   describe('onDelete', () => {
     it('should close the dialog with delete mode and form data', () => {
       component.formGroup.patchValue(certificate1);
-      component.onDelete();
+      component.closeModalWithDelete();
       expect(dialogRefMock.close)
         .toHaveBeenCalledWith({ modalSubmitMode: ModalSubmitMode.DELETE,
           submittedModel: component.formGroup.getRawValue() });

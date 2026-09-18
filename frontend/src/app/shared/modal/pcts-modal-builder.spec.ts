@@ -1,5 +1,5 @@
 import { DestroyRef, Injector } from '@angular/core';
-import { of, Subject } from 'rxjs';
+import {Observable, of, Subject} from 'rxjs';
 import { PctsModalBuilder } from './pcts-modal-builder';
 import { ModelWithId } from './pcts-modal.service';
 import { ModalSubmitMode } from '../enum/modal-submit-mode.enum';
@@ -54,7 +54,7 @@ describe('PctsModalBuilder', () => {
       const config = getConfig();
 
       expect(config.data.submitOptions)
-        .toEqual([]);
+        .toEqual([ModalSubmitMode.DELETE]);
     });
 
     it('should set the correct submitMethods for add', () => {
@@ -87,17 +87,21 @@ describe('PctsModalBuilder', () => {
   describe('Submit Methods', () => {
     let submitSpy: jest.Mock;
     let successSpy: jest.Mock;
+    let deleteSpy: jest.Mock;
     let opener: (model?: ModelWithId) => void;
 
     beforeEach(() => {
       submitSpy = jest.fn()
         .mockImplementation((model) => of(model));
+      deleteSpy = jest.fn()
+        .mockImplementation((id: number) => Observable<void>);
       successSpy = jest.fn();
 
       opener = builder
         .withComponent(MockModalComponent as any)
         .withOnSubmitMethod(submitSpy)
         .withOnSuccessMethod(successSpy)
+        .withOnDeleteMethod(deleteSpy)
         .build();
 
       opener();
@@ -112,6 +116,8 @@ describe('PctsModalBuilder', () => {
         .toHaveBeenCalledWith(modelWithId);
       expect(successSpy)
         .toHaveBeenCalled();
+      expect(deleteSpy)
+        .not.toHaveBeenCalled()
 
       expect(openModalSpy)
         .toHaveBeenCalledTimes(1);
@@ -127,6 +133,8 @@ describe('PctsModalBuilder', () => {
 
       expect(openModalSpy)
         .toHaveBeenCalledTimes(2);
+      expect(deleteSpy)
+        .not.toHaveBeenCalled()
 
       const config = getConfig(1);
       expect(config.data.model)
@@ -143,10 +151,23 @@ describe('PctsModalBuilder', () => {
 
       expect(openModalSpy)
         .toHaveBeenCalledTimes(2);
+      expect(deleteSpy)
+        .not.toHaveBeenCalled()
 
       const config = getConfig(1);
       expect(config.data.model)
         .toEqual(modelWithId);
+    });
+
+    it('should not reopen modal on delete and call delete method', () => {
+      submitModal(ModalSubmitMode.DELETE, modelWithId);
+
+      expect(successSpy)
+        .not.toHaveBeenCalled();
+      expect(openModalSpy)
+        .toHaveBeenCalledTimes(1);
+      expect(deleteSpy)
+        .toHaveBeenCalled()
     });
   });
 
