@@ -1,44 +1,51 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MemberDetailViewComponent } from './member-detail-view.component';
 import { MemberService } from '../member.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { provideTranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
-import {
-  certificate1,
-  leadershipExperience1,
-  memberOverview1,
-  rolePointsList1
-} from '../../../shared/test/test-data';
-import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
+import { memberOverview1, rolePointsList1 } from '../../../shared/test/test-data';
 import { PctsModalService } from '../../../shared/modal/pcts-modal.service';
-import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import { CertificateService } from '../../certificates/certificate.service';
-import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
 import { LeadershipExperienceService } from '../../leadership-experiences/leadership-experience.service';
 
 import { AuthService } from '../../../core/auth/auth.service';
-import { inputBinding } from '@angular/core';
+import { DegreeService } from '../../degrees/degree.service';
+import { ExperienceService } from '../../experiences/experience.service';
+import { ApplicationRef } from '@angular/core';
 
 describe('MemberDetailViewComponent (Jest)', () => {
+  let fixture: ComponentFixture<MemberDetailViewComponent>;
+  let component: MemberDetailViewComponent;
   let memberServiceMock: Partial<jest.Mocked<MemberService>>;
-  let certificateService: Partial<jest.Mocked<CertificateService>>;
-  let leadershipExperienceService: Partial<jest.Mocked<LeadershipExperienceService>>;
-  let modalService: Partial<jest.Mocked<PctsModalService>>;
+  let certificateServiceMock: Partial<jest.Mocked<CertificateService>>;
+  let leadershipExperienceServiceMock: Partial<jest.Mocked<LeadershipExperienceService>>;
+  let experienceServiceMock: Partial<jest.Mocked<ExperienceService>>;
+  let degreeServiceMock: Partial<jest.Mocked<DegreeService>>;
+  let modalServiceMock: Partial<jest.Mocked<PctsModalService>>;
   let authServiceMock: jest.Mocked<AuthService>;
   let routerMock: jest.Mocked<Router>;
   let routeMock: ActivatedRoute;
+  let appRef: ApplicationRef;
 
-  function setupTestBed(id: string | null) {
+  let mockDialogBuilder: any;
+
+  beforeEach(() => {
     memberServiceMock = {
-      getMemberOverviewByMemberId: jest.fn(),
-      getPointsForActiveCalculationsForRoleByMemberId: jest.fn(),
+      getMemberOverviewByMemberId: jest.fn()
+        .mockReturnValue(of(memberOverview1)),
+      getPointsForActiveCalculationsForRoleByMemberId: jest.fn()
+        .mockReturnValue(of(rolePointsList1)),
+      getMemberById: jest.fn()
+        .mockReturnValue(of(memberOverview1.member)),
       getCalculationsByMemberIdAndOptionalRoleId: jest.fn()
+        .mockReturnValue(of([]))
     } as Partial<jest.Mocked<MemberService>>;
 
     authServiceMock = {
       isAdmin: jest.fn()
+        .mockReturnValue(true)
     } as unknown as jest.Mocked<AuthService>;
 
     routerMock = {
@@ -46,33 +53,56 @@ describe('MemberDetailViewComponent (Jest)', () => {
       url: '/member/1'
     } as any;
 
-    routeMock = {
-      snapshot: {
-        paramMap: {
-          get: jest.fn()
-            .mockReturnValue(id)
-        }
-      }
-    } as unknown as ActivatedRoute;
+    routeMock = {} as unknown as ActivatedRoute;
 
-    modalService = {
-      openModal: jest.fn()
+    mockDialogBuilder = {
+      withComponent: jest.fn()
+        .mockReturnThis(),
+      withOnSubmitMethod: jest.fn()
+        .mockReturnThis(),
+      withOnSuccessMethod: jest.fn()
+        .mockReturnThis(),
+      withSubmitOptionsForAdd: jest.fn()
+        .mockReturnThis(),
+      withSubmitOptionsForEdit: jest.fn()
+        .mockReturnThis(),
+      withI18nPrefix: jest.fn()
+        .mockReturnThis(),
+      build: jest.fn()
+        .mockReturnValue(jest.fn())
     };
 
-    certificateService = {
-      addCertificate: jest.fn()
-        .mockReturnValue(of(certificate1))
+    modalServiceMock = {
+      dialogOpener: jest.fn()
+        .mockReturnValue(mockDialogBuilder)
+    } as any;
+
+    certificateServiceMock = {
+      addCertificate: jest.fn(),
+      updateCertificate: jest.fn(),
+      getCertificateById: jest.fn()
     } as Partial<jest.Mocked<CertificateService>>;
 
-    leadershipExperienceService = {
-      addLeadershipExperience: jest.fn()
-        .mockReturnValue(of({ leadershipExperience1 }))
+    leadershipExperienceServiceMock = {
+      addLeadershipExperience: jest.fn(),
+      updateLeadershipExperience: jest.fn(),
+      getLeadershipExperienceById: jest.fn()
     } as Partial<jest.Mocked<LeadershipExperienceService>>;
 
+    experienceServiceMock = {
+      addExperience: jest.fn(),
+      updateExperience: jest.fn(),
+      getExperienceById: jest.fn()
+    } as Partial<jest.Mocked<ExperienceService>>;
+
+    degreeServiceMock = {
+      addDegree: jest.fn(),
+      updateDegree: jest.fn(),
+      getDegreeById: jest.fn()
+    } as Partial<jest.Mocked<DegreeService>>;
+
     TestBed.configureTestingModule({
-      imports: [MemberDetailViewComponent,
-        MemberCalculationTableComponent,
-        CrudButtonComponent],
+      imports: [MemberDetailViewComponent],
       providers: [
         { provide: ActivatedRoute,
           useValue: routeMock },
@@ -81,50 +111,43 @@ describe('MemberDetailViewComponent (Jest)', () => {
         { provide: MemberService,
           useValue: memberServiceMock },
         { provide: LeadershipExperienceService,
-          useValue: leadershipExperienceService },
+          useValue: leadershipExperienceServiceMock },
+        { provide: ExperienceService,
+          useValue: experienceServiceMock },
+        { provide: DegreeService,
+          useValue: degreeServiceMock },
         { provide: PctsModalService,
-          useValue: modalService },
+          useValue: modalServiceMock },
         { provide: CertificateService,
-          useValue: certificateService },
-        {
-          provide: AuthService,
-          useValue: authServiceMock
-        },
+          useValue: certificateServiceMock },
+        { provide: AuthService,
+          useValue: authServiceMock },
         provideTranslateService(),
         DatePipe
       ]
     });
 
-    const fixture = TestBed.createComponent(MemberDetailViewComponent, {
-      bindings: [inputBinding('tabIndex', () => 0)]
-    });
-    memberServiceMock.getMemberOverviewByMemberId?.mockReturnValue(of(memberOverview1));
-    memberServiceMock.getCalculationsByMemberIdAndOptionalRoleId?.mockReturnValue(of([]));
+    appRef = TestBed.inject(ApplicationRef);
 
-    memberServiceMock.getPointsForActiveCalculationsForRoleByMemberId?.mockReturnValue(of(rolePointsList1));
+    fixture = TestBed.createComponent(MemberDetailViewComponent);
+    component = fixture.componentInstance;
+
+    fixture.componentRef.setInput('memberId', 1);
+    fixture.componentRef.setInput('tabIndex', 0);
+  });
+
+  it('loads the member overview and role points', async() => {
     fixture.detectChanges();
-    return {
-      fixture,
-      component: fixture.componentInstance
-    };
-  }
+    await appRef.whenStable(); // We want to wait so that the rxResources are filled with data before proceeding
+    fixture.detectChanges(); // After the resources have data we need to update the html
 
-  it('loads the member overview and role points when an id exists', () => {
-    const { component } = setupTestBed('1');
-
-    // Service calls
     expect(memberServiceMock.getMemberOverviewByMemberId)
-      .toHaveBeenCalledTimes(1);
-    expect(memberServiceMock.getPointsForActiveCalculationsForRoleByMemberId)
-      .toHaveBeenCalledTimes(1);
+      .toHaveBeenCalledWith(1);
     expect(memberServiceMock.getPointsForActiveCalculationsForRoleByMemberId)
       .toHaveBeenCalledWith(1);
+    expect(memberServiceMock.getMemberById)
+      .toHaveBeenCalledWith(1);
 
-    // Member data
-    expect(component.member())
-      .toEqual(memberOverview1.member);
-
-    // CV data
     expect(component.degreeData())
       .toEqual(memberOverview1.cv.degrees);
     expect(component.experienceData())
@@ -133,118 +156,30 @@ describe('MemberDetailViewComponent (Jest)', () => {
       .toEqual(memberOverview1.cv.certificates);
     expect(component.leadershipExperienceData())
       .toEqual(memberOverview1.cv.leadershipExperiences);
-    expect(routerMock.navigate).not.toHaveBeenCalled();
 
-    // Role points
-    expect(component.rolePointsResource.value())
+    expect(component.rolePointList())
       .toEqual(rolePointsList1);
   });
 
-  it('navigates back when id does not exist', () => {
-    const { component } = setupTestBed(null);
+  it('updates tab index via router navigation', () => {
+    component.onTabIndexChange(2);
 
     expect(routerMock.navigate)
-      .toHaveBeenCalledWith(['/member']);
-
-    expect(memberServiceMock.getMemberOverviewByMemberId)
-      .not.toHaveBeenCalled();
-    expect(memberServiceMock.getPointsForActiveCalculationsForRoleByMemberId)
-      .not.toHaveBeenCalled();
-
-    expect(component.member())
-      .toBeNull();
-    expect(component.rolePointsResource)
-      .toBeUndefined();
+      .toHaveBeenCalledWith([], {
+        relativeTo: routeMock,
+        queryParams: { tabIndex: 2 },
+        queryParamsHandling: 'merge',
+        replaceUrl: true
+      });
   });
 
-  describe('open certificate modal', () => {
-    it('should save and close on SAVE mode', () => {
-      const { component } = setupTestBed('1');
+  describe('Modal Openers', () => {
+    it('should call modal builders', () => {
+      expect(modalServiceMock.dialogOpener)
+        .toHaveBeenCalledTimes(8);
 
-      modalService.openModal?.mockReturnValue({
-        afterSubmitted: of({
-          modalSubmitMode: ModalSubmitMode.SAVE,
-          submittedModel: certificate1
-        })
-      } as any);
-
-      const spyData = jest.spyOn(component, 'getData');
-
-      component.openCertificateDialog();
-
-      // Assert modal opened once, save called once, data refreshed once
-      expect(modalService.openModal)
-        .toHaveBeenCalledTimes(1);
-      expect(certificateService.addCertificate)
-        .toHaveBeenCalledTimes(1);
-      expect(certificateService.addCertificate)
-        .toHaveBeenCalledWith(certificate1);
-      expect(spyData)
-        .toHaveBeenCalledTimes(1);
-    });
-
-    it('should re-open dialog with empty data on ENTER_ANOTHER mode', () => {
-      const { component } = setupTestBed('1');
-
-      modalService.openModal?.mockReturnValueOnce({
-        afterSubmitted: of({
-          modalSubmitMode: ModalSubmitMode.ENTER_ANOTHER,
-          submittedModel: certificate1
-        })
-      } as any);
-
-      modalService.openModal?.mockReturnValue({
-        afterSubmitted: of({
-          modalSubmitMode: ModalSubmitMode.SAVE,
-          submittedModel: certificate1
-        })
-      } as any);
-
-      const spyData = jest.spyOn(component, 'getData');
-
-      component.openCertificateDialog();
-
-      expect(modalService.openModal)
-        .toHaveBeenCalledTimes(2);
-      expect(certificateService.addCertificate)
-        .toHaveBeenCalledTimes(2);
-      expect(certificateService.addCertificate)
-        .toHaveBeenCalledWith(certificate1);
-      expect(spyData)
-        .toHaveBeenCalledTimes(2);
-    });
-
-    it('should re-open dialog with copied data on COPY mode', () => {
-      const { component } = setupTestBed('1');
-
-      modalService.openModal?.mockReturnValueOnce({
-        afterSubmitted: of({
-          modalSubmitMode: ModalSubmitMode.COPY,
-          submittedModel: certificate1
-        })
-      } as any);
-
-      modalService.openModal?.mockReturnValue({
-        afterSubmitted: of({
-          modalSubmitMode: ModalSubmitMode.SAVE,
-          submittedModel: certificate1
-        })
-      } as any);
-
-      const spyData = jest.spyOn(component, 'getData');
-
-      component.openCertificateDialog();
-
-      expect(modalService.openModal)
-        .toHaveBeenCalledTimes(2);
-
-      expect(modalService.openModal)
-        .toHaveBeenNthCalledWith(2, expect.anything(), { data: certificate1 });
-
-      expect(certificateService.addCertificate)
-        .toHaveBeenCalledTimes(2);
-      expect(spyData)
-        .toHaveBeenCalledTimes(2);
+      expect(mockDialogBuilder.build)
+        .toHaveBeenCalledTimes(8);
     });
   });
 });
