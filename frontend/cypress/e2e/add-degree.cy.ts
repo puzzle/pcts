@@ -166,6 +166,8 @@ describe('Degree Modal', () => {
 
       formPage.shouldShowSuccessToast('Ausbildung wurde erfolgreich aktualisiert.');
 
+      cy.wait('@degrees');
+
       cy.get('@degrees')
         .then((interception) => {
           expect(interception.request.body).to.contain({
