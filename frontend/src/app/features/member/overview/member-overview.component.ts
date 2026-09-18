@@ -43,9 +43,7 @@ import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.com
 export class MemberOverviewComponent implements OnInit {
   private readonly service: MemberService = inject(MemberService);
 
-  private readonly datePipe: DatePipe = inject(DatePipe);
-
-  private readonly router = inject(Router);
+  protected readonly router = inject(Router);
 
   private readonly route = inject(ActivatedRoute);
 

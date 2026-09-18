@@ -37,7 +37,8 @@
       *matRowDef="let row; columns: columnNames();"
       (click)="this.entrySelected.emit(row)"
       [class.cursor-pointer]="dataSource().shouldLink"
-      data-testid="generic-table-row">
+      data-testid="generic-table-row"
+      (keydown.enter)="this.entrySelected.emit(row)">
     </tr>
 
   <tr *matNoDataRow data-testid="no-results-row">
