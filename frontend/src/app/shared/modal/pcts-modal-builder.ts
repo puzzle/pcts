@@ -110,6 +110,7 @@ export class PctsModalBuilder<T extends ModelWithId> {
   private evaluateSubmitModes(modalSubmitMode: ModalSubmitMode) {
     switch (modalSubmitMode) {
       case ModalSubmitMode.SAVE:
+      case ModalSubmitMode.DELETE:
         return { shouldReopen: false,
           withModal: false };
       case ModalSubmitMode.ENTER_ANOTHER:
@@ -118,13 +119,6 @@ export class PctsModalBuilder<T extends ModelWithId> {
       case ModalSubmitMode.COPY:
         return { shouldReopen: true,
           withModal: true };
-      case ModalSubmitMode.DELETE:
-        return { shouldReopen: false,
-          withModal: false };
-      default:
-        modalSubmitMode satisfies never;
-        return { shouldReopen: false,
-          withModal: false };
     }
   }
 
