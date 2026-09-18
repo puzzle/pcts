@@ -1,6 +1,7 @@
 package ch.puzzle.pctsmigration.exception;
 
 import jakarta.validation.constraints.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.web.server.ResponseStatusException;
 
 public class MigrationException extends ResponseStatusException {
@@ -13,5 +14,11 @@ public class MigrationException extends ResponseStatusException {
 
     public Error getError() {
         return error;
+    }
+
+    @Override
+    public @NonNull
+    String getMessage() {
+        return error.message();
     }
 }

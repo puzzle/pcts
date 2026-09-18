@@ -3,14 +3,15 @@ package ch.puzzle.pctsmigration.extractor;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import ch.puzzle.pctsmigration.exception.MigrationException;
+import ch.puzzle.pctsmigration.ods.OdsParseConfig;
 import ch.puzzle.pctsmigration.ods.OdsParserService;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -103,7 +104,11 @@ class ExtractorServiceTest {
     }
 
     private void mockPipelineExtraction(MultipartFile file) {
-        when(odsParserService.parseToPromptText(file, new ArrayList<>())).thenReturn(MARKDOWN);
+        OdsParseConfig config = new OdsParseConfig((String::isEmpty), "Start", false);
+        when(pipeline.odsSheetParseConfig()).thenReturn(config);
+
+        when(odsParserService.parseToPromptText(eq(file), any(OdsParseConfig.class))).thenReturn(MARKDOWN);
+
         when(pipeline.fetchContext()).thenReturn("Context");
         when(pipeline.systemPrompt("Context")).thenReturn("System Prompt");
         when(pipeline.entityClass()).thenReturn(DummyResult.class);

@@ -2,12 +2,18 @@ package ch.puzzle.pctsmigration.ods;
 
 import ch.puzzle.pctsmigration.exception.Error;
 import ch.puzzle.pctsmigration.exception.MigrationException;
+import ch.puzzle.pctsmigration.ods.model.Cell;
+import ch.puzzle.pctsmigration.ods.model.Row;
+import ch.puzzle.pctsmigration.ods.model.Sheet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Predicate;
+import java.util.stream.IntStream;
 import org.odftoolkit.odfdom.doc.OdfSpreadsheetDocument;
 import org.odftoolkit.odfdom.doc.table.OdfTable;
-import org.odftoolkit.odfdom.doc.table.OdfTableCell;
 import org.odftoolkit.odfdom.doc.table.OdfTableRow;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,15 +24,19 @@ public class OdsParserService {
     private static final int MAX_SHEETS = 10;
     private static final int MAX_ROWS = 500;
     private static final int MAX_COLS = 50;
+    private static final int CALCULATION_COLUMN_INDEX = 5;
 
-    public String parseToPromptText(MultipartFile file, List<String> tableNames) {
+    public String parseToPromptText(MultipartFile file, OdsParseConfig config) {
         if (file.isEmpty()) {
             throw new MigrationException(new Error(HttpStatusCode.valueOf(400), "Uploaded file is empty"));
         }
 
-        try {
-            OdfSpreadsheetDocument doc = OdfSpreadsheetDocument.loadDocument(file.getInputStream());
-            OdsParseResult result = extractData(doc, tableNames);
+        try (OdfSpreadsheetDocument doc = OdfSpreadsheetDocument.loadDocument(file.getInputStream())) {
+
+            List<Sheet> result = extractData(doc,
+                                             config.tableNameConvention(),
+                                             config.startMarker(),
+                                             config.shouldCutOfCalcRow());
             return generateMarkdown(result);
         } catch (Exception e) {
             throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
@@ -34,65 +44,98 @@ public class OdsParserService {
         }
     }
 
-    private OdsParseResult extractData(OdfSpreadsheetDocument doc, List<String> tableNames) throws Exception {
-        List<OdsParseResult.Sheet> sheets = doc
+    private List<Sheet> extractData(OdfSpreadsheetDocument doc, Predicate<String> tableNameConvention,
+                                    String startMarker, boolean shouldCutOfCalcRow)
+            throws MigrationException {
+        List<Sheet> sheets = doc
                 .getSpreadsheetTables()
                 .stream()
-                .filter(table -> isValidTableName(tableNames, table.getTableName()))
+                .filter(table -> tableNameConvention.test(table.getTableName()))
                 .limit(MAX_SHEETS)
-                .map(this::extractSheet)
+                .map(table -> extractSheet(table, startMarker, shouldCutOfCalcRow))
                 .toList();
 
         if (sheets.isEmpty()) {
-            throw new Exception("No valid sheets found");
+            throw new MigrationException(new Error(HttpStatus.BAD_REQUEST, "No valid sheets found"));
         }
-        return new OdsParseResult(sheets);
+        return sheets;
     }
 
-    private boolean isValidTableName(List<String> tableNames, String name) {
-        String actualName = name.trim().toLowerCase();
-        List<String> cleanTableNames = tableNames.stream().map(t -> t.trim().toLowerCase()).toList();
-        return cleanTableNames.contains(actualName);
-    }
+    private Sheet extractSheet(OdfTable table, String startMarker, boolean shouldCutOfCalcRow) {
+        SheetRowCollector collector = new SheetRowCollector(startMarker);
 
-    private OdsParseResult.Sheet extractSheet(OdfTable table) {
         int rowCount = Math.min(table.getRowCount(), MAX_ROWS);
         int colCount = Math.min(table.getColumnCount(), MAX_COLS);
-        List<List<String>> rows = new ArrayList<>();
 
         for (int r = 0; r < rowCount; r++) {
-            List<String> cells = extractRow(table.getRowByIndex(r), colCount);
-            if (!cells.isEmpty()) {
-                rows.add(cells);
+            OdfTableRow odfTableRow = table.getRowByIndex(r);
+            Row row = extractRow(odfTableRow, colCount);
+
+            if (shouldCutOfCalcRow) {
+                cutOfCalculationRow(row);
+            }
+
+            collector.processRow(row);
+
+            if (collector.isDone()) {
+                break;
             }
         }
-        return new OdsParseResult.Sheet(table.getTableName(), rows);
+
+        List<Row> optimizedRows = optimizeColumns(collector.getSheet().getRows());
+        return new Sheet(table.getTableName(), optimizedRows);
     }
 
-    private List<String> extractRow(OdfTableRow row, int colCount) {
-        List<String> cells = new ArrayList<>();
-        for (int c = 0; c < colCount; c++) {
-            OdfTableCell cell = row.getCellByIndex(c);
-            cells.add(cell.getDisplayText().trim());
+    // We're overwriting the entire 5th column here because some ODS files have a
+    // calculation column there that we don't want to extract.
+    private void cutOfCalculationRow(Row row) {
+        if (!Objects.equals(row.getCells().get(CALCULATION_COLUMN_INDEX).getText(), "")) {
+            row.updateCellTextByIndex(5, "");
         }
-
-        while (!cells.isEmpty() && cells.getLast().isEmpty()) {
-            cells.removeLast();
-        }
-        return cells;
     }
 
-    private String generateMarkdown(OdsParseResult result) {
+    private Row extractRow(OdfTableRow odfTableRow, int colCount) {
+        Row row = new Row();
+
+        IntStream.range(0, colCount).mapToObj(odfTableRow::getCellByIndex).map(Cell::new).forEach(row::addCell);
+
+        return row;
+    }
+
+    private List<Row> optimizeColumns(List<Row> rows) {
+        if (rows.isEmpty())
+            return rows;
+
+        // Find the rightmost column that still contains data
+        int maxCol = 0;
+        for (Row row : rows) {
+            for (int c = row.getCells().size() - 1; c >= maxCol; c--) {
+                if (!row.getCells().get(c).getText().isEmpty()) {
+                    maxCol = Math.max(maxCol, c + 1);
+                    break;
+                }
+            }
+        }
+
+        // Trim all rows to this maximum width with data
+        List<Row> optimized = new ArrayList<>(rows.size());
+        for (Row row : rows) {
+            optimized.add(new Row(row.getCells().subList(0, Math.min(row.getCells().size(), maxCol))));
+        }
+        return optimized;
+    }
+
+    private String generateMarkdown(List<Sheet> result) {
         StringBuilder sb = new StringBuilder();
-        for (OdsParseResult.Sheet sheet : result.sheets()) {
+        for (Sheet sheet : result) {
             appendSheetMarkdown(sb, sheet);
         }
         return sb.toString();
     }
 
-    private void appendSheetMarkdown(StringBuilder sb, OdsParseResult.Sheet sheet) {
-        sb.append("## Sheet: ").append(sheet.name()).append("\n\n");
-        List<List<String>> rows = sheet.rows();
+    private void appendSheetMarkdown(StringBuilder sb, Sheet sheet) {
+        sb.append("## Sheet: ").append(sheet.getName()).append("\n\n");
+        List<Row> rows = sheet.getRows();
 
         if (rows.isEmpty()) {
             sb.append("_(empty sheet)_\n\n");
@@ -100,7 +143,7 @@ public class OdsParserService {
         }
 
         appendMarkdownRow(sb, rows.getFirst());
-        appendMarkdownSeparator(sb, rows.getFirst().size());
+        appendMarkdownSeparator(sb, rows.getFirst().getCells().size());
 
         for (int i = 1; i < rows.size(); i++) {
             appendMarkdownRow(sb, rows.get(i));
@@ -108,10 +151,10 @@ public class OdsParserService {
         sb.append("\n");
     }
 
-    private void appendMarkdownRow(StringBuilder sb, List<String> cells) {
+    private void appendMarkdownRow(StringBuilder sb, Row row) {
         sb.append("| ");
-        for (String cell : cells) {
-            sb.append(cell.replace("|", "\\|")).append(" | ");
+        for (Cell cell : row.getCells()) {
+            sb.append(cell.getText().replace("|", "\\|")).append(" | ");
         }
         sb.append("\n");
     }

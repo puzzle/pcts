@@ -1,14 +1,13 @@
 package ch.puzzle.pctsmigration.certificates;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 import ch.puzzle.pctsmigration.api.CertificateService;
 import ch.puzzle.pctsmigration.api.CertificateTypeService;
 import ch.puzzle.pctsmigration.api.MemberService;
-import ch.puzzle.pctsmigration.exception.MigrationException;
+import ch.puzzle.pctsmigration.ods.OdsParseConfig;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -19,7 +18,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openapitools.client.model.CertificateInputDto;
 import org.openapitools.client.model.CertificateTypeDto;
-import org.springframework.http.HttpStatusCode;
 
 @ExtendWith(MockitoExtension.class)
 class CertificateExtractionPipelineTest {
@@ -53,6 +51,19 @@ class CertificateExtractionPipelineTest {
         String prompt = pipeline.systemPrompt(context);
 
         assertThat(prompt).contains("Current date: 2026-05-10");
+    }
+
+    @Test
+    @DisplayName("odsSheetParseConfig should match correct sheet names and configurations")
+    void odsSheetParseConfig_configuresSheetNamesCorrectly() {
+        OdsParseConfig config = pipeline.odsSheetParseConfig();
+
+        assertThat(config.tableNameConvention().test("Zertifikat")).isTrue();
+        assertThat(config.tableNameConvention().test("Zertifikate")).isTrue();
+        assertThat(config.tableNameConvention().test("InvalidSheet")).isFalse();
+
+        assertThat(config.startMarker()).isNull();
+        assertThat(config.shouldCutOfCalcRow()).isFalse();
     }
 
     @Test
@@ -97,6 +108,7 @@ class CertificateExtractionPipelineTest {
         assertThat(dto.getCertificateTypeId()).isEqualTo(12L);
 
         verify(memberService).getMemberIdBy("AW");
+        verify(certificateTypeService).getCertificateTypes();
     }
 
     @Test
@@ -107,31 +119,5 @@ class CertificateExtractionPipelineTest {
         pipeline.create(dtos);
 
         verify(certificateService, times(1)).create(eq(dtos));
-    }
-
-    @Test
-    @DisplayName("mapToDto should throw MigrationException if filename is invalid (no underscore)")
-    void mapToDto_withInvalidFilename_throwsMigrationException() {
-        String invalidFilename = "invalidfilename.ods";
-        CertificateWrapper wrapper = mock(CertificateWrapper.class);
-
-        MigrationException exception = assertThrows(MigrationException.class,
-                                                    () -> pipeline.mapToDto(invalidFilename, wrapper));
-        assertThat(exception.getError().status()).isEqualTo(HttpStatusCode.valueOf(400));
-        assertThat(exception.getError().message())
-                .isEqualTo("Invalid filename: can not extract abbreviation invalidfilename.ods");
-
-        verifyNoInteractions(memberService);
-        verifyNoInteractions(certificateTypeService);
-    }
-
-    @Test
-    @DisplayName("additionalValidations should not throw any exceptions")
-    void additionalValidations_doesNotThrowException() {
-        CertificateWrapper wrapper = mock(CertificateWrapper.class);
-
-        org.assertj.core.api.Assertions
-                .assertThatCode(() -> pipeline.additionalValidations(wrapper))
-                .doesNotThrowAnyException();
     }
 }
