@@ -13,7 +13,7 @@ import { LeadershipExperienceService } from '../../leadership-experiences/leader
 import { AuthService } from '../../../core/auth/auth.service';
 import { DegreeService } from '../../degrees/degree.service';
 import { ExperienceService } from '../../experiences/experience.service';
-import { ApplicationRef } from '@angular/core';
+
 
 describe('MemberDetailViewComponent (Jest)', () => {
   let fixture: ComponentFixture<MemberDetailViewComponent>;
@@ -27,7 +27,6 @@ describe('MemberDetailViewComponent (Jest)', () => {
   let authServiceMock: jest.Mocked<AuthService>;
   let routerMock: jest.Mocked<Router>;
   let routeMock: ActivatedRoute;
-  let appRef: ApplicationRef;
 
   let mockDialogBuilder: any;
 
@@ -127,20 +126,15 @@ describe('MemberDetailViewComponent (Jest)', () => {
       ]
     });
 
-    appRef = TestBed.inject(ApplicationRef);
-
     fixture = TestBed.createComponent(MemberDetailViewComponent);
     component = fixture.componentInstance;
 
     fixture.componentRef.setInput('memberId', 1);
     fixture.componentRef.setInput('tabIndex', 0);
+    fixture.detectChanges();
   });
 
-  it('loads the member overview and role points', async() => {
-    fixture.detectChanges();
-    await appRef.whenStable(); // We want to wait so that the rxResources are filled with data before proceeding
-    fixture.detectChanges(); // After the resources have data we need to update the html
-
+  it('loads the member overview and role points', () => {
     expect(memberServiceMock.getMemberOverviewByMemberId)
       .toHaveBeenCalledWith(1);
     expect(memberServiceMock.getPointsForActiveCalculationsForRoleByMemberId)
