@@ -42,10 +42,6 @@ export class ModalActionsComponent {
     this.submitAction.emit(mode);
   }
 
-  onDelete(mode: ModalSubmitMode): void {
-    this.deleteAction.emit(mode);
-  }
-
   hasDeleteSubmitMode() {
     return this.submitModes()
       .includes(ModalSubmitMode.DELETE);
