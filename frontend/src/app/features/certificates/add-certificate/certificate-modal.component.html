@@ -44,7 +44,7 @@
       [isValid]="formGroup.valid"
       (cancelAction)="onCancel()"
       (submitAction)="onSubmit($event)"
-      (deleteAction)="onDelete()"
+      (deleteAction)="closeModalWithDelete()"
     />
   </ng-container>
 </app-base-modal>
