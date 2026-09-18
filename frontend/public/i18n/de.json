@@ -54,8 +54,7 @@
         "ACTION": "Hinzufügen",
         "CANCEL": "Abbrechen",
         "ENTER_ANOTHER": "Hinzufügen + weiteren Eintrag erfassen",
-        "COPY": "Hinzufügen + Inhalt kopieren",
-        "DELETE": "Eintrag löschen"
+        "COPY": "Hinzufügen + Inhalt kopieren"
       }
     },
     "EDIT": {
