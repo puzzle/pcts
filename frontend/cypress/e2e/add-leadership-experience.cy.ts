@@ -70,4 +70,50 @@ describe('Add leadershipExperience modal', () => {
       });
     });
   });
+
+  describe('Edit leadershipExperience modal', () => {
+    const openLeadershipExperienceModal = () => {
+      cy.getByTestId('cv-table-leadership-experience')
+        .within(() => {
+          cy.getByTestId('generic-table-cell')
+            .eq(1)
+            .click();
+        });
+    };
+
+    beforeEach(() => {
+      openLeadershipExperienceModal();
+    });
+
+    it('should open correct modal', () => {
+      modalPage.modalTitle()
+        .should('include.text', 'Führungserfahrung bearbeiten');
+    });
+
+    it('should save changes correctly', () => {
+      cy.intercept('PUT', 'api/v1/leadership-experiences/**')
+        .as('leadershipExperiences');
+
+      formPage.clearAndBlur('leadershipExperienceType');
+      modalPage.selectAutoCompleteValue('leadershipExperienceType', 'Leader Essentials');
+
+      formPage.clearAndBlur('comment');
+      formPage.typeAndBlur('comment', 'This is a comment.');
+
+      cy.getByTestId('submit-button')
+        .click();
+
+      formPage.shouldShowSuccessToast('Führungserfahrung wurde erfolgreich aktualisiert.');
+
+      cy.get('@leadershipExperiences')
+        .then((interception) => {
+          expect(interception.request.body).to.contain({
+            memberId: 1,
+            leadershipExperienceTypeId: 3,
+            comment: 'This is a comment.'
+          });
+        });
+      modalPage.checkModalIsClosed();
+    });
+  });
 });
