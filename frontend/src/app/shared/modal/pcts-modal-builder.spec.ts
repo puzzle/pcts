@@ -1,5 +1,5 @@
 import { DestroyRef, Injector } from '@angular/core';
-import {Observable, of, Subject} from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { PctsModalBuilder } from './pcts-modal-builder';
 import { ModelWithId } from './pcts-modal.service';
 import { ModalSubmitMode } from '../enum/modal-submit-mode.enum';
@@ -117,7 +117,7 @@ describe('PctsModalBuilder', () => {
       expect(successSpy)
         .toHaveBeenCalled();
       expect(deleteSpy)
-        .not.toHaveBeenCalled()
+        .not.toHaveBeenCalled();
 
       expect(openModalSpy)
         .toHaveBeenCalledTimes(1);
@@ -134,7 +134,7 @@ describe('PctsModalBuilder', () => {
       expect(openModalSpy)
         .toHaveBeenCalledTimes(2);
       expect(deleteSpy)
-        .not.toHaveBeenCalled()
+        .not.toHaveBeenCalled();
 
       const config = getConfig(1);
       expect(config.data.model)
@@ -152,7 +152,7 @@ describe('PctsModalBuilder', () => {
       expect(openModalSpy)
         .toHaveBeenCalledTimes(2);
       expect(deleteSpy)
-        .not.toHaveBeenCalled()
+        .not.toHaveBeenCalled();
 
       const config = getConfig(1);
       expect(config.data.model)
@@ -167,7 +167,7 @@ describe('PctsModalBuilder', () => {
       expect(openModalSpy)
         .toHaveBeenCalledTimes(1);
       expect(deleteSpy)
-        .toHaveBeenCalled()
+        .toHaveBeenCalled();
     });
   });
 

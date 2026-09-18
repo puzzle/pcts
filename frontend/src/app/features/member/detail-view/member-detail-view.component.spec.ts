@@ -67,6 +67,8 @@ describe('MemberDetailViewComponent (Jest)', () => {
         .mockReturnThis(),
       withI18nPrefix: jest.fn()
         .mockReturnThis(),
+      withOnDeleteMethod: jest.fn()
+        .mockReturnThis(),
       build: jest.fn()
         .mockReturnValue(jest.fn())
     };

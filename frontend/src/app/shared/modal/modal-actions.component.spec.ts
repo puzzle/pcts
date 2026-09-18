@@ -63,16 +63,8 @@ describe('ModalActionsComponent', () => {
 
   describe('hasDeleteSubmitMode()', () => {
     it('should return true when DELETE is included in submitModes', () => {
-      fixture.componentRef.destroy();
-      fixture = TestBed.createComponent(ModalActionsComponent, {
-        bindings: [inputBinding('submitModes', () => [ModalSubmitMode.SAVE, ModalSubmitMode.DELETE])]
-      });
-
+      fixture.componentRef.setInput('submitModes', [ModalSubmitMode.DELETE]);
       fixture.detectChanges();
-
-      component = fixture.componentInstance;
-
-      // Todo: ask someone smart if there is a way to set inputs without creating a new component
 
       expect(component.hasDeleteSubmitMode())
         .toBe(true);
