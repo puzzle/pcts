@@ -157,7 +157,7 @@ describe('MemberDetailViewComponent (Jest)', () => {
     expect(component.leadershipExperienceData())
       .toEqual(memberOverview1.cv.leadershipExperiences);
 
-    expect(component.rolePointList())
+    expect(component.rolePointsResource.value())
       .toEqual(rolePointsList1);
   });
 

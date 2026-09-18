@@ -1,4 +1,4 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, effect, inject, input, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
@@ -10,7 +10,7 @@ import { CertificateOverviewModel } from './cv/certificate-overview.model';
 import { LeadershipExperienceOverviewModel } from './cv/leadership-experience-overview.model';
 import { ExperienceService } from '../../experiences/experience.service';
 import { ExperienceModel } from '../../experiences/experience.model';
-import { ExperienceModalComponent } from '../../experiences/./experience-modal/experience-modal.component';
+import { ExperienceModalComponent } from '../../experiences/experience-modal/experience-modal.component';
 import { TranslationScopeDirective } from '../../../shared/translation-scope/translation-scope.directive';
 import { CertificateService } from '../../certificates/certificate.service';
 import { CertificateModel } from '../../certificates/certificate.model';
@@ -20,11 +20,11 @@ import { MemberCalculationTableComponent } from './calculation-table/member-calc
 import { LeadershipExperienceModel } from '../../leadership-experiences/leadership-experience.model';
 import {
   LeadershipExperienceModalComponent
-} from '../../leadership-experiences/./leadership-experience-modal/leadership-experience-modal.component';
+} from '../../leadership-experiences/leadership-experience-modal/leadership-experience-modal.component';
 import { LeadershipExperienceService } from '../../leadership-experiences/leadership-experience.service';
 import { ShowIfAdminDirective } from '../../../core/auth/directive/show-if-admin.directive';
 import { DegreeModel } from '../../degrees/degree.model';
-import { DegreeModalComponent } from '../../degrees/./degree-modal/degree-modal.component';
+import { DegreeModalComponent } from '../../degrees/degree-modal/degree-modal.component';
 import { DegreeService } from '../../degrees/degree.service';
 import {
   getCertificateTable,
@@ -74,6 +74,8 @@ export class MemberDetailViewComponent {
 
   memberId = input.required<number>();
 
+  tabGroup = viewChild(MatTabGroup);
+
   readonly memberOverviewResource = rxResource({
     params: () => this.memberId(),
     stream: ({ params: id }) => this.memberService.getMemberOverviewByMemberId(id)
@@ -86,10 +88,9 @@ export class MemberDetailViewComponent {
 
   readonly rolePointsResource = rxResource({
     params: () => this.memberId(),
-    stream: ({ params: id }) => this.memberService.getPointsForActiveCalculationsForRoleByMemberId(id)
+    stream: ({ params: id }) => this.memberService.getPointsForActiveCalculationsForRoleByMemberId(id),
+    defaultValue: []
   });
-
-  rolePointList = computed(() => this.rolePointsResource.value() ?? []);
 
   degreeData = computed(() => this.memberOverviewResource.value()?.cv.degrees ?? []);
 
@@ -106,6 +107,16 @@ export class MemberDetailViewComponent {
   readonly degreeTable = getDegreeTable();
 
   readonly leadershipExperienceTable = getLeadershipExperienceTable();
+
+  constructor() {
+    effect(() => {
+      const tabGroup = this.tabGroup();
+      const rolePoints = this.rolePointsResource.value();
+      if (tabGroup && rolePoints.length > 0) {
+        tabGroup.selectedIndex = this.tabIndex();
+      }
+    });
+  }
 
   addDegreeDialog = this.modalService
     .dialogOpener<DegreeModel>()
@@ -175,7 +186,7 @@ export class MemberDetailViewComponent {
     .withI18nPrefix('EXPERIENCE.FORM.ADD')
     .build();
 
-  private readonly createEditDegreeDialog = this.modalService
+  private readonly openEditDegreeDialog = this.modalService
     .dialogOpener<DegreeModel>()
     .withComponent(DegreeModalComponent)
     .withOnSubmitMethod((model: DegreeModel) => this.degreeService.updateDegree(model.id, model))
@@ -187,11 +198,11 @@ export class MemberDetailViewComponent {
   editDegreeDialog(row: DegreeOverviewModel) {
     this.degreeService.getDegreeById(row.id)
       .subscribe((degree: DegreeModel) => {
-        this.createEditDegreeDialog(degree);
+        this.openEditDegreeDialog(degree);
       });
   }
 
-  private readonly createEditCertificateDialog = this.modalService
+  private readonly openEditCertificateDialog = this.modalService
     .dialogOpener<CertificateModel>()
     .withComponent(CertificateModalComponent)
     .withOnSubmitMethod((model: CertificateModel) => this.certificateService.updateCertificate(model.id, model))
@@ -203,11 +214,11 @@ export class MemberDetailViewComponent {
   editCertificateDialog(row: CertificateOverviewModel) {
     this.certificateService.getCertificateById(row.id)
       .subscribe((certificate: CertificateModel) => {
-        this.createEditCertificateDialog(certificate);
+        this.openEditCertificateDialog(certificate);
       });
   }
 
-  private readonly createEditLeadershipExperienceDialog = this.modalService
+  private readonly openEditLeadershipExperienceDialog = this.modalService
     .dialogOpener<LeadershipExperienceModel>()
     .withComponent(LeadershipExperienceModalComponent)
     .withOnSubmitMethod((model: LeadershipExperienceModel) => this.leadershipExperienceService.updateLeadershipExperience(model.id, model))
@@ -219,11 +230,11 @@ export class MemberDetailViewComponent {
   editLeadershipExperienceDialog(row: LeadershipExperienceOverviewModel) {
     this.leadershipExperienceService.getLeadershipExperienceById(row.id)
       .subscribe((leadershipExperience: LeadershipExperienceModel) => {
-        this.createEditLeadershipExperienceDialog(leadershipExperience);
+        this.openEditLeadershipExperienceDialog(leadershipExperience);
       });
   }
 
-  private readonly createEditExperienceDialog = this.modalService
+  private readonly openEditExperienceDialog = this.modalService
     .dialogOpener<ExperienceModel>()
     .withComponent(ExperienceModalComponent)
     .withOnSubmitMethod((model: ExperienceModel) => this.experienceService.updateExperience(model.id, model))
@@ -235,7 +246,7 @@ export class MemberDetailViewComponent {
   editExperienceDialog(row: ExperienceOverviewModel) {
     this.experienceService.getExperienceById(row.id)
       .subscribe((experience: ExperienceModel) => {
-        this.createEditExperienceDialog(experience);
+        this.openEditExperienceDialog(experience);
       });
   }
 
