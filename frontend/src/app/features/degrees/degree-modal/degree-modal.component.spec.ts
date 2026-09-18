@@ -1,17 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AddDegreeComponent } from './add-degree.component';
+import { DegreeModalComponent } from './degree-modal.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { degree1, degreeType1, degreeType2 } from '../../../shared/test/test-data';
 import { provideTranslateService } from '@ngx-translate/core';
 import { DegreeTypeService } from '../degree-type/degree-type.service';
 import { of } from 'rxjs';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
+import { FormModalConfig } from '../../../shared/modal/pcts-modal.service';
+import { DegreeModel } from '../degree.model';
 
-describe('AddDegreeComponent', () => {
-  let component: AddDegreeComponent;
-  let fixture: ComponentFixture<AddDegreeComponent>;
+describe('DegreeModalComponent', () => {
+  let component: DegreeModalComponent;
+  let fixture: ComponentFixture<DegreeModalComponent>;
 
-  const dialogData = degree1;
   const dialogRefMock = { close: jest.fn() };
   const degreeTypeServiceMock = {
     getAllDegreeTypes: jest.fn()
@@ -19,9 +20,12 @@ describe('AddDegreeComponent', () => {
         degreeType2]))
   };
 
+  const dialogData: FormModalConfig<DegreeModel> = { model: degree1,
+    submitOptions: [] };
+
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      imports: [AddDegreeComponent],
+      imports: [DegreeModalComponent],
       providers: [
         {
           provide: MAT_DIALOG_DATA,
@@ -40,7 +44,7 @@ describe('AddDegreeComponent', () => {
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(AddDegreeComponent);
+    fixture = TestBed.createComponent(DegreeModalComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
@@ -74,7 +78,7 @@ describe('AddDegreeComponent', () => {
     });
 
     it('should initialize empty form if no data is provided', () => {
-      (component as any).data = undefined;
+      (component as any).data.model = undefined;
       component.formGroup.reset();
 
       component.ngOnInit();

@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
-import { AddLeadershipExperienceComponent } from './add-leadership-experience.component';
+import { LeadershipExperienceModalComponent } from './leadership-experience-modal.component';
 import { LeadershipExperienceTypeService } from '../leadership-experiences-type/leadership-experience-type.service';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import {
@@ -11,10 +11,12 @@ import {
   leadershipExperienceType1,
   leadershipExperienceType2
 } from '../../../shared/test/test-data';
+import { FormModalConfig } from '../../../shared/modal/pcts-modal.service';
+import { LeadershipExperienceModel } from '../leadership-experience.model';
 
-describe('AddLeadershipExperienceComponent', () => {
-  let component: AddLeadershipExperienceComponent;
-  let fixture: ComponentFixture<AddLeadershipExperienceComponent>;
+describe('LeadershipExperienceModalComponent', () => {
+  let component: LeadershipExperienceModalComponent;
+  let fixture: ComponentFixture<LeadershipExperienceModalComponent>;
 
   const dialogRefMock = { close: jest.fn() };
   const leadershipExperienceTypeServiceMock = {
@@ -23,11 +25,12 @@ describe('AddLeadershipExperienceComponent', () => {
         leadershipExperienceType2]))
   };
 
-  const dialogData = leadershipExperience1;
+  const dialogData: FormModalConfig<LeadershipExperienceModel> = { model: leadershipExperience1,
+    submitOptions: [] };
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      imports: [AddLeadershipExperienceComponent],
+      imports: [LeadershipExperienceModalComponent],
       providers: [
         { provide: MAT_DIALOG_DATA,
           useValue: dialogData },
@@ -40,7 +43,7 @@ describe('AddLeadershipExperienceComponent', () => {
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(AddLeadershipExperienceComponent);
+    fixture = TestBed.createComponent(LeadershipExperienceModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -69,7 +72,7 @@ describe('AddLeadershipExperienceComponent', () => {
     });
 
     it('should initialize empty form if no data is provided', () => {
-      (component as any).data = undefined;
+      (component as any).data.model = undefined;
       component.formGroup.reset();
 
       component.ngOnInit();

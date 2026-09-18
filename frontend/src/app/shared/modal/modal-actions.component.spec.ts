@@ -13,6 +13,7 @@ describe('ModalActionsComponent', () => {
       .compileComponents();
 
     fixture = TestBed.createComponent(ModalActionsComponent);
+    fixture.componentRef.setInput('submitModes', []);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

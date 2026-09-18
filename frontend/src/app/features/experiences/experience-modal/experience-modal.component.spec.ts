@@ -1,17 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AddExperienceComponent } from './add-experience.component';
+import { ExperienceModalComponent } from './experience-modal.component';
 import { experience1, experienceType1, experienceType2 } from '../../../shared/test/test-data';
 import { of } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { provideTranslateService } from '@ngx-translate/core';
 import { ExperienceTypeService } from '../experience-type/experience-type.service';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
+import { ExperienceModel } from '../experience.model';
+import { FormModalConfig } from '../../../shared/modal/pcts-modal.service';
 
-describe('AddExperienceComponent', () => {
-  let component: AddExperienceComponent;
-  let fixture: ComponentFixture<AddExperienceComponent>;
+describe('ExperienceModalComponent', () => {
+  let component: ExperienceModalComponent;
+  let fixture: ComponentFixture<ExperienceModalComponent>;
 
-  const dialogData = experience1;
   const dialogRefMock = { close: jest.fn() };
   const experienceTypeServiceMock = {
     getAllExperienceTypes: jest.fn()
@@ -19,9 +20,12 @@ describe('AddExperienceComponent', () => {
         experienceType2]))
   };
 
+  const dialogData: FormModalConfig<ExperienceModel> = { model: experience1,
+    submitOptions: [] };
+
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      imports: [AddExperienceComponent],
+      imports: [ExperienceModalComponent],
       providers: [
         {
           provide: MAT_DIALOG_DATA,
@@ -40,7 +44,7 @@ describe('AddExperienceComponent', () => {
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(AddExperienceComponent);
+    fixture = TestBed.createComponent(ExperienceModalComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
@@ -74,7 +78,7 @@ describe('AddExperienceComponent', () => {
     });
 
     it('should initialize empty form if no data is provided', () => {
-      (component as any).data = undefined;
+      (component as any).data.model = undefined;
       component.formGroup.reset();
 
       component.ngOnInit();

@@ -71,7 +71,7 @@ class CertificateMapperTest {
         assertEquals(CERTIFICATE_1.getComment(), resultDto.comment());
         assertEquals(expectedMemberDto, resultDto.member());
 
-        assertEquals(expectedCertTypeDto, resultDto.certificate());
+        assertEquals(expectedCertTypeDto, resultDto.certificateType());
 
         verify(memberMapper).toDto(MEMBER_1);
         verify(certificateTypeMapper).toDto(CERT_TYPE_1);

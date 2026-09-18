@@ -173,4 +173,76 @@ describe('MemberFormComponent', () => {
         .toHaveBeenCalledWith(1, { ...member1 });
     });
   });
+
+  describe('Role Management', () => {
+    let mockEvent: any;
+
+    beforeEach(() => {
+      mockEvent = {
+        option: {
+          value: null,
+          deselect: jest.fn()
+        }
+      };
+
+      component['memberForm'].get('roles')
+        ?.setValue([role1]);
+    });
+
+    describe('removeRole', () => {
+      it('should remove the specified role from the form control', () => {
+        component['memberForm'].get('roles')
+          ?.setValue([role1,
+            role2]);
+
+        component.removeRole(role1);
+
+        expect(component['memberForm'].get('roles')?.value)
+          .toEqual([role2]);
+      });
+
+      it('should not mutate the array if the role does not exist', () => {
+        component.removeRole(role2);
+
+        expect(component['memberForm'].get('roles')?.value)
+          .toEqual([role1]);
+      });
+    });
+
+    describe('selectRole', () => {
+      it('should add a new role to the form control and deselect the option', () => {
+        mockEvent.option.value = role2;
+
+        component.selectRole(mockEvent);
+
+        expect(component['memberForm'].get('roles')?.value)
+          .toEqual([role1,
+            role2]);
+        expect(mockEvent.option.deselect)
+          .toHaveBeenCalled();
+      });
+
+      it('should not add the role if it is already in the list, but still deselect', () => {
+        mockEvent.option.value = role1;
+
+        component.selectRole(mockEvent);
+
+        expect(component['memberForm'].get('roles')?.value)
+          .toEqual([role1]);
+        expect(mockEvent.option.deselect)
+          .toHaveBeenCalled();
+      });
+
+      it('should not add anything if the selected value is falsy, but still deselect', () => {
+        mockEvent.option.value = null;
+
+        component.selectRole(mockEvent);
+
+        expect(component['memberForm'].get('roles')?.value)
+          .toEqual([role1]);
+        expect(mockEvent.option.deselect)
+          .toHaveBeenCalled();
+      });
+    });
+  });
 });

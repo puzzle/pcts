@@ -4,12 +4,12 @@
     <ng-container content>
 
       <app-input-field>
-        <input type="text" formControlName="experienceType" matInput [matAutocomplete]="experienceTypeAutoComplete"
-               data-testid="experienceType">
-        <mat-autocomplete autoActiveFirstOption #experienceTypeAutoComplete="matAutocomplete"
-                          [displayWith]="displayExperienceTypes">
-          @for (experienceType of experienceTypeFilteredOptions(); track experienceType) {
-            <mat-option [value]="experienceType">{{ displayExperienceTypes(experienceType) }}</mat-option>
+        <input type="text" formControlName="type" matInput [matAutocomplete]="degreeTypeAutoComplete"
+               data-testid="degreeType">
+        <mat-autocomplete autoActiveFirstOption #degreeTypeAutoComplete="matAutocomplete"
+                          [displayWith]="displayDegreeTypes">
+          @for (degreeType of degreeTypeFilteredOptions(); track degreeType) {
+            <mat-option [value]="degreeType">{{ displayDegreeTypes(degreeType) }}</mat-option>
           }
         </mat-autocomplete>
       </app-input-field>
@@ -19,12 +19,9 @@
       </app-input-field>
 
       <app-input-field>
-        <input type="text" formControlName="employer" data-testid="employer" matInput>
+        <input type="text" formControlName="institution" data-testid="institution" matInput>
       </app-input-field>
 
-      <app-input-field>
-        <input type="number" formControlName="percent" data-testid="percent" matInput>
-      </app-input-field>
 
       <mat-form-field>
         <mat-label appPctsFormLabel/>
@@ -46,12 +43,15 @@
         <textarea type="text" formControlName="comment" data-testid="comment" matInput></textarea>
       </app-input-field>
 
+        <mat-checkbox formControlName="completed">{{"COMPLETED" | scopedTranslation}}</mat-checkbox>
+
     </ng-container>
     <ng-container actions/>
   </app-base-form>
 
   <ng-container actions>
     <app-modal-actions
+      [submitModes]="this.data.submitOptions"
       [isValid]="formGroup.valid"
       (cancelAction)="onCancel()"
       (submitAction)="onSubmit($event)" />

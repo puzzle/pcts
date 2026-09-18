@@ -1,5 +1,5 @@
 <pzsh-container>
-  <pzsh-topbar class="position-sticky top-0 z-3">
+  <pzsh-topbar class="position-fixed top-0 w-100 z-3">
     <button class="btn btn-link" (click)="visitRoot()">
       <!--Inline style here due to ngSrc not working without it -->
       <img
@@ -35,7 +35,7 @@
       </pzsh-menu-dropdown>
     </div>
   </pzsh-menu>
-  <main class="w-75 mx-auto">
+  <main class="w-75 mx-auto mt-5">
     <router-outlet></router-outlet>
   </main>
 </pzsh-container>

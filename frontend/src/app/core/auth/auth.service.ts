@@ -3,6 +3,8 @@ import Keycloak from 'keycloak-js';
 import { PuzzleTokenModel } from './puzzle-token.model';
 import { APP_CONFIG } from '../../features/configuration/configuration.token';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { MemberService } from '../../features/member/member.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +15,12 @@ export class AuthService {
   private readonly keycloak = inject(Keycloak);
 
   private readonly keycloakSignal = inject(KEYCLOAK_EVENT_SIGNAL);
+
+  private readonly memberService = inject(MemberService);
+
+  private readonly _currentAppUserResource = rxResource({ stream: () => this.memberService.getMyself() });
+
+  public readonly currentAppUser = this._currentAppUserResource.value.asReadonly();
 
   public readonly name: Signal<string | null> = computed(() => {
     this.keycloakSignal();

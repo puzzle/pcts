@@ -3,14 +3,16 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
-import { AddCertificateComponent } from './add-certificate.component';
+import { CertificateModalComponent } from './certificate-modal.component';
 import { CertificateTypeService } from '../certificate-type/certificate-type.service';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import { certificate1, certificateType1, certificateType2 } from '../../../shared/test/test-data';
+import { FormModalConfig } from '../../../shared/modal/pcts-modal.service';
+import { CertificateModel } from '../certificate.model';
 
-describe('AddCertificateComponent', () => {
-  let component: AddCertificateComponent;
-  let fixture: ComponentFixture<AddCertificateComponent>;
+describe('CertificateModalComponent', () => {
+  let component: CertificateModalComponent;
+  let fixture: ComponentFixture<CertificateModalComponent>;
 
   const dialogRefMock = { close: jest.fn() };
   const certificateTypeServiceMock = {
@@ -19,11 +21,12 @@ describe('AddCertificateComponent', () => {
         certificateType2]))
   };
 
-  const dialogData = certificate1;
+  const dialogData: FormModalConfig<CertificateModel> = { model: certificate1,
+    submitOptions: [] };
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      imports: [AddCertificateComponent],
+      imports: [CertificateModalComponent],
       providers: [
         {
           provide: MAT_DIALOG_DATA,
@@ -42,7 +45,7 @@ describe('AddCertificateComponent', () => {
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(AddCertificateComponent);
+    fixture = TestBed.createComponent(CertificateModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -71,7 +74,7 @@ describe('AddCertificateComponent', () => {
     });
 
     it('should initialize empty form if no data is provided', () => {
-      (component as any).data = undefined;
+      (component as any).data.model = undefined;
       component.formGroup.reset();
 
       component.ngOnInit();
