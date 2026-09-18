@@ -31,7 +31,7 @@
   @if (hasDeleteSubmitMode()){
     <button
       class="text-danger"
-      (click)="onDelete(ModalSubmitMode.DELETE)"
+      (click)="this.deleteAction.emit()"
       type="button"
       matButton="text"
       data-testid="delete-button"
