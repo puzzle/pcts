@@ -18,6 +18,8 @@ public abstract class ExtractionPipeline<C, R, D> {
     public String extractAbbreviation(String filename) {
         if (filename.contains("_")) {
             return filename.split("_")[0].toUpperCase();
+        } else if(filename.contains(".")){
+            return filename.split("\\.")[0].toUpperCase();
         }
         throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
                                                "Invalid filename: can not extract abbreviation " + filename));
