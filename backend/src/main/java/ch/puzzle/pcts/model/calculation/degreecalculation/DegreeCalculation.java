@@ -5,7 +5,6 @@ import static org.apache.commons.lang3.StringUtils.trim;
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationChildInterface;
-import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.degree.Degree;
 import ch.puzzle.pcts.util.validation.PCTSStringValidation;
 import jakarta.persistence.*;
@@ -30,24 +29,29 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
     @JoinColumn(name = "degree_id")
     private Degree degree;
 
-    @Enumerated(EnumType.STRING)
     @NotNull(message = "{attribute.not.null}")
-    private Relevancy relevancy;
+    @Range(min = 1, max = 100, message = "{attribute.size.between}")
+    private BigDecimal strongWeight;
 
     @NotNull(message = "{attribute.not.null}")
     @Range(min = 1, max = 100, message = "{attribute.size.between}")
-    private BigDecimal weight;
+    private BigDecimal partlyWeight;
+
+    @NotNull(message = "{attribute.not.null}")
+    @Range(min = 1, max = 100, message = "{attribute.size.between}")
+    private BigDecimal lessWeight;
 
     @PCTSStringValidation(nullable = true, allowOnlyWhiteSpaces = true)
     private String comment;
 
-    public DegreeCalculation(Long id, Calculation calculation, Degree degree, Relevancy relevancy, BigDecimal weight,
-                             String comment) {
+    public DegreeCalculation(Long id, Calculation calculation, Degree degree, BigDecimal strongWeight,
+                             BigDecimal partlyWeight, BigDecimal lessWeight, String comment) {
         this.id = id;
         this.calculation = calculation;
         this.degree = degree;
-        this.relevancy = relevancy;
-        this.weight = weight;
+        this.strongWeight = strongWeight;
+        this.partlyWeight = partlyWeight;
+        this.lessWeight = lessWeight;
         this.comment = trim(comment);
     }
 
@@ -57,34 +61,24 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
 
     @Override
     public String toString() {
-        return "DegreeCalculation{" + "id=" + id + ", calculationId="
-               + (getCalculation() != null ? getCalculation().getId() : null) + ", degree=" + getDegree()
-               + ", relevancy=" + getRelevancy() + ", weight=" + getWeight() + ", comment='" + getComment() + '\''
-               + '}';
+        return "DegreeCalculation{" + "id=" + id + ", calculation=" + calculation + ", degree=" + degree
+               + ", strongWeight=" + strongWeight + ", partlyWeight=" + partlyWeight + ", lessWeight=" + lessWeight
+               + ", comment='" + comment + '\'' + '}';
     }
 
     @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof DegreeCalculation that)) {
+    public boolean equals(Object o) {
+        if (!(o instanceof DegreeCalculation that))
             return false;
-        }
-        return Objects.equals(getId(), that.getId())
-               && Objects
-                       .equals(this.getCalculation() != null ? this.getCalculation().getId() : null,
-                               that.getCalculation() != null ? that.getCalculation().getId() : null)
-               && Objects.equals(getDegree(), that.getDegree()) && getRelevancy() == that.getRelevancy()
-               && Objects.equals(getWeight(), that.getWeight()) && Objects.equals(getComment(), that.getComment());
+        return Objects.equals(id, that.id) && Objects.equals(calculation, that.calculation)
+               && Objects.equals(degree, that.degree) && Objects.equals(strongWeight, that.strongWeight)
+               && Objects.equals(partlyWeight, that.partlyWeight) && Objects.equals(lessWeight, that.lessWeight)
+               && Objects.equals(comment, that.comment);
     }
 
     @Override
     public int hashCode() {
-        return Objects
-                .hash(getId(),
-                      getCalculation() != null ? getCalculation().getId() : null,
-                      getDegree(),
-                      getRelevancy(),
-                      getWeight(),
-                      getComment());
+        return Objects.hash(id, calculation, degree, strongWeight, partlyWeight, lessWeight, comment);
     }
 
     public Long getId() {
@@ -111,20 +105,28 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
         this.degree = degree;
     }
 
-    public Relevancy getRelevancy() {
-        return relevancy;
+    public BigDecimal getStrongWeight() {
+        return strongWeight;
     }
 
-    public void setRelevancy(Relevancy relevancy) {
-        this.relevancy = relevancy;
+    public void setStrongWeight(BigDecimal strongWeight) {
+        this.strongWeight = strongWeight;
     }
 
-    public BigDecimal getWeight() {
-        return weight;
+    public BigDecimal getPartlyWeight() {
+        return partlyWeight;
     }
 
-    public void setWeight(BigDecimal weight) {
-        this.weight = weight;
+    public void setPartlyWeight(BigDecimal partlyWeight) {
+        this.partlyWeight = partlyWeight;
+    }
+
+    public BigDecimal getLessWeight() {
+        return lessWeight;
+    }
+
+    public void setLessWeight(BigDecimal lessWeight) {
+        this.lessWeight = lessWeight;
     }
 
     public String getComment() {
