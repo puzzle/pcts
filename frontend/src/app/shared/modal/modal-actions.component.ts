@@ -1,4 +1,4 @@
-import { Component, EventEmitter, input, Input, Output } from '@angular/core';
+import { Component, input, Input, output } from '@angular/core';
 import { ModalSubmitMode } from '../enum/modal-submit-mode.enum';
 import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
 import { MenuButtonComponent } from '../menu-button/menu-button.component';
@@ -26,21 +26,13 @@ export class ModalActionsComponent {
 
   @Input() deleteKey = 'BUTTONS.DELETE';
 
-  @Output() cancelAction = new EventEmitter<void>();
+  cancelAction = output<void>();
 
-  @Output() submitAction = new EventEmitter<ModalSubmitMode>();
+  submitAction = output<ModalSubmitMode>();
 
-  @Output() deleteAction = new EventEmitter<ModalSubmitMode>();
+  deleteAction = output<ModalSubmitMode>();
 
   public readonly ModalSubmitMode = ModalSubmitMode;
-
-  onCancel(): void {
-    this.cancelAction.emit();
-  }
-
-  onSubmit(mode: ModalSubmitMode): void {
-    this.submitAction.emit(mode);
-  }
 
   hasDeleteSubmitMode() {
     return this.submitModes()
@@ -50,5 +42,17 @@ export class ModalActionsComponent {
   menuButtonFunctions() {
     return this.submitModes()
       .filter((modelSubmitMode) => modelSubmitMode !== ModalSubmitMode.DELETE);
+  }
+
+  handleCancel() {
+    this.cancelAction.emit();
+  }
+
+  handleSubmit(mode: ModalSubmitMode) {
+    this.submitAction.emit(mode);
+  }
+
+  handleDelete() {
+    this.deleteAction.emit(ModalSubmitMode.DELETE);
   }
 }
