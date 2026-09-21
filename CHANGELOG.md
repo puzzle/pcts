@@ -1,5 +1,63 @@
 # Changelog
 
+## [0.12.0](https://github.com/puzzle/pcts/compare/0.11.0...0.12.0) (2026-09-21)
+
+
+### Features
+
+* add extraction of leadership experiences via migration tool [#717](https://github.com/puzzle/pcts/issues/717) ([0b54383](https://github.com/puzzle/pcts/commit/0b5438387314daa2d76815f954785c4c9f9ed2f0))
+* **frontend:** add edit modal [#798](https://github.com/puzzle/pcts/issues/798) ([#832](https://github.com/puzzle/pcts/issues/832)) ([37706f5](https://github.com/puzzle/pcts/commit/37706f50279283f3c2484d155430420c2b2955ae))
+* implement UI to add experience to member [#307](https://github.com/puzzle/pcts/issues/307) ([d81878e](https://github.com/puzzle/pcts/commit/d81878e56aab7e2645ac4a138208a71c9ce1fe93))
+* map member directly to roles [#581](https://github.com/puzzle/pcts/issues/581) ([d4b7b3d](https://github.com/puzzle/pcts/commit/d4b7b3d74e8b487709e26e6c2985c1f6a6c0ec43))
+
+
+### Bug Fixes
+
+* ensure frontend only allows 110 percent max ([6650312](https://github.com/puzzle/pcts/commit/665031207aa7d4d0a43920534e6aeea0ee4e6782))
+* exclude soft-deleted members from MemberRepository lookups [#813](https://github.com/puzzle/pcts/issues/813) ([1aa3f65](https://github.com/puzzle/pcts/commit/1aa3f6586e09717d11fad2846046a23abeb0b291))
+* run migration tool with docker compose [#796](https://github.com/puzzle/pcts/issues/796) ([19efece](https://github.com/puzzle/pcts/commit/19efece396271ac2afc1c58e4c6eb7b9e4da018b))
+
+
+### Miscellaneous Chores
+
+* add check for WIP commits ([c03bd35](https://github.com/puzzle/pcts/commit/c03bd35dbc30e09f6e99be6d956ec7eee38caa5c))
+* **deps:** update all devdependencies (minor and patch) ([#870](https://github.com/puzzle/pcts/issues/870)) ([3c03bf8](https://github.com/puzzle/pcts/commit/3c03bf8543be0c48eed8926fc13fc884f9b1d8e0))
+* **deps:** update all devdependencies (minor and patch) ([#886](https://github.com/puzzle/pcts/issues/886)) ([c5f7443](https://github.com/puzzle/pcts/commit/c5f74432c2c8dc8f83ce37c9f3dbbbec987afe0a))
+* **deps:** update all devdependencies (minor and patch) ([#900](https://github.com/puzzle/pcts/issues/900)) ([e5f9d02](https://github.com/puzzle/pcts/commit/e5f9d020762bf0cdd489a29d29fe41b709beccf7))
+* **deps:** update all devdependencies (minor and patch) ([#912](https://github.com/puzzle/pcts/issues/912)) ([3060767](https://github.com/puzzle/pcts/commit/30607672ea8a52e102b5fcdf95629a6086fd2323))
+* **deps:** update all devdependencies (minor and patch) to v22.1.8 ([#892](https://github.com/puzzle/pcts/issues/892)) ([6291022](https://github.com/puzzle/pcts/commit/62910221ff37adab1f1a0b941feb16744e35fa49))
+* **deps:** update all devdependencies (minor and patch) to v30.5.1 ([#864](https://github.com/puzzle/pcts/issues/864)) ([91ffd97](https://github.com/puzzle/pcts/commit/91ffd97492446841915a7247ba6b1722364bef90))
+* **deps:** update all eslint packages ([#887](https://github.com/puzzle/pcts/issues/887)) ([e345874](https://github.com/puzzle/pcts/commit/e34587467bf6ff9883437e94e4126214772a5db3))
+* **deps:** update angular monorepo to v22.1.5 ([#871](https://github.com/puzzle/pcts/issues/871)) ([40545d0](https://github.com/puzzle/pcts/commit/40545d0d8942e26cae5d5eee9f9eac46fb184c38))
+* **deps:** update angular monorepo to v22.1.6 ([#890](https://github.com/puzzle/pcts/issues/890)) ([70f13d0](https://github.com/puzzle/pcts/commit/70f13d0ab5c219053743eb0825e94542985047b4))
+* **deps:** update angular monorepo to v22.1.7 ([#913](https://github.com/puzzle/pcts/issues/913)) ([a33ff9c](https://github.com/puzzle/pcts/commit/a33ff9cc73987608b7de6cabf4d0026f4d53b7eb))
+* **deps:** update angularmaterial monorepo to v22.1.5 ([#869](https://github.com/puzzle/pcts/issues/869)) ([b66c9ce](https://github.com/puzzle/pcts/commit/b66c9cedd2c4274d707bbccf2938ba8bbd4ba172))
+* **deps:** update angularmaterial monorepo to v22.1.6 ([#891](https://github.com/puzzle/pcts/issues/891)) ([de010c5](https://github.com/puzzle/pcts/commit/de010c53918ff9a99f56842f2c01cd1341d64f3e))
+* **deps:** update dependency @cspell/eslint-plugin to v10.2.2 ([52157f4](https://github.com/puzzle/pcts/commit/52157f4a237771b0a55bb939f2b4a03cc85b93fd))
+* **deps:** update dependency com.diffplug.spotless:spotless-maven-plugin to v3.10.2 ([82a7c6a](https://github.com/puzzle/pcts/commit/82a7c6af49f9cc84cc8cfece3233d0bdc6fd869c))
+* **deps:** update dependency cypress to v16 ([bb87748](https://github.com/puzzle/pcts/commit/bb877481005fd2effc420ef043058cb50e869b2c))
+* **deps:** update dependency node to v24.21.0 ([#893](https://github.com/puzzle/pcts/issues/893)) ([2f1d951](https://github.com/puzzle/pcts/commit/2f1d9518be30b0a338a03ede04f1e802a4e06fd6))
+* **deps:** update dependency org.apache.maven.plugins:maven-failsafe-plugin to v3.6.0 ([#859](https://github.com/puzzle/pcts/issues/859)) ([86e54aa](https://github.com/puzzle/pcts/commit/86e54aa90481077720ec9b537e78180db2aed2cb))
+* **deps:** update dependency org.apache.maven.plugins:maven-surefire-plugin to v3.6.0 ([#865](https://github.com/puzzle/pcts/issues/865)) ([5a4011e](https://github.com/puzzle/pcts/commit/5a4011e444ef2d2420061b3ee1632df8b8061dfa))
+* **deps:** update dependency org.codehaus.mojo:properties-maven-plugin to v1.3.1 ([#898](https://github.com/puzzle/pcts/issues/898)) ([1f03cb4](https://github.com/puzzle/pcts/commit/1f03cb4cfe5e86b40e7ff0ddcbfc2a719803b9c5))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v13.5.0 ([#883](https://github.com/puzzle/pcts/issues/883)) ([7a6da1c](https://github.com/puzzle/pcts/commit/7a6da1cd098cb4c31aa12bc7e032ca2cae053204))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v13.6.0 ([#899](https://github.com/puzzle/pcts/issues/899)) ([cc68d7d](https://github.com/puzzle/pcts/commit/cc68d7d30456c246d801cf67fd7e75bd87ffd56a))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v13.7.0 ([#911](https://github.com/puzzle/pcts/issues/911)) ([5cca7a2](https://github.com/puzzle/pcts/commit/5cca7a24321c0ab1172c0920d90bde6765b89352))
+* **deps:** update dependency org.sonarsource.scanner.maven:sonar-maven-plugin to v5.8.0.7211 ([#901](https://github.com/puzzle/pcts/issues/901)) ([ef5dc55](https://github.com/puzzle/pcts/commit/ef5dc55b765ea1c59e63de671da4fbec48cd93e0))
+* **deps:** update dependency org.springdoc:springdoc-openapi-starter-webmvc-ui to v3.1.1 ([#882](https://github.com/puzzle/pcts/issues/882)) ([04a6020](https://github.com/puzzle/pcts/commit/04a6020bb477dcb36c4f1e748d454e9b76a335ac))
+* **deps:** update dependency typescript-eslint to v8.69.0 ([#867](https://github.com/puzzle/pcts/issues/867)) ([ff6f095](https://github.com/puzzle/pcts/commit/ff6f0953c8c434c19d83f7041be0126d4448210a))
+* **deps:** update pnpm to v11.27.0 ([#902](https://github.com/puzzle/pcts/issues/902)) ([41be0c8](https://github.com/puzzle/pcts/commit/41be0c8bc299d3279cc79ac2b5b2065521bca7ba))
+* **deps:** update pnpm to v12 ([6c5c496](https://github.com/puzzle/pcts/commit/6c5c496ec0e2015bda86bf897caf65f25c701957))
+* **deps:** update pnpm to v12.4.2 ([#910](https://github.com/puzzle/pcts/issues/910)) ([89fa3ae](https://github.com/puzzle/pcts/commit/89fa3aecf2414f479c06232b0d284959a534b96e))
+* exlude add-xyz modal templates from duplication detection ([c43d7b5](https://github.com/puzzle/pcts/commit/c43d7b52fe74efd672bf16641947edf31338f3b6))
+* fetch entire SCM depth for SonarQube analysis ([1f97eab](https://github.com/puzzle/pcts/commit/1f97eab3a8480a9a41e20c29966f426872632ffe))
+* fetch entire scm history for SonarQube analysis ([1f97eab](https://github.com/puzzle/pcts/commit/1f97eab3a8480a9a41e20c29966f426872632ffe))
+* **hooks:** allow wip as a prefix ([594a6a1](https://github.com/puzzle/pcts/commit/594a6a1e9cfbde120d6c65df61127b0662fe547d))
+* improve ci experience for forks ([657244a](https://github.com/puzzle/pcts/commit/657244abeb21df9511f4e6ae6d086b25c56e5b07))
+* improve ci experience for forks ([ddc4da5](https://github.com/puzzle/pcts/commit/ddc4da5f6dd9f019e81a0dbb5007da9e74edb083))
+* move version out of repository variables into workflow files ([657244a](https://github.com/puzzle/pcts/commit/657244abeb21df9511f4e6ae6d086b25c56e5b07))
+* validate audiences in JWT ([d4100a2](https://github.com/puzzle/pcts/commit/d4100a2737f6bfcec582cca11097f2786d943ad7))
+
 ## [0.11.0](https://github.com/puzzle/pcts/compare/0.10.0...0.11.0) (2026-09-04)
 
 
