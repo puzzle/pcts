@@ -168,37 +168,37 @@ importers:
     dependencies:
       '@angular/cdk':
         specifier: ^22.0.3
-        version: 22.1.6(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(@angular/forms@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)))(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 22.1.6(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(@angular/forms@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)))(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/common':
         specifier: ^22.0.5
-        version: 22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/core':
         specifier: ^22.0.5
-        version: 22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)
+        version: 22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)
       '@angular/forms':
         specifier: ^22.0.5
-        version: 22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/material':
         specifier: ^22.0.3
-        version: 22.1.6(f55ba12d3bc1001fd1ec07a20f0d3705)
+        version: 22.1.6(a4a46c6056682046c5110c62dc7cfc59)
       '@angular/material-date-fns-adapter':
         specifier: ^22.0.3
-        version: 22.1.6(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(@angular/material@22.1.6(f55ba12d3bc1001fd1ec07a20f0d3705))(date-fns@4.4.0)
+        version: 22.1.6(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(@angular/material@22.1.6(a4a46c6056682046c5110c62dc7cfc59))(date-fns@4.4.0)
       '@angular/material-luxon-adapter':
         specifier: ^22.0.3
-        version: 22.1.6(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(@angular/material@22.1.6(f55ba12d3bc1001fd1ec07a20f0d3705))(luxon@3.7.2)
+        version: 22.1.6(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(@angular/material@22.1.6(a4a46c6056682046c5110c62dc7cfc59))(luxon@3.7.2)
       '@angular/platform-browser':
         specifier: ^22.0.5
-        version: 22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))
+        version: 22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))
       '@angular/router':
         specifier: ^22.0.5
-        version: 22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)))(rxjs@7.8.2)
+        version: 22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@ngx-translate/core':
         specifier: ^18.0.0
-        version: 18.0.0(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2)
+        version: 18.0.0(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2)
       '@ngx-translate/http-loader':
         specifier: ^18.0.0
-        version: 18.0.0(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(@ngx-translate/core@18.0.0(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))
+        version: 18.0.0(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(@ngx-translate/core@18.0.0(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))
       '@puzzleitc/puzzle-shell':
         specifier: ^5.1.0
         version: 5.1.3
@@ -210,7 +210,7 @@ importers:
         version: 4.4.0
       keycloak-angular:
         specifier: ^22.0.0
-        version: 22.0.0(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(@angular/router@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)))(rxjs@7.8.2))(keycloak-js@26.2.4)(rxjs@7.8.2)
+        version: 22.0.0(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(@angular/router@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)))(rxjs@7.8.2))(keycloak-js@26.2.4)(rxjs@7.8.2)
       keycloak-js:
         specifier: ^26.2.2
         version: 26.2.4
@@ -241,28 +241,28 @@ importers:
         version: 22.5.0(eslint@10.10.0(supports-color@8.1.1))(typescript@6.0.3)
       '@angular/build':
         specifier: ^22.0.5
-        version: 22.1.8(@angular/compiler-cli@22.1.6(@angular/compiler@22.1.6)(typescript@6.0.3))(@angular/compiler@22.1.6)(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)))(@types/node@26.4.0)(chokidar@5.0.0)(istanbul-lib-instrument@6.0.3(supports-color@8.1.1))(karma@6.4.4(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1))(postcss@8.5.26)(supports-color@8.1.1)(tslib@2.8.1)(typescript@6.0.3)(yaml@2.9.0)
+        version: 22.1.8(@angular/compiler-cli@22.1.7(@angular/compiler@22.1.7)(typescript@6.0.3))(@angular/compiler@22.1.7)(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)))(@types/node@26.4.0)(chokidar@5.0.0)(istanbul-lib-instrument@6.0.3(supports-color@8.1.1))(karma@6.4.4(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1))(postcss@8.5.26)(supports-color@8.1.1)(tslib@2.8.1)(typescript@6.0.3)(yaml@2.9.0)
       '@angular/cli':
         specifier: ^22.0.5
         version: 22.1.8(@types/node@26.4.0)(chokidar@5.0.0)(supports-color@8.1.1)
       '@angular/compiler':
         specifier: ^22.0.5
-        version: 22.1.6
+        version: 22.1.7
       '@angular/compiler-cli':
         specifier: ^22.0.5
-        version: 22.1.6(@angular/compiler@22.1.6)(typescript@6.0.3)
+        version: 22.1.7(@angular/compiler@22.1.7)(typescript@6.0.3)
       '@cspell/dict-de-ch':
         specifier: ^1.3.2
         version: 1.3.2
       '@cspell/eslint-plugin':
         specifier: ^10.0.0
-        version: 10.3.1(eslint@10.10.0(supports-color@8.1.1))
+        version: 10.3.3(eslint@10.10.0(supports-color@8.1.1))
       '@eslint/js':
         specifier: ^10.0.0
         version: 10.0.1(eslint@10.10.0(supports-color@8.1.1))
       '@html-eslint/eslint-plugin':
         specifier: ^0.66.0
-        version: 0.66.0(eslint@10.10.0(supports-color@8.1.1))
+        version: 0.66.1(eslint@10.10.0(supports-color@8.1.1))
       '@stylistic/eslint-plugin':
         specifier: ^5.2.3
         version: 5.10.0(eslint@10.10.0(supports-color@8.1.1))
@@ -280,7 +280,7 @@ importers:
         version: 22.5.0(chokidar@5.0.0)(eslint@10.10.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript-eslint@8.70.0(eslint@10.10.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3))(typescript@6.0.3)
       cypress:
         specifier: ^16.0.0
-        version: 16.0.0
+        version: 16.1.0
       eslint:
         specifier: ^10.0.0
         version: 10.10.0(supports-color@8.1.1)
@@ -295,7 +295,7 @@ importers:
         version: 3.4.2(eslint@10.10.0(supports-color@8.1.1))
       eslint-plugin-prettier:
         specifier: ^5.5.4
-        version: 5.5.6(eslint-config-prettier@10.1.8(eslint@10.10.0(supports-color@8.1.1)))(eslint@10.10.0(supports-color@8.1.1))(prettier@3.9.6)
+        version: 5.5.6(eslint-config-prettier@10.1.8(eslint@10.10.0(supports-color@8.1.1)))(eslint@10.10.0(supports-color@8.1.1))(prettier@3.9.8)
       jasmine-core:
         specifier: ~7.0.0
         version: 7.0.2
@@ -310,7 +310,7 @@ importers:
         version: 17.0.0
       jest-preset-angular:
         specifier: ^17.0.0
-        version: 17.0.0(@angular/compiler-cli@22.1.6(@angular/compiler@22.1.6)(typescript@6.0.3))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)))(@babel/core@7.29.7(supports-color@8.1.1))(@jest/transform@30.5.1(supports-color@8.1.1))(@jest/types@30.4.1)(babel-jest@30.5.1(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(jest@30.5.1(@types/node@26.4.0)(supports-color@8.1.1))(jsdom@26.1.0(supports-color@8.1.1))(typescript@6.0.3)
+        version: 17.0.0(@angular/compiler-cli@22.1.7(@angular/compiler@22.1.7)(typescript@6.0.3))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)))(@babel/core@7.29.7(supports-color@8.1.1))(@jest/transform@30.5.1(supports-color@8.1.1))(@jest/types@30.4.1)(babel-jest@30.5.1(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(jest@30.5.1(@types/node@26.4.0)(supports-color@8.1.1))(jsdom@26.1.0(supports-color@8.1.1))(typescript@6.0.3)
       karma:
         specifier: ~6.4.0
         version: 6.4.4(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1)
@@ -328,7 +328,7 @@ importers:
         version: 2.3.0(jasmine-core@7.0.2)(karma-jasmine@5.1.0(karma@6.4.4(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1)))(karma@6.4.4(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1))
       prettier:
         specifier: ^3.6.2
-        version: 3.9.6
+        version: 3.9.8
       prettier-eslint:
         specifier: ^17.0.0
         version: 17.1.2(supports-color@8.1.1)(typescript@6.0.3)
@@ -495,19 +495,19 @@ packages:
       '@angular/core': 22.1.7
       rxjs: ^6.5.3 || ^7.4.0
 
-  '@angular/compiler-cli@22.1.6':
-    resolution: {integrity: sha512-C1fQuaSLnibhfbb7Im/vurdBEcfQk+/GqPkY4+dgEKd4EPleO0xWlD+k5DwyNFX8a9w7HebWfo0Zl66HuaEwOQ==}
+  '@angular/compiler-cli@22.1.7':
+    resolution: {integrity: sha512-VGg8Kyt0YymQfnUUFk79vFaM+x5xmIMHy+BZh3P2Lh/uxqCXTWhJJH8kOHKtIGGH5/wKhBEmSy2CezdcIuM9xg==}
     engines: {node: ^22.22.3 || ^24.15.0 || >=26.0.0}
     hasBin: true
     peerDependencies:
-      '@angular/compiler': 22.1.6
+      '@angular/compiler': 22.1.7
       typescript: '>=6.0 <6.1'
     peerDependenciesMeta:
       typescript:
         optional: true
 
-  '@angular/compiler@22.1.6':
-    resolution: {integrity: sha512-JjOUm/qD338+fGfZvxSNn/vTUiVqNwOiPzacInVUq1eVp7Jev+cnvEwXA2cFJkYZoy3Imz6wHoMvTUZNN8cbKQ==}
+  '@angular/compiler@22.1.7':
+    resolution: {integrity: sha512-qhoHAByh805nT4Xy4Wd2kE5FvkTc7wcg8Qps+EH6+z4KRfwGiL5cwdgooGWjTAldFCeqTgJ0BO/0dB6GHZjdkQ==}
     engines: {node: ^22.22.3 || ^24.15.0 || >=26.0.0}
 
   '@angular/core@22.1.7':
@@ -819,28 +819,28 @@ packages:
     resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==}
     engines: {node: '>=0.1.90'}
 
-  '@cspell/cspell-bundled-dicts@10.3.1':
-    resolution: {integrity: sha512-wHRmqaHrhmPHxsnYs9JhYCwD+lLsIOltbvaK9XfIkisblfBCjvsSihsJZhVEvSQ2pPNqESUaOQnBBeVbqv52qA==}
+  '@cspell/cspell-bundled-dicts@10.3.3':
+    resolution: {integrity: sha512-aX40uWqTN44EM81R/Xj/NMIbgdtBM0ulKPTDKhVJYIbCJarISLoxaJkERs9dHB5AwrDZViC6BXcpVYnoRV1kXg==}
     engines: {node: '>=22.18.0'}
 
-  '@cspell/cspell-performance-monitor@10.3.1':
-    resolution: {integrity: sha512-zSFk/7YxYUCoxCxunigiW/q0U9XsIYNQJy6+bYaVYOT6/3WMOHZkzWffxAD8WNzzMd61QFpTb2FrrzudEhY/Yw==}
+  '@cspell/cspell-performance-monitor@10.3.3':
+    resolution: {integrity: sha512-RfHwlk45TwYS2oNuHUGH562NgKEFLotG9LHYjkTiPKC8tZfqaoBKT1BHK/g7H5XUe5L8/nhN0ycxI0bZ3InShA==}
     engines: {node: '>=22.18.0'}
 
-  '@cspell/cspell-pipe@10.3.1':
-    resolution: {integrity: sha512-ErGssy4KPaI+PWbc92attUz4/hYcJW05c94tgzhiaEUumgrCMqV64sJlFyTh3ckMhAh9pPg2Kp+qpmS634pTwQ==}
+  '@cspell/cspell-pipe@10.3.3':
+    resolution: {integrity: sha512-ZZ0dgTKbvWyb5cb4rhWTP9KCdyEGaIzc55Qvz6+mPWDTd/cQthsH4SECitZtWgzY8o/kLmlCEOrkqgli5kAHBQ==}
     engines: {node: '>=22.18.0'}
 
-  '@cspell/cspell-resolver@10.3.1':
-    resolution: {integrity: sha512-m072aE8NesdbSt8wieWJiCZOzSekzorsaXFxetkTFI2JIM7fqd+wvCtasLYY1CUbhjGdHOjTQ5GxXL6Z4rzCbA==}
+  '@cspell/cspell-resolver@10.3.3':
+    resolution: {integrity: sha512-zy+3lykifrK3z6RW93mi5BLCdn4aPM1/ovfy8ekJO2I43FxpevbtNFfSoU1/ZYpWPAgEbz9CUjbMkWE7pgK+HA==}
     engines: {node: '>=22.18.0'}
 
-  '@cspell/cspell-service-bus@10.3.1':
-    resolution: {integrity: sha512-Ha+H8SOBFA0QeWjYc9qY2/Jm41PGpmFjGqgOGZtI8BiJ5DTPLQpn2rPAxE6IKNUvtNE1kkknkbhsWVe/a14wkw==}
+  '@cspell/cspell-service-bus@10.3.3':
+    resolution: {integrity: sha512-zGQgksLrM36TinrflZvx3bp3DSRHog1wl4HZAYvVtp74eqZromUDoW0lziFFrumZnld+p92l8GSrXptnvYhjog==}
     engines: {node: '>=22.18.0'}
 
-  '@cspell/cspell-types@10.3.1':
-    resolution: {integrity: sha512-c0ta73Z2KQdvOqlCWNCi9GYQSw/IUFm0R0FpNOaPZn3cjc6J6pMBd4IwD07TsOXMduCrmf/Ppg6gzcyviGHeAQ==}
+  '@cspell/cspell-types@10.3.3':
+    resolution: {integrity: sha512-sLw1ik9qrPc2NZJ93Y6eKXd2r5jpiu7ciOl2fVsvKo11GU6MmOqx7J9UJ3uUy5+xo6Zvpo/6JGD030l8OiYUOw==}
     engines: {node: '>=22.18.0'}
 
   '@cspell/dict-ada@4.1.1':
@@ -1028,30 +1028,30 @@ packages:
   '@cspell/dict-zig@1.0.0':
     resolution: {integrity: sha512-XibBIxBlVosU06+M6uHWkFeT0/pW5WajDRYdXG2CgHnq85b0TI/Ks0FuBJykmsgi2CAD3Qtx8UHFEtl/DSFnAQ==}
 
-  '@cspell/dynamic-import@10.3.1':
-    resolution: {integrity: sha512-4OlYzARVBPlPjc1hsixRJObNhnzmBQOXuMjCmlLa5CiAB2y9fhVKN8EIZMSph/Tboo+LzCxUpOmklSwb1NqYRQ==}
+  '@cspell/dynamic-import@10.3.3':
+    resolution: {integrity: sha512-9/V6879khIUrZVsB3lV1Xv1uENvrurAdfLkj1A659RSjc4cGao3ZfWZ6iEV3hRRoroO6616xlvpE/Fd9ojTBtw==}
     engines: {node: '>=22.18.0'}
 
-  '@cspell/eslint-plugin@10.3.1':
-    resolution: {integrity: sha512-n8nlg9IZ3JvzXEYEVFjSQxI2iBRFO/NV0+zWtvqSmCAtck9+gJBGmoomw+AZt43iEVIdw5Bc2zG3DX4Ue6QK7g==}
+  '@cspell/eslint-plugin@10.3.3':
+    resolution: {integrity: sha512-OATL0AwQADvJvRus8kuJRTepiHeuqb4bd8GCTPgji8pA04B1Ir93cWq486UA7PYxZsgD3SDLs3n3yOb7pnf9Mg==}
     engines: {node: '>=22.18.0'}
     peerDependencies:
       eslint: ^8 || ^9 || ^10
 
-  '@cspell/filetypes@10.3.1':
-    resolution: {integrity: sha512-R7pQUshSh78yWEb5SSdeKlQBamYn15BpU3EEUHKXFZq70PvixXatVtygFBHawdk8YjSAVQTT+G5Rx4LOv/3QLQ==}
+  '@cspell/filetypes@10.3.3':
+    resolution: {integrity: sha512-HFKLXlgeIn+r4qEdBkJNVbmNCMphDGrF/42BHBssydYaeS4j3eWQqsSg+rWNHFJDfK0gsHPuxRjWORbp4F9hzQ==}
     engines: {node: '>=22.18.0'}
 
-  '@cspell/rpc@10.3.1':
-    resolution: {integrity: sha512-3MJ62tcb27JM/Znpg9OE97iWHh0QDQsUZV15imAw2326yGAG7oyFEIyDDvhbJLQTfogs0oYdH7c5A4B/VfBIZg==}
+  '@cspell/rpc@10.3.3':
+    resolution: {integrity: sha512-VcAqdtyer/CT/bq5gs4i7V61+sQgjXn+aGA6bVq9qUyivieX7Yo/Ue3reN81UWdsj7whlK++oBaf1Ds4alhFOw==}
     engines: {node: '>=22.18.0'}
 
-  '@cspell/strong-weak-map@10.3.1':
-    resolution: {integrity: sha512-Bwe3+1GyKN1BcfdDsWW53ujWxUqn6onNAKJ6hIXaZCTAS/ZLMcoYP7fJQko/syEGerOvbcSgdCkXfahrM2dRfA==}
+  '@cspell/strong-weak-map@10.3.3':
+    resolution: {integrity: sha512-cXMVHROQtAIraRc62dQ1nX5h4vlc7O1EUT+GotiTx+BuwSTiMgBr/zue1pr+yQXoltExQUUuudSNsLRf/wZn5A==}
     engines: {node: '>=22.18.0'}
 
-  '@cspell/url@10.3.1':
-    resolution: {integrity: sha512-S2+Sr9LwCrUATnODo8fdyF6NfJZYAmYmA0HaJ40OGEsOwi17T5aa1jHfw62RWyZYMkxFLcL7ABeFHnWDgI784A==}
+  '@cspell/url@10.3.3':
+    resolution: {integrity: sha512-ZhsdSzfwXA/TuyqDb0nl+A9Kfd0W+rBIDdPxeXLvVsKFCtxVDa0zUYyhWhrtT9RtsPZQfRqPTkr+DsfWOzu4EA==}
     engines: {node: '>=22.18.0'}
 
   '@csstools/color-helpers@5.1.0':
@@ -1491,27 +1491,27 @@ packages:
     peerDependencies:
       hono: ^4
 
-  '@html-eslint/core@0.66.0':
-    resolution: {integrity: sha512-7zO32H2x91leamTOnslX2T6hGyeTLtXQeQF89QVw5Na1iqJul39fEVX/MCpwEC6195G30tzhSJuqjDU5HIM6VA==}
+  '@html-eslint/core@0.66.1':
+    resolution: {integrity: sha512-Rxog7sJUrBQsDObqrsSyuJNggLx5nqLKpx47/OIkut1qTpjWLUmtarcKTHjfNXidX2g5Hq7mr7rhrQJIglNhHg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@html-eslint/eslint-plugin@0.66.0':
-    resolution: {integrity: sha512-Oha7l7nENQHw5aCLzWaHyyF5bqrA1ODEbowEifMejMHM6Vauj6jJh8M/msIdnKwUBglPTkvFDH9vGaZVmGggfw==}
+  '@html-eslint/eslint-plugin@0.66.1':
+    resolution: {integrity: sha512-4KVifGTBF9fweCis7kmjdVRpqHNOW5fngBPBh9QUdVweLbYa6ZaN+txit/DeHXpmQ4aQwTh/YbKee9WjxmYY5w==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: '>=8.0.0 || ^10.0.0-0'
 
-  '@html-eslint/parser@0.66.0':
-    resolution: {integrity: sha512-/KE6i8DIO1TAL0YvAgqaXWKduvlnnj1Sy2PXM3UKJZsk0798sLrKMKOl6sXH8QuNxXsPsW1hlxIHsho9UfZI1A==}
+  '@html-eslint/parser@0.66.1':
+    resolution: {integrity: sha512-NsqgNpMzF74AEtEoRdNR0FA7+y1Pw9vnyAxG/iUh0lhvY9arwZpREvKDoP7g4G/txi3fIYl+ZJALmfxketJ4nw==}
 
-  '@html-eslint/template-parser@0.66.0':
-    resolution: {integrity: sha512-eGo6mfWFahcVQE3+CGAK12QaYIURG8/xwb8ITw+5lrn0Mo1yUXFgdBODjx7E0Sd9sZ2FVw8JzMjMgxo4ntFdzA==}
+  '@html-eslint/template-parser@0.66.1':
+    resolution: {integrity: sha512-cWBzHgMEqgWPAeRdu20tQm80KXvhwPJkAm536581yIhOnaPQslpDbE8MXauDstfDAWR42pZc4xUf7+qn/vezMQ==}
 
-  '@html-eslint/template-syntax-parser@0.66.0':
-    resolution: {integrity: sha512-HLHSaH0e4udBFqE+GDexZnXBSyaB4Mo42UfYQo+/hyFXMnY8QBWaFFqsKL/vwWccX1hAaC5nKDdKldoVPDgugw==}
+  '@html-eslint/template-syntax-parser@0.66.1':
+    resolution: {integrity: sha512-du8KqD/fE1faKC6Ve7WNd0ImRcrgIoeJV6/jpFAIjzN9XOqwKBHwtZD3n9nUS7YU0vCvbScpmg+I+rYNKMTiYQ==}
 
-  '@html-eslint/types@0.66.0':
-    resolution: {integrity: sha512-QrUudu/EA47xIE0nN5Wf0LlMkz1vGB/rks/3D/+9KtlmUzpGOn562AShyz1fYE1OBFjjEk86pJmCkHhIm4WO7g==}
+  '@html-eslint/types@0.66.1':
+    resolution: {integrity: sha512-wX7v093qlQYzuPHSD4a0C1P2F6HM1PhEq6vYxj9L2LoT9VoIbVPJ2KKcGBgNGHwvVhwbOh0EY+R8+TcaJGVXTQ==}
 
   '@humanfs/core@0.19.2':
     resolution: {integrity: sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA==}
@@ -3291,36 +3291,36 @@ packages:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
     engines: {node: '>= 8'}
 
-  cspell-config-lib@10.3.1:
-    resolution: {integrity: sha512-cSZEEhXqTjvoeohRW9ZhYziOTxApN9roHWKaGslsS9UGWbY4eOBO6FikDL1r/2PQ0rGLMu570XTEJYMmFlHraw==}
+  cspell-config-lib@10.3.3:
+    resolution: {integrity: sha512-6u5s+LLLqXxhhtSDz/ft40LIZ2u4YxEPJxaOnojXleMZzDxSQskyuAG72R2vIjJOYjxevK0vb/f3rnZ+cSmnVw==}
     engines: {node: '>=22.18.0'}
 
-  cspell-dictionary@10.3.1:
-    resolution: {integrity: sha512-IR4ApsnqSP0m+daR1lXjpTG4hzrH5Ow7E/yzgoAKKbP9OQRVgrpXC948aOVbB6JOC/Sk2BkWmeMlnJ3YBM3FFQ==}
+  cspell-dictionary@10.3.3:
+    resolution: {integrity: sha512-uHYhIfByu1iB2tBZdxbCAh8mMqMrxcWi/u5d1kdXBPqCa5QpsFv316CaUNgcU/pmDp6ZAti4QhXbk0gSsKdIiA==}
     engines: {node: '>=22.18.0'}
 
-  cspell-glob@10.3.1:
-    resolution: {integrity: sha512-w6DvrttxHpSYUYep7RzcIvTZbCtXovWkWVkuGw+RPLOSXbUEcoqDYg3EW9uTg57LIT3p5Jsop+VOTuJzQ8ahTw==}
+  cspell-glob@10.3.3:
+    resolution: {integrity: sha512-oxqYJHjlZ+OzA5YDF2NCWvKNGJmuuvyqv+QZ7BYPOx3bkuouAK2q4GNme0lVHL6Vbj0tPgBY67eAMESz45r3yw==}
     engines: {node: '>=22.18.0'}
 
-  cspell-grammar@10.3.1:
-    resolution: {integrity: sha512-GLtG5fzT4+o9FMqB2M10LT/hnA0iFEO4OmKl1+XMyDrK4rdFrqsBpVfc9Uyk+5AZ+nkR9/PudZBEkFpDDrpgNg==}
+  cspell-grammar@10.3.3:
+    resolution: {integrity: sha512-cCGp22tH7Q8I6xmoxvI654FQrIXKz+AZ1XOuPgBbjFCsu6Fl8y27HM+9I9GbzrsGykyT+7cSpdhGID6Ay7Rn+w==}
     engines: {node: '>=22.18.0'}
     hasBin: true
 
-  cspell-io@10.3.1:
-    resolution: {integrity: sha512-LGC739gKC/wzoCrLFl+F0F/wQQZNATzvMoIlFk7acr+xGrRVJUUudxh0Fh0yCBnYXtCGhbSUxLgg8eHgFScAag==}
+  cspell-io@10.3.3:
+    resolution: {integrity: sha512-ifhTJgf8ISAvyB8i5NMTVXkRP4JvsoB6XOWtXPg8wqpBiGWHk2o/eGgNn8iap9dLWHU7GRxkE4R9Qdw5nXfuTg==}
     engines: {node: '>=22.18.0'}
 
-  cspell-lib@10.3.1:
-    resolution: {integrity: sha512-msDAL+F0suXMTFj6OCWPmeBUNUe+19Bb1yPtOkbGVBU65K7sKHfwjCt8ev3iTdhhIKi8hIaq6xmJShBb1vznmw==}
+  cspell-lib@10.3.3:
+    resolution: {integrity: sha512-KyJpUJu66COyz3ZW1hbJsTfJYJheoc/EEiMbKFSxJUIbbbX8byN2dVF3eq2t+t2Q5dORrQ2OnnfYwpw2WbKZzw==}
     engines: {node: '>=22.18.0'}
 
-  cspell-trie-lib@10.3.1:
-    resolution: {integrity: sha512-6mJGGPEtD4CMoq9qxmRIa+XB7BgLPTgDSGFn1FluNbhF/x3VFeSErcTO+lcfqQhAdAZvEIqptzKt/m6CJJUUPg==}
+  cspell-trie-lib@10.3.3:
+    resolution: {integrity: sha512-NgdfYr4UvoAdG+ZYwi/WnXiGwOCU5azD7FciV03+dstkXA1ZxNWC7UjMjt4NtZvK/HfCSSLlUnMzLmCGX2TO9g==}
     engines: {node: '>=22.18.0'}
     peerDependencies:
-      '@cspell/cspell-types': 10.3.1
+      '@cspell/cspell-types': 10.3.3
 
   css-select@6.0.0:
     resolution: {integrity: sha512-rZZVSLle8v0+EY8QAkDWrKhpgt6SA5OtHsgBnsj6ZaLb5dmDVOWUDtQitd9ydxxvEjhewNudS6eTVU7uOyzvXw==}
@@ -3340,8 +3340,8 @@ packages:
   custom-event@1.0.1:
     resolution: {integrity: sha512-GAj5FOq0Hd+RsCGVJxZuKaIDXDf3h6GQoNEjFgbLLI/trgtavwUbSnZ5pVfg27DVCaWjIohryS0JFwIJyT2cMg==}
 
-  cypress@16.0.0:
-    resolution: {integrity: sha512-/H3zsayGwIGboFIiLWaXxy6ADmCdWy5QjjDBZgslCvjIgYAf1DkZerwAM7wXMPSpfpQ4w+lGjFlmwneRBpg27g==}
+  cypress@16.1.0:
+    resolution: {integrity: sha512-t8suSUVzQyHI7v6KhhA07M9ChftdfqVZNLCekhguIb+2f0fCmI8WAih5L0oGH7K6slapNduGy5zpJ+17LmSXkQ==}
     engines: {node: ^22.0.0 || ^24.0.0 || >=26.0.0}
     hasBin: true
 
@@ -3540,8 +3540,8 @@ packages:
     resolution: {integrity: sha512-Zf5H2Kxt2xjTvbJvP2ZWLEICxA6j+hAmMzIlypy4xcBg1vKVnx89Wy0GbS+kf5cwCVFFzdCFh2XSCFNULS6csw==}
     engines: {node: '>= 0.4'}
 
-  es-html-parser@0.3.1:
-    resolution: {integrity: sha512-YTEasG4xt7FEN4b6qJIPbFo/fzQ5kjRMEQ33QMqSXTvfXqAbC2rHxo32x2/1Rhq7Mlu6wI3MIpM5Kf2VHPXrUQ==}
+  es-html-parser@0.3.2:
+    resolution: {integrity: sha512-/xo/9AOatFv+hn1ALFoDfNX1zK91O4hLlv3JMSzUA4MRbErKRgVjcE48KBcoO896WkW4b4BpLS2H/F9DXaTBag==}
 
   es-module-lexer@2.3.2:
     resolution: {integrity: sha512-poHGpORABojJJucnV9KbOavETW8lBVnphkW77ER5/BQ5Fz7oXSoCNek7IH3vR5nRjdsEz926ibFYX8KtLQmdyw==}
@@ -5035,8 +5035,8 @@ packages:
     resolution: {integrity: sha512-SxToR7P8Y2lWmv/kTzVLC1t/GDI2WGjMwNhLLE9qtH8Q13C+aEmuRlzDst4Up4s0Wc8sF2M+J57iB3cMLqftfg==}
     engines: {node: '>=6.0.0'}
 
-  prettier@3.9.6:
-    resolution: {integrity: sha512-OpN0zzVdiaiAhxpuuj5efpIS4sY9j7bY6uR5mnj5yPzGkdkjNKSJeUThPb60Jw29QuAZgA4o+/iB49kFiaBX6g==}
+  prettier@3.9.8:
+    resolution: {integrity: sha512-WRFq3Wn3WId7LLROfMLdH7xaFr2jR62wU8nLO6rQUOLOxNZUviyJQs1M0iIhLexSFy+L+w0ch66wtoO2jRjG0A==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -5948,12 +5948,12 @@ snapshots:
       eslint: 10.10.0(supports-color@8.1.1)
       typescript: 6.0.3
 
-  '@angular/build@22.1.8(@angular/compiler-cli@22.1.6(@angular/compiler@22.1.6)(typescript@6.0.3))(@angular/compiler@22.1.6)(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)))(@types/node@26.4.0)(chokidar@5.0.0)(istanbul-lib-instrument@6.0.3(supports-color@8.1.1))(karma@6.4.4(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1))(postcss@8.5.26)(supports-color@8.1.1)(tslib@2.8.1)(typescript@6.0.3)(yaml@2.9.0)':
+  '@angular/build@22.1.8(@angular/compiler-cli@22.1.7(@angular/compiler@22.1.7)(typescript@6.0.3))(@angular/compiler@22.1.7)(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)))(@types/node@26.4.0)(chokidar@5.0.0)(istanbul-lib-instrument@6.0.3(supports-color@8.1.1))(karma@6.4.4(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1))(postcss@8.5.26)(supports-color@8.1.1)(tslib@2.8.1)(typescript@6.0.3)(yaml@2.9.0)':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@angular-devkit/architect': 0.2201.8(chokidar@5.0.0)
-      '@angular/compiler': 22.1.6
-      '@angular/compiler-cli': 22.1.6(@angular/compiler@22.1.6)(typescript@6.0.3)
+      '@angular/compiler': 22.1.7
+      '@angular/compiler-cli': 22.1.7(@angular/compiler@22.1.7)(typescript@6.0.3)
       '@babel/core': 8.0.1
       '@babel/helper-annotate-as-pure': 8.0.0
       '@babel/helper-split-export-declaration': 7.24.7
@@ -5981,8 +5981,8 @@ snapshots:
       vite: 8.1.5(@types/node@26.4.0)(esbuild@0.28.2)(sass@1.101.0)(yaml@2.9.0)
       watchpack: 2.5.2
     optionalDependencies:
-      '@angular/core': 22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)
-      '@angular/platform-browser': 22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))
+      '@angular/core': 22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)
+      '@angular/platform-browser': 22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))
       istanbul-lib-instrument: 6.0.3(supports-color@8.1.1)
       karma: 6.4.4(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1)
       lmdb: 3.5.6
@@ -6001,12 +6001,12 @@ snapshots:
       - tsx
       - yaml
 
-  '@angular/cdk@22.1.6(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(@angular/forms@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)))(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)))(rxjs@7.8.2)':
+  '@angular/cdk@22.1.6(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(@angular/forms@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)))(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)))(rxjs@7.8.2)':
     dependencies:
-      '@angular/common': 22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2)
-      '@angular/core': 22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)
-      '@angular/forms': 22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)))(rxjs@7.8.2)
-      '@angular/platform-browser': 22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))
+      '@angular/common': 22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2)
+      '@angular/core': 22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)
+      '@angular/forms': 22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)))(rxjs@7.8.2)
+      '@angular/platform-browser': 22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))
       parse5: 8.0.1
       rxjs: 7.8.2
       tslib: 2.8.1
@@ -6033,15 +6033,15 @@ snapshots:
       - chokidar
       - supports-color
 
-  '@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2)':
+  '@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2)':
     dependencies:
-      '@angular/core': 22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)
+      '@angular/core': 22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)
       rxjs: 7.8.2
       tslib: 2.8.1
 
-  '@angular/compiler-cli@22.1.6(@angular/compiler@22.1.6)(typescript@6.0.3)':
+  '@angular/compiler-cli@22.1.7(@angular/compiler@22.1.7)(typescript@6.0.3)':
     dependencies:
-      '@angular/compiler': 22.1.6
+      '@angular/compiler': 22.1.7
       '@babel/core': 8.0.1
       '@jridgewell/sourcemap-codec': 1.6.0
       chokidar: 5.0.0
@@ -6053,62 +6053,62 @@ snapshots:
     optionalDependencies:
       typescript: 6.0.3
 
-  '@angular/compiler@22.1.6':
+  '@angular/compiler@22.1.7':
     dependencies:
       tslib: 2.8.1
 
-  '@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)':
+  '@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)':
     dependencies:
       rxjs: 7.8.2
       tslib: 2.8.1
     optionalDependencies:
-      '@angular/compiler': 22.1.6
+      '@angular/compiler': 22.1.7
 
-  '@angular/forms@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)))(rxjs@7.8.2)':
+  '@angular/forms@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)))(rxjs@7.8.2)':
     dependencies:
-      '@angular/common': 22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2)
-      '@angular/core': 22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)
-      '@angular/platform-browser': 22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))
+      '@angular/common': 22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2)
+      '@angular/core': 22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)
+      '@angular/platform-browser': 22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))
       '@standard-schema/spec': 1.1.0
       rxjs: 7.8.2
       tslib: 2.8.1
       zod: 4.5.4
 
-  '@angular/material-date-fns-adapter@22.1.6(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(@angular/material@22.1.6(f55ba12d3bc1001fd1ec07a20f0d3705))(date-fns@4.4.0)':
+  '@angular/material-date-fns-adapter@22.1.6(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(@angular/material@22.1.6(a4a46c6056682046c5110c62dc7cfc59))(date-fns@4.4.0)':
     dependencies:
-      '@angular/core': 22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)
-      '@angular/material': 22.1.6(f55ba12d3bc1001fd1ec07a20f0d3705)
+      '@angular/core': 22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)
+      '@angular/material': 22.1.6(a4a46c6056682046c5110c62dc7cfc59)
       date-fns: 4.4.0
       tslib: 2.8.1
 
-  '@angular/material-luxon-adapter@22.1.6(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(@angular/material@22.1.6(f55ba12d3bc1001fd1ec07a20f0d3705))(luxon@3.7.2)':
+  '@angular/material-luxon-adapter@22.1.6(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(@angular/material@22.1.6(a4a46c6056682046c5110c62dc7cfc59))(luxon@3.7.2)':
     dependencies:
-      '@angular/core': 22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)
-      '@angular/material': 22.1.6(f55ba12d3bc1001fd1ec07a20f0d3705)
+      '@angular/core': 22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)
+      '@angular/material': 22.1.6(a4a46c6056682046c5110c62dc7cfc59)
       luxon: 3.7.2
       tslib: 2.8.1
 
-  '@angular/material@22.1.6(f55ba12d3bc1001fd1ec07a20f0d3705)':
+  '@angular/material@22.1.6(a4a46c6056682046c5110c62dc7cfc59)':
     dependencies:
-      '@angular/cdk': 22.1.6(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(@angular/forms@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)))(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)))(rxjs@7.8.2)
-      '@angular/common': 22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2)
-      '@angular/core': 22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)
-      '@angular/forms': 22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)))(rxjs@7.8.2)
-      '@angular/platform-browser': 22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))
+      '@angular/cdk': 22.1.6(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(@angular/forms@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)))(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)))(rxjs@7.8.2)
+      '@angular/common': 22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2)
+      '@angular/core': 22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)
+      '@angular/forms': 22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)))(rxjs@7.8.2)
+      '@angular/platform-browser': 22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))
       rxjs: 7.8.2
       tslib: 2.8.1
 
-  '@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))':
+  '@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))':
     dependencies:
-      '@angular/common': 22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2)
-      '@angular/core': 22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)
+      '@angular/common': 22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2)
+      '@angular/core': 22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)
       tslib: 2.8.1
 
-  '@angular/router@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)))(rxjs@7.8.2)':
+  '@angular/router@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)))(rxjs@7.8.2)':
     dependencies:
-      '@angular/common': 22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2)
-      '@angular/core': 22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)
-      '@angular/platform-browser': 22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))
+      '@angular/common': 22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2)
+      '@angular/core': 22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)
+      '@angular/platform-browser': 22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))
       rxjs: 7.8.2
       tslib: 2.8.1
 
@@ -6412,7 +6412,7 @@ snapshots:
 
   '@colors/colors@1.5.0': {}
 
-  '@cspell/cspell-bundled-dicts@10.3.1':
+  '@cspell/cspell-bundled-dicts@10.3.3':
     dependencies:
       '@cspell/dict-ada': 4.1.1
       '@cspell/dict-al': 1.1.1
@@ -6474,17 +6474,17 @@ snapshots:
       '@cspell/dict-vue': 3.0.5
       '@cspell/dict-zig': 1.0.0
 
-  '@cspell/cspell-performance-monitor@10.3.1': {}
+  '@cspell/cspell-performance-monitor@10.3.3': {}
 
-  '@cspell/cspell-pipe@10.3.1': {}
+  '@cspell/cspell-pipe@10.3.3': {}
 
-  '@cspell/cspell-resolver@10.3.1':
+  '@cspell/cspell-resolver@10.3.3':
     dependencies:
       global-directory: 5.0.0
 
-  '@cspell/cspell-service-bus@10.3.1': {}
+  '@cspell/cspell-service-bus@10.3.3': {}
 
-  '@cspell/cspell-types@10.3.1': {}
+  '@cspell/cspell-types@10.3.3': {}
 
   '@cspell/dict-ada@4.1.1': {}
 
@@ -6615,26 +6615,26 @@ snapshots:
 
   '@cspell/dict-zig@1.0.0': {}
 
-  '@cspell/dynamic-import@10.3.1':
+  '@cspell/dynamic-import@10.3.3':
     dependencies:
-      '@cspell/url': 10.3.1
+      '@cspell/url': 10.3.3
       import-meta-resolve: 4.2.0
 
-  '@cspell/eslint-plugin@10.3.1(eslint@10.10.0(supports-color@8.1.1))':
+  '@cspell/eslint-plugin@10.3.3(eslint@10.10.0(supports-color@8.1.1))':
     dependencies:
-      '@cspell/cspell-types': 10.3.1
-      '@cspell/url': 10.3.1
-      cspell-lib: 10.3.1
+      '@cspell/cspell-types': 10.3.3
+      '@cspell/url': 10.3.3
+      cspell-lib: 10.3.3
       eslint: 10.10.0(supports-color@8.1.1)
       synckit: 0.11.13
 
-  '@cspell/filetypes@10.3.1': {}
+  '@cspell/filetypes@10.3.3': {}
 
-  '@cspell/rpc@10.3.1': {}
+  '@cspell/rpc@10.3.3': {}
 
-  '@cspell/strong-weak-map@10.3.1': {}
+  '@cspell/strong-weak-map@10.3.3': {}
 
-  '@cspell/url@10.3.1': {}
+  '@cspell/url@10.3.3': {}
 
   '@csstools/color-helpers@5.1.0': {}
 
@@ -6941,44 +6941,44 @@ snapshots:
     dependencies:
       hono: 4.13.5
 
-  '@html-eslint/core@0.66.0':
+  '@html-eslint/core@0.66.1':
     dependencies:
-      '@html-eslint/types': 0.66.0
+      '@html-eslint/types': 0.66.1
       html-standard: 0.0.13
 
-  '@html-eslint/eslint-plugin@0.66.0(eslint@10.10.0(supports-color@8.1.1))':
+  '@html-eslint/eslint-plugin@0.66.1(eslint@10.10.0(supports-color@8.1.1))':
     dependencies:
       '@eslint/plugin-kit': 0.4.1
-      '@html-eslint/core': 0.66.0
-      '@html-eslint/parser': 0.66.0
-      '@html-eslint/template-parser': 0.66.0
-      '@html-eslint/template-syntax-parser': 0.66.0
-      '@html-eslint/types': 0.66.0
+      '@html-eslint/core': 0.66.1
+      '@html-eslint/parser': 0.66.1
+      '@html-eslint/template-parser': 0.66.1
+      '@html-eslint/template-syntax-parser': 0.66.1
+      '@html-eslint/types': 0.66.1
       '@rviscomi/capo.js': 2.2.0
       eslint: 10.10.0(supports-color@8.1.1)
       html-standard: 0.0.13
 
-  '@html-eslint/parser@0.66.0':
+  '@html-eslint/parser@0.66.1':
     dependencies:
-      '@html-eslint/template-syntax-parser': 0.66.0
-      '@html-eslint/types': 0.66.0
+      '@html-eslint/template-syntax-parser': 0.66.1
+      '@html-eslint/types': 0.66.1
       css-tree: 3.2.1
-      es-html-parser: 0.3.1
+      es-html-parser: 0.3.2
 
-  '@html-eslint/template-parser@0.66.0':
+  '@html-eslint/template-parser@0.66.1':
     dependencies:
-      '@html-eslint/types': 0.66.0
-      es-html-parser: 0.3.1
+      '@html-eslint/types': 0.66.1
+      es-html-parser: 0.3.2
 
-  '@html-eslint/template-syntax-parser@0.66.0':
+  '@html-eslint/template-syntax-parser@0.66.1':
     dependencies:
-      '@html-eslint/types': 0.66.0
+      '@html-eslint/types': 0.66.1
 
-  '@html-eslint/types@0.66.0':
+  '@html-eslint/types@0.66.1':
     dependencies:
       '@types/css-tree': 2.3.11
       '@types/estree': 1.0.9
-      es-html-parser: 0.3.1
+      es-html-parser: 0.3.2
 
   '@humanfs/core@0.19.2':
     dependencies:
@@ -7592,18 +7592,18 @@ snapshots:
       '@tybys/wasm-util': 0.10.3
     optional: true
 
-  '@ngx-translate/core@18.0.0(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2)':
+  '@ngx-translate/core@18.0.0(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2)':
     dependencies:
-      '@angular/common': 22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2)
-      '@angular/core': 22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)
+      '@angular/common': 22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2)
+      '@angular/core': 22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)
       rxjs: 7.8.2
       tslib: 2.8.1
 
-  '@ngx-translate/http-loader@18.0.0(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(@ngx-translate/core@18.0.0(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))':
+  '@ngx-translate/http-loader@18.0.0(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(@ngx-translate/core@18.0.0(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))':
     dependencies:
-      '@angular/common': 22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2)
-      '@angular/core': 22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)
-      '@ngx-translate/core': 18.0.0(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2)
+      '@angular/common': 22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2)
+      '@angular/core': 22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)
+      '@ngx-translate/core': 18.0.0(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2)
       tslib: 2.8.1
 
   '@ota-meshi/ast-token-store@0.3.0': {}
@@ -8667,54 +8667,54 @@ snapshots:
       shebang-command: 2.0.0
       which: 2.0.2
 
-  cspell-config-lib@10.3.1:
+  cspell-config-lib@10.3.3:
     dependencies:
-      '@cspell/cspell-types': 10.3.1
+      '@cspell/cspell-types': 10.3.3
       comment-json: 5.0.0
       smol-toml: 1.8.0
       yaml: 2.9.0
 
-  cspell-dictionary@10.3.1:
+  cspell-dictionary@10.3.3:
     dependencies:
-      '@cspell/cspell-performance-monitor': 10.3.1
-      '@cspell/cspell-pipe': 10.3.1
-      '@cspell/cspell-types': 10.3.1
-      cspell-trie-lib: 10.3.1(@cspell/cspell-types@10.3.1)
+      '@cspell/cspell-performance-monitor': 10.3.3
+      '@cspell/cspell-pipe': 10.3.3
+      '@cspell/cspell-types': 10.3.3
+      cspell-trie-lib: 10.3.3(@cspell/cspell-types@10.3.3)
       fast-equals: 6.0.2
 
-  cspell-glob@10.3.1:
+  cspell-glob@10.3.3:
     dependencies:
-      '@cspell/url': 10.3.1
+      '@cspell/url': 10.3.3
       picomatch: 4.0.7
 
-  cspell-grammar@10.3.1:
+  cspell-grammar@10.3.3:
     dependencies:
-      '@cspell/cspell-pipe': 10.3.1
-      '@cspell/cspell-types': 10.3.1
+      '@cspell/cspell-pipe': 10.3.3
+      '@cspell/cspell-types': 10.3.3
 
-  cspell-io@10.3.1:
+  cspell-io@10.3.3:
     dependencies:
-      '@cspell/cspell-service-bus': 10.3.1
-      '@cspell/url': 10.3.1
+      '@cspell/cspell-service-bus': 10.3.3
+      '@cspell/url': 10.3.3
 
-  cspell-lib@10.3.1:
+  cspell-lib@10.3.3:
     dependencies:
-      '@cspell/cspell-bundled-dicts': 10.3.1
-      '@cspell/cspell-performance-monitor': 10.3.1
-      '@cspell/cspell-pipe': 10.3.1
-      '@cspell/cspell-resolver': 10.3.1
-      '@cspell/cspell-types': 10.3.1
-      '@cspell/dynamic-import': 10.3.1
-      '@cspell/filetypes': 10.3.1
-      '@cspell/rpc': 10.3.1
-      '@cspell/strong-weak-map': 10.3.1
-      '@cspell/url': 10.3.1
-      cspell-config-lib: 10.3.1
-      cspell-dictionary: 10.3.1
-      cspell-glob: 10.3.1
-      cspell-grammar: 10.3.1
-      cspell-io: 10.3.1
-      cspell-trie-lib: 10.3.1(@cspell/cspell-types@10.3.1)
+      '@cspell/cspell-bundled-dicts': 10.3.3
+      '@cspell/cspell-performance-monitor': 10.3.3
+      '@cspell/cspell-pipe': 10.3.3
+      '@cspell/cspell-resolver': 10.3.3
+      '@cspell/cspell-types': 10.3.3
+      '@cspell/dynamic-import': 10.3.3
+      '@cspell/filetypes': 10.3.3
+      '@cspell/rpc': 10.3.3
+      '@cspell/strong-weak-map': 10.3.3
+      '@cspell/url': 10.3.3
+      cspell-config-lib: 10.3.3
+      cspell-dictionary: 10.3.3
+      cspell-glob: 10.3.3
+      cspell-grammar: 10.3.3
+      cspell-io: 10.3.3
+      cspell-trie-lib: 10.3.3(@cspell/cspell-types@10.3.3)
       env-paths: 4.0.0
       gensequence: 8.0.8
       import-fresh: 4.0.0
@@ -8723,9 +8723,9 @@ snapshots:
       vscode-uri: 3.2.0
       xdg-basedir: 5.1.0
 
-  cspell-trie-lib@10.3.1(@cspell/cspell-types@10.3.1):
+  cspell-trie-lib@10.3.3(@cspell/cspell-types@10.3.3):
     dependencies:
-      '@cspell/cspell-types': 10.3.1
+      '@cspell/cspell-types': 10.3.3
 
   css-select@6.0.0:
     dependencies:
@@ -8749,7 +8749,7 @@ snapshots:
 
   custom-event@1.0.1: {}
 
-  cypress@16.0.0:
+  cypress@16.1.0:
     dependencies:
       '@cypress/request': 4.0.1
       '@cypress/xvfb': 1.2.4(supports-color@8.1.1)
@@ -8957,7 +8957,7 @@ snapshots:
 
   es-errors@1.3.0: {}
 
-  es-html-parser@0.3.1: {}
+  es-html-parser@0.3.2: {}
 
   es-module-lexer@2.3.2: {}
 
@@ -9074,10 +9074,10 @@ snapshots:
     transitivePeerDependencies:
       - '@eslint/json'
 
-  eslint-plugin-prettier@5.5.6(eslint-config-prettier@10.1.8(eslint@10.10.0(supports-color@8.1.1)))(eslint@10.10.0(supports-color@8.1.1))(prettier@3.9.6):
+  eslint-plugin-prettier@5.5.6(eslint-config-prettier@10.1.8(eslint@10.10.0(supports-color@8.1.1)))(eslint@10.10.0(supports-color@8.1.1))(prettier@3.9.8):
     dependencies:
       eslint: 10.10.0(supports-color@8.1.1)
-      prettier: 3.9.6
+      prettier: 3.9.8
       prettier-linter-helpers: 1.0.1
       synckit: 0.11.13
     optionalDependencies:
@@ -9956,11 +9956,11 @@ snapshots:
       '@types/node': 26.4.0
       jest-util: 30.5.1
 
-  jest-preset-angular@17.0.0(@angular/compiler-cli@22.1.6(@angular/compiler@22.1.6)(typescript@6.0.3))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)))(@babel/core@7.29.7(supports-color@8.1.1))(@jest/transform@30.5.1(supports-color@8.1.1))(@jest/types@30.4.1)(babel-jest@30.5.1(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(jest@30.5.1(@types/node@26.4.0)(supports-color@8.1.1))(jsdom@26.1.0(supports-color@8.1.1))(typescript@6.0.3):
+  jest-preset-angular@17.0.0(@angular/compiler-cli@22.1.7(@angular/compiler@22.1.7)(typescript@6.0.3))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)))(@babel/core@7.29.7(supports-color@8.1.1))(@jest/transform@30.5.1(supports-color@8.1.1))(@jest/types@30.4.1)(babel-jest@30.5.1(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(jest@30.5.1(@types/node@26.4.0)(supports-color@8.1.1))(jsdom@26.1.0(supports-color@8.1.1))(typescript@6.0.3):
     dependencies:
-      '@angular/compiler-cli': 22.1.6(@angular/compiler@22.1.6)(typescript@6.0.3)
-      '@angular/core': 22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)
-      '@angular/platform-browser': 22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))
+      '@angular/compiler-cli': 22.1.7(@angular/compiler@22.1.7)(typescript@6.0.3)
+      '@angular/core': 22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)
+      '@angular/platform-browser': 22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))
       '@jest/environment-jsdom-abstract': 30.4.1(jsdom@26.1.0(supports-color@8.1.1))
       bs-logger: 0.2.6
       esbuild-wasm: 0.28.1
@@ -10281,11 +10281,11 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  keycloak-angular@22.0.0(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(@angular/router@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)))(rxjs@7.8.2))(keycloak-js@26.2.4)(rxjs@7.8.2):
+  keycloak-angular@22.0.0(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(@angular/router@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)))(rxjs@7.8.2))(keycloak-js@26.2.4)(rxjs@7.8.2):
     dependencies:
-      '@angular/common': 22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2)
-      '@angular/core': 22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)
-      '@angular/router': 22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.6)(rxjs@7.8.2)))(rxjs@7.8.2)
+      '@angular/common': 22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2)
+      '@angular/core': 22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)
+      '@angular/router': 22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(@angular/platform-browser@22.1.7(@angular/common@22.1.7(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.7(@angular/compiler@22.1.7)(rxjs@7.8.2)))(rxjs@7.8.2)
       keycloak-js: 26.2.4
       rxjs: 7.8.2
       tslib: 2.8.1
@@ -10800,7 +10800,7 @@ snapshots:
       eslint: 10.10.0(supports-color@8.1.1)
       indent-string: 5.0.0
       loglevel-colored-level-prefix: 1.0.0
-      prettier: 3.9.6
+      prettier: 3.9.8
       pretty-format: 30.4.1
       stable-hash-x: 0.2.0
       tslib: 2.8.1
@@ -10814,7 +10814,7 @@ snapshots:
     dependencies:
       fast-diff: 1.3.0
 
-  prettier@3.9.6: {}
+  prettier@3.9.8: {}
 
   pretty-bytes@5.6.0: {}
 
