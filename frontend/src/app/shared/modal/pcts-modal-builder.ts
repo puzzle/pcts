@@ -162,15 +162,13 @@ export class PctsModalBuilder<T extends ModelWithId> {
   ) {
     if (modalSubmitMode === ModalSubmitMode.DELETE && onDeleteMethod) {
       return onDeleteMethod(submittedModel.id);
-    } else {
-      return onSubmitMethod(submittedModel)
-        .pipe(map(() => {
-          const submitMode = this.evaluateSubmitModes(modalSubmitMode);
-
-          if (submitMode.shouldReopen) {
-            opener(submitMode.withModal ? submittedModel : undefined);
-          }
-        }));
     }
+    return onSubmitMethod(submittedModel)
+      .pipe(map(() => {
+        const submitMode = this.evaluateSubmitModes(modalSubmitMode);
+        if (submitMode.shouldReopen) {
+          opener(submitMode.withModal ? submittedModel : undefined);
+        }
+      }));
   }
 }
