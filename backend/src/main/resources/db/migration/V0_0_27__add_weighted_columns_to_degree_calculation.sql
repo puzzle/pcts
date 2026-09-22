@@ -3,13 +3,11 @@ Create TABLE degree_calculation_weight (
                                            weight NUMERIC NOT NULL,
                                            relevancy TEXT NOT NULL,
                                            degree_calculation_id BIGINT NOT NULL,
-                                           UNIQUE (degree_calculation_id, relevancy)
-);
-
-ALTER TABLE degree_calculation_weight
-    ADD CONSTRAINT fk_degree_calculation
-        FOREIGN KEY (degree_calculation_id)
-            references degree_calculation (id);
+                                           UNIQUE (degree_calculation_id, relevancy),
+                                           CONSTRAINT fk_degree_calculation
+                                               FOREIGN KEY (degree_calculation_id)
+                                                   references degree_calculation (id)
+                                       );
 
 Alter Table degree_calculation
     add column degree_calculation_weight_id bigint default null;
