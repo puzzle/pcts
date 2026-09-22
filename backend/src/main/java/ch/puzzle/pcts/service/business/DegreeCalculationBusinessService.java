@@ -5,9 +5,12 @@ import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
 import ch.puzzle.pcts.service.persistence.DegreeCalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.DegreeCalculationValidationService;
+
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -84,14 +87,22 @@ public class DegreeCalculationBusinessService extends BusinessBase<DegreeCalcula
     }
 
     /*
-     * The divisions are rounded to a DECIMAL128 digit because numbers with a
+     * The divisions are rounded to a DECIMAL128 digit because numbers with an
      * infinite amount of digits could cause a ArithmeticException
      */
     private BigDecimal calculatePoints(DegreeCalculation calculation) {
-        Relevancy relevancy = calculation.getRelevancy();
+        Map<Relevancy, BigDecimal> relevancy = calculation.getRelevancies();
+        BigDecimal points = BigDecimal.ZERO;
 
-        BigDecimal pointsByRelevancy = calculation.getDegree().getDegreeType().getPointsByRelevancy(relevancy);
-
-        return pointsByRelevancy.divide(BigDecimal.valueOf(100), MathContext.DECIMAL128).multiply(weight);
+        return relevancy.entrySet().stream().map(relevance -> {
+            BigDecimal pointsByRelevancy = calculation
+                    .getDegree()
+                    .getDegreeType()
+                    .getPointsByRelevancy(relevance.getKey());
+            return points
+                    .add(pointsByRelevancy
+                            .divide(BigDecimal.valueOf(100), MathContext.DECIMAL128)
+                            .multiply(relevance.getValue()));
+        }).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
