@@ -44,15 +44,14 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
     @PCTSStringValidation(nullable = true, allowOnlyWhiteSpaces = true)
     private String comment;
 
-    public DegreeCalculation(Long id, Calculation calculation, Degree degree, BigDecimal strongWeight,
-                             BigDecimal partlyWeight, BigDecimal lessWeight, String comment) {
-        this.id = id;
-        this.calculation = calculation;
-        this.degree = degree;
-        this.strongWeight = strongWeight;
-        this.partlyWeight = partlyWeight;
-        this.lessWeight = lessWeight;
-        this.comment = trim(comment);
+    public DegreeCalculation(Builder builder) {
+        this.id = builder.id;
+        this.calculation = builder.calculation;
+        this.degree = builder.degree;
+        this.strongWeight = builder.strongWeight;
+        this.partlyWeight = builder.partlyWeight;
+        this.lessWeight = builder.lessWeight;
+        this.comment = builder.comment;
     }
 
     public DegreeCalculation() {
@@ -135,5 +134,61 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
 
     public void setComment(String comment) {
         this.comment = trim(comment);
+    }
+
+    public static final class Builder {
+        private Long id;
+        private Calculation calculation;
+        private Degree degree;
+        private BigDecimal strongWeight;
+        private BigDecimal partlyWeight;
+        private BigDecimal lessWeight;
+        private String comment;
+
+        private Builder() {
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder withCalculation(Calculation calculation) {
+            this.calculation = calculation;
+            return this;
+        }
+
+        public Builder withDegree(Degree degree) {
+            this.degree = degree;
+            return this;
+        }
+
+        public Builder withStrongWeight(BigDecimal strongWeight) {
+            this.strongWeight = strongWeight;
+            return this;
+        }
+
+        public Builder withPartlyWeight(BigDecimal partlyWeight) {
+            this.partlyWeight = partlyWeight;
+            return this;
+        }
+
+        public Builder withLessWeight(BigDecimal lessWeight) {
+            this.lessWeight = lessWeight;
+            return this;
+        }
+
+        public Builder withComment(String comment) {
+            this.comment = trim(comment);
+            return this;
+        }
+
+        public DegreeCalculation build() {
+            return new DegreeCalculation(this);
+        }
     }
 }
