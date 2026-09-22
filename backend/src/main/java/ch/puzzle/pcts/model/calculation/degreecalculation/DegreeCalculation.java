@@ -30,15 +30,15 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
     private Degree degree;
 
     @NotNull(message = "{attribute.not.null}")
-    @Range(min = 1, max = 100, message = "{attribute.size.between}")
+    @Range(min = 0, max = 100, message = "{attribute.size.between}")
     private BigDecimal strongWeight;
 
     @NotNull(message = "{attribute.not.null}")
-    @Range(min = 1, max = 100, message = "{attribute.size.between}")
+    @Range(min = 0, max = 100, message = "{attribute.size.between}")
     private BigDecimal partlyWeight;
 
     @NotNull(message = "{attribute.not.null}")
-    @Range(min = 1, max = 100, message = "{attribute.size.between}")
+    @Range(min = 0, max = 100, message = "{attribute.size.between}")
     private BigDecimal lessWeight;
 
     @PCTSStringValidation(nullable = true, allowOnlyWhiteSpaces = true)
