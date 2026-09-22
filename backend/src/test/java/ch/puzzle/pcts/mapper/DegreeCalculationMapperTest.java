@@ -12,6 +12,7 @@ import ch.puzzle.pcts.model.degree.Degree;
 import ch.puzzle.pcts.service.business.DegreeBusinessService;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,7 +45,7 @@ class DegreeCalculationMapperTest {
     }
 
     private DegreeCalculation createDegreeCalculation(Degree degree) {
-        return new DegreeCalculation(DEGREE_CALCULATION_ID, null, degree, RELEVANCY, WEIGHT, COMMENT);
+        return new DegreeCalculation(DEGREE_CALCULATION_ID, null, degree, Map.of(RELEVANCY, WEIGHT), COMMENT);
     }
 
     private DegreeCalculationInputDto createDegreeCalculationInputDto() {
@@ -69,8 +70,8 @@ class DegreeCalculationMapperTest {
         assertNotNull(result);
         assertEquals(DEGREE_CALCULATION_ID, result.id());
         assertEquals(mockedDto, result.degree());
-        assertEquals(WEIGHT, result.weight());
-        assertEquals(RELEVANCY, result.relevancy());
+        assertEquals(WEIGHT, result.relevancies().get(RELEVANCY));
+        assertTrue(result.relevancies().containsKey(RELEVANCY));
         assertEquals(COMMENT, result.comment());
 
         verify(degreeMapper).toDto(degree);
@@ -103,8 +104,8 @@ class DegreeCalculationMapperTest {
         assertNotNull(result);
         assertNull(result.getId());
         assertEquals(degree, result.getDegree());
-        assertEquals(RELEVANCY, result.getRelevancy());
-        assertEquals(WEIGHT, result.getWeight());
+        assertTrue(result.getRelevancies().containsKey(RELEVANCY));
+        assertEquals(WEIGHT, result.getRelevancies().get(RELEVANCY));
         assertEquals(COMMENT, result.getComment());
 
         verify(degreeBusinessService).getById(DEGREE_ID);

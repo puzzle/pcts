@@ -30,39 +30,48 @@ class DegreeCalculationValidationServiceTest
 
     @Override
     DegreeCalculation getValidModel() {
-        return new DegreeCalculation(null, CALCULATION_1, DEGREE_1, Relevancy.STRONGLY, VALID_WEIGHT, VALID_STRING);
+        return new DegreeCalculation(null,
+                                     CALCULATION_1,
+                                     DEGREE_1,
+                                     Map.of(Relevancy.STRONGLY, VALID_WEIGHT),
+                                     VALID_STRING);
     }
 
     static Stream<Arguments> invalidModelProvider() {
         return Stream
                 .of(Arguments
-                        .of(new DegreeCalculation(null, null, DEGREE_1, Relevancy.STRONGLY, VALID_WEIGHT, VALID_STRING),
+                        .of(new DegreeCalculation(null,
+                                                  null,
+                                                  DEGREE_1,
+                                                  Map.of(Relevancy.STRONGLY, VALID_WEIGHT),
+                                                  VALID_STRING),
                             List.of(Map.of(FieldKey.CLASS, "DegreeCalculation", FieldKey.FIELD, "calculation"))),
                     Arguments
                             .of(new DegreeCalculation(null,
                                                       CALCULATION_1,
                                                       null,
-                                                      Relevancy.STRONGLY,
-                                                      VALID_WEIGHT,
+                                                      Map.of(Relevancy.STRONGLY, VALID_WEIGHT),
                                                       VALID_STRING),
                                 List.of(Map.of(FieldKey.CLASS, "DegreeCalculation", FieldKey.FIELD, "degree"))),
                     Arguments
-                            .of(new DegreeCalculation(null, CALCULATION_1, DEGREE_1, null, VALID_WEIGHT, VALID_STRING),
+                            .of(new DegreeCalculation(null,
+                                                      CALCULATION_1,
+                                                      DEGREE_1,
+                                                      Map.of(null, VALID_WEIGHT),
+                                                      VALID_STRING),
                                 List.of(Map.of(FieldKey.CLASS, "DegreeCalculation", FieldKey.FIELD, "relevancy"))),
                     Arguments
                             .of(new DegreeCalculation(null,
                                                       CALCULATION_1,
                                                       DEGREE_1,
-                                                      Relevancy.STRONGLY,
-                                                      null,
+                                                      Map.of(Relevancy.STRONGLY, null),
                                                       VALID_STRING),
                                 List.of(Map.of(FieldKey.CLASS, "DegreeCalculation", FieldKey.FIELD, "weight"))),
                     Arguments
                             .of(new DegreeCalculation(null,
                                                       CALCULATION_1,
                                                       DEGREE_1,
-                                                      Relevancy.STRONGLY,
-                                                      NEGATIVE_BIG_DECIMAL,
+                                                      Map.of(Relevancy.STRONGLY, NEGATIVE_BIG_DECIMAL),
                                                       VALID_STRING),
                                 List
                                         .of(Map
@@ -80,8 +89,7 @@ class DegreeCalculationValidationServiceTest
                             .of(new DegreeCalculation(null,
                                                       CALCULATION_1,
                                                       DEGREE_1,
-                                                      Relevancy.STRONGLY,
-                                                      TOO_HIGH_WEIGHT,
+                                                      Map.of(Relevancy.STRONGLY, TOO_HIGH_WEIGHT),
                                                       VALID_STRING),
                                 List
                                         .of(Map
