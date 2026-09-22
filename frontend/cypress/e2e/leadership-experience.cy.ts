@@ -117,5 +117,12 @@ describe('LeadershipExperience modal', () => {
         });
       modalPage.checkModalIsClosed();
     });
+
+    it('should open the edit modal and delete the modal', () => {
+      cy.getByTestId('delete-button')
+        .click();
+      formPage.shouldShowSuccessToast('Führungserfahrung wurde erfolgreich gelöscht.');
+      modalPage.checkModalIsClosed();
+    });
   });
 });

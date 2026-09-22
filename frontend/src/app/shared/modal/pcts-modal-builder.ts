@@ -15,6 +15,7 @@ type OpenModalType<T extends ModelWithId> = (
 ) => TypedMatDialogRef<ModalComponent<T>, DialogResult<T>>;
 
 type OnSubmitMethodType<T extends ModelWithId> = (model: T) => Observable<T>;
+type onDeleteMethodType = (id: number) => Observable<void>;
 
 export class PctsModalBuilder<T extends ModelWithId> {
   private component: Type<ModalComponent<T>> | undefined;
@@ -26,6 +27,8 @@ export class PctsModalBuilder<T extends ModelWithId> {
   private submitOptions: ModalSubmitMode[] | undefined;
 
   private i18nPrefix: string | undefined;
+
+  private onDeleteMethod: onDeleteMethodType | undefined;
 
   private readonly destroyRef: DestroyRef;
 
@@ -55,7 +58,7 @@ export class PctsModalBuilder<T extends ModelWithId> {
   }
 
   withSubmitOptionsForEdit() {
-    this.submitOptions = [];
+    this.submitOptions = [ModalSubmitMode.DELETE];
     return this;
   }
 
@@ -67,6 +70,11 @@ export class PctsModalBuilder<T extends ModelWithId> {
 
   withSubmitOptions(submitOptions: ModalSubmitMode[]) {
     this.submitOptions = submitOptions;
+    return this;
+  }
+
+  withOnDeleteMethod(onDeleteMethod: onDeleteMethodType) {
+    this.onDeleteMethod = onDeleteMethod;
     return this;
   }
 
@@ -87,7 +95,7 @@ export class PctsModalBuilder<T extends ModelWithId> {
     const onSuccess = this.onSuccess;
 
     return this.createOpenerMethod(
-      component, onSubmitMethod, submitOptions, i18nPrefix, onSuccess
+      component, onSubmitMethod, submitOptions, i18nPrefix, this.onDeleteMethod, onSuccess
     );
   }
 
@@ -102,6 +110,7 @@ export class PctsModalBuilder<T extends ModelWithId> {
   private evaluateSubmitModes(modalSubmitMode: ModalSubmitMode) {
     switch (modalSubmitMode) {
       case ModalSubmitMode.SAVE:
+      case ModalSubmitMode.DELETE:
         return { shouldReopen: false,
           withModal: false };
       case ModalSubmitMode.ENTER_ANOTHER:
@@ -110,10 +119,6 @@ export class PctsModalBuilder<T extends ModelWithId> {
       case ModalSubmitMode.COPY:
         return { shouldReopen: true,
           withModal: true };
-      default:
-        modalSubmitMode satisfies never;
-        return { shouldReopen: false,
-          withModal: false };
     }
   }
 
@@ -122,6 +127,7 @@ export class PctsModalBuilder<T extends ModelWithId> {
     onSubmitMethod: OnSubmitMethodType<T>,
     submitOptions: ModalSubmitMode[],
     i18nPrefix: string,
+    onDeleteMethod: onDeleteMethodType | undefined,
     onSuccess?: () => void
   ) {
     const opener = (model?: T) => {
@@ -138,7 +144,7 @@ export class PctsModalBuilder<T extends ModelWithId> {
       })
         .afterSubmitted
         .pipe(takeUntilDestroyed(this.destroyRef), concatMap(({ modalSubmitMode, submittedModel }) => this.onFormSubmit(
-          submittedModel, modalSubmitMode, onSubmitMethod, opener.bind(this)
+          submittedModel, modalSubmitMode, onSubmitMethod, onDeleteMethod, opener.bind(this)
         )))
         .subscribe(() => {
           onSuccess?.();
@@ -151,12 +157,15 @@ export class PctsModalBuilder<T extends ModelWithId> {
     submittedModel: T,
     modalSubmitMode: ModalSubmitMode,
     onSubmitMethod: OnSubmitMethodType<T>,
+    onDeleteMethod: onDeleteMethodType | undefined,
     opener: (model?: T) => void
   ) {
+    if (modalSubmitMode === ModalSubmitMode.DELETE && onDeleteMethod) {
+      return onDeleteMethod(submittedModel.id);
+    }
     return onSubmitMethod(submittedModel)
       .pipe(map(() => {
         const submitMode = this.evaluateSubmitModes(modalSubmitMode);
-
         if (submitMode.shouldReopen) {
           opener(submitMode.withModal ? submittedModel : undefined);
         }

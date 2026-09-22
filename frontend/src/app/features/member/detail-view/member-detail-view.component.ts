@@ -193,6 +193,7 @@ export class MemberDetailViewComponent {
     .withOnSuccessMethod(() => this.memberOverviewResource.reload())
     .withSubmitOptionsForEdit()
     .withI18nPrefix('DEGREE.FORM.EDIT')
+    .withOnDeleteMethod((id: number) => this.degreeService.deleteDegree(id))
     .build();
 
   editDegreeDialog(row: DegreeOverviewModel) {
@@ -209,6 +210,7 @@ export class MemberDetailViewComponent {
     .withOnSuccessMethod(() => this.memberOverviewResource.reload())
     .withSubmitOptionsForEdit()
     .withI18nPrefix('CERTIFICATE.FORM.EDIT')
+    .withOnDeleteMethod((id: number) => this.certificateService.deleteCertificate(id))
     .build();
 
   editCertificateDialog(row: CertificateOverviewModel) {
@@ -225,6 +227,7 @@ export class MemberDetailViewComponent {
     .withOnSuccessMethod(() => this.memberOverviewResource.reload())
     .withSubmitOptionsForEdit()
     .withI18nPrefix('LEADERSHIP_EXPERIENCE.FORM.EDIT')
+    .withOnDeleteMethod((id: number) => this.leadershipExperienceService.deleteLeadershipExperience(id))
     .build();
 
   editLeadershipExperienceDialog(row: LeadershipExperienceOverviewModel) {
@@ -241,6 +244,7 @@ export class MemberDetailViewComponent {
     .withOnSuccessMethod(() => this.memberOverviewResource.reload())
     .withSubmitOptionsForEdit()
     .withI18nPrefix('EXPERIENCE.FORM.EDIT')
+    .withOnDeleteMethod((id: number) => this.experienceService.deleteExperience(id))
     .build();
 
   editExperienceDialog(row: ExperienceOverviewModel) {

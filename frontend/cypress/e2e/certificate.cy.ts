@@ -164,5 +164,12 @@ describe('Certificate modal', () => {
         });
       modalPage.checkModalIsClosed();
     });
+
+    it('should open the edit modal and delete the modal', () => {
+      cy.getByTestId('delete-button')
+        .click();
+      formPage.shouldShowSuccessToast('Zertifikat wurde erfolgreich gelöscht.');
+      modalPage.checkModalIsClosed();
+    });
   });
 });

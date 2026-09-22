@@ -182,5 +182,15 @@ describe('ExperienceModalComponent', () => {
       expect(dialogRefMock.close)
         .toHaveBeenCalledWith();
     });
+
+    describe('onDelete', () => {
+      it('should close the dialog with delete mode and form data', () => {
+        component.formGroup.patchValue(experience1);
+        component.onDelete();
+        expect(dialogRefMock.close)
+          .toHaveBeenCalledWith({ modalSubmitMode: ModalSubmitMode.DELETE,
+            submittedModel: component.formGroup.getRawValue() });
+      });
+    });
   });
 });

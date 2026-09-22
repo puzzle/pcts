@@ -236,5 +236,12 @@ describe('Experience modal', () => {
         });
       modalPage.checkModalIsClosed();
     });
+
+    it('should open the edit modal and delete the modal', () => {
+      cy.getByTestId('delete-button')
+        .click();
+      formPage.shouldShowSuccessToast('Berufs- und Lebenserfahrung wurde erfolgreich gelöscht.');
+      modalPage.checkModalIsClosed();
+    });
   });
 });
