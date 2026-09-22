@@ -5,11 +5,14 @@ import static org.apache.commons.lang3.StringUtils.trim;
 import ch.puzzle.pcts.model.Model;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationChildInterface;
+import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.degree.Degree;
 import ch.puzzle.pcts.util.validation.PCTSStringValidation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import org.hibernate.validator.constraints.Range;
 
@@ -29,40 +32,31 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
     @JoinColumn(name = "degree_id")
     private Degree degree;
 
-    @NotNull(message = "{attribute.not.null}")
-    @Range(min = 0, max = 100, message = "{attribute.size.between}")
-    private BigDecimal strongWeight;
-
-    @NotNull(message = "{attribute.not.null}")
-    @Range(min = 0, max = 100, message = "{attribute.size.between}")
-    private BigDecimal partlyWeight;
-
-    @NotNull(message = "{attribute.not.null}")
-    @Range(min = 0, max = 100, message = "{attribute.size.between}")
-    private BigDecimal lessWeight;
-
     @PCTSStringValidation(nullable = true, allowOnlyWhiteSpaces = true)
     private String comment;
+
+    @ElementCollection
+    @MapKeyColumn(name="Relevancy")
+    @Column(name="Weight")
+    @CollectionTable(name="degree_calculation_weight", joinColumns=@JoinColumn(name="degree_calculation_id"))
+    private Map<Relevancy, BigDecimal> relevancies = new HashMap<>();
 
     public DegreeCalculation(Builder builder) {
         this.id = builder.id;
         this.calculation = builder.calculation;
         this.degree = builder.degree;
-        this.strongWeight = builder.strongWeight;
-        this.partlyWeight = builder.partlyWeight;
-        this.lessWeight = builder.lessWeight;
         this.comment = builder.comment;
+        this.relevancies = builder.relevancies;
     }
 
     public DegreeCalculation() {
-
     }
+
 
     @Override
     public String toString() {
         return "DegreeCalculation{" + "id=" + id + ", calculation=" + calculation + ", degree=" + degree
-               + ", strongWeight=" + strongWeight + ", partlyWeight=" + partlyWeight + ", lessWeight=" + lessWeight
-               + ", comment='" + comment + '\'' + '}';
+               + ", comment='" + comment + ", relevanies'" + relevancies + '\'' + '}';
     }
 
     @Override
@@ -71,10 +65,8 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
             return false;
         return Objects.equals(getId(), that.getId()) && Objects.equals(getCalculation(), that.getCalculation())
                && Objects.equals(getDegree(), that.getDegree())
-               && Objects.equals(getStrongWeight(), that.getStrongWeight())
-               && Objects.equals(getPartlyWeight(), that.getPartlyWeight())
-               && Objects.equals(getLessWeight(), that.getLessWeight())
-               && Objects.equals(getComment(), that.getComment());
+               && Objects.equals(getComment(), that.getComment())
+                && Objects.equals(getRelevancies(), that.getRelevancies());
     }
 
     @Override
@@ -83,11 +75,11 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
                 .hash(getId(),
                       getCalculation(),
                       getDegree(),
-                      getStrongWeight(),
-                      getPartlyWeight(),
-                      getLessWeight(),
-                      getComment());
+                      getComment(),
+                        getRelevancies());
+
     }
+
 
     public Long getId() {
         return id;
@@ -113,30 +105,6 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
         this.degree = degree;
     }
 
-    public BigDecimal getStrongWeight() {
-        return strongWeight;
-    }
-
-    public void setStrongWeight(BigDecimal strongWeight) {
-        this.strongWeight = strongWeight;
-    }
-
-    public BigDecimal getPartlyWeight() {
-        return partlyWeight;
-    }
-
-    public void setPartlyWeight(BigDecimal partlyWeight) {
-        this.partlyWeight = partlyWeight;
-    }
-
-    public BigDecimal getLessWeight() {
-        return lessWeight;
-    }
-
-    public void setLessWeight(BigDecimal lessWeight) {
-        this.lessWeight = lessWeight;
-    }
-
     public String getComment() {
         return comment;
     }
@@ -145,14 +113,20 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
         this.comment = trim(comment);
     }
 
+    public Map<Relevancy, BigDecimal> getRelevancies() {
+        return relevancies;
+    }
+
+    public void setRelevancies(Map<Relevancy, BigDecimal> relevancies) {
+        this.relevancies = relevancies;
+    }
+
     public static final class Builder {
         private Long id;
         private Calculation calculation;
         private Degree degree;
-        private BigDecimal strongWeight;
-        private BigDecimal partlyWeight;
-        private BigDecimal lessWeight;
         private String comment;
+        private Map<Relevancy, BigDecimal> relevancies;
 
         private Builder() {
         }
@@ -176,23 +150,15 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
             return this;
         }
 
-        public Builder withStrongWeight(BigDecimal strongWeight) {
-            this.strongWeight = strongWeight;
-            return this;
-        }
-
-        public Builder withPartlyWeight(BigDecimal partlyWeight) {
-            this.partlyWeight = partlyWeight;
-            return this;
-        }
-
-        public Builder withLessWeight(BigDecimal lessWeight) {
-            this.lessWeight = lessWeight;
-            return this;
-        }
 
         public Builder withComment(String comment) {
             this.comment = trim(comment);
+            return this;
+        }
+
+
+        public Builder withRelevancy(Map<Relevancy, BigDecimal> relevancies) {
+            this.relevancies = relevancies;
             return this;
         }
 

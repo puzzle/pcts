@@ -89,7 +89,6 @@ public class DegreeCalculationBusinessService extends BusinessBase<DegreeCalcula
      */
     private BigDecimal calculatePoints(DegreeCalculation calculation) {
         Relevancy relevancy = calculation.getRelevancy();
-        BigDecimal weight = calculation.getWeight();
 
         BigDecimal pointsByRelevancy = calculation.getDegree().getDegreeType().getPointsByRelevancy(relevancy);
 
