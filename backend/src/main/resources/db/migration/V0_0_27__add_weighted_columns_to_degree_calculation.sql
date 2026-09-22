@@ -1,4 +1,4 @@
 ALTER TABLE degree_calculation
     ADD strongWeight DECIMAL,
-    ADD partlyWeight DECIAML,
-    ADD lessWeight DECIAML;git
+    ADD partlyWeight DECIMAL,
+    ADD lessWeight DECIMAL;
