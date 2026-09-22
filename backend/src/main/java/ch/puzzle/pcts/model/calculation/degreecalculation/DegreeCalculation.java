@@ -69,15 +69,24 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
     public boolean equals(Object o) {
         if (!(o instanceof DegreeCalculation that))
             return false;
-        return Objects.equals(id, that.id) && Objects.equals(calculation, that.calculation)
-               && Objects.equals(degree, that.degree) && Objects.equals(strongWeight, that.strongWeight)
-               && Objects.equals(partlyWeight, that.partlyWeight) && Objects.equals(lessWeight, that.lessWeight)
-               && Objects.equals(comment, that.comment);
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getCalculation(), that.getCalculation())
+               && Objects.equals(getDegree(), that.getDegree())
+               && Objects.equals(getStrongWeight(), that.getStrongWeight())
+               && Objects.equals(getPartlyWeight(), that.getPartlyWeight())
+               && Objects.equals(getLessWeight(), that.getLessWeight())
+               && Objects.equals(getComment(), that.getComment());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, calculation, degree, strongWeight, partlyWeight, lessWeight, comment);
+        return Objects
+                .hash(getId(),
+                      getCalculation(),
+                      getDegree(),
+                      getStrongWeight(),
+                      getPartlyWeight(),
+                      getLessWeight(),
+                      getComment());
     }
 
     public Long getId() {
