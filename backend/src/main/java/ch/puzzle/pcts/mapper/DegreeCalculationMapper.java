@@ -1,11 +1,8 @@
 package ch.puzzle.pcts.mapper;
 
-import ch.puzzle.pcts.dto.calculation.CalculationInputDto;
 import ch.puzzle.pcts.dto.calculation.degreecalculation.DegreeCalculationDto;
 import ch.puzzle.pcts.dto.calculation.degreecalculation.DegreeCalculationInputDto;
-import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
-import ch.puzzle.pcts.service.business.CalculationBusinessService;
 import ch.puzzle.pcts.service.business.DegreeBusinessService;
 import java.util.List;
 import java.util.Map;
@@ -16,11 +13,9 @@ import org.springframework.stereotype.Component;
 public class DegreeCalculationMapper {
 
     private final DegreeBusinessService degreeBusinessService;
-    private final DegreeMapper degreeMapper;
 
-    public DegreeCalculationMapper(DegreeBusinessService degreeBusinessService, DegreeMapper degreeMapper) {
+    public DegreeCalculationMapper(DegreeBusinessService degreeBusinessService) {
         this.degreeBusinessService = degreeBusinessService;
-        this.degreeMapper = degreeMapper;
     }
 
     public List<DegreeCalculationDto> toDto(List<DegreeCalculation> models) {
@@ -33,18 +28,18 @@ public class DegreeCalculationMapper {
 
     public DegreeCalculationDto toDto(DegreeCalculation degreeCalculation) {
         return new DegreeCalculationDto(degreeCalculation.getId(),
-                                     null,
+                                        null,
                                         degreeCalculation.getRelevancies(),
                                         degreeCalculation.getComment());
     }
 
-    public DegreeCalculation fromDto (DegreeCalculationInputDto dto) {
+    public DegreeCalculation fromDto(DegreeCalculationInputDto dto) {
         return DegreeCalculation.Builder
-                    .builder()
-                    .withCalculation(null)
-                    .withDegree(degreeBusinessService.getById(dto.degreeId()))
-                    .withComment(dto.comment())
-                    .withRelevancy(Map.of(dto.relevancy(), dto.weight()))
-                    .build();
-        }
+                .builder()
+                .withCalculation(null)
+                .withDegree(degreeBusinessService.getById(dto.degreeId()))
+                .withComment(dto.comment())
+                .withRelevancy(Map.of(dto.relevancy(), dto.weight()))
+                .build();
     }
+}

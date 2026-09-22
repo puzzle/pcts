@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import org.hibernate.validator.constraints.Range;
 
 @Entity
 public class DegreeCalculation implements CalculationChildInterface, Model {
@@ -36,9 +35,9 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
     private String comment;
 
     @ElementCollection
-    @MapKeyColumn(name="Relevancy")
-    @Column(name="Weight")
-    @CollectionTable(name="degree_calculation_weight", joinColumns=@JoinColumn(name="degree_calculation_id"))
+    @MapKeyColumn(name = "relevancy")
+    @Column(name = "weight")
+    @CollectionTable(name = "degree_calculation_weight", joinColumns = @JoinColumn(name = "degree_calculation_id"))
     private Map<Relevancy, BigDecimal> relevancies = new HashMap<>();
 
     public DegreeCalculation(Builder builder) {
@@ -52,6 +51,14 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
     public DegreeCalculation() {
     }
 
+    public DegreeCalculation(Long id, Calculation calculation, Degree degree, Map<Relevancy, BigDecimal> relevancies,
+                             String comment) {
+        this.id = id;
+        this.calculation = calculation;
+        this.degree = degree;
+        this.comment = comment;
+        this.relevancies = relevancies;
+    }
 
     @Override
     public String toString() {
@@ -73,13 +80,11 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
     public int hashCode() {
         return Objects
                 .hash(getId(),
-                      getCalculation(),
+                      getCalculation() != null ? getCalculation().getId() : null,
                       getDegree(),
                       getComment(),
-                        getRelevancies());
-
+                      getRelevancies());
     }
-
 
     public Long getId() {
         return id;
@@ -150,12 +155,10 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
             return this;
         }
 
-
         public Builder withComment(String comment) {
             this.comment = trim(comment);
             return this;
         }
-
 
         public Builder withRelevancy(Map<Relevancy, BigDecimal> relevancies) {
             this.relevancies = relevancies;
