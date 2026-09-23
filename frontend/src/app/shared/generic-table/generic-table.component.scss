@@ -31,3 +31,7 @@ tr.detail-row td.mat-mdc-cell {
 td.mat-mdc-cell mat-icon {
   transition: transform 0.2s ease-in-out;
 }
+
+tr.row-background-gray td.mat-mdc-cell {
+  background-color: var(--bs-table-striped-bg);
+}

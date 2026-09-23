@@ -3,7 +3,6 @@
   mat-table
   [dataSource]="dataSource()"
   class="table table-hover member-table m-0"
-  [class.table-striped]="!isRowExpansionEnabled()"
   matSort
   [matSortActive]="this.dataSource().sortedBy"
   matSortDirection="asc"
@@ -65,11 +64,12 @@
 
     <tr
       mat-row
-      *matRowDef="let row; columns: columnNames();"
+      *matRowDef="let row; columns: columnNames(); let index = dataIndex;"
       (click)="isRowExpansionEnabled() ? toggleRowExpansion(row) : this.entrySelected.emit(row)"
       [class.cursor-pointer]="dataSource().shouldLink"
-      data-testid="generic-table-row"
-      (keydown.enter)="this.entrySelected.emit(row)">
+      (keydown.enter)="this.entrySelected.emit(row)"
+      [class.row-background-gray]="index % 2 == 0"
+      data-testid="generic-table-row">
     </tr>
 
     @if (isRowExpansionEnabled()) {

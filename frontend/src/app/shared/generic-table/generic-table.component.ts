@@ -24,7 +24,6 @@ import { MatSort, MatSortHeader } from '@angular/material/sort';
 import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
 import { camelToSnake } from '../utils/case-formatter';
 import { GenCol, GenericTableDataSource } from './generic-table-data-source';
-import { RouterLink } from '@angular/router';
 import { NgTemplateOutlet } from '@angular/common';
 import { ColumnTemplateDirective } from './column-template/column-template.directive';
 import { TranslationScopeDirective } from '../translation-scope/translation-scope.directive';
@@ -49,7 +48,6 @@ import { MatIcon } from '@angular/material/icon';
     ScopedTranslationPipe,
     MatHeaderCellDef,
     MatNoDataRow,
-    RouterLink,
     NgTemplateOutlet,
     TranslationScopeDirective,
     MatIconButton,
@@ -80,10 +78,6 @@ export class GenericTableComponent<T extends object> {
   rowDetailTemplate = contentChild(RowDetailTemplateDirective);
 
   isRowExpansionEnabled = computed(() => !!this.rowDetailTemplate());
-
-  stripedFrequency = computed(() => {
-    return this.isRowExpansionEnabled() ? 4 : 2;
-  });
 
   columns = computed(() => this.dataSource().columnDefs);
 
