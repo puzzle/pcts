@@ -36,6 +36,7 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
 
     @ElementCollection
     @MapKeyColumn(name = "relevancy")
+    @MapKeyEnumerated(EnumType.STRING)
     @Column(name = "weight")
     @CollectionTable(name = "degree_calculation_weight", joinColumns = @JoinColumn(name = "degree_calculation_id"))
     private Map<Relevancy, BigDecimal> relevancies = new HashMap<>();
@@ -62,8 +63,8 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
 
     @Override
     public String toString() {
-        return "DegreeCalculation{" + "id=" + id + ", calculation=" + calculation + ", degree=" + degree
-               + ", comment='" + comment + ", relevanies'" + relevancies + '\'' + '}';
+        return "DegreeCalculation{" + "id=" + id + ", calculation=" + calculation + ", degree=" + degree + ", comment='"
+               + comment + ", relevanies'" + relevancies + '\'' + '}';
     }
 
     @Override
@@ -71,9 +72,8 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
         if (!(o instanceof DegreeCalculation that))
             return false;
         return Objects.equals(getId(), that.getId()) && Objects.equals(getCalculation(), that.getCalculation())
-               && Objects.equals(getDegree(), that.getDegree())
-               && Objects.equals(getComment(), that.getComment())
-                && Objects.equals(getRelevancies(), that.getRelevancies());
+               && Objects.equals(getDegree(), that.getDegree()) && Objects.equals(getComment(), that.getComment())
+               && Objects.equals(getRelevancies(), that.getRelevancies());
     }
 
     @Override
