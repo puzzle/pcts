@@ -10,8 +10,5 @@ Create TABLE degree_calculation_weight (
                                        );
 
 Alter Table degree_calculation
-    add column degree_calculation_weight_id bigint default null;
-
-Alter table degree_calculation
-    add constraint degree_calc_fk
-        foreign key (degree_calc_weight_id) references degree_calculation_weight (id)
+drop column weight,
+drop column relevancy;
