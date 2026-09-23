@@ -13,9 +13,11 @@ import org.springframework.stereotype.Component;
 public class DegreeCalculationMapper {
 
     private final DegreeBusinessService degreeBusinessService;
+    private final DegreeMapper degreeMapper;
 
-    public DegreeCalculationMapper(DegreeBusinessService degreeBusinessService) {
+    public DegreeCalculationMapper(DegreeBusinessService degreeBusinessService, DegreeMapper degreeMapper) {
         this.degreeBusinessService = degreeBusinessService;
+        this.degreeMapper = degreeMapper;
     }
 
     public List<DegreeCalculationDto> toDto(List<DegreeCalculation> models) {
@@ -28,7 +30,7 @@ public class DegreeCalculationMapper {
 
     public DegreeCalculationDto toDto(DegreeCalculation degreeCalculation) {
         return new DegreeCalculationDto(degreeCalculation.getId(),
-                                        null,
+                                        degreeMapper.toDto(degreeCalculation.getDegree()),
                                         degreeCalculation.getRelevancies(),
                                         degreeCalculation.getComment());
     }
