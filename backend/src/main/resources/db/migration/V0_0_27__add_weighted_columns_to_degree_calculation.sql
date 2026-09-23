@@ -8,7 +8,3 @@ Create TABLE degree_calculation_weight (
                                                FOREIGN KEY (degree_calculation_id)
                                                    references degree_calculation (id)
                                        );
-
-Alter Table degree_calculation
-drop column weight,
-drop column relevancy;
