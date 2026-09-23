@@ -90,6 +90,10 @@ describe('GenericTableComponent', () => {
       expect(val)
         .toBe('Master of Artificial Intelligence');
     });
+
+    it('should be a striped table', () => {
+
+    });
   });
 
   describe('Interactions (Expansion & Filtering)', () => {
@@ -145,6 +149,30 @@ describe('GenericTableComponent', () => {
 
       expect(link)
         .toBeUndefined();
+    });
+  });
+
+  describe('Expandable Rows', () => {
+    it('should set isRowExpansionEnabled', () => {
+
+    });
+
+    it('should add expand colum to columnNames when isRowExpansionEnabled is true', () => {
+
+    });
+
+    it('should not add expand colum to columnNames when isRowExpansionEnabled is false', () => {
+
+    });
+
+    describe('Expansion Toggle Logic', () => {
+      it('should add element when not already in expandedElements', () => {
+
+      });
+
+      it('should remove element when already in expandedElements', () => {
+
+      });
     });
   });
 });
