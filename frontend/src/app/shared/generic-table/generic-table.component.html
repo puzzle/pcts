@@ -9,53 +9,58 @@
   data-testid="generic-table"
   multiTemplateDataRows
   >
-    <ng-container matColumnDef="expand">
-      <th mat-header-cell *matHeaderCellDef aria-label="row-actions">&nbsp;</th>
-      <td mat-cell *matCellDef="let entity">
-        <button
-          type="button"
-          matIconButton
-          aria-label="expand row"
-          (click)="toggleRowExpansion(entity); $event.stopPropagation()">
-          <mat-icon [class.rotated]="isRowExpanded(entity)">keyboard_arrow_right</mat-icon>
+    @if (isRowExpansionEnabled()) {
+      <ng-container matColumnDef="expand">
+        <th mat-header-cell *matHeaderCellDef aria-label="row-actions">&nbsp;</th>
+        <td mat-cell *matCellDef="let entity">
+          <button
+            type="button"
+            matIconButton
+            aria-label="expand row"
+            (click)="toggleRowExpansion(entity); $event.stopPropagation()">
+            <mat-icon [class.rotated]="isRowExpanded(entity)">keyboard_arrow_right</mat-icon>
 
-        </button>
-      </td>
+          </button>
+        </td>
 
-    </ng-container>
+      </ng-container>
+    }
 
-  @for (col of columns(); track col.columnName) {
-    <ng-container [matColumnDef]="col.columnName">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>
-        {{ getFieldI18nKey(col) | scopedTranslation }}
-      </th>
+    @for (col of columns(); track col.columnName) {
+      <ng-container [matColumnDef]="col.columnName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ getFieldI18nKey(col) | scopedTranslation }}
+        </th>
 
-      <td mat-cell data-testid="generic-table-cell" *matCellDef="let entity">
-        @let customTpl = templateMap().get(col.columnName);
+        <td mat-cell data-testid="generic-table-cell" *matCellDef="let entity">
+          @let customTpl = templateMap().get(col.columnName);
 
-        <ng-container
-          *ngTemplateOutlet="customTpl || defaultRenderer;
-          context: { $implicit: entity, col: col }"
-        />
-      </td>
-    </ng-container>
-  }
-  <ng-container matColumnDef="expandedDetail">
-    <td mat-cell *matCellDef="let entity" [attr.colspan]="columnNames().length">
-      <div class="detail-wrapper" [class.expanded]="isRowExpanded(entity)">
-        <div class="detail-content">
-          <ng-container *ngTemplateOutlet="rowDetailTemplate()?.template; context: { $implicit: entity }" />
+          <ng-container
+            *ngTemplateOutlet="customTpl || defaultRenderer;
+            context: { $implicit: entity, col: col }"
+          />
+        </td>
+      </ng-container>
+    }
 
-        </div>
-      </div>
-    </td>
-  </ng-container>
+    @if (isRowExpansionEnabled()) {
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let entity" [attr.colspan]="columnNames().length">
+          <div class="detail-wrapper" [class.expanded]="isRowExpanded(entity)">
+            <div class="detail-content">
+              <ng-container *ngTemplateOutlet="rowDetailTemplate()?.template; context: { $implicit: entity }" />
 
-  <tr
-    class="h-25"
-    mat-header-row
-    *matHeaderRowDef="this.columnNames(); sticky: true">
-  </tr>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+    }
+
+    <tr
+      class="h-25"
+      mat-header-row
+      *matHeaderRowDef="this.columnNames(); sticky: true">
+    </tr>
 
     <tr
       mat-row
@@ -65,20 +70,22 @@
       data-testid="generic-table-row">
     </tr>
 
-    <tr
-      *matRowDef="let row; columns: ['expandedDetail'];"
-      mat-row
-      class="detail-row">
-    </tr>
+    @if (isRowExpansionEnabled()) {
+      <tr
+        *matRowDef="let row; columns: ['expandedDetail'];"
+        mat-row
+        class="detail-row">
+      </tr>
+    }
 
-  <tr *matNoDataRow data-testid="no-results-row">
-    <td colspan="4">
-      {{
-        'TABLE.NO_SEARCH_RESULT' | scopedTranslation :
-          {model: 'MODEL_NAME' | scopedTranslation, searchValue: ''}
-      }}
-    </td>
-  </tr>
+    <tr *matNoDataRow data-testid="no-results-row">
+      <td colspan="4">
+        {{
+          'TABLE.NO_SEARCH_RESULT' | scopedTranslation :
+            {model: 'MODEL_NAME' | scopedTranslation, searchValue: ''}
+        }}
+      </td>
+    </tr>
 </table>
 
 <ng-template #defaultRenderer let-entity let-col="col">
