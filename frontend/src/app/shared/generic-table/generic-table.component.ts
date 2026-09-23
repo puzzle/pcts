@@ -81,6 +81,10 @@ export class GenericTableComponent<T extends object> {
 
   isRowExpansionEnabled = computed(() => !!this.rowDetailTemplate());
 
+  stripedFrequency = computed(() => {
+    return this.isRowExpansionEnabled() ? 4 : 2;
+  });
+
   columns = computed(() => this.dataSource().columnDefs);
 
   columnNames = computed(() => {
