@@ -184,11 +184,18 @@ VALUES
     (7, 4, 'NORMAL', 'Internship experience');
 
 INSERT INTO degree_calculation
-(calculation_id, degree_id, weight, relevancy, comment)
+(calculation_id, degree_id, comment)
 VALUES
-    (2, 2, 40,  'POORLY',  'Low relevance for technical role'),
-    (3, 3, 90,  'STRONGLY',  'Directly relevant degree'),
-    (4, 3, 70,  'NORMAL', 'Relevant but less practical focus');
+    (2, 2, 'Low relevance for technical role'),
+    (3, 3, 'Directly relevant degree'),
+    (4, 3, 'Relevant but less practical focus');
+
+INSERT INTO degree_calculation_weight
+(weight, relevancy, degree_calculation_id)
+VALUES
+    (40,  'POORLY', 1),
+    (90,  'STRONGLY', 2),
+    (70,  'NORMAL', 3);
 
 INSERT INTO certificate_calculation
 (calculation_id, certificate_id)

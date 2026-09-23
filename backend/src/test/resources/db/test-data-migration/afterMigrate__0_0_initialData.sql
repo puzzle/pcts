@@ -127,11 +127,18 @@ VALUES
 TRUNCATE TABLE degree_calculation CASCADE;
 
 INSERT INTO degree_calculation
-(calculation_id, degree_id, weight, relevancy, comment)
+(calculation_id, degree_id, comment)
 VALUES
-    (1, 2, 80,'STRONGLY', 'Comment'),
-    (2, 2, 10,'POORLY', 'Comment'),
-    (1, 2, 100,'NORMAL','Comment');
+    (2, 2, 'Low relevance for technical role'),
+    (3, 3, 'Directly relevant degree'),
+    (4, 3, 'Relevant but less practical focus');
+
+INSERT INTO degree_calculation_weight
+(weight, relevancy, degree_calculation_id)
+VALUES
+    (80, 'STRONGLY', 1),
+    (10,'POORLY', 2),
+    (100,'NORMAL', 3);
 
 TRUNCATE TABLE certificate_calculation CASCADE;
 

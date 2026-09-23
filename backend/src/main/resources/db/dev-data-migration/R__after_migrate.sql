@@ -185,6 +185,12 @@ VALUES
     (3, 3, 'Directly relevant degree'),
     (4, 3, 'Relevant but less practical focus');
 
+INSERT INTO degree_calculation_weight (weight, relevancy, degree_calculation_id)
+VALUES
+(100, 'STRONGLY', 1),
+(100, 'NORMAL', 2),
+(100, 'POORLY', 3);
+
 INSERT INTO certificate_calculation
 (calculation_id, certificate_id)
 VALUES
