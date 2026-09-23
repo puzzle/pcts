@@ -34,6 +34,7 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
     @PCTSStringValidation(nullable = true, allowOnlyWhiteSpaces = true)
     private String comment;
 
+    @NotNull
     @ElementCollection
     @MapKeyColumn(name = "relevancy")
     @MapKeyEnumerated(EnumType.STRING)
@@ -63,8 +64,9 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
 
     @Override
     public String toString() {
-        return "DegreeCalculation{" + "id=" + id + ", calculation=" + calculation + ", degree=" + degree + ", comment='"
-               + comment + ", relevanies'" + relevancies + '\'' + '}';
+        return "DegreeCalculation{" + "id=" + id + ", calculation="
+               + (calculation != null ? getCalculation().getId().toString() : null) + ", degree=" + degree
+               + ", comment='" + comment + ", relevanies'" + relevancies + '\'' + '}';
     }
 
     @Override

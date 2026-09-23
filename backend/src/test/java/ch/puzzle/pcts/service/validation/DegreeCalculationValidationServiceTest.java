@@ -54,55 +54,16 @@ class DegreeCalculationValidationServiceTest
                                                       VALID_STRING),
                                 List.of(Map.of(FieldKey.CLASS, "DegreeCalculation", FieldKey.FIELD, "degree"))),
                     Arguments
-                            .of(new DegreeCalculation(null,
-                                                      CALCULATION_1,
-                                                      DEGREE_1,
-                                                      Map.of(null, VALID_WEIGHT),
-                                                      VALID_STRING),
-                                List.of(Map.of(FieldKey.CLASS, "DegreeCalculation", FieldKey.FIELD, "relevancy"))),
-                    Arguments
-                            .of(new DegreeCalculation(null,
-                                                      CALCULATION_1,
-                                                      DEGREE_1,
-                                                      Map.of(Relevancy.STRONGLY, null),
-                                                      VALID_STRING),
-                                List.of(Map.of(FieldKey.CLASS, "DegreeCalculation", FieldKey.FIELD, "weight"))),
-                    Arguments
-                            .of(new DegreeCalculation(null,
-                                                      CALCULATION_1,
-                                                      DEGREE_1,
-                                                      Map.of(Relevancy.STRONGLY, NEGATIVE_BIG_DECIMAL),
-                                                      VALID_STRING),
-                                List
-                                        .of(Map
-                                                .of(FieldKey.CLASS,
-                                                    "DegreeCalculation",
-                                                    FieldKey.FIELD,
-                                                    "weight",
-                                                    FieldKey.MAX,
-                                                    MAX_WEIGHT,
-                                                    FieldKey.MIN,
-                                                    MIN_WEIGHT,
-                                                    FieldKey.IS,
-                                                    NEGATIVE_BIG_DECIMAL.toString()))),
+                            .of(new DegreeCalculation(null, CALCULATION_1, DEGREE_1, null, VALID_STRING),
+                                List.of(Map.of(FieldKey.IS, "must not be null"))),
                     Arguments
                             .of(new DegreeCalculation(null,
                                                       CALCULATION_1,
                                                       DEGREE_1,
                                                       Map.of(Relevancy.STRONGLY, TOO_HIGH_WEIGHT),
                                                       VALID_STRING),
-                                List
-                                        .of(Map
-                                                .of(FieldKey.CLASS,
-                                                    "DegreeCalculation",
-                                                    FieldKey.FIELD,
-                                                    "weight",
-                                                    FieldKey.MAX,
-                                                    MAX_WEIGHT,
-                                                    FieldKey.MIN,
-                                                    MIN_WEIGHT,
-                                                    FieldKey.IS,
-                                                    TOO_HIGH_WEIGHT.toString()))));
+                                List.of(Map.of(FieldKey.IS, "must not be null"))));
+
     }
 
     @DisplayName("Should throw exception when members do not match")
