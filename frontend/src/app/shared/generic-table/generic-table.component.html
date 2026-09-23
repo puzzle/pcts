@@ -7,7 +7,22 @@
   [matSortActive]="this.dataSource().sortedBy"
   matSortDirection="asc"
   data-testid="generic-table"
->
+  multiTemplateDataRows
+  >
+    <ng-container matColumnDef="expand">
+      <th mat-header-cell *matHeaderCellDef aria-label="row-actions">&nbsp;</th>
+      <td mat-cell *matCellDef="let entity">
+        <button
+          type="button"
+          matIconButton
+          aria-label="expand row"
+          (click)="toggleRowExpansion(entity); $event.stopPropagation()">
+          <mat-icon [class.rotated]="isRowExpanded(entity)">keyboard_arrow_right</mat-icon>
+
+        </button>
+      </td>
+
+    </ng-container>
 
   @for (col of columns(); track col.columnName) {
     <ng-container [matColumnDef]="col.columnName">
@@ -25,6 +40,16 @@
       </td>
     </ng-container>
   }
+  <ng-container matColumnDef="expandedDetail">
+    <td mat-cell *matCellDef="let entity" [attr.colspan]="columnNames().length">
+      <div class="detail-wrapper" [class.expanded]="isRowExpanded(entity)">
+        <div class="detail-content">
+          <ng-container *ngTemplateOutlet="rowDetailTemplate()?.template; context: { $implicit: entity }" />
+
+        </div>
+      </div>
+    </td>
+  </ng-container>
 
   <tr
     class="h-25"
@@ -38,6 +63,12 @@
       (click)="this.entrySelected.emit(row)"
       [class.cursor-pointer]="dataSource().shouldLink"
       data-testid="generic-table-row">
+    </tr>
+
+    <tr
+      *matRowDef="let row; columns: ['expandedDetail'];"
+      mat-row
+      class="detail-row">
     </tr>
 
   <tr *matNoDataRow data-testid="no-results-row">
