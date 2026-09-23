@@ -21,12 +21,14 @@ public class DegreeCalculationValidationService extends ValidationBase<DegreeCal
     public void validateOnCreate(DegreeCalculation model) {
         super.validateOnCreate(model);
         validateMemberForCalculation(model);
+        isValid(model);
     }
 
     @Override
     public void validateOnUpdate(Long id, DegreeCalculation model) {
         super.validateOnUpdate(id, model);
         validateMemberForCalculation(model);
+        isValid(model);
     }
 
     public void validateDuplicateDegreeId(DegreeCalculation degreeCalculation,
@@ -63,7 +65,8 @@ public class DegreeCalculationValidationService extends ValidationBase<DegreeCal
         BigDecimal total = model.getRelevancies().values().stream().reduce(BigDecimal.ZERO, BigDecimal::add);
 
         if (!total.equals(BigDecimal.valueOf(100))) {
-            Map<FieldKey, String> attributes = Map.of(FieldKey.CONDITION_FIELD, "weight", FieldKey.SUM, "100");
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "relevancies", FieldKey.IS, total.toString());
 
             GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTES_NOT_ADDING_UP_TO_100, attributes);
             throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
