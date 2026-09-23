@@ -6,6 +6,7 @@ import { degreeOverviewList } from '../test/test-data';
 import {
   GenericCvContentComponent
 } from '../../features/member/detail-view/generic-cv-content/generic-cv-content.component';
+import { signal } from '@angular/core';
 
 
 describe('GenericTableComponent', () => {
@@ -90,10 +91,6 @@ describe('GenericTableComponent', () => {
       expect(val)
         .toBe('Master of Artificial Intelligence');
     });
-
-    it('should be a striped table', () => {
-
-    });
   });
 
   describe('Interactions (Expansion & Filtering)', () => {
@@ -153,25 +150,44 @@ describe('GenericTableComponent', () => {
   });
 
   describe('Expandable Rows', () => {
-    it('should set isRowExpansionEnabled', () => {
-
-    });
-
     it('should add expand colum to columnNames when isRowExpansionEnabled is true', () => {
+      (component as any).isRowExpansionEnabled = signal(true);
 
+      fixture.componentRef.setInput('dataSource', new GenericTableDataSource(dataSource.columnDefs, dataSource.data));
+
+      expect(component.columnNames())
+        .toContain('expand');
     });
 
     it('should not add expand colum to columnNames when isRowExpansionEnabled is false', () => {
+      (component as any).isRowExpansionEnabled = signal(false);
+      fixture.componentRef.setInput('dataSource', dataSource);
 
+      fixture.componentRef.setInput('dataSource', new GenericTableDataSource(dataSource.columnDefs, dataSource.data));
+
+      expect(component.columnNames()).not.toContain('expand');
     });
 
     describe('Expansion Toggle Logic', () => {
       it('should add element when not already in expandedElements', () => {
+        const row = degreeOverviewList[0];
 
+        component.expandedElements = [];
+
+        component.toggleRowExpansion(row);
+
+        expect(component.expandedElements)
+          .toContain(row);
       });
 
       it('should remove element when already in expandedElements', () => {
+        const row = degreeOverviewList[0];
 
+        component.expandedElements = [row];
+
+        component.toggleRowExpansion(row);
+
+        expect(component.expandedElements).not.toContain(row);
       });
     });
   });
