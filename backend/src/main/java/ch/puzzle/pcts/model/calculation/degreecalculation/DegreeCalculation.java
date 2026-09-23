@@ -45,7 +45,7 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
         this.id = builder.id;
         this.calculation = builder.calculation;
         this.degree = builder.degree;
-        this.comment = builder.comment;
+        this.comment = trim(builder.comment);
         this.relevancies = builder.relevancies;
     }
 
@@ -57,7 +57,7 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
         this.id = id;
         this.calculation = calculation;
         this.degree = degree;
-        this.comment = comment;
+        this.comment = trim(comment);
         this.relevancies = relevancies;
     }
 
