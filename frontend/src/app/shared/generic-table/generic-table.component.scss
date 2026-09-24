@@ -1,0 +1,53 @@
+@use '@angular/material' as mat;
+
+tr.detail-row {
+  height: 0;
+}
+
+tr.detail-row td.mat-mdc-cell {
+  border-bottom-width: 0;
+  padding: 0;
+}
+
+.detail-wrapper {
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 0fr;
+  grid-template-columns: 100%;
+  transition: grid-template-rows 225ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.detail-wrapper.expanded {
+  grid-template-rows: 1fr;
+}
+
+.detail-content {
+  display: flex;
+  min-height: 0;
+}
+
+.rotated {
+  transform: rotate(90deg);
+}
+
+td.mat-mdc-cell mat-icon {
+  transition: transform 0.2s ease-in-out;
+}
+
+tr.row-background-gray td.mat-mdc-cell {
+  background-color: var(--bs-table-striped-bg);
+}
+
+.small-icon-button {
+  @include mat.icon-button-overrides(
+    (
+      icon-size: 18px,
+      state-layer-size: 28px,
+    )
+  );
+
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

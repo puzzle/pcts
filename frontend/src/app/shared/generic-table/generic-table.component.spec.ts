@@ -6,6 +6,7 @@ import { degreeOverviewList } from '../test/test-data';
 import {
   GenericCvContentComponent
 } from '../../features/member/detail-view/generic-cv-content/generic-cv-content.component';
+import { signal } from '@angular/core';
 
 
 describe('GenericTableComponent', () => {
@@ -145,6 +146,53 @@ describe('GenericTableComponent', () => {
 
       expect(link)
         .toBeUndefined();
+    });
+  });
+
+  describe('Expandable Rows', () => {
+    it('should add expand colum to columnNames when isRowExpansionEnabled is true', () => {
+      (component as any).isRowExpansionEnabled = signal(true);
+
+      fixture.componentRef.setInput('dataSource', new GenericTableDataSource(dataSource.columnDefs, dataSource.data));
+
+      expect(component.columnNames())
+        .toContain('expand');
+    });
+
+    it('should not add expand colum to columnNames when isRowExpansionEnabled is false', () => {
+      (component as any).isRowExpansionEnabled = signal(false);
+      fixture.componentRef.setInput('dataSource', dataSource);
+
+      fixture.componentRef.setInput('dataSource', new GenericTableDataSource(dataSource.columnDefs, dataSource.data));
+
+      expect(component.columnNames()).not.toContain('expand');
+    });
+
+    describe('Expansion Toggle Logic', () => {
+      beforeEach(() => {
+        fixture.componentRef.setInput('idAttr', 'id');
+        fixture.detectChanges();
+      });
+      it('should add element when not already in expandedElements', () => {
+        const row = degreeOverviewList[0];
+
+        component.expandedElementIds = [];
+
+        component.toggleRowExpansion(row);
+
+        expect(component.expandedElementIds)
+          .toContain(row.id);
+      });
+
+      it('should remove element when already in expandedElements', () => {
+        const row = degreeOverviewList[0];
+
+        component.expandedElementIds = [row.id];
+
+        component.toggleRowExpansion(row);
+
+        expect(component.expandedElementIds).not.toContain(row.id);
+      });
     });
   });
 });

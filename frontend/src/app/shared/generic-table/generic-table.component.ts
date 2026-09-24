@@ -1,6 +1,6 @@
 import {
   Component,
-  computed,
+  computed, contentChild,
   contentChildren,
   effect, inject, Injector,
   input, output, runInInjectionContext,
@@ -24,10 +24,12 @@ import { MatSort, MatSortHeader } from '@angular/material/sort';
 import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
 import { camelToSnake } from '../utils/case-formatter';
 import { GenCol, GenericTableDataSource } from './generic-table-data-source';
-import { RouterLink } from '@angular/router';
 import { NgTemplateOutlet } from '@angular/common';
 import { ColumnTemplateDirective } from './column-template/column-template.directive';
 import { TranslationScopeDirective } from '../translation-scope/translation-scope.directive';
+import { RowDetailTemplateDirective } from './rowDetailTemplate.directive';
+import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-generic-table',
@@ -46,16 +48,18 @@ import { TranslationScopeDirective } from '../translation-scope/translation-scop
     ScopedTranslationPipe,
     MatHeaderCellDef,
     MatNoDataRow,
-    RouterLink,
     NgTemplateOutlet,
-    TranslationScopeDirective
+    TranslationScopeDirective,
+    MatIconButton,
+    MatIcon
   ],
-  templateUrl: './generic-table.component.html'
+  templateUrl: './generic-table.component.html',
+  styleUrl: './generic-table.component.scss'
 })
-export class GenericTableComponent<T extends object> {
+export class GenericTableComponent<T extends object, K extends keyof T = keyof T> {
   injector = inject(Injector);
 
-  idAttr = input<keyof T>();
+  idAttr = input<K>();
 
   crudBasePath = input<string>('');
 
@@ -71,13 +75,27 @@ export class GenericTableComponent<T extends object> {
     return this.dataSource().filteredData.length !== this.dataSource().data.length || this.isExpanded;
   };
 
+  rowDetailTemplate = contentChild(RowDetailTemplateDirective);
+
+  isRowExpansionEnabled = computed(() => !!this.rowDetailTemplate() && this.idAttr());
+
   columns = computed(() => this.dataSource().columnDefs);
 
-  columnNames = computed(() => this.dataSource().columnDefs.map((e) => e.columnName));
+  columnNames = computed(() => {
+    let colNames = this.dataSource().columnDefs.map((e) => e.columnName);
+    if (this.isRowExpansionEnabled()) {
+      colNames = ['expand',
+        ...colNames];
+    }
+
+    return colNames;
+  });
 
   sort = viewChild(MatSort);
 
   customTemplates = contentChildren(ColumnTemplateDirective);
+
+  expandedElementIds: T[K][] = [];
 
   /*
    * 2. Create a Signal Map for O(1) lookup in the template
@@ -149,5 +167,29 @@ export class GenericTableComponent<T extends object> {
     return [this.crudBasePath(),
       entity[idAttr]].filter(Boolean)
       .join('/');
+  }
+
+  isRowExpanded(entity: T): boolean {
+    const idAttr = this.idAttr();
+    if (idAttr) {
+      return this.expandedElementIds.includes(entity[idAttr]);
+    } else {
+      return false;
+    }
+  }
+
+  toggleRowExpansion(entity: T): void {
+    const idAttr = this.idAttr();
+
+    if (idAttr) {
+      const entityId = entity[idAttr];
+
+      if (this.isRowExpanded(entity)) {
+        this.expandedElementIds = this.expandedElementIds.filter((e) => e !== entityId);
+      } else {
+        this.expandedElementIds = [...this.expandedElementIds,
+          entityId];
+      }
+    }
   }
 }
