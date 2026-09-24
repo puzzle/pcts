@@ -56,10 +56,10 @@ import { MatIcon } from '@angular/material/icon';
   templateUrl: './generic-table.component.html',
   styleUrl: './generic-table.component.scss'
 })
-export class GenericTableComponent<T extends object> {
+export class GenericTableComponent<T extends object, K extends keyof T = keyof T> {
   injector = inject(Injector);
 
-  idAttr = input<keyof T>();
+  idAttr = input<K>();
 
   crudBasePath = input<string>('');
 
@@ -77,7 +77,7 @@ export class GenericTableComponent<T extends object> {
 
   rowDetailTemplate = contentChild(RowDetailTemplateDirective);
 
-  isRowExpansionEnabled = computed(() => !!this.rowDetailTemplate());
+  isRowExpansionEnabled = computed(() => !!this.rowDetailTemplate() && this.idAttr());
 
   columns = computed(() => this.dataSource().columnDefs);
 
@@ -95,7 +95,7 @@ export class GenericTableComponent<T extends object> {
 
   customTemplates = contentChildren(ColumnTemplateDirective);
 
-  expandedElementIds: number[] = [];
+  expandedElementIds: T[K][] = [];
 
   /*
    * 2. Create a Signal Map for O(1) lookup in the template
@@ -169,16 +169,27 @@ export class GenericTableComponent<T extends object> {
       .join('/');
   }
 
-  isRowExpanded(id: number): boolean {
-    return this.expandedElementIds.includes(id);
+  isRowExpanded(entity: T): boolean {
+    const idAttr = this.idAttr();
+    if (idAttr) {
+      return this.expandedElementIds.includes(entity[idAttr]);
+    } else {
+      return false;
+    }
   }
 
-  toggleRowExpansion(id: number): void {
-    if (this.isRowExpanded(id)) {
-      this.expandedElementIds = this.expandedElementIds.filter((e) => e !== id);
-    } else {
-      this.expandedElementIds = [...this.expandedElementIds,
-        id];
+  toggleRowExpansion(entity: T): void {
+    const idAttr = this.idAttr();
+
+    if (idAttr) {
+      const entityId = entity[idAttr];
+
+      if (this.isRowExpanded(entity)) {
+        this.expandedElementIds = this.expandedElementIds.filter((e) => e !== entityId);
+      } else {
+        this.expandedElementIds = [...this.expandedElementIds,
+          entityId];
+      }
     }
   }
 }
