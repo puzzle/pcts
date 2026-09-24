@@ -33,7 +33,20 @@
     "COMPLETED_AT": "Abgeschlossen am",
     "CERTIFICATE_TYPE": "Art des Zertifikats",
     "VALID_UNTIL": "Gültig bis",
-    "COMMENT": "Beschreibung"
+    "COMMENT": "Beschreibung",
+    "EFFORT": "Kurs und Lerndauer",
+    "EXAM_DURATION": "Prüfungsdauer",
+    "EXAM_TYPE": {
+      "TYPE": "Prüfungsart",
+      "THEORETICAL": "Theoretisch",
+      "PRACTICAL": "Praktisch",
+      "THEORETICAL_AND_PRACTICAL": "Theoretisch und Praktisch",
+      "MULTIPLE_CHOICE": "Multiple Choice",
+      "CASE_STUDY": "Case Study",
+      "WRITTEN_ASSIGNMENT": "Schriftliche Aufgabe",
+      "NONE": "Keine"
+    },
+    "LINK": "Weitere Informationen"
   },
   "LEADERSHIP_EXPERIENCE": {
     "MODEL_NAME": "Führungserfahrung",
