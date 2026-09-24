@@ -67,7 +67,7 @@
       *matRowDef="let row; columns: columnNames(); let index = dataIndex;"
       (click)="isRowExpansionEnabled() ? toggleRowExpansion(row) : this.entrySelected.emit(row)"
       [class.cursor-pointer]="dataSource().shouldLink"
-      (keydown.enter)="this.entrySelected.emit(row)"
+      (keydown.enter)="isRowExpansionEnabled() ? toggleRowExpansion(row) : this.entrySelected.emit(row)"
       [class.row-background-gray]="index % 2 == 0"
       data-testid="generic-table-row">
     </tr>
