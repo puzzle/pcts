@@ -11,6 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatusCode;
 
+/**
+ * @param <C> the context required to prepare the extraction
+ * @param <R> the result produced by the extraction and subsequently validated
+ * @param <D> the DTO to which the extraction result is mapped
+ */
 public abstract class ExtractionPipeline<C, R, D> {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final LevenshteinDistance levenshtein = LevenshteinDistance.getDefaultInstance();

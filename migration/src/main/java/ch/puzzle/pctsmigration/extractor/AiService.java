@@ -11,7 +11,9 @@ public class AiService {
     public AiService(ChatClient.Builder builder) {
         this.client = builder.defaultAdvisors(new SimpleLoggerAdvisor()).build();
     }
-
+    /**
+     * @param <R> the type of the result extracted by the AI
+     */
     public <R> R extract(String parsedMarkdownContent, String prompt, Class<R> typeRef) {
         return this.client
                 .prompt()
