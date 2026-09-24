@@ -62,7 +62,30 @@ class DegreeCalculationValidationServiceTest
                                                       DEGREE_1,
                                                       Map.of(Relevancy.STRONGLY, TOO_HIGH_WEIGHT),
                                                       VALID_STRING),
-                                List.of(Map.of(FieldKey.IS, "must not be null"))));
+                                List
+                                        .of(Map
+                                                .of(FieldKey.IS,
+                                                    "200",
+                                                    FieldKey.ENTITY,
+                                                    "calculation",
+                                                    FieldKey.FIELD,
+                                                    "relevancies"))),
+                    Arguments
+                            .of(new DegreeCalculation(null,
+                                                      CALCULATION_1,
+                                                      DEGREE_1,
+                                                      Map.of(Relevancy.STRONGLY, TOO_LOW_WEIGHT),
+                                                      VALID_STRING),
+                                List
+                                        .of(Map
+                                                .of(FieldKey.IS,
+                                                    "50",
+                                                    FieldKey.ENTITY,
+                                                    "calculation",
+                                                    FieldKey.FIELD,
+                                                    "relevancies")))
+
+                );
 
     }
 

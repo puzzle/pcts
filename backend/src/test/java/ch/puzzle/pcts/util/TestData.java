@@ -27,6 +27,7 @@ public class TestData {
 
     public static final BigDecimal VALID_WEIGHT = BigDecimal.valueOf(100);
     public static final BigDecimal TOO_HIGH_WEIGHT = BigDecimal.valueOf(200);
+    public static final BigDecimal TOO_LOW_WEIGHT = BigDecimal.valueOf(50);
     public static final String MIN_WEIGHT = "1";
     public static final String MAX_WEIGHT = "100";
 
