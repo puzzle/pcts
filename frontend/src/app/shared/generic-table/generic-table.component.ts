@@ -27,7 +27,7 @@ import { GenCol, GenericTableDataSource } from './generic-table-data-source';
 import { NgTemplateOutlet } from '@angular/common';
 import { ColumnTemplateDirective } from './column-template/column-template.directive';
 import { TranslationScopeDirective } from '../translation-scope/translation-scope.directive';
-import { RowDetailTemplateDirective } from './rowDetailTemplateDirective';
+import { RowDetailTemplateDirective } from './rowDetailTemplate.directive';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 

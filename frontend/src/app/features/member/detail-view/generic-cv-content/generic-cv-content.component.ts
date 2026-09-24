@@ -6,7 +6,7 @@ import { ColumnTemplateDirective } from '../../../../shared/generic-table/column
 import { TypedTemplateDirective } from '../../../../shared/generic-table/type-template/typed-template.directive';
 import { ExperienceTypePillComponent } from '../../../../shared/experience-type-pill/experience-type-pill.component';
 import { ShowIfAdminDirective } from '../../../../core/auth/directive/show-if-admin.directive';
-import { RowDetailTemplateDirective } from '../../../../shared/generic-table/rowDetailTemplateDirective';
+import { RowDetailTemplateDirective } from '../../../../shared/generic-table/rowDetailTemplate.directive';
 
 @Component({
   selector: 'app-generic-cv-content',
