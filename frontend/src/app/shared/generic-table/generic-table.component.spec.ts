@@ -172,22 +172,22 @@ describe('GenericTableComponent', () => {
       it('should add element when not already in expandedElements', () => {
         const row = degreeOverviewList[0];
 
-        component.expandedElements = [];
+        component.expandedElementIds = [];
 
-        component.toggleRowExpansion(row);
+        component.toggleRowExpansion(row.id);
 
-        expect(component.expandedElements)
-          .toContain(row);
+        expect(component.expandedElementIds)
+          .toContain(row.id);
       });
 
       it('should remove element when already in expandedElements', () => {
         const row = degreeOverviewList[0];
 
-        component.expandedElements = [row];
+        component.expandedElementIds = [row.id];
 
-        component.toggleRowExpansion(row);
+        component.toggleRowExpansion(row.id);
 
-        expect(component.expandedElements).not.toContain(row);
+        expect(component.expandedElementIds).not.toContain(row.id);
       });
     });
   });
