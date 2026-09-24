@@ -1,6 +1,6 @@
 <div class="mt-5">
-  <h1>{{"MODEL_NAME_PLURAL" | scopedTranslation}}</h1>
-  <app-generic-table [dataSource]="table" idAttr="id" crudBasePath="" class>
+  <h1 class="pt-3">{{"MODEL_NAME_PLURAL" | scopedTranslation}}</h1>
+  <app-generic-table [dataSource]="table" idAttr="id" crudBasePath="">
     <ng-template [appTypedTemplate]="table.data"/>
 
     <ng-template

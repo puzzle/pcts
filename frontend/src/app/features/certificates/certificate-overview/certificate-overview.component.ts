@@ -4,7 +4,6 @@ import { TypedTemplateDirective } from '../../../shared/generic-table/type-templ
 import { RowDetailTemplateDirective } from '../../../shared/generic-table/rowDetailTemplate.directive';
 import { GenCol, GenericTableDataSource } from '../../../shared/generic-table/generic-table-data-source';
 import { CertificateOverviewModel } from './certificateOverviewModel';
-import { CertificateTypeModel } from '../certificate-type/certificate-type.model';
 import { ColumnTemplateDirective } from '../../../shared/generic-table/column-template/column-template.directive';
 import { ExperienceTypePillComponent } from '../../../shared/experience-type-pill/experience-type-pill.component';
 import { ActivatedRoute } from '@angular/router';
@@ -45,16 +44,6 @@ export class CertificateOverviewComponent {
         this.table.data = certs;
       }
     });
-  }
-
-  mapToOverviewModel(certificate: CertificateTypeModel): CertificateOverviewModel {
-    return {
-      id: certificate.id,
-      points: certificate.points,
-      name: certificate.name,
-      publisher: certificate.publisher,
-      tags: certificate.tags
-    };
   }
 }
 
