@@ -14,7 +14,7 @@ import { ExperienceModalComponent } from '../../experiences/experience-modal/exp
 import { TranslationScopeDirective } from '../../../shared/translation-scope/translation-scope.directive';
 import { CertificateService } from '../../certificates/certificate.service';
 import { CertificateModel } from '../../certificates/certificate.model';
-import { CertificateModalComponent } from '../../certificates/add-certificate/certificate-modal.component';
+import { CertificateModalComponent } from '../../certificates/./certificate-modal/certificate-modal.component';
 import { PctsModalService } from '../../../shared/modal/pcts-modal.service';
 import { MemberCalculationTableComponent } from './calculation-table/member-calculation-table.component';
 import { LeadershipExperienceModel } from '../../leadership-experiences/leadership-experience.model';
