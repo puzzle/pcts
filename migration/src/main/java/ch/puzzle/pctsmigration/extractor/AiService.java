@@ -12,7 +12,8 @@ public class AiService {
         this.client = builder.defaultAdvisors(new SimpleLoggerAdvisor()).build();
     }
     /**
-     * @param <R> the type of the result extracted by the AI
+     * @param <R>
+     *            the type of the result extracted by the AI
      */
     public <R> R extract(String parsedMarkdownContent, String prompt, Class<R> typeRef) {
         return this.client
