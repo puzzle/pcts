@@ -1,6 +1,6 @@
 import { RowDetailTemplateDirective } from './rowDetailTemplate.directive';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component, ViewChild } from '@angular/core';
+import { Component, viewChild } from '@angular/core';
 
 @Component({
   template: `
@@ -12,7 +12,7 @@ import { Component, ViewChild } from '@angular/core';
   standalone: true
 })
 class TestHostComponent {
-  @ViewChild(RowDetailTemplateDirective) directive!: RowDetailTemplateDirective;
+  directive = viewChild('RowDetailTemplateDirective');
 }
 
 describe('RowDetailTemplateDirective', () => {
