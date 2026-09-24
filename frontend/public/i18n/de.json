@@ -25,6 +25,11 @@
   },
   "CERTIFICATE": {
     "MODEL_NAME": "Zertifikat",
+    "MODEL_NAME_PLURAL": "Zertifikate",
+    "NAME": "Titel",
+    "PUBLISHER": "Anbieter",
+    "TAGS": "Themenbereiche",
+    "POINTS": "PCTS",
     "COMPLETED_AT": "Abgeschlossen am",
     "CERTIFICATE_TYPE": "Art des Zertifikats",
     "VALID_UNTIL": "Gültig bis",
