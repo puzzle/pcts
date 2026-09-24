@@ -1,14 +1,22 @@
-{{certificate()?.name}}
-
-<div class="d-flex flex-row justify-content-start">
-  <div class="w-25">
-    <div>
-      <p class="fw-light">
-        {{"COMMENT" | scopedTranslation}}
-      </p>
-      <p>
-        {{certificate()?.comment}}
-      </p>
-    </div>
-  </div>
-</div>
+<table class="table">
+  <tr>
+    <th>{{"EFFORT" | scopedTranslation}}:</th>
+    <td>{{certificate()?.effort}}</td>
+  </tr>
+  <tr>
+    <th>{{"EXAM_TYPE.TYPE" | scopedTranslation}}:</th>
+    <td>{{"EXAM_TYPE." + certificate()?.examType | scopedTranslation}}/td>
+  </tr>
+  <tr>
+    <th>{{"EXAM_DURATION" | scopedTranslation}}:</th>
+    <td>{{certificate()?.examDuration}}</td>
+  </tr>
+  <tr>
+    <th>{{"COMMENT" | scopedTranslation}}:</th>
+    <td>{{certificate()?.comment}}</td>
+  </tr>
+  <tr>
+    <th>{{"LINK" | scopedTranslation}}:</th>
+    <td><a [href]="certificate()?.link">{{certificate()?.link}}</a></td>
+  </tr>
+</table>
