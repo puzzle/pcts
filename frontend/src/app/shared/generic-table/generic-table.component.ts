@@ -95,7 +95,7 @@ export class GenericTableComponent<T extends object> {
 
   customTemplates = contentChildren(ColumnTemplateDirective);
 
-  expandedElements: T[] = [];
+  expandedElementIds: number[] = [];
 
   /*
    * 2. Create a Signal Map for O(1) lookup in the template
@@ -169,16 +169,16 @@ export class GenericTableComponent<T extends object> {
       .join('/');
   }
 
-  isRowExpanded(entity: T): boolean {
-    return this.expandedElements.includes(entity);
+  isRowExpanded(id: number): boolean {
+    return this.expandedElementIds.includes(id);
   }
 
-  toggleRowExpansion(entity: T): void {
-    if (this.isRowExpanded(entity)) {
-      this.expandedElements = this.expandedElements.filter((e) => e !== entity);
+  toggleRowExpansion(id: number): void {
+    if (this.isRowExpanded(id)) {
+      this.expandedElementIds = this.expandedElementIds.filter((e) => e !== id);
     } else {
-      this.expandedElements = [...this.expandedElements,
-        entity];
+      this.expandedElementIds = [...this.expandedElementIds,
+        id];
     }
   }
 }
