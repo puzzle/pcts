@@ -169,12 +169,16 @@ describe('GenericTableComponent', () => {
     });
 
     describe('Expansion Toggle Logic', () => {
+      beforeEach(() => {
+        fixture.componentRef.setInput('idAttr', 'id');
+        fixture.detectChanges();
+      });
       it('should add element when not already in expandedElements', () => {
         const row = degreeOverviewList[0];
 
         component.expandedElementIds = [];
 
-        component.toggleRowExpansion(row.id);
+        component.toggleRowExpansion(row);
 
         expect(component.expandedElementIds)
           .toContain(row.id);
@@ -185,7 +189,7 @@ describe('GenericTableComponent', () => {
 
         component.expandedElementIds = [row.id];
 
-        component.toggleRowExpansion(row.id);
+        component.toggleRowExpansion(row);
 
         expect(component.expandedElementIds).not.toContain(row.id);
       });
