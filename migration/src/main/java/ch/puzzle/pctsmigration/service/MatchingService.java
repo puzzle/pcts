@@ -1,6 +1,9 @@
 package ch.puzzle.pctsmigration.service;
 
+import ch.puzzle.pctsmigration.exception.Error;
+import ch.puzzle.pctsmigration.exception.MigrationException;
 import org.apache.commons.text.similarity.LevenshteinDistance;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -24,10 +27,16 @@ public class MatchingService {
         options = options.stream().map(this::replaceUmlaute)
                 .toList();
 
-        return options
+        String closest = options
                 .stream()
                 .min(Comparator.comparingInt(name -> calculateDistance(name, replaceUmlaute(target))))
                 .orElseThrow();
+
+        if (calculateDistance(closest, replaceUmlaute(target)) > 40) {
+            throw new MigrationException(new Error(HttpStatusCode.valueOf(400), "Levenshtein distance is too large to be a valid insert"));
+        }
+
+        return closest;
     }
 
     private Integer calculateDistance(String dtoName, String name) {
