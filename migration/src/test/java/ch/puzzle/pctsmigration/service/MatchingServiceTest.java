@@ -61,7 +61,7 @@ class MatchingServiceTest {
                 ),
                 Arguments.of(
                         getOptions(),
-                        "SaFe Agilist Ausbildung",
+                        "SAFe Agilist bildung",
                         "SAFe Agilist"
                 ),
                 Arguments.of(
