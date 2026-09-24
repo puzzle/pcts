@@ -26,12 +26,12 @@ public class MatchingService {
 
         return options
                 .stream()
-                .min(Comparator.comparingInt(dto -> calculateDistance(dto.toLowerCase(), replaceUmlaute(target.toLowerCase()))))
+                .min(Comparator.comparingInt(name -> calculateDistance(name, replaceUmlaute(target))))
                 .orElseThrow();
     }
 
     private Integer calculateDistance(String dtoName, String name) {
-        Integer distance = this.levenshtein.apply(dtoName, name);
+        Integer distance = this.levenshtein.apply(dtoName.toLowerCase(), name.toLowerCase());
         logger.info("Input name: {}, Actual name: {}, Distance: {}", name, dtoName, distance);
 
         return distance;
