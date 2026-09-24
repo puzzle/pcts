@@ -23,20 +23,6 @@ class DegreeCalculationValidationServiceTest
         extends
             ValidationBaseServiceTest<DegreeCalculation, DegreeCalculationValidationService> {
 
-    @Override
-    DegreeCalculationValidationService getService() {
-        return new DegreeCalculationValidationService();
-    }
-
-    @Override
-    DegreeCalculation getValidModel() {
-        return new DegreeCalculation(null,
-                                     CALCULATION_1,
-                                     DEGREE_1,
-                                     Map.of(Relevancy.STRONGLY, VALID_WEIGHT),
-                                     VALID_STRING);
-    }
-
     static Stream<Arguments> invalidModelProvider() {
         return Stream
                 .of(Arguments
@@ -87,6 +73,20 @@ class DegreeCalculationValidationServiceTest
 
                 );
 
+    }
+
+    @Override
+    DegreeCalculationValidationService getService() {
+        return new DegreeCalculationValidationService();
+    }
+
+    @Override
+    DegreeCalculation getValidModel() {
+        return new DegreeCalculation(null,
+                                     CALCULATION_1,
+                                     DEGREE_1,
+                                     Map.of(Relevancy.STRONGLY, VALID_WEIGHT),
+                                     VALID_STRING);
     }
 
     @DisplayName("Should throw exception when members do not match")
