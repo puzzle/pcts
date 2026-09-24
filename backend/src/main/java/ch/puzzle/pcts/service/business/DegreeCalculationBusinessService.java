@@ -91,18 +91,16 @@ public class DegreeCalculationBusinessService extends BusinessBase<DegreeCalcula
      * infinite amount of digits could cause a ArithmeticException
      */
     private BigDecimal calculatePoints(DegreeCalculation calculation) {
-        Map<Relevancy, BigDecimal> relevancy = calculation.getRelevancies();
-        BigDecimal points = BigDecimal.ZERO;
+        Map<Relevancy, BigDecimal> relevancies = calculation.getRelevancies();
 
-        return relevancy.entrySet().stream().map(relevance -> {
+        return relevancies.entrySet().stream().map(relevance -> {
             BigDecimal pointsByRelevancy = calculation
                     .getDegree()
                     .getDegreeType()
                     .getPointsByRelevancy(relevance.getKey());
-            return points
-                    .add(pointsByRelevancy
-                            .divide(BigDecimal.valueOf(100), MathContext.DECIMAL128)
-                            .multiply(relevance.getValue()));
+            return (pointsByRelevancy
+                    .divide(BigDecimal.valueOf(100), MathContext.DECIMAL128)
+                    .multiply(relevance.getValue()));
         }).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
