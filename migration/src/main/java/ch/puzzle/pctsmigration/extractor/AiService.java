@@ -13,7 +13,8 @@ public class AiService {
     }
     /**
      * @param <R>
-     *            the type of the result extracted by the AI
+     *            the result type expected from the AI extraction and used as the
+     *            target type for decoding the AI
      */
     public <R> R extract(String parsedMarkdownContent, String prompt, Class<R> typeRef) {
         return this.client

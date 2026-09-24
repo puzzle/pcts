@@ -24,11 +24,13 @@ public class ExtractorService {
 
     /**
      * @param <C>
-     *            The context required by the pipeline to prepare the processing.
+     *            the context type used to provide additional information required
+     *            to build the AI system prompt
      * @param <R>
-     *            The result extracted by the AI and validated afterward.
+     *            The result extracted by the AI and validated afterward
      * @param <D>
-     *            The data transfer object the result is mapped to.
+     *            the DTO type to which the validated extraction result is mapped
+     *            before being returned
      */
     public <C, R, D> List<D> extract(MultipartFile file, ExtractionPipeline<C, R, D> pipeline) {
         String parsedToMarkdown = this.odsParserService.parseToPromptText(file, pipeline.odsSheetParseConfig());
@@ -45,9 +47,10 @@ public class ExtractorService {
 
     /**
      * @param <R>
-     *            the type of the extracted result
+     *            the type of the AI extracted result that is subject to Jakarta
+     *            Validation
      * @param result
-     *            the result to validate
+     *            result the extracted result to validate
      */
     private <R> void jakartaValidation(R result) {
         var violations = validator.validate(result);

@@ -13,9 +13,11 @@ import org.springframework.http.HttpStatusCode;
 
 /**
  * @param <C>
- *            the context required to prepare the extraction
+ *            Context data fetched from the PCTS API. It is used to build the AI service
+ *            system prompt
  * @param <R>
- *            the result produced by the extraction and subsequently validated
+ *            Result type returned by the AI service. The result is validated
+ *            before further processing
  * @param <D>
  *            the DTO to which the extraction result is mapped
  */
