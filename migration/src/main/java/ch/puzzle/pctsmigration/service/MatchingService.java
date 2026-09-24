@@ -2,14 +2,13 @@ package ch.puzzle.pctsmigration.service;
 
 import ch.puzzle.pctsmigration.exception.Error;
 import ch.puzzle.pctsmigration.exception.MigrationException;
+import java.util.Comparator;
+import java.util.List;
 import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
-
-import java.util.Comparator;
-import java.util.List;
 
 @Service
 public class MatchingService {
@@ -28,7 +27,8 @@ public class MatchingService {
                 .orElseThrow();
 
         if (calculateDistance(closest, normalizedTarget) > 40) {
-            throw new MigrationException(new Error(HttpStatusCode.valueOf(400), "Levenshtein distance is too large to be a valid insert"));
+            throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
+                                                   "Levenshtein distance is too large to be a valid insert"));
         }
 
         return closest;
@@ -42,7 +42,8 @@ public class MatchingService {
     }
 
     private String replaceUmlaute(String input) {
-        return input.replace("ä", "ae")
+        return input
+                .replace("ä", "ae")
                 .replace("ö", "oe")
                 .replace("ü", "ue")
                 .replace("Ä", "Ae")
@@ -56,14 +57,16 @@ public class MatchingService {
         double lower = normalizedTarget.length() - adjustment;
         double upper = lower + adjustment * 2;
 
-        List<String> filteredOptions = list.stream().filter(option -> option.length() >= lower && option.length() <= upper).toList();
+        List<String> filteredOptions = list
+                .stream()
+                .filter(option -> option.length() >= lower && option.length() <= upper)
+                .toList();
 
         if (filteredOptions.isEmpty()) {
-            throw new MigrationException(new Error(HttpStatusCode.valueOf(400), "No valid option found within acceptable range"));
+            throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
+                                                   "No valid option found within acceptable range"));
         }
 
         return filteredOptions;
     }
 }
-
-
