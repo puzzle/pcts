@@ -14,14 +14,7 @@
               <app-experience-type-pill [experienceType]="experience.experienceTypeName" />
             </ng-template>
 
-            <ng-template
-              appExpandableRow
-              let-row
-            >
-              <h1>{{ row.id }}</h1>
-            </ng-template>
-
-            <ng-template appColumnTemplate="workName" let-experience>
+        <ng-template appColumnTemplate="workName" let-experience>
           @if (experience.employer; as employer) {
             <b>{{ employer }}</b><br/>
           }
