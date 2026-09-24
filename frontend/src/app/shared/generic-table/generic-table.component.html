@@ -12,14 +12,14 @@
     @if (isRowExpansionEnabled()) {
       <ng-container matColumnDef="expand">
         <th mat-header-cell *matHeaderCellDef aria-label="row-actions">&nbsp;</th>
-        <td mat-cell *matCellDef="let entity">
+        <td mat-cell *matCellDef="let entity" class="align-middle">
           <button
-            type="button"
             matIconButton
+            type="button"
+            class="small-icon-button"
             aria-label="expand row"
             (click)="toggleRowExpansion(entity.id); $event.stopPropagation()">
             <mat-icon [class.rotated]="isRowExpanded(entity.id)">keyboard_arrow_right</mat-icon>
-
           </button>
         </td>
 

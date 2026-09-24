@@ -1,3 +1,5 @@
+@use '@angular/material' as mat;
+
 tr.detail-row {
   height: 0;
 }
@@ -34,4 +36,18 @@ td.mat-mdc-cell mat-icon {
 
 tr.row-background-gray td.mat-mdc-cell {
   background-color: var(--bs-table-striped-bg);
+}
+
+.small-icon-button {
+  @include mat.icon-button-overrides(
+    (
+      icon-size: 18px,
+      state-layer-size: 28px,
+    )
+  );
+
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
