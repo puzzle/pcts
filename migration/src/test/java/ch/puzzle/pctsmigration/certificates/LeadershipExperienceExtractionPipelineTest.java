@@ -14,6 +14,8 @@ import ch.puzzle.pctsmigration.leadershipexperience.LeadershipExperienceWrapper;
 import ch.puzzle.pctsmigration.ods.OdsParseConfig;
 import java.time.LocalDate;
 import java.util.List;
+
+import ch.puzzle.pctsmigration.service.MatchingService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,6 +36,9 @@ class LeadershipExperienceExtractionPipelineTest {
 
     @Mock
     private MemberService memberService;
+
+    @Mock
+    private MatchingService matchingService;
 
     @InjectMocks
     private LeadershipExperienceExtractionPipeline pipeline;
@@ -108,6 +113,8 @@ class LeadershipExperienceExtractionPipelineTest {
         when(leadershipExperienceTypeService.getLeadershipExperienceTypes())
                 .thenReturn(List.of(wrongType, correctClosestType));
 
+        when(matchingService.match(anyList(), anyString())).thenReturn("Offizier Militär");
+
         List<LeadershipExperienceInputDto> result = pipeline.mapToDto(filename, wrapper);
 
         assertThat(result).hasSize(1);
@@ -118,7 +125,7 @@ class LeadershipExperienceExtractionPipelineTest {
         assertThat(dto.getComment()).isEqualTo("Gute Führung");
 
         verify(memberService).getMemberIdBy("AW");
-        verify(leadershipExperienceTypeService).getLeadershipExperienceTypes();
+        verify(leadershipExperienceTypeService, times(2)).getLeadershipExperienceTypes();
     }
 
     @Test
