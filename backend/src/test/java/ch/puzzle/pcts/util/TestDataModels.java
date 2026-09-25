@@ -677,7 +677,7 @@ public class TestDataModels {
                                                                                 DEGREE_2,
                                                                                 Map
                                                                                         .of(Relevancy.STRONGLY,
-                                                                                            BigDecimal.valueOf(80)),
+                                                                                            BigDecimal.valueOf(100)),
                                                                                 "Comment");
 
     public static final DegreeCalculation DEGREE_CALC_2 = new DegreeCalculation(DEGREE_CALC_2_ID,
@@ -685,7 +685,7 @@ public class TestDataModels {
                                                                                 DEGREE_2,
                                                                                 Map
                                                                                         .of(Relevancy.POORLY,
-                                                                                            BigDecimal.valueOf(10)),
+                                                                                            BigDecimal.valueOf(100)),
                                                                                 "Comment");
 
     public static final DegreeCalculation DEGREE_CALC_3 = new DegreeCalculation(DEGREE_CALC_3_ID,

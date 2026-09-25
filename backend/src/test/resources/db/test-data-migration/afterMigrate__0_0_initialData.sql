@@ -129,9 +129,9 @@ TRUNCATE TABLE degree_calculation CASCADE;
 INSERT INTO degree_calculation
 (calculation_id, degree_id, comment)
 VALUES
-    (2, 2, 'Low relevance for technical role'),
-    (3, 3, 'Directly relevant degree'),
-    (4, 3, 'Relevant but less practical focus');
+    (1, 2, 'Comment'),
+    (2, 2, 'Comment'),
+    (1, 2, 'Comment');
 
 INSERT INTO degree_calculation_weight
 (weight, relevancy, degree_calculation_id)
