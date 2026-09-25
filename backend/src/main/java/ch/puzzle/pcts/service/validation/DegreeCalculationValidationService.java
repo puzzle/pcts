@@ -63,7 +63,7 @@ public class DegreeCalculationValidationService extends ValidationBase<DegreeCal
     public void validateWeightsForCalculation(DegreeCalculation model) {
         BigDecimal total = model.getRelevancies().values().stream().reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        if (!total.equals(BigDecimal.valueOf(100))) {
+        if (total.compareTo(BigDecimal.valueOf(100)) != 0) {
             Map<FieldKey, String> attributes = Map
                     .of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "relevancies", FieldKey.IS, total.toString());
 
