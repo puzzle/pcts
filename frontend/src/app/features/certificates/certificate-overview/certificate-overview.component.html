@@ -5,11 +5,13 @@
 
     <ng-template
       appColumnTemplate="tags"
-      let-tags
+      let-certificate
     >
+      @for (tag of certificate.tags; track tag) {
       <span class="badge bg-primary">
-        {{ tags.name }}
+        {{ tag }}
       </span>
+      }
 
     </ng-template>
 
