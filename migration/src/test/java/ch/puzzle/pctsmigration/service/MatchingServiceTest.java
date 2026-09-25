@@ -3,6 +3,8 @@ package ch.puzzle.pctsmigration.service;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
+
+import ch.puzzle.pctsmigration.exception.MigrationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,6 +28,12 @@ class MatchingServiceTest {
 
     }
 
+    @ParameterizedTest
+    @MethodSource("generateInvalidData")
+    void shouldThrowOnInvalidEntities(List<String> options, String target) {
+        Assertions.assertThrows(MigrationException.class, () -> matchingService.match(options, target));
+    }
+
     private static Stream<Arguments> generateData() {
         return Stream
                 .of(Arguments
@@ -46,9 +54,26 @@ class MatchingServiceTest {
                                 "Foundation Level: Certified Professional for Software Architecture"),
                     Arguments.of(getOptions(), "Kutomers Experiences Faciilitator", "Customer Experience Facilitator"),
                     Arguments.of(getOptions(), "UX Fundation Levle", "UXQB Foundation Level"),
-                    Arguments.of(getOptions(), "SAFe Agilist bildung", "SAFe Agilist"),
-                    Arguments.of(getOptions(), "GitLab 301", "GitLab 101") // sött eig e error throwe
+                    Arguments.of(getOptions(), "SAFe Agilist bildung", "SAFe Agilist")
                 );
+    }
+
+    private static Stream<Arguments> generateInvalidData() {
+        return Stream.of(
+                Arguments.of(
+                        getOptions(),
+                        "something".repeat(10)
+                ),
+
+                Arguments.of(
+                        getOptions(),
+                        "something".repeat(45)
+                ),
+                Arguments.of(
+                        getOptions(),
+                        "GitLab 301"
+                )
+        );
     }
 
     private static List<String> getOptions() {
