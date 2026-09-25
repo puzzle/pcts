@@ -18,7 +18,9 @@ import java.util.Map;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class DegreeCalculationValidationServiceTest
         extends
@@ -121,21 +123,30 @@ class DegreeCalculationValidationServiceTest
         verify(spyService).validateMemberForCalculation(dc);
     }
 
+    @ParameterizedTest
+    @ValueSource(ints = { 49, 51 })
     @DisplayName("Should throw exception when relevancies do not add up to 100")
-    @Test
-    void shouldThrowExceptionWhenRelevanciesDoNotAddUpTo100() {
+    void shouldThrowExceptionWhenRelevanciesDoNotAddUpTo100(int poorRelevancy) {
         DegreeCalculationValidationService spyService = spy(getService());
         DegreeCalculation degreeCalculation = getValidModel();
         degreeCalculation
                 .setRelevancies(Map
-                        .of(Relevancy.STRONGLY, BigDecimal.valueOf(50), Relevancy.POORLY, BigDecimal.valueOf(30)));
+                        .of(Relevancy.STRONGLY,
+                            BigDecimal.valueOf(50),
+                            Relevancy.POORLY,
+                            BigDecimal.valueOf(poorRelevancy)));
 
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> spyService.validateWeightsForCalculation(degreeCalculation));
 
         assertEquals(ErrorKey.ATTRIBUTES_NOT_ADDING_UP_TO_100, exception.getErrorKeys().getFirst());
-        assertEquals(Map.of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "relevancies", FieldKey.IS, "80"),
-                     exception.getErrorAttributes().getFirst());
+        assertEquals(Map
+                .of(FieldKey.ENTITY,
+                    CALCULATION,
+                    FieldKey.FIELD,
+                    "relevancies",
+                    FieldKey.IS,
+                    BigDecimal.valueOf(50 + poorRelevancy).toString()), exception.getErrorAttributes().getFirst());
     }
 
     @DisplayName("Should not throw exception when relevancies add up to 100")
