@@ -7,12 +7,16 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { AuthService } from './core/auth/auth.service';
 import { ConfigurationService } from './features/configuration/configuration.service';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,
+  imports: [
+    RouterOutlet,
     TranslatePipe,
-    NgOptimizedImage],
+    NgOptimizedImage,
+    MatIcon
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
