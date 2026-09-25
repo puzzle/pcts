@@ -53,12 +53,17 @@ class MatchingServiceTest {
                                 "Foundation Level: Certified Professional for Software Architecture"),
                     Arguments.of(getOptions(), "Kutomers Experiences Faciilitator", "Customer Experience Facilitator"),
                     Arguments.of(getOptions(), "UX Fundation Levle", "UXQB Foundation Level"),
-                    Arguments.of(getOptions(), "SAFe Agilist bildung", "SAFe Agilist"));
+                    Arguments.of(getOptions(), "SAFe Agilist bildung", "SAFe Agilist"),
+                    Arguments.of(
+                            getOptions(),
+                            "AWS Certified Solutions Architect – Associate (SAA-C03)   AWS Certified Developer – Associate (DVA-C02)   AWS Certified CloudOps Engineer – Associate (SOA-C03)   AWS Certified Data Engineer – Associate (DEA-C01)   AWS Certified Machine Learning Engineer – Associate (MLA-C01)" + "repeat".repeat(5),
+                            "AWS Certified Solutions Architect – Associate (SAA-C03)   AWS Certified Developer – Associate (DVA-C02)   AWS Certified CloudOps Engineer – Associate (SOA-C03)   AWS Certified Data Engineer – Associate (DEA-C01)   AWS Certified Machine Learning Engineer – Associate (MLA-C01)"));
     }
 
     private static Stream<Arguments> generateInvalidData() {
         return Stream
                 .of(Arguments.of(getOptions(), "something".repeat(10)),
+                Arguments.of(getOptions(), "something".repeat(100)),
 
                     Arguments.of(getOptions(), "something".repeat(45)),
                     Arguments.of(getOptions(), "GitLab 301"));
