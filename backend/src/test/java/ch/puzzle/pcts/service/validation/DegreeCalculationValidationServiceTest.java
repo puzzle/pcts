@@ -33,7 +33,7 @@ class DegreeCalculationValidationServiceTest
         return new DegreeCalculation(null,
                                      CALCULATION_1,
                                      DEGREE_1,
-                                     Map.of(Relevancy.STRONGLY, VALID_WEIGHT),
+                                     Map.of(Relevancy.STRONGLY, DEGREE_RELEVANCIES_VALID_WEIGHT),
                                      VALID_STRING);
     }
 
@@ -43,14 +43,14 @@ class DegreeCalculationValidationServiceTest
                         .of(new DegreeCalculation(null,
                                                   null,
                                                   DEGREE_1,
-                                                  Map.of(Relevancy.STRONGLY, VALID_WEIGHT),
+                                                  Map.of(Relevancy.STRONGLY, DEGREE_RELEVANCIES_VALID_WEIGHT),
                                                   VALID_STRING),
                             List.of(Map.of(FieldKey.CLASS, "DegreeCalculation", FieldKey.FIELD, "calculation"))),
                     Arguments
                             .of(new DegreeCalculation(null,
                                                       CALCULATION_1,
                                                       null,
-                                                      Map.of(Relevancy.STRONGLY, VALID_WEIGHT),
+                                                      Map.of(Relevancy.STRONGLY, DEGREE_RELEVANCIES_VALID_WEIGHT),
                                                       VALID_STRING),
                                 List.of(Map.of(FieldKey.CLASS, "DegreeCalculation", FieldKey.FIELD, "degree"))),
                     Arguments
@@ -60,7 +60,7 @@ class DegreeCalculationValidationServiceTest
                             .of(new DegreeCalculation(null,
                                                       CALCULATION_1,
                                                       DEGREE_1,
-                                                      Map.of(Relevancy.STRONGLY, TOO_HIGH_WEIGHT),
+                                                      Map.of(Relevancy.STRONGLY, DEGREE_RELEVANCIES_TOO_HIGH_WEIGHT),
                                                       VALID_STRING),
                                 List
                                         .of(Map
@@ -74,7 +74,7 @@ class DegreeCalculationValidationServiceTest
                             .of(new DegreeCalculation(null,
                                                       CALCULATION_1,
                                                       DEGREE_1,
-                                                      Map.of(Relevancy.STRONGLY, TOO_LOW_WEIGHT),
+                                                      Map.of(Relevancy.STRONGLY, DEGREE_RELECANCIES_TOO_LOW_WEIGHT),
                                                       VALID_STRING),
                                 List
                                         .of(Map
