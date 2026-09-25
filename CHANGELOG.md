@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.13.0](https://github.com/puzzle/pcts/compare/0.12.0...0.13.0) (2026-09-25)
+
+
+### Features
+
+* 904 split relevancy for degrees ([da89057](https://github.com/puzzle/pcts/commit/da8905751681383c19290d26ac0261857bdf8626))
+* add delete button [#799](https://github.com/puzzle/pcts/issues/799)  ([9499951](https://github.com/puzzle/pcts/commit/9499951153f42bb6e7748679c02bb0bf868f2d67))
+* **frontend:** add expandable rows to generic table [#914](https://github.com/puzzle/pcts/issues/914) ([#918](https://github.com/puzzle/pcts/issues/918)) ([83ffc96](https://github.com/puzzle/pcts/commit/83ffc96fccdae17db193fcf094cd1dbeee0243e5))
+
+
+### Miscellaneous Chores
+
+* add 'Ganzzahl' to CSpell dictionary ([2e5700f](https://github.com/puzzle/pcts/commit/2e5700fd7a76f551209722e221f10a3f098d3962))
+* add check for WIP commits ([9499951](https://github.com/puzzle/pcts/commit/9499951153f42bb6e7748679c02bb0bf868f2d67))
+* **deps:** update all devdependencies (minor and patch) to v30.5.2 ([#919](https://github.com/puzzle/pcts/issues/919)) ([19ac6d7](https://github.com/puzzle/pcts/commit/19ac6d7f9e5514cbd6b6ff066cb00d857bba5a2a))
+* **deps:** update angularmaterial monorepo to v22.1.7 ([#920](https://github.com/puzzle/pcts/issues/920)) ([17cd406](https://github.com/puzzle/pcts/commit/17cd4061af12e145a8dd12620d7c398fe2d6ad2e))
+
+
+### Docs
+
+* **migration:** add description docs for generics  [#874](https://github.com/puzzle/pcts/issues/874) ([e9f203a](https://github.com/puzzle/pcts/commit/e9f203a10515d9ddfbb799fa6409074c19013fa3))
+
 ## [0.12.0](https://github.com/puzzle/pcts/compare/0.11.0...0.12.0) (2026-09-21)
 
 
