@@ -47,11 +47,9 @@
       <ng-container matColumnDef="expandedDetail">
         <td mat-cell *matCellDef="let entity" [attr.colspan]="columnNames().length">
           <div class="detail-wrapper" [class.expanded]="isRowExpanded(entity)">
-            @if (isRowExpanded(entity)) {
-              <div class="detail-content">
-                <ng-container *ngTemplateOutlet="rowDetailTemplate()?.template; context: { $implicit: entity }" />
-              </div>
-            }
+            <div class="detail-content">
+              <ng-container *ngTemplateOutlet="rowDetailTemplate()?.template; context: { $implicit: entity }" />
+            </div>
           </div>
         </td>
       </ng-container>

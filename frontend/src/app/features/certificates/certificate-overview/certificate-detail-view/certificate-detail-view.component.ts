@@ -1,8 +1,6 @@
-import { Component, inject, input } from '@angular/core';
-import { CertificateTypeService } from '../../certificate-type/certificate-type.service';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { switchMap } from 'rxjs';
+import { Component, input } from '@angular/core';
 import { ScopedTranslationPipe } from '../../../../shared/pipes/scoped-translation-pipe';
+import { CertificateTypeModel } from '../../certificate-type/certificate-type.model';
 
 @Component({
   imports: [ScopedTranslationPipe],
@@ -12,10 +10,5 @@ import { ScopedTranslationPipe } from '../../../../shared/pipes/scoped-translati
   templateUrl: './certificate-detail-view.component.html'
 })
 export class CertificateDetailViewComponent {
-  private readonly certificateType = inject(CertificateTypeService);
-
-  public readonly id = input.required<number>();
-
-  certificate = toSignal(toObservable(this.id)
-    .pipe(switchMap((currentId) => this.certificateType.getCertificateById(currentId))));
+  public readonly certificate = input.required<CertificateTypeModel>();
 }

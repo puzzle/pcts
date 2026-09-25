@@ -3,14 +3,12 @@ import { GenericTableComponent } from '../../../shared/generic-table/generic-tab
 import { TypedTemplateDirective } from '../../../shared/generic-table/type-template/typed-template.directive';
 import { RowDetailTemplateDirective } from '../../../shared/generic-table/rowDetailTemplate.directive';
 import { GenCol, GenericTableDataSource } from '../../../shared/generic-table/generic-table-data-source';
-import { CertificateOverviewModel } from './certificateOverviewModel';
 import { ColumnTemplateDirective } from '../../../shared/generic-table/column-template/column-template.directive';
-import { ExperienceTypePillComponent } from '../../../shared/experience-type-pill/experience-type-pill.component';
 import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { TranslatePipe } from '@ngx-translate/core';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CertificateDetailViewComponent } from './certificate-detail-view/certificate-detail-view.component';
+import { CertificateTypeModel } from '../certificate-type/certificate-type.model';
 
 @Component({
   imports: [
@@ -18,8 +16,6 @@ import { CertificateDetailViewComponent } from './certificate-detail-view/certif
     TypedTemplateDirective,
     RowDetailTemplateDirective,
     ColumnTemplateDirective,
-    ExperienceTypePillComponent,
-    TranslatePipe,
     ScopedTranslationPipe,
     CertificateDetailViewComponent
   ],
@@ -30,11 +26,11 @@ import { CertificateDetailViewComponent } from './certificate-detail-view/certif
 export class CertificateOverviewComponent {
   private readonly route = inject(ActivatedRoute);
 
-  private data = toSignal(this.route.data);
+  private readonly data = toSignal(this.route.data);
 
   table = getCertificateOverviewTable();
 
-  certificates = computed(() => this.data()?.['certificateOverview'] as CertificateOverviewModel[]);
+  certificates = computed(() => this.data()?.['certificates'] as CertificateTypeModel[]);
 
 
   constructor() {
@@ -51,7 +47,7 @@ const getCertificateOverviewTable = () => new GenericTableDataSource(getCertific
   .withLimit(10)
   .withDetailViewLink();
 
-const getCertificateOverviewColumns = (): GenCol<CertificateOverviewModel>[] => [
+const getCertificateOverviewColumns = (): GenCol<CertificateTypeModel>[] => [
   GenCol.fromAttr('name'),
   GenCol.fromAttr('publisher'),
   GenCol.fromAttr('points'),

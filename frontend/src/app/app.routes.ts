@@ -11,7 +11,7 @@ import { memberIdResolver } from './features/member/member-id-resolver';
 import {
   CertificateOverviewComponent
 } from './features/certificates/certificate-overview/certificate-overview.component';
-import { certificateOverviewResolver } from './features/certificates/certificate-overview-resolver';
+import { certificateTypeResolver } from './features/certificates/certificate-overview-resolver';
 
 export const routes: Routes = [
   {
@@ -60,7 +60,7 @@ export const routes: Routes = [
     component: CertificateOverviewComponent,
     canActivate: [authGuard('user')],
     resolve: {
-      certificateOverview: certificateOverviewResolver
+      certificates: certificateTypeResolver
     }
   },
   {
