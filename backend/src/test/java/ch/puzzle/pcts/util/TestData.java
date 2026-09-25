@@ -26,8 +26,6 @@ public class TestData {
     public static final String TOO_LONG_STRING = "a".repeat(251);
 
     public static final BigDecimal DEGREE_RELEVANCIES_VALID_WEIGHT = BigDecimal.valueOf(100);
-    public static final BigDecimal DEGREE_RELEVANCIES_TOO_HIGH_WEIGHT = BigDecimal.valueOf(200);
-    public static final BigDecimal DEGREE_RELECANCIES_TOO_LOW_WEIGHT = BigDecimal.valueOf(50);
 
     public static final Long INVALID_ID = 999L;
 
