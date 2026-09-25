@@ -18,9 +18,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class DegreeCalculationValidationService extends ValidationBase<DegreeCalculation> {
     @Override
-    public void validate(DegreeCalculation model) {
-        super.validate(model);
+    public void validateOnCreate(DegreeCalculation model) {
+        super.validateOnCreate(model);
         validateMemberForCalculation(model);
+        isValid(model);
+    }
+
+    @Override
+    public void validateOnUpdate(Long id, DegreeCalculation model) {
+        super.validateOnUpdate(id, model);
         isValid(model);
     }
 
