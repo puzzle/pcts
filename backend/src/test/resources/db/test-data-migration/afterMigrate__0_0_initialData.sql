@@ -136,8 +136,8 @@ VALUES
 INSERT INTO degree_calculation_weight
 (weight, relevancy, degree_calculation_id)
 VALUES
-    (80, 'STRONGLY', 1),
-    (10,'POORLY', 2),
+    (100, 'STRONGLY', 1),
+    (100,'POORLY', 2),
     (100,'NORMAL', 3);
 
 TRUNCATE TABLE certificate_calculation CASCADE;
