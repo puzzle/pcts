@@ -2,19 +2,19 @@
   <table class="table m-0">
     <tr>
       <th>{{"EFFORT" | scopedTranslation}}:</th>
-      <td>{{certificate()?.effort}}</td>
+      <td>{{certificate().effort}}</td>
     </tr>
     <tr>
       <th>{{"EXAM_TYPE.TYPE" | scopedTranslation}}:</th>
-      <td>{{"EXAM_TYPE." + certificate()?.examType | scopedTranslation}}</td>
+      <td>{{"EXAM_TYPE." + certificate().examType | scopedTranslation}}</td>
     </tr>
     <tr>
       <th>{{"EXAM_DURATION" | scopedTranslation}}:</th>
-      <td>{{certificate()?.examDuration || "-"}}</td>
+      <td>{{certificate().examDuration || "-"}}</td>
     </tr>
     <tr>
       <th>{{"COMMENT" | scopedTranslation}}:</th>
-      <td>{{certificate()?.comment || "-"}}</td>
+      <td>{{certificate().comment || "-"}}</td>
     </tr>
     <tr>
       <th>{{"LINK" | scopedTranslation}}:</th>
