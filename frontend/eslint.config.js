@@ -31,7 +31,7 @@ export default tsEslint.config(
           checkStrings: true,
           checkIdentifiers: false,
           cspell: {
-            words: ['PCTS', 'Ganzzahl', 'MATDATEPICKERPARSE', 'Addresse'],
+            words: ['PCTS', 'Ganzzahl', 'Relevanzen', 'MATDATEPICKERPARSE', 'Addresse'],
           },
         },
       ],
