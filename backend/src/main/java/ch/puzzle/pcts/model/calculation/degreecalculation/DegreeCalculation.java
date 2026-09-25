@@ -71,8 +71,9 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof DegreeCalculation that))
+        if (!(o instanceof DegreeCalculation that)) {
             return false;
+        }
         return Objects.equals(getId(), that.getId()) && Objects.equals(getCalculation(), that.getCalculation())
                && Objects.equals(getDegree(), that.getDegree()) && Objects.equals(getComment(), that.getComment())
                && Objects.equals(getRelevancies(), that.getRelevancies());
