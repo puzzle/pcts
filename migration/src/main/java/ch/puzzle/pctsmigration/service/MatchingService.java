@@ -4,6 +4,8 @@ import ch.puzzle.pctsmigration.exception.Error;
 import ch.puzzle.pctsmigration.exception.MigrationException;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
+
 import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,17 +23,33 @@ public class MatchingService {
         String normalizedTarget = replaceUmlaute(target);
         List<String> filteredOptions = filterByLengthThreshold(options, normalizedTarget);
 
-        String closest = filteredOptions
-                .stream()
-                .min(Comparator.comparingInt(name -> calculateDistance(replaceUmlaute(name), normalizedTarget)))
-                .orElseThrow();
-
-        if (calculateDistance(closest, normalizedTarget) > 40) {
+        if (filteredOptions.isEmpty()) {
             throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
-                                                   "Levenshtein distance is too large to be a valid insert"));
+                    "No valid option found within acceptable range"));
         }
 
-        return closest;
+        List<String> sorted = filteredOptions
+                .stream()
+                .sorted(Comparator.comparingInt(name -> calculateDistance(replaceUmlaute(name), normalizedTarget))).toList();
+
+        String first = sorted.getFirst();
+
+        if (calculateDistance(first, normalizedTarget) > 40) {
+            throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
+                    "Levenshtein distance is too large to be a valid insert"));
+        }
+
+        if (filteredOptions.size() == 1) {
+            return first;
+        }
+
+        String second = sorted.get(1);
+
+        if (Objects.equals(calculateDistance(first, target), calculateDistance(second, target))) {
+            throw new MigrationException(new Error(HttpStatusCode.valueOf(400), "Two options are equally close to target"));
+        }
+
+        return first;
     }
 
     private Integer calculateDistance(String dtoName, String name) {
@@ -57,16 +75,9 @@ public class MatchingService {
         double lower = normalizedTarget.length() - adjustment;
         double upper = lower + adjustment * 2;
 
-        List<String> filteredOptions = list
+        return list
                 .stream()
                 .filter(option -> option.length() >= lower && option.length() <= upper)
                 .toList();
-
-        if (filteredOptions.isEmpty()) {
-            throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
-                                                   "No valid option found within acceptable range"));
-        }
-
-        return filteredOptions;
     }
 }
