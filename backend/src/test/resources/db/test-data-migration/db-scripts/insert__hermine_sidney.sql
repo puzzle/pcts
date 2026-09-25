@@ -88,10 +88,11 @@ VALUES (1000, 1000, 'POORLY'),
        (1000, 1020, 'STRONGLY'),
        (1000, 1021, 'POORLY');
 
-INSERT INTO degree_calculation()
-VALUES (1000, 1000),
-       (1000, 1001);
+INSERT INTO degree_calculation(id, calculation_id, degree_id)
+    OVERRIDING SYSTEM VALUE
+VALUES (4, 1000, 1000),
+       (5, 1000, 1001);
 
 INSERT INTO degree_calculation_weight(degree_calculation_id, weight, relevancy)
-VALUES ((SELECT id FROM degree_calculation WHERE calculation_id == 1000 & degree_id == 1000) 100, 'STRONGLY'),
-       ((SELECT id FROM degree_calculation WHERE calculation_id == 1000 & degree_id == 1001) 100, 'STRONGLY');
+VALUES (4, 100, 'STRONGLY'),
+       (5, 100, 'STRONGLY');
