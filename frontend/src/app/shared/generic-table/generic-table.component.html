@@ -2,7 +2,7 @@
   <table
     mat-table
     [dataSource]="dataSource()"
-    class="table table-hover member-table m-0"
+    class="table member-table m-0"
     matSort
     [matSortActive]="this.dataSource().sortedBy"
     matSortDirection="asc"
@@ -70,6 +70,7 @@
       [class.cursor-pointer]="dataSource().shouldLink"
       (keydown.enter)="isRowExpansionEnabled() ? toggleRowExpansion(row) : this.entrySelected.emit(row)"
       [class.row-background-gray]="index % 2 == 0"
+      class="main-row"
       data-testid="generic-table-row">
     </tr>
 

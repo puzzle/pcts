@@ -51,3 +51,7 @@ tr.row-background-gray td.mat-mdc-cell {
   align-items: center;
   justify-content: center;
 }
+
+.main-row:hover > td {
+  background-color: #ececec !important;
+}
