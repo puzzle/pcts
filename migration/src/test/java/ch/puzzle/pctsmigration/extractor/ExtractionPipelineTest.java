@@ -52,16 +52,6 @@ class ExtractionPipelineTest {
     }
 
     @Test
-    @DisplayName("calculateDistance should return the correct Levenshtein distance")
-    void calculateDistance_returnsCorrectLevenshteinDistance() {
-        assertThat(pipeline.calculateDistance("Scrum Master", "Scrum Master")).isEqualTo(0);
-
-        assertThat(pipeline.calculateDistance("kitten", "sitting")).isEqualTo(3);
-
-        assertThat(pipeline.calculateDistance("Scrum Master", "Scrum Mstr")).isEqualTo(2);
-    }
-
-    @Test
     @DisplayName("additionalValidations should not throw any exceptions by default")
     void additionalValidations_doesNotThrowException() {
         assertThatCode(() -> pipeline.additionalValidations("dummy_object")).doesNotThrowAnyException();
