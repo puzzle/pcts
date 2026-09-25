@@ -21,13 +21,13 @@ public class DegreeCalculationValidationService extends ValidationBase<DegreeCal
     public void validateOnCreate(DegreeCalculation model) {
         super.validateOnCreate(model);
         validateMemberForCalculation(model);
-        isValid(model);
+        validateWeightsForCalculation(model);
     }
 
     @Override
     public void validateOnUpdate(Long id, DegreeCalculation model) {
         super.validateOnUpdate(id, model);
-        isValid(model);
+        validateWeightsForCalculation(model);
     }
 
     public void validateDuplicateDegreeId(DegreeCalculation degreeCalculation,
@@ -60,7 +60,7 @@ public class DegreeCalculationValidationService extends ValidationBase<DegreeCal
         }
     }
 
-    public void isValid(DegreeCalculation model) {
+    public void validateWeightsForCalculation(DegreeCalculation model) {
         BigDecimal total = model.getRelevancies().values().stream().reduce(BigDecimal.ZERO, BigDecimal::add);
 
         if (!total.equals(BigDecimal.valueOf(100))) {
