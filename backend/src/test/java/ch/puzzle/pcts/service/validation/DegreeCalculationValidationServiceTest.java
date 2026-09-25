@@ -12,6 +12,7 @@ import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -118,5 +119,30 @@ class DegreeCalculationValidationServiceTest
         spyService.validateOnCreate(dc);
 
         verify(spyService).validateMemberForCalculation(dc);
+    }
+
+    @DisplayName("Should throw exception when relevancies do not add up to 100")
+    @Test
+    void shouldThrowExceptionWhenRelevanciesDoNotAddUpTo100() {
+        DegreeCalculationValidationService spyService = spy(getService());
+        DegreeCalculation degreeCalculation = getValidModel();
+        degreeCalculation
+                .setRelevancies(Map
+                        .of(Relevancy.STRONGLY, BigDecimal.valueOf(50), Relevancy.POORLY, BigDecimal.valueOf(30)));
+
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> spyService.validateWeightsForCalculation(degreeCalculation));
+
+        assertEquals(ErrorKey.ATTRIBUTES_NOT_ADDING_UP_TO_100, exception.getErrorKeys().getFirst());
+        assertEquals(Map.of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "relevancies", FieldKey.IS, "80"),
+                     exception.getErrorAttributes().getFirst());
+    }
+
+    @DisplayName("Should not throw exception when relevancies add up to 100")
+    @Test
+    void shouldNotThrowExceptionWhenRelevanciesAddUpTo100() {
+        DegreeCalculationValidationService spyService = spy(getService());
+        DegreeCalculation degreeCalculation = getValidModel();
+        assertDoesNotThrow(() -> spyService.validateWeightsForCalculation(degreeCalculation));
     }
 }
