@@ -8,48 +8,63 @@ import { MemberDetailViewComponent } from './features/member/detail-view/member-
 import { tabResolver } from './features/member/detail-view/tab-resolver';
 import { authGuard } from './core/auth/guard/auth.guard';
 import { memberIdResolver } from './features/member/member-id-resolver';
+import {
+  CertificateOverviewComponent
+} from './features/certificates/certificate-overview/certificate-overview.component';
+import { certificateOverviewResolver } from './features/certificates/certificate-overview-resolver';
 
-export const routes: Routes = [{
-  path: '',
-  pathMatch: 'full',
-  redirectTo: 'member'
-},
-{
-  path: 'member',
-  providers: [provideI18nPrefix('MEMBER')],
-  canActivate: [authGuard],
-  children: [
-    {
-      path: '',
-      component: MemberOverviewComponent,
-      canActivate: [authGuard('admin')],
-      resolve: { filters: memberOverviewResolver },
-      providers: [provideI18nPrefix('OVERVIEW')]
-    },
-    {
-      path: 'add',
-      component: MemberFormComponent,
-      canActivate: [authGuard('admin')],
-      providers: [provideI18nPrefix('FORM.ADD')]
-    },
-    {
-      path: ':id',
-      component: MemberDetailViewComponent,
-      canActivate: [authGuard('selfOrAdmin')],
-      resolve:
+export const routes: Routes = [
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'member'
+  },
+  {
+    path: 'member',
+    providers: [provideI18nPrefix('MEMBER')],
+    canActivate: [authGuard],
+    children: [
+      {
+        path: '',
+        component: MemberOverviewComponent,
+        canActivate: [authGuard('admin')],
+        resolve: { filters: memberOverviewResolver },
+        providers: [provideI18nPrefix('OVERVIEW')]
+      },
+      {
+        path: 'add',
+        component: MemberFormComponent,
+        canActivate: [authGuard('admin')],
+        providers: [provideI18nPrefix('FORM.ADD')]
+      },
+      {
+        path: ':id',
+        component: MemberDetailViewComponent,
+        canActivate: [authGuard('selfOrAdmin')],
+        resolve:
         { memberId: memberIdResolver,
           tabIndex: tabResolver }
-    },
-    {
-      path: ':id/edit',
-      component: MemberFormComponent,
-      canActivate: [authGuard('admin')],
-      resolve: { member: memberDataResolver },
-      providers: [provideI18nPrefix('FORM.EDIT')]
+      },
+      {
+        path: ':id/edit',
+        component: MemberFormComponent,
+        canActivate: [authGuard('admin')],
+        resolve: { member: memberDataResolver },
+        providers: [provideI18nPrefix('FORM.EDIT')]
+      }
+    ]
+  },
+  {
+    path: 'certificate',
+    providers: [provideI18nPrefix('CERTIFICATE')],
+    component: CertificateOverviewComponent,
+    canActivate: [authGuard('user')],
+    resolve: {
+      certificateOverview: certificateOverviewResolver
     }
-  ]
-},
-{
-  path: '**',
-  redirectTo: 'member'
-}];
+  },
+  {
+    path: '**',
+    redirectTo: 'member'
+  }
+];

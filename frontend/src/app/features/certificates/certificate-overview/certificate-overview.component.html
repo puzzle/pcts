@@ -1,0 +1,25 @@
+<div class="mt-5">
+  <h1 class="pt-3">{{"MODEL_NAME_PLURAL" | scopedTranslation}}</h1>
+  <app-generic-table [dataSource]="table" idAttr="id" crudBasePath="">
+    <ng-template [appTypedTemplate]="table.data"/>
+
+    <ng-template
+      appColumnTemplate="tags"
+      let-tags
+    >
+      <span class="badge bg-primary">
+        {{ tags.name }}
+      </span>
+
+    </ng-template>
+
+    <ng-template
+      [appExpandableRow]="table"
+      let-certificate
+    >
+      <app-certificate-detail-view [id]="certificate.id" />
+    </ng-template>
+  </app-generic-table>
+</div>
+
+
