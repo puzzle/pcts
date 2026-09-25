@@ -9,6 +9,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CertificateDetailViewComponent } from './certificate-detail-view/certificate-detail-view.component';
 import { CertificateTypeModel } from '../certificate-type/certificate-type.model';
+import { CertificateTypeTagsComponent } from '../certificate-type-tags/certificate-type-tags.component';
 
 @Component({
   imports: [
@@ -17,7 +18,8 @@ import { CertificateTypeModel } from '../certificate-type/certificate-type.model
     RowDetailTemplateDirective,
     ColumnTemplateDirective,
     ScopedTranslationPipe,
-    CertificateDetailViewComponent
+    CertificateDetailViewComponent,
+    CertificateTypeTagsComponent
   ],
   selector: 'app-certificate.component',
   styleUrl: './certificate-overview.component.scss',

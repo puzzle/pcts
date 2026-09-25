@@ -7,12 +7,7 @@
       appColumnTemplate="tags"
       let-certificate
     >
-      @for (tag of certificate.tags; track tag) {
-      <span class="badge bg-primary">
-        {{ tag }}
-      </span>
-      }
-
+      <app-certificate-type-tags [tags]="certificate.tags" />
     </ng-template>
 
     <ng-template
