@@ -193,9 +193,9 @@ VALUES
 INSERT INTO degree_calculation_weight
 (weight, relevancy, degree_calculation_id)
 VALUES
-    (40,  'POORLY', 1),
-    (90,  'STRONGLY', 2),
-    (70,  'NORMAL', 3);
+    (100,  'POORLY', 1),
+    (100,  'STRONGLY', 2),
+    (100,  'NORMAL', 3);
 
 INSERT INTO certificate_calculation
 (calculation_id, certificate_id)
