@@ -3,6 +3,7 @@ package ch.puzzle.pcts.service.business;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
+import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.service.persistence.DegreeCalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.DegreeCalculationValidationService;
 
@@ -94,13 +95,12 @@ public class DegreeCalculationBusinessService extends BusinessBase<DegreeCalcula
         Map<Relevancy, BigDecimal> relevancies = calculation.getRelevancies();
 
         return relevancies.entrySet().stream().map(relevance -> {
-            BigDecimal pointsByRelevancy = calculation
-                    .getDegree()
-                    .getDegreeType()
-                    .getPointsByRelevancy(relevance.getKey());
-            return (pointsByRelevancy
-                    .divide(BigDecimal.valueOf(100), MathContext.DECIMAL128)
-                    .multiply(relevance.getValue()));
+            DegreeType degreeType = calculation.getDegree().getDegreeType();
+            return calculateItemPoints(degreeType, relevance.getKey(), relevance.getValue());
         }).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+    private BigDecimal calculateItemPoints(DegreeType degreeType, Relevancy relevancy, BigDecimal weight) {
+        BigDecimal pointsByRelevancy = degreeType.getPointsByRelevancy(relevancy);
+        return (pointsByRelevancy.divide(BigDecimal.valueOf(100), MathContext.DECIMAL128).multiply(weight));
     }
 }
