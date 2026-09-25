@@ -13,8 +13,8 @@ import org.springframework.http.HttpStatusCode;
 
 /**
  * @param <C>
- *            Context data fetched from the PCTS API. It is used to build the AI service
- *            system prompt
+ *            Context data fetched from the PCTS API. It is used to build the AI
+ *            service system prompt
  * @param <R>
  *            Result type returned by the AI service. The result is validated
  *            before further processing
