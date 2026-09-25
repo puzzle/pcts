@@ -12,7 +12,7 @@ public record DegreeCalculationDto(
 
         @Schema(description = "Degree that is evaluated in the calculation", requiredMode = Schema.RequiredMode.REQUIRED) DegreeDto degree,
 
-        @Schema(description = "Weight of each relevancy", example = "STRONGLY", requiredMode = Schema.RequiredMode.REQUIRED) Map<Relevancy, BigDecimal> relevancies,
+        @Schema(description = "Weight of each relevancy", requiredMode = Schema.RequiredMode.REQUIRED) Map<Relevancy, BigDecimal> relevancies,
 
         @Schema(description = "Optional comment explaining the relevancy", example = "Degree matches the job requirements exactly.") String comment) {
 }
