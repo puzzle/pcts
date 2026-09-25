@@ -1,5 +1,5 @@
 import { Component, computed, CUSTOM_ELEMENTS_SCHEMA, DOCUMENT, effect, inject } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import '@puzzleitc/puzzle-shell';
 import { LangChangeEvent, TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NgOptimizedImage } from '@angular/common';
@@ -15,7 +15,8 @@ import { MatIcon } from '@angular/material/icon';
     RouterOutlet,
     TranslatePipe,
     NgOptimizedImage,
-    MatIcon
+    MatIcon,
+    RouterLink
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
