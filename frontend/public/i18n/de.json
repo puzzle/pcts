@@ -34,8 +34,8 @@
     "CERTIFICATE_TYPE": "Art des Zertifikats",
     "VALID_UNTIL": "Gültig bis",
     "COMMENT": "Beschreibung",
-    "EFFORT": "Kurs und Lerndauer",
-    "EXAM_DURATION": "Prüfungsdauer",
+    "EFFORT": "Aufwand in Tagen (inkl. Prüfungen)",
+    "EXAM_DURATION": "Prüfungsdauer in Minuten",
     "EXAM_TYPE": {
       "TYPE": "Prüfungsart",
       "THEORETICAL": "Theoretisch",
