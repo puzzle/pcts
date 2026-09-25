@@ -74,7 +74,10 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
         if (!(o instanceof DegreeCalculation that)) {
             return false;
         }
-        return Objects.equals(getId(), that.getId()) && Objects.equals(getCalculation(), that.getCalculation())
+        return Objects.equals(getId(), that.getId())
+               && Objects
+                       .equals(this.getCalculation() != null ? this.getCalculation().getId() : null,
+                               that.getCalculation() != null ? that.getCalculation().getId() : null)
                && Objects.equals(getDegree(), that.getDegree()) && Objects.equals(getComment(), that.getComment())
                && Objects.equals(getRelevancies(), that.getRelevancies());
     }
