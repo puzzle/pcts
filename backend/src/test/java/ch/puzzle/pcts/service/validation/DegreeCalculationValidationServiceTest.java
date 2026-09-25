@@ -12,12 +12,15 @@ import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class DegreeCalculationValidationServiceTest
         extends
@@ -30,71 +33,34 @@ class DegreeCalculationValidationServiceTest
 
     @Override
     DegreeCalculation getValidModel() {
-        return new DegreeCalculation(null, CALCULATION_1, DEGREE_1, Relevancy.STRONGLY, VALID_WEIGHT, VALID_STRING);
+        return new DegreeCalculation(null,
+                                     CALCULATION_1,
+                                     DEGREE_1,
+                                     Map.of(Relevancy.STRONGLY, DEGREE_RELEVANCIES_VALID_WEIGHT),
+                                     VALID_STRING);
     }
 
     static Stream<Arguments> invalidModelProvider() {
         return Stream
                 .of(Arguments
-                        .of(new DegreeCalculation(null, null, DEGREE_1, Relevancy.STRONGLY, VALID_WEIGHT, VALID_STRING),
+                        .of(new DegreeCalculation(null,
+                                                  null,
+                                                  DEGREE_1,
+                                                  Map.of(Relevancy.STRONGLY, DEGREE_RELEVANCIES_VALID_WEIGHT),
+                                                  VALID_STRING),
                             List.of(Map.of(FieldKey.CLASS, "DegreeCalculation", FieldKey.FIELD, "calculation"))),
                     Arguments
                             .of(new DegreeCalculation(null,
                                                       CALCULATION_1,
                                                       null,
-                                                      Relevancy.STRONGLY,
-                                                      VALID_WEIGHT,
+                                                      Map.of(Relevancy.STRONGLY, DEGREE_RELEVANCIES_VALID_WEIGHT),
                                                       VALID_STRING),
                                 List.of(Map.of(FieldKey.CLASS, "DegreeCalculation", FieldKey.FIELD, "degree"))),
                     Arguments
-                            .of(new DegreeCalculation(null, CALCULATION_1, DEGREE_1, null, VALID_WEIGHT, VALID_STRING),
-                                List.of(Map.of(FieldKey.CLASS, "DegreeCalculation", FieldKey.FIELD, "relevancy"))),
-                    Arguments
-                            .of(new DegreeCalculation(null,
-                                                      CALCULATION_1,
-                                                      DEGREE_1,
-                                                      Relevancy.STRONGLY,
-                                                      null,
-                                                      VALID_STRING),
-                                List.of(Map.of(FieldKey.CLASS, "DegreeCalculation", FieldKey.FIELD, "weight"))),
-                    Arguments
-                            .of(new DegreeCalculation(null,
-                                                      CALCULATION_1,
-                                                      DEGREE_1,
-                                                      Relevancy.STRONGLY,
-                                                      NEGATIVE_BIG_DECIMAL,
-                                                      VALID_STRING),
-                                List
-                                        .of(Map
-                                                .of(FieldKey.CLASS,
-                                                    "DegreeCalculation",
-                                                    FieldKey.FIELD,
-                                                    "weight",
-                                                    FieldKey.MAX,
-                                                    MAX_WEIGHT,
-                                                    FieldKey.MIN,
-                                                    MIN_WEIGHT,
-                                                    FieldKey.IS,
-                                                    NEGATIVE_BIG_DECIMAL.toString()))),
-                    Arguments
-                            .of(new DegreeCalculation(null,
-                                                      CALCULATION_1,
-                                                      DEGREE_1,
-                                                      Relevancy.STRONGLY,
-                                                      TOO_HIGH_WEIGHT,
-                                                      VALID_STRING),
-                                List
-                                        .of(Map
-                                                .of(FieldKey.CLASS,
-                                                    "DegreeCalculation",
-                                                    FieldKey.FIELD,
-                                                    "weight",
-                                                    FieldKey.MAX,
-                                                    MAX_WEIGHT,
-                                                    FieldKey.MIN,
-                                                    MIN_WEIGHT,
-                                                    FieldKey.IS,
-                                                    TOO_HIGH_WEIGHT.toString()))));
+                            .of(new DegreeCalculation(null, CALCULATION_1, DEGREE_1, null, VALID_STRING),
+                                List.of(Map.of(FieldKey.IS, "must not be null")))
+
+                );
     }
 
     @DisplayName("Should throw exception when members do not match")
@@ -155,5 +121,39 @@ class DegreeCalculationValidationServiceTest
         spyService.validateOnCreate(dc);
 
         verify(spyService).validateMemberForCalculation(dc);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 49, 51 })
+    @DisplayName("Should throw exception when relevancies do not add up to 100")
+    void shouldThrowExceptionWhenRelevanciesDoNotAddUpTo100(int poorRelevancy) {
+        DegreeCalculationValidationService spyService = spy(getService());
+        DegreeCalculation degreeCalculation = getValidModel();
+        degreeCalculation
+                .setRelevancies(Map
+                        .of(Relevancy.STRONGLY,
+                            BigDecimal.valueOf(50),
+                            Relevancy.POORLY,
+                            BigDecimal.valueOf(poorRelevancy)));
+
+        PCTSException exception = assertThrows(PCTSException.class,
+                                               () -> spyService.validateWeightsForCalculation(degreeCalculation));
+
+        assertEquals(ErrorKey.ATTRIBUTES_NOT_ADDING_UP_TO_100, exception.getErrorKeys().getFirst());
+        assertEquals(Map
+                .of(FieldKey.ENTITY,
+                    CALCULATION,
+                    FieldKey.FIELD,
+                    "relevancies",
+                    FieldKey.IS,
+                    BigDecimal.valueOf(50 + poorRelevancy).toString()), exception.getErrorAttributes().getFirst());
+    }
+
+    @DisplayName("Should not throw exception when relevancies add up to 100")
+    @Test
+    void shouldNotThrowExceptionWhenRelevanciesAddUpTo100() {
+        DegreeCalculationValidationService spyService = spy(getService());
+        DegreeCalculation degreeCalculation = getValidModel();
+        assertDoesNotThrow(() -> spyService.validateWeightsForCalculation(degreeCalculation));
     }
 }

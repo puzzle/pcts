@@ -25,10 +25,7 @@ public class TestData {
     public static final String VALID_STRING = "Valid String";
     public static final String TOO_LONG_STRING = "a".repeat(251);
 
-    public static final BigDecimal VALID_WEIGHT = BigDecimal.valueOf(50);
-    public static final BigDecimal TOO_HIGH_WEIGHT = BigDecimal.valueOf(200);
-    public static final String MIN_WEIGHT = "1";
-    public static final String MAX_WEIGHT = "100";
+    public static final BigDecimal DEGREE_RELEVANCIES_VALID_WEIGHT = BigDecimal.valueOf(100);
 
     public static final Long INVALID_ID = 999L;
 

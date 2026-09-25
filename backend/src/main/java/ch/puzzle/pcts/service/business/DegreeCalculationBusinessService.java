@@ -3,11 +3,15 @@ package ch.puzzle.pcts.service.business;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
+import ch.puzzle.pcts.model.degreetype.DegreeType;
 import ch.puzzle.pcts.service.persistence.DegreeCalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.DegreeCalculationValidationService;
+
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -84,15 +88,19 @@ public class DegreeCalculationBusinessService extends BusinessBase<DegreeCalcula
     }
 
     /*
-     * The divisions are rounded to a DECIMAL128 digit because numbers with a
+     * The divisions are rounded to a DECIMAL128 digit because numbers with an
      * infinite amount of digits could cause a ArithmeticException
      */
     private BigDecimal calculatePoints(DegreeCalculation calculation) {
-        Relevancy relevancy = calculation.getRelevancy();
-        BigDecimal weight = calculation.getWeight();
+        Map<Relevancy, BigDecimal> relevancies = calculation.getRelevancies();
 
-        BigDecimal pointsByRelevancy = calculation.getDegree().getDegreeType().getPointsByRelevancy(relevancy);
-
-        return pointsByRelevancy.divide(BigDecimal.valueOf(100), MathContext.DECIMAL128).multiply(weight);
+        return relevancies.entrySet().stream().map(relevance -> {
+            DegreeType degreeType = calculation.getDegree().getDegreeType();
+            return calculateItemPoints(degreeType, relevance.getKey(), relevance.getValue());
+        }).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+    private BigDecimal calculateItemPoints(DegreeType degreeType, Relevancy relevancy, BigDecimal weight) {
+        BigDecimal pointsByRelevancy = degreeType.getPointsByRelevancy(relevancy);
+        return (pointsByRelevancy.divide(BigDecimal.valueOf(100), MathContext.DECIMAL128).multiply(weight));
     }
 }

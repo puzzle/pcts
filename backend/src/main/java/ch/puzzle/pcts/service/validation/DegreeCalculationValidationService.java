@@ -1,6 +1,6 @@
 package ch.puzzle.pcts.service.validation;
 
-import static ch.puzzle.pcts.Constants.CALCULATION;
+import static ch.puzzle.pcts.Constants.*;
 
 import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.FieldKey;
@@ -9,6 +9,7 @@ import ch.puzzle.pcts.exception.PCTSException;
 import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.service.validation.util.CalculationChildValidationUtil;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
@@ -20,12 +21,14 @@ public class DegreeCalculationValidationService extends ValidationBase<DegreeCal
     public void validateOnCreate(DegreeCalculation model) {
         super.validateOnCreate(model);
         validateMemberForCalculation(model);
+        validateWeightsForCalculation(model);
     }
 
     @Override
     public void validateOnUpdate(Long id, DegreeCalculation model) {
         super.validateOnUpdate(id, model);
         validateMemberForCalculation(model);
+        validateWeightsForCalculation(model);
     }
 
     public void validateDuplicateDegreeId(DegreeCalculation degreeCalculation,
@@ -54,6 +57,18 @@ public class DegreeCalculationValidationService extends ValidationBase<DegreeCal
                     .of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "degree", FieldKey.CONDITION_FIELD, "member");
 
             GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTE_DOES_NOT_MATCH, attributes);
+            throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
+        }
+    }
+
+    public void validateWeightsForCalculation(DegreeCalculation model) {
+        BigDecimal total = model.getRelevancies().values().stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        if (total.compareTo(BigDecimal.valueOf(100)) != 0) {
+            Map<FieldKey, String> attributes = Map
+                    .of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "relevancies", FieldKey.IS, total.toString());
+
+            GenericErrorDto error = new GenericErrorDto(ErrorKey.ATTRIBUTES_NOT_ADDING_UP_TO_100, attributes);
             throw new PCTSException(HttpStatus.BAD_REQUEST, List.of(error));
         }
     }

@@ -31,6 +31,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class TestDataModels {
@@ -674,22 +675,25 @@ public class TestDataModels {
     public static final DegreeCalculation DEGREE_CALC_1 = new DegreeCalculation(DEGREE_CALC_1_ID,
                                                                                 null,
                                                                                 DEGREE_2,
-                                                                                Relevancy.STRONGLY,
-                                                                                BigDecimal.valueOf(80),
+                                                                                Map
+                                                                                        .of(Relevancy.STRONGLY,
+                                                                                            BigDecimal.valueOf(100)),
                                                                                 "Comment");
 
     public static final DegreeCalculation DEGREE_CALC_2 = new DegreeCalculation(DEGREE_CALC_2_ID,
                                                                                 null,
                                                                                 DEGREE_2,
-                                                                                Relevancy.POORLY,
-                                                                                BigDecimal.valueOf(10),
+                                                                                Map
+                                                                                        .of(Relevancy.POORLY,
+                                                                                            BigDecimal.valueOf(100)),
                                                                                 "Comment");
 
     public static final DegreeCalculation DEGREE_CALC_3 = new DegreeCalculation(DEGREE_CALC_3_ID,
                                                                                 null,
                                                                                 DEGREE_2,
-                                                                                Relevancy.NORMAL,
-                                                                                BigDecimal.valueOf(100),
+                                                                                Map
+                                                                                        .of(Relevancy.NORMAL,
+                                                                                            BigDecimal.valueOf(100)),
                                                                                 "Comment");
 
     public static final ExperienceCalculation EXP_CALC_1 = new ExperienceCalculation(EXPERIENCE_CALC_1_ID,

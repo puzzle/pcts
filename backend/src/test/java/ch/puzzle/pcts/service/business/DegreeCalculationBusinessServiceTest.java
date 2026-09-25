@@ -13,6 +13,7 @@ import ch.puzzle.pcts.service.validation.DegreeCalculationValidationService;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -120,8 +121,7 @@ class DegreeCalculationBusinessServiceTest
 
         DegreeCalculation dc = mock(DegreeCalculation.class);
         when(dc.getDegree()).thenReturn(degree);
-        when(dc.getRelevancy()).thenReturn(relevancy);
-        when(dc.getWeight()).thenReturn(weight);
+        when(dc.getRelevancies()).thenReturn(Map.of(relevancy, weight));
 
         when(persistenceService.getByCalculationId(DEGREE_CALCULATION_ID_1)).thenReturn(List.of(dc));
 

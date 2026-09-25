@@ -11,8 +11,9 @@ import ch.puzzle.pcts.util.validation.PCTSStringValidation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Objects;
-import org.hibernate.validator.constraints.Range;
 
 @Entity
 public class DegreeCalculation implements CalculationChildInterface, Model {
@@ -30,50 +31,56 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
     @JoinColumn(name = "degree_id")
     private Degree degree;
 
-    @Enumerated(EnumType.STRING)
-    @NotNull(message = "{attribute.not.null}")
-    private Relevancy relevancy;
-
-    @NotNull(message = "{attribute.not.null}")
-    @Range(min = 1, max = 100, message = "{attribute.size.between}")
-    private BigDecimal weight;
-
     @PCTSStringValidation(nullable = true, allowOnlyWhiteSpaces = true)
     private String comment;
 
-    public DegreeCalculation(Long id, Calculation calculation, Degree degree, Relevancy relevancy, BigDecimal weight,
+    @NotNull
+    @ElementCollection
+    @MapKeyColumn(name = "relevancy")
+    @MapKeyEnumerated(EnumType.STRING)
+    @Column(name = "weight")
+    @CollectionTable(name = "degree_calculation_weight", joinColumns = @JoinColumn(name = "degree_calculation_id"))
+    private Map<Relevancy, BigDecimal> relevancies = new EnumMap<>(Relevancy.class);
+
+    public DegreeCalculation(Builder builder) {
+        this.id = builder.id;
+        this.calculation = builder.calculation;
+        this.degree = builder.degree;
+        this.comment = trim(builder.comment);
+        this.relevancies = builder.relevancies;
+    }
+
+    public DegreeCalculation() {
+    }
+
+    public DegreeCalculation(Long id, Calculation calculation, Degree degree, Map<Relevancy, BigDecimal> relevancies,
                              String comment) {
         this.id = id;
         this.calculation = calculation;
         this.degree = degree;
-        this.relevancy = relevancy;
-        this.weight = weight;
         this.comment = trim(comment);
-    }
-
-    public DegreeCalculation() {
-
+        this.relevancies = relevancies;
     }
 
     @Override
     public String toString() {
-        return "DegreeCalculation{" + "id=" + id + ", calculationId="
+        return "DegreeCalculation{" + "id=" + getId() + ", calculation="
                + (getCalculation() != null ? getCalculation().getId() : null) + ", degree=" + getDegree()
-               + ", relevancy=" + getRelevancy() + ", weight=" + getWeight() + ", comment='" + getComment() + '\''
-               + '}';
+               + ", comment='" + getComment() + ", relevancies='" + getRelevancies() + '\'' + '}';
+
     }
 
     @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof DegreeCalculation that)) {
+    public boolean equals(Object o) {
+        if (!(o instanceof DegreeCalculation that)) {
             return false;
         }
         return Objects.equals(getId(), that.getId())
                && Objects
                        .equals(this.getCalculation() != null ? this.getCalculation().getId() : null,
                                that.getCalculation() != null ? that.getCalculation().getId() : null)
-               && Objects.equals(getDegree(), that.getDegree()) && getRelevancy() == that.getRelevancy()
-               && Objects.equals(getWeight(), that.getWeight()) && Objects.equals(getComment(), that.getComment());
+               && Objects.equals(getDegree(), that.getDegree()) && Objects.equals(getComment(), that.getComment())
+               && Objects.equals(getRelevancies(), that.getRelevancies());
     }
 
     @Override
@@ -82,9 +89,8 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
                 .hash(getId(),
                       getCalculation() != null ? getCalculation().getId() : null,
                       getDegree(),
-                      getRelevancy(),
-                      getWeight(),
-                      getComment());
+                      getComment(),
+                      getRelevancies());
     }
 
     public Long getId() {
@@ -111,27 +117,63 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
         this.degree = degree;
     }
 
-    public Relevancy getRelevancy() {
-        return relevancy;
-    }
-
-    public void setRelevancy(Relevancy relevancy) {
-        this.relevancy = relevancy;
-    }
-
-    public BigDecimal getWeight() {
-        return weight;
-    }
-
-    public void setWeight(BigDecimal weight) {
-        this.weight = weight;
-    }
-
     public String getComment() {
         return comment;
     }
 
     public void setComment(String comment) {
         this.comment = trim(comment);
+    }
+
+    public Map<Relevancy, BigDecimal> getRelevancies() {
+        return relevancies;
+    }
+
+    public void setRelevancies(Map<Relevancy, BigDecimal> relevancies) {
+        this.relevancies = relevancies;
+    }
+
+    public static final class Builder {
+        private Long id;
+        private Calculation calculation;
+        private Degree degree;
+        private String comment;
+        private Map<Relevancy, BigDecimal> relevancies;
+
+        private Builder() {
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder withCalculation(Calculation calculation) {
+            this.calculation = calculation;
+            return this;
+        }
+
+        public Builder withDegree(Degree degree) {
+            this.degree = degree;
+            return this;
+        }
+
+        public Builder withComment(String comment) {
+            this.comment = trim(comment);
+            return this;
+        }
+
+        public Builder withRelevancy(Map<Relevancy, BigDecimal> relevancies) {
+            this.relevancies = relevancies;
+            return this;
+        }
+
+        public DegreeCalculation build() {
+            return new DegreeCalculation(this);
+        }
     }
 }

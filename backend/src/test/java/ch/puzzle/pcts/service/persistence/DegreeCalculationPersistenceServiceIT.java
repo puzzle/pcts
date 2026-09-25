@@ -10,6 +10,7 @@ import ch.puzzle.pcts.repository.DegreeCalculationRepository;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,7 @@ class DegreeCalculationPersistenceServiceIT
         return new DegreeCalculation(null,
                                      CALCULATION_1,
                                      DEGREE_2,
-                                     Relevancy.STRONGLY,
-                                     BigDecimal.valueOf(80),
+                                     Map.of(Relevancy.STRONGLY, BigDecimal.valueOf(80)),
                                      "Comment");
     }
 
@@ -65,8 +65,8 @@ class DegreeCalculationPersistenceServiceIT
 
         assertEquals(dc.getCalculation(), saved.getCalculation());
         assertEquals(dc.getDegree(), saved.getDegree());
-        assertEquals(dc.getWeight(), saved.getWeight());
-        assertEquals(dc.getRelevancy(), saved.getRelevancy());
+        assertEquals(dc.getRelevancies().get(Relevancy.STRONGLY), saved.getRelevancies().get(Relevancy.STRONGLY));
+        assertEquals(dc.getRelevancies(), saved.getRelevancies());
         assertEquals(dc.getComment(), saved.getComment());
 
         assertThat(persistenceService.getAll()).contains(saved);
