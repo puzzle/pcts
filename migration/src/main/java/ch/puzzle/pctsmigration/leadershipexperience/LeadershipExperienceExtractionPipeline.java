@@ -3,11 +3,10 @@ package ch.puzzle.pctsmigration.leadershipexperience;
 import ch.puzzle.pctsmigration.api.*;
 import ch.puzzle.pctsmigration.extractor.ExtractionPipeline;
 import ch.puzzle.pctsmigration.ods.OdsParseConfig;
+import ch.puzzle.pctsmigration.service.MatchingService;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Predicate;
-
-import ch.puzzle.pctsmigration.service.MatchingService;
 import org.openapitools.client.model.LeadershipExperienceInputDto;
 import org.openapitools.client.model.LeadershipExperienceTypeDto;
 import org.springframework.stereotype.Component;
@@ -24,7 +23,8 @@ public class LeadershipExperienceExtractionPipeline
 
     public LeadershipExperienceExtractionPipeline(LeadershipExperienceService leadershipExperienceService,
                                                   MemberService memberService,
-                                                  LeadershipExperienceTypeService leadershipExperienceTypeService, MatchingService matchingService) {
+                                                  LeadershipExperienceTypeService leadershipExperienceTypeService,
+                                                  MatchingService matchingService) {
         this.leadershipExperienceService = leadershipExperienceService;
         this.memberService = memberService;
         this.leadershipExperienceTypeService = leadershipExperienceTypeService;
@@ -85,11 +85,15 @@ public class LeadershipExperienceExtractionPipeline
     }
 
     private Long mapLeadershipExperienceTypeId(String name) {
-        List<String> dtoNames = this.leadershipExperienceTypeService.getLeadershipExperienceTypes().stream().map(LeadershipExperienceTypeDto::getName).toList();
+        List<String> dtoNames = this.leadershipExperienceTypeService
+                .getLeadershipExperienceTypes()
+                .stream()
+                .map(LeadershipExperienceTypeDto::getName)
+                .toList();
 
         String closestName = this.matchingService.match(dtoNames, name);
 
-        for  (LeadershipExperienceTypeDto dto : this.leadershipExperienceTypeService.getLeadershipExperienceTypes()) {
+        for (LeadershipExperienceTypeDto dto : this.leadershipExperienceTypeService.getLeadershipExperienceTypes()) {
             if (dto.getName().equals(closestName)) {
                 return dto.getId();
             }
