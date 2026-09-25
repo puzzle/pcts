@@ -4,10 +4,10 @@ import ch.puzzle.pctsmigration.api.*;
 import ch.puzzle.pctsmigration.extractor.ExtractionPipeline;
 import ch.puzzle.pctsmigration.ods.OdsParseConfig;
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 
+import ch.puzzle.pctsmigration.service.MatchingService;
 import org.openapitools.client.model.LeadershipExperienceInputDto;
 import org.openapitools.client.model.LeadershipExperienceTypeDto;
 import org.springframework.stereotype.Component;
@@ -20,13 +20,15 @@ public class LeadershipExperienceExtractionPipeline
     private final LeadershipExperienceService leadershipExperienceService;
     private final LeadershipExperienceTypeService leadershipExperienceTypeService;
     private final MemberService memberService;
+    private final MatchingService matchingService;
 
     public LeadershipExperienceExtractionPipeline(LeadershipExperienceService leadershipExperienceService,
                                                   MemberService memberService,
-                                                  LeadershipExperienceTypeService leadershipExperienceTypeService) {
+                                                  LeadershipExperienceTypeService leadershipExperienceTypeService, MatchingService matchingService) {
         this.leadershipExperienceService = leadershipExperienceService;
         this.memberService = memberService;
         this.leadershipExperienceTypeService = leadershipExperienceTypeService;
+        this.matchingService = matchingService;
     }
 
     @Override
@@ -83,13 +85,16 @@ public class LeadershipExperienceExtractionPipeline
     }
 
     private Long mapLeadershipExperienceTypeId(String name) {
-        List<LeadershipExperienceTypeDto> dtos = this.leadershipExperienceTypeService.getLeadershipExperienceTypes();
+        List<String> dtoNames = this.leadershipExperienceTypeService.getLeadershipExperienceTypes().stream().map(LeadershipExperienceTypeDto::getName).toList();
 
-        return dtos
-                .stream()
-                .min(Comparator.comparingInt(dto -> calculateDistance(dto.getName(), name)))
-                .map(LeadershipExperienceTypeDto::getId)
-                .orElseThrow();
+        String closestName = this.matchingService.match(dtoNames, name);
+
+        for  (LeadershipExperienceTypeDto dto : this.leadershipExperienceTypeService.getLeadershipExperienceTypes()) {
+            if (dto.getName().equals(closestName)) {
+                return dto.getId();
+            }
+        }
+        return -1L;
     }
 
     @Override
