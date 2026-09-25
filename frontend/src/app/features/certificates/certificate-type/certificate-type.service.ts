@@ -14,8 +14,4 @@ export class CertificateTypeService {
   getAllCertificateTypes(): Observable<CertificateTypeModel[]> {
     return this.httpClient.get<CertificateTypeModel[]>(this.API_URL);
   }
-
-  getCertificateById(id: number): Observable<CertificateTypeModel> {
-    return this.httpClient.get<CertificateTypeModel>(`${this.API_URL}/${id}`);
-  }
 }
