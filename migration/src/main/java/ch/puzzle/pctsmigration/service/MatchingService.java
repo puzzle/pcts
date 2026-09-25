@@ -25,18 +25,19 @@ public class MatchingService {
 
         if (filteredOptions.isEmpty()) {
             throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
-                    "No valid option found within acceptable range"));
+                                                   "No valid option found within acceptable range"));
         }
 
         List<String> sorted = filteredOptions
                 .stream()
-                .sorted(Comparator.comparingInt(name -> calculateDistance(replaceUmlaute(name), normalizedTarget))).toList();
+                .sorted(Comparator.comparingInt(name -> calculateDistance(replaceUmlaute(name), normalizedTarget)))
+                .toList();
 
         String first = sorted.getFirst();
 
         if (calculateDistance(first, normalizedTarget) > 40) {
             throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
-                    "Levenshtein distance is too large to be a valid insert"));
+                                                   "Levenshtein distance is too large to be a valid insert"));
         }
 
         if (filteredOptions.size() == 1) {
@@ -46,7 +47,8 @@ public class MatchingService {
         String second = sorted.get(1);
 
         if (Objects.equals(calculateDistance(first, target), calculateDistance(second, target))) {
-            throw new MigrationException(new Error(HttpStatusCode.valueOf(400), "Two options are equally close to target"));
+            throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
+                                                   "Two options are equally close to target"));
         }
 
         return first;
@@ -75,9 +77,6 @@ public class MatchingService {
         double lower = normalizedTarget.length() - adjustment;
         double upper = lower + adjustment * 2;
 
-        return list
-                .stream()
-                .filter(option -> option.length() >= lower && option.length() <= upper)
-                .toList();
+        return list.stream().filter(option -> option.length() >= lower && option.length() <= upper).toList();
     }
 }
