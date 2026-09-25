@@ -139,17 +139,32 @@ VALUES (1000, 1000, 'NORMAL'),
        (1001, 1020, 'STRONGLY'),
        (1001, 1021, 'POORLY');
 
-INSERT INTO degree_calculation(calculation_id, degree_id, weight, relevancy)
-VALUES (1000, 1000, 100, 'STRONGLY'),
-       (1000, 1001, 100, 'NORMAL'),
-       (1000, 1002, 100, 'NORMAL'),
-       (1000, 1003, 100, 'NORMAL'),
-       (1000, 1004, 100, 'NORMAL'),
-       (1000, 1005, 100, 'STRONGLY'),
+INSERT INTO degree_calculation(calculation_id, degree_id)
+VALUES (1000, 1000),
+       (1000, 1001),
+       (1000, 1002),
+       (1000, 1003),
+       (1000, 1004),
+       (1000, 1005),
 
-       (1001, 1000, 100, 'STRONGLY'),
-       (1001, 1001, 100, 'NORMAL'),
-       (1001, 1002, 100, 'NORMAL'),
-       (1001, 1003, 100, 'NORMAL'),
-       (1001, 1004, 100, 'NORMAL'),
-       (1001, 1005, 100, 'NORMAL');
+       (1001, 1000),
+       (1001, 1001),
+       (1001, 1002),
+       (1001, 1003),
+       (1001, 1004),
+       (1001, 1005);
+
+
+INSERT INTO degree_calculation_weight(degree_calculation_id, weight, relevancy)
+VALUES ((SELECT id FROM degree_calculation WHERE calculation_id == 1000 & degree_id == 1000), 100, 'STRONGLY'),
+       ((SELECT id FROM degree_calculation WHERE calculation_id == 1000 & degree_id == 1001), 100, 'NORMAL'),
+       ((SELECT id FROM degree_calculation WHERE calculation_id == 1000 & degree_id == 1002), 100, 'NORMAL'),
+       ((SELECT id FROM degree_calculation WHERE calculation_id == 1000 & degree_id == 1003), 100, 'NORMAL'),
+       ((SELECT id FROM degree_calculation WHERE calculation_id == 1000 & degree_id == 1004), 100, 'NORMAL'),
+       ((SELECT id FROM degree_calculation WHERE calculation_id == 1000 & degree_id == 1005), 100, 'STRONGLY'),
+       ((SELECT id FROM degree_calculation WHERE calculation_id == 1001 & degree_id == 1000), 100, 'STRONGLY'),
+       ((SELECT id FROM degree_calculation WHERE calculation_id == 1001 & degree_id == 1001), 100, 'NORMAL'),
+       ((SELECT id FROM degree_calculation WHERE calculation_id == 1001 & degree_id == 1002), 100, 'NORMAL'),
+       ((SELECT id FROM degree_calculation WHERE calculation_id == 1001 & degree_id == 1003), 100, 'NORMAL'),
+       ((SELECT id FROM degree_calculation WHERE calculation_id == 1001 & degree_id == 1004), 100, 'NORMAL'),
+       ((SELECT id FROM degree_calculation WHERE calculation_id == 1001 & degree_id == 1005), 100, 'NORMAL');
