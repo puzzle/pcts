@@ -65,8 +65,8 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
     @Override
     public String toString() {
         return "DegreeCalculation{" + "id=" + id + ", calculation="
-               + (calculation != null ? getCalculation().getId().toString() : null) + ", degree=" + degree
-               + ", comment='" + comment + ", relevanies'" + relevancies + '\'' + '}';
+               + (calculation != null ? getCalculation().getId() : null) + ", degree=" + degree + ", comment='"
+               + comment + ", relevanies'" + relevancies + '\'' + '}';
     }
 
     @Override
