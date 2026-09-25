@@ -11,7 +11,7 @@ import ch.puzzle.pcts.util.validation.PCTSStringValidation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -40,7 +40,7 @@ public class DegreeCalculation implements CalculationChildInterface, Model {
     @MapKeyEnumerated(EnumType.STRING)
     @Column(name = "weight")
     @CollectionTable(name = "degree_calculation_weight", joinColumns = @JoinColumn(name = "degree_calculation_id"))
-    private Map<Relevancy, BigDecimal> relevancies = new HashMap<>();
+    private Map<Relevancy, BigDecimal> relevancies = new EnumMap<>(Relevancy.class);
 
     public DegreeCalculation(Builder builder) {
         this.id = builder.id;
