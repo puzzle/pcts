@@ -5,11 +5,10 @@ import ch.puzzle.pctsmigration.api.CertificateTypeService;
 import ch.puzzle.pctsmigration.api.MemberService;
 import ch.puzzle.pctsmigration.extractor.ExtractionPipeline;
 import ch.puzzle.pctsmigration.ods.OdsParseConfig;
+import ch.puzzle.pctsmigration.service.MatchingService;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Predicate;
-
-import ch.puzzle.pctsmigration.service.MatchingService;
 import org.openapitools.client.model.CertificateInputDto;
 import org.openapitools.client.model.CertificateTypeDto;
 import org.springframework.stereotype.Component;
@@ -76,11 +75,15 @@ public class CertificateExtractionPipeline
     }
 
     private Long mapCertificateTypeId(String name) {
-        List<String> dtoNames = this.certificateTypeService.getCertificateTypes().stream().map(CertificateTypeDto::getName).toList();
+        List<String> dtoNames = this.certificateTypeService
+                .getCertificateTypes()
+                .stream()
+                .map(CertificateTypeDto::getName)
+                .toList();
 
         String closestName = this.matchingService.match(dtoNames, name);
 
-        for  (CertificateTypeDto dto : this.certificateTypeService.getCertificateTypes()) {
+        for (CertificateTypeDto dto : this.certificateTypeService.getCertificateTypes()) {
             if (dto.getName().equals(closestName)) {
                 return dto.getId();
             }
