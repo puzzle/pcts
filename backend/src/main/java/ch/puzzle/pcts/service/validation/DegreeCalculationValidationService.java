@@ -27,6 +27,7 @@ public class DegreeCalculationValidationService extends ValidationBase<DegreeCal
     @Override
     public void validateOnUpdate(Long id, DegreeCalculation model) {
         super.validateOnUpdate(id, model);
+        validateMemberForCalculation(model);
         validateWeightsForCalculation(model);
     }
 
