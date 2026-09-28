@@ -34,7 +34,7 @@
     "CERTIFICATE_TYPE": "Art des Zertifikats",
     "VALID_UNTIL": "Gültig bis",
     "COMMENT": "Beschreibung",
-    "EFFORT": "Aufwand in Tagen (inkl. Prüfungen)",
+    "EFFORT": "Aufwand in Tagen",
     "EXAM_DURATION": "Prüfungsdauer in Minuten",
     "EXAM_TYPE": {
       "TYPE": "Prüfungsart",
