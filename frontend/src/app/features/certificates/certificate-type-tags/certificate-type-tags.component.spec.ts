@@ -25,7 +25,7 @@ describe('CertificateTypeTagsComponent', () => {
   });
 
   it('should sort the tags', () => {
-    expect(component.sortedTags)
+    expect(component.sortedTags())
       .toEqual([
         'A',
         'B',
