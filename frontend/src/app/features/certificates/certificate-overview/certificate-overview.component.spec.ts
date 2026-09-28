@@ -12,6 +12,7 @@ describe('CertificateComponent', () => {
       .compileComponents();
 
     fixture = TestBed.createComponent(CertificateOverviewComponent);
+    fixture.componentRef.setInput('certificates', []);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
