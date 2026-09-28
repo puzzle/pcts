@@ -44,18 +44,18 @@ VALUES
     ('Extern', FALSE),
     ('Consultant', FALSE);
 
-INSERT INTO certificate_type (name, points, deleted_at, comment)
+INSERT INTO certificate_type (name, points, deleted_at, comment, effort, exam_duration, link, exam_type)
 VALUES
-    ('CompTIA A+', 5.0, NULL, 'Entry-level IT certification covering hardware, software, and troubleshooting'),
-    ('Cisco CCNA', 7.5, '2023-06-20 14:21:27.063055', 'Cisco Certified Network Associate – networking fundamentals and routing/switching'),
-    ('Microsoft 365 Administrator Associate', 6.0, NULL, 'Cloud and productivity administration in Microsoft 365 environments'),
-    ('AWS Certified Solutions Architect – Associate', 8.0, NULL, 'Amazon Web Services cloud design and deployment certification'),
-    ('ITIL 4 Foundation', 4.0, NULL, 'Certification in IT service management best practices'),
-    ('Google IT Support Professional', 5.5, NULL, 'Foundational IT skills including networking, OS, and security basics'),
-    ('Red Hat Certified System Administrator (RHCSA)', 7.0, NULL, 'Linux administration and system management certification'),
-    ('Certified Information Systems Security Professional (CISSP)', 9.0, NULL, 'Advanced cybersecurity certification for security leadership roles'),
-    ('Project Management Professional (PMP)', 8.5, NULL, 'Globally recognized project management certification'),
-    ('Microsoft Certified: Azure Administrator Associate', 7.5, NULL, 'Managing Azure cloud services and resources');
+    ('CompTIA A+', 5.0, NULL, 'Entry-level IT certification covering hardware, software, and troubleshooting', 5, 120, 'https://example.com/', 'MULTIPLE_CHOICE'),
+    ('Cisco CCNA', 7.5, '2023-06-20 14:21:27.063055', 'Cisco Certified Network Associate – networking fundamentals and routing/switching', 5, 120, 'https://example.com/', 'MULTIPLE_CHOICE'),
+    ('Microsoft 365 Administrator Associate', 6.0, NULL, 'Cloud and productivity administration in Microsoft 365 environments', 5, 120, 'https://example.com/', 'MULTIPLE_CHOICE'),
+    ('AWS Certified Solutions Architect – Associate', 8.0, NULL, 'Amazon Web Services cloud design and deployment certification', 5, 120, 'https://example.com/', 'MULTIPLE_CHOICE'),
+    ('ITIL 4 Foundation', 4.0, NULL, 'Certification in IT service management best practices', 5, 120, 'https://example.com/', 'MULTIPLE_CHOICE'),
+    ('Google IT Support Professional', 5.5, NULL, 'Foundational IT skills including networking, OS, and security basics', 5, 120, 'https://example.com/', 'MULTIPLE_CHOICE'),
+    ('Red Hat Certified System Administrator (RHCSA)', 7.0, NULL, 'Linux administration and system management certification', 5, 120, 'https://example.com/', 'MULTIPLE_CHOICE'),
+    ('Certified Information Systems Security Professional (CISSP)', 9.0, NULL, 'Advanced cybersecurity certification for security leadership roles', 5, 120, 'https://example.com/', 'MULTIPLE_CHOICE'),
+    ('Project Management Professional (PMP)', 8.5, NULL, 'Globally recognized project management certification', 5, 120, 'https://example.com/', 'MULTIPLE_CHOICE'),
+    ('Microsoft Certified: Azure Administrator Associate', 7.5, NULL, 'Managing Azure cloud services and resources', 5, 120, 'https://example.com/', 'MULTIPLE_CHOICE');
 
 INSERT INTO leadership_experience_type(name, points, comment, experience_kind, deleted_at)
 VALUES
