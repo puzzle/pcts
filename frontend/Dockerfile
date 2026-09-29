@@ -14,7 +14,11 @@ ARG BUILD_CONFIGURATION=production
 RUN pnpm build --output-path=./dist/ --configuration=${BUILD_CONFIGURATION}
 
 FROM nginxinc/nginx-unprivileged:1.31-alpine AS runner
-COPY frontend/nginx.conf /etc/nginx/
+# rendered to /etc/nginx/nginx.conf on start, only PCTS_* variables are substituted (nginx's own $vars stay untouched)
+ENV NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx \
+    NGINX_ENVSUBST_FILTER=^PCTS_ \
+    PCTS_KEYCLOAK_URL=http://localhost:8544
+COPY frontend/nginx.conf /etc/nginx/templates/nginx.conf.template
 COPY --from=builder /app/dist/browser /usr/share/nginx/html
 EXPOSE 4200
 CMD ["nginx", "-g", "daemon off;"]
