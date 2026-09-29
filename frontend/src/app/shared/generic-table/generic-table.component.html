@@ -18,6 +18,7 @@
             type="button"
             class="small-icon-button"
             aria-label="expand row"
+            data-testid="expand-row"
             (click)="toggleRowExpansion(entity); $event.stopPropagation()">
             <mat-icon [class.rotated]="isRowExpanded(entity)">keyboard_arrow_right</mat-icon>
           </button>
