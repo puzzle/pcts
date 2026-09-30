@@ -34,12 +34,7 @@ describe('AppComponent', () => {
       providers: [
         provideTranslateService(),
         provideRouter([]),
-        /*
-         * {
-         *   provide: Router,
-         *   useValue: routerMock
-         * },
-         */
+
         {
           provide: AuthService,
           useValue: authServiceMock
@@ -70,12 +65,11 @@ describe('AppComponent', () => {
   });
 
   it('should navigate to /member when visitRoot() is called', () => {
+    const routerSpy = jest.spyOn(component['router'], 'navigate');
     component.visitRoot();
 
-    /*
-     * expect(routerMock.navigate)
-     *   .toHaveBeenCalledWith(['']);
-     */
+    expect(routerSpy)
+      .toHaveBeenCalledWith(['']);
   });
 
   it('should call logout service when handleLogout() is called', () => {
