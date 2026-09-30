@@ -1,5 +1,6 @@
 import * as users from '../fixtures/users.json';
 import memberDetailPage from '../pages/memberDetailPage';
+import CertificateTypeOverviewPage from '../pages/certificateTypeOverviewPage';
 
 describe('Certificate modal', () => {
   beforeEach(() => {
@@ -9,8 +10,7 @@ describe('Certificate modal', () => {
 
   describe('open certificate overview', () => {
     it('should open certificate overview', () => {
-      cy.getByTestId('certificate-overview')
-        .click();
+      CertificateTypeOverviewPage.certificateButton();
       cy.getByTestId('generic-table')
         .should('be.visible');
     });
@@ -18,37 +18,24 @@ describe('Certificate modal', () => {
 
   describe('expand and collapse certificate detail', () => {
     it('should expand and collapse the detail row', () => {
-      cy.getByTestId('certificate-overview')
-        .click();
+      CertificateTypeOverviewPage.certificateButton();
+      CertificateTypeOverviewPage.certificateRows();
 
-      cy.getByTestId('expand-row')
-        .first()
-        .click();
-      cy.get('.detail-content')
-        .first()
+      CertificateTypeOverviewPage.certificateDetailView()
         .should('be.visible');
 
-      cy.getByTestId('expand-row')
-        .first()
-        .click();
-
-      cy.get('.detail-content')
-        .first()
+      CertificateTypeOverviewPage.certificateRows();
+      CertificateTypeOverviewPage.certificateDetailView()
         .should('not.be.visible');
     });
   });
 
   describe('open example link in a new page', () => {
     it('should open the certificate detail link', () => {
-      cy.getByTestId('certificate-overview')
-        .click();
+      CertificateTypeOverviewPage.certificateButton();
+      CertificateTypeOverviewPage.certificateRows();
 
-      cy.getByTestId('expand-row')
-        .first()
-        .click();
-
-      cy.get('.detail-content')
-        .first()
+      CertificateTypeOverviewPage.certificateDetailView()
         .find('a')
         .click();
     });
