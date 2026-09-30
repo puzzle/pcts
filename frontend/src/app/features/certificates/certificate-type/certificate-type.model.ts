@@ -6,7 +6,7 @@ export interface CertificateTypeModel {
   tags: string[];
   effort: number;
   examDuration: number;
-  link: string;
+  link: string | null;
   examType: ExamType;
   publisher: string;
 
