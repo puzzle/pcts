@@ -31,7 +31,6 @@ const getCertificateOverviewColumns = (): GenCol<CertificateTypeModel>[] => [
     CertificateTypeTagsComponent
   ],
   selector: 'app-certificate.component',
-  styleUrl: './certificate-overview.component.scss',
   templateUrl: './certificate-overview.component.html'
 })
 export class CertificateOverviewComponent {
