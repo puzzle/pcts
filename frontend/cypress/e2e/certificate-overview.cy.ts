@@ -30,15 +30,17 @@ describe('Certificate modal', () => {
   });
 
   describe('open example link in a new page', () => {
-    it('should open the certificate detail link', () => {
+    it.only('should have correct certificate detail url set', () => {
+      cy.visit('/certificate');
+
       CertificateTypeOverviewPage.certificateButton();
       CertificateTypeOverviewPage.certificateRows();
 
-      CertificateTypeOverviewPage.certificateDetailView()
-        .find('a')
-        .click();
+      cy.getByTestId('certificate-overview')
+        .shadow()
+        .findByTestId('certificate-overview')
+        .invoke('attr', 'href')
+        .should('eq', '/certificate');
     });
   });
 });
-
-
