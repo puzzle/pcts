@@ -1,7 +1,8 @@
 ---
+name: pcts
+
 services:
   pcts-db:
-    container_name: pcts-db
     image: postgres:18
     restart: unless-stopped
     environment:
@@ -9,25 +10,23 @@ services:
       POSTGRES_PASSWORD: pwd
       POSTGRES_DB: pcts
     ports:
-      - "5432:5432"
+      - "${PCTS_DB_PORT:-5432}:5432"
     profiles: ['', backend, infra, db, migration]
 
   pcts-wiremock:
-    container_name: pcts-wiremock
     image: wiremock/wiremock:latest
     ports:
-      - "8443:8080"
+      - "${PCTS_WIREMOCK_PORT:-8443}:8080"
     volumes:
       - ./wiremock:/home/wiremock
     profiles: ['', backend, migration]
 
   pcts-backend:
-    container_name: pcts-backend
     build:
       context: ..
       dockerfile: ./backend/Dockerfile
     ports:
-      - "8080:8080"
+      - "${PCTS_BACKEND_PORT:-8080}:8080"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
@@ -37,13 +36,14 @@ services:
     environment:
       PCTS_SPRING_DATASOURCE_URL: pcts-db
       SPRING_PROFILES_ACTIVE: dev
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://localhost:8544/realms/pitc
+      # must match the issuer Keycloak writes into the tokens (KC_HOSTNAME), keys are fetched container-internally
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: "http://localhost:${PCTS_KEYCLOAK_PORT:-8544}/realms/pitc"
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://pcts-keycloak:8544/realms/pitc/protocol/openid-connect/certs
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_AUDIENCES_0: pcts-dev
+      PCTS_FRONTEND_KEYCLOAK_URL: "http://localhost:${PCTS_KEYCLOAK_PORT:-8544}"
     profiles: ['', backend, migration]
 
   pcts-frontend:
-    container_name: pcts-frontend
     depends_on:
       - pcts-backend
       - pcts-keycloak
@@ -53,11 +53,13 @@ services:
       args:
         BUILD_CONFIGURATION: development
     ports:
-      - "4200:4200"
+      - "${PCTS_FRONTEND_PORT:-4200}:4200"
+    environment:
+      # allowed in the CSP connect-src
+      PCTS_KEYCLOAK_URL: "http://localhost:${PCTS_KEYCLOAK_PORT:-8544}"
     profiles: ['']
 
   pcts-keycloak:
-    container_name: pcts-keycloak
     image: quay.io/keycloak/keycloak:26.7.0
     healthcheck:
       test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/8544 || exit 1"]
@@ -65,28 +67,31 @@ services:
       timeout: 5s
       retries: 5
     environment:
-      - KC_BOOTSTRAP_ADMIN_USERNAME=admin26
-      - KC_BOOTSTRAP_ADMIN_PASSWORD=keycloak26
-      - KC_HOSTNAME=localhost
-      - KC_HOSTNAME_PORT=8544
-      - KC_HOSTNAME_STRICT=false
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin26
+      KC_BOOTSTRAP_ADMIN_PASSWORD: keycloak26
+      # the browser talks to Keycloak via its host port (not the dockportless proxy), a full URL keeps the token
+      # issuer the same when Keycloak is called container-internally (backend, migration)
+      KC_HOSTNAME: "http://localhost:${PCTS_KEYCLOAK_PORT:-8544}"
+      KC_HOSTNAME_BACKCHANNEL_DYNAMIC: "true"
+      KC_HTTP_PORT: "8544"
+      # resolved in the realm import: redirect URIs of the pcts-dev client (direct host port and dockportless URL)
+      PCTS_FRONTEND_URL: "http://localhost:${PCTS_FRONTEND_PORT:-4200}"
+      PCTS_FRONTEND_PROXY_URL: "http://pcts-frontend.${COMPOSE_PROJECT_NAME}.localhost:7355"
     volumes:
       - ./config/realm-export-pitc.json:/opt/keycloak/data/import/realm-pitc.json
     command:
       - start-dev
       - --import-realm
-      - --http-port=8544
     ports:
-      - "8544:8544"
+      - "${PCTS_KEYCLOAK_PORT:-8544}:8544"
     profiles: ['', backend, infra, migration]
 
   pcts-migration:
-    container_name: pcts-migration
     build:
       context: ..
       dockerfile: ./migration/Dockerfile
     ports:
-      - "8081:8081"
+      - "${PCTS_MIGRATION_PORT:-8081}:8081"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     links:
