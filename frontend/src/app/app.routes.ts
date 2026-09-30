@@ -11,7 +11,7 @@ import { memberIdResolver } from './features/member/member-id-resolver';
 import {
   CertificateOverviewComponent
 } from './features/certificates/certificate-overview/certificate-overview.component';
-import { certificateTypeResolver } from './features/certificates/certificate-overview-resolver';
+import { certificateTypeResolver } from './features/certificates/certificate-type.resolver';
 
 export const routes: Routes = [
   {
