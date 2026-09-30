@@ -1,11 +1,10 @@
 import * as users from '../fixtures/users.json';
-import memberDetailPage from '../pages/memberDetailPage';
 import CertificateTypeOverviewPage from '../pages/certificateTypeOverviewPage';
 
 describe('Certificate modal', () => {
   beforeEach(() => {
     cy.loginAsUser(users.gl);
-    memberDetailPage.visit(1);
+    CertificateTypeOverviewPage.visit();
   });
 
   describe('open certificate overview', () => {
