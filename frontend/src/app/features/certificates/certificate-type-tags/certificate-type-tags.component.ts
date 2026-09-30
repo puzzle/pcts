@@ -11,11 +11,8 @@ export class CertificateTypeTagsComponent {
   tags = input.required<string[]>();
 
   sortedTags = computed(() => {
-    let sortedTags = this.tags();
-
-    sortedTags = sortedTags.sort((a, b) => b.localeCompare(a));
-    sortedTags.reverse();
-
-    return sortedTags;
+    return this.tags()
+      .sort((a, b) => b.localeCompare(a))
+      .reverse();
   });
 }
