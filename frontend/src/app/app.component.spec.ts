@@ -2,10 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { provideRouter } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { DOCUMENT } from '@angular/common';
 import { provideTranslateService } from '@ngx-translate/core';
 import { AuthService } from './core/auth/auth.service';
-import { signal } from '@angular/core';
+import { DOCUMENT, signal } from '@angular/core';
 import { ConfigurationService } from './features/configuration/configuration.service';
 
 jest.mock('@puzzleitc/puzzle-shell', () => jest.fn());
@@ -51,8 +50,8 @@ describe('AppComponent', () => {
     component = fixture.componentInstance;
     document = TestBed.inject(DOCUMENT);
     translateService = TestBed.inject(TranslateService);
-
     fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   afterEach(() => {
