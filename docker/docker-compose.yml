@@ -88,20 +88,32 @@ services:
       PCTS_FRONTEND_KEYCLOAK_URL: "http://localhost:${PCTS_KEYCLOAK_PORT:-8544}"
     profiles: ['', backend, migration]
 
+  # 'pnpm start' (ng serve with HMR) on the bind mounted sources, the Dockerfile image is only used for e2e.
+  # node_modules and the angular cache are volumes, so the container's (musl) binaries don't end up on the host.
+  # A package.json/lockfile change needs 'docker compose restart pcts-frontend', which runs the install again
   pcts-frontend:
     depends_on:
       - pcts-backend
       - pcts-keycloak
-    build:
-      context: ..
-      dockerfile: ./frontend/Dockerfile
-      args:
-        BUILD_CONFIGURATION: development
+    image: node:24.21-alpine
+    working_dir: /app
+    volumes:
+      - ../frontend:/app
+      - pcts-frontend-node-modules:/app/node_modules
+      - pcts-frontend-angular-cache:/app/.angular
+    command:
+      - sh
+      - -c
+      - corepack enable && pnpm install --frozen-lockfile && exec pnpm start --host 0.0.0.0 --port 4200
     ports:
       - "${PCTS_FRONTEND_PORT:-4200}:4200"
     environment:
-      # allowed in the CSP connect-src
-      PCTS_KEYCLOAK_URL: "http://localhost:${PCTS_KEYCLOAK_PORT:-8544}"
+      CI: "true"
+      CYPRESS_INSTALL_BINARY: "0"
+      COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
+      NG_CLI_ANALYTICS: "false"
+      # /api is proxied to the backend container (src/proxy.conf.js)
+      PCTS_BACKEND_URL: http://pcts-backend:8080
     profiles: ['']
 
   pcts-keycloak:
@@ -151,3 +163,7 @@ services:
       BACKEND_API_BASE_URL: http://pcts-backend:8080
       SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_TOKEN_URI: http://pcts-keycloak:8544/realms/pitc/protocol/openid-connect/token
     profiles: [migration]
+
+volumes:
+  pcts-frontend-node-modules:
+  pcts-frontend-angular-cache:

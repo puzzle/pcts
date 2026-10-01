@@ -12,3 +12,18 @@ services:
     develop: !reset null
     environment:
       SPRING_PROFILES_ACTIVE: e2e-test
+
+  # release image (nginx) instead of 'pnpm start', drops the dev setup of the base file
+  pcts-frontend:
+    build:
+      context: ..
+      dockerfile: ./frontend/Dockerfile
+      args:
+        BUILD_CONFIGURATION: development
+    image: !reset null
+    working_dir: !reset null
+    command: !reset null
+    volumes: !reset []
+    environment: !override
+      # allowed in the CSP connect-src
+      PCTS_KEYCLOAK_URL: "http://localhost:${PCTS_KEYCLOAK_PORT:-8544}"
