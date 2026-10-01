@@ -150,6 +150,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+      # a fresh container imports the realm first
+      start_period: 2m
+      start_interval: 2s
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: admin26
       KC_BOOTSTRAP_ADMIN_PASSWORD: keycloak26
