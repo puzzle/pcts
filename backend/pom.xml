@@ -85,13 +85,7 @@
       <artifactId>spring-boot-starter-security-oauth2-resource-server</artifactId>
     </dependency>
 
-		<!-- Dev Tools   -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
-		</dependency>
+		<!-- Dev Tools (spring-boot-devtools lives in the 'dev' profile) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
@@ -308,4 +302,46 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<!-- local development / docker 'dev' target: adds devtools (auto restart) and opens a JDWP debug port on spring-boot:run -->
+		<profile>
+			<id>dev</id>
+			<properties>
+				<!-- the docker dev image overrides this with *:5005 so the port can be published -->
+				<dev.debug.address>localhost:5005</dev.debug.address>
+				<!-- a property instead of <profiles> so the docker image can pass SPRING_PROFILES_ACTIVE (e.g. e2e-test) -->
+				<spring-boot.run.profiles>dev</spring-boot.run.profiles>
+			</properties>
+			<dependencies>
+				<dependency>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-devtools</artifactId>
+					<scope>runtime</scope>
+					<optional>true</optional>
+				</dependency>
+			</dependencies>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<configuration>
+							<!-- 'false' = only compile sources newer than their class (the default recompiles everything on any change).
+							Classes depending on a changed one are not recompiled, a changed signature or constant needs a full compile -->
+							<useIncrementalCompilation>false</useIncrementalCompilation>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+						<configuration>
+							<!-- spring-boot:run already adds -XX:TieredStopAtLevel=1 (optimizedLaunch) -->
+							<jvmArguments>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=${dev.debug.address}</jvmArguments>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
