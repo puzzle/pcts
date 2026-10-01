@@ -9,6 +9,13 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: pwd
       POSTGRES_DB: pcts
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d pcts"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+      start_interval: 1s
     ports:
       - "${PCTS_DB_PORT:-5432}:5432"
     profiles: ['', backend, infra, db, migration]
@@ -66,9 +73,20 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
-      - pcts-wiremock
-      - pcts-db
-      - pcts-keycloak
+      pcts-wiremock:
+        condition: service_healthy
+      pcts-db:
+        condition: service_healthy
+      pcts-keycloak:
+        condition: service_healthy
+    # curl is in the dev (maven) and the runner image. The dev start does a full compile first
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fs http://127.0.0.1:8080/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5m
+      start_interval: 2s
     environment:
       PCTS_SPRING_DATASOURCE_URL: pcts-db
       SPRING_PROFILES_ACTIVE: dev
@@ -93,8 +111,18 @@ services:
   # A package.json/lockfile change needs 'docker compose restart pcts-frontend', which runs the install again
   pcts-frontend:
     depends_on:
-      - pcts-backend
-      - pcts-keycloak
+      pcts-backend:
+        condition: service_healthy
+      pcts-keycloak:
+        condition: service_healthy
+    # wget (busybox) is in the node and the nginx image. The first start installs all dependencies
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:4200/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10m
+      start_interval: 2s
     image: node:24.21-alpine
     working_dir: /app
     volumes:
@@ -157,7 +185,7 @@ services:
       pcts-keycloak:
         condition: service_healthy
       pcts-backend:
-        condition: service_started
+        condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: dev
       BACKEND_API_BASE_URL: http://pcts-backend:8080
