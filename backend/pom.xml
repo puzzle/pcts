@@ -312,6 +312,8 @@
 				<dev.debug.address>localhost:5005</dev.debug.address>
 				<!-- a property instead of <profiles> so the docker image can pass SPRING_PROFILES_ACTIVE (e.g. e2e-test) -->
 				<spring-boot.run.profiles>dev</spring-boot.run.profiles>
+				<!-- spring-boot:run would compile the tests on every start. Note: 'mvn -Pdev test/verify' runs no tests -->
+				<maven.test.skip>true</maven.test.skip>
 			</properties>
 			<dependencies>
 				<dependency>

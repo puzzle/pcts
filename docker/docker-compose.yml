@@ -56,15 +56,13 @@ services:
       - ../backend/docker/dev-recompile.sh:/usr/local/bin/dev-recompile:ro
     # every (re)start does a full compile, so a pom.xml change (compose restarts the container) or a
     # 'docker compose restart pcts-backend' leaves no stale classes. The compile also warms up the mvnd daemon used by
-    # the watch recompiles, the app itself is started by plain mvn so it doesn't occupy that daemon.
-    # maven.test.skip stops spring-boot:run from compiling the tests on every start
+    # the watch recompiles, the app itself is started by plain mvn so it doesn't occupy that daemon
     command:
       - sh
       - -c
       - >-
         dev-recompile --full
-        && exec mvn -B -f backend/pom.xml -Pdev -Dmaven.test.skip=true -Ddev.debug.address='*:5005'
-        -Dspring-boot.run.profiles="$$SPRING_PROFILES_ACTIVE" spring-boot:run
+        && exec mvn -B -f backend/pom.xml -Pdev -Dspring-boot.run.profiles="$$SPRING_PROFILES_ACTIVE" spring-boot:run
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
@@ -80,6 +78,9 @@ services:
       SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 200ms
       SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 50ms
       SPRING_DEVTOOLS_LIVERELOAD_ENABLED: "false"
+      # appended to every mvn call (Maven 3.9+). JDWP has to listen on all interfaces in the container so the published
+      # port reaches it, the dev profile's default (host runs) is localhost only
+      MAVEN_ARGS: -Ddev.debug.address=*:5005
       # must match the issuer Keycloak writes into the tokens (KC_HOSTNAME), keys are fetched container-internally
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: "http://localhost:${PCTS_KEYCLOAK_PORT:-8544}/realms/pitc"
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://pcts-keycloak:8544/realms/pitc/protocol/openid-connect/certs
