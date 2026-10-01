@@ -25,8 +25,35 @@ services:
     build:
       context: ..
       dockerfile: ./backend/Dockerfile
+      target: dev
+      args:
+        MAVEN_PROFILES: dev
     ports:
       - "${PCTS_BACKEND_PORT:-8080}:8080"
+      # JDWP, IntelliJ 'Backend-Debug' run config. Bound to localhost only, the debug port allows code execution
+      - "127.0.0.1:${PCTS_BACKEND_DEBUG_PORT:-5005}:5005"
+    # 'docker compose up --watch': a src change is synced and compiled in the container by dev-recompile (only changed
+    # sources, full compile if a file was removed), devtools restarts the app once the compile touched the trigger
+    # file. A pom.xml change restarts the container, which does a full compile and picks up new dependencies.
+    # Full compile by hand: docker compose exec pcts-backend dev-recompile --full
+    develop:
+      watch:
+        - action: sync+exec
+          path: ../backend/src
+          target: /app/backend/src
+          initial_sync: true
+          exec:
+            command: dev-recompile
+        - action: rebuild
+          path: ../backend/docker/dev-recompile.sh
+        - action: sync+restart
+          path: ../backend/pom.xml
+          target: /app/backend/pom.xml
+          initial_sync: true
+        - action: sync+restart
+          path: ../pom.xml
+          target: /app/pom.xml
+          initial_sync: true
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:

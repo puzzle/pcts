@@ -2,5 +2,11 @@
 services:
   pcts-backend:
     container_name: pcts-e2e-backend
+    build:
+      # release build by default, to change backend code locally:
+      # PCTS_BACKEND_TARGET=dev PCTS_BACKEND_MAVEN_PROFILES=dev ./e2e-application-start --watch
+      target: ${PCTS_BACKEND_TARGET:-runner}
+      args:
+        MAVEN_PROFILES: ${PCTS_BACKEND_MAVEN_PROFILES:-}
     environment:
       SPRING_PROFILES_ACTIVE: e2e-test
