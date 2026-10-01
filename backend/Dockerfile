@@ -4,6 +4,7 @@
 #   build  - compiles and packages everything, MAVEN_PROFILES selects the Maven profile(s):
 #            ''  -> release build (default, CI)
 #            dev -> devtools + changed-files-only compile, required by the dev stage (set by docker compose)
+#   mvnd   - downloads mvnd for the dev stage, independent of the build so it stays cached
 #   dev    - used by docker compose: runs from target/classes with devtools + JDWP (5005), sources are synced
 #            in by 'docker compose up --watch' and recompiled by a warm mvnd daemon (see the develop.watch rules)
 #   runner - default (last) stage, release image
@@ -22,16 +23,24 @@ RUN mvn -B -f backend/pom.xml ${MAVEN_PROFILES:+-P$MAVEN_PROFILES} clean package
     && java -Djarmode=tools -jar application.jar extract --layers --destination extracted
 
 
+FROM alpine AS mvnd
+ARG MVND_VERSION=1.0.6
+ARG TARGETARCH
+# mvnd ships a native client per architecture, named amd64 / aarch64 (e.g. Apple Silicon)
+RUN apk add --no-cache curl \
+    && arch=$(echo "$TARGETARCH" | sed 's/arm64/aarch64/') \
+    && curl -fsSL "https://github.com/apache/maven-mvnd/releases/download/${MVND_VERSION}/maven-mvnd-${MVND_VERSION}-linux-${arch}.tar.gz" \
+      | tar -xz -C /opt \
+    && mv "/opt/maven-mvnd-${MVND_VERSION}-linux-${arch}" /opt/mvnd
+
+
 FROM build AS dev
 ARG MAVEN_PROFILES
 RUN case ",$MAVEN_PROFILES," in *,dev,*) ;; \
       *) echo "the dev stage needs --build-arg MAVEN_PROFILES=dev" >&2; exit 1 ;; esac
-ARG MVND_VERSION=1.0.6
-# mvnd ships a native client per architecture (x86_64 -> amd64, aarch64 e.g. on Apple Silicon)
-RUN arch=$(uname -m | sed 's/x86_64/amd64/') \
-    && curl -fsSL "https://github.com/apache/maven-mvnd/releases/download/${MVND_VERSION}/maven-mvnd-${MVND_VERSION}-linux-${arch}.tar.gz" \
-      | tar -xz -C /opt \
-    && ln -s "/opt/maven-mvnd-${MVND_VERSION}-linux-${arch}/bin/mvnd" /usr/local/bin/mvnd
+# mvnd is copied from its own stage, so a code change doesn't download it again
+COPY --from=mvnd /opt/mvnd /opt/mvnd
+RUN ln -s /opt/mvnd/bin/mvnd /usr/local/bin/mvnd
 COPY --chmod=755 backend/docker/dev-recompile.sh /usr/local/bin/dev-recompile
 
 # devtools only restarts once a recompile is complete (dev-recompile touches the trigger file), so the
