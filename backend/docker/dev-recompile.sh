@@ -38,6 +38,6 @@ elif [ -f "$sources" ] && [ -n "$(comm -23 "$sources" "$sources.new")" ]; then
   clear_classes
 fi
 
-mvnd -B -q $offline -Pdev compile
+/opt/mvnd/bin/mvnd -B -q $offline -Pdev compile
 mv "$sources.new" "$sources"
 touch "$classes/.reloadtrigger"

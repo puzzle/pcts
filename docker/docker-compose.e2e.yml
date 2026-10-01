@@ -2,11 +2,13 @@
 services:
   pcts-backend:
     container_name: pcts-e2e-backend
+    # release image, drops the dev setup of the base file (the command would be passed to 'java -jar' as arguments)
     build:
-      # release build by default, to change backend code locally:
-      # PCTS_BACKEND_TARGET=dev PCTS_BACKEND_MAVEN_PROFILES=dev ./e2e-application-start --watch
-      target: ${PCTS_BACKEND_TARGET:-runner}
+      target: runner
       args:
-        MAVEN_PROFILES: ${PCTS_BACKEND_MAVEN_PROFILES:-}
+        MAVEN_PROFILES: ""
+    command: !reset null
+    volumes: !reset []
+    develop: !reset null
     environment:
       SPRING_PROFILES_ACTIVE: e2e-test
