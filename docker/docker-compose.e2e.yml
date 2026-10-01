@@ -13,8 +13,8 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: e2e-test
 
-  # release image (nginx) instead of 'pnpm start', drops the dev setup of the base file
   pcts-frontend:
+    # release image (nginx) instead of 'pnpm start', drops the dev setup of the base file
     build:
       context: ..
       dockerfile: ./frontend/Dockerfile

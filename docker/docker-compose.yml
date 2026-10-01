@@ -67,9 +67,8 @@ services:
     command:
       - sh
       - -c
-      - >-
-        dev-recompile --full
-        && exec mvn -B -f backend/pom.xml -Pdev -Dspring-boot.run.profiles="$$SPRING_PROFILES_ACTIVE" spring-boot:run
+      # double quoted: the YAML parser of dockportless fails on && or quotes in plain and folded scalars
+      - "dev-recompile --full && exec mvn -B -f backend/pom.xml -Pdev -Dspring-boot.run.profiles=$$SPRING_PROFILES_ACTIVE spring-boot:run"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
@@ -106,10 +105,10 @@ services:
       PCTS_FRONTEND_KEYCLOAK_URL: "http://localhost:${PCTS_KEYCLOAK_PORT:-8544}"
     profiles: ['', backend, migration]
 
-  # 'pnpm start' (ng serve with HMR) on the bind mounted sources, the Dockerfile image is only used for e2e.
-  # node_modules and the angular cache are volumes, so the container's (musl) binaries don't end up on the host.
-  # A package.json/lockfile change needs 'docker compose restart pcts-frontend', which runs the install again
   pcts-frontend:
+    # 'pnpm start' (ng serve with HMR) on the bind mounted sources, the Dockerfile image is only used for e2e.
+    # node_modules and the angular cache are volumes, so the container's (musl) binaries don't end up on the host.
+    # A package.json/lockfile change needs 'docker compose restart pcts-frontend', which runs the install again
     depends_on:
       pcts-backend:
         condition: service_healthy
@@ -132,7 +131,7 @@ services:
     command:
       - sh
       - -c
-      - corepack enable && pnpm install --frozen-lockfile && exec pnpm start --host 0.0.0.0 --port 4200
+      - "corepack enable && pnpm install --frozen-lockfile && exec pnpm start --host 0.0.0.0 --port 4200"
     ports:
       - "${PCTS_FRONTEND_PORT:-4200}:4200"
     environment:
@@ -193,5 +192,6 @@ services:
     profiles: [migration]
 
 volumes:
-  pcts-frontend-node-modules:
-  pcts-frontend-angular-cache:
+  # {} instead of an empty value, the YAML parser of dockportless crashes on the latter
+  pcts-frontend-node-modules: {}
+  pcts-frontend-angular-cache: {}
