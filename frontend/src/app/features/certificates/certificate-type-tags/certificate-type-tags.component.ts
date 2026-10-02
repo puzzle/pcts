@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   imports: [],
@@ -8,11 +8,7 @@ import { Component, computed, input } from '@angular/core';
   templateUrl: './certificate-type-tags.component.html'
 })
 export class CertificateTypeTagsComponent {
-  tags = input.required<string[]>();
-
-  sortedTags = computed(() => {
-    return this.tags()
-      .sort((a, b) => b.localeCompare(a))
-      .reverse();
+  tags = input.required<string[], string>({
+    transform: (tags) => [...tags].sort((a, b) => a.localeCompare(b))
   });
 }
