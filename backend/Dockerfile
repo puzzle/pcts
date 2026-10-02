@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM maven:3-eclipse-temurin-25 AS build
+FROM maven:3-eclipse-temurin-25 AS base
 ARG MAVEN_PROFILES=""
 WORKDIR /app
 COPY pom.xml .
@@ -8,6 +8,9 @@ COPY backend/pom.xml backend/
 # baked into the layer, not a cache mount, the dev container recompiles offline against it
 RUN mvn -B -q -f backend/pom.xml ${MAVEN_PROFILES:+-P$MAVEN_PROFILES} dependency:go-offline
 COPY backend/src backend/src
+
+
+FROM base AS build
 RUN mvn -B -f backend/pom.xml ${MAVEN_PROFILES:+-P$MAVEN_PROFILES} clean package -Dmaven.test.skip=true -Djacoco.skip=true \
     && cp backend/target/pcts-*.jar application.jar \
     && java -Djarmode=tools -jar application.jar extract --layers --destination extracted
@@ -23,7 +26,7 @@ RUN apk add --no-cache curl \
     && mv "/opt/maven-mvnd-${MVND_VERSION}-linux-${arch}" /opt/mvnd
 
 
-FROM build AS dev
+FROM base AS dev
 COPY --from=mvnd /opt/mvnd /opt/mvnd
 
 

@@ -152,9 +152,10 @@ a Dockerfile change needs `docker compose up --build`.
 
 #### Dockerfile stages
 
-- `build`: packages everything, the `MAVEN_PROFILES` build arg selects the maven profile (empty for release/CI, `dev` from compose)
+- `base`: dependencies (`dependency:go-offline`) and sources, the `MAVEN_PROFILES` build arg selects the maven profile (empty for release/CI, `dev` from compose)
+- `build`: `base` + `package` and the jar extract, only `runner` needs it
 - `mvnd`: downloads mvnd, independent of the build so a code change doesn't download it again
-- `dev`: `build` + mvnd, used by compose. the whole dev setup (start command, devtools env vars, the `dev-recompile` mount) lives in `docker/docker-compose.yml`, not in the Dockerfile
+- `dev`: `base` + mvnd, used by compose. it doesn't package anything, the container compiles at start anyway. the whole dev setup (start command, devtools env vars, the `dev-recompile` mount) lives in `docker/docker-compose.yml`, not in the Dockerfile
 - `runner`: default stage, the release image. only copies the extracted jar layers from `build`, used for releases and e2e (`docker-compose.e2e.yml`)
 
 #### frontend
