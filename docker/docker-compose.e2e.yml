@@ -2,5 +2,27 @@
 services:
   pcts-backend:
     container_name: pcts-e2e-backend
+    # the base file's command would end up as 'java -jar' arguments
+    build:
+      target: runner
+      args:
+        MAVEN_PROFILES: ""
+    command: !reset null
+    volumes: !reset []
+    develop: !reset null
     environment:
       SPRING_PROFILES_ACTIVE: e2e-test
+
+  pcts-frontend:
+    build:
+      context: ..
+      dockerfile: ./frontend/Dockerfile
+      args:
+        BUILD_CONFIGURATION: development
+    image: !reset null
+    working_dir: !reset null
+    command: !reset null
+    volumes: !reset []
+    environment: !override
+      # for the csp connect-src
+      PCTS_KEYCLOAK_URL: "http://localhost:${PCTS_KEYCLOAK_PORT:-8544}"
