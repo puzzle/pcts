@@ -119,9 +119,10 @@ the default and the `backend` profile run the backend from source with spring de
 #### how a change gets into the running app
 
 save a file under `backend/src` -> compose syncs it into the container -> `dev-recompile` compiles it -> touches `target/classes/.reloadtrigger` -> devtools restarts the spring context.
-devtools only watches the trigger file and not `target/classes` itself, so the app restarts exactly once per successful compile and never on a half written classpath. a failed compile doesn't touch the trigger file, the app keeps running on the last good classes.
+devtools only watches the trigger file and not `target/classes` itself, so the app restarts exactly once per successful compile and never on a half written classpath. a failed compile doesn't touch the trigger file, the app keeps running on the last good classes. that's also why the devtools poll and quiet period can be that short.
 
 the JVM itself keeps running during a restart, so an attached debugger stays attached. JDWP (java debug wire protocol, the port a remote debugger connects to for breakpoints and stepping) listens on `localhost:5005`, use the `Backend-Debug` run config in IntelliJ. it's bound to localhost only since whoever can reach that port can run code in the JVM.
+inside the container it has to listen on `*:5005` so the published port reaches it, compose passes that via `MAVEN_ARGS`. running `mvn spring-boot:run -Pdev` on the host keeps the profile's default `localhost:5005`.
 
 #### dev-recompile
 
@@ -132,7 +133,10 @@ the `dev` maven profile only compiles sources newer than their class file. this 
   docker compose exec pcts-backend dev-recompile --full
 ```
 
-a deleted or renamed file under `src/main` triggers a full compile on its own, otherwise the stale class would stay on the classpath.
+a deleted or renamed file under `src/main` triggers a full compile on its own, otherwise the stale class would stay on the classpath. every container (re)start does a full compile too, so `docker compose restart pcts-backend` is the other way to get rid of stale classes.
+compiles triggered by quick saves in a row run one after the other (`flock`), never two at the same time into `target/classes`.
+
+the `dev` profile skips the tests, otherwise `spring-boot:run` compiles them on every start. so `mvn -Pdev verify` runs no tests.
 
 #### why mvnd
 
@@ -155,5 +159,9 @@ a Dockerfile change needs `docker compose up --build`.
 
 #### frontend
 
-`pcts-frontend` runs `pnpm start` (ng serve with HMR) in a `node` container on the bind mounted `frontend/`, so there is nothing to watch or rebuild. `node_modules` and `.angular` live in named volumes, `/api` is proxied to the backend.
+`pcts-frontend` runs `pnpm start` (ng serve with HMR) in a `node` container on the bind mounted `frontend/`, so there is nothing to watch or rebuild. `node_modules` and `.angular` live in named volumes so the container's (musl) binaries don't end up on the host. `/api` is proxied to `PCTS_BACKEND_URL` (`src/proxy.conf.js`), `localhost:8080` when running on the host.
 after a `package.json` or lockfile change run `docker compose restart pcts-frontend`.
+
+#### e2e
+
+`./e2e-application-start` merges `docker-compose.e2e.yml` over the base file. it builds the release images (backend `runner`, frontend nginx) and `!reset`s the dev setup (command, volumes, watch) of the base file, the backend command would otherwise end up as `java -jar` arguments.

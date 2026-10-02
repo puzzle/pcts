@@ -37,12 +37,8 @@ services:
         MAVEN_PROFILES: dev
     ports:
       - "${PCTS_BACKEND_PORT:-8080}:8080"
-      # JDWP, IntelliJ 'Backend-Debug' run config. Bound to localhost only, the debug port allows code execution
+      # localhost only, JDWP allows code execution
       - "127.0.0.1:${PCTS_BACKEND_DEBUG_PORT:-5005}:5005"
-    # 'docker compose up --watch': a src change is synced and compiled in the container by dev-recompile (only changed
-    # sources, full compile if a file was removed), devtools restarts the app once the compile touched the trigger
-    # file. A pom.xml change restarts the container, which does a full compile and picks up new dependencies.
-    # Full compile by hand: docker compose exec pcts-backend dev-recompile --full
     develop:
       watch:
         - action: sync+exec
@@ -61,13 +57,10 @@ services:
           initial_sync: true
     volumes:
       - ../backend/docker/dev-recompile.sh:/usr/local/bin/dev-recompile:ro
-    # every (re)start does a full compile, so a pom.xml change (compose restarts the container) or a
-    # 'docker compose restart pcts-backend' leaves no stale classes. The compile also warms up the mvnd daemon used by
-    # the watch recompiles, the app itself is started by plain mvn so it doesn't occupy that daemon
     command:
       - sh
       - -c
-      # double quoted: the YAML parser of dockportless fails on && or quotes in plain and folded scalars
+      # double quoted, the yaml parser of dockportless fails on && or quotes in plain and folded scalars
       - "dev-recompile --full && exec mvn -B -f backend/pom.xml -Pdev -Dspring-boot.run.profiles=$$SPRING_PROFILES_ACTIVE spring-boot:run"
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -78,7 +71,6 @@ services:
         condition: service_healthy
       pcts-keycloak:
         condition: service_healthy
-    # curl is in the dev (maven) and the runner image. The dev start does a full compile first
     healthcheck:
       test: ["CMD-SHELL", "curl -fs http://127.0.0.1:8080/actuator/health || exit 1"]
       interval: 10s
@@ -89,14 +81,10 @@ services:
     environment:
       PCTS_SPRING_DATASOURCE_URL: pcts-db
       SPRING_PROFILES_ACTIVE: dev
-      # devtools only restarts once a recompile is complete (dev-recompile touches the trigger file), so the
-      # poll/quiet period can be short without restarting on a half written target/classes
       SPRING_DEVTOOLS_RESTART_TRIGGER_FILE: .reloadtrigger
       SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 200ms
       SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 50ms
       SPRING_DEVTOOLS_LIVERELOAD_ENABLED: "false"
-      # appended to every mvn call (Maven 3.9+). JDWP has to listen on all interfaces in the container so the published
-      # port reaches it, the dev profile's default (host runs) is localhost only
       MAVEN_ARGS: -Ddev.debug.address=*:5005
       # must match the issuer Keycloak writes into the tokens (KC_HOSTNAME), keys are fetched container-internally
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: "http://localhost:${PCTS_KEYCLOAK_PORT:-8544}/realms/pitc"
@@ -106,15 +94,11 @@ services:
     profiles: ['', backend, migration]
 
   pcts-frontend:
-    # 'pnpm start' (ng serve with HMR) on the bind mounted sources, the Dockerfile image is only used for e2e.
-    # node_modules and the angular cache are volumes, so the container's (musl) binaries don't end up on the host.
-    # A package.json/lockfile change needs 'docker compose restart pcts-frontend', which runs the install again
     depends_on:
       pcts-backend:
         condition: service_healthy
       pcts-keycloak:
         condition: service_healthy
-    # wget (busybox) is in the node and the nginx image. The first start installs all dependencies
     healthcheck:
       test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:4200/ || exit 1"]
       interval: 10s
@@ -139,7 +123,6 @@ services:
       CYPRESS_INSTALL_BINARY: "0"
       COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
       NG_CLI_ANALYTICS: "false"
-      # /api is proxied to the backend container (src/proxy.conf.js)
       PCTS_BACKEND_URL: http://pcts-backend:8080
     profiles: ['']
 
@@ -150,7 +133,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-      # a fresh container imports the realm first
       start_period: 2m
       start_interval: 2s
     environment:
@@ -195,6 +177,6 @@ services:
     profiles: [migration]
 
 volumes:
-  # {} instead of an empty value, the YAML parser of dockportless crashes on the latter
+  # {} and not empty, the yaml parser of dockportless crashes on an empty value
   pcts-frontend-node-modules: {}
   pcts-frontend-angular-cache: {}

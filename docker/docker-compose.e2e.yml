@@ -2,7 +2,7 @@
 services:
   pcts-backend:
     container_name: pcts-e2e-backend
-    # release image, drops the dev setup of the base file (the command would be passed to 'java -jar' as arguments)
+    # the base file's command would end up as 'java -jar' arguments
     build:
       target: runner
       args:
@@ -14,7 +14,6 @@ services:
       SPRING_PROFILES_ACTIVE: e2e-test
 
   pcts-frontend:
-    # release image (nginx) instead of 'pnpm start', drops the dev setup of the base file
     build:
       context: ..
       dockerfile: ./frontend/Dockerfile
@@ -25,5 +24,5 @@ services:
     command: !reset null
     volumes: !reset []
     environment: !override
-      # allowed in the CSP connect-src
+      # for the csp connect-src
       PCTS_KEYCLOAK_URL: "http://localhost:${PCTS_KEYCLOAK_PORT:-8544}"
