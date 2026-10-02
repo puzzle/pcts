@@ -1,6 +1,6 @@
 @use 'variables' as *;
 
-span {
+.pz-field-highlight {
   background-color: $pz-light-blue;
   color: $pz-dark-blue;
 }
