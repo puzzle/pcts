@@ -21,8 +21,8 @@
     <tr>
       <th>{{"LINK" | scopedTranslation}}:</th>
       <td>
-        @if (certificate()?.link) {
-          <a target="_blank" [href]="certificate()?.link">{{certificate()?.link}}</a>
+        @if (certificate().link) {
+          <a target="_blank" [href]="certificate().link">{{certificate().link}}</a>
         } @else {
           -
         }
