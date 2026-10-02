@@ -29,18 +29,18 @@ describe('Certificate modal', () => {
     });
   });
 
-  describe('open example link in a new page', () => {
-    it.only('should have correct certificate detail url set', () => {
-      cy.visit('/certificate');
+  it.only('should have a valid link and open it in a new tab', () => {
+    cy.visit('/certificate');
 
-      CertificateTypeOverviewPage.certificateButton();
-      CertificateTypeOverviewPage.certificateRows();
+    CertificateTypeOverviewPage.certificateRows();
+    CertificateTypeOverviewPage.certificateDetailView()
 
-      cy.getByTestId('certificate-overview')
-        .shadow()
-        .findByTestId('certificate-overview')
-        .invoke('attr', 'href')
-        .should('eq', '/certificate');
-    });
+      .find('a')
+      .should('have.attr', 'href')
+      .and('not.be.empty');
+
+    CertificateTypeOverviewPage.certificateDetailView()
+      .find('a')
+      .should('have.attr', 'target', '_blank');
   });
 });
