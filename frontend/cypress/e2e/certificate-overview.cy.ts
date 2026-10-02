@@ -29,7 +29,7 @@ describe('Certificate modal', () => {
     });
   });
 
-  it.only('should have a valid link and open it in a new tab', () => {
+  it('should have a valid link and open it in a new tab', () => {
     cy.visit('/certificate');
 
     CertificateTypeOverviewPage.certificateRows();
