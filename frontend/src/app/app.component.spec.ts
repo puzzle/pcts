@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { provideTranslateService } from '@ngx-translate/core';
 import { AuthService } from './core/auth/auth.service';
@@ -64,7 +64,7 @@ describe('AppComponent', () => {
   });
 
   it('should navigate to /member when visitRoot() is called', () => {
-    const routerSpy = jest.spyOn(component['router'], 'navigate');
+    const routerSpy = jest.spyOn(TestBed.inject(Router), 'navigate');
     component.visitRoot();
 
     expect(routerSpy)
