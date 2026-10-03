@@ -1,5 +1,5 @@
 import { Component, computed, CUSTOM_ELEMENTS_SCHEMA, DOCUMENT, effect, inject } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import '@puzzleitc/puzzle-shell';
 import { LangChangeEvent, TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NgOptimizedImage } from '@angular/common';
@@ -7,12 +7,17 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { AuthService } from './core/auth/auth.service';
 import { ConfigurationService } from './features/configuration/configuration.service';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,
+  imports: [
+    RouterOutlet,
     TranslatePipe,
-    NgOptimizedImage],
+    NgOptimizedImage,
+    MatIcon,
+    RouterLink
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
