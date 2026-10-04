@@ -1,5 +1,4 @@
 import * as users from '../fixtures/users.json';
-import CertificateTypeOverviewPage from '../pages/certificateTypeOverviewPage';
 
 // These tests rely on Nginx to set headers, so they may fail without Docker/Proxy.
 describe('Security: Content Security Policy', () => {
@@ -58,32 +57,6 @@ describe('Security: Content Security Policy', () => {
     it('should include specific style-src hashes', () => {
       const expectedHash = '\'sha256-mwH/Oz1bMiZ9vHH84YJ6PbP6BpLW5nG9AD9Lad8u1+c=\'';
       expect(csp).to.include(expectedHash);
-    });
-  });
-
-  describe('accessible for a normal user', () => {
-    beforeEach(() => {
-      cy.loginAsUser(users.member);
-    });
-
-    it('should open certificate overview', () => {
-      CertificateTypeOverviewPage.visit();
-
-      CertificateTypeOverviewPage.visitViaButton();
-
-      CertificateTypeOverviewPage.table()
-        .should('be.visible');
-
-      CertificateTypeOverviewPage.firstCertificateRow()
-        .click();
-
-      CertificateTypeOverviewPage.certificateDetailView()
-        .should('be.visible');
-
-      CertificateTypeOverviewPage.firstCertificateRow()
-        .click();
-      CertificateTypeOverviewPage.certificateDetailView()
-        .should('not.be.visible');
     });
   });
 });

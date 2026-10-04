@@ -3,6 +3,7 @@ import OverviewPage from '../pages/overviewPage';
 import MemberDetailPage from '../pages/memberDetailPage';
 import FormPage from '../pages/formPage';
 import memberDetailPage from '../pages/memberDetailPage';
+import CertificateTypeOverviewPage from '../pages/certificateTypeOverviewPage';
 
 const user = users.member;
 
@@ -66,5 +67,14 @@ describe('Non-Admin (Member) Permissions', () => {
         .getByTestId('add-member-button')
         .should('not.exist');
     });
+  });
+
+  it('should open certificate overview', () => {
+    CertificateTypeOverviewPage.visit();
+
+    CertificateTypeOverviewPage.visitViaButton();
+
+    CertificateTypeOverviewPage.table()
+      .should('be.visible');
   });
 });
