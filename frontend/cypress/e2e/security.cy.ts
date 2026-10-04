@@ -69,17 +69,19 @@ describe('Security: Content Security Policy', () => {
     it('should open certificate overview', () => {
       CertificateTypeOverviewPage.visit();
 
-      CertificateTypeOverviewPage.certificateButton();
+      CertificateTypeOverviewPage.visitViaButton();
 
-      cy.getByTestId('generic-table')
+      CertificateTypeOverviewPage.table()
         .should('be.visible');
 
-      CertificateTypeOverviewPage.certificateRows();
+      CertificateTypeOverviewPage.firstCertificateRow()
+        .click();
 
       CertificateTypeOverviewPage.certificateDetailView()
         .should('be.visible');
 
-      CertificateTypeOverviewPage.certificateRows();
+      CertificateTypeOverviewPage.firstCertificateRow()
+        .click();
       CertificateTypeOverviewPage.certificateDetailView()
         .should('not.be.visible');
     });

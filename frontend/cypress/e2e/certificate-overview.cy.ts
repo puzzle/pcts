@@ -9,32 +9,35 @@ describe('Certificate modal', () => {
 
   describe('open certificate overview', () => {
     it('should open certificate overview', () => {
-      CertificateTypeOverviewPage.certificateButton();
-      cy.getByTestId('generic-table')
+      cy.visit('/');
+
+      CertificateTypeOverviewPage.visitViaButton();
+
+      CertificateTypeOverviewPage.table()
         .should('be.visible');
     });
   });
 
   describe('expand and collapse certificate detail', () => {
     it('should expand and collapse the detail row', () => {
-      CertificateTypeOverviewPage.certificateButton();
-      CertificateTypeOverviewPage.certificateRows();
+      CertificateTypeOverviewPage.firstCertificateRow()
+        .click();
 
       CertificateTypeOverviewPage.certificateDetailView()
         .should('be.visible');
 
-      CertificateTypeOverviewPage.certificateRows();
+      CertificateTypeOverviewPage.firstCertificateRow()
+        .click();
       CertificateTypeOverviewPage.certificateDetailView()
         .should('not.be.visible');
     });
   });
 
   it('should have a valid link and open it in a new tab', () => {
-    cy.visit('/certificate');
+    CertificateTypeOverviewPage.firstCertificateRow()
+      .click();
 
-    CertificateTypeOverviewPage.certificateRows();
     CertificateTypeOverviewPage.certificateDetailView()
-
       .find('a')
       .should('have.attr', 'href')
       .and('not.be.empty');

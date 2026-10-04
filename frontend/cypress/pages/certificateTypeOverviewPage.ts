@@ -5,15 +5,23 @@ class CertificateTypeOverviewPage extends Page {
     cy.visit('/certificate');
   }
 
-  certificateButton() {
-    return cy.getByTestId('certificate-overview')
+  visitViaButton() {
+    cy.getByTestId('certificate-overview')
       .click();
+    return this;
+  }
+
+  table() {
+    return cy.getByTestId('generic-table');
   }
 
   certificateRows() {
-    return cy.getByTestId('expand-row')
-      .first()
-      .click();
+    return cy.getByTestId('expand-row');
+  }
+
+  firstCertificateRow() {
+    return this.certificateRows()
+      .first();
   }
 
   certificateDetailView() {
