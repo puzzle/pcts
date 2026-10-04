@@ -2,9 +2,10 @@ import { MemberModel } from '../../features/member/member.model';
 import { EmploymentState } from '../enum/employment-state.enum';
 import { OrganisationUnitModel } from '../../features/organisation-unit/organisation-unit.model';
 import { MemberDto } from '../../features/member/dto/member.dto';
-import { TagModel } from '../../features/certificates/certificate-type/tag.model';
-import { CertificateTypeModel } from '../../features/certificates/certificate-type/certificate-type.model';
-import { LeadershipExperienceKind } from '../../features/leadership-experiences/leadership-experiences-type/leadership-experience-kind.enum';
+import { CertificateTypeModel, ExamType } from '../../features/certificates/certificate-type/certificate-type.model';
+import {
+  LeadershipExperienceKind
+} from '../../features/leadership-experiences/leadership-experiences-type/leadership-experience-kind.enum';
 import { CertificateModel } from '../../features/certificates/certificate.model';
 import { CertificateDto } from '../../features/certificates/dto/certificate.dto';
 import { ExperienceTypeModel } from '../../features/experiences/experience-type/experience-type.model';
@@ -147,33 +148,18 @@ export const memberDto2: MemberDto = {
   roleIds: [role2.id]
 };
 
-export const tag1: TagModel = {
-  id: 1,
-  name: 'GitLab'
-};
-
-export const tag2: TagModel = {
-  id: 2,
-  name: 'AWS'
-};
-
-export const tag3: TagModel = {
-  id: 3,
-  name: 'Ruby'
-};
-
-export const tag4: TagModel = {
-  id: 4,
-  name: 'PHP'
-};
-
 export const certificateType1: CertificateTypeModel = {
   id: 1,
   name: 'GitLab & AWS Certificate',
   points: 10,
   comment: null,
-  tags: [tag1,
-    tag2]
+  tags: ['GitLab',
+    'AWS'],
+  effort: 5,
+  examDuration: 120,
+  link: 'https://example.com/',
+  examType: ExamType.MULTIPLE_CHOICE,
+  publisher: 'GitLab'
 };
 
 export const certificateType2: CertificateTypeModel = {
@@ -181,7 +167,12 @@ export const certificateType2: CertificateTypeModel = {
   name: 'Ruby Certificate',
   points: 15,
   comment: null,
-  tags: [tag3]
+  tags: ['Ruby'],
+  effort: 5,
+  examDuration: 120,
+  link: 'https://example.com/',
+  examType: ExamType.MULTIPLE_CHOICE,
+  publisher: 'Ruby'
 };
 
 export const certificate1: CertificateModel = {

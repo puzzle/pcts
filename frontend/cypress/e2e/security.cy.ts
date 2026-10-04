@@ -27,34 +27,36 @@ describe('Security: Content Security Policy', () => {
       value: 'none' }
   ];
 
-  before(() => {
-    cy.loginAsUser(users.gl);
+  describe('CSP headers', () => {
+    before(() => {
+      cy.loginAsUser(users.gl);
 
-    cy.request({
-      url: '/',
-      method: 'GET'
-    })
-      .then((response) => {
-        expect(response.headers).to.have.property('content-security-policy');
-        csp = response.headers['content-security-policy'] as string;
-      });
-  });
-
-  it('should contain all required directives with correct values', () => {
-    expectedDirectives.forEach(({ name, value }) => {
-      expect(csp, `Checking directive: ${name}`).to.include(`${name} '${value}'`);
+      cy.request({
+        url: '/',
+        method: 'GET'
+      })
+        .then((response) => {
+          expect(response.headers).to.have.property('content-security-policy');
+          csp = response.headers['content-security-policy'] as string;
+        });
     });
-  });
 
-  it('should have replaced the Nginx request_id variable with a real nonce', () => {
-    expect(csp).to.not.include('nonce-$request_id');
+    it('should contain all required directives with correct values', () => {
+      expectedDirectives.forEach(({ name, value }) => {
+        expect(csp, `Checking directive: ${name}`).to.include(`${name} '${value}'`);
+      });
+    });
 
-    const nonceRegex = /'nonce-[A-Za-z0-9+/=]+'/;
-    expect(csp).to.match(nonceRegex, 'CSP should contain a valid generated nonce');
-  });
+    it('should have replaced the Nginx request_id variable with a real nonce', () => {
+      expect(csp).to.not.include('nonce-$request_id');
 
-  it('should include specific style-src hashes', () => {
-    const expectedHash = '\'sha256-mwH/Oz1bMiZ9vHH84YJ6PbP6BpLW5nG9AD9Lad8u1+c=\'';
-    expect(csp).to.include(expectedHash);
+      const nonceRegex = /'nonce-[A-Za-z0-9+/=]+'/;
+      expect(csp).to.match(nonceRegex, 'CSP should contain a valid generated nonce');
+    });
+
+    it('should include specific style-src hashes', () => {
+      const expectedHash = '\'sha256-mwH/Oz1bMiZ9vHH84YJ6PbP6BpLW5nG9AD9Lad8u1+c=\'';
+      expect(csp).to.include(expectedHash);
+    });
   });
 });
