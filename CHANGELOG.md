@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.13.0](https://github.com/puzzle/pcts/compare/0.12.0...0.13.0) (2026-10-04)
+
+
+### Features
+
+* 904 split relevancy for degrees ([da89057](https://github.com/puzzle/pcts/commit/da8905751681383c19290d26ac0261857bdf8626))
+* add delete button [#799](https://github.com/puzzle/pcts/issues/799)  ([9499951](https://github.com/puzzle/pcts/commit/9499951153f42bb6e7748679c02bb0bf868f2d67))
+* **frontend:** add expandable rows to generic table [#914](https://github.com/puzzle/pcts/issues/914) ([#918](https://github.com/puzzle/pcts/issues/918)) ([83ffc96](https://github.com/puzzle/pcts/commit/83ffc96fccdae17db193fcf094cd1dbeee0243e5))
+
+
+### Miscellaneous Chores
+
+* add 'Ganzzahl' to CSpell dictionary ([2e5700f](https://github.com/puzzle/pcts/commit/2e5700fd7a76f551209722e221f10a3f098d3962))
+* add check for WIP commits ([9499951](https://github.com/puzzle/pcts/commit/9499951153f42bb6e7748679c02bb0bf868f2d67))
+* **deps:** update all devdependencies (minor and patch) to v30.5.2 ([#919](https://github.com/puzzle/pcts/issues/919)) ([19ac6d7](https://github.com/puzzle/pcts/commit/19ac6d7f9e5514cbd6b6ff066cb00d857bba5a2a))
+* **deps:** update all eslint packages ([#937](https://github.com/puzzle/pcts/issues/937)) ([0db536b](https://github.com/puzzle/pcts/commit/0db536b9a45d634f4814a7b9c125758c0bd2a94b))
+* **deps:** update angularmaterial monorepo to v22.1.7 ([#920](https://github.com/puzzle/pcts/issues/920)) ([17cd406](https://github.com/puzzle/pcts/commit/17cd4061af12e145a8dd12620d7c398fe2d6ad2e))
+* **deps:** update cypress-io/github-action action to v7.4.4 ([#933](https://github.com/puzzle/pcts/issues/933)) ([4f8fb8a](https://github.com/puzzle/pcts/commit/4f8fb8a2ff352869aedb52c6d7da95a07ad91b2e))
+* **deps:** update cypress-io/github-action action to v7.4.5 ([#938](https://github.com/puzzle/pcts/issues/938)) ([b420970](https://github.com/puzzle/pcts/commit/b42097090e87ddf97f313eb6ff3ddb6c913a623f))
+* **deps:** update dependency com.diffplug.spotless:spotless-maven-plugin to v3.10.3 ([#934](https://github.com/puzzle/pcts/issues/934)) ([669d2ca](https://github.com/puzzle/pcts/commit/669d2cab8526c820f62406d56eb3a2cf22f41191))
+* **deps:** update dependency com.tngtech.archunit:archunit-junit5 to v1.5.1 ([#936](https://github.com/puzzle/pcts/issues/936)) ([75ba0d2](https://github.com/puzzle/pcts/commit/75ba0d2985de0486c2e8df4b2d2983fad50afe03))
+* **deps:** update dependency org.openapitools:jackson-databind-nullable to v0.2.12 ([#939](https://github.com/puzzle/pcts/issues/939)) ([01e25dc](https://github.com/puzzle/pcts/commit/01e25dc77dc79c4807673436d0c67ad8d277eaaa))
+* make docker config working with dockportless ([2dba855](https://github.com/puzzle/pcts/commit/2dba855514b31b470e6c7daf19697462526da583))
+* make docker config working with dockrootless  [#722](https://github.com/puzzle/pcts/issues/722) ([2dba855](https://github.com/puzzle/pcts/commit/2dba855514b31b470e6c7daf19697462526da583))
+
+
+### Docs
+
+* **migration:** add description docs for generics  [#874](https://github.com/puzzle/pcts/issues/874) ([e9f203a](https://github.com/puzzle/pcts/commit/e9f203a10515d9ddfbb799fa6409074c19013fa3))
+
 ## [0.12.0](https://github.com/puzzle/pcts/compare/0.11.0...0.12.0) (2026-09-21)
 
 
