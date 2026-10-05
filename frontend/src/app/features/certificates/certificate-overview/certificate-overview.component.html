@@ -1,5 +1,25 @@
 <div class="mt-5">
   <h1 class="pt-3">{{"MODEL_NAME_PLURAL" | scopedTranslation}}</h1>
+
+  <div class="d-flex flex-row justify-content-between mb-3">
+    <div class="w-25 d-flex flex-row align-items-start">
+      <mat-form-field
+        color="primary"
+        appearance="outline"
+        class="w-75 small-form-field"
+        data-testid="search-field"
+      >
+        <mat-icon matPrefix>search</mat-icon>
+        <input
+          matInput
+          [formControl]="searchControl"
+          [placeholder]="'FILTER.SEARCH' | scopedTranslation"
+          data-testid="search-input"
+        />
+      </mat-form-field>
+    </div>
+  </div>
+
   <app-generic-table [dataSource]="table" idAttr="id">
     <ng-template [appTypedTemplate]="table.data"/>
 
@@ -18,5 +38,3 @@
     </ng-template>
   </app-generic-table>
 </div>
-
-
