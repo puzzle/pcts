@@ -39,11 +39,11 @@ export class GenCol<T> {
 export class GenericTableDataSource<T> extends MatTableDataSource<T> {
   private _limit?: number;
 
-  private _customPredicate?: (data: T, filter: string, index: number) => boolean;
+  private _customPredicates: Array<(data: T, filter: string, index: number) => boolean> = [];
 
   private _columnDefs: GenCol<T>[] = [];
 
-  private _ignoreLimit = true;
+  private _ignorePredicate = false;
 
   shouldLink = false;
 
@@ -69,7 +69,7 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
   }
 
   public withCustomFilterPredicate(predicate: (data: T, filter: string, index: number) => boolean) {
-    this._customPredicate = predicate;
+    this._customPredicates.push(predicate);
     return this;
   }
 
@@ -84,7 +84,16 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
   }
 
   override _filterData(data: T[]) { // eslint-disable-line @typescript-eslint/naming-convention
-    this.filteredData = data.filter((obj: T, index: number) => this.filterPredicateWithIndex(obj, this.filter, index));
+    if (this._ignorePredicate) {
+      this.filteredData = this.data;
+    } else {
+      this.filteredData = data.filter((obj: T, index: number) => this.filterPredicateWithIndex(obj, this.filter, index));
+    }
+
+    if (this._limit !== undefined && this.filteredData.length > this._limit) {
+      this.filteredData = this.filteredData.slice(0, this._limit);
+    }
+
     if (this.paginator) {
       this._updatePaginator(this.filteredData.length);
     }
@@ -97,21 +106,15 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
       return true;
     }
 
-    if (this._ignoreLimit) {
-      if (this._limit !== undefined && index >= this._limit) {
-        return false;
-      }
-    }
-
-    if (this._customPredicate) {
-      return this._customPredicate(data, filter, index);
+    if (this._customPredicates && this._customPredicates.length > 0) {
+      return this._customPredicates.every(predicate => predicate(data, filter, index));
     }
 
     return this.filterPredicate(data, filter);
   };
 
   toggleIgnorePredicate() {
-    this._ignoreLimit = !this._ignoreLimit;
+    this._ignorePredicate = !this._ignorePredicate;
     this.reloadData();
   }
 
