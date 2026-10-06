@@ -88,10 +88,9 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
       this.filteredData = this.data;
     } else {
       this.filteredData = data.filter((obj: T, index: number) => this.filterPredicateWithIndex(obj, this.filter, index));
-    }
-
-    if (this._limit !== undefined && this.filteredData.length > this._limit) {
-      this.filteredData = this.filteredData.slice(0, this._limit);
+      if (this._limit !== undefined && this.filteredData.length > this._limit) {
+        this.filteredData = this.filteredData.slice(0, this._limit);
+      }
     }
 
     if (this.paginator) {
