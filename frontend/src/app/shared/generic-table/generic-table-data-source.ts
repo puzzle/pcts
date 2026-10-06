@@ -63,11 +63,17 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
     this._columnDefs = value;
   }
 
+  // Never create a table that has a limit and a filter,
+  // because then you can filter, perhaps using a text search or something like that, and you can also click the button to see more or less.
+  // That doesn't make sense.
   public withLimit(limit: number) {
     this._limit = limit;
     return this;
   }
 
+  // Never create a table that has a limit and a filter,
+  // because then you can filter, perhaps using a text search or something like that, and you can also click the button to see more or less.
+  // That doesn't make sense.
   public withCustomFilterPredicate(predicate: (data: T, filter: string, index: number) => boolean) {
     this._customPredicates.push(predicate);
     return this;
