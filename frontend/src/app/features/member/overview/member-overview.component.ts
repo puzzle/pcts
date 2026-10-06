@@ -17,6 +17,15 @@ import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
 import sortingDataAccessor from '../../../shared/utils/sortingDataAccessor';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
+import {
+
+
+  degreeCalculation1,
+  degreeCalculation2
+} from '../../../shared/test/test-data';
+import {
+  GenericRadioFormTableComponent
+} from '../../../shared/generic-table/generic-radio-form-table/generic-radio-form-table.component';
 
 
 @Component({
@@ -35,7 +44,8 @@ import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.com
     TranslatePipe,
     RouterLink,
     ScopedTranslationPipe,
-    CrudButtonComponent
+    CrudButtonComponent,
+    GenericRadioFormTableComponent
   ],
   templateUrl: './member-overview.component.html',
   styleUrl: './member-overview.component.scss'
@@ -176,4 +186,7 @@ export class MemberOverviewComponent implements OnInit {
   handleAddMemberClick(): void {
     this.router.navigate(['/member/add']);
   }
+
+  protected readonly degreeCalculations = [degreeCalculation1,
+    degreeCalculation2];
 }
