@@ -97,12 +97,12 @@ describe('GenericTableComponent', () => {
     it('should toggle expansion and notify data source', () => {
       const spy = jest.spyOn(dataSource, 'toggleIgnorePredicate');
 
-      expect(component.isExpanded)
+      expect(component.isExpanded())
         .toBe(false);
 
       component.toggleButton();
 
-      expect(component.isExpanded)
+      expect(component.isExpanded())
         .toBe(true);
       expect(spy)
         .toHaveBeenCalled();
@@ -112,10 +112,10 @@ describe('GenericTableComponent', () => {
       expect(component.isFilterApplied())
         .toBe(false);
 
-      component.isExpanded = true;
+      component.isExpanded.set(true);
       expect(component.isFilterApplied())
         .toBe(true);
-      component.isExpanded = false;
+      component.isExpanded.set(false);
 
       dataSource.filteredData = [degreeOverviewList[0]];
       expect(component.isFilterApplied())
