@@ -1,3 +1,4 @@
+import { signal } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 
 type Formatter = (value: any) => any;
@@ -43,7 +44,9 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
 
   private _columnDefs: GenCol<T>[] = [];
 
-  private _ignorePredicate = false;
+  private _ignoreLimit = false;
+
+  hasMoreEntriesToDisplay = signal(false);
 
   shouldLink = false;
 
@@ -94,20 +97,21 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
   }
 
   override _filterData(data: T[]) { // eslint-disable-line @typescript-eslint/naming-convention
-    if (this._ignorePredicate) {
-      this.filteredData = this.data;
-    } else {
-      this.filteredData = data.filter((obj: T, index: number) => this.filterPredicateWithIndex(obj, this.filter, index));
-      if (this._limit !== undefined && this.filteredData.length > this._limit) {
-        this.filteredData = this.filteredData.slice(0, this._limit);
-      }
+    let filteredEntries = data.filter((obj: T, index: number) => this.filterPredicateWithIndex(obj, this.filter, index));
+
+    const hasMoreEntriesToDisplay = this._limit !== undefined && filteredEntries.length > this._limit;
+    this.hasMoreEntriesToDisplay.set(hasMoreEntriesToDisplay);
+
+    if (hasMoreEntriesToDisplay && !this._ignoreLimit) {
+      filteredEntries = filteredEntries.slice(0, this._limit);
     }
 
     if (this.paginator) {
-      this._updatePaginator(this.filteredData.length);
+      this._updatePaginator(filteredEntries.length);
     }
 
-    return this.filteredData;
+    this.filteredData = filteredEntries;
+    return filteredEntries;
   }
 
   filterPredicateWithIndex: (data: T, filter: string, index: number) => boolean = (data: T, filter: string, index: number) => {
@@ -122,8 +126,8 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
     return this.filterPredicate(data, filter);
   };
 
-  toggleIgnorePredicate() {
-    this._ignorePredicate = !this._ignorePredicate;
+  toggleIgnoreLimit() {
+    this._ignoreLimit = !this._ignoreLimit;
     this.reloadData();
   }
 

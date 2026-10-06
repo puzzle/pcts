@@ -96,7 +96,7 @@
     {{ getDisplayValue(col, entity) }}
   </ng-template>
 
-  @if (isFilterApplied()) {
+  @if (displayExpansionButton()) {
     <div class="d-flex justify-content-center mt-2" *appTranslationScope="'TABLE'">
       <button
         data-testid="limit-list-button"
@@ -104,7 +104,7 @@
         class="btn btn-link"
         (click)="toggleButton()"
       >
-        {{ isExpanded ? ('SHOW_LESS' | scopedTranslation) : ('SHOW_ALL'  | scopedTranslation) }}
+        {{ isExpanded() ? ('SHOW_LESS' | scopedTranslation) : ('SHOW_ALL'  | scopedTranslation) }}
       </button>
     </div>
   }
