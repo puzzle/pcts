@@ -69,6 +69,8 @@ export class GenericTableComponent<T extends object, K extends keyof T = keyof T
 
   isExpanded = signal(false);
 
+  displayExpansionButton = computed(() => this.dataSource().hasMoreEntriesToDisplay());
+
   entrySelected = output<T>();
 
   isFilterApplied = computed(() => this.dataSource().filteredData.length !== this.dataSource().data.length || this.isExpanded());
@@ -119,7 +121,7 @@ export class GenericTableComponent<T extends object, K extends keyof T = keyof T
   toggleButton() {
     this.isExpanded.set(!this.isExpanded());
     this.dataSource()
-      .toggleIgnorePredicate();
+      .toggleIgnoreLimit();
   }
 
 
