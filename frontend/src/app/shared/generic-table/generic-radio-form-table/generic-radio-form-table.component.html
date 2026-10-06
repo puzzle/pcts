@@ -1,0 +1,22 @@
+<div class="mt-5">
+  <h1 class="pt-3">{{"MODEL_NAME_PLURAL" | scopedTranslation}}</h1>
+  <app-generic-table [dataSource]="table">
+    <mat-radio-group>
+    <ng-template
+    appColumnTemplate="strongly_relevant"
+    >
+      <mat-radio-button />
+    </ng-template>
+      <ng-template
+        appColumnTemplate="normal_relevant"
+      >
+        <mat-radio-button />
+      </ng-template>
+      <ng-template
+        appColumnTemplate="poorly_relevant"
+      >
+        <mat-radio-button />
+      </ng-template>
+    </mat-radio-group>
+  </app-generic-table>
+</div>
