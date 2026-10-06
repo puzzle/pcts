@@ -1,30 +1,34 @@
-import {Component, effect, inject, input} from '@angular/core';
-import {FormControl, ReactiveFormsModule} from '@angular/forms';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatIcon} from '@angular/material/icon';
-import {debounceTime} from 'rxjs/operators';
-import {GenericTableComponent} from '../../../shared/generic-table/generic-table.component';
-import {TypedTemplateDirective} from '../../../shared/generic-table/type-template/typed-template.directive';
-import {RowDetailTemplateDirective} from '../../../shared/generic-table/rowDetailTemplate.directive';
-import {GenCol, GenericTableDataSource} from '../../../shared/generic-table/generic-table-data-source';
-import {ColumnTemplateDirective} from '../../../shared/generic-table/column-template/column-template.directive';
-import {ScopedTranslationPipe} from '../../../shared/pipes/scoped-translation-pipe';
-import {CertificateDetailViewComponent} from './certificate-detail-view/certificate-detail-view.component';
-import {CertificateTypeModel} from '../certificate-type/certificate-type.model';
-import {CertificateTypeTagsComponent} from '../certificate-type-tags/certificate-type-tags.component';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Component, effect, inject, input } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIcon } from '@angular/material/icon';
+import { debounceTime } from 'rxjs/operators';
+import { GenericTableComponent } from '../../../shared/generic-table/generic-table.component';
+import { TypedTemplateDirective } from '../../../shared/generic-table/type-template/typed-template.directive';
+import { RowDetailTemplateDirective } from '../../../shared/generic-table/rowDetailTemplate.directive';
+import { GenCol, GenericTableDataSource } from '../../../shared/generic-table/generic-table-data-source';
+import { ColumnTemplateDirective } from '../../../shared/generic-table/column-template/column-template.directive';
+import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
+import { CertificateDetailViewComponent } from './certificate-detail-view/certificate-detail-view.component';
+import { CertificateTypeModel } from '../certificate-type/certificate-type.model';
+import { CertificateTypeTagsComponent } from '../certificate-type-tags/certificate-type-tags.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 const getCertificateOverviewTable = () => new GenericTableDataSource(getCertificateOverviewColumns())
   .withDetailViewLink()
   .withCustomFilterPredicate((cert: CertificateTypeModel, filter: string) => {
-    if (!filter) return true;
+    if (!filter) {
+      return true;
+    }
 
     try {
       const filterValues = JSON.parse(filter);
       const searchTxt = (filterValues.text || '').toLowerCase();
 
-      if (!searchTxt) return true;
+      if (!searchTxt) {
+        return true;
+      }
 
       const certDataString = (
         (cert.name || '') + ' ' +
@@ -32,7 +36,8 @@ const getCertificateOverviewTable = () => new GenericTableDataSource(getCertific
         (cert.points.toString() || '')
       ).toLowerCase();
 
-      const searchTerms = searchTxt.split(' ').filter(Boolean);
+      const searchTerms = searchTxt.split(' ')
+        .filter(Boolean);
       return searchTerms.every((term: string) => certDataString.includes(term));
     } catch {
       return true;
