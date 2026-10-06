@@ -90,7 +90,6 @@ describe('GenericTableDataSource', () => {
     const ds = new GenericTableDataSource(columns, data)
       .withLimit(2);
 
-    ds.filter = 'any';
     ds._updateChangeSubscription();
 
     expect(ds.filteredData.length)
@@ -131,7 +130,7 @@ describe('GenericTableDataSource', () => {
     const ds = new GenericTableDataSource(columns, data)
       .withLimit(1);
 
-    ds.filter = 'test';
+    ds.filter = 'alp';
     ds._updateChangeSubscription();
     expect(ds.filteredData.length)
       .toBe(1);
@@ -148,7 +147,7 @@ describe('GenericTableDataSource', () => {
     ds.toggleIgnorePredicate();
     ds.toggleIgnorePredicate();
 
-    ds.filter = 'test';
+    ds.filter = 'alp';
     ds._updateChangeSubscription();
 
     expect(ds.filteredData.length)
