@@ -17,6 +17,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 const getCertificateOverviewTable = () => new GenericTableDataSource(getCertificateOverviewColumns())
   .withDetailViewLink()
+  .withLimit(3)
   .withCustomFilterPredicate((cert: CertificateTypeModel, filter: string) => {
     if (!filter) {
       return true;
