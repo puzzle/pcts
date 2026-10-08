@@ -1,14 +1,14 @@
 <div class="mt-5">
   <h3 class="pt-3">{{"MODEL_NAME_PLURAL" | scopedTranslation}}</h3>
   <app-generic-table [dataSource]="table()">
-    <ng-template appColumnTemplate="highlyRelevancy" let-leadershipExperienceType>
-      <mat-radio-button id="highly" [name]=leadershipExperienceType.id />
+    <ng-template appColumnTemplate="highlyRelevant" let-experienceCalculation>
+      <mat-radio-button id="highly" [name]=experienceCalculation.id (change)="this.handleRadioButtonClick.emit({row: experienceCalculation, value: Relevancy.STRONGLY})"/>
     </ng-template>
-    <ng-template appColumnTemplate="limitedRelevancy" let-leadershipExperienceType>
-      <mat-radio-button id="limited" [name]=leadershipExperienceType.id />
+    <ng-template appColumnTemplate="limitedRelevant" let-experienceCalculation>
+      <mat-radio-button id="limited" [name]=experienceCalculation.id (change)="this.handleRadioButtonClick.emit({row: experienceCalculation, value: Relevancy.NORMAL})"/>
     </ng-template>
-    <ng-template appColumnTemplate="littleRelevancy" let-leadershipExperienceType>
-      <mat-radio-button id="little" [name]=leadershipExperienceType.id />
+    <ng-template appColumnTemplate="littleRelevant" let-experienceCalculation>
+      <mat-radio-button id="little" [name]=experienceCalculation.id (change)="this.handleRadioButtonClick.emit({row: experienceCalculation, value: Relevancy.POORLY})"/>
     </ng-template>
   </app-generic-table>
 </div>
