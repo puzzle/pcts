@@ -89,9 +89,10 @@ export class CertificateOverviewComponent {
       }
     });
 
-    this.route.data.subscribe(({ filters }) => {
-      if (filters?.searchText !== undefined) {
-        this.searchControl.setValue(filters.searchText, { emitEvent: false });
+    this.route.queryParams.subscribe((params) => {
+      if (params['q'] !== undefined) {
+        const searchText = decodeURIComponent(params['q']);
+        this.searchControl.setValue(searchText, { emitEvent: false });
         this.applyFilterString();
       }
     });
@@ -114,7 +115,7 @@ export class CertificateOverviewComponent {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        q: this.searchControl.value ? encodeURIComponent(this.searchControl.value) : null
+        q: this.searchControl.value ? this.searchControl.value : null
       },
       queryParamsHandling: 'merge',
       replaceUrl: true
