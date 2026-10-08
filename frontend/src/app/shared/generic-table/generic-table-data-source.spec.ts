@@ -130,12 +130,12 @@ describe('GenericTableDataSource', () => {
     const ds = new GenericTableDataSource(columns, data)
       .withLimit(1);
 
-    ds.filter = 'alp';
+    ds.filter = 'a';
     ds._updateChangeSubscription();
     expect(ds.filteredData.length)
       .toBe(1);
 
-    ds.toggleIgnorePredicate();
+    ds.toggleIgnoreLimit();
     expect(ds.filteredData.length)
       .toBe(3);
   });
@@ -144,8 +144,8 @@ describe('GenericTableDataSource', () => {
     const ds = new GenericTableDataSource(columns, data)
       .withLimit(1);
 
-    ds.toggleIgnorePredicate();
-    ds.toggleIgnorePredicate();
+    ds.toggleIgnoreLimit();
+    ds.toggleIgnoreLimit();
 
     ds.filter = 'alp';
     ds._updateChangeSubscription();
@@ -158,7 +158,7 @@ describe('GenericTableDataSource', () => {
     const ds = new GenericTableDataSource(columns, data)
       .withLimit(1);
 
-    ds.filter = 'test';
+    ds.filter = 'alp';
     ds.reloadData();
     ds._updateChangeSubscription();
 
