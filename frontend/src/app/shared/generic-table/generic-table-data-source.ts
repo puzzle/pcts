@@ -101,9 +101,10 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
 
     const hasMoreEntriesToDisplay = this._limit !== undefined && filteredEntries.length > this._limit;
 
-    Promise.resolve().then(() => {
-      this.hasMoreEntriesToDisplay.set(hasMoreEntriesToDisplay);
-    });
+    Promise.resolve()
+      .then(() => {
+        this.hasMoreEntriesToDisplay.set(hasMoreEntriesToDisplay);
+      });
     if (hasMoreEntriesToDisplay && !this._ignoreLimit) {
       filteredEntries = filteredEntries.slice(0, this._limit);
     }
