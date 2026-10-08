@@ -69,7 +69,8 @@ export class GenericTableComponent<T extends object, K extends keyof T = keyof T
 
   isExpanded = signal(false);
 
-  displayExpansionButton = computed(() => this.dataSource().hasMoreEntriesToDisplay());
+  displayExpansionButton = computed(() => this.dataSource()
+    .hasMoreEntriesToDisplay());
 
   entrySelected = output<T>();
 

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CertificateOverviewComponent } from './certificate-overview.component';
-import {ActivatedRoute, provideRouter} from '@angular/router';
+import { provideRouter } from '@angular/router';
 
 describe('CertificateOverviewComponent', () => {
   let component: CertificateOverviewComponent;
@@ -9,9 +9,7 @@ describe('CertificateOverviewComponent', () => {
   beforeEach(async() => {
     await TestBed.configureTestingModule({
       imports: [CertificateOverviewComponent],
-      providers: [
-        provideRouter([])
-      ]
+      providers: [provideRouter([])]
     })
       .compileComponents();
 
