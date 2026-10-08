@@ -20,14 +20,15 @@ import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.com
 import {
 
 
-  degreeCalculation1,
-  degreeCalculation2
+  experienceCalculation1
 } from '../../../shared/test/test-data';
 import {
   GenericRadioFormTableComponent
 } from '../../../shared/generic-table/generic-radio-form-table/generic-radio-form-table.component';
 import { filterMultipleFields } from '../../../shared/utils/typeFilter';
 import { InfoIconComponent } from '../../../shared/icon-tooltip/info-icon/info-icon.component';
+import { GenCol, GenericTableDataSource } from '../../../shared/generic-table/generic-table-data-source';
+import { ExperienceCalculationModel } from '../../calculations/experience-calculation/experience-calculation.model';
 
 
 @Component({
@@ -194,6 +195,17 @@ export class MemberOverviewComponent implements OnInit {
     this.router.navigate(['/member/add']);
   }
 
-  protected readonly degreeCalculations = [degreeCalculation1,
-    degreeCalculation2];
+  protected readonly experienceCalculationModels = [experienceCalculation1,
+    experienceCalculation1];
+
+  getTableData = () => new GenericTableDataSource(this.getColumns())
+    .withLimit(10)
+    .withDetailViewLink();
+
+  getColumns = (): GenCol<ExperienceCalculationModel>[] => [
+    GenCol.fromCalculated('highlyRelevancy', (l: ExperienceCalculationModel) => l.experience.experienceType.highlyRelevantPoints),
+    GenCol.fromCalculated('limitedRelevancy', (l: ExperienceCalculationModel) => l.experience.experienceType.limitedRelevantPoints),
+    GenCol.fromCalculated('littleRelevancy', (l: ExperienceCalculationModel) => l.experience.experienceType.littleRelevantPoints),
+    GenCol.fromAttr('relevancy')
+  ];
 }
