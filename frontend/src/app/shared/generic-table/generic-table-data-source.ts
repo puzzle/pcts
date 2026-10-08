@@ -100,7 +100,7 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
     let filteredEntries = data.filter((obj: T, index: number) => this.filterPredicateWithIndex(obj, this.filter, index));
 
     const hasMoreEntriesToDisplay = this._limit !== undefined && filteredEntries.length > this._limit;
-    this.hasMoreEntriesToDisplay.set(hasMoreEntriesToDisplay);
+    this.hasMoreEntriesToDisplay?.set(hasMoreEntriesToDisplay);
 
     if (hasMoreEntriesToDisplay && !this._ignoreLimit) {
       filteredEntries = filteredEntries.slice(0, this._limit);

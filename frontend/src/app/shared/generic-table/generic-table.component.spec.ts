@@ -95,7 +95,7 @@ describe('GenericTableComponent', () => {
 
   describe('Interactions (Expansion & Filtering)', () => {
     it('should toggle expansion and notify data source', () => {
-      const spy = jest.spyOn(dataSource, 'toggleIgnorePredicate');
+      const spy = jest.spyOn(dataSource, 'toggleIgnoreLimit');
 
       expect(component.isExpanded())
         .toBe(false);
