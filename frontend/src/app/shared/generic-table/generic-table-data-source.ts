@@ -132,6 +132,6 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
   }
 
   reloadData() {
-    this['_filter'].next('');
+    this['_filter'].next(this.filter);
   }
 }
