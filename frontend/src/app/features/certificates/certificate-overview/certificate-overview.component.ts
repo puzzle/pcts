@@ -90,7 +90,7 @@ export class CertificateOverviewComponent {
     });
 
     this.route.data.subscribe(({ filters }) => {
-      if (filters && filters.searchText !== undefined) {
+      if (filters?.searchText !== undefined) {
         this.searchControl.setValue(filters.searchText, { emitEvent: false });
         this.applyFilterString();
       }

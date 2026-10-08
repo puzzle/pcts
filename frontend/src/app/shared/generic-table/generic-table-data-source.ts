@@ -38,9 +38,9 @@ export class GenCol<T> {
 }
 
 export class GenericTableDataSource<T> extends MatTableDataSource<T> {
-  private _limit?: number;
+  private readonly _customPredicates: ((data: T, filter: string, index: number) => boolean)[] = [];
 
-  private _customPredicates: ((data: T, filter: string, index: number) => boolean)[] = [];
+  private _limit?: number;
 
   private _columnDefs: GenCol<T>[] = [];
 
