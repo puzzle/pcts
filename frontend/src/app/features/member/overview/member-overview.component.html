@@ -139,4 +139,4 @@
   </div>
 </div>
 
-<app-generic-radio-form-table [table]="getTableData()" [data]="experienceCalculationModels" />
+<app-generic-radio-form-table [table]="getTableData()" [data]="experienceCalculationModels" (handleRadioButtonClick)="changeData($event)"/>

@@ -18,15 +18,11 @@ import sortingDataAccessor from '../../../shared/utils/sortingDataAccessor';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
 import {
-
-
-  experienceCalculation1, experienceCalculation2
-} from '../../../shared/test/test-data';
-import {
   GenericRadioFormTableComponent
 } from '../../../shared/generic-table/generic-radio-form-table/generic-radio-form-table.component';
 import { GenCol, GenericTableDataSource } from '../../../shared/generic-table/generic-table-data-source';
 import { ExperienceCalculationModel } from '../../calculations/experience-calculation/experience-calculation.model';
+import { Relevancy } from '../../calculations/relevancy.enum';
 
 
 @Component({
@@ -60,6 +56,8 @@ export class MemberOverviewComponent implements OnInit {
 
   private readonly translate = inject(TranslateService);
 
+  private readonly memberService = inject(MemberService);
+
   protected readonly GLOBAL_DATE_FORMAT = GLOBAL_DATE_FORMAT;
 
   displayedColumns: string[] = [
@@ -84,6 +82,10 @@ export class MemberOverviewComponent implements OnInit {
 
   employmentStateValues: EmploymentState[] = Object.values(EmploymentState);
 
+  experienceCalculationModels: ExperienceCalculationModel[] = [];
+
+  protected readonly Relevancy = Relevancy;
+
   constructor() {
     effect((): void => {
       this.dataSource.data = this.members();
@@ -101,6 +103,14 @@ export class MemberOverviewComponent implements OnInit {
       .pipe(debounceTime(300))
       .subscribe(() => {
         this.applyCombinedFilter();
+      });
+
+    this.memberService.getCalculationsByMemberIdAndOptionalRoleId(1)
+      .subscribe((response) => {
+        response.forEach((result) => {
+          this.experienceCalculationModels = [...this.experienceCalculationModels,
+            ...result.experienceCalculations] as ExperienceCalculationModel[];
+        });
       });
   }
 
@@ -188,18 +198,28 @@ export class MemberOverviewComponent implements OnInit {
     this.router.navigate(['/member/add']);
   }
 
-  protected readonly experienceCalculationModels = [experienceCalculation1,
-    experienceCalculation2];
-
   getTableData = () => new GenericTableDataSource(this.getColumns())
     .withLimit(10)
     .withDetailViewLink();
 
   getColumns = (): GenCol<ExperienceCalculationModel>[] => [
     GenCol.fromCalculated('name', (e: ExperienceCalculationModel) => e.experience.name),
-    GenCol.fromCalculated('highlyRelevancy', (e: ExperienceCalculationModel) => e.experience.experienceType.highlyRelevantPoints),
-    GenCol.fromCalculated('limitedRelevancy', (e: ExperienceCalculationModel) => e.experience.experienceType.limitedRelevantPoints),
-    GenCol.fromCalculated('littleRelevancy', (e: ExperienceCalculationModel) => e.experience.experienceType.littleRelevantPoints),
-    GenCol.fromCalculated('points', (e: ExperienceCalculationModel) => e.experience.experienceType.littleRelevantPoints)
+    GenCol.fromCalculated('highlyRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.highlyRelevantPoints),
+    GenCol.fromCalculated('limitedRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.limitedRelevantPoints),
+    GenCol.fromCalculated('littleRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.littleRelevantPoints),
+    GenCol.fromCalculated('points', () => 0)
   ];
+
+  changeData(object: { row: ExperienceCalculationModel;
+    value: Relevancy; }) {
+    const row = object.row;
+
+    const value = object.value;
+
+    this.experienceCalculationModels.forEach((experienceCalculation) => {
+      if (experienceCalculation.id === row.id) {
+        experienceCalculation.relevancy = value;
+      }
+    });
+  }
 }
