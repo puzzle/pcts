@@ -20,7 +20,7 @@ import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.com
 import {
 
 
-  experienceCalculation1
+  experienceCalculation1, experienceCalculation2
 } from '../../../shared/test/test-data';
 import {
   GenericRadioFormTableComponent
@@ -189,16 +189,17 @@ export class MemberOverviewComponent implements OnInit {
   }
 
   protected readonly experienceCalculationModels = [experienceCalculation1,
-    experienceCalculation1];
+    experienceCalculation2];
 
   getTableData = () => new GenericTableDataSource(this.getColumns())
     .withLimit(10)
     .withDetailViewLink();
 
   getColumns = (): GenCol<ExperienceCalculationModel>[] => [
-    GenCol.fromCalculated('highlyRelevancy', (l: ExperienceCalculationModel) => l.experience.experienceType.highlyRelevantPoints),
-    GenCol.fromCalculated('limitedRelevancy', (l: ExperienceCalculationModel) => l.experience.experienceType.limitedRelevantPoints),
-    GenCol.fromCalculated('littleRelevancy', (l: ExperienceCalculationModel) => l.experience.experienceType.littleRelevantPoints),
-    GenCol.fromAttr('relevancy')
+    GenCol.fromCalculated('name', (e: ExperienceCalculationModel) => e.experience.name),
+    GenCol.fromCalculated('highlyRelevancy', (e: ExperienceCalculationModel) => e.experience.experienceType.highlyRelevantPoints),
+    GenCol.fromCalculated('limitedRelevancy', (e: ExperienceCalculationModel) => e.experience.experienceType.limitedRelevantPoints),
+    GenCol.fromCalculated('littleRelevancy', (e: ExperienceCalculationModel) => e.experience.experienceType.littleRelevantPoints),
+    GenCol.fromCalculated('points', (e: ExperienceCalculationModel) => e.experience.experienceType.littleRelevantPoints)
   ];
 }

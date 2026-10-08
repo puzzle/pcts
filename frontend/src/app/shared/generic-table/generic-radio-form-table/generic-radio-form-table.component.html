@@ -1,19 +1,14 @@
 <div class="mt-5">
   <h3 class="pt-3">{{"MODEL_NAME_PLURAL" | scopedTranslation}}</h3>
   <app-generic-table [dataSource]="table()">
-    <ng-template appColumnTemplate="relevancy" let-leadershipExperienceType>
-      <mat-radio-button [name]=leadershipExperienceType.id />
+    <ng-template appColumnTemplate="highlyRelevancy" let-leadershipExperienceType>
+      <mat-radio-button id="highly" [name]=leadershipExperienceType.id />
     </ng-template>
-
-    <ng-template appColumnTemplate="leadershipExperienceTypeKind" let-leadershipExperienceType>
-      <mat-radio-button [name]=leadershipExperienceType.id />
+    <ng-template appColumnTemplate="limitedRelevancy" let-leadershipExperienceType>
+      <mat-radio-button id="limited" [name]=leadershipExperienceType.id />
     </ng-template>
-
-    <ng-template
-      appColumnTemplate="leadershipExperienceType"
-      let-leadershipExperienceType
-    >
-      <mat-radio-button [name]=leadershipExperienceType.id />
+    <ng-template appColumnTemplate="littleRelevancy" let-leadershipExperienceType>
+      <mat-radio-button id="little" [name]=leadershipExperienceType.id />
     </ng-template>
   </app-generic-table>
 </div>
