@@ -28,6 +28,10 @@ class CertificateTypeOverviewPage extends Page {
     return cy.get('.detail-content')
       .first();
   }
+
+  tableRows() {
+    return cy.getByTestId('generic-table-row');
+  }
 }
 export default new CertificateTypeOverviewPage();
 
