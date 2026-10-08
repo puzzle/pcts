@@ -53,7 +53,7 @@ const getCertificateOverviewColumns = (): GenCol<CertificateTypeModel>[] => [
   templateUrl: './certificate-overview.component.html'
 })
 export class CertificateOverviewComponent {
-  protected readonly router = inject(Router);
+  private readonly router = inject(Router);
 
   private readonly route = inject(ActivatedRoute);
 
