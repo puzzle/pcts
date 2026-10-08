@@ -14,6 +14,7 @@ import { CertificateDetailViewComponent } from './certificate-detail-view/certif
 import { CertificateTypeModel } from '../certificate-type/certificate-type.model';
 import { CertificateTypeTagsComponent } from '../certificate-type-tags/certificate-type-tags.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { filterMultipleFields } from '../../../shared/utils/typeFilter';
 
 const getCertificateOverviewTable = () => new GenericTableDataSource(getCertificateOverviewColumns())
   .withDetailViewLink()
@@ -22,15 +23,9 @@ const getCertificateOverviewTable = () => new GenericTableDataSource(getCertific
     const filterValues = JSON.parse(filter);
     const searchTxt = (filterValues.text || '').toLowerCase();
 
-    const certDataString = (
-      (cert.name || '') + ' ' +
-      (cert.publisher || '') + ' ' +
-      (cert.points.toString() || '')
-    ).toLowerCase();
-
-    const searchTerms = searchTxt.split(' ')
-      .filter(Boolean);
-    return searchTerms.every((term: string) => certDataString.includes(term));
+    return filterMultipleFields(cert, searchTxt, ['name',
+      'publisher',
+      'points']);
   });
 
 const getCertificateOverviewColumns = (): GenCol<CertificateTypeModel>[] => [

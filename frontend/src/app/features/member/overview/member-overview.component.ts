@@ -17,6 +17,7 @@ import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
 import sortingDataAccessor from '../../../shared/utils/sortingDataAccessor';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
+import { filterMultipleFields } from '../../../shared/utils/typeFilter';
 
 
 @Component({
@@ -107,24 +108,27 @@ export class MemberOverviewComponent implements OnInit {
   createFilterPredicate(): (data: MemberModel, filter: string) => boolean {
     return (member: MemberModel, filter: string): boolean => {
       const filterValues = JSON.parse(filter);
-      const searchTxt: string = filterValues.text.toLowerCase();
+      const searchTxt: string = filterValues.text;
       const status: string = filterValues.status;
 
       const statusMatch: boolean = status === '' || status.split('+')
         .includes(member.employmentState);
 
-      const memberDataString: string = (
-        member.firstName +
-        member.lastName +
-        member.birthDate +
-        (member.organisationUnit ? member.organisationUnit.name : this.translate.instant('MEMBER.NO_DIVISION')) +
-        this.translate.instant('MEMBER.EMPLOYMENT_STATUS_VALUES.' + member.employmentState)
-      ).toLowerCase();
+      const searchableItem = {
+        firstName: member.firstName,
+        lastName: member.lastName,
+        birthDate: member.birthDate,
+        orgUnitName: member.organisationUnit ? member.organisationUnit.name : this.translate.instant('MEMBER.NO_DIVISION'),
+        translatedStatus: this.translate.instant('MEMBER.EMPLOYMENT_STATUS_VALUES.' + member.employmentState)
+      };
 
-      const searchTerms: string[] = searchTxt.split(' ')
-        .filter(Boolean);
-
-      const isTextMatch: boolean = searchTerms.every((term) => memberDataString.includes(term));
+      const isTextMatch = filterMultipleFields(searchableItem, searchTxt, [
+        'firstName',
+        'lastName',
+        'birthDate',
+        'orgUnitName',
+        'translatedStatus'
+      ]);
 
       return isTextMatch && statusMatch;
     };

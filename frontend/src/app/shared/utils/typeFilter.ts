@@ -17,3 +17,25 @@ export function filterType<T, K extends { [P in keyof T]: T[P] extends string ? 
   return options.filter((option) => (option[attr] as string).toLowerCase()
     .includes(value.toLowerCase()));
 }
+
+export function filterMultipleFields<T>(item: T,
+  searchValue: string,
+  keys: (keyof T)[]): boolean {
+  if (!searchValue) {
+    return true;
+  }
+
+  const searchTerms = searchValue.toLowerCase()
+    .split(' ')
+    .filter(Boolean);
+
+  const dataString = keys
+    .map((key) => {
+      const value = item[key];
+      return value !== null && value !== undefined ? String(value) : '';
+    })
+    .join(' ')
+    .toLowerCase();
+
+  return searchTerms.every((term) => dataString.includes(term));
+}
