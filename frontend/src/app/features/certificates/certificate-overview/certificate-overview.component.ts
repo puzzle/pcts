@@ -19,30 +19,18 @@ const getCertificateOverviewTable = () => new GenericTableDataSource(getCertific
   .withDetailViewLink()
   .withLimit(3)
   .withCustomFilterPredicate((cert: CertificateTypeModel, filter: string) => {
-    if (!filter) {
-      return true;
-    }
+    const filterValues = JSON.parse(filter);
+    const searchTxt = (filterValues.text || '').toLowerCase();
 
-    try {
-      const filterValues = JSON.parse(filter);
-      const searchTxt = (filterValues.text || '').toLowerCase();
+    const certDataString = (
+      (cert.name || '') + ' ' +
+      (cert.publisher || '') + ' ' +
+      (cert.points.toString() || '')
+    ).toLowerCase();
 
-      if (!searchTxt) {
-        return true;
-      }
-
-      const certDataString = (
-        (cert.name || '') + ' ' +
-        (cert.publisher || '') + ' ' +
-        (cert.points.toString() || '')
-      ).toLowerCase();
-
-      const searchTerms = searchTxt.split(' ')
-        .filter(Boolean);
-      return searchTerms.every((term: string) => certDataString.includes(term));
-    } catch {
-      return true;
-    }
+    const searchTerms = searchTxt.split(' ')
+      .filter(Boolean);
+    return searchTerms.every((term: string) => certDataString.includes(term));
   });
 
 const getCertificateOverviewColumns = (): GenCol<CertificateTypeModel>[] => [
