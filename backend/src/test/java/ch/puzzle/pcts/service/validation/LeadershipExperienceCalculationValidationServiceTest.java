@@ -3,7 +3,7 @@ package ch.puzzle.pcts.service.validation;
 import static ch.puzzle.pcts.Constants.CALCULATION;
 import static ch.puzzle.pcts.util.TestData.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.*;
 
 import ch.puzzle.pcts.dto.error.ErrorKey;
 import ch.puzzle.pcts.dto.error.FieldKey;
@@ -116,6 +116,19 @@ class LeadershipExperienceCalculationValidationServiceTest
         List<LeadershipExperienceCalculation> existing = List.of(lc);
 
         assertDoesNotThrow(() -> spyService.validateDuplicateLeadershipExperienceId(lc, existing));
+    }
+
+    @DisplayName("Should call validateMemberForCalculation on validateOnCreate")
+    @Test
+    void shouldCallValidateMemberForCalculationOnCreate() {
+        LeadershipExperienceCalculationValidationService spyService = spy(getService());
+        LeadershipExperienceCalculation lc = getValidModel();
+
+        doNothing().when(spyService).validateMemberForCalculation(lc);
+
+        spyService.validateOnCreate(lc);
+
+        verify(spyService).validateMemberForCalculation(lc);
     }
 
     private Member createMember(Long id, String firstName, String lastName) {
