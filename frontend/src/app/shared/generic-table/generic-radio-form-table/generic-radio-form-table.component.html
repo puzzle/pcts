@@ -2,13 +2,13 @@
   <h3 class="pt-3">{{"MODEL_NAME_PLURAL" | scopedTranslation}}</h3>
   <app-generic-table [dataSource]="table()">
     <ng-template appColumnTemplate="highlyRelevant" let-experienceCalculation>
-      <mat-radio-button id="highly" [name]=experienceCalculation.id (change)="this.handleRadioButtonClick.emit({row: experienceCalculation, value: Relevancy.STRONGLY})"/>
+      <mat-radio-button [checked]="shouldBeChecked(experienceCalculation, Relevancy.STRONGLY)" id="highly" [name]=experienceCalculation.id (change)="this.handleRadioButtonClick.emit({row: experienceCalculation, value: Relevancy.STRONGLY})"/>
     </ng-template>
     <ng-template appColumnTemplate="limitedRelevant" let-experienceCalculation>
-      <mat-radio-button id="limited" [name]=experienceCalculation.id (change)="this.handleRadioButtonClick.emit({row: experienceCalculation, value: Relevancy.NORMAL})"/>
+      <mat-radio-button [checked]="shouldBeChecked(experienceCalculation, Relevancy.NORMAL)" id="limited" [name]=experienceCalculation.id (change)="this.handleRadioButtonClick.emit({row: experienceCalculation, value: Relevancy.NORMAL})"/>
     </ng-template>
     <ng-template appColumnTemplate="littleRelevant" let-experienceCalculation>
-      <mat-radio-button id="little" [name]=experienceCalculation.id (change)="this.handleRadioButtonClick.emit({row: experienceCalculation, value: Relevancy.POORLY})"/>
+      <mat-radio-button [checked]="shouldBeChecked(experienceCalculation, Relevancy.POORLY)" id="little" [name]=experienceCalculation.id (change)="this.handleRadioButtonClick.emit({row: experienceCalculation, value: Relevancy.POORLY})"/>
     </ng-template>
   </app-generic-table>
 </div>
