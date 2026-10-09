@@ -95,103 +95,100 @@ describe('GenericTableComponent', () => {
 
   describe('Interactions (Expansion & Filtering)', () => {
     it('should toggle expansion and notify data source', () => {
-      const spy = jest.spyOn(dataSource, 'toggleIgnorePredicate');
+      const spy = jest.spyOn(dataSource, 'toggleIgnoreLimit');
 
-      expect(component.isExpanded)
+      expect(component.isExpanded())
         .toBe(false);
 
       component.toggleButton();
 
-      expect(component.isExpanded)
+      expect(component.isExpanded())
         .toBe(true);
       expect(spy)
         .toHaveBeenCalled();
     });
 
     it('should detect if filter is applied', () => {
-      expect(component.isFilterApplied())
+      expect(component.displayExpansionButton())
         .toBe(false);
 
-      component.isExpanded = true;
-      expect(component.isFilterApplied())
+      dataSource.hasMoreEntriesToDisplay.set(true);
+
+      expect(component.displayExpansionButton())
         .toBe(true);
-      component.isExpanded = false;
-
-      dataSource.filteredData = [degreeOverviewList[0]];
-      expect(component.isFilterApplied())
-        .toBe(true);
-    });
-  });
-
-  describe('Router Integration', () => {
-    it('should generate valid router link using idAttr', () => {
-      fixture.componentRef.setInput('idAttr', 'id');
-      fixture.componentRef.setInput('crudBasePath', 'degrees');
-      fixture.detectChanges();
-
-      const row = degreeOverviewList[2];
-
-      const link = (component as any).getRouterLink(row);
-
-      expect(link)
-        .toBe('degrees/3');
+      dataSource.hasMoreEntriesToDisplay.set(false);
     });
 
-    it('should return undefined if idAttr is not provided', () => {
-      fixture.componentRef.setInput('idAttr', undefined);
-      fixture.detectChanges();
-
-      const row = degreeOverviewList[0];
-      const link = (component as any).getRouterLink(row);
-
-      expect(link)
-        .toBeUndefined();
-    });
-  });
-
-  describe('Expandable Rows', () => {
-    it('should add expand colum to columnNames when isRowExpansionEnabled is true', () => {
-      (component as any).isRowExpansionEnabled = signal(true);
-
-      fixture.componentRef.setInput('dataSource', new GenericTableDataSource(dataSource.columnDefs, dataSource.data));
-
-      expect(component.columnNames())
-        .toContain('expand');
-    });
-
-    it('should not add expand colum to columnNames when isRowExpansionEnabled is false', () => {
-      (component as any).isRowExpansionEnabled = signal(false);
-      fixture.componentRef.setInput('dataSource', dataSource);
-
-      fixture.componentRef.setInput('dataSource', new GenericTableDataSource(dataSource.columnDefs, dataSource.data));
-
-      expect(component.columnNames()).not.toContain('expand');
-    });
-
-    describe('Expansion Toggle Logic', () => {
-      beforeEach(() => {
+    describe('Router Integration', () => {
+      it('should generate valid router link using idAttr', () => {
         fixture.componentRef.setInput('idAttr', 'id');
+        fixture.componentRef.setInput('crudBasePath', 'degrees');
         fixture.detectChanges();
-      });
-      it('should add element when not already in expandedElements', () => {
-        const row = degreeOverviewList[0];
 
-        component.expandedElementIds = [];
+        const row = degreeOverviewList[2];
 
-        component.toggleRowExpansion(row);
+        const link = (component as any).getRouterLink(row);
 
-        expect(component.expandedElementIds)
-          .toContain(row.id);
+        expect(link)
+          .toBe('degrees/3');
       });
 
-      it('should remove element when already in expandedElements', () => {
+      it('should return undefined if idAttr is not provided', () => {
+        fixture.componentRef.setInput('idAttr', undefined);
+        fixture.detectChanges();
+
         const row = degreeOverviewList[0];
+        const link = (component as any).getRouterLink(row);
 
-        component.expandedElementIds = [row.id];
+        expect(link)
+          .toBeUndefined();
+      });
+    });
 
-        component.toggleRowExpansion(row);
+    describe('Expandable Rows', () => {
+      it('should add expand colum to columnNames when isRowExpansionEnabled is true', () => {
+        (component as any).isRowExpansionEnabled = signal(true);
 
-        expect(component.expandedElementIds).not.toContain(row.id);
+        fixture.componentRef.setInput('dataSource', new GenericTableDataSource(dataSource.columnDefs, dataSource.data));
+
+        expect(component.columnNames())
+          .toContain('expand');
+      });
+
+      it('should not add expand colum to columnNames when isRowExpansionEnabled is false', () => {
+        (component as any).isRowExpansionEnabled = signal(false);
+        fixture.componentRef.setInput('dataSource', dataSource);
+
+        fixture.componentRef.setInput('dataSource', new GenericTableDataSource(dataSource.columnDefs, dataSource.data));
+
+        expect(component.columnNames()).not.toContain('expand');
+      });
+
+      describe('Expansion Toggle Logic', () => {
+        beforeEach(() => {
+          fixture.componentRef.setInput('idAttr', 'id');
+          fixture.detectChanges();
+        });
+        it('should add element when not already in expandedElements', () => {
+          const row = degreeOverviewList[0];
+
+          component.expandedElementIds = [];
+
+          component.toggleRowExpansion(row);
+
+          expect(component.expandedElementIds)
+            .toContain(row.id);
+        });
+
+        it('should remove element when already in expandedElements', () => {
+          const row = degreeOverviewList[0];
+
+          component.expandedElementIds = [row.id];
+
+          component.toggleRowExpansion(row);
+
+          expect(component.expandedElementIds).not.toContain(row.id);
+        });
       });
     });
   });

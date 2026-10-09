@@ -90,7 +90,6 @@ describe('GenericTableDataSource', () => {
     const ds = new GenericTableDataSource(columns, data)
       .withLimit(2);
 
-    ds.filter = 'any';
     ds._updateChangeSubscription();
 
     expect(ds.filteredData.length)
@@ -127,28 +126,28 @@ describe('GenericTableDataSource', () => {
       .toBe('Alpha');
   });
 
-  it('should ignore predicate when toggleIgnorePredicate is enabled', () => {
+  it('should ignore predicate when toggleIgnoreLimit is enabled', () => {
     const ds = new GenericTableDataSource(columns, data)
       .withLimit(1);
 
-    ds.filter = 'test';
+    ds.filter = 'a';
     ds._updateChangeSubscription();
     expect(ds.filteredData.length)
       .toBe(1);
 
-    ds.toggleIgnorePredicate();
+    ds.toggleIgnoreLimit();
     expect(ds.filteredData.length)
       .toBe(3);
   });
 
-  it('should restore predicate when toggleIgnorePredicate is toggled twice', () => {
+  it('should restore predicate when toggleIgnoreLimit is toggled twice', () => {
     const ds = new GenericTableDataSource(columns, data)
       .withLimit(1);
 
-    ds.toggleIgnorePredicate();
-    ds.toggleIgnorePredicate();
+    ds.toggleIgnoreLimit();
+    ds.toggleIgnoreLimit();
 
-    ds.filter = 'test';
+    ds.filter = 'alp';
     ds._updateChangeSubscription();
 
     expect(ds.filteredData.length)
@@ -159,7 +158,7 @@ describe('GenericTableDataSource', () => {
     const ds = new GenericTableDataSource(columns, data)
       .withLimit(1);
 
-    ds.filter = 'test';
+    ds.filter = 'alp';
     ds.reloadData();
     ds._updateChangeSubscription();
 

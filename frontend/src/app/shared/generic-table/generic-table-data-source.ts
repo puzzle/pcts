@@ -1,3 +1,4 @@
+import { signal } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 
 type Formatter = (value: any) => any;
@@ -37,9 +38,15 @@ export class GenCol<T> {
 }
 
 export class GenericTableDataSource<T> extends MatTableDataSource<T> {
+  private readonly _customPredicates: ((data: T, filter: string, index: number) => boolean)[] = [];
+
+  private _limit?: number;
+
   private _columnDefs: GenCol<T>[] = [];
 
-  private _ignorePredicate = false;
+  private _ignoreLimit = false;
+
+  hasMoreEntriesToDisplay = signal(false);
 
   shouldLink = false;
 
@@ -59,13 +66,23 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
     this._columnDefs = value;
   }
 
+  /*
+   * Never create a table that has a limit and a filter,
+   * because then you can filter, perhaps using a text search or something like that, and you can also click the button to see more or less.
+   * That doesn't make sense.
+   */
   public withLimit(limit: number) {
-    this.filterPredicateWithIndex = (data: T, filter: string, index: number) => index < limit;
+    this._limit = limit;
     return this;
   }
 
+  /*
+   * Never create a table that has a limit and a filter,
+   * because then you can filter, perhaps using a text search or something like that, and you can also click the button to see more or less.
+   * That doesn't make sense.
+   */
   public withCustomFilterPredicate(predicate: (data: T, filter: string, index: number) => boolean) {
-    this.filterPredicateWithIndex = predicate;
+    this._customPredicates.push(predicate);
     return this;
   }
 
@@ -80,32 +97,44 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
   }
 
   override _filterData(data: T[]) { // eslint-disable-line @typescript-eslint/naming-convention
-    if (this._ignorePredicate) {
-      this.filteredData = this.data;
-    } else {
-      this.filteredData = data.filter((obj: T, index: number) => this.filterPredicateWithIndex(obj, this.filter, index));
+    let filteredEntries = data.filter((obj: T, index: number) => this.filterPredicateWithIndex(obj, this.filter, index));
+
+    const hasMoreEntriesToDisplay = this._limit !== undefined && filteredEntries.length > this._limit;
+
+    Promise.resolve()
+      .then(() => {
+        this.hasMoreEntriesToDisplay.set(hasMoreEntriesToDisplay);
+      });
+    if (hasMoreEntriesToDisplay && !this._ignoreLimit) {
+      filteredEntries = filteredEntries.slice(0, this._limit);
     }
 
     if (this.paginator) {
-      this._updatePaginator(this.filteredData.length);
+      this._updatePaginator(filteredEntries.length);
     }
 
-    return this.filteredData;
+    this.filteredData = filteredEntries;
+    return filteredEntries;
   }
 
   filterPredicateWithIndex: (data: T, filter: string, index: number) => boolean = (data: T, filter: string, index: number) => {
     if (this.filter == null || this.filter === '') {
       return true;
     }
+
+    if (this._customPredicates && this._customPredicates.length > 0) {
+      return this._customPredicates.every((predicate) => predicate(data, filter, index));
+    }
+
     return this.filterPredicate(data, filter);
   };
 
-  toggleIgnorePredicate() {
-    this._ignorePredicate = !this._ignorePredicate;
+  toggleIgnoreLimit() {
+    this._ignoreLimit = !this._ignoreLimit;
     this.reloadData();
   }
 
   reloadData() {
-    this['_filter'].next('');
+    this['_filter'].next(this.filter);
   }
 }

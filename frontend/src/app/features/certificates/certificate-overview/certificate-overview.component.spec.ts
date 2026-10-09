@@ -1,18 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CertificateOverviewComponent } from './certificate-overview.component';
+import { provideRouter } from '@angular/router';
 
-describe('CertificateComponent', () => {
+describe('CertificateOverviewComponent', () => {
   let component: CertificateOverviewComponent;
   let fixture: ComponentFixture<CertificateOverviewComponent>;
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      imports: [CertificateOverviewComponent]
+      imports: [CertificateOverviewComponent],
+      providers: [provideRouter([])]
     })
       .compileComponents();
 
     fixture = TestBed.createComponent(CertificateOverviewComponent);
     fixture.componentRef.setInput('certificates', []);
+    fixture.componentRef.setInput('searchTerm', 'aws');
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
