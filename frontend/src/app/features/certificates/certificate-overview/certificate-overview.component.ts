@@ -59,7 +59,7 @@ export class CertificateOverviewComponent {
 
   certificates = input.required<CertificateTypeModel[]>();
 
-  searchTerm = input.required<string | null>();
+  searchTerm = input.required<{ textSearch: string } | null>();
 
   table = getCertificateOverviewTable();
 
@@ -75,7 +75,7 @@ export class CertificateOverviewComponent {
     });
 
     effect(() => {
-      this.searchControl.setValue(this.searchTerm());
+      this.searchControl.setValue(this.searchTerm()?.textSearch ?? '');
     });
 
     this.searchControl.valueChanges
