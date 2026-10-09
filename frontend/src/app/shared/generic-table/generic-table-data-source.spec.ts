@@ -126,7 +126,7 @@ describe('GenericTableDataSource', () => {
       .toBe('Alpha');
   });
 
-  it('should ignore predicate when toggleIgnorePredicate is enabled', () => {
+  it('should ignore predicate when toggleIgnoreLimit is enabled', () => {
     const ds = new GenericTableDataSource(columns, data)
       .withLimit(1);
 
@@ -140,7 +140,7 @@ describe('GenericTableDataSource', () => {
       .toBe(3);
   });
 
-  it('should restore predicate when toggleIgnorePredicate is toggled twice', () => {
+  it('should restore predicate when toggleIgnoreLimit is toggled twice', () => {
     const ds = new GenericTableDataSource(columns, data)
       .withLimit(1);
 
