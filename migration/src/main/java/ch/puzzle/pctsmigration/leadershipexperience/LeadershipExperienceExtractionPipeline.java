@@ -3,11 +3,13 @@ package ch.puzzle.pctsmigration.leadershipexperience;
 import ch.puzzle.pctsmigration.api.*;
 import ch.puzzle.pctsmigration.extractor.ExtractionPipeline;
 import ch.puzzle.pctsmigration.ods.OdsParseConfig;
+import ch.puzzle.pctsmigration.service.MatchingService;
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
+import org.openapitools.client.model.CertificateTypeDto;
 import org.openapitools.client.model.LeadershipExperienceInputDto;
 import org.openapitools.client.model.LeadershipExperienceTypeDto;
 import org.springframework.stereotype.Component;
@@ -20,13 +22,16 @@ public class LeadershipExperienceExtractionPipeline
     private final LeadershipExperienceService leadershipExperienceService;
     private final LeadershipExperienceTypeService leadershipExperienceTypeService;
     private final MemberService memberService;
+    private final MatchingService<LeadershipExperienceTypeDto> matchingService;
 
     public LeadershipExperienceExtractionPipeline(LeadershipExperienceService leadershipExperienceService,
                                                   MemberService memberService,
-                                                  LeadershipExperienceTypeService leadershipExperienceTypeService) {
+                                                  LeadershipExperienceTypeService leadershipExperienceTypeService,
+                                                  MatchingService<LeadershipExperienceTypeDto> matchingService) {
         this.leadershipExperienceService = leadershipExperienceService;
         this.memberService = memberService;
         this.leadershipExperienceTypeService = leadershipExperienceTypeService;
+        this.matchingService = matchingService;
     }
 
     @Override
@@ -84,12 +89,14 @@ public class LeadershipExperienceExtractionPipeline
 
     private Long mapLeadershipExperienceTypeId(String name) {
         List<LeadershipExperienceTypeDto> dtos = this.leadershipExperienceTypeService.getLeadershipExperienceTypes();
+        Function<LeadershipExperienceTypeDto, String> getTargetAttr = LeadershipExperienceTypeDto::getName;
 
-        return dtos
-                .stream()
-                .min(Comparator.comparingInt(dto -> calculateDistance(dto.getName(), name)))
-                .map(LeadershipExperienceTypeDto::getId)
-                .orElseThrow();
+        LeadershipExperienceTypeDto closestDto = this.matchingService.match(dtos, name, getTargetAttr);
+
+        if (closestDto != null && closestDto.getName().equals(name)) {
+            return closestDto.getId();
+        }
+        return -1L;
     }
 
     @Override
