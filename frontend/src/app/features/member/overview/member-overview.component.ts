@@ -17,12 +17,6 @@ import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
 import sortingDataAccessor from '../../../shared/utils/sortingDataAccessor';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
-import {
-  GenericRadioFormTableComponent
-} from '../../../shared/generic-table/generic-radio-form-table/generic-radio-form-table.component';
-import { GenCol, GenericTableDataSource } from '../../../shared/generic-table/generic-table-data-source';
-import { ExperienceCalculationModel } from '../../calculations/experience-calculation/experience-calculation.model';
-import { Relevancy } from '../../calculations/relevancy.enum';
 
 
 @Component({
@@ -41,8 +35,7 @@ import { Relevancy } from '../../calculations/relevancy.enum';
     TranslatePipe,
     RouterLink,
     ScopedTranslationPipe,
-    CrudButtonComponent,
-    GenericRadioFormTableComponent
+    CrudButtonComponent
   ],
   templateUrl: './member-overview.component.html',
   styleUrl: './member-overview.component.scss'
@@ -55,8 +48,6 @@ export class MemberOverviewComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
 
   private readonly translate = inject(TranslateService);
-
-  private readonly memberService = inject(MemberService);
 
   protected readonly GLOBAL_DATE_FORMAT = GLOBAL_DATE_FORMAT;
 
@@ -82,10 +73,6 @@ export class MemberOverviewComponent implements OnInit {
 
   employmentStateValues: EmploymentState[] = Object.values(EmploymentState);
 
-  experienceCalculationModels: ExperienceCalculationModel[] = [];
-
-  protected readonly Relevancy = Relevancy;
-
   constructor() {
     effect((): void => {
       this.dataSource.data = this.members();
@@ -103,14 +90,6 @@ export class MemberOverviewComponent implements OnInit {
       .pipe(debounceTime(300))
       .subscribe(() => {
         this.applyCombinedFilter();
-      });
-
-    this.memberService.getCalculationsByMemberIdAndOptionalRoleId(1)
-      .subscribe((response) => {
-        response.forEach((result) => {
-          this.experienceCalculationModels = [...this.experienceCalculationModels,
-            ...result.experienceCalculations] as ExperienceCalculationModel[];
-        });
       });
   }
 
@@ -196,30 +175,5 @@ export class MemberOverviewComponent implements OnInit {
 
   handleAddMemberClick(): void {
     this.router.navigate(['/member/add']);
-  }
-
-  getTableData = () => new GenericTableDataSource(this.getColumns())
-    .withLimit(10)
-    .withDetailViewLink();
-
-  getColumns = (): GenCol<ExperienceCalculationModel>[] => [
-    GenCol.fromCalculated('name', (e: ExperienceCalculationModel) => e.experience.name),
-    GenCol.fromCalculated('highlyRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.highlyRelevantPoints),
-    GenCol.fromCalculated('limitedRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.limitedRelevantPoints),
-    GenCol.fromCalculated('littleRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.littleRelevantPoints),
-    GenCol.fromCalculated('points', () => 0)
-  ];
-
-  changeData(object: { row: ExperienceCalculationModel;
-    value: Relevancy; }) {
-    const row = object.row;
-
-    const value = object.value;
-
-    this.experienceCalculationModels.forEach((experienceCalculation) => {
-      if (experienceCalculation.id === row.id) {
-        experienceCalculation.relevancy = value;
-      }
-    });
   }
 }
