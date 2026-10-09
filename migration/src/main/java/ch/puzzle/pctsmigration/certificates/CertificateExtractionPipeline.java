@@ -8,6 +8,7 @@ import ch.puzzle.pctsmigration.ods.OdsParseConfig;
 import ch.puzzle.pctsmigration.service.MatchingService;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import org.openapitools.client.model.CertificateInputDto;
 import org.openapitools.client.model.CertificateTypeDto;
@@ -21,10 +22,10 @@ public class CertificateExtractionPipeline
     private final CertificateTypeService certificateTypeService;
     private final MemberService memberService;
     private final CertificateService certificateService;
-    private final MatchingService matchingService;
+    private final MatchingService<CertificateTypeDto> matchingService;
 
     public CertificateExtractionPipeline(CertificateTypeService certificateTypeService, MemberService memberService,
-                                         CertificateService certificateService, MatchingService matchingService) {
+                                         CertificateService certificateService, MatchingService<CertificateTypeDto> matchingService) {
         this.certificateTypeService = certificateTypeService;
         this.memberService = memberService;
         this.certificateService = certificateService;
@@ -75,18 +76,13 @@ public class CertificateExtractionPipeline
     }
 
     private Long mapCertificateTypeId(String name) {
-        List<String> dtoNames = this.certificateTypeService
-                .getCertificateTypes()
-                .stream()
-                .map(CertificateTypeDto::getName)
-                .toList();
+        List<CertificateTypeDto> dtos = this.certificateTypeService.getCertificateTypes();
+        Function<CertificateTypeDto, String> getTargetAttr = CertificateTypeDto::getName;
 
-        String closestName = this.matchingService.match(dtoNames, name);
+        CertificateTypeDto closestDto = this.matchingService.match(dtos, name, getTargetAttr);
 
-        for (CertificateTypeDto dto : this.certificateTypeService.getCertificateTypes()) {
-            if (dto.getName().equals(closestName)) {
-                return dto.getId();
-            }
+        if (closestDto != null && closestDto.getName().equals(name)) {
+            return  closestDto.getId();
         }
         return -1L;
     }

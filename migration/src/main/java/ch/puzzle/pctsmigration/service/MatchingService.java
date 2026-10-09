@@ -4,7 +4,7 @@ import ch.puzzle.pctsmigration.exception.Error;
 import ch.puzzle.pctsmigration.exception.MigrationException;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
+import java.util.function.Function;
 
 import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.slf4j.Logger;
@@ -13,55 +13,61 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MatchingService {
+public class MatchingService<T> {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final LevenshteinDistance levenshtein = LevenshteinDistance.getDefaultInstance();
-    private static final double RANGE_IN_PERCENT = 40;
-    private static final double PERCENT_FACTOR = RANGE_IN_PERCENT / 100;
+    private static final double PERCENT_FACTOR = 0.40;
 
-    public String match(List<String> options, String target) {
+    public T match(List<T> options, String target, Function<T, String> getTargetAttr) {
         String normalizedTarget = replaceUmlaute(target);
-        List<String> filteredOptions = filterByLengthThreshold(options, normalizedTarget);
+        List<T> filteredOptions = filterByLengthThreshold(options, target, getTargetAttr);
 
         if (filteredOptions.isEmpty()) {
             throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
                                                    "No valid option found within acceptable range"));
         }
 
-        List<String> sorted = filteredOptions
-                .stream()
-                .sorted(Comparator.comparingInt(name -> calculateDistance(replaceUmlaute(name), normalizedTarget)))
-                .toList();
+        List<Match<T>> sortedOptions = filteredOptions.stream().map(option -> {
+            String attr = getTargetAttr.apply(option);
+            String normalizedAttr = replaceUmlaute(attr);
+            int distance = calculateDistance(normalizedAttr, normalizedTarget);
+            return new Match<>(option, distance, attr);
+        }).sorted(Comparator.comparingInt(Match::distance)).toList();
 
-        String first = sorted.getFirst();
+        Match<T> firstMatch = sortedOptions.getFirst();
 
-        if (calculateDistance(first, normalizedTarget) > 40) {
+        if (calculateDistance(firstMatch.originalAttr(), normalizedTarget) > 40) {
             throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
                                                    "Levenshtein distance is too large to be a valid insert"));
         }
 
-        if (filteredOptions.size() == 1) {
-            return first;
+        if (sortedOptions.size() == 1) {
+            return firstMatch.option();
         }
 
-        String second = sorted.get(1);
+        Match<T> secondMatch = sortedOptions.get(1);
 
-        if (Objects.equals(calculateDistance(first, target), calculateDistance(second, target))) {
+        int distanceFirst = calculateDistance(firstMatch.originalAttr(), target);
+        int distanceSecond = calculateDistance(secondMatch.originalAttr(), target);
+
+        if (distanceFirst == distanceSecond) {
             throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
                                                    "Two options are equally close to target"));
         }
 
-        return first;
+        return firstMatch.option();
     }
 
-    private Integer calculateDistance(String dtoName, String name) {
-        Integer distance = this.levenshtein.apply(dtoName.toLowerCase(), name.toLowerCase());
+    private int calculateDistance(String dtoName, String name) {
+        int distance = this.levenshtein.apply(dtoName.toLowerCase(), name.toLowerCase());
         logger.info("Input name: {}, Actual name: {}, Distance: {}", name, dtoName, distance);
-
         return distance;
     }
 
     private String replaceUmlaute(String input) {
+        if (input == null) {
+            return null;
+        }
         return input
                 .replace("ä", "ae")
                 .replace("ö", "oe")
@@ -71,12 +77,19 @@ public class MatchingService {
                 .replace("Ü", "Ue");
     }
 
-    private List<String> filterByLengthThreshold(List<String> list, String normalizedTarget) {
-        double adjustment = normalizedTarget.length() * PERCENT_FACTOR;
+    private List<T> filterByLengthThreshold(List<T> list, String target, Function<T, String> getTargetAttr) {
+        int targetLength = target.length();
+        double adjustment = targetLength * PERCENT_FACTOR;
+        double lower = targetLength - adjustment;
+        double upper = targetLength + adjustment;
 
-        double lower = normalizedTarget.length() - adjustment;
-        double upper = lower + adjustment * 2;
+        return list.stream().filter(option -> {
+            int optionLength = getTargetAttr.apply(option).length();
+            return optionLength >= lower && optionLength <= upper;
+        }).toList();
+    }
 
-        return list.stream().filter(option -> option.length() >= lower && option.length() <= upper).toList();
+
+    private record Match<T>(T option, int distance, String originalAttr) {
     }
 }
