@@ -12,6 +12,9 @@ import {
   CertificateOverviewComponent
 } from './features/certificates/certificate-overview/certificate-overview.component';
 import { certificateTypeResolver } from './features/certificates/certificate-type.resolver';
+import {
+  certificateOverviewResolver
+} from './features/certificates/certificate-overview/certificate-detail-view/certificate-overview.resolver';
 
 export const routes: Routes = [
   {
@@ -59,8 +62,10 @@ export const routes: Routes = [
     providers: [provideI18nPrefix('CERTIFICATE')],
     component: CertificateOverviewComponent,
     canActivate: [authGuard('user')],
+    runGuardsAndResolvers: 'paramsOrQueryParamsChange',
     resolve: {
-      certificates: certificateTypeResolver
+      certificates: certificateTypeResolver,
+      searchTerm: certificateOverviewResolver
     }
   },
   {
