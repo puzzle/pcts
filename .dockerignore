@@ -3,3 +3,6 @@ frontend/coverage
 frontend/.angular
 frontend/dist
 frontend/.pnpm-store
+**/target
+.git
+.idea
