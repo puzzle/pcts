@@ -64,7 +64,7 @@
     "@cspell/eslint-plugin": "^10.0.0",
     "@html-eslint/eslint-plugin": "^0.66.0",
     "@stylistic/eslint-plugin": "^5.2.3",
-    "@types/jasmine": "~6.0.0",
+    "@types/jasmine": "~7.0.0",
     "@types/jest": "^30.0.0",
     "@types/luxon": "^3.7.1",
     "angular-eslint": "^22.0.0",
