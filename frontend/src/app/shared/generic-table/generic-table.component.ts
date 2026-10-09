@@ -74,8 +74,6 @@ export class GenericTableComponent<T extends object, K extends keyof T = keyof T
 
   entrySelected = output<T>();
 
-  isFilterApplied = computed(() => this.dataSource().filteredData.length !== this.dataSource().data.length || this.isExpanded());
-
   rowDetailTemplate = contentChild(RowDetailTemplateDirective);
 
   isRowExpansionEnabled = computed(() => !!this.rowDetailTemplate() && this.idAttr());

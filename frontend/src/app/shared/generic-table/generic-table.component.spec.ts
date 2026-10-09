@@ -109,16 +109,16 @@ describe('GenericTableComponent', () => {
     });
 
     it('should detect if filter is applied', () => {
-      expect(component.isFilterApplied())
+      expect(component.displayExpansionButton())
         .toBe(false);
 
       component.isExpanded.set(true);
-      expect(component.isFilterApplied())
+      expect(component.displayExpansionButton())
         .toBe(true);
       component.isExpanded.set(false);
 
       dataSource.filteredData = [degreeOverviewList[0]];
-      expect(component.isFilterApplied())
+      expect(component.displayExpansionButton())
         .toBe(true);
     });
   });
