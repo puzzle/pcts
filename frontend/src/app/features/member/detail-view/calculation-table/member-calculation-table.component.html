@@ -4,6 +4,6 @@
     <app-crud-button mode="add" />
   </div>
   @if (calculationTable(); as c){
-    <app-generic-table crudBasePath="calculation" idAttr="id" [dataSource]="c"/>
+    <app-generic-table crudBasePath="calculation" idAttr="id" [dataSource]="c" (entrySelected)="onClick($event)"/>
   }
 </div>
