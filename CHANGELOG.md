@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.13.1](https://github.com/puzzle/pcts/compare/0.13.0...0.13.1) (2026-10-09)
+
+
+### Miscellaneous Chores
+
+* **deps:** update all devdependencies (minor and patch) ([#943](https://github.com/puzzle/pcts/issues/943)) ([dbc5c5a](https://github.com/puzzle/pcts/commit/dbc5c5a3f55aa164ec225700dccf35a64f935c02))
+* **deps:** update all devdependencies (minor and patch) ([#953](https://github.com/puzzle/pcts/issues/953)) ([5ce3bc8](https://github.com/puzzle/pcts/commit/5ce3bc855aa24395c55abda67fe30d6e04cd5365))
+* **deps:** update angular monorepo to v22.2.1 ([#947](https://github.com/puzzle/pcts/issues/947)) ([41eb28b](https://github.com/puzzle/pcts/commit/41eb28b8466c3ec1b4ecad53cf12cfc5bd87ea3f))
+* **deps:** update angularmaterial monorepo to v22.2.1 ([#948](https://github.com/puzzle/pcts/issues/948)) ([63f8d30](https://github.com/puzzle/pcts/commit/63f8d3020be5825669aec030b1bce381d28215f7))
+* **deps:** update cypress-io/github-action action to v7.4.6 ([#942](https://github.com/puzzle/pcts/issues/942)) ([6ba3a5b](https://github.com/puzzle/pcts/commit/6ba3a5b4956485eb5cc4d0c140d43155dac70ae3))
+* **deps:** update dependency @types/jasmine to v7 ([39f61f1](https://github.com/puzzle/pcts/commit/39f61f15e209eb451b4a3ae5f6e908c9dc877cd5))
+* **deps:** update dependency eslint to v10.12.0 ([#949](https://github.com/puzzle/pcts/issues/949)) ([09415a9](https://github.com/puzzle/pcts/commit/09415a94717bf4a5ac659f1f30aab1c189e8f4f2))
+* **deps:** update dependency maven to v3.10.0 ([#950](https://github.com/puzzle/pcts/issues/950)) ([6e89d8d](https://github.com/puzzle/pcts/commit/6e89d8d9274e88a43580f6e1a164d8340c70f26f))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v13.9.0 ([#951](https://github.com/puzzle/pcts/issues/951)) ([228f6fe](https://github.com/puzzle/pcts/commit/228f6fe472e3d75fa7c8c21b3ba65516915d6154))
+* **deps:** update pnpm to v12.9.1 ([#952](https://github.com/puzzle/pcts/issues/952)) ([379c3de](https://github.com/puzzle/pcts/commit/379c3de2d2d1550d61775b085c21f86e0cf429e0))
+
 ## [0.13.0](https://github.com/puzzle/pcts/compare/0.12.0...0.13.0) (2026-10-05)
 
 
