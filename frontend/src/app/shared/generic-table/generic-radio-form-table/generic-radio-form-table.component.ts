@@ -1,10 +1,13 @@
-import { Component, effect, input, output } from '@angular/core';
+import { Component, effect, input, model, output } from '@angular/core';
 import { ColumnTemplateDirective } from '../column-template/column-template.directive';
 import { GenericTableComponent } from '../generic-table.component';
 import { ScopedTranslationPipe } from '../../pipes/scoped-translation-pipe';
 import { GenericTableDataSource } from '../generic-table-data-source';
 import { MatRadioButton } from '@angular/material/radio';
 import { Relevancy } from '../../../features/calculations/relevancy.enum';
+import { RadioFormTableResponse } from './radio-form-table-response.model';
+import { FormValueControl } from '@angular/forms/signals';
+import { experienceCalculation1 } from '../../test/test-data';
 
 @Component({
   imports: [
@@ -18,8 +21,13 @@ import { Relevancy } from '../../../features/calculations/relevancy.enum';
   templateUrl: './generic-radio-form-table.component.html'
 })
 
-export class GenericRadioFormTableComponent<T extends object> {
-  data = input.required<T[]>();
+export class GenericRadioFormTableComponent<T extends object> implements FormValueControl<RadioFormTableResponse<T>[]> {
+  protected readonly Relevancy = Relevancy;
+
+  value = model<RadioFormTableResponse<T>[]>([{
+    row: experienceCalculation1 as T,
+    relevancy: Relevancy.NORMAL
+  }]);
 
   table = input.required<GenericTableDataSource<T>>();
 
@@ -28,14 +36,17 @@ export class GenericRadioFormTableComponent<T extends object> {
 
   constructor() {
     effect(() => {
-      const dataValue = this.data();
+      const dataValue = this.value()
+        .map((entry) => entry.row);
       if (dataValue) {
         this.table().data = dataValue;
       }
     });
   }
 
-  protected readonly Relevancy = Relevancy;
+  shouldBeChecked(row: { relevancy: Relevancy }, relevancy: Relevancy): boolean {
+    return row.relevancy === relevancy;
+  }
 }
 
 
