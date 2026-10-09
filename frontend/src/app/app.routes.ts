@@ -13,8 +13,8 @@ import {
 } from './features/certificates/certificate-overview/certificate-overview.component';
 import { certificateTypeResolver } from './features/certificates/certificate-type.resolver';
 import {
-  certificateOverviewResolver
-} from './features/certificates/certificate-overview/certificate-detail-view/certificate-overview.resolver';
+  filterResolver
+} from './features/certificates/certificate-overview/certificate-detail-view/filter.resolver';
 
 export const routes: Routes = [
   {
@@ -65,7 +65,7 @@ export const routes: Routes = [
     runGuardsAndResolvers: 'paramsOrQueryParamsChange',
     resolve: {
       certificates: certificateTypeResolver,
-      searchTerm: certificateOverviewResolver
+      searchTerm: filterResolver
     }
   },
   {
