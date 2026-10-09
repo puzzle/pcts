@@ -12,6 +12,9 @@ import {
   CertificateOverviewComponent
 } from './features/certificates/certificate-overview/certificate-overview.component';
 import { certificateTypeResolver } from './features/certificates/certificate-type.resolver';
+import {
+  CalculationDetailViewComponent
+} from './features/calculations/calculation-detail-view.component/calculation-detail-view.component';
 
 export const routes: Routes = [
   {
@@ -39,11 +42,20 @@ export const routes: Routes = [
       },
       {
         path: ':id',
-        component: MemberDetailViewComponent,
         canActivate: [authGuard('selfOrAdmin')],
-        resolve:
-        { memberId: memberIdResolver,
-          tabIndex: tabResolver }
+        children: [{
+          path: '',
+          component: MemberDetailViewComponent,
+          resolve:
+              { memberId: memberIdResolver,
+                tabIndex: tabResolver }
+        },
+        {
+          path: 'calculation/:id',
+          providers: [provideI18nPrefix('CALCULATION')],
+          canActivate: [authGuard('selfOrAdmin')],
+          component: CalculationDetailViewComponent
+        }]
       },
       {
         path: ':id/edit',
