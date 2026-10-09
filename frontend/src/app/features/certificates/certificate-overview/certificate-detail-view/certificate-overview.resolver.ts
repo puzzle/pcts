@@ -1,5 +1,6 @@
-import { ActivatedRouteSnapshot, ResolveFn } from '@angular/router';
+import { ResolveFn } from '@angular/router';
 
-export const certificateOverviewResolver: ResolveFn<string | null> = (route: ActivatedRouteSnapshot) => {
-  return route.queryParamMap.get('q');
+export const certificateOverviewResolver: ResolveFn<{ textSearch: string } | null> = (route) => {
+  const search = route.queryParamMap.get('q');
+  return search ? { textSearch: search } : null;
 };
