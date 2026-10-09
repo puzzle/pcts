@@ -15,6 +15,7 @@ describe('CertificateOverviewComponent', () => {
 
     fixture = TestBed.createComponent(CertificateOverviewComponent);
     fixture.componentRef.setInput('certificates', []);
+    fixture.componentRef.setInput('searchTerm', 'aws');
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
