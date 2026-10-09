@@ -59,6 +59,8 @@ export class CertificateOverviewComponent {
 
   certificates = input.required<CertificateTypeModel[]>();
 
+  searchTerm = input.required<string | null>();
+
   table = getCertificateOverviewTable();
 
   searchControl = new FormControl('');
@@ -72,12 +74,8 @@ export class CertificateOverviewComponent {
       }
     });
 
-    this.route.queryParams.subscribe((params) => {
-      if (params['q'] !== undefined) {
-        const searchText = decodeURIComponent(params['q']);
-        this.searchControl.setValue(searchText, { emitEvent: false });
-        this.applyFilterString();
-      }
+    effect(() => {
+      this.searchControl.setValue(this.searchTerm());
     });
 
     this.searchControl.valueChanges
