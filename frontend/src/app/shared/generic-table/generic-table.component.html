@@ -96,7 +96,7 @@
     {{ getDisplayValue(col, entity) }}
   </ng-template>
 
-  @if (displayExpansionButton()) {
+  @if (areEntriesCut()) {
     <div class="d-flex justify-content-center mt-2" *appTranslationScope="'TABLE'">
       <button
         data-testid="limit-list-button"

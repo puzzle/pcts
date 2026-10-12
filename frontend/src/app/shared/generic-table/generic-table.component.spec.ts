@@ -109,12 +109,12 @@ describe('GenericTableComponent', () => {
     });
 
     it('should detect if filter is applied', () => {
-      expect(component.displayExpansionButton())
+      expect(component.areEntriesCut())
         .toBe(false);
 
       dataSource.hasMoreEntriesToDisplay.set(true);
 
-      expect(component.displayExpansionButton())
+      expect(component.areEntriesCut())
         .toBe(true);
       dataSource.hasMoreEntriesToDisplay.set(false);
     });
