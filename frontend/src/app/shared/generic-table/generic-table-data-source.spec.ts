@@ -102,9 +102,9 @@ describe('GenericTableDataSource', () => {
 
   it('should apply custom filter predicate with index', () => {
     const ds = new GenericTableDataSource(columns, data)
-      .withCustomFilterPredicate((item, _filter, index) => index === 1);
+      .withCustomFilterPredicate((item, _filter) => item.name.startsWith(_filter));
 
-    ds.filter = 'test';
+    ds.filter = 'B';
     ds._updateChangeSubscription();
 
     expect(ds.filteredData.length)
