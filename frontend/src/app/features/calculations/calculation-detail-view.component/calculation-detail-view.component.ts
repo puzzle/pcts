@@ -18,7 +18,7 @@ import { Relevancy } from '../relevancy.enum';
   templateUrl: './calculation-detail-view.component.html'
 })
 export class CalculationDetailViewComponent {
-  private memberService = inject(MemberService);
+  private readonly memberService = inject(MemberService);
 
   experienceCalculationModels: ExperienceCalculationModel[] = [];
 

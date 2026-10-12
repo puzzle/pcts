@@ -18,7 +18,7 @@ import { CalculationModel } from '../../../calculations/calculation.model';
 export class MemberCalculationTableComponent {
   private readonly memberService = inject(MemberService);
 
-  private router = inject(Router);
+  private readonly router = inject(Router);
 
   memberId = input.required<number>();
 
