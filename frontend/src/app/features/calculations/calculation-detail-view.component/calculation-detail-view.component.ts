@@ -63,11 +63,10 @@ export class CalculationDetailViewComponent {
     })
   ];
 
-  changeData(object: { row: ExperienceCalculationModel;
-    value: Relevancy; }) {
+  changeData(object: RadioFormTableResponse<ExperienceCalculationModel>) {
     const row = object.row;
 
-    const value = object.value;
+    const value = object.relevancy;
 
     this.experienceCalculationModels.forEach((experienceCalculation) => {
       if (experienceCalculation.id === row.id) {
