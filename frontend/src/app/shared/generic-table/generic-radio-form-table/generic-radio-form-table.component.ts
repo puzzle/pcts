@@ -7,7 +7,6 @@ import { MatRadioButton } from '@angular/material/radio';
 import { Relevancy } from '../../../features/calculations/relevancy.enum';
 import { RadioFormTableResponse } from './radio-form-table-response.model';
 import { FormValueControl } from '@angular/forms/signals';
-import { experienceCalculation1 } from '../../test/test-data';
 
 @Component({
   imports: [
@@ -24,22 +23,18 @@ import { experienceCalculation1 } from '../../test/test-data';
 export class GenericRadioFormTableComponent<T extends object> implements FormValueControl<RadioFormTableResponse<T>[]> {
   protected readonly Relevancy = Relevancy;
 
-  value = model<RadioFormTableResponse<T>[]>([{
-    row: experienceCalculation1 as T,
-    relevancy: Relevancy.NORMAL
-  }]);
+  value = model<RadioFormTableResponse<T>[]>([]);
 
   table = input.required<GenericTableDataSource<T>>();
 
-  handleRadioButtonClick = output<{ row: T;
-    value: Relevancy; }>();
+  handleRadioButtonClick = output<RadioFormTableResponse<T>>();
 
   constructor() {
     effect(() => {
-      const dataValue = this.value()
-        .map((entry) => entry.row);
-      if (dataValue) {
-        this.table().data = dataValue;
+      const value = this.value();
+      if (value) {
+        this.table().data = value
+          .map((entry) => entry.row);
       }
     });
   }
