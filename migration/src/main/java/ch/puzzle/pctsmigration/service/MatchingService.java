@@ -20,7 +20,6 @@ public class MatchingService<T> {
     private static final int MAX_DISTANCE = 40;
 
     public T match(List<T> options, String target, Function<T, String> getTargetAttr) {
-        String normalizedTarget = replaceUmlaute(target);
         List<T> filteredOptions = filterByLengthThreshold(options, target, getTargetAttr);
 
         if (filteredOptions.isEmpty()) {
@@ -30,14 +29,13 @@ public class MatchingService<T> {
 
         List<Match<T>> sortedOptions = filteredOptions.stream().map(option -> {
             String attr = getTargetAttr.apply(option);
-            String normalizedAttr = replaceUmlaute(attr);
-            int distance = calculateDistance(normalizedAttr, normalizedTarget);
+            int distance = calculateDistance(attr, target);
             return new Match<>(option, distance, attr);
         }).sorted(Comparator.comparingInt(Match::distance)).toList();
 
         Match<T> firstMatch = sortedOptions.getFirst();
 
-        if (calculateDistance(firstMatch.originalAttr(), normalizedTarget) > MAX_DISTANCE) {
+        if (calculateDistance(firstMatch.originalAttr(), target) > MAX_DISTANCE) {
             throw new MigrationException(new Error(HttpStatus.BAD_REQUEST,
                                                    "Levenshtein distance is too large to be a valid insert"));
         }
@@ -60,7 +58,7 @@ public class MatchingService<T> {
     }
 
     private int calculateDistance(String dtoName, String name) {
-        int distance = this.levenshtein.apply(dtoName.toLowerCase(), name.toLowerCase());
+        int distance = this.levenshtein.apply(replaceUmlaute(dtoName.toLowerCase()), replaceUmlaute(name.toLowerCase()));
         logger.info("Input name: {}, Actual name: {}, Distance: {}", name, dtoName, distance);
         return distance;
     }
