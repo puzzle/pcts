@@ -5,6 +5,7 @@ import { MemberService } from '../../member.service';
 import { CalculationModel } from '../../../calculations/calculation.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import Mocked = jest.Mocked;
+import { calculation1 } from '../../../../shared/test/test-data';
 
 describe('MemberCalculationTableComponent (Jest)', () => {
   let component: MemberCalculationTableComponent;
@@ -95,5 +96,29 @@ describe('MemberCalculationTableComponent (Jest)', () => {
       .toHaveBeenCalledWith(5, 10);
     expect(component.calculationTable().data)
       .toEqual(newData);
+  });
+
+
+  it('should navigate on click', async() => {
+    memberServiceMock.getCalculationsByMemberIdAndOptionalRoleId?.mockReturnValue(of([]));
+    fixture.componentRef.setInput('memberId', 5);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    memberServiceMock.getCalculationsByMemberIdAndOptionalRoleId?.mockReturnValue(of([calculation1]));
+
+    fixture.componentRef.setInput('roleId', 10);
+    fixture.detectChanges();
+
+    await fixture.whenStable();
+    component.onClick(calculation1);
+
+    expect(routerMock.navigate)
+      .toHaveBeenCalledWith([
+        '/member',
+        5,
+        'calculation',
+        calculation1.id
+      ]);
   });
 });
