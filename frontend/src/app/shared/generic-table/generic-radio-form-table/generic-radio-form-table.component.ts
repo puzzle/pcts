@@ -20,7 +20,7 @@ import { FormValueControl } from '@angular/forms/signals';
   templateUrl: './generic-radio-form-table.component.html'
 })
 
-export class GenericRadioFormTableComponent<T extends object> implements FormValueControl<RadioFormTableResponse<T>[]> {
+export class GenericRadioFormTableComponent<T extends { relevancy: Relevancy }> implements FormValueControl<RadioFormTableResponse<T>[]> {
   protected readonly Relevancy = Relevancy;
 
   value = model<RadioFormTableResponse<T>[]>([]);
@@ -39,7 +39,7 @@ export class GenericRadioFormTableComponent<T extends object> implements FormVal
     });
   }
 
-  shouldBeChecked(row: { relevancy: Relevancy }, relevancy: Relevancy): boolean {
+  shouldBeChecked(row: T, relevancy: Relevancy): boolean {
     return row.relevancy === relevancy;
   }
 }
