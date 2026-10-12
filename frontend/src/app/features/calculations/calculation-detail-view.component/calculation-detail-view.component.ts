@@ -25,6 +25,7 @@ export class CalculationDetailViewComponent {
   protected formControl = new FormControl();
 
   constructor() {
+    // Todo: Implement calculation service then fetch from calculation id instead of going over member service
     this.memberService.getCalculationsByMemberIdAndOptionalRoleId(1)
       .subscribe((response) => {
         response.forEach((result) => {
