@@ -18,6 +18,7 @@ import sortingDataAccessor from '../../../shared/utils/sortingDataAccessor';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
 import { filterMultipleFields } from '../../../shared/utils/typeFilter';
+import { InfoIconComponent } from '../../../shared/icon-tooltip/info-icon/info-icon.component';
 
 
 @Component({
@@ -36,7 +37,8 @@ import { filterMultipleFields } from '../../../shared/utils/typeFilter';
     TranslatePipe,
     RouterLink,
     ScopedTranslationPipe,
-    CrudButtonComponent
+    CrudButtonComponent,
+    InfoIconComponent
   ],
   templateUrl: './member-overview.component.html',
   styleUrl: './member-overview.component.scss'

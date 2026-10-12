@@ -127,6 +127,11 @@
     "EMPLOYMENT_STATE": "Anstellungsstatus",
     "ATTRIBUTE_NULL": "-",
     "PERSONAL_DETAILS": "Personalien",
+    "OVERVIEW": {
+      "SEARCH": {
+        "INFO": "Member durch die Suchleiste suchen"
+      }
+    },
     "EMPLOYMENT_STATUS_VALUES": {
       "MEMBER": "Member",
       "APPLICANT": "Bewerber",
