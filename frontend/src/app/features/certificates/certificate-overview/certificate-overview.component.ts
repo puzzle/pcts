@@ -1,5 +1,5 @@
 import { Component, effect, inject, input } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';
@@ -15,15 +15,16 @@ import { CertificateTypeModel } from '../certificate-type/certificate-type.model
 import { CertificateTypeTagsComponent } from '../certificate-type-tags/certificate-type-tags.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { filterMultipleFields } from '../../../shared/utils/typeFilter';
+import { CertificateFilter } from './certificate-detail-view/certificateFilter';
 
 const getCertificateOverviewTable = () => new GenericTableDataSource(getCertificateOverviewColumns())
   .withDetailViewLink()
   .withLimit(3)
   .withCustomFilterPredicate((cert: CertificateTypeModel, filter: string) => {
     const filterValues = JSON.parse(filter);
-    const searchTxt = (filterValues.text || '').toLowerCase();
+    const textSearch = (filterValues.textSearch || '').toLowerCase();
 
-    return filterMultipleFields(cert, searchTxt, ['name',
+    return filterMultipleFields(cert, textSearch, ['name',
       'publisher',
       'points']);
   });
@@ -59,11 +60,13 @@ export class CertificateOverviewComponent {
 
   certificates = input.required<CertificateTypeModel[]>();
 
-  searchTerm = input.required<{ textSearch: string } | null>();
+  filter = input.required<CertificateFilter>();
 
   table = getCertificateOverviewTable();
 
-  searchControl = new FormControl('');
+  filterFormGroup = new FormGroup({
+    textSearch: new FormControl<string>('')
+  });
 
   constructor() {
     effect(() => {
@@ -71,33 +74,31 @@ export class CertificateOverviewComponent {
     });
 
     effect(() => {
-      const currentSearch = this.searchTerm()?.textSearch ?? '';
+      const currentSearch = this.filter() ?? '';
 
-      if (this.searchControl.value !== currentSearch) {
-        this.searchControl.setValue(currentSearch, { emitEvent: false });
+      if (this.filterFormGroup.getRawValue() !== currentSearch) {
+        this.filterFormGroup.setValue(currentSearch);
       }
 
-      this.applyFilter({ textSearch: currentSearch });
+      this.applyFilter(currentSearch);
     });
 
-    this.searchControl.valueChanges
+    this.filterFormGroup.valueChanges
       .pipe(debounceTime(300))
-      .subscribe((value) => {
-        this.updateUrl({ textSearch: value ?? '' });
+      .subscribe((textSearch) => {
+        this.updateUrl(textSearch);
       });
   }
 
-  private applyFilter(filter: { textSearch: string }): void {
-    this.table.filter = JSON.stringify({
-      text: filter.textSearch
-    });
+  private applyFilter(filter: CertificateFilter): void {
+    this.table.filter = JSON.stringify(filter);
   }
 
-  private updateUrl(queries: { textSearch: string }): void {
+  private updateUrl(queries: Partial<CertificateFilter>): void {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        q: queries.textSearch || null
+        q: queries.textSearch
       },
       queryParamsHandling: 'merge',
       replaceUrl: true

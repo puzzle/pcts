@@ -14,7 +14,7 @@ import {
 import { certificateTypeResolver } from './features/certificates/certificate-type.resolver';
 import {
   filterResolver
-} from './features/certificates/certificate-overview/certificate-detail-view/filter.resolver';
+} from './shared/utils/filter.resolver';
 
 export const routes: Routes = [
   {
@@ -65,7 +65,7 @@ export const routes: Routes = [
     runGuardsAndResolvers: 'paramsOrQueryParamsChange',
     resolve: {
       certificates: certificateTypeResolver,
-      searchTerm: filterResolver
+      filter: filterResolver
     }
   },
   {
