@@ -16,6 +16,8 @@ import { CertificateTypeTagsComponent } from '../certificate-type-tags/certifica
 import { ActivatedRoute, Router } from '@angular/router';
 import { filterMultipleFields } from '../../../shared/utils/typeFilter';
 import { CertificateFilter } from './certificateFilter';
+import { MatOption, MatSelect, MatSelectTrigger } from '@angular/material/select';
+import { MatChipGrid, MatChipRemove, MatChipRow } from '@angular/material/chips';
 import { InfoIconComponent } from '../../../shared/icon-tooltip/info-icon/info-icon.component';
 
 const getCertificateOverviewTable = () => new GenericTableDataSource<CertificateTypeModel, CertificateFilter>(getCertificateOverviewColumns())
@@ -48,8 +50,15 @@ const getCertificateOverviewColumns = (): GenCol<CertificateTypeModel>[] => [
     CertificateDetailViewComponent,
     CertificateTypeTagsComponent,
     InfoIconComponent
+    CertificateTypeTagsComponent,
+    MatSelect,
+    MatSelectTrigger,
+    MatOption,
+    MatChipGrid,
+    MatChipRow,
+    MatChipRemove
   ],
-  selector: 'app-certificate.component',
+  selector: 'app-certificate',
   templateUrl: './certificate-overview.component.html'
 })
 export class CertificateOverviewComponent {
@@ -66,6 +75,18 @@ export class CertificateOverviewComponent {
   filterFormGroup = new FormGroup({
     textSearch: new FormControl<string>('')
   });
+
+  tagControl = new FormControl<string[] | null>([]);
+
+  // todo this is temporary data for development
+  tags: string[] = [
+    'Extra cheese',
+    'Mushroom',
+    'Onion',
+    'Pepperoni',
+    'Sausage',
+    'Tomato'
+  ];
 
   constructor() {
     effect(() => {
@@ -96,6 +117,12 @@ export class CertificateOverviewComponent {
 
   private applyFilter(filter: CertificateFilter): void {
     this.table.setFilter(filter);
+  }
+
+  protected removeTag(tag: string): void {
+    const selectedTags = this.tagControl.value;
+
+    this.tagControl.setValue(selectedTags?.filter((selectedTag) => selectedTag !== tag) || []);
   }
 
   private updateUrl(filter: Partial<CertificateFilter>): void {
