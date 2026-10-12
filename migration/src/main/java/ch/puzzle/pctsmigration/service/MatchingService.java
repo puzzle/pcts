@@ -9,7 +9,7 @@ import java.util.function.Function;
 import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,7 +23,7 @@ public class MatchingService<T> {
         List<T> filteredOptions = filterByLengthThreshold(options, target, getTargetAttr);
 
         if (filteredOptions.isEmpty()) {
-            throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
+            throw new MigrationException(new Error(HttpStatus.BAD_REQUEST,
                                                    "No valid option found within acceptable range"));
         }
 
@@ -37,7 +37,7 @@ public class MatchingService<T> {
         Match<T> firstMatch = sortedOptions.getFirst();
 
         if (calculateDistance(firstMatch.originalAttr(), normalizedTarget) > 40) {
-            throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
+            throw new MigrationException(new Error(HttpStatus.BAD_REQUEST,
                                                    "Levenshtein distance is too large to be a valid insert"));
         }
 
@@ -51,7 +51,7 @@ public class MatchingService<T> {
         int distanceSecond = calculateDistance(secondMatch.originalAttr(), target);
 
         if (distanceFirst == distanceSecond) {
-            throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
+            throw new MigrationException(new Error(HttpStatus.BAD_REQUEST,
                                                    "Two options are equally close to target"));
         }
 
