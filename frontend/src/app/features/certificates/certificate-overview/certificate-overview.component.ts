@@ -67,36 +67,37 @@ export class CertificateOverviewComponent {
 
   constructor() {
     effect(() => {
-      const certs = this.certificates();
-      if (certs) {
-        this.table.data = certs;
-        this.applyFilterString();
-      }
+      this.table.data = this.certificates();
     });
 
     effect(() => {
-      this.searchControl.setValue(this.searchTerm()?.textSearch ?? '');
+      const currentSearch = this.searchTerm()?.textSearch ?? '';
+
+      if (this.searchControl.value !== currentSearch) {
+        this.searchControl.setValue(currentSearch, { emitEvent: false });
+      }
+
+      this.applyFilter({ textSearch: currentSearch });
     });
 
     this.searchControl.valueChanges
       .pipe(debounceTime(300))
-      .subscribe(() => {
-        this.applyFilterString();
-        this.updateUrl();
+      .subscribe((value) => {
+        this.updateUrl({ textSearch: value ?? '' });
       });
   }
 
-  private applyFilterString(): void {
+  private applyFilter(filter: { textSearch: string }): void {
     this.table.filter = JSON.stringify({
-      text: this.searchControl.value ?? ''
+      text: filter.textSearch
     });
   }
 
-  private updateUrl(): void {
+  private updateUrl(queries: { textSearch: string }): void {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        q: this.searchControl.value || null
+        q: queries.textSearch || null
       },
       queryParamsHandling: 'merge',
       replaceUrl: true
