@@ -26,7 +26,8 @@ public class CertificateExtractionPipeline
     private final MatchingService<CertificateTypeDto> matchingService;
 
     public CertificateExtractionPipeline(CertificateTypeService certificateTypeService, MemberService memberService,
-                                         CertificateService certificateService, MatchingService<CertificateTypeDto> matchingService) {
+                                         CertificateService certificateService,
+                                         MatchingService<CertificateTypeDto> matchingService) {
         this.certificateTypeService = certificateTypeService;
         this.memberService = memberService;
         this.certificateService = certificateService;
@@ -84,7 +85,7 @@ public class CertificateExtractionPipeline
 
         CertificateTypeDto closestDto = this.matchingService.match(dtos, name, getTargetAttr);
 
-        if (closestDto != null && closestDto.getName().equals(name)) {
+        if (closestDto != null) {
             return Optional.of(closestDto.getId());
         }
         return Optional.empty();

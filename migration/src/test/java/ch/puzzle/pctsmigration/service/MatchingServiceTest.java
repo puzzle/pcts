@@ -21,16 +21,17 @@ class MatchingServiceTest {
     @ParameterizedTest
     @MethodSource("generateData")
     void shouldFindMatchingEntities(List<String> options, String target, String expected) {
-        String result = matchingService.match(options, target);
+        Object result = matchingService.match(options, target, Object::toString);
 
-        Assertions.assertEquals(expected, result);
+        Assertions.assertEquals(expected, result.toString());
 
     }
 
     @ParameterizedTest
     @MethodSource("generateInvalidData")
     void shouldThrowOnInvalidEntities(List<String> options, String target) {
-        Assertions.assertThrows(MigrationException.class, () -> matchingService.match(options, target));
+        Assertions
+                .assertThrows(MigrationException.class, () -> matchingService.match(options, target, Object::toString));
     }
 
     private static Stream<Arguments> generateData() {

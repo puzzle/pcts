@@ -91,16 +91,14 @@ class CertificateExtractionPipelineTest {
         when(wrapper.items()).thenReturn(List.of(aiResult));
 
         CertificateTypeDto wrongType = mock(CertificateTypeDto.class);
-        when(wrongType.getName()).thenReturn("Java Developer");
 
         CertificateTypeDto correctClosestType = mock(CertificateTypeDto.class);
-        when(correctClosestType.getName()).thenReturn("Scrum Master");
         when(correctClosestType.getId()).thenReturn(12L);
 
         when(memberService.getMemberIdBy("AW")).thenReturn(expectedMemberId);
         when(certificateTypeService.getCertificateTypes()).thenReturn(List.of(wrongType, correctClosestType));
 
-        when(matchingService.match(anyList(), anyString())).thenReturn("Scrum Master");
+        when(matchingService.match(anyList(), anyString(), any())).thenReturn(correctClosestType);
 
         List<CertificateInputDto> result = pipeline.mapToDto(filename, wrapper);
 

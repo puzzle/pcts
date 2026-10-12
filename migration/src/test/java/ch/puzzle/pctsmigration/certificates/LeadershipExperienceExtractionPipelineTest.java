@@ -112,7 +112,7 @@ class LeadershipExperienceExtractionPipelineTest {
         when(leadershipExperienceTypeService.getLeadershipExperienceTypes())
                 .thenReturn(List.of(wrongType, correctClosestType));
 
-        when(matchingService.match(anyList(), anyString())).thenReturn("Offizier Militär");
+        when(matchingService.match(anyList(), anyString(), any())).thenReturn("Offizier Militär");
 
         List<LeadershipExperienceInputDto> result = pipeline.mapToDto(filename, wrapper);
 

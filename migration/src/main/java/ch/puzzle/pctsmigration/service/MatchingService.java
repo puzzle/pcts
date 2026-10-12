@@ -50,15 +50,15 @@ public class MatchingService<T> {
         int distanceSecond = calculateDistance(secondMatch.originalAttr(), target);
 
         if (distanceFirst == distanceSecond) {
-            throw new MigrationException(new Error(HttpStatus.BAD_REQUEST,
-                                                   "Two options are equally close to target"));
+            throw new MigrationException(new Error(HttpStatus.BAD_REQUEST, "Two options are equally close to target"));
         }
 
         return firstMatch.option();
     }
 
     private int calculateDistance(String dtoName, String name) {
-        int distance = this.levenshtein.apply(replaceUmlaute(dtoName.toLowerCase()), replaceUmlaute(name.toLowerCase()));
+        int distance = this.levenshtein
+                .apply(replaceUmlaute(dtoName.toLowerCase()), replaceUmlaute(name.toLowerCase()));
         logger.info("Input name: {}, Actual name: {}, Distance: {}", name, dtoName, distance);
         return distance;
     }
@@ -76,7 +76,8 @@ public class MatchingService<T> {
                 .replace("Ü", "Ue");
     }
 
-    // To improve performance, we filter out any option that is outside a certain percent range in length.
+    // To improve performance, we filter out any option that is outside a certain
+    // percent range in length.
     private List<T> filterByLengthThreshold(List<T> list, String target, Function<T, String> getTargetAttr) {
         int targetLength = target.length();
         double adjustment = targetLength * PERCENT_FACTOR;
@@ -88,7 +89,6 @@ public class MatchingService<T> {
             return optionLength >= lower && optionLength <= upper;
         }).toList();
     }
-
 
     private record Match<T>(T option, int distance, String originalAttr) {
     }

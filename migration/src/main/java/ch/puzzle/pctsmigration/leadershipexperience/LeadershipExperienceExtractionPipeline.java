@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import org.openapitools.client.model.CertificateTypeDto;
 import org.openapitools.client.model.LeadershipExperienceInputDto;
 import org.openapitools.client.model.LeadershipExperienceTypeDto;
 import org.springframework.stereotype.Component;
