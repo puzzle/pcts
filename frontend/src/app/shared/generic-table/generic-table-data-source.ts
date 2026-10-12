@@ -101,6 +101,10 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
 
     const hasMoreEntriesToDisplay = this._limit !== undefined && filteredEntries.length > this._limit;
 
+    /*
+     * Defer signal update to the next microtask to avoid
+     * conflicts with Angular's render process during template updates.
+     */
     Promise.resolve()
       .then(() => {
         this.hasMoreEntriesToDisplay.set(hasMoreEntriesToDisplay);
