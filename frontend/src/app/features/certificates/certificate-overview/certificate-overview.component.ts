@@ -77,7 +77,11 @@ export class CertificateOverviewComponent {
       const currentSearch = this.filter() ?? '';
 
       if (this.filterFormGroup.getRawValue() !== currentSearch) {
-        this.filterFormGroup.setValue(currentSearch);
+        /*
+         * We use `emitEvent: false` here because otherwise `valueChanges` would be executed again even though it has already run before.
+         * If you look at the entire workflow, it would go through the process twice.
+         */
+        this.filterFormGroup.setValue(currentSearch, { emitEvent: false });
       }
 
       this.applyFilter(currentSearch);
