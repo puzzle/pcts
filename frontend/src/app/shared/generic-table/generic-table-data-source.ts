@@ -38,7 +38,7 @@ export class GenCol<T> {
 }
 
 export class GenericTableDataSource<T> extends MatTableDataSource<T> {
-  private readonly _customPredicates: ((data: T, filter: string, index: number) => boolean)[] = [];
+  private readonly _customPredicates: ((data: T, filter: string) => boolean)[] = [];
 
   private _limit?: number;
 
@@ -71,7 +71,7 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
     return this;
   }
 
-  public withCustomFilterPredicate(predicate: (data: T, filter: string, index: number) => boolean) {
+  public withCustomFilterPredicate(predicate: (data: T, filter: string) => boolean) {
     this._customPredicates.push(predicate);
     return this;
   }
@@ -87,7 +87,17 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
   }
 
   override _filterData(data: T[]) { // eslint-disable-line @typescript-eslint/naming-convention
-    let filteredEntries = data.filter((obj: T, index: number) => this.filterPredicateWithIndex(obj, this.filter, index));
+    let filteredEntries = data.filter((obj: T) => {
+      if (this.filter == null || this.filter === '') {
+        return true;
+      }
+
+      if (this._customPredicates.length > 0) {
+        return this.filterCustomPredicates(obj, this.filter);
+      } else {
+        return this.filterPredicate(obj, this.filter);
+      }
+    });
 
     const hasMoreEntriesToDisplay = this._limit !== undefined && filteredEntries.length > this._limit;
 
@@ -95,6 +105,7 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
       .then(() => {
         this.hasMoreEntriesToDisplay.set(hasMoreEntriesToDisplay);
       });
+
     if (hasMoreEntriesToDisplay && !this._ignoreLimit) {
       filteredEntries = filteredEntries.slice(0, this._limit);
     }
@@ -107,17 +118,12 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
     return filteredEntries;
   }
 
-  filterPredicateWithIndex: (data: T, filter: string, index: number) => boolean = (data: T, filter: string, index: number) => {
-    if (this.filter == null || this.filter === '') {
-      return true;
-    }
-
+  private filterCustomPredicates(data: T, filter: string): boolean {
     if (this._customPredicates && this._customPredicates.length > 0) {
-      return this._customPredicates.every((predicate) => predicate(data, filter, index));
+      return this._customPredicates.every((predicate) => predicate(data, filter));
     }
-
-    return this.filterPredicate(data, filter);
-  };
+    return true;
+  }
 
   toggleIgnoreLimit() {
     this._ignoreLimit = !this._ignoreLimit;
