@@ -193,7 +193,7 @@
   "POST": "{{OBJECT}} wurde erfolgreich erstellt.",
   "PUT": "{{OBJECT}} wurde erfolgreich aktualisiert.",
   "DELETE": "{{OBJECT}} wurde erfolgreich gelöscht.",
-  "Object": "Objekt",
+  "OBJECT": "Objekt",
   "HIGHLY_RELEVANT": "Stark relevant",
   "LIMITED_RELEVANT": "Bedingt relevant",
   "LITTLE_RELEVANT": "Wenig relevant",
