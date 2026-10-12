@@ -129,7 +129,7 @@
     "PERSONAL_DETAILS": "Personalien",
     "OVERVIEW": {
       "SEARCH": {
-        "INFO": "Member durch die Suchleiste suchen"
+        "INFO": "Trennt mehrere Suchbegriffe durch Leerzeichen, um passende Mitglieder zu finden"
       }
     },
     "EMPLOYMENT_STATUS_VALUES": {
