@@ -131,4 +131,17 @@ describe('MemberOverviewComponent', () => {
         .should('contain.text', expectedDesc);
     });
   });
+
+  it('should test the icon is visible', () => {
+    cy.get('app-info-icon')
+      .should('be.visible');
+  });
+
+  it('should show the tooltip on hover', () => {
+    cy.get('app-info-icon mat-icon')
+      .trigger('mouseover');
+
+    cy.getByTestId('filter-info')
+      .should('be.visible');
+  });
 });
