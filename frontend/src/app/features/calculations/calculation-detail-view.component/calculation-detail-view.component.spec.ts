@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CalculationDetailViewComponent } from './calculation-detail-view.component';
 import { MemberService } from '../../member/member.service';
-import { calculation1, experienceCalculation1 } from '../../../shared/test/test-data';
+import { calculation1, experienceCalculation1, experienceCalculation2 } from '../../../shared/test/test-data';
 import { of } from 'rxjs';
 import { Relevancy } from '../relevancy.enum';
 
@@ -52,5 +52,17 @@ describe('CalculationDetailViewComponent', () => {
     const changedData = component.getTableData();
 
     expect(changedData).not.toEqual(tableData);
+  });
+
+  it('should not change table data on method call with argument which is not in table data', () => {
+    const tableData = component.getTableData();
+
+    component.changeData({ row: experienceCalculation2,
+      relevancy: Relevancy.NORMAL });
+
+    const changedData = component.getTableData();
+
+    expect(changedData.data)
+      .toEqual(tableData.data);
   });
 });
