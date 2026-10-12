@@ -86,7 +86,34 @@ describe('GenericTableDataSource', () => {
       .toEqual(newCols);
   });
 
-  it('should apply limit filter', () => {
+  it('should allow configuring sortedBy via withSortedBy', () => {
+    const ds = new GenericTableDataSource(columns, data)
+      .withSortedBy('name');
+
+    expect(ds.sortedBy)
+      .toBe('name');
+  });
+
+  it('should parse filterString from JSON filter', () => {
+    const ds = new GenericTableDataSource(columns, data);
+
+    ds.filter = JSON.stringify({ textSearch: 'test-query' });
+
+    expect(ds.filterString)
+      .toBe('test-query');
+  });
+
+  it('should return true for all elements when filter is empty or null', () => {
+    const ds = new GenericTableDataSource(columns, data);
+
+    ds.filter = '';
+    ds._updateChangeSubscription();
+
+    expect(ds.filteredData.length)
+      .toBe(3);
+  });
+
+  it('should apply limit filter and update hasMoreEntriesToDisplay signal', async() => {
     const ds = new GenericTableDataSource(columns, data)
       .withLimit(2);
 
@@ -98,22 +125,28 @@ describe('GenericTableDataSource', () => {
       .toBe(1);
     expect(ds.filteredData[1].id)
       .toBe(2);
+
+    await Promise.resolve();
+    expect(ds.hasMoreEntriesToDisplay())
+      .toBe(true);
   });
 
-  it('should apply custom filter predicate with index', () => {
+  it('should combine multiple custom filter predicates', () => {
     const ds = new GenericTableDataSource(columns, data)
-      .withCustomFilterPredicate((item, _filter) => item.name.startsWith(_filter));
+      .withCustomFilterPredicate((item, filter) => item.value >= 20)
+      .withCustomFilterPredicate((item, filter) => item.name.includes(filter));
 
-    ds.filter = 'B';
+    ds.filter = 'a';
     ds._updateChangeSubscription();
 
     expect(ds.filteredData.length)
-      .toBe(1);
-    expect(ds.filteredData[0].name)
-      .toBe('Beta');
+      .toBe(2);
+    expect(ds.filteredData.map((d) => d.name))
+      .toEqual(['Beta',
+        'Gamma']);
   });
 
-  it('should fallback to default filterPredicate when filterPredicateWithIndex allows', () => {
+  it('should fallback to default filterPredicate when no custom predicates are added', () => {
     const ds = new GenericTableDataSource(columns, data);
 
     ds.filterPredicate = (item, filter) => item.name.includes(filter);
