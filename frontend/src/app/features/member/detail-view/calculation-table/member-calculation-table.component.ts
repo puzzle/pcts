@@ -40,7 +40,11 @@ export class MemberCalculationTableComponent {
   });
 
   onClick(model: CalculationModel) {
-    this.router.navigate(['/calculation',
-      model.id]);
+    this.router.navigate([
+      '/member',
+      this.memberId(),
+      'calculation',
+      model.id
+    ]);
   }
 }
