@@ -76,6 +76,7 @@ public class MatchingService<T> {
                 .replace("Ü", "Ue");
     }
 
+    // To improve performance, we filter out any option that is outside a certain percent range in length.
     private List<T> filterByLengthThreshold(List<T> list, String target, Function<T, String> getTargetAttr) {
         int targetLength = target.length();
         double adjustment = targetLength * PERCENT_FACTOR;
