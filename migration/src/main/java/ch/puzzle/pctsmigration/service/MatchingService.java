@@ -19,32 +19,32 @@ public class MatchingService<T> {
     private static final double PERCENT_FACTOR = 0.40;
     private static final int MAX_DISTANCE = 40;
 
-    public T match(List<T> options, String target, Function<T, String> getTargetAttr) {
-        List<T> filteredOptions = filterByLengthThreshold(options, target, getTargetAttr);
+    public T match(List<T> validResults, String target, Function<T, String> getTargetAttr) {
+        List<T> filteredValidResults = filterByLengthThreshold(validResults, target, getTargetAttr);
 
-        if (filteredOptions.isEmpty()) {
+        if (filteredValidResults.isEmpty()) {
             throw new MigrationException(new Error(HttpStatus.BAD_REQUEST,
                                                    "No valid option found within acceptable range"));
         }
 
-        List<Match<T>> sortedOptions = filteredOptions.stream().map(option -> {
+        List<Match<T>> sortedValidResults = filteredValidResults.stream().map(option -> {
             String attr = getTargetAttr.apply(option);
             int distance = calculateDistance(attr, target);
             return new Match<>(option, distance, attr);
         }).sorted(Comparator.comparingInt(Match::distance)).toList();
 
-        Match<T> firstMatch = sortedOptions.getFirst();
+        Match<T> firstMatch = sortedValidResults.getFirst();
 
         if (calculateDistance(firstMatch.originalAttr(), target) > MAX_DISTANCE) {
             throw new MigrationException(new Error(HttpStatus.BAD_REQUEST,
                                                    "Levenshtein distance is too large to be a valid insert"));
         }
 
-        if (sortedOptions.size() == 1) {
+        if (sortedValidResults.size() == 1) {
             return firstMatch.option();
         }
 
-        Match<T> secondMatch = sortedOptions.get(1);
+        Match<T> secondMatch = sortedValidResults.get(1);
 
         int distanceFirst = calculateDistance(firstMatch.originalAttr(), target);
         int distanceSecond = calculateDistance(secondMatch.originalAttr(), target);
