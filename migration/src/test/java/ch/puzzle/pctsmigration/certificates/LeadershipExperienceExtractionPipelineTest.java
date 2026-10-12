@@ -102,17 +102,15 @@ class LeadershipExperienceExtractionPipelineTest {
         when(wrapper.items()).thenReturn(List.of(aiResult));
 
         LeadershipExperienceTypeDto wrongType = mock(LeadershipExperienceTypeDto.class);
-        when(wrongType.getName()).thenReturn("J+S Leiter");
 
         LeadershipExperienceTypeDto correctClosestType = mock(LeadershipExperienceTypeDto.class);
-        when(correctClosestType.getName()).thenReturn("Offizier Militär");
         when(correctClosestType.getId()).thenReturn(15L);
 
         when(memberService.getMemberIdBy("AW")).thenReturn(expectedMemberId);
         when(leadershipExperienceTypeService.getLeadershipExperienceTypes())
                 .thenReturn(List.of(wrongType, correctClosestType));
 
-        when(matchingService.match(anyList(), anyString(), any())).thenReturn("Offizier Militär");
+        when(matchingService.match(anyList(), anyString(), any())).thenReturn(correctClosestType);
 
         List<LeadershipExperienceInputDto> result = pipeline.mapToDto(filename, wrapper);
 
@@ -124,7 +122,7 @@ class LeadershipExperienceExtractionPipelineTest {
         assertThat(dto.getComment()).isEqualTo("Gute Führung");
 
         verify(memberService).getMemberIdBy("AW");
-        verify(leadershipExperienceTypeService, times(2)).getLeadershipExperienceTypes();
+        verify(leadershipExperienceTypeService).getLeadershipExperienceTypes();
     }
 
     @Test

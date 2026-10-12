@@ -92,7 +92,7 @@ public class LeadershipExperienceExtractionPipeline
 
         LeadershipExperienceTypeDto closestDto = this.matchingService.match(dtos, name, getTargetAttr);
 
-        if (closestDto != null && closestDto.getName().equals(name)) {
+        if (closestDto != null) {
             return closestDto.getId();
         }
         return -1L;
