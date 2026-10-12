@@ -8,6 +8,7 @@ import ch.puzzle.pctsmigration.ods.OdsParseConfig;
 import ch.puzzle.pctsmigration.service.MatchingService;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import org.openapitools.client.model.CertificateInputDto;
@@ -68,23 +69,25 @@ public class CertificateExtractionPipeline
     private CertificateInputDto createCertificateInputDto(String abbreviation, CertificateAiResultDto aiResult) {
         CertificateInputDto dto = new CertificateInputDto();
         dto.setMemberId(this.memberService.getMemberIdBy(abbreviation));
-        dto.setCertificateTypeId(mapCertificateTypeId(aiResult.name()));
+        if (mapCertificateTypeId(aiResult.name()).isPresent()) {
+            dto.setCertificateTypeId(mapCertificateTypeId(aiResult.name()).get());
+        }
         dto.setValidUntil(null);
         dto.setComment(aiResult.comment());
         dto.setCompletedAt(aiResult.completedAt());
         return dto;
     }
 
-    private Long mapCertificateTypeId(String name) {
+    private Optional<Long> mapCertificateTypeId(String name) {
         List<CertificateTypeDto> dtos = this.certificateTypeService.getCertificateTypes();
         Function<CertificateTypeDto, String> getTargetAttr = CertificateTypeDto::getName;
 
         CertificateTypeDto closestDto = this.matchingService.match(dtos, name, getTargetAttr);
 
         if (closestDto != null && closestDto.getName().equals(name)) {
-            return  closestDto.getId();
+            return Optional.of(closestDto.getId());
         }
-        return -1L;
+        return Optional.empty();
     }
 
     @Override
