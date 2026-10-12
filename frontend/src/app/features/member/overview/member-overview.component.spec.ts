@@ -6,7 +6,7 @@ import { EmploymentState } from '../../../shared/enum/employment-state.enum';
 import { of } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { MemberService } from '../member.service';
-import { calculation1, member1, member2 } from '../../../shared/test/test-data';
+import { member1, member2 } from '../../../shared/test/test-data';
 import { provideTranslateService } from '@ngx-translate/core';
 
 describe('MemberOverviewComponent', () => {
@@ -20,9 +20,7 @@ describe('MemberOverviewComponent', () => {
   beforeEach(async() => {
     memberServiceMock = {
       getAllMembers: jest.fn()
-        .mockReturnValue(of(membersMock)),
-      getCalculationsByMemberIdAndOptionalRoleId: jest.fn()
-        .mockReturnValue(of(calculation1))
+        .mockReturnValue(of(membersMock))
     };
 
     await TestBed.configureTestingModule({
