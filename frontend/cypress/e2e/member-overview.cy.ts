@@ -144,4 +144,12 @@ describe('MemberOverviewComponent', () => {
     cy.getByTestId('filter-info')
       .should('be.visible');
   });
+
+  it.only('should show the tooltip on focus', () => {
+    cy.get('app-info-icon mat-icon')
+      .focus();
+
+    cy.getByTestId('filter-info')
+      .should('be.visible');
+  });
 });
