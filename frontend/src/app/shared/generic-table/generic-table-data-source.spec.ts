@@ -133,8 +133,8 @@ describe('GenericTableDataSource', () => {
 
   it('should combine multiple custom filter predicates', () => {
     const ds = new GenericTableDataSource(columns, data)
-      .withCustomFilterPredicate((item, filter) => item.value >= 20)
-      .withCustomFilterPredicate((item, filter) => item.name.includes(filter));
+      .addFilterPredicate((item, filter) => item.value >= 20)
+      .addFilterPredicate((item, filter) => item.name.includes(filter));
 
     ds.filter = 'a';
     ds._updateChangeSubscription();

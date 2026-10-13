@@ -71,7 +71,7 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
     return this;
   }
 
-  public withCustomFilterPredicate(predicate: (data: T, filter: string) => boolean) {
+  public addFilterPredicate(predicate: (data: T, filter: string) => boolean) {
     this._customPredicates.push(predicate);
     return this;
   }
