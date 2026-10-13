@@ -23,15 +23,12 @@
         appearance="outline"
         class="small-form-field"
       >
-        <mat-label>{{"TAGS" | scopedTranslation}}</mat-label>
-        <mat-select [formControl]="tagControl" multiple>
+        <mat-select [formControl]="tagControl" multiple [placeholder]="'TAGS' | scopedTranslation">
           <mat-select-trigger>
             {{"TAGS" | scopedTranslation}}
-            @if ((tagControl.value?.length || 0) > 1) {
-              ({{tagControl.value?.length}})
-            }
+            ({{tagControl.value?.length}})
           </mat-select-trigger>
-          @for (tag of tags; track tag) {
+          @for (tag of tags(); track tag) {
             <mat-option [value]="tag">{{tag}}</mat-option>
           }
         </mat-select>

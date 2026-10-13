@@ -1,4 +1,4 @@
-import { Component, effect, inject, input } from '@angular/core';
+import { Component, computed, effect, inject, input } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -17,6 +17,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { filterMultipleFields } from '../../../shared/utils/typeFilter';
 import { CertificateFilter } from './certificateFilter';
 import { InfoIconComponent } from '../../../shared/icon-tooltip/info-icon/info-icon.component';
+import { MatSelect, MatSelectTrigger } from '@angular/material/select';
+import { MatOption } from '@angular/material/autocomplete';
+import { MatChipGrid, MatChipRemove, MatChipRow } from '@angular/material/chips';
 
 const getCertificateOverviewTable = () => new GenericTableDataSource<CertificateTypeModel, CertificateFilter>(getCertificateOverviewColumns())
   .withDetailViewLink()
@@ -47,9 +50,16 @@ const getCertificateOverviewColumns = (): GenCol<CertificateTypeModel>[] => [
     ScopedTranslationPipe,
     CertificateDetailViewComponent,
     CertificateTypeTagsComponent,
+    MatSelect,
+    MatSelectTrigger,
+    MatOption,
+    MatChipGrid,
+    MatChipRow,
+    MatChipRemove,
+    MatSelect,
     InfoIconComponent
   ],
-  selector: 'app-certificate.component',
+  selector: 'app-certificate',
   templateUrl: './certificate-overview.component.html'
 })
 export class CertificateOverviewComponent {
@@ -65,6 +75,14 @@ export class CertificateOverviewComponent {
 
   filterFormGroup = new FormGroup({
     textSearch: new FormControl<string>('')
+  });
+
+  tagControl = new FormControl<string[] | null>([]);
+
+  tags = computed(() => {
+    const allTags = this.certificates()
+      .flatMap((cert) => cert.tags);
+    return [...new Set(allTags)];
   });
 
   constructor() {
@@ -96,6 +114,12 @@ export class CertificateOverviewComponent {
 
   private applyFilter(filter: CertificateFilter): void {
     this.table.setFilter(filter);
+  }
+
+  protected removeTag(tag: string): void {
+    const selectedTags = this.tagControl.value;
+
+    this.tagControl.setValue(selectedTags?.filter((selectedTag) => selectedTag !== tag) || []);
   }
 
   private updateUrl(filter: Partial<CertificateFilter>): void {
