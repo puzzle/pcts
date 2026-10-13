@@ -474,16 +474,16 @@ export const leadershipExperienceCalculation2: LeadershipExperienceCalculationMo
 export const degreeCalculation1: DegreeCalculationModel = {
   id: 1,
   degree: degree1,
-  weight: 1,
-  relevancy: Relevancy.STRONGLY,
+  relevancies: new Map<Relevancy, number>([[Relevancy.STRONGLY,
+    100]]),
   comment: null
 };
 
 export const degreeCalculation2: DegreeCalculationModel = {
   id: 2,
   degree: degree2,
-  weight: 0.7,
-  relevancy: Relevancy.NORMAL,
+  relevancies: new Map<Relevancy, number>([[Relevancy.NORMAL,
+    100]]),
   comment: 'Still pursuing the degree'
 };
 
