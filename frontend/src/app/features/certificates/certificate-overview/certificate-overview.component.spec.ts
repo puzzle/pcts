@@ -2,6 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CertificateOverviewComponent } from './certificate-overview.component';
 import { ActivatedRoute, Router, provideRouter } from '@angular/router';
 import { CertificateTypeModel } from '../certificate-type/certificate-type.model';
+import { allTags, certificateType1, certificateType2 } from '../../../shared/test/test-data';
+import { CertificateFilter } from './certificate-detail-view/certificateFilter';
 import { certificateType1, certificateType2 } from '../../../shared/test/test-data';
 import { CertificateFilter } from './certificateFilter';
 
@@ -148,6 +150,31 @@ describe('CertificateOverviewComponent', () => {
       setInputs(undefined, { textSearch: 'gitlab' });
       expect(component.table.filteredData)
         .toEqual([certificateType1]);
+    });
+  });
+
+  describe('Tag Filter', () => {
+    it('should get all unique tags sorted alphabetically', () => {
+      const allTagsSorted = allTags.sort();
+
+      setInputs(undefined, { textSearch: '' });
+      expect(component.tags())
+        .toEqual(allTagsSorted);
+    });
+
+    it('should remove tag on method call', () => {
+      const tag = allTags[0];
+
+      setInputs(undefined, { textSearch: '' });
+      component.tagControl.setValue([tag]);
+
+      expect(component.tagControl.value)
+        .toEqual([tag]);
+
+      component['removeTag'](tag);
+
+      expect(component.tagControl.value)
+        .toEqual([]);
     });
   });
 });
