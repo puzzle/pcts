@@ -79,7 +79,9 @@ export class CertificateOverviewComponent {
       if (this.filterFormGroup.getRawValue() !== currentSearch) {
         /*
          * We use `emitEvent: false` here because otherwise `valueChanges` would be executed again even though it has already run before.
-         * If you look at the entire workflow, it would go through the process twice.
+         * This is for when you click on a link to the certificate overview but with query parameters—in that case,
+         * the URL is already set correctly, so we prevent the updateUrl from being executed again for no reason.
+         *
          */
         this.filterFormGroup.setValue(currentSearch, { emitEvent: false });
       }
