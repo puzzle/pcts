@@ -139,7 +139,7 @@ export class MemberDetailViewComponent {
         const map = this.degreeCalculationModel.map((degreeCalculationModel) => {
           return {
             row: degreeCalculationModel,
-            relevancy: degreeCalculationModel.relevancy
+            relevancy: Relevancy.STRONGLY
           } as CheckBoxTableResponse<DegreeCalculationModel>;
         });
         this.formControl.setValue(map);
@@ -297,36 +297,15 @@ export class MemberDetailViewComponent {
 
   getColumns = (): GenCol<DegreeCalculationModel>[] => [
     GenCol.fromCalculated('name', (d: DegreeCalculationModel) => d.degree.name),
-    GenCol.fromCalculated('highlyRelevant', (d: DegreeCalculationModel) => d.degree.type),
-    GenCol.fromCalculated('limitedRelevant', (d: DegreeCalculationModel) => d.weight),
-    GenCol.fromCalculated('littleRelevant', (d: DegreeCalculationModel) => d.comment),
-    GenCol.fromCalculated('points', (d: DegreeCalculationModel) => {
-      switch (d.relevancy) {
-        case Relevancy.STRONGLY:
-          return d.weight + 5;
-        case Relevancy.NORMAL:
-          return d.weight + 3;
-        case Relevancy.POORLY:
-          return d.weight + 1;
-        default:
-          return 0;
-      }
-    })
+    GenCol.fromCalculated('highlyRelevant', () => {}),
+    GenCol.fromCalculated('limitedRelevant', () => {}),
+    GenCol.fromCalculated('littleRelevant', () => {}),
+    GenCol.fromCalculated('points', (d: DegreeCalculationModel) => {})
   ];
 
   changeData(object: CheckBoxTableResponse<DegreeCalculationModel>) {
-    const row = object.row;
-
-    const value = object.relevancy;
-
-    this.degreeCalculationModel.forEach((experienceCalculation) => {
-      if (experienceCalculation.id === row.id) {
-        if (experienceCalculation.relevancy !== value) {
-          experienceCalculation.relevancy = value;
-        } else {
-          experienceCalculation.relevancy = Relevancy.NONE;
-        }
-      }
-    });
+    object.row.relevancies = new Map<Relevancy, number>([[object.relevancy,
+      object.amount ?? 100]]);
+    console.log(object.amount);
   }
 }
