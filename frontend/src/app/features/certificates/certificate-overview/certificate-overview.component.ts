@@ -15,7 +15,7 @@ import { CertificateTypeModel } from '../certificate-type/certificate-type.model
 import { CertificateTypeTagsComponent } from '../certificate-type-tags/certificate-type-tags.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { filterMultipleFields } from '../../../shared/utils/typeFilter';
-import { CertificateFilter } from './certificate-detail-view/certificateFilter';
+import { CertificateFilter } from './certificateFilter';
 
 const getCertificateOverviewTable = () => new GenericTableDataSource<CertificateTypeModel, CertificateFilter>(getCertificateOverviewColumns())
   .withDetailViewLink()
