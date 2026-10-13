@@ -48,7 +48,7 @@ describe('Certificate modal', () => {
       .should('have.attr', 'target', '_blank');
   });
 
-  describe.only('text search filter', () => {
+  describe('text search filter', () => {
     it('should not filter when search term is whitespace', () => {
       OverviewPage.fillSearchInput(' ');
 
@@ -112,7 +112,7 @@ describe('Certificate modal', () => {
   });
 
   /*
-   * describe.only('text search filter', () => {
+   * describe('text search filter', () => {
    *   it('should not filter when filter is empty', () => {
    *     const searchTerm = ' ';
    *
