@@ -80,9 +80,9 @@ export class CertificateOverviewComponent {
   tagControl = new FormControl<string[] | null>([]);
 
   tags = computed(() => {
-    const allTags = this.certificates()
-      .flatMap((cert) => cert.tags);
-    return [...new Set(allTags)];
+    const allUniqueTags = this.getAllUniqueTags(this.certificates());
+
+    return this.sortArrayAlphabetically(allUniqueTags);
   });
 
   constructor() {
@@ -131,5 +131,16 @@ export class CertificateOverviewComponent {
       queryParamsHandling: 'merge',
       replaceUrl: true
     });
+  }
+
+  private sortArrayAlphabetically(array: string[]) {
+    return array.sort((a, b) => a.localeCompare(b));
+  }
+
+  private getAllUniqueTags(certificates: CertificateTypeModel[]) {
+    const allTags = certificates
+      .flatMap((cert) => cert.tags);
+
+    return [...new Set(allTags)];
   }
 }
