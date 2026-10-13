@@ -1,4 +1,4 @@
-import { Component, effect, inject, input } from '@angular/core';
+import { Component, computed, effect, inject, input } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -56,7 +56,8 @@ const getCertificateOverviewColumns = (): GenCol<CertificateTypeModel>[] => [
     MatOption,
     MatChipGrid,
     MatChipRow,
-    MatChipRemove
+    MatChipRemove,
+    MatSelect
   ],
   selector: 'app-certificate',
   templateUrl: './certificate-overview.component.html'
@@ -78,15 +79,11 @@ export class CertificateOverviewComponent {
 
   tagControl = new FormControl<string[] | null>([]);
 
-  // todo this is temporary data for development
-  tags: string[] = [
-    'Extra cheese',
-    'Mushroom',
-    'Onion',
-    'Pepperoni',
-    'Sausage',
-    'Tomato'
-  ];
+  tags = computed(() => {
+    const allTags = this.certificates()
+      .flatMap((cert) => cert.tags);
+    return [...new Set(allTags)];
+  });
 
   constructor() {
     effect(() => {
