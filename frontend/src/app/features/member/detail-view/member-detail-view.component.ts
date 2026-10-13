@@ -35,6 +35,14 @@ import {
 import { MemberService } from '../member.service';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { ExperienceOverviewModel } from './cv/experience-overview.model';
+import {
+  GenericCheckboxFormTableComponent
+} from '../../../shared/generic-table/generic-checkbox-form-table/generic-checkbox-form-table.component';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { CheckBoxTableResponse } from '../../../shared/generic-table/generic-checkbox-form-table/CheckBoxTableResponse';
+import { GenCol, GenericTableDataSource } from '../../../shared/generic-table/generic-table-data-source';
+import { Relevancy } from '../../calculations/relevancy.enum';
+import { DegreeCalculationModel } from '../../calculations/degree-calculation/degree-calculation.model';
 
 @Component({
   selector: 'app-member-detail-view',
@@ -48,7 +56,9 @@ import { ExperienceOverviewModel } from './cv/experience-overview.model';
     MatTab,
     TranslationScopeDirective,
     MemberCalculationTableComponent,
-    ShowIfAdminDirective
+    ShowIfAdminDirective,
+    GenericCheckboxFormTableComponent,
+    ReactiveFormsModule
   ],
   templateUrl: './member-detail-view.component.html',
   styleUrls: ['./member-detail-view.component.scss']
@@ -108,6 +118,10 @@ export class MemberDetailViewComponent {
 
   readonly leadershipExperienceTable = getLeadershipExperienceTable();
 
+  degreeCalculationModel: DegreeCalculationModel[] = [];
+
+  protected formControl = new FormControl();
+
   constructor() {
     effect(() => {
       const tabGroup = this.tabGroup();
@@ -116,6 +130,20 @@ export class MemberDetailViewComponent {
         tabGroup.selectedIndex = this.tabIndex();
       }
     });
+
+    this.memberService.getCalculationsByMemberIdAndOptionalRoleId(2)
+      .subscribe((response) => {
+        response.forEach((result) => {
+          this.degreeCalculationModel.push(...result.degreeCalculations);
+        });
+        const map = this.degreeCalculationModel.map((degreeCalculationModel) => {
+          return {
+            row: degreeCalculationModel,
+            relevancy: degreeCalculationModel.relevancy
+          } as CheckBoxTableResponse<DegreeCalculationModel>;
+        });
+        this.formControl.setValue(map);
+      });
   }
 
   addDegreeDialog = this.modalService
@@ -260,6 +288,45 @@ export class MemberDetailViewComponent {
       queryParams: { tabIndex: index },
       queryParamsHandling: 'merge',
       replaceUrl: true
+    });
+  }
+
+  getTableData = () => new GenericTableDataSource(this.getColumns())
+    .withLimit(10)
+    .withDetailViewLink();
+
+  getColumns = (): GenCol<DegreeCalculationModel>[] => [
+    GenCol.fromCalculated('name', (d: DegreeCalculationModel) => d.degree.name),
+    GenCol.fromCalculated('highlyRelevant', (d: DegreeCalculationModel) => d.degree.type),
+    GenCol.fromCalculated('limitedRelevant', (d: DegreeCalculationModel) => d.weight),
+    GenCol.fromCalculated('littleRelevant', (d: DegreeCalculationModel) => d.comment),
+    GenCol.fromCalculated('points', (d: DegreeCalculationModel) => {
+      switch (d.relevancy) {
+        case Relevancy.STRONGLY:
+          return d.weight + 5;
+        case Relevancy.NORMAL:
+          return d.weight + 3;
+        case Relevancy.POORLY:
+          return d.weight + 1;
+        default:
+          return 0;
+      }
+    })
+  ];
+
+  changeData(object: CheckBoxTableResponse<DegreeCalculationModel>) {
+    const row = object.row;
+
+    const value = object.relevancy;
+
+    this.degreeCalculationModel.forEach((experienceCalculation) => {
+      if (experienceCalculation.id === row.id) {
+        if (experienceCalculation.relevancy !== value) {
+          experienceCalculation.relevancy = value;
+        } else {
+          experienceCalculation.relevancy = Relevancy.NONE;
+        }
+      }
     });
   }
 }

@@ -136,4 +136,5 @@
       }
     </mat-tab-group>
   </div>
+  <app-generic-checkbox-form-table [formControl]="formControl" [table]="getTableData()" (handleCheckboxClick)="changeData($event)" />
 }
