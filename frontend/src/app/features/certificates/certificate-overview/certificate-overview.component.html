@@ -12,7 +12,7 @@
           <mat-icon matPrefix>search</mat-icon>
           <input
             matInput
-            [formControl]="searchControl"
+            [formControl]="filterFormGroup.controls.textSearch"
             [placeholder]="'FILTER.SEARCH' | scopedTranslation"
             data-testid="search-input"
           />
