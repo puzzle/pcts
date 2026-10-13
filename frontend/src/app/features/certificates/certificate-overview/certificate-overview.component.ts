@@ -17,13 +17,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { filterMultipleFields } from '../../../shared/utils/typeFilter';
 import { CertificateFilter } from './certificate-detail-view/certificateFilter';
 
-const getCertificateOverviewTable = () => new GenericTableDataSource(getCertificateOverviewColumns())
+const getCertificateOverviewTable = () => new GenericTableDataSource<CertificateTypeModel, CertificateFilter>(getCertificateOverviewColumns())
   .withDetailViewLink()
   .withLimit(3)
-  .addFilterPredicate((cert: CertificateTypeModel, filter: string) => {
-    const filterValues = JSON.parse(filter);
-    const textSearch = (filterValues.textSearch || '').toLowerCase();
-
+  .addFilterPredicate((cert: CertificateTypeModel, filter: CertificateFilter) => {
+    const textSearch = (filter.textSearch || '').toLowerCase();
     return filterMultipleFields(cert, textSearch, ['name',
       'publisher',
       'points']);
@@ -97,7 +95,7 @@ export class CertificateOverviewComponent {
   }
 
   private applyFilter(filter: CertificateFilter): void {
-    this.table.filter = JSON.stringify(filter);
+    this.table.setFilter(filter);
   }
 
   private updateUrl(queries: Partial<CertificateFilter>): void {

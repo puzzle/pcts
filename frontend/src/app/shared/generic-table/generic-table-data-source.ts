@@ -37,14 +37,16 @@ export class GenCol<T> {
   }
 }
 
-export class GenericTableDataSource<T> extends MatTableDataSource<T> {
-  private readonly _customPredicates: ((data: T, filter: string) => boolean)[] = [];
+export class GenericTableDataSource<T, F = string> extends MatTableDataSource<T> {
+  private readonly _customPredicates: ((data: T, filter: F) => boolean)[] = [];
 
   private _limit?: number;
 
   private _columnDefs: GenCol<T>[] = [];
 
   private _ignoreLimit = false;
+
+  private _filterObject: F | null = null;
 
   hasMoreEntriesToDisplay = signal(false);
 
@@ -71,7 +73,7 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
     return this;
   }
 
-  public addFilterPredicate(predicate: (data: T, filter: string) => boolean) {
+  public addFilterPredicate(predicate: (data: T, filter: F) => boolean) {
     this._customPredicates.push(predicate);
     return this;
   }
@@ -86,17 +88,18 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
     return this;
   }
 
+  public setFilter(filter: F) {
+    this._filterObject = filter;
+    this.reloadData();
+  }
+
   override _filterData(data: T[]) { // eslint-disable-line @typescript-eslint/naming-convention
     let filteredEntries = data.filter((obj: T) => {
-      if (this.filter == null || this.filter === '') {
+      if (this._filterObject == null) {
         return true;
       }
 
-      if (this._customPredicates.length > 0) {
-        return this.filterCustomPredicates(obj, this.filter);
-      } else {
-        return this.filterPredicate(obj, this.filter);
-      }
+      return this.filterCustomPredicates(obj, this._filterObject);
     });
 
     const hasMoreEntriesToDisplay = this._limit !== undefined && filteredEntries.length > this._limit;
@@ -122,7 +125,7 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
     return filteredEntries;
   }
 
-  private filterCustomPredicates(data: T, filter: string): boolean {
+  private filterCustomPredicates(data: T, filter: F): boolean {
     if (this._customPredicates && this._customPredicates.length > 0) {
       return this._customPredicates.every((predicate) => predicate(data, filter));
     }
@@ -135,10 +138,6 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
   }
 
   reloadData() {
-    this['_filter'].next(this.filter);
-  }
-
-  get filterString(): string {
-    return JSON.parse(this.filter).textSearch;
+    this['_filter'].next(this._filterObject);
   }
 }
