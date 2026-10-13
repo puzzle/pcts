@@ -28,6 +28,8 @@ button.active {
 }
 
 .filter-info-icon {
-  position: relative;
-  top: 7px;
+  // Match the height of the Angular Material form field container
+  height: 40px;
+  display: flex;
+  align-items: center;
 }
