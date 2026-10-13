@@ -6,7 +6,6 @@ import { MatTooltip } from '@angular/material/tooltip';
   imports: [MatIcon,
     MatTooltip],
   selector: 'app-info-icon',
-  styleUrl: './info-icon.component.scss',
   templateUrl: './info-icon.component.html'
 })
 export class InfoIconComponent {
