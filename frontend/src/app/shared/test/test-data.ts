@@ -542,3 +542,7 @@ export const configuration: ConfigurationModel = {
 export const helpUrl: HelpUrlModel = {
   helpUrl: 'https://google.com'
 };
+
+export const allTags = ['AWS',
+  'GitLab',
+  'Ruby'];
