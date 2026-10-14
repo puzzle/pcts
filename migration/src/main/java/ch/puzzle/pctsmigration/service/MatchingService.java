@@ -46,10 +46,7 @@ public class MatchingService<T> {
 
         Match<T> secondMatch = sortedValidResults.get(1);
 
-        int distanceFirst = calculateDistance(firstMatch.originalAttr(), target);
-        int distanceSecond = calculateDistance(secondMatch.originalAttr(), target);
-
-        if (distanceFirst == distanceSecond) {
+        if (firstMatch.distance == secondMatch.distance) {
             throw new MigrationException(new Error(HttpStatus.BAD_REQUEST, "Two options are equally close to target"));
         }
 
