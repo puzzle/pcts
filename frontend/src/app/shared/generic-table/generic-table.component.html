@@ -83,7 +83,7 @@
     }
 
     <tr *matNoDataRow data-testid="no-results-row">
-      <td colspan="4">
+      <td [attr.colspan]="columnNames().length">
         {{
           'TABLE.NO_SEARCH_RESULT' | scopedTranslation :
             {model: 'MODEL_NAME' | scopedTranslation}
