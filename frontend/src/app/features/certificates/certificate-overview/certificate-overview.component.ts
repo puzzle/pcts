@@ -72,8 +72,7 @@ export class CertificateOverviewComponent {
     });
 
     effect(() => {
-      const currentSearch = this.filter() ?? '';
-
+      const currentSearch = this.filter();
       if (this.filterFormGroup.getRawValue() !== currentSearch) {
         /*
          * We use `emitEvent: false` here because otherwise `valueChanges` would be executed again even though it has already run before.
@@ -102,7 +101,7 @@ export class CertificateOverviewComponent {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        q: queries.textSearch
+        q: queries.textSearch?.trim() || null
       },
       queryParamsHandling: 'merge',
       replaceUrl: true
