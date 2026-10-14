@@ -14,7 +14,7 @@ import {
 import { certificateTypeResolver } from './features/certificates/certificate-type.resolver';
 import {
   filterResolver
-} from './shared/utils/filter.resolver';
+} from './features/certificates/certificate-overview/filter.resolver';
 
 export const routes: Routes = [
   {

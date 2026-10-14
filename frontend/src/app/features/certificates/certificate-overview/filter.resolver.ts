@@ -1,5 +1,5 @@
 import { ResolveFn } from '@angular/router';
-import { CertificateFilter } from '../../features/certificates/certificate-overview/certificateFilter';
+import { CertificateFilter } from './certificateFilter';
 
 export const filterResolver: ResolveFn<CertificateFilter> = (route) => {
   const search = route.queryParamMap.get('q');
