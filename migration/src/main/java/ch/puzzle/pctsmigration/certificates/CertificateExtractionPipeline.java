@@ -70,25 +70,18 @@ public class CertificateExtractionPipeline
     private CertificateInputDto createCertificateInputDto(String abbreviation, CertificateAiResultDto aiResult) {
         CertificateInputDto dto = new CertificateInputDto();
         dto.setMemberId(this.memberService.getMemberIdBy(abbreviation));
-        if (mapCertificateTypeId(aiResult.name()).isPresent()) {
-            dto.setCertificateTypeId(mapCertificateTypeId(aiResult.name()).get());
-        }
+        dto.setCertificateTypeId(mapCertificateTypeId(aiResult.name()));
         dto.setValidUntil(null);
         dto.setComment(aiResult.comment());
         dto.setCompletedAt(aiResult.completedAt());
         return dto;
     }
 
-    private Optional<Long> mapCertificateTypeId(String name) {
+    private Long mapCertificateTypeId(String name) {
         List<CertificateTypeDto> dtos = this.certificateTypeService.getCertificateTypes();
         Function<CertificateTypeDto, String> getTargetAttr = CertificateTypeDto::getName;
 
-        CertificateTypeDto closestDto = this.matchingService.match(dtos, name, getTargetAttr);
-
-        if (closestDto != null) {
-            return Optional.of(closestDto.getId());
-        }
-        return Optional.empty();
+        return this.matchingService.match(dtos, name, getTargetAttr).getId();
     }
 
     @Override
