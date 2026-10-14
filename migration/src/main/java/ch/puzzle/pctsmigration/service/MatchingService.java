@@ -17,7 +17,7 @@ public class MatchingService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final LevenshteinDistance levenshtein = LevenshteinDistance.getDefaultInstance();
     private static final double PERCENT_FACTOR = 0.40;
-    private static final int MAX_DISTANCE = 40;
+    private static final double MAX_DISTANCE_FACTOR = 0.40;
 
     public <T> T match(List<T> validResults, String target, Function<T, String> getTargetAttr) {
         List<T> filteredValidResults = filterByLengthThreshold(validResults, target, getTargetAttr);
@@ -35,7 +35,9 @@ public class MatchingService {
 
         Match<T> firstMatch = sortedValidResults.getFirst();
 
-        if (calculateDistance(firstMatch.originalAttr(), target) > MAX_DISTANCE) {
+        int maxAllowedDistance = (int) Math.ceil(target.length() * MAX_DISTANCE_FACTOR);
+
+        if (firstMatch.distance() > maxAllowedDistance) {
             throw new MigrationException(new Error(HttpStatus.BAD_REQUEST,
                                                    "Levenshtein distance is too large to be a valid insert"));
         }
