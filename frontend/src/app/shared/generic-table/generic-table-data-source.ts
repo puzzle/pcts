@@ -138,6 +138,6 @@ export class GenericTableDataSource<T, F = any> extends MatTableDataSource<T> {
   }
 
   reloadData() {
-    this['_filter'].next(this._filterObject);
+    this.filter = this.filter; // eslint-disable-line
   }
 }
