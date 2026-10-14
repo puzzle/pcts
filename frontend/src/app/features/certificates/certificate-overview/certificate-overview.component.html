@@ -22,6 +22,7 @@
         color="primary"
         appearance="outline"
         class="small-form-field"
+        data-testid="tag-field"
       >
         <mat-select [formControl]="tagControl" multiple [placeholder]="'TAGS' | scopedTranslation">
           <mat-select-trigger>
@@ -43,9 +44,9 @@
 
     <mat-chip-grid>
       @for (tag of tagControl?.value; track tag) {
-        <mat-chip-row (removed)="removeTag(tag)">
+        <mat-chip-row (removed)="removeTag(tag)" [attr.data-testid]="'chip-' + tag">
           {{tag}}
-          <button matChipRemove type="button">
+          <button matChipRemove type="button" [attr.data-testid]="'chip-' + tag + '-remove'">
             <mat-icon>cancel</mat-icon>
           </button>
         </mat-chip-row>
