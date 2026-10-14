@@ -94,20 +94,10 @@ describe('GenericTableDataSource', () => {
       .toBe('name');
   });
 
-  it('should parse filterString from JSON filter', () => {
-    const ds = new GenericTableDataSource(columns, data);
-
-    ds.filter = JSON.stringify({ textSearch: 'test-query' });
-
-    expect(ds.filterString)
-      .toBe('test-query');
-  });
-
   it('should return true for all elements when filter is empty or null', () => {
     const ds = new GenericTableDataSource(columns, data);
 
-    ds.filter = '';
-    ds._updateChangeSubscription();
+    ds.setFilter(null);
 
     expect(ds.filteredData.length)
       .toBe(3);
@@ -117,7 +107,7 @@ describe('GenericTableDataSource', () => {
     const ds = new GenericTableDataSource(columns, data)
       .withLimit(2);
 
-    ds._updateChangeSubscription();
+    ds.setFilter(null);
 
     expect(ds.filteredData.length)
       .toBe(2);
@@ -132,12 +122,11 @@ describe('GenericTableDataSource', () => {
   });
 
   it('should combine multiple custom filter predicates', () => {
-    const ds = new GenericTableDataSource(columns, data)
+    const ds = new GenericTableDataSource<TestModel, string>(columns, data)
       .addFilterPredicate((item, filter) => item.value >= 20)
       .addFilterPredicate((item, filter) => item.name.includes(filter));
 
-    ds.filter = 'a';
-    ds._updateChangeSubscription();
+    ds.setFilter('a');
 
     expect(ds.filteredData.length)
       .toBe(2);
@@ -146,12 +135,11 @@ describe('GenericTableDataSource', () => {
         'Gamma']);
   });
 
-  it('should fallback to default filterPredicate when no custom predicates are added', () => {
-    const ds = new GenericTableDataSource(columns, data);
+  it('should apply added custom predicate (replacing old filterPredicate logic)', () => {
+    const ds = new GenericTableDataSource<TestModel, string>(columns, data);
 
-    ds.filterPredicate = (item, filter) => item.name.includes(filter);
-    ds.filter = 'Alpha';
-    ds._updateChangeSubscription();
+    ds.addFilterPredicate((item, filter) => item.name.includes(filter));
+    ds.setFilter('Alpha');
 
     expect(ds.filteredData.length)
       .toBe(1);
@@ -159,12 +147,20 @@ describe('GenericTableDataSource', () => {
       .toBe('Alpha');
   });
 
-  it('should ignore predicate when toggleIgnoreLimit is enabled', () => {
+  it('should return all elements when filter object is set but no custom predicates are added', () => {
+    const ds = new GenericTableDataSource<TestModel, string>(columns, data);
+
+    ds.setFilter('Alpha');
+
+    expect(ds.filteredData.length)
+      .toBe(3);
+  });
+
+  it('should ignore limit when toggleIgnoreLimit is enabled', () => {
     const ds = new GenericTableDataSource(columns, data)
       .withLimit(1);
 
-    ds.filter = 'a';
-    ds._updateChangeSubscription();
+    ds.setFilter(null);
     expect(ds.filteredData.length)
       .toBe(1);
 
@@ -173,15 +169,14 @@ describe('GenericTableDataSource', () => {
       .toBe(3);
   });
 
-  it('should restore predicate when toggleIgnoreLimit is toggled twice', () => {
-    const ds = new GenericTableDataSource(columns, data)
+  it('should restore limit when toggleIgnoreLimit is toggled twice', () => {
+    const ds = new GenericTableDataSource<TestModel, string>(columns, data)
       .withLimit(1);
 
     ds.toggleIgnoreLimit();
     ds.toggleIgnoreLimit();
 
-    ds.filter = 'alp';
-    ds._updateChangeSubscription();
+    ds.setFilter(null);
 
     expect(ds.filteredData.length)
       .toBe(1);
@@ -191,12 +186,15 @@ describe('GenericTableDataSource', () => {
     const ds = new GenericTableDataSource(columns, data)
       .withLimit(1);
 
-    ds.filter = 'alp';
-    ds.reloadData();
-    ds._updateChangeSubscription();
-
+    ds.setFilter(null);
     expect(ds.filteredData.length)
       .toBe(1);
+
+    ds.withLimit(2);
+    ds.reloadData();
+
+    expect(ds.filteredData.length)
+      .toBe(2);
   });
 
   it('should allow link flag', () => {

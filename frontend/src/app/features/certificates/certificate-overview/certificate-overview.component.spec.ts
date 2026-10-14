@@ -3,7 +3,7 @@ import { CertificateOverviewComponent } from './certificate-overview.component';
 import { ActivatedRoute, Router, provideRouter } from '@angular/router';
 import { CertificateTypeModel } from '../certificate-type/certificate-type.model';
 import { certificateType1, certificateType2 } from '../../../shared/test/test-data';
-import { CertificateFilter } from './certificate-detail-view/certificateFilter';
+import { CertificateFilter } from './certificateFilter';
 
 describe('CertificateOverviewComponent', () => {
   let component: CertificateOverviewComponent;
@@ -25,7 +25,7 @@ describe('CertificateOverviewComponent', () => {
     route = TestBed.inject(ActivatedRoute);
 
     jest.spyOn(router, 'navigate')
-      .mockImplementation();
+      .mockResolvedValue(true);
 
     fixture = TestBed.createComponent(CertificateOverviewComponent);
     component = fixture.componentInstance;
@@ -50,25 +50,6 @@ describe('CertificateOverviewComponent', () => {
 
       expect(component.table.data)
         .toEqual(mockCertificates);
-    });
-
-    it('should update filterFormGroup and apply filter when filter input changes', () => {
-      const filterInput: CertificateFilter = { textSearch: 'aws' };
-      setInputs([], filterInput);
-
-      expect(component.filterFormGroup.value)
-        .toEqual({ textSearch: 'aws' });
-      expect(component.table.filter)
-        .toBe(JSON.stringify({ textSearch: 'aws' }));
-    });
-
-    it('should reset filterFormGroup and apply empty filter when filter input has empty textSearch', () => {
-      setInputs([], { textSearch: '' });
-
-      expect(component.filterFormGroup.value)
-        .toEqual({ textSearch: '' });
-      expect(component.table.filter)
-        .toBe(JSON.stringify({ textSearch: '' }));
     });
 
     it('should emit event on filterFormGroup when input updates current value', () => {
@@ -107,7 +88,7 @@ describe('CertificateOverviewComponent', () => {
       expect(router.navigate)
         .toHaveBeenCalledWith([], {
           relativeTo: route,
-          queryParams: { q: '' },
+          queryParams: { q: null },
           queryParamsHandling: 'merge',
           replaceUrl: true
         });
