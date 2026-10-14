@@ -13,13 +13,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MatchingService<T> {
+public class MatchingService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final LevenshteinDistance levenshtein = LevenshteinDistance.getDefaultInstance();
     private static final double PERCENT_FACTOR = 0.40;
     private static final int MAX_DISTANCE = 40;
 
-    public T match(List<T> validResults, String target, Function<T, String> getTargetAttr) {
+    public <T> T match(List<T> validResults, String target, Function<T, String> getTargetAttr) {
         List<T> filteredValidResults = filterByLengthThreshold(validResults, target, getTargetAttr);
 
         if (filteredValidResults.isEmpty()) {
@@ -73,9 +73,7 @@ public class MatchingService<T> {
                 .replace("Ü", "Ue");
     }
 
-    // To improve performance, we filter out any option that is outside a certain
-    // percent range in length.
-    private List<T> filterByLengthThreshold(List<T> list, String target, Function<T, String> getTargetAttr) {
+    private <T> List<T> filterByLengthThreshold(List<T> list, String target, Function<T, String> getTargetAttr) {
         int targetLength = target.length();
         double adjustment = targetLength * PERCENT_FACTOR;
         double lower = targetLength - adjustment;
