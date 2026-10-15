@@ -69,7 +69,7 @@ const getCertificateOverviewColumns = (): GenCol<CertificateTypeModel>[] => [
   selector: 'app-certificate',
   templateUrl: './certificate-overview.component.html'
 })
-export class CertificateOverviewComponent {
+class CertificateOverviewComponent {
   private readonly router = inject(Router);
 
   private readonly route = inject(ActivatedRoute);
@@ -98,6 +98,11 @@ export class CertificateOverviewComponent {
 
     effect(() => {
       const currentSearch = this.filter();
+
+      // Tags that are in the url, but they don't exist in the table should be ignored
+      currentSearch.tags = currentSearch.tags?.filter((tag) => this.tags()
+        .includes(tag)) ?? null;
+
       if (this.filterFormGroup.controls.textSearch.value !== currentSearch.textSearch) {
         /*
          * We use `emitEvent: false` here because otherwise `valueChanges` would be executed again even though it has already run before.
@@ -151,3 +156,5 @@ export class CertificateOverviewComponent {
     return [...new Set(allTags)];
   }
 }
+
+export default CertificateOverviewComponent;
