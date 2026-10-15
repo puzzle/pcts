@@ -27,6 +27,13 @@ const getCertificateOverviewTable = () => new GenericTableDataSource<Certificate
     return filterMultipleFields(cert, textSearch, ['name',
       'publisher',
       'points']);
+  })
+  .addFilterPredicate((cert: CertificateTypeModel, filter: CertificateFilter) => {
+    if (filter.tags?.length === 0) {
+      return true;
+    }
+
+    return filter.tags?.some((tag) => cert.tags.includes(tag)) ?? false;
   });
 
 const getCertificateOverviewColumns = (): GenCol<CertificateTypeModel>[] => [
@@ -74,10 +81,9 @@ export class CertificateOverviewComponent {
   table = getCertificateOverviewTable();
 
   filterFormGroup = new FormGroup({
-    textSearch: new FormControl<string>('')
+    textSearch: new FormControl<string>(''),
+    tags: new FormControl<string[] | null>([])
   });
-
-  tagControl = new FormControl<string[] | null>([]);
 
   tags = computed(() => {
     const allUniqueTags = this.getAllUniqueTags(this.certificates());
@@ -117,16 +123,17 @@ export class CertificateOverviewComponent {
   }
 
   protected removeTag(tag: string): void {
-    const selectedTags = this.tagControl.value;
+    const selectedTags = this.filterFormGroup.controls.tags.value;
 
-    this.tagControl.setValue(selectedTags?.filter((selectedTag) => selectedTag !== tag) || []);
+    this.filterFormGroup.controls.tags.setValue(selectedTags?.filter((selectedTag) => selectedTag !== tag) || []);
   }
 
   private updateUrl(filter: Partial<CertificateFilter>): void {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        textSearch: filter.textSearch?.trim() || null
+        textSearch: filter.textSearch?.trim() || null,
+        tag: filter.tags
       },
       queryParamsHandling: 'merge',
       replaceUrl: true

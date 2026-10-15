@@ -3,5 +3,7 @@ import { CertificateFilter } from './certificateFilter';
 
 export const filterResolver: ResolveFn<CertificateFilter> = (route) => {
   const search = route.queryParamMap.get('textSearch');
-  return { textSearch: search };
+  const tags = route.queryParamMap.getAll('tag');
+  return { textSearch: search,
+    tags: tags };
 };
