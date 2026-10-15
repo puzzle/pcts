@@ -116,10 +116,15 @@ class CertificateOverviewComponent {
       this.applyFilter(currentSearch);
     });
 
-    this.filterFormGroup.valueChanges
+    this.filterFormGroup.controls.textSearch.valueChanges
       .pipe(debounceTime(300))
-      .subscribe((textSearch) => {
-        this.updateUrl(textSearch);
+      .subscribe(() => {
+        this.updateUrl(this.filterFormGroup.getRawValue());
+      });
+
+    this.filterFormGroup.controls.tags.valueChanges
+      .subscribe(() => {
+        this.updateUrl(this.filterFormGroup.getRawValue());
       });
   }
 
