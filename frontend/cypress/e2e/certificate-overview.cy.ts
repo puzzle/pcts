@@ -91,32 +91,54 @@ describe('Certificate overview', () => {
     it('should display options in alphabetical order', () => {
       certificateTypeOverviewPage.tagFilter();
 
+      const options: string[] = [];
+
       cy.get('mat-option')
-        .should('contain', 'AWSA01');
+        .each(($option) => {
+          options.push($option.text()
+            .trim());
+        })
+        .then(() => {
+          const sortedOptions = [...options].sort((a, b) => a.localeCompare(b));
+
+          expect(sortedOptions).to.deep.equal(options);
+        });
     });
 
     it('should display chips in alphabetical order', () => {
       certificateTypeOverviewPage.tagFilter();
 
-      certificateTypeOverviewPage.selectOptionFromTagFilter('AWSA01');
-      certificateTypeOverviewPage.selectOptionFromTagFilter('Berufsbildner');
+      const options: string[] = [];
 
+      cy.get('mat-option')
+        .each(($option) => {
+          certificateTypeOverviewPage.selectOptionFromTagFilter($option.text());
+          options.push($option.text()
+            .trim());
+        })
+        .then(() => {
+          const chips: string[] = [];
 
-      cy.getByTestId('chip-AWSA01')
-        .should('exist');
-      cy.getByTestId('chip-Berufsbildner')
-        .should('exist');
+          certificateTypeOverviewPage.tagFilter();
+
+          cy.get('mat-chip-row')
+            .each(($chip) => {
+              chips.push($chip.text()
+                .replace('cancel', '')
+                .trim());
+            })
+            .then(() => {
+              expect(chips).to.deep.equal(options);
+            });
+        });
     });
 
     it('should display the pills and select option in the dropdown when selected in dropdown', () => {
       certificateTypeOverviewPage.tagFilter();
-
       certificateTypeOverviewPage.selectOptionFromTagFilter('AWSA01');
 
       cy.getByTestId('chip-AWSA01')
         .should('exist');
-
-      certificateTypeOverviewPage.tagFilter();
 
       certificateTypeOverviewPage.checkIfOptionFromTagFilterIsSelected('AWSA01');
     });
@@ -124,7 +146,6 @@ describe('Certificate overview', () => {
     it('should remove chip and deselect option in dropdown when clicked on cancel icon on the chip', () => {
       certificateTypeOverviewPage.tagFilter();
       certificateTypeOverviewPage.selectOptionFromTagFilter('AWSA01');
-
       certificateTypeOverviewPage.tagFilter();
 
       cy.getByTestId('chip-AWSA01')
@@ -145,10 +166,14 @@ describe('Certificate overview', () => {
       certificateTypeOverviewPage.selectOptionFromTagFilter('AWSA01');
 
       certificateTypeOverviewPage.checkIfOptionFromTagFilterIsSelected('AWSA01');
+      cy.getByTestId('chip-AWSA01')
+        .should('exist');
 
       certificateTypeOverviewPage.selectOptionFromTagFilter('AWSA01');
 
       certificateTypeOverviewPage.checkIfOptionFromTagFilterIsNotSelected('AWSA01');
+      cy.getByTestId('chip-AWSA01')
+        .should('not.exist');
     });
   });
 
