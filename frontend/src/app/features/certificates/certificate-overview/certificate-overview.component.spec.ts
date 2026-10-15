@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CertificateOverviewComponent } from './certificate-overview.component';
+import CertificateOverviewComponent from './certificate-overview.component';
 import { ActivatedRoute, Router, provideRouter } from '@angular/router';
 import { CertificateTypeModel } from '../certificate-type/certificate-type.model';
 import { allTags, certificateType1, certificateType2 } from '../../../shared/test/test-data';
