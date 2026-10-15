@@ -24,10 +24,10 @@
         class="small-form-field"
         data-testid="tag-field"
       >
-        <mat-select [formControl]="tagControl" multiple [placeholder]="'TAGS' | scopedTranslation">
+        <mat-select [formControl]="filterFormGroup.controls.tags" multiple [placeholder]="'TAGS' | scopedTranslation">
           <mat-select-trigger>
             {{"TAGS" | scopedTranslation}}
-            ({{tagControl.value?.length}})
+            ({{filterFormGroup.controls.tags.value?.length}})
           </mat-select-trigger>
           @for (tag of tags(); track tag) {
             <mat-option [value]="tag">{{tag}}</mat-option>
@@ -38,7 +38,7 @@
     </div>
 
     <mat-chip-grid>
-      @for (tag of tagControl?.value; track tag) {
+      @for (tag of filterFormGroup.controls.tags.value; track tag) {
         <mat-chip-row (removed)="removeTag(tag)" [attr.data-testid]="'chip-' + tag">
           {{tag}}
           <button matChipRemove type="button" [attr.data-testid]="'chip-' + tag + '-remove'">
