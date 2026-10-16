@@ -8,7 +8,7 @@ import { MemberDetailViewComponent } from './features/member/detail-view/member-
 import { tabResolver } from './features/member/detail-view/tab-resolver';
 import { authGuard } from './core/auth/guard/auth.guard';
 import { memberIdResolver } from './features/member/member-id-resolver';
-import CertificateOverviewComponent from './features/certificates/certificate-overview/certificate-overview.component';
+import { CertificateOverviewComponent } from './features/certificates/certificate-overview/certificate-overview.component';
 import { certificateTypeResolver } from './features/certificates/certificate-type.resolver';
 import {
   CalculationDetailViewComponent
