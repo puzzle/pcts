@@ -52,8 +52,20 @@ describe('CertificateOverviewComponent', () => {
         .toEqual(mockCertificates);
     });
 
-    it('should emit event on filterFormGroup when input updates current value', () => {
+    it('should not emit event on filterFormGroup when filter is equals to input', () => {
       setInputs([], { textSearch: 'aws' });
+
+      const setValueSpy = jest.spyOn(component.filterFormGroup, 'setValue');
+
+      fixture.componentRef.setInput('filter', { textSearch: 'aws' });
+      fixture.detectChanges();
+
+      expect(setValueSpy)
+        .not.toHaveBeenCalled();
+    });
+
+    it('should emit event on filterFormGroup when filter is not equals to input', () => {
+      setInputs([], { textSearch: 'a' });
 
       const setValueSpy = jest.spyOn(component.filterFormGroup, 'setValue');
 
