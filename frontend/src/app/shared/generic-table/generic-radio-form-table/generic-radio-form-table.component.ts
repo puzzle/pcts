@@ -1,4 +1,4 @@
-import { Component, effect, input, model, output } from '@angular/core';
+import { Component, effect, input, model } from '@angular/core';
 import { ColumnTemplateDirective } from '../column-template/column-template.directive';
 import { GenericTableComponent } from '../generic-table.component';
 import { ScopedTranslationPipe } from '../../pipes/scoped-translation-pipe';
@@ -26,8 +26,6 @@ export class GenericRadioFormTableComponent<T extends { relevancy: Relevancy }> 
   value = model<RadioFormTableResponse<T>[]>([]);
 
   table = input.required<GenericTableDataSource<T>>();
-
-  handleRadioButtonClick = output<RadioFormTableResponse<T>>();
 
   constructor() {
     effect(() => {
