@@ -22,11 +22,11 @@ public class CertificateExtractionPipeline
     private final CertificateTypeService certificateTypeService;
     private final MemberService memberService;
     private final CertificateService certificateService;
-    private final MatchingService<CertificateTypeDto> matchingService;
+    private final MatchingService matchingService;
 
     public CertificateExtractionPipeline(CertificateTypeService certificateTypeService, MemberService memberService,
                                          CertificateService certificateService,
-                                         MatchingService<CertificateTypeDto> matchingService) {
+                                         MatchingService matchingService) {
         this.certificateTypeService = certificateTypeService;
         this.memberService = memberService;
         this.certificateService = certificateService;

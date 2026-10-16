@@ -21,12 +21,12 @@ public class LeadershipExperienceExtractionPipeline
     private final LeadershipExperienceService leadershipExperienceService;
     private final LeadershipExperienceTypeService leadershipExperienceTypeService;
     private final MemberService memberService;
-    private final MatchingService<LeadershipExperienceTypeDto> matchingService;
+    private final MatchingService matchingService;
 
     public LeadershipExperienceExtractionPipeline(LeadershipExperienceService leadershipExperienceService,
                                                   MemberService memberService,
                                                   LeadershipExperienceTypeService leadershipExperienceTypeService,
-                                                  MatchingService<LeadershipExperienceTypeDto> matchingService) {
+                                                  MatchingService matchingService) {
         this.leadershipExperienceService = leadershipExperienceService;
         this.memberService = memberService;
         this.leadershipExperienceTypeService = leadershipExperienceTypeService;

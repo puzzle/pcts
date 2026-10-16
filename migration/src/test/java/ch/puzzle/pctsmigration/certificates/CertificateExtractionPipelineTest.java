@@ -112,7 +112,7 @@ class CertificateExtractionPipelineTest {
         assertThat(dto.getCertificateTypeId()).isEqualTo(12L);
 
         verify(memberService).getMemberIdBy("AW");
-        verify(certificateTypeService, times(2)).getCertificateTypes();
+        verify(certificateTypeService, times(1)).getCertificateTypes();
     }
 
     @Test
