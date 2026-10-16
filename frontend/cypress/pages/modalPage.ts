@@ -31,5 +31,14 @@ class ModalPage extends Page {
     cy.getByTestId('close-modal-icon-button')
       .should('be.focused');
   }
+
+  /*
+   * the dialog moves focus to its first tabbable element once the open animation is done,
+   * focusing a field before that loses the focus again
+   */
+  waitUntilOpened() {
+    this.checkModalIconButtonVisible();
+    this.checkModalIconButtonFocused();
+  }
 }
 export default new ModalPage();

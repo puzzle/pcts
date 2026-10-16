@@ -14,7 +14,7 @@ describe('Certificate modal', () => {
       memberDetailPage.openModalButton('add', 'certificate')
         .click();
 
-      modalPage.checkModalIconButtonVisible();
+      modalPage.waitUntilOpened();
     };
 
     it('should open correct modal', () => {
@@ -118,6 +118,8 @@ describe('Certificate modal', () => {
             .eq(1)
             .click();
         });
+
+      modalPage.waitUntilOpened();
     };
 
     beforeEach(() => {

@@ -13,7 +13,7 @@ describe('LeadershipExperience modal', () => {
       memberDetailPage.openModalButton('add', 'leadership-experience')
         .click();
 
-      modalPage.checkModalIconButtonVisible();
+      modalPage.waitUntilOpened();
     };
 
     it('should open correct modal', () => {
@@ -79,6 +79,8 @@ describe('LeadershipExperience modal', () => {
             .eq(1)
             .click();
         });
+
+      modalPage.waitUntilOpened();
     };
 
     beforeEach(() => {
