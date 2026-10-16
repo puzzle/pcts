@@ -52,12 +52,13 @@ export class GenericRadioFormTableComponent<T extends { relevancy: Relevancy;
 
   changeData(row: T, relevancy: Relevancy) {
     this.value.update((experienceCalculation) => {
-      experienceCalculation = experienceCalculation.filter((entry) => entry.id !== row.id);
-      experienceCalculation.push({ ...row,
-        relevancy: relevancy });
-      this.touch.emit();
-      return experienceCalculation;
+      const updatedCalculation = experienceCalculation.filter((entry) => entry.id !== row.id);
+      updatedCalculation.push({ ...row,
+        relevancy });
+      return updatedCalculation;
     });
+
+    this.touch.emit();
   }
 }
 
