@@ -3,7 +3,7 @@ import { defineConfig } from 'cypress';
 export default defineConfig({
   e2e: {
     baseUrl: 'http://localhost:4200',
-    experimentalMemoryManagement: true,
+    defaultCommandTimeout: 10000,
     testIsolation: true,
     viewportWidth: 1920,
     viewportHeight: 1080
