@@ -87,7 +87,7 @@ describe('Certificate overview', () => {
   });
 
 
-  describe.only('tag filter', () => {
+  describe('tag filter', () => {
     describe('tag selecting and deselecting', () => {
       it('should display options in alphabetical order', () => {
         certificateTypeOverviewPage.tagFilter();
@@ -106,7 +106,7 @@ describe('Certificate overview', () => {
           });
       });
 
-      it.only('should display chips in alphabetical order', () => {
+      it('should display chips in alphabetical order', () => {
         certificateTypeOverviewPage.tagFilter();
 
         const options: string[] = [];
