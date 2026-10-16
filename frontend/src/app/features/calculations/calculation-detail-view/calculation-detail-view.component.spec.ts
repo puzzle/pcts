@@ -4,6 +4,7 @@ import { MemberService } from '../../member/member.service';
 import { calculation1, experienceCalculation1, experienceCalculation2 } from '../../../shared/test/test-data';
 import { of } from 'rxjs';
 import { Relevancy } from '../relevancy.enum';
+import { provideTranslateService } from '@ngx-translate/core';
 
 describe('CalculationDetailViewComponent', () => {
   let component: CalculationDetailViewComponent;
@@ -22,7 +23,8 @@ describe('CalculationDetailViewComponent', () => {
       providers: [{
         provide: MemberService,
         useValue: memberServiceMock
-      }]
+      },
+      provideTranslateService()]
     })
       .compileComponents();
 
@@ -37,32 +39,32 @@ describe('CalculationDetailViewComponent', () => {
   });
 
   it('should have correct amount of columns in table', () => {
-    const columns = component.getColumns();
+    const columns = component.getColumns;
 
     expect(columns.length)
       .toEqual(5);
   });
 
   it('should change table data on method call', () => {
-    const tableData = component.getTableData();
+    const tableData = component.experienceCalculationModels.map((entry) => entry.relevancy);
 
     component.changeData({ row: experienceCalculation1,
       relevancy: Relevancy.NORMAL });
 
-    const changedData = component.getTableData();
+    const changedData = component.experienceCalculationModels.map((entry) => entry.relevancy);
 
     expect(changedData).not.toEqual(tableData);
   });
 
   it('should not change table data on method call with argument which is not in table data', () => {
-    const tableData = component.getTableData();
+    const tableData = component.experienceCalculationModels.map((entry) => entry.relevancy);
 
     component.changeData({ row: experienceCalculation2,
       relevancy: Relevancy.NORMAL });
 
-    const changedData = component.getTableData();
+    const changedData = component.experienceCalculationModels.map((entry) => entry.relevancy);
 
-    expect(changedData.data)
-      .toEqual(tableData.data);
+    expect(changedData)
+      .toEqual(tableData);
   });
 });
