@@ -56,14 +56,14 @@ import { MatIcon } from '@angular/material/icon';
   templateUrl: './generic-table.component.html',
   styleUrl: './generic-table.component.scss'
 })
-export class GenericTableComponent<T extends object, K extends keyof T = keyof T> {
+export class GenericTableComponent<T extends object, K extends keyof T = keyof T, F = unknown> {
   injector = inject(Injector);
 
   idAttr = input<K>();
 
   crudBasePath = input<string>('');
 
-  dataSource = input.required<GenericTableDataSource<T>>();
+  dataSource = input.required<GenericTableDataSource<T, F>>();
 
   data = computed(() => this.dataSource().data);
 
