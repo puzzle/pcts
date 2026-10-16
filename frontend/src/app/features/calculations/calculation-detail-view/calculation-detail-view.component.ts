@@ -42,8 +42,7 @@ export class CalculationDetailViewComponent {
   }
 
   getTableData = () => new GenericTableDataSource(this.getColumns())
-    .withLimit(10)
-    .withDetailViewLink();
+    .withLimit(10);
 
   getColumns = (): GenCol<ExperienceCalculationModel>[] => [
     GenCol.fromCalculated('name', (e: ExperienceCalculationModel) => e.experience.name),
