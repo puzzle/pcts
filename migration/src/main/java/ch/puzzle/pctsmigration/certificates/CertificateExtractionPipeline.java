@@ -5,11 +5,11 @@ import ch.puzzle.pctsmigration.api.CertificateTypeService;
 import ch.puzzle.pctsmigration.api.MemberService;
 import ch.puzzle.pctsmigration.extractor.ExtractionPipeline;
 import ch.puzzle.pctsmigration.ods.OdsParseConfig;
+import ch.puzzle.pctsmigration.service.MatchingService;
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Predicate;
-
 import org.openapitools.client.model.CertificateInputDto;
 import org.openapitools.client.model.CertificateTypeDto;
 import org.springframework.stereotype.Component;
@@ -22,12 +22,14 @@ public class CertificateExtractionPipeline
     private final CertificateTypeService certificateTypeService;
     private final MemberService memberService;
     private final CertificateService certificateService;
+    private final MatchingService matchingService;
 
     public CertificateExtractionPipeline(CertificateTypeService certificateTypeService, MemberService memberService,
-                                         CertificateService certificateService) {
+                                         CertificateService certificateService, MatchingService matchingService) {
         this.certificateTypeService = certificateTypeService;
         this.memberService = memberService;
         this.certificateService = certificateService;
+        this.matchingService = matchingService;
     }
 
     @Override
@@ -75,12 +77,9 @@ public class CertificateExtractionPipeline
 
     private Long mapCertificateTypeId(String name) {
         List<CertificateTypeDto> dtos = this.certificateTypeService.getCertificateTypes();
+        Function<CertificateTypeDto, String> getTargetAttr = CertificateTypeDto::getName;
 
-        return dtos
-                .stream()
-                .min(Comparator.comparingInt(dto -> calculateDistance(dto.getName(), name)))
-                .map(CertificateTypeDto::getId)
-                .orElseThrow();
+        return this.matchingService.match(dtos, name, getTargetAttr).getId();
     }
 
     @Override

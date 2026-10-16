@@ -5,10 +5,7 @@ import ch.puzzle.pctsmigration.exception.MigrationException;
 import ch.puzzle.pctsmigration.ods.OdsParseConfig;
 import java.util.List;
 
-import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.openapitools.client.ApiException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatusCode;
 
 /**
@@ -22,8 +19,6 @@ import org.springframework.http.HttpStatusCode;
  *            the DTO to which the extraction result is mapped
  */
 public abstract class ExtractionPipeline<C, R, D> {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final LevenshteinDistance levenshtein = LevenshteinDistance.getDefaultInstance();
 
     public String extractAbbreviation(String filename) {
         if (filename.contains("_")) {
@@ -33,13 +28,6 @@ public abstract class ExtractionPipeline<C, R, D> {
         }
         throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
                                                "Invalid filename: can not extract abbreviation " + filename));
-    }
-
-    public Integer calculateDistance(String dtoName, String name) {
-        Integer distance = this.levenshtein.apply(dtoName, name);
-        logger.info("Input name: {}, Actual name: {}, Distance: {}", name, dtoName, distance);
-
-        return distance;
     }
 
     /** Fetch all context needed from the PCTS API or other places */

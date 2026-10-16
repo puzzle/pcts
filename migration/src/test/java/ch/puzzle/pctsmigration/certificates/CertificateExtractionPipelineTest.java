@@ -8,6 +8,7 @@ import ch.puzzle.pctsmigration.api.CertificateService;
 import ch.puzzle.pctsmigration.api.CertificateTypeService;
 import ch.puzzle.pctsmigration.api.MemberService;
 import ch.puzzle.pctsmigration.ods.OdsParseConfig;
+import ch.puzzle.pctsmigration.service.MatchingService;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -30,6 +31,9 @@ class CertificateExtractionPipelineTest {
 
     @Mock
     private CertificateService certificateService;
+
+    @Mock
+    private MatchingService matchingService;
 
     @InjectMocks
     private CertificateExtractionPipeline pipeline;
@@ -87,14 +91,14 @@ class CertificateExtractionPipelineTest {
         when(wrapper.items()).thenReturn(List.of(aiResult));
 
         CertificateTypeDto wrongType = mock(CertificateTypeDto.class);
-        when(wrongType.getName()).thenReturn("Java Developer");
 
         CertificateTypeDto correctClosestType = mock(CertificateTypeDto.class);
-        when(correctClosestType.getName()).thenReturn("Scrum Master");
         when(correctClosestType.getId()).thenReturn(12L);
 
         when(memberService.getMemberIdBy("AW")).thenReturn(expectedMemberId);
         when(certificateTypeService.getCertificateTypes()).thenReturn(List.of(wrongType, correctClosestType));
+
+        when(matchingService.match(anyList(), anyString(), any())).thenReturn(correctClosestType);
 
         List<CertificateInputDto> result = pipeline.mapToDto(filename, wrapper);
 
@@ -108,7 +112,7 @@ class CertificateExtractionPipelineTest {
         assertThat(dto.getCertificateTypeId()).isEqualTo(12L);
 
         verify(memberService).getMemberIdBy("AW");
-        verify(certificateTypeService).getCertificateTypes();
+        verify(certificateTypeService, times(1)).getCertificateTypes();
     }
 
     @Test

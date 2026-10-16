@@ -12,6 +12,7 @@ import ch.puzzle.pctsmigration.leadershipexperience.LeadershipExperienceContextM
 import ch.puzzle.pctsmigration.leadershipexperience.LeadershipExperienceExtractionPipeline;
 import ch.puzzle.pctsmigration.leadershipexperience.LeadershipExperienceWrapper;
 import ch.puzzle.pctsmigration.ods.OdsParseConfig;
+import ch.puzzle.pctsmigration.service.MatchingService;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -34,6 +35,9 @@ class LeadershipExperienceExtractionPipelineTest {
 
     @Mock
     private MemberService memberService;
+
+    @Mock
+    private MatchingService matchingService;
 
     @InjectMocks
     private LeadershipExperienceExtractionPipeline pipeline;
@@ -98,15 +102,15 @@ class LeadershipExperienceExtractionPipelineTest {
         when(wrapper.items()).thenReturn(List.of(aiResult));
 
         LeadershipExperienceTypeDto wrongType = mock(LeadershipExperienceTypeDto.class);
-        when(wrongType.getName()).thenReturn("J+S Leiter");
 
         LeadershipExperienceTypeDto correctClosestType = mock(LeadershipExperienceTypeDto.class);
-        when(correctClosestType.getName()).thenReturn("Offizier Militär");
         when(correctClosestType.getId()).thenReturn(15L);
 
         when(memberService.getMemberIdBy("AW")).thenReturn(expectedMemberId);
         when(leadershipExperienceTypeService.getLeadershipExperienceTypes())
                 .thenReturn(List.of(wrongType, correctClosestType));
+
+        when(matchingService.match(anyList(), anyString(), any())).thenReturn(correctClosestType);
 
         List<LeadershipExperienceInputDto> result = pipeline.mapToDto(filename, wrapper);
 
