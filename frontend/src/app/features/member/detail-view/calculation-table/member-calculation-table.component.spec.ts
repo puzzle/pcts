@@ -114,4 +114,60 @@ describe('MemberCalculationTableComponent (Jest)', () => {
         calculation1.id
       ]);
   });
+
+  describe('Template & Bindings', () => {
+    it('should render title and add crud-button', async() => {
+      fixture.componentRef.setInput('memberId', 42);
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const titleEl = fixture.nativeElement.querySelector('h3');
+      expect(titleEl)
+        .toBeTruthy();
+      // ScopedTranslationPipe übersetzt 'MODEL_NAME', wir erwarten, dass es im Text ist
+      expect(titleEl.textContent)
+        .toContain('MODEL_NAME');
+
+      const crudButton = fixture.nativeElement.querySelector('app-crud-button');
+      expect(crudButton)
+        .toBeTruthy();
+      expect(crudButton.getAttribute('mode'))
+        .toBe('add');
+    });
+
+    it('should render generic table with correct inputs', async() => {
+      fixture.componentRef.setInput('memberId', 42);
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const tableEl = fixture.nativeElement.querySelector('app-generic-table');
+
+      expect(tableEl)
+        .toBeTruthy();
+      expect(tableEl.getAttribute('crudBasePath'))
+        .toBe('calculation');
+      expect(tableEl.getAttribute('idAttr'))
+        .toBe('id');
+    });
+
+    it('should trigger openCalculation when table emits entrySelected', async() => {
+      fixture.componentRef.setInput('memberId', 5);
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const openCalcSpy = jest.spyOn(component, 'openCalculation');
+
+      const tableDebugElement = fixture.debugElement.query((debugEl) => debugEl.name === 'app-generic-table');
+
+      expect(tableDebugElement)
+        .toBeTruthy();
+
+      tableDebugElement.triggerEventHandler('entrySelected', calculation1);
+
+      expect(openCalcSpy)
+        .toHaveBeenCalledTimes(1);
+      expect(openCalcSpy)
+        .toHaveBeenCalledWith(calculation1);
+    });
+  });
 });
