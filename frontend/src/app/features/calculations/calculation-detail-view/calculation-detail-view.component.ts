@@ -23,18 +23,15 @@ import { form, FormField } from '@angular/forms/signals';
 export class CalculationDetailViewComponent {
   private readonly memberService = inject(MemberService);
 
-  experienceCalculationModels: ExperienceCalculationModel[] = [];
-
   private readonly experienceCalculations = signal<ExperienceCalculationModel[]>([] as ExperienceCalculationModel[]);
 
   constructor() {
-    // Todo: Implement calculation service then fetch from calculation id instead of going over member service
+    // Todo: Implement calculation service then fetch from calculation id instead of going over member service this is for the new ticket
     this.memberService.getCalculationsByMemberIdAndOptionalRoleId(1)
       .subscribe((response) => {
         response.forEach((result) => {
-          this.experienceCalculationModels.push(...result.experienceCalculations);
+          this.experienceCalculations.set(result.experienceCalculations);
         });
-        this.experienceCalculations.set(this.experienceCalculationModels);
       });
   }
 
