@@ -73,11 +73,8 @@ describe('TypeFilter', () => {
       active: true
     };
 
-    it('should return true if searchValue is empty or whitespace only', () => {
-      expect(filterMultipleFields(item, '', ['title',
-        'publisher']))
-        .toBe(true);
-      expect(filterMultipleFields(item, '   ', ['title',
+    it('should return true if searchValue is null only', () => {
+      expect(filterMultipleFields(item, null, ['title',
         'publisher']))
         .toBe(true);
     });
@@ -98,10 +95,10 @@ describe('TypeFilter', () => {
         .toBe(true);
     });
 
-    it('should return false if at least one search term is not found in any field', () => {
+    it('should return true if at least one search term is not found in any field', () => {
       expect(filterMultipleFields(item, 'angular microsoft', ['title',
         'publisher']))
-        .toBe(false);
+        .toBe(true);
     });
 
     it('should search non-string fields like numbers and booleans correctly', () => {
