@@ -97,11 +97,11 @@ export class CertificateOverviewComponent {
     this.table.setFilter(filter);
   }
 
-  private updateUrl(queries: Partial<CertificateFilter>): void {
+  private updateUrl(filter: Partial<CertificateFilter>): void {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        q: queries.textSearch?.trim() || null
+        q: filter.textSearch?.trim() || null
       },
       queryParamsHandling: 'merge',
       replaceUrl: true
