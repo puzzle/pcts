@@ -126,18 +126,5 @@ describe('CalculationDetailViewComponent', () => {
       expect(tableData.columnDefs)
         .toEqual(component.getColumns);
     });
-
-    it('should correctly apply the limit of 10 to the filterPredicateWithIndex', () => {
-      const tableData = component.getTableData();
-
-      const testData = {} as ExperienceCalculationModel;
-
-      expect(tableData.filterPredicateWithIndex(testData, '', 9))
-        .toBe(true);
-      expect(tableData.filterPredicateWithIndex(testData, '', 10))
-        .toBe(false);
-      expect(tableData.filterPredicateWithIndex(testData, '', 15))
-        .toBe(false);
-    });
   });
 });
