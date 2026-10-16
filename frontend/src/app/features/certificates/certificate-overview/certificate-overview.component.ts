@@ -54,7 +54,7 @@ const getCertificateOverviewColumns = (): GenCol<CertificateTypeModel>[] => [
     ScopedTranslationPipe,
     CertificateDetailViewComponent,
     CertificateTypeTagsComponent,
-    InfoIconComponent
+    InfoIconComponent,
     CertificateTypeTagsComponent,
     MatSelect,
     MatSelectTrigger,
