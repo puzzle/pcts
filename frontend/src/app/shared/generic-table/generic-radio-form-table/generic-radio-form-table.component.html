@@ -2,13 +2,13 @@
   <h3 class="pt-3">{{"MODEL_NAME_PLURAL" | scopedTranslation}}</h3>
   <app-generic-table [dataSource]="table()">
     <ng-template appColumnTemplate="highlyRelevant" let-row>
-      <mat-radio-button [checked]="shouldBeChecked(row, Relevancy.STRONGLY)" [name]=row.id />
+      <mat-radio-button [checked]="shouldBeChecked(row, Relevancy.STRONGLY)" [name]=row.id (change)="changeData(row, Relevancy.STRONGLY)"/>
     </ng-template>
     <ng-template appColumnTemplate="limitedRelevant" let-row>
-      <mat-radio-button [checked]="shouldBeChecked(row, Relevancy.NORMAL)" [name]=row.id />
+      <mat-radio-button [checked]="shouldBeChecked(row, Relevancy.NORMAL)" [name]=row.id (change)="changeData(row, Relevancy.NORMAL)"/>
     </ng-template>
     <ng-template appColumnTemplate="littleRelevant" let-row>
-      <mat-radio-button [checked]="shouldBeChecked(row, Relevancy.POORLY)" [name]=row.id />
+      <mat-radio-button [checked]="shouldBeChecked(row, Relevancy.POORLY)" [name]=row.id (change)="changeData(row, Relevancy.POORLY)"/>
     </ng-template>
   </app-generic-table>
 </div>

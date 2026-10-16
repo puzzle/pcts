@@ -74,17 +74,4 @@ export class CalculationDetailViewComponent {
 
   getTableData = new GenericTableDataSource(this.getColumns)
     .withLimit(10);
-
-  changeData(object: { row: ExperienceCalculationModel;
-    relevancy: Relevancy; }) {
-    const row = object.row;
-
-    const value = object.relevancy;
-
-    this.experienceCalculationModels.forEach((experienceCalculation) => {
-      if (experienceCalculation.id === row.id) {
-        experienceCalculation.relevancy = value;
-      }
-    });
-  }
 }

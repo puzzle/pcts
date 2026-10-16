@@ -1,4 +1,4 @@
-import { Component, effect, input, model } from '@angular/core';
+import { Component, effect, input, model, output } from '@angular/core';
 import { ColumnTemplateDirective } from '../column-template/column-template.directive';
 import { GenericTableComponent } from '../generic-table.component';
 import { ScopedTranslationPipe } from '../../pipes/scoped-translation-pipe';
@@ -19,12 +19,15 @@ import { FormValueControl } from '@angular/forms/signals';
   templateUrl: './generic-radio-form-table.component.html'
 })
 
-export class GenericRadioFormTableComponent<T extends { relevancy: Relevancy }> implements FormValueControl<T[]> {
+export class GenericRadioFormTableComponent<T extends { relevancy: Relevancy;
+  id: number; }> implements FormValueControl<T[]> {
   protected readonly Relevancy = Relevancy;
 
   value = model<T[]>([]);
 
   table = input.required<GenericTableDataSource<T>>();
+
+  readonly touch = output<void>();
 
   constructor() {
     effect(() => {
@@ -37,6 +40,15 @@ export class GenericRadioFormTableComponent<T extends { relevancy: Relevancy }> 
 
   shouldBeChecked(row: T, relevancy: Relevancy): boolean {
     return row.relevancy === relevancy;
+  }
+
+  changeData(row: T, relevancy: Relevancy) {
+    this.table().data.forEach((experienceCalculation) => {
+      if (experienceCalculation.id === row.id) {
+        experienceCalculation.relevancy = relevancy;
+        this.touch.emit();
+      }
+    });
   }
 }
 
