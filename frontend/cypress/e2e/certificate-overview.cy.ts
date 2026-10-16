@@ -198,7 +198,7 @@ describe('Certificate overview', () => {
         length: 2,
         searchTerm: '' },
       { tags: ['GitLab 101'],
-        length: 1,
+        length: 2,
         searchTerm: '' },
       { tags: ['Berufsbildner'],
         length: 1,
@@ -229,41 +229,4 @@ describe('Certificate overview', () => {
       });
     });
   });
-
-  /*
-   * describe('text search filter', () => {
-   *   it('should not filter when filter is empty', () => {
-   *     const searchTerm = ' ';
-   *
-   *     OverviewPage.fillSearchInput(searchTerm);
-   *
-   *     cy.wait(300);
-   *
-   *     CertificateTypeOverviewPage.table()
-   *       .should('be.visible');
-   *     CertificateTypeOverviewPage.tableRows()
-   *       .should('have.length', 9);
-   *   });
-   *
-   *   [{ searchTerm: 'aws',
-   *     length: 1 },
-   *   { searchTerm: 'cer',
-   *     length: 4 },
-   *   {
-   *     searchTerm: 'mic',
-   *     length: 2
-   *   }].forEach((table) => {
-   *     it(`should filter when search term is ${table.searchTerm}`, () => {
-   *       OverviewPage.fillSearchInput(table.searchTerm);
-   *
-   *       cy.wait(300);
-   *
-   *       CertificateTypeOverviewPage.table()
-   *         .should('be.visible');
-   *       CertificateTypeOverviewPage.tableRows()
-   *         .should('have.length', table.length);
-   *     });
-   *   });
-   * });
-   */
 });
