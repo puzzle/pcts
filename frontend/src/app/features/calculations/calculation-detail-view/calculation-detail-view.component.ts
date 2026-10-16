@@ -1,18 +1,22 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   GenericRadioFormTableComponent
 } from '../../../shared/generic-table/generic-radio-form-table/generic-radio-form-table.component';
 import { ExperienceCalculationModel } from '../experience-calculation/experience-calculation.model';
 import { MemberService } from '../../member/member.service';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { GenCol, GenericTableDataSource } from '../../../shared/generic-table/generic-table-data-source';
 import { Relevancy } from '../relevancy.enum';
 import { TranslationScopeDirective } from '../../../shared/translation-scope/translation-scope.directive';
+import { FieldTree, form, FormField } from '@angular/forms/signals';
 
 @Component({
-  imports: [GenericRadioFormTableComponent,
+  imports: [
+    GenericRadioFormTableComponent,
     ReactiveFormsModule,
-    TranslationScopeDirective],
+    TranslationScopeDirective,
+    FormField
+  ],
   selector: 'app-calculation-detail-view',
   templateUrl: './calculation-detail-view.component.html'
 })
@@ -21,7 +25,14 @@ export class CalculationDetailViewComponent {
 
   experienceCalculationModels: ExperienceCalculationModel[] = [];
 
-  protected formControl = new FormControl();
+  private experienceCalculations = signal<{ row: ExperienceCalculationModel;
+    relevancy: Relevancy; }[]>([{}] as { row: ExperienceCalculationModel;
+    relevancy: Relevancy; }[]);
+
+  protected experienceCalculationForm: FieldTree<{
+    row: ExperienceCalculationModel;
+    relevancy: Relevancy;
+  }[]>;
 
   constructor() {
     // Todo: Implement calculation service then fetch from calculation id instead of going over member service
@@ -37,11 +48,12 @@ export class CalculationDetailViewComponent {
           } as { row: ExperienceCalculationModel;
             relevancy: Relevancy; };
         });
-        this.formControl.setValue(map);
+        this.experienceCalculations.set(map);
       });
+    this.experienceCalculationForm = form(this.experienceCalculations);
   }
 
-  getColumns = (): GenCol<ExperienceCalculationModel>[] => [
+  getColumns = [
     GenCol.fromCalculated('name', (e: ExperienceCalculationModel) => e.experience.name),
     GenCol.fromCalculated('highlyRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.highlyRelevantPoints),
     GenCol.fromCalculated('limitedRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.limitedRelevantPoints),
@@ -60,7 +72,7 @@ export class CalculationDetailViewComponent {
     })
   ];
 
-  getTableData = new GenericTableDataSource(this.getColumns())
+  getTableData = new GenericTableDataSource(this.getColumns)
     .withLimit(10);
 
   changeData(object: { row: ExperienceCalculationModel;
