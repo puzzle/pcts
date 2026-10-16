@@ -19,7 +19,6 @@ import { CertificateFilter } from './certificateFilter';
 
 const getCertificateOverviewTable = () => new GenericTableDataSource<CertificateTypeModel, CertificateFilter>(getCertificateOverviewColumns())
   .withDetailViewLink()
-  .withLimit(3)
   .addFilterPredicate((cert: CertificateTypeModel, filter: CertificateFilter) => {
     const textSearch = filter.textSearch;
     return filterMultipleFields(cert, textSearch, ['name',
