@@ -41,9 +41,6 @@ export class CalculationDetailViewComponent {
       });
   }
 
-  getTableData = () => new GenericTableDataSource(this.getColumns())
-    .withLimit(10);
-
   getColumns = (): GenCol<ExperienceCalculationModel>[] => [
     GenCol.fromCalculated('name', (e: ExperienceCalculationModel) => e.experience.name),
     GenCol.fromCalculated('highlyRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.highlyRelevantPoints),
@@ -62,6 +59,9 @@ export class CalculationDetailViewComponent {
       }
     })
   ];
+
+  getTableData = new GenericTableDataSource(this.getColumns())
+    .withLimit(10);
 
   changeData(object: { row: ExperienceCalculationModel;
     relevancy: Relevancy; }) {
