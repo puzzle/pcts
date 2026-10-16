@@ -2,7 +2,7 @@ import { Page } from './page';
 
 class CertificateTypeOverviewPage extends Page {
   visit() {
-    cy.visit('/certificate');
+    cy.visitApp('/certificate');
   }
 
   visitViaButton() {

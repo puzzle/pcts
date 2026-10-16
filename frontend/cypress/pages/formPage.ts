@@ -2,12 +2,12 @@ import { errorColor, successColor } from '../support/helper/colors';
 
 class FormPage {
   visitAdd(modelPathName: string) {
-    cy.visit(`/${modelPathName}/add`);
+    cy.visitApp(`/${modelPathName}/add`);
     return this;
   }
 
   visitEdit(modelId: number | string, modelPathName: string) {
-    cy.visit(`/${modelPathName}/${modelId}/edit`);
+    cy.visitApp(`/${modelPathName}/${modelId}/edit`);
     return this;
   }
 

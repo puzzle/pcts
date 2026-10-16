@@ -5,6 +5,7 @@ declare global {
     interface Chainable {
       visitDefaultPage(): void;
       loginAsUser(user: any): Chainable;
+      visitApp(url: string): void;
       logout(): void;
       getByTestId(testsId: string, text?: string): Chainable;
       findByTestId(testId: string, text?: string): Chainable;

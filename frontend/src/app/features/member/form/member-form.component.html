@@ -61,9 +61,10 @@
                placeholder='{{ "ADD_ROLE" | scopedTranslation }}'
                #roleInput
                [matChipInputFor]="chipGrid"
-               [matAutocomplete]="roleAutoComplete">
+               [matAutocomplete]="roleAutoComplete"
+               (input)="revalidateRoles()">
         <mat-autocomplete autoActiveFirstOption #roleAutoComplete="matAutocomplete"
-                          (optionSelected)="selectRole($event); roleInput.value= ''">
+                          (optionSelected)="selectRole($event); roleInput.value = ''; revalidateRoles()">
           @for (role of this.filterList(roleInput.value, this.roleOptions(), "name"); track role.id) {
             <mat-option [value]="role">{{ formatRoleName(role) }}</mat-option>
           }

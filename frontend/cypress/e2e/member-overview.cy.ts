@@ -12,7 +12,6 @@ describe('MemberOverviewComponent', () => {
 
   it('should search members by name', () => {
     OverviewPage.fillSearchInput('Lena');
-    cy.wait(300);
     OverviewPage.memberRows()
       .contains('Lena Müller', { matchCase: false });
   });
@@ -145,7 +144,7 @@ describe('MemberOverviewComponent', () => {
       .should('be.visible');
   });
 
-  it.only('should show the tooltip on focus', () => {
+  it('should show the tooltip on focus', () => {
     cy.get('app-info-icon mat-icon')
       .focus();
 

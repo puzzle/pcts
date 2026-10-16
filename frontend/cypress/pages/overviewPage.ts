@@ -3,7 +3,7 @@ import { EmploymentState } from '../../src/app/shared/enum/employment-state.enum
 
 class OverviewPage extends Page {
   visit() {
-    cy.visit('/');
+    cy.visitApp('/');
   }
 
   title() {
