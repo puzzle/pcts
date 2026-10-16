@@ -1,4 +1,12 @@
-import { Component, effect, input, model, output } from '@angular/core';
+import {
+
+
+  Component,
+  effect,
+  input,
+  model,
+  output
+} from '@angular/core';
 import { ColumnTemplateDirective } from '../column-template/column-template.directive';
 import { GenericTableComponent } from '../generic-table.component';
 import { ScopedTranslationPipe } from '../../pipes/scoped-translation-pipe';
@@ -43,11 +51,12 @@ export class GenericRadioFormTableComponent<T extends { relevancy: Relevancy;
   }
 
   changeData(row: T, relevancy: Relevancy) {
-    this.table().data.forEach((experienceCalculation) => {
-      if (experienceCalculation.id === row.id) {
-        experienceCalculation.relevancy = relevancy;
-        this.touch.emit();
-      }
+    this.value.update((experienceCalculation) => {
+      experienceCalculation = experienceCalculation.filter((entry) => entry.id !== row.id);
+      experienceCalculation.push({ ...row,
+        relevancy: relevancy });
+      this.touch.emit();
+      return experienceCalculation;
     });
   }
 }
