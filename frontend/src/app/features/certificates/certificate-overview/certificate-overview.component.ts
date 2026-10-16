@@ -73,7 +73,7 @@ export class CertificateOverviewComponent {
 
     effect(() => {
       const currentSearch = this.filter();
-      if (this.filterFormGroup.getRawValue() !== currentSearch) {
+      if (this.filterFormGroup.controls.textSearch.value !== currentSearch.textSearch) {
         /*
          * We use `emitEvent: false` here because otherwise `valueChanges` would be executed again even though it has already run before.
          * This is for when you click on a link to the certificate overview but with query parameters—in that case,
