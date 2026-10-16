@@ -7,10 +7,12 @@ import { MemberService } from '../../member/member.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { GenCol, GenericTableDataSource } from '../../../shared/generic-table/generic-table-data-source';
 import { Relevancy } from '../relevancy.enum';
+import { TranslationScopeDirective } from '../../../shared/translation-scope/translation-scope.directive';
 
 @Component({
   imports: [GenericRadioFormTableComponent,
-    ReactiveFormsModule],
+    ReactiveFormsModule,
+    TranslationScopeDirective],
   selector: 'app-calculation-detail-view',
   templateUrl: './calculation-detail-view.component.html'
 })
