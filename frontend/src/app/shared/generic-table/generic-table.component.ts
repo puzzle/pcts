@@ -3,7 +3,7 @@ import {
   computed, contentChild,
   contentChildren,
   effect, inject, Injector,
-  input, output, runInInjectionContext,
+  input, output, runInInjectionContext, signal,
   TemplateRef,
   viewChild
 } from '@angular/core';
@@ -67,8 +67,7 @@ export class GenericTableComponent<T extends object, K extends keyof T = keyof T
 
   data = computed(() => this.dataSource().data);
 
-  isExpanded = computed(() => this.dataSource()
-    .ignoreLimit());
+  isExpanded = signal(false);
 
   areEntriesCut = computed(() => this.dataSource()
     .hasMoreEntriesToDisplay());
@@ -119,6 +118,7 @@ export class GenericTableComponent<T extends object, K extends keyof T = keyof T
   }
 
   toggleButton() {
+    this.isExpanded.update((currentValue) => !currentValue);
     this.dataSource()
       .toggleIgnoreLimit();
   }

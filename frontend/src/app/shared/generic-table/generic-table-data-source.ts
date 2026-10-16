@@ -44,7 +44,7 @@ export class GenericTableDataSource<T, F = unknown> extends MatTableDataSource<T
 
   private _columnDefs: GenCol<T>[] = [];
 
-  ignoreLimit = signal(false);
+  ignoreLimit = false;
 
   filterObject: F | null = null;
 
@@ -114,7 +114,7 @@ export class GenericTableDataSource<T, F = unknown> extends MatTableDataSource<T
         this.hasMoreEntriesToDisplay.set(hasMoreEntriesToDisplay);
       });
 
-    if (hasMoreEntriesToDisplay && !this.ignoreLimit()) {
+    if (hasMoreEntriesToDisplay && !this.ignoreLimit) {
       filteredEntries = filteredEntries.slice(0, this._limit);
     }
 
@@ -134,7 +134,7 @@ export class GenericTableDataSource<T, F = unknown> extends MatTableDataSource<T
   }
 
   toggleIgnoreLimit() {
-    this.ignoreLimit.set(!this.ignoreLimit());
+    this.ignoreLimit = !this.ignoreLimit;
     this.reloadData();
   }
 
