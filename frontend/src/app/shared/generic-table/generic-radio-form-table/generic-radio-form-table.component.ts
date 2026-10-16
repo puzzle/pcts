@@ -14,6 +14,7 @@ import { GenericTableDataSource } from '../generic-table-data-source';
 import { MatRadioButton } from '@angular/material/radio';
 import { Relevancy } from '../../../features/calculations/relevancy.enum';
 import { FormValueControl } from '@angular/forms/signals';
+import { RelevancyModel } from './RelevancyModel';
 
 @Component({
   imports: [
@@ -27,8 +28,7 @@ import { FormValueControl } from '@angular/forms/signals';
   templateUrl: './generic-radio-form-table.component.html'
 })
 
-export class GenericRadioFormTableComponent<T extends { relevancy: Relevancy;
-  id: number; }> implements FormValueControl<T[]> {
+export class GenericRadioFormTableComponent<T extends RelevancyModel> implements FormValueControl<T[]> {
   protected readonly Relevancy = Relevancy;
 
   value = model<T[]>([]);
