@@ -101,7 +101,7 @@ export class CertificateOverviewComponent {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        q: filter.textSearch?.trim() || null
+        textSearch: filter.textSearch?.trim() || null
       },
       queryParamsHandling: 'merge',
       replaceUrl: true
