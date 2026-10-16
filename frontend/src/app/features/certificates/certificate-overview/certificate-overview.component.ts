@@ -100,8 +100,7 @@ class CertificateOverviewComponent {
       const currentSearch = this.filter();
 
       // Tags that are in the url, but they don't exist in the table should be ignored
-      currentSearch.tags = currentSearch.tags?.filter((tag) => this.tags()
-        .includes(tag)) ?? null;
+      currentSearch.tags = this.getIntersection(currentSearch.tags, this.tags());
 
       if (this.filterFormGroup.controls.textSearch.value !== currentSearch.textSearch) {
         /*
@@ -159,6 +158,10 @@ class CertificateOverviewComponent {
       .flatMap((cert) => cert.tags);
 
     return [...new Set(allTags)];
+  }
+
+  private getIntersection(array: string[] | null, baseArray: string[]) {
+    return array?.filter((element) => baseArray.includes(element)) ?? null;
   }
 }
 
