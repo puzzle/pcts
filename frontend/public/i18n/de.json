@@ -23,6 +23,11 @@
     "PERCENT": "Stellenprozente",
     "COMPLETED": "Abgeschlossen"
   },
+  "OVERVIEW": {
+    "SEARCH": {
+      "INFO": "Trenne mit einem Leerzeichen, um mehrere Suchbegriffe anzuwenden."
+    }
+  },
   "CERTIFICATE": {
     "MODEL_NAME": "Zertifikat",
     "MODEL_NAME_PLURAL": "Zertifikate",
@@ -36,9 +41,6 @@
     "COMMENT": "Beschreibung",
     "EFFORT": "Aufwand in Tagen",
     "EXAM_DURATION": "Prüfungsdauer in Minuten",
-    "SEARCH": {
-      "INFO": "Trenne mit einem Leerzeichen, um mehrere Suchbegriffe anzuwenden."
-    },
     "EXAM_TYPE": {
       "TYPE": "Prüfungsart",
       "THEORETICAL": "Theoretisch",
@@ -130,11 +132,6 @@
     "EMPLOYMENT_STATE": "Anstellungsstatus",
     "ATTRIBUTE_NULL": "-",
     "PERSONAL_DETAILS": "Personalien",
-    "OVERVIEW": {
-      "SEARCH": {
-        "INFO": "Trenne mit einem Leerzeichen, um mehrere Suchbegriffe anzuwenden."
-      }
-    },
     "EMPLOYMENT_STATUS_VALUES": {
       "MEMBER": "Member",
       "APPLICANT": "Bewerber",
