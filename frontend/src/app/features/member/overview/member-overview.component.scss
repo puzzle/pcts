@@ -26,3 +26,10 @@ button.active {
 .col-range {
   width: 1%;
 }
+
+.filter-info-icon {
+  // Match the height of the Angular Material form field container
+  height: 40px;
+  display: flex;
+  align-items: center;
+}

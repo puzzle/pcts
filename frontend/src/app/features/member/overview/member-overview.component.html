@@ -4,7 +4,7 @@
   </h1>
 
   <div class="d-flex flex-row justify-content-between">
-    <div class="w-25 d-flex flex-row align-items-start">
+    <div class="w-25 d-flex flex-row align-items-start gap-2">
       <mat-form-field
         color="primary"
         appearance="outline"
@@ -19,6 +19,11 @@
           data-testid="search-input"
         />
       </mat-form-field>
+
+      <app-info-icon
+        class="filter-info-icon"
+        data-testid="filter-info"
+        [message]="'SEARCH.INFO' | scopedTranslation" />
     </div>
 
     <div data-testid="filters">

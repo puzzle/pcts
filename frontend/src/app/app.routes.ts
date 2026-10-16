@@ -59,7 +59,7 @@ export const routes: Routes = [
   },
   {
     path: 'certificate',
-    providers: [provideI18nPrefix('CERTIFICATE')],
+    providers: [provideI18nPrefix('CERTIFICATE.OVERVIEW')],
     component: CertificateOverviewComponent,
     canActivate: [authGuard('user')],
     runGuardsAndResolvers: 'paramsOrQueryParamsChange',

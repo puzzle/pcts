@@ -23,6 +23,11 @@
     "PERCENT": "Stellenprozente",
     "COMPLETED": "Abgeschlossen"
   },
+  "OVERVIEW": {
+    "SEARCH": {
+      "INFO": "Trenne mit einem Leerzeichen, um mehrere Suchbegriffe anzuwenden."
+    }
+  },
   "CERTIFICATE": {
     "MODEL_NAME": "Zertifikat",
     "MODEL_NAME_PLURAL": "Zertifikate",

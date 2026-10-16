@@ -16,6 +16,7 @@ import { CertificateTypeTagsComponent } from '../certificate-type-tags/certifica
 import { ActivatedRoute, Router } from '@angular/router';
 import { filterMultipleFields } from '../../../shared/utils/typeFilter';
 import { CertificateFilter } from './certificateFilter';
+import { InfoIconComponent } from '../../../shared/icon-tooltip/info-icon/info-icon.component';
 
 const getCertificateOverviewTable = () => new GenericTableDataSource<CertificateTypeModel, CertificateFilter>(getCertificateOverviewColumns())
   .withDetailViewLink()
@@ -45,7 +46,8 @@ const getCertificateOverviewColumns = (): GenCol<CertificateTypeModel>[] => [
     ColumnTemplateDirective,
     ScopedTranslationPipe,
     CertificateDetailViewComponent,
-    CertificateTypeTagsComponent
+    CertificateTypeTagsComponent,
+    InfoIconComponent
   ],
   selector: 'app-certificate.component',
   templateUrl: './certificate-overview.component.html'
