@@ -18,6 +18,7 @@ import { filterMultipleFields } from '../../../shared/utils/typeFilter';
 import { CertificateFilter } from './certificateFilter';
 import { MatOption, MatSelect, MatSelectTrigger } from '@angular/material/select';
 import { MatChipGrid, MatChipRemove, MatChipRow } from '@angular/material/chips';
+import { merge } from 'rxjs';
 import { InfoIconComponent } from '../../../shared/icon-tooltip/info-icon/info-icon.component';
 
 const getCertificateOverviewTable = () => new GenericTableDataSource<CertificateTypeModel, CertificateFilter>(getCertificateOverviewColumns())
@@ -112,13 +113,8 @@ export class CertificateOverviewComponent {
       this.applyFilter(currentSearch);
     });
 
-    this.filterFormGroup.controls.textSearch.valueChanges
-      .pipe(debounceTime(300))
-      .subscribe(() => {
-        this.updateUrl(this.filterFormGroup.getRawValue());
-      });
-
-    this.filterFormGroup.controls.tags.valueChanges
+    // We only want to debounce time on the Search field. The tag filer should be instant
+    merge(this.filterFormGroup.controls.textSearch.valueChanges.pipe(debounceTime(300)), this.filterFormGroup.controls.tags.valueChanges)
       .subscribe(() => {
         this.updateUrl(this.filterFormGroup.getRawValue());
       });
