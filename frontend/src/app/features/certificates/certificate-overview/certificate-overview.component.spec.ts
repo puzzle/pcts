@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import CertificateOverviewComponent from './certificate-overview.component';
+import { CertificateOverviewComponent } from './certificate-overview.component';
 import { ActivatedRoute, Router, provideRouter } from '@angular/router';
 import { CertificateTypeModel } from '../certificate-type/certificate-type.model';
 import { allTags, certificateType1, certificateType2, certificateType3 } from '../../../shared/test/test-data';
@@ -69,7 +69,8 @@ describe('CertificateOverviewComponent', () => {
     });
 
     it('should emit event on filterFormGroup when filter is not equals to input', () => {
-      setInputs([], { textSearch: 'a' });
+      setInputs([], { textSearch: 'a',
+        tags: [] });
 
       const setValueSpy = jest.spyOn(component.filterFormGroup, 'setValue');
 
@@ -132,7 +133,8 @@ describe('CertificateOverviewComponent', () => {
     });
 
     it('should restore "aws" into the search form when provided via input (simulating ?textSearch=aws)', () => {
-      setInputs([], { textSearch: 'aws' });
+      setInputs([], { textSearch: 'aws',
+        tags: [] });
 
       expect(component.filterFormGroup.value.textSearch)
         .toBe('aws');
