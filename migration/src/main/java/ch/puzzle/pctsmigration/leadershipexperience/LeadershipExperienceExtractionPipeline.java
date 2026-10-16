@@ -90,12 +90,7 @@ public class LeadershipExperienceExtractionPipeline
         List<LeadershipExperienceTypeDto> dtos = this.leadershipExperienceTypeService.getLeadershipExperienceTypes();
         Function<LeadershipExperienceTypeDto, String> getTargetAttr = LeadershipExperienceTypeDto::getName;
 
-        LeadershipExperienceTypeDto closestDto = this.matchingService.match(dtos, name, getTargetAttr);
-
-        if (closestDto != null) {
-            return closestDto.getId();
-        }
-        return -1L;
+        return this.matchingService.match(dtos, name, getTargetAttr).getId();
     }
 
     @Override
