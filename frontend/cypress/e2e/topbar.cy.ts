@@ -9,7 +9,7 @@ describe('Topbar', () => {
     cy.intercept('GET', 'http://localhost:4200/api/v1/configuration/app')
       .as('getURL');
 
-    cy.visit('/');
+    cy.visitApp('/');
 
     cy.wait('@getURL');
 

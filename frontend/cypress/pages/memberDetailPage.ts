@@ -2,7 +2,7 @@ import { Page } from './page';
 
 class MemberDetailPage extends Page {
   visit(id: number) {
-    cy.visit(`/member/${id}`);
+    cy.visitApp(`/member/${id}`);
     return this;
   }
 
