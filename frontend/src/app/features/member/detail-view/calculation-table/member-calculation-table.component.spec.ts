@@ -100,18 +100,11 @@ describe('MemberCalculationTableComponent (Jest)', () => {
 
 
   it('should navigate on click', async() => {
-    memberServiceMock.getCalculationsByMemberIdAndOptionalRoleId?.mockReturnValue(of([]));
     fixture.componentRef.setInput('memberId', 5);
     fixture.detectChanges();
-    await fixture.whenStable();
-
-    memberServiceMock.getCalculationsByMemberIdAndOptionalRoleId?.mockReturnValue(of([calculation1]));
-
-    fixture.componentRef.setInput('roleId', 10);
-    fixture.detectChanges();
 
     await fixture.whenStable();
-    component.onClick(calculation1);
+    component.openCalculation(calculation1);
 
     expect(routerMock.navigate)
       .toHaveBeenCalledWith([
