@@ -159,7 +159,7 @@
       "ADD_ENTRY": "Eintrag hinzufügen"
     },
     "CALCULATION": {
-      "NAME": "Bezeichnung",
+      "NAME": "Name",
       "MODEL_NAME": "PCTS-Berechnung",
       "POINTS": "PCTS-Punkte",
       "STATE": "Status",
