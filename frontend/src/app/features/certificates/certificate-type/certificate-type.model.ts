@@ -4,8 +4,8 @@ export interface CertificateTypeModel {
   points: number;
   comment: string | null;
   tags: string[];
-  effort: number;
-  examDuration: number;
+  effort: number | null;
+  examDuration: number | null;
   link: string | null;
   examType: ExamType;
   publisher: string | null;

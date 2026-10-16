@@ -1,30 +1,57 @@
 <div class="mt-5">
   <h1 class="pt-3">{{"MODEL_NAME_PLURAL" | scopedTranslation}}</h1>
 
-  <div class="d-flex flex-row justify-content-between mb-3">
-    <div class="w-25 d-flex flex-row align-items-center gap-2">
+  <search>
+    <div class="w-50 gap-3 d-flex flex-row align-items-center">
+        <mat-form-field
+          color="primary"
+          appearance="outline"
+          class="small-form-field"
+          data-testid="search-field"
+          subscriptSizing="dynamic"
+        >
+          <mat-icon matPrefix>search</mat-icon>
+          <input
+            matInput
+            [formControl]="filterFormGroup.controls.textSearch"
+            [placeholder]="'FILTER.SEARCH' | scopedTranslation"
+            data-testid="search-input"
+          />
+        </mat-form-field>
+        <app-info-icon
+                class="filter-info-icon d-flex"
+                data-testid="filter-info"
+                [message]="'SEARCH.INFO' | scopedTranslation" />
       <mat-form-field
         color="primary"
         appearance="outline"
-        class="w-75 small-form-field"
+        class="small-form-field"
+        data-testid="tag-field"
         subscriptSizing="dynamic"
-        data-testid="search-field"
       >
-        <mat-icon matPrefix>search</mat-icon>
-        <input
-          matInput
-          [formControl]="filterFormGroup.controls.textSearch"
-          [placeholder]="'FILTER.SEARCH' | scopedTranslation"
-          data-testid="search-input"
-        />
+        <mat-select [formControl]="filterFormGroup.controls.tags" multiple [placeholder]="'TAGS' | scopedTranslation">
+          <mat-select-trigger>
+            {{"TAGS" | scopedTranslation}}
+            ({{filterFormGroup.controls.tags.value?.length}})
+          </mat-select-trigger>
+          @for (tag of tags(); track tag) {
+            <mat-option [value]="tag">{{tag}}</mat-option>
+          }
+        </mat-select>
       </mat-form-field>
-
-      <app-info-icon
-        class="filter-info-icon d-flex"
-        data-testid="filter-info"
-        [message]="'SEARCH.INFO' | scopedTranslation" />
     </div>
-  </div>
+
+    <mat-chip-grid class="mt-2">
+      @for (tag of filterFormGroup.controls.tags.value; track tag) {
+        <mat-chip-row (removed)="removeTag(tag)" [attr.data-testid]="'chip-' + tag">
+          {{tag}}
+          <button matChipRemove type="button" [attr.data-testid]="'chip-' + tag + '-remove'">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+      }
+    </mat-chip-grid>
+  </search>
 
   <app-generic-table [dataSource]="table" idAttr="id">
     <ng-template [appTypedTemplate]="table.data"/>
