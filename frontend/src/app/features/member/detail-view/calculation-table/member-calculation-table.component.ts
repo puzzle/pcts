@@ -39,7 +39,7 @@ export class MemberCalculationTableComponent {
     return table;
   });
 
-  onClick(model: CalculationModel) {
+  openCalculation(model: CalculationModel) {
     this.router.navigate([
       '/member',
       this.memberId(),
