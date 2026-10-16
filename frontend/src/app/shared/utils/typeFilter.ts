@@ -34,7 +34,7 @@ export function filterMultipleFields<T>(item: T,
       const value = item[key];
       return value !== null && value !== undefined ? String(value) : '';
     })
-    .join(' ')
+    .join('')
     .toLowerCase();
 
   return searchTerms.every((term) => dataString.includes(term));
