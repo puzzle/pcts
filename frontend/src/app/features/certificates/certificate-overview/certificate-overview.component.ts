@@ -20,6 +20,7 @@ import { InfoIconComponent } from '../../../shared/icon-tooltip/info-icon/info-i
 import { MatSelect, MatSelectTrigger } from '@angular/material/select';
 import { MatOption } from '@angular/material/autocomplete';
 import { MatChipGrid, MatChipRemove, MatChipRow } from '@angular/material/chips';
+import { merge } from 'rxjs';
 
 const getCertificateOverviewTable = () => new GenericTableDataSource<CertificateTypeModel, CertificateFilter>(getCertificateOverviewColumns())
   .withDetailViewLink()
@@ -112,13 +113,8 @@ export class CertificateOverviewComponent {
       this.applyFilter(currentSearch);
     });
 
-    this.filterFormGroup.controls.textSearch.valueChanges
-      .pipe(debounceTime(300))
-      .subscribe(() => {
-        this.updateUrl(this.filterFormGroup.getRawValue());
-      });
-
-    this.filterFormGroup.controls.tags.valueChanges
+    // We only want to debounce time on the Search field. The tag filer should be instant
+    merge(this.filterFormGroup.controls.textSearch.valueChanges.pipe(debounceTime(300)), this.filterFormGroup.controls.tags.valueChanges)
       .subscribe(() => {
         this.updateUrl(this.filterFormGroup.getRawValue());
       });
