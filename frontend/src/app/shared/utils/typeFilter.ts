@@ -37,5 +37,5 @@ export function filterMultipleFields<T>(item: T,
     .join('')
     .toLowerCase();
 
-  return searchTerms.every((term) => dataString.includes(term));
+  return searchTerms.some((term) => dataString.includes(term));
 }
