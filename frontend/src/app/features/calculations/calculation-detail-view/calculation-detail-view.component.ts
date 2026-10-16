@@ -25,7 +25,7 @@ export class CalculationDetailViewComponent {
 
   experienceCalculationModels: ExperienceCalculationModel[] = [];
 
-  private experienceCalculations = signal<{ row: ExperienceCalculationModel;
+  private readonly experienceCalculations = signal<{ row: ExperienceCalculationModel;
     relevancy: Relevancy; }[]>([{}] as { row: ExperienceCalculationModel;
     relevancy: Relevancy; }[]);
 
