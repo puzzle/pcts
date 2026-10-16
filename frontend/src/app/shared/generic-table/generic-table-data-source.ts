@@ -46,7 +46,7 @@ export class GenericTableDataSource<T, F = unknown> extends MatTableDataSource<T
 
   private _ignoreLimit = false;
 
-  private _filterObject: F | null = null;
+  filterObject: F | null = null;
 
   hasMoreEntriesToDisplay = signal(false);
 
@@ -89,18 +89,19 @@ export class GenericTableDataSource<T, F = unknown> extends MatTableDataSource<T
   }
 
   public setFilter(filter: F) {
-    this._filterObject = filter;
+    this.filterObject = filter;
     this.reloadData();
   }
 
   override _filterData(data: T[]) { // eslint-disable-line @typescript-eslint/naming-convention
-    let filteredEntries = data.filter((obj: T) => {
-      if (this._filterObject == null) {
-        return true;
-      }
+    let filteredEntries: T[];
 
-      return this.filterCustomPredicates(obj, this._filterObject);
-    });
+    if (this.filterObject == null) {
+      filteredEntries = data;
+    } else {
+      const currentFilter = this.filterObject;
+      filteredEntries = data.filter((obj: T) => this.filterCustomPredicates(obj, currentFilter));
+    }
 
     const hasMoreEntriesToDisplay = this._limit !== undefined && filteredEntries.length > this._limit;
 
