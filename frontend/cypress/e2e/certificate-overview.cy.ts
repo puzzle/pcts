@@ -127,7 +127,8 @@ describe('Certificate overview', () => {
         cy.get('mat-chip-row')
           .each(($chip) => {
             const chipTitle = $chip.children('span.mat-mdc-chip-action')
-              .text();
+              .text()
+              .trim();
             chips.push(chipTitle);
           })
           .then(() => {
