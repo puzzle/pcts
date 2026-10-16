@@ -2,9 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import CertificateOverviewComponent from './certificate-overview.component';
 import { ActivatedRoute, Router, provideRouter } from '@angular/router';
 import { CertificateTypeModel } from '../certificate-type/certificate-type.model';
-import { allTags, certificateType1, certificateType2 } from '../../../shared/test/test-data';
-import { CertificateFilter } from './certificate-detail-view/certificateFilter';
-import { certificateType1, certificateType2 } from '../../../shared/test/test-data';
+import { allTags, certificateType1, certificateType2, certificateType3 } from '../../../shared/test/test-data';
 import { CertificateFilter } from './certificateFilter';
 
 describe('CertificateOverviewComponent', () => {
@@ -34,7 +32,9 @@ describe('CertificateOverviewComponent', () => {
   });
 
   function setInputs(certificates: CertificateTypeModel[] = [certificateType1,
-    certificateType2], filter: CertificateFilter = { textSearch: '' }) {
+    certificateType2,
+    certificateType3], filter: CertificateFilter = { textSearch: '',
+    tags: [] }) {
     fixture.componentRef.setInput('certificates', certificates);
     fixture.componentRef.setInput('filter', filter);
     fixture.detectChanges();
@@ -48,14 +48,16 @@ describe('CertificateOverviewComponent', () => {
 
   describe('Effects', () => {
     it('should update table data when certificates input changes', () => {
-      setInputs(mockCertificates, { textSearch: '' });
+      setInputs(mockCertificates, { textSearch: '',
+        tags: [] });
 
       expect(component.table.data)
         .toEqual(mockCertificates);
     });
 
     it('should not emit event on filterFormGroup when filter is equals to input', () => {
-      setInputs([], { textSearch: 'aws' });
+      setInputs([], { textSearch: 'aws',
+        tags: [] });
 
       const setValueSpy = jest.spyOn(component.filterFormGroup, 'setValue');
 
@@ -81,7 +83,8 @@ describe('CertificateOverviewComponent', () => {
 
   describe('User Interaction (filterFormGroup & updateUrl)', () => {
     it('should update URL with query parameter when updateUrl is triggered', () => {
-      setInputs([], { textSearch: '' });
+      setInputs([], { textSearch: '',
+        tags: [] });
 
       (component as any).updateUrl({ textSearch: 'azure' });
 
@@ -95,7 +98,8 @@ describe('CertificateOverviewComponent', () => {
     });
 
     it('should pass empty textSearch to q parameter in URL when textSearch is empty', () => {
-      setInputs([], { textSearch: 'aws' });
+      setInputs([], { textSearch: 'aws',
+        tags: [] });
 
       (component as any).updateUrl({ textSearch: '' });
 
@@ -109,14 +113,19 @@ describe('CertificateOverviewComponent', () => {
     });
 
     it('should handle partial form updates correctly in updateUrl', () => {
-      setInputs([], { textSearch: '' });
+      setInputs([], { textSearch: '',
+        tags: [] });
 
-      (component as any).updateUrl({ textSearch: 'kubernetes' });
+      (component as any).updateUrl({ textSearch: 'kubernetes',
+        tags: ['kubernetes',
+          'CI/CD'] });
 
       expect(router.navigate)
         .toHaveBeenCalledWith([], {
           relativeTo: route,
-          queryParams: { textSearch: 'kubernetes' },
+          queryParams: { textSearch: 'kubernetes',
+            tag: ['kubernetes',
+              'CI/CD'] },
           queryParamsHandling: 'merge',
           replaceUrl: true
         });
@@ -131,25 +140,44 @@ describe('CertificateOverviewComponent', () => {
   });
   describe('Table Custom Filter Predicate', () => {
     it('should correctly filter certificates in GenericTableDataSource', () => {
-      setInputs(undefined, { textSearch: 'aws' });
+      setInputs(undefined, { textSearch: 'aws',
+        tags: [] });
       expect(component.table.filteredData)
         .toEqual([certificateType1]);
 
-      setInputs(undefined, { textSearch: 'ruby' });
+      setInputs(undefined, { textSearch: 'ruby',
+        tags: [] });
       expect(component.table.filteredData)
         .toEqual([certificateType2]);
 
-      setInputs(undefined, { textSearch: '10' });
+      setInputs(undefined, { textSearch: '10',
+        tags: [] });
       expect(component.table.filteredData)
         .toEqual([certificateType1]);
 
-      setInputs(undefined, { textSearch: '15' });
+      setInputs(undefined, { textSearch: '15',
+        tags: [] });
       expect(component.table.filteredData)
         .toEqual([certificateType2]);
 
-      setInputs(undefined, { textSearch: 'gitlab' });
+      setInputs(undefined, { textSearch: 'gitlab',
+        tags: [] });
       expect(component.table.filteredData)
-        .toEqual([certificateType1]);
+        .toEqual([certificateType1,
+          certificateType3]);
+
+      setInputs(undefined, { textSearch: '',
+        tags: ['GitLab',
+          'AWS'] });
+      expect(component.table.filteredData)
+        .toEqual([certificateType1,
+          certificateType3]);
+
+      setInputs(undefined, { textSearch: '',
+        tags: ['GitLab'] });
+      expect(component.table.filteredData)
+        .toEqual([certificateType1,
+          certificateType3]);
     });
   });
 
@@ -157,7 +185,8 @@ describe('CertificateOverviewComponent', () => {
     it('should get all unique tags sorted alphabetically', () => {
       const allTagsSorted = allTags.sort();
 
-      setInputs(undefined, { textSearch: '' });
+      setInputs(undefined, { textSearch: '',
+        tags: [] });
       expect(component.tags())
         .toEqual(allTagsSorted);
     });
@@ -165,15 +194,16 @@ describe('CertificateOverviewComponent', () => {
     it('should remove tag on method call', () => {
       const tag = allTags[0];
 
-      setInputs(undefined, { textSearch: '' });
-      component.tagControl.setValue([tag]);
+      setInputs(undefined, { textSearch: '',
+        tags: [] });
+      component.filterFormGroup.controls.tags.setValue([tag]);
 
-      expect(component.tagControl.value)
+      expect(component.filterFormGroup.controls.tags.value)
         .toEqual([tag]);
 
       component['removeTag'](tag);
 
-      expect(component.tagControl.value)
+      expect(component.filterFormGroup.controls.tags.value)
         .toEqual([]);
     });
   });

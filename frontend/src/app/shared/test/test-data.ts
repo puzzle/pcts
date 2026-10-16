@@ -175,6 +175,18 @@ export const certificateType2: CertificateTypeModel = {
   publisher: 'Ruby'
 };
 
+export const certificateType3: CertificateTypeModel = {
+  id: 3,
+  name: 'GitLab Certificate',
+  points: 5,
+  comment: null,
+  tags: ['GitLab'],
+  effort: 5,
+  examDuration: 120,
+  link: 'https://example.com/',
+  examType: ExamType.MULTIPLE_CHOICE,
+  publisher: 'GitLab'
+};
 export const certificate1: CertificateModel = {
   id: 1,
   member: member1,
