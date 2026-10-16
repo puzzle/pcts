@@ -35,8 +35,6 @@ export class CalculationDetailViewComponent {
           this.experienceCalculationModels.push(...result.experienceCalculations);
         });
         this.experienceCalculations.set(this.experienceCalculationModels);
-        console.log(this.experienceCalculations());
-        console.log(this.experienceCalculationModels);
       });
   }
 
