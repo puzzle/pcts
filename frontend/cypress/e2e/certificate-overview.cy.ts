@@ -106,31 +106,32 @@ describe('Certificate overview', () => {
           });
       });
 
-      it('should display chips in alphabetical order', () => {
+      it.only('should display chips in alphabetical order', () => {
         certificateTypeOverviewPage.tagFilter();
 
         const options: string[] = [];
 
         cy.get('mat-option')
           .each(($option) => {
-            certificateTypeOverviewPage.selectOptionFromTagFilter($option.text());
-            options.push($option.text()
-              .trim());
+            const optionTitle = $option.text()
+              .trim();
+
+            certificateTypeOverviewPage.selectOptionFromTagFilter(optionTitle);
+            options.push(optionTitle);
+          });
+
+        const chips: string[] = [];
+
+        certificateTypeOverviewPage.tagFilter();
+
+        cy.get('mat-chip-row')
+          .each(($chip) => {
+            const chipTitle = $chip.children('span.mat-mdc-chip-action')
+              .text();
+            chips.push(chipTitle);
           })
           .then(() => {
-            const chips: string[] = [];
-
-            certificateTypeOverviewPage.tagFilter();
-
-            cy.get('mat-chip-row')
-              .each(($chip) => {
-                chips.push($chip.text()
-                  .replace('cancel', '')
-                  .trim());
-              })
-              .then(() => {
-                expect(chips).to.deep.equal(options);
-              });
+            expect(chips).to.deep.equal(options);
           });
       });
 
@@ -142,6 +143,9 @@ describe('Certificate overview', () => {
           .should('exist');
 
         certificateTypeOverviewPage.checkIfOptionFromTagFilterIsSelected('AWSA01');
+
+        cy.url()
+          .should('include', 'tag=AWSA01');
       });
 
       it('should remove chip and deselect option in dropdown when clicked on cancel icon on the chip', () => {
@@ -160,6 +164,8 @@ describe('Certificate overview', () => {
 
         certificateTypeOverviewPage.tagFilter();
         certificateTypeOverviewPage.checkIfOptionFromTagFilterIsNotSelected('AWSA01');
+        cy.url()
+          .should('not.include', 'tag=AWSA01');
       });
 
       it('should remove chip and deselect option in dropdown when clicked on a selected option in the dropdown', () => {
@@ -175,6 +181,8 @@ describe('Certificate overview', () => {
         certificateTypeOverviewPage.checkIfOptionFromTagFilterIsNotSelected('AWSA01');
         cy.getByTestId('chip-AWSA01')
           .should('not.exist');
+        cy.url()
+          .should('not.include', 'tag=AWSA01');
       });
     });
 
