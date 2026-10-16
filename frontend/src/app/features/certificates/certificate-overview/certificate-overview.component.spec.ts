@@ -74,7 +74,7 @@ describe('CertificateOverviewComponent', () => {
       expect(router.navigate)
         .toHaveBeenCalledWith([], {
           relativeTo: route,
-          queryParams: { q: 'azure' },
+          queryParams: { textSearch: 'azure' },
           queryParamsHandling: 'merge',
           replaceUrl: true
         });
@@ -88,7 +88,7 @@ describe('CertificateOverviewComponent', () => {
       expect(router.navigate)
         .toHaveBeenCalledWith([], {
           relativeTo: route,
-          queryParams: { q: null },
+          queryParams: { textSearch: null },
           queryParamsHandling: 'merge',
           replaceUrl: true
         });
@@ -102,10 +102,17 @@ describe('CertificateOverviewComponent', () => {
       expect(router.navigate)
         .toHaveBeenCalledWith([], {
           relativeTo: route,
-          queryParams: { q: 'kubernetes' },
+          queryParams: { textSearch: 'kubernetes' },
           queryParamsHandling: 'merge',
           replaceUrl: true
         });
+    });
+
+    it('should restore "aws" into the search form when provided via input (simulating ?textSearch=aws)', () => {
+      setInputs([], { textSearch: 'aws' });
+
+      expect(component.filterFormGroup.value.textSearch)
+        .toBe('aws');
     });
   });
   describe('Table Custom Filter Predicate', () => {
