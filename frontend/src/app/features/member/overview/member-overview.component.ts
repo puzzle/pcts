@@ -38,7 +38,8 @@ import { InfoIconComponent } from '../../../shared/icon-tooltip/info-icon/info-i
     RouterLink,
     ScopedTranslationPipe,
     CrudButtonComponent,
-    InfoIconComponent
+    InfoIconComponent,
+    CrudButtonComponent
   ],
   templateUrl: './member-overview.component.html',
   styleUrl: './member-overview.component.scss'

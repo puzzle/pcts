@@ -159,6 +159,7 @@
       "ADD_ENTRY": "Eintrag hinzufügen"
     },
     "CALCULATION": {
+      "NAME": "Name",
       "MODEL_NAME": "PCTS-Berechnung",
       "POINTS": "PCTS-Punkte",
       "STATE": "Status",
@@ -167,7 +168,13 @@
       "ARCHIVED": "Archiviert",
       "PUBLICIZED_BY": "Veröffentlicht von",
       "PUBLICATION_DATE": "Veröffentlicht am",
-      "RELEVANCIES": "Gewichte der Relevanzen"
+      "RELEVANCIES": "Gewichte der Relevanzen",
+      "HIGHLY_RELEVANT": "Stark relevant",
+      "LIMITED_RELEVANT": "Bedingt relevant",
+      "LITTLE_RELEVANT": "Wenig relevant",
+      "EXPERIENCE": {
+        "MODEL_NAME_PLURAL": "Berufs- und Lebenserfahrungen"
+      }
     }
   },
   "ERROR": {
@@ -192,5 +199,5 @@
   "POST": "{{OBJECT}} wurde erfolgreich erstellt.",
   "PUT": "{{OBJECT}} wurde erfolgreich aktualisiert.",
   "DELETE": "{{OBJECT}} wurde erfolgreich gelöscht.",
-  "Object": "Objekt"
+  "OBJECT": "Objekt"
 }

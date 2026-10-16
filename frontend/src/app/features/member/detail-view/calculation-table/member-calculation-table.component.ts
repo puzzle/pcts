@@ -5,6 +5,8 @@ import { CrudButtonComponent } from '../../../../shared/crud-button/crud-button.
 import { ScopedTranslationPipe } from '../../../../shared/pipes/scoped-translation-pipe';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { getCalculationTable } from '../cv/member-detail-cv-table-definition';
+import { Router } from '@angular/router';
+import { CalculationModel } from '../../../calculations/calculation.model';
 
 @Component({
   selector: 'app-member-calculation-table',
@@ -15,6 +17,8 @@ import { getCalculationTable } from '../cv/member-detail-cv-table-definition';
 })
 export class MemberCalculationTableComponent {
   private readonly memberService = inject(MemberService);
+
+  private readonly router = inject(Router);
 
   memberId = input.required<number>();
 
@@ -34,4 +38,13 @@ export class MemberCalculationTableComponent {
     table.data = this.calculationsResource.value();
     return table;
   });
+
+  openCalculation(model: CalculationModel) {
+    this.router.navigate([
+      '/member',
+      this.memberId(),
+      'calculation',
+      model.id
+    ]);
+  }
 }
