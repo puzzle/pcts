@@ -17,14 +17,8 @@ import { GLOBAL_DATE_FORMAT } from '../../../shared/format/date-format';
 import sortingDataAccessor from '../../../shared/utils/sortingDataAccessor';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CrudButtonComponent } from '../../../shared/crud-button/crud-button.component';
-import {
-  GenericRadioFormTableComponent
-} from '../../../shared/generic-table/generic-radio-form-table/generic-radio-form-table.component';
 import { filterMultipleFields } from '../../../shared/utils/typeFilter';
 import { InfoIconComponent } from '../../../shared/icon-tooltip/info-icon/info-icon.component';
-import { GenCol, GenericTableDataSource } from '../../../shared/generic-table/generic-table-data-source';
-import { ExperienceCalculationModel } from '../../calculations/experience-calculation/experience-calculation.model';
-import { Relevancy } from '../../calculations/relevancy.enum';
 
 
 @Component({
@@ -44,7 +38,7 @@ import { Relevancy } from '../../calculations/relevancy.enum';
     RouterLink,
     ScopedTranslationPipe,
     CrudButtonComponent,
-    InfoIconComponent
+    InfoIconComponent,
     CrudButtonComponent
   ],
   templateUrl: './member-overview.component.html',
