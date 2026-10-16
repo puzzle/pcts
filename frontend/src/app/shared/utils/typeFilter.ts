@@ -19,7 +19,7 @@ export function filterType<T, K extends { [P in keyof T]: T[P] extends string ? 
 }
 
 export function filterMultipleFields<T>(item: T,
-  searchValue: string,
+  searchValue: string | null,
   keys: (keyof T)[]): boolean {
   if (!searchValue) {
     return true;

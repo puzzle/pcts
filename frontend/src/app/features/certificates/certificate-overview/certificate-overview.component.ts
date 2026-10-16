@@ -21,7 +21,7 @@ const getCertificateOverviewTable = () => new GenericTableDataSource<Certificate
   .withDetailViewLink()
   .withLimit(3)
   .addFilterPredicate((cert: CertificateTypeModel, filter: CertificateFilter) => {
-    const textSearch = (filter.textSearch || '').toLowerCase();
+    const textSearch = filter.textSearch;
     return filterMultipleFields(cert, textSearch, ['name',
       'publisher',
       'points']);
