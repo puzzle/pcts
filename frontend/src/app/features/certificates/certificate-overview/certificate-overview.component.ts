@@ -69,7 +69,7 @@ const getCertificateOverviewColumns = (): GenCol<CertificateTypeModel>[] => [
   selector: 'app-certificate',
   templateUrl: './certificate-overview.component.html'
 })
-class CertificateOverviewComponent {
+export class CertificateOverviewComponent {
   private readonly router = inject(Router);
 
   private readonly route = inject(ActivatedRoute);
@@ -164,5 +164,3 @@ class CertificateOverviewComponent {
     return array?.filter((element) => baseArray.includes(element)) ?? null;
   }
 }
-
-export default CertificateOverviewComponent;
