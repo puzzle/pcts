@@ -89,9 +89,11 @@ describe('Certificate overview', () => {
 
   describe('tag filter', () => {
     describe('tag selecting and deselecting', () => {
-      it('should display options in alphabetical order', () => {
+      beforeEach(() => {
         certificateTypeOverviewPage.tagFilter();
+      });
 
+      it('should display options in alphabetical order', () => {
         const options: string[] = [];
 
         cy.get('mat-option')
@@ -107,8 +109,6 @@ describe('Certificate overview', () => {
       });
 
       it('should display chips in alphabetical order', () => {
-        certificateTypeOverviewPage.tagFilter();
-
         const options: string[] = [];
 
         cy.get('mat-option')
@@ -137,7 +137,6 @@ describe('Certificate overview', () => {
       });
 
       it('should display the pills and select option in the dropdown when selected in dropdown', () => {
-        certificateTypeOverviewPage.tagFilter();
         certificateTypeOverviewPage.selectOptionFromTagFilter('AWSA01');
 
         cy.getByTestId('chip-AWSA01')
@@ -150,7 +149,6 @@ describe('Certificate overview', () => {
       });
 
       it('should remove chip and deselect option in dropdown when clicked on cancel icon on the chip', () => {
-        certificateTypeOverviewPage.tagFilter();
         certificateTypeOverviewPage.selectOptionFromTagFilter('AWSA01');
         certificateTypeOverviewPage.tagFilter();
 
@@ -170,7 +168,6 @@ describe('Certificate overview', () => {
       });
 
       it('should remove chip and deselect option in dropdown when clicked on a selected option in the dropdown', () => {
-        certificateTypeOverviewPage.tagFilter();
         certificateTypeOverviewPage.selectOptionFromTagFilter('AWSA01');
 
         certificateTypeOverviewPage.checkIfOptionFromTagFilterIsSelected('AWSA01');
