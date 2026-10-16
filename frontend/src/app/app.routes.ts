@@ -54,9 +54,8 @@ export const routes: Routes = [
                 tabIndex: tabResolver }
         },
         {
-          path: 'calculation/:id',
+          path: 'calculation/:calculationId',
           providers: [provideI18nPrefix('CALCULATION')],
-          canActivate: [authGuard('selfOrAdmin')],
           component: CalculationDetailViewComponent
         }]
       },
