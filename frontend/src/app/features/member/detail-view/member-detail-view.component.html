@@ -129,7 +129,7 @@
           <app-crud-button crud-button mode="add" [customOnClick]="addLeadershipExperienceDialog" data-testid="add-leadership-experience-button"/>
         </app-generic-cv-content>
       </mat-tab>
-      @for (rolePoints of rolePointsResource.value(); track rolePoints.role) {
+      @for (rolePoints of rolePointsResource.value(); track rolePoints.role.id) {
         <mat-tab *appTranslationScope="'CALCULATION'" [label]='rolePoints.role.name'>
           <app-member-calculation-table data-testid="member-calculation-table" [roleId]="rolePoints.role.id" [memberId]="m.id"/>
         </mat-tab>
