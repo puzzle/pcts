@@ -82,8 +82,8 @@ describe('MemberFormComponent', () => {
     });
 
     it('should submit member and show him in list', () => {
-      OverviewPage.visit();
-      FormPage.visitAdd('member');
+      cy.intercept('POST', '**/api/v1/members')
+        .as('createMember');
 
       FormPage.submitButtonShouldBe('disabled');
       FormPage.typeAndBlur('firstName', 'John');
@@ -104,6 +104,10 @@ describe('MemberFormComponent', () => {
         .click();
 
       FormPage.save();
+
+      cy.wait('@createMember')
+        .its('response.statusCode')
+        .should('eq', 201);
 
       OverviewPage.memberRows()
         .contains('John Doe', { matchCase: false });
@@ -136,33 +140,35 @@ describe('MemberFormComponent', () => {
     });
 
     it('should save changes to member', () => {
+      cy.intercept('PUT', '**/api/v1/members/1')
+        .as('updateMember');
+
       FormPage.visitEdit(1, 'member');
 
-      FormPage.clearAndBlur('firstName');
-      FormPage.typeAndBlur('firstName', 'Lena');
+      const changedMemberData = {
+        firstName: 'Lena Maria',
+        lastName: 'Müller-Keller',
+        abbreviation: 'LMK',
+        birthDate: '11.08.1999',
+        dateOfHire: '16.07.2021'
+      };
 
-      FormPage.clearAndBlur('lastName');
-      FormPage.typeAndBlur('lastName', 'Müller');
-
-      FormPage.clearAndBlur('abbreviation');
-      FormPage.typeAndBlur('abbreviation', 'LM');
-
-      FormPage.clearAndBlur('birthDate');
-      FormPage.typeAndBlur('birthDate', '10.08.1999');
-
-      FormPage.clearAndBlur('dateOfHire');
-      FormPage.typeAndBlur('dateOfHire', '15.07.2021');
+      Object.entries(changedMemberData)
+        .forEach(([field,
+          value]) => {
+          FormPage.clearAndBlur(field);
+          FormPage.typeAndBlur(field, value);
+        });
 
       FormPage.clearAndBlur('employmentState');
-      FormPage.typeAndBlur('employmentState', 'Member');
+      FormPage.typeAndBlur('employmentState', 'Bewerber');
       cy.get('mat-option')
-        .contains('Member')
+        .contains('Bewerber')
         .click();
 
-      FormPage.clearAndBlur('roles');
-      FormPage.type('roles', 'Intern');
+      FormPage.type('roles', 'Developer');
       cy.get('mat-option')
-        .contains('Intern')
+        .contains('Developer')
         .click();
 
       FormPage.clearAndBlur('organisationUnit');
@@ -172,24 +178,24 @@ describe('MemberFormComponent', () => {
         .click();
 
       FormPage.save();
-      OverviewPage.visit();
+
+      cy.wait('@updateMember')
+        .its('response.statusCode')
+        .should('eq', 200);
+      cy.location('pathname')
+        .should('eq', '/member/1');
 
       FormPage.visitEdit(1, 'member');
-      const expectedMemberData = {
-        firstName: 'Lena',
-        lastName: 'Müller',
-        abbreviation: 'LM',
-        birthDate: '10.08.1999',
-        dateOfHire: '15.07.2021',
-        employmentState: 'Member',
-        organisationUnit: '/zh'
-      };
 
-      Object.entries(expectedMemberData)
+      Object.entries({ ...changedMemberData,
+        employmentState: 'Bewerber',
+        organisationUnit: '/zh' })
         .forEach(([field,
           value]) => {
           FormPage.shouldHaveFieldValue(field, value);
         });
+      cy.get('mat-chip-row')
+        .should('contain.text', 'Developer');
     });
   });
 
