@@ -2,11 +2,12 @@
   <h1 class="pt-3">{{"MODEL_NAME_PLURAL" | scopedTranslation}}</h1>
 
   <div class="d-flex flex-row justify-content-between mb-3">
-    <div class="w-25 d-flex flex-row align-items-start">
+    <div class="w-25 d-flex flex-row align-items-center gap-2">
       <mat-form-field
         color="primary"
         appearance="outline"
         class="w-75 small-form-field"
+        subscriptSizing="dynamic"
         data-testid="search-field"
       >
         <mat-icon matPrefix>search</mat-icon>
@@ -17,6 +18,11 @@
           data-testid="search-input"
         />
       </mat-form-field>
+
+      <app-info-icon
+        class="filter-info-icon d-flex"
+        data-testid="filter-info"
+        [message]="'SEARCH.INFO' | scopedTranslation" />
     </div>
   </div>
 

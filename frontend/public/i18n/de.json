@@ -36,6 +36,9 @@
     "COMMENT": "Beschreibung",
     "EFFORT": "Aufwand in Tagen",
     "EXAM_DURATION": "Prüfungsdauer in Minuten",
+    "SEARCH": {
+      "INFO": "Trenne mit einem Leerzeichen um mehrere Suchbegriffe ahnzuwenden"
+    },
     "EXAM_TYPE": {
       "TYPE": "Prüfungsart",
       "THEORETICAL": "Theoretisch",
@@ -129,7 +132,7 @@
     "PERSONAL_DETAILS": "Personalien",
     "OVERVIEW": {
       "SEARCH": {
-        "INFO": "Trennt mehrere Suchbegriffe durch Leerzeichen, um passende Mitglieder zu finden"
+        "INFO": "Trenne mit einem Leerzeichen um mehrere Suchbegriffe ahnzuwenden"
       }
     },
     "EMPLOYMENT_STATUS_VALUES": {
