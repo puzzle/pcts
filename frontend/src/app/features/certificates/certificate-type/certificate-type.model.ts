@@ -8,7 +8,7 @@ export interface CertificateTypeModel {
   examDuration: number;
   link: string | null;
   examType: ExamType;
-  publisher: string;
+  publisher: string | null;
 
 }
 

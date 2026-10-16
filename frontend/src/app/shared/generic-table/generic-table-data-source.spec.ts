@@ -86,12 +86,28 @@ describe('GenericTableDataSource', () => {
       .toEqual(newCols);
   });
 
-  it('should apply limit filter', () => {
+  it('should allow configuring sortedBy via withSortedBy', () => {
+    const ds = new GenericTableDataSource(columns, data)
+      .withSortedBy('name');
+
+    expect(ds.sortedBy)
+      .toBe('name');
+  });
+
+  it('should return true for all elements when filter is empty or null', () => {
+    const ds = new GenericTableDataSource(columns, data);
+
+    ds.setFilter(null);
+
+    expect(ds.filteredData.length)
+      .toBe(3);
+  });
+
+  it('should apply limit filter and update hasMoreEntriesToDisplay signal', async() => {
     const ds = new GenericTableDataSource(columns, data)
       .withLimit(2);
 
-    ds.filter = 'any';
-    ds._updateChangeSubscription();
+    ds.setFilter(null);
 
     expect(ds.filteredData.length)
       .toBe(2);
@@ -99,27 +115,31 @@ describe('GenericTableDataSource', () => {
       .toBe(1);
     expect(ds.filteredData[1].id)
       .toBe(2);
+
+    await Promise.resolve();
+    expect(ds.hasMoreEntriesToDisplay())
+      .toBe(true);
   });
 
-  it('should apply custom filter predicate with index', () => {
-    const ds = new GenericTableDataSource(columns, data)
-      .withCustomFilterPredicate((item, _filter, index) => index === 1);
+  it('should combine multiple custom filter predicates', () => {
+    const ds = new GenericTableDataSource<TestModel, string>(columns, data)
+      .addFilterPredicate((item, filter) => item.value >= 20)
+      .addFilterPredicate((item, filter) => item.name.includes(filter));
 
-    ds.filter = 'test';
-    ds._updateChangeSubscription();
+    ds.setFilter('a');
 
     expect(ds.filteredData.length)
-      .toBe(1);
-    expect(ds.filteredData[0].name)
-      .toBe('Beta');
+      .toBe(2);
+    expect(ds.filteredData.map((d) => d.name))
+      .toEqual(['Beta',
+        'Gamma']);
   });
 
-  it('should fallback to default filterPredicate when filterPredicateWithIndex allows', () => {
-    const ds = new GenericTableDataSource(columns, data);
+  it('should apply added custom predicate (replacing old filterPredicate logic)', () => {
+    const ds = new GenericTableDataSource<TestModel, string>(columns, data);
 
-    ds.filterPredicate = (item, filter) => item.name.includes(filter);
-    ds.filter = 'Alpha';
-    ds._updateChangeSubscription();
+    ds.addFilterPredicate((item, filter) => item.name.includes(filter));
+    ds.setFilter('Alpha');
 
     expect(ds.filteredData.length)
       .toBe(1);
@@ -127,29 +147,36 @@ describe('GenericTableDataSource', () => {
       .toBe('Alpha');
   });
 
-  it('should ignore predicate when toggleIgnorePredicate is enabled', () => {
-    const ds = new GenericTableDataSource(columns, data)
-      .withLimit(1);
+  it('should return all elements when filter object is set but no custom predicates are added', () => {
+    const ds = new GenericTableDataSource<TestModel, string>(columns, data);
 
-    ds.filter = 'test';
-    ds._updateChangeSubscription();
-    expect(ds.filteredData.length)
-      .toBe(1);
+    ds.setFilter('Alpha');
 
-    ds.toggleIgnorePredicate();
     expect(ds.filteredData.length)
       .toBe(3);
   });
 
-  it('should restore predicate when toggleIgnorePredicate is toggled twice', () => {
+  it('should ignore limit when toggleIgnoreLimit is enabled', () => {
     const ds = new GenericTableDataSource(columns, data)
       .withLimit(1);
 
-    ds.toggleIgnorePredicate();
-    ds.toggleIgnorePredicate();
+    ds.setFilter(null);
+    expect(ds.filteredData.length)
+      .toBe(1);
 
-    ds.filter = 'test';
-    ds._updateChangeSubscription();
+    ds.toggleIgnoreLimit();
+    expect(ds.filteredData.length)
+      .toBe(3);
+  });
+
+  it('should restore limit when toggleIgnoreLimit is toggled twice', () => {
+    const ds = new GenericTableDataSource<TestModel, string>(columns, data)
+      .withLimit(1);
+
+    ds.toggleIgnoreLimit();
+    ds.toggleIgnoreLimit();
+
+    ds.setFilter(null);
 
     expect(ds.filteredData.length)
       .toBe(1);
@@ -159,12 +186,15 @@ describe('GenericTableDataSource', () => {
     const ds = new GenericTableDataSource(columns, data)
       .withLimit(1);
 
-    ds.filter = 'test';
-    ds.reloadData();
-    ds._updateChangeSubscription();
-
+    ds.setFilter(null);
     expect(ds.filteredData.length)
       .toBe(1);
+
+    ds.withLimit(2);
+    ds.reloadData();
+
+    expect(ds.filteredData.length)
+      .toBe(2);
   });
 
   it('should allow link flag', () => {

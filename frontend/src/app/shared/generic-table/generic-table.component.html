@@ -83,10 +83,10 @@
     }
 
     <tr *matNoDataRow data-testid="no-results-row">
-      <td colspan="4">
+      <td [attr.colspan]="columnNames().length">
         {{
           'TABLE.NO_SEARCH_RESULT' | scopedTranslation :
-            {model: 'MODEL_NAME' | scopedTranslation, searchValue: ''}
+            {model: 'MODEL_NAME' | scopedTranslation}
         }}
       </td>
     </tr>
@@ -96,7 +96,7 @@
     {{ getDisplayValue(col, entity) }}
   </ng-template>
 
-  @if (isFilterApplied()) {
+  @if (areEntriesCut()) {
     <div class="d-flex justify-content-center mt-2" *appTranslationScope="'TABLE'">
       <button
         data-testid="limit-list-button"
@@ -104,7 +104,7 @@
         class="btn btn-link"
         (click)="toggleButton()"
       >
-        {{ isExpanded ? ('SHOW_LESS' | scopedTranslation) : ('SHOW_ALL'  | scopedTranslation) }}
+        {{ isExpanded() ? ('SHOW_LESS' | scopedTranslation) : ('SHOW_ALL'  | scopedTranslation) }}
       </button>
     </div>
   }

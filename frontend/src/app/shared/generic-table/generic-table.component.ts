@@ -3,7 +3,7 @@ import {
   computed, contentChild,
   contentChildren,
   effect, inject, Injector,
-  input, output, runInInjectionContext,
+  input, output, runInInjectionContext, signal,
   TemplateRef,
   viewChild
 } from '@angular/core';
@@ -56,24 +56,23 @@ import { MatIcon } from '@angular/material/icon';
   templateUrl: './generic-table.component.html',
   styleUrl: './generic-table.component.scss'
 })
-export class GenericTableComponent<T extends object, K extends keyof T = keyof T> {
+export class GenericTableComponent<T extends object, K extends keyof T = keyof T, F = unknown> {
   injector = inject(Injector);
 
   idAttr = input<K>();
 
   crudBasePath = input<string>('');
 
-  dataSource = input.required<GenericTableDataSource<T>>();
+  dataSource = input.required<GenericTableDataSource<T, F>>();
 
   data = computed(() => this.dataSource().data);
 
-  isExpanded = false;
+  isExpanded = signal(false);
+
+  areEntriesCut = computed(() => this.dataSource()
+    .hasMoreEntriesToDisplay());
 
   entrySelected = output<T>();
-
-  isFilterApplied = () => {
-    return this.dataSource().filteredData.length !== this.dataSource().data.length || this.isExpanded;
-  };
 
   rowDetailTemplate = contentChild(RowDetailTemplateDirective);
 
@@ -119,9 +118,9 @@ export class GenericTableComponent<T extends object, K extends keyof T = keyof T
   }
 
   toggleButton() {
-    this.isExpanded = !this.isExpanded;
+    this.isExpanded.update((currentValue) => !currentValue);
     this.dataSource()
-      .toggleIgnorePredicate();
+      .toggleIgnoreLimit();
   }
 
 

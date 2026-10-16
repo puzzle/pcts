@@ -1,3 +1,4 @@
+import { signal } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 
 type Formatter = (value: any) => any;
@@ -36,10 +37,18 @@ export class GenCol<T> {
   }
 }
 
-export class GenericTableDataSource<T> extends MatTableDataSource<T> {
+export class GenericTableDataSource<T, F = unknown> extends MatTableDataSource<T> {
+  private readonly _customPredicates: ((data: T, filter: F) => boolean)[] = [];
+
+  private _limit?: number;
+
   private _columnDefs: GenCol<T>[] = [];
 
-  private _ignorePredicate = false;
+  ignoreLimit = false;
+
+  filterObject: F | null = null;
+
+  hasMoreEntriesToDisplay = signal(false);
 
   shouldLink = false;
 
@@ -60,12 +69,12 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
   }
 
   public withLimit(limit: number) {
-    this.filterPredicateWithIndex = (data: T, filter: string, index: number) => index < limit;
+    this._limit = limit;
     return this;
   }
 
-  public withCustomFilterPredicate(predicate: (data: T, filter: string, index: number) => boolean) {
-    this.filterPredicateWithIndex = predicate;
+  public addFilterPredicate(predicate: (data: T, filter: F) => boolean) {
+    this._customPredicates.push(predicate);
     return this;
   }
 
@@ -79,33 +88,57 @@ export class GenericTableDataSource<T> extends MatTableDataSource<T> {
     return this;
   }
 
+  public setFilter(filter: F) {
+    this.filterObject = filter;
+    this.reloadData();
+  }
+
   override _filterData(data: T[]) { // eslint-disable-line @typescript-eslint/naming-convention
-    if (this._ignorePredicate) {
-      this.filteredData = this.data;
+    let filteredEntries: T[];
+
+    if (this.filterObject == null) {
+      filteredEntries = data;
     } else {
-      this.filteredData = data.filter((obj: T, index: number) => this.filterPredicateWithIndex(obj, this.filter, index));
+      const currentFilter = this.filterObject;
+      filteredEntries = data.filter((obj: T) => this.filterCustomPredicates(obj, currentFilter));
+    }
+
+    const hasMoreEntriesToDisplay = this._limit !== undefined && filteredEntries.length > this._limit;
+
+    /*
+     * Defer signal update to the next microtask to avoid
+     * conflicts with Angular's render process during template updates.
+     */
+    Promise.resolve()
+      .then(() => {
+        this.hasMoreEntriesToDisplay.set(hasMoreEntriesToDisplay);
+      });
+
+    if (hasMoreEntriesToDisplay && !this.ignoreLimit) {
+      filteredEntries = filteredEntries.slice(0, this._limit);
     }
 
     if (this.paginator) {
-      this._updatePaginator(this.filteredData.length);
+      this._updatePaginator(filteredEntries.length);
     }
 
-    return this.filteredData;
+    this.filteredData = filteredEntries;
+    return filteredEntries;
   }
 
-  filterPredicateWithIndex: (data: T, filter: string, index: number) => boolean = (data: T, filter: string, index: number) => {
-    if (this.filter == null || this.filter === '') {
-      return true;
+  private filterCustomPredicates(data: T, filter: F): boolean {
+    if (this._customPredicates && this._customPredicates.length > 0) {
+      return this._customPredicates.every((predicate) => predicate(data, filter));
     }
-    return this.filterPredicate(data, filter);
-  };
+    return true;
+  }
 
-  toggleIgnorePredicate() {
-    this._ignorePredicate = !this._ignorePredicate;
+  toggleIgnoreLimit() {
+    this.ignoreLimit = !this.ignoreLimit;
     this.reloadData();
   }
 
   reloadData() {
-    this['_filter'].next('');
+    this.filter = this.filter; // eslint-disable-line no-self-assign
   }
 }

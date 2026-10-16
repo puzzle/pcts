@@ -5,8 +5,8 @@ import { GenericTableDataSource } from './generic-table-data-source';
   selector: '[appExpandableRow]',
   standalone: true
 })
-export class RowDetailTemplateDirective<T> {
-  appExpandableRow = input.required<GenericTableDataSource<T>>();
+export class RowDetailTemplateDirective<T, F = unknown> {
+  appExpandableRow = input.required<GenericTableDataSource<T, F>>();
 
   template = inject(TemplateRef);
 

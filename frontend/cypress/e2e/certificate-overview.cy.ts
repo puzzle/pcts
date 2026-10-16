@@ -1,7 +1,8 @@
 import * as users from '../fixtures/users.json';
 import CertificateTypeOverviewPage from '../pages/certificateTypeOverviewPage';
+import OverviewPage from '../pages/overviewPage';
 
-describe('Certificate modal', () => {
+describe('Certificate overview', () => {
   beforeEach(() => {
     cy.loginAsUser(users.gl);
     CertificateTypeOverviewPage.visit();
@@ -45,5 +46,42 @@ describe('Certificate modal', () => {
     CertificateTypeOverviewPage.certificateDetailView()
       .find('a')
       .should('have.attr', 'target', '_blank');
+  });
+
+  describe('text search filter', () => {
+    describe('text search filter', () => {
+      it('should not filter when filter is empty', () => {
+        const searchTerm = ' ';
+
+        OverviewPage.fillSearchInput(searchTerm);
+
+        cy.wait(300);
+
+        CertificateTypeOverviewPage.table()
+          .should('be.visible');
+        CertificateTypeOverviewPage.tableRows()
+          .should('have.length', 9);
+      });
+
+      [{ searchTerm: 'aws',
+        length: 1 },
+      { searchTerm: 'cer',
+        length: 4 },
+      {
+        searchTerm: 'mic',
+        length: 2
+      }].forEach((table) => {
+        it(`should filter when search term is ${table.searchTerm}`, () => {
+          OverviewPage.fillSearchInput(table.searchTerm);
+
+          cy.wait(300);
+
+          CertificateTypeOverviewPage.table()
+            .should('be.visible');
+          CertificateTypeOverviewPage.tableRows()
+            .should('have.length', table.length);
+        });
+      });
+    });
   });
 });
