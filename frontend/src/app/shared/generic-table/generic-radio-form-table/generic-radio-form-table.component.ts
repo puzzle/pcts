@@ -19,12 +19,10 @@ import { FormValueControl } from '@angular/forms/signals';
   templateUrl: './generic-radio-form-table.component.html'
 })
 
-export class GenericRadioFormTableComponent<T extends { relevancy: Relevancy }> implements FormValueControl<{ row: T;
-  relevancy: Relevancy; }[]> {
+export class GenericRadioFormTableComponent<T extends { relevancy: Relevancy }> implements FormValueControl<T[]> {
   protected readonly Relevancy = Relevancy;
 
-  value = model<{ row: T;
-    relevancy: Relevancy; }[]>([]);
+  value = model<T[]>([]);
 
   table = input.required<GenericTableDataSource<T>>();
 
@@ -32,8 +30,7 @@ export class GenericRadioFormTableComponent<T extends { relevancy: Relevancy }> 
     effect(() => {
       const value = this.value();
       if (value) {
-        this.table().data = value
-          .map((entry) => entry.row);
+        this.table().data = value;
       }
     });
   }
