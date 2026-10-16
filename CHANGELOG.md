@@ -1,5 +1,40 @@
 # Changelog
 
+## [0.14.0](https://github.com/puzzle/pcts/compare/0.13.0...0.14.0) (2026-10-16)
+
+
+### Features
+
+* Certificate Overview - text search [#924](https://github.com/puzzle/pcts/issues/924) ([#941](https://github.com/puzzle/pcts/issues/941)) ([cea9e97](https://github.com/puzzle/pcts/commit/cea9e97f40871c7a45071e025bac971aaf0de799))
+* certificate overview tag filter [#926](https://github.com/puzzle/pcts/issues/926) ([#959](https://github.com/puzzle/pcts/issues/959)) ([16f92b9](https://github.com/puzzle/pcts/commit/16f92b9abfbd2deb4ea2cb461074bf29b1d5b019))
+* improve matching in migration [#875](https://github.com/puzzle/pcts/issues/875) ([#921](https://github.com/puzzle/pcts/issues/921)) ([e64acd2](https://github.com/puzzle/pcts/commit/e64acd2a4b8dfb3559e7a9be827b8539add3a1f3))
+* radio form relevancy selection [#905](https://github.com/puzzle/pcts/issues/905) ([#945](https://github.com/puzzle/pcts/issues/945)) ([c3e66cb](https://github.com/puzzle/pcts/commit/c3e66cb8c8a4cba5ccc60f892e16e37e784d9d33))
+* search info tooltip for certificate and member overview [#925](https://github.com/puzzle/pcts/issues/925) ([#958](https://github.com/puzzle/pcts/issues/958)) ([3fac424](https://github.com/puzzle/pcts/commit/3fac4243ab4103be79f8c24d79b18ffed378c84d))
+
+
+### Miscellaneous Chores
+
+* **deps:** update all devdependencies (minor and patch) ([#943](https://github.com/puzzle/pcts/issues/943)) ([dbc5c5a](https://github.com/puzzle/pcts/commit/dbc5c5a3f55aa164ec225700dccf35a64f935c02))
+* **deps:** update all devdependencies (minor and patch) ([#953](https://github.com/puzzle/pcts/issues/953)) ([5ce3bc8](https://github.com/puzzle/pcts/commit/5ce3bc855aa24395c55abda67fe30d6e04cd5365))
+* **deps:** update all devdependencies (minor and patch) to v22.2.2 ([#961](https://github.com/puzzle/pcts/issues/961)) ([bfeff05](https://github.com/puzzle/pcts/commit/bfeff0574926c40f342680e425483a9df58d5139))
+* **deps:** update all devdependencies (minor and patch) to v22.6.0 ([#967](https://github.com/puzzle/pcts/issues/967)) ([c53a1d3](https://github.com/puzzle/pcts/commit/c53a1d34841ce9aaf70ad95893b5575b547ff8f2))
+* **deps:** update angular monorepo to v22.2.1 ([#947](https://github.com/puzzle/pcts/issues/947)) ([41eb28b](https://github.com/puzzle/pcts/commit/41eb28b8466c3ec1b4ecad53cf12cfc5bd87ea3f))
+* **deps:** update angular monorepo to v22.2.2 ([#962](https://github.com/puzzle/pcts/issues/962)) ([1487269](https://github.com/puzzle/pcts/commit/1487269ac6c1a0d2f8ff302c387883d7f4f46a38))
+* **deps:** update angularmaterial monorepo to v22.2.1 ([#948](https://github.com/puzzle/pcts/issues/948)) ([63f8d30](https://github.com/puzzle/pcts/commit/63f8d3020be5825669aec030b1bce381d28215f7))
+* **deps:** update angularmaterial monorepo to v22.2.2 ([#957](https://github.com/puzzle/pcts/issues/957)) ([a119bbd](https://github.com/puzzle/pcts/commit/a119bbd767390f7bbe2e3dc267ba593ee50773fa))
+* **deps:** update cypress-io/github-action action to v7.4.6 ([#942](https://github.com/puzzle/pcts/issues/942)) ([6ba3a5b](https://github.com/puzzle/pcts/commit/6ba3a5b4956485eb5cc4d0c140d43155dac70ae3))
+* **deps:** update dependency @types/jasmine to v7 ([39f61f1](https://github.com/puzzle/pcts/commit/39f61f15e209eb451b4a3ae5f6e908c9dc877cd5))
+* **deps:** update dependency com.diffplug.spotless:spotless-maven-plugin to v3.10.4 ([#963](https://github.com/puzzle/pcts/issues/963)) ([133a326](https://github.com/puzzle/pcts/commit/133a326c8b7a4529215beaab716c0e7e8dde8233))
+* **deps:** update dependency eslint to v10.12.0 ([#949](https://github.com/puzzle/pcts/issues/949)) ([09415a9](https://github.com/puzzle/pcts/commit/09415a94717bf4a5ac659f1f30aab1c189e8f4f2))
+* **deps:** update dependency maven to v3.10.0 ([#950](https://github.com/puzzle/pcts/issues/950)) ([6e89d8d](https://github.com/puzzle/pcts/commit/6e89d8d9274e88a43580f6e1a164d8340c70f26f))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v13.10.0 ([#964](https://github.com/puzzle/pcts/issues/964)) ([9b275cb](https://github.com/puzzle/pcts/commit/9b275cb738f927142b8a69efc320cf8e0c5f773c))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v13.9.0 ([#951](https://github.com/puzzle/pcts/issues/951)) ([228f6fe](https://github.com/puzzle/pcts/commit/228f6fe472e3d75fa7c8c21b3ba65516915d6154))
+* **deps:** update dependency org.openapitools:openapi-generator-maven-plugin to v7.26.0 ([#955](https://github.com/puzzle/pcts/issues/955)) ([d7641f2](https://github.com/puzzle/pcts/commit/d7641f2bcaadfdcf3331c1162c7d53add8fbdd3d))
+* **deps:** update dependency typescript-eslint to v8.71.2 ([#966](https://github.com/puzzle/pcts/issues/966)) ([d5f6a99](https://github.com/puzzle/pcts/commit/d5f6a994200859ada0a51c0ca1de2fc2ce23ff71))
+* **deps:** update pnpm to v12.10.1 ([#956](https://github.com/puzzle/pcts/issues/956)) ([d043319](https://github.com/puzzle/pcts/commit/d0433193dec496ba3bd236db06e601fa0bf46665))
+* **deps:** update pnpm to v12.11.2 ([#965](https://github.com/puzzle/pcts/issues/965)) ([6ca2b8e](https://github.com/puzzle/pcts/commit/6ca2b8e34ca1e24a977cea042ea361b33fe362ce))
+* **deps:** update pnpm to v12.9.1 ([#952](https://github.com/puzzle/pcts/issues/952)) ([379c3de](https://github.com/puzzle/pcts/commit/379c3de2d2d1550d61775b085c21f86e0cf429e0))
+
 ## [0.13.0](https://github.com/puzzle/pcts/compare/0.12.0...0.13.0) (2026-10-05)
 
 
