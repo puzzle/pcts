@@ -5,7 +5,6 @@ import { ScopedTranslationPipe } from '../../pipes/scoped-translation-pipe';
 import { GenericTableDataSource } from '../generic-table-data-source';
 import { MatRadioButton } from '@angular/material/radio';
 import { Relevancy } from '../../../features/calculations/relevancy.enum';
-import { RadioFormTableResponse } from './radio-form-table-response.model';
 import { FormValueControl } from '@angular/forms/signals';
 
 @Component({
@@ -20,10 +19,12 @@ import { FormValueControl } from '@angular/forms/signals';
   templateUrl: './generic-radio-form-table.component.html'
 })
 
-export class GenericRadioFormTableComponent<T extends { relevancy: Relevancy }> implements FormValueControl<RadioFormTableResponse<T>[]> {
+export class GenericRadioFormTableComponent<T extends { relevancy: Relevancy }> implements FormValueControl<{ row: T;
+  relevancy: Relevancy; }[]> {
   protected readonly Relevancy = Relevancy;
 
-  value = model<RadioFormTableResponse<T>[]>([]);
+  value = model<{ row: T;
+    relevancy: Relevancy; }[]>([]);
 
   table = input.required<GenericTableDataSource<T>>();
 

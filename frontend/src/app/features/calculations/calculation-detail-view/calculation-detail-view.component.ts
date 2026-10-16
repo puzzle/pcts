@@ -4,9 +4,6 @@ import {
 } from '../../../shared/generic-table/generic-radio-form-table/generic-radio-form-table.component';
 import { ExperienceCalculationModel } from '../experience-calculation/experience-calculation.model';
 import { MemberService } from '../../member/member.service';
-import {
-  RadioFormTableResponse
-} from '../../../shared/generic-table/generic-radio-form-table/radio-form-table-response.model';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { GenCol, GenericTableDataSource } from '../../../shared/generic-table/generic-table-data-source';
 import { Relevancy } from '../relevancy.enum';
@@ -35,7 +32,8 @@ export class CalculationDetailViewComponent {
           return {
             row: experienceCalculation,
             relevancy: experienceCalculation.relevancy
-          } as RadioFormTableResponse<ExperienceCalculationModel>;
+          } as { row: ExperienceCalculationModel;
+            relevancy: Relevancy; };
         });
         this.formControl.setValue(map);
       });
@@ -63,7 +61,8 @@ export class CalculationDetailViewComponent {
     })
   ];
 
-  changeData(object: RadioFormTableResponse<ExperienceCalculationModel>) {
+  changeData(object: { row: ExperienceCalculationModel;
+    relevancy: Relevancy; }) {
     const row = object.row;
 
     const value = object.relevancy;
