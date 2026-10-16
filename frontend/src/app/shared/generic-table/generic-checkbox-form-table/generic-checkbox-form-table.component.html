@@ -1,0 +1,17 @@
+<div class="mt-5">
+  <h3 class="pt-3">{{"MODEL_NAME_PLURAL" | scopedTranslation}}</h3>
+  <app-generic-table [dataSource]="table()">
+    <ng-template appColumnTemplate="highlyRelevant" let-row>
+      <mat-checkbox [checked]="shouldBeChecked(row, Relevancy.STRONGLY)" id="highly" [name]=row.id (change)="this.handleCheckboxClick.emit({row: row, relevancy: Relevancy.STRONGLY, amount: Number(this.highlyRelevant.value)})"/>
+      <input matInput [formControl]="highlyRelevant"/>
+    </ng-template>
+    <ng-template appColumnTemplate="limitedRelevant" let-row>
+      <mat-checkbox [checked]="shouldBeChecked(row, Relevancy.NORMAL)" id="limited" [name]=row.id (change)="this.handleCheckboxClick.emit({row: row, relevancy: Relevancy.NORMAL, amount: Number(this.limitedRelevant.value)})"/>
+      <input matInput [formControl]="limitedRelevant"/>
+    </ng-template>
+    <ng-template appColumnTemplate="littleRelevant" let-row>
+      <mat-checkbox [checked]="shouldBeChecked(row, Relevancy.POORLY)" id="little" [name]=row.id (change)="this.handleCheckboxClick.emit({row: row, relevancy: Relevancy.POORLY, amount: Number(this.littleRelevant.value)})"/>
+      <input matInput [formControl]="littleRelevant"/>
+    </ng-template>
+  </app-generic-table>
+</div>
