@@ -14,7 +14,7 @@ import {
 import { certificateTypeResolver } from './features/certificates/certificate-type.resolver';
 import {
   CalculationDetailViewComponent
-} from './features/calculations/calculation-detail-view.component/calculation-detail-view.component';
+} from './features/calculations/calculation-detail-view/calculation-detail-view.component';
 import {
   filterResolver
 } from './features/certificates/certificate-overview/filter.resolver';

@@ -14,7 +14,7 @@ import { Relevancy } from '../relevancy.enum';
 @Component({
   imports: [GenericRadioFormTableComponent,
     ReactiveFormsModule],
-  selector: 'app-calculation-detail-view.component',
+  selector: 'app-calculation-detail-view',
   templateUrl: './calculation-detail-view.component.html'
 })
 export class CalculationDetailViewComponent {
