@@ -223,11 +223,14 @@ describe('Certificate overview', () => {
         table.tags.forEach((tag) => certificateTypeOverviewPage.selectOptionFromTagFilter(tag));
 
         cy.get('app-certificate-type-tags')
-          .each(($element) => {
-            const rowTags = $element.text()
-              .trim();
+          .each(($tagContainer) => {
+            const certificateTags = $tagContainer.find('span')
+              .map((_, $tag) => $tag.innerText.trim())
+              .get();
 
-            expect(table.tags.some((tag) => rowTags.includes(tag))).to.equal(true);
+            const certificateHasAtLeastOneSelectedTag = certificateTags.some((tag) => table.tags.includes(tag));
+
+            expect(certificateHasAtLeastOneSelectedTag).to.equal(true);
           });
 
         CertificateTypeOverviewPage.table()
