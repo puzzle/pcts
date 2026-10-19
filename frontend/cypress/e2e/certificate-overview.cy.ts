@@ -198,7 +198,7 @@ describe('Certificate overview', () => {
         length: 2,
         searchTerm: '' },
       { tags: ['GitLab 101'],
-        length: 2,
+        length: 1,
         searchTerm: '' },
       { tags: ['Berufsbildner'],
         length: 1,
