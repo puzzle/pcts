@@ -222,6 +222,14 @@ describe('Certificate overview', () => {
 
         table.tags.forEach((tag) => certificateTypeOverviewPage.selectOptionFromTagFilter(tag));
 
+        cy.get('app-certificate-type-tags')
+          .each(($element) => {
+            const rowTags = $element.text()
+              .trim();
+
+            expect(table.tags.some((tag) => rowTags.includes(tag))).to.equal(true);
+          });
+
         CertificateTypeOverviewPage.table()
           .should('be.visible');
         CertificateTypeOverviewPage.tableRows()
