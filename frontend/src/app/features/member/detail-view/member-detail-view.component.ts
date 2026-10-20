@@ -291,8 +291,7 @@ export class MemberDetailViewComponent {
     });
   }
 
-  getTableData = () => new GenericTableDataSource(this.getColumns())
-    .withLimit(10)
+  getTableData = () => new GenericTableDataSource<DegreeCalculationModel>(this.getColumns())
     .withDetailViewLink();
 
   getColumns = (): GenCol<DegreeCalculationModel>[] => [
@@ -302,10 +301,4 @@ export class MemberDetailViewComponent {
     GenCol.fromCalculated('littleRelevant', () => {}),
     GenCol.fromCalculated('points', (d: DegreeCalculationModel) => {})
   ];
-
-  changeData(object: CheckBoxTableResponse<DegreeCalculationModel>) {
-    object.row.relevancies = new Map<Relevancy, number>([[object.relevancy,
-      object.amount ?? 100]]);
-    console.log(object.amount);
-  }
 }
