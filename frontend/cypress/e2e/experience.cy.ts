@@ -14,8 +14,7 @@ describe('Experience modal', () => {
       memberDetailPage.openModalButton('add', 'experience')
         .click();
 
-      modalPage.checkModalIconButtonVisible();
-      modalPage.checkModalIconButtonFocused();
+      modalPage.waitUntilOpened();
     };
 
     it('should open correct modal', () => {
@@ -177,6 +176,8 @@ describe('Experience modal', () => {
             .eq(1)
             .click();
         });
+
+      modalPage.waitUntilOpened();
     };
 
     beforeEach(() => {

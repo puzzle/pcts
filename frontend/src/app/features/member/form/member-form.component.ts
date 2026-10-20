@@ -153,10 +153,6 @@ export class MemberFormComponent implements OnInit {
       this.memberForm.patchValue({
         ...this.member()
       });
-
-      this.memberForm.get('organisationUnit')
-        ?.setValue(this.organisationUnitsOptions()
-          .find((orgUnit) => orgUnit.id === this.member()?.organisationUnit?.id));
     });
   }
 
@@ -224,6 +220,11 @@ export class MemberFormComponent implements OnInit {
         .toLowerCase()
         .includes(value.toLowerCase());
     });
+  }
+
+  revalidateRoles(): void {
+    this.memberForm.get('roles')
+      ?.updateValueAndValidity();
   }
 
   removeRole(roleToRemove: RoleModel): void {

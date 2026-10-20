@@ -14,7 +14,7 @@ describe('Degree Modal', () => {
       memberDetailPage.openModalButton('add', 'degree')
         .click();
 
-      modalPage.checkModalIconButtonVisible();
+      modalPage.waitUntilOpened();
     };
 
     it('should open correct modal', () => {
@@ -94,7 +94,6 @@ describe('Degree Modal', () => {
           errors]) => {
           it(`shows error for invalid date in: ${fieldName}`, () => {
             formPage.submitButtonShouldBe('disabled');
-            cy.wait(300);
             formPage.typeAndBlur(fieldName, 'invalid entry');
             errors.forEach((error) => {
               formPage.shouldShowValidationError(error, fieldName);
@@ -128,7 +127,7 @@ describe('Degree Modal', () => {
             .click();
         });
 
-      modalPage.checkModalIconButtonVisible();
+      modalPage.waitUntilOpened();
     };
 
     beforeEach(() => {
