@@ -1,17 +1,35 @@
 <div class="mt-5">
   <h3 class="pt-3">{{"MODEL_NAME_PLURAL" | scopedTranslation}}</h3>
-  <app-generic-table [dataSource]="table()">
+  <app-generic-table [dataSource]="table()" idAttr="id">
     <ng-template appColumnTemplate="highlyRelevant" let-row>
-      <mat-checkbox [checked]="shouldBeChecked(row, Relevancy.STRONGLY)" id="highly" [name]=row.id (change)="this.handleCheckboxClick.emit({row: row, relevancy: Relevancy.STRONGLY, amount: Number(this.highlyRelevant.value)})"/>
-      <input matInput [formControl]="highlyRelevant"/>
+      <mat-checkbox [checked]="shouldBeChecked()" id="highly" [name]=row.id />
     </ng-template>
     <ng-template appColumnTemplate="limitedRelevant" let-row>
-      <mat-checkbox [checked]="shouldBeChecked(row, Relevancy.NORMAL)" id="limited" [name]=row.id (change)="this.handleCheckboxClick.emit({row: row, relevancy: Relevancy.NORMAL, amount: Number(this.limitedRelevant.value)})"/>
-      <input matInput [formControl]="limitedRelevant"/>
+      <mat-checkbox [checked]="shouldBeChecked()" id="limited" [name]=row.id />
     </ng-template>
     <ng-template appColumnTemplate="littleRelevant" let-row>
-      <mat-checkbox [checked]="shouldBeChecked(row, Relevancy.POORLY)" id="little" [name]=row.id (change)="this.handleCheckboxClick.emit({row: row, relevancy: Relevancy.POORLY, amount: Number(this.littleRelevant.value)})"/>
-      <input matInput [formControl]="littleRelevant"/>
+      <mat-checkbox [checked]="shouldBeChecked()" id="little" [name]=row.id />
+    </ng-template>
+
+    <ng-template [appTypedTemplate]="table().data"/>
+
+    <ng-template
+      [appExpandableRow]="table()"
+    >
+      <mat-form-field>
+        <mat-label>highlyRelevant</mat-label>
+        <input matInput [formControl]="highlyRelevant"/>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>limitedRelevant</mat-label>
+      <input matInput [formControl]="limitedRelevant"/>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>littleRelevant</mat-label>
+        <input matInput [formControl]="littleRelevant"/>
+      </mat-form-field>
     </ng-template>
   </app-generic-table>
 </div>
