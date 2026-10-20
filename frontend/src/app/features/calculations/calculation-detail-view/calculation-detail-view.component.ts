@@ -1,41 +1,33 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, input } from '@angular/core';
 import {
   GenericRadioFormTableComponent
 } from '../../../shared/generic-table/generic-radio-form-table/generic-radio-form-table.component';
 import { ExperienceCalculationModel } from '../experience-calculation/experience-calculation.model';
-import { MemberService } from '../../member/member.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { GenCol, GenericTableDataSource } from '../../../shared/generic-table/generic-table-data-source';
 import { Relevancy } from '../relevancy.enum';
 import { TranslationScopeDirective } from '../../../shared/translation-scope/translation-scope.directive';
-import { form, FormField } from '@angular/forms/signals';
+import { FormField } from '@angular/forms/signals';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
+import { CalculationModel } from '../calculation.model';
 
 @Component({
   imports: [
     GenericRadioFormTableComponent,
     ReactiveFormsModule,
     TranslationScopeDirective,
-    FormField
+    FormField,
+    MatButton,
+    MatIcon,
+    RouterLink
   ],
   selector: 'app-calculation-detail-view',
   templateUrl: './calculation-detail-view.component.html'
 })
 export class CalculationDetailViewComponent {
-  private readonly memberService = inject(MemberService);
-
-  private readonly experienceCalculations = signal<ExperienceCalculationModel[]>([] as ExperienceCalculationModel[]);
-
-  constructor() {
-    // Todo: Implement calculation service then fetch from calculation id instead of going over member service this is for the new ticket
-    this.memberService.getCalculationsByMemberIdAndOptionalRoleId(1)
-      .subscribe((response) => {
-        response.forEach((result) => {
-          this.experienceCalculations.set(result.experienceCalculations);
-        });
-      });
-  }
-
-  experienceCalculationForm = form(this.experienceCalculations);
+  calculation = input.required<CalculationModel>();
 
   getColumns = [
     GenCol.fromCalculated('name', (e: ExperienceCalculationModel) => e.experience.name),
