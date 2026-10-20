@@ -114,3 +114,18 @@ export function isBetweenUpperAndLower(lower: number, upper: number): ValidatorF
     return { invalid_integer: true };
   };
 }
+
+export function doesAddUpToTarget(target: number): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const highly = Number(control.get('highlyRelevant')?.value);
+    const limited = Number(control.get('limitedRelevant')?.value);
+    const little = Number(control.get('littleRelevant')?.value);
+
+    if (highly + limited + little !== target) {
+      console.log('invalid', highly + limited + little);
+      return { invalid_total: true };
+    }
+
+    return null;
+  };
+}
