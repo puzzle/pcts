@@ -35,10 +35,6 @@ import {
 import { MemberService } from '../member.service';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { ExperienceOverviewModel } from './cv/experience-overview.model';
-import {
-  GenericCheckboxFormTableComponent
-} from '../../../shared/generic-table/generic-checkbox-form-table/generic-checkbox-form-table.component';
-import { ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-member-detail-view',
   standalone: true,
@@ -51,9 +47,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatTab,
     TranslationScopeDirective,
     MemberCalculationTableComponent,
-    ShowIfAdminDirective,
-    GenericCheckboxFormTableComponent,
-    ReactiveFormsModule
+    ShowIfAdminDirective
   ],
   templateUrl: './member-detail-view.component.html',
   styleUrls: ['./member-detail-view.component.scss']
