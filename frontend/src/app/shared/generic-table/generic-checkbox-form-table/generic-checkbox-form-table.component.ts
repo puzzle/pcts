@@ -7,8 +7,11 @@ import { FormValueControl } from '@angular/forms/signals';
 import { GenericTableDataSource } from '../generic-table-data-source';
 import { CheckBoxTableResponse } from './CheckBoxTableResponse';
 import { ColumnTemplateDirective } from '../column-template/column-template.directive';
-import { MatInput } from '@angular/material/input';
+import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RowDetailTemplateDirective } from '../rowDetailTemplate.directive';
+import { TypedTemplateDirective } from '../type-template/typed-template.directive';
+import { isBetweenUpperAndLower } from '../../form/form-validators';
 
 @Component({
   imports: [
@@ -18,13 +21,18 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
     ColumnTemplateDirective,
     MatInput,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RowDetailTemplateDirective,
+    TypedTemplateDirective,
+    MatFormField,
+    MatLabel
   ],
   selector: 'app-generic-checkbox-form-table',
   styleUrl: './generic-checkbox-form-table.component.scss',
   templateUrl: './generic-checkbox-form-table.component.html'
 })
-export class GenericCheckboxFormTableComponent<T extends { relevancies: Map<Relevancy, number> }> implements FormValueControl<CheckBoxTableResponse<T>[]> {
+export class GenericCheckboxFormTableComponent<T extends { id: number;
+  relevancies: Map<Relevancy, number>; }> implements FormValueControl<CheckBoxTableResponse<T>[]> {
   protected readonly Relevancy = Relevancy;
 
   protected readonly Number = Number;
@@ -33,13 +41,13 @@ export class GenericCheckboxFormTableComponent<T extends { relevancies: Map<Rele
 
   table = input.required<GenericTableDataSource<T>>();
 
-  handleCheckboxClick = output<CheckBoxTableResponse<T>>();
+  readonly touch = output<void>();
 
-  highlyRelevant = new FormControl('');
+  highlyRelevant = new FormControl('', isBetweenUpperAndLower(0, 100));
 
-  limitedRelevant = new FormControl('');
+  limitedRelevant = new FormControl('', isBetweenUpperAndLower(0, 100));
 
-  littleRelevant = new FormControl('');
+  littleRelevant = new FormControl('', isBetweenUpperAndLower(0, 100));
 
   constructor() {
     effect(() => {
@@ -52,10 +60,7 @@ export class GenericCheckboxFormTableComponent<T extends { relevancies: Map<Rele
     });
   }
 
-  shouldBeChecked(row: T, methodRelevancy: Relevancy): boolean {
-    for (const key of row.relevancies.keys()) {
-      return key === methodRelevancy && (row.relevancies.get(key) ?? 0) > 0;
-    }
-    return false;
+  shouldBeChecked(): boolean {
+    return true;
   }
 }
