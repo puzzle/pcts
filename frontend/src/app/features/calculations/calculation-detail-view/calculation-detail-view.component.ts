@@ -48,35 +48,16 @@ export function validateWeightsAddingUpTo100<T extends RelevancyWeightsRow>(path
     TranslationScopeDirective,
     FormField,
     GenericCheckboxFormTableComponent
+    FormField,
+    MatButton,
+    MatIcon,
+    RouterLink
   ],
   selector: 'app-calculation-detail-view',
   templateUrl: './calculation-detail-view.component.html'
 })
 export class CalculationDetailViewComponent {
-  private readonly memberService = inject(MemberService);
-
-  private readonly experienceCalculations = signal<ExperienceCalculationModel[]>([] as ExperienceCalculationModel[]);
-
-  degreeCalculations = signal<DegreeCalculationModel[]>([] as DegreeCalculationModel[]);
-
-  constructor() {
-    // Todo: Implement calculation service then fetch from calculation id instead of going over member service this is for the new ticket
-    this.memberService.getCalculationsByMemberIdAndOptionalRoleId(1)
-      .subscribe((response) => {
-        response.forEach((result) => {
-          this.experienceCalculations.set(result.experienceCalculations);
-        });
-      });
-
-    this.memberService.getCalculationsByMemberIdAndOptionalRoleId(2)
-      .subscribe((response) => {
-        response.forEach((result) => {
-          this.degreeCalculations.set(result.degreeCalculations);
-        });
-      });
-  }
-
-  experienceCalculationForm = form(this.experienceCalculations);
+  calculation = input.required<CalculationModel>();
 
   degreeCalculationForm = form(this.degreeCalculations, (degreeCalculation) => validateWeightsAddingUpTo100(degreeCalculation));
 
