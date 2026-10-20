@@ -5,7 +5,6 @@ import { ScopedTranslationPipe } from '../../pipes/scoped-translation-pipe';
 import { Relevancy } from '../../../features/calculations/relevancy.enum';
 import { FormValueControl } from '@angular/forms/signals';
 import { GenericTableDataSource } from '../generic-table-data-source';
-import { CheckBoxTableResponse } from './CheckBoxTableResponse';
 import { ColumnTemplateDirective } from '../column-template/column-template.directive';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -32,12 +31,12 @@ import { addsUpToTarget, isBetweenUpperAndLower } from '../../form/form-validato
   templateUrl: './generic-checkbox-form-table.component.html'
 })
 export class GenericCheckboxFormTableComponent<T extends { id: number;
-  relevancies: Map<Relevancy, number>; }> implements FormValueControl<CheckBoxTableResponse<T>[]> {
+  relevancies: Map<Relevancy, number>; }> implements FormValueControl<T[]> {
   protected readonly Relevancy = Relevancy;
 
   protected readonly Number = Number;
 
-  value = model<CheckBoxTableResponse<T>[]>([]);
+  value = model<T[]>([]);
 
   table = input.required<GenericTableDataSource<T>>();
 
@@ -71,8 +70,7 @@ export class GenericCheckboxFormTableComponent<T extends { id: number;
       const value = this.value();
 
       if (value) {
-        this.table().data = value
-          .map((entry) => entry.row);
+        this.table().data = value;
       }
     });
   }
