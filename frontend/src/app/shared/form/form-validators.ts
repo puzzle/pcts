@@ -102,3 +102,15 @@ export function isSearchTermEmpty(inputFieldTagId: string): ValidatorFn {
     return inputfield.value ? { invalid_entry: inputfield.value } : null;
   };
 }
+
+export function isBetweenUpperAndLower(lower: number, upper: number): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+
+    if (value <= upper && value >= lower) {
+      return null;
+    }
+
+    return { invalid_integer: true };
+  };
+}
