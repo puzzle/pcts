@@ -38,12 +38,7 @@ import { ExperienceOverviewModel } from './cv/experience-overview.model';
 import {
   GenericCheckboxFormTableComponent
 } from '../../../shared/generic-table/generic-checkbox-form-table/generic-checkbox-form-table.component';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { CheckBoxTableResponse } from '../../../shared/generic-table/generic-checkbox-form-table/CheckBoxTableResponse';
-import { GenCol, GenericTableDataSource } from '../../../shared/generic-table/generic-table-data-source';
-import { Relevancy } from '../../calculations/relevancy.enum';
-import { DegreeCalculationModel } from '../../calculations/degree-calculation/degree-calculation.model';
-
+import { ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-member-detail-view',
   standalone: true,
@@ -118,10 +113,6 @@ export class MemberDetailViewComponent {
 
   readonly leadershipExperienceTable = getLeadershipExperienceTable();
 
-  degreeCalculationModel: DegreeCalculationModel[] = [];
-
-  protected formControl = new FormControl();
-
   constructor() {
     effect(() => {
       const tabGroup = this.tabGroup();
@@ -130,20 +121,6 @@ export class MemberDetailViewComponent {
         tabGroup.selectedIndex = this.tabIndex();
       }
     });
-
-    this.memberService.getCalculationsByMemberIdAndOptionalRoleId(2)
-      .subscribe((response) => {
-        response.forEach((result) => {
-          this.degreeCalculationModel.push(...result.degreeCalculations);
-        });
-        const map = this.degreeCalculationModel.map((degreeCalculationModel) => {
-          return {
-            row: degreeCalculationModel,
-            relevancy: Relevancy.STRONGLY
-          } as CheckBoxTableResponse<DegreeCalculationModel>;
-        });
-        this.formControl.setValue(map);
-      });
   }
 
   addDegreeDialog = this.modalService
@@ -290,15 +267,4 @@ export class MemberDetailViewComponent {
       replaceUrl: true
     });
   }
-
-  getTableData = () => new GenericTableDataSource<DegreeCalculationModel>(this.getColumns())
-    .withDetailViewLink();
-
-  getColumns = (): GenCol<DegreeCalculationModel>[] => [
-    GenCol.fromCalculated('name', (d: DegreeCalculationModel) => d.degree.name),
-    GenCol.fromCalculated('highlyRelevant', () => {}),
-    GenCol.fromCalculated('limitedRelevant', () => {}),
-    GenCol.fromCalculated('littleRelevant', () => {}),
-    GenCol.fromCalculated('points', (d: DegreeCalculationModel) => {})
-  ];
 }
