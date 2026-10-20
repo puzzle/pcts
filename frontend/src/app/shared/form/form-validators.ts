@@ -115,7 +115,7 @@ export function isBetweenUpperAndLower(lower: number, upper: number): ValidatorF
   };
 }
 
-export function doesAddUpToTarget(target: number): ValidatorFn {
+export function addsUpToTarget(target: number): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const highly = Number(control.get('highlyRelevant')?.value);
     const limited = Number(control.get('limitedRelevant')?.value);
