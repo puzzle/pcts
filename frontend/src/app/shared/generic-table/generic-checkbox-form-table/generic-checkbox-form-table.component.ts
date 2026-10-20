@@ -8,10 +8,10 @@ import { GenericTableDataSource } from '../generic-table-data-source';
 import { CheckBoxTableResponse } from './CheckBoxTableResponse';
 import { ColumnTemplateDirective } from '../column-template/column-template.directive';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RowDetailTemplateDirective } from '../rowDetailTemplate.directive';
 import { TypedTemplateDirective } from '../type-template/typed-template.directive';
-import { isBetweenUpperAndLower } from '../../form/form-validators';
+import { addsUpToTarget, isBetweenUpperAndLower } from '../../form/form-validators';
 
 @Component({
   imports: [
@@ -43,11 +43,28 @@ export class GenericCheckboxFormTableComponent<T extends { id: number;
 
   readonly touch = output<void>();
 
-  highlyRelevant = new FormControl('', isBetweenUpperAndLower(0, 100));
+  relevancyForm = new FormGroup({
+    comment: new FormControl(''),
 
-  limitedRelevant = new FormControl('', isBetweenUpperAndLower(0, 100));
+    highlyRelevant: new FormControl('', isBetweenUpperAndLower(0, 100)),
 
-  littleRelevant = new FormControl('', isBetweenUpperAndLower(0, 100));
+    limitedRelevant: new FormControl('', isBetweenUpperAndLower(0, 100)),
+
+    littleRelevant: new FormControl('', isBetweenUpperAndLower(0, 100))
+  }, {
+    validators: addsUpToTarget(100)
+  });
+
+  relevancyMap = new Map<Relevancy, { enabled: boolean;
+    formControl: FormControl; }>([[Relevancy.STRONGLY,
+    { enabled: true,
+      formControl: this.relevancyForm.controls.highlyRelevant }],
+  [Relevancy.NORMAL,
+    { enabled: true,
+      formControl: this.relevancyForm.controls.limitedRelevant }],
+  [Relevancy.POORLY,
+    { enabled: true,
+      formControl: this.relevancyForm.controls.littleRelevant }]]);
 
   constructor() {
     effect(() => {
@@ -62,5 +79,14 @@ export class GenericCheckboxFormTableComponent<T extends { id: number;
 
   shouldBeChecked(): boolean {
     return true;
+  }
+
+  updateInputFields(relevancy: Relevancy) {
+    const smth = this.relevancyMap.get(relevancy);
+
+    if (smth) {
+      smth.enabled ? smth.formControl.disable() : smth.formControl.enable();
+      smth.enabled = !smth.enabled;
+    }
   }
 }
