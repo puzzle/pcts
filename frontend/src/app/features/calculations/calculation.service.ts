@@ -2,7 +2,6 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CalculationModel } from './calculation.model';
-import { id } from 'date-fns/locale';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +20,6 @@ export class CalculationService {
   }
 
   addCalculation(calculation: CalculationModel): Observable<CalculationModel> {
-    return this.httpClient.post<CalculationModel>(`${this.API_URL}/${id}`, calculation);
+    return this.httpClient.post<CalculationModel>(`${this.API_URL}`, calculation);
   }
 }
