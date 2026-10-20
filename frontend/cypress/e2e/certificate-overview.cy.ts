@@ -198,7 +198,7 @@ describe('Certificate overview', () => {
         length: 2,
         searchTerm: '' },
       { tags: ['GitLab 101'],
-        length: 2,
+        length: 1,
         searchTerm: '' },
       { tags: ['Berufsbildner'],
         length: 1,
@@ -221,6 +221,17 @@ describe('Certificate overview', () => {
         certificateTypeOverviewPage.tagFilter();
 
         table.tags.forEach((tag) => certificateTypeOverviewPage.selectOptionFromTagFilter(tag));
+
+        cy.get('app-certificate-type-tags')
+          .each(($tagContainer) => {
+            const certificateTags = $tagContainer.find('span')
+              .map((_, $tag) => $tag.innerText.trim())
+              .get();
+
+            const certificateHasAtLeastOneSelectedTag = certificateTags.some((tag) => table.tags.includes(tag));
+
+            expect(certificateHasAtLeastOneSelectedTag).to.equal(true);
+          });
 
         CertificateTypeOverviewPage.table()
           .should('be.visible');

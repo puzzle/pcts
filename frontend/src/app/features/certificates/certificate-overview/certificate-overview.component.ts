@@ -30,8 +30,11 @@ const getCertificateOverviewTable = () => new GenericTableDataSource<Certificate
       'points']);
   })
   .addFilterPredicate((cert: CertificateTypeModel, filter: CertificateFilter) => {
-    const tags = filter.tags?.join(' ') ?? null;
-    return filterMultipleFields(cert, tags, ['tags']);
+    if (filter.tags?.length === 0) {
+      return true;
+    }
+
+    return filter.tags?.some((tag) => cert.tags.includes(tag)) ?? false;
   });
 
 const getCertificateOverviewColumns = (): GenCol<CertificateTypeModel>[] => [
