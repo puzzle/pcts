@@ -1,5 +1,5 @@
 <div class="mt-5">
-  <h3 class="pt-3">{{"MODEL_NAME_PLURAL" | scopedTranslation}}</h3>
+  <h4 class="pt-3">{{"MODEL_NAME_PLURAL" | scopedTranslation}}</h4>
   <app-generic-table [dataSource]="table()">
     <ng-template appColumnTemplate="highlyRelevant" let-row>
       <mat-radio-button [checked]="shouldBeChecked(row, Relevancy.STRONGLY)" [name]=row.id (change)="changeData(row, Relevancy.STRONGLY)"/>
