@@ -35,6 +35,7 @@ import {
 import { MemberService } from '../member.service';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { ExperienceOverviewModel } from './cv/experience-overview.model';
+
 @Component({
   selector: 'app-member-detail-view',
   standalone: true,
