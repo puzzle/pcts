@@ -9,13 +9,20 @@ import { GenCol, GenericTableDataSource } from '../../../shared/generic-table/ge
 import { Relevancy } from '../relevancy.enum';
 import { TranslationScopeDirective } from '../../../shared/translation-scope/translation-scope.directive';
 import { form, FormField } from '@angular/forms/signals';
+import {
+  GenericCheckboxFormTableComponent
+} from '../../../shared/generic-table/generic-checkbox-form-table/generic-checkbox-form-table.component';
+import { DegreeCalculationModel } from '../degree-calculation/degree-calculation.model';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   imports: [
     GenericRadioFormTableComponent,
     ReactiveFormsModule,
     TranslationScopeDirective,
-    FormField
+    FormField,
+    GenericCheckboxFormTableComponent,
+    JsonPipe
   ],
   selector: 'app-calculation-detail-view',
   templateUrl: './calculation-detail-view.component.html'
@@ -25,6 +32,8 @@ export class CalculationDetailViewComponent {
 
   private readonly experienceCalculations = signal<ExperienceCalculationModel[]>([] as ExperienceCalculationModel[]);
 
+  degreeCalculations = signal<DegreeCalculationModel[]>([] as DegreeCalculationModel[]);
+
   constructor() {
     // Todo: Implement calculation service then fetch from calculation id instead of going over member service this is for the new ticket
     this.memberService.getCalculationsByMemberIdAndOptionalRoleId(1)
@@ -33,9 +42,18 @@ export class CalculationDetailViewComponent {
           this.experienceCalculations.set(result.experienceCalculations);
         });
       });
+
+    this.memberService.getCalculationsByMemberIdAndOptionalRoleId(2)
+      .subscribe((response) => {
+        response.forEach((result) => {
+          this.degreeCalculations.set(result.degreeCalculations);
+        });
+      });
   }
 
   experienceCalculationForm = form(this.experienceCalculations);
+
+  degreeCalculationForm = form(this.degreeCalculations);
 
   getColumns = [
     GenCol.fromCalculated('name', (e: ExperienceCalculationModel) => e.experience.name),
@@ -58,4 +76,15 @@ export class CalculationDetailViewComponent {
 
   getTableData = () => new GenericTableDataSource(this.getColumns)
     .withLimit(10);
+
+  getDegreeCalculationTableData = () => new GenericTableDataSource<DegreeCalculationModel>(this.getDegreeCalculationColumns())
+    .withDetailViewLink();
+
+  getDegreeCalculationColumns = (): GenCol<DegreeCalculationModel>[] => [
+    GenCol.fromCalculated('name', (d: DegreeCalculationModel) => d.degree.name),
+    GenCol.fromCalculated('highlyRelevant', () => {}),
+    GenCol.fromCalculated('limitedRelevant', () => {}),
+    GenCol.fromCalculated('littleRelevant', () => {}),
+    GenCol.fromCalculated('points', (d: DegreeCalculationModel) => {})
+  ];
 }
