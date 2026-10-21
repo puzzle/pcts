@@ -29,10 +29,12 @@ class FormPage {
 
   typeAndBlur(fieldName: string, text: string) {
     cy.getByTestId(fieldName)
+      .should('be.visible')
       .focus();
     cy.getByTestId(fieldName)
       .type(text);
     cy.getByTestId(fieldName)
+      .should('be.focused')
       .blur();
     return this;
   }
