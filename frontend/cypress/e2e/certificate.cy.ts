@@ -54,8 +54,10 @@ describe('Certificate modal', () => {
 
         cy.getByTestId('certificateType')
           .should('be.visible')
+          .focus()
           .type('invalid entry')
-          .should('have.value', 'invalid entry');
+          .should('have.value', 'invalid entry')
+          .blur();
 
         formPage.shouldShowValidationError('Ungültige Eingabe', 'certificateType');
       });
