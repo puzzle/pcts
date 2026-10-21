@@ -62,7 +62,9 @@ class FormPage {
 
   shouldShowValidationError(message: string, fieldName: string) {
     cy.getByTestId('validation-error')
-      .should('include.text', message)
+      .should('include.text', message);
+
+    cy.getByTestId('validation-error')
       .parents('mat-form-field')
       .find('input')
       .invoke('attr', 'data-testid')
