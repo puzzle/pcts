@@ -15,8 +15,12 @@ describe('Certificate overview', () => {
 
       CertificateTypeOverviewPage.visitViaButton();
 
+      cy.url()
+        .should('include', 'certificate');
+
       CertificateTypeOverviewPage.table()
-        .should('be.visible');
+        .should('exist')
+        .and('be.visible');
     });
   });
 
