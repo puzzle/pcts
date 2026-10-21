@@ -10,7 +10,7 @@ on:
 
 jobs:
   backend:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     defaults:
       run:
         working-directory: backend
@@ -32,7 +32,7 @@ jobs:
         run: mvn spotless:check
 
   migration:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     defaults:
       run:
         working-directory: migration

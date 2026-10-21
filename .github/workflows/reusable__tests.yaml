@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   frontend-tests:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     defaults:
       run:
         working-directory: frontend
@@ -52,7 +52,7 @@ jobs:
             frontend/junit.xml
 
   backend-tests:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     defaults:
       run:
         working-directory: backend
@@ -81,7 +81,7 @@ jobs:
             backend/target/surefire-reports/*.xml
 
   migration-tests:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     defaults:
       run:
         working-directory: migration
