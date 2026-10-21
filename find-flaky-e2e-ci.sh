@@ -15,13 +15,14 @@ failing_tests() {
     | awk '/[0-9]+ failing *$/ {p=1} /\(Results\)/ {p=0} p' \
     | grep -vE '^ +at |^[[:space:]]*$' \
     | awk -v spec="$1" -v url="$2" '
-        function flush() { if (title != "") print spec "\t" title "\t" substr(err, 1, 200) "\t" url; title = ""; err = "" }
+        function flush() { if (title != "") print spec "\t" title "\t" err "\t" url; title = ""; err = ""; errlines = 0 }
         { line = $0; sub(/^ +/, "", line) }
         line ~ /^[0-9]+ failing/ { next }
         line ~ /^[0-9]+\) / { flush(); sub(/^[0-9]+\) /, "", line); title = line; intitle = 1
                               if (sub(/:$/, "", title)) intitle = 0; next }
         intitle { title = title " › " line; if (sub(/:$/, "", title)) intitle = 0; next }
-        title != "" && err == "" { err = line }
+        # Error lines are joined with \002 so a failure stays one record; capped so huge diffs stay readable.
+        title != "" && errlines++ < 20 { err = (err == "" ? "" : err "\002") line }
         END { flush() }'
 }
 
@@ -59,8 +60,8 @@ done
 printf '\n=== flaky e2e tests since %s ===\n' "$since"
 printf '%s' "$records" | grep . | awk -F "$tab" '
   { key = $1 "\t" $2; count[key]++
-    if ($3 != "" && !((key, $3) in seen)) { seen[key, $3] = 1; errs[key] = errs[key] "\001      " $3 }
-    urls[key] = urls[key] "\001      " $4 }
-  END { for (k in count) { split(k, p, "\t"); printf "%d\t%dx  %s › %s\001    errors:%s\001    jobs:%s\001\n", count[k], count[k], p[1], p[2], errs[k], urls[k] } }' \
+    err = $3; gsub(/\002/, "\001        ", err)
+    items[key] = items[key] "\001    " $4 (err == "" ? "" : "\001        " err) }
+  END { for (k in count) { split(k, p, "\t"); printf "%d\t%dx  %s › %s%s\001\n", count[k], count[k], p[1], p[2], items[k] } }' \
   | sort -rn | sed 's/^[0-9]*\t//' | tr '\001' '\n'
 notify-send "Flaky e2e scan done" "$(printf '%s' "$records" | grep -c .) failures since $since"
