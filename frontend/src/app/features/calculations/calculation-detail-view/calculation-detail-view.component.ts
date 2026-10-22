@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input, linkedSignal } from '@angular/core';
 import {
   GenericRadioFormTableComponent
 } from '../../../shared/generic-table/generic-radio-form-table/generic-radio-form-table.component';
@@ -39,6 +39,30 @@ export function validateWeightsAddingUpTo100<T extends RelevancyWeightsRow>(path
       return errors;
     }, []));
 }
+import { form, FormField } from '@angular/forms/signals';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
+import { CalculationModel } from '../calculation.model';
+import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
+import { CalculationService } from '../calculation.service';
+import { GenericTableComponent } from '../../../shared/generic-table/generic-table.component';
+import { CertificateTypeModel } from '../../certificates/certificate-type/certificate-type.model';
+import {
+  LeadershipExperienceTypeModel
+} from '../../leadership-experiences/leadership-experiences-type/leadership-experience-type.model';
+
+const getCertificateTable = () => new GenericTableDataSource(getCertificateColumns())
+  .withLimit(10);
+
+const getCertificateColumns = (): GenCol<CertificateTypeModel>[] => [GenCol.fromAttr('name'),
+  GenCol.fromAttr('points')];
+
+const getLeadershipExperienceTable = () => new GenericTableDataSource(getLeadershipExperienceColumns())
+  .withLimit(10);
+
+const getLeadershipExperienceColumns = (): GenCol<LeadershipExperienceTypeModel>[] => [GenCol.fromAttr('name'),
+  GenCol.fromAttr('points')];
 
 @Component({
   imports: [
@@ -51,7 +75,7 @@ export function validateWeightsAddingUpTo100<T extends RelevancyWeightsRow>(path
     MatButton,
     MatIcon,
     RouterLink,
-    MatFormField,
+    GenericTableComponent,
     ScopedTranslationPipe
   ],
   selector: 'app-calculation-detail-view',
@@ -62,9 +86,21 @@ export class CalculationDetailViewComponent {
 
   calculation = input.required<CalculationModel>();
 
-  calculationTest = linkedSignal(() => this.calculation());
+  calculationWritableSignal = linkedSignal(() => this.calculation());
 
-  calculationForm = form(this.calculationTest);
+  calculationForm = form(this.calculationWritableSignal);
+
+  certificateTable = getCertificateTable();
+
+  leadershipExperienceTable = getLeadershipExperienceTable();
+
+  constructor() {
+    effect(() => {
+      this.certificateTable.data = this.calculation().certificateCalculations.map((certificateCalculation) => certificateCalculation.certificate.certificateType);
+
+      this.leadershipExperienceTable.data = this.calculation().leadershipExperienceCalculations.map((leadershipExperienceCalculations) => leadershipExperienceCalculations.leadershipExperience.leadershipExperienceType);
+    });
+  }
 
   saveForm() {
     this.calculationService.updateCalculation(this.calculation().id, this.calculationForm()
