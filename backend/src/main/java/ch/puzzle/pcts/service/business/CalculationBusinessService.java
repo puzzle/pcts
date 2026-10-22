@@ -1,5 +1,6 @@
 package ch.puzzle.pcts.service.business;
 
+import ch.puzzle.pcts.dto.calculation.CalculationTemplateDto;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
@@ -22,19 +23,33 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
     private final LeadershipExperienceCalculationBusinessService leadershipExperienceCalculationBusinessService;
     private final DegreeCalculationBusinessService degreeCalculationBusinessService;
     private final CalculationPersistenceService calculationPersistenceService;
+    private final CertificateBusinessService certificateBusinessService;
+    private final LeadershipExperienceBusinessService leadershipExperienceBusinessService;
+    private final ExperienceBusinessService experienceBusinessService;
+    private final DegreeBusinessService degreeBusinessService;
 
     public CalculationBusinessService(CalculationValidationService validationService,
                                       CalculationPersistenceService persistenceService,
                                       ExperienceCalculationBusinessService experienceCalculationBusinessService,
                                       CertificateCalculationBusinessService certificateCalculationBusinessService,
                                       LeadershipExperienceCalculationBusinessService leadershipExperienceCalculationBusinessService,
-                                      DegreeCalculationBusinessService degreeCalculationBusinessService) {
+                                      DegreeCalculationBusinessService degreeCalculationBusinessService,
+                                      CertificateBusinessService certificateBusinessService,
+                                      LeadershipExperienceBusinessService leadershipExperienceBusinessService,
+                                      ExperienceBusinessService experienceBusinessService,
+                                      DegreeBusinessService degreeBusinessService) {
         super(validationService, persistenceService);
         this.experienceCalculationBusinessService = experienceCalculationBusinessService;
         this.certificateCalculationBusinessService = certificateCalculationBusinessService;
         this.degreeCalculationBusinessService = degreeCalculationBusinessService;
         this.leadershipExperienceCalculationBusinessService = leadershipExperienceCalculationBusinessService;
         this.calculationPersistenceService = persistenceService;
+        // Todo none of them return all Certificate for a member at the moment.
+        // Implement the method.
+        this.certificateBusinessService = certificateBusinessService;
+        this.leadershipExperienceBusinessService = leadershipExperienceBusinessService;
+        this.experienceBusinessService = experienceBusinessService;
+        this.degreeBusinessService = degreeBusinessService;
     }
 
     @Override
@@ -132,5 +147,10 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
             BigDecimal points = this.getPointsOfCalculation(calculation);
             calculation.setPoints(points);
         });
+    }
+
+    private CalculationTemplateDto getCalculationTemplateDto() {
+        // Todo create a DTO where all the Degree and Experience from the member in this
+        // exact momemnt are filled in
     }
 }
