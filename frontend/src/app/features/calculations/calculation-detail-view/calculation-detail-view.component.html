@@ -1,5 +1,5 @@
 <button
-  [routerLink]="['member']"
+  [routerLink]="['member', calculation().member.id]"
   matButton>
   <mat-icon>keyboard_arrow_left</mat-icon>
   Alle Berechnungen
@@ -11,21 +11,30 @@
 
 <app-generic-radio-form-table *appTranslationScope="'EXPERIENCE'" [formField]="calculationForm.experienceCalculations" [table]="getTableData()"/>
 
+<h4>
+  Zertifikate
+</h4>
+
+<app-generic-table [dataSource]="certificateTable"/>
+
+<h4>
+  Führungserfahrung
+</h4>
+
+<app-generic-table [dataSource]="leadershipExperienceTable"/>
+
+
 <div class="sticky-bottom position-absolute">
-  <mat-form-field>
-<button
-  type="button"
-  (click)="saveForm()"
-matButton="filled">
-  {{"FORM.SAVE_FORM" | scopedTranslation}}
-</button>
-  </mat-form-field>
-  <mat-form-field>
+    <button
+      type="button"
+      (click)="saveForm()"
+    matButton="filled">
+      Speichern
+    </button>
     <button
       matButton>
-      {{"FORM.CANCEL" | scopedTranslation}}
+      Abbrechen
     </button>
-  </mat-form-field>
 </div>
 
 
