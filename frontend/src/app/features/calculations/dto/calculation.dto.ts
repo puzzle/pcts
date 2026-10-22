@@ -1,17 +1,17 @@
 import { CalculationState } from '../calculation-state.enum';
-import { CertificateCalculationModel } from '../certificate-calculation/certificate-calculation.model';
+import { CertificateCalculationInputDto } from '../certificate-calculation/dto/certificate-calculation.dto';
 import {
-  LeadershipExperienceCalculationModel
-} from '../leadership-experience-calculation/leadership-experience-calculation.model';
-import { DegreeCalculationModel } from '../degree-calculation/degree-calculation.model';
-import { ExperienceCalculationModel } from '../experience-calculation/experience-calculation.model';
+  LeadershipExperienceCalculationInputDto
+} from '../leadership-experience-calculation/dto/leadership-experience-calculation.dto';
+import { DegreeCalculationInputDto } from '../degree-calculation/dto/degree-calculation.dto';
+import { ExperienceCalculationInputDto } from '../experience-calculation/dto/experience-calculation.dto';
 
 export interface CalculationInputDto {
   memberId: number;
   state: CalculationState;
   roleId: number;
-  certificateCalculations: CertificateCalculationModel[];
-  leadershipExperienceCalculations: LeadershipExperienceCalculationModel[];
-  degreeCalculations: DegreeCalculationModel[];
-  experienceCalculations: ExperienceCalculationModel[];
+  certificateCalculations: CertificateCalculationInputDto[];
+  leadershipExperienceCalculations: LeadershipExperienceCalculationInputDto[];
+  degreeCalculations: DegreeCalculationInputDto[];
+  experienceCalculations: ExperienceCalculationInputDto[];
 }
