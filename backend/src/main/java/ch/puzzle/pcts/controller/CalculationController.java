@@ -2,6 +2,7 @@ package ch.puzzle.pcts.controller;
 
 import ch.puzzle.pcts.dto.calculation.CalculationDto;
 import ch.puzzle.pcts.dto.calculation.CalculationInputDto;
+import ch.puzzle.pcts.dto.calculation.CalculationTemplateDto;
 import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.security.annotation.IsAdmin;
@@ -47,6 +48,15 @@ public class CalculationController {
     public ResponseEntity<CalculationDto> createCalculation(@RequestBody CalculationInputDto dto) {
         Calculation newCalculation = businessService.create(mapper.fromDto(dto));
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDto(newCalculation));
+    }
+
+    @Operation(summary = "Get a template with all degree and Experience for the calculation")
+    @ApiResponse(responseCode = "200", description = "A single calculation template.", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = CalculationTemplateDto.class)) })
+    @GetMapping("")
+    public ResponseEntity<CalculationTemplateDto> getCalculationTemplate() {
+        CalculationTemplateDto calculationTemplateDto = businessService.getById(1L);
+        return ResponseEntity.ok(calculationTemplateDto);
     }
 
     @Operation(summary = "Update a calculation")
