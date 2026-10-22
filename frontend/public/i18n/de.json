@@ -175,6 +175,10 @@
       "EXPERIENCE": {
         "MODEL_NAME_PLURAL": "Berufs- und Lebenserfahrungen"
       },
+      "FORM": {
+        "SAVE_FORM": "Speichern",
+        "CANCEL": "Abbrechen"
+      },
       "DEGREE": {
         "MODEL_NAME_PLURAL": "Ausbildungen",
         "ERROR_COL": ""

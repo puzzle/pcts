@@ -1,9 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, input } from '@angular/core';
 import {
   GenericRadioFormTableComponent
 } from '../../../shared/generic-table/generic-radio-form-table/generic-radio-form-table.component';
 import { ExperienceCalculationModel } from '../experience-calculation/experience-calculation.model';
-import { MemberService } from '../../member/member.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { GenCol, GenericTableDataSource } from '../../../shared/generic-table/generic-table-data-source';
 import { Relevancy } from '../relevancy.enum';
@@ -51,13 +50,29 @@ export function validateWeightsAddingUpTo100<T extends RelevancyWeightsRow>(path
     FormField,
     MatButton,
     MatIcon,
-    RouterLink
+    RouterLink,
+    MatFormField,
+    ScopedTranslationPipe
   ],
   selector: 'app-calculation-detail-view',
   templateUrl: './calculation-detail-view.component.html'
 })
 export class CalculationDetailViewComponent {
+  private readonly calculationService = inject(CalculationService);
+
   calculation = input.required<CalculationModel>();
+
+  calculationTest = linkedSignal(() => this.calculation());
+
+  calculationForm = form(this.calculationTest);
+
+  saveForm() {
+    this.calculationService.updateCalculation(this.calculation().id, this.calculationForm()
+      .controlValue())
+      .subscribe((result) => {
+        console.log(result);
+      });
+  }
 
   degreeCalculationForm = form(this.degreeCalculations, (degreeCalculation) => validateWeightsAddingUpTo100(degreeCalculation));
 
