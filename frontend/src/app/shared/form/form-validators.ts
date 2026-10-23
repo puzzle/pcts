@@ -102,3 +102,30 @@ export function isSearchTermEmpty(inputFieldTagId: string): ValidatorFn {
     return inputfield.value ? { invalid_entry: inputfield.value } : null;
   };
 }
+
+export function isBetweenUpperAndLower(lower: number, upper: number): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+
+    if (value <= upper && value >= lower) {
+      return null;
+    }
+
+    return { invalid_integer: true };
+  };
+}
+
+export function addsUpToTarget(target: number): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const highly = Number(control.get('highlyRelevant')?.value);
+    const limited = Number(control.get('limitedRelevant')?.value);
+    const little = Number(control.get('littleRelevant')?.value);
+
+    if (highly + limited + little !== target) {
+      console.log('invalid', highly + limited + little);
+      return { invalid_total: true };
+    }
+
+    return null;
+  };
+}

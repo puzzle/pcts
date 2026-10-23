@@ -1,0 +1,40 @@
+<div class="mt-5">
+  <h3 class="pt-3">{{"MODEL_NAME_PLURAL" | scopedTranslation}}</h3>
+  <app-generic-table [dataSource]="table()" idAttr="id">
+    <ng-template appColumnTemplate="highlyRelevant" let-row>
+      <mat-checkbox [checked]="shouldBeChecked()" (change)="updateInputFields(Relevancy.STRONGLY)" id="highly" [name]=row.id />
+    </ng-template>
+    <ng-template appColumnTemplate="limitedRelevant" let-row>
+      <mat-checkbox [checked]="shouldBeChecked()" (change)="updateInputFields(Relevancy.NORMAL)" id="limited" [name]=row.id />
+    </ng-template>
+    <ng-template appColumnTemplate="littleRelevant" let-row>
+      <mat-checkbox [checked]="shouldBeChecked()" (change)="updateInputFields(Relevancy.POORLY)" id="little" [name]=row.id />
+    </ng-template>
+
+    <ng-template [appTypedTemplate]="table().data"/>
+
+    <ng-template
+      [appExpandableRow]="table()"
+    >
+      <mat-form-field>
+        <mat-label>comment</mat-label>
+        <input matInput [formControl]="relevancyForm.controls.comment"/>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>highlyRelevant</mat-label>
+        <input matInput [formControl]="relevancyForm.controls.highlyRelevant"/>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>limitedRelevant</mat-label>
+      <input matInput [formControl]="relevancyForm.controls.limitedRelevant"/>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>littleRelevant</mat-label>
+        <input matInput [formControl]="relevancyForm.controls.littleRelevant"/>
+      </mat-form-field>
+    </ng-template>
+  </app-generic-table>
+</div>
