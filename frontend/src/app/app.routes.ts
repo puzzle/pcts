@@ -16,6 +16,7 @@ import {
 import {
   filterResolver
 } from './features/certificates/certificate-overview/filter.resolver';
+import { calculationResolver } from './features/calculations/calculation-resolver';
 
 export const routes: Routes = [
   {
@@ -54,7 +55,11 @@ export const routes: Routes = [
         {
           path: 'calculation/:calculationId',
           providers: [provideI18nPrefix('CALCULATION')],
-          component: CalculationDetailViewComponent
+          component: CalculationDetailViewComponent,
+          resolve: {
+            memberId: memberIdResolver,
+            calculation: calculationResolver
+          }
         }]
       },
       {

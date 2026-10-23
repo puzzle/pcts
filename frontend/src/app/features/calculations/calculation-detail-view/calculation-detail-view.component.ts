@@ -1,41 +1,80 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, input, linkedSignal } from '@angular/core';
 import {
   GenericRadioFormTableComponent
 } from '../../../shared/generic-table/generic-radio-form-table/generic-radio-form-table.component';
 import { ExperienceCalculationModel } from '../experience-calculation/experience-calculation.model';
-import { MemberService } from '../../member/member.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { GenCol, GenericTableDataSource } from '../../../shared/generic-table/generic-table-data-source';
 import { Relevancy } from '../relevancy.enum';
 import { TranslationScopeDirective } from '../../../shared/translation-scope/translation-scope.directive';
 import { form, FormField } from '@angular/forms/signals';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
+import { CalculationModel } from '../calculation.model';
+import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
+import { CalculationService } from '../calculation.service';
+import { GenericTableComponent } from '../../../shared/generic-table/generic-table.component';
+import { CertificateTypeModel } from '../../certificates/certificate-type/certificate-type.model';
+import {
+  LeadershipExperienceTypeModel
+} from '../../leadership-experiences/leadership-experiences-type/leadership-experience-type.model';
+
+const getCertificateTable = () => new GenericTableDataSource(getCertificateColumns())
+  .withLimit(10);
+
+const getCertificateColumns = (): GenCol<CertificateTypeModel>[] => [GenCol.fromAttr('name'),
+  GenCol.fromAttr('points')];
+
+const getLeadershipExperienceTable = () => new GenericTableDataSource(getLeadershipExperienceColumns())
+  .withLimit(10);
+
+const getLeadershipExperienceColumns = (): GenCol<LeadershipExperienceTypeModel>[] => [GenCol.fromAttr('name'),
+  GenCol.fromAttr('points')];
 
 @Component({
   imports: [
     GenericRadioFormTableComponent,
     ReactiveFormsModule,
     TranslationScopeDirective,
-    FormField
+    FormField,
+    MatButton,
+    MatIcon,
+    RouterLink,
+    GenericTableComponent,
+    ScopedTranslationPipe
   ],
   selector: 'app-calculation-detail-view',
   templateUrl: './calculation-detail-view.component.html'
 })
 export class CalculationDetailViewComponent {
-  private readonly memberService = inject(MemberService);
+  private readonly calculationService = inject(CalculationService);
 
-  private readonly experienceCalculations = signal<ExperienceCalculationModel[]>([] as ExperienceCalculationModel[]);
+  calculation = input.required<CalculationModel>();
+
+  calculationWritableSignal = linkedSignal(() => this.calculation());
+
+  calculationForm = form(this.calculationWritableSignal);
+
+  certificateTable = getCertificateTable();
+
+  leadershipExperienceTable = getLeadershipExperienceTable();
 
   constructor() {
-    // Todo: Implement calculation service then fetch from calculation id instead of going over member service this is for the new ticket
-    this.memberService.getCalculationsByMemberIdAndOptionalRoleId(1)
-      .subscribe((response) => {
-        response.forEach((result) => {
-          this.experienceCalculations.set(result.experienceCalculations);
-        });
-      });
+    effect(() => {
+      this.certificateTable.data = this.calculation().certificateCalculations.map((certificateCalculation) => certificateCalculation.certificate.certificateType);
+
+      this.leadershipExperienceTable.data = this.calculation().leadershipExperienceCalculations.map((leadershipExperienceCalculations) => leadershipExperienceCalculations.leadershipExperience.leadershipExperienceType);
+    });
   }
 
-  experienceCalculationForm = form(this.experienceCalculations);
+  saveForm() {
+    this.calculationService.updateCalculation(this.calculation().id, this.calculationForm()
+      .controlValue())
+      .subscribe((result) => {
+        console.log(result);
+      });
+  }
 
   getColumns = [
     GenCol.fromCalculated('name', (e: ExperienceCalculationModel) => e.experience.name),
