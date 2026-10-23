@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.14.1](https://github.com/puzzle/pcts/compare/0.14.0...0.14.1) (2026-10-23)
+
+
+### Miscellaneous Chores
+
+* **deps:** update dependency eslint to v10.13.0 ([#983](https://github.com/puzzle/pcts/issues/983)) ([edae6d6](https://github.com/puzzle/pcts/commit/edae6d643e970f2d9c1a7566c3e6ab04186437c1))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v13.10.3 ([#982](https://github.com/puzzle/pcts/issues/982)) ([94ef392](https://github.com/puzzle/pcts/commit/94ef3922fc2ecbee670dc1f7031727a2c50fd306))
+* **deps:** update dependency typescript-eslint to v8.72.0 ([#987](https://github.com/puzzle/pcts/issues/987)) ([26658c2](https://github.com/puzzle/pcts/commit/26658c2f3397e3d7b6a9dc9f7d6af72d53fc92d8))
+* **deps:** update dependency ubuntu to v26 ([#986](https://github.com/puzzle/pcts/issues/986)) ([674ac12](https://github.com/puzzle/pcts/commit/674ac1249fae0d322125f992e993163aeb9242f1))
+
 ## [0.14.0](https://github.com/puzzle/pcts/compare/0.13.0...0.14.0) (2026-10-20)
 
 
