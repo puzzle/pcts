@@ -55,8 +55,7 @@ public class CalculationController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = CalculationTemplateDto.class)) })
     @GetMapping("")
     public ResponseEntity<CalculationTemplateDto> getCalculationTemplate() {
-        CalculationTemplateDto calculationTemplateDto = businessService.getById(1L);
-        return ResponseEntity.ok(calculationTemplateDto);
+        return ResponseEntity.ok(businessService.getCalculationTemplate());
     }
 
     @Operation(summary = "Update a calculation")
