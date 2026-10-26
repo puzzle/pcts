@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class DegreeService extends ApiBase<DegreeInputDto, DegreeDto> {
     private final DegreesApi degreesApi;
 
-    public DegreeService (DegreesApi degreesApi) {
+    public DegreeService(DegreesApi degreesApi) {
         this.degreesApi = degreesApi;
     }
 

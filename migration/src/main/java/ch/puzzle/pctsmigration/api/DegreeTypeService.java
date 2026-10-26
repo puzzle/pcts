@@ -2,13 +2,12 @@ package ch.puzzle.pctsmigration.api;
 
 import ch.puzzle.pctsmigration.exception.Error;
 import ch.puzzle.pctsmigration.exception.MigrationException;
+import java.util.List;
 import org.openapitools.client.ApiException;
 import org.openapitools.client.api.DegreeTypesApi;
 import org.openapitools.client.model.DegreeTypeDto;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class DegreeTypeService {

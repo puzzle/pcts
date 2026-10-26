@@ -1,5 +1,10 @@
 package ch.puzzle.pctsmigration.certificates;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+
 import ch.puzzle.pctsmigration.api.DegreeService;
 import ch.puzzle.pctsmigration.api.DegreeTypeService;
 import ch.puzzle.pctsmigration.api.MemberService;
@@ -9,6 +14,8 @@ import ch.puzzle.pctsmigration.degree.DegreeExtractionPipeline;
 import ch.puzzle.pctsmigration.degree.DegreeWrapper;
 import ch.puzzle.pctsmigration.ods.OdsParseConfig;
 import ch.puzzle.pctsmigration.service.MatchingService;
+import java.time.LocalDate;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,15 +24,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openapitools.client.model.DegreeInputDto;
 import org.openapitools.client.model.DegreeTypeDto;
-import org.openapitools.client.model.LeadershipExperienceInputDto;
-
-import java.time.LocalDate;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class DegreeExtractionPipelineTest {
@@ -105,8 +103,7 @@ class DegreeExtractionPipelineTest {
         when(correctClosestType.getId()).thenReturn(15L);
 
         when(memberService.getMemberIdBy("AW")).thenReturn(expectedMemberId);
-        when(degreeTypeService.getDegreeTypes())
-                .thenReturn(List.of(wrongType, correctClosestType));
+        when(degreeTypeService.getDegreeTypes()).thenReturn(List.of(wrongType, correctClosestType));
 
         when(matchingService.match(anyList(), anyString(), any())).thenReturn(correctClosestType);
 

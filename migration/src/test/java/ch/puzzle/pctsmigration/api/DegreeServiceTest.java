@@ -1,5 +1,8 @@
 package ch.puzzle.pctsmigration.api;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -9,9 +12,6 @@ import org.openapitools.client.ApiException;
 import org.openapitools.client.api.DegreesApi;
 import org.openapitools.client.model.DegreeDto;
 import org.openapitools.client.model.DegreeInputDto;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class DegreeServiceTest {

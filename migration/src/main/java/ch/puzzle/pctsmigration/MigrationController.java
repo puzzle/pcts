@@ -116,7 +116,7 @@ public class MigrationController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Degree successfully extracted and created in pcts-api.") })
     public ResponseEntity<List<DegreeInputDto>> degree(@Parameter(description = "The .ods file containing the degree data to be migrated. Must be a valid OpenDocument Spreadsheet.", required = true)
-                                                                                   @RequestPart("file") MultipartFile file) {
+    @RequestPart("file") MultipartFile file) {
         List<DegreeInputDto> result = service.extract(file, degreeExtractionPipeline);
         degreeExtractionPipeline.create(result);
 
@@ -134,8 +134,7 @@ public class MigrationController {
             String filename = file.getOriginalFilename();
 
             try {
-                List<DegreeInputDto> extracted = service
-                        .extract(file, degreeExtractionPipeline);
+                List<DegreeInputDto> extracted = service.extract(file, degreeExtractionPipeline);
                 degreeExtractionPipeline.create(extracted);
                 result.addToSuccessfulFiles(filename, extracted);
 

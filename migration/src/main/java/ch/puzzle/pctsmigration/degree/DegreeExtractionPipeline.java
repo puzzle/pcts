@@ -6,19 +6,16 @@ import ch.puzzle.pctsmigration.api.MemberService;
 import ch.puzzle.pctsmigration.extractor.ExtractionPipeline;
 import ch.puzzle.pctsmigration.ods.OdsParseConfig;
 import ch.puzzle.pctsmigration.service.MatchingService;
-import org.openapitools.client.model.DegreeInputDto;
-import org.openapitools.client.model.DegreeTypeDto;
-import org.springframework.stereotype.Component;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import org.openapitools.client.model.DegreeInputDto;
+import org.openapitools.client.model.DegreeTypeDto;
+import org.springframework.stereotype.Component;
 
 @Component
-public class DegreeExtractionPipeline
-        extends
-            ExtractionPipeline<DegreeContextModel, DegreeWrapper, DegreeInputDto> {
+public class DegreeExtractionPipeline extends ExtractionPipeline<DegreeContextModel, DegreeWrapper, DegreeInputDto> {
 
     private final DegreeTypeService degreeTypeService;
     private final MemberService memberService;
@@ -54,7 +51,10 @@ public class DegreeExtractionPipeline
 
     @Override
     public OdsParseConfig odsSheetParseConfig() {
-        Predicate<String> isTableNotMasterAndNotContainingAlt = tableName -> !tableName.equals("Master") && !tableName.contains("Zertifikat") && !tableName.contains("Berufserfahrung") && !tableName.contains("alt");
+        Predicate<String> isTableNotMasterAndNotContainingAlt = tableName -> !tableName.equals("Master")
+                                                                             && !tableName.contains("Zertifikat")
+                                                                             && !tableName.contains("Berufserfahrung")
+                                                                             && !tableName.contains("alt");
         return new OdsParseConfig(isTableNotMasterAndNotContainingAlt, "Ausbildung", true);
     }
 
@@ -76,7 +76,7 @@ public class DegreeExtractionPipeline
         dto.setTypeId(matchedType.getId());
         dto.setComment(aiResult.comment());
         dto.setCompleted(true);
-        dto.setStartDate(LocalDate.of(1970,1,1));
+        dto.setStartDate(LocalDate.of(1970, 1, 1));
         dto.setName(matchedType.getName());
         return dto;
     }

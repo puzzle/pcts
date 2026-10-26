@@ -5,11 +5,9 @@ import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record DegreeAiResultDto(
-        @NotNull @NotBlank
-        @JsonPropertyDescription("""
-                The name of the degree. Locate the 'Ausbildung' column and extract the value exactly one position to its right.
-                """) String name,
+public record DegreeAiResultDto(@NotNull @NotBlank @JsonPropertyDescription("""
+        The name of the degree. Locate the 'Ausbildung' column and extract the value exactly one position to its right.
+        """) String name,
 
         @Nullable
         @JsonPropertyDescription("""
