@@ -18,7 +18,13 @@ public class DegreeExtractionPipeline
 
     @Override
     public String systemPrompt(DegreeContextModel context) {
-        return "";
+        return """
+                IMPORTANT EXTRACTION RULES:
+                1. Each data row in the '' column corresponds to exactly ONE degree object in the resulting array.
+                === Context ===
+                Current date: %s
+                """
+                .formatted(context);
     }
 
     @Override
@@ -28,7 +34,7 @@ public class DegreeExtractionPipeline
 
     @Override
     public Class<DegreeWrapper> entityClass() {
-        return null;
+        return DegreeWrapper.class;
     }
 
     @Override
