@@ -54,9 +54,8 @@ public class DegreeExtractionPipeline
 
     @Override
     public OdsParseConfig odsSheetParseConfig() {
-        Predicate<String> isTableStartingWithMAndIsNotMaster = tableName -> tableName.startsWith("M")
-                && !tableName.equals("Master");
-        return new OdsParseConfig(isTableStartingWithMAndIsNotMaster, "Ausbildung", true);
+        Predicate<String> isTableNotMasterAndNotContainingAlt = tableName -> !tableName.equals("Master") && !tableName.contains("Zertifikat") && !tableName.contains("Berufserfahrung") && !tableName.contains("alt");
+        return new OdsParseConfig(isTableNotMasterAndNotContainingAlt, "Ausbildung", true);
     }
 
     @Override
@@ -71,18 +70,22 @@ public class DegreeExtractionPipeline
     }
 
     private DegreeInputDto createDegreeInputDto(String abbreviation, DegreeAiResultDto aiResult) {
+        DegreeTypeDto matchedType = mapDegreeType(aiResult.name());
         DegreeInputDto dto = new DegreeInputDto();
         dto.setMemberId(this.memberService.getMemberIdBy(abbreviation));
-        dto.setTypeId(mapDegreeTypeId(aiResult.name()));
+        dto.setTypeId(matchedType.getId());
         dto.setComment(aiResult.comment());
+        dto.setCompleted(true);
+        dto.setStartDate(LocalDate.of(1970,1,1));
+        dto.setName(matchedType.getName());
         return dto;
     }
 
-    private Long mapDegreeTypeId(String name) {
+    private DegreeTypeDto mapDegreeType(String name) {
         List<DegreeTypeDto> dtos = this.degreeTypeService.getDegreeTypes();
         Function<DegreeTypeDto, String> getTargetAttr = DegreeTypeDto::getName;
 
-        return this.matchingService.match(dtos, name, getTargetAttr).getId();
+        return this.matchingService.match(dtos, name, getTargetAttr);
     }
 
     @Override
