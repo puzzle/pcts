@@ -6,9 +6,11 @@ import org.openapitools.client.ApiException;
 import org.openapitools.client.api.DegreeTypesApi;
 import org.openapitools.client.model.DegreeTypeDto;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class DegreeTypeService {
 
     private final DegreeTypesApi degreeTypesApi;

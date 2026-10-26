@@ -8,12 +8,14 @@ import ch.puzzle.pctsmigration.ods.OdsParseConfig;
 import ch.puzzle.pctsmigration.service.MatchingService;
 import org.openapitools.client.model.DegreeInputDto;
 import org.openapitools.client.model.DegreeTypeDto;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+@Component
 public class DegreeExtractionPipeline
         extends
             ExtractionPipeline<DegreeContextModel, DegreeWrapper, DegreeInputDto> {
@@ -40,7 +42,10 @@ public class DegreeExtractionPipeline
     public String systemPrompt(DegreeContextModel context) {
         return """
                 IMPORTANT EXTRACTION RULES:
-                1. Each data row in the '' column corresponds to exactly ONE degree object in the resulting array.
+                1. Each qualifying row must correspond to exactly ONE degree object in the output array.
+                   To qualify for extraction, an entry must be located in the second column and have an assigned point value (indicated by a number in the 3rd, 4th, or 5th column of the same row).
+                   Ignore all rows without numbers.
+                2. Each degree can only be extracted exactly ONCE at most.
                 === Context ===
                 Current date: %s
                 """
@@ -49,8 +54,9 @@ public class DegreeExtractionPipeline
 
     @Override
     public OdsParseConfig odsSheetParseConfig() {
-        Predicate<String> isDegreeTable = tableName -> List.of("Ausbildung", "Ausbildungen").contains(tableName);
-        return new OdsParseConfig(isDegreeTable, null, false);
+        Predicate<String> isTableStartingWithMAndIsNotMaster = tableName -> tableName.startsWith("M")
+                && !tableName.equals("Master");
+        return new OdsParseConfig(isTableStartingWithMAndIsNotMaster, "Ausbildung", true);
     }
 
     @Override
@@ -66,6 +72,9 @@ public class DegreeExtractionPipeline
 
     private DegreeInputDto createDegreeInputDto(String abbreviation, DegreeAiResultDto aiResult) {
         DegreeInputDto dto = new DegreeInputDto();
+        dto.setMemberId(this.memberService.getMemberIdBy(abbreviation));
+        dto.setTypeId(mapDegreeTypeId(aiResult.name()));
+        dto.setComment(aiResult.comment());
         return dto;
     }
 
