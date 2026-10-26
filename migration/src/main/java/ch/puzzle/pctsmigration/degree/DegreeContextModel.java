@@ -1,4 +1,6 @@
 package ch.puzzle.pctsmigration.degree;
 
-public class DegreeContextModel {
+import java.time.LocalDate;
+
+public record DegreeContextModel(LocalDate currentDate) {
 }
