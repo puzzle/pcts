@@ -3,6 +3,7 @@ package ch.puzzle.pcts.service.business;
 import ch.puzzle.pcts.model.leadershipexperience.LeadershipExperience;
 import ch.puzzle.pcts.service.persistence.LeadershipExperiencePersistenceService;
 import ch.puzzle.pcts.service.validation.LeadershipExperienceValidationService;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,5 +12,9 @@ public class LeadershipExperienceBusinessService extends BusinessBase<Leadership
     LeadershipExperienceBusinessService(LeadershipExperiencePersistenceService leadershipExperiencePersistenceService,
                                         LeadershipExperienceValidationService validationService) {
         super(validationService, leadershipExperiencePersistenceService);
+    }
+
+    public List<LeadershipExperience> getAll() {
+        return persistenceService.getAll();
     }
 }
