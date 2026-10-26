@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.14.1](https://github.com/puzzle/pcts/compare/0.14.0...0.14.1) (2026-10-26)
+
+
+### Miscellaneous Chores
+
+* **deps:** pin 24.22.1 to ensure CVE-2026-111497 is not relevant ([f96821a](https://github.com/puzzle/pcts/commit/f96821a5e23274b2ad0c874bab3dcfcb4bd56f90))
+* **deps:** update all devdependencies (minor and patch) to v22.2.4 ([#990](https://github.com/puzzle/pcts/issues/990)) ([dedfa00](https://github.com/puzzle/pcts/commit/dedfa00ccdcf64bf32b6472dc2dcc2110cb240c8))
+* **deps:** update angularmaterial monorepo to v22.2.4 ([#988](https://github.com/puzzle/pcts/issues/988)) ([08b63ca](https://github.com/puzzle/pcts/commit/08b63caeee8f6270e881cb4773084905d1f66a82))
+* **deps:** update dependency eslint to v10.13.0 ([#983](https://github.com/puzzle/pcts/issues/983)) ([edae6d6](https://github.com/puzzle/pcts/commit/edae6d643e970f2d9c1a7566c3e6ab04186437c1))
+* **deps:** update dependency node to v24.22.1 ([#989](https://github.com/puzzle/pcts/issues/989)) ([811a6eb](https://github.com/puzzle/pcts/commit/811a6eb4fd76a5dcd88305c5b1d017188f180e0e))
+* **deps:** update dependency org.flywaydb:flyway-database-postgresql to v13.10.3 ([#982](https://github.com/puzzle/pcts/issues/982)) ([94ef392](https://github.com/puzzle/pcts/commit/94ef3922fc2ecbee670dc1f7031727a2c50fd306))
+* **deps:** update dependency org.springframework.ai:spring-ai-bom to v2.0.2 ([#991](https://github.com/puzzle/pcts/issues/991)) ([b63ac60](https://github.com/puzzle/pcts/commit/b63ac60ddfd0b7e58f108825c9edce5e78de79c9))
+* **deps:** update dependency typescript-eslint to v8.72.0 ([#987](https://github.com/puzzle/pcts/issues/987)) ([26658c2](https://github.com/puzzle/pcts/commit/26658c2f3397e3d7b6a9dc9f7d6af72d53fc92d8))
+* **deps:** update dependency ubuntu to v26 ([#986](https://github.com/puzzle/pcts/issues/986)) ([674ac12](https://github.com/puzzle/pcts/commit/674ac1249fae0d322125f992e993163aeb9242f1))
+
 ## [0.14.0](https://github.com/puzzle/pcts/compare/0.13.0...0.14.0) (2026-10-20)
 
 
