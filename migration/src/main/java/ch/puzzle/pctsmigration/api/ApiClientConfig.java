@@ -46,4 +46,14 @@ public class ApiClientConfig {
     public LeadershipExperienceTypesApi leadershipExperienceTypesApi(ApiClient apiClient) {
         return new LeadershipExperienceTypesApi(apiClient);
     }
+
+    @Bean
+    public DegreeTypesApi degreeTypesApi(ApiClient apiClient) {
+        return new DegreeTypesApi(apiClient);
+    }
+
+    @Bean
+    public DegreesApi degreesApi(ApiClient apiClient) {
+        return new DegreesApi(apiClient);
+    }
 }
