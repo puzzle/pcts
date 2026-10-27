@@ -207,9 +207,9 @@ class MigrationControllerTest {
     @Test
     void testDegree_Success() throws Exception {
         MockMultipartFile mockFile = new MockMultipartFile("file",
-                "degree_data.ods",
-                "application/vnd.oasis.opendocument.spreadsheet",
-                "dummy content".getBytes());
+                                                           "degree_data.ods",
+                                                           "application/vnd.oasis.opendocument.spreadsheet",
+                                                           "dummy content".getBytes());
 
         DegreeInputDto dummyDto = new DegreeInputDto();
         when(extractorService.extract(any(), eq(degreeExtractionPipeline))).thenReturn(List.of(dummyDto));
@@ -226,14 +226,8 @@ class MigrationControllerTest {
 
     @Test
     void testDegrees_AllFilesSuccessful() throws Exception {
-        MockMultipartFile file1 = new MockMultipartFile("files",
-                "degree1.ods",
-                "text/plain",
-                "content1".getBytes());
-        MockMultipartFile file2 = new MockMultipartFile("files",
-                "degree2.ods",
-                "text/plain",
-                "content2".getBytes());
+        MockMultipartFile file1 = new MockMultipartFile("files", "degree1.ods", "text/plain", "content1".getBytes());
+        MockMultipartFile file2 = new MockMultipartFile("files", "degree2.ods", "text/plain", "content2".getBytes());
 
         DegreeInputDto dummyDto1 = new DegreeInputDto();
         DegreeInputDto dummyDto2 = new DegreeInputDto();
@@ -257,13 +251,13 @@ class MigrationControllerTest {
     @Test
     void testDegrees_PartialFailureAndSuccess() throws Exception {
         MockMultipartFile successFile = new MockMultipartFile("files",
-                "degree_success.ods",
-                "text/plain",
-                "good".getBytes());
+                                                              "degree_success.ods",
+                                                              "text/plain",
+                                                              "good".getBytes());
         MockMultipartFile errorFile = new MockMultipartFile("files",
-                "degree_error.ods",
-                "text/plain",
-                "bad".getBytes());
+                                                            "degree_error.ods",
+                                                            "text/plain",
+                                                            "bad".getBytes());
 
         DegreeInputDto dummyDto = new DegreeInputDto();
 
@@ -289,7 +283,8 @@ class MigrationControllerTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "/api/migration/leadershipexperience", "/api/migration/certificate", "/api/migration/degree" })
+    @ValueSource(strings = { "/api/migration/leadershipexperience", "/api/migration/certificate",
+            "/api/migration/degree" })
     void testEndpoint_MissingFileReturns400(String url) throws Exception {
         mockMvc.perform(multipart(url)).andExpect(status().isBadRequest());
     }

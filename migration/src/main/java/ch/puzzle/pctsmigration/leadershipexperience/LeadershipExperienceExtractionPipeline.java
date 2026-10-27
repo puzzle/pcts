@@ -57,7 +57,8 @@ public class LeadershipExperienceExtractionPipeline
 
     @Override
     public OdsParseConfig odsSheetParseConfig() {
-        Predicate<String> isTableStartingWithMAndIsNotMaster = tableName -> tableName.matches("M.*") && !tableName.equals("Master");
+        Predicate<String> isTableStartingWithMAndIsNotMaster = tableName -> tableName.matches("M.*")
+                                                                            && !tableName.equals("Master");
         return new OdsParseConfig(isTableStartingWithMAndIsNotMaster, "Führungserfahrung (nur bei M-Rollen)", true);
     }
 
