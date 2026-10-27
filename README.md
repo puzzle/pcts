@@ -1,4 +1,11 @@
-# PCTS
+![PCTS Logo](frontend/public/images/pcts-logo.svg)
+
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/puzzle/pcts/issues)
+![GitHub contributors](https://img.shields.io/github/contributors/puzzle/pcts)
+![GitHub last commit](https://img.shields.io/github/last-commit/puzzle/pcts)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+![GitHub stars](https://img.shields.io/github/stars/puzzle/pcts)
+
 
 ## Packages
 
