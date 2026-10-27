@@ -42,7 +42,8 @@ public class ExtractorService {
         pipeline.additionalValidations(result);
 
         String filename = getFileName(file);
-        return pipeline.mapToDto(filename, result);
+        List<D> dtos = pipeline.mapToDto(filename, result);
+        return pipeline.deduplicate(dtos);
     }
 
     /**

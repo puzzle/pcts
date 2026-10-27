@@ -87,5 +87,10 @@ class ExtractionPipelineTest {
         @Override
         public void create(List<Object> dtos) {
         }
+
+        @Override
+        public List<Object> deduplicate(List<Object> dtos) {
+            return List.of();
+        }
     }
 }

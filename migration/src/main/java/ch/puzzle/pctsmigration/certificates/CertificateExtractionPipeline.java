@@ -86,4 +86,9 @@ public class CertificateExtractionPipeline
     public void create(List<CertificateInputDto> dtos) {
         this.certificateService.create(dtos);
     }
+
+    @Override
+    public List<CertificateInputDto> deduplicate(List<CertificateInputDto> dtos) {
+        return List.of();
+    }
 }

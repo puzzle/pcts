@@ -54,4 +54,6 @@ public abstract class ExtractionPipeline<C, R, D> {
 
     /** Send the results to the PCTS API to create a new resource */
     public abstract void create(List<D> dtos) throws ApiException;
+
+    public abstract List<D> deduplicate(List<D> dtos);
 }
