@@ -6,6 +6,13 @@
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 ![GitHub stars](https://img.shields.io/github/stars/puzzle/pcts)
 
+PCTS stands for Puzzle ECTS, inspired on the
+[European Credit Transfer and Accumulation System](https://en.wikipedia.org/wiki/European_Credit_Transfer_and_Accumulation_System).
+
+We use the PCTS points to track which employees have what
+training, certificates, experience, further education and adjust the salaries
+according to that.
+
 ## Packages
 
 You can find the PCTS Docker images on the [Packages page of our GitHub repository](https://github.com/puzzle/pcts/packages).
@@ -111,3 +118,21 @@ There are different profiles available.
 ```shell
   docker compose --profile db up
 ```
+
+**Migration Tool:**
+
+```shell
+  docker compose --profile migration up
+```
+
+## 📄 Changelog
+
+See what’s new in the latest versions by checking the [CHANGELOG.md](https://github.com/puzzle/pcts/blob/main/CHANGELOG.md).
+
+## Documentation
+
+See our Backend documentation: [Backend](backend/README.md)
+
+See our Frontend documentation: [Frontend](frontend/README.md)
+
+See our Migration tool documentation: [Migration tool](migration/README.md)
