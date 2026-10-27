@@ -2,7 +2,6 @@ package ch.puzzle.pcts.controller;
 
 import ch.puzzle.pcts.dto.calculation.CalculationDto;
 import ch.puzzle.pcts.dto.calculation.CalculationInputDto;
-import ch.puzzle.pcts.dto.calculation.CalculationTemplateDto;
 import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.security.annotation.IsAdmin;
@@ -56,9 +55,9 @@ public class CalculationController {
 
     @Operation(summary = "Get a template with all degree and Experience for the calculation")
     @ApiResponse(responseCode = "200", description = "A single calculation template.", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = CalculationTemplateDto.class)) })
+            @Content(mediaType = "application/json", schema = @Schema(implementation = CalculationInputDto.class)) })
     @GetMapping("template/{memberId}")
-    public ResponseEntity<CalculationTemplateDto> getCalculationTemplate(@PathVariable Long memberId) {
+    public ResponseEntity<CalculationInputDto> getCalculationTemplate(@PathVariable Long memberId) {
         return ResponseEntity.ok(templateBusinessService.getCalculationTemplate(memberId));
     }
 

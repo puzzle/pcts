@@ -1,10 +1,11 @@
 package ch.puzzle.pcts.service.business;
 
-import ch.puzzle.pcts.dto.calculation.CalculationTemplateDto;
+import ch.puzzle.pcts.dto.calculation.CalculationInputDto;
 import ch.puzzle.pcts.dto.calculation.calculationleadershipexperience.LeadershipExperienceCalculationInputDto;
 import ch.puzzle.pcts.dto.calculation.certificatecalculation.CertificateCalculationInputDto;
 import ch.puzzle.pcts.dto.calculation.degreecalculation.DegreeCalculationInputDto;
 import ch.puzzle.pcts.dto.calculation.experiencecalculation.ExperienceCalculationInputDto;
+import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.member.Member;
 import java.util.List;
@@ -31,13 +32,13 @@ public class CalculationTemplateBusinessService {
         this.experienceBusinessService = experienceBusinessService;
     }
 
-    public CalculationTemplateDto getCalculationTemplate(Long memberId) {
+    public CalculationInputDto getCalculationTemplate(Long memberId) {
         Member member = memberBusinessService.getById(memberId);
 
         return getCalculationTemplateDtoForMember(member);
     }
 
-    private CalculationTemplateDto getCalculationTemplateDtoForMember(Member member) {
+    private CalculationInputDto getCalculationTemplateDtoForMember(Member member) {
         List<DegreeCalculationInputDto> degreeCalculations = degreeBusinessService
                 .findAllByMember(member)
                 .stream()
@@ -62,9 +63,12 @@ public class CalculationTemplateBusinessService {
                 .map(certificate -> new CertificateCalculationInputDto(null, certificate.getId()))
                 .toList();
 
-        return new CalculationTemplateDto(certificateCalculations,
-                                          leadershipCalculations,
-                                          degreeCalculations,
-                                          experienceCalculations);
+        return new CalculationInputDto(member.getId(),
+                                       CalculationState.DRAFT,
+                                       null,
+                                       certificateCalculations,
+                                       leadershipCalculations,
+                                       degreeCalculations,
+                                       experienceCalculations);
     }
 }

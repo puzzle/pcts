@@ -22,33 +22,19 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
     private final LeadershipExperienceCalculationBusinessService leadershipExperienceCalculationBusinessService;
     private final DegreeCalculationBusinessService degreeCalculationBusinessService;
     private final CalculationPersistenceService calculationPersistenceService;
-    private final CertificateBusinessService certificateBusinessService;
-    private final LeadershipExperienceBusinessService leadershipExperienceBusinessService;
-    private final ExperienceBusinessService experienceBusinessService;
-    private final DegreeBusinessService degreeBusinessService;
 
     public CalculationBusinessService(CalculationValidationService validationService,
                                       CalculationPersistenceService persistenceService,
                                       ExperienceCalculationBusinessService experienceCalculationBusinessService,
                                       CertificateCalculationBusinessService certificateCalculationBusinessService,
                                       LeadershipExperienceCalculationBusinessService leadershipExperienceCalculationBusinessService,
-                                      DegreeCalculationBusinessService degreeCalculationBusinessService,
-                                      CertificateBusinessService certificateBusinessService,
-                                      LeadershipExperienceBusinessService leadershipExperienceBusinessService,
-                                      ExperienceBusinessService experienceBusinessService,
-                                      DegreeBusinessService degreeBusinessService) {
+                                      DegreeCalculationBusinessService degreeCalculationBusinessService) {
         super(validationService, persistenceService);
         this.experienceCalculationBusinessService = experienceCalculationBusinessService;
         this.certificateCalculationBusinessService = certificateCalculationBusinessService;
         this.degreeCalculationBusinessService = degreeCalculationBusinessService;
         this.leadershipExperienceCalculationBusinessService = leadershipExperienceCalculationBusinessService;
         this.calculationPersistenceService = persistenceService;
-        // Todo none of them return all Certificate for a member at the moment.
-        // Implement the method.
-        this.certificateBusinessService = certificateBusinessService;
-        this.leadershipExperienceBusinessService = leadershipExperienceBusinessService;
-        this.experienceBusinessService = experienceBusinessService;
-        this.degreeBusinessService = degreeBusinessService;
     }
 
     @Override
