@@ -145,7 +145,7 @@ describe('MemberOverviewComponent', () => {
       .should('be.visible');
   });
 
-  it.only('should show the tooltip on focus', () => {
+  it('should show the tooltip on focus', () => {
     cy.get('app-info-icon mat-icon')
       .focus();
 
