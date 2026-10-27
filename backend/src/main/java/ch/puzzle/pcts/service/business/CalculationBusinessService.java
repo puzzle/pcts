@@ -181,7 +181,7 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
                 .toList();
 
         List<CertificateCalculationInputDto> certificateCalculations = certificateBusinessService
-                .getAllByMemberId()
+                .getAll()
                 .stream()
                 .map(certificate -> new CertificateCalculationInputDto(null, certificate.getId()))
                 .toList();
