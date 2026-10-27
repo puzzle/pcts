@@ -13,6 +13,8 @@ We use the PCTS points to track which employees have what
 training, certificates, experience, further education and adjust the salaries
 according to that.
 
+![UI](pctsUI.png)
+
 ## Packages
 
 You can find the PCTS Docker images on the [Packages page of our GitHub repository](https://github.com/puzzle/pcts/packages).
@@ -125,7 +127,7 @@ There are different profiles available.
   docker compose --profile migration up
 ```
 
-## 📄 Changelog
+## Changelog
 
 See what’s new in the latest versions by checking the [CHANGELOG.md](https://github.com/puzzle/pcts/blob/main/CHANGELOG.md).
 
