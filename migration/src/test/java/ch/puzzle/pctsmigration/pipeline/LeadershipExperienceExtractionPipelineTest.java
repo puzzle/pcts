@@ -73,8 +73,8 @@ class LeadershipExperienceExtractionPipelineTest {
     void odsSheetParseConfig_configuresSheetNamesCorrectly() {
         OdsParseConfig config = pipeline.odsSheetParseConfig();
 
-        assertThat(config.tableNameConvention().test("M-Mitarbeiter")).isTrue();
-        assertThat(config.tableNameConvention().test("M")).isTrue();
+        assertThat(config.tableNameConvention().test("M3-Mitarbeiter")).isTrue();
+        assertThat(config.tableNameConvention().test("M2")).isTrue();
         assertThat(config.tableNameConvention().test("Master")).isFalse();
         assertThat(config.tableNameConvention().test("Zertifikate")).isFalse();
 
