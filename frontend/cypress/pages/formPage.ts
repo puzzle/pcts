@@ -28,7 +28,7 @@ class FormPage {
   }
 
   typeAndBlur(fieldName: string, text: string) {
-    cy.getByTestId(fieldName)
+    cy.get(`[data-testid="${fieldName}"]`)
       .should('be.visible')
       .focus();
     cy.getByTestId(fieldName)
