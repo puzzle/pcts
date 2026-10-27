@@ -3,7 +3,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import { GenericTableComponent } from '../generic-table.component';
 import { ScopedTranslationPipe } from '../../pipes/scoped-translation-pipe';
 import { Relevancy } from '../../../features/calculations/relevancy.enum';
-import { applyEach, disabled, FieldTree, form, FormValueControl } from '@angular/forms/signals';
+import { applyEach, disabled, FieldTree, form, FormValueControl, max, min } from '@angular/forms/signals';
 import { GenericTableDataSource } from '../generic-table-data-source';
 import { ColumnTemplateDirective } from '../column-template/column-template.directive';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
@@ -33,7 +33,7 @@ import { RelevancyWeightsRow } from './RelevancyWeightsRow';
 })
 export class GenericCheckboxFormTableComponent<T extends { id: number;
   relevancies: Map<Relevancy, number>; }> implements FormValueControl<T[]> {
-  RELEVANCY_COLUMNS = [{ relevancy: Relevancy.POORLY },
+  RELEVANCY_COLUMNS: { relevancy: Relevancy }[] = [{ relevancy: Relevancy.POORLY },
     { relevancy: Relevancy.NORMAL },
     { relevancy: Relevancy.STRONGLY }];
 
@@ -97,17 +97,10 @@ export class GenericCheckboxFormTableComponent<T extends { id: number;
 
   protected readonly rows: FieldTree<RelevancyWeightsRow[]> = form(this.value as unknown as WritableSignal<RelevancyWeightsRow[]>, (rows) => applyEach(rows, (row) => {
     this.RELEVANCY_COLUMNS.forEach(({ relevancy }) => {
-      /*
-       * min(row.relevancies[relevancy], 1);
-       * max(row.relevancies[relevancy], 100);
-       * a single selection is an implicit 100, the user only types weights once there is something to split
-       */
-      disabled(row.relevancies[relevancy], {
-        when: ({
-          value,
-          valueOf
-        }) => value() === null || this.checkedRelevancies.length < 2
-      });
+      min(row.relevancies[relevancy], 1);
+      max(row.relevancies[relevancy], 100);
+      // a single selection is an implicit 100, the user only types weights once there is something to split
+      disabled(row.relevancies[relevancy], { when: ({ value, valueOf }) => value() === null || this.checkedRelevancies().length < 2 });
     });
   }));
 
