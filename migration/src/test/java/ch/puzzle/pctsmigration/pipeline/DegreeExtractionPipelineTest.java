@@ -67,8 +67,8 @@ class DegreeExtractionPipelineTest {
     void odsSheetParseConfig_configuresSheetNamesCorrectly() {
         OdsParseConfig config = degreeExtractionPipeline.odsSheetParseConfig();
 
-        assertThat(config.tableNameConvention().test("M-Mitarbeiter")).isTrue();
-        assertThat(config.tableNameConvention().test("M")).isTrue();
+        assertThat(config.tableNameConvention().test("T3 Architect")).isTrue();
+        assertThat(config.tableNameConvention().test("M2 Scrum Master")).isTrue();
         assertThat(config.tableNameConvention().test("Master")).isFalse();
         assertThat(config.tableNameConvention().test("Zertifikate")).isFalse();
         assertThat(config.tableNameConvention().test("Berufserfahrungen")).isFalse();
