@@ -39,7 +39,7 @@ public class MatchingService {
 
         if (firstMatch.distance() > maxAllowedDistance) {
             throw new MigrationException(new Error(HttpStatus.BAD_REQUEST,
-                                                   "Levenshtein distance is too large to be a valid insert"));
+                                                   "Levenshtein distance is too large to be a valid insert, closest match was: %s, distance to %s is: %s and max allowed distance is: %s".formatted(firstMatch, target, firstMatch.distance, maxAllowedDistance)));
         }
 
         if (sortedValidResults.size() == 1) {
@@ -49,7 +49,7 @@ public class MatchingService {
         Match<T> secondMatch = sortedValidResults.get(1);
 
         if (firstMatch.distance == secondMatch.distance) {
-            throw new MigrationException(new Error(HttpStatus.BAD_REQUEST, "Two options are equally close to target"));
+            throw new MigrationException(new Error(HttpStatus.BAD_REQUEST, "%s and %s are equally close to %s".formatted(firstMatch.option(), secondMatch.option(), target)));
         }
 
         return firstMatch.option();
