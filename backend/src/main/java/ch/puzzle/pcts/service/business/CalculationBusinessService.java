@@ -1,13 +1,7 @@
 package ch.puzzle.pcts.service.business;
 
-import ch.puzzle.pcts.dto.calculation.CalculationTemplateDto;
-import ch.puzzle.pcts.dto.calculation.calculationleadershipexperience.LeadershipExperienceCalculationInputDto;
-import ch.puzzle.pcts.dto.calculation.certificatecalculation.CertificateCalculationInputDto;
-import ch.puzzle.pcts.dto.calculation.degreecalculation.DegreeCalculationInputDto;
-import ch.puzzle.pcts.dto.calculation.experiencecalculation.ExperienceCalculationInputDto;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
-import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
 import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
 import ch.puzzle.pcts.model.calculation.experiencecalculation.ExperienceCalculation;
@@ -19,7 +13,6 @@ import ch.puzzle.pcts.service.validation.CalculationValidationService;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -153,42 +146,5 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
             BigDecimal points = this.getPointsOfCalculation(calculation);
             calculation.setPoints(points);
         });
-    }
-
-    public CalculationTemplateDto getCalculationTemplate() {
-        return getCalculationTemplateDto();
-        // Todo create a DTO where all the Degree and Experience from the member in this
-        // exact moment are filled in
-    }
-
-    private CalculationTemplateDto getCalculationTemplateDto() {
-        List<DegreeCalculationInputDto> degreeCalculations = degreeBusinessService
-                .getAll()
-                .stream()
-                .map(degree -> new DegreeCalculationInputDto(null, degree.getId(), Map.of(), null))
-                .toList();
-
-        List<ExperienceCalculationInputDto> experienceCalculations = experienceBusinessService
-                .getAll()
-                .stream()
-                .map(experience -> new ExperienceCalculationInputDto(null, experience.getId(), Relevancy.NONE, null))
-                .toList();
-
-        List<LeadershipExperienceCalculationInputDto> leadershipCalculations = leadershipExperienceBusinessService
-                .getAll()
-                .stream()
-                .map(experience -> new LeadershipExperienceCalculationInputDto(null, experience.getId()))
-                .toList();
-
-        List<CertificateCalculationInputDto> certificateCalculations = certificateBusinessService
-                .getAll()
-                .stream()
-                .map(certificate -> new CertificateCalculationInputDto(null, certificate.getId()))
-                .toList();
-
-        return new CalculationTemplateDto(certificateCalculations,
-                                          leadershipCalculations,
-                                          degreeCalculations,
-                                          experienceCalculations);
     }
 }
