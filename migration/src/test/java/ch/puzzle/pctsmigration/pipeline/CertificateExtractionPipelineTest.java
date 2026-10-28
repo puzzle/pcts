@@ -141,7 +141,7 @@ class CertificateExtractionPipelineTest {
         List<CertificateInputDto> result = pipeline.deduplicate(dtos);
 
         assertThat(result).hasSize(2);
-        assertThat(result).isEqualTo(List.of(dto1, dto1));
+        assertThat(result).isEqualTo(List.of(dto1, dto3));
     }
 
     private CertificateInputDto createDto(Long certificateId) {
