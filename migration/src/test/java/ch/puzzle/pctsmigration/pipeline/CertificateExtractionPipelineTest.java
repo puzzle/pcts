@@ -128,4 +128,28 @@ class CertificateExtractionPipelineTest {
 
         verify(certificateService, times(1)).create(eq(dtos));
     }
+
+    @Test
+    @DisplayName("Should deduplicate CertificateInputDto technical and conceptually")
+    void deduplicate_filterInputDtos() {
+        CertificateInputDto dto1 = createDto(1L, "Comment 1");
+        CertificateInputDto dto2 = createDto(2L, "Comment 2");
+        CertificateInputDto dto3 = createDto(1L, "Comment 3");
+
+        List<CertificateInputDto> dtos = List.of(dto1, dto2, dto3);
+
+        List<CertificateInputDto> result = pipeline.deduplicate(dtos);
+
+        assertThat(result)
+                .hasSize(2)
+                .extracting(CertificateInputDto::getComment)
+                .containsExactly("Comment 1", "Comment 2");
+    }
+
+    private CertificateInputDto createDto(Long typeId, String comment) {
+        CertificateInputDto dto = new CertificateInputDto();
+        dto.setCertificateTypeId(typeId);
+        dto.setComment(comment);
+        return dto;
+    }
 }

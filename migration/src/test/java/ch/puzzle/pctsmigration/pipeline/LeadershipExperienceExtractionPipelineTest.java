@@ -138,11 +138,11 @@ class LeadershipExperienceExtractionPipelineTest {
     }
 
     @Test
-    @DisplayName("Should deduplicate inputdtos")
-    void deduplicateInputdtos() {
-        LeadershipExperienceInputDto dto1 = createDto(1L, 1L, "Comment 1");
-        LeadershipExperienceInputDto dto2 = createDto(1L, 1L, "Comment 1");
-        LeadershipExperienceInputDto dto3 = createDto(1L, 1L, "Comment 2");
+    @DisplayName("Should deduplicate LeadershipExperienceInputDto technical and conceptually")
+    void deduplicate_filterInputDtos() {
+        LeadershipExperienceInputDto dto1 = createDto(1L, "Comment 1");
+        LeadershipExperienceInputDto dto2 = createDto(1L, "Comment 1");
+        LeadershipExperienceInputDto dto3 = createDto(1L, "Comment 2");
 
         List<LeadershipExperienceInputDto> dtos = List.of(dto1, dto2, dto3);
 
@@ -154,9 +154,8 @@ class LeadershipExperienceExtractionPipelineTest {
                 .containsExactly("Comment 1", "Comment 2");
     }
 
-    private LeadershipExperienceInputDto createDto(Long memberId, Long typeId, String comment) {
+    private LeadershipExperienceInputDto createDto(Long typeId, String comment) {
         var dto = new LeadershipExperienceInputDto();
-        dto.setMemberId(memberId);
         dto.setLeadershipExperienceTypeId(typeId);
         dto.setComment(comment);
         return dto;

@@ -7,7 +7,10 @@ import ch.puzzle.pctsmigration.extractor.ExtractionPipeline;
 import ch.puzzle.pctsmigration.ods.OdsParseConfig;
 import ch.puzzle.pctsmigration.service.MatchingService;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import org.openapitools.client.model.CertificateInputDto;
@@ -89,6 +92,15 @@ public class CertificateExtractionPipeline
 
     @Override
     public List<CertificateInputDto> deduplicate(List<CertificateInputDto> dtos) {
-        return List.of();
+        Set<Long> seenTypes = new HashSet<>();
+        List<CertificateInputDto> uniqueDtos = new ArrayList<>();
+
+        for (CertificateInputDto dto : dtos) {
+            if (seenTypes.add(dto.getCertificateTypeId())) {
+                uniqueDtos.add(dto);
+            }
+        }
+
+        return uniqueDtos;
     }
 }
