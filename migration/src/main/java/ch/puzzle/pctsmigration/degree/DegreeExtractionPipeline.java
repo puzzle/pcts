@@ -52,9 +52,9 @@ public class DegreeExtractionPipeline extends ExtractionPipeline<DegreeContextMo
     @Override
     public OdsParseConfig odsSheetParseConfig() {
         Predicate<String> isMatchingConvention = tableName -> tableName.matches("^[A-Z]\\d.*");
-        Predicate<String> isNotOldSheet = tableName -> !tableName.contains("alt");
+        Predicate<String> isOldSheet = tableName -> tableName.contains("alt");
 
-        return new OdsParseConfig(isMatchingConvention.and(isNotOldSheet), "Ausbildung", true);
+        return new OdsParseConfig(isMatchingConvention.and(isOldSheet.negate()), "Ausbildung", true);
     }
 
     @Override
