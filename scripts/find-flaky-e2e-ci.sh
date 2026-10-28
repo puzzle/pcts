@@ -1,6 +1,7 @@
 #!/bin/sh
 # Lists Cypress tests of on-push.yaml e2e jobs that failed in attempt 1 but the run passed on re-run,
 # grouped by test with occurrence count, errors and job URLs.
+# Prerequisites: gh sed awk grep
 # Usage: ./find-flaky-e2e-ci.sh [days=14] [repo=puzzle/pcts]
 
 days=${1:-14}
@@ -64,4 +65,3 @@ printf '%s' "$records" | grep . | awk -F "$tab" '
     items[key] = items[key] "\001    " $4 (err == "" ? "" : "\001        " err) }
   END { for (k in count) { split(k, p, "\t"); printf "%d\t%dx  %s › %s%s\001\n", count[k], count[k], p[1], p[2], items[k] } }' \
   | sort -rn | sed 's/^[0-9]*\t//' | tr '\001' '\n'
-notify-send "Flaky e2e scan done" "$(printf '%s' "$records" | grep -c .) failures since $since"
