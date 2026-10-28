@@ -58,6 +58,7 @@ public abstract class ExtractionPipeline<C, R, D> {
     /** Send the results to the PCTS API to create a new resource */
     public abstract void create(List<D> dtos) throws ApiException;
 
+    /** Filter out duplicates */
     public List<D> deduplicate(List<D> dtos) {
         return new ArrayList<>(new LinkedHashSet<>(dtos));
     }
