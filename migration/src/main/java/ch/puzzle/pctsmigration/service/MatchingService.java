@@ -24,7 +24,8 @@ public class MatchingService {
 
         if (filteredValidResults.isEmpty()) {
             throw new MigrationException(new Error(HttpStatus.BAD_REQUEST,
-                                                   "No valid option found within acceptable range"));
+                                                   "No valid option found. Option lengths must be within ±40%% of the target string length of (%d)."
+                                                           .formatted(target.length())));
         }
 
         List<Match<T>> sortedValidResults = filteredValidResults.stream().map(option -> {
