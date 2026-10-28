@@ -1,4 +1,4 @@
-package ch.puzzle.pctsmigration.certificates;
+package ch.puzzle.pctsmigration.pipeline;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
@@ -73,8 +73,10 @@ class LeadershipExperienceExtractionPipelineTest {
     void odsSheetParseConfig_configuresSheetNamesCorrectly() {
         OdsParseConfig config = pipeline.odsSheetParseConfig();
 
-        assertThat(config.tableNameConvention().test("M-Mitarbeiter")).isTrue();
-        assertThat(config.tableNameConvention().test("M")).isTrue();
+        assertThat(config.tableNameConvention().test("M3-Mitarbeiter")).isTrue();
+        assertThat(config.tableNameConvention().test("M2")).isTrue();
+        assertThat(config.tableNameConvention().test("M2 (alt)")).isFalse();
+        assertThat(config.tableNameConvention().test("M2 alter Project Manager")).isTrue();
         assertThat(config.tableNameConvention().test("Master")).isFalse();
         assertThat(config.tableNameConvention().test("Zertifikate")).isFalse();
 

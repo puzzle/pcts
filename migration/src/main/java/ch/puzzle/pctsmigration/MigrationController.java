@@ -1,6 +1,7 @@
 package ch.puzzle.pctsmigration;
 
 import ch.puzzle.pctsmigration.certificates.CertificateExtractionPipeline;
+import ch.puzzle.pctsmigration.degree.DegreeExtractionPipeline;
 import ch.puzzle.pctsmigration.exception.FileError;
 import ch.puzzle.pctsmigration.exception.MigrationException;
 import ch.puzzle.pctsmigration.extractor.ExtractorService;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.openapitools.client.model.CertificateInputDto;
+import org.openapitools.client.model.DegreeInputDto;
 import org.openapitools.client.model.LeadershipExperienceInputDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,12 +29,15 @@ public class MigrationController {
     private final ExtractorService service;
     private final CertificateExtractionPipeline certificateExtractionPipeline;
     private final LeadershipExperienceExtractionPipeline leadershipExperienceExtractionPipeline;
+    private final DegreeExtractionPipeline degreeExtractionPipeline;
 
     public MigrationController(ExtractorService service, CertificateExtractionPipeline certificateExtractionPipeline,
-                               LeadershipExperienceExtractionPipeline leadershipExperienceExtractionPipeline) {
+                               LeadershipExperienceExtractionPipeline leadershipExperienceExtractionPipeline,
+                               DegreeExtractionPipeline degreeExtractionPipeline) {
         this.service = service;
         this.certificateExtractionPipeline = certificateExtractionPipeline;
         this.leadershipExperienceExtractionPipeline = leadershipExperienceExtractionPipeline;
+        this.degreeExtractionPipeline = degreeExtractionPipeline;
     }
 
     @PostMapping(value = "/certificate", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -74,7 +79,7 @@ public class MigrationController {
     @Operation(summary = "Extract and migrate leadership experiences from an ODS file", description = "Uploads a legacy .ods spreadsheet containing leadership experience data. The system uses an AI-based extraction pipeline to parse the file, generate the corresponding `LeadershipExperienceInputDto` objects, and automatically persists them in the upstream pcts-api. ")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Leadership Experience successfully extracted and created in pcts-api.") })
-    public ResponseEntity<List<LeadershipExperienceInputDto>> leadershipExperience(@Parameter(description = "The .ods file containing the certificate data to be migrated. Must be a valid OpenDocument Spreadsheet.", required = true)
+    public ResponseEntity<List<LeadershipExperienceInputDto>> leadershipExperience(@Parameter(description = "The .ods file containing the Leadership Experience data to be migrated. Must be a valid OpenDocument Spreadsheet.", required = true)
     @RequestPart("file") MultipartFile file) {
         List<LeadershipExperienceInputDto> result = service.extract(file, leadershipExperienceExtractionPipeline);
         leadershipExperienceExtractionPipeline.create(result);
@@ -96,6 +101,41 @@ public class MigrationController {
                 List<LeadershipExperienceInputDto> extracted = service
                         .extract(file, leadershipExperienceExtractionPipeline);
                 leadershipExperienceExtractionPipeline.create(extracted);
+                result.addToSuccessfulFiles(filename, extracted);
+
+            } catch (MigrationException e) {
+                result.addToFailedFiles(new FileError(filename, e.getMessage()));
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
+    @PostMapping(value = "/degree", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Extract and migrate degrees from an ODS file", description = "Uploads a legacy .ods spreadsheet containing degree data. The system uses an AI-based extraction pipeline to parse the file, generate the corresponding `DegreeInputDto` objects, and automatically persists them in the upstream pcts-api. ")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Degree successfully extracted and created in pcts-api.") })
+    public ResponseEntity<List<DegreeInputDto>> degree(@Parameter(description = "The .ods file containing the degree data to be migrated. Must be a valid OpenDocument Spreadsheet.", required = true)
+    @RequestPart("file") MultipartFile file) {
+        List<DegreeInputDto> result = service.extract(file, degreeExtractionPipeline);
+        degreeExtractionPipeline.create(result);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
+    @PostMapping(value = "/degrees", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Extract and migrate degree from ODS files", description = "Uploads multiple legacy .ods spreadsheet containing degree data. The system uses an AI-based extraction pipeline to parse the file, generate the corresponding `DegreeInputDto` objects, and automatically persists them in the upstream pcts-api.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Degree successfully extracted and created in pcts-api.") })
+    public ResponseEntity<MultipleFileResultDto<DegreeInputDto>> degrees(@RequestPart("files") List<MultipartFile> files) {
+        MultipleFileResultDto<DegreeInputDto> result = new MultipleFileResultDto<>();
+
+        for (MultipartFile file : files) {
+            String filename = file.getOriginalFilename();
+
+            try {
+                List<DegreeInputDto> extracted = service.extract(file, degreeExtractionPipeline);
+                degreeExtractionPipeline.create(extracted);
                 result.addToSuccessfulFiles(filename, extracted);
 
             } catch (MigrationException e) {

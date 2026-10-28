@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.puzzle.pctsmigration.certificates.CertificateExtractionPipeline;
+import ch.puzzle.pctsmigration.degree.DegreeExtractionPipeline;
 import ch.puzzle.pctsmigration.exception.MigrationException;
 import ch.puzzle.pctsmigration.extractor.ExtractorService;
 import ch.puzzle.pctsmigration.leadershipexperience.LeadershipExperienceExtractionPipeline;
@@ -21,6 +22,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openapitools.client.model.CertificateInputDto;
+import org.openapitools.client.model.DegreeInputDto;
 import org.openapitools.client.model.LeadershipExperienceInputDto;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
@@ -39,6 +41,9 @@ class MigrationControllerTest {
 
     @Mock
     private LeadershipExperienceExtractionPipeline leadershipExperiencePipeline;
+
+    @Mock
+    private DegreeExtractionPipeline degreeExtractionPipeline;
 
     @InjectMocks
     private MigrationController migrationController;
@@ -199,8 +204,87 @@ class MigrationControllerTest {
         mockMvc.perform(multipart("/api/migration/leadershipexperience")).andExpect(status().isBadRequest());
     }
 
+    @Test
+    void testDegree_Success() throws Exception {
+        MockMultipartFile mockFile = new MockMultipartFile("file",
+                                                           "degree_data.ods",
+                                                           "application/vnd.oasis.opendocument.spreadsheet",
+                                                           "dummy content".getBytes());
+
+        DegreeInputDto dummyDto = new DegreeInputDto();
+        when(extractorService.extract(any(), eq(degreeExtractionPipeline))).thenReturn(List.of(dummyDto));
+
+        mockMvc
+                .perform(multipart("/api/migration/degree").file(mockFile))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(1));
+
+        verify(extractorService, times(1)).extract(any(), eq(degreeExtractionPipeline));
+        verify(degreeExtractionPipeline, times(1)).create(anyList());
+    }
+
+    @Test
+    void testDegrees_AllFilesSuccessful() throws Exception {
+        MockMultipartFile file1 = new MockMultipartFile("files", "degree1.ods", "text/plain", "content1".getBytes());
+        MockMultipartFile file2 = new MockMultipartFile("files", "degree2.ods", "text/plain", "content2".getBytes());
+
+        DegreeInputDto dummyDto1 = new DegreeInputDto();
+        DegreeInputDto dummyDto2 = new DegreeInputDto();
+
+        when(extractorService.extract(any(), eq(degreeExtractionPipeline)))
+                .thenReturn(List.of(dummyDto1))
+                .thenReturn(List.of(dummyDto2));
+
+        mockMvc
+                .perform(multipart("/api/migration/degrees").file(file1).file(file2))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.successfulFiles").isMap())
+                .andExpect(jsonPath("$.successfulFiles.length()").value(2))
+                .andExpect(jsonPath("$.failedFiles").isArray())
+                .andExpect(jsonPath("$.failedFiles.length()").value(0));
+
+        verify(extractorService, times(2)).extract(any(), eq(degreeExtractionPipeline));
+        verify(degreeExtractionPipeline, times(2)).create(anyList());
+    }
+
+    @Test
+    void testDegrees_PartialFailureAndSuccess() throws Exception {
+        MockMultipartFile successFile = new MockMultipartFile("files",
+                                                              "degree_success.ods",
+                                                              "text/plain",
+                                                              "good".getBytes());
+        MockMultipartFile errorFile = new MockMultipartFile("files",
+                                                            "degree_error.ods",
+                                                            "text/plain",
+                                                            "bad".getBytes());
+
+        DegreeInputDto dummyDto = new DegreeInputDto();
+
+        MigrationException mockException = mock(MigrationException.class);
+        when(mockException.getMessage()).thenReturn("Parsing failed miserably for degree");
+
+        when(extractorService.extract(any(), eq(degreeExtractionPipeline)))
+                .thenReturn(List.of(dummyDto))
+                .thenThrow(mockException);
+
+        mockMvc
+                .perform(multipart("/api/migration/degrees").file(successFile).file(errorFile))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.successfulFiles.length()").value(1))
+                .andExpect(jsonPath("$.failedFiles.length()").value(1))
+                .andExpect(jsonPath("$.failedFiles[0].filename").value("degree_error.ods"));
+        verify(degreeExtractionPipeline, times(1)).create(anyList());
+    }
+
+    @Test
+    void testDegree_MissingFileReturns400() throws Exception {
+        mockMvc.perform(multipart("/api/migration/degree")).andExpect(status().isBadRequest());
+    }
+
     @ParameterizedTest
-    @ValueSource(strings = { "/api/migration/leadershipexperience", "/api/migration/certificate" })
+    @ValueSource(strings = { "/api/migration/leadershipexperience", "/api/migration/certificate",
+            "/api/migration/degree" })
     void testEndpoint_MissingFileReturns400(String url) throws Exception {
         mockMvc.perform(multipart(url)).andExpect(status().isBadRequest());
     }

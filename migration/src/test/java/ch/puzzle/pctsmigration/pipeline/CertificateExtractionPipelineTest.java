@@ -1,4 +1,4 @@
-package ch.puzzle.pctsmigration.certificates;
+package ch.puzzle.pctsmigration.pipeline;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
@@ -7,6 +7,10 @@ import static org.mockito.Mockito.*;
 import ch.puzzle.pctsmigration.api.CertificateService;
 import ch.puzzle.pctsmigration.api.CertificateTypeService;
 import ch.puzzle.pctsmigration.api.MemberService;
+import ch.puzzle.pctsmigration.certificates.CertificateAiResultDto;
+import ch.puzzle.pctsmigration.certificates.CertificateContextModel;
+import ch.puzzle.pctsmigration.certificates.CertificateExtractionPipeline;
+import ch.puzzle.pctsmigration.certificates.CertificateWrapper;
 import ch.puzzle.pctsmigration.ods.OdsParseConfig;
 import ch.puzzle.pctsmigration.service.MatchingService;
 import java.time.LocalDate;
