@@ -22,6 +22,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.openapitools.client.model.LeadershipExperienceInputDto;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
@@ -64,6 +65,7 @@ class ExtractorServiceTest {
         mockPipelineExtraction(sampleFile);
         when(validator.validate(any())).thenReturn(Collections.emptySet());
         when(pipeline.mapToDto("test.ods", AI_RESULT)).thenReturn(List.of(EXPECTED_DTO));
+        when(pipeline.deduplicate(List.of(EXPECTED_DTO))).thenReturn(List.of(EXPECTED_DTO));
 
         List<DummyDto> result = extractorService.extract(sampleFile, pipeline);
 
