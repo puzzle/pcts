@@ -138,8 +138,8 @@ class LeadershipExperienceExtractionPipelineTest {
     }
 
     @Test
-    @DisplayName("Should deduplicate LeadershipExperienceInputDto technical and conceptually")
-    void deduplicate_filterInputDtos() {
+    @DisplayName("Should filter out entries that are exactly the same")
+    void deduplicate_filterOutEntriesThatAreExactlyTheSame() {
         LeadershipExperienceInputDto dto1 = createDto(1L, "Comment 1");
         LeadershipExperienceInputDto dto2 = createDto(1L, "Comment 1");
         LeadershipExperienceInputDto dto3 = createDto(1L, "Comment 2");

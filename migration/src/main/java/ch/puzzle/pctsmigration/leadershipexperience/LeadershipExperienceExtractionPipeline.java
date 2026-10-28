@@ -5,8 +5,6 @@ import ch.puzzle.pctsmigration.extractor.ExtractionPipeline;
 import ch.puzzle.pctsmigration.ods.OdsParseConfig;
 import ch.puzzle.pctsmigration.service.MatchingService;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;

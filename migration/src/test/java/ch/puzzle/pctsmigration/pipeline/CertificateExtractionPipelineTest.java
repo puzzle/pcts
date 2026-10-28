@@ -130,8 +130,8 @@ class CertificateExtractionPipelineTest {
     }
 
     @Test
-    @DisplayName("Should deduplicate CertificateInputDto technical and conceptually")
-    void deduplicate_filterInputDtos() {
+    @DisplayName("Should filter out any entry that have the same type CertificateTypeId.")
+    void deduplicate_filterOutAnyEntryThatHaveTheSameTypeId() {
         CertificateInputDto dto1 = createDto(1L, "Comment 1");
         CertificateInputDto dto2 = createDto(2L, "Comment 2");
         CertificateInputDto dto3 = createDto(1L, "Comment 3");
