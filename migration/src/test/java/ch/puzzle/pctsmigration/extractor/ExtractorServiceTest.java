@@ -64,6 +64,7 @@ class ExtractorServiceTest {
         mockPipelineExtraction(sampleFile);
         when(validator.validate(any())).thenReturn(Collections.emptySet());
         when(pipeline.mapToDto("test.ods", AI_RESULT)).thenReturn(List.of(EXPECTED_DTO));
+        when(pipeline.deduplicate(List.of(EXPECTED_DTO))).thenReturn(List.of(EXPECTED_DTO));
 
         List<DummyDto> result = extractorService.extract(sampleFile, pipeline);
 

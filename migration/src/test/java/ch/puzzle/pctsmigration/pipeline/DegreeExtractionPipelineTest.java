@@ -130,4 +130,54 @@ class DegreeExtractionPipelineTest {
 
         verify(degreeService, times(1)).create(eq(dtos));
     }
+
+    @Test
+    @DisplayName("Should filter out entries that are exactly the same")
+    void deduplicate_filterOutEntriesThatAreExactlyTheSame() {
+        DegreeInputDto dto1 = createDto(1L,
+                                        "Duplicate",
+                                        "Institution",
+                                        true,
+                                        1L,
+                                        LocalDate.of(2025, 1, 1),
+                                        LocalDate.of(2025, 1, 1),
+                                        "Comment");
+        DegreeInputDto dto2 = createDto(1L,
+                                        "Duplicate",
+                                        "Institution",
+                                        true,
+                                        1L,
+                                        LocalDate.of(2025, 1, 1),
+                                        LocalDate.of(2025, 1, 1),
+                                        "Comment");
+        DegreeInputDto dto3 = createDto(1L,
+                                        "Name",
+                                        "Institution",
+                                        true,
+                                        1L,
+                                        LocalDate.of(2025, 1, 1),
+                                        LocalDate.of(2025, 1, 1),
+                                        "Comment");
+
+        List<DegreeInputDto> dtos = List.of(dto1, dto2, dto3);
+
+        List<DegreeInputDto> result = degreeExtractionPipeline.deduplicate(dtos);
+
+        assertThat(result).hasSize(2);
+        assertThat(result).isEqualTo(List.of(dto1, dto3));
+    }
+
+    private DegreeInputDto createDto(Long memberId, String name, String institution, Boolean completed, Long typeId,
+                                     LocalDate startDate, LocalDate endDate, String comment) {
+        var dto = new DegreeInputDto();
+        dto.setMemberId(memberId);
+        dto.setName(name);
+        dto.setInstitution(institution);
+        dto.setCompleted(completed);
+        dto.setTypeId(typeId);
+        dto.setStartDate(startDate);
+        dto.setEndDate(endDate);
+        dto.setComment(comment);
+        return dto;
+    }
 }

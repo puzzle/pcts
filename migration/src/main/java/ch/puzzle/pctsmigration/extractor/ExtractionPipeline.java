@@ -3,6 +3,9 @@ package ch.puzzle.pctsmigration.extractor;
 import ch.puzzle.pctsmigration.exception.Error;
 import ch.puzzle.pctsmigration.exception.MigrationException;
 import ch.puzzle.pctsmigration.ods.OdsParseConfig;
+
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.openapitools.client.ApiException;
@@ -54,4 +57,9 @@ public abstract class ExtractionPipeline<C, R, D> {
 
     /** Send the results to the PCTS API to create a new resource */
     public abstract void create(List<D> dtos) throws ApiException;
+
+    /** Filter out duplicates */
+    public List<D> deduplicate(List<D> dtos) {
+        return new ArrayList<>(new LinkedHashSet<>(dtos));
+    }
 }

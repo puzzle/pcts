@@ -136,4 +136,27 @@ class LeadershipExperienceExtractionPipelineTest {
 
         verify(leadershipExperienceService, times(1)).create(eq(dtos));
     }
+
+    @Test
+    @DisplayName("Should filter out entries that are exactly the same")
+    void deduplicate_filterOutEntriesThatAreExactlyTheSame() {
+        LeadershipExperienceInputDto dto1 = createDto(1L, 1L, "Comment 1");
+        LeadershipExperienceInputDto dto2 = createDto(1L, 1L, "Comment 1");
+        LeadershipExperienceInputDto dto3 = createDto(2L, 1L, "Comment 1");
+
+        List<LeadershipExperienceInputDto> dtos = List.of(dto1, dto2, dto3);
+
+        List<LeadershipExperienceInputDto> result = pipeline.deduplicate(dtos);
+
+        assertThat(result).hasSize(2);
+        assertThat(result).isEqualTo(List.of(dto1, dto3));
+    }
+
+    private LeadershipExperienceInputDto createDto(Long memberId, Long leadershipExperienceTypeId, String comment) {
+        LeadershipExperienceInputDto dto = new LeadershipExperienceInputDto();
+        dto.setMemberId(memberId);
+        dto.setLeadershipExperienceTypeId(leadershipExperienceTypeId);
+        dto.setComment(comment);
+        return dto;
+    }
 }
