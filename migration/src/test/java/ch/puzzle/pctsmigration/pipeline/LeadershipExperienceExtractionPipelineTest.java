@@ -76,6 +76,7 @@ class LeadershipExperienceExtractionPipelineTest {
         assertThat(config.tableNameConvention().test("M3-Mitarbeiter")).isTrue();
         assertThat(config.tableNameConvention().test("M2")).isTrue();
         assertThat(config.tableNameConvention().test("M2 (alt)")).isFalse();
+        assertThat(config.tableNameConvention().test("M2 alter Project Manager")).isTrue();
         assertThat(config.tableNameConvention().test("Master")).isFalse();
         assertThat(config.tableNameConvention().test("Zertifikate")).isFalse();
 

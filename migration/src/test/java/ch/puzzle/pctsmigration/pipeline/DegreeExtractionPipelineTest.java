@@ -73,6 +73,7 @@ class DegreeExtractionPipelineTest {
         assertThat(config.tableNameConvention().test("Zertifikate")).isFalse();
         assertThat(config.tableNameConvention().test("Berufserfahrungen")).isFalse();
         assertThat(config.tableNameConvention().test("T3 smth (alt)")).isFalse();
+        assertThat(config.tableNameConvention().test("M2 alter Project Manager")).isTrue();
 
         assertThat(config.startMarker()).isEqualTo("Ausbildung");
         assertThat(config.shouldCutOfCalcRow()).isTrue();
