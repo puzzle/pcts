@@ -102,9 +102,4 @@ public class LeadershipExperienceExtractionPipeline
     public void create(List<LeadershipExperienceInputDto> dtos) {
         this.leadershipExperienceService.create(dtos);
     }
-
-    @Override
-    public List<LeadershipExperienceInputDto> deduplicate(List<LeadershipExperienceInputDto> dtos) {
-        return new ArrayList<>(new LinkedHashSet<>(dtos));
-    }
 }
