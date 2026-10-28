@@ -132,24 +132,21 @@ class CertificateExtractionPipelineTest {
     @Test
     @DisplayName("Should filter out any entry that have the same type CertificateTypeId.")
     void deduplicate_filterOutAnyEntryThatHaveTheSameTypeId() {
-        CertificateInputDto dto1 = createDto(1L, "Comment 1");
-        CertificateInputDto dto2 = createDto(2L, "Comment 2");
-        CertificateInputDto dto3 = createDto(1L, "Comment 3");
+        CertificateInputDto dto1 = createDto(1L);
+        CertificateInputDto dto2 = createDto(1L);
+        CertificateInputDto dto3 = createDto(2L);
 
         List<CertificateInputDto> dtos = List.of(dto1, dto2, dto3);
 
         List<CertificateInputDto> result = pipeline.deduplicate(dtos);
 
-        assertThat(result)
-                .hasSize(2)
-                .extracting(CertificateInputDto::getComment)
-                .containsExactly("Comment 1", "Comment 2");
+        assertThat(result).hasSize(2);
+        assertThat(result).isEqualTo(List.of(dto1, dto1));
     }
 
-    private CertificateInputDto createDto(Long typeId, String comment) {
+    private CertificateInputDto createDto(Long certificateId) {
         CertificateInputDto dto = new CertificateInputDto();
-        dto.setCertificateTypeId(typeId);
-        dto.setComment(comment);
+        dto.setCertificateTypeId(certificateId);
         return dto;
     }
 }
