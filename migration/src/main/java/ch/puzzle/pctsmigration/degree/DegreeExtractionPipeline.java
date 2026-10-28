@@ -74,7 +74,13 @@ public class DegreeExtractionPipeline extends ExtractionPipeline<DegreeContextMo
         dto.setMemberId(this.memberService.getMemberIdBy(abbreviation));
         dto.setTypeId(matchedType.getId());
         dto.setComment(aiResult.comment());
+
+        // We always set this value to true, since no degree is extracted that the
+        // person has not earned; therefore, it is always true.
         dto.setCompleted(true);
+
+        // We always enter the same start date here because the start date isn't listed
+        // in a PCTS sheet.
         dto.setStartDate(LocalDate.of(1970, 1, 1));
         dto.setName(matchedType.getName());
         return dto;
