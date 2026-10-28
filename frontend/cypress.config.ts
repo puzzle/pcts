@@ -3,10 +3,10 @@ import { defineConfig } from 'cypress';
 export default defineConfig({
   e2e: {
     baseUrl: 'http://localhost:4200',
-    experimentalMemoryManagement: true,
     testIsolation: true,
     viewportWidth: 1920,
-    viewportHeight: 1080
+    viewportHeight: 1080,
+    defaultBrowser: "firefox"
   },
   expose: {
     LOGIN_URL: 'http://localhost:8544'

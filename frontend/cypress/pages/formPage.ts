@@ -28,11 +28,13 @@ class FormPage {
   }
 
   typeAndBlur(fieldName: string, text: string) {
-    cy.getByTestId(fieldName)
+    cy.get(`[data-testid="${fieldName}"]`)
+      .should('be.visible')
       .focus();
     cy.getByTestId(fieldName)
       .type(text);
     cy.getByTestId(fieldName)
+      .should('be.focused')
       .blur();
     return this;
   }
@@ -62,7 +64,9 @@ class FormPage {
 
   shouldShowValidationError(message: string, fieldName: string) {
     cy.getByTestId('validation-error')
-      .should('include.text', message)
+      .should('include.text', message);
+
+    cy.getByTestId('validation-error')
       .parents('mat-form-field')
       .find('input')
       .invoke('attr', 'data-testid')

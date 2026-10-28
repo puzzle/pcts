@@ -15,6 +15,7 @@ describe('Certificate modal', () => {
         .click();
 
       modalPage.checkModalIconButtonVisible();
+      modalPage.checkModalIconButtonFocused();
     };
 
     it('should open correct modal', () => {
@@ -45,13 +46,19 @@ describe('Certificate modal', () => {
       it('validates certificate type requirement and input', () => {
         formPage.submitButtonShouldBe('disabled');
         cy.getByTestId('certificateType')
+          .should('be.visible')
           .focus()
+          .should('be.focused')
           .blur();
         formPage.shouldShowValidationError('Muss ausgefüllt sein', 'certificateType');
 
-        formPage.type('certificateType', 'invalid entry');
         cy.getByTestId('certificateType')
+          .should('be.visible')
+          .focus()
+          .type('invalid entry')
+          .should('have.value', 'invalid entry')
           .blur();
+
         formPage.shouldShowValidationError('Ungültige Eingabe', 'certificateType');
       });
 
