@@ -130,7 +130,7 @@ class CertificateExtractionPipelineTest {
     }
 
     @Test
-    @DisplayName("Should filter out any entry that have the same type CertificateTypeId.")
+    @DisplayName("Should filter out any entry that have the same type CertificateTypeId")
     void deduplicate_filterOutAnyEntryThatHaveTheSameTypeId() {
         CertificateInputDto dto1 = createDto(1L);
         CertificateInputDto dto2 = createDto(1L);
