@@ -60,7 +60,9 @@ public class LeadershipExperienceExtractionPipeline
         Predicate<String> isMatchingConvention = tableName -> tableName.matches("^M\\d.*");
         Predicate<String> isNotOldSheet = tableName -> !tableName.contains("alt");
 
-        return new OdsParseConfig(isMatchingConvention.and(isNotOldSheet), "Führungserfahrung (nur bei M-Rollen)", true);
+        return new OdsParseConfig(isMatchingConvention.and(isNotOldSheet),
+                                  "Führungserfahrung (nur bei M-Rollen)",
+                                  true);
     }
 
     @Override
