@@ -26,6 +26,11 @@ export class CalculationService {
     return this.httpClient.put<CalculationModel>(`${this.API_URL}/${id}`, this.toDto(calculation));
   }
 
+  getTemplate(memberId: number, roleId: number): Observable<CalculationModel> {
+    return this.httpClient.get<CalculationModel>(`${this.API_URL}/template/${memberId}/${roleId}`);
+    // return this.httpClient.put<CalculationModel>(`${this.API_URL}/${id}`, this.toDto(calculation));
+  }
+
   addCalculation(calculation: CalculationModel): Observable<CalculationModel> {
     return this.httpClient.post<CalculationModel>(`${this.API_URL}`, this.toDto(calculation));
   }

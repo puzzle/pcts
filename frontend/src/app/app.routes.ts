@@ -17,6 +17,7 @@ import {
   filterResolver
 } from './features/certificates/certificate-overview/filter.resolver';
 import { calculationResolver } from './features/calculations/calculation-resolver';
+import { calculationTemplateResolver } from './features/calculations/calculation-template-resolver';
 
 export const routes: Routes = [
   {
@@ -43,7 +44,7 @@ export const routes: Routes = [
         providers: [provideI18nPrefix('FORM.ADD')]
       },
       {
-        path: ':id',
+        path: ':memberId',
         canActivate: [authGuard('selfOrAdmin')],
         children: [{
           path: '',
@@ -59,6 +60,14 @@ export const routes: Routes = [
           resolve: {
             memberId: memberIdResolver,
             calculation: calculationResolver
+          }
+        },
+        {
+          path: 'calculation/new/:roleId',
+          providers: [provideI18nPrefix('CALCULATION')],
+          component: CalculationDetailViewComponent,
+          resolve: {
+            calculation: calculationTemplateResolver
           }
         }]
       },
