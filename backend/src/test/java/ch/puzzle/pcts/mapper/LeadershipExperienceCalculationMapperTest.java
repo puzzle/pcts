@@ -66,7 +66,7 @@ class LeadershipExperienceCalculationMapperTest {
 
         assertNotNull(result);
         assertEquals(5L, result.id());
-        assertEquals(mockedDto, result.experience());
+        assertEquals(mockedDto, result.leadershipExperience());
 
         verify(leadershipExperienceMapper).toDto(experience);
     }
@@ -83,7 +83,7 @@ class LeadershipExperienceCalculationMapperTest {
         List<LeadershipExperienceCalculationDto> result = mapper.toDto(List.of(leadershipCalc));
 
         assertEquals(1, result.size());
-        assertEquals(mockedDto, result.getFirst().experience());
+        assertEquals(mockedDto, result.getFirst().leadershipExperience());
 
         verify(leadershipExperienceMapper).toDto(leadershipExperience);
     }

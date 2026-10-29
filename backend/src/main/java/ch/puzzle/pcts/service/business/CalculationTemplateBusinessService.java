@@ -110,7 +110,7 @@ public class CalculationTemplateBusinessService {
     private BigDecimal getLeadershipExperiencePoints(List<LeadershipExperienceCalculationDto> leadershipExperienceCalculationDtos) {
         return leadershipExperienceCalculationDtos
                 .stream()
-                .map(dto -> dto.experience().leadershipExperienceType().points())
+                .map(dto -> dto.leadershipExperience().leadershipExperienceType().points())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
