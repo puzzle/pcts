@@ -44,7 +44,7 @@ export const routes: Routes = [
         providers: [provideI18nPrefix('FORM.ADD')]
       },
       {
-        path: ':memberId',
+        path: ':id',
         canActivate: [authGuard('selfOrAdmin')],
         children: [{
           path: '',
