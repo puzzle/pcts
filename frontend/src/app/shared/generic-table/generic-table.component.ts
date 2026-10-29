@@ -63,6 +63,8 @@ export class GenericTableComponent<T extends object, K extends keyof T = keyof T
 
   crudBasePath = input<string>('');
 
+  disableSorting = input<boolean>();
+
   dataSource = input.required<GenericTableDataSource<T, F>>();
 
   data = computed(() => this.dataSource().data);
