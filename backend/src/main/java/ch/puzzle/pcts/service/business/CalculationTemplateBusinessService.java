@@ -11,6 +11,7 @@ import ch.puzzle.pcts.model.calculation.Relevancy;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.role.Role;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Service;
@@ -77,12 +78,17 @@ public class CalculationTemplateBusinessService {
                                                                 null))
                 .toList();
 
-        List<LeadershipExperienceCalculationDto> leadershipCalculations = leadershipExperienceBusinessService
-                .findAllByMember(member)
-                .stream()
-                .map(experience -> new LeadershipExperienceCalculationDto(null,
-                                                                          leadershipExperienceMapper.toDto(experience)))
-                .toList();
+        List<LeadershipExperienceCalculationDto> leadershipCalculations = new ArrayList<>();
+
+        if (role.getIsManagement()) {
+            leadershipCalculations = leadershipExperienceBusinessService
+                    .findAllByMember(member)
+                    .stream()
+                    .map(experience -> new LeadershipExperienceCalculationDto(null,
+                                                                              leadershipExperienceMapper
+                                                                                      .toDto(experience)))
+                    .toList();
+        }
 
         List<CertificateCalculationDto> certificateCalculations = certificateBusinessService
                 .findAllByMember(member)
