@@ -1,39 +1,68 @@
+<!--todo Add Translation-->
 <button
-  [routerLink]="['member', calculation().member.id]"
+  (click)="routeToCV()"
   matButton>
   <mat-icon>keyboard_arrow_left</mat-icon>
   Alle Berechnungen
 </button>
 
+<!--todo Add Translation-->
 <h3>
   Berechnung 1 vom 03. Juni 2025
 </h3>
 
-<app-generic-radio-form-table *appTranslationScope="'EXPERIENCE'" [formField]="calculationForm.experienceCalculations" [table]="getTableData()"/>
+<div class="d-flex flex-row justify-content-start gap-5">
+  <div class="d-flex flex-column gap-1">
+    <span>{{ "POINTS" | scopedTranslation }}</span>
+    <span class="points">{{calculation().points.toFixed(2)}}</span>
+  </div>
+  <div class="d-flex flex-column gap-1">
+    <label for="status">{{ "STATE" | scopedTranslation }}</label>
+    <mat-form-field >
+      <mat-select [formField]="calculationForm.state" id="status">
+        @for (state of calculationState; track state) {
+          <mat-option [value]="state">{{state | scopedTranslation}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
 
-<h4>
-  Zertifikate
-</h4>
+<div class="d-flex flex-column gap-5">
+  <app-generic-radio-form-table *appTranslationScope="'EXPERIENCE'" [formField]="calculationForm.experienceCalculations" [table]="experienceTable"/>
 
-<app-generic-table [dataSource]="certificateTable"/>
+  <div>
+    <h4>
+      {{"CERTIFICATE.MODEL_NAME" | scopedTranslation}}
+    </h4>
+    <app-generic-table [dataSource]="certificateTable" [disableSorting]="true"/>
+  </div>
 
-<h4>
-  Führungserfahrung
-</h4>
+  <div>
+    <h4>
+      {{"LEADERSHIP_EXPERIENCE.MODEL_NAME" | scopedTranslation}}
+    </h4>
 
-<app-generic-table [dataSource]="leadershipExperienceTable"/>
+    <app-generic-table [dataSource]="leadershipExperienceTable" [disableSorting]="true"/>
+  </div>
+</div>
 
-
-<div class="sticky-bottom position-absolute">
+<div class="bottom">
     <button
       type="button"
       (click)="saveForm()"
     matButton="filled">
-      Speichern
+      @if (isAdd()) {
+        {{"FORM.ADD.BUTTONS.ACTION" | scopedTranslation}}
+      } @else {
+        {{"FORM.EDIT.BUTTONS.ACTION" | scopedTranslation}}
+      }
     </button>
     <button
+      (click)="routeToCV()"
+      type="button"
       matButton>
-      Abbrechen
+      {{"FORM.EDIT.BUTTONS.CANCEL" | scopedTranslation}}
     </button>
 </div>
 
