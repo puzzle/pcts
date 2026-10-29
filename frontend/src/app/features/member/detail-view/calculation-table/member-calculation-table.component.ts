@@ -7,12 +7,16 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { getCalculationTable } from '../cv/member-detail-cv-table-definition';
 import { Router } from '@angular/router';
 import { CalculationModel } from '../../../calculations/calculation.model';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-member-calculation-table',
-  imports: [GenericTableComponent,
+  imports: [
+    GenericTableComponent,
     CrudButtonComponent,
-    ScopedTranslationPipe],
+    ScopedTranslationPipe,
+    MatButton
+  ],
   templateUrl: './member-calculation-table.component.html'
 })
 export class MemberCalculationTableComponent {
@@ -47,4 +51,17 @@ export class MemberCalculationTableComponent {
       model.id
     ]);
   }
+
+
+  createCalculation = () => {
+    this.router.navigate([
+      '/member',
+      this.memberId(),
+      'calculation',
+      'new',
+      this.roleId()
+    ]);
+  };
 }
+
+
