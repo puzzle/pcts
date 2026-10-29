@@ -10,7 +10,7 @@ import { TranslationScopeDirective } from '../../../shared/translation-scope/tra
 import { form, FormField } from '@angular/forms/signals';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CalculationModel } from '../calculation.model';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CalculationService } from '../calculation.service';
@@ -19,6 +19,9 @@ import { CertificateTypeModel } from '../../certificates/certificate-type/certif
 import {
   LeadershipExperienceTypeModel
 } from '../../leadership-experiences/leadership-experiences-type/leadership-experience-type.model';
+import { MatFormField, MatLabel } from '@angular/material/input';
+import { MatOption, MatSelect } from '@angular/material/select';
+import { CalculationState } from '../calculation-state.enum';
 
 const getCertificateTable = () => new GenericTableDataSource(getCertificateColumns())
   .withLimit(10);
@@ -32,6 +35,28 @@ const getLeadershipExperienceTable = () => new GenericTableDataSource(getLeaders
 const getLeadershipExperienceColumns = (): GenCol<LeadershipExperienceTypeModel>[] => [GenCol.fromAttr('name'),
   GenCol.fromAttr('points')];
 
+const getExperienceTable = () => new GenericTableDataSource(getExperienceColumns())
+  .withLimit(10);
+
+const getExperienceColumns = (): GenCol<ExperienceCalculationModel>[] => [
+  GenCol.fromCalculated('name', (e: ExperienceCalculationModel) => e.experience.name),
+  GenCol.fromCalculated('highlyRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.highlyRelevantPoints),
+  GenCol.fromCalculated('limitedRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.limitedRelevantPoints),
+  GenCol.fromCalculated('littleRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.littleRelevantPoints),
+  GenCol.fromCalculated('points', (e: ExperienceCalculationModel) => {
+    switch (e.relevancy) {
+      case Relevancy.STRONGLY:
+        return e.experience.experienceType.highlyRelevantPoints;
+      case Relevancy.NORMAL:
+        return e.experience.experienceType.limitedRelevantPoints;
+      case Relevancy.POORLY:
+        return e.experience.experienceType.littleRelevantPoints;
+      default:
+        return 0;
+    }
+  })
+];
+
 @Component({
   imports: [
     GenericRadioFormTableComponent,
@@ -42,13 +67,20 @@ const getLeadershipExperienceColumns = (): GenCol<LeadershipExperienceTypeModel>
     MatIcon,
     RouterLink,
     GenericTableComponent,
-    ScopedTranslationPipe
+    ScopedTranslationPipe,
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    MatOption
   ],
   selector: 'app-calculation-detail-view',
-  templateUrl: './calculation-detail-view.component.html'
+  templateUrl: './calculation-detail-view.component.html',
+  styleUrl: 'calculation-detail-view.component.scss'
 })
 export class CalculationDetailViewComponent {
   private readonly calculationService = inject(CalculationService);
+
+  private readonly router = inject(Router);
 
   calculation = input.required<CalculationModel>();
 
@@ -60,6 +92,13 @@ export class CalculationDetailViewComponent {
 
   leadershipExperienceTable = getLeadershipExperienceTable();
 
+  experienceTable = getExperienceTable();
+
+
+  calculationState = [CalculationState.DRAFT,
+    CalculationState.ACTIVE,
+    CalculationState.ARCHIVED];
+
   constructor() {
     effect(() => {
       this.certificateTable.data = this.calculation().certificateCalculations.map((certificateCalculation) => certificateCalculation.certificate.certificateType);
@@ -69,32 +108,28 @@ export class CalculationDetailViewComponent {
   }
 
   saveForm() {
-    this.calculationService.updateCalculation(this.calculation().id, this.calculationForm()
-      .controlValue())
-      .subscribe((result) => {
-        console.log(result);
-      });
+    if (!this.isAdd()) {
+      this.calculationService.updateCalculation(this.calculation().id, this.calculationForm()
+        .controlValue())
+        .subscribe(() => {
+          this.routeToCV();
+        });
+    } else {
+      this.calculationService.addCalculation(this.calculation())
+        .subscribe(() => {
+          this.routeToCV();
+        });
+    }
   }
 
-  getColumns = [
-    GenCol.fromCalculated('name', (e: ExperienceCalculationModel) => e.experience.name),
-    GenCol.fromCalculated('highlyRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.highlyRelevantPoints),
-    GenCol.fromCalculated('limitedRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.limitedRelevantPoints),
-    GenCol.fromCalculated('littleRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.littleRelevantPoints),
-    GenCol.fromCalculated('points', (e: ExperienceCalculationModel) => {
-      switch (e.relevancy) {
-        case Relevancy.STRONGLY:
-          return e.experience.experienceType.highlyRelevantPoints;
-        case Relevancy.NORMAL:
-          return e.experience.experienceType.limitedRelevantPoints;
-        case Relevancy.POORLY:
-          return e.experience.experienceType.littleRelevantPoints;
-        default:
-          return 0;
-      }
-    })
-  ];
+  routeToCV() {
+    this.router.navigate(['member',
+      this.calculation().member.id]);
+  }
 
-  getTableData = () => new GenericTableDataSource(this.getColumns)
-    .withLimit(10);
+  isAdd() {
+    return !this.calculation().id;
+  }
+
+  protected readonly CalculationState = CalculationState;
 }
