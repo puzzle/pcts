@@ -85,13 +85,6 @@ export class GenericCheckboxFormTableComponent<T extends { id: number;
     }
   }
 
-  inputChange(relevancy: Relevancy, id: number) {
-    console.log(this.value(), 'value');
-    console.log(this.rows[id].relevancies[relevancy]()
-      .value());
-  }
-
-
   protected readonly rows: FieldTree<RelevancyWeightsRow[]> = form(this.value as unknown as WritableSignal<RelevancyWeightsRow[]>, (rows) => applyEach(rows, (row) => {
     this.RELEVANCY_COLUMNS.forEach(({ relevancy }) => {
       min(row.relevancies[relevancy], 1);
@@ -112,7 +105,6 @@ export class GenericCheckboxFormTableComponent<T extends { id: number;
         checked.push(entry);
       }
     }
-    console.log(checked);
     return checked;
   }
 }
