@@ -90,7 +90,7 @@ export class GenericCheckboxFormTableComponent<T extends { id: number;
       min(row.relevancies[relevancy], 1);
       max(row.relevancies[relevancy], 100);
       // a single selection is an implicit 100, the user only types weights once there is something to split
-      disabled(row.relevancies[relevancy], { when: ({ value, valueOf }) => value() === null || this.checkedRelevancies().length < 2 });
+      disabled(row.relevancies[relevancy], { when: ({ value, valueOf }) => value() === null || this.shouldBeDisabled(relevancy) });
     });
   }));
 
@@ -106,5 +106,9 @@ export class GenericCheckboxFormTableComponent<T extends { id: number;
       }
     }
     return checked;
+  }
+
+  shouldBeDisabled(relevancy: Relevancy) {
+    return !this.checkedRelevancies().includes(relevancy);
   }
 }
