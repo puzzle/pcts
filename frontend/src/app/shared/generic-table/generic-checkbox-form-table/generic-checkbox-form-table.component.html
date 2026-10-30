@@ -2,13 +2,13 @@
   <h3 class="pt-3">{{"MODEL_NAME_PLURAL" | scopedTranslation}}</h3>
   <app-generic-table [dataSource]="table()" idAttr="id">
     <ng-template appColumnTemplate="highlyRelevant" let-row>
-      <mat-checkbox [checked]="shouldBeChecked()" (change)="updateInputFields(Relevancy.STRONGLY)" id="highly" [name]=row.id />
+      <mat-checkbox [checked]="shouldBeChecked()" (change)="updateInputFields(Relevancy.STRONGLY)" (click)="$event.stopPropagation()" id="highly" [name]=row.id />
     </ng-template>
     <ng-template appColumnTemplate="limitedRelevant" let-row>
-      <mat-checkbox [checked]="shouldBeChecked()" (change)="updateInputFields(Relevancy.NORMAL)" id="limited" [name]=row.id />
+      <mat-checkbox [checked]="shouldBeChecked()" (change)="updateInputFields(Relevancy.NORMAL)" (click)="$event.stopPropagation()" id="limited" [name]=row.id />
     </ng-template>
     <ng-template appColumnTemplate="littleRelevant" let-row>
-      <mat-checkbox [checked]="shouldBeChecked()" (change)="updateInputFields(Relevancy.POORLY)" id="little" [name]=row.id />
+      <mat-checkbox [checked]="shouldBeChecked()" (change)="updateInputFields(Relevancy.POORLY)" (click)="$event.stopPropagation()" id="little" [name]=row.id />
     </ng-template>
 
     <ng-template [appTypedTemplate]="table().data"/>
