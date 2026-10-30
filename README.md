@@ -24,6 +24,12 @@ Note: When running the backend image, make sure to specify a Spring Profile to c
 
 ## Development
 
+You will need the following things properly installed on your computer:
+
+- [Git (Version Control System)](http://git-scm.com/)
+- [Java](https://www.java.com/)
+- [Docker](https://www.docker.com)
+
 ### Prerequisites: pnpm
 
 This project uses [pnpm](https://pnpm.io) as the frontend package manager. **npm and yarn are not supported** — the `preinstall` script will block them.
