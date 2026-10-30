@@ -49,7 +49,7 @@ class DegreeCalculationMapperTest {
     }
 
     private DegreeCalculationInputDto createDegreeCalculationInputDto() {
-        return new DegreeCalculationInputDto(null, DEGREE_ID, WEIGHT, RELEVANCY, COMMENT);
+        return new DegreeCalculationInputDto(null, DEGREE_ID, Map.of(RELEVANCY, WEIGHT), COMMENT);
     }
 
     private DegreeDto mockDegreeDto() {
