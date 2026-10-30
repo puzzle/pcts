@@ -3,14 +3,14 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import { GenericTableComponent } from '../generic-table.component';
 import { ScopedTranslationPipe } from '../../pipes/scoped-translation-pipe';
 import { Relevancy } from '../../../features/calculations/relevancy.enum';
-import { applyEach, disabled, FieldTree, form, FormValueControl, max, min } from '@angular/forms/signals';
+import { applyEach, disabled, FieldTree, form, FormField, FormValueControl, max, min } from '@angular/forms/signals';
 import { GenericTableDataSource } from '../generic-table-data-source';
 import { ColumnTemplateDirective } from '../column-template/column-template.directive';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RowDetailTemplateDirective } from '../rowDetailTemplate.directive';
 import { TypedTemplateDirective } from '../type-template/typed-template.directive';
-import { addsUpToTarget, isBetweenUpperAndLower } from '../../form/form-validators';
+import { addsUpToTarget } from '../../form/form-validators';
 import { RelevancyWeightsRow } from './RelevancyWeightsRow';
 
 @Component({
@@ -25,7 +25,8 @@ import { RelevancyWeightsRow } from './RelevancyWeightsRow';
     RowDetailTemplateDirective,
     TypedTemplateDirective,
     MatFormField,
-    MatLabel
+    MatLabel,
+    FormField
   ],
   selector: 'app-generic-checkbox-form-table',
   styleUrl: './generic-checkbox-form-table.component.scss',
@@ -48,29 +49,19 @@ export class GenericCheckboxFormTableComponent<T extends { id: number;
   readonly touch = output<void>();
 
   relevancyForm = new FormGroup({
-    comment: new FormControl(''),
-
-    highlyRelevant: new FormControl('', isBetweenUpperAndLower(0, 100)),
-
-    limitedRelevant: new FormControl('', isBetweenUpperAndLower(0, 100)),
-
-    littleRelevant: new FormControl('', isBetweenUpperAndLower(0, 100))
+    comment: new FormControl('')
   }, {
     validators: addsUpToTarget(100)
   });
 
   relevancyMap = new Map<Relevancy, {
     enabled: boolean;
-    formControl: FormControl;
   }>([[Relevancy.STRONGLY,
-    { enabled: true,
-      formControl: this.relevancyForm.controls.highlyRelevant }],
+    { enabled: true }],
   [Relevancy.NORMAL,
-    { enabled: true,
-      formControl: this.relevancyForm.controls.limitedRelevant }],
+    { enabled: true }],
   [Relevancy.POORLY,
-    { enabled: true,
-      formControl: this.relevancyForm.controls.littleRelevant }]]);
+    { enabled: true }]]);
 
   constructor() {
     effect(() => {
@@ -90,10 +81,16 @@ export class GenericCheckboxFormTableComponent<T extends { id: number;
     const smth = this.relevancyMap.get(relevancy);
 
     if (smth) {
-      smth.enabled ? smth.formControl.disable() : smth.formControl.enable();
       smth.enabled = !smth.enabled;
     }
   }
+
+  inputChange(relevancy: Relevancy, id: number) {
+    console.log(this.value(), 'value');
+    console.log(this.rows[id].relevancies[relevancy]()
+      .value());
+  }
+
 
   protected readonly rows: FieldTree<RelevancyWeightsRow[]> = form(this.value as unknown as WritableSignal<RelevancyWeightsRow[]>, (rows) => applyEach(rows, (row) => {
     this.RELEVANCY_COLUMNS.forEach(({ relevancy }) => {
@@ -104,6 +101,10 @@ export class GenericCheckboxFormTableComponent<T extends { id: number;
     });
   }));
 
+  getField(rowId: number, column: Relevancy) {
+    return this.rows[rowId].relevancies[column];
+  }
+
   checkedRelevancies() {
     const checked: Relevancy[] = [];
     for (const entry of this.relevancyMap.keys()) {
@@ -111,6 +112,7 @@ export class GenericCheckboxFormTableComponent<T extends { id: number;
         checked.push(entry);
       }
     }
+    console.log(checked);
     return checked;
   }
 }
