@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.15.0](https://github.com/puzzle/pcts/compare/0.14.1...0.15.0) (2026-10-31)
+
+
+### Features
+
+* add degree extraction to migration tool [#815](https://github.com/puzzle/pcts/issues/815) ([379d2fd](https://github.com/puzzle/pcts/commit/379d2fdb2189be1016724f4e60e10a11e57d8ede))
+* **migration:** add basic deduplication for extracted data [#993](https://github.com/puzzle/pcts/issues/993) ([7045dec](https://github.com/puzzle/pcts/commit/7045dec59a9a752c755de33191da5a7fe9cce552))
+
+
+### Bug Fixes
+
+* improve on flaky e2e tests [#467](https://github.com/puzzle/pcts/issues/467) ([a43684b](https://github.com/puzzle/pcts/commit/a43684ba41b43c8717c789cb981becd7c2d4d7ff))
+
+
+### Miscellaneous Chores
+
+* **deps:** update cypress-io/github-action action to v7.4.7 ([#998](https://github.com/puzzle/pcts/issues/998)) ([775b394](https://github.com/puzzle/pcts/commit/775b394b13edf4fed1fb98efecd8ffb795e82e93))
+* **deps:** update cypress-io/github-action action to v7.4.8 ([#1006](https://github.com/puzzle/pcts/issues/1006)) ([038f385](https://github.com/puzzle/pcts/commit/038f3859009df3b2e66983a5e29e6987565bb351))
+* **deps:** update dependency keycloak-js to v26.2.5 ([#1009](https://github.com/puzzle/pcts/issues/1009)) ([2bdcf2c](https://github.com/puzzle/pcts/commit/2bdcf2c49e6b54c71ada759c190dd194e0c0f6df))
+* **deps:** update dependency org.apache.maven.plugins:maven-failsafe-plugin to v3.6.1 ([#999](https://github.com/puzzle/pcts/issues/999)) ([492b184](https://github.com/puzzle/pcts/commit/492b184995e88b02ed2eb56cdceecdd677dd2c08))
+* **deps:** update dependency org.apache.maven.plugins:maven-surefire-plugin to v3.6.1 ([#1000](https://github.com/puzzle/pcts/issues/1000)) ([b9b97c7](https://github.com/puzzle/pcts/commit/b9b97c7871673a94855b656fa4e1842eb7a1f0a6))
+* **deps:** update dependency org.jacoco:jacoco-maven-plugin to v0.8.16 ([#1007](https://github.com/puzzle/pcts/issues/1007)) ([fc8539f](https://github.com/puzzle/pcts/commit/fc8539f0f6000fa9b0611784b46b4c6ae313fa1c))
+* **deps:** update dependency org.openapitools:jackson-databind-nullable to v0.2.13 ([#1004](https://github.com/puzzle/pcts/issues/1004)) ([4e3ae17](https://github.com/puzzle/pcts/commit/4e3ae17c5f10f865637438e8242957e09a496358))
+* **deps:** update dependency typescript-eslint to v8.72.1 ([#1010](https://github.com/puzzle/pcts/issues/1010)) ([12937e5](https://github.com/puzzle/pcts/commit/12937e5426e16e638d802325d8278c8a3c26e184))
+* **deps:** update spring boot to v4.1.2 ([#1001](https://github.com/puzzle/pcts/issues/1001)) ([63e5746](https://github.com/puzzle/pcts/commit/63e57467daf5222b484a4e8ab3be97a278550fa8))
+
 ## [0.14.1](https://github.com/puzzle/pcts/compare/0.14.0...0.14.1) (2026-10-26)
 
 
