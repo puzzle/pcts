@@ -7,7 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { GenCol, GenericTableDataSource } from '../../../shared/generic-table/generic-table-data-source';
 import { Relevancy } from '../relevancy.enum';
 import { TranslationScopeDirective } from '../../../shared/translation-scope/translation-scope.directive';
-import { form, FormField } from '@angular/forms/signals';
+import { form, FormField, SchemaPath, validate, ValidationError } from '@angular/forms/signals';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { Router } from '@angular/router';
@@ -23,6 +23,7 @@ import { MatFormField } from '@angular/material/input';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { CalculationState } from '../calculation-state.enum';
 import { DatePipe } from '@angular/common';
+import { RelevancyModel } from '../../../shared/generic-table/generic-radio-form-table/RelevancyModel';
 
 const getCertificateTable = () => new GenericTableDataSource(getCertificateColumns())
   .withLimit(10);
@@ -58,6 +59,18 @@ const getExperienceColumns = (): GenCol<ExperienceCalculationModel>[] => [
   })
 ];
 
+export interface NoRelevancyError<T extends RelevancyModel> extends ValidationError {
+  kind: 'noRelevancy';
+  row: T;
+}
+
+export function validateRelevancySelected<T extends RelevancyModel>(path: SchemaPath<T[]>) {
+  validate(path, ({ value }) => value()
+    .filter((row) => !row.relevancy || row.relevancy === Relevancy.NONE)
+    .map((row, index): NoRelevancyError<T> => ({ kind: 'noRelevancy',
+      row: row })));
+}
+
 @Component({
   imports: [
     GenericRadioFormTableComponent,
@@ -87,7 +100,7 @@ export class CalculationDetailViewComponent {
 
   calculationWritableSignal = linkedSignal(() => this.calculation());
 
-  calculationForm = form(this.calculationWritableSignal);
+  calculationForm = form(this.calculationWritableSignal, (calculation) => validateRelevancySelected(calculation.experienceCalculations));
 
   certificateTable = getCertificateTable();
 
@@ -109,17 +122,23 @@ export class CalculationDetailViewComponent {
   }
 
   saveForm() {
-    if (!this.isAdd()) {
-      this.calculationService.updateCalculation(this.calculation().id, this.calculationForm()
-        .controlValue())
-        .subscribe(() => {
-          this.routeToCV();
-        });
+    if (!this.calculationForm()
+      .invalid()) {
+      if (!this.isAdd()) {
+        this.calculationService.updateCalculation(this.calculation().id, this.calculationForm()
+          .controlValue())
+          .subscribe(() => {
+            this.routeToCV();
+          });
+      } else {
+        this.calculationService.addCalculation(this.calculation())
+          .subscribe(() => {
+            this.routeToCV();
+          });
+      }
     } else {
-      this.calculationService.addCalculation(this.calculation())
-        .subscribe(() => {
-          this.routeToCV();
-        });
+      this.calculationForm()
+        .markAsTouched();
     }
   }
 
@@ -131,6 +150,4 @@ export class CalculationDetailViewComponent {
   isAdd() {
     return !this.calculation().id;
   }
-
-  protected readonly CalculationState = CalculationState;
 }

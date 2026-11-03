@@ -57,6 +57,7 @@
 
 <footer class="bottom">
     <button
+      [disabled]="calculationForm().invalid()"
       type="button"
       (click)="saveForm()"
     matButton="filled">
