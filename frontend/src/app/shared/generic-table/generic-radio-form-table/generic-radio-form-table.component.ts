@@ -25,6 +25,7 @@ import { RelevancyModel } from './RelevancyModel';
   ],
   selector: 'app-generic-radio-form-table',
   styleUrl: './generic-radio-form-table.component.scss',
+  standalone: true,
   templateUrl: './generic-radio-form-table.component.html'
 })
 

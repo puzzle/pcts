@@ -175,6 +175,9 @@
       "EXPERIENCE": {
         "MODEL_NAME_PLURAL": "Berufs- und Lebenserfahrungen"
       },
+      "ALL_CALCULATIONS": "Alle Berechnungen",
+      "FROM": "vom"
+      },
       "FORM": {
         "SAVE_FORM": "Speichern",
         "CANCEL": "Abbrechen"
