@@ -89,6 +89,18 @@ const getExperienceColumns = (): GenCol<ExperienceCalculationModel>[] => [
   })
 ];
 
+export interface NoRelevancyError<T extends RelevancyModel> extends ValidationError {
+  kind: 'noRelevancy';
+  row: T;
+}
+
+export function validateRelevancySelected<T extends RelevancyModel>(path: SchemaPath<T[]>) {
+  validate(path, ({ value }) => value()
+    .filter((row) => !row.relevancy || row.relevancy === Relevancy.NONE)
+    .map((row, index): NoRelevancyError<T> => ({ kind: 'noRelevancy',
+      row: row })));
+}
+
 @Component({
   imports: [
     GenericRadioFormTableComponent,
@@ -120,7 +132,7 @@ export class CalculationDetailViewComponent {
 
   calculationWritableSignal = linkedSignal(() => this.calculation());
 
-  calculationForm = form(this.calculationWritableSignal);
+  calculationForm = form(this.calculationWritableSignal, (calculation) => validateRelevancySelected(calculation.experienceCalculations));
 
   certificateTable = getCertificateTable();
 
@@ -142,17 +154,23 @@ export class CalculationDetailViewComponent {
   }
 
   saveForm() {
-    if (!this.isAdd()) {
-      this.calculationService.updateCalculation(this.calculation().id, this.calculationForm()
-        .controlValue())
-        .subscribe(() => {
-          this.routeToCV();
-        });
+    if (!this.calculationForm()
+      .invalid()) {
+      if (!this.isAdd()) {
+        this.calculationService.updateCalculation(this.calculation().id, this.calculationForm()
+          .controlValue())
+          .subscribe(() => {
+            this.routeToCV();
+          });
+      } else {
+        this.calculationService.addCalculation(this.calculation())
+          .subscribe(() => {
+            this.routeToCV();
+          });
+      }
     } else {
-      this.calculationService.addCalculation(this.calculation())
-        .subscribe(() => {
-          this.routeToCV();
-        });
+      this.calculationForm()
+        .markAsTouched();
     }
   }
 
