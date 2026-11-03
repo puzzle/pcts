@@ -42,7 +42,7 @@ export function validateWeightsAddingUpTo100<T extends RelevancyWeightsRow>(path
 import { form, FormField } from '@angular/forms/signals';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CalculationModel } from '../calculation.model';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { CalculationService } from '../calculation.service';
@@ -51,6 +51,9 @@ import { CertificateTypeModel } from '../../certificates/certificate-type/certif
 import {
   LeadershipExperienceTypeModel
 } from '../../leadership-experiences/leadership-experiences-type/leadership-experience-type.model';
+import { MatFormField, MatLabel } from '@angular/material/input';
+import { MatOption, MatSelect } from '@angular/material/select';
+import { CalculationState } from '../calculation-state.enum';
 
 const getCertificateTable = () => new GenericTableDataSource(getCertificateColumns())
   .withLimit(10);
@@ -96,16 +99,16 @@ const getExperienceColumns = (): GenCol<ExperienceCalculationModel>[] => [
     FormField,
     MatButton,
     MatIcon,
-    RouterLink,
     GenericTableComponent,
     ScopedTranslationPipe,
     MatFormField,
-    MatLabel,
     MatSelect,
-    MatOption
+    MatOption,
+    DatePipe
   ],
   selector: 'app-calculation-detail-view',
   templateUrl: './calculation-detail-view.component.html',
+  standalone: true,
   styleUrl: 'calculation-detail-view.component.scss'
 })
 export class CalculationDetailViewComponent {
