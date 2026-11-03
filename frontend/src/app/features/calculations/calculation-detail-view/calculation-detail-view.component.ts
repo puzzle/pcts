@@ -13,7 +13,6 @@ import {
   GenericCheckboxFormTableComponent
 } from '../../../shared/generic-table/generic-checkbox-form-table/generic-checkbox-form-table.component';
 import { DegreeCalculationModel } from '../degree-calculation/degree-calculation.model';
-import { JsonPipe } from '@angular/common';
 
 @Component({
   imports: [
@@ -21,8 +20,7 @@ import { JsonPipe } from '@angular/common';
     ReactiveFormsModule,
     TranslationScopeDirective,
     FormField,
-    GenericCheckboxFormTableComponent,
-    JsonPipe
+    GenericCheckboxFormTableComponent
   ],
   selector: 'app-calculation-detail-view',
   templateUrl: './calculation-detail-view.component.html'
@@ -85,6 +83,29 @@ export class CalculationDetailViewComponent {
     GenCol.fromCalculated('highlyRelevant', () => {}),
     GenCol.fromCalculated('limitedRelevant', () => {}),
     GenCol.fromCalculated('littleRelevant', () => {}),
-    GenCol.fromCalculated('points', (d: DegreeCalculationModel) => {})
+    GenCol.fromCalculated('points', (e: DegreeCalculationModel) => {
+      let points = 0;
+
+      for (const [key,
+        value] of Object.entries(e.relevancies || {})) {
+        const factor = value / 100;
+
+        switch (key as Relevancy) {
+          case Relevancy.STRONGLY:
+            points += factor * (e.degree.type.highlyRelevantPoints || 0);
+            break;
+          case Relevancy.NORMAL:
+            points += factor * (e.degree.type.limitedRelevantPoints || 0);
+            break;
+          case Relevancy.POORLY:
+            points += factor * (e.degree.type.littleRelevantPoints || 0);
+            break;
+          default:
+            break;
+        }
+      }
+
+      return points;
+    })
   ];
 }
