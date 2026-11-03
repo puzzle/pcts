@@ -44,13 +44,15 @@
     <app-generic-table [dataSource]="certificateTable" [disableSorting]="true"/>
   </section>
 
-  <section>
-    <h4>
-      {{"LEADERSHIP_EXPERIENCE.MODEL_NAME" | scopedTranslation}}
-    </h4>
+  @if (calculation().role.isManagement) {
+    <section>
+      <h4>
+        {{"LEADERSHIP_EXPERIENCE.MODEL_NAME" | scopedTranslation}}
+      </h4>
 
-    <app-generic-table [dataSource]="leadershipExperienceTable" [disableSorting]="true"/>
-  </section>
+      <app-generic-table [dataSource]="leadershipExperienceTable" [disableSorting]="true"/>
+    </section>
+  }
 </div>
 
 <footer class="bottom">
