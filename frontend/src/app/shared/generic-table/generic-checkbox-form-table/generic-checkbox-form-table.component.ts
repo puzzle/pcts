@@ -3,7 +3,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import { GenericTableComponent } from '../generic-table.component';
 import { ScopedTranslationPipe } from '../../pipes/scoped-translation-pipe';
 import { Relevancy } from '../../../features/calculations/relevancy.enum';
-import { applyEach, disabled, FieldTree, form, FormField, FormValueControl, max, min } from '@angular/forms/signals';
+import { applyEach, FieldTree, form, FormField, FormValueControl, max, min } from '@angular/forms/signals';
 import { GenericTableDataSource } from '../generic-table-data-source';
 import { ColumnTemplateDirective } from '../column-template/column-template.directive';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
@@ -32,8 +32,7 @@ import { RelevancyWeightsRow } from './RelevancyWeightsRow';
   styleUrl: './generic-checkbox-form-table.component.scss',
   templateUrl: './generic-checkbox-form-table.component.html'
 })
-export class GenericCheckboxFormTableComponent<T extends { id: number;
-  relevancies: Map<Relevancy, number>; }> implements FormValueControl<T[]> {
+export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> implements FormValueControl<T[]> {
   RELEVANCY_COLUMNS: { relevancy: Relevancy }[] = [{ relevancy: Relevancy.POORLY },
     { relevancy: Relevancy.NORMAL },
     { relevancy: Relevancy.STRONGLY }];
@@ -87,15 +86,18 @@ export class GenericCheckboxFormTableComponent<T extends { id: number;
 
   protected readonly rows: FieldTree<RelevancyWeightsRow[]> = form(this.value as unknown as WritableSignal<RelevancyWeightsRow[]>, (rows) => applyEach(rows, (row) => {
     this.RELEVANCY_COLUMNS.forEach(({ relevancy }) => {
-      min(row.relevancies[relevancy], 1);
-      max(row.relevancies[relevancy], 100);
-      // a single selection is an implicit 100, the user only types weights once there is something to split
-      disabled(row.relevancies[relevancy], { when: ({ value, valueOf }) => value() === null || this.shouldBeDisabled(relevancy) });
+      min(row.relevancies[relevancy].weight, 1);
+      max(row.relevancies[relevancy].weight, 100);
+
+      /*
+       * a single selection is an implicit 100, the user only types weights once there is something to split
+       * disabled(row.relevancies[relevancy], { when: ({ value, valueOf }) => value() === null || row.relevancies[relevancy].checked });
+       */
     });
   }));
 
   getField(rowId: number, column: Relevancy) {
-    return this.rows[rowId].relevancies[column];
+    return this.rows[rowId].relevancies[column].weight;
   }
 
   checkedRelevancies() {

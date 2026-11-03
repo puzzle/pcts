@@ -20,7 +20,7 @@ import { DegreeModel } from '../../features/degrees/degree.model';
 import { DegreeOverviewModel } from '../../features/member/detail-view/cv/degree-overview.model';
 import { MemberCvOverviewModel } from '../../features/member/member-cv-overview.model';
 import { ConfigurationModel } from '../../features/configuration/configuration.model';
-import { CalculationModel } from '../../features/calculations/calculation.model';
+import { CalculationModel } from '../../features/calculations/calculationModel';
 import { RoleModel } from '../../features/roles/role.model';
 import { RolePointsModel } from '../../features/member/detail-view/RolePointsModel';
 import { Relevancy } from '../../features/calculations/relevancy.enum';
@@ -474,16 +474,18 @@ export const leadershipExperienceCalculation2: LeadershipExperienceCalculationMo
 export const degreeCalculation1: DegreeCalculationModel = {
   id: 1,
   degree: degree1,
-  relevancies: new Map<Relevancy, number>([[Relevancy.STRONGLY,
-    100]]),
+  relevancies: {
+    [Relevancy.STRONGLY]: 100
+  },
   comment: null
 };
 
 export const degreeCalculation2: DegreeCalculationModel = {
   id: 2,
   degree: degree2,
-  relevancies: new Map<Relevancy, number>([[Relevancy.NORMAL,
-    100]]),
+  relevancies: {
+    [Relevancy.NORMAL]: 100
+  },
   comment: 'Still pursuing the degree'
 };
 

@@ -1,5 +1,7 @@
 import { Relevancy } from '../../../features/calculations/relevancy.enum';
 
 export interface RelevancyWeightsRow {
-  relevancies: Record<Relevancy, number>;
+  id: number;
+  relevancies: Record<Relevancy, { weight: number;
+    checked: boolean; }>;
 }

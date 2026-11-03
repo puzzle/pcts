@@ -6,7 +6,7 @@ import { ScopedTranslationPipe } from '../../../../shared/pipes/scoped-translati
 import { rxResource } from '@angular/core/rxjs-interop';
 import { getCalculationTable } from '../cv/member-detail-cv-table-definition';
 import { Router } from '@angular/router';
-import { CalculationModel } from '../../../calculations/calculation.model';
+import { CalculationDto } from '../../../calculations/calculationModel';
 
 @Component({
   selector: 'app-member-calculation-table',
@@ -39,7 +39,7 @@ export class MemberCalculationTableComponent {
     return table;
   });
 
-  openCalculation(model: CalculationModel) {
+  openCalculation(model: CalculationDto) {
     this.router.navigate([
       '/member',
       this.memberId(),
