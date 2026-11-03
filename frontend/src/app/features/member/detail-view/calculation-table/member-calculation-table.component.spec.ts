@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { MemberCalculationTableComponent } from './member-calculation-table.component';
 import { MemberService } from '../../member.service';
-import { CalculationModel } from '../../../calculations/calculation.model';
+import { CalculationModel } from '../../../calculations/calculationModel';
 import { ActivatedRoute, Router } from '@angular/router';
 import Mocked = jest.Mocked;
 import { calculation1 } from '../../../../shared/test/test-data';

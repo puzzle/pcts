@@ -12,7 +12,7 @@ import { form, FormField } from '@angular/forms/signals';
 import {
   GenericCheckboxFormTableComponent
 } from '../../../shared/generic-table/generic-checkbox-form-table/generic-checkbox-form-table.component';
-import { DegreeCalculationModel } from '../degree-calculation/degree-calculation.model';
+import { DegreeCalculationDto } from '../degree-calculation/degree-calculation-model';
 
 @Component({
   imports: [
@@ -30,7 +30,7 @@ export class CalculationDetailViewComponent {
 
   private readonly experienceCalculations = signal<ExperienceCalculationModel[]>([] as ExperienceCalculationModel[]);
 
-  degreeCalculations = signal<DegreeCalculationModel[]>([] as DegreeCalculationModel[]);
+  degreeCalculations = signal<DegreeCalculationDto[]>([] as DegreeCalculationDto[]);
 
   constructor() {
     // Todo: Implement calculation service then fetch from calculation id instead of going over member service this is for the new ticket
@@ -75,20 +75,19 @@ export class CalculationDetailViewComponent {
   getTableData = () => new GenericTableDataSource(this.getColumns)
     .withLimit(10);
 
-  getDegreeCalculationTableData = () => new GenericTableDataSource<DegreeCalculationModel>(this.getDegreeCalculationColumns())
+  getDegreeCalculationTableData = () => new GenericTableDataSource<DegreeCalculationDto>(this.getDegreeCalculationColumns())
     .withDetailViewLink();
 
-  getDegreeCalculationColumns = (): GenCol<DegreeCalculationModel>[] => [
-    GenCol.fromCalculated('name', (d: DegreeCalculationModel) => d.degree.name),
+  getDegreeCalculationColumns = (): GenCol<DegreeCalculationDto>[] => [
+    GenCol.fromCalculated('name', (d: DegreeCalculationDto) => d.degree.name),
     GenCol.fromCalculated('highlyRelevant', () => {}),
     GenCol.fromCalculated('limitedRelevant', () => {}),
     GenCol.fromCalculated('littleRelevant', () => {}),
-    GenCol.fromCalculated('points', (e: DegreeCalculationModel) => {
+    GenCol.fromCalculated('points', (e: DegreeCalculationDto) => {
       let points = 0;
-
       for (const [key,
         value] of Object.entries(e.relevancies || {})) {
-        const factor = value / 100;
+        const factor = value.weight / 100;
 
         switch (key as Relevancy) {
           case Relevancy.STRONGLY:

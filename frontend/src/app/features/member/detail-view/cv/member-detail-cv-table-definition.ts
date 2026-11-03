@@ -4,10 +4,10 @@ import { ExperienceOverviewModel } from './experience-overview.model';
 import { LeadershipExperienceOverviewModel } from './leadership-experience-overview.model';
 import { formatDateLocale } from '../../../../shared/format/date-format';
 import { CertificateOverviewModel } from './certificate-overview.model';
-import { CalculationModel } from '../../../calculations/calculation.model';
 import { CalculationState, calculationStateSortingPriority } from '../../../calculations/calculation-state.enum';
 import { inject } from '@angular/core';
 import { ScopedTranslationService } from '../../../../shared/i18n-prefix.provider';
+import { CalculationDto } from '../../../calculations/calculationModel';
 
 const formatRange = (start: Date, end: Date | null): string => {
   const s = formatDateLocale(start);
@@ -62,11 +62,11 @@ const getLeadershipExperienceColumns = (): GenCol<LeadershipExperienceOverviewMo
 }),
 GenCol.fromAttr('comment')];
 
-const getCalculationColumns = (): GenCol<CalculationModel>[] => [
-  GenCol.fromCalculated('points', (e: CalculationModel) => {
+const getCalculationColumns = (): GenCol<CalculationDto>[] => [
+  GenCol.fromCalculated('points', (e: CalculationDto) => {
     return e.points.toFixed(2);
   }),
-  GenCol.fromAttr<CalculationModel>('state', [(s: CalculationState) => {
+  GenCol.fromAttr<CalculationDto>('state', [(s: CalculationState) => {
     const scopedTranslationService = inject(ScopedTranslationService);
     return scopedTranslationService.instant(s);
   }])

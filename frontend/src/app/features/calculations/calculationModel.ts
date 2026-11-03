@@ -7,6 +7,7 @@ import {
 } from './leadership-experience-calculation/leadership-experience-calculation.model';
 import { DegreeCalculationModel } from './degree-calculation/degree-calculation.model';
 import { ExperienceCalculationModel } from './experience-calculation/experience-calculation.model';
+import { DegreeCalculationDto } from './degree-calculation/degree-calculation-model';
 
 export interface CalculationModel {
   id: number;
@@ -21,3 +22,7 @@ export interface CalculationModel {
   degreeCalculations: DegreeCalculationModel[];
   experienceCalculations: ExperienceCalculationModel[];
 }
+
+export type CalculationDto = Omit<CalculationModel, 'degreeCalculations'> & {
+  degreeCalculations: DegreeCalculationDto[];
+};

@@ -13,7 +13,7 @@ import {
   rolePointsList1
 } from '../../shared/test/test-data';
 import { provideHttpClient } from '@angular/common/http';
-import { CalculationModel } from '../calculations/calculation.model';
+import { CalculationModel } from '../calculations/calculationModel';
 
 describe('MemberService', () => {
   let service: MemberService;

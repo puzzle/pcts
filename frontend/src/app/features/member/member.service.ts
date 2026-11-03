@@ -5,8 +5,9 @@ import { map, Observable } from 'rxjs';
 import { MemberDto } from './dto/member.dto';
 import { DateTime } from 'luxon';
 import { MemberCvOverviewModel } from './member-cv-overview.model';
-import { CalculationModel } from '../calculations/calculation.model';
 import { RolePointsModel } from './detail-view/RolePointsModel';
+import { toCalculationDto } from '../calculations/calculation-mapper';
+import { CalculationDto, CalculationModel } from '../calculations/calculationModel';
 
 
 @Injectable({
@@ -37,14 +38,16 @@ export class MemberService {
       .pipe(map((dto) => this.mapDates(dto)));
   }
 
-  getCalculationsByMemberIdAndOptionalRoleId(memberId: number, roleId?: number): Observable<CalculationModel[]> {
+  getCalculationsByMemberIdAndOptionalRoleId(memberId: number, roleId?: number): Observable<CalculationDto[]> {
     let roleIdParam = new HttpParams();
     if (roleId) {
       roleIdParam = roleIdParam.set('roleId', roleId);
     }
+
     return this.httpClient.get<CalculationModel[]>(`${this.API_URL}/${memberId}/calculations`, {
       params: roleIdParam
-    });
+    })
+      .pipe(map((dtos: CalculationModel[]) => dtos.map((dto) => toCalculationDto(dto))));
   }
 
   getMyself() {
