@@ -54,6 +54,7 @@ import { MatIcon } from '@angular/material/icon';
     MatIcon
   ],
   templateUrl: './generic-table.component.html',
+  standalone: true,
   styleUrl: './generic-table.component.scss'
 })
 export class GenericTableComponent<T extends object, K extends keyof T = keyof T, F = unknown> {
