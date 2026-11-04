@@ -12,7 +12,7 @@ import { form, FormField } from '@angular/forms/signals';
 import {
   GenericCheckboxFormTableComponent
 } from '../../../shared/generic-table/generic-checkbox-form-table/generic-checkbox-form-table.component';
-import { DegreeCalculationDto } from '../degree-calculation/degree-calculation-model';
+import { DegreeCalculationModel } from '../degree-calculation/degree-calculation.dto';
 
 @Component({
   imports: [
@@ -30,7 +30,7 @@ export class CalculationDetailViewComponent {
 
   private readonly experienceCalculations = signal<ExperienceCalculationModel[]>([] as ExperienceCalculationModel[]);
 
-  degreeCalculations = signal<DegreeCalculationDto[]>([] as DegreeCalculationDto[]);
+  degreeCalculations = signal<DegreeCalculationModel[]>([] as DegreeCalculationModel[]);
 
   constructor() {
     // Todo: Implement calculation service then fetch from calculation id instead of going over member service this is for the new ticket
@@ -75,15 +75,15 @@ export class CalculationDetailViewComponent {
   getTableData = () => new GenericTableDataSource(this.getColumns)
     .withLimit(10);
 
-  getDegreeCalculationTableData = () => new GenericTableDataSource<DegreeCalculationDto>(this.getDegreeCalculationColumns())
+  getDegreeCalculationTableData = () => new GenericTableDataSource<DegreeCalculationModel>(this.getDegreeCalculationColumns())
     .withDetailViewLink();
 
-  getDegreeCalculationColumns = (): GenCol<DegreeCalculationDto>[] => [
-    GenCol.fromCalculated('name', (d: DegreeCalculationDto) => d.degree.name),
+  getDegreeCalculationColumns = (): GenCol<DegreeCalculationModel>[] => [
+    GenCol.fromCalculated('name', (d: DegreeCalculationModel) => d.degree.name),
     GenCol.fromCalculated('highlyRelevant', () => {}),
     GenCol.fromCalculated('limitedRelevant', () => {}),
     GenCol.fromCalculated('littleRelevant', () => {}),
-    GenCol.fromCalculated('points', (e: DegreeCalculationDto) => {
+    GenCol.fromCalculated('points', (e: DegreeCalculationModel) => {
       let points = 0;
       for (const [key,
         value] of Object.entries(e.relevancies || {})) {

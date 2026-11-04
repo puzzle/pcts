@@ -1,16 +1,16 @@
-import { toDegreeCalculationDto, toDegreeCalculationModel } from './degree-calculation/degree-calculation-mapper';
-import { CalculationDto, CalculationModel } from './calculationModel';
+import { toDegreeCalculationModel, toDegreeCalculationDto } from './degree-calculation/degree-calculation-mapper';
+import { CalculationModel, CalculationDto } from './calculationDto';
 
-export function toCalculationDto(dto: CalculationModel): CalculationDto {
+export function toCalculationModel(dto: CalculationDto): CalculationModel {
   return {
     ...dto,
-    degreeCalculations: dto.degreeCalculations.map((degreeDto) => toDegreeCalculationDto(degreeDto))
+    degreeCalculations: dto.degreeCalculations.map((degreeDto) => toDegreeCalculationModel(degreeDto))
   };
 }
 
-export function toCalculationModel(model: CalculationDto): CalculationModel {
+export function toCalculationDto(model: CalculationModel): CalculationDto {
   return {
     ...model,
-    degreeCalculations: model.degreeCalculations.map(toDegreeCalculationModel)
+    degreeCalculations: model.degreeCalculations.map(toDegreeCalculationDto)
   };
 }

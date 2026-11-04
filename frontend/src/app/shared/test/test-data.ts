@@ -20,7 +20,7 @@ import { DegreeModel } from '../../features/degrees/degree.model';
 import { DegreeOverviewModel } from '../../features/member/detail-view/cv/degree-overview.model';
 import { MemberCvOverviewModel } from '../../features/member/member-cv-overview.model';
 import { ConfigurationModel } from '../../features/configuration/configuration.model';
-import { CalculationModel } from '../../features/calculations/calculationModel';
+import { CalculationDto } from '../../features/calculations/calculationDto';
 import { RoleModel } from '../../features/roles/role.model';
 import { RolePointsModel } from '../../features/member/detail-view/RolePointsModel';
 import { Relevancy } from '../../features/calculations/relevancy.enum';
@@ -31,7 +31,7 @@ import {
 import {
   LeadershipExperienceCalculationModel
 } from '../../features/calculations/leadership-experience-calculation/leadership-experience-calculation.model';
-import { DegreeCalculationModel } from '../../features/calculations/degree-calculation/degree-calculation.model';
+import { DegreeCalculationDto } from '../../features/calculations/degree-calculation/degree-calculation.dto';
 import {
   ExperienceCalculationModel
 } from '../../features/calculations/experience-calculation/experience-calculation.model';
@@ -471,7 +471,7 @@ export const leadershipExperienceCalculation2: LeadershipExperienceCalculationMo
   leadershipExperience: leadershipExperience2
 };
 
-export const degreeCalculation1: DegreeCalculationModel = {
+export const degreeCalculation1: DegreeCalculationDto = {
   id: 1,
   degree: degree1,
   relevancies: {
@@ -480,7 +480,7 @@ export const degreeCalculation1: DegreeCalculationModel = {
   comment: null
 };
 
-export const degreeCalculation2: DegreeCalculationModel = {
+export const degreeCalculation2: DegreeCalculationDto = {
   id: 2,
   degree: degree2,
   relevancies: {
@@ -503,7 +503,7 @@ export const experienceCalculation2: ExperienceCalculationModel = {
   comment: 'Leadership engagement relevant but mixed focus'
 };
 
-export const calculation1: CalculationModel = {
+export const calculation1: CalculationDto = {
   id: 1,
   member: member1,
   role: role1,
@@ -517,7 +517,7 @@ export const calculation1: CalculationModel = {
   experienceCalculations: [experienceCalculation1]
 };
 
-export const calculation2: CalculationModel = {
+export const calculation2: CalculationDto = {
   id: 2,
   member: member2,
   role: role2,
@@ -531,7 +531,7 @@ export const calculation2: CalculationModel = {
   experienceCalculations: [experienceCalculation2]
 };
 
-export const calculation3: CalculationModel = {
+export const calculation3: CalculationDto = {
   id: 3,
   member: member3,
   role: role3,
