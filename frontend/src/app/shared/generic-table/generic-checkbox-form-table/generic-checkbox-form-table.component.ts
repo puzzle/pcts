@@ -71,24 +71,6 @@ export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> im
         this.table().data = value;
       }
     });
-
-    effect(() => {
-      // this.rows().value()[0]
-      console.log('Effect');
-      Array.from(this.relevancyMap.keys())
-        .forEach((e) => console.log(this.rows[0].relevancies[e]()
-          .value(), this.rows[0].relevancies[e].weight()
-          .disabled()));
-    });
-    effect(() => {
-      // this.rows().value()[0]
-      console.log(this.value()[0].relevancies, 'updated');
-      console.log(this.rows()
-        .value(), 'triggered');
-      this.rows()
-        .reloadValidation();
-      // Array.from(this.relevancyMap.keys()).forEach(e=> console.log(this.rows[0].relevancies[e]().value(), this.rows[0].relevancies[e].weight().disabled()))
-    });
   }
 
   shouldBeChecked(relevancy: Relevancy) {
@@ -96,15 +78,15 @@ export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> im
   }
 
   updateInputFields(relevancy: Relevancy) {
-    // this.rows().value()[0].relevancies[relevancy].
-    this.value.update((currentValue) => {
-      const isChecked = currentValue[0].relevancies[relevancy].checked;
-      currentValue[0].relevancies[relevancy].checked = !isChecked;
-      console.log('in signal ', currentValue, Object.is(currentValue, [...currentValue]));
-      return [...currentValue];
+    this.rows[0].relevancies().value.update((currentValue) => {
+      const target = currentValue[relevancy];
+
+      return { ...currentValue,
+        [relevancy]: {
+          ...target,
+          checked: !target.checked
+        } };
     });
-    console.log('afterupdate ', this.rows()
-      .value()[0].relevancies[relevancy]);
   }
 
   protected readonly rows: FieldTree<RelevancyWeightsRow[]> = form(this.value as unknown as WritableSignal<DegreeCalculationModel[]>, (rows) => applyEach(rows, (row) => {
@@ -114,16 +96,12 @@ export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> im
 
       // a single selection is an implicit 100, the user only types weights once there is something to split
       disabled(row.relevancies[relevancy].weight, { when: ({ value, valueOf }) => {
-        // debugger
         return !valueOf(row.relevancies[relevancy].checked);
       } });
     });
   }));
 
   getField(rowId: number, column: Relevancy) {
-    console.log(this.rows[rowId].relevancies[column].weight());
-    console.log(column, this.rows[rowId].relevancies[column].weight()
-      .disabled());
     return this.rows[rowId].relevancies[column].weight;
   }
 
