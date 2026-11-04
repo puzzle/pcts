@@ -90,6 +90,11 @@ export class GenericTableComponent<T extends object, K extends keyof T = keyof T
     return colNames;
   });
 
+  trackRow = (index: number, row: T): unknown => {
+    const idKey = this.idAttr();
+    return idKey ? row[idKey] : row;
+  };
+
   sort = viewChild(MatSort);
 
   customTemplates = contentChildren(ColumnTemplateDirective);
