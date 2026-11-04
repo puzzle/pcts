@@ -6,8 +6,8 @@ import { MemberDto } from './dto/member.dto';
 import { DateTime } from 'luxon';
 import { MemberCvOverviewModel } from './member-cv-overview.model';
 import { RolePointsModel } from './detail-view/RolePointsModel';
-import { toCalculationDto } from '../calculations/calculation-mapper';
-import { CalculationDto, CalculationModel } from '../calculations/calculationModel';
+import { toCalculationModel } from '../calculations/calculation-mapper';
+import { CalculationModel, CalculationDto } from '../calculations/calculationDto';
 
 
 @Injectable({
@@ -38,16 +38,16 @@ export class MemberService {
       .pipe(map((dto) => this.mapDates(dto)));
   }
 
-  getCalculationsByMemberIdAndOptionalRoleId(memberId: number, roleId?: number): Observable<CalculationDto[]> {
+  getCalculationsByMemberIdAndOptionalRoleId(memberId: number, roleId?: number): Observable<CalculationModel[]> {
     let roleIdParam = new HttpParams();
     if (roleId) {
       roleIdParam = roleIdParam.set('roleId', roleId);
     }
 
-    return this.httpClient.get<CalculationModel[]>(`${this.API_URL}/${memberId}/calculations`, {
+    return this.httpClient.get<CalculationDto[]>(`${this.API_URL}/${memberId}/calculations`, {
       params: roleIdParam
     })
-      .pipe(map((dtos: CalculationModel[]) => dtos.map((dto) => toCalculationDto(dto))));
+      .pipe(map((dtos: CalculationDto[]) => dtos.map((dto) => toCalculationModel(dto))));
   }
 
   getMyself() {

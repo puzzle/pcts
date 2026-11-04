@@ -1,8 +1,7 @@
 import { Relevancy } from '../relevancy.enum';
-import { DegreeCalculationModel } from './degree-calculation.model';
-import { DegreeCalculationDto } from './degree-calculation-model';
+import { DegreeCalculationDto, DegreeCalculationModel } from './degree-calculation.dto';
 
-export function toDegreeCalculationDto(dto: DegreeCalculationModel): DegreeCalculationDto {
+export function toDegreeCalculationModel(dto: DegreeCalculationDto): DegreeCalculationModel {
   const mappedRelevancies = Object.entries(dto.relevancies)
     .reduce((acc, [key,
       value]) => {
@@ -25,7 +24,7 @@ export function toDegreeCalculationDto(dto: DegreeCalculationModel): DegreeCalcu
   };
 }
 
-export function toDegreeCalculationModel(model: DegreeCalculationDto): DegreeCalculationModel {
+export function toDegreeCalculationDto(model: DegreeCalculationModel): DegreeCalculationDto {
   const mappedRelevancies = Object.entries(model.relevancies)
     .reduce((acc, [key,
       data]) => {

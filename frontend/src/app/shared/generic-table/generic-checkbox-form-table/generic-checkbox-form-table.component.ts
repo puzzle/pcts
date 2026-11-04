@@ -12,6 +12,7 @@ import { RowDetailTemplateDirective } from '../rowDetailTemplate.directive';
 import { TypedTemplateDirective } from '../type-template/typed-template.directive';
 import { addsUpToTarget } from '../../form/form-validators';
 import { RelevancyWeightsRow } from './RelevancyWeightsRow';
+import { DegreeCalculationModel } from '../../../features/calculations/degree-calculation/degree-calculation.dto';
 
 @Component({
   imports: [
@@ -84,7 +85,7 @@ export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> im
     }
   }
 
-  protected readonly rows: FieldTree<RelevancyWeightsRow[]> = form(this.value as unknown as WritableSignal<RelevancyWeightsRow[]>, (rows) => applyEach(rows, (row) => {
+  protected readonly rows: FieldTree<RelevancyWeightsRow[]> = form(this.value as unknown as WritableSignal<DegreeCalculationModel[]>, (rows) => applyEach(rows, (row) => {
     this.RELEVANCY_COLUMNS.forEach(({ relevancy }) => {
       min(row.relevancies[relevancy].weight, 1);
       max(row.relevancies[relevancy].weight, 100);
