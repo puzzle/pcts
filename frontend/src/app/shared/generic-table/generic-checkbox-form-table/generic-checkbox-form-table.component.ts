@@ -3,7 +3,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import { GenericTableComponent } from '../generic-table.component';
 import { ScopedTranslationPipe } from '../../pipes/scoped-translation-pipe';
 import { Relevancy } from '../../../features/calculations/relevancy.enum';
-import { applyEach, FieldTree, form, FormField, FormValueControl, max, min } from '@angular/forms/signals';
+import { applyEach, disabled, FieldTree, form, FormField, FormValueControl, max, min } from '@angular/forms/signals';
 import { GenericTableDataSource } from '../generic-table-data-source';
 import { ColumnTemplateDirective } from '../column-template/column-template.directive';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
@@ -71,18 +71,40 @@ export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> im
         this.table().data = value;
       }
     });
+
+    effect(() => {
+      // this.rows().value()[0]
+      console.log('Effect');
+      Array.from(this.relevancyMap.keys())
+        .forEach((e) => console.log(this.rows[0].relevancies[e]()
+          .value(), this.rows[0].relevancies[e].weight()
+          .disabled()));
+    });
+    effect(() => {
+      // this.rows().value()[0]
+      console.log(this.value()[0].relevancies, 'updated');
+      console.log(this.rows()
+        .value(), 'triggered');
+      this.rows()
+        .reloadValidation();
+      // Array.from(this.relevancyMap.keys()).forEach(e=> console.log(this.rows[0].relevancies[e]().value(), this.rows[0].relevancies[e].weight().disabled()))
+    });
   }
 
-  shouldBeChecked(): boolean {
-    return true;
+  shouldBeChecked(relevancy: Relevancy) {
+    return this.value()[0].relevancies[relevancy].checked;
   }
 
   updateInputFields(relevancy: Relevancy) {
-    const smth = this.relevancyMap.get(relevancy);
-
-    if (smth) {
-      smth.enabled = !smth.enabled;
-    }
+    // this.rows().value()[0].relevancies[relevancy].
+    this.value.update((currentValue) => {
+      const isChecked = currentValue[0].relevancies[relevancy].checked;
+      currentValue[0].relevancies[relevancy].checked = !isChecked;
+      console.log('in signal ', currentValue, Object.is(currentValue, [...currentValue]));
+      return [...currentValue];
+    });
+    console.log('afterupdate ', this.rows()
+      .value()[0].relevancies[relevancy]);
   }
 
   protected readonly rows: FieldTree<RelevancyWeightsRow[]> = form(this.value as unknown as WritableSignal<DegreeCalculationModel[]>, (rows) => applyEach(rows, (row) => {
@@ -90,14 +112,18 @@ export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> im
       min(row.relevancies[relevancy].weight, 1);
       max(row.relevancies[relevancy].weight, 100);
 
-      /*
-       * a single selection is an implicit 100, the user only types weights once there is something to split
-       * disabled(row.relevancies[relevancy], { when: ({ value, valueOf }) => value() === null || row.relevancies[relevancy].checked });
-       */
+      // a single selection is an implicit 100, the user only types weights once there is something to split
+      disabled(row.relevancies[relevancy].weight, { when: ({ value, valueOf }) => {
+        // debugger
+        return !valueOf(row.relevancies[relevancy].checked);
+      } });
     });
   }));
 
   getField(rowId: number, column: Relevancy) {
+    console.log(this.rows[rowId].relevancies[column].weight());
+    console.log(column, this.rows[rowId].relevancies[column].weight()
+      .disabled());
     return this.rows[rowId].relevancies[column].weight;
   }
 
