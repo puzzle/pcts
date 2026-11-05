@@ -1,5 +1,7 @@
 package ch.puzzle.pcts.service.business;
 
+import static ch.puzzle.pcts.service.business.CalculationBusinessService.sortCalculationsByEndDate;
+
 import ch.puzzle.pcts.dto.calculation.CalculationDto;
 import ch.puzzle.pcts.dto.calculation.calculationleadershipexperience.LeadershipExperienceCalculationDto;
 import ch.puzzle.pcts.dto.calculation.certificatecalculation.CertificateCalculationDto;
@@ -59,7 +61,8 @@ public class CalculationTemplateBusinessService {
         Member member = memberBusinessService.getById(memberId);
         Role role = roleBusinessService.getById(roleId);
 
-        return getCalculationTemplateForMemberAndRole(member, role);
+        CalculationDto calculationDto = getCalculationTemplateForMemberAndRole(member, role);
+        return sortCalculationsByEndDate(calculationDto);
     }
 
     private CalculationDto getCalculationTemplateForMemberAndRole(Member member, Role role) {
