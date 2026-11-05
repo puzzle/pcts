@@ -1,5 +1,9 @@
 package ch.puzzle.pcts.service.business;
 
+import ch.puzzle.pcts.dto.calculation.CalculationDto;
+import ch.puzzle.pcts.dto.calculation.certificatecalculation.CertificateCalculationDto;
+import ch.puzzle.pcts.dto.calculation.degreecalculation.DegreeCalculationDto;
+import ch.puzzle.pcts.dto.calculation.experiencecalculation.ExperienceCalculationDto;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
@@ -12,6 +16,8 @@ import ch.puzzle.pcts.service.persistence.CalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.CalculationValidationService;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -132,5 +138,56 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
             BigDecimal points = this.getPointsOfCalculation(calculation);
             calculation.setPoints(points);
         });
+    }
+
+    public static CalculationDto sortCalculationsByEndDate(CalculationDto dto) {
+        if (dto == null) {
+            return null;
+        }
+
+        List<CertificateCalculationDto> sortedCertificates = dto.certificateCalculations() == null ? null
+                : dto
+                        .certificateCalculations()
+                        .stream()
+                        .sorted(Comparator.comparing(CalculationBusinessService::getCertificateDate))
+                        .toList();
+
+        List<DegreeCalculationDto> sortedDegrees = dto.degreeCalculations() == null ? null
+                : dto
+                        .degreeCalculations()
+                        .stream()
+                        .sorted(Comparator.comparing(CalculationBusinessService::getDegreeDate))
+                        .toList();
+
+        List<ExperienceCalculationDto> sortedExperiences = dto.experienceCalculations() == null ? null
+                : dto
+                        .experienceCalculations()
+                        .stream()
+                        .sorted(Comparator.comparing(CalculationBusinessService::getExperienceDate))
+                        .toList();
+
+        return new CalculationDto(dto.id(),
+                                  dto.member(),
+                                  dto.role(),
+                                  dto.state(),
+                                  dto.publicationDate(),
+                                  dto.publicizedBy(),
+                                  dto.points(),
+                                  sortedCertificates,
+                                  dto.leadershipExperienceCalculations(),
+                                  sortedDegrees,
+                                  sortedExperiences);
+    }
+
+    private static LocalDate getCertificateDate(CertificateCalculationDto c) {
+        return (c != null && c.certificate() != null) ? c.certificate().completedAt() : null;
+    }
+
+    private static LocalDate getDegreeDate(DegreeCalculationDto d) {
+        return (d != null && d.degree() != null) ? d.degree().endDate() : null;
+    }
+
+    private static LocalDate getExperienceDate(ExperienceCalculationDto e) {
+        return (e != null && e.experience() != null) ? e.experience().endDate() : null;
     }
 }
