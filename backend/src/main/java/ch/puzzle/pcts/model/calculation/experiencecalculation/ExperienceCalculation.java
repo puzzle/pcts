@@ -44,6 +44,14 @@ public class ExperienceCalculation implements CalculationChildInterface, Model {
         this.comment = trim(comment);
     }
 
+    public ExperienceCalculation(Builder builder) {
+        this.id = builder.id;
+        this.calculation = builder.calculation;
+        this.experience = builder.experience;
+        this.relevancy = builder.relevancy;
+        this.comment = builder.comment;
+    }
+
     public ExperienceCalculation() {
     }
 
@@ -117,5 +125,49 @@ public class ExperienceCalculation implements CalculationChildInterface, Model {
         return "ExperienceCalculation{" + "id=" + id + ", calculationId="
                + (getCalculation() != null ? getCalculation().getId() : null) + ", experience=" + getExperience()
                + ", relevancy=" + getRelevancy() + ", comment='" + getComment() + '\'' + '}';
+    }
+
+    public static final class Builder {
+        private Long id;
+        private Calculation calculation;
+        private Experience experience;
+        private Relevancy relevancy;
+        private String comment;
+
+        private Builder() {
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder withCalculation(Calculation calculation) {
+            this.calculation = calculation;
+            return this;
+        }
+
+        public Builder withExperience(Experience experience) {
+            this.experience = experience;
+            return this;
+        }
+
+        public Builder withRelevancy(Relevancy relevancy) {
+            this.relevancy = relevancy;
+            return this;
+        }
+
+        public Builder withComment(String comment) {
+            this.comment = trim(comment);
+            return this;
+        }
+
+        public ExperienceCalculation build() {
+            return new ExperienceCalculation(this);
+        }
     }
 }
