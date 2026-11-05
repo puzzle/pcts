@@ -31,6 +31,12 @@ public class LeadershipExperienceCalculation implements CalculationChildInterfac
         this.leadershipExperience = leadershipExperience;
     }
 
+    public LeadershipExperienceCalculation(Builder builder) {
+        this.id = builder.id;
+        this.calculation = builder.calculation;
+        this.leadershipExperience = builder.leadershipExperience;
+    }
+
     public LeadershipExperienceCalculation() {
     }
 
@@ -78,5 +84,37 @@ public class LeadershipExperienceCalculation implements CalculationChildInterfac
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public static final class Builder {
+        private Long id;
+        private Calculation calculation;
+        private LeadershipExperience leadershipExperience;
+
+        private Builder() {
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder withCalculation(Calculation calculation) {
+            this.calculation = calculation;
+            return this;
+        }
+
+        public Builder withLeadershipExperience(LeadershipExperience leadershipExperience) {
+            this.leadershipExperience = leadershipExperience;
+            return this;
+        }
+
+        public LeadershipExperienceCalculation build() {
+            return new LeadershipExperienceCalculation(this);
+        }
     }
 }
