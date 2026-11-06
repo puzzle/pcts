@@ -32,7 +32,7 @@ describe('GenericCheckboxFormTableComponent', () => {
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(GenericCheckboxFormTableComponent);
+    fixture = TestBed.createComponent<GenericCheckboxFormTableComponent<DegreeCalculationModel>>(GenericCheckboxFormTableComponent);
 
     fixture.componentRef.setInput('value', degreeCalculations);
     fixture.componentRef.setInput('table', getTableData());
@@ -103,5 +103,16 @@ describe('GenericCheckboxFormTableComponent', () => {
 
     expect(() => component.getField(unknownRow, Relevancy.POORLY))
       .toThrow();
+  });
+
+  it('should change rows when calling updateInputFields', () => {
+    const row1 = toDegreeCalculationModel(degreeCalculation1);
+    component.value.set([row1]);
+
+    fixture.detectChanges();
+
+    component.updateInputFields(row1, Relevancy.POORLY);
+
+    expect(component.value()[0].relevancies[Relevancy.POORLY].checked).not.toEqual(row1.relevancies[Relevancy.POORLY].checked);
   });
 });
