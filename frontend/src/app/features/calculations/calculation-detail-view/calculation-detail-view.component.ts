@@ -8,11 +8,31 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { GenCol, GenericTableDataSource } from '../../../shared/generic-table/generic-table-data-source';
 import { Relevancy } from '../relevancy.enum';
 import { TranslationScopeDirective } from '../../../shared/translation-scope/translation-scope.directive';
-import { form, FormField } from '@angular/forms/signals';
+import { form, FormField, SchemaPath, validate, ValidationError } from '@angular/forms/signals';
 import {
   GenericCheckboxFormTableComponent
 } from '../../../shared/generic-table/generic-checkbox-form-table/generic-checkbox-form-table.component';
 import { DegreeCalculationModel } from '../degree-calculation/degree-calculation.dto';
+import { RelevancyWeightsRow } from '../../../shared/generic-table/generic-checkbox-form-table/RelevancyWeightsRow';
+
+
+export interface InvalidTotalError<T extends RelevancyWeightsRow> extends ValidationError {
+  kind: 'invalidTotal';
+  row: T;
+  total: number;
+}
+
+export function validateWeightsAddingUpTo100<T extends RelevancyWeightsRow>(path: SchemaPath<T[]>) {
+  validate(path, ({ value }) => value()
+    .filter((row) => row.relevancies[Relevancy.STRONGLY].weight +
+      row.relevancies[Relevancy.STRONGLY].weight +
+      row.relevancies[Relevancy.STRONGLY].weight !== 100)
+    .map((row, index): InvalidTotalError<T> => ({
+      kind: 'invalidTotal',
+      row: row,
+      total: row.relevancies[Relevancy.STRONGLY].weight + row.relevancies[Relevancy.STRONGLY].weight + row.relevancies[Relevancy.STRONGLY].weight
+    })));
+}
 
 @Component({
   imports: [
@@ -51,7 +71,7 @@ export class CalculationDetailViewComponent {
 
   experienceCalculationForm = form(this.experienceCalculations);
 
-  degreeCalculationForm = form(this.degreeCalculations);
+  degreeCalculationForm = form(this.degreeCalculations, (degreeCalculation) => validateWeightsAddingUpTo100(degreeCalculation));
 
   getColumns = [
     GenCol.fromCalculated('name', (e: ExperienceCalculationModel) => e.experience.name),
