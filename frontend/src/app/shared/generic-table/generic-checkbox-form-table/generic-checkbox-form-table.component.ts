@@ -101,7 +101,7 @@ export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> im
 
   protected readonly rows: FieldTree<RelevancyWeightsRow[]> = form(this.value as unknown as WritableSignal<DegreeCalculationModel[]>, (rows) => applyEach(rows, (row) => {
     this.RELEVANCY_COLUMNS.forEach(({ relevancy }) => {
-      min(row.relevancies[relevancy].weight, 1);
+      min(row.relevancies[relevancy].weight, 0);
       max(row.relevancies[relevancy].weight, 100);
 
       // a single selection is an implicit 100, the user only types weights once there is something to split
