@@ -124,7 +124,8 @@ export class CalculationDetailViewComponent {
         }
       }
 
-      return points;
+      return Number.parseFloat(String(points))
+        .toFixed(2);
     })
   ];
 }
