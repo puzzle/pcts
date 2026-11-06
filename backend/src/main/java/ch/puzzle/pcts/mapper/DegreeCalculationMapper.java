@@ -4,7 +4,6 @@ import ch.puzzle.pcts.dto.calculation.degreecalculation.DegreeCalculationDto;
 import ch.puzzle.pcts.dto.calculation.degreecalculation.DegreeCalculationInputDto;
 import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
 import ch.puzzle.pcts.service.business.DegreeBusinessService;
-
 import java.util.List;
 import java.util.Map;
 
