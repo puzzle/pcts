@@ -83,9 +83,10 @@ export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> im
   }
 
   updateInputFields(row: RelevancyWeightsRow, relevancy: Relevancy) {
-    this.rows[this.rows()
+    const indexOfRow = this.rows()
       .value()
-      .indexOf(row)].relevancies().value.update((currentValue) => {
+      .indexOf(row);
+    this.rows[indexOfRow].relevancies().value.update((currentValue) => {
       const target = currentValue[relevancy];
 
       return { ...currentValue,
