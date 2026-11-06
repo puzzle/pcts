@@ -73,12 +73,19 @@ export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> im
     });
   }
 
-  shouldBeChecked(relevancy: Relevancy) {
-    return this.value()[0].relevancies[relevancy].checked;
+  shouldBeChecked(row: RelevancyWeightsRow, relevancy: Relevancy) {
+    for (const entry of this.value()) {
+      if (entry === row) {
+        return entry.relevancies[relevancy].checked;
+      }
+    }
+    return false;
   }
 
-  updateInputFields(relevancy: Relevancy) {
-    this.rows[0].relevancies().value.update((currentValue) => {
+  updateInputFields(row: RelevancyWeightsRow, relevancy: Relevancy) {
+    this.rows[this.rows()
+      .value()
+      .indexOf(row)].relevancies().value.update((currentValue) => {
       const target = currentValue[relevancy];
 
       return { ...currentValue,
@@ -101,8 +108,15 @@ export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> im
     });
   }));
 
-  getField(rowId: number, column: Relevancy) {
-    return this.rows[rowId].relevancies[column].weight;
+  getField(rowId: RelevancyWeightsRow, column: Relevancy): FieldTree<number, string, 'writable'> {
+    const rows = this.rows;
+    for (const entry of rows) {
+      if (entry()
+        .value() === rowId) {
+        return entry.relevancies[column].weight;
+      }
+    }
+    return rows[1].relevancies[column].weight;
   }
 
   checkedRelevancies() {
