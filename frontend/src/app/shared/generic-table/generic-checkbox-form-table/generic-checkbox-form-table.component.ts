@@ -16,7 +16,7 @@ import {
 } from '@angular/forms/signals';
 import { GenericTableDataSource } from '../generic-table-data-source';
 import { ColumnTemplateDirective } from '../column-template/column-template.directive';
-import { MatError, MatFormField, MatInput, MatLabel } from '@angular/material/input';
+import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RowDetailTemplateDirective } from '../rowDetailTemplate.directive';
 import { TypedTemplateDirective } from '../type-template/typed-template.directive';
@@ -25,6 +25,7 @@ import { DegreeCalculationModel } from '../../../features/calculations/degree-ca
 import {
   InvalidTotalError
 } from '../../../features/calculations/calculation-detail-view/calculation-detail-view.component';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   imports: [
@@ -40,7 +41,7 @@ import {
     MatFormField,
     MatLabel,
     FormField,
-    MatError
+    MatIcon
   ],
   selector: 'app-generic-checkbox-form-table',
   styleUrl: './generic-checkbox-form-table.component.scss',
