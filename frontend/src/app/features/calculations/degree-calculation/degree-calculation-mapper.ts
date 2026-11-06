@@ -36,12 +36,12 @@ export function toDegreeCalculationDto(model: DegreeCalculationModel): DegreeCal
     id: model.id,
     degree: model.degree,
     comment: model.comment,
-    relevancies: fillMissingWithZero(mappedRelevancies as Map<Relevancy, number>) as Partial<Record<Relevancy, number>>
+    relevancies: fillMissingWithZero(mappedRelevancies) as Partial<Record<Relevancy, number>>
   };
 }
 
-function fillMissingWithZero(inputMap: Map<Relevancy, number>) {
-  const resultMap = new Map<Relevancy, number>(inputMap);
+function fillMissingWithZero(input: Partial<Record<Relevancy, number>>) {
+  const resultMap = new Map<Relevancy, number>(Object.entries(input) as [Relevancy, number][]);
 
   if (resultMap.size === 3) {
     return resultMap;
