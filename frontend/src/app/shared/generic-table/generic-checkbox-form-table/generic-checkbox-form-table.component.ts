@@ -26,6 +26,7 @@ import {
   InvalidTotalError
 } from '../../../features/calculations/calculation-detail-view/calculation-detail-view.component';
 import { MatIcon } from '@angular/material/icon';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   imports: [
@@ -41,7 +42,8 @@ import { MatIcon } from '@angular/material/icon';
     MatFormField,
     MatLabel,
     FormField,
-    MatIcon
+    MatIcon,
+    TranslatePipe
   ],
   selector: 'app-generic-checkbox-form-table',
   styleUrl: './generic-checkbox-form-table.component.scss',

@@ -23,21 +23,21 @@
       let-row
     >
       <mat-form-field>
-        <mat-label>comment</mat-label>
+        <mat-label>{{ "COMMENT" | scopedTranslation}}</mat-label>
         <input matInput [formControl]="relevancyForm.controls.comment"/>
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>highlyRelevant</mat-label>
+        <mat-label>{{ "HIGHLY_RELEVANT" | scopedTranslation}}</mat-label>
         <input matInput type="number" [formField]="getField(row, Relevancy.STRONGLY)"/>
       </mat-form-field>
       <mat-form-field>
-        <mat-label>limitedRelevant</mat-label>
+        <mat-label>{{ "LIMITED_RELEVANT" | scopedTranslation}}</mat-label>
         <input matInput type="number" [formField]="getField(row, Relevancy.NORMAL)"/>
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>littleRelevant</mat-label>
+        <mat-label>{{ "LITTLE_RELEVANT" | scopedTranslation}}</mat-label>
         <input matInput type="number" [formField]="getField(row, Relevancy.POORLY)"/>
       </mat-form-field>
     </ng-template>
