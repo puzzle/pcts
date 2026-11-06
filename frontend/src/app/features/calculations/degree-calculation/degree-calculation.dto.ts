@@ -2,7 +2,7 @@ import { Relevancy } from '../relevancy.enum';
 import { DegreeModel } from '../../degrees/degree.model';
 
 export interface DegreeCalculationDto {
-  id: number;
+  id: number | null;
   degree: DegreeModel;
   relevancies: Partial<Record<Relevancy, number>>;
   comment: string | null;
