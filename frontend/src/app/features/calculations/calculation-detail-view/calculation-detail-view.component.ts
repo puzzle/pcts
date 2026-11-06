@@ -25,12 +25,12 @@ export interface InvalidTotalError<T extends RelevancyWeightsRow> extends Valida
 export function validateWeightsAddingUpTo100<T extends RelevancyWeightsRow>(path: SchemaPath<T[]>) {
   validate(path, ({ value }) => value()
     .filter((row) => row.relevancies[Relevancy.STRONGLY].weight +
-      row.relevancies[Relevancy.STRONGLY].weight +
-      row.relevancies[Relevancy.STRONGLY].weight !== 100)
+      row.relevancies[Relevancy.NORMAL].weight +
+      row.relevancies[Relevancy.POORLY].weight !== 100)
     .map((row, index): InvalidTotalError<T> => ({
       kind: 'invalidTotal',
       row: row,
-      total: row.relevancies[Relevancy.STRONGLY].weight + row.relevancies[Relevancy.STRONGLY].weight + row.relevancies[Relevancy.STRONGLY].weight
+      total: row.relevancies[Relevancy.STRONGLY].weight + row.relevancies[Relevancy.NORMAL].weight + row.relevancies[Relevancy.POORLY].weight
     })));
 }
 
