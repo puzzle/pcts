@@ -1,18 +1,31 @@
-import { Component, effect, input, model, output, WritableSignal } from '@angular/core';
+import { Component, computed, effect, input, model, output, Signal, WritableSignal } from '@angular/core';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { GenericTableComponent } from '../generic-table.component';
 import { ScopedTranslationPipe } from '../../pipes/scoped-translation-pipe';
 import { Relevancy } from '../../../features/calculations/relevancy.enum';
-import { applyEach, disabled, FieldTree, form, FormField, FormValueControl, max, min } from '@angular/forms/signals';
+import {
+  applyEach,
+  disabled,
+  FieldTree,
+  form,
+  FormField,
+  FormValueControl,
+  max,
+  min,
+  ValidationError
+} from '@angular/forms/signals';
 import { GenericTableDataSource } from '../generic-table-data-source';
 import { ColumnTemplateDirective } from '../column-template/column-template.directive';
-import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
+import { MatError, MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RowDetailTemplateDirective } from '../rowDetailTemplate.directive';
 import { TypedTemplateDirective } from '../type-template/typed-template.directive';
 import { addsUpToTarget } from '../../form/form-validators';
 import { RelevancyWeightsRow } from './RelevancyWeightsRow';
 import { DegreeCalculationModel } from '../../../features/calculations/degree-calculation/degree-calculation.dto';
+import {
+  InvalidTotalError
+} from '../../../features/calculations/calculation-detail-view/calculation-detail-view.component';
 
 @Component({
   imports: [
@@ -27,7 +40,8 @@ import { DegreeCalculationModel } from '../../../features/calculations/degree-ca
     TypedTemplateDirective,
     MatFormField,
     MatLabel,
-    FormField
+    FormField,
+    MatError
   ],
   selector: 'app-generic-checkbox-form-table',
   styleUrl: './generic-checkbox-form-table.component.scss',
@@ -133,5 +147,22 @@ export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> im
   shouldBeDisabled(relevancy: Relevancy) {
     return !this.checkedRelevancies()
       .includes(relevancy);
+  }
+
+  errors = input<readonly ValidationError.WithOptionalFieldTree[]>([]);
+
+
+  private readonly invalidRows: Signal<Set<T>> = computed(() => {
+    const errors = this.errors() as unknown as InvalidTotalError<T>[];
+    return new Set(errors
+      .map((error) => error?.row));
+  });
+
+  isRowInvalid(row: T): boolean {
+    console.log(this.invalidRows(), row);
+    console.log(this.invalidRows()
+      .has(row));
+    return this.invalidRows()
+      .has(row);
   }
 }
