@@ -1,26 +1,13 @@
 import { Relevancy } from '../relevancy.enum';
 import { DegreeCalculationDto, DegreeCalculationModel } from './degree-calculation.dto';
+import { RelevancyType } from '../../../shared/generic-table/generic-checkbox-form-table/RelevancyWeightsRow';
 
 export function toDegreeCalculationModel(dto: DegreeCalculationDto): DegreeCalculationModel {
-  const mappedRelevancies = Object.entries(dto.relevancies)
-    .reduce((acc, [key,
-      value]) => {
-      const weight = value ?? 0;
-
-      acc[key as Relevancy] = {
-        weight: weight,
-        checked: weight > 0
-      };
-
-      return acc;
-    }, {} as Record<Relevancy, { weight: number;
-      checked: boolean; }>);
-
   return {
     id: dto.id,
     degree: dto.degree,
     comment: dto.comment,
-    relevancies: mappedRelevancies
+    relevancies: fillMissingWithZero(dto.relevancies)
   };
 }
 
@@ -36,24 +23,19 @@ export function toDegreeCalculationDto(model: DegreeCalculationModel): DegreeCal
     id: model.id,
     degree: model.degree,
     comment: model.comment,
-    relevancies: fillMissingWithZero(mappedRelevancies) as Partial<Record<Relevancy, number>>
+    relevancies: mappedRelevancies
   };
 }
 
 function fillMissingWithZero(input: Partial<Record<Relevancy, number>>) {
-  const resultMap = new Map<Relevancy, number>(Object.entries(input) as [Relevancy, number][]);
-
-  if (resultMap.size === 3) {
-    return resultMap;
-  }
+  const result: Record<Relevancy, RelevancyType> = {} as Record<Relevancy, RelevancyType>;
 
   for (const relevancy of Object.values(Relevancy)) {
-    if (relevancy !== Relevancy.NONE) {
-      if (!resultMap.has(relevancy)) {
-        resultMap.set(relevancy, 0);
-      }
-    }
+    result[relevancy] = {
+      weight: input[relevancy] ?? 0,
+      checked: (input[relevancy] ?? 0) > 0
+    };
   }
 
-  return resultMap;
+  return result;
 }
