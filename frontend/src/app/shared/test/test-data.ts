@@ -475,7 +475,9 @@ export const degreeCalculation1: DegreeCalculationDto = {
   id: 1,
   degree: degree1,
   relevancies: {
-    [Relevancy.STRONGLY]: 100
+    [Relevancy.STRONGLY]: 100,
+    [Relevancy.NORMAL]: 0,
+    [Relevancy.POORLY]: 0
   },
   comment: null
 };
@@ -484,7 +486,9 @@ export const degreeCalculation2: DegreeCalculationDto = {
   id: 2,
   degree: degree2,
   relevancies: {
-    [Relevancy.NORMAL]: 100
+    [Relevancy.STRONGLY]: 100,
+    [Relevancy.NORMAL]: 0,
+    [Relevancy.POORLY]: 0
   },
   comment: 'Still pursuing the degree'
 };
