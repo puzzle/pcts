@@ -36,6 +36,11 @@
         <input matInput type="number" [formField]="getField(row, Relevancy.POORLY)"/>
       </mat-form-field>
 
+      @if (isRowInvalid(row)) {
+        <mat-error>
+        Weights do not add up to 100
+        </mat-error>
+      }
     </ng-template>
   </app-generic-table>
 </div>
