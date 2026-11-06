@@ -10,6 +10,11 @@
     <ng-template appColumnTemplate="littleRelevant" let-row>
       <mat-checkbox [checked]="shouldBeChecked(row, Relevancy.POORLY)" (change)="updateInputFields(row, Relevancy.POORLY)" (click)="$event.stopPropagation()" id="little" [name]=row.id />
     </ng-template>
+    <ng-template appColumnTemplate="errorCol" let-row>
+      @if (isRowInvalid(row)) {
+        <mat-icon>warning</mat-icon>
+      }
+    </ng-template>
 
     <ng-template [appTypedTemplate]="table().data"/>
 
@@ -35,12 +40,6 @@
         <mat-label>littleRelevant</mat-label>
         <input matInput type="number" [formField]="getField(row, Relevancy.POORLY)"/>
       </mat-form-field>
-
-      @if (isRowInvalid(row)) {
-        <mat-error>
-        Weights do not add up to 100
-        </mat-error>
-      }
     </ng-template>
   </app-generic-table>
 </div>

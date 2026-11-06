@@ -176,7 +176,8 @@
         "MODEL_NAME_PLURAL": "Berufs- und Lebenserfahrungen"
       },
       "DEGREE": {
-        "MODEL_NAME_PLURAL": "Ausbildungen"
+        "MODEL_NAME_PLURAL": "Ausbildungen",
+        "ERROR_COL": ""
       }
     }
   },

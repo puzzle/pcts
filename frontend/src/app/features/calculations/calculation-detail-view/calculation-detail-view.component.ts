@@ -126,6 +126,7 @@ export class CalculationDetailViewComponent {
 
       return Number.parseFloat(String(points))
         .toFixed(2);
-    })
+    }),
+    GenCol.fromCalculated('errorCol', () => {})
   ];
 }
