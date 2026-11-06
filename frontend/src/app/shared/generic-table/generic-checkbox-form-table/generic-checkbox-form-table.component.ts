@@ -100,7 +100,7 @@ export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> im
     });
   }
 
-  protected readonly rows: FieldTree<RelevancyWeightsRow[]> = form(this.value as unknown as WritableSignal<DegreeCalculationModel[]>, (rows) => applyEach(rows, (row) => {
+  readonly rows: FieldTree<RelevancyWeightsRow[]> = form(this.value as unknown as WritableSignal<DegreeCalculationModel[]>, (rows) => applyEach(rows, (row) => {
     this.RELEVANCY_COLUMNS.forEach(({ relevancy }) => {
       min(row.relevancies[relevancy].weight, 0);
       max(row.relevancies[relevancy].weight, 100);
@@ -120,7 +120,7 @@ export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> im
         return entry.relevancies[column].weight;
       }
     }
-    return rows[1].relevancies[column].weight;
+    throw new Error('Field does not exist');
   }
 
   errors = input<readonly ValidationError.WithOptionalFieldTree[]>([]);
