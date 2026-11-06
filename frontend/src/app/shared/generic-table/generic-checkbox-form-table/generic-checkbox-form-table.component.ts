@@ -65,15 +65,6 @@ export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> im
     comment: new FormControl('')
   });
 
-  relevancyMap = new Map<Relevancy, {
-    enabled: boolean;
-  }>([[Relevancy.STRONGLY,
-    { enabled: true }],
-  [Relevancy.NORMAL,
-    { enabled: true }],
-  [Relevancy.POORLY,
-    { enabled: true }]]);
-
   constructor() {
     effect(() => {
       const value = this.value();
@@ -129,21 +120,6 @@ export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> im
       }
     }
     return rows[1].relevancies[column].weight;
-  }
-
-  checkedRelevancies() {
-    const checked: Relevancy[] = [];
-    for (const entry of this.relevancyMap.keys()) {
-      if (this.relevancyMap.get(entry)?.enabled) {
-        checked.push(entry);
-      }
-    }
-    return checked;
-  }
-
-  shouldBeDisabled(relevancy: Relevancy) {
-    return !this.checkedRelevancies()
-      .includes(relevancy);
   }
 
   errors = input<readonly ValidationError.WithOptionalFieldTree[]>([]);
