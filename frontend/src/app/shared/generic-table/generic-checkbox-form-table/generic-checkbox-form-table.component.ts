@@ -20,7 +20,6 @@ import { MatError, MatFormField, MatInput, MatLabel } from '@angular/material/in
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RowDetailTemplateDirective } from '../rowDetailTemplate.directive';
 import { TypedTemplateDirective } from '../type-template/typed-template.directive';
-import { addsUpToTarget } from '../../form/form-validators';
 import { RelevancyWeightsRow } from './RelevancyWeightsRow';
 import { DegreeCalculationModel } from '../../../features/calculations/degree-calculation/degree-calculation.dto';
 import {
@@ -64,8 +63,6 @@ export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> im
 
   relevancyForm = new FormGroup({
     comment: new FormControl('')
-  }, {
-    validators: addsUpToTarget(100)
   });
 
   relevancyMap = new Map<Relevancy, {
