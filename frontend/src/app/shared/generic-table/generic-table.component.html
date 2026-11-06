@@ -2,6 +2,7 @@
   <table
     mat-table
     [dataSource]="dataSource()"
+    [trackBy]="trackRow"
     class="table member-table m-0"
     matSort
     [matSortActive]="this.dataSource().sortedBy"

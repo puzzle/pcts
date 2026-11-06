@@ -1,0 +1,144 @@
+import { Component, computed, effect, input, model, output, Signal, WritableSignal } from '@angular/core';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { GenericTableComponent } from '../generic-table.component';
+import { ScopedTranslationPipe } from '../../pipes/scoped-translation-pipe';
+import { Relevancy } from '../../../features/calculations/relevancy.enum';
+import {
+  applyEach,
+  disabled,
+  FieldTree,
+  form,
+  FormField,
+  FormValueControl,
+  max,
+  min,
+  ValidationError
+} from '@angular/forms/signals';
+import { GenericTableDataSource } from '../generic-table-data-source';
+import { ColumnTemplateDirective } from '../column-template/column-template.directive';
+import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RowDetailTemplateDirective } from '../rowDetailTemplate.directive';
+import { TypedTemplateDirective } from '../type-template/typed-template.directive';
+import { RelevancyWeightsRow } from './RelevancyWeightsRow';
+import { DegreeCalculationModel } from '../../../features/calculations/degree-calculation/degree-calculation.dto';
+import {
+  InvalidTotalError
+} from '../../../features/calculations/calculation-detail-view/calculation-detail-view.component';
+import { MatIcon } from '@angular/material/icon';
+import { TranslatePipe } from '@ngx-translate/core';
+
+@Component({
+  imports: [
+    MatCheckbox,
+    GenericTableComponent,
+    ScopedTranslationPipe,
+    ColumnTemplateDirective,
+    MatInput,
+    FormsModule,
+    ReactiveFormsModule,
+    RowDetailTemplateDirective,
+    TypedTemplateDirective,
+    MatFormField,
+    MatLabel,
+    FormField,
+    MatIcon,
+    TranslatePipe
+  ],
+  selector: 'app-generic-checkbox-form-table',
+  styleUrl: './generic-checkbox-form-table.component.scss',
+  templateUrl: './generic-checkbox-form-table.component.html'
+})
+export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> implements FormValueControl<T[]> {
+  RELEVANCY_COLUMNS: { relevancy: Relevancy }[] = [{ relevancy: Relevancy.POORLY },
+    { relevancy: Relevancy.NORMAL },
+    { relevancy: Relevancy.STRONGLY }];
+
+  protected readonly Relevancy = Relevancy;
+
+  protected readonly Number = Number;
+
+  value = model<T[]>([]);
+
+  table = input.required<GenericTableDataSource<T>>();
+
+  readonly touch = output<void>();
+
+  relevancyForm = new FormGroup({
+    comment: new FormControl('')
+  });
+
+  constructor() {
+    effect(() => {
+      const value = this.value();
+
+      if (value) {
+        this.table().data = value;
+      }
+    });
+  }
+
+  shouldBeChecked(row: RelevancyWeightsRow, relevancy: Relevancy) {
+    for (const entry of this.value()) {
+      if (entry === row) {
+        return entry.relevancies[relevancy].checked;
+      }
+    }
+    return false;
+  }
+
+  updateInputFields(row: RelevancyWeightsRow, relevancy: Relevancy) {
+    const indexOfRow = this.rows()
+      .value()
+      .indexOf(row);
+    this.rows[indexOfRow].relevancies().value.update((currentValue) => {
+      const target = currentValue[relevancy];
+
+      return { ...currentValue,
+        [relevancy]: {
+          ...target,
+          checked: !target.checked
+        } };
+    });
+  }
+
+  readonly rows: FieldTree<RelevancyWeightsRow[]> = form(this.value as unknown as WritableSignal<DegreeCalculationModel[]>, (rows) => applyEach(rows, (row) => {
+    this.RELEVANCY_COLUMNS.forEach(({ relevancy }) => {
+      min(row.relevancies[relevancy].weight, 0);
+      max(row.relevancies[relevancy].weight, 100);
+
+      // a single selection is an implicit 100, the user only types weights once there is something to split
+      disabled(row.relevancies[relevancy].weight, { when: ({ value, valueOf }) => {
+        return !valueOf(row.relevancies[relevancy].checked);
+      } });
+    });
+  }));
+
+  getField(rowId: RelevancyWeightsRow, column: Relevancy): FieldTree<number, string, 'writable'> {
+    const rows = this.rows;
+    for (const entry of rows) {
+      if (entry()
+        .value() === rowId) {
+        return entry.relevancies[column].weight;
+      }
+    }
+    throw new Error('Field does not exist');
+  }
+
+  errors = input<readonly ValidationError.WithOptionalFieldTree[]>([]);
+
+
+  private readonly invalidRows: Signal<Set<T>> = computed(() => {
+    const errors = this.errors() as unknown as InvalidTotalError<T>[];
+    return new Set(errors
+      .map((error) => error?.row));
+  });
+
+  isRowInvalid(row: T): boolean {
+    console.log(this.invalidRows(), row);
+    console.log(this.invalidRows()
+      .has(row));
+    return this.invalidRows()
+      .has(row);
+  }
+}

@@ -5,10 +5,10 @@ import { CertificateCalculationModel } from './certificate-calculation/certifica
 import {
   LeadershipExperienceCalculationModel
 } from './leadership-experience-calculation/leadership-experience-calculation.model';
-import { DegreeCalculationModel } from './degree-calculation/degree-calculation.model';
 import { ExperienceCalculationModel } from './experience-calculation/experience-calculation.model';
+import { DegreeCalculationDto, DegreeCalculationModel } from './degree-calculation/degree-calculation.dto';
 
-export interface CalculationModel {
+export interface CalculationDto {
   id: number;
   member: MemberModel;
   role: RoleModel;
@@ -18,6 +18,10 @@ export interface CalculationModel {
   points: number;
   certificateCalculations: CertificateCalculationModel[];
   leadershipExperienceCalculations: LeadershipExperienceCalculationModel[];
-  degreeCalculations: DegreeCalculationModel[];
+  degreeCalculations: DegreeCalculationDto[];
   experienceCalculations: ExperienceCalculationModel[];
 }
+
+export type CalculationModel = Omit<CalculationDto, 'degreeCalculations'> & {
+  degreeCalculations: DegreeCalculationModel[];
+};
