@@ -493,6 +493,17 @@ export const degreeCalculation2: DegreeCalculationDto = {
   comment: 'Still pursuing the degree'
 };
 
+export const degreeCalculation3: DegreeCalculationDto = {
+  id: 3,
+  degree: degree1,
+  relevancies: {
+    [Relevancy.STRONGLY]: 50,
+    [Relevancy.NORMAL]: 50,
+    [Relevancy.POORLY]: 0
+  },
+  comment: 'Still pursuing the degree'
+};
+
 export const experienceCalculation1: ExperienceCalculationModel = {
   id: 1,
   experience: experience1,
