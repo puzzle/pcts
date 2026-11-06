@@ -49,6 +49,15 @@ public class CalculationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDto(newCalculation));
     }
 
+    @Operation(summary = "Get a template with all degree and Experience for the calculation")
+    @ApiResponse(responseCode = "200", description = "A single calculation template.", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = CalculationInputDto.class)) })
+    @GetMapping("template/{memberId}/{roleId}")
+    public ResponseEntity<CalculationDto> getCalculationTemplate(@PathVariable Long memberId,
+                                                                 @PathVariable Long roleId) {
+        return ResponseEntity.ok(mapper.toDto(businessService.getCalculationTemplate(memberId, roleId)));
+    }
+
     @Operation(summary = "Update a calculation")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The updated calculation data.", required = true)
     @ApiResponse(responseCode = "200", description = "Calculation updated successfully.", content = {

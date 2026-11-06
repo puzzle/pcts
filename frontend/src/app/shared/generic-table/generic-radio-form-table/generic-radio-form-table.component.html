@@ -1,8 +1,13 @@
 <div class="mt-5">
-  <h3 class="pt-3">{{"MODEL_NAME_PLURAL" | scopedTranslation}}</h3>
-  <app-generic-table [dataSource]="table()">
+  <h4 class="pt-3">{{"MODEL_NAME_PLURAL" | scopedTranslation}}</h4>
+  <app-generic-table [dataSource]="table()" [disableSorting]="true">
     <ng-template appColumnTemplate="highlyRelevant" let-row>
       <mat-radio-button [checked]="shouldBeChecked(row, Relevancy.STRONGLY)" [name]=row.id (change)="changeData(row, Relevancy.STRONGLY)"/>
+      @if (isRowInvalid(row)) {
+        <mat-error>
+          must be filled
+        </mat-error>
+      }
     </ng-template>
     <ng-template appColumnTemplate="limitedRelevant" let-row>
       <mat-radio-button [checked]="shouldBeChecked(row, Relevancy.NORMAL)" [name]=row.id (change)="changeData(row, Relevancy.NORMAL)"/>

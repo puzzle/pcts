@@ -4,7 +4,6 @@ import { Relevancy } from '../relevancy.enum';
 export interface DegreeCalculationModel {
   id: number;
   degree: DegreeModel;
-  weight: number;
-  relevancy: Relevancy;
+  relevancies: Map<Relevancy, number>;
   comment: string | null;
 }
