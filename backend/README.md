@@ -2,6 +2,12 @@
 
 The backend of this project is written in Spring Boot.
 
+## Prerequisites
+
+- JDK 25
+- Maven (or use the bundled `./mvnw` wrapper)
+- Docker, for the dev database (see below)
+
 ## Development
 
 ### Dev-Database
@@ -34,9 +40,12 @@ We use the ***spotless*** Plugin for formatting the Java code:
 - To check the code formatting run `mvn spotless:check`
 - To then format the code run `mvn spotless:apply`
 
-If you have not set up our [Git Hooks](../README.md#git-hooks) we strongly
-encourage you to do so since they also contain a check for the formatting
-whenever you commit.
+If you have not set up our git hooks yet, we strongly encourage you to do
+so since they also contain a check for the formatting whenever you commit:
+
+```shell
+git config --local core.hooksPath .githooks/
+```
 
 ### How to update the spotless configuration using Intellij IDEA
 
