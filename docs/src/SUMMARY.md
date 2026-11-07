@@ -12,6 +12,7 @@
    - [Security Headers](./development/frontend/security-headers.md)
 - [Backend](development/backend/overview.md)
    - [Authentication Annotations](./development/backend/authentication-annotations.md)
+   - [Certificate Link Checks](./development/backend/certificate-link-checks.md)
 
 ---
 # Deployment
