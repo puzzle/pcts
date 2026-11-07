@@ -13,7 +13,7 @@ We use the PCTS points to track which employees have what
 training, certificates, experience, further education and adjust the salaries
 according to that.
 
-![UI](pctsUI.png)
+![UI](screenshot.png)
 
 ## Documentation
 
