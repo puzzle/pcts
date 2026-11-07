@@ -7,16 +7,16 @@
 
 - [Overview](./development/overview.md)
 - [General Guidelines](./development/gen_guidelines.md)
-- [Frontend]()
-   - [Example]()
-- [Backend](./development/backend_overview.md)
-   - [Another example]()
+- [Frontend](development/frontend/overview.md)
+   - [Scoped Translation system](./development/frontend/scoped-translations.md)
+   - [Security Headers](./development/frontend/security-headers.md)
+- [Backend](development/backend/overview.md)
+   - [Authentication Annotations](./development/backend/authentication-annotations.md)
 
 ---
 # Deployment
 
-- [CICD Workflows]()
-- [TODO]()
+- [Release](./development/deployment/release.md)
 
 ---
 

@@ -23,18 +23,18 @@ note left of Controller: A request comes through the REST API
 
 User -> Controller: GET /resource
 
-opt
-    note over Mapper
-        Sometimes a DTO/Model needs
-        to be mapped to something else.
-    end note
-    Controller -> Mapper: Transform DTO to model
-    Mapper -> Controller: Return model
-end
 
-Controller -> Service
+note over Mapper
+    Usually a DTO/Model needs
+    to be mapped to something else.
+end note
+Controller -> Mapper: Transform DTO to model
+Mapper -> Controller: Return model
 
-Service -> ValidationService: Validate if the request is OK
+
+Controller -> BusinessService
+
+BusinessService -> ValidationService: Validate if the request is OK
 
 opt
     note over ValidationService
@@ -45,12 +45,12 @@ opt
     PersistenceService -> ValidationService
 end
 
-ValidationService -> Service: Request is OK
-Service -> PersistenceService
+ValidationService -> BusinessService: Request is OK
+BusinessService -> PersistenceService
 PersistenceService -> Repository: Save to DB
 Repository -> PersistenceService
-PersistenceService -> Service
-Service -> Controller
+PersistenceService -> BusinessService
+BusinessService -> Controller
 Controller -> Mapper: Transform model to DTO
 Mapper -> Controller: Return DTO
 

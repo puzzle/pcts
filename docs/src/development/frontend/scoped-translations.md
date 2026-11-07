@@ -1,14 +1,12 @@
-# Backend Overview
+# Scoped Translation System
 
-## Scoped Translation System
-
-### Overview
+## Overview
 
 The Scoped Translation system provides a way to manage i18n keys in reusable components. It allows you to define a prefix for a specific route or component (e.g., `MEMBER.FORM.ADD`). Inside that component's template, you can use short, relative keys (e.g., `'TITLE'`).
 
 The system automatically combines the prefix and the key (`MEMBER.FORM.ADD.TITLE`) and even provides a sophisticated fallback mechanism, allowing for highly reusable components and cleaner translation files.
 
-### How to Use
+## How to Use
 
 There are two main steps:
 
@@ -17,11 +15,11 @@ There are two main steps:
 
 ---
 
-#### 1. Providing the i18n Prefix
+### 1. Providing the i18n Prefix
 
 Use the `provideI18nPrefix` helper function in the `providers` array of your component or route definition. This is most powerful when used in routing.
 
-##### Example: `routes.ts`
+#### Example: `routes.ts`
 
 This setup uses the _same_ `MemberFormComponent` for both "add" and "edit" operations, but provides a different translation prefix for each.
 
@@ -60,11 +58,11 @@ The `provideI18nPrefix` function also supports nesting. If a parent route provid
 
 ---
 
-#### 2. Using the `scopedTranslation` Pipe
+### 2. Using the `scopedTranslation` Pipe
 
 In the component that has a prefix provided (like `MemberFormComponent`), you can now use the `scopedTranslation` pipe instead of the standard `translate` pipe.
 
-##### Example: `member-form.component.html`
+#### Example: `member-form.component.html`
 
 ```html
 <h1>{{ 'TITLE' | scopedTranslation }}</h1>
@@ -77,7 +75,7 @@ In the component that has a prefix provided (like `MemberFormComponent`), you ca
 
 ---
 
-### The Fallback Hierarchy
+## The Fallback Hierarchy
 
 The true power of this system is its automatic fallback. When you request a key, the service searches for the most specific translation first, then works its way up to the most generic.
 
@@ -90,7 +88,7 @@ If your component has the prefix `MEMBER.FORM.ADD` and you request the key `TITL
 
 This allows you to define common translations at a high level and override them only when necessary.
 
-### Full Example
+## Full Example
 
 1. **Translation File (`en.json`)**
 
@@ -134,7 +132,7 @@ This allows you to define common translations at a high level and override them 
    <button>{{ 'BUTTONS.ACTION' | scopedTranslation }}</button>
    ```
 
-#### Result
+### Result
 
 - **When a user navigates to `/members/add`:**
     - `'TITLE'` resolves to `MEMBER.FORM.ADD.TITLE` -> "Create New Member"
@@ -145,14 +143,3 @@ This allows you to define common translations at a high level and override them 
     - `'TITLE'` resolves to `MEMBER.FORM.EDIT.TITLE` -> "Edit Member"
     - `'BUTTONS.CANCEL'` resolves to `MEMBER.FORM.BUTTONS.CANCEL` -> "Cancel"
     - `'BUTTONS.ACTION'` resolves to `MEMBER.FORM.EDIT.BUTTONS.ACTION` -> "Save Changes"
-
-## Security Headers
-
-We use nginx to configure `Content-Security-Policy` and managing the nonce flow.
-
-### Nonce flow
-
-- **Injection**: A placeholder string is set within the Angular `index.html` file. At runtime nginx overwrites this placeholder with a unique request ID.
-- **Header Configuration**: Nginx sets the `script-src` and `style-src` directive in the `Content-Security-Policy` header to `nonce-${request_id}`.
-- **Inline Styles**: Angular's Critical CSS Inlining feature (used to improve initial load speed)
-  has been disabled. This is because every inline style requires the nonce, which cannot easily be applied to Angular's generated styles.
