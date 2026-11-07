@@ -23,6 +23,8 @@ See our Frontend documentation: [Frontend](frontend/README.md)
 
 See our Migration tool documentation: [Migration tool](migration/README.md)
 
+See our other documentation: [Other](http://puzzle.github.io/pcts/)
+
 ## Packages
 
 You can find the PCTS Docker images on the [Packages page of our GitHub repository](https://github.com/puzzle/pcts/packages).
