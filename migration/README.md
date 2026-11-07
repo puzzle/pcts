@@ -4,7 +4,10 @@ This service uses AI (**Spring AI**) to analyze `.ods` spreadsheet documents,
 extract structured data, and automatically map it to database entities.
 The extracted records are then sent directly to the **PCTS API** for creation.
 
----
+## Prerequisites
+
+- JDK 25
+- An OpenAI-API-compatible chat model endpoint
 
 ## Getting Started
 

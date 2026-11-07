@@ -36,6 +36,10 @@
         {
           "type": "pom",
           "path": "pom.xml"
+        },
+        {
+          "type": "generic",
+          "path": "SECURITY.md"
         }
       ]
     }
