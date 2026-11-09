@@ -50,8 +50,6 @@ import { MatIcon } from '@angular/material/icon';
 export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> implements FormValueControl<T[]> {
   protected readonly Relevancy = Relevancy;
 
-  protected readonly Number = Number;
-
   value = model<T[]>([]);
 
   table = input.required<GenericTableDataSource<T>>();
