@@ -163,7 +163,8 @@ export class CalculationDetailViewComponent {
             this.routeToCV();
           });
       } else {
-        this.calculationService.addCalculation(this.calculation())
+        this.calculationService.addCalculation(this.calculationForm()
+          .controlValue())
           .subscribe(() => {
             this.routeToCV();
           });

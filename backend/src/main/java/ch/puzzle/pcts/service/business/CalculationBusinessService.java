@@ -145,21 +145,27 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
                 : calculation
                         .getCertificateCalculations()
                         .stream()
-                        .sorted(Comparator.comparing(CalculationBusinessService::getCertificateDate))
+                        .sorted(Comparator
+                                .comparing(CalculationBusinessService::getCertificateDate,
+                                           Comparator.nullsLast(Comparator.naturalOrder())))
                         .toList();
 
         List<DegreeCalculation> sortedDegrees = calculation.getDegreeCalculations() == null ? null
                 : calculation
                         .getDegreeCalculations()
                         .stream()
-                        .sorted(Comparator.comparing(CalculationBusinessService::getDegreeDate))
+                        .sorted(Comparator
+                                .comparing(CalculationBusinessService::getDegreeDate,
+                                           Comparator.nullsLast(Comparator.naturalOrder())))
                         .toList();
 
         List<ExperienceCalculation> sortedExperiences = calculation.getExperienceCalculations() == null ? null
                 : calculation
                         .getExperienceCalculations()
                         .stream()
-                        .sorted(Comparator.comparing(CalculationBusinessService::getExperienceDate))
+                        .sorted(Comparator
+                                .comparing(CalculationBusinessService::getExperienceDate,
+                                           Comparator.nullsLast(Comparator.naturalOrder())))
                         .toList();
 
         return Calculation.Builder
