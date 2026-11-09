@@ -7,6 +7,7 @@ import { Relevancy } from '../relevancy.enum';
 import { ExperienceCalculationModel } from '../experience-calculation/experience-calculation.model';
 import { GenericTableDataSource } from '../../../shared/generic-table/generic-table-data-source';
 import { DegreeCalculationModel } from '../degree-calculation/degree-calculation.dto';
+import { calculationModel1 } from '../../../shared/test/test-data';
 
 describe('CalculationDetailViewComponent', () => {
   let component: CalculationDetailViewComponent;
@@ -17,7 +18,7 @@ describe('CalculationDetailViewComponent', () => {
   beforeEach(async() => {
     memberServiceMock = {
       getCalculationsByMemberIdAndOptionalRoleId: jest.fn()
-        .mockReturnValue(of([]))
+        .mockReturnValue(of([calculationModel1]))
     };
 
     await TestBed.configureTestingModule({

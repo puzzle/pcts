@@ -20,7 +20,7 @@ import { DegreeModel } from '../../features/degrees/degree.model';
 import { DegreeOverviewModel } from '../../features/member/detail-view/cv/degree-overview.model';
 import { MemberCvOverviewModel } from '../../features/member/member-cv-overview.model';
 import { ConfigurationModel } from '../../features/configuration/configuration.model';
-import { CalculationDto } from '../../features/calculations/calculationDto';
+import { CalculationDto, CalculationModel } from '../../features/calculations/calculationDto';
 import { RoleModel } from '../../features/roles/role.model';
 import { RolePointsModel } from '../../features/member/detail-view/RolePointsModel';
 import { Relevancy } from '../../features/calculations/relevancy.enum';
@@ -31,7 +31,7 @@ import {
 import {
   LeadershipExperienceCalculationModel
 } from '../../features/calculations/leadership-experience-calculation/leadership-experience-calculation.model';
-import { DegreeCalculationDto } from '../../features/calculations/degree-calculation/degree-calculation.dto';
+import { DegreeCalculationDto, DegreeCalculationModel } from '../../features/calculations/degree-calculation/degree-calculation.dto';
 import {
   ExperienceCalculationModel
 } from '../../features/calculations/experience-calculation/experience-calculation.model';
@@ -530,6 +530,37 @@ export const calculation1: CalculationDto = {
   leadershipExperienceCalculations: [leadershipExperienceCalculation1],
   degreeCalculations: [degreeCalculation1],
   experienceCalculations: [experienceCalculation1]
+};
+
+export const degreeCalculationModel1: DegreeCalculationModel = {
+  id: 1,
+  degree: degree1,
+  comment: 'cemment',
+  relevancies: {
+    [Relevancy.STRONGLY]: { weight: 1.0,
+      checked: true },
+    [Relevancy.NORMAL]: { weight: 0.5,
+      checked: false },
+    [Relevancy.POORLY]: { weight: 0.2,
+      checked: false },
+    [Relevancy.NONE]: { weight: 0.0,
+      checked: false }
+  }
+};
+
+export const calculationModel1: CalculationModel = {
+  id: 1,
+  member: member1,
+  role: role1,
+  state: CalculationState.ACTIVE,
+  publicationDate: new Date('2024-01-20'),
+  publicizedBy: 'Admin',
+  points: 145,
+  certificateCalculations: [certificateCalculation1],
+  leadershipExperienceCalculations: [leadershipExperienceCalculation1],
+  degreeCalculations: [degreeCalculationModel1],
+  experienceCalculations: [experienceCalculation1]
+
 };
 
 export const calculation2: CalculationDto = {
