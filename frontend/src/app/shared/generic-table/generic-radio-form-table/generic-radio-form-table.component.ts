@@ -15,10 +15,10 @@ import { MatRadioButton } from '@angular/material/radio';
 import { Relevancy } from '../../../features/calculations/relevancy.enum';
 import { FormValueControl, ValidationError } from '@angular/forms/signals';
 import { RelevancyModel } from './RelevancyModel';
-import { MatError } from '@angular/material/input';
 import {
   NoRelevancyError
 } from '../../../features/calculations/calculation-detail-view/calculation-detail-view.component';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   imports: [
@@ -26,7 +26,7 @@ import {
     GenericTableComponent,
     ScopedTranslationPipe,
     MatRadioButton,
-    MatError
+    MatIcon
   ],
   selector: 'app-generic-radio-form-table',
   styleUrl: './generic-radio-form-table.component.scss',

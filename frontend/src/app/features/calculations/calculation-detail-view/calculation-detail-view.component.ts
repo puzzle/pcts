@@ -86,7 +86,8 @@ const getExperienceColumns = (): GenCol<ExperienceCalculationModel>[] => [
       default:
         return 0;
     }
-  })
+  }),
+  GenCol.fromCalculated('errorCol', () => {})
 ];
 
 export interface NoRelevancyError<T extends RelevancyModel> extends ValidationError {
