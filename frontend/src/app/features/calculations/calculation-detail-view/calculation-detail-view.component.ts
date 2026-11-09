@@ -25,10 +25,9 @@ export interface InvalidTotalError<T extends RelevancyWeightsRow> extends Valida
 export function validateWeightsAddingUpTo100<T extends RelevancyWeightsRow>(path: SchemaPath<T[]>) {
   validate(path, ({ value }) => value()
     .reduce<InvalidTotalError<T>[]>((errors, row) => {
-      const total =
-        row.relevancies[Relevancy.STRONGLY].weight +
-        row.relevancies[Relevancy.NORMAL].weight +
-        row.relevancies[Relevancy.POORLY].weight;
+      const total = Object.values(row.relevancies)
+        .filter((rel) => rel.checked)
+        .reduce((sum, rel) => sum + rel.weight, 0);
 
       if (total !== 100) {
         errors.push({

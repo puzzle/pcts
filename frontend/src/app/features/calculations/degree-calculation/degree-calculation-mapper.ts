@@ -15,7 +15,9 @@ export function toDegreeCalculationDto(model: DegreeCalculationModel): DegreeCal
   const mappedRelevancies = Object.entries(model.relevancies)
     .reduce((acc, [key,
       data]) => {
-      acc[key as Relevancy] = data.weight;
+      if (data.checked) {
+        acc[key as Relevancy] = data.weight;
+      }
       return acc;
     }, {} as Partial<Record<Relevancy, number>>);
 
