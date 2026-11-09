@@ -129,9 +129,6 @@ export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> im
   });
 
   isRowInvalid(row: T): boolean {
-    console.log(this.invalidRows(), row);
-    console.log(this.invalidRows()
-      .has(row));
     return this.invalidRows()
       .has(row);
   }
