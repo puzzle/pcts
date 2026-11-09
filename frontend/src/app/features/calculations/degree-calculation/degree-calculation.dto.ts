@@ -8,7 +8,9 @@ export interface DegreeCalculationDto {
   comment: string | null;
 }
 
-export type DegreeCalculationModel = Omit<DegreeCalculationDto, 'relevancies'> & {
+export type DegreeCalculationModel = Omit<DegreeCalculationDto, 'relevancies' | 'comment'> & {
   relevancies: Record<Relevancy, { weight: number;
     checked: boolean; }>;
+  comment: string;
+
 };

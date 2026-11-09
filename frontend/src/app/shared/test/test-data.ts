@@ -479,7 +479,7 @@ export const degreeCalculation1: DegreeCalculationDto = {
     [Relevancy.NORMAL]: 0,
     [Relevancy.POORLY]: 0
   },
-  comment: null
+  comment: ''
 };
 
 export const degreeCalculation2: DegreeCalculationDto = {

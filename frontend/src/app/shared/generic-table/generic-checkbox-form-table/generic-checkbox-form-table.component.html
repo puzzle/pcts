@@ -24,28 +24,28 @@
         <div class="pe-4 flex-2 comment-indent">
           <mat-form-field appearance="outline" class="w-100 mb-0">
             <mat-label>{{ "COMMENT" | scopedTranslation}}</mat-label>
-            <input matInput [formControl]="relevancyForm.controls.comment"/>
+            <input matInput [formField]="getField(row).comment"/>
           </mat-form-field>
         </div>
 
         <div class="px-2 flex-1">
           <mat-form-field appearance="outline" class="w-75 mb-0">
             <mat-label>{{ "HIGHLY_RELEVANT" | scopedTranslation}}</mat-label>
-            <input matInput type="number" [formField]="getField(row, Relevancy.STRONGLY)"/>
+            <input matInput type="number" [formField]="getRelevancyField(row, Relevancy.STRONGLY)"/>
           </mat-form-field>
         </div>
 
         <div class="px-2 flex-1">
           <mat-form-field appearance="outline" class="w-75 mb-0">
             <mat-label>{{ "LIMITED_RELEVANT" | scopedTranslation}}</mat-label>
-            <input matInput type="number" [formField]="getField(row, Relevancy.NORMAL)"/>
+            <input matInput type="number" [formField]="getRelevancyField(row, Relevancy.NORMAL)"/>
           </mat-form-field>
         </div>
 
         <div class="px-2 flex-1">
           <mat-form-field appearance="outline" class="w-75 mb-0">
             <mat-label>{{ "LITTLE_RELEVANT" | scopedTranslation}}</mat-label>
-            <input matInput type="number" [formField]="getField(row, Relevancy.POORLY)"/>
+            <input matInput type="number" [formField]="getRelevancyField(row, Relevancy.POORLY)"/>
           </mat-form-field>
         </div>
 

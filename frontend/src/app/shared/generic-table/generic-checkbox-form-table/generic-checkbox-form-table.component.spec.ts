@@ -84,7 +84,7 @@ describe('GenericCheckboxFormTableComponent', () => {
     component.value.set([row]);
     fixture.detectChanges();
 
-    const field = component.getField(row, Relevancy.POORLY);
+    const field = component.getRelevancyField(row, Relevancy.POORLY);
 
     expect(field)
       .toBeDefined();
@@ -101,7 +101,7 @@ describe('GenericCheckboxFormTableComponent', () => {
 
     const unknownRow = toDegreeCalculationModel(degreeCalculation2);
 
-    expect(() => component.getField(unknownRow, Relevancy.POORLY))
+    expect(() => component.getRelevancyField(unknownRow, Relevancy.POORLY))
       .toThrow();
   });
 

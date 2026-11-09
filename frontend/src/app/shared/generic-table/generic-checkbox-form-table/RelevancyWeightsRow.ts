@@ -5,5 +5,6 @@ export interface RelevancyType { weight: number;
 
 export interface RelevancyWeightsRow {
   id: number | null;
+  comment: string;
   relevancies: Record<Relevancy, RelevancyType>;
 }

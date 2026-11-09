@@ -54,6 +54,8 @@ export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> im
 
   table = input.required<GenericTableDataSource<T>>();
 
+  errors = input<readonly ValidationError.WithOptionalFieldTree[]>([]);
+
   readonly touch = output<void>();
 
   relevancyForm = new FormGroup({
@@ -108,7 +110,7 @@ export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> im
       });
   }));
 
-  getField(rowId: RelevancyWeightsRow, column: Relevancy): FieldTree<number, string, 'writable'> {
+  getRelevancyField(rowId: RelevancyWeightsRow, column: Relevancy) {
     const rows = this.rows;
     for (const entry of rows) {
       if (entry()
@@ -119,8 +121,16 @@ export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> im
     throw new Error('Field does not exist');
   }
 
-  errors = input<readonly ValidationError.WithOptionalFieldTree[]>([]);
-
+  getField(rowId: RelevancyWeightsRow): FieldTree<RelevancyWeightsRow, number, 'writable'> {
+    const rows = this.rows;
+    for (const entry of rows) {
+      if (entry()
+        .value() === rowId) {
+        return entry;
+      }
+    }
+    throw new Error('Field does not exist');
+  }
 
   private readonly invalidRows: Signal<Set<T>> = computed(() => {
     const errors = this.errors() as unknown as InvalidTotalError<T>[];

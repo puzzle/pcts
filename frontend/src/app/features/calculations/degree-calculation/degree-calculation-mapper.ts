@@ -6,7 +6,7 @@ export function toDegreeCalculationModel(dto: DegreeCalculationDto): DegreeCalcu
   return {
     id: dto.id,
     degree: dto.degree,
-    comment: dto.comment,
+    comment: dto.comment ?? '',
     relevancies: fillMissingWithZero(dto.relevancies)
   };
 }
