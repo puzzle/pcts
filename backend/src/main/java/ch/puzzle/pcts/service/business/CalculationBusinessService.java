@@ -13,7 +13,6 @@ import ch.puzzle.pcts.service.validation.CalculationValidationService;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -25,37 +24,19 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
     private final LeadershipExperienceCalculationBusinessService leadershipExperienceCalculationBusinessService;
     private final DegreeCalculationBusinessService degreeCalculationBusinessService;
     private final CalculationPersistenceService calculationPersistenceService;
-    private final MemberBusinessService memberBusinessService;
-    private final DegreeBusinessService degreeBusinessService;
-    private final CertificateBusinessService certificateBusinessService;
-    private final LeadershipExperienceBusinessService leadershipExperienceBusinessService;
-    private final ExperienceBusinessService experienceBusinessService;
-    private final RoleBusinessService roleBusinessService;
 
     public CalculationBusinessService(CalculationValidationService validationService,
                                       CalculationPersistenceService persistenceService,
                                       ExperienceCalculationBusinessService experienceCalculationBusinessService,
                                       CertificateCalculationBusinessService certificateCalculationBusinessService,
                                       LeadershipExperienceCalculationBusinessService leadershipExperienceCalculationBusinessService,
-                                      DegreeCalculationBusinessService degreeCalculationBusinessService,
-                                      MemberBusinessService memberBusinessService,
-                                      DegreeBusinessService degreeBusinessService,
-                                      CertificateBusinessService certificateBusinessService,
-                                      LeadershipExperienceBusinessService leadershipExperienceBusinessService,
-                                      ExperienceBusinessService experienceBusinessService,
-                                      RoleBusinessService roleBusinessService) {
+                                      DegreeCalculationBusinessService degreeCalculationBusinessService) {
         super(validationService, persistenceService);
         this.experienceCalculationBusinessService = experienceCalculationBusinessService;
         this.certificateCalculationBusinessService = certificateCalculationBusinessService;
         this.degreeCalculationBusinessService = degreeCalculationBusinessService;
         this.leadershipExperienceCalculationBusinessService = leadershipExperienceCalculationBusinessService;
         this.calculationPersistenceService = persistenceService;
-        this.memberBusinessService = memberBusinessService;
-        this.degreeBusinessService = degreeBusinessService;
-        this.certificateBusinessService = certificateBusinessService;
-        this.leadershipExperienceBusinessService = leadershipExperienceBusinessService;
-        this.experienceBusinessService = experienceBusinessService;
-        this.roleBusinessService = roleBusinessService;
     }
 
     @Override
@@ -155,65 +136,6 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
         });
     }
 
-    public Calculation getCalculationTemplate(Long memberId, Long roleId) {
-        Member member = memberBusinessService.getById(memberId);
-        Role role = roleBusinessService.getById(roleId);
-
-        Calculation calculation = getCalculationTemplateForMemberAndRole(member, role);
-
-        calculation.setPoints(getPointsOfCalculation(calculation));
-
-        return calculation;
-    }
-
-    private Calculation getCalculationTemplateForMemberAndRole(Member member, Role role) {
-        List<DegreeCalculation> degreeCalculations = degreeBusinessService
-                .findAllByMember(member)
-                .stream()
-                .map(degree -> DegreeCalculation.Builder.builder().withDegree(degree).build())
-                .toList();
-
-        List<ExperienceCalculation> experienceCalculations = experienceBusinessService
-                .findAllByMember(member)
-                .stream()
-                .map(experience -> ExperienceCalculation.Builder.builder().withExperience(experience).build())
-                .toList();
-
-        List<LeadershipExperienceCalculation> leadershipCalculations = new ArrayList<>();
-
-        if (role.getIsManagement()) {
-            leadershipCalculations = leadershipExperienceBusinessService
-                    .findAllByMember(member)
-                    .stream()
-                    .map(leadershipExperience -> LeadershipExperienceCalculation.Builder
-                            .builder()
-                            .withLeadershipExperience(leadershipExperience)
-                            .build())
-                    .toList();
-        }
-
-        List<CertificateCalculation> certificateCalculations = certificateBusinessService
-                .findAllByMember(member)
-                .stream()
-                .map(certificate -> CertificateCalculation.Builder.builder().withCertificate(certificate).build())
-                .toList();
-
-        return Calculation.Builder
-                .builder()
-                .withId(null)
-                .withMember(member)
-                .withRole(role)
-                .withState(CalculationState.DRAFT)
-                .withPublicationDate(null)
-                .withPublicizedBy(null)
-                .withPoints(BigDecimal.ZERO)
-                .withCertificateCalculations(certificateCalculations)
-                .withLeadershipExperienceCalculations(leadershipCalculations)
-                .withDegreeCalculations(degreeCalculations)
-                .withExperienceCalculations(experienceCalculations)
-                .build();
-    }
-
     public static Calculation sortCalculationsByEndDate(Calculation calculation) {
         if (calculation == null) {
             return null;
@@ -221,26 +143,27 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
 
         List<CertificateCalculation> sortedCertificates = calculation.getCertificateCalculations() == null ? null
                 : calculation
-                .getCertificateCalculations()
-                .stream()
-                .sorted(Comparator.comparing(CalculationBusinessService::getCertificateDate))
-                .toList();
+                        .getCertificateCalculations()
+                        .stream()
+                        .sorted(Comparator.comparing(CalculationBusinessService::getCertificateDate))
+                        .toList();
 
         List<DegreeCalculation> sortedDegrees = calculation.getDegreeCalculations() == null ? null
                 : calculation
-                .getDegreeCalculations()
-                .stream()
-                .sorted(Comparator.comparing(CalculationBusinessService::getDegreeDate))
-                .toList();
+                        .getDegreeCalculations()
+                        .stream()
+                        .sorted(Comparator.comparing(CalculationBusinessService::getDegreeDate))
+                        .toList();
 
         List<ExperienceCalculation> sortedExperiences = calculation.getExperienceCalculations() == null ? null
                 : calculation
-                .getExperienceCalculations()
-                .stream()
-                .sorted(Comparator.comparing(CalculationBusinessService::getExperienceDate))
-                .toList();
+                        .getExperienceCalculations()
+                        .stream()
+                        .sorted(Comparator.comparing(CalculationBusinessService::getExperienceDate))
+                        .toList();
 
-        return Calculation.Builder.builder()
+        return Calculation.Builder
+                .builder()
                 .withId(calculation.getId())
                 .withMember(calculation.getMember())
                 .withRole(calculation.getRole())
