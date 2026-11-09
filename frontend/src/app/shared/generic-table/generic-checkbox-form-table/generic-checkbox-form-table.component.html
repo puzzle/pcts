@@ -18,28 +18,40 @@
 
     <ng-template [appTypedTemplate]="table().data"/>
 
-    <ng-template
-      [appExpandableRow]="table()"
-      let-row
-    >
-      <mat-form-field>
-        <mat-label>{{ "COMMENT" | scopedTranslation}}</mat-label>
-        <input matInput [formControl]="relevancyForm.controls.comment"/>
-      </mat-form-field>
+    <ng-template [appExpandableRow]="table()" let-row>
+      <div class="d-flex w-100 py-3 align-items-start text-start">
 
-      <mat-form-field>
-        <mat-label>{{ "HIGHLY_RELEVANT" | scopedTranslation}}</mat-label>
-        <input matInput type="number" [formField]="getField(row, Relevancy.STRONGLY)"/>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>{{ "LIMITED_RELEVANT" | scopedTranslation}}</mat-label>
-        <input matInput type="number" [formField]="getField(row, Relevancy.NORMAL)"/>
-      </mat-form-field>
+        <div class="pe-4 flex-2 comment-indent">
+          <mat-form-field appearance="outline" class="w-100 mb-0">
+            <mat-label>{{ "COMMENT" | scopedTranslation}}</mat-label>
+            <input matInput [formControl]="relevancyForm.controls.comment"/>
+          </mat-form-field>
+        </div>
 
-      <mat-form-field>
-        <mat-label>{{ "LITTLE_RELEVANT" | scopedTranslation}}</mat-label>
-        <input matInput type="number" [formField]="getField(row, Relevancy.POORLY)"/>
-      </mat-form-field>
+        <div class="px-2 flex-1">
+          <mat-form-field appearance="outline" class="w-75 mb-0">
+            <mat-label>{{ "HIGHLY_RELEVANT" | scopedTranslation}}</mat-label>
+            <input matInput type="number" [formField]="getField(row, Relevancy.STRONGLY)"/>
+          </mat-form-field>
+        </div>
+
+        <div class="px-2 flex-1">
+          <mat-form-field appearance="outline" class="w-75 mb-0">
+            <mat-label>{{ "LIMITED_RELEVANT" | scopedTranslation}}</mat-label>
+            <input matInput type="number" [formField]="getField(row, Relevancy.NORMAL)"/>
+          </mat-form-field>
+        </div>
+
+        <div class="px-2 flex-1">
+          <mat-form-field appearance="outline" class="w-75 mb-0">
+            <mat-label>{{ "LITTLE_RELEVANT" | scopedTranslation}}</mat-label>
+            <input matInput type="number" [formField]="getField(row, Relevancy.POORLY)"/>
+          </mat-form-field>
+        </div>
+
+        <div class="flex-1"></div>
+
+      </div>
     </ng-template>
   </app-generic-table>
 </div>
