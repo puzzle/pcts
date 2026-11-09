@@ -15,6 +15,8 @@ describe('DegreeCalculationMapper', () => {
         [Relevancy.NORMAL]: { weight: 0,
           checked: false },
         [Relevancy.POORLY]: { weight: 0,
+          checked: false },
+        [Relevancy.NONE]: { weight: 0,
           checked: false }
       }
     };
@@ -34,18 +36,20 @@ describe('DegreeCalculationMapper', () => {
         [Relevancy.NORMAL]: { weight: 0,
           checked: false },
         [Relevancy.POORLY]: { weight: 0,
+          checked: false },
+        [Relevancy.NONE]: { weight: 0,
           checked: false }
       }
     };
 
     const expectedResult = {
       ...degreeCalculation1,
-      relevancies: new Map([[Relevancy.STRONGLY,
-        100],
-      [Relevancy.NORMAL,
-        0],
-      [Relevancy.POORLY,
-        0]])
+      relevancies: {
+        [Relevancy.STRONGLY]: 100,
+        [Relevancy.NORMAL]: 0,
+        [Relevancy.POORLY]: 0,
+        [Relevancy.NONE]: 0
+      }
     };
     expect(toDegreeCalculationDto(input))
       .toEqual(expectedResult);

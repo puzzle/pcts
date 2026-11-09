@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CalculationDetailViewComponent } from './calculation-detail-view.component';
 import { MemberService } from '../../member/member.service';
-import { calculation1 } from '../../../shared/test/test-data';
 import { of } from 'rxjs';
 import { provideTranslateService } from '@ngx-translate/core';
 import { Relevancy } from '../relevancy.enum';
@@ -17,7 +16,7 @@ describe('CalculationDetailViewComponent', () => {
   beforeEach(async() => {
     memberServiceMock = {
       getCalculationsByMemberIdAndOptionalRoleId: jest.fn()
-        .mockReturnValue(of([calculation1]))
+        .mockReturnValue(of([]))
     };
 
     await TestBed.configureTestingModule({
