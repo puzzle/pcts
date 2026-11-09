@@ -8,7 +8,7 @@ describe('DegreeCalculationMapper', () => {
     const expectedModel: DegreeCalculationModel = {
       id: 1,
       degree: degree1,
-      comment: null,
+      comment: '',
       relevancies: {
         [Relevancy.STRONGLY]: { weight: 100,
           checked: true },
@@ -29,7 +29,7 @@ describe('DegreeCalculationMapper', () => {
     const input: DegreeCalculationModel = {
       id: 1,
       degree: degree1,
-      comment: null,
+      comment: '',
       relevancies: {
         [Relevancy.STRONGLY]: { weight: 100,
           checked: true },
@@ -45,10 +45,7 @@ describe('DegreeCalculationMapper', () => {
     const expectedResult = {
       ...degreeCalculation1,
       relevancies: {
-        [Relevancy.STRONGLY]: 100,
-        [Relevancy.NORMAL]: 0,
-        [Relevancy.POORLY]: 0,
-        [Relevancy.NONE]: 0
+        [Relevancy.STRONGLY]: 100
       }
     };
     expect(toDegreeCalculationDto(input))
