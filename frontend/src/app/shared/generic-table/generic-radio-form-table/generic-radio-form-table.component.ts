@@ -67,14 +67,18 @@ export class GenericRadioFormTableComponent<T extends RelevancyModel> implements
   }
 
   changeData(row: T, relevancy: Relevancy) {
-    this.value.update((experienceCalculation) => {
-      const updatedCalculation = experienceCalculation.filter((entry) => entry.id !== row.id);
-      updatedCalculation.push({ ...row,
-        relevancy });
-      return updatedCalculation;
-    });
+    this.value.update((experienceCalculation) => experienceCalculation.map((entry) => {
+      return entry === row ? { ...entry,
+        relevancy } : entry;
+    }));
 
     this.touch.emit();
+  }
+
+  getIndexOfRow(row: T): string {
+    return this.value()
+      .indexOf(row)
+      .toString();
   }
 
   isRowInvalid(row: T): boolean {
