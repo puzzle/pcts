@@ -173,7 +173,8 @@
       "LIMITED_RELEVANT": "Bedingt relevant",
       "LITTLE_RELEVANT": "Wenig relevant",
       "EXPERIENCE": {
-        "MODEL_NAME_PLURAL": "Berufs- und Lebenserfahrungen"
+        "MODEL_NAME_PLURAL": "Berufs- und Lebenserfahrungen",
+        "ERROR_COL": ""
       },
       "ALL_CALCULATIONS": "Alle Berechnungen",
       "FROM": "vom"
