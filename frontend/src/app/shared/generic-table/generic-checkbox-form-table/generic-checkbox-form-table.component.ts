@@ -26,7 +26,6 @@ import {
   InvalidTotalError
 } from '../../../features/calculations/calculation-detail-view/calculation-detail-view.component';
 import { MatIcon } from '@angular/material/icon';
-import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   imports: [
@@ -42,18 +41,13 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatFormField,
     MatLabel,
     FormField,
-    MatIcon,
-    TranslatePipe
+    MatIcon
   ],
   selector: 'app-generic-checkbox-form-table',
   styleUrl: './generic-checkbox-form-table.component.scss',
   templateUrl: './generic-checkbox-form-table.component.html'
 })
 export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> implements FormValueControl<T[]> {
-  RELEVANCY_COLUMNS: { relevancy: Relevancy }[] = [{ relevancy: Relevancy.POORLY },
-    { relevancy: Relevancy.NORMAL },
-    { relevancy: Relevancy.STRONGLY }];
-
   protected readonly Relevancy = Relevancy;
 
   protected readonly Number = Number;
@@ -103,15 +97,17 @@ export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> im
   }
 
   readonly rows: FieldTree<RelevancyWeightsRow[]> = form(this.value as unknown as WritableSignal<DegreeCalculationModel[]>, (rows) => applyEach(rows, (row) => {
-    this.RELEVANCY_COLUMNS.forEach(({ relevancy }) => {
-      min(row.relevancies[relevancy].weight, 0);
-      max(row.relevancies[relevancy].weight, 100);
+    Object.values(Relevancy)
+      .forEach((relevancy) => {
+        min(row.relevancies[relevancy].weight, 0);
+        max(row.relevancies[relevancy].weight, 100);
 
-      // a single selection is an implicit 100, the user only types weights once there is something to split
-      disabled(row.relevancies[relevancy].weight, { when: ({ value, valueOf }) => {
-        return !valueOf(row.relevancies[relevancy].checked);
-      } });
-    });
+        disabled(row.relevancies[relevancy].weight, {
+          when: ({ valueOf }) => {
+            return !valueOf(row.relevancies[relevancy].checked);
+          }
+        });
+      });
   }));
 
   getField(rowId: RelevancyWeightsRow, column: Relevancy): FieldTree<number, string, 'writable'> {
