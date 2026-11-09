@@ -20,7 +20,7 @@ import { DegreeModel } from '../../features/degrees/degree.model';
 import { DegreeOverviewModel } from '../../features/member/detail-view/cv/degree-overview.model';
 import { MemberCvOverviewModel } from '../../features/member/member-cv-overview.model';
 import { ConfigurationModel } from '../../features/configuration/configuration.model';
-import { CalculationModel } from '../../features/calculations/calculation.model';
+import { CalculationDto, CalculationModel } from '../../features/calculations/calculationDto';
 import { RoleModel } from '../../features/roles/role.model';
 import { RolePointsModel } from '../../features/member/detail-view/RolePointsModel';
 import { Relevancy } from '../../features/calculations/relevancy.enum';
@@ -31,7 +31,7 @@ import {
 import {
   LeadershipExperienceCalculationModel
 } from '../../features/calculations/leadership-experience-calculation/leadership-experience-calculation.model';
-import { DegreeCalculationModel } from '../../features/calculations/degree-calculation/degree-calculation.model';
+import { DegreeCalculationDto, DegreeCalculationModel } from '../../features/calculations/degree-calculation/degree-calculation.dto';
 import {
   ExperienceCalculationModel
 } from '../../features/calculations/experience-calculation/experience-calculation.model';
@@ -471,19 +471,36 @@ export const leadershipExperienceCalculation2: LeadershipExperienceCalculationMo
   leadershipExperience: leadershipExperience2
 };
 
-export const degreeCalculation1: DegreeCalculationModel = {
+export const degreeCalculation1: DegreeCalculationDto = {
   id: 1,
   degree: degree1,
-  weight: 1,
-  relevancy: Relevancy.STRONGLY,
-  comment: null
+  relevancies: {
+    [Relevancy.STRONGLY]: 100,
+    [Relevancy.NORMAL]: 0,
+    [Relevancy.POORLY]: 0
+  },
+  comment: ''
 };
 
-export const degreeCalculation2: DegreeCalculationModel = {
+export const degreeCalculation2: DegreeCalculationDto = {
   id: 2,
   degree: degree2,
-  weight: 0.7,
-  relevancy: Relevancy.NORMAL,
+  relevancies: {
+    [Relevancy.STRONGLY]: 100,
+    [Relevancy.NORMAL]: 0,
+    [Relevancy.POORLY]: 0
+  },
+  comment: 'Still pursuing the degree'
+};
+
+export const degreeCalculation3: DegreeCalculationDto = {
+  id: 3,
+  degree: degree1,
+  relevancies: {
+    [Relevancy.STRONGLY]: 50,
+    [Relevancy.NORMAL]: 50,
+    [Relevancy.POORLY]: 0
+  },
   comment: 'Still pursuing the degree'
 };
 
@@ -501,7 +518,7 @@ export const experienceCalculation2: ExperienceCalculationModel = {
   comment: 'Leadership engagement relevant but mixed focus'
 };
 
-export const calculation1: CalculationModel = {
+export const calculation1: CalculationDto = {
   id: 1,
   member: member1,
   role: role1,
@@ -515,7 +532,38 @@ export const calculation1: CalculationModel = {
   experienceCalculations: [experienceCalculation1]
 };
 
-export const calculation2: CalculationModel = {
+export const degreeCalculationModel1: DegreeCalculationModel = {
+  id: 1,
+  degree: degree1,
+  comment: 'cemment',
+  relevancies: {
+    [Relevancy.STRONGLY]: { weight: 1,
+      checked: true },
+    [Relevancy.NORMAL]: { weight: 0.5,
+      checked: false },
+    [Relevancy.POORLY]: { weight: 0.2,
+      checked: false },
+    [Relevancy.NONE]: { weight: 0,
+      checked: false }
+  }
+};
+
+export const calculationModel1: CalculationModel = {
+  id: 1,
+  member: member1,
+  role: role1,
+  state: CalculationState.ACTIVE,
+  publicationDate: new Date('2024-01-20'),
+  publicizedBy: 'Admin',
+  points: 145,
+  certificateCalculations: [certificateCalculation1],
+  leadershipExperienceCalculations: [leadershipExperienceCalculation1],
+  degreeCalculations: [degreeCalculationModel1],
+  experienceCalculations: [experienceCalculation1]
+
+};
+
+export const calculation2: CalculationDto = {
   id: 2,
   member: member2,
   role: role2,
@@ -529,7 +577,7 @@ export const calculation2: CalculationModel = {
   experienceCalculations: [experienceCalculation2]
 };
 
-export const calculation3: CalculationModel = {
+export const calculation3: CalculationDto = {
   id: 3,
   member: member3,
   role: role3,

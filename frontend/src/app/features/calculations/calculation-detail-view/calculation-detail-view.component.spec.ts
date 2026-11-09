@@ -1,12 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CalculationDetailViewComponent } from './calculation-detail-view.component';
 import { MemberService } from '../../member/member.service';
-import { calculation1 } from '../../../shared/test/test-data';
 import { of } from 'rxjs';
 import { provideTranslateService } from '@ngx-translate/core';
 import { Relevancy } from '../relevancy.enum';
 import { ExperienceCalculationModel } from '../experience-calculation/experience-calculation.model';
 import { GenericTableDataSource } from '../../../shared/generic-table/generic-table-data-source';
+import { DegreeCalculationModel } from '../degree-calculation/degree-calculation.dto';
+import { calculationModel1 } from '../../../shared/test/test-data';
 
 describe('CalculationDetailViewComponent', () => {
   let component: CalculationDetailViewComponent;
@@ -17,7 +18,7 @@ describe('CalculationDetailViewComponent', () => {
   beforeEach(async() => {
     memberServiceMock = {
       getCalculationsByMemberIdAndOptionalRoleId: jest.fn()
-        .mockReturnValue(of([calculation1]))
+        .mockReturnValue(of([calculationModel1]))
     };
 
     await TestBed.configureTestingModule({
@@ -125,6 +126,120 @@ describe('CalculationDetailViewComponent', () => {
         .toBeInstanceOf(GenericTableDataSource);
       expect(tableData.columnDefs)
         .toEqual(component.getColumns);
+    });
+  });
+
+  describe('Degree Calculations Initialization', () => {
+    it('should call memberService to fetch degree calculations on init for id 2', () => {
+      expect(memberServiceMock.getCalculationsByMemberIdAndOptionalRoleId)
+        .toHaveBeenCalledWith(2);
+    });
+  });
+
+  describe('Degree Table Columns Definition', () => {
+    let mockDegreeCalc: DegreeCalculationModel;
+
+    beforeEach(() => {
+      mockDegreeCalc = {
+        degree: {
+          name: 'Master of Science',
+          type: {
+            highlyRelevantPoints: 100,
+            limitedRelevantPoints: 50,
+            littleRelevantPoints: 20
+          }
+        },
+        relevancies: {
+          [Relevancy.STRONGLY]: { weight: 0 },
+          [Relevancy.NORMAL]: { weight: 0 },
+          [Relevancy.POORLY]: { weight: 0 }
+        }
+      } as DegreeCalculationModel;
+    });
+
+    it('should have correct amount of columns in degree table', () => {
+      const columns = component.getDegreeCalculationColumns();
+      expect(columns.length)
+        .toEqual(6);
+    });
+
+    it('should correctly map standard properties in degree columns via getValue', () => {
+      const columns = component.getDegreeCalculationColumns();
+      const nameCol = columns[0];
+      const highlyCol = columns[1];
+      const limitedCol = columns[2];
+      const littleCol = columns[3];
+
+      expect(nameCol.getValue(mockDegreeCalc))
+        .toBe('Master of Science');
+      expect(highlyCol.getValue(mockDegreeCalc))
+        .toBeUndefined();
+      expect(limitedCol.getValue(mockDegreeCalc))
+        .toBeUndefined();
+      expect(littleCol.getValue(mockDegreeCalc))
+        .toBeUndefined();
+    });
+
+    it('should calculate degree points correctly with mixed weights', () => {
+      mockDegreeCalc.relevancies = {
+        [Relevancy.STRONGLY]: { weight: 50 },
+        [Relevancy.NORMAL]: { weight: 30 },
+        [Relevancy.POORLY]: { weight: 20 }
+      } as any;
+
+      const pointsCol = component.getDegreeCalculationColumns()[4];
+
+      expect(pointsCol.getValue(mockDegreeCalc))
+        .toEqual('69.00');
+    });
+
+    it('should calculate degree points correctly with 100% in one relevancy', () => {
+      mockDegreeCalc.relevancies = {
+        [Relevancy.STRONGLY]: { weight: 0 },
+        [Relevancy.NORMAL]: { weight: 100 },
+        [Relevancy.POORLY]: { weight: 0 }
+      } as any;
+
+      const pointsCol = component.getDegreeCalculationColumns()[4];
+
+      expect(pointsCol.getValue(mockDegreeCalc))
+        .toEqual('50.00');
+    });
+
+    it('should handle missing degree type points gracefully and return 0.00', () => {
+      mockDegreeCalc.degree.type = {} as any;
+      mockDegreeCalc.relevancies = {
+        [Relevancy.STRONGLY]: { weight: 50 },
+        [Relevancy.NORMAL]: { weight: 50 },
+        [Relevancy.POORLY]: { weight: 0 }
+      } as any;
+
+      const pointsCol = component.getDegreeCalculationColumns()[4];
+
+      expect(pointsCol.getValue(mockDegreeCalc))
+        .toEqual('0.00');
+    });
+
+    it('should handle missing relevancies gracefully and return 0.00', () => {
+      mockDegreeCalc.relevancies = undefined as any;
+
+      const pointsCol = component.getDegreeCalculationColumns()[4];
+
+      expect(pointsCol.getValue(mockDegreeCalc))
+        .toEqual('0.00');
+    });
+  });
+
+  describe('Degree Table Data configuration', () => {
+    it('should configure GenericTableDataSource with detail view link for degree table', () => {
+      const tableData = component.getDegreeCalculationTableData();
+
+      expect(tableData)
+        .toBeInstanceOf(GenericTableDataSource);
+      expect(tableData.shouldLink)
+        .toBe(true);
+      expect(tableData.columnDefs.length)
+        .toEqual(6);
     });
   });
 });

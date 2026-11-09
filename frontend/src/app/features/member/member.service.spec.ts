@@ -13,7 +13,7 @@ import {
   rolePointsList1
 } from '../../shared/test/test-data';
 import { provideHttpClient } from '@angular/common/http';
-import { CalculationModel } from '../calculations/calculation.model';
+import { CalculationDto } from '../calculations/calculationDto';
 
 describe('MemberService', () => {
   let service: MemberService;
@@ -146,7 +146,7 @@ describe('MemberService', () => {
   });
   describe('should get calculations by member id and optional role id', () => {
     const mockCalcs = [calculation1,
-      calculation2] as CalculationModel[];
+      calculation2] as CalculationDto[];
 
     it('should call httpClient.get with the correct URL and no roleId', () => {
       const memberId = 5;

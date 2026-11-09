@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { MemberCalculationTableComponent } from './member-calculation-table.component';
 import { MemberService } from '../../member.service';
-import { CalculationModel } from '../../../calculations/calculation.model';
+import { CalculationDto } from '../../../calculations/calculationDto';
 import { ActivatedRoute, Router } from '@angular/router';
 import Mocked = jest.Mocked;
 import { calculation1 } from '../../../../shared/test/test-data';
@@ -59,10 +59,10 @@ describe('MemberCalculationTableComponent (Jest)', () => {
   });
 
   it('should set calculations and calculationTable.data', async() => {
-    const calcData: CalculationModel[] = [{ id: 1,
+    const calcData: CalculationDto[] = [{ id: 1,
       points: 1 },
     { id: 2,
-      points: 2 }] as CalculationModel[];
+      points: 2 }] as CalculationDto[];
 
     memberServiceMock.getCalculationsByMemberIdAndOptionalRoleId?.mockReturnValue(of(calcData));
 
@@ -78,7 +78,7 @@ describe('MemberCalculationTableComponent (Jest)', () => {
   // Make the test async
   it('should update when roleId changes', async() => {
     const newData = [{ id: 99,
-      points: 20 } as CalculationModel];
+      points: 20 } as CalculationDto];
 
     memberServiceMock.getCalculationsByMemberIdAndOptionalRoleId?.mockReturnValue(of([]));
     fixture.componentRef.setInput('memberId', 5);

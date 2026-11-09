@@ -1,0 +1,57 @@
+<div class="mt-5">
+  <h3 class="pt-3">{{"MODEL_NAME_PLURAL" | scopedTranslation}}</h3>
+  <app-generic-table [dataSource]="table()" idAttr="id">
+    <ng-template appColumnTemplate="highlyRelevant" let-row>
+      <mat-checkbox [checked]="shouldBeChecked(row, Relevancy.STRONGLY)" (change)="updateInputFields(row, Relevancy.STRONGLY)" (click)="$event.stopPropagation()" id="highly" [name]=row.id (keydown)="$event.stopPropagation()"/>
+    </ng-template>
+    <ng-template appColumnTemplate="limitedRelevant" let-row>
+      <mat-checkbox [checked]="shouldBeChecked(row, Relevancy.NORMAL)" (change)="updateInputFields(row, Relevancy.NORMAL)" (click)="$event.stopPropagation()" id="limited" [name]=row.id (keydown)="$event.stopPropagation()"/>
+    </ng-template>
+    <ng-template appColumnTemplate="littleRelevant" let-row>
+      <mat-checkbox [checked]="shouldBeChecked(row, Relevancy.POORLY)" (change)="updateInputFields(row, Relevancy.POORLY)" (click)="$event.stopPropagation()" id="little" [name]=row.id (keydown)="$event.stopPropagation()"/>
+    </ng-template>
+    <ng-template appColumnTemplate="errorCol" let-row>
+      @if (isRowInvalid(row)) {
+        <mat-icon>warning</mat-icon>
+      }
+    </ng-template>
+
+    <ng-template [appTypedTemplate]="table().data"/>
+
+    <ng-template [appExpandableRow]="table()" let-row>
+      <div class="d-flex w-100 py-3 align-items-start text-start">
+
+        <div class="pe-4 flex-2 comment-indent">
+          <mat-form-field appearance="outline" class="w-100 mb-0">
+            <mat-label>{{ "COMMENT" | scopedTranslation}}</mat-label>
+            <input matInput [formField]="getField(row).comment"/>
+          </mat-form-field>
+        </div>
+
+        <div class="px-2 flex-1">
+          <mat-form-field appearance="outline" class="w-75 mb-0">
+            <mat-label>{{ "HIGHLY_RELEVANT" | scopedTranslation}}</mat-label>
+            <input matInput type="number" [formField]="getRelevancyField(row, Relevancy.STRONGLY)"/>
+          </mat-form-field>
+        </div>
+
+        <div class="px-2 flex-1">
+          <mat-form-field appearance="outline" class="w-75 mb-0">
+            <mat-label>{{ "LIMITED_RELEVANT" | scopedTranslation}}</mat-label>
+            <input matInput type="number" [formField]="getRelevancyField(row, Relevancy.NORMAL)"/>
+          </mat-form-field>
+        </div>
+
+        <div class="px-2 flex-1">
+          <mat-form-field appearance="outline" class="w-75 mb-0">
+            <mat-label>{{ "LITTLE_RELEVANT" | scopedTranslation}}</mat-label>
+            <input matInput type="number" [formField]="getRelevancyField(row, Relevancy.POORLY)"/>
+          </mat-form-field>
+        </div>
+
+        <div class="flex-1"></div>
+
+      </div>
+    </ng-template>
+  </app-generic-table>
+</div>

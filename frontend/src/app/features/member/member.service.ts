@@ -5,8 +5,9 @@ import { map, Observable } from 'rxjs';
 import { MemberDto } from './dto/member.dto';
 import { DateTime } from 'luxon';
 import { MemberCvOverviewModel } from './member-cv-overview.model';
-import { CalculationModel } from '../calculations/calculation.model';
 import { RolePointsModel } from './detail-view/RolePointsModel';
+import { toCalculationModel } from '../calculations/calculation-mapper';
+import { CalculationModel, CalculationDto } from '../calculations/calculationDto';
 
 
 @Injectable({
@@ -42,9 +43,11 @@ export class MemberService {
     if (roleId) {
       roleIdParam = roleIdParam.set('roleId', roleId);
     }
-    return this.httpClient.get<CalculationModel[]>(`${this.API_URL}/${memberId}/calculations`, {
+
+    return this.httpClient.get<CalculationDto[]>(`${this.API_URL}/${memberId}/calculations`, {
       params: roleIdParam
-    });
+    })
+      .pipe(map((dtos: CalculationDto[]) => dtos.map((dto) => toCalculationModel(dto))));
   }
 
   getMyself() {
