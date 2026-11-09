@@ -537,13 +537,13 @@ export const degreeCalculationModel1: DegreeCalculationModel = {
   degree: degree1,
   comment: 'cemment',
   relevancies: {
-    [Relevancy.STRONGLY]: { weight: 1.0,
+    [Relevancy.STRONGLY]: { weight: 1,
       checked: true },
     [Relevancy.NORMAL]: { weight: 0.5,
       checked: false },
     [Relevancy.POORLY]: { weight: 0.2,
       checked: false },
-    [Relevancy.NONE]: { weight: 0.0,
+    [Relevancy.NONE]: { weight: 0,
       checked: false }
   }
 };
