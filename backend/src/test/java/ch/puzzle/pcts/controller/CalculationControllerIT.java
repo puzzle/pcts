@@ -1,6 +1,6 @@
 package ch.puzzle.pcts.controller;
 
-import static ch.puzzle.pcts.util.TestData.CALCULATION_1_ID;
+import static ch.puzzle.pcts.util.TestData.*;
 import static ch.puzzle.pcts.util.TestDataDTOs.CALCULATION_DTO_1;
 import static ch.puzzle.pcts.util.TestDataDTOs.CALCULATION_INPUT_DTO_1;
 import static ch.puzzle.pcts.util.TestDataModels.CALCULATION_1;
@@ -15,6 +15,7 @@ import ch.puzzle.pcts.dto.calculation.CalculationInputDto;
 import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.service.business.CalculationBusinessService;
+import ch.puzzle.pcts.service.business.CalculationTemplateBusinessService;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,6 +32,8 @@ class CalculationControllerIT extends ControllerITBase {
 
     @MockitoBean
     private CalculationBusinessService businessService;
+    @MockitoBean
+    private CalculationTemplateBusinessService templateBusinessService;
     @MockitoBean
     private CalculationMapper mapper;
     @Autowired
@@ -93,5 +96,20 @@ class CalculationControllerIT extends ControllerITBase {
         verify(mapper, times(1)).fromDto(any(CalculationInputDto.class));
         verify(businessService, times(1)).update(eq(CALCULATION_1_ID), any(Calculation.class));
         verify(mapper, times(1)).toDto(any(Calculation.class));
+    }
+
+    @DisplayName("Should successfully return a Calculation Template for the Role and Member ID")
+    @Test
+    void shouldGetCalculationTemplate() throws Exception {
+        when(mapper.toDto(any(Calculation.class))).thenReturn(CALCULATION_DTO_1);
+        when(templateBusinessService.getCalculationTemplate(MEMBER_1_ID, ROLE_1_ID)).thenReturn(CALCULATION_1);
+
+        mvc
+                .perform(get(BASEURL + "/template/{memberId}/{roleId}", MEMBER_1_ID, ROLE_1_ID).with(csrf()).with(adminJwt()))
+                .andExpect(status().isOk())
+                .andExpect(JsonDtoMatcher.matchesDto(CALCULATION_DTO_1, "$"));
+
+        verify(mapper, times(1)).toDto(any(Calculation.class));
+        verify(templateBusinessService, times(1)).getCalculationTemplate(MEMBER_1_ID, ROLE_1_ID);
     }
 }
