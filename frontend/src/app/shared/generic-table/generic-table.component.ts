@@ -123,6 +123,13 @@ export class GenericTableComponent<T extends object, K extends keyof T = keyof T
       this.dataSource().sortingDataAccessor = this.createSortingAccessor(this.columns());
       this.dataSource().sort = this.sort();
     });
+
+    effect(() => {
+      if (this.disableSorting()) {
+        this.dataSource()
+          .withSortedBy('');
+      }
+    });
   }
 
   toggleButton() {
