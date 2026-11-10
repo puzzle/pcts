@@ -29,8 +29,10 @@ export function toDegreeCalculationDto(model: DegreeCalculationModel): DegreeCal
   };
 }
 
-function fillMissingWithZero(input: Partial<Record<Relevancy, number>>) {
+function fillMissingWithZero(input: Partial<Record<Relevancy, number>> | null) {
   const result: Record<Relevancy, RelevancyType> = {} as Record<Relevancy, RelevancyType>;
+
+  input = input ?? {};
 
   for (const relevancy of Object.values(Relevancy)) {
     result[relevancy] = {
