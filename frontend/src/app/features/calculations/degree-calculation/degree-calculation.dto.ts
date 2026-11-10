@@ -4,7 +4,7 @@ import { DegreeModel } from '../../degrees/degree.model';
 export interface DegreeCalculationDto {
   id: number | null;
   degree: DegreeModel;
-  relevancies: Partial<Record<Relevancy, number>>;
+  relevancies: Partial<Record<Relevancy, number>> | null;
   comment: string | null;
 }
 

@@ -6,8 +6,8 @@ import { ScopedTranslationPipe } from '../../../../shared/pipes/scoped-translati
 import { rxResource } from '@angular/core/rxjs-interop';
 import { getCalculationTable } from '../cv/member-detail-cv-table-definition';
 import { Router } from '@angular/router';
-import { CalculationModel } from '../../../calculations/calculation.model';
 import { MatButton } from '@angular/material/button';
+import { CalculationModel } from '../../../calculations/calculationDto';
 
 @Component({
   selector: 'app-member-calculation-table',

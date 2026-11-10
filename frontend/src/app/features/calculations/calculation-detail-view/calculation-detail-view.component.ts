@@ -13,6 +13,23 @@ import {
 } from '../../../shared/generic-table/generic-checkbox-form-table/generic-checkbox-form-table.component';
 import { DegreeCalculationModel } from '../degree-calculation/degree-calculation.dto';
 import { RelevancyWeightsRow } from '../../../shared/generic-table/generic-checkbox-form-table/RelevancyWeightsRow';
+import { CertificateTypeModel } from '../../certificates/certificate-type/certificate-type.model';
+import {
+  LeadershipExperienceTypeModel
+} from '../../leadership-experiences/leadership-experiences-type/leadership-experience-type.model';
+import { RelevancyModel } from '../../../shared/generic-table/generic-radio-form-table/RelevancyModel';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { GenericTableComponent } from '../../../shared/generic-table/generic-table.component';
+import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
+import { MatFormField } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/autocomplete';
+import { DatePipe } from '@angular/common';
+import { CalculationService } from '../calculation.service';
+import { Router } from '@angular/router';
+import { CalculationModel } from '../calculationDto';
+import { CalculationState } from '../calculation-state.enum';
 
 
 export interface InvalidTotalError<T extends RelevancyWeightsRow> extends ValidationError {
@@ -24,6 +41,7 @@ export interface InvalidTotalError<T extends RelevancyWeightsRow> extends Valida
 export function validateWeightsAddingUpTo100<T extends RelevancyWeightsRow>(path: SchemaPath<T[]>) {
   validate(path, ({ value }) => value()
     .reduce<InvalidTotalError<T>[]>((errors, row) => {
+      console.log(row);
       const total = Object.values(row.relevancies)
         .filter((rel) => rel.checked)
         .reduce((sum, rel) => sum + rel.weight, 0);
@@ -39,21 +57,6 @@ export function validateWeightsAddingUpTo100<T extends RelevancyWeightsRow>(path
       return errors;
     }, []));
 }
-import { form, FormField } from '@angular/forms/signals';
-import { MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
-import { Router, RouterLink } from '@angular/router';
-import { CalculationModel } from '../calculation.model';
-import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
-import { CalculationService } from '../calculation.service';
-import { GenericTableComponent } from '../../../shared/generic-table/generic-table.component';
-import { CertificateTypeModel } from '../../certificates/certificate-type/certificate-type.model';
-import {
-  LeadershipExperienceTypeModel
-} from '../../leadership-experiences/leadership-experiences-type/leadership-experience-type.model';
-import { MatFormField, MatLabel } from '@angular/material/input';
-import { MatOption, MatSelect } from '@angular/material/select';
-import { CalculationState } from '../calculation-state.enum';
 
 const getCertificateTable = () => new GenericTableDataSource(getCertificateColumns())
   .withLimit(10);
@@ -108,8 +111,6 @@ export function validateRelevancySelected<T extends RelevancyModel>(path: Schema
     ReactiveFormsModule,
     TranslationScopeDirective,
     FormField,
-    GenericCheckboxFormTableComponent
-    FormField,
     MatButton,
     MatIcon,
     GenericTableComponent,
@@ -117,7 +118,8 @@ export function validateRelevancySelected<T extends RelevancyModel>(path: Schema
     MatFormField,
     MatSelect,
     MatOption,
-    DatePipe
+    DatePipe,
+    GenericCheckboxFormTableComponent
   ],
   selector: 'app-calculation-detail-view',
   templateUrl: './calculation-detail-view.component.html',
@@ -133,7 +135,10 @@ export class CalculationDetailViewComponent {
 
   calculationWritableSignal = linkedSignal(() => this.calculation());
 
-  calculationForm = form(this.calculationWritableSignal, (calculation) => validateRelevancySelected(calculation.experienceCalculations));
+  calculationForm = form(this.calculationWritableSignal, (calculation) => {
+    validateRelevancySelected(calculation.experienceCalculations);
+    validateWeightsAddingUpTo100(calculation.degreeCalculations);
+  });
 
   certificateTable = getCertificateTable();
 
@@ -184,29 +189,6 @@ export class CalculationDetailViewComponent {
   isAdd() {
     return !this.calculation().id;
   }
-  degreeCalculationForm = form(this.degreeCalculations, (degreeCalculation) => validateWeightsAddingUpTo100(degreeCalculation));
-
-  getColumns = [
-    GenCol.fromCalculated('name', (e: ExperienceCalculationModel) => e.experience.name),
-    GenCol.fromCalculated('highlyRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.highlyRelevantPoints),
-    GenCol.fromCalculated('limitedRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.limitedRelevantPoints),
-    GenCol.fromCalculated('littleRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.littleRelevantPoints),
-    GenCol.fromCalculated('points', (e: ExperienceCalculationModel) => {
-      switch (e.relevancy) {
-        case Relevancy.STRONGLY:
-          return e.experience.experienceType.highlyRelevantPoints;
-        case Relevancy.NORMAL:
-          return e.experience.experienceType.limitedRelevantPoints;
-        case Relevancy.POORLY:
-          return e.experience.experienceType.littleRelevantPoints;
-        default:
-          return 0;
-      }
-    })
-  ];
-
-  getTableData = () => new GenericTableDataSource(this.getColumns)
-    .withLimit(10);
 
   getDegreeCalculationTableData = () => new GenericTableDataSource<DegreeCalculationModel>(this.getDegreeCalculationColumns())
     .withDetailViewLink();
