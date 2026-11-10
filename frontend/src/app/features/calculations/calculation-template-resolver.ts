@@ -1,7 +1,7 @@
 import { ResolveFn } from '@angular/router';
 import { inject } from '@angular/core';
 import { CalculationService } from './calculation.service';
-import { CalculationModel } from './calculation.model';
+import { CalculationModel } from './calculationDto';
 
 export const calculationTemplateResolver: ResolveFn<CalculationModel> = (route, state) => {
   const calculationService = inject(CalculationService);
