@@ -1,5 +1,17 @@
-<div class="hint-box"
-     [class.hint]="state() === 'Hint'"
-     [class.warning]="state() === 'Warning'">
-  {{ text() }}
-</div>
+<section
+  class="hint-box"
+  [class.hint]="state() === 'Hint'"
+  [class.warning]="state() === 'Warning'">
+
+  <div class="hint-box-header">
+    <span class="hint-icon" aria-hidden="true">
+      {{ state() === 'Warning' ? '!' : 'i' }}
+    </span>
+
+    <strong>
+      {{ ('HINT_BOX.' + state()) | scopedTranslation }}
+    </strong>
+  </div>
+
+  <p>{{ text() | scopedTranslation }}</p>
+</section>

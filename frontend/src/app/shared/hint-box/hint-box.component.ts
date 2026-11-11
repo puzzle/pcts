@@ -1,12 +1,14 @@
 import { Component, input } from '@angular/core';
+import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
 
 export type HintBoxState = 'Hint' | 'Warning';
 
 @Component({
-  imports: [],
   selector: 'app-hint-box',
-  styleUrl: './hint-box.component.scss',
-  templateUrl: './hint-box.component.html'
+  standalone: true,
+  imports: [ScopedTranslationPipe],
+  templateUrl: './hint-box.component.html',
+  styleUrl: './hint-box.component.scss'
 })
 export class HintBoxComponent {
   text = input.required<string>();
