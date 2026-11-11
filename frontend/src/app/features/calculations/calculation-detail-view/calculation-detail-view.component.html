@@ -56,8 +56,11 @@
     </section>
   } @else {
     <app-hint-box
-      [text]="'Leadership experiences are only considered for management roles.'"
+      [text]="'HINT.TEXT' | scopedTranslation"
       [state]="'Hint'"/>
+    <app-hint-box
+      [text]="'WARNING.TEXT' | scopedTranslation"
+      [state]="'Warning'" />
   }
 </div>
 
