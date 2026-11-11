@@ -54,6 +54,10 @@
 
       <app-generic-table [dataSource]="leadershipExperienceTable" [disableSorting]="true"/>
     </section>
+  } @else {
+    <app-hint-box
+      [text]="'Leadership experiences are only considered for management roles.'"
+      [state]="'Hint'"/>
   }
 </div>
 
