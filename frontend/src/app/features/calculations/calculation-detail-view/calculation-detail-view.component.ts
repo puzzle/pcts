@@ -30,6 +30,7 @@ import { CalculationService } from '../calculation.service';
 import { Router } from '@angular/router';
 import { CalculationModel } from '../calculationDto';
 import { CalculationState } from '../calculation-state.enum';
+import { HintBoxComponent } from '../../../shared/hint-box/hint-box.component';
 
 
 export interface InvalidTotalError<T extends RelevancyWeightsRow> extends ValidationError {
@@ -119,7 +120,8 @@ export function validateRelevancySelected<T extends RelevancyModel>(path: Schema
     MatSelect,
     MatOption,
     DatePipe,
-    GenericCheckboxFormTableComponent
+    GenericCheckboxFormTableComponent,
+    HintBoxComponent
   ],
   selector: 'app-calculation-detail-view',
   templateUrl: './calculation-detail-view.component.html',
