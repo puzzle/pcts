@@ -172,6 +172,11 @@
       "HIGHLY_RELEVANT": "Stark relevant",
       "LIMITED_RELEVANT": "Bedingt relevant",
       "LITTLE_RELEVANT": "Wenig relevant",
+      "HINT_BOX": {
+        "HINT": "Hinweis",
+        "WARNING": "Warnung"
+      },
+
       "EXPERIENCE": {
         "MODEL_NAME_PLURAL": "Berufs- und Lebenserfahrungen",
         "ERROR_COL": ""
