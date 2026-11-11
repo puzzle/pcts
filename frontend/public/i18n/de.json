@@ -176,7 +176,16 @@
         "HINT": "Hinweis",
         "WARNING": "Warnung"
       },
-
+      "MEMBER": {
+        "CALCULATION": {
+          "WARNING": {
+            "TEXT": "Führungserfahrungen können für diese Rolle nicht angerechnet werden."
+          },
+          "HINT": {
+            "TEXT": "Führungserfahrungen werden bei Nicht-Management-Rollen nicht berücksichtigt."
+          }
+        }
+      },
       "EXPERIENCE": {
         "MODEL_NAME_PLURAL": "Berufs- und Lebenserfahrungen",
         "ERROR_COL": ""
