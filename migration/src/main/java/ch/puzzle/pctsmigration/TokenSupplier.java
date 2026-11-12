@@ -27,7 +27,7 @@ public class TokenSupplier {
                 .stream()
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-                        "Could not resolve clientId from application.properties"));
+                                                               "Could not resolve clientId from application.properties"));
 
         OAuth2AuthorizeRequest request = OAuth2AuthorizeRequest
                 .withClientRegistrationId(registrationId)
