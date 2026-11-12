@@ -1,6 +1,5 @@
 package ch.puzzle.pctsmigration;
 
-import java.util.List;
 import org.springframework.boot.security.oauth2.client.autoconfigure.OAuth2ClientProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
@@ -22,20 +21,16 @@ public class TokenSupplier {
     }
 
     public String get() {
-        List<OAuth2ClientProperties.Registration> registrationList = oAuth2ClientProperties
+        String registrationId = oAuth2ClientProperties
                 .getRegistration()
-                .values()
+                .keySet()
                 .stream()
-                .toList();
-        String clientId = registrationList.getFirst().getClientId();
-
-        if (clientId == null) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-                                              "Could not resolve clientId from application.properties");
-        }
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                        "Could not resolve clientId from application.properties"));
 
         OAuth2AuthorizeRequest request = OAuth2AuthorizeRequest
-                .withClientRegistrationId(clientId)
+                .withClientRegistrationId(registrationId)
                 .principal("migration-service")
                 .build();
 
