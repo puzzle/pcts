@@ -1,8 +1,8 @@
 import { Relevancy } from '../../relevancy.enum';
 
 export interface DegreeCalculationInputDto {
-  id: number;
+  id: number | null;
   degreeId: number;
-  relevancies: Map<Relevancy, number>;
+  relevancies: Record<Relevancy, number>;
   comment: string | null;
 }
