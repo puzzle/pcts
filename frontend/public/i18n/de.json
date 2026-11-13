@@ -176,16 +176,16 @@
         "MODEL_NAME_PLURAL": "Berufs- und Lebenserfahrungen",
         "ERROR_COL": ""
       },
+      "DEGREE": {
+        "MODEL_NAME_PLURAL": "Ausbildungen",
+        "ERROR_COL": ""
+      },
       "ALL_CALCULATIONS": "Alle Berechnungen",
       "FROM": "vom"
     },
     "FORM": {
       "SAVE_FORM": "Speichern",
       "CANCEL": "Abbrechen"
-    },
-    "DEGREE": {
-      "MODEL_NAME_PLURAL": "Ausbildungen",
-      "ERROR_COL": ""
     }
   },
   "ERROR": {
