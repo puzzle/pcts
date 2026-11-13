@@ -49,7 +49,7 @@ public class ExperienceCalculation implements CalculationChildInterface, Model {
         this.calculation = builder.calculation;
         this.experience = builder.experience;
         this.relevancy = builder.relevancy;
-        this.comment = builder.comment;
+        this.comment = trim(builder.comment);
     }
 
     public ExperienceCalculation() {
