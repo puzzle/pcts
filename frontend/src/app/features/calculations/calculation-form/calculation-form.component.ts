@@ -1,6 +1,6 @@
 import { Component, effect, input, linkedSignal } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { form, FormField, SchemaPath, validate, ValidationError } from '@angular/forms/signals';
+import { disabled, form, FormField, SchemaPath, validate, ValidationError } from '@angular/forms/signals';
 
 import { GenericRadioFormTableComponent } from '../../../shared/generic-table/generic-radio-form-table/generic-radio-form-table.component';
 import { GenericCheckboxFormTableComponent } from '../../../shared/generic-table/generic-checkbox-form-table/generic-checkbox-form-table.component';
@@ -90,11 +90,16 @@ const getExperienceColumns = (): GenCol<ExperienceCalculationModel>[] => [
   styleUrl: './calculation-form.component.scss'
 })
 export class CalculationFormComponent {
+  isReadOnly = input<boolean>();
+
   calculation = input.required<CalculationModel>();
 
   calculationWritableSignal = linkedSignal(() => this.calculation());
 
   calculationForm = form(this.calculationWritableSignal, (calc) => {
+    disabled(calc, { when: () => !!this.isReadOnly() });
+    disabled(calc.experienceCalculations, { when: () => !!this.isReadOnly() });
+
     validateRelevancySelected(calc.experienceCalculations);
     validateWeightsAddingUpTo100(calc.degreeCalculations);
   });
