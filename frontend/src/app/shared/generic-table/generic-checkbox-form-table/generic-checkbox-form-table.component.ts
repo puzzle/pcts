@@ -5,7 +5,7 @@ import { ScopedTranslationPipe } from '../../pipes/scoped-translation-pipe';
 import { Relevancy } from '../../../features/calculations/relevancy.enum';
 import {
   applyEach,
-  disabled,
+  disabled as disableField,
   FieldTree,
   form,
   FormField,
@@ -54,6 +54,8 @@ export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> im
 
   errors = input<readonly ValidationError.WithOptionalFieldTree[]>([]);
 
+  disabled = input<boolean>(false);
+
   readonly touch = output<void>();
 
   relevancyForm = new FormGroup({
@@ -100,9 +102,9 @@ export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> im
         min(row.relevancies[relevancy].weight, 0);
         max(row.relevancies[relevancy].weight, 100);
 
-        disabled(row.relevancies[relevancy].weight, {
+        disableField(row.relevancies[relevancy].weight, {
           when: ({ valueOf }) => {
-            return !valueOf(row.relevancies[relevancy].checked);
+            return this.disabled() || !valueOf(row.relevancies[relevancy].checked);
           }
         });
       });
