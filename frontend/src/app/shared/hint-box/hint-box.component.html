@@ -1,11 +1,11 @@
 <section
   class="hint-box"
-  [class.hint]="state() === 'Hint'"
-  [class.warning]="state() === 'Warning'">
+  [class.hint]="state() === HintBoxState.HINT"
+  [class.warning]="state() === HintBoxState.WARNING">
 
   <div class="hint-box-header">
     <span class="hint-icon" aria-hidden="true">
-      {{ state() === 'Warning' ? '!' : 'i' }}
+      {{ state() === HintBoxState.HINT ? '!' : 'i' }}
     </span>
 
     <strong>
