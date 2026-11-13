@@ -8,6 +8,7 @@ import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-
 import { CalculationService } from '../calculation.service';
 import { CalculationModel } from '../calculationDto';
 import { CalculationFormComponent } from '../calculation-form/calculation-form.component';
+import { SubmitButtonComponent } from '../../../shared/submit-button/submit-button.component';
 
 @Component({
   selector: 'app-calculation-detail-view',
@@ -17,7 +18,8 @@ import { CalculationFormComponent } from '../calculation-form/calculation-form.c
     MatButton,
     MatIcon,
     ScopedTranslationPipe,
-    DatePipe
+    DatePipe,
+    SubmitButtonComponent
   ],
   templateUrl: './calculation-detail-view.component.html',
   styleUrl: 'calculation-detail-view.component.scss'

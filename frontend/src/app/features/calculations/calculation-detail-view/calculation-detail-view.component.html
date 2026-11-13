@@ -20,21 +20,9 @@
   [calculation]="calculation()" />
 
 <footer class="bottom">
-  <button
+  <app-submit-button
     [disabled]="calcForm.calculationForm().invalid()"
-    type="button"
-    (click)="saveForm(calcForm)"
-    matButton="filled">
-    @if (isAdd()) {
-      {{"FORM.ADD.BUTTONS.ACTION" | scopedTranslation}}
-    } @else {
-      {{"FORM.EDIT.BUTTONS.ACTION" | scopedTranslation}}
-    }
-  </button>
-  <button
-    (click)="routeToCV()"
-    type="button"
-    matButton>
-    {{"FORM.EDIT.BUTTONS.CANCEL" | scopedTranslation}}
-  </button>
+    [isAdd]="isAdd()"
+    (saveClicked)="saveForm(calcForm)"
+    (cancelClicked)="routeToCV()" />
 </footer>
