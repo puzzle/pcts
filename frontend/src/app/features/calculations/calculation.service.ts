@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { CalculationDto, CalculationModel } from './calculationDto';
-import { toCalculationDto, toCalculationModel } from './calculation-mapper';
+import { toCalculationInputDto, toCalculationModel } from './calculation-mapper';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class CalculationService {
   }
 
   updateCalculation(id: number, calculation: CalculationModel): Observable<CalculationModel> {
-    return this.httpClient.put<CalculationModel>(`${this.API_URL}/${id}`, toCalculationDto(calculation));
+    return this.httpClient.put<CalculationModel>(`${this.API_URL}/${id}`, toCalculationInputDto(calculation));
   }
 
   getTemplate(memberId: number, roleId: number): Observable<CalculationModel> {
@@ -26,6 +26,6 @@ export class CalculationService {
   }
 
   addCalculation(calculation: CalculationModel): Observable<CalculationModel> {
-    return this.httpClient.post<CalculationModel>(`${this.API_URL}`, toCalculationDto(calculation));
+    return this.httpClient.post<CalculationModel>(`${this.API_URL}`, toCalculationInputDto(calculation));
   }
 }
