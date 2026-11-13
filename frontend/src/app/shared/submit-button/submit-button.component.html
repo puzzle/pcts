@@ -1,0 +1,17 @@
+<button
+  [disabled]="disabled()"
+  type="button"
+  (click)="saveClicked.emit()"
+  matButton="filled">
+  @if (isAdd()) {
+    {{"FORM.ADD.BUTTONS.ACTION" | scopedTranslation}}
+  } @else {
+    {{"FORM.EDIT.BUTTONS.ACTION" | scopedTranslation}}
+  }
+</button>
+<button
+  (click)="cancelClicked.emit()"
+  type="button"
+  matButton>
+  {{"FORM.EDIT.BUTTONS.CANCEL" | scopedTranslation}}
+</button>
