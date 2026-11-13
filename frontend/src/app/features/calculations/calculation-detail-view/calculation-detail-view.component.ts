@@ -9,6 +9,7 @@ import { CalculationService } from '../calculation.service';
 import { CalculationModel } from '../calculationDto';
 import { CalculationFormComponent } from '../calculation-form/calculation-form.component';
 import { SubmitButtonComponent } from '../../../shared/submit-button/submit-button.component';
+import { CalculationState } from '../calculation-state.enum';
 
 @Component({
   selector: 'app-calculation-detail-view',
@@ -58,6 +59,14 @@ export class CalculationDetailViewComponent {
     } else {
       calcForm()
         .markAsTouched();
+    }
+  }
+
+  isArchived(): boolean {
+    if (this.calculation().state == CalculationState.ARCHIVED) {
+      return false;
+    } else {
+      return true;
     }
   }
 }
