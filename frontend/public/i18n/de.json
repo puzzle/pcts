@@ -67,7 +67,8 @@
     "MODEL_NAME": "Rolle"
   },
   "CALCULATION": {
-    "POINTS": "Punkte"
+    "POINTS": "Punkte",
+    "MODEL_NAME": "PCTS-Berechnung"
   },
 
   "FORM": {
