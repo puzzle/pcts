@@ -99,6 +99,7 @@ export class CalculationFormComponent {
   calculationForm = form(this.calculationWritableSignal, (calc) => {
     disabled(calc, { when: () => !!this.isReadOnly() });
     disabled(calc.experienceCalculations, { when: () => !!this.isReadOnly() });
+    disabled(calc.degreeCalculations, { when: () => !!this.isReadOnly() });
 
     validateRelevancySelected(calc.experienceCalculations);
     validateWeightsAddingUpTo100(calc.degreeCalculations);
