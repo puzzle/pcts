@@ -17,6 +17,7 @@
 
 <app-calculation-form
   #calcForm
+  [isReadOnly]="!isArchived()"
   [calculation]="calculation()" />
 
 @if (isArchived()) {
