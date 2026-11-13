@@ -2,13 +2,13 @@
   <h3 class="pt-3">{{"MODEL_NAME_PLURAL" | scopedTranslation}}</h3>
   <app-generic-table [dataSource]="table()" idAttr="id">
     <ng-template appColumnTemplate="highlyRelevant" let-row>
-      <mat-checkbox [checked]="shouldBeChecked(row, Relevancy.STRONGLY)" (change)="updateInputFields(row, Relevancy.STRONGLY)" (click)="$event.stopPropagation()" id="highly" [name]=row.id (keydown)="$event.stopPropagation()"/>
+      <mat-checkbox [disabled]="disabled()" [checked]="shouldBeChecked(row, Relevancy.STRONGLY)" (change)="updateInputFields(row, Relevancy.STRONGLY)" (click)="$event.stopPropagation()" id="highly" [name]=row.id (keydown)="$event.stopPropagation()"/>
     </ng-template>
     <ng-template appColumnTemplate="limitedRelevant" let-row>
-      <mat-checkbox [checked]="shouldBeChecked(row, Relevancy.NORMAL)" (change)="updateInputFields(row, Relevancy.NORMAL)" (click)="$event.stopPropagation()" id="limited" [name]=row.id (keydown)="$event.stopPropagation()"/>
+      <mat-checkbox [disabled]="disabled()" [checked]="shouldBeChecked(row, Relevancy.NORMAL)" (change)="updateInputFields(row, Relevancy.NORMAL)" (click)="$event.stopPropagation()" id="limited" [name]=row.id (keydown)="$event.stopPropagation()"/>
     </ng-template>
     <ng-template appColumnTemplate="littleRelevant" let-row>
-      <mat-checkbox [checked]="shouldBeChecked(row, Relevancy.POORLY)" (change)="updateInputFields(row, Relevancy.POORLY)" (click)="$event.stopPropagation()" id="little" [name]=row.id (keydown)="$event.stopPropagation()"/>
+      <mat-checkbox [disabled]="disabled()" [checked]="shouldBeChecked(row, Relevancy.POORLY)" (change)="updateInputFields(row, Relevancy.POORLY)" (click)="$event.stopPropagation()" id="little" [name]=row.id (keydown)="$event.stopPropagation()"/>
     </ng-template>
     <ng-template appColumnTemplate="errorCol" let-row>
       @if (isRowInvalid(row)) {
