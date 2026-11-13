@@ -1,37 +1,41 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CalculationDetailViewComponent } from './calculation-detail-view.component';
-import { MemberService } from '../../member/member.service';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { provideTranslateService } from '@ngx-translate/core';
 import { Relevancy } from '../relevancy.enum';
 import { ExperienceCalculationModel } from '../experience-calculation/experience-calculation.model';
 import { GenericTableDataSource } from '../../../shared/generic-table/generic-table-data-source';
 import { DegreeCalculationModel } from '../degree-calculation/degree-calculation.dto';
 import { calculationModel1 } from '../../../shared/test/test-data';
+import { CalculationService } from '../calculation.service';
+import { CalculationModel } from '../calculationDto';
 
 describe('CalculationDetailViewComponent', () => {
   let component: CalculationDetailViewComponent;
   let fixture: ComponentFixture<CalculationDetailViewComponent>;
 
-  let memberServiceMock: Partial<MemberService>;
+  let calculationServiceMock: Partial<CalculationService>;
 
   beforeEach(async() => {
-    memberServiceMock = {
-      getCalculationsByMemberIdAndOptionalRoleId: jest.fn()
-        .mockReturnValue(of([calculationModel1]))
+    calculationServiceMock = {
+      getCalculationById: jest.fn()
+        .mockReturnValue(of(calculationModel1)),
+      getTemplate: jest.fn()
+        .mockReturnValue(of(Observable<CalculationModel>))
     };
 
     await TestBed.configureTestingModule({
       imports: [CalculationDetailViewComponent],
       providers: [{
-        provide: MemberService,
-        useValue: memberServiceMock
+        provide: CalculationService,
+        useValue: calculationServiceMock
       },
       provideTranslateService()]
     })
       .compileComponents();
 
     fixture = TestBed.createComponent(CalculationDetailViewComponent);
+    fixture.componentRef.setInput('calculation', calculationModel1);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
@@ -41,15 +45,10 @@ describe('CalculationDetailViewComponent', () => {
       .toBeTruthy();
   });
 
-  it('should call memberService to fetch calculations on init', () => {
-    expect(memberServiceMock.getCalculationsByMemberIdAndOptionalRoleId)
-      .toHaveBeenCalledWith(1);
-  });
-
   it('should have correct amount of columns in table', () => {
-    const columns = component.getColumns;
+    const columns = component.getDegreeCalculationColumns();
     expect(columns.length)
-      .toEqual(5);
+      .toEqual(6);
   });
 
   describe('Table Columns Definition', () => {
@@ -70,10 +69,10 @@ describe('CalculationDetailViewComponent', () => {
     });
 
     it('should correctly map standard properties in columns via getValue', () => {
-      const nameCol = component.getColumns[0];
-      const highlyCol = component.getColumns[1];
-      const limitedCol = component.getColumns[2];
-      const littleCol = component.getColumns[3];
+      const nameCol = component.experienceTable.columnDefs[0];
+      const highlyCol = component.experienceTable.columnDefs[1];
+      const limitedCol = component.experienceTable.columnDefs[2];
+      const littleCol = component.experienceTable.columnDefs[3];
 
       expect(nameCol.getValue(mockExperienceCalc))
         .toBe('Test Experience');
@@ -87,7 +86,7 @@ describe('CalculationDetailViewComponent', () => {
 
     it('should calculate points correctly for STRONGLY relevancy', () => {
       mockExperienceCalc.relevancy = Relevancy.STRONGLY;
-      const pointsCol = component.getColumns[4];
+      const pointsCol = component.experienceTable.columnDefs[4];
 
       expect(pointsCol.getValue(mockExperienceCalc))
         .toEqual(10);
@@ -95,7 +94,7 @@ describe('CalculationDetailViewComponent', () => {
 
     it('should calculate points correctly for NORMAL relevancy', () => {
       mockExperienceCalc.relevancy = Relevancy.NORMAL;
-      const pointsCol = component.getColumns[4];
+      const pointsCol = component.experienceTable.columnDefs[4];
 
       expect(pointsCol.getValue(mockExperienceCalc))
         .toEqual(5);
@@ -103,7 +102,7 @@ describe('CalculationDetailViewComponent', () => {
 
     it('should calculate points correctly for POORLY relevancy', () => {
       mockExperienceCalc.relevancy = Relevancy.POORLY;
-      const pointsCol = component.getColumns[4];
+      const pointsCol = component.experienceTable.columnDefs[4];
 
       expect(pointsCol.getValue(mockExperienceCalc))
         .toEqual(2);
@@ -111,7 +110,7 @@ describe('CalculationDetailViewComponent', () => {
 
     it('should return 0 points for unknown relevancy', () => {
       mockExperienceCalc.relevancy = 'UNKNOWN_RELEVANCY' as any;
-      const pointsCol = component.getColumns[4];
+      const pointsCol = component.experienceTable.columnDefs[4];
 
       expect(pointsCol.getValue(mockExperienceCalc))
         .toEqual(0);
@@ -120,19 +119,12 @@ describe('CalculationDetailViewComponent', () => {
 
   describe('Table Data configuration', () => {
     it('should configure GenericTableDataSource with columns', () => {
-      const tableData = component.getTableData();
+      const tableData = component.experienceTable;
 
       expect(tableData)
         .toBeInstanceOf(GenericTableDataSource);
       expect(tableData.columnDefs)
-        .toEqual(component.getColumns);
-    });
-  });
-
-  describe('Degree Calculations Initialization', () => {
-    it('should call memberService to fetch degree calculations on init for id 2', () => {
-      expect(memberServiceMock.getCalculationsByMemberIdAndOptionalRoleId)
-        .toHaveBeenCalledWith(2);
+        .toEqual(component.experienceTable.columnDefs);
     });
   });
 
