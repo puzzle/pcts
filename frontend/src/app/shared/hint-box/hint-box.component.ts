@@ -1,7 +1,6 @@
 import { Component, input } from '@angular/core';
 import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
-
-export type HintBoxState = 'Hint' | 'Warning';
+import { HintBoxState } from './HintBoxState.enum';
 
 @Component({
   selector: 'app-hint-box',
@@ -14,4 +13,6 @@ export class HintBoxComponent {
   text = input.required<string>();
 
   state = input.required<HintBoxState>();
+
+  protected readonly HintBoxState = HintBoxState;
 }

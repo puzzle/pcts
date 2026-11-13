@@ -57,10 +57,10 @@
   } @else {
     <app-hint-box
       [text]="'HINT.TEXT' | scopedTranslation"
-      [state]="'Hint'"/>
+      [state]="HintBoxState.HINT"/>
     <app-hint-box
       [text]="'WARNING.TEXT' | scopedTranslation"
-      [state]="'Warning'" />
+      [state]="HintBoxState.WARNING" />
   }
 </div>
 

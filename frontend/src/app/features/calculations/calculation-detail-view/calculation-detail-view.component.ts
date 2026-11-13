@@ -31,6 +31,7 @@ import { Router } from '@angular/router';
 import { CalculationModel } from '../calculationDto';
 import { CalculationState } from '../calculation-state.enum';
 import { HintBoxComponent } from '../../../shared/hint-box/hint-box.component';
+import { HintBoxState } from '../../../shared/hint-box/HintBoxState.enum';
 
 
 export interface InvalidTotalError<T extends RelevancyWeightsRow> extends ValidationError {
@@ -226,4 +227,6 @@ export class CalculationDetailViewComponent {
     }),
     GenCol.fromCalculated('errorCol', () => {})
   ];
+
+  protected readonly HintBoxState = HintBoxState;
 }
