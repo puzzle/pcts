@@ -15,10 +15,8 @@ import { MatRadioButton } from '@angular/material/radio';
 import { Relevancy } from '../../../features/calculations/relevancy.enum';
 import { FormValueControl, ValidationError } from '@angular/forms/signals';
 import { RelevancyModel } from './RelevancyModel';
-import {
-  NoRelevancyError
-} from '../../../features/calculations/calculation-detail-view/calculation-detail-view.component';
 import { MatIcon } from '@angular/material/icon';
+import { NoRelevancyError } from '../../../features/calculations/calculation-form/calculation-form.component';
 
 @Component({
   imports: [
