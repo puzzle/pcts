@@ -19,10 +19,12 @@
   #calcForm
   [calculation]="calculation()" />
 
-<footer class="bottom">
-  <app-submit-button
-    [disabled]="calcForm.calculationForm().invalid()"
-    [isAdd]="isAdd()"
-    (saveClicked)="saveForm(calcForm)"
-    (cancelClicked)="routeToCV()" />
-</footer>
+@if (isArchived()) {
+  <footer class="bottom">
+    <app-submit-button
+      [disabled]="calcForm.calculationForm().invalid()"
+      [isAdd]="isAdd()"
+      (saveClicked)="saveForm(calcForm)"
+      (cancelClicked)="routeToCV()" />
+  </footer>
+}
