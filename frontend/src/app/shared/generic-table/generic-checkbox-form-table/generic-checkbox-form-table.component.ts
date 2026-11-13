@@ -22,10 +22,8 @@ import { RowDetailTemplateDirective } from '../rowDetailTemplate.directive';
 import { TypedTemplateDirective } from '../type-template/typed-template.directive';
 import { RelevancyWeightsRow } from './RelevancyWeightsRow';
 import { DegreeCalculationModel } from '../../../features/calculations/degree-calculation/degree-calculation.dto';
-import {
-  InvalidTotalError
-} from '../../../features/calculations/calculation-detail-view/calculation-detail-view.component';
 import { MatIcon } from '@angular/material/icon';
+import { InvalidTotalError } from '../../../features/calculations/calculation-form/calculation-form.component';
 
 @Component({
   imports: [
