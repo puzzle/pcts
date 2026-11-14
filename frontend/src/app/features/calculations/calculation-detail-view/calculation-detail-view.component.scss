@@ -1,0 +1,16 @@
+.bottom {
+  position: fixed;
+  bottom: 0;
+  width: 75%;
+  background-color: white;
+  margin: auto;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.points {
+  font-size: 1.5rem;
+  font-weight: bold;
+}

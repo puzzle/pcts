@@ -5,7 +5,7 @@ import { ScopedTranslationPipe } from '../../pipes/scoped-translation-pipe';
 import { Relevancy } from '../../../features/calculations/relevancy.enum';
 import {
   applyEach,
-  disabled,
+  disabled as disableField,
   FieldTree,
   form,
   FormField,
@@ -22,10 +22,8 @@ import { RowDetailTemplateDirective } from '../rowDetailTemplate.directive';
 import { TypedTemplateDirective } from '../type-template/typed-template.directive';
 import { RelevancyWeightsRow } from './RelevancyWeightsRow';
 import { DegreeCalculationModel } from '../../../features/calculations/degree-calculation/degree-calculation.dto';
-import {
-  InvalidTotalError
-} from '../../../features/calculations/calculation-detail-view/calculation-detail-view.component';
 import { MatIcon } from '@angular/material/icon';
+import { InvalidTotalError } from '../../../features/calculations/calculation-form/calculation-form.component';
 
 @Component({
   imports: [
@@ -55,6 +53,8 @@ export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> im
   table = input.required<GenericTableDataSource<T>>();
 
   errors = input<readonly ValidationError.WithOptionalFieldTree[]>([]);
+
+  disabled = input<boolean>(false);
 
   readonly touch = output<void>();
 
@@ -102,9 +102,9 @@ export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> im
         min(row.relevancies[relevancy].weight, 0);
         max(row.relevancies[relevancy].weight, 100);
 
-        disabled(row.relevancies[relevancy].weight, {
+        disableField(row.relevancies[relevancy].weight, {
           when: ({ valueOf }) => {
-            return !valueOf(row.relevancies[relevancy].checked);
+            return this.disabled() || !valueOf(row.relevancies[relevancy].checked);
           }
         });
       });

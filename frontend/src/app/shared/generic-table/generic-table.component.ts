@@ -54,6 +54,7 @@ import { MatIcon } from '@angular/material/icon';
     MatIcon
   ],
   templateUrl: './generic-table.component.html',
+  standalone: true,
   styleUrl: './generic-table.component.scss'
 })
 export class GenericTableComponent<T extends object, K extends keyof T = keyof T, F = unknown> {
@@ -62,6 +63,8 @@ export class GenericTableComponent<T extends object, K extends keyof T = keyof T
   idAttr = input<K>();
 
   crudBasePath = input<string>('');
+
+  disableSorting = input<boolean>();
 
   dataSource = input.required<GenericTableDataSource<T, F>>();
 
@@ -119,6 +122,13 @@ export class GenericTableComponent<T extends object, K extends keyof T = keyof T
     effect(() => {
       this.dataSource().sortingDataAccessor = this.createSortingAccessor(this.columns());
       this.dataSource().sort = this.sort();
+    });
+
+    effect(() => {
+      if (this.disableSorting()) {
+        this.dataSource()
+          .withSortedBy('');
+      }
     });
   }
 
