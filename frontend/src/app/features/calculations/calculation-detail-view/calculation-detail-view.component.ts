@@ -1,9 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, input, linkedSignal } from '@angular/core';
 import {
   GenericRadioFormTableComponent
 } from '../../../shared/generic-table/generic-radio-form-table/generic-radio-form-table.component';
 import { ExperienceCalculationModel } from '../experience-calculation/experience-calculation.model';
-import { MemberService } from '../../member/member.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { GenCol, GenericTableDataSource } from '../../../shared/generic-table/generic-table-data-source';
 import { Relevancy } from '../relevancy.enum';
@@ -14,6 +13,23 @@ import {
 } from '../../../shared/generic-table/generic-checkbox-form-table/generic-checkbox-form-table.component';
 import { DegreeCalculationModel } from '../degree-calculation/degree-calculation.dto';
 import { RelevancyWeightsRow } from '../../../shared/generic-table/generic-checkbox-form-table/RelevancyWeightsRow';
+import { CertificateTypeModel } from '../../certificates/certificate-type/certificate-type.model';
+import {
+  LeadershipExperienceTypeModel
+} from '../../leadership-experiences/leadership-experiences-type/leadership-experience-type.model';
+import { RelevancyModel } from '../../../shared/generic-table/generic-radio-form-table/RelevancyModel';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { GenericTableComponent } from '../../../shared/generic-table/generic-table.component';
+import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
+import { MatFormField } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/autocomplete';
+import { DatePipe } from '@angular/common';
+import { CalculationService } from '../calculation.service';
+import { Router } from '@angular/router';
+import { CalculationModel } from '../calculationDto';
+import { CalculationState } from '../calculation-state.enum';
 
 
 export interface InvalidTotalError<T extends RelevancyWeightsRow> extends ValidationError {
@@ -25,6 +41,7 @@ export interface InvalidTotalError<T extends RelevancyWeightsRow> extends Valida
 export function validateWeightsAddingUpTo100<T extends RelevancyWeightsRow>(path: SchemaPath<T[]>) {
   validate(path, ({ value }) => value()
     .reduce<InvalidTotalError<T>[]>((errors, row) => {
+      console.log(row);
       const total = Object.values(row.relevancies)
         .filter((rel) => rel.checked)
         .reduce((sum, rel) => sum + rel.weight, 0);
@@ -41,66 +58,137 @@ export function validateWeightsAddingUpTo100<T extends RelevancyWeightsRow>(path
     }, []));
 }
 
+const getCertificateTable = () => new GenericTableDataSource(getCertificateColumns())
+  .withLimit(10);
+
+const getCertificateColumns = (): GenCol<CertificateTypeModel>[] => [GenCol.fromAttr('name'),
+  GenCol.fromAttr('points')];
+
+const getLeadershipExperienceTable = () => new GenericTableDataSource(getLeadershipExperienceColumns())
+  .withLimit(10);
+
+const getLeadershipExperienceColumns = (): GenCol<LeadershipExperienceTypeModel>[] => [GenCol.fromAttr('name'),
+  GenCol.fromAttr('points')];
+
+const getExperienceTable = () => new GenericTableDataSource(getExperienceColumns())
+  .withLimit(10);
+
+const getExperienceColumns = (): GenCol<ExperienceCalculationModel>[] => [
+  GenCol.fromCalculated('name', (e: ExperienceCalculationModel) => e.experience.name),
+  GenCol.fromCalculated('highlyRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.highlyRelevantPoints),
+  GenCol.fromCalculated('limitedRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.limitedRelevantPoints),
+  GenCol.fromCalculated('littleRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.littleRelevantPoints),
+  GenCol.fromCalculated('points', (e: ExperienceCalculationModel) => {
+    switch (e.relevancy) {
+      case Relevancy.STRONGLY:
+        return e.experience.experienceType.highlyRelevantPoints;
+      case Relevancy.NORMAL:
+        return e.experience.experienceType.limitedRelevantPoints;
+      case Relevancy.POORLY:
+        return e.experience.experienceType.littleRelevantPoints;
+      default:
+        return 0;
+    }
+  }),
+  GenCol.fromCalculated('errorCol', () => {})
+];
+
+export interface NoRelevancyError<T extends RelevancyModel> extends ValidationError {
+  kind: 'noRelevancy';
+  row: T;
+}
+
+export function validateRelevancySelected<T extends RelevancyModel>(path: SchemaPath<T[]>) {
+  validate(path, ({ value }) => value()
+    .filter((row) => !row.relevancy || row.relevancy === Relevancy.NONE)
+    .map((row, index): NoRelevancyError<T> => ({ kind: 'noRelevancy',
+      row: row })));
+}
+
 @Component({
   imports: [
     GenericRadioFormTableComponent,
     ReactiveFormsModule,
     TranslationScopeDirective,
     FormField,
+    MatButton,
+    MatIcon,
+    GenericTableComponent,
+    ScopedTranslationPipe,
+    MatFormField,
+    MatSelect,
+    MatOption,
+    DatePipe,
     GenericCheckboxFormTableComponent
   ],
   selector: 'app-calculation-detail-view',
-  templateUrl: './calculation-detail-view.component.html'
+  templateUrl: './calculation-detail-view.component.html',
+  standalone: true,
+  styleUrl: 'calculation-detail-view.component.scss'
 })
 export class CalculationDetailViewComponent {
-  private readonly memberService = inject(MemberService);
+  private readonly calculationService = inject(CalculationService);
 
-  private readonly experienceCalculations = signal<ExperienceCalculationModel[]>([] as ExperienceCalculationModel[]);
+  private readonly router = inject(Router);
 
-  degreeCalculations = signal<DegreeCalculationModel[]>([] as DegreeCalculationModel[]);
+  calculation = input.required<CalculationModel>();
+
+  calculationWritableSignal = linkedSignal(() => this.calculation());
+
+  calculationForm = form(this.calculationWritableSignal, (calculation) => {
+    validateRelevancySelected(calculation.experienceCalculations);
+    validateWeightsAddingUpTo100(calculation.degreeCalculations);
+  });
+
+  certificateTable = getCertificateTable();
+
+  leadershipExperienceTable = getLeadershipExperienceTable();
+
+  experienceTable = getExperienceTable();
+
+
+  calculationState = [CalculationState.DRAFT,
+    CalculationState.ACTIVE,
+    CalculationState.ARCHIVED];
 
   constructor() {
-    // Todo: Implement calculation service then fetch from calculation id instead of going over member service this is for the new ticket
-    this.memberService.getCalculationsByMemberIdAndOptionalRoleId(1)
-      .subscribe((response) => {
-        response.forEach((result) => {
-          this.experienceCalculations.set(result.experienceCalculations);
-        });
-      });
+    effect(() => {
+      this.certificateTable.data = this.calculation().certificateCalculations.map((certificateCalculation) => certificateCalculation.certificate.certificateType);
 
-    this.memberService.getCalculationsByMemberIdAndOptionalRoleId(2)
-      .subscribe((response) => {
-        response.forEach((result) => {
-          this.degreeCalculations.set(result.degreeCalculations);
-        });
-      });
+      this.leadershipExperienceTable.data = this.calculation().leadershipExperienceCalculations.map((leadershipExperienceCalculations) => leadershipExperienceCalculations.leadershipExperience.leadershipExperienceType);
+    });
   }
 
-  experienceCalculationForm = form(this.experienceCalculations);
-
-  degreeCalculationForm = form(this.degreeCalculations, (degreeCalculation) => validateWeightsAddingUpTo100(degreeCalculation));
-
-  getColumns = [
-    GenCol.fromCalculated('name', (e: ExperienceCalculationModel) => e.experience.name),
-    GenCol.fromCalculated('highlyRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.highlyRelevantPoints),
-    GenCol.fromCalculated('limitedRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.limitedRelevantPoints),
-    GenCol.fromCalculated('littleRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.littleRelevantPoints),
-    GenCol.fromCalculated('points', (e: ExperienceCalculationModel) => {
-      switch (e.relevancy) {
-        case Relevancy.STRONGLY:
-          return e.experience.experienceType.highlyRelevantPoints;
-        case Relevancy.NORMAL:
-          return e.experience.experienceType.limitedRelevantPoints;
-        case Relevancy.POORLY:
-          return e.experience.experienceType.littleRelevantPoints;
-        default:
-          return 0;
+  saveForm() {
+    if (!this.calculationForm()
+      .invalid()) {
+      if (!this.isAdd()) {
+        this.calculationService.updateCalculation(this.calculation().id, this.calculationForm()
+          .controlValue())
+          .subscribe(() => {
+            this.routeToCV();
+          });
+      } else {
+        this.calculationService.addCalculation(this.calculationForm()
+          .controlValue())
+          .subscribe(() => {
+            this.routeToCV();
+          });
       }
-    })
-  ];
+    } else {
+      this.calculationForm()
+        .markAsTouched();
+    }
+  }
 
-  getTableData = () => new GenericTableDataSource(this.getColumns)
-    .withLimit(10);
+  routeToCV() {
+    this.router.navigate(['member',
+      this.calculation().member.id]);
+  }
+
+  isAdd() {
+    return !this.calculation().id;
+  }
 
   getDegreeCalculationTableData = () => new GenericTableDataSource<DegreeCalculationModel>(this.getDegreeCalculationColumns())
     .withDetailViewLink();
