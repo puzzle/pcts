@@ -30,6 +30,12 @@ public class CertificateCalculation implements CalculationChildInterface, Model 
         this.certificate = certificate;
     }
 
+    public CertificateCalculation(Builder builder) {
+        this.id = builder.id;
+        this.calculation = builder.calculation;
+        this.certificate = builder.certificate;
+    }
+
     public CertificateCalculation() {
     }
 
@@ -79,5 +85,37 @@ public class CertificateCalculation implements CalculationChildInterface, Model 
 
     public void setCertificate(Certificate certificate) {
         this.certificate = certificate;
+    }
+
+    public static final class Builder {
+        private Long id;
+        private Calculation calculation;
+        private Certificate certificate;
+
+        private Builder() {
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder withCalculation(Calculation calculation) {
+            this.calculation = calculation;
+            return this;
+        }
+
+        public Builder withCertificate(Certificate certificate) {
+            this.certificate = certificate;
+            return this;
+        }
+
+        public CertificateCalculation build() {
+            return new CertificateCalculation(this);
+        }
     }
 }

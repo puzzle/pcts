@@ -172,13 +172,34 @@
       "HIGHLY_RELEVANT": "Stark relevant",
       "LIMITED_RELEVANT": "Bedingt relevant",
       "LITTLE_RELEVANT": "Wenig relevant",
-      "EXPERIENCE": {
-        "MODEL_NAME_PLURAL": "Berufs- und Lebenserfahrungen"
+      "HINT_BOX": {
+        "HINT": "Hinweis",
+        "WARNING": "Warnung"
       },
-      "DEGREE": {
-        "MODEL_NAME_PLURAL": "Ausbildungen",
+      "MEMBER": {
+        "CALCULATION": {
+          "WARNING": {
+            "TEXT": "Führungserfahrungen können für diese Rolle nicht angerechnet werden."
+          },
+          "HINT": {
+            "TEXT": "Führungserfahrungen werden bei Nicht-Management-Rollen nicht berücksichtigt."
+          }
+        }
+      },
+      "EXPERIENCE": {
+        "MODEL_NAME_PLURAL": "Berufs- und Lebenserfahrungen",
         "ERROR_COL": ""
-      }
+      },
+      "ALL_CALCULATIONS": "Alle Berechnungen",
+      "FROM": "vom"
+    },
+    "FORM": {
+      "SAVE_FORM": "Speichern",
+      "CANCEL": "Abbrechen"
+    },
+    "DEGREE": {
+      "MODEL_NAME_PLURAL": "Ausbildungen",
+      "ERROR_COL": ""
     }
   },
   "ERROR": {
