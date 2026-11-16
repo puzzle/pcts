@@ -69,8 +69,6 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
     public Calculation update(Long id, Calculation calculation) {
         // update base Calculation first to get the final persisted state
         Calculation baseCalc = super.update(id, calculation);
-        calculation.setId(baseCalc.getId());
-
         // update related entities using the baseCalc we use the not persisted
         // calculation for this as the persisted calculation does not contain any
         // relations yet
@@ -168,20 +166,11 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
                                            Comparator.nullsLast(Comparator.naturalOrder())))
                         .toList();
 
-        return Calculation.Builder
-                .builder()
-                .withId(calculation.getId())
-                .withMember(calculation.getMember())
-                .withRole(calculation.getRole())
-                .withState(calculation.getState())
-                .withPublicationDate(calculation.getPublicationDate())
-                .withPublicizedBy(calculation.getPublicizedBy())
-                .withPoints(calculation.getPoints())
-                .withCertificateCalculations(sortedCertificates)
-                .withDegreeCalculations(sortedDegrees)
-                .withExperienceCalculations(sortedExperiences)
-                .withLeadershipExperienceCalculations(calculation.getLeadershipExperienceCalculations())
-                .build();
+        calculation.setCertificateCalculations(sortedCertificates);
+        calculation.setDegreeCalculations(sortedDegrees);
+        calculation.setExperienceCalculations(sortedExperiences);
+
+        return calculation;
     }
 
     private static LocalDate getCertificateDate(CertificateCalculation c) {
