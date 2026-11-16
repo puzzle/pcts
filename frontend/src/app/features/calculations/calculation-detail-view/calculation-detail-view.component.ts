@@ -31,7 +31,6 @@ import { Router } from '@angular/router';
 import { CalculationModel } from '../calculationDto';
 import { CalculationState } from '../calculation-state.enum';
 
-
 export interface InvalidTotalError<T extends RelevancyWeightsRow> extends ValidationError {
   kind: 'invalidTotal';
   row: T;
@@ -58,20 +57,17 @@ export function validateWeightsAddingUpTo100<T extends RelevancyWeightsRow>(path
     }, []));
 }
 
-const getCertificateTable = () => new GenericTableDataSource(getCertificateColumns())
-  .withLimit(10);
+const getCertificateTable = () => new GenericTableDataSource(getCertificateColumns());
 
 const getCertificateColumns = (): GenCol<CertificateTypeModel>[] => [GenCol.fromAttr('name'),
   GenCol.fromAttr('points')];
 
-const getLeadershipExperienceTable = () => new GenericTableDataSource(getLeadershipExperienceColumns())
-  .withLimit(10);
+const getLeadershipExperienceTable = () => new GenericTableDataSource(getLeadershipExperienceColumns());
 
 const getLeadershipExperienceColumns = (): GenCol<LeadershipExperienceTypeModel>[] => [GenCol.fromAttr('name'),
   GenCol.fromAttr('points')];
 
-const getExperienceTable = () => new GenericTableDataSource(getExperienceColumns())
-  .withLimit(10);
+const getExperienceTable = () => new GenericTableDataSource(getExperienceColumns());
 
 const getExperienceColumns = (): GenCol<ExperienceCalculationModel>[] => [
   GenCol.fromCalculated('name', (e: ExperienceCalculationModel) => e.experience.name),
@@ -89,6 +85,41 @@ const getExperienceColumns = (): GenCol<ExperienceCalculationModel>[] => [
       default:
         return 0;
     }
+  }),
+  GenCol.fromCalculated('errorCol', () => {})
+];
+
+const getDegreeTable = () => new GenericTableDataSource<DegreeCalculationModel>(getDegreeColumns())
+  .withDetailViewLink();
+
+const getDegreeColumns = (): GenCol<DegreeCalculationModel>[] => [
+  GenCol.fromCalculated('name', (d: DegreeCalculationModel) => d.degree.name),
+  GenCol.fromCalculated('highlyRelevant', () => {}),
+  GenCol.fromCalculated('limitedRelevant', () => {}),
+  GenCol.fromCalculated('littleRelevant', () => {}),
+  GenCol.fromCalculated('points', (e: DegreeCalculationModel) => {
+    let points = 0;
+    for (const [key,
+      value] of Object.entries(e.relevancies || {})) {
+      const factor = value.weight / 100;
+
+      switch (key as Relevancy) {
+        case Relevancy.STRONGLY:
+          points += factor * (e.degree.type.highlyRelevantPoints || 0);
+          break;
+        case Relevancy.NORMAL:
+          points += factor * (e.degree.type.limitedRelevantPoints || 0);
+          break;
+        case Relevancy.POORLY:
+          points += factor * (e.degree.type.littleRelevantPoints || 0);
+          break;
+        default:
+          break;
+      }
+    }
+
+    return Number.parseFloat(String(points))
+      .toFixed(2);
   }),
   GenCol.fromCalculated('errorCol', () => {})
 ];
@@ -146,6 +177,7 @@ export class CalculationDetailViewComponent {
 
   experienceTable = getExperienceTable();
 
+  degreeTable = getDegreeTable();
 
   calculationState = [CalculationState.DRAFT,
     CalculationState.ACTIVE,
@@ -189,39 +221,4 @@ export class CalculationDetailViewComponent {
   isAdd() {
     return !this.calculation().id;
   }
-
-  getDegreeCalculationTableData = () => new GenericTableDataSource<DegreeCalculationModel>(this.getDegreeCalculationColumns())
-    .withDetailViewLink();
-
-  getDegreeCalculationColumns = (): GenCol<DegreeCalculationModel>[] => [
-    GenCol.fromCalculated('name', (d: DegreeCalculationModel) => d.degree.name),
-    GenCol.fromCalculated('highlyRelevant', () => {}),
-    GenCol.fromCalculated('limitedRelevant', () => {}),
-    GenCol.fromCalculated('littleRelevant', () => {}),
-    GenCol.fromCalculated('points', (e: DegreeCalculationModel) => {
-      let points = 0;
-      for (const [key,
-        value] of Object.entries(e.relevancies || {})) {
-        const factor = value.weight / 100;
-
-        switch (key as Relevancy) {
-          case Relevancy.STRONGLY:
-            points += factor * (e.degree.type.highlyRelevantPoints || 0);
-            break;
-          case Relevancy.NORMAL:
-            points += factor * (e.degree.type.limitedRelevantPoints || 0);
-            break;
-          case Relevancy.POORLY:
-            points += factor * (e.degree.type.littleRelevantPoints || 0);
-            break;
-          default:
-            break;
-        }
-      }
-
-      return Number.parseFloat(String(points))
-        .toFixed(2);
-    }),
-    GenCol.fromCalculated('errorCol', () => {})
-  ];
 }
