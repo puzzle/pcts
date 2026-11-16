@@ -183,10 +183,10 @@
       "MEMBER": {
         "CALCULATION": {
           "WARNING": {
-            "TEXT": "Führungserfahrungen können für diese Rolle nicht angerechnet werden."
+            "LEADERSHIP": "Führungserfahrungen können für diese Rolle nicht angerechnet werden."
           },
           "HINT": {
-            "TEXT": "Führungserfahrungen werden bei Nicht-Management-Rollen nicht berücksichtigt."
+            "LEADERSHIP": "Führungserfahrungen werden bei Nicht-Management-Rollen nicht berücksichtigt."
           }
         }
       },
