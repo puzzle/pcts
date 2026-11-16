@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, Input, input, output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
 import { BaseFormActionsComponent } from '../base-form-actions/base-form-actions.component';
@@ -12,6 +12,8 @@ import { BaseFormActionsComponent } from '../base-form-actions/base-form-actions
   templateUrl: './base-form.component.html'
 })
 export class BaseFormComponent {
+  @Input() formName = '';
+
   formGroup = input.required<FormGroup>();
 
   submitted = output();
