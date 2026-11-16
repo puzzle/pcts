@@ -4,14 +4,14 @@
   [class.warning]="state() === HintBoxState.WARNING">
 
   <div class="hint-box-header">
-    <span class="hint-icon" aria-hidden="true">
-      {{ state() === HintBoxState.HINT ? '!' : 'i' }}
-    </span>
+    <mat-icon
+      aria-hidden="true"
+      [fontIcon]="config[state()].icon" />
 
     <strong>
       {{ ('HINT_BOX.' + state()) | scopedTranslation }}
     </strong>
   </div>
 
-  <p>{{ text() | scopedTranslation }}</p>
+  <p>{{ text() }}</p>
 </section>
