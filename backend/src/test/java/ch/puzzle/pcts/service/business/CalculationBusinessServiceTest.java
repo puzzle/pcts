@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -42,7 +43,7 @@ class CalculationBusinessServiceTest
     @Mock
     private LeadershipExperienceCalculationBusinessService leadershipExperienceBusinessService;
 
-    @Mock
+    @Spy
     private Calculation calculation;
 
     @InjectMocks
@@ -97,10 +98,10 @@ class CalculationBusinessServiceTest
     @DisplayName("Should create calculation with experiences")
     @Test
     void shouldCreate() {
-        when(experienceBusinessService.getExperiencePoints(anyLong())).thenReturn(BigDecimal.ONE);
-        when(degreeBusinessService.getDegreePoints(anyLong())).thenReturn(BigDecimal.ONE);
-        when(certificateBusinessService.getCertificatePoints(anyLong())).thenReturn(BigDecimal.ONE);
-        when(leadershipExperienceBusinessService.getLeadershipExperiencePoints(anyLong())).thenReturn(BigDecimal.ONE);
+        when(experienceBusinessService.getExperiencePoints(any())).thenReturn(BigDecimal.ONE);
+        when(degreeBusinessService.getDegreePoints(any())).thenReturn(BigDecimal.ONE);
+        when(certificateBusinessService.getCertificatePoints(any())).thenReturn(BigDecimal.ONE);
+        when(leadershipExperienceBusinessService.getLeadershipExperiencePoints(any())).thenReturn(BigDecimal.ONE);
 
         super.shouldCreate();
 
@@ -109,10 +110,10 @@ class CalculationBusinessServiceTest
         verify(degreeBusinessService).createDegreeCalculations(calculation);
         verify(leadershipExperienceBusinessService).createLeadershipExperienceCalculations(calculation);
 
-        verify(experienceBusinessService).getExperiencePoints(anyLong());
-        verify(degreeBusinessService).getDegreePoints(anyLong());
-        verify(certificateBusinessService).getCertificatePoints(anyLong());
-        verify(leadershipExperienceBusinessService).getLeadershipExperiencePoints(anyLong());
+        verify(experienceBusinessService).getExperiencePoints(any());
+        verify(degreeBusinessService).getDegreePoints(any());
+        verify(certificateBusinessService).getCertificatePoints(any());
+        verify(leadershipExperienceBusinessService).getLeadershipExperiencePoints(any());
     }
 
     @Override
