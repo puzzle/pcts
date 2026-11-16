@@ -49,6 +49,10 @@ class MemberDetailPage extends Page {
       .should('include.text', role)
       .and('include.text', points);
   }
+
+  addCalculation() {
+    return cy.getByTestId('add-calculation-button');
+  }
 }
 
 export default new MemberDetailPage();
