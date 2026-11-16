@@ -5,12 +5,18 @@ import { MatIcon } from '@angular/material/icon';
 
 abstract class HintBoxConfig {
   abstract icon: string;
+
+  abstract classes: string[];
 }
 class InfoConfig extends HintBoxConfig {
   icon = 'info';
+
+  classes = ['hint'];
 }
 class WarningConfig extends HintBoxConfig {
   icon = 'warning';
+
+  classes = ['warning'];
 }
 const HINT_BOX_CONFIG = {
   [HintBoxState.HINT]: new InfoConfig(),
