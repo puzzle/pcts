@@ -1,4 +1,5 @@
 import { TableData } from './table-data';
+import { Relevancy } from '../../../src/app/features/calculations/relevancy.enum';
 
 export class TableHelper {
   private readonly tableTestId: string;
@@ -66,6 +67,77 @@ export class TableHelper {
   toggleShowAll() {
     this.getShowAllButton()
       .click();
+    return this;
+  }
+
+  selectRowRelevancy(row: JQuery<HTMLElement>, state: Relevancy) {
+    if (state === Relevancy.NONE) {
+      return;
+    }
+
+    const stateIndexMap = {
+      [Relevancy.STRONGLY]: 0,
+      [Relevancy.NORMAL]: 1,
+      [Relevancy.POORLY]: 2
+    };
+
+    cy.wrap(row)
+      .find('mat-radio-button')
+      .eq(stateIndexMap[state])
+      .find('input')
+      .click({ force: true });
+  }
+
+  expandRow(row: JQuery<HTMLElement>) {
+    cy.wrap(row)
+      .findByTestId('expand-row')
+      .click();
+
+    return this;
+  }
+
+  setRowCheckboxRelevancy(row: JQuery<HTMLElement>, state: Relevancy, checkState = true) {
+    if (state === Relevancy.NONE) {
+      return this;
+    }
+
+    const stateIdMap = {
+      [Relevancy.STRONGLY]: '#highly',
+      [Relevancy.NORMAL]: '#limited',
+      [Relevancy.POORLY]: '#little'
+    };
+
+    const checkboxInput = cy.wrap(row)
+      .find(`mat-checkbox${stateIdMap[state]}`)
+      .find('input');
+
+    if (checkState) {
+      checkboxInput.check({ force: true });
+    } else {
+      checkboxInput.uncheck({ force: true });
+    }
+
+    return this;
+  }
+
+  setRowPercentage(row: JQuery<HTMLElement>, state: Relevancy, percentage: number) {
+    if (state === Relevancy.NONE) {
+      return this;
+    }
+
+    const stateIndexMap = {
+      [Relevancy.STRONGLY]: 0,
+      [Relevancy.NORMAL]: 1,
+      [Relevancy.POORLY]: 2
+    };
+
+    cy.wrap(row)
+      .next('.detail-row')
+      .find('input[type="number"]')
+      .eq(stateIndexMap[state])
+      .clear()
+      .type(percentage.toString());
+
     return this;
   }
 }
