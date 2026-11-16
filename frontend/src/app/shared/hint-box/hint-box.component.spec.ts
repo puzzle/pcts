@@ -12,6 +12,8 @@ describe('HintBoxComponent', () => {
       .compileComponents();
 
     fixture = TestBed.createComponent(HintBoxComponent);
+    fixture.componentRef.setInput('text', 'Test message');
+    fixture.componentRef.setInput('state', 'Hint');
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
