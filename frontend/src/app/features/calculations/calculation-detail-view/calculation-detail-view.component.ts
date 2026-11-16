@@ -63,10 +63,6 @@ export class CalculationDetailViewComponent {
   }
 
   isArchived(): boolean {
-    if (this.calculation().state == CalculationState.ARCHIVED) {
-      return false;
-    } else {
-      return true;
-    }
+    return this.calculation().state == CalculationState.ARCHIVED;
   }
 }

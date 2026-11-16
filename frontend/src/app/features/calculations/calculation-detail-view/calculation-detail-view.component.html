@@ -17,10 +17,10 @@
 
 <app-calculation-form
   #calcForm
-  [isReadOnly]="!isArchived()"
+  [isReadOnly]="isArchived()"
   [calculation]="calculation()" />
 
-@if (isArchived()) {
+@if (!isArchived()) {
   <footer class="bottom">
     <app-submit-button
       [disabled]="calcForm.calculationForm().invalid()"
