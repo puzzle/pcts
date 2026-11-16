@@ -46,8 +46,8 @@ describe('CalculationDetailViewComponent', () => {
   });
 
   it('should have correct amount of columns in table', () => {
-    const columns = component.getDegreeCalculationColumns();
-    expect(columns.length)
+    const columns = component.degreeTable;
+    expect(columns.columnDefs.length)
       .toEqual(6);
   });
 
@@ -150,17 +150,17 @@ describe('CalculationDetailViewComponent', () => {
     });
 
     it('should have correct amount of columns in degree table', () => {
-      const columns = component.getDegreeCalculationColumns();
-      expect(columns.length)
+      const columns = component.degreeTable;
+      expect(columns.columnDefs.length)
         .toEqual(6);
     });
 
     it('should correctly map standard properties in degree columns via getValue', () => {
-      const columns = component.getDegreeCalculationColumns();
-      const nameCol = columns[0];
-      const highlyCol = columns[1];
-      const limitedCol = columns[2];
-      const littleCol = columns[3];
+      const columns = component.degreeTable;
+      const nameCol = columns.columnDefs[0];
+      const highlyCol = columns.columnDefs[1];
+      const limitedCol = columns.columnDefs[2];
+      const littleCol = columns.columnDefs[3];
 
       expect(nameCol.getValue(mockDegreeCalc))
         .toBe('Master of Science');
@@ -179,7 +179,7 @@ describe('CalculationDetailViewComponent', () => {
         [Relevancy.POORLY]: { weight: 20 }
       } as any;
 
-      const pointsCol = component.getDegreeCalculationColumns()[4];
+      const pointsCol = component.degreeTable.columnDefs[4];
 
       expect(pointsCol.getValue(mockDegreeCalc))
         .toEqual('69.00');
@@ -192,7 +192,7 @@ describe('CalculationDetailViewComponent', () => {
         [Relevancy.POORLY]: { weight: 0 }
       } as any;
 
-      const pointsCol = component.getDegreeCalculationColumns()[4];
+      const pointsCol = component.degreeTable.columnDefs[4];
 
       expect(pointsCol.getValue(mockDegreeCalc))
         .toEqual('50.00');
@@ -206,7 +206,7 @@ describe('CalculationDetailViewComponent', () => {
         [Relevancy.POORLY]: { weight: 0 }
       } as any;
 
-      const pointsCol = component.getDegreeCalculationColumns()[4];
+      const pointsCol = component.degreeTable.columnDefs[4];
 
       expect(pointsCol.getValue(mockDegreeCalc))
         .toEqual('0.00');
@@ -215,7 +215,7 @@ describe('CalculationDetailViewComponent', () => {
     it('should handle missing relevancies gracefully and return 0.00', () => {
       mockDegreeCalc.relevancies = undefined as any;
 
-      const pointsCol = component.getDegreeCalculationColumns()[4];
+      const pointsCol = component.degreeTable.columnDefs[4];
 
       expect(pointsCol.getValue(mockDegreeCalc))
         .toEqual('0.00');
@@ -224,7 +224,7 @@ describe('CalculationDetailViewComponent', () => {
 
   describe('Degree Table Data configuration', () => {
     it('should configure GenericTableDataSource with detail view link for degree table', () => {
-      const tableData = component.getDegreeCalculationTableData();
+      const tableData = component.degreeTable;
 
       expect(tableData)
         .toBeInstanceOf(GenericTableDataSource);
