@@ -1,11 +1,12 @@
 FROM node:26.13.1-alpine AS builder
 WORKDIR /app
-RUN corepack enable && corepack prepare pnpm@10.32.1 --activate
 ENV CI="true"
 ENV CYPRESS_INSTALL_BINARY=0
 
 # 1. Copy ONLY the package files first to leverage Docker layer caching
 COPY frontend/package.json frontend/pnpm-lock.yaml frontend/pnpm-workspace.yaml ./
+# Install the pnpm version pinned in package.json's packageManager field
+RUN npm install -g "pnpm@$(node -p "require('./package.json').packageManager.split('@')[1]")"
 # 2. Install ALL dependencies (Angular needs devDependencies to build)
 RUN pnpm install --frozen-lockfile
 # 3. Copy the rest of the source code
