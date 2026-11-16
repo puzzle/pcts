@@ -97,7 +97,7 @@ export class CalculationFormComponent {
   calculationWritableSignal = linkedSignal(() => this.calculation());
 
   calculationForm = form(this.calculationWritableSignal, (calc) => {
-    disabled(calc, { when: () => !!this.isReadOnly() });
+    disabled(calc.state, { when: () => !!this.isReadOnly() });
     disabled(calc.experienceCalculations, { when: () => !!this.isReadOnly() });
     disabled(calc.degreeCalculations, { when: () => !!this.isReadOnly() });
 
