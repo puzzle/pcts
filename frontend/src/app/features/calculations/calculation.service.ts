@@ -13,7 +13,8 @@ export class CalculationService {
   private readonly API_URL = '/api/v1/calculations';
 
   getCalculationById(id: number): Observable<CalculationModel> {
-    return this.httpClient.get<CalculationModel>(`${this.API_URL}/${id}`);
+    return this.httpClient.get<CalculationDto>(`${this.API_URL}/${id}`)
+      .pipe(map((calculationDto) => toCalculationModel(calculationDto)));
   }
 
   updateCalculation(id: number, calculation: CalculationModel): Observable<CalculationModel> {
