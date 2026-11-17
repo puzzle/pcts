@@ -12,6 +12,7 @@ describe('SubmitButtonComponent', () => {
       .compileComponents();
 
     fixture = TestBed.createComponent(SubmitButtonComponent);
+    fixture.componentRef.setInput('isAdd', true);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
