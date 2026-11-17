@@ -1,27 +1,8 @@
 import { Component, input } from '@angular/core';
 import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
 import { HintBoxState } from './HintBoxState.enum';
+import { HINT_BOX_CONFIG } from './hint-box-config';
 import { MatIcon } from '@angular/material/icon';
-
-abstract class HintBoxConfig {
-  abstract icon: string;
-
-  abstract classes: string[];
-}
-class InfoConfig extends HintBoxConfig {
-  icon = 'info';
-
-  classes = ['hint'];
-}
-class WarningConfig extends HintBoxConfig {
-  icon = 'warning';
-
-  classes = ['warning'];
-}
-const HINT_BOX_CONFIG = {
-  [HintBoxState.HINT]: new InfoConfig(),
-  [HintBoxState.WARNING]: new WarningConfig()
-};
 
 @Component({
   selector: 'app-hint-box',
