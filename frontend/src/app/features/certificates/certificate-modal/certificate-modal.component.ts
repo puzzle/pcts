@@ -7,7 +7,7 @@ import { MatAutocomplete, MatAutocompleteTrigger, MatOption } from '@angular/mat
 import { PctsFormErrorDirective } from '../../../shared/pcts-form-error/pcts-form-error.directive';
 import { PctsFormLabelDirective } from '../../../shared/pcts-form-label/pcts-form-label.directive';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { isValueInListSignal } from '../../../shared/form/form-validators';
+import { isCompletedAtBeforeValidUntil, isValueInListSignal } from '../../../shared/form/form-validators';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import { CertificateTypeModel } from '../certificate-type/certificate-type.model';
 import { CertificateTypeService } from '../certificate-type/certificate-type.service';
@@ -41,7 +41,8 @@ import { filterType } from '../../../shared/utils/typeFilter';
     MatDatepickerToggle,
     MatSuffix,
     InputFieldComponent,
-    ModalActionsComponent
+    ModalActionsComponent,
+    MatDatepickerToggle
   ],
   templateUrl: './certificate-modal.component.html'
 })
@@ -64,11 +65,16 @@ export class CertificateModalComponent extends StrictlyTypedDialog<FormModalConf
       Validators.required],
     validUntil: [null as Date | null],
     comment: ['' as string | null]
+  }, {
+    validators: [isCompletedAtBeforeValidUntil()]
   });
 
   ngOnInit(): void {
     this.formGroup.patchValue(this.data.model ?? {});
-
+    this.formGroup.get('validUntil')?.valueChanges?.subscribe(() => {
+      this.formGroup.get('completedAt')
+        ?.updateValueAndValidity();
+    });
     this.certificateTypeService.getAllCertificateTypes()
       .subscribe((organisationUnits) => {
         this.certificateTypeOptions.set(organisationUnits);
