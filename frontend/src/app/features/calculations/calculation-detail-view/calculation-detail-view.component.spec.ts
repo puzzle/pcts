@@ -112,8 +112,8 @@ describe('CalculationDetailViewComponent', () => {
       mockFormComponent = {
         calculationForm: jest.fn()
           .mockReturnValue({
-            invalid: jest.fn()
-              .mockReturnValue(false),
+            valid: jest.fn()
+              .mockReturnValue(true),
             controlValue: jest.fn()
               .mockReturnValue({ formData: 'test' }),
             markAsTouched: jest.fn()
@@ -147,7 +147,7 @@ describe('CalculationDetailViewComponent', () => {
     });
 
     it('should not call service and mark form as touched if form is invalid', () => {
-      mockFormComponent.calculationForm().invalid.mockReturnValue(true);
+      mockFormComponent.calculationForm().valid.mockReturnValue(false);
 
       component.saveForm(mockFormComponent as CalculationFormComponent);
 
