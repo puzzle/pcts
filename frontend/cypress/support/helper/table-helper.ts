@@ -120,9 +120,9 @@ export class TableHelper {
     return this;
   }
 
-  setRowPercentage(row: JQuery<HTMLElement>, state: Relevancy, percentage: number) {
+  getPercentageInputField(row: JQuery<HTMLElement>, state: Relevancy) {
     if (state === Relevancy.NONE) {
-      return this;
+      throw Error;
     }
 
     const stateIndexMap = {
@@ -131,13 +131,36 @@ export class TableHelper {
       [Relevancy.POORLY]: 2
     };
 
-    cy.wrap(row)
+    return cy.wrap(row)
       .next('.detail-row')
       .find('input[type="number"]')
-      .eq(stateIndexMap[state])
+      .eq(stateIndexMap[state]);
+  }
+
+  setRowPercentage(row: JQuery<HTMLElement>, state: Relevancy, percentage: number) {
+    this.getPercentageInputField(row, state)
       .clear()
       .type(percentage.toString());
 
     return this;
+  }
+
+  expectWarning(row: JQuery<HTMLElement>) {
+    this.getWarningForRow(row)
+      .should('be.visible');
+
+    return this;
+  }
+
+  expectNoWarning(row: JQuery<HTMLElement>) {
+    this.getWarningForRow(row)
+      .should('not.exist');
+
+    return this;
+  }
+
+  private getWarningForRow(row: JQuery<HTMLElement>) {
+    return cy.wrap(row)
+      .contains('mat-icon', 'warning');
   }
 }

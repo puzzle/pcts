@@ -63,21 +63,23 @@ describe('MemberCalculationComponent', () => {
     certificateTableHelper.expectLengthOfTable(1);
     leadershipExperienceTableHelper.expectEmptyTable();
 
-    // todo check that points are zero at beginning
+    calculationDetailViewPage.pointsValue()
+      .should('have.text', '0.00');
 
-    // todo change status
+    calculationDetailViewPage.setStatus('Aktiv');
 
     // click every radio button on a experience.
     experienceTableHelper.tableRows()
       .each(($row, index) => {
         // check if warning hint is there on expereinece.
-        cy.wrap($row)
-          .contains('mat-icon', 'warning')
-          .should('be.visible');
+        experienceTableHelper.expectWarning($row);
 
         experienceTableHelper.selectRowRelevancy($row, Relevancy.STRONGLY);
 
-        // check if the warning hint is gone after selection.
+        /*
+         * check if the warning hint is gone after selection.
+         * $row can't be used here because after page update it doesn't exsist anymore
+         */
         experienceTableHelper.tableRows()
           .eq(index)
           .contains('mat-icon', 'warning')
@@ -87,28 +89,41 @@ describe('MemberCalculationComponent', () => {
     degreeTableHelper.tableRows()
       .each(($row) => {
         // check if warning is there
-        cy.wrap($row)
-          .contains('mat-icon', 'warning')
-          .should('be.visible');
-
-        /*
-         * todo check if all three procent input fields are disabled.
-         * todo click first checkbox. Check if first field is enabled. To for all
-         * todo set values that dont add up to 100
-         */
+        degreeTableHelper.expectWarning($row);
 
         // expand Degree row.
         degreeTableHelper.expandRow($row);
 
+
+        [Relevancy.POORLY,
+          Relevancy.NORMAL,
+          Relevancy.STRONGLY].forEach((relevancy) => {
+          degreeTableHelper.getPercentageInputField($row, relevancy)
+            .should('be.disabled');
+          degreeTableHelper.setRowCheckboxRelevancy($row, relevancy);
+          degreeTableHelper.getPercentageInputField($row, relevancy)
+            .should('be.enabled');
+          degreeTableHelper.setRowCheckboxRelevancy($row, relevancy, false);
+        });
+
         degreeTableHelper.setRowCheckboxRelevancy($row, Relevancy.NORMAL);
 
-        // check if warning is there
         degreeTableHelper.setRowPercentage($row, Relevancy.NORMAL, 100);
 
         // check if warning is not there
-        cy.wrap($row)
-          .contains('mat-icon', 'warning')
-          .should('not.exist');
+        degreeTableHelper.expectNoWarning($row);
+
+        degreeTableHelper.setRowCheckboxRelevancy($row, Relevancy.STRONGLY);
+
+        degreeTableHelper.setRowPercentage($row, Relevancy.STRONGLY, 100);
+
+        degreeTableHelper.expectWarning($row);
+
+        degreeTableHelper.setRowPercentage($row, Relevancy.STRONGLY, 50);
+
+        degreeTableHelper.setRowPercentage($row, Relevancy.NORMAL, 50);
+
+        degreeTableHelper.expectNoWarning($row);
       });
 
     // check save button is enabled

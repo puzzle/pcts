@@ -33,6 +33,15 @@ class CalculationDetailViewPage extends Page {
     return cy.get('footer.bottom button')
       .last();
   }
+
+  setStatus(status: 'Entwurf' | 'Aktiv' | 'Archiviert') {
+    this.statusDropdown()
+      .click();
+
+    cy.get('mat-option')
+      .contains('Aktiv')
+      .click();
+  }
 }
 
 export default new CalculationDetailViewPage();
