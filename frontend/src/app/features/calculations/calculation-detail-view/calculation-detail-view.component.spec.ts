@@ -1,237 +1,161 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CalculationDetailViewComponent } from './calculation-detail-view.component';
-import { Observable, of } from 'rxjs';
 import { provideTranslateService } from '@ngx-translate/core';
-import { Relevancy } from '../relevancy.enum';
-import { ExperienceCalculationModel } from '../experience-calculation/experience-calculation.model';
-import { GenericTableDataSource } from '../../../shared/generic-table/generic-table-data-source';
-import { DegreeCalculationModel } from '../degree-calculation/degree-calculation.dto';
 import { calculationModel1 } from '../../../shared/test/test-data';
 import { CalculationService } from '../calculation.service';
-import { CalculationModel } from '../calculationDto';
+import { Router } from '@angular/router';
+import { CalculationState } from '../calculation-state.enum';
+import { DatePipe } from '@angular/common';
+import { of } from 'rxjs';
+import { CalculationFormComponent } from '../calculation-form/calculation-form.component';
 
 describe('CalculationDetailViewComponent', () => {
   let component: CalculationDetailViewComponent;
   let fixture: ComponentFixture<CalculationDetailViewComponent>;
 
   let calculationServiceMock: Partial<CalculationService>;
+  let routerMock: any;
 
   beforeEach(async() => {
     calculationServiceMock = {
-      getCalculationById: jest.fn()
-        .mockReturnValue(of(calculationModel1)),
-      getTemplate: jest.fn()
-        .mockReturnValue(of(Observable<CalculationModel>))
+      updateCalculation: jest.fn()
+        .mockReturnValue(of({})),
+      addCalculation: jest.fn()
+        .mockReturnValue(of({}))
+    };
+
+    routerMock = {
+      navigate: jest.fn()
     };
 
     await TestBed.configureTestingModule({
       imports: [CalculationDetailViewComponent],
-      providers: [{
-        provide: CalculationService,
-        useValue: calculationServiceMock
-      },
-      provideTranslateService()]
+      providers: [
+        { provide: CalculationService,
+          useValue: calculationServiceMock },
+        { provide: Router,
+          useValue: routerMock },
+        provideTranslateService(),
+        DatePipe
+      ]
     })
       .compileComponents();
 
     fixture = TestBed.createComponent(CalculationDetailViewComponent);
     fixture.componentRef.setInput('calculation', calculationModel1);
     component = fixture.componentInstance;
+
+    fixture.detectChanges();
     await fixture.whenStable();
   });
 
-  it('should create', () => {
-    expect(component)
-      .toBeTruthy();
+  describe('Initialization & Basics', () => {
+    it('should create', () => {
+      expect(component)
+        .toBeTruthy();
+    });
+
+    it('should identify as "Add" mode if calculation has no ID', () => {
+      const newCalc = JSON.parse(JSON.stringify(calculationModel1));
+      newCalc.id = null;
+
+      fixture.componentRef.setInput('calculation', newCalc);
+      fixture.detectChanges();
+
+      expect(component.isAdd())
+        .toBeTruthy();
+    });
+
+    it('should identify as "Edit" mode if calculation has an ID', () => {
+      expect(component.isAdd())
+        .toBeFalsy();
+    });
   });
 
-  it('should have correct amount of columns in table', () => {
-    const columns = component.degreeTable;
-    expect(columns.columnDefs.length)
-      .toEqual(6);
+  describe('Routing', () => {
+    it('should navigate to member CV when routeToCV is called', () => {
+      component.routeToCV();
+      expect(routerMock.navigate)
+        .toHaveBeenCalledWith(['member',
+          calculationModel1.member.id]);
+    });
   });
 
-  describe('Table Columns Definition', () => {
-    let mockExperienceCalc: ExperienceCalculationModel;
+  describe('State (isArchived)', () => {
+    it('should return true if calculation state is ARCHIVED', () => {
+      const archivedCalc = JSON.parse(JSON.stringify(calculationModel1));
+      archivedCalc.state = CalculationState.ARCHIVED;
+
+      fixture.componentRef.setInput('calculation', archivedCalc);
+      fixture.detectChanges();
+
+      expect(component.isArchived())
+        .toBeTruthy();
+    });
+
+    it('should return false if calculation state is NOT ARCHIVED', () => {
+      const draftCalc = JSON.parse(JSON.stringify(calculationModel1));
+      draftCalc.state = CalculationState.DRAFT;
+
+      fixture.componentRef.setInput('calculation', draftCalc);
+      fixture.detectChanges();
+
+      expect(component.isArchived())
+        .toBeFalsy();
+    });
+  });
+
+  describe('Saving Form (saveForm)', () => {
+    let mockFormComponent: any;
 
     beforeEach(() => {
-      mockExperienceCalc = {
-        experience: {
-          name: 'Test Experience',
-          experienceType: {
-            highlyRelevantPoints: 10,
-            limitedRelevantPoints: 5,
-            littleRelevantPoints: 2
-          }
-        },
-        relevancy: Relevancy.STRONGLY
-      } as ExperienceCalculationModel;
+      mockFormComponent = {
+        calculationForm: jest.fn()
+          .mockReturnValue({
+            invalid: jest.fn()
+              .mockReturnValue(false),
+            controlValue: jest.fn()
+              .mockReturnValue({ formData: 'test' }),
+            markAsTouched: jest.fn()
+          })
+      };
     });
 
-    it('should correctly map standard properties in columns via getValue', () => {
-      const nameCol = component.experienceTable.columnDefs[0];
-      const highlyCol = component.experienceTable.columnDefs[1];
-      const limitedCol = component.experienceTable.columnDefs[2];
-      const littleCol = component.experienceTable.columnDefs[3];
+    it('should update calculation if form is valid and NOT in add mode', () => {
+      component.saveForm(mockFormComponent as CalculationFormComponent);
 
-      expect(nameCol.getValue(mockExperienceCalc))
-        .toBe('Test Experience');
-      expect(highlyCol.getValue(mockExperienceCalc))
-        .toBe(10);
-      expect(limitedCol.getValue(mockExperienceCalc))
-        .toBe(5);
-      expect(littleCol.getValue(mockExperienceCalc))
-        .toBe(2);
+      expect(calculationServiceMock.updateCalculation)
+        .toHaveBeenCalledWith(calculationModel1.id, { formData: 'test' });
+      expect(routerMock.navigate)
+        .toHaveBeenCalledWith(['member',
+          calculationModel1.member.id]);
     });
 
-    it('should calculate points correctly for STRONGLY relevancy', () => {
-      mockExperienceCalc.relevancy = Relevancy.STRONGLY;
-      const pointsCol = component.experienceTable.columnDefs[4];
+    it('should add calculation if form is valid and in add mode', () => {
+      const newCalc = JSON.parse(JSON.stringify(calculationModel1));
+      newCalc.id = null;
+      fixture.componentRef.setInput('calculation', newCalc);
+      fixture.detectChanges();
 
-      expect(pointsCol.getValue(mockExperienceCalc))
-        .toEqual(10);
+      component.saveForm(mockFormComponent as CalculationFormComponent);
+
+      expect(calculationServiceMock.addCalculation)
+        .toHaveBeenCalledWith({ formData: 'test' });
+      expect(routerMock.navigate)
+        .toHaveBeenCalledWith(['member',
+          calculationModel1.member.id]);
     });
 
-    it('should calculate points correctly for NORMAL relevancy', () => {
-      mockExperienceCalc.relevancy = Relevancy.NORMAL;
-      const pointsCol = component.experienceTable.columnDefs[4];
+    it('should not call service and mark form as touched if form is invalid', () => {
+      mockFormComponent.calculationForm().invalid.mockReturnValue(true);
 
-      expect(pointsCol.getValue(mockExperienceCalc))
-        .toEqual(5);
-    });
+      component.saveForm(mockFormComponent as CalculationFormComponent);
 
-    it('should calculate points correctly for POORLY relevancy', () => {
-      mockExperienceCalc.relevancy = Relevancy.POORLY;
-      const pointsCol = component.experienceTable.columnDefs[4];
+      expect(calculationServiceMock.updateCalculation).not.toHaveBeenCalled();
+      expect(calculationServiceMock.addCalculation).not.toHaveBeenCalled();
 
-      expect(pointsCol.getValue(mockExperienceCalc))
-        .toEqual(2);
-    });
-
-    it('should return 0 points for unknown relevancy', () => {
-      mockExperienceCalc.relevancy = 'UNKNOWN_RELEVANCY' as any;
-      const pointsCol = component.experienceTable.columnDefs[4];
-
-      expect(pointsCol.getValue(mockExperienceCalc))
-        .toEqual(0);
-    });
-  });
-
-  describe('Table Data configuration', () => {
-    it('should configure GenericTableDataSource with columns', () => {
-      const tableData = component.experienceTable;
-
-      expect(tableData)
-        .toBeInstanceOf(GenericTableDataSource);
-      expect(tableData.columnDefs)
-        .toEqual(component.experienceTable.columnDefs);
-    });
-  });
-
-  describe('Degree Table Columns Definition', () => {
-    let mockDegreeCalc: DegreeCalculationModel;
-
-    beforeEach(() => {
-      mockDegreeCalc = {
-        degree: {
-          name: 'Master of Science',
-          type: {
-            highlyRelevantPoints: 100,
-            limitedRelevantPoints: 50,
-            littleRelevantPoints: 20
-          }
-        },
-        relevancies: {
-          [Relevancy.STRONGLY]: { weight: 0 },
-          [Relevancy.NORMAL]: { weight: 0 },
-          [Relevancy.POORLY]: { weight: 0 }
-        }
-      } as DegreeCalculationModel;
-    });
-
-    it('should have correct amount of columns in degree table', () => {
-      const columns = component.degreeTable;
-      expect(columns.columnDefs.length)
-        .toEqual(6);
-    });
-
-    it('should correctly map standard properties in degree columns via getValue', () => {
-      const columns = component.degreeTable;
-      const nameCol = columns.columnDefs[0];
-      const highlyCol = columns.columnDefs[1];
-      const limitedCol = columns.columnDefs[2];
-      const littleCol = columns.columnDefs[3];
-
-      expect(nameCol.getValue(mockDegreeCalc))
-        .toBe('Master of Science');
-      expect(highlyCol.getValue(mockDegreeCalc))
-        .toBeUndefined();
-      expect(limitedCol.getValue(mockDegreeCalc))
-        .toBeUndefined();
-      expect(littleCol.getValue(mockDegreeCalc))
-        .toBeUndefined();
-    });
-
-    it('should calculate degree points correctly with mixed weights', () => {
-      mockDegreeCalc.relevancies = {
-        [Relevancy.STRONGLY]: { weight: 50 },
-        [Relevancy.NORMAL]: { weight: 30 },
-        [Relevancy.POORLY]: { weight: 20 }
-      } as any;
-
-      const pointsCol = component.degreeTable.columnDefs[4];
-
-      expect(pointsCol.getValue(mockDegreeCalc))
-        .toEqual('69.00');
-    });
-
-    it('should calculate degree points correctly with 100% in one relevancy', () => {
-      mockDegreeCalc.relevancies = {
-        [Relevancy.STRONGLY]: { weight: 0 },
-        [Relevancy.NORMAL]: { weight: 100 },
-        [Relevancy.POORLY]: { weight: 0 }
-      } as any;
-
-      const pointsCol = component.degreeTable.columnDefs[4];
-
-      expect(pointsCol.getValue(mockDegreeCalc))
-        .toEqual('50.00');
-    });
-
-    it('should handle missing degree type points gracefully and return 0.00', () => {
-      mockDegreeCalc.degree.type = {} as any;
-      mockDegreeCalc.relevancies = {
-        [Relevancy.STRONGLY]: { weight: 50 },
-        [Relevancy.NORMAL]: { weight: 50 },
-        [Relevancy.POORLY]: { weight: 0 }
-      } as any;
-
-      const pointsCol = component.degreeTable.columnDefs[4];
-
-      expect(pointsCol.getValue(mockDegreeCalc))
-        .toEqual('0.00');
-    });
-
-    it('should handle missing relevancies gracefully and return 0.00', () => {
-      mockDegreeCalc.relevancies = undefined as any;
-
-      const pointsCol = component.degreeTable.columnDefs[4];
-
-      expect(pointsCol.getValue(mockDegreeCalc))
-        .toEqual('0.00');
-    });
-  });
-
-  describe('Degree Table Data configuration', () => {
-    it('should configure GenericTableDataSource with detail view link for degree table', () => {
-      const tableData = component.degreeTable;
-
-      expect(tableData)
-        .toBeInstanceOf(GenericTableDataSource);
-      expect(tableData.shouldLink)
-        .toBe(true);
-      expect(tableData.columnDefs.length)
-        .toEqual(6);
+      expect(mockFormComponent.calculationForm().markAsTouched)
+        .toHaveBeenCalled();
     });
   });
 });
