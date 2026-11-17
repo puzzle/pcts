@@ -102,3 +102,21 @@ export function isSearchTermEmpty(inputFieldTagId: string): ValidatorFn {
     return inputfield.value ? { invalid_entry: inputfield.value } : null;
   };
 }
+
+export function isCompletedAtBeforeValidUntil(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const completedAt = control.get('completedAt')?.value;
+    const validUntil = control.get('validUntil')?.value;
+
+    if (!completedAt || !validUntil) {
+      return null;
+    }
+
+    if (new Date(completedAt)
+      .getTime() > new Date(validUntil)
+      .getTime()) {
+      return { isCompletedAtBeforeValidUntil: true };
+    }
+    return null;
+  };
+}
