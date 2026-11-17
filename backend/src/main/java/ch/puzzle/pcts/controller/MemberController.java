@@ -7,11 +7,13 @@ import ch.puzzle.pcts.dto.member.MemberInputDto;
 import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.mapper.MemberMapper;
 import ch.puzzle.pcts.model.calculation.Calculation;
+import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.model.role.Role;
 import ch.puzzle.pcts.security.annotation.IsAdmin;
 import ch.puzzle.pcts.security.annotation.IsAdminOrOwner;
 import ch.puzzle.pcts.security.annotation.IsAuthenticated;
+import ch.puzzle.pcts.service.SecurityService;
 import ch.puzzle.pcts.service.business.MemberBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -36,11 +38,13 @@ public class MemberController {
     private final MemberMapper mapper;
     private final CalculationMapper calculationMapper;
     private final MemberBusinessService service;
+    private final SecurityService securityService;
 
-    public MemberController(MemberMapper mapper, CalculationMapper calculationMapper, MemberBusinessService service) {
+    public MemberController(MemberMapper mapper, CalculationMapper calculationMapper, MemberBusinessService service, SecurityService securityService) {
         this.mapper = mapper;
         this.calculationMapper = calculationMapper;
         this.service = service;
+        this.securityService = securityService;
     }
 
     @Operation(summary = "List all members")
@@ -68,6 +72,9 @@ public class MemberController {
     public ResponseEntity<List<CalculationDto>> getMemberCalculations(@Parameter(description = "ID of the member.", required = true)
     @PathVariable Long memberId, @Parameter(description = "Optional role ID to filter calculations.") @RequestParam(name = "roleId", required = false) Long roleId) {
         List<Calculation> calculations = service.getAllCalculationsByMemberIdAndRoleId(memberId, roleId);
+        if (!securityService.isAdmin()) {
+            calculations = calculations.stream().filter((calculation) -> calculation.getState() == CalculationState.ACTIVE).toList();
+        }
         return ResponseEntity.ok(calculationMapper.toDto(calculations));
     }
 
