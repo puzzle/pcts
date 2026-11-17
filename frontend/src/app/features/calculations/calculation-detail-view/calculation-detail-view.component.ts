@@ -45,7 +45,7 @@ export class CalculationDetailViewComponent {
     const calcForm = formComponent.calculationForm;
 
     if (calcForm()
-      .invalid()) {
+      .valid()) {
       const formData = calcForm()
         .controlValue();
 
