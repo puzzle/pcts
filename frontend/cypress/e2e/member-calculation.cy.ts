@@ -4,6 +4,7 @@ import { TableHelper } from '../support/helper/table-helper';
 import * as users from '../fixtures/users.json';
 import calculationDetailViewPage from '../pages/calculationDetailViewPage';
 import { Relevancy } from '../../src/app/features/calculations/relevancy.enum';
+import { StringMatcher } from 'cypress/types/net-stubbing';
 
 
 describe('MemberCalculationComponent', () => {
@@ -42,7 +43,7 @@ describe('MemberCalculationComponent', () => {
       .toggleShowAll();
   });
 
-  it.only('should save a new calculation', () => {
+  it('should save a new calculation', () => {
     // go to tab
     memberDetailPage.visit(1)
       .switchTab('Administrator');
@@ -94,7 +95,6 @@ describe('MemberCalculationComponent', () => {
         // expand Degree row.
         degreeTableHelper.expandRow($row);
 
-
         [Relevancy.POORLY,
           Relevancy.NORMAL,
           Relevancy.STRONGLY].forEach((relevancy) => {
@@ -106,24 +106,15 @@ describe('MemberCalculationComponent', () => {
           degreeTableHelper.setRowCheckboxRelevancy($row, relevancy, false);
         });
 
-        degreeTableHelper.setRowCheckboxRelevancy($row, Relevancy.NORMAL);
-
-        degreeTableHelper.setRowPercentage($row, Relevancy.NORMAL, 100);
-
-        // check if warning is not there
-        degreeTableHelper.expectNoWarning($row);
-
-        degreeTableHelper.setRowCheckboxRelevancy($row, Relevancy.STRONGLY);
-
-        degreeTableHelper.setRowPercentage($row, Relevancy.STRONGLY, 100);
-
-        degreeTableHelper.expectWarning($row);
-
-        degreeTableHelper.setRowPercentage($row, Relevancy.STRONGLY, 50);
-
-        degreeTableHelper.setRowPercentage($row, Relevancy.NORMAL, 50);
-
-        degreeTableHelper.expectNoWarning($row);
+        degreeTableHelper.setRowCheckboxRelevancy($row, Relevancy.NORMAL)
+          .setRowPercentage($row, Relevancy.NORMAL, 100)
+          .expectNoWarning($row)
+          .setRowCheckboxRelevancy($row, Relevancy.STRONGLY)
+          .setRowPercentage($row, Relevancy.STRONGLY, 100)
+          .expectWarning($row)
+          .setRowPercentage($row, Relevancy.STRONGLY, 50)
+          .setRowPercentage($row, Relevancy.NORMAL, 50)
+          .expectNoWarning($row);
       });
 
     // check save button is enabled
@@ -131,18 +122,107 @@ describe('MemberCalculationComponent', () => {
       .should('be.enabled');
   });
 
-  it('should save a exsisting caluculation', () => {
-    // todo add a new experience, degree, certificate and a leadership.
+  it.only('should save a exsisting caluculation', () => {
+    let calculationBodyBefore: any;
 
-    // todo go to tab
+    const regexCalculationPath: StringMatcher = /\/api\/v1\/calculations\/\d+$/;
+    const regexCalculationTemplatePath: StringMatcher = /\/api\/v1\/calculations\/template\/\d+\/\d+$/;
 
-    // todo click calculation.
+    cy.intercept({
+      method: 'GET',
+      url: regexCalculationPath
+    })
+      .as('getCalculation');
 
-    // todo check if the new values are not displayed.
+    cy.intercept({
+      method: 'GET',
+      url: regexCalculationTemplatePath
+    })
+      .as('getCalculationTemplate');
 
-    // todo change form
+    memberDetailPage.visit(1)
+      .switchTab('Administrator');
+    calculationTableHelper.tableRows()
+      .first()
+      .click();
 
-    // todo save
+    cy.wait('@getCalculation')
+      .then((interceptionBefore) => {
+        // todo clean this up
+        const authHeader = interceptionBefore.request.headers['authorization'];
+
+        const headerString = Array.isArray(authHeader) ? authHeader[0] : authHeader;
+        const token = headerString.split(' ')[1];
+
+        calculationBodyBefore = interceptionBefore.response?.body;
+
+        createExperience(token);
+        createLeadershipExperience(token);
+        createDegree(token);
+        createCertificate(token);
+      });
+
+    calculationDetailViewPage.cancelButton()
+      .click();
+    memberDetailPage.switchTab('Administrator');
+    memberDetailPage.addCalculation()
+      .click();
+
+    cy.wait('@getCalculationTemplate')
+      .then((interception) => {
+        const calculationBodyAfter = interception.response?.body;
+
+        expect(calculationBodyBefore).to.not.eql(calculationBodyAfter);
+      });
+
+    calculationDetailViewPage.cancelButton()
+      .click();
+    memberDetailPage.switchTab('Administrator');
+    calculationTableHelper.tableRows()
+      .first()
+      .click();
+
+    cy.wait('@getCalculation')
+      .then((interceptionAfter) => {
+        const calculationBodyAfter = interceptionAfter.response?.body;
+
+        expect(calculationBodyBefore).to.eql(calculationBodyAfter);
+      });
+
+    experienceTableHelper.tableRows()
+      .each(($row, index) => {
+        degreeTableHelper.expectNoWarning($row);
+
+        experienceTableHelper.selectRowRelevancy($row, Relevancy.STRONGLY);
+
+        experienceTableHelper.tableRows()
+          .eq(index)
+          .contains('mat-icon', 'warning')
+          .should('not.exist');
+      });
+
+    degreeTableHelper.tableRows()
+      .each(($row) => {
+        degreeTableHelper.expandRow($row);
+
+        degreeTableHelper.setRowCheckboxRelevancy($row, Relevancy.STRONGLY);
+        degreeTableHelper.setRowPercentage($row, Relevancy.STRONGLY, 100);
+
+        degreeTableHelper.expectWarning($row);
+
+        degreeTableHelper.setRowCheckboxRelevancy($row, Relevancy.POORLY, false);
+
+        degreeTableHelper.expectNoWarning($row);
+
+        // todo saving doesn't work, see pr documentation
+        calculationDetailViewPage.saveButton()
+          .click();
+
+        /*
+         * todo check if toaster gets displayed
+         * todo check with interceptor if right caluclation gets send back.
+         */
+      });
   });
 
   it('should only display leadership experiences in calculation from a Management role', () => {
@@ -159,3 +239,75 @@ describe('MemberCalculationComponent', () => {
     // todo check that leadership experience is present
   });
 });
+
+export const createExperience = (token: string) => {
+  return cy.request({
+    method: 'POST',
+    url: 'http://localhost:4200/api/v1/experiences',
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    body: {
+      name: 'Software Engineer',
+      memberId: 1,
+      experienceTypeId: 1,
+      comment: 'Worked on backend APIs and DevOps tasks.',
+      employer: 'TechNova Solutions',
+      percent: 100,
+      startDate: '2023-10-10',
+      endDate: '2027-12-10'
+    }
+  });
+};
+
+export const createLeadershipExperience = (token: string) => {
+  return cy.request({
+    method: 'POST',
+    url: 'http://localhost:4200/api/v1/leadership-experiences',
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    body: {
+      memberId: 1,
+      leadershipExperienceTypeId: 3,
+      comment: 'This is a comment'
+    }
+  });
+};
+
+export const createDegree = (token: string) => {
+  return cy.request({
+    method: 'POST',
+    url: 'http://localhost:4200/api/v1/degrees',
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    body: {
+      name: 'Bachelor in mathematics',
+      memberId: 1,
+      typeId: 1,
+      institution: 'GIBB',
+      completed: true,
+      comment: '',
+      startDate: '2000-10-10',
+      endDate: '2001-12-10'
+    }
+  });
+};
+
+export const createCertificate = (token: string) => {
+  return cy.request({
+    method: 'POST',
+    url: 'http://localhost:4200/api/v1/certificates',
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    body: {
+      memberId: 1,
+      certificateTypeId: 10,
+      completedAt: '2000-10-10',
+      validUntil: null,
+      comment: ''
+    }
+  });
+};

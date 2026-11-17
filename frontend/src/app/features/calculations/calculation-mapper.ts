@@ -6,16 +6,18 @@ import { Relevancy } from './relevancy.enum';
 export function toCalculationModel(dto: CalculationDto): CalculationModel {
   return {
     ...dto,
-    degreeCalculations: dto.degreeCalculations.map((degreeDto) => toDegreeCalculationModel(degreeDto))
+    degreeCalculations: dto.degreeCalculations.map((degreeDto, index) => toDegreeCalculationModel(degreeDto, index))
   };
 }
 
-export function toCalculationDto(model: CalculationModel): CalculationDto {
-  return {
-    ...model,
-    degreeCalculations: model.degreeCalculations.map(toDegreeCalculationDto)
-  };
-}
+/*
+ * export function toCalculationDto(model: CalculationModel): CalculationDto {
+ *   return {
+ *     ...model,
+ *     degreeCalculations: model.degreeCalculations.map(toDegreeCalculationDto)
+ *   };
+ * }
+ */
 
 export function toCalculationInputDto(model: CalculationModel): CalculationInputDto {
   return {

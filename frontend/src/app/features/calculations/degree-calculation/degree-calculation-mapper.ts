@@ -2,9 +2,10 @@ import { Relevancy } from '../relevancy.enum';
 import { DegreeCalculationDto, DegreeCalculationModel } from './degree-calculation.dto';
 import { RelevancyType } from '../../../shared/generic-table/generic-checkbox-form-table/RelevancyWeightsRow';
 
-export function toDegreeCalculationModel(dto: DegreeCalculationDto): DegreeCalculationModel {
+export function toDegreeCalculationModel(dto: DegreeCalculationDto, index: number): DegreeCalculationModel {
+  // we need a unique identifier for degrees. Therefor we use negative id that is made from the index
   return {
-    id: dto.id,
+    id: dto.id ?? -index,
     degree: dto.degree,
     comment: dto.comment ?? '',
     relevancies: fillMissingWithZero(dto.relevancies)
@@ -21,6 +22,7 @@ export function toDegreeCalculationDto(model: DegreeCalculationModel): DegreeCal
       return acc;
     }, {} as Partial<Record<Relevancy, number>>);
 
+  // todo map back to null when id is fictional (Negative) -1 => null
   return {
     id: model.id,
     degree: model.degree,
