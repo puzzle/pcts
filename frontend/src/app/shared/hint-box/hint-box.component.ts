@@ -1,8 +1,13 @@
 import { Component, input } from '@angular/core';
 import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
 import { HintBoxState } from './HintBoxState.enum';
-import { HINT_BOX_CONFIG } from './hint-box-config';
 import { MatIcon } from '@angular/material/icon';
+import { InfoConfig, WarningConfig } from './hint-box-config';
+
+const HINT_BOX_CONFIG = {
+  [HintBoxState.HINT]: new InfoConfig(),
+  [HintBoxState.WARNING]: new WarningConfig()
+};
 
 @Component({
   selector: 'app-hint-box',
