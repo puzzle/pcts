@@ -7,7 +7,6 @@ import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
   standalone: true,
   imports: [MatButton,
     ScopedTranslationPipe],
-  styleUrl: './submit-button.component.scss',
   templateUrl: './submit-button.component.html'
 })
 export class SubmitButtonComponent {

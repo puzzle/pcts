@@ -44,16 +44,16 @@ export class CalculationDetailViewComponent {
   saveForm(formComponent: CalculationFormComponent) {
     const calcForm = formComponent.calculationForm;
 
-    if (!calcForm()
+    if (calcForm()
       .invalid()) {
       const formData = calcForm()
         .controlValue();
 
-      if (!this.isAdd()) {
-        this.calculationService.updateCalculation(this.calculation().id, formData)
+      if (this.isAdd()) {
+        this.calculationService.addCalculation(formData)
           .subscribe(() => this.routeToCV());
       } else {
-        this.calculationService.addCalculation(formData)
+        this.calculationService.updateCalculation(this.calculation().id, formData)
           .subscribe(() => this.routeToCV());
       }
     } else {
