@@ -53,8 +53,10 @@ export function validateRelevancySelected<T extends RelevancyModel>(path: Schema
 
 const getCertificateColumns = (): GenCol<CertificateTypeModel>[] => [GenCol.fromAttr('name'),
   GenCol.fromAttr('points')];
+
 const getLeadershipExperienceColumns = (): GenCol<LeadershipExperienceTypeModel>[] => [GenCol.fromAttr('name'),
   GenCol.fromAttr('points')];
+
 const getExperienceColumns = (): GenCol<ExperienceCalculationModel>[] => [
   GenCol.fromCalculated('name', (e: ExperienceCalculationModel) => e.experience.name),
   GenCol.fromCalculated('highlyRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.highlyRelevantPoints),
@@ -67,6 +69,28 @@ const getExperienceColumns = (): GenCol<ExperienceCalculationModel>[] => [
       case Relevancy.POORLY: return e.experience.experienceType.littleRelevantPoints;
       default: return 0;
     }
+  }),
+  GenCol.fromCalculated('errorCol', () => {})
+];
+
+const getDegreeColumns = (): GenCol<DegreeCalculationModel>[] => [
+  GenCol.fromCalculated('name', (d: DegreeCalculationModel) => d.degree.name),
+  GenCol.fromCalculated('highlyRelevant', () => {}),
+  GenCol.fromCalculated('limitedRelevant', () => {}),
+  GenCol.fromCalculated('littleRelevant', () => {}),
+  GenCol.fromCalculated('points', (e: DegreeCalculationModel) => {
+    let points = 0;
+    for (const [key,
+      value] of Object.entries(e.relevancies || {})) {
+      const factor = value.weight / 100;
+      switch (key as Relevancy) {
+        case Relevancy.STRONGLY: points += factor * (e.degree.type.highlyRelevantPoints || 0); break;
+        case Relevancy.NORMAL: points += factor * (e.degree.type.limitedRelevantPoints || 0); break;
+        case Relevancy.POORLY: points += factor * (e.degree.type.littleRelevantPoints || 0); break;
+      }
+    }
+    return Number.parseFloat(String(points))
+      .toFixed(2);
   }),
   GenCol.fromCalculated('errorCol', () => {})
 ];
@@ -114,6 +138,9 @@ export class CalculationFormComponent {
   experienceTable = new GenericTableDataSource(getExperienceColumns())
     .withLimit(10);
 
+  degreeTable = new GenericTableDataSource(getDegreeColumns())
+    .withDetailViewLink();
+
   calculationState = [CalculationState.DRAFT,
     CalculationState.ACTIVE,
     CalculationState.ARCHIVED];
@@ -124,29 +151,4 @@ export class CalculationFormComponent {
       this.leadershipExperienceTable.data = this.calculation().leadershipExperienceCalculations.map((l) => l.leadershipExperience.leadershipExperienceType);
     });
   }
-
-  getDegreeCalculationTableData = () => new GenericTableDataSource<DegreeCalculationModel>(this.getDegreeCalculationColumns())
-    .withDetailViewLink();
-
-  getDegreeCalculationColumns = (): GenCol<DegreeCalculationModel>[] => [
-    GenCol.fromCalculated('name', (d: DegreeCalculationModel) => d.degree.name),
-    GenCol.fromCalculated('highlyRelevant', () => {}),
-    GenCol.fromCalculated('limitedRelevant', () => {}),
-    GenCol.fromCalculated('littleRelevant', () => {}),
-    GenCol.fromCalculated('points', (e: DegreeCalculationModel) => {
-      let points = 0;
-      for (const [key,
-        value] of Object.entries(e.relevancies || {})) {
-        const factor = value.weight / 100;
-        switch (key as Relevancy) {
-          case Relevancy.STRONGLY: points += factor * (e.degree.type.highlyRelevantPoints || 0); break;
-          case Relevancy.NORMAL: points += factor * (e.degree.type.limitedRelevantPoints || 0); break;
-          case Relevancy.POORLY: points += factor * (e.degree.type.littleRelevantPoints || 0); break;
-        }
-      }
-      return Number.parseFloat(String(points))
-        .toFixed(2);
-    }),
-    GenCol.fromCalculated('errorCol', () => {})
-  ];
 }
