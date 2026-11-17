@@ -2,6 +2,7 @@
   [disabled]="disabled()"
   type="button"
   (click)="saveClicked.emit()"
+  data-testid="calculation-save-button"
   matButton="filled">
   @if (isAdd()) {
     {{"FORM.ADD.BUTTONS.ACTION" | scopedTranslation}}
