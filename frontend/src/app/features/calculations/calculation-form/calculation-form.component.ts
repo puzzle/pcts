@@ -129,17 +129,13 @@ export class CalculationFormComponent {
     validateWeightsAddingUpTo100(calc.degreeCalculations);
   });
 
-  certificateTable = new GenericTableDataSource(getCertificateColumns())
-    .withLimit(10);
+  certificateTable = new GenericTableDataSource(getCertificateColumns());
 
-  leadershipExperienceTable = new GenericTableDataSource(getLeadershipExperienceColumns())
-    .withLimit(10);
+  leadershipExperienceTable = new GenericTableDataSource(getLeadershipExperienceColumns());
 
-  experienceTable = new GenericTableDataSource(getExperienceColumns())
-    .withLimit(10);
+  experienceTable = new GenericTableDataSource(getExperienceColumns());
 
-  degreeTable = new GenericTableDataSource(getDegreeColumns())
-    .withDetailViewLink();
+  degreeTable = new GenericTableDataSource(getDegreeColumns());
 
   calculationState = [CalculationState.DRAFT,
     CalculationState.ACTIVE,
