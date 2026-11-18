@@ -31,6 +31,8 @@ import { FieldTree, submit } from '@angular/forms/signals';
 export class CalculationDetailViewComponent {
   private readonly calculationService = inject(CalculationService);
 
+  protected readonly HintBoxState = HintBoxState;
+
   private readonly router = inject(Router);
 
   calculation = input.required<CalculationModel>();
@@ -60,41 +62,4 @@ export class CalculationDetailViewComponent {
   isArchived(): boolean {
     return this.calculation().state === CalculationState.ARCHIVED;
   }
-
-  getDegreeCalculationTableData = () => new GenericTableDataSource<DegreeCalculationModel>(this.getDegreeCalculationColumns())
-    .withDetailViewLink();
-
-  getDegreeCalculationColumns = (): GenCol<DegreeCalculationModel>[] => [
-    GenCol.fromCalculated('name', (d: DegreeCalculationModel) => d.degree.name),
-    GenCol.fromCalculated('highlyRelevant', () => {}),
-    GenCol.fromCalculated('limitedRelevant', () => {}),
-    GenCol.fromCalculated('littleRelevant', () => {}),
-    GenCol.fromCalculated('points', (e: DegreeCalculationModel) => {
-      let points = 0;
-      for (const [key,
-        value] of Object.entries(e.relevancies || {})) {
-        const factor = value.weight / 100;
-
-        switch (key as Relevancy) {
-          case Relevancy.STRONGLY:
-            points += factor * (e.degree.type.highlyRelevantPoints || 0);
-            break;
-          case Relevancy.NORMAL:
-            points += factor * (e.degree.type.limitedRelevantPoints || 0);
-            break;
-          case Relevancy.POORLY:
-            points += factor * (e.degree.type.littleRelevantPoints || 0);
-            break;
-          default:
-            break;
-        }
-      }
-
-      return Number.parseFloat(String(points))
-        .toFixed(2);
-    }),
-    GenCol.fromCalculated('errorCol', () => {})
-  ];
-
-  protected readonly HintBoxState = HintBoxState;
 }
