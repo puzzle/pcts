@@ -128,13 +128,14 @@ export class CalculationFormComponent {
     validateWeightsAddingUpTo100(calc.degreeCalculations);
   });
 
-  certificateTable = new GenericTableDataSource(getCertificateColumns());
+  certificateTableDataSource = new GenericTableDataSource(getCertificateColumns());
 
-  leadershipExperienceTable = new GenericTableDataSource(getLeadershipExperienceColumns());
+  leadershipExperienceTableDataSource = new GenericTableDataSource(getLeadershipExperienceColumns());
 
-  experienceTable = new GenericTableDataSource(getExperienceColumns());
+  experienceTableDataSource = new GenericTableDataSource(getExperienceColumns());
 
-  degreeTable = new GenericTableDataSource(getDegreeColumns());
+  degreeTableDataSource = new GenericTableDataSource(getDegreeColumns())
+    .withDetailViewLink();
 
   calculationState = [CalculationState.DRAFT,
     CalculationState.ACTIVE,
@@ -142,8 +143,8 @@ export class CalculationFormComponent {
 
   constructor() {
     effect(() => {
-      this.certificateTable.data = this.calculation().certificateCalculations.map((c) => c.certificate.certificateType);
-      this.leadershipExperienceTable.data = this.calculation().leadershipExperienceCalculations.map((l) => l.leadershipExperience.leadershipExperienceType);
+      this.certificateTableDataSource.data = this.calculation().certificateCalculations.map((c) => c.certificate.certificateType);
+      this.leadershipExperienceTableDataSource.data = this.calculation().leadershipExperienceCalculations.map((l) => l.leadershipExperience.leadershipExperienceType);
     });
   }
 }
