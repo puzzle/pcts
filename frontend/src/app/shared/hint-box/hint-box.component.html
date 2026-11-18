@@ -1,14 +1,15 @@
 <section
   class="hint-box"
-  [class]="config[state()].classes">
+  [class.hint]="variant() === HintBoxState.HINT"
+  [class.warning]="variant() === HintBoxState.WARNING">
 
   <div class="d-flex align-items-center gap-2 mb-3">
     <mat-icon
       aria-hidden="true"
-      [fontIcon]="config[state()].icon" />
+      [fontIcon]="icon()" />
 
     <strong>
-      {{ ('HINT_BOX.' + state()) | scopedTranslation }}
+      {{ ('HINT_BOX.' + variant()) | scopedTranslation }}
     </strong>
   </div>
 
