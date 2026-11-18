@@ -31,8 +31,6 @@ import { FieldTree, submit } from '@angular/forms/signals';
 export class CalculationDetailViewComponent {
   private readonly calculationService = inject(CalculationService);
 
-  protected readonly HintBoxState = HintBoxState;
-
   private readonly router = inject(Router);
 
   calculation = input.required<CalculationModel>();
