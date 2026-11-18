@@ -11,7 +11,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { DialogResult, StrictlyTypedDialog } from '../../../shared/modal/strictly-typed-dialog.helper';
 import { MemberModel } from '../../member/member.model';
-import { isValueInListSignal } from '../../../shared/form/form-validators';
+import { isCompletedAtBeforeValidUntil, isValueInListSignal } from '../../../shared/form/form-validators';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import { DegreeModel } from '../degree.model';
@@ -67,15 +67,20 @@ export class DegreeModalComponent extends StrictlyTypedDialog<FormModalConfig<De
         isValueInListSignal(this.degreeTypeOptions, (a, b) => a.id === b.id)]],
     institution: ['' as string | null],
     completed: [true as boolean | null],
-    endDate: [null as Date | null],
+    endDate: [null as Date | null,
+      [isCompletedAtBeforeValidUntil('startDate', 'endDate')]],
     startDate: [null as Date | null,
-      Validators.required],
+      [Validators.required,
+        isCompletedAtBeforeValidUntil('startDate', 'endDate')]],
     comment: ['' as string | null]
   });
 
   ngOnInit(): void {
     this.formGroup.patchValue(this.data.model ?? {});
-
+    this.formGroup.get('endDate')?.valueChanges.subscribe(() => {
+      this.formGroup.get('startDate')
+        ?.updateValueAndValidity();
+    });
     this.degreeTypeService.getAllDegreeTypes()
       .subscribe((degreeTypes) => {
         this.degreeTypeOptions.set(degreeTypes);
