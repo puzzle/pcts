@@ -103,7 +103,7 @@ export function isSearchTermEmpty(inputFieldTagId: string): ValidatorFn {
   };
 }
 
-export function hasToBeBeforeStartDate(otherDateField: string): ValidatorFn {
+export function hasToBeBeforeDate(otherDateField: string): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const endDate = control.value;
     const startDate = control.parent?.get(otherDateField)?.value;
@@ -115,7 +115,7 @@ export function hasToBeBeforeStartDate(otherDateField: string): ValidatorFn {
     if (new Date(startDate)
       .getTime() > new Date(endDate)
       .getTime()) {
-      return { has_To_Be_Before_Start_Date: true };
+      return { has_To_Be_Before_Date: true };
     }
     return null;
   };

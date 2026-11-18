@@ -8,7 +8,7 @@ import { PctsFormErrorDirective } from '../../../shared/pcts-form-error/pcts-for
 import { PctsFormLabelDirective } from '../../../shared/pcts-form-label/pcts-form-label.directive';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
-  hasToBeBeforeStartDate,
+  hasToBeBeforeDate,
   isValueInListSignal
 } from '../../../shared/form/form-validators';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
@@ -67,7 +67,7 @@ export class CertificateModalComponent extends StrictlyTypedDialog<FormModalConf
     completedAt: [null as Date | null,
       Validators.required],
     validUntil: [null as Date | null,
-      [hasToBeBeforeStartDate('completedAt')]],
+      [hasToBeBeforeDate('completedAt')]],
     comment: ['' as string | null]
   });
 
