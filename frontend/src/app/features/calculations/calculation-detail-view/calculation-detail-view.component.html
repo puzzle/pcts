@@ -24,8 +24,10 @@
   <footer class="bottom">
     <app-submit-button
       [disabled]="calcForm.calculationForm().invalid()"
-      [isAdd]="isAdd()"
       (saveClicked)="saveForm(calcForm)"
-      (cancelClicked)="routeToCV()" />
+      [text]="(isAdd() ? 'FORM.ADD.BUTTONS.ACTION' : 'FORM.EDIT.BUTTONS.ACTION') | scopedTranslation" />
+    <app-cancel-button
+      (cancelClicked)="routeToCV()"
+      [text]="'FORM.EDIT.BUTTONS.CANCEL' | scopedTranslation" />
   </footer>
 }
