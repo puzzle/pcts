@@ -1,5 +1,5 @@
-import { Component, inject, input } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, computed, inject, input } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -29,15 +29,15 @@ import { FieldTree, submit } from '@angular/forms/signals';
   styleUrl: 'calculation-detail-view.component.scss'
 })
 export class CalculationDetailViewComponent {
+  private readonly route = inject(ActivatedRoute);
+
   private readonly calculationService = inject(CalculationService);
 
   private readonly router = inject(Router);
 
   calculation = input.required<CalculationModel>();
 
-  isAdd() {
-    return !this.calculation().id;
-  }
+  isAdd = computed(() => this.route.snapshot.data['mode'] === 'create');
 
   routeToCV() {
     this.router.navigate(['member',
