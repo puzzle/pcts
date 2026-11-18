@@ -113,16 +113,16 @@ const getDegreeColumns = (): GenCol<DegreeCalculationModel>[] => [
   templateUrl: './calculation-form.component.html'
 })
 export class CalculationFormComponent {
-  isReadOnly = input<boolean>();
+  isReadOnly = input<boolean>(false);
 
   calculation = input.required<CalculationModel>();
 
   calculationWritableSignal = linkedSignal(() => this.calculation());
 
   calculationForm = form(this.calculationWritableSignal, (calc) => {
-    disabled(calc.state, { when: () => !!this.isReadOnly() });
-    disabled(calc.experienceCalculations, { when: () => !!this.isReadOnly() });
-    disabled(calc.degreeCalculations, { when: () => !!this.isReadOnly() });
+    disabled(calc.state, { when: () => this.isReadOnly() });
+    disabled(calc.experienceCalculations, { when: () => this.isReadOnly() });
+    disabled(calc.degreeCalculations, { when: () => this.isReadOnly() });
 
     validateRelevancySelected(calc.experienceCalculations);
     validateWeightsAddingUpTo100(calc.degreeCalculations);
