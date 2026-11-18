@@ -115,7 +115,7 @@ export function isCompletedAtBeforeValidUntil(startDateField = 'startDate', endD
     if (new Date(startDate)
       .getTime() > new Date(endDate)
       .getTime()) {
-      return { isCompletedAtBeforeValidUntil: true };
+      return { is_Completed_At_Before_Valid_Until: true };
     }
     return null;
   };
