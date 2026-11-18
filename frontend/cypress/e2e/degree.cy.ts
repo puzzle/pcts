@@ -80,7 +80,7 @@ describe('Degree Modal', () => {
         formPage.typeAndBlur('startDate', '10.10.2027');
         formPage.typeAndBlur('endDate', '10.09.2027');
 
-        formPage.shouldShowValidationError('Das Abschlussdatum darf nicht nach dem Gültigkeitsdatum liegen', 'startDate');
+        formPage.shouldShowValidationError('Das Enddatum darf nicht vor dem Startdatum liegen', 'endDate');
         formPage.submitButtonShouldBe('disabled');
       });
 

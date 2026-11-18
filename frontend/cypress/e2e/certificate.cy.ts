@@ -49,7 +49,7 @@ describe('Certificate modal', () => {
         formPage.typeAndBlur('completedAt', '10.10.2027');
         formPage.typeAndBlur('validUntil', '10.09.2027');
 
-        formPage.shouldShowValidationError('Das Abschlussdatum darf nicht nach dem Gültigkeitsdatum liegen', 'completedAt');
+        formPage.shouldShowValidationError('Das Enddatum darf nicht vor dem Startdatum liegen', 'validUntil');
         formPage.submitButtonShouldBe('disabled');
       });
 
