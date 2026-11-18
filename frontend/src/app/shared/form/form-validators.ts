@@ -103,10 +103,10 @@ export function isSearchTermEmpty(inputFieldTagId: string): ValidatorFn {
   };
 }
 
-export function isCompletedAtBeforeValidUntil(): ValidatorFn {
+export function isCompletedAtBeforeValidUntil(completedAtField = 'completedAt', validUntilField = 'validUntil'): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    const completedAt = control.get('completedAt')?.value;
-    const validUntil = control.get('validUntil')?.value;
+    const completedAt = control.parent?.get(completedAtField)?.value;
+    const validUntil = control.parent?.get(validUntilField)?.value;
 
     if (!completedAt || !validUntil) {
       return null;
