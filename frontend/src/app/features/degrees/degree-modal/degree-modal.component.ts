@@ -70,17 +70,13 @@ export class DegreeModalComponent extends StrictlyTypedDialog<FormModalConfig<De
     endDate: [null as Date | null,
       [isCompletedAtBeforeValidUntil()]],
     startDate: [null as Date | null,
-      [Validators.required,
-        isCompletedAtBeforeValidUntil()]],
+      Validators.required],
     comment: ['' as string | null]
   });
 
   ngOnInit(): void {
     this.formGroup.patchValue(this.data.model ?? {});
-    this.formGroup.get('endDate')?.valueChanges.subscribe(() => {
-      this.formGroup.get('startDate')
-        ?.updateValueAndValidity();
-    });
+
     this.degreeTypeService.getAllDegreeTypes()
       .subscribe((degreeTypes) => {
         this.degreeTypeOptions.set(degreeTypes);

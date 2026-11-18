@@ -73,17 +73,13 @@ export class ExperienceModalComponent extends StrictlyTypedDialog<FormModalConfi
     endDate: [null as Date | null,
       [isCompletedAtBeforeValidUntil()]],
     startDate: [null as Date | null,
-      [Validators.required,
-        isCompletedAtBeforeValidUntil()]],
+      Validators.required],
     comment: ['' as string | null]
   });
 
   ngOnInit(): void {
     this.formGroup.patchValue(this.data.model ?? {});
-    this.formGroup.get('endDate')?.valueChanges.subscribe(() => {
-      this.formGroup.get('startDate')
-        ?.updateValueAndValidity();
-    });
+
     this.experienceTypeService.getAllExperienceTypes()
       .subscribe((experienceTypes) => {
         this.experienceTypeOptions.set(experienceTypes);

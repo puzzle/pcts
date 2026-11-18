@@ -62,8 +62,7 @@ export class CertificateModalComponent extends StrictlyTypedDialog<FormModalConf
       [Validators.required,
         isValueInListSignal(this.certificateTypeOptions, (a, b) => a.id === b.id)]],
     completedAt: [null as Date | null,
-      [Validators.required,
-        isCompletedAtBeforeValidUntil('completedAt', 'validUntil')]],
+      Validators.required],
     validUntil: [null as Date | null,
       [isCompletedAtBeforeValidUntil('completedAt', 'validUntil')]],
     comment: ['' as string | null]
@@ -71,10 +70,7 @@ export class CertificateModalComponent extends StrictlyTypedDialog<FormModalConf
 
   ngOnInit(): void {
     this.formGroup.patchValue(this.data.model ?? {});
-    this.formGroup.get('validUntil')?.valueChanges.subscribe(() => {
-      this.formGroup.get('completedAt')
-        ?.updateValueAndValidity();
-    });
+
     this.certificateTypeService.getAllCertificateTypes()
       .subscribe((organisationUnits) => {
         this.certificateTypeOptions.set(organisationUnits);
