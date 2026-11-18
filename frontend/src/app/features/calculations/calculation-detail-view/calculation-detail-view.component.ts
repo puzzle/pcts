@@ -10,6 +10,7 @@ import { CalculationModel } from '../calculationDto';
 import { CalculationFormComponent } from '../calculation-form/calculation-form.component';
 import { SubmitButtonComponent } from '../../../shared/submit-button/submit-button.component';
 import { CalculationState } from '../calculation-state.enum';
+import { CancelButtonComponent } from '../../../shared/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-calculation-detail-view',
@@ -20,7 +21,8 @@ import { CalculationState } from '../calculation-state.enum';
     MatIcon,
     ScopedTranslationPipe,
     DatePipe,
-    SubmitButtonComponent
+    SubmitButtonComponent,
+    CancelButtonComponent
   ],
   templateUrl: './calculation-detail-view.component.html',
   styleUrl: 'calculation-detail-view.component.scss'
