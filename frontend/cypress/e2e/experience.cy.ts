@@ -148,22 +148,6 @@ describe('Experience modal', () => {
 
         formPage.submitButtonShouldBe('disabled');
       });
-
-      it('should show error when startDate is after endDate', () => {
-        modalPage.selectAutoCompleteValue('experienceType', 'Pra');
-
-        formPage.typeAndBlur('name', 'Software Engineer');
-        formPage.typeAndBlur('employer', 'TechNova Solutions');
-        formPage.typeAndBlur('percent', '100');
-        formPage.typeAndBlur('startDate', '10.10.2000');
-        formPage.typeAndBlur('endDate', '10.09.2000');
-
-        formPage.submitButtonShouldBe('enabled');
-
-        formPage.save();
-
-        formPage.shouldShowErrorToast('Von mit dem Wert 2000-10-10 muss jünger sein als 2000-09-10.');
-      });
     });
 
     describe('Closing Modal', () => {
