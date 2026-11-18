@@ -1,12 +1,15 @@
 import { Component, computed, input } from '@angular/core';
 import { ScopedTranslationPipe } from '../pipes/scoped-translation-pipe';
-import { HintBoxState } from './HintBoxState.enum';
 import { MatIcon } from '@angular/material/icon';
 
+export type HintBoxVariant = 'hint' | 'warning';
+
+export type HintBoxIcon = 'info' | 'warning';
+
 const HINT_BOX_ICONS = {
-  [HintBoxState.HINT]: 'info',
-  [HintBoxState.WARNING]: 'warning'
-} as const satisfies Record<HintBoxState, string>;
+  hint: 'info',
+  warning: 'warning'
+} as const satisfies Record<HintBoxVariant, HintBoxIcon>;
 
 @Component({
   selector: 'app-hint-box',
@@ -19,9 +22,7 @@ const HINT_BOX_ICONS = {
 export class HintBoxComponent {
   text = input.required<string>();
 
-  variant = input.required<HintBoxState>();
+  variant = input.required<HintBoxVariant>();
 
   protected readonly icon = computed(() => HINT_BOX_ICONS[this.variant()]);
-
-  protected readonly HintBoxState = HintBoxState;
 }
