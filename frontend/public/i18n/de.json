@@ -175,13 +175,12 @@
       "HIGHLY_RELEVANT": "Stark relevant",
       "LIMITED_RELEVANT": "Bedingt relevant",
       "LITTLE_RELEVANT": "Wenig relevant",
+      "ERROR_COL": "",
       "EXPERIENCE": {
-        "MODEL_NAME_PLURAL": "Berufs- und Lebenserfahrungen",
-        "ERROR_COL": ""
+        "MODEL_NAME_PLURAL": "Berufs- und Lebenserfahrungen"
       },
       "DEGREE": {
-        "MODEL_NAME_PLURAL": "Ausbildungen",
-        "ERROR_COL": ""
+        "MODEL_NAME_PLURAL": "Ausbildungen"
       },
       "ALL_CALCULATIONS": "Alle Berechnungen",
       "FROM": "vom"
