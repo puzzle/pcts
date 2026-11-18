@@ -7,7 +7,10 @@ import { MatAutocomplete, MatAutocompleteTrigger, MatOption } from '@angular/mat
 import { PctsFormErrorDirective } from '../../../shared/pcts-form-error/pcts-form-error.directive';
 import { PctsFormLabelDirective } from '../../../shared/pcts-form-label/pcts-form-label.directive';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { isCompletedAtBeforeValidUntil, isValueInListSignal } from '../../../shared/form/form-validators';
+import {
+  hasToBeBeforeStartDate,
+  isValueInListSignal
+} from '../../../shared/form/form-validators';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import { CertificateTypeModel } from '../certificate-type/certificate-type.model';
 import { CertificateTypeService } from '../certificate-type/certificate-type.service';
@@ -64,7 +67,7 @@ export class CertificateModalComponent extends StrictlyTypedDialog<FormModalConf
     completedAt: [null as Date | null,
       Validators.required],
     validUntil: [null as Date | null,
-      [isCompletedAtBeforeValidUntil('completedAt', 'validUntil')]],
+      [hasToBeBeforeStartDate('completedAt')]],
     comment: ['' as string | null]
   });
 
