@@ -13,7 +13,7 @@ describe('HintBoxComponent', () => {
 
     fixture = TestBed.createComponent(HintBoxComponent);
     fixture.componentRef.setInput('text', 'Test message');
-    fixture.componentRef.setInput('variant', 'Hint');
+    fixture.componentRef.setInput('variant', 'hint');
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
