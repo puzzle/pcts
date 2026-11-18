@@ -30,7 +30,7 @@ describe('CalculationFormComponent', () => {
   });
 
   it('should have correct amount of columns in table', () => {
-    expect(component.degreeTable.columnDefs.length)
+    expect(component.degreeTableDataSource.columnDefs.length)
       .toEqual(6);
   });
 
@@ -57,7 +57,7 @@ describe('CalculationFormComponent', () => {
         highlyCol,
         limitedCol,
         littleCol
-      ] = component.experienceTable.columnDefs;
+      ] = component.experienceTableDataSource.columnDefs;
 
       expect(nameCol.getValue(mockExperienceCalc))
         .toBe('Test Experience');
@@ -83,7 +83,7 @@ describe('CalculationFormComponent', () => {
     relevancyCases.forEach(({ relevancy, expected }) => {
       it(`should calculate points correctly for ${relevancy} relevancy`, () => {
         mockExperienceCalc.relevancy = relevancy;
-        const pointsCol = component.experienceTable.columnDefs[4];
+        const pointsCol = component.experienceTableDataSource.columnDefs[4];
         expect(pointsCol.getValue(mockExperienceCalc))
           .toEqual(expected);
       });
@@ -92,10 +92,10 @@ describe('CalculationFormComponent', () => {
 
   describe('Table Data configuration', () => {
     it('should configure GenericTableDataSource with columns', () => {
-      expect(component.experienceTable)
+      expect(component.experienceTableDataSource)
         .toBeInstanceOf(GenericTableDataSource);
-      expect(component.experienceTable.columnDefs)
-        .toEqual(component.experienceTable.columnDefs);
+      expect(component.experienceTableDataSource.columnDefs)
+        .toEqual(component.experienceTableDataSource.columnDefs);
     });
   });
 
@@ -126,7 +126,7 @@ describe('CalculationFormComponent', () => {
         highlyCol,
         limitedCol,
         littleCol
-      ] = component.degreeTable.columnDefs;
+      ] = component.degreeTableDataSource.columnDefs;
 
       expect(nameCol.getValue(mockDegreeCalc))
         .toBe('Master of Science');
@@ -145,7 +145,7 @@ describe('CalculationFormComponent', () => {
         [Relevancy.POORLY]: { weight: 20 }
       } as any;
 
-      expect(component.degreeTable.columnDefs[4].getValue(mockDegreeCalc))
+      expect(component.degreeTableDataSource.columnDefs[4].getValue(mockDegreeCalc))
         .toEqual('69.00');
     });
 
@@ -156,7 +156,7 @@ describe('CalculationFormComponent', () => {
         [Relevancy.POORLY]: { weight: 0 }
       } as any;
 
-      expect(component.degreeTable.columnDefs[4].getValue(mockDegreeCalc))
+      expect(component.degreeTableDataSource.columnDefs[4].getValue(mockDegreeCalc))
         .toEqual('50.00');
     });
 
@@ -168,13 +168,13 @@ describe('CalculationFormComponent', () => {
         [Relevancy.POORLY]: { weight: 0 }
       } as any;
 
-      expect(component.degreeTable.columnDefs[4].getValue(mockDegreeCalc))
+      expect(component.degreeTableDataSource.columnDefs[4].getValue(mockDegreeCalc))
         .toEqual('0.00');
     });
 
     it('should handle missing relevancies gracefully and return 0.00', () => {
       mockDegreeCalc.relevancies = undefined as any;
-      expect(component.degreeTable.columnDefs[4].getValue(mockDegreeCalc))
+      expect(component.degreeTableDataSource.columnDefs[4].getValue(mockDegreeCalc))
         .toEqual('0.00');
     });
   });
