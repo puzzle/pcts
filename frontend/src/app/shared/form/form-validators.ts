@@ -103,17 +103,17 @@ export function isSearchTermEmpty(inputFieldTagId: string): ValidatorFn {
   };
 }
 
-export function isCompletedAtBeforeValidUntil(completedAtField = 'completedAt', validUntilField = 'validUntil'): ValidatorFn {
+export function isCompletedAtBeforeValidUntil(startDateField = 'startDate', endDateField = 'endDate'): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    const completedAt = control.parent?.get(completedAtField)?.value;
-    const validUntil = control.parent?.get(validUntilField)?.value;
+    const startDate = control.parent?.get(startDateField)?.value;
+    const endDate = control.parent?.get(endDateField)?.value;
 
-    if (!completedAt || !validUntil) {
+    if (!startDate || !endDate) {
       return null;
     }
 
-    if (new Date(completedAt)
-      .getTime() > new Date(validUntil)
+    if (new Date(startDate)
+      .getTime() > new Date(endDate)
       .getTime()) {
       return { isCompletedAtBeforeValidUntil: true };
     }

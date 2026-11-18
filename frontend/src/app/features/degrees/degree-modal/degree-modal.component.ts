@@ -68,10 +68,10 @@ export class DegreeModalComponent extends StrictlyTypedDialog<FormModalConfig<De
     institution: ['' as string | null],
     completed: [true as boolean | null],
     endDate: [null as Date | null,
-      [isCompletedAtBeforeValidUntil('startDate', 'endDate')]],
+      [isCompletedAtBeforeValidUntil()]],
     startDate: [null as Date | null,
       [Validators.required,
-        isCompletedAtBeforeValidUntil('startDate', 'endDate')]],
+        isCompletedAtBeforeValidUntil()]],
     comment: ['' as string | null]
   });
 

@@ -63,9 +63,9 @@ export class CertificateModalComponent extends StrictlyTypedDialog<FormModalConf
         isValueInListSignal(this.certificateTypeOptions, (a, b) => a.id === b.id)]],
     completedAt: [null as Date | null,
       [Validators.required,
-        isCompletedAtBeforeValidUntil()]],
+        isCompletedAtBeforeValidUntil('completedAt', 'validUntil')]],
     validUntil: [null as Date | null,
-      [isCompletedAtBeforeValidUntil()]],
+      [isCompletedAtBeforeValidUntil('completedAt', 'validUntil')]],
     comment: ['' as string | null]
   });
 
