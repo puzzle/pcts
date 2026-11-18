@@ -1,11 +1,11 @@
 <section
   class="hint-box"
-  [class]="variant()">
+  [class]="config().class">
 
   <div class="d-flex align-items-center gap-2 mb-3">
     <mat-icon
       aria-hidden="true"
-      [fontIcon]="icon()" />
+      [fontIcon]="config().icon" />
 
     <strong>
       {{ ('HINT_BOX.' + variant()) | scopedTranslation }}
