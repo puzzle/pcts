@@ -11,6 +11,7 @@ import { CalculationFormComponent } from '../calculation-form/calculation-form.c
 import { SubmitButtonComponent } from '../../../shared/submit-button/submit-button.component';
 import { CalculationState } from '../calculation-state.enum';
 import { CancelButtonComponent } from '../../../shared/cancel-button/cancel-button.component';
+import { FieldTree } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-calculation-detail-view',
@@ -43,12 +44,10 @@ export class CalculationDetailViewComponent {
       this.calculation().member.id]);
   }
 
-  saveForm(formComponent: CalculationFormComponent) {
-    const calcForm = formComponent.calculationForm;
-
-    if (calcForm()
+  saveForm(calculationForm: FieldTree<CalculationModel>) {
+    if (calculationForm()
       .valid()) {
-      const formData = calcForm()
+      const formData = calculationForm()
         .controlValue();
 
       if (this.isAdd()) {
@@ -59,7 +58,7 @@ export class CalculationDetailViewComponent {
           .subscribe(() => this.routeToCV());
       }
     } else {
-      calcForm()
+      calculationForm()
         .markAsTouched();
     }
   }
