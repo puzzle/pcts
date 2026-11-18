@@ -23,8 +23,8 @@
 @if (!isArchived()) {
   <footer class="bottom">
     <app-submit-button
-      [disabled]="calcForm.calculationForm().invalid()"
-      (saveClicked)="saveForm(calcForm.calculationForm)"
+      [disabled]="!calcForm.calculationForm().valid() || calcForm.calculationForm().submitting()"
+      (saveClicked)="save(calcForm.calculationForm)"
       [text]="(isAdd() ? 'FORM.ADD.BUTTONS.ACTION' : 'FORM.EDIT.BUTTONS.ACTION') | scopedTranslation" />
     <app-cancel-button
       (cancelClicked)="routeToCV()"

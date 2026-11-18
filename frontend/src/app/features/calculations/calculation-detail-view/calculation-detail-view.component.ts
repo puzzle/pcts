@@ -11,7 +11,7 @@ import { CalculationFormComponent } from '../calculation-form/calculation-form.c
 import { SubmitButtonComponent } from '../../../shared/submit-button/submit-button.component';
 import { CalculationState } from '../calculation-state.enum';
 import { CancelButtonComponent } from '../../../shared/cancel-button/cancel-button.component';
-import { FieldTree } from '@angular/forms/signals';
+import { FieldTree, submit } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-calculation-detail-view',
@@ -44,23 +44,27 @@ export class CalculationDetailViewComponent {
       this.calculation().member.id]);
   }
 
-  saveForm(calculationForm: FieldTree<CalculationModel>) {
-    if (calculationForm()
-      .valid()) {
-      const formData = calculationForm()
-        .controlValue();
-
-      if (this.isAdd()) {
-        this.calculationService.addCalculation(formData)
-          .subscribe(() => this.routeToCV());
-      } else {
-        this.calculationService.updateCalculation(this.calculation().id, formData)
-          .subscribe(() => this.routeToCV());
-      }
-    } else {
-      calculationForm()
-        .markAsTouched();
-    }
+  save(calculationForm: FieldTree<CalculationModel>) {
+    submit(calculationForm, {
+      ignoreValidators: 'none',
+      action: (form) => new Promise((resolve) => {
+        if (this.isAdd()) {
+          this.calculationService.addCalculation(form()
+            .value())
+            .subscribe({
+              next: () => this.routeToCV(),
+              error: () => resolve(undefined)
+            });
+        } else {
+          this.calculationService.updateCalculation(this.calculation().id, form()
+            .value())
+            .subscribe({
+              next: () => this.routeToCV(),
+              error: () => resolve(undefined)
+            });
+        }
+      })
+    });
   }
 
   isArchived(): boolean {
