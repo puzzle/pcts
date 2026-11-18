@@ -72,6 +72,18 @@ describe('Degree Modal', () => {
         openDegreeModal();
       });
 
+      it('should show error message and disable submit button when startDate is after endDate', () => {
+        modalPage.selectAutoCompleteValue('degreeType', 'Bachelor\'s Degree');
+
+        formPage.typeAndBlur('name', 'Bachelor in mathematics');
+        formPage.typeAndBlur('institution', 'GIBB');
+        formPage.typeAndBlur('startDate', '10.10.2027');
+        formPage.typeAndBlur('endDate', '10.09.2027');
+
+        formPage.shouldShowValidationError('Das Abschlussdatum darf nicht nach dem Gültigkeitsdatum liegen', 'startDate');
+        formPage.submitButtonShouldBe('disabled');
+      });
+
       it('validates degree type requirement and input', () => {
         formPage.submitButtonShouldBe('disabled');
         modalPage.selectAutoCompleteValue('degreeType', 'Bachelor\'s Degree');

@@ -74,6 +74,19 @@ describe('Experience modal', () => {
         openExperienceModal();
       });
 
+      it('should show error message and disable submit button when startDate is after endDate', () => {
+        modalPage.selectAutoCompleteValue('experienceType', 'Pra');
+
+        formPage.typeAndBlur('name', 'Software Engineer');
+        formPage.typeAndBlur('employer', 'TechNova Solutions');
+        formPage.typeAndBlur('percent', '100');
+        formPage.typeAndBlur('startDate', '10.10.2027');
+        formPage.typeAndBlur('endDate', '10.09.2027');
+
+        formPage.shouldShowValidationError('Das Abschlussdatum darf nicht nach dem Gültigkeitsdatum liegen', 'startDate');
+        formPage.submitButtonShouldBe('disabled');
+      });
+
       it('validates experience type requirement and input', () => {
         formPage.submitButtonShouldBe('disabled');
 
