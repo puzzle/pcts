@@ -5,7 +5,6 @@ import { disabled, form, FormField, SchemaPath, validate, ValidationError } from
 import { GenericRadioFormTableComponent } from '../../../shared/generic-table/generic-radio-form-table/generic-radio-form-table.component';
 import { GenericCheckboxFormTableComponent } from '../../../shared/generic-table/generic-checkbox-form-table/generic-checkbox-form-table.component';
 import { GenericTableComponent } from '../../../shared/generic-table/generic-table.component';
-import { TranslationScopeDirective } from '../../../shared/translation-scope/translation-scope.directive';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { GenCol, GenericTableDataSource } from '../../../shared/generic-table/generic-table-data-source';
 
@@ -103,7 +102,6 @@ const getDegreeColumns = (): GenCol<DegreeCalculationModel>[] => [
     GenericCheckboxFormTableComponent,
     GenericTableComponent,
     ReactiveFormsModule,
-    TranslationScopeDirective,
     FormField,
     ScopedTranslationPipe,
     MatFormField,
