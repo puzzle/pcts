@@ -4,15 +4,6 @@
   (click)="saveClicked.emit()"
   data-testid="calculation-save-button"
   matButton="filled">
-  @if (isAdd()) {
-    {{"FORM.ADD.BUTTONS.ACTION" | scopedTranslation}}
-  } @else {
-    {{"FORM.EDIT.BUTTONS.ACTION" | scopedTranslation}}
-  }
+  {{ text() }}
 </button>
-<button
-  (click)="cancelClicked.emit()"
-  type="button"
-  matButton>
-  {{"FORM.EDIT.BUTTONS.CANCEL" | scopedTranslation}}
-</button>
+
