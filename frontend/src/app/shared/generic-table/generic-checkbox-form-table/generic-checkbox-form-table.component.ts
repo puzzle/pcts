@@ -97,7 +97,7 @@ export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> im
   }
 
   readonly rows: FieldTree<RelevancyWeightsRow[]> = form(this.value as unknown as WritableSignal<DegreeCalculationModel[]>, (rows) => applyEach(rows, (row) => {
-    disableField(row.comment, {
+    disableField(row, {
       when: () => this.disabled()
     });
 
