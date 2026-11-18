@@ -55,6 +55,7 @@
   },
   "LEADERSHIP_EXPERIENCE": {
     "MODEL_NAME": "Führungserfahrung",
+    "MODEL_NAME_PLURAL": "Führungserfahrungen",
     "LEADERSHIP_EXPERIENCE_TYPE": "Art der Führungserfahrung",
     "TYPES": {
       "MILITARY_FUNCTION": "Militärdienst",
