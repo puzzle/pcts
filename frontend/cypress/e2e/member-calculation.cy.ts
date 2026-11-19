@@ -5,6 +5,7 @@ import * as users from '../fixtures/users.json';
 import calculationDetailViewPage from '../pages/calculationDetailViewPage';
 import { Relevancy } from '../../src/app/features/calculations/relevancy.enum';
 import { StringMatcher } from 'cypress/types/net-stubbing';
+import formPage from '../pages/formPage';
 
 
 describe('MemberCalculationComponent', () => {
@@ -120,6 +121,20 @@ describe('MemberCalculationComponent', () => {
     // check save button is enabled
     calculationDetailViewPage.saveButton()
       .should('be.enabled');
+
+    cy.intercept('POST', '**/api/v1/calculations')
+      .as('createCalculation');
+
+    calculationDetailViewPage.saveButton()
+      .click();
+
+    cy.wait('@createCalculation')
+      .then((interception) => {
+        expect(interception.response?.statusCode).to.eq(201);
+      });
+
+
+    formPage.shouldShowSuccessToast('PCTS-Berechnung wurde erfolgreich erstellt.');
   });
 
   it.only('should save a exsisting caluculation', () => {
@@ -218,10 +233,16 @@ describe('MemberCalculationComponent', () => {
         calculationDetailViewPage.saveButton()
           .click();
 
-        /*
-         * todo check if toaster gets displayed
-         * todo check with interceptor if right caluclation gets send back.
-         */
+
+        cy.intercept('PUT', '**/api/v1/calculations/*')
+          .as('updateCalculation');
+
+        cy.wait('@updateCalculation')
+          .then((interception) => {
+            expect(interception.response?.statusCode).to.eq(200);
+          });
+
+        formPage.shouldShowSuccessToast('PCTS-Berechnung wurde erfolgreich aktualisiert.');
       });
   });
 
