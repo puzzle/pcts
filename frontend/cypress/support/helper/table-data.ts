@@ -45,7 +45,7 @@ export const leadershipExperienceTableData: TableData = {
 export const memberCalculationTableData: TableData = {
   rows: [{
     cells: [
-      '0.00',
+      '5.00',
       'Aktiv',
       'system',
       '02.02.2025'
