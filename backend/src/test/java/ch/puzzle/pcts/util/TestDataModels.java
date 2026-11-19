@@ -674,7 +674,7 @@ public class TestDataModels {
 
     public static final DegreeCalculation DEGREE_CALC_1 = new DegreeCalculation(DEGREE_CALC_1_ID,
                                                                                 null,
-                                                                                DEGREE_2,
+                                                                                DEGREE_1,
                                                                                 Map
                                                                                         .of(Relevancy.STRONGLY,
                                                                                             BigDecimal.valueOf(100)),
@@ -704,7 +704,7 @@ public class TestDataModels {
 
     public static final ExperienceCalculation EXP_CALC_2 = new ExperienceCalculation(EXPERIENCE_CALC_2_ID,
                                                                                      null,
-                                                                                     EXPERIENCE_2,
+                                                                                     EXPERIENCE_3,
                                                                                      Relevancy.POORLY,
                                                                                      "Comment");
 
@@ -716,7 +716,7 @@ public class TestDataModels {
 
     public static final CertificateCalculation CERT_CALC_1 = new CertificateCalculation(CERTIFICATE_CALC_1_ID,
                                                                                         null,
-                                                                                        CERTIFICATE_2);
+                                                                                        CERTIFICATE_1);
 
     public static final CertificateCalculation CERT_CALC_2 = new CertificateCalculation(CERTIFICATE_CALC_2_ID,
                                                                                         null,
@@ -724,7 +724,7 @@ public class TestDataModels {
 
     public static final CertificateCalculation CERT_CALC_3 = new CertificateCalculation(CERTIFICATE_CALC_3_ID,
                                                                                         null,
-                                                                                        CERTIFICATE_3);
+                                                                                        CERTIFICATE_4);
 
     public static final LeadershipExperienceCalculation LEADERSHIP_EXPERIENCE_CALC_1 = new LeadershipExperienceCalculation(LEADERSHIP_EXPERIENCE_CALC_1_ID,
                                                                                                                            null,
@@ -749,8 +749,8 @@ public class TestDataModels {
                 .withState(CalculationState.DRAFT)
                 .withPublicationDate(LocalDate.of(2025, 1, 14))
                 .withPublicizedBy("Ldap User")
-                .withDegreeCalculations(List.of(DEGREE_CALC_1, DEGREE_CALC_3))
-                .withExperienceCalculations(List.of(EXP_CALC_1, EXP_CALC_3))
+                .withDegreeCalculations(List.of(DEGREE_CALC_1))
+                .withExperienceCalculations(List.of(EXP_CALC_1))
                 .withCertificateCalculations(List.of(CERT_CALC_1, CERT_CALC_3))
                 .build();
 
@@ -770,11 +770,10 @@ public class TestDataModels {
                 .withState(CalculationState.DRAFT)
                 .withPublicationDate(LocalDate.of(2025, 1, 14))
                 .withPublicizedBy("Ldap User")
-                .withDegreeCalculations(List.of(DEGREE_CALC_1, DEGREE_CALC_3))
-                .withExperienceCalculations(List.of(EXP_CALC_1, EXP_CALC_3))
+                .withDegreeCalculations(List.of(DEGREE_CALC_1))
+                .withExperienceCalculations(List.of(EXP_CALC_1))
                 .withCertificateCalculations(List.of(CERT_CALC_1, CERT_CALC_3))
-                .withLeadershipExperienceCalculations(List
-                        .of(LEADERSHIP_EXPERIENCE_CALC_1, LEADERSHIP_EXPERIENCE_CALC_2))
+                .withLeadershipExperienceCalculations(List.of(LEADERSHIP_EXPERIENCE_CALC_1))
                 .build();
 
         calc1.getDegreeCalculations().forEach(d -> d.setCalculation(calc1));
@@ -801,16 +800,22 @@ public class TestDataModels {
         calc2.getCertificateCalculations().forEach(c -> c.setCalculation(calc2));
         CALCULATION_2 = calc2;
 
-        CALCULATION_3 = Calculation.Builder
+        Calculation calc3 = Calculation.Builder
                 .builder()
                 .withId(CALCULATION_3_ID)
                 .withMember(MEMBER_2)
                 .withRole(ROLE_2)
                 .withState(CalculationState.ACTIVE)
-                .withDegreeCalculations(List.of())
-                .withExperienceCalculations(List.of())
+                .withDegreeCalculations(List.of(DEGREE_CALC_3))
+                .withExperienceCalculations(List.of(EXP_CALC_3))
                 .withCertificateCalculations(List.of())
+                .withLeadershipExperienceCalculations(List.of(LEADERSHIP_EXPERIENCE_CALC_2))
                 .build();
+
+        calc3.getDegreeCalculations().forEach(d -> d.setCalculation(calc3));
+        calc3.getExperienceCalculations().forEach(e -> e.setCalculation(calc3));
+        calc3.getLeadershipExperienceCalculations().forEach(l -> l.setCalculation(calc3));
+        CALCULATION_3 = calc3;
 
         Calculation calc5 = Calculation.Builder
                 .builder()
@@ -820,8 +825,8 @@ public class TestDataModels {
                 .withState(CalculationState.ACTIVE)
                 .withPublicationDate(LocalDate.of(2025, 1, 14))
                 .withPublicizedBy("Ldap User")
-                .withDegreeCalculations(List.of(DEGREE_CALC_1, DEGREE_CALC_3))
-                .withExperienceCalculations(List.of(EXP_CALC_1, EXP_CALC_3))
+                .withDegreeCalculations(List.of(DEGREE_CALC_1))
+                .withExperienceCalculations(List.of(EXP_CALC_1))
                 .withCertificateCalculations(List.of(CERT_CALC_1, CERT_CALC_3))
                 .build();
 
