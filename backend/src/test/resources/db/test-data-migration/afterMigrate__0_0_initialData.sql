@@ -121,17 +121,17 @@ INSERT INTO experience_calculation
 (calculation_id, experience_id, relevancy, comment)
 VALUES
     (1, 2, 'STRONGLY', 'Comment'),
-    (2, 2, 'POORLY', 'Comment'),
-    (1, 3, 'NORMAL','Comment');
+    (2, 3, 'POORLY', 'Comment'),
+    (3, 3, 'NORMAL','Comment');
 
 TRUNCATE TABLE degree_calculation CASCADE;
 
 INSERT INTO degree_calculation
 (calculation_id, degree_id, comment)
 VALUES
-    (1, 2, 'Comment'),
+    (1, 1, 'Comment'),
     (2, 2, 'Comment'),
-    (1, 2, 'Comment');
+    (3, 2, 'Comment');
 
 INSERT INTO degree_calculation_weight
 (weight, relevancy, degree_calculation_id)
@@ -145,16 +145,16 @@ TRUNCATE TABLE certificate_calculation CASCADE;
 INSERT INTO certificate_calculation
 (calculation_id, certificate_id)
 VALUES
-    (1, 2),
+    (1, 1),
     (2, 2),
-    (1, 3);
+    (1, 4);
 
 TRUNCATE TABLE leadership_experience_calculation CASCADE;
 
 INSERT INTO leadership_experience_calculation(calculation_id, leadership_experience_id)
 VALUES
     (1, 1),
-    (1, 2);
+    (3, 2);
 
 INSERT INTO member_role(member_id, role_id)
 VALUES
