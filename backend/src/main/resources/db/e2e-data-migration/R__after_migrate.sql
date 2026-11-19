@@ -202,9 +202,9 @@ VALUES
 INSERT INTO degree_calculation
 (calculation_id, degree_id, comment)
 VALUES
-    (2, 2, 'Low relevance for technical role'),
-    (3, 3, 'Directly relevant degree'),
-    (4, 3, 'Relevant but less practical focus'),
+    (12, 2, 'Low relevance for technical role'),
+    (13, 3, 'Directly relevant degree'),
+    (4, 1, 'Relevant but less practical focus'),
     (17, 4, 'Highly relevant technical degree'),
     (18, 4, 'Highly relevant technical degree');
 
@@ -220,18 +220,17 @@ VALUES
 INSERT INTO certificate_calculation
 (calculation_id, certificate_id)
 VALUES
-    (2, 2),
-    (3, 3),
-    (4, 4),
-    (5, 5),
+    (2, 1),
+    (13, 3),
+    (14, 4),
+    (5, 1),
     (17, 6),
     (18, 6);
 
 INSERT INTO leadership_experience_calculation
 (calculation_id, leadership_experience_id)
 VALUES
-    (1, 1),
-    (2, 2),
-    (4, 3),
+    (12, 2),
+    (14, 3),
     (17, 4),
     (18, 4);
