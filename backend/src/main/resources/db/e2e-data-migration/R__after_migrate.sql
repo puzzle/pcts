@@ -220,6 +220,7 @@ VALUES
 INSERT INTO certificate_calculation
 (calculation_id, certificate_id)
 VALUES
+    (1, 1),
     (2, 1),
     (13, 3),
     (14, 4),
