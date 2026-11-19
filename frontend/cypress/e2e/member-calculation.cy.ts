@@ -137,39 +137,43 @@ describe('MemberCalculationComponent', () => {
     formPage.shouldShowSuccessToast('PCTS-Berechnung wurde erfolgreich erstellt.');
   });
 
-  it.only('should save a exsisting caluculation', () => {
+  it('should update an existing calculation (and verify snapshot behavior)', () => {
     let calculationBodyBefore: any;
+    let token: string;
 
     const regexCalculationPath: StringMatcher = /\/api\/v1\/calculations\/\d+$/;
     const regexCalculationTemplatePath: StringMatcher = /\/api\/v1\/calculations\/template\/\d+\/\d+$/;
 
-    cy.intercept({
-      method: 'GET',
-      url: regexCalculationPath
-    })
+    cy.intercept({ method: 'GET',
+      url: regexCalculationPath })
       .as('getCalculation');
-
-    cy.intercept({
-      method: 'GET',
-      url: regexCalculationTemplatePath
-    })
+    cy.intercept({ method: 'GET',
+      url: regexCalculationTemplatePath })
       .as('getCalculationTemplate');
+    cy.intercept({ method: 'GET',
+      url: '**/api/v1/members/*' })
+      .as('getMember');
 
-    memberDetailPage.visit(1)
-      .switchTab('Administrator');
+    memberDetailPage.visit(2);
+
+    cy.wait('@getMember')
+      .then((interception) => {
+        const authHeader = interception.request.headers['authorization'];
+        const headerString = Array.isArray(authHeader) ? authHeader[0] : authHeader;
+        token = headerString.split(' ')[1];
+
+        createCalculation(token);
+      });
+
+    memberDetailPage.switchTab('Manager');
+
     calculationTableHelper.tableRows()
       .first()
       .click();
 
     cy.wait('@getCalculation')
-      .then((interceptionBefore) => {
-        // todo clean this up
-        const authHeader = interceptionBefore.request.headers['authorization'];
-
-        const headerString = Array.isArray(authHeader) ? authHeader[0] : authHeader;
-        const token = headerString.split(' ')[1];
-
-        calculationBodyBefore = interceptionBefore.response?.body;
+      .then((interception) => {
+        calculationBodyBefore = interception.response?.body;
 
         createExperience(token);
         createLeadershipExperience(token);
@@ -179,20 +183,19 @@ describe('MemberCalculationComponent', () => {
 
     calculationDetailViewPage.cancelButton()
       .click();
-    memberDetailPage.switchTab('Administrator');
+    memberDetailPage.switchTab('Manager');
     memberDetailPage.addCalculation()
       .click();
 
     cy.wait('@getCalculationTemplate')
       .then((interception) => {
         const calculationBodyAfter = interception.response?.body;
-
         expect(calculationBodyBefore).to.not.eql(calculationBodyAfter);
       });
 
     calculationDetailViewPage.cancelButton()
       .click();
-    memberDetailPage.switchTab('Administrator');
+    memberDetailPage.switchTab('Manager');
     calculationTableHelper.tableRows()
       .first()
       .click();
@@ -200,7 +203,6 @@ describe('MemberCalculationComponent', () => {
     cy.wait('@getCalculation')
       .then((interceptionAfter) => {
         const calculationBodyAfter = interceptionAfter.response?.body;
-
         expect(calculationBodyBefore).to.eql(calculationBodyAfter);
       });
 
@@ -220,22 +222,20 @@ describe('MemberCalculationComponent', () => {
       .each(($row) => {
         degreeTableHelper.expandRow($row);
 
-        degreeTableHelper.setRowCheckboxRelevancy($row, Relevancy.STRONGLY);
-        degreeTableHelper.setRowPercentage($row, Relevancy.STRONGLY, 100);
+        degreeTableHelper.setRowCheckboxRelevancy($row, Relevancy.NORMAL);
+        degreeTableHelper.setRowPercentage($row, Relevancy.NORMAL, 100);
 
         degreeTableHelper.expectWarning($row);
 
-        degreeTableHelper.setRowCheckboxRelevancy($row, Relevancy.POORLY, false);
+        degreeTableHelper.setRowCheckboxRelevancy($row, Relevancy.STRONGLY, false);
 
         degreeTableHelper.expectNoWarning($row);
 
-        // todo saving doesn't work, see pr documentation
-        calculationDetailViewPage.saveButton()
-          .click();
-
-
         cy.intercept('PUT', '**/api/v1/calculations/*')
           .as('updateCalculation');
+
+        calculationDetailViewPage.saveButton()
+          .click();
 
         cy.wait('@updateCalculation')
           .then((interception) => {
@@ -247,17 +247,23 @@ describe('MemberCalculationComponent', () => {
   });
 
   it('should only display leadership experiences in calculation from a Management role', () => {
-    // todo go to tab (no m-role)
+    memberDetailPage.visit(1)
+      .switchTab('Administrator');
 
-    // todo click add button
+    memberDetailPage.addCalculation()
+      .click();
 
-    // todo check that no leadership experience is present
+    leadershipExperienceTableHelper.expectEmptyTable();
 
-    // todo go to tab (m-role)
+    calculationDetailViewPage.cancelButton()
+      .click();
 
-    // todo click add button
+    memberDetailPage.switchTab('Intern');
 
-    // todo check that leadership experience is present
+    memberDetailPage.addCalculation()
+      .click();
+
+    leadershipExperienceTableHelper.expectTableNotFound();
   });
 });
 
@@ -270,7 +276,7 @@ export const createExperience = (token: string) => {
     },
     body: {
       name: 'Software Engineer',
-      memberId: 1,
+      memberId: 2,
       experienceTypeId: 1,
       comment: 'Worked on backend APIs and DevOps tasks.',
       employer: 'TechNova Solutions',
@@ -289,7 +295,7 @@ export const createLeadershipExperience = (token: string) => {
       Authorization: `Bearer ${token}`
     },
     body: {
-      memberId: 1,
+      memberId: 2,
       leadershipExperienceTypeId: 3,
       comment: 'This is a comment'
     }
@@ -305,7 +311,7 @@ export const createDegree = (token: string) => {
     },
     body: {
       name: 'Bachelor in mathematics',
-      memberId: 1,
+      memberId: 2,
       typeId: 1,
       institution: 'GIBB',
       completed: true,
@@ -324,11 +330,48 @@ export const createCertificate = (token: string) => {
       Authorization: `Bearer ${token}`
     },
     body: {
-      memberId: 1,
+      memberId: 2,
       certificateTypeId: 10,
       completedAt: '2000-10-10',
       validUntil: null,
       comment: ''
+    }
+  });
+};
+
+export const createCalculation = (token: string) => {
+  return cy.request({
+    method: 'POST',
+    url: 'http://localhost:4200/api/v1/calculations',
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    body: {
+      memberId: 2,
+      state: 'DRAFT',
+      roleId: 2,
+      certificateCalculations: [{
+        id: null,
+        certificateId: 2
+      }],
+      degreeCalculations: [{
+        id: null,
+        degreeId: 2,
+        relevancies: {
+          STRONGLY: 100
+        },
+        comment: ''
+      }],
+      experienceCalculations: [{
+        id: null,
+        experienceId: 13,
+        comment: null,
+        relevancy: 'STRONGLY'
+      }],
+      leadershipExperienceCalculations: [{
+        id: null,
+        leadershipExperienceId: 2
+      }]
     }
   });
 };

@@ -163,4 +163,10 @@ export class TableHelper {
     return cy.wrap(row)
       .contains('mat-icon', 'warning');
   }
+
+  expectTableNotFound() {
+    cy.get('body')
+      .findByTestId(this.tableTestId)
+      .should('not.exist');
+  }
 }
