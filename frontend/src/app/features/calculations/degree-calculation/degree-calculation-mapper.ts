@@ -22,13 +22,19 @@ export function toDegreeCalculationDto(model: DegreeCalculationModel): DegreeCal
       return acc;
     }, {} as Partial<Record<Relevancy, number>>);
 
-  // todo map back to null when id is fictional (Negative) -1 => null
+  // we need a unique identifier for degrees. Therefor we use negative id that is made from the index. We need to map back to the real ids.
+  const dtoId = model.id ? mapModelIdToDtoID(model.id) : null;
+
   return {
-    id: model.id,
+    id: dtoId,
     degree: model.degree,
     comment: model.comment,
     relevancies: mappedRelevancies
   };
+}
+
+function mapModelIdToDtoID(id: number) {
+  return id < 0 ? null : id;
 }
 
 function fillMissingWithZero(input: Partial<Record<Relevancy, number>> | null) {

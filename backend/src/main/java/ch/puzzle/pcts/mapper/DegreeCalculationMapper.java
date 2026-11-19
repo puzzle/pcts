@@ -37,6 +37,7 @@ public class DegreeCalculationMapper {
     public DegreeCalculation fromDto(DegreeCalculationInputDto dto) {
         return DegreeCalculation.Builder
                 .builder()
+                .withId(dto.id())
                 .withCalculation(null)
                 .withDegree(degreeBusinessService.getById(dto.degreeId()))
                 .withComment(dto.comment())

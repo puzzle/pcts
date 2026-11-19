@@ -50,7 +50,7 @@ export function toCalculationInputDto(model: CalculationModel): CalculationInput
     }),
     leadershipExperienceCalculations: model.leadershipExperienceCalculations.map((leadershipExperienceCalculation) => {
       return {
-        id: model.id,
+        id: leadershipExperienceCalculation.id,
         leadershipExperienceId: leadershipExperienceCalculation.leadershipExperience.id
       };
     })

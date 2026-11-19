@@ -73,15 +73,15 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
         // calculation for this as the persisted calculation does not contain any
         // relations yet
         List<ExperienceCalculation> expCalc = experienceCalculationBusinessService
-                .updateExperienceCalculations(baseCalc);
+                .updateExperienceCalculations(calculation);
 
-        List<DegreeCalculation> degCalc = degreeCalculationBusinessService.updateDegreeCalculations(baseCalc);
+        List<DegreeCalculation> degCalc = degreeCalculationBusinessService.updateDegreeCalculations(calculation);
 
         List<CertificateCalculation> certCalc = certificateCalculationBusinessService
-                .updateCertificateCalculations(baseCalc);
+                .updateCertificateCalculations(calculation);
 
         List<LeadershipExperienceCalculation> leadershipExpCalc = leadershipExperienceCalculationBusinessService
-                .updateLeadershipExperienceCalculations(baseCalc);
+                .updateLeadershipExperienceCalculations(calculation);
 
         // set relations to return a fully-populated object
         baseCalc.setExperienceCalculations(expCalc);
