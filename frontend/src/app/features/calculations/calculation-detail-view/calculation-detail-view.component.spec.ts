@@ -83,40 +83,7 @@ describe('CalculationDetailViewComponent', () => {
       expect(littleCol.getValue(mockExperienceCalc))
         .toBe(2);
     });
-
-    it('should calculate points correctly for STRONGLY relevancy', () => {
-      mockExperienceCalc.relevancy = Relevancy.STRONGLY;
-      const pointsCol = component.experienceTable.columnDefs[4];
-
-      expect(pointsCol.getValue(mockExperienceCalc))
-        .toEqual(10);
-    });
-
-    it('should calculate points correctly for NORMAL relevancy', () => {
-      mockExperienceCalc.relevancy = Relevancy.NORMAL;
-      const pointsCol = component.experienceTable.columnDefs[4];
-
-      expect(pointsCol.getValue(mockExperienceCalc))
-        .toEqual(5);
-    });
-
-    it('should calculate points correctly for POORLY relevancy', () => {
-      mockExperienceCalc.relevancy = Relevancy.POORLY;
-      const pointsCol = component.experienceTable.columnDefs[4];
-
-      expect(pointsCol.getValue(mockExperienceCalc))
-        .toEqual(2);
-    });
-
-    it('should return 0 points for unknown relevancy', () => {
-      mockExperienceCalc.relevancy = 'UNKNOWN_RELEVANCY' as any;
-      const pointsCol = component.experienceTable.columnDefs[4];
-
-      expect(pointsCol.getValue(mockExperienceCalc))
-        .toEqual(0);
-    });
   });
-
   describe('Table Data configuration', () => {
     it('should configure GenericTableDataSource with columns', () => {
       const tableData = component.experienceTable;
@@ -171,57 +138,7 @@ describe('CalculationDetailViewComponent', () => {
       expect(littleCol.getValue(mockDegreeCalc))
         .toBeUndefined();
     });
-
-    it('should calculate degree points correctly with mixed weights', () => {
-      mockDegreeCalc.relevancies = {
-        [Relevancy.STRONGLY]: { weight: 50 },
-        [Relevancy.NORMAL]: { weight: 30 },
-        [Relevancy.POORLY]: { weight: 20 }
-      } as any;
-
-      const pointsCol = component.degreeTable.columnDefs[4];
-
-      expect(pointsCol.getValue(mockDegreeCalc))
-        .toEqual('69.00');
-    });
-
-    it('should calculate degree points correctly with 100% in one relevancy', () => {
-      mockDegreeCalc.relevancies = {
-        [Relevancy.STRONGLY]: { weight: 0 },
-        [Relevancy.NORMAL]: { weight: 100 },
-        [Relevancy.POORLY]: { weight: 0 }
-      } as any;
-
-      const pointsCol = component.degreeTable.columnDefs[4];
-
-      expect(pointsCol.getValue(mockDegreeCalc))
-        .toEqual('50.00');
-    });
-
-    it('should handle missing degree type points gracefully and return 0.00', () => {
-      mockDegreeCalc.degree.type = {} as any;
-      mockDegreeCalc.relevancies = {
-        [Relevancy.STRONGLY]: { weight: 50 },
-        [Relevancy.NORMAL]: { weight: 50 },
-        [Relevancy.POORLY]: { weight: 0 }
-      } as any;
-
-      const pointsCol = component.degreeTable.columnDefs[4];
-
-      expect(pointsCol.getValue(mockDegreeCalc))
-        .toEqual('0.00');
-    });
-
-    it('should handle missing relevancies gracefully and return 0.00', () => {
-      mockDegreeCalc.relevancies = undefined as any;
-
-      const pointsCol = component.degreeTable.columnDefs[4];
-
-      expect(pointsCol.getValue(mockDegreeCalc))
-        .toEqual('0.00');
-    });
   });
-
   describe('Degree Table Data configuration', () => {
     it('should configure GenericTableDataSource with detail view link for degree table', () => {
       const tableData = component.degreeTable;

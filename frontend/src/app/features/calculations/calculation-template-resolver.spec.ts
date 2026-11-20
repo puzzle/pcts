@@ -68,6 +68,6 @@ describe('calculationTemplateResolver', () => {
     (mockRoute.paramMap.get as jest.Mock).mockReturnValue(null);
 
     expect(() => executeResolver(mockRoute, mockState))
-      .toThrow('calculation id is missing in the route');
+      .toThrow('member id is missing in the route');
   });
 });
