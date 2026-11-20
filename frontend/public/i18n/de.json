@@ -8,7 +8,7 @@
     "END_DATE": "Abgeschlossen am",
     "TYPE": "Art der Ausbildung",
     "START_DATE": "Begonnen am",
-    "COMMENT": "Beschreibung",
+    "COMMENT": "Kommentar",
     "INSTITUTION": "Ausbildungsort",
     "COMPLETED": "Abgeschlossen"
   },
@@ -67,7 +67,8 @@
     "MODEL_NAME": "Rolle"
   },
   "CALCULATION": {
-    "POINTS": "Punkte"
+    "POINTS": "Punkte",
+    "MODEL_NAME": "PCTS-Berechnung"
   },
 
   "FORM": {
@@ -174,12 +175,19 @@
       "LIMITED_RELEVANT": "Bedingt relevant",
       "LITTLE_RELEVANT": "Wenig relevant",
       "EXPERIENCE": {
-        "MODEL_NAME_PLURAL": "Berufs- und Lebenserfahrungen"
+        "MODEL_NAME_PLURAL": "Berufs- und Lebenserfahrungen",
+        "ERROR_COL": ""
       },
       "DEGREE": {
         "MODEL_NAME_PLURAL": "Ausbildungen",
         "ERROR_COL": ""
-      }
+      },
+      "ALL_CALCULATIONS": "Alle Berechnungen",
+      "FROM": "vom"
+    },
+    "FORM": {
+      "SAVE_FORM": "Speichern",
+      "CANCEL": "Abbrechen"
     }
   },
   "ERROR": {

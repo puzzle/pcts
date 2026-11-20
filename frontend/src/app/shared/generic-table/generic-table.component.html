@@ -5,7 +5,8 @@
     [trackBy]="trackRow"
     class="table member-table m-0"
     matSort
-    [matSortActive]="this.dataSource().sortedBy"
+    [matSortDisabled]="disableSorting()"
+    [matSortActive]="disableSorting() ? '' : dataSource().sortedBy"
     matSortDirection="asc"
     data-testid="generic-table"
     multiTemplateDataRows

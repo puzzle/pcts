@@ -5,7 +5,6 @@ import ch.puzzle.pcts.dto.calculation.degreecalculation.DegreeCalculationInputDt
 import ch.puzzle.pcts.model.calculation.degreecalculation.DegreeCalculation;
 import ch.puzzle.pcts.service.business.DegreeBusinessService;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
@@ -38,10 +37,11 @@ public class DegreeCalculationMapper {
     public DegreeCalculation fromDto(DegreeCalculationInputDto dto) {
         return DegreeCalculation.Builder
                 .builder()
+                .withId(dto.id())
                 .withCalculation(null)
                 .withDegree(degreeBusinessService.getById(dto.degreeId()))
                 .withComment(dto.comment())
-                .withRelevancy(Map.of(dto.relevancy(), dto.weight()))
+                .withRelevancy(dto.relevancies())
                 .build();
     }
 }

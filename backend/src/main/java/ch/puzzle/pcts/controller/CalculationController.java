@@ -6,6 +6,7 @@ import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.security.annotation.IsAdmin;
 import ch.puzzle.pcts.service.business.CalculationBusinessService;
+import ch.puzzle.pcts.service.business.CalculationTemplateBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -22,10 +23,13 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "calculations", description = "Manage the calculations which are associated with a member")
 public class CalculationController {
     private final CalculationBusinessService businessService;
+    private final CalculationTemplateBusinessService templateBusinessService;
     private final CalculationMapper mapper;
 
-    public CalculationController(CalculationBusinessService businessService, CalculationMapper mapper) {
+    public CalculationController(CalculationBusinessService businessService,
+                                 CalculationTemplateBusinessService templateBusinessService, CalculationMapper mapper) {
         this.businessService = businessService;
+        this.templateBusinessService = templateBusinessService;
         this.mapper = mapper;
     }
 
@@ -47,6 +51,15 @@ public class CalculationController {
     public ResponseEntity<CalculationDto> createCalculation(@RequestBody CalculationInputDto dto) {
         Calculation newCalculation = businessService.create(mapper.fromDto(dto));
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDto(newCalculation));
+    }
+
+    @Operation(summary = "Get a template with all degree and Experience for the calculation")
+    @ApiResponse(responseCode = "200", description = "A single calculation template.", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = CalculationInputDto.class)) })
+    @GetMapping("template/{memberId}/{roleId}")
+    public ResponseEntity<CalculationDto> getCalculationTemplate(@PathVariable Long memberId,
+                                                                 @PathVariable Long roleId) {
+        return ResponseEntity.ok(mapper.toDto(templateBusinessService.getCalculationTemplate(memberId, roleId)));
     }
 
     @Operation(summary = "Update a calculation")

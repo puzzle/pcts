@@ -3,6 +3,7 @@ import { InterpolationParameters } from '@ngx-translate/core';
 import { ScopedTranslationService } from '../i18n-prefix.provider';
 
 @Pipe({
+  standalone: true,
   name: 'scopedTranslation'
 })
 export class ScopedTranslationPipe implements PipeTransform {

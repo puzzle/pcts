@@ -12,6 +12,8 @@ import ch.puzzle.pcts.service.persistence.CalculationPersistenceService;
 import ch.puzzle.pcts.service.validation.CalculationValidationService;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -59,7 +61,7 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
         baseCalc.setLeadershipExperienceCalculations(leadershipExpCalc);
         baseCalc.setPoints(getPointsOfCalculation(calculation));
 
-        return baseCalc;
+        return sortCalculationsByEndDate(baseCalc);
     }
 
     @Override
@@ -67,8 +69,6 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
     public Calculation update(Long id, Calculation calculation) {
         // update base Calculation first to get the final persisted state
         Calculation baseCalc = super.update(id, calculation);
-        calculation.setId(baseCalc.getId());
-
         // update related entities using the baseCalc we use the not persisted
         // calculation for this as the persisted calculation does not contain any
         // relations yet
@@ -90,32 +90,71 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
         baseCalc.setLeadershipExperienceCalculations(leadershipExpCalc);
         baseCalc.setPoints(getPointsOfCalculation(calculation));
 
-        return baseCalc;
+        return sortCalculationsByEndDate(baseCalc);
     }
 
     @Override
     public Calculation getById(Long calculationId) {
         Calculation calculation = super.getById(calculationId);
         calculation.setPoints(getPointsOfCalculation(calculation));
-        return calculation;
+        return sortCalculationsByEndDate(calculation);
     }
 
     public List<Calculation> getAllByMember(Member member) {
         List<Calculation> calculations = calculationPersistenceService.getAllByMember(member);
         setPointsForCalculations(calculations);
-        return calculations;
+        return calculations.stream().map(this::sortCalculationsByEndDate).toList();
     }
 
     public List<Calculation> getAllByMemberAndState(Member member, CalculationState state) {
         List<Calculation> calculations = calculationPersistenceService.getAllByMemberAndState(member, state);
         setPointsForCalculations(calculations);
-        return calculations;
+        return calculations.stream().map(this::sortCalculationsByEndDate).toList();
     }
 
     public List<Calculation> getAllByMemberAndRole(Member member, Role role) {
         List<Calculation> calculations = calculationPersistenceService.getAllByMemberAndRole(member, role);
         setPointsForCalculations(calculations);
-        return calculations;
+        return calculations.stream().map(this::sortCalculationsByEndDate).toList();
+    }
+
+    public Calculation sortCalculationsByEndDate(Calculation calculation) {
+        if (calculation == null) {
+            return null;
+        }
+
+        List<CertificateCalculation> sortedCertificates = calculation.getCertificateCalculations() == null ? null
+                : calculation
+                        .getCertificateCalculations()
+                        .stream()
+                        .sorted(Comparator
+                                .comparing(CalculationBusinessService::getCertificateDate,
+                                           Comparator.nullsLast(Comparator.naturalOrder())))
+                        .toList();
+
+        List<DegreeCalculation> sortedDegrees = calculation.getDegreeCalculations() == null ? null
+                : calculation
+                        .getDegreeCalculations()
+                        .stream()
+                        .sorted(Comparator
+                                .comparing(CalculationBusinessService::getDegreeDate,
+                                           Comparator.nullsLast(Comparator.naturalOrder())))
+                        .toList();
+
+        List<ExperienceCalculation> sortedExperiences = calculation.getExperienceCalculations() == null ? null
+                : calculation
+                        .getExperienceCalculations()
+                        .stream()
+                        .sorted(Comparator
+                                .comparing(CalculationBusinessService::getExperienceDate,
+                                           Comparator.nullsLast(Comparator.naturalOrder())))
+                        .toList();
+
+        calculation.setCertificateCalculations(sortedCertificates);
+        calculation.setDegreeCalculations(sortedDegrees);
+        calculation.setExperienceCalculations(sortedExperiences);
+
+        return calculation;
     }
 
     private BigDecimal getPointsOfCalculation(Calculation calculation) {
@@ -133,4 +172,17 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
             calculation.setPoints(points);
         });
     }
+
+    private static LocalDate getCertificateDate(CertificateCalculation c) {
+        return (c != null && c.getCertificate() != null) ? c.getCertificate().getCompletedAt() : null;
+    }
+
+    private static LocalDate getDegreeDate(DegreeCalculation d) {
+        return (d != null && d.getDegree() != null) ? d.getDegree().getEndDate() : null;
+    }
+
+    private static LocalDate getExperienceDate(ExperienceCalculation e) {
+        return (e != null && e.getExperience() != null) ? e.getExperience().getEndDate() : null;
+    }
+
 }

@@ -1,0 +1,17 @@
+.bottom {
+  position: fixed;
+  bottom: 0;
+  width: 75%;
+  background-color: white;
+  margin: auto;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.points {
+  line-height: var(--mat-form-field-container-height);
+  font-size: 2.5rem;
+  font-weight: bold;
+}
