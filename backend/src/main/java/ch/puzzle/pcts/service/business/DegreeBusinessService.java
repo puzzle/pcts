@@ -16,9 +16,6 @@ public class DegreeBusinessService extends BusinessBase<Degree> {
         super(validationService, persistenceService);
         degreePersistenceService = persistenceService;
     }
-    public List<Degree> getAll() {
-        return degreePersistenceService.getAll();
-    }
 
     public List<Degree> findAllByMember(Member member) {
         return degreePersistenceService.findAllByMember(member);
