@@ -21,10 +21,8 @@ import { CalculationState } from '../calculation-state.enum';
 import { MatFormField } from '@angular/material/form-field';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/autocomplete';
+import { InvalidTotalError } from '../../../shared/generic-table/error/invalid-total-error';
 
-export interface InvalidTotalError<T extends RelevancyWeightsRow> extends ValidationError { kind: 'invalidTotal';
-  row: T;
-  total: number; }
 export interface NoRelevancyError<T extends RelevancyModel> extends ValidationError { kind: 'noRelevancy';
   row: T; }
 

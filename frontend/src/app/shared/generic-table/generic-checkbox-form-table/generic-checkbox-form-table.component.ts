@@ -23,7 +23,7 @@ import { TypedTemplateDirective } from '../type-template/typed-template.directiv
 import { RelevancyWeightsRow } from './RelevancyWeightsRow';
 import { DegreeCalculationModel } from '../../../features/calculations/degree-calculation/degree-calculation.dto';
 import { MatIcon } from '@angular/material/icon';
-import { InvalidTotalError } from '../../../features/calculations/calculation-form/calculation-form.component';
+import { InvalidTotalError } from '../error/invalid-total-error';
 
 @Component({
   imports: [
