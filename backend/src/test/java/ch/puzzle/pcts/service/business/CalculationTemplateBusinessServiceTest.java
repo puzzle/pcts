@@ -5,6 +5,7 @@ import static ch.puzzle.pcts.util.TestData.ROLE_1_ID;
 import static ch.puzzle.pcts.util.TestDataModels.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -35,6 +36,8 @@ class CalculationTemplateBusinessServiceTest {
     private ExperienceBusinessService experienceBusinessService;
     @Mock
     private RoleBusinessService roleBusinessService;
+    @Mock
+    private CalculationBusinessService calculationBusinessService;
 
     @InjectMocks
     private CalculationTemplateBusinessService calculationTemplateBusinessService;
@@ -46,6 +49,12 @@ class CalculationTemplateBusinessServiceTest {
         Long roleId = ROLE_1_ID;
         Member member = MEMBER_1;
         Role role = ROLE_1;
+        Calculation calculation = CALCULATION_1;
+        calculation.setRole(role);
+        calculation.setDegreeCalculations(List.of(DEGREE_CALC_1));
+        calculation.setExperienceCalculations(List.of(EXP_CALC_1));
+        calculation.setLeadershipExperienceCalculations(List.of(LEADERSHIP_EXPERIENCE_CALC_1));
+        calculation.setCertificateCalculations(List.of(CERT_CALC_1));
 
         when(memberBusinessService.getById(memberId)).thenReturn(member);
         when(roleBusinessService.getById(roleId)).thenReturn(role);
@@ -54,6 +63,7 @@ class CalculationTemplateBusinessServiceTest {
         when(experienceBusinessService.findAllByMember(member)).thenReturn(List.of(EXPERIENCE_2));
         when(leadershipExperienceBusinessService.findAllByMember(member)).thenReturn(List.of(LEADERSHIP_EXPERIENCE_1));
         when(certificateBusinessService.findAllByMember(member)).thenReturn(List.of(CERTIFICATE_1));
+        when(calculationBusinessService.sortCalculationsByEndDate(any(Calculation.class))).thenReturn(calculation);
 
         Calculation result = calculationTemplateBusinessService.getCalculationTemplate(memberId, roleId);
 
