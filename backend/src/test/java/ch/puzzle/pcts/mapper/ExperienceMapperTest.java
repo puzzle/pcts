@@ -119,7 +119,7 @@ class ExperienceMapperTest {
         PCTSException exception = assertThrows(PCTSException.class, () -> mapper.fromDto(experienceInputDto));
 
         assertEquals(Map.of(FieldKey.ENTITY, MEMBER, FieldKey.FIELD, "id",  FieldKey.IS, String.valueOf(INVALID_ID)), exception.getErrors().get(0).values());
-        assertEquals(ErrorKey.NOT_FOUND, exception.getErrors().get(0).key());
+        assertEquals(ErrorKey.NOT_FOUND, exception.getErrors().getFirst().key());
     }
 
     @DisplayName("Should throw exception when experienceType with id does not exist")
