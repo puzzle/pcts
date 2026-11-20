@@ -6,7 +6,7 @@
     class="table member-table m-0"
     matSort
     [matSortDisabled]="disableSorting()"
-    [matSortActive]="this.dataSource().sortedBy"
+    [matSortActive]="disableSorting() ? '' : dataSource().sortedBy"
     matSortDirection="asc"
     data-testid="generic-table"
     multiTemplateDataRows

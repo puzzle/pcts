@@ -64,7 +64,7 @@ export class GenericTableComponent<T extends object, K extends keyof T = keyof T
 
   crudBasePath = input<string>('');
 
-  disableSorting = input<boolean>();
+  disableSorting = input(false);
 
   dataSource = input.required<GenericTableDataSource<T, F>>();
 
@@ -122,13 +122,6 @@ export class GenericTableComponent<T extends object, K extends keyof T = keyof T
     effect(() => {
       this.dataSource().sortingDataAccessor = this.createSortingAccessor(this.columns());
       this.dataSource().sort = this.sort();
-    });
-
-    effect(() => {
-      if (this.disableSorting()) {
-        this.dataSource()
-          .withSortedBy('');
-      }
     });
   }
 
