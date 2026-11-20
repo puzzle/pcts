@@ -10,15 +10,6 @@ export function toCalculationModel(dto: CalculationDto): CalculationModel {
   };
 }
 
-/*
- * export function toCalculationDto(model: CalculationModel): CalculationDto {
- *   return {
- *     ...model,
- *     degreeCalculations: model.degreeCalculations.map(toDegreeCalculationDto)
- *   };
- * }
- */
-
 export function toCalculationInputDto(model: CalculationModel): CalculationInputDto {
   return {
     memberId: model.member.id,
