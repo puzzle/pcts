@@ -1,7 +1,5 @@
 package ch.puzzle.pcts.service.business;
 
-import static ch.puzzle.pcts.service.business.CalculationBusinessService.sortCalculationsByEndDate;
-
 import ch.puzzle.pcts.model.calculation.Calculation;
 import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.calculation.certificatecalculation.CertificateCalculation;
@@ -23,19 +21,22 @@ public class CalculationTemplateBusinessService {
     private final LeadershipExperienceBusinessService leadershipExperienceBusinessService;
     private final ExperienceBusinessService experienceBusinessService;
     private final RoleBusinessService roleBusinessService;
+    private final CalculationBusinessService calculationBusinessService;
 
     public CalculationTemplateBusinessService(MemberBusinessService memberBusinessService,
                                               DegreeBusinessService degreeBusinessService,
                                               CertificateBusinessService certificateBusinessService,
                                               LeadershipExperienceBusinessService leadershipExperienceBusinessService,
                                               ExperienceBusinessService experienceBusinessService,
-                                              RoleBusinessService roleBusinessService) {
+                                              RoleBusinessService roleBusinessService,
+                                              CalculationBusinessService calculationBusinessService) {
         this.memberBusinessService = memberBusinessService;
         this.degreeBusinessService = degreeBusinessService;
         this.certificateBusinessService = certificateBusinessService;
         this.leadershipExperienceBusinessService = leadershipExperienceBusinessService;
         this.experienceBusinessService = experienceBusinessService;
         this.roleBusinessService = roleBusinessService;
+        this.calculationBusinessService = calculationBusinessService;
     }
 
     public Calculation getCalculationTemplate(Long memberId, Long roleId) {
@@ -44,7 +45,7 @@ public class CalculationTemplateBusinessService {
 
         Calculation calculation = getCalculationTemplateForMemberAndRole(member, role);
 
-        return sortCalculationsByEndDate(calculation);
+        return calculationBusinessService.sortCalculationsByEndDate(calculation);
     }
 
     private Calculation getCalculationTemplateForMemberAndRole(Member member, Role role) {

@@ -103,22 +103,22 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
     public List<Calculation> getAllByMember(Member member) {
         List<Calculation> calculations = calculationPersistenceService.getAllByMember(member);
         setPointsForCalculations(calculations);
-        return calculations.stream().map(CalculationBusinessService::sortCalculationsByEndDate).toList();
+        return calculations.stream().map(this::sortCalculationsByEndDate).toList();
     }
 
     public List<Calculation> getAllByMemberAndState(Member member, CalculationState state) {
         List<Calculation> calculations = calculationPersistenceService.getAllByMemberAndState(member, state);
         setPointsForCalculations(calculations);
-        return calculations.stream().map(CalculationBusinessService::sortCalculationsByEndDate).toList();
+        return calculations.stream().map(this::sortCalculationsByEndDate).toList();
     }
 
     public List<Calculation> getAllByMemberAndRole(Member member, Role role) {
         List<Calculation> calculations = calculationPersistenceService.getAllByMemberAndRole(member, role);
         setPointsForCalculations(calculations);
-        return calculations.stream().map(CalculationBusinessService::sortCalculationsByEndDate).toList();
+        return calculations.stream().map(this::sortCalculationsByEndDate).toList();
     }
 
-    public static Calculation sortCalculationsByEndDate(Calculation calculation) {
+    public Calculation sortCalculationsByEndDate(Calculation calculation) {
         if (calculation == null) {
             return null;
         }
