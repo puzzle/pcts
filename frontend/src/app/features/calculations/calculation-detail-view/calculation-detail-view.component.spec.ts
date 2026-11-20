@@ -3,11 +3,12 @@ import { CalculationDetailViewComponent } from './calculation-detail-view.compon
 import { provideTranslateService } from '@ngx-translate/core';
 import { calculationModel1 } from '../../../shared/test/test-data';
 import { CalculationService } from '../calculation.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CalculationState } from '../calculation-state.enum';
 import { DatePipe } from '@angular/common';
 import { of } from 'rxjs';
 import { CalculationFormComponent } from '../calculation-form/calculation-form.component';
+import { signal, WritableSignal } from '@angular/core';
 
 describe('CalculationDetailViewComponent', () => {
   let component: CalculationDetailViewComponent;
@@ -15,6 +16,8 @@ describe('CalculationDetailViewComponent', () => {
 
   let calculationServiceMock: Partial<CalculationService>;
   let routerMock: any;
+  let routeMock: any;
+  let modeSignal: WritableSignal<'create' | 'edit'>;
 
   beforeEach(async() => {
     calculationServiceMock = {
@@ -28,6 +31,16 @@ describe('CalculationDetailViewComponent', () => {
       navigate: jest.fn()
     };
 
+    modeSignal = signal<'create' | 'edit'>('create');
+
+    routeMock = {
+      snapshot: {
+        get data() {
+          return { mode: modeSignal() };
+        }
+      }
+    } as unknown as ActivatedRoute;
+
     await TestBed.configureTestingModule({
       imports: [CalculationDetailViewComponent],
       providers: [
@@ -35,6 +48,8 @@ describe('CalculationDetailViewComponent', () => {
           useValue: calculationServiceMock },
         { provide: Router,
           useValue: routerMock },
+        { provide: ActivatedRoute,
+          useValue: routeMock },
         provideTranslateService(),
         DatePipe
       ]
@@ -67,6 +82,7 @@ describe('CalculationDetailViewComponent', () => {
     });
 
     it('should identify as "Edit" mode if calculation has an ID', () => {
+      modeSignal.set('edit');
       expect(component.isAdd())
         .toBeFalsy();
     });
