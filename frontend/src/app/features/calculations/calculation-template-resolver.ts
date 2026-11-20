@@ -9,8 +9,12 @@ export const calculationTemplateResolver: ResolveFn<CalculationModel> = (route, 
   const memberId: string | null = route.paramMap.get('id');
   const roleId: string | null = route.paramMap.get('roleId');
 
-  if (!memberId || !roleId) {
-    throw new Error('calculation id is missing in the route');
+  if (!memberId) {
+    throw new Error('member id is missing in the route');
+  }
+
+  if (!roleId) {
+    throw new Error('role id is missing in the route');
   }
 
   return calculationService.getTemplate(Number(memberId), Number(roleId));
