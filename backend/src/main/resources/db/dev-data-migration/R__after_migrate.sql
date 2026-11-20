@@ -172,9 +172,9 @@ VALUES
 INSERT INTO experience_calculation
 (calculation_id, experience_id, relevancy, comment)
 VALUES
-    (2, 2, 'POORLY',  'Marketing internship, low relevance'),
-    (3, 4, 'STRONGLY',  'Full-time data analyst role'),
-    (4, 2, 'NORMAL', 'Internship experience'),
+    (2, 13, 'POORLY',  'Marketing internship, low relevance'),
+    (3, 15, 'STRONGLY',  'Full-time data analyst role'),
+    (1, 2, 'NORMAL', 'Internship experience'),
     (6, 2, 'NORMAL', 'Internship experience'),
     (7, 4, 'NORMAL', 'Internship experience');
 
@@ -183,7 +183,7 @@ INSERT INTO degree_calculation
 VALUES
     (2, 2, 'Low relevance for technical role'),
     (3, 3, 'Directly relevant degree'),
-    (4, 3, 'Relevant but less practical focus');
+    (1, 1, 'Relevant but less practical focus');
 
 INSERT INTO degree_calculation_weight (weight, relevancy, degree_calculation_id)
 VALUES

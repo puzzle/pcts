@@ -61,7 +61,7 @@ describe('MemberOverviewComponent', () => {
   });
 
   it('should display role and there points', () => {
-    memberDetailPage.assertRoleWithPoints('Administrator', '7.50');
+    memberDetailPage.assertRoleWithPoints('Administrator', '5.00');
     memberDetailPage.assertRoleWithPoints('Intern', '4.55');
   });
 });

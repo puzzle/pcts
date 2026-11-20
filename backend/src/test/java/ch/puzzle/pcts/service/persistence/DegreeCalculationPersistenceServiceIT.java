@@ -44,7 +44,7 @@ class DegreeCalculationPersistenceServiceIT
     void shouldGetByCalculationId() {
         List<DegreeCalculation> result = persistenceService.getByCalculationId(1L);
 
-        assertThat(result).hasSize(2).allMatch(dc -> dc.getCalculation().getId().equals(1L));
+        assertThat(result).hasSize(1).allMatch(dc -> dc.getCalculation().getId().equals(1L));
     }
 
     @DisplayName("Should fetch DegreeCalculations by degreeId")
@@ -53,7 +53,7 @@ class DegreeCalculationPersistenceServiceIT
     void shouldGetByDegreeId() {
         List<DegreeCalculation> result = persistenceService.getByDegreeId(2L);
 
-        assertThat(result).hasSize(3).allMatch(dc -> dc.getDegree().getId().equals(2L));
+        assertThat(result).hasSize(2).allMatch(dc -> dc.getDegree().getId().equals(2L));
     }
 
     @DisplayName("Should save and retrieve DegreeCalculation correctly")
