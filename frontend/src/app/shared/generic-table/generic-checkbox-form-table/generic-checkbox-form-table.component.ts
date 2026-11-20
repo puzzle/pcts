@@ -133,7 +133,7 @@ export class GenericCheckboxFormTableComponent<T extends RelevancyWeightsRow> im
   }
 
   private readonly invalidRows: Signal<Set<T>> = computed(() => {
-    const errors = this.errors() as unknown as InvalidTotalError<T>[];
+    const errors = this.errors() as InvalidTotalError<T>[];
     return new Set(errors
       .map((error) => error?.row));
   });
