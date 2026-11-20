@@ -74,18 +74,7 @@ const getExperienceColumns = (): GenCol<ExperienceCalculationModel>[] => [
   GenCol.fromCalculated('highlyRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.highlyRelevantPoints),
   GenCol.fromCalculated('limitedRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.limitedRelevantPoints),
   GenCol.fromCalculated('littleRelevant', (e: ExperienceCalculationModel) => e.experience.experienceType.littleRelevantPoints),
-  GenCol.fromCalculated('points', (e: ExperienceCalculationModel) => {
-    switch (e.relevancy) {
-      case Relevancy.STRONGLY:
-        return e.experience.experienceType.highlyRelevantPoints;
-      case Relevancy.NORMAL:
-        return e.experience.experienceType.limitedRelevantPoints;
-      case Relevancy.POORLY:
-        return e.experience.experienceType.littleRelevantPoints;
-      default:
-        return 0;
-    }
-  }),
+  GenCol.fromCalculated('points', () => '-'),
   GenCol.fromCalculated('errorCol', () => {})
 ];
 
@@ -97,30 +86,7 @@ const getDegreeColumns = (): GenCol<DegreeCalculationModel>[] => [
   GenCol.fromCalculated('highlyRelevant', () => {}),
   GenCol.fromCalculated('limitedRelevant', () => {}),
   GenCol.fromCalculated('littleRelevant', () => {}),
-  GenCol.fromCalculated('points', (e: DegreeCalculationModel) => {
-    let points = 0;
-    for (const [key,
-      value] of Object.entries(e.relevancies || {})) {
-      const factor = value.weight / 100;
-
-      switch (key as Relevancy) {
-        case Relevancy.STRONGLY:
-          points += factor * (e.degree.type.highlyRelevantPoints || 0);
-          break;
-        case Relevancy.NORMAL:
-          points += factor * (e.degree.type.limitedRelevantPoints || 0);
-          break;
-        case Relevancy.POORLY:
-          points += factor * (e.degree.type.littleRelevantPoints || 0);
-          break;
-        default:
-          break;
-      }
-    }
-
-    return Number.parseFloat(String(points))
-      .toFixed(2);
-  }),
+  GenCol.fromCalculated('points', () => '-'),
   GenCol.fromCalculated('errorCol', () => {})
 ];
 
