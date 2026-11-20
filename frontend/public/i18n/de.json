@@ -197,10 +197,6 @@
       "CANCEL": "Abbrechen"
     }
   },
-  "HINT_BOX": {
-    "HINT": "Hinweis",
-    "WARNING": "Warnung"
-  },
   "ERROR": {
     "NOT_AUTHENTICATED": "Benutzer ist nicht oder falsch angemeldet.",
     "UPDATE_ARCHIVED_CALCULATION": "Archivierte Berechnungen kann man nicht editieren.",
