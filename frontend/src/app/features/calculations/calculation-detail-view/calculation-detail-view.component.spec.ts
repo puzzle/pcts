@@ -7,8 +7,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CalculationState } from '../calculation-state.enum';
 import { DatePipe } from '@angular/common';
 import { of } from 'rxjs';
-import { CalculationFormComponent } from '../calculation-form/calculation-form.component';
 import { signal, WritableSignal } from '@angular/core';
+import { form, validate } from '@angular/forms/signals';
+import { CalculationModel } from '../calculationDto';
 
 describe('CalculationDetailViewComponent', () => {
   let component: CalculationDetailViewComponent;
@@ -122,26 +123,16 @@ describe('CalculationDetailViewComponent', () => {
   });
 
   describe('Saving Form (saveForm)', () => {
-    let mockFormComponent: any;
+    it('should update calculation if form is valid and NOT in add mode', async() => {
+      const formModel = signal(calculationModel1);
+      const fieldTree = TestBed.runInInjectionContext(() => form(formModel));
 
-    beforeEach(() => {
-      mockFormComponent = {
-        calculationForm: jest.fn()
-          .mockReturnValue({
-            valid: jest.fn()
-              .mockReturnValue(true),
-            controlValue: jest.fn()
-              .mockReturnValue({ formData: 'test' }),
-            markAsTouched: jest.fn()
-          })
-      };
-    });
-
-    it('should update calculation if form is valid and NOT in add mode', () => {
-      component.saveForm(mockFormComponent as CalculationFormComponent);
+      modeSignal.set('edit');
+      component.save(fieldTree);
+      await fixture.whenStable();
 
       expect(calculationServiceMock.updateCalculation)
-        .toHaveBeenCalledWith(calculationModel1.id, { formData: 'test' });
+        .toHaveBeenCalledWith(calculationModel1.id, formModel());
       expect(routerMock.navigate)
         .toHaveBeenCalledWith(['member',
           calculationModel1.member.id]);
@@ -153,25 +144,34 @@ describe('CalculationDetailViewComponent', () => {
       fixture.componentRef.setInput('calculation', newCalc);
       fixture.detectChanges();
 
-      component.saveForm(mockFormComponent as CalculationFormComponent);
+      const formModel: WritableSignal<CalculationModel> = signal(newCalc);
+      const fieldTree = TestBed.runInInjectionContext(() => form(formModel));
+
+      modeSignal.set('create');
+      component.save(fieldTree);
 
       expect(calculationServiceMock.addCalculation)
-        .toHaveBeenCalledWith({ formData: 'test' });
+        .toHaveBeenCalledWith(formModel());
       expect(routerMock.navigate)
         .toHaveBeenCalledWith(['member',
           calculationModel1.member.id]);
     });
 
-    it('should not call service and mark form as touched if form is invalid', () => {
-      mockFormComponent.calculationForm().valid.mockReturnValue(false);
+    it('should not call service if form is invalid', async() => {
+      const formModel = signal(calculationModel1);
+      const fieldTree = TestBed.runInInjectionContext(() => form(formModel, (schema) => {
+        validate(schema.points, () => ({ kind: 'invalid' }));
+      }));
 
-      component.saveForm(mockFormComponent as CalculationFormComponent);
+      modeSignal.set('edit');
+      component.save(fieldTree);
+      await fixture.whenStable();
 
       expect(calculationServiceMock.updateCalculation).not.toHaveBeenCalled();
       expect(calculationServiceMock.addCalculation).not.toHaveBeenCalled();
-
-      expect(mockFormComponent.calculationForm().markAsTouched)
-        .toHaveBeenCalled();
+      expect(fieldTree()
+        .touched())
+        .toBe(true);
     });
   });
 });
