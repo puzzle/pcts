@@ -192,24 +192,25 @@ export class CalculationDetailViewComponent {
   }
 
   saveForm() {
-    if (!this.calculationForm()
+    if (this.calculationForm()
       .invalid()) {
-      if (!this.isAdd()) {
-        this.calculationService.updateCalculation(this.calculation().id, this.calculationForm()
-          .controlValue())
-          .subscribe(() => {
-            this.routeToCV();
-          });
-      } else {
-        this.calculationService.addCalculation(this.calculationForm()
-          .controlValue())
-          .subscribe(() => {
-            this.routeToCV();
-          });
-      }
-    } else {
       this.calculationForm()
         .markAsTouched();
+      return;
+    }
+
+    if (this.isAdd()) {
+      this.calculationService.addCalculation(this.calculationForm()
+        .controlValue())
+        .subscribe(() => {
+          this.routeToCV();
+        });
+    } else {
+      this.calculationService.updateCalculation(this.calculation().id, this.calculationForm()
+        .controlValue())
+        .subscribe(() => {
+          this.routeToCV();
+        });
     }
   }
 
