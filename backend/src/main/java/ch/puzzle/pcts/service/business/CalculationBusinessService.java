@@ -118,22 +118,6 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
         return calculations.stream().map(CalculationBusinessService::sortCalculationsByEndDate).toList();
     }
 
-    private BigDecimal getPointsOfCalculation(Calculation calculation) {
-        Long calculationId = calculation.getId();
-        return BigDecimal.ZERO
-                .add(experienceCalculationBusinessService.getExperiencePoints(calculationId))
-                .add(degreeCalculationBusinessService.getDegreePoints(calculationId))
-                .add(certificateCalculationBusinessService.getCertificatePoints(calculationId))
-                .add(leadershipExperienceCalculationBusinessService.getLeadershipExperiencePoints(calculationId));
-    }
-
-    private void setPointsForCalculations(List<Calculation> calculations) {
-        calculations.forEach(calculation -> {
-            BigDecimal points = this.getPointsOfCalculation(calculation);
-            calculation.setPoints(points);
-        });
-    }
-
     public static Calculation sortCalculationsByEndDate(Calculation calculation) {
         if (calculation == null) {
             return null;
@@ -171,6 +155,22 @@ public class CalculationBusinessService extends BusinessBase<Calculation> {
         calculation.setExperienceCalculations(sortedExperiences);
 
         return calculation;
+    }
+
+    private BigDecimal getPointsOfCalculation(Calculation calculation) {
+        Long calculationId = calculation.getId();
+        return BigDecimal.ZERO
+                .add(experienceCalculationBusinessService.getExperiencePoints(calculationId))
+                .add(degreeCalculationBusinessService.getDegreePoints(calculationId))
+                .add(certificateCalculationBusinessService.getCertificatePoints(calculationId))
+                .add(leadershipExperienceCalculationBusinessService.getLeadershipExperiencePoints(calculationId));
+    }
+
+    private void setPointsForCalculations(List<Calculation> calculations) {
+        calculations.forEach(calculation -> {
+            BigDecimal points = this.getPointsOfCalculation(calculation);
+            calculation.setPoints(points);
+        });
     }
 
     private static LocalDate getCertificateDate(CertificateCalculation c) {
