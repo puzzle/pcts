@@ -5,7 +5,6 @@ import {
 import { ExperienceCalculationModel } from '../experience-calculation/experience-calculation.model';
 import { ReactiveFormsModule } from '@angular/forms';
 import { GenCol, GenericTableDataSource } from '../../../shared/generic-table/generic-table-data-source';
-import { Relevancy } from '../relevancy.enum';
 import { TranslationScopeDirective } from '../../../shared/translation-scope/translation-scope.directive';
 import { form, FormField, SchemaPath, validate, ValidationError } from '@angular/forms/signals';
 import {
@@ -17,7 +16,6 @@ import { CertificateTypeModel } from '../../certificates/certificate-type/certif
 import {
   LeadershipExperienceTypeModel
 } from '../../leadership-experiences/leadership-experiences-type/leadership-experience-type.model';
-import { RelevancyModel } from '../../../shared/generic-table/generic-radio-form-table/RelevancyModel';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { GenericTableComponent } from '../../../shared/generic-table/generic-table.component';
@@ -30,6 +28,9 @@ import { CalculationService } from '../calculation.service';
 import { Router } from '@angular/router';
 import { CalculationModel } from '../calculationDto';
 import { CalculationState } from '../calculation-state.enum';
+import { NoRelevancyError } from '../../../shared/generic-table/error/no-relevancy-error';
+import { RelevancyModel } from '../../../shared/generic-table/generic-radio-form-table/RelevancyModel';
+import { Relevancy } from '../relevancy.enum';
 
 export interface InvalidTotalError<T extends RelevancyWeightsRow> extends ValidationError {
   kind: 'invalidTotal';
@@ -89,11 +90,6 @@ const getDegreeColumns = (): GenCol<DegreeCalculationModel>[] => [
   GenCol.fromCalculated('points', () => '-'),
   GenCol.fromCalculated('errorCol', () => {})
 ];
-
-export interface NoRelevancyError<T extends RelevancyModel> extends ValidationError {
-  kind: 'noRelevancy';
-  row: T;
-}
 
 export function validateRelevancySelected<T extends RelevancyModel>(path: SchemaPath<T[]>) {
   validate(path, ({ value }) => value()

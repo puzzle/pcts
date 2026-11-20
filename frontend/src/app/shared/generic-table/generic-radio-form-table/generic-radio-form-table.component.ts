@@ -17,7 +17,7 @@ import { FormValueControl, ValidationError } from '@angular/forms/signals';
 import { RelevancyModel } from './RelevancyModel';
 import {
   NoRelevancyError
-} from '../../../features/calculations/calculation-detail-view/calculation-detail-view.component';
+} from '../error/no-relevancy-error';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
