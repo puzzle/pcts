@@ -176,6 +176,13 @@
       "LIMITED_RELEVANT": "Bedingt relevant",
       "LITTLE_RELEVANT": "Wenig relevant",
       "ERROR_COL": "",
+      "HINT_BOX": {
+        "HINT": "Hinweis",
+        "WARNING": "Warnung"
+      },
+      "HINT": {
+        "LEADERSHIP": "Führungserfahrungen können für diese Rolle nicht angerechnet werden."
+      },
       "EXPERIENCE": {
         "MODEL_NAME_PLURAL": "Berufs- und Lebenserfahrungen"
       },

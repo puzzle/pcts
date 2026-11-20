@@ -22,6 +22,7 @@ import { MatFormField } from '@angular/material/form-field';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/autocomplete';
 import { InvalidTotalError } from '../../../shared/generic-table/error/invalid-total-error';
+import { HintBoxComponent } from '../../../shared/hint-box/hint-box.component';
 
 export interface NoRelevancyError<T extends RelevancyModel> extends ValidationError { kind: 'noRelevancy';
   row: T; }
@@ -104,7 +105,8 @@ const getDegreeColumns = (): GenCol<DegreeCalculationModel>[] => [
     ScopedTranslationPipe,
     MatFormField,
     MatSelect,
-    MatOption
+    MatOption,
+    HintBoxComponent
   ],
   templateUrl: './calculation-form.component.html'
 })

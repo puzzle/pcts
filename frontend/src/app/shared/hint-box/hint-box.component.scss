@@ -1,0 +1,13 @@
+.hint-box {
+  padding: 0.5rem;
+  margin: auto;
+
+  &.hint {
+    background-color: #e5f3ff;
+    color: #315675;
+  }
+  &.warning {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+}
