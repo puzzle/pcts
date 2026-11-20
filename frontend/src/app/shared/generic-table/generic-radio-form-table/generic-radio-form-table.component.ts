@@ -51,7 +51,7 @@ export class GenericRadioFormTableComponent<T extends RelevancyModel> implements
 
   readonly touch = output<void>();
 
-  readonly touched = input(true);
+  readonly touched = input(false);
 
   constructor() {
     effect(() => {
