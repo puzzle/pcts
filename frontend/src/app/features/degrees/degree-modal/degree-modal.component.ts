@@ -11,7 +11,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ScopedTranslationPipe } from '../../../shared/pipes/scoped-translation-pipe';
 import { DialogResult, StrictlyTypedDialog } from '../../../shared/modal/strictly-typed-dialog.helper';
 import { MemberModel } from '../../member/member.model';
-import { isValueInListSignal } from '../../../shared/form/form-validators';
+import { hasToBeBeforeDate, isValueInListSignal } from '../../../shared/form/form-validators';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import { DegreeModel } from '../degree.model';
@@ -67,7 +67,8 @@ export class DegreeModalComponent extends StrictlyTypedDialog<FormModalConfig<De
         isValueInListSignal(this.degreeTypeOptions, (a, b) => a.id === b.id)]],
     institution: ['' as string | null],
     completed: [true as boolean | null],
-    endDate: [null as Date | null],
+    endDate: [null as Date | null,
+      [hasToBeBeforeDate('startDate')]],
     startDate: [null as Date | null,
       Validators.required],
     comment: ['' as string | null]

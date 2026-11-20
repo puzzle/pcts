@@ -10,7 +10,7 @@ import { PctsFormLabelDirective } from '../../../shared/pcts-form-label/pcts-for
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DialogResult, StrictlyTypedDialog } from '../../../shared/modal/strictly-typed-dialog.helper';
 import { MemberModel } from '../../member/member.model';
-import { isInteger, isValueInListSignal } from '../../../shared/form/form-validators';
+import { hasToBeBeforeDate, isInteger, isValueInListSignal } from '../../../shared/form/form-validators';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ModalSubmitMode } from '../../../shared/enum/modal-submit-mode.enum';
 import { ExperienceModel } from '../experience.model';
@@ -70,7 +70,8 @@ export class ExperienceModalComponent extends StrictlyTypedDialog<FormModalConfi
         Validators.max(110),
         isInteger()
       ]],
-    endDate: [null as Date | null],
+    endDate: [null as Date | null,
+      [hasToBeBeforeDate('startDate')]],
     startDate: [null as Date | null,
       Validators.required],
     comment: ['' as string | null]

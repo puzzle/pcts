@@ -102,3 +102,21 @@ export function isSearchTermEmpty(inputFieldTagId: string): ValidatorFn {
     return inputfield.value ? { invalid_entry: inputfield.value } : null;
   };
 }
+
+export function hasToBeBeforeDate(otherDateField: string): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const endDate = control.value;
+    const startDate = control.parent?.get(otherDateField)?.value;
+
+    if (!startDate || !endDate) {
+      return null;
+    }
+
+    if (new Date(startDate)
+      .getTime() > new Date(endDate)
+      .getTime()) {
+      return { has_To_Be_Before_Date: true };
+    }
+    return null;
+  };
+}

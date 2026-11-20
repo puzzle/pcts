@@ -113,7 +113,8 @@
     "EMAIL": "Muss eine gültige Email-Adresse sein",
     "MIN": "Die Eingabe muss mindestens {{min}} sein",
     "MAX": "Die Eingabe muss maximal {{max}} sein",
-    "INVALID_INTEGER": "Die Eingabe muss eine Ganzzahl sein"
+    "INVALID_INTEGER": "Die Eingabe muss eine Ganzzahl sein",
+    "HAS_TO_BE_BEFORE_DATE": "Das Enddatum darf nicht vor dem Startdatum liegen"
   },
 
   "MEMBER": {
