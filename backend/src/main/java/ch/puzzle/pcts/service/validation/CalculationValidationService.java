@@ -32,7 +32,9 @@ public class CalculationValidationService extends ValidationBase<Calculation> {
                     .of(FieldKey.ENTITY, CALCULATION, FieldKey.FIELD, "state", FieldKey.IS, oldModelState.name());
 
             throw new PCTSException(HttpStatus.BAD_REQUEST,
-                                    List.of(new GenericErrorDto(ErrorKey.UPDATE_ARCHIVED_CALCULATION, attributes)));
+                                    List
+                                            .of(new GenericErrorDto(ErrorKey.ARCHIVED_CALCULATION_NOT_EDITABLE,
+                                                                    attributes)));
         }
     }
 }

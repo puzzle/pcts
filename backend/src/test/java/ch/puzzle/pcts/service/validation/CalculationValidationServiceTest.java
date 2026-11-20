@@ -98,7 +98,7 @@ class CalculationValidationServiceTest extends ValidationBaseServiceTest<Calcula
         PCTSException exception = assertThrows(PCTSException.class,
                                                () -> service.validateOnUpdate(GENERIC_1_ID, calculationToUpdate));
 
-        assertEquals(List.of(ErrorKey.UPDATE_ARCHIVED_CALCULATION), exception.getErrorKeys());
+        assertEquals(List.of(ErrorKey.ARCHIVED_CALCULATION_NOT_EDITABLE), exception.getErrorKeys());
 
         Map<FieldKey, String> expectedAttributes = Map
                 .of(FieldKey.ENTITY,
