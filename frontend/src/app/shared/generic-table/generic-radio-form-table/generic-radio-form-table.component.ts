@@ -43,6 +43,8 @@ export class GenericRadioFormTableComponent<T extends RelevancyModel> implements
 
   table = input.required<GenericTableDataSource<T>>();
 
+  disabled = input<boolean>(false);
+
   private readonly invalidRows: Signal<Set<T>> = computed(() => {
     const errors = this.errors() as NoRelevancyError<T>[];
     return new Set(errors

@@ -1,0 +1,9 @@
+<button
+  [disabled]="disabled()"
+  type="button"
+  (click)="saveClicked.emit()"
+  data-testid="calculation-save-button"
+  matButton="filled">
+  {{ text() }}
+</button>
+

@@ -1,13 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CalculationDetailViewComponent } from './calculation-detail-view.component';
-import { Observable, of } from 'rxjs';
 import { provideTranslateService } from '@ngx-translate/core';
-import { Relevancy } from '../relevancy.enum';
-import { ExperienceCalculationModel } from '../experience-calculation/experience-calculation.model';
-import { GenericTableDataSource } from '../../../shared/generic-table/generic-table-data-source';
-import { DegreeCalculationModel } from '../degree-calculation/degree-calculation.dto';
 import { calculationModel1 } from '../../../shared/test/test-data';
 import { CalculationService } from '../calculation.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CalculationState } from '../calculation-state.enum';
+import { DatePipe } from '@angular/common';
+import { of } from 'rxjs';
+import { signal, WritableSignal } from '@angular/core';
+import { form, validate } from '@angular/forms/signals';
 import { CalculationModel } from '../calculationDto';
 
 describe('CalculationDetailViewComponent', () => {
@@ -15,140 +16,138 @@ describe('CalculationDetailViewComponent', () => {
   let fixture: ComponentFixture<CalculationDetailViewComponent>;
 
   let calculationServiceMock: Partial<CalculationService>;
+  let routerMock: any;
+  let routeMock: any;
 
   beforeEach(async() => {
     calculationServiceMock = {
-      getCalculationById: jest.fn()
-        .mockReturnValue(of(calculationModel1)),
-      getTemplate: jest.fn()
-        .mockReturnValue(of(Observable<CalculationModel>))
+      updateCalculation: jest.fn()
+        .mockReturnValue(of({})),
+      addCalculation: jest.fn()
+        .mockReturnValue(of({}))
     };
+
+    routerMock = {
+      navigate: jest.fn()
+    };
+
+    routeMock = {} as unknown as ActivatedRoute;
 
     await TestBed.configureTestingModule({
       imports: [CalculationDetailViewComponent],
-      providers: [{
-        provide: CalculationService,
-        useValue: calculationServiceMock
-      },
-      provideTranslateService()]
+      providers: [
+        { provide: CalculationService,
+          useValue: calculationServiceMock },
+        { provide: Router,
+          useValue: routerMock },
+        { provide: ActivatedRoute,
+          useValue: routeMock },
+        provideTranslateService(),
+        DatePipe
+      ]
     })
       .compileComponents();
 
     fixture = TestBed.createComponent(CalculationDetailViewComponent);
     fixture.componentRef.setInput('calculation', calculationModel1);
+    fixture.componentRef.setInput('isCreate', true);
     component = fixture.componentInstance;
+
+    fixture.detectChanges();
     await fixture.whenStable();
   });
 
-  it('should create', () => {
-    expect(component)
-      .toBeTruthy();
-  });
-
-  it('should have correct amount of columns in table', () => {
-    const columns = component.degreeTable;
-    expect(columns.columnDefs.length)
-      .toEqual(6);
-  });
-
-  describe('Table Columns Definition', () => {
-    let mockExperienceCalc: ExperienceCalculationModel;
-
-    beforeEach(() => {
-      mockExperienceCalc = {
-        experience: {
-          name: 'Test Experience',
-          experienceType: {
-            highlyRelevantPoints: 10,
-            limitedRelevantPoints: 5,
-            littleRelevantPoints: 2
-          }
-        },
-        relevancy: Relevancy.STRONGLY
-      } as ExperienceCalculationModel;
-    });
-
-    it('should correctly map standard properties in columns via getValue', () => {
-      const nameCol = component.experienceTable.columnDefs[0];
-      const highlyCol = component.experienceTable.columnDefs[1];
-      const limitedCol = component.experienceTable.columnDefs[2];
-      const littleCol = component.experienceTable.columnDefs[3];
-
-      expect(nameCol.getValue(mockExperienceCalc))
-        .toBe('Test Experience');
-      expect(highlyCol.getValue(mockExperienceCalc))
-        .toBe(10);
-      expect(limitedCol.getValue(mockExperienceCalc))
-        .toBe(5);
-      expect(littleCol.getValue(mockExperienceCalc))
-        .toBe(2);
-    });
-  });
-  describe('Table Data configuration', () => {
-    it('should configure GenericTableDataSource with columns', () => {
-      const tableData = component.experienceTable;
-
-      expect(tableData)
-        .toBeInstanceOf(GenericTableDataSource);
-      expect(tableData.columnDefs)
-        .toEqual(component.experienceTable.columnDefs);
+  describe('Initialization & Basics', () => {
+    it('should create', () => {
+      expect(component)
+        .toBeTruthy();
     });
   });
 
-  describe('Degree Table Columns Definition', () => {
-    let mockDegreeCalc: DegreeCalculationModel;
-
-    beforeEach(() => {
-      mockDegreeCalc = {
-        degree: {
-          name: 'Master of Science',
-          type: {
-            highlyRelevantPoints: 100,
-            limitedRelevantPoints: 50,
-            littleRelevantPoints: 20
-          }
-        },
-        relevancies: {
-          [Relevancy.STRONGLY]: { weight: 0 },
-          [Relevancy.NORMAL]: { weight: 0 },
-          [Relevancy.POORLY]: { weight: 0 }
-        }
-      } as DegreeCalculationModel;
-    });
-
-    it('should have correct amount of columns in degree table', () => {
-      const columns = component.degreeTable;
-      expect(columns.columnDefs.length)
-        .toEqual(6);
-    });
-
-    it('should correctly map standard properties in degree columns via getValue', () => {
-      const columns = component.degreeTable;
-      const nameCol = columns.columnDefs[0];
-      const highlyCol = columns.columnDefs[1];
-      const limitedCol = columns.columnDefs[2];
-      const littleCol = columns.columnDefs[3];
-
-      expect(nameCol.getValue(mockDegreeCalc))
-        .toBe('Master of Science');
-      expect(highlyCol.getValue(mockDegreeCalc))
-        .toBeUndefined();
-      expect(limitedCol.getValue(mockDegreeCalc))
-        .toBeUndefined();
-      expect(littleCol.getValue(mockDegreeCalc))
-        .toBeUndefined();
+  describe('Routing', () => {
+    it('should navigate to member CV when routeToCV is called', () => {
+      component.routeToCV();
+      expect(routerMock.navigate)
+        .toHaveBeenCalledWith(['member',
+          calculationModel1.member.id]);
     });
   });
-  describe('Degree Table Data configuration', () => {
-    it('should configure GenericTableDataSource with detail view link for degree table', () => {
-      const tableData = component.degreeTable;
 
-      expect(tableData)
-        .toBeInstanceOf(GenericTableDataSource);
-      expect(tableData.shouldLink)
+  describe('State (isArchived)', () => {
+    it('should return true if calculation state is ARCHIVED', () => {
+      const archivedCalc = JSON.parse(JSON.stringify(calculationModel1));
+      archivedCalc.state = CalculationState.ARCHIVED;
+
+      fixture.componentRef.setInput('calculation', archivedCalc);
+      fixture.detectChanges();
+
+      expect(component.isArchived())
+        .toBeTruthy();
+    });
+
+    it('should return false if calculation state is NOT ARCHIVED', () => {
+      const draftCalc = JSON.parse(JSON.stringify(calculationModel1));
+      draftCalc.state = CalculationState.DRAFT;
+
+      fixture.componentRef.setInput('calculation', draftCalc);
+      fixture.detectChanges();
+
+      expect(component.isArchived())
+        .toBeFalsy();
+    });
+  });
+
+  describe('Saving Form (saveForm)', () => {
+    it('should update calculation if form is valid and is in update mode', async() => {
+      const newCalc = JSON.parse(JSON.stringify(calculationModel1));
+      fixture.componentRef.setInput('calculation', newCalc);
+      fixture.componentRef.setInput('isCreate', false);
+
+      const formModel = signal(calculationModel1);
+      const fieldTree = TestBed.runInInjectionContext(() => form(formModel));
+
+      component.save(fieldTree);
+      await fixture.whenStable();
+
+      expect(calculationServiceMock.updateCalculation)
+        .toHaveBeenCalledWith(calculationModel1.id, formModel());
+      expect(routerMock.navigate)
+        .toHaveBeenCalledWith(['member',
+          calculationModel1.member.id]);
+    });
+
+    it('should add calculation if form is valid and in add mode', async() => {
+      const newCalc = JSON.parse(JSON.stringify(calculationModel1));
+      fixture.componentRef.setInput('calculation', newCalc);
+      fixture.detectChanges();
+
+      const formModel: WritableSignal<CalculationModel> = signal(newCalc);
+      const fieldTree = TestBed.runInInjectionContext(() => form(formModel));
+
+      component.save(fieldTree);
+      await fixture.whenStable();
+
+      expect(calculationServiceMock.addCalculation)
+        .toHaveBeenCalledWith(formModel());
+      expect(routerMock.navigate)
+        .toHaveBeenCalledWith(['member',
+          calculationModel1.member.id]);
+    });
+
+    it('should not call service if form is invalid', async() => {
+      const formModel = signal(calculationModel1);
+      const fieldTree = TestBed.runInInjectionContext(() => form(formModel, (schema) => {
+        validate(schema.points, () => ({ kind: 'invalid' }));
+      }));
+
+      component.save(fieldTree);
+      await fixture.whenStable();
+
+      expect(calculationServiceMock.updateCalculation).not.toHaveBeenCalled();
+      expect(calculationServiceMock.addCalculation).not.toHaveBeenCalled();
+      expect(fieldTree()
+        .touched())
         .toBe(true);
-      expect(tableData.columnDefs.length)
-        .toEqual(6);
     });
   });
 });
