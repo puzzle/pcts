@@ -253,19 +253,19 @@ describe('MemberCalculationComponent', () => {
       });
   });
 
-  it('should only display leadership experiences in calculation from a Management role', () => {
-    memberDetailPage.visit(8)
+  it('should display leadership experience in calculation from a Management role', () => {
+    memberDetailPage.visit(1)
       .switchTab('Administrator');
 
     memberDetailPage.addCalculation()
       .click();
 
     leadershipExperienceTableHelper.expectEmptyTable();
+  });
 
-    calculationDetailViewPage.cancelButton()
-      .click();
-
-    memberDetailPage.switchTab('Intern');
+  it('should not display leadership experience in calculation from a no Management role', () => {
+    memberDetailPage.visit(1)
+      .switchTab('Intern');
 
     memberDetailPage.addCalculation()
       .click();
