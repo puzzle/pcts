@@ -303,7 +303,7 @@ describe('MemberCalculationComponent', () => {
 
       calculationTableHelper
         .toggleShowAll()
-        .getTableRowBy(11, 'Archiviert')
+        .getTableRowBy(13, 'Archiviert')
         .click();
 
       calculationDetailViewPage.saveButton()
