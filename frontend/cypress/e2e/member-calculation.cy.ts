@@ -273,8 +273,8 @@ describe('MemberCalculationComponent', () => {
     leadershipExperienceTableHelper.expectTableNotFound();
   });
 
-  describe.only('Read-Only When Archived Calculation', () => {
-    it.only('should disable all form fields when opening an archived calculation', () => {
+  describe('Read-Only When Archived Calculation', () => {
+    it('should disable all form fields when opening an archived calculation', () => {
       memberDetailPage.visit(1)
         .switchTab('Administrator');
 
@@ -288,12 +288,12 @@ describe('MemberCalculationComponent', () => {
 
       experienceTableHelper.tableRows()
         .each(($row) => {
-          experienceTableHelper.expectRadioRowIfDisabled($row);
+          experienceTableHelper.expectRadioRowsIs($row, 'disabled');
         });
 
       degreeTableHelper.tableRows()
         .each(($row) => {
-          degreeTableHelper.expectCheckboxRowIfDisabled($row);
+          degreeTableHelper.expectCheckboxRowIs($row, 'disabled');
         });
     });
 
@@ -313,7 +313,31 @@ describe('MemberCalculationComponent', () => {
     });
 
     it('should not be disabled when opening a non-archived calculation', () => {
+      memberDetailPage.visit(1)
+        .switchTab('Administrator');
 
+      calculationTableHelper
+        .toggleShowAll()
+        .getTableRowBy(10, 'Aktiv')
+        .click();
     });
+
+    calculationDetailViewPage.statusDropdown()
+      .should('be.not.disabled');
+
+    experienceTableHelper.tableRows()
+      .each(($row) => {
+        experienceTableHelper.expectRadioRowsIs($row, 'not.disabled');
+      });
+
+    degreeTableHelper.tableRows()
+      .each(($row) => {
+        degreeTableHelper.expectCheckboxRowIs($row, 'not.disabled');
+      });
+
+    calculationDetailViewPage.saveButton()
+      .should('exist');
+    calculationDetailViewPage.cancelButton()
+      .should('exist');
   });
 });

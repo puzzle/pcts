@@ -94,16 +94,16 @@ export class TableHelper {
       .click({ force: true });
   }
 
-  expectRadioRowIfDisabled(row: JQuery<HTMLElement>) {
+  expectRadioRowsIs(row: JQuery<HTMLElement>, expected: string) {
     cy.wrap(row)
       .find('mat-radio-button input')
-      .should('be.disabled');
+      .should('be.' + expected);
   }
 
-  expectCheckboxRowIfDisabled(row: JQuery<HTMLElement>) {
+  expectCheckboxRowIs(row: JQuery<HTMLElement>, expected: string) {
     cy.wrap(row)
       .find('mat-checkbox input, input[matInput]')
-      .should('be.disabled');
+      .should('be.' + expected);
   }
 
   expandRow(row: JQuery<HTMLElement>) {
