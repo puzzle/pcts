@@ -272,4 +272,37 @@ describe('MemberCalculationComponent', () => {
 
     leadershipExperienceTableHelper.expectTableNotFound();
   });
+
+  describe.only('Read-Only When Archived Calculation', () => {
+    it.only('should disable all form fields when opening an archived calculation', () => {
+      memberDetailPage.visit(1)
+        .switchTab('Administrator');
+
+      calculationTableHelper
+        .toggleShowAll()
+        .getTableRowBy(13, 'Archiviert')
+        .click();
+
+      calculationDetailViewPage.statusDropdown()
+        .should('be.disabled');
+
+      experienceTableHelper.tableRows()
+        .each(($row) => {
+          experienceTableHelper.expectRadioRowIfDisabled($row);
+        });
+
+      degreeTableHelper.tableRows()
+        .each(($row) => {
+          degreeTableHelper.expectCheckboxRowIfDisabled($row);
+        });
+    });
+
+    it('should disable the Save and Cancel buttons when opening an archived calculation', () => {
+
+    });
+
+    it('should not be disabled when opening a non-archived calculation', () => {
+
+    });
+  });
 });
