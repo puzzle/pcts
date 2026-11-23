@@ -1,4 +1,3 @@
-<div class="mt-5">
   <app-generic-table [dataSource]="table()" idAttr="id">
     <ng-template appColumnTemplate="highlyRelevant" let-row>
       <mat-checkbox [disabled]="disabled()" [checked]="shouldBeChecked(row, Relevancy.STRONGLY)" (change)="updateInputFields(row, Relevancy.STRONGLY)" (click)="$event.stopPropagation()" id="highly" [name]=row.id (keydown)="$event.stopPropagation()"/>
@@ -53,4 +52,3 @@
       </div>
     </ng-template>
   </app-generic-table>
-</div>
