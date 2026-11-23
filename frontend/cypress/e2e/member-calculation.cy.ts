@@ -296,7 +296,7 @@ describe('MemberCalculationComponent', () => {
         });
     });
 
-    it('should not appear the Save and Cancel buttons when opening an archived calculation', () => {
+    it('should not display the Save and Cancel buttons when opening an archived calculation', () => {
       memberDetailPage.visit(8)
         .switchTab('Administrator');
 

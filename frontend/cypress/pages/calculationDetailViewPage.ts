@@ -38,7 +38,7 @@ class CalculationDetailViewPage extends Page {
       .click();
 
     cy.get('mat-option')
-      .contains('Aktiv')
+      .contains(status)
       .click();
   }
 }
