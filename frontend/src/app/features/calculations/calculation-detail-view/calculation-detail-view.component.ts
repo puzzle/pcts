@@ -1,5 +1,5 @@
 import { Component, inject, input } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -29,8 +29,6 @@ import { FieldTree, submit } from '@angular/forms/signals';
   styleUrl: 'calculation-detail-view.component.scss'
 })
 export class CalculationDetailViewComponent {
-  private readonly route = inject(ActivatedRoute);
-
   private readonly calculationService = inject(CalculationService);
 
   private readonly router = inject(Router);
@@ -44,25 +42,17 @@ export class CalculationDetailViewComponent {
       this.calculation().member.id]);
   }
 
-  save(calculationForm: FieldTree<CalculationModel>) {
-    submit(calculationForm, {
+  async save(calculationForm: FieldTree<CalculationModel>) {
+    await submit(calculationForm, {
       ignoreValidators: 'none',
       action: (form) => new Promise((resolve) => {
-        if (this.isCreate()) {
-          this.calculationService.addCalculation(form()
-            .value())
-            .subscribe({
-              next: () => this.routeToCV(),
-              error: () => resolve(undefined)
-            });
-        } else {
-          this.calculationService.updateCalculation(this.calculation().id, form()
-            .value())
-            .subscribe({
-              next: () => this.routeToCV(),
-              error: () => resolve(undefined)
-            });
-        }
+        const method = this.isCreate() ? this.calculationService.addCalculation(form()
+          .value()) : this.calculationService.updateCalculation(this.calculation().id, form()
+          .value());
+        method.subscribe({
+          next: () => this.routeToCV(),
+          error: () => resolve(undefined)
+        });
       })
     });
   }
