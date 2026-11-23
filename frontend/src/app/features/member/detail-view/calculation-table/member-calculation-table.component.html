@@ -8,7 +8,7 @@
     <app-generic-table crudBasePath="calculation" idAttr="id" [dataSource]="c" (entrySelected)="openCalculation($event)"/>
   }
 </div>
-} @else if (calculationsResource.value()) {
+} @else if (calculationsResource.value()?.length) {
   <h3 class="p-3">{{ "MODEL_NAME" | scopedTranslation }}</h3>
   <app-calculation-form [isReadOnly]="true" [calculation]="calculationsResource.value()[0]"/>
 } @else {
