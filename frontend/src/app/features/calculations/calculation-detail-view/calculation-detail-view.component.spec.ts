@@ -18,7 +18,6 @@ describe('CalculationDetailViewComponent', () => {
   let calculationServiceMock: Partial<CalculationService>;
   let routerMock: any;
   let routeMock: any;
-  let modeSignal: WritableSignal<'create' | 'edit'>;
 
   beforeEach(async() => {
     calculationServiceMock = {
@@ -32,15 +31,7 @@ describe('CalculationDetailViewComponent', () => {
       navigate: jest.fn()
     };
 
-    modeSignal = signal<'create' | 'edit'>('create');
-
-    routeMock = {
-      snapshot: {
-        get data() {
-          return { mode: modeSignal() };
-        }
-      }
-    } as unknown as ActivatedRoute;
+    routeMock = {} as unknown as ActivatedRoute;
 
     await TestBed.configureTestingModule({
       imports: [CalculationDetailViewComponent],
@@ -59,6 +50,7 @@ describe('CalculationDetailViewComponent', () => {
 
     fixture = TestBed.createComponent(CalculationDetailViewComponent);
     fixture.componentRef.setInput('calculation', calculationModel1);
+    fixture.componentRef.setInput('isCreate', true);
     component = fixture.componentInstance;
 
     fixture.detectChanges();
@@ -69,23 +61,6 @@ describe('CalculationDetailViewComponent', () => {
     it('should create', () => {
       expect(component)
         .toBeTruthy();
-    });
-
-    it('should identify as "Add" mode if calculation has no ID', () => {
-      const newCalc = JSON.parse(JSON.stringify(calculationModel1));
-      newCalc.id = null;
-
-      fixture.componentRef.setInput('calculation', newCalc);
-      fixture.detectChanges();
-
-      expect(component.isAdd())
-        .toBeTruthy();
-    });
-
-    it('should identify as "Edit" mode if calculation has an ID', () => {
-      modeSignal.set('edit');
-      expect(component.isAdd())
-        .toBeFalsy();
     });
   });
 
@@ -123,11 +98,14 @@ describe('CalculationDetailViewComponent', () => {
   });
 
   describe('Saving Form (saveForm)', () => {
-    it('should update calculation if form is valid and NOT in add mode', async() => {
+    it('should update calculation if form is valid and is in update mode', async() => {
+      const newCalc = JSON.parse(JSON.stringify(calculationModel1));
+      fixture.componentRef.setInput('calculation', newCalc);
+      fixture.componentRef.setInput('isCreate', false);
+
       const formModel = signal(calculationModel1);
       const fieldTree = TestBed.runInInjectionContext(() => form(formModel));
 
-      modeSignal.set('edit');
       component.save(fieldTree);
       await fixture.whenStable();
 
@@ -138,17 +116,16 @@ describe('CalculationDetailViewComponent', () => {
           calculationModel1.member.id]);
     });
 
-    it('should add calculation if form is valid and in add mode', () => {
+    it('should add calculation if form is valid and in add mode', async() => {
       const newCalc = JSON.parse(JSON.stringify(calculationModel1));
-      newCalc.id = null;
       fixture.componentRef.setInput('calculation', newCalc);
       fixture.detectChanges();
 
       const formModel: WritableSignal<CalculationModel> = signal(newCalc);
       const fieldTree = TestBed.runInInjectionContext(() => form(formModel));
 
-      modeSignal.set('create');
       component.save(fieldTree);
+      await fixture.whenStable();
 
       expect(calculationServiceMock.addCalculation)
         .toHaveBeenCalledWith(formModel());
@@ -163,7 +140,6 @@ describe('CalculationDetailViewComponent', () => {
         validate(schema.points, () => ({ kind: 'invalid' }));
       }));
 
-      modeSignal.set('edit');
       component.save(fieldTree);
       await fixture.whenStable();
 
