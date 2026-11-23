@@ -185,7 +185,8 @@ VALUES
     (4, 4, 'DRAFT', NULL, NULL),
     (1, 5, 'ACTIVE', '2025-01-28', 'admin_user'),
     (1, 1, 'ARCHIVED', '2025-01-28', 'admin_user'),
-    (8, 1, 'ARCHIVED', '2025-03-01', 'admin_user');
+    (8, 1, 'ARCHIVED', '2025-03-01', 'admin_user'),
+    (8, 1, 'ACTIVE', '2025-03-10', 'admin_user');
 
 INSERT INTO experience_calculation
 (calculation_id, experience_id, relevancy, comment)
@@ -195,7 +196,8 @@ VALUES
     (4, 2, 'NORMAL', 'Internship experience'),
     (15, 2, 'NORMAL', 'Internship experience'),
     (7, 4, 'NORMAL', 'Internship experience'),
-    (17, 16, 'STRONGLY', 'Directly relevant senior engineering role');
+    (17, 16, 'STRONGLY', 'Directly relevant senior engineering role'),
+    (18, 16, 'STRONGLY', 'Directly relevant senior engineering role');
 
 INSERT INTO degree_calculation
 (calculation_id, degree_id, comment)
@@ -203,7 +205,8 @@ VALUES
     (2, 2, 'Low relevance for technical role'),
     (3, 3, 'Directly relevant degree'),
     (4, 3, 'Relevant but less practical focus'),
-    (17, 4, 'Highly relevant technical degree');
+    (17, 4, 'Highly relevant technical degree'),
+    (18, 4, 'Highly relevant technical degree');
 
 INSERT INTO degree_calculation_weight
 (weight, relevancy, degree_calculation_id)
@@ -211,7 +214,8 @@ VALUES
     (100,  'POORLY', 1),
     (100,  'STRONGLY', 2),
     (100,  'NORMAL', 3),
-    (100,  'STRONGLY', 4);
+    (100,  'STRONGLY', 4),
+    (100,  'STRONGLY', 5);
 
 INSERT INTO certificate_calculation
 (calculation_id, certificate_id)
@@ -220,7 +224,8 @@ VALUES
     (3, 3),
     (4, 4),
     (5, 5),
-    (17, 6);
+    (17, 6),
+    (18, 6);
 
 INSERT INTO leadership_experience_calculation
 (calculation_id, leadership_experience_id)
@@ -228,4 +233,5 @@ VALUES
     (1, 1),
     (2, 2),
     (4, 3),
-    (17, 4);
+    (17, 4),
+    (18, 4);
