@@ -181,6 +181,7 @@
         "WARNING": "Warnung"
       },
       "HINT": {
+        "NO_ACTIVE_CALCULATIONS": "Für diese Rolle gibt es keine aktive Berechnung.",
         "LEADERSHIP": "Führungserfahrungen können für diese Rolle nicht angerechnet werden."
       },
       "EXPERIENCE": {

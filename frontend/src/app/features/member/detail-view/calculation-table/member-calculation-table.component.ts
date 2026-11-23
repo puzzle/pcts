@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { CalculationModel } from '../../../calculations/calculationDto';
 import { CalculationFormComponent } from '../../../calculations/calculation-form/calculation-form.component';
 import { AuthService } from '../../../../core/auth/auth.service';
+import { HintBoxComponent } from '../../../../shared/hint-box/hint-box.component';
 
 @Component({
   selector: 'app-member-calculation-table',
@@ -16,7 +17,8 @@ import { AuthService } from '../../../../core/auth/auth.service';
     GenericTableComponent,
     CrudButtonComponent,
     ScopedTranslationPipe,
-    CalculationFormComponent
+    CalculationFormComponent,
+    HintBoxComponent
   ],
   templateUrl: './member-calculation-table.component.html'
 })
@@ -65,4 +67,6 @@ export class MemberCalculationTableComponent {
       this.roleId()
     ]);
   };
+
+  protected readonly HintBoxComponent = HintBoxComponent;
 }
