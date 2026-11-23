@@ -1,4 +1,4 @@
-<div class="d-flex flex-row justify-content-start gap-5">
+<div class="d-flex flex-row justify-content-start gap-5 p-3">
   <div class="d-flex flex-column gap-1">
     <span>{{ "POINTS" | scopedTranslation }}</span>
     <span class="points">{{calculation().points.toFixed(2)}}</span>
@@ -15,22 +15,25 @@
   </div>
 </div>
 
-<div class="d-flex flex-column gap-5 mb-5">
-  <section>
-    <h3 class="pt-3">{{"EXPERIENCE.MODEL_NAME_PLURAL" | scopedTranslation}}</h3>
+<div class="d-flex flex-column mb-5">
+  <section class="mt-5 pb-5 border-bottom p-3">
+    <h3>{{"EXPERIENCE.MODEL_NAME_PLURAL" | scopedTranslation}}</h3>
     <app-generic-radio-form-table [formField]="calculationForm.experienceCalculations" [table]="experienceTableDataSource" data-testid="experience-table"/>
   </section>
 
-  <section>
-    <h3 class="pt-3">{{"DEGREE.MODEL_NAME_PLURAL" | scopedTranslation}}</h3>
+  <section class="mt-5 pb-5 border-bottom p-3">
+    <h3>{{"DEGREE.MODEL_NAME_PLURAL" | scopedTranslation}}</h3>
     <app-generic-checkbox-form-table [formField]="calculationForm.degreeCalculations" [table]="degreeTableDataSource" data-testid="degree-table"/>
   </section>
 
-  <section>
-    <h3 class="pt-3">{{"CERTIFICATE.MODEL_NAME_PLURAL" | scopedTranslation}}</h3>
+  <section class="mt-5 pb-5 border-bottom p-3">
+    <h3>{{"CERTIFICATE.MODEL_NAME_PLURAL" | scopedTranslation}}</h3>
     <app-generic-table [dataSource]="certificateTableDataSource" [disableSorting]="true" data-testid="certificate-table"/>
   </section>
 
+  @if (calculation().role.isManagement) {
+    <section class="mt-5 pb-5 border-bottom p-3">
+      <h3>{{"LEADERSHIP_EXPERIENCE.MODEL_NAME_PLURAL" | scopedTranslation}}</h3>
   <section>
     <h3 class="pt-3">{{"LEADERSHIP_EXPERIENCE.MODEL_NAME_PLURAL" | scopedTranslation}}</h3>
     @if (calculation().role.isManagement) {

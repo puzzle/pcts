@@ -9,7 +9,7 @@
   }
 </div>
 } @else if (calculationsResource.value()) {
-  <h3>{{ "MODEL_NAME" | scopedTranslation }}</h3>
+  <h3 class="p-3">{{ "MODEL_NAME" | scopedTranslation }}</h3>
   <app-calculation-form [isReadOnly]="true" [calculation]="calculationsResource.value()[0]"/>
 } @else {
   // TODO: add pcts hint
