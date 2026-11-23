@@ -57,7 +57,7 @@ export const routes: Routes = [
           path: 'calculation/:calculationId',
           providers: [provideI18nPrefix('CALCULATION')],
           component: CalculationDetailViewComponent,
-          data: { mode: 'edit' },
+          data: { isCreate: false },
           resolve: {
             memberId: memberIdResolver,
             calculation: calculationResolver
@@ -67,7 +67,7 @@ export const routes: Routes = [
           path: 'calculation/new/:roleId',
           providers: [provideI18nPrefix('CALCULATION')],
           component: CalculationDetailViewComponent,
-          data: { mode: 'create' },
+          data: { isCreate: true },
           resolve: {
             calculation: calculationTemplateResolver
           }
