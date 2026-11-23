@@ -112,7 +112,8 @@ VALUES
     (1, 'Software Engineer', 'TechNova Solutions', 100, 1, 'Worked on backend APIs and DevOps tasks.', '2019-03-01', '2022-07-31'),
     (2, 'Marketing Intern', 'TechNova Solutions', 80, 2, 'Assisted in content strategy and social media analytics.', '2021-06-01', null),
     (1, 'Web Developer (Freelance)', 'Freelance', 50, 3, null, '2020-02-15', '2020-12-15'),
-    (3, 'Data Analyst',  null, 100, 1, null, '2018-01-10', null);
+    (3, 'Data Analyst',  null, 100, 1, null, '2018-01-10', null),
+    (8, 'Senior Software Engineer', 'TechNova Solutions', 100, 2, 'Led backend platform migration.', '2022-08-01', '2024-12-31');
 
 INSERT INTO degree (member_id, name, institution, completed, degree_type_id, start_date, end_date, comment)
 VALUES (1,
@@ -138,7 +139,15 @@ VALUES (1,
         4,
         '2017-09-01',
         '2020-06-30',
-        null);
+        null),
+       (8,
+        'Master of Science in Computer Science',
+        'ETH Zürich',
+        TRUE,
+        2,
+        '2018-09-01',
+        '2020-06-30',
+        'Specialized in distributed systems.');
 
 INSERT INTO certificate
 (member_id, certificate_type_id, completed_at, valid_until, comment, deleted_at)
@@ -147,14 +156,16 @@ VALUES
     (2, 2, '2022-11-01', NULL, 'Lifetime certification.', NULL),
     (3, 3, '2020-03-22', '2022-03-21', 'Needs renewal.', NULL),
     (4, 1, '2021-06-10', '2023-06-09', 'Left organization.', '2023-07-01 10:00:00'),
-    (5, 4, '2024-02-01', '2026-02-01', NULL, NULL);
+    (5, 4, '2024-02-01', '2026-02-01', NULL, NULL),
+    (8, 5, '2024-05-10', '2027-05-09', 'ITIL foundation for service management.', NULL);
 
 INSERT INTO leadership_experience
 (member_id, leadership_experience_type_id, comment, deleted_at)
 VALUES
     (6, 1, NULL, NULL),
     (2, 2, 'This is quite hard', NULL),
-    (4, 3, NULL, '2025-01-03 10:43:12');
+    (4, 3, NULL, '2025-01-03 10:43:12'),
+    (8, 3, 'Led onboarding training for new hires.', NULL);
 
 INSERT INTO calculation (member_id, role_id, state, publication_date, publicized_by)
 VALUES
@@ -173,7 +184,9 @@ VALUES
     (3, 3, 'ARCHIVED', '2025-01-10', 'admin_user'),
     (4, 4, 'DRAFT', NULL, NULL),
     (1, 5, 'ACTIVE', '2025-01-28', 'admin_user'),
-    (1, 1, 'ARCHIVED', '2025-01-28', 'admin_user');
+    (1, 1, 'ARCHIVED', '2025-01-28', 'admin_user'),
+    (8, 1, 'ARCHIVED', '2025-03-01', 'admin_user'),
+    (8, 1, 'ACTIVE', '2025-03-10', 'admin_user');
 
 INSERT INTO experience_calculation
 (calculation_id, experience_id, relevancy, comment)
@@ -182,21 +195,27 @@ VALUES
     (3, 4, 'STRONGLY',  'Full-time data analyst role'),
     (4, 2, 'NORMAL', 'Internship experience'),
     (15, 2, 'NORMAL', 'Internship experience'),
-    (7, 4, 'NORMAL', 'Internship experience');
+    (7, 4, 'NORMAL', 'Internship experience'),
+    (17, 16, 'STRONGLY', 'Directly relevant senior engineering role'),
+    (18, 16, 'STRONGLY', 'Directly relevant senior engineering role');
 
 INSERT INTO degree_calculation
 (calculation_id, degree_id, comment)
 VALUES
     (2, 2, 'Low relevance for technical role'),
     (3, 3, 'Directly relevant degree'),
-    (4, 3, 'Relevant but less practical focus');
+    (4, 3, 'Relevant but less practical focus'),
+    (17, 4, 'Highly relevant technical degree'),
+    (18, 4, 'Highly relevant technical degree');
 
 INSERT INTO degree_calculation_weight
 (weight, relevancy, degree_calculation_id)
 VALUES
     (100,  'POORLY', 1),
     (100,  'STRONGLY', 2),
-    (100,  'NORMAL', 3);
+    (100,  'NORMAL', 3),
+    (100,  'STRONGLY', 4),
+    (100,  'STRONGLY', 5);
 
 INSERT INTO certificate_calculation
 (calculation_id, certificate_id)
@@ -204,11 +223,15 @@ VALUES
     (2, 2),
     (3, 3),
     (4, 4),
-    (5, 5);
+    (5, 5),
+    (17, 6),
+    (18, 6);
 
 INSERT INTO leadership_experience_calculation
 (calculation_id, leadership_experience_id)
 VALUES
     (1, 1),
     (2, 2),
-    (4, 3);
+    (4, 3),
+    (17, 4),
+    (18, 4);

@@ -21,6 +21,12 @@ export class TableHelper {
       .findByTestId('generic-table-row');
   }
 
+  getTableRowBy(index: number, text: string) {
+    return this.tableRows()
+      .eq(index)
+      .should('contain.text', text);
+  }
+
   getShowAllButton() {
     return this.getTableHTMLElement()
       .findByTestId('limit-list-button');
@@ -86,6 +92,18 @@ export class TableHelper {
       .eq(stateIndexMap[state])
       .find('input')
       .click({ force: true });
+  }
+
+  expectRadioRowsIs(row: JQuery<HTMLElement>, expected: string) {
+    cy.wrap(row)
+      .find('mat-radio-button input')
+      .should('be.' + expected);
+  }
+
+  expectCheckboxRowIs(row: JQuery<HTMLElement>, expected: string) {
+    cy.wrap(row)
+      .find('mat-checkbox input, input[matInput]')
+      .should('be.' + expected);
   }
 
   expandRow(row: JQuery<HTMLElement>) {
