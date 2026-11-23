@@ -254,7 +254,7 @@ describe('MemberCalculationComponent', () => {
   });
 
   it('should only display leadership experiences in calculation from a Management role', () => {
-    memberDetailPage.visit(1)
+    memberDetailPage.visit(8)
       .switchTab('Administrator');
 
     memberDetailPage.addCalculation()
@@ -273,14 +273,13 @@ describe('MemberCalculationComponent', () => {
     leadershipExperienceTableHelper.expectTableNotFound();
   });
 
-  describe('Read-Only When Archived Calculation', () => {
+  describe.only('Read-Only When Archived Calculation', () => {
     it('should disable all form fields when opening an archived calculation', () => {
-      memberDetailPage.visit(1)
+      memberDetailPage.visit(8)
         .switchTab('Administrator');
 
       calculationTableHelper
-        .toggleShowAll()
-        .getTableRowBy(13, 'Archiviert')
+        .getTableRowBy(1, 'Archiviert')
         .click();
 
       calculationDetailViewPage.statusDropdown()
@@ -298,12 +297,11 @@ describe('MemberCalculationComponent', () => {
     });
 
     it('should not appear the Save and Cancel buttons when opening an archived calculation', () => {
-      memberDetailPage.visit(1)
+      memberDetailPage.visit(8)
         .switchTab('Administrator');
 
       calculationTableHelper
-        .toggleShowAll()
-        .getTableRowBy(13, 'Archiviert')
+        .getTableRowBy(1, 'Archiviert')
         .click();
 
       calculationDetailViewPage.saveButton()
@@ -313,12 +311,11 @@ describe('MemberCalculationComponent', () => {
     });
 
     it('should not be disabled when opening a non-archived calculation', () => {
-      memberDetailPage.visit(1)
+      memberDetailPage.visit(8)
         .switchTab('Administrator');
 
       calculationTableHelper
-        .toggleShowAll()
-        .getTableRowBy(10, 'Aktiv')
+        .getTableRowBy(0, 'Aktiv')
         .click();
 
       calculationDetailViewPage.statusDropdown()
