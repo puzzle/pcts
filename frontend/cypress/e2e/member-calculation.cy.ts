@@ -320,24 +320,24 @@ describe('MemberCalculationComponent', () => {
         .toggleShowAll()
         .getTableRowBy(10, 'Aktiv')
         .click();
+
+      calculationDetailViewPage.statusDropdown()
+        .should('be.not.disabled');
+
+      experienceTableHelper.tableRows()
+        .each(($row) => {
+          experienceTableHelper.expectRadioRowsIs($row, 'not.disabled');
+        });
+
+      degreeTableHelper.tableRows()
+        .each(($row) => {
+          degreeTableHelper.expectCheckboxRowIs($row, 'not.disabled');
+        });
+
+      calculationDetailViewPage.saveButton()
+        .should('exist');
+      calculationDetailViewPage.cancelButton()
+        .should('exist');
     });
-
-    calculationDetailViewPage.statusDropdown()
-      .should('be.not.disabled');
-
-    experienceTableHelper.tableRows()
-      .each(($row) => {
-        experienceTableHelper.expectRadioRowsIs($row, 'not.disabled');
-      });
-
-    degreeTableHelper.tableRows()
-      .each(($row) => {
-        degreeTableHelper.expectCheckboxRowIs($row, 'not.disabled');
-      });
-
-    calculationDetailViewPage.saveButton()
-      .should('exist');
-    calculationDetailViewPage.cancelButton()
-      .should('exist');
   });
 });
