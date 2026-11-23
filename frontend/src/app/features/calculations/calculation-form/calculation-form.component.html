@@ -31,10 +31,13 @@
     <app-generic-table [dataSource]="certificateTableDataSource" [disableSorting]="true" data-testid="certificate-table"/>
   </section>
 
-  @if (calculation().role.isManagement) {
-    <section>
-      <h3 class="pt-3">{{"LEADERSHIP_EXPERIENCE.MODEL_NAME_PLURAL" | scopedTranslation}}</h3>
+  <section>
+    <h3 class="pt-3">{{"LEADERSHIP_EXPERIENCE.MODEL_NAME_PLURAL" | scopedTranslation}}</h3>
+    @if (calculation().role.isManagement) {
       <app-generic-table [dataSource]="leadershipExperienceTableDataSource" [disableSorting]="true" data-testid="leadership-experience-table"/>
-    </section>
+
+  } @else {
+    <app-hint-box [text]="'HINT.LEADERSHIP' | scopedTranslation" [variant]="'hint'"/>
   }
+  </section>
 </div>
