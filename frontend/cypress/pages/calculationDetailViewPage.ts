@@ -30,8 +30,7 @@ class CalculationDetailViewPage extends Page {
   }
 
   cancelButton() {
-    return cy.get('footer.bottom button')
-      .last();
+    return cy.getByTestId('calculation-cancel-button');
   }
 
   setStatus(status: 'Entwurf' | 'Aktiv' | 'Archiviert') {

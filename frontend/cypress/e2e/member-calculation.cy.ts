@@ -273,7 +273,7 @@ describe('MemberCalculationComponent', () => {
     leadershipExperienceTableHelper.expectTableNotFound();
   });
 
-  describe.only('Read-Only When Archived Calculation', () => {
+  describe('Read-Only When Archived Calculation', () => {
     it('should disable all form fields when opening an archived calculation', () => {
       memberDetailPage.visit(8)
         .switchTab('Administrator');
@@ -283,7 +283,7 @@ describe('MemberCalculationComponent', () => {
         .click();
 
       calculationDetailViewPage.statusDropdown()
-        .should('be.disabled');
+        .should('have.class', 'mat-mdc-select-disabled');
 
       experienceTableHelper.tableRows()
         .each(($row) => {
@@ -319,7 +319,7 @@ describe('MemberCalculationComponent', () => {
         .click();
 
       calculationDetailViewPage.statusDropdown()
-        .should('be.not.disabled');
+        .should('not.have.class', 'mat-mdc-select-disabled');
 
       experienceTableHelper.tableRows()
         .each(($row) => {
