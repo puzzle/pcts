@@ -25,7 +25,7 @@
     <app-submit-button
       [disabled]="!calcForm.calculationForm().valid() || calcForm.calculationForm().submitting()"
       (saveClicked)="save(calcForm.calculationForm)"
-      [text]="(isAdd() ? 'FORM.ADD.BUTTONS.ACTION' : 'FORM.EDIT.BUTTONS.ACTION') | scopedTranslation" />
+      [text]="(isCreate() ? 'FORM.ADD.BUTTONS.ACTION' : 'FORM.EDIT.BUTTONS.ACTION') | scopedTranslation" />
     <app-cancel-button
       (cancelClicked)="routeToCV()"
       [text]="'FORM.EDIT.BUTTONS.CANCEL' | scopedTranslation" />

@@ -1,4 +1,4 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { MatButton } from '@angular/material/button';
@@ -37,7 +37,7 @@ export class CalculationDetailViewComponent {
 
   calculation = input.required<CalculationModel>();
 
-  isAdd = computed(() => this.route.snapshot.data['mode'] === 'create');
+  isCreate = input.required<boolean>();
 
   routeToCV() {
     this.router.navigate(['member',
@@ -48,7 +48,7 @@ export class CalculationDetailViewComponent {
     submit(calculationForm, {
       ignoreValidators: 'none',
       action: (form) => new Promise((resolve) => {
-        if (this.isAdd()) {
+        if (this.isCreate()) {
           this.calculationService.addCalculation(form()
             .value())
             .subscribe({
