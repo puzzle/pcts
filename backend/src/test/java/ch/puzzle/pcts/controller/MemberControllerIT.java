@@ -19,6 +19,7 @@ import ch.puzzle.pcts.dto.member.MemberInputDto;
 import ch.puzzle.pcts.mapper.CalculationMapper;
 import ch.puzzle.pcts.mapper.MemberMapper;
 import ch.puzzle.pcts.model.calculation.Calculation;
+import ch.puzzle.pcts.model.calculation.CalculationState;
 import ch.puzzle.pcts.model.member.Member;
 import ch.puzzle.pcts.util.JsonDtoMatcher;
 import java.math.BigDecimal;
@@ -155,7 +156,7 @@ class MemberControllerIT extends ControllerITBase {
 
     @DisplayName("Should successfully get calculations of member with optional roleId")
     @Test
-    void shouldGetCalculationsByMemberId() throws Exception {
+    void shouldGetCalculationsByMemberIdAsAdmin() throws Exception {
         Long memberId = 1L;
         Long roleId = 2L;
 
@@ -182,7 +183,7 @@ class MemberControllerIT extends ControllerITBase {
 
     @DisplayName("Should successfully get calculations of member without roleId")
     @Test
-    void shouldGetCalculationsByMemberIdWithoutRoleId() throws Exception {
+    void shouldGetCalculationsByMemberIdWithoutRoleIdAsAdmin() throws Exception {
         Long memberId = 1L;
 
         Calculation calculation = mock(Calculation.class);
@@ -203,6 +204,69 @@ class MemberControllerIT extends ControllerITBase {
 
         verify(memberBusinessService, times(1)).getAllCalculationsByMemberIdAndRoleId(memberId, null);
         verify(calculationMapper, times(1)).toDto(anyList());
+    }
+
+    @DisplayName("Should successfully get calculations of member with optional roleId")
+    @Test
+    void shouldGetCalculationsByMemberIdAsMember() throws Exception {
+        Long memberId = 1L;
+        Long roleId = 2L;
+
+        Calculation calculationActive = mock(Calculation.class);
+        Calculation calculationDraft = mock(Calculation.class);
+
+        when(calculationDraft.getState()).thenReturn(CalculationState.DRAFT);
+        when(calculationActive.getState()).thenReturn(CalculationState.ACTIVE);
+
+        CalculationDto calculationDto = mock(CalculationDto.class);
+
+        when(memberBusinessService.getAllCalculationsByMemberIdAndRoleId(memberId, roleId))
+                .thenReturn(List.of(calculationActive, calculationDraft));
+
+        when(calculationMapper.toDto(anyList())).thenReturn(List.of(calculationDto));
+
+        mvc
+                .perform(get(BASEURL + "/" + memberId + "/calculations")
+                        .param("roleId", String.valueOf(roleId))
+                        .with(csrf())
+                        .with(ownerJwt())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1));
+
+        verify(memberBusinessService, times(1)).getAllCalculationsByMemberIdAndRoleId(memberId, roleId);
+        verify(calculationMapper, times(1)).toDto(List.of(calculationActive));
+        verify(securityService, times(2)).isAdmin();
+    }
+
+    @DisplayName("Should successfully get calculations of member without roleId")
+    @Test
+    void shouldGetCalculationsByMemberIdWithoutRoleIdAsMember() throws Exception {
+        Long memberId = 1L;
+
+        Calculation calculationActive = mock(Calculation.class);
+        Calculation calculationDraft = mock(Calculation.class);
+        CalculationDto calculationDto = mock(CalculationDto.class);
+
+        when(calculationDraft.getState()).thenReturn(CalculationState.DRAFT);
+        when(calculationActive.getState()).thenReturn(CalculationState.ACTIVE);
+
+        when(memberBusinessService.getAllCalculationsByMemberIdAndRoleId(memberId, null))
+                .thenReturn(List.of(calculationActive, calculationDraft));
+
+        when(calculationMapper.toDto(anyList())).thenReturn(List.of(calculationDto));
+
+        mvc
+                .perform(get(BASEURL + "/" + memberId + "/calculations")
+                        .with(csrf())
+                        .with(ownerJwt())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1));
+
+        verify(memberBusinessService, times(1)).getAllCalculationsByMemberIdAndRoleId(memberId, null);
+        verify(calculationMapper, times(1)).toDto(List.of(calculationActive));
+        verify(securityService, times(2)).isAdmin();
     }
 
     @DisplayName("Should successfully get role points of member")
