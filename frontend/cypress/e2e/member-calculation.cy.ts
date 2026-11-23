@@ -297,8 +297,19 @@ describe('MemberCalculationComponent', () => {
         });
     });
 
-    it('should disable the Save and Cancel buttons when opening an archived calculation', () => {
+    it('should not appear the Save and Cancel buttons when opening an archived calculation', () => {
+      memberDetailPage.visit(1)
+        .switchTab('Administrator');
 
+      calculationTableHelper
+        .toggleShowAll()
+        .getTableRowBy(11, 'Archiviert')
+        .click();
+
+      calculationDetailViewPage.saveButton()
+        .should('not.exist');
+      calculationDetailViewPage.cancelButton()
+        .should('not.exist');
     });
 
     it('should not be disabled when opening a non-archived calculation', () => {
