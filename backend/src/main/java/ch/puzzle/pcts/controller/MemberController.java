@@ -79,7 +79,7 @@ public class MemberController {
         if (!securityService.isAdmin()) {
             calculations = calculations
                     .stream()
-                    .filter((calculation) -> calculation.getState() == CalculationState.ACTIVE)
+                    .filter(calculation -> calculation.getState() == CalculationState.ACTIVE)
                     .toList();
         }
         return ResponseEntity.ok(calculationMapper.toDto(calculations));
