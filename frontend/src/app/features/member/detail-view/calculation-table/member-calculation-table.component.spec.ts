@@ -184,7 +184,7 @@ describe('MemberCalculationTableComponent', () => {
 
       const htmlContent = fixture.nativeElement.innerHTML;
       expect(htmlContent)
-        .toContain('Hint no calculation');
+        .toContain('HINT.NO_ACTIVE_CALCULATIONS');
     });
   });
 });
