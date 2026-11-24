@@ -3,7 +3,11 @@ package ch.puzzle.pctsmigration.experience;
 import ch.puzzle.pctsmigration.api.ExperienceService;
 import ch.puzzle.pctsmigration.extractor.ExtractionPipeline;
 import ch.puzzle.pctsmigration.ods.OdsParseConfig;
+
+import java.time.LocalDate;
 import java.util.List;
+import java.util.function.Predicate;
+
 import org.openapitools.client.model.ExperienceInputDto;
 import org.springframework.stereotype.Component;
 
@@ -20,22 +24,30 @@ public class ExperienceExtractionPipeline
 
     @Override
     public ExperienceContextModel fetchContext() {
-        return null;
+        return new ExperienceContextModel(LocalDate.now());
     }
 
     @Override
     public String systemPrompt(ExperienceContextModel context) {
-        return "";
+        return """
+                IMPORTANT EXTRACTION RULES:
+                
+                === Context ===
+                Current date: %s
+                """
+                .formatted(context.currentDate());
     }
 
     @Override
     public OdsParseConfig odsSheetParseConfig() {
-        return null;
+        Predicate<String> isMatchingConvention = tableName -> tableName.equals("Berufserfahrung");
+
+        return new OdsParseConfig(isMatchingConvention, null, false);
     }
 
     @Override
     public Class<ExperienceWrapper> entityClass() {
-        return null;
+        return ExperienceWrapper.class;
     }
 
     @Override
