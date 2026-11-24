@@ -6,4 +6,5 @@ export interface ExperienceOverviewModel {
   comment: string | null;
   startDate: Date;
   endDate: Date | null;
+  percent: number;
 }

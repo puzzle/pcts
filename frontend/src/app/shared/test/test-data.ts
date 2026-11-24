@@ -381,7 +381,8 @@ export const memberOverview1: MemberCvOverviewModel = {
       experienceTypeName: 'Internship',
       comment: 'Worked on backend APIs and DevOps tasks.',
       startDate: new Date(),
-      endDate: new Date()
+      endDate: new Date(),
+      percent: 100
     },
     {
       id: 3,
@@ -390,7 +391,8 @@ export const memberOverview1: MemberCvOverviewModel = {
       experienceTypeName: 'Hackathon',
       comment: null,
       startDate: new Date(),
-      endDate: new Date()
+      endDate: new Date(),
+      percent: 50
     }],
     certificates: [{
       id: 1,

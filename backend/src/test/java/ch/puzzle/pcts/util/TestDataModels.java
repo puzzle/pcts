@@ -545,6 +545,7 @@ public class TestDataModels {
                         .withExperienceEndDate(EXPERIENCE_2.getEndDate())
                         .withExperienceComment(EXPERIENCE_2.getComment())
                         .withExperienceTypeName(EXPERIENCE_2.getType().getName())
+                        .withExperienceTPercent(EXPERIENCE_2.getPercent())
                         .build(),
 
                 // 2. Cert 4, Lead 1, Exp 2

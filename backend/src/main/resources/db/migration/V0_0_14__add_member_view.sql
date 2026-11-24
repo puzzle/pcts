@@ -32,6 +32,7 @@ SELECT
     COALESCE(e.id, 0)     AS experience_id,
     e.name                AS experience_name,
     e.employer            AS experience_employer,
+    e.percent             AS experience_percent,
     e.start_date          AS experience_start_date,
     e.end_date            AS experience_end_date,
     e.comment             AS experience_comment,
