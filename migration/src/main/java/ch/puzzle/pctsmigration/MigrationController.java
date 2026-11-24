@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.openapitools.client.model.CertificateInputDto;
 import org.openapitools.client.model.DegreeInputDto;
+import org.openapitools.client.model.ExperienceInputDto;
 import org.openapitools.client.model.LeadershipExperienceInputDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -136,6 +137,41 @@ public class MigrationController {
             try {
                 List<DegreeInputDto> extracted = service.extract(file, degreeExtractionPipeline);
                 degreeExtractionPipeline.create(extracted);
+                result.addToSuccessfulFiles(filename, extracted);
+
+            } catch (MigrationException e) {
+                result.addToFailedFiles(new FileError(filename, e.getMessage()));
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
+    @PostMapping(value = "/experience", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Extract and migrate experience from an ODS file", description = "Uploads a legacy .ods spreadsheet containing experience data. The system uses an AI-based extraction pipeline to parse the file, generate the corresponding `ExperienceInputDto` objects, and automatically persists them in the upstream pcts-api. ")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Experience successfully extracted and created in pcts-api.") })
+    public ResponseEntity<List<ExperienceInputDto>> experience(@Parameter(description = "The .ods file containing the experience data to be migrated. Must be a valid OpenDocument Spreadsheet.", required = true)
+                                                       @RequestPart("file") MultipartFile file) {
+        List<ExperienceInputDto> result = service.extract(file, experienceExtrationPipeline);
+        experienceExtrationPipeline.create(result);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
+    @PostMapping(value = "/experiences", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Extract and migrate experiences from ODS files", description = "Uploads multiple legacy .ods spreadsheet containing experience data. The system uses an AI-based extraction pipeline to parse the file, generate the corresponding `ExperienceInputDto` objects, and automatically persists them in the upstream pcts-api.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Experiences successfully extracted and created in pcts-api.") })
+    public ResponseEntity<MultipleFileResultDto<ExperienceInputDto>> experiences(@RequestPart("files") List<MultipartFile> files) {
+        MultipleFileResultDto<ExperienceInputDto> result = new MultipleFileResultDto<>();
+
+        for (MultipartFile file : files) {
+            String filename = file.getOriginalFilename();
+
+            try {
+                List<ExperienceInputDto> extracted = service.extract(file, experienceExtrationPipeline);
+                experienceExtrationPipeline.create(extracted);
                 result.addToSuccessfulFiles(filename, extracted);
 
             } catch (MigrationException e) {
