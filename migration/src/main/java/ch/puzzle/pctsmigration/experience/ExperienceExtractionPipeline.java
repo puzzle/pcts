@@ -1,9 +1,9 @@
 package ch.puzzle.pctsmigration.experience;
 
+import ch.puzzle.pctsmigration.api.ExperienceService;
 import ch.puzzle.pctsmigration.extractor.ExtractionPipeline;
 import ch.puzzle.pctsmigration.ods.OdsParseConfig;
 import java.util.List;
-import org.openapitools.client.ApiException;
 import org.openapitools.client.model.ExperienceInputDto;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +11,13 @@ import org.springframework.stereotype.Component;
 public class ExperienceExtractionPipeline
         extends
             ExtractionPipeline<ExperienceContextModel, ExperienceWrapper, ExperienceInputDto> {
+
+    private final ExperienceService experienceService;
+
+    public ExperienceExtractionPipeline(ExperienceService experienceService) {
+        this.experienceService = experienceService;
+    }
+
     @Override
     public ExperienceContextModel fetchContext() {
         return null;
@@ -37,7 +44,7 @@ public class ExperienceExtractionPipeline
     }
 
     @Override
-    public void create(List<ExperienceInputDto> dtos) throws ApiException {
-
+    public void create(List<ExperienceInputDto> dtos) {
+        this.experienceService.create(dtos);
     }
 }
