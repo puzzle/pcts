@@ -1,4 +1,4 @@
-package ch.puzzle.pctsmigration.certificates;
+package ch.puzzle.pctsmigration.certificate;
 
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import jakarta.annotation.Nullable;

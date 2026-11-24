@@ -1,6 +1,6 @@
 package ch.puzzle.pctsmigration;
 
-import ch.puzzle.pctsmigration.certificates.CertificateExtractionPipeline;
+import ch.puzzle.pctsmigration.certificate.CertificateExtractionPipeline;
 import ch.puzzle.pctsmigration.degree.DegreeExtractionPipeline;
 import ch.puzzle.pctsmigration.exception.FileError;
 import ch.puzzle.pctsmigration.exception.MigrationException;
