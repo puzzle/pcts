@@ -41,6 +41,16 @@ class CalculationDetailViewPage extends Page {
       .contains(status)
       .click();
   }
+
+  statusDropdownShouldBeDisabled() {
+    this.statusDropdown()
+      .should('have.class', 'mat-mdc-select-disabled');
+  }
+
+  statusDropdownShouldBeEnabled() {
+    this.statusDropdown()
+      .should('not.have.class', 'mat-mdc-select-disabled');
+  }
 }
 
 export default new CalculationDetailViewPage();

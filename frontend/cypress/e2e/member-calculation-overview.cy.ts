@@ -48,19 +48,11 @@ describe('Member Calculation Overview', () => {
           .should('be.visible');
       });
 
-      calculationDetailViewPage
-        .statusDropdown()
-        .should('have.class', 'mat-mdc-select-disabled');
+      calculationDetailViewPage.statusDropdownShouldBeDisabled();
 
-      experienceTableHelper.tableRows()
-        .each(($row) => {
-          experienceTableHelper.expectRadioRowsIs($row, 'disabled');
-        });
+      experienceTableHelper.expectRadioTableRowsToBe('disabled');
 
-      degreeTableHelper.tableRows()
-        .each(($row) => {
-          degreeTableHelper.expectCheckboxRowIs($row, 'disabled');
-        });
+      degreeTableHelper.expectCheckboxTableRowsToBe('disabled');
 
       calculationDetailViewPage.saveButton()
         .should('not.exist');

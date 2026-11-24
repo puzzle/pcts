@@ -282,59 +282,45 @@ describe('MemberCalculationComponent', () => {
         .getTableRowBy(1, 'Archiviert')
         .click();
 
-      calculationDetailViewPage.statusDropdown()
-        .should('have.class', 'mat-mdc-select-disabled');
+      calculationDetailViewPage.statusDropdownShouldBeDisabled();
 
-      experienceTableHelper.tableRows()
-        .each(($row) => {
-          experienceTableHelper.expectRadioRowsIs($row, 'disabled');
-        });
+      experienceTableHelper.expectRadioTableRowsToBe('disabled');
 
-      degreeTableHelper.tableRows()
-        .each(($row) => {
-          degreeTableHelper.expectCheckboxRowIs($row, 'disabled');
-        });
+      degreeTableHelper.expectCheckboxTableRowsToBe('disabled');
     });
+  });
 
-    it('should not display the Save and Cancel buttons when opening an archived calculation', () => {
-      memberDetailPage.visit(8)
-        .switchTab('Administrator');
+  it('should not display the Save and Cancel buttons when opening an archived calculation', () => {
+    memberDetailPage.visit(8)
+      .switchTab('Administrator');
 
-      calculationTableHelper
-        .getTableRowBy(1, 'Archiviert')
-        .click();
+    calculationTableHelper
+      .getTableRowBy(1, 'Archiviert')
+      .click();
 
-      calculationDetailViewPage.saveButton()
-        .should('not.exist');
-      calculationDetailViewPage.cancelButton()
-        .should('not.exist');
-    });
+    calculationDetailViewPage.saveButton()
+      .should('not.exist');
+    calculationDetailViewPage.cancelButton()
+      .should('not.exist');
+  });
 
-    it('should not be disabled when opening a non-archived calculation', () => {
-      memberDetailPage.visit(8)
-        .switchTab('Administrator');
+  it('should not be disabled when opening a non-archived calculation', () => {
+    memberDetailPage.visit(8)
+      .switchTab('Administrator');
 
-      calculationTableHelper
-        .getTableRowBy(0, 'Aktiv')
-        .click();
+    calculationTableHelper
+      .getTableRowBy(0, 'Aktiv')
+      .click();
 
-      calculationDetailViewPage.statusDropdown()
-        .should('not.have.class', 'mat-mdc-select-disabled');
+    calculationDetailViewPage.statusDropdownShouldBeEnabled();
 
-      experienceTableHelper.tableRows()
-        .each(($row) => {
-          experienceTableHelper.expectRadioRowsIs($row, 'not.disabled');
-        });
+    experienceTableHelper.expectRadioTableRowsToBe('not.disabled');
 
-      degreeTableHelper.tableRows()
-        .each(($row) => {
-          degreeTableHelper.expectCheckboxRowIs($row, 'not.disabled');
-        });
+    degreeTableHelper.expectCheckboxTableRowsToBe('not.disabled');
 
-      calculationDetailViewPage.saveButton()
-        .should('exist');
-      calculationDetailViewPage.cancelButton()
-        .should('exist');
-    });
+    calculationDetailViewPage.saveButton()
+      .should('exist');
+    calculationDetailViewPage.cancelButton()
+      .should('exist');
   });
 });
