@@ -12,5 +12,5 @@
   <h3 class="p-3">{{ "MODEL_NAME" | scopedTranslation }}</h3>
   <app-calculation-form [isReadOnly]="true" [calculation]="calculationsResource.value()[0]"/>
 } @else {
-  <app-hint-box [text]="'HINT.NO_ACTIVE_CALCULATIONS' | scopedTranslation" variant="hint"/>
+  <app-hint-box class="m-3" [text]="'HINT.NO_ACTIVE_CALCULATIONS' | scopedTranslation" variant="hint"/>
 }
