@@ -4,6 +4,7 @@ import ch.puzzle.pctsmigration.certificate.CertificateExtractionPipeline;
 import ch.puzzle.pctsmigration.degree.DegreeExtractionPipeline;
 import ch.puzzle.pctsmigration.exception.FileError;
 import ch.puzzle.pctsmigration.exception.MigrationException;
+import ch.puzzle.pctsmigration.experience.ExperienceExtractionPipeline;
 import ch.puzzle.pctsmigration.extractor.ExtractorService;
 import ch.puzzle.pctsmigration.leadershipexperience.LeadershipExperienceExtractionPipeline;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,14 +32,17 @@ public class MigrationController {
     private final CertificateExtractionPipeline certificateExtractionPipeline;
     private final LeadershipExperienceExtractionPipeline leadershipExperienceExtractionPipeline;
     private final DegreeExtractionPipeline degreeExtractionPipeline;
+    private final ExperienceExtractionPipeline experienceExtractionPipeline;
 
     public MigrationController(ExtractorService service, CertificateExtractionPipeline certificateExtractionPipeline,
                                LeadershipExperienceExtractionPipeline leadershipExperienceExtractionPipeline,
-                               DegreeExtractionPipeline degreeExtractionPipeline) {
+                               DegreeExtractionPipeline degreeExtractionPipeline,
+                               ExperienceExtractionPipeline experienceExtractionPipeline) {
         this.service = service;
         this.certificateExtractionPipeline = certificateExtractionPipeline;
         this.leadershipExperienceExtractionPipeline = leadershipExperienceExtractionPipeline;
         this.degreeExtractionPipeline = degreeExtractionPipeline;
+        this.experienceExtractionPipeline = experienceExtractionPipeline;
     }
 
     @PostMapping(value = "/certificate", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -152,9 +156,9 @@ public class MigrationController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Experience successfully extracted and created in pcts-api.") })
     public ResponseEntity<List<ExperienceInputDto>> experience(@Parameter(description = "The .ods file containing the experience data to be migrated. Must be a valid OpenDocument Spreadsheet.", required = true)
-                                                       @RequestPart("file") MultipartFile file) {
-        List<ExperienceInputDto> result = service.extract(file, experienceExtrationPipeline);
-        experienceExtrationPipeline.create(result);
+    @RequestPart("file") MultipartFile file) {
+        List<ExperienceInputDto> result = service.extract(file, experienceExtractionPipeline);
+        experienceExtractionPipeline.create(result);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
@@ -170,8 +174,8 @@ public class MigrationController {
             String filename = file.getOriginalFilename();
 
             try {
-                List<ExperienceInputDto> extracted = service.extract(file, experienceExtrationPipeline);
-                experienceExtrationPipeline.create(extracted);
+                List<ExperienceInputDto> extracted = service.extract(file, experienceExtractionPipeline);
+                experienceExtractionPipeline.create(extracted);
                 result.addToSuccessfulFiles(filename, extracted);
 
             } catch (MigrationException e) {
