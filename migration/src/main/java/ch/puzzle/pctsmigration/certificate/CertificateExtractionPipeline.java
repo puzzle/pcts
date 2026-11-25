@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CertificateExtractionPipeline
         extends
-            ExtractionPipeline<CertificateContextModel, CertificateWrapper, CertificateInputDto> {
+            ExtractionPipeline<CertificateContextModel, CertificateAiResultDto, CertificateWrapper, CertificateInputDto> {
 
     private final CertificateTypeService certificateTypeService;
     private final MemberService memberService;
@@ -33,6 +33,11 @@ public class CertificateExtractionPipeline
         this.memberService = memberService;
         this.certificateService = certificateService;
         this.matchingService = matchingService;
+    }
+
+    @Override
+    protected CertificateWrapper createWrapper(List<CertificateAiResultDto> items) {
+        return new CertificateWrapper(items);
     }
 
     @Override
@@ -65,7 +70,7 @@ public class CertificateExtractionPipeline
     @Override
     public List<CertificateInputDto> mapToDto(String filename, CertificateWrapper wrapper) {
         String abbreviation = extractAbbreviation(filename);
-        return wrapper.items().stream().map(aiResult -> createCertificateInputDto(abbreviation, aiResult)).toList();
+        return wrapper.getItems().stream().map(aiResult -> createCertificateInputDto(abbreviation, aiResult)).toList();
     }
 
     private CertificateInputDto createCertificateInputDto(String abbreviation, CertificateAiResultDto aiResult) {

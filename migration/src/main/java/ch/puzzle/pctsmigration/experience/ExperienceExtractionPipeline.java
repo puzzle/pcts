@@ -15,12 +15,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class ExperienceExtractionPipeline
         extends
-            ExtractionPipeline<ExperienceContextModel, ExperienceWrapper, ExperienceInputDto> {
+            ExtractionPipeline<ExperienceContextModel, ExperienceAiResultDto, ExperienceWrapper, ExperienceInputDto> {
 
     private final ExperienceService experienceService;
 
     public ExperienceExtractionPipeline(ExperienceService experienceService) {
         this.experienceService = experienceService;
+    }
+
+    @Override
+    protected ExperienceWrapper createWrapper(List<ExperienceAiResultDto> items) {
+        return new ExperienceWrapper(items);
     }
 
     @Override
@@ -42,7 +47,7 @@ public class ExperienceExtractionPipeline
     public OdsParseConfig odsSheetParseConfig() {
         Predicate<String> isMatchingConvention = tableName -> tableName.equals("Berufserfahrung");
 
-        return new OdsParseConfig(isMatchingConvention, "", Map.of("Berufserfahrung", List.of("Praktika")), false);
+        return new OdsParseConfig(isMatchingConvention, null, Map.of("Berufserfahrung", List.of("Praktika")), false);
     }
 
     @Override

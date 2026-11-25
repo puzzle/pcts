@@ -1,4 +1,4 @@
-package ch.puzzle.pctsmigration.extractor;
+package ch.puzzle.pctsmigration.ai;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;

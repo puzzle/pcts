@@ -1,9 +1,16 @@
 package ch.puzzle.pctsmigration.certificate;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
+import ch.puzzle.pctsmigration.ai.AiResultWrapper;
 
 import java.util.List;
 
-public record CertificateWrapper(@Valid @NotNull List<CertificateAiResultDto> items) {
+public class CertificateWrapper extends AiResultWrapper<CertificateAiResultDto> {
+
+    public CertificateWrapper() {
+        super(null);
+    }
+
+    public CertificateWrapper(List<CertificateAiResultDto> items) {
+        super(items);
+    }
 }

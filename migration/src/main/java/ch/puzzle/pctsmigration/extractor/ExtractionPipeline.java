@@ -1,5 +1,6 @@
 package ch.puzzle.pctsmigration.extractor;
 
+import ch.puzzle.pctsmigration.ai.AiResultWrapper;
 import ch.puzzle.pctsmigration.exception.Error;
 import ch.puzzle.pctsmigration.exception.MigrationException;
 import ch.puzzle.pctsmigration.ods.OdsParseConfig;
@@ -21,7 +22,7 @@ import org.springframework.http.HttpStatusCode;
  * @param <D>
  *            the DTO to which the extraction result is mapped
  */
-public abstract class ExtractionPipeline<C, R, D> {
+public abstract class ExtractionPipeline<C, T, R extends AiResultWrapper<T>, D> {
 
     public String extractAbbreviation(String filename) {
         if (filename.contains("_")) {
@@ -32,6 +33,14 @@ public abstract class ExtractionPipeline<C, R, D> {
         throw new MigrationException(new Error(HttpStatusCode.valueOf(400),
                                                "Invalid filename: can not extract abbreviation " + filename));
     }
+
+    public R merge(List<R> results) {
+        List<T> allItems = results.stream().map(AiResultWrapper::getItems).flatMap(List::stream).toList();
+
+        return createWrapper(allItems);
+    }
+
+    protected abstract R createWrapper(List<T> items);
 
     /** Fetch all context needed from the PCTS API or other places */
     public abstract C fetchContext();

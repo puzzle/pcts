@@ -15,7 +15,9 @@ import org.openapitools.client.model.DegreeTypeDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DegreeExtractionPipeline extends ExtractionPipeline<DegreeContextModel, DegreeWrapper, DegreeInputDto> {
+public class DegreeExtractionPipeline
+        extends
+            ExtractionPipeline<DegreeContextModel, DegreeAiResultDto, DegreeWrapper, DegreeInputDto> {
 
     private final DegreeTypeService degreeTypeService;
     private final MemberService memberService;
@@ -28,6 +30,11 @@ public class DegreeExtractionPipeline extends ExtractionPipeline<DegreeContextMo
         this.memberService = memberService;
         this.degreeService = degreeService;
         this.matchingService = matchingService;
+    }
+
+    @Override
+    protected DegreeWrapper createWrapper(List<DegreeAiResultDto> items) {
+        return new DegreeWrapper(items);
     }
 
     @Override
@@ -65,7 +72,7 @@ public class DegreeExtractionPipeline extends ExtractionPipeline<DegreeContextMo
     @Override
     public List<DegreeInputDto> mapToDto(String filename, DegreeWrapper wrapper) {
         String abbreviation = extractAbbreviation(filename);
-        return wrapper.items().stream().map(aiResult -> createDegreeInputDto(abbreviation, aiResult)).toList();
+        return wrapper.getItems().stream().map(aiResult -> createDegreeInputDto(abbreviation, aiResult)).toList();
     }
 
     private DegreeInputDto createDegreeInputDto(String abbreviation, DegreeAiResultDto aiResult) {
