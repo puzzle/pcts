@@ -411,7 +411,7 @@ public class MemberOverview {
                + ", experienceName='" + getExperienceName() + '\'' + ", experienceEmployer='" + getExperienceEmployer()
                + '\'' + ", experienceStartDate=" + getExperienceStartDate() + ", experienceEndDate="
                + getExperienceEndDate() + ", experienceComment='" + getExperienceComment() + '\''
-               + ",experiencePercent='" + getExperiencePercent() + ", experienceTypeName='" + getExperienceTypeName()
+               + ", experiencePercent=" + getExperiencePercent() + ", experienceTypeName='" + getExperienceTypeName()
                + '\'' + '}';
     }
 
