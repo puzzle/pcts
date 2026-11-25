@@ -48,8 +48,7 @@ const getExperienceColumns = (): GenCol<ExperienceOverviewModel>[] => [
       .getTime()),
   GenCol.fromCalculated('workName', (e: ExperienceOverviewModel) => `${e.employer}\n${e.name}`),
   GenCol.fromAttr('comment'),
-  GenCol.fromAttr<ExperienceOverviewModel>('percent', [(percent: number) => `${percent} %`])
-    .withCustomSortingAccessor((e) => e.percent),
+  GenCol.fromAttr<ExperienceOverviewModel>('percent', [(percent: number) => `${percent} %`]),
   GenCol.fromAttr('experienceTypeName')
 ];
 
