@@ -8,20 +8,11 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SheetSplitter {
+class SheetSplitter {
 
     List<List<Sheet>> split(Map<Sheet, List<String>> sheetsWithSplitMarkers) {
         if (sheetsWithSplitMarkers == null || sheetsWithSplitMarkers.isEmpty()) {
             return List.of();
-        }
-
-        if (hasNoSplitMarkers(sheetsWithSplitMarkers)) {
-            List<Sheet> trimmed = sheetsWithSplitMarkers
-                    .keySet()
-                    .stream()
-                    .map(Sheet::trimTrailingEmptyColumns)
-                    .toList();
-            return List.of(trimmed);
         }
 
         List<List<Sheet>> parts = new ArrayList<>();
@@ -30,14 +21,16 @@ public class SheetSplitter {
         for (Map.Entry<Sheet, List<String>> entry : sheetsWithSplitMarkers.entrySet()) {
             Sheet sheet = entry.getKey();
             List<String> splitMarkers = sanitizeMarkers(entry.getValue());
+
+            if (sheet.isEmpty()) {
+                currentPart.add(sheet);
+                continue;
+            }
+
             List<Row> currentRows = new ArrayList<>();
-
             for (Row row : sheet.rows()) {
-                boolean isSplitPoint = !splitMarkers.isEmpty() && row.containsAnyText(splitMarkers);
-                boolean hasContent = !currentPart.isEmpty() || !currentRows.isEmpty();
-
-                if (isSplitPoint && hasContent) {
-                    flushRowsIntoPart(currentPart, sheet.name(), currentRows);
+                if (isSplitTrigger(row, splitMarkers) && hasCollectedContent(currentPart, currentRows)) {
+                    flushRows(currentPart, sheet.name(), currentRows);
                     parts.add(List.copyOf(currentPart));
                     currentPart = new ArrayList<>();
                     currentRows = new ArrayList<>();
@@ -45,7 +38,7 @@ public class SheetSplitter {
                 currentRows.add(row);
             }
 
-            flushRowsIntoPart(currentPart, sheet.name(), currentRows);
+            flushRows(currentPart, sheet.name(), currentRows);
         }
 
         if (!currentPart.isEmpty()) {
@@ -55,8 +48,12 @@ public class SheetSplitter {
         return List.copyOf(parts);
     }
 
-    private boolean hasNoSplitMarkers(Map<Sheet, List<String>> sheetsWithSplitMarkers) {
-        return sheetsWithSplitMarkers.values().stream().allMatch(markers -> sanitizeMarkers(markers).isEmpty());
+    private boolean isSplitTrigger(Row row, List<String> splitMarkers) {
+        return !splitMarkers.isEmpty() && row.containsAnyText(splitMarkers);
+    }
+
+    private boolean hasCollectedContent(List<Sheet> currentPart, List<Row> currentRows) {
+        return !currentPart.isEmpty() || !currentRows.isEmpty();
     }
 
     private List<String> sanitizeMarkers(List<String> markers) {
@@ -66,9 +63,9 @@ public class SheetSplitter {
         return markers.stream().filter(marker -> marker != null && !marker.isBlank()).toList();
     }
 
-    private void flushRowsIntoPart(List<Sheet> part, String sheetName, List<Row> rows) {
+    private void flushRows(List<Sheet> part, String sheetName, List<Row> rows) {
         if (!rows.isEmpty()) {
-            part.add(new Sheet(sheetName, rows).trimTrailingEmptyColumns());
+            part.add(new Sheet(sheetName, rows));
         }
     }
 }

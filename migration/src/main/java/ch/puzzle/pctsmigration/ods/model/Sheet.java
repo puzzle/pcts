@@ -14,6 +14,10 @@ public record Sheet(String name, List<Row> rows) {
     }
 
     public Sheet trimTrailingEmptyColumns() {
+        if (rows.isEmpty()) {
+            return this;
+        }
+
         int maxCol = rows.stream().mapToInt(Row::lastNonEmptyColumnIndex).max().orElse(-1) + 1;
 
         if (maxCol == 0) {

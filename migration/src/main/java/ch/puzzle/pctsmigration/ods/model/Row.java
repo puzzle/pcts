@@ -17,11 +17,11 @@ public record Row(List<Cell> cells) {
     }
 
     public boolean containsText(String marker) {
-        return cells.stream().anyMatch(cell -> cell.contains(marker));
+        return marker != null && !marker.isEmpty() && cells.stream().anyMatch(cell -> cell.contains(marker));
     }
 
     public boolean containsAnyText(List<String> markers) {
-        return markers.stream().anyMatch(this::containsText);
+        return markers != null && !markers.isEmpty() && markers.stream().anyMatch(this::containsText);
     }
 
     public int lastNonEmptyColumnIndex() {
@@ -34,7 +34,10 @@ public record Row(List<Cell> cells) {
     }
 
     public Row truncateTo(int maxColumns) {
-        int limit = Math.min(cells.size(), Math.max(0, maxColumns));
+        int limit = Math.max(0, maxColumns);
+        if (limit >= cells.size()) {
+            return this;
+        }
         return new Row(cells.subList(0, limit));
     }
 }

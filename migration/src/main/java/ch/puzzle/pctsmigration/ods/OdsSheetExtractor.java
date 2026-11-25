@@ -15,7 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 @Component
-public class OdsSheetExtractor {
+class OdsSheetExtractor {
 
     private static final int MAX_SHEETS = 10;
     private static final int MAX_ROWS = 500;
@@ -44,8 +44,10 @@ public class OdsSheetExtractor {
         int colCount = Math.min(table.getColumnCount(), MAX_COLS);
 
         for (int r = 0; r < rowCount && !collector.isDone(); r++) {
-            Row row = extractRow(table.getRowByIndex(r), colCount, config.shouldCutOffCalcColumn());
-            collector.accept(row);
+            OdfTableRow odfRow = table.getRowByIndex(r);
+            if (odfRow != null) {
+                collector.accept(extractRow(odfRow, colCount, config.shouldCutOffCalcColumn()));
+            }
         }
 
         return new Sheet(table.getTableName(), collector.collectedRows());

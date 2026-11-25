@@ -19,8 +19,7 @@ public record Cell(String text) {
         }
 
         String cleaned = PHANTOM_AND_NEWLINE_PATTERN.matcher(rawText).replaceAll(" ").trim();
-
-        if (cleaned.isBlank() || cleaned.equals("0")) {
+        if (cleaned.isEmpty() || cleaned.equals("0")) {
             return EMPTY;
         }
 
@@ -32,6 +31,6 @@ public record Cell(String text) {
     }
 
     public boolean contains(String marker) {
-        return text.contains(marker);
+        return marker != null && !marker.isEmpty() && text.contains(marker);
     }
 }
