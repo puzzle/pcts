@@ -8,7 +8,7 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 @Component
-class SheetSplitter {
+public class SheetSplitter {
 
     List<List<Sheet>> split(Map<Sheet, List<String>> sheetsWithSplitMarkers) {
         if (sheetsWithSplitMarkers == null || sheetsWithSplitMarkers.isEmpty()) {

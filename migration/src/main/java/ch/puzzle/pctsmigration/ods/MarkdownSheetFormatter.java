@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 @Component
-class MarkdownSheetFormatter {
+public class MarkdownSheetFormatter {
 
     String format(List<Sheet> sheets) {
         StringBuilder sb = new StringBuilder();

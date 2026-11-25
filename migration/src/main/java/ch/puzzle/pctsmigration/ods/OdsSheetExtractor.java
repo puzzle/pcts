@@ -15,7 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 @Component
-class OdsSheetExtractor {
+public class OdsSheetExtractor {
 
     private static final int MAX_SHEETS = 10;
     private static final int MAX_ROWS = 500;
