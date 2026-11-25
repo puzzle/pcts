@@ -583,6 +583,7 @@ public class TestDataModels {
                         .withExperienceEndDate(EXPERIENCE_2.getEndDate())
                         .withExperienceComment(EXPERIENCE_2.getComment())
                         .withExperienceTypeName(EXPERIENCE_2.getType().getName())
+                        .withExperiencePercent(EXPERIENCE_2.getPercent())
                         .build());
 
     public static final List<MemberOverview> MEMBER_2_OVERVIEWS = List
