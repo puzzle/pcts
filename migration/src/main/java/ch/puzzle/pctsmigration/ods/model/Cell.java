@@ -1,38 +1,37 @@
 package ch.puzzle.pctsmigration.ods.model;
 
-import org.odftoolkit.odfdom.doc.table.OdfTableCell;
+import java.util.regex.Pattern;
 
-public class Cell {
-    private String text;
+public record Cell(String text) {
 
-    public Cell(OdfTableCell cell) {
-        this.text = cleanCellText(cell);
+    public static final Cell EMPTY = new Cell("");
+
+    private static final Pattern PHANTOM_AND_NEWLINE_PATTERN = Pattern
+            .compile("[\\u00A0\\u200B\\u200C\\u200D\\uFEFF\\r\\n]+");
+
+    public Cell {
+        text = text == null ? "" : text;
     }
 
-    private String cleanCellText(OdfTableCell cell) {
-        if (cell == null) {
-            return "";
+    public static Cell of(String rawText) {
+        if (rawText == null) {
+            return EMPTY;
         }
 
-        String displayText = cell.getDisplayText();
-        if (displayText == null) {
-            return "";
+        String cleaned = PHANTOM_AND_NEWLINE_PATTERN.matcher(rawText).replaceAll(" ").trim();
+
+        if (cleaned.isBlank() || cleaned.equals("0")) {
+            return EMPTY;
         }
 
-        // Removes non-breaking spaces, zero-width spaces, and other phantom characters.
-        displayText = displayText.replaceAll("[\\u00A0\\u200B\\u200C\\u200D\\uFEFF]", " ").trim();
-        if (displayText.isBlank() || displayText.equals("0")) {
-            return "";
-        }
-
-        return displayText;
+        return new Cell(cleaned);
     }
 
-    public String getText() {
-        return text;
+    public boolean isEmpty() {
+        return text.isEmpty();
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public boolean contains(String marker) {
+        return text.contains(marker);
     }
 }

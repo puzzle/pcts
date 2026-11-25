@@ -31,18 +31,17 @@ public class ExperienceExtractionPipeline
     public String systemPrompt(ExperienceContextModel context) {
         return """
                 IMPORTANT EXTRACTION RULES:
-                
+
                 === Context ===
                 Current date: %s
-                """
-                .formatted(context.currentDate());
+                """.formatted(context.currentDate());
     }
 
     @Override
     public OdsParseConfig odsSheetParseConfig() {
         Predicate<String> isMatchingConvention = tableName -> tableName.equals("Berufserfahrung");
 
-        return new OdsParseConfig(isMatchingConvention, null, false);
+        return new OdsParseConfig(isMatchingConvention, "", List.of("Praktika"), false);
     }
 
     @Override

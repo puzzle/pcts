@@ -1,32 +1,40 @@
 package ch.puzzle.pctsmigration.ods.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class Row {
-    private List<Cell> cells;
+public record Row(List<Cell> cells) {
 
-    public Row(List<Cell> cells) {
-        this.cells = cells;
+    public Row {
+        cells = cells == null ? List.of() : List.copyOf(cells);
     }
 
-    public Row() {
-        this.cells = new ArrayList<>();
+    public boolean isEmpty() {
+        return cells.stream().allMatch(Cell::isEmpty);
     }
 
-    public List<Cell> getCells() {
-        return cells;
+    public int columnCount() {
+        return cells.size();
     }
 
-    public void addCell(Cell cell) {
-        cells.add(cell);
+    public boolean containsText(String marker) {
+        return cells.stream().anyMatch(cell -> cell.contains(marker));
     }
 
-    public void updateCellTextByIndex(int index, String text) {
-        cells.get(index).setText(text);
+    public boolean containsAnyText(List<String> markers) {
+        return markers.stream().anyMatch(this::containsText);
     }
 
-    public boolean containsStartMarker(String requiredStartMarker) {
-        return cells.stream().anyMatch(cell -> cell.getText().contains(requiredStartMarker));
+    public int lastNonEmptyColumnIndex() {
+        for (int i = cells.size() - 1; i >= 0; i--) {
+            if (!cells.get(i).isEmpty()) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public Row truncateTo(int maxColumns) {
+        int limit = Math.min(cells.size(), Math.max(0, maxColumns));
+        return new Row(cells.subList(0, limit));
     }
 }

@@ -4,6 +4,8 @@ import ch.puzzle.pctsmigration.exception.Error;
 import ch.puzzle.pctsmigration.exception.MigrationException;
 import ch.puzzle.pctsmigration.ods.OdsParserService;
 import jakarta.validation.Validator;
+
+import java.awt.*;
 import java.util.List;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
@@ -33,17 +35,22 @@ public class ExtractorService {
      *            before being returned
      */
     public <C, R, D> List<D> extract(MultipartFile file, ExtractionPipeline<C, R, D> pipeline) {
-        String parsedToMarkdown = this.odsParserService.parseToPromptText(file, pipeline.odsSheetParseConfig());
+        List<String> parsedToMarkdown = this.odsParserService.parseToPromptText(file, pipeline.odsSheetParseConfig());
+        parsedToMarkdown.forEach(parsedToMarkdownLine -> { System.out.println("Cut: " + parsedToMarkdownLine); });
 
-        C context = pipeline.fetchContext();
-        R result = this.aiService.extract(parsedToMarkdown, pipeline.systemPrompt(context), pipeline.entityClass());
+        System.out.println("Markers: " + pipeline.odsSheetParseConfig().splitMarkers());
+        System.out.println("Anzahl Parts: " + parsedToMarkdown.size());
 
-        jakartaValidation(result);
-        pipeline.additionalValidations(result);
-
-        String filename = getFileName(file);
-        List<D> dtos = pipeline.mapToDto(filename, result);
-        return pipeline.deduplicate(dtos);
+        // C context = pipeline.fetchContext();
+        // R result = this.aiService.extract(parsedToMarkdown,
+        // pipeline.systemPrompt(context), pipeline.entityClass());
+        //
+        // jakartaValidation(result);
+        // pipeline.additionalValidations(result);
+        //
+        // String filename = getFileName(file);
+        // List<D> dtos = pipeline.mapToDto(filename, result);
+        return null;
     }
 
     /**
