@@ -64,7 +64,8 @@ public class MemberOverviewMapper {
                                                e.getExperienceTypeName(),
                                                e.getExperienceComment(),
                                                e.getExperienceStartDate(),
-                                               e.getExperienceEndDate());
+                                               e.getExperienceEndDate(),
+                                               e.getExperiencePercent());
     }
 
     private MemberOverviewCertificateDto mapToCertificate(MemberOverview e) {

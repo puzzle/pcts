@@ -52,6 +52,7 @@ public class MemberOverview {
     private LocalDate experienceStartDate;
     private LocalDate experienceEndDate;
     private String experienceComment;
+    private int experiencePercent;
 
     private String experienceTypeName;
 
@@ -84,6 +85,8 @@ public class MemberOverview {
         experienceEndDate = builder.experienceEndDate;
         experienceComment = trim(builder.experienceComment);
         experienceTypeName = trim(builder.experienceTypeName);
+        experiencePercent = builder.experiencePercent;
+
     }
 
     public MemberOverview() {
@@ -306,6 +309,14 @@ public class MemberOverview {
         this.experienceComment = trim(experienceComment);
     }
 
+    public int getExperiencePercent() {
+        return experiencePercent;
+    }
+
+    public void setExperiencePercent(int experiencePercent) {
+        this.experiencePercent = experiencePercent;
+    }
+
     public String getExperienceTypeName() {
         return experienceTypeName;
     }
@@ -345,7 +356,8 @@ public class MemberOverview {
                && Objects.equals(getExperienceStartDate(), that.getExperienceStartDate())
                && Objects.equals(getExperienceEndDate(), that.getExperienceEndDate())
                && Objects.equals(getExperienceComment(), that.getExperienceComment())
-               && Objects.equals(getExperienceTypeName(), that.getExperienceTypeName());
+               && Objects.equals(getExperienceTypeName(), that.getExperienceTypeName())
+               && Objects.equals(getExperiencePercent(), that.getExperiencePercent());
     }
 
     @Override
@@ -378,7 +390,8 @@ public class MemberOverview {
                       getExperienceStartDate(),
                       getExperienceEndDate(),
                       getExperienceComment(),
-                      getExperienceTypeName());
+                      getExperienceTypeName(),
+                      getExperiencePercent());
     }
 
     @Override
@@ -398,7 +411,8 @@ public class MemberOverview {
                + ", experienceName='" + getExperienceName() + '\'' + ", experienceEmployer='" + getExperienceEmployer()
                + '\'' + ", experienceStartDate=" + getExperienceStartDate() + ", experienceEndDate="
                + getExperienceEndDate() + ", experienceComment='" + getExperienceComment() + '\''
-               + ", experienceTypeName='" + getExperienceTypeName() + '\'' + '}';
+               + ", experiencePercent=" + getExperiencePercent() + ", experienceTypeName='" + getExperienceTypeName()
+               + '\'' + '}';
     }
 
     public static final class Builder {
@@ -437,6 +451,7 @@ public class MemberOverview {
         private String experienceComment;
 
         private String experienceTypeName;
+        private int experiencePercent;
 
         private Builder() {
         }
@@ -582,6 +597,11 @@ public class MemberOverview {
 
         public Builder withExperienceTypeName(String experienceTypeName) {
             this.experienceTypeName = trim(experienceTypeName);
+            return this;
+        }
+
+        public Builder withExperiencePercent(int experiencePercent) {
+            this.experiencePercent = experiencePercent;
             return this;
         }
 

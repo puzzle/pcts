@@ -10,5 +10,6 @@ public record MemberOverviewExperienceDto(
         @Schema(description = "The name of the experience-type.", example = "Management", requiredMode = Schema.RequiredMode.REQUIRED, minLength = 1) String experienceTypeName,
         @Schema(description = "Additional comments about the experience.", example = "Worked on backend API development using Spring Boot.", requiredMode = Schema.RequiredMode.NOT_REQUIRED, nullable = true) String comment,
         @Schema(description = "The start date of the experience.", example = "2021-06-01", requiredMode = Schema.RequiredMode.REQUIRED, nullable = false) LocalDate startDate,
-        @Schema(description = "The end date of the experience.", example = "2021-12-31", requiredMode = Schema.RequiredMode.NOT_REQUIRED, nullable = true) LocalDate endDate) {
+        @Schema(description = "The end date of the experience.", example = "2021-12-31", requiredMode = Schema.RequiredMode.NOT_REQUIRED, nullable = true) LocalDate endDate,
+        @Schema(description = "The percentage of the experience.", example = "50", requiredMode = Schema.RequiredMode.REQUIRED, nullable = false) int percent) {
 }

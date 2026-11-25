@@ -417,7 +417,9 @@ public class TestDataDTOs {
                                                                                                                                                             EXPERIENCE_2
                                                                                                                                                                     .getStartDate(),
                                                                                                                                                             EXPERIENCE_2
-                                                                                                                                                                    .getEndDate())),
+                                                                                                                                                                    .getEndDate(),
+                                                                                                                                                            EXPERIENCE_2
+                                                                                                                                                                    .getPercent())),
                                                                                                                 List
                                                                                                                         .of(new MemberOverviewCertificateDto(CERTIFICATE_1
                                                                                                                                 .getId(),
@@ -493,7 +495,9 @@ public class TestDataDTOs {
                                                                                                                                                             EXPERIENCE_3
                                                                                                                                                                     .getStartDate(),
                                                                                                                                                             EXPERIENCE_3
-                                                                                                                                                                    .getEndDate())),
+                                                                                                                                                                    .getEndDate(),
+                                                                                                                                                            EXPERIENCE_3
+                                                                                                                                                                    .getPercent())),
                                                                                                                 List
                                                                                                                         .of(new MemberOverviewCertificateDto(CERTIFICATE_2
                                                                                                                                 .getId(),

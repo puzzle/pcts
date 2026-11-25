@@ -48,8 +48,10 @@ const getExperienceColumns = (): GenCol<ExperienceOverviewModel>[] => [
       .getTime()),
   GenCol.fromCalculated('workName', (e: ExperienceOverviewModel) => `${e.employer}\n${e.name}`),
   GenCol.fromAttr('comment'),
+  GenCol.fromAttr<ExperienceOverviewModel>('percent', [(p: number) => `${p} %`]),
   GenCol.fromAttr('experienceTypeName')
 ];
+
 
 const getCertificateColumns = (): GenCol<CertificateOverviewModel>[] => [GenCol.fromAttr('completedAt', [(d: Date) => {
   return d ? formatDateLocale(d) : '';

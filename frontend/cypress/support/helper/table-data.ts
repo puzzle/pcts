@@ -19,6 +19,7 @@ export const experienceTableData: TableData = {
       '01.06.2021 - heute',
       'TechNova Solutions Marketing Intern',
       'Assisted in content strategy and social media analytics.',
+      '80 %',
       'Berufserfahrung'
     ]
   }]
