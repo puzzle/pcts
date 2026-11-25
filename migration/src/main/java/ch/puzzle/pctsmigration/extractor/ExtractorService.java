@@ -38,7 +38,7 @@ public class ExtractorService {
         List<String> parsedToMarkdown = this.odsParserService.parseToPromptText(file, pipeline.odsSheetParseConfig());
         parsedToMarkdown.forEach(parsedToMarkdownLine -> { System.out.println("Cut: " + parsedToMarkdownLine); });
 
-        System.out.println("Markers: " + pipeline.odsSheetParseConfig().splitMarkers());
+        System.out.println("Markers: " + pipeline.odsSheetParseConfig().splitMarkersFor("Berufserfahrung"));
         System.out.println("Anzahl Parts: " + parsedToMarkdown.size());
 
         // C context = pipeline.fetchContext();

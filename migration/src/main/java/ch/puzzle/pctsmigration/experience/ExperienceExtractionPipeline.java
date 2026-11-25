@@ -6,6 +6,7 @@ import ch.puzzle.pctsmigration.ods.OdsParseConfig;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 
 import org.openapitools.client.model.ExperienceInputDto;
@@ -41,7 +42,7 @@ public class ExperienceExtractionPipeline
     public OdsParseConfig odsSheetParseConfig() {
         Predicate<String> isMatchingConvention = tableName -> tableName.equals("Berufserfahrung");
 
-        return new OdsParseConfig(isMatchingConvention, "", List.of("Praktika"), false);
+        return new OdsParseConfig(isMatchingConvention, "", Map.of("Berufserfahrung", List.of("Praktika")), false);
     }
 
     @Override
