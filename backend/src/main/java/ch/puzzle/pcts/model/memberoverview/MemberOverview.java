@@ -52,7 +52,7 @@ public class MemberOverview {
     private LocalDate experienceStartDate;
     private LocalDate experienceEndDate;
     private String experienceComment;
-    private Integer experiencePercent;
+    private int experiencePercent;
 
     private String experienceTypeName;
 
@@ -313,7 +313,7 @@ public class MemberOverview {
         return experiencePercent;
     }
 
-    public void setExperiencePercent(Integer experiencePercent) {
+    public void setExperiencePercent(int experiencePercent) {
         this.experiencePercent = experiencePercent;
     }
 
@@ -451,7 +451,7 @@ public class MemberOverview {
         private String experienceComment;
 
         private String experienceTypeName;
-        private Integer experiencePercent;
+        private int experiencePercent;
 
         private Builder() {
         }
@@ -600,7 +600,7 @@ public class MemberOverview {
             return this;
         }
 
-        public Builder withExperiencePercent(Integer experiencePercent) {
+        public Builder withExperiencePercent(int experiencePercent) {
             this.experiencePercent = experiencePercent;
             return this;
         }
