@@ -34,9 +34,15 @@ public class OdsParserService {
 
         try (OdfSpreadsheetDocument doc = OdfSpreadsheetDocument.loadDocument(file.getInputStream())) {
             List<Sheet> sheets = sheetExtractor.extractSheets(doc, config);
-            Map<Sheet, List<String>> sheetsWithMarkers = mapSheetsToSplitMarkers(sheets, config);
 
-            return sheetSplitter.split(sheetsWithMarkers).stream().map(markdownFormatter::format).toList();
+            List<List<Sheet>> parts = config.isSplittingEnabled()
+                    ? sheetSplitter.split(mapSheetsToSplitMarkers(sheets, config)) : List.of(sheets);
+
+            return parts
+                    .stream()
+                    .map(part -> part.stream().map(Sheet::trimTrailingEmptyColumns).toList())
+                    .map(markdownFormatter::format)
+                    .toList();
         } catch (MigrationException e) {
             throw e;
         } catch (Exception e) {

@@ -70,4 +70,8 @@ public record OdsParseConfig(Predicate<String> tableNameConvention, String start
     public List<String> splitMarkersFor(String sheetName) {
         return splitMarkersBySheet.getOrDefault(sheetName, List.of());
     }
+
+    public boolean isSplittingEnabled() {
+        return splitMarkersBySheet.values().stream().anyMatch(markers -> !markers.isEmpty());
+    }
 }

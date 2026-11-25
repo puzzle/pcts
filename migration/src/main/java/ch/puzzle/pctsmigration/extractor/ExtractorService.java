@@ -36,7 +36,7 @@ public class ExtractorService {
      */
     public <C, R, D> List<D> extract(MultipartFile file, ExtractionPipeline<C, R, D> pipeline) {
         List<String> parsedToMarkdown = this.odsParserService.parseToPromptText(file, pipeline.odsSheetParseConfig());
-        parsedToMarkdown.forEach(parsedToMarkdownLine -> { System.out.println("Cut: " + parsedToMarkdownLine); });
+        parsedToMarkdown.forEach(System.out::println);
 
         System.out.println("Markers: " + pipeline.odsSheetParseConfig().splitMarkersFor("Berufserfahrung"));
         System.out.println("Anzahl Parts: " + parsedToMarkdown.size());
