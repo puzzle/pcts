@@ -618,6 +618,7 @@ public class TestDataModels {
                     .withExperienceEndDate(EXPERIENCE_3.getEndDate())
                     .withExperienceComment(EXPERIENCE_3.getComment())
                     .withExperienceTypeName(EXPERIENCE_3.getType().getName())
+                    .withExperienceTPercent(EXPERIENCE_3.getPercent())
                     .build(),
 
                 MemberOverview.Builder
@@ -654,6 +655,7 @@ public class TestDataModels {
                         .withExperienceEndDate(EXPERIENCE_3.getEndDate())
                         .withExperienceComment(EXPERIENCE_3.getComment())
                         .withExperienceTypeName(EXPERIENCE_3.getType().getName())
+                        .withExperienceTPercent(EXPERIENCE_3.getPercent())
                         .build());
 
     public static final List<MemberOverview> MEMBER_EMPTY_CV_OVERVIEWS = List
