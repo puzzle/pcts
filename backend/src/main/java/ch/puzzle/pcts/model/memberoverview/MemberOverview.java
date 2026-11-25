@@ -600,7 +600,7 @@ public class MemberOverview {
             return this;
         }
 
-        public Builder withExperienceTPercent(int experiencePercent) {
+        public Builder withExperiencePercent(int experiencePercent) {
             this.experiencePercent = experiencePercent;
             return this;
         }

@@ -545,7 +545,7 @@ public class TestDataModels {
                         .withExperienceEndDate(EXPERIENCE_2.getEndDate())
                         .withExperienceComment(EXPERIENCE_2.getComment())
                         .withExperienceTypeName(EXPERIENCE_2.getType().getName())
-                        .withExperienceTPercent(EXPERIENCE_2.getPercent())
+                        .withExperiencePercent(EXPERIENCE_2.getPercent())
                         .build(),
 
                 // 2. Cert 4, Lead 1, Exp 2
@@ -618,7 +618,7 @@ public class TestDataModels {
                     .withExperienceEndDate(EXPERIENCE_3.getEndDate())
                     .withExperienceComment(EXPERIENCE_3.getComment())
                     .withExperienceTypeName(EXPERIENCE_3.getType().getName())
-                    .withExperienceTPercent(EXPERIENCE_3.getPercent())
+                    .withExperiencePercent(EXPERIENCE_3.getPercent())
                     .build(),
 
                 MemberOverview.Builder
@@ -655,7 +655,7 @@ public class TestDataModels {
                         .withExperienceEndDate(EXPERIENCE_3.getEndDate())
                         .withExperienceComment(EXPERIENCE_3.getComment())
                         .withExperienceTypeName(EXPERIENCE_3.getType().getName())
-                        .withExperienceTPercent(EXPERIENCE_3.getPercent())
+                        .withExperiencePercent(EXPERIENCE_3.getPercent())
                         .build());
 
     public static final List<MemberOverview> MEMBER_EMPTY_CV_OVERVIEWS = List
