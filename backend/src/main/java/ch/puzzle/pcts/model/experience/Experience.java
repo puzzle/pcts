@@ -35,7 +35,7 @@ public class Experience implements Model {
 
     @Min(value = 0, message = "{attribute.min.value}")
     @Max(value = 110, message = "{attribute.max.value}")
-    private int percent;
+    private Integer percent;
 
     @NotNull(message = "{attribute.not.null}")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -189,7 +189,7 @@ public class Experience implements Model {
         private Member member;
         private String name;
         private String employer;
-        private int percent;
+        private Integer percent;
         private ExperienceType type;
         private String comment;
         private LocalDate startDate;
@@ -215,7 +215,7 @@ public class Experience implements Model {
             return this;
         }
 
-        public Builder withPercent(int percent) {
+        public Builder withPercent(Integer percent) {
             this.percent = percent;
             return this;
         }
