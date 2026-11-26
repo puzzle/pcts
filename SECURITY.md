@@ -24,4 +24,4 @@ This information will help us triage your report more quickly.
 
 ## Supported Versions
 
-Only the current version is supported: 0.14.1 <!-- x-release-please-version -->
+Only the current version is supported: 0.15.0 <!-- x-release-please-version -->
