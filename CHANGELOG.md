@@ -1,5 +1,76 @@
 # Changelog
 
+## [0.15.0](https://github.com/puzzle/pcts/compare/0.14.1...0.15.0) (2026-11-26)
+
+
+### Features
+
+* add degree extraction to migration tool [#815](https://github.com/puzzle/pcts/issues/815) ([379d2fd](https://github.com/puzzle/pcts/commit/379d2fdb2189be1016724f4e60e10a11e57d8ede))
+* add employment percentage to CV overview  [#1045](https://github.com/puzzle/pcts/issues/1045) ([3e5d081](https://github.com/puzzle/pcts/commit/3e5d08146a796fc22b8418a4dfa398796e75a466))
+* add UI to create and edit calculations [#377](https://github.com/puzzle/pcts/issues/377) ([57eaf99](https://github.com/puzzle/pcts/commit/57eaf99428dbc8660585374321adb635f1689678))
+* checkbox form relevancy selection [#940](https://github.com/puzzle/pcts/issues/940) ([#960](https://github.com/puzzle/pcts/issues/960)) ([e44d829](https://github.com/puzzle/pcts/commit/e44d829ba142a212fc627d11f40e5fa4a7d8e429))
+* leadership experience hint [#1018](https://github.com/puzzle/pcts/issues/1018) ([#1043](https://github.com/puzzle/pcts/issues/1043)) ([ef9a394](https://github.com/puzzle/pcts/commit/ef9a3949c5100b0f3f374ec1bc77dca29cfc1ea6))
+* **migration:** add basic deduplication for extracted data [#993](https://github.com/puzzle/pcts/issues/993) ([7045dec](https://github.com/puzzle/pcts/commit/7045dec59a9a752c755de33191da5a7fe9cce552))
+* read-only archived calculations [#1020](https://github.com/puzzle/pcts/issues/1020) ([#1046](https://github.com/puzzle/pcts/issues/1046)) ([93f6faa](https://github.com/puzzle/pcts/commit/93f6faab43d3fc98d1ec1f237010472e076d9e34))
+* validate multiple dates in the UI [#473](https://github.com/puzzle/pcts/issues/473) ([c3ae823](https://github.com/puzzle/pcts/commit/c3ae823ca4a6708d4dd1e80a55fd06b70a8a20f1))
+
+
+### Bug Fixes
+
+* improve on flaky e2e tests [#467](https://github.com/puzzle/pcts/issues/467) ([a43684b](https://github.com/puzzle/pcts/commit/a43684ba41b43c8717c789cb981becd7c2d4d7ff))
+* **migration:** switch OAuth clientId with registrationId [#796](https://github.com/puzzle/pcts/issues/796) ([27938d3](https://github.com/puzzle/pcts/commit/27938d3e40483edfb40116d24b58f105d8adbd26))
+
+
+### Miscellaneous Chores
+
+* configure SonarQube to more aggressively delete branches ([64d3483](https://github.com/puzzle/pcts/commit/64d348342b3118ddeac8afd3fda60e44d40becf2))
+* **deps:** update all devdependencies (minor and patch) ([#1015](https://github.com/puzzle/pcts/issues/1015)) ([10595e2](https://github.com/puzzle/pcts/commit/10595e21919376a38688f0de7b15190c6e00dc80))
+* **deps:** update all devdependencies (minor and patch) ([#1042](https://github.com/puzzle/pcts/issues/1042)) ([92c770f](https://github.com/puzzle/pcts/commit/92c770f5b517f28f07fc13ca15ae7a278d31d704))
+* **deps:** update all devdependencies (minor and patch) ([#1063](https://github.com/puzzle/pcts/issues/1063)) ([87185c0](https://github.com/puzzle/pcts/commit/87185c0b4e479c41877e7ce2e4351e1ca3ccf49b))
+* **deps:** update all devdependencies (minor and patch) to v22.2.6 ([#1031](https://github.com/puzzle/pcts/issues/1031)) ([848f328](https://github.com/puzzle/pcts/commit/848f3283bcb172a26860d5a0bddfe88fa0e1fdc1))
+* **deps:** update all eslint packages ([#1064](https://github.com/puzzle/pcts/issues/1064)) ([41d00b8](https://github.com/puzzle/pcts/commit/41d00b8595da513253467f309908ba03446405a7))
+* **deps:** update angular monorepo to v22.2.4 ([#1016](https://github.com/puzzle/pcts/issues/1016)) ([1f993ef](https://github.com/puzzle/pcts/commit/1f993ef12cce4322620b09b339809db8c98779b5))
+* **deps:** update angular monorepo to v22.2.5 ([#1040](https://github.com/puzzle/pcts/issues/1040)) ([9f08690](https://github.com/puzzle/pcts/commit/9f0869044d563554e5421338d9f24880b57af0eb))
+* **deps:** update angular monorepo to v22.3.0 ([#1066](https://github.com/puzzle/pcts/issues/1066)) ([bad8ae0](https://github.com/puzzle/pcts/commit/bad8ae0be913bf3ec9038be034edb72fe1c13c0a))
+* **deps:** update angularmaterial monorepo to v22.2.5 ([#1013](https://github.com/puzzle/pcts/issues/1013)) ([04cd54f](https://github.com/puzzle/pcts/commit/04cd54f91c64662899620a846c66bcaf0bd5a40d))
+* **deps:** update angularmaterial monorepo to v22.2.6 ([#1032](https://github.com/puzzle/pcts/issues/1032)) ([aa3c938](https://github.com/puzzle/pcts/commit/aa3c938c9d451605783c62572c931fd9b79cd6eb))
+* **deps:** update cypress-io/github-action action to v7.4.10 ([#1061](https://github.com/puzzle/pcts/issues/1061)) ([7eab61d](https://github.com/puzzle/pcts/commit/7eab61d5a69ba77971b47425b23b7d37c2434a5e))
+* **deps:** update cypress-io/github-action action to v7.4.7 ([#998](https://github.com/puzzle/pcts/issues/998)) ([775b394](https://github.com/puzzle/pcts/commit/775b394b13edf4fed1fb98efecd8ffb795e82e93))
+* **deps:** update cypress-io/github-action action to v7.4.8 ([#1006](https://github.com/puzzle/pcts/issues/1006)) ([038f385](https://github.com/puzzle/pcts/commit/038f3859009df3b2e66983a5e29e6987565bb351))
+* **deps:** update cypress-io/github-action action to v7.4.9 ([#1026](https://github.com/puzzle/pcts/issues/1026)) ([3dce763](https://github.com/puzzle/pcts/commit/3dce76376b531823d2d365c905f04e20714a8d59))
+* **deps:** update dependency @ngx-translate/core to v18.1.0 ([#1011](https://github.com/puzzle/pcts/issues/1011)) ([abb1ee1](https://github.com/puzzle/pcts/commit/abb1ee1ac93b79ed045cf32928230b770a1fde1b))
+* **deps:** update dependency @ngx-translate/http-loader to v18.1.0 ([#1012](https://github.com/puzzle/pcts/issues/1012)) ([3a4c711](https://github.com/puzzle/pcts/commit/3a4c7116dc2917f5a70d5bd8188d7d27685a347f))
+* **deps:** update dependency bootstrap to v5.3.9 ([#1062](https://github.com/puzzle/pcts/issues/1062)) ([eea438c](https://github.com/puzzle/pcts/commit/eea438c2afcbf7c017a1c99d8703c4e9b829a303))
+* **deps:** update dependency com.diffplug.spotless:spotless-maven-plugin to v3.11.0 ([#1029](https://github.com/puzzle/pcts/issues/1029)) ([bf0f436](https://github.com/puzzle/pcts/commit/bf0f43638a1f6c85b65988bc66eca089f9f76e01))
+* **deps:** update dependency com.diffplug.spotless:spotless-maven-plugin to v3.12.0 ([#1073](https://github.com/puzzle/pcts/issues/1073)) ([117ab5f](https://github.com/puzzle/pcts/commit/117ab5f3dba34aa66109d6a6d60838b0acf8a332))
+* **deps:** update dependency eslint to v10.14.0 ([#1024](https://github.com/puzzle/pcts/issues/1024)) ([f1bfde5](https://github.com/puzzle/pcts/commit/f1bfde56b468db735201392665fa9fe0e82c9971))
+* **deps:** update dependency keycloak-js to v26.2.5 ([#1009](https://github.com/puzzle/pcts/issues/1009)) ([2bdcf2c](https://github.com/puzzle/pcts/commit/2bdcf2c49e6b54c71ada759c190dd194e0c0f6df))
+* **deps:** update dependency maven to v3.10.2 ([#1065](https://github.com/puzzle/pcts/issues/1065)) ([e34a290](https://github.com/puzzle/pcts/commit/e34a290a89e4c0097fcc38a3de62c3a8a7683ec0))
+* **deps:** update dependency node to v24.22.2 ([#1022](https://github.com/puzzle/pcts/issues/1022)) ([6e5cae1](https://github.com/puzzle/pcts/commit/6e5cae19a1b6c3ad51b6d563ff8dc8c2d63cbe5c))
+* **deps:** update dependency node to v26 ([954af3b](https://github.com/puzzle/pcts/commit/954af3bee1dc66dc57b9e9a696b3747b14d01945))
+* **deps:** update dependency org.apache.maven.plugins:maven-failsafe-plugin to v3.6.1 ([#999](https://github.com/puzzle/pcts/issues/999)) ([492b184](https://github.com/puzzle/pcts/commit/492b184995e88b02ed2eb56cdceecdd677dd2c08))
+* **deps:** update dependency org.apache.maven.plugins:maven-surefire-plugin to v3.6.1 ([#1000](https://github.com/puzzle/pcts/issues/1000)) ([b9b97c7](https://github.com/puzzle/pcts/commit/b9b97c7871673a94855b656fa4e1842eb7a1f0a6))
+* **deps:** update dependency org.codehaus.mojo:properties-maven-plugin to v1.4.0 ([#1048](https://github.com/puzzle/pcts/issues/1048)) ([cb1e198](https://github.com/puzzle/pcts/commit/cb1e19867afcaf2edf75515e37f95cf9e330ffab))
+* **deps:** update dependency org.jacoco:jacoco-maven-plugin to v0.8.16 ([#1007](https://github.com/puzzle/pcts/issues/1007)) ([fc8539f](https://github.com/puzzle/pcts/commit/fc8539f0f6000fa9b0611784b46b4c6ae313fa1c))
+* **deps:** update dependency org.openapitools:jackson-databind-nullable to v0.2.13 ([#1004](https://github.com/puzzle/pcts/issues/1004)) ([4e3ae17](https://github.com/puzzle/pcts/commit/4e3ae17c5f10f865637438e8242957e09a496358))
+* **deps:** update dependency org.openapitools:openapi-generator-maven-plugin to v7.27.0 ([#1030](https://github.com/puzzle/pcts/issues/1030)) ([a7a0ca1](https://github.com/puzzle/pcts/commit/a7a0ca1627a315591ca9b0c7b62f282f9a6331ec))
+* **deps:** update dependency org.sonarsource.scanner.maven:sonar-maven-plugin to v5.9.0.7382 ([#1069](https://github.com/puzzle/pcts/issues/1069)) ([167fd6c](https://github.com/puzzle/pcts/commit/167fd6c92a7dabc064096b3a9309f6f538185646))
+* **deps:** update dependency org.springdoc:springdoc-openapi-starter-webmvc-ui to v3.2.0 ([#1014](https://github.com/puzzle/pcts/issues/1014)) ([eb689f4](https://github.com/puzzle/pcts/commit/eb689f497b16eac8e9d706ef8a7c4334c7e745ee))
+* **deps:** update dependency tslib to v2.9.1 ([#1025](https://github.com/puzzle/pcts/issues/1025)) ([6c7eefd](https://github.com/puzzle/pcts/commit/6c7eefdeda36cea7ef18554293743080b663227e))
+* **deps:** update dependency typescript-eslint to v8.72.1 ([#1010](https://github.com/puzzle/pcts/issues/1010)) ([12937e5](https://github.com/puzzle/pcts/commit/12937e5426e16e638d802325d8278c8a3c26e184))
+* **deps:** update dependency typescript-eslint to v8.72.2 ([#1047](https://github.com/puzzle/pcts/issues/1047)) ([3a9a100](https://github.com/puzzle/pcts/commit/3a9a100f62a79af19fde02b4e1de1c5a52d2c593))
+* **deps:** update eclipse-temurin docker tag to v25.0.5_8-jre-alpine ([#1023](https://github.com/puzzle/pcts/issues/1023)) ([bcac009](https://github.com/puzzle/pcts/commit/bcac0092976150740d162a98f1a3b0ff49589f11))
+* **deps:** update eclipse-temurin docker tag to v25.0.5.1_2-jre-alpine ([#1068](https://github.com/puzzle/pcts/issues/1068)) ([acd4867](https://github.com/puzzle/pcts/commit/acd48675059f01d3b3ef46b6d134f041ffd08995))
+* **deps:** update pnpm to v12.18.0 ([#1033](https://github.com/puzzle/pcts/issues/1033)) ([6e16ce0](https://github.com/puzzle/pcts/commit/6e16ce0b3902de6283a1e53445032f322ce5c1c9))
+* **deps:** update pnpm to v12.23.0 ([#1074](https://github.com/puzzle/pcts/issues/1074)) ([f3263aa](https://github.com/puzzle/pcts/commit/f3263aacc2a1f92a505e22de9ad52f4f2bdce629))
+* **deps:** update spring boot to v4.1.2 ([#1001](https://github.com/puzzle/pcts/issues/1001)) ([63e5746](https://github.com/puzzle/pcts/commit/63e57467daf5222b484a4e8ab3be97a278550fa8))
+* update to fixed nginx image (nginx2root) ([#1053](https://github.com/puzzle/pcts/issues/1053)) ([64e87db](https://github.com/puzzle/pcts/commit/64e87db227311d94133d75cac6a0e73c975b9aeb))
+
+
+### Docs
+
+* update README.md and /docs [#768](https://github.com/puzzle/pcts/issues/768) ([5a39c88](https://github.com/puzzle/pcts/commit/5a39c8817e441f3736159725c37f416f8113fbef))
+
 ## [0.14.1](https://github.com/puzzle/pcts/compare/0.14.0...0.14.1) (2026-10-26)
 
 
