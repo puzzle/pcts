@@ -14,7 +14,7 @@ COPY frontend/ ./
 ARG BUILD_CONFIGURATION=production
 RUN pnpm build --output-path=./dist/ --configuration=${BUILD_CONFIGURATION}
 
-FROM nginx/nginx-unprivileged:1.31.9 AS runner
+FROM nginx/nginx-unprivileged:1.31.10 AS runner
 # rendered to /etc/nginx/nginx.conf on start, only PCTS_* variables are substituted (nginx's own $vars stay untouched)
 ENV NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx \
     NGINX_ENVSUBST_FILTER=^PCTS_ \
