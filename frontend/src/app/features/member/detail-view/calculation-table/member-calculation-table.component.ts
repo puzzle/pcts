@@ -6,8 +6,11 @@ import { ScopedTranslationPipe } from '../../../../shared/pipes/scoped-translati
 import { rxResource } from '@angular/core/rxjs-interop';
 import { getCalculationTable } from '../cv/member-detail-cv-table-definition';
 import { Router } from '@angular/router';
-import { MatButton } from '@angular/material/button';
 import { CalculationModel } from '../../../calculations/calculationDto';
+import { CalculationFormComponent } from '../../../calculations/calculation-form/calculation-form.component';
+import { AuthService } from '../../../../core/auth/auth.service';
+import { HintBoxComponent } from '../../../../shared/hint-box/hint-box.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-member-calculation-table',
@@ -15,7 +18,9 @@ import { CalculationModel } from '../../../calculations/calculationDto';
     GenericTableComponent,
     CrudButtonComponent,
     ScopedTranslationPipe,
-    MatButton
+    CalculationFormComponent,
+    HintBoxComponent,
+    DatePipe
   ],
   templateUrl: './member-calculation-table.component.html'
 })
@@ -23,6 +28,8 @@ export class MemberCalculationTableComponent {
   private readonly memberService = inject(MemberService);
 
   private readonly router = inject(Router);
+
+  protected readonly authService = inject(AuthService);
 
   memberId = input.required<number>();
 

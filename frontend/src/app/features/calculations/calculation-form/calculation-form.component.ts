@@ -108,7 +108,8 @@ const getDegreeColumns = (): GenCol<DegreeCalculationModel>[] => [
     MatOption,
     HintBoxComponent
   ],
-  templateUrl: './calculation-form.component.html'
+  templateUrl: './calculation-form.component.html',
+  styleUrl: 'calculation-form.component.scss'
 })
 export class CalculationFormComponent {
   isReadOnly = input<boolean>(false);

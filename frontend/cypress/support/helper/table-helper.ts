@@ -187,4 +187,18 @@ export class TableHelper {
       .findByTestId(this.tableTestId)
       .should('not.exist');
   }
+
+  expectRadioTableRowsToBe(toggled: string) {
+    this.tableRows()
+      .each(($row) => {
+        this.expectRadioRowsIs($row, toggled);
+      });
+  }
+
+  expectCheckboxTableRowsToBe(toggled: string) {
+    this.tableRows()
+      .each(($row) => {
+        this.expectCheckboxRowIs($row, toggled);
+      });
+  }
 }
