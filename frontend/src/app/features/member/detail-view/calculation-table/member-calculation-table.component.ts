@@ -10,6 +10,7 @@ import { CalculationModel } from '../../../calculations/calculationDto';
 import { CalculationFormComponent } from '../../../calculations/calculation-form/calculation-form.component';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { HintBoxComponent } from '../../../../shared/hint-box/hint-box.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-member-calculation-table',
@@ -18,7 +19,8 @@ import { HintBoxComponent } from '../../../../shared/hint-box/hint-box.component
     CrudButtonComponent,
     ScopedTranslationPipe,
     CalculationFormComponent,
-    HintBoxComponent
+    HintBoxComponent,
+    DatePipe
   ],
   templateUrl: './member-calculation-table.component.html'
 })
