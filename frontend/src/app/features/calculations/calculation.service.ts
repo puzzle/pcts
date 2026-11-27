@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { CalculationDto, CalculationModel } from './calculationDto';
 import { toCalculationInputDto, toCalculationModel } from './calculation-mapper';
+import { CalculationInputDto } from './dto/calculation.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -28,5 +29,9 @@ export class CalculationService {
 
   addCalculation(calculation: CalculationModel): Observable<CalculationModel> {
     return this.httpClient.post<CalculationModel>(`${this.API_URL}`, toCalculationInputDto(calculation));
+  }
+
+  copyCalculation(id: number): Observable<CalculationInputDto> {
+    return this.httpClient.get<CalculationInputDto>(`${this.API_URL}/${id}/copy`);
   }
 }
