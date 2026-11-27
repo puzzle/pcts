@@ -61,4 +61,9 @@ public class ApiClientConfig {
     public ExperiencesApi experiencesApi(ApiClient apiClient) {
         return new ExperiencesApi(apiClient);
     }
+
+    @Bean
+    public ExperienceTypesApi experienceTypesApi(ApiClient apiClient) {
+        return new ExperienceTypesApi(apiClient);
+    }
 }

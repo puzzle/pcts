@@ -1,4 +1,7 @@
 package ch.puzzle.pctsmigration.experience;
 
-public record ExperienceAiResultDto() {
+import java.time.LocalDate;
+
+public record ExperienceAiResultDto(String name, ExperienceType type, String employer, Integer percent, String comment,
+        LocalDate startDate, LocalDate endDate) {
 }
