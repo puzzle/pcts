@@ -35,7 +35,7 @@ public abstract class ExtractionPipeline<C, T, R extends AiResultWrapper<T>, D> 
     }
 
     public R merge(List<R> results) {
-        List<T> allItems = results.stream().map(AiResultWrapper::getItems).flatMap(List::stream).toList();
+        List<T> allItems = results.stream().map(AiResultWrapper::items).flatMap(List::stream).toList();
 
         return createWrapper(allItems);
     }

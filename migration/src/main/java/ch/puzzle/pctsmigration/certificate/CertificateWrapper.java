@@ -4,13 +4,5 @@ import ch.puzzle.pctsmigration.ai.AiResultWrapper;
 
 import java.util.List;
 
-public class CertificateWrapper extends AiResultWrapper<CertificateAiResultDto> {
-
-    public CertificateWrapper() {
-        super(null);
-    }
-
-    public CertificateWrapper(List<CertificateAiResultDto> items) {
-        super(items);
-    }
+public record CertificateWrapper(List<CertificateAiResultDto> items) implements AiResultWrapper<CertificateAiResultDto> {
 }

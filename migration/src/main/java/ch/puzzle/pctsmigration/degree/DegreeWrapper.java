@@ -4,13 +4,5 @@ import ch.puzzle.pctsmigration.ai.AiResultWrapper;
 
 import java.util.List;
 
-public class DegreeWrapper extends AiResultWrapper<DegreeAiResultDto> {
-
-    public DegreeWrapper() {
-        super(null);
-    }
-
-    public DegreeWrapper(List<DegreeAiResultDto> items) {
-        super(items);
-    }
+public record DegreeWrapper(List<DegreeAiResultDto> items) implements AiResultWrapper<DegreeAiResultDto> {
 }

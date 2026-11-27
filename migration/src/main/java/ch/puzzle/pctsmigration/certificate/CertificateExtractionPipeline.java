@@ -70,7 +70,7 @@ public class CertificateExtractionPipeline
     @Override
     public List<CertificateInputDto> mapToDto(String filename, CertificateWrapper wrapper) {
         String abbreviation = extractAbbreviation(filename);
-        return wrapper.getItems().stream().map(aiResult -> createCertificateInputDto(abbreviation, aiResult)).toList();
+        return wrapper.items().stream().map(aiResult -> createCertificateInputDto(abbreviation, aiResult)).toList();
     }
 
     private CertificateInputDto createCertificateInputDto(String abbreviation, CertificateAiResultDto aiResult) {

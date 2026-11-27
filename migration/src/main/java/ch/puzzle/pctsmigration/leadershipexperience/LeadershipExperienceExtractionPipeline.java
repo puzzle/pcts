@@ -79,7 +79,7 @@ public class LeadershipExperienceExtractionPipeline
     public List<LeadershipExperienceInputDto> mapToDto(String filename, LeadershipExperienceWrapper wrapper) {
         String abbreviation = extractAbbreviation(filename);
         return wrapper
-                .getItems()
+                .items()
                 .stream()
                 .map(aiResult -> createLeadershipExperienceInputDto(abbreviation, aiResult))
                 .toList();

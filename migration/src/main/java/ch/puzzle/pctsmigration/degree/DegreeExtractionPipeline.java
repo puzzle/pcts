@@ -72,7 +72,7 @@ public class DegreeExtractionPipeline
     @Override
     public List<DegreeInputDto> mapToDto(String filename, DegreeWrapper wrapper) {
         String abbreviation = extractAbbreviation(filename);
-        return wrapper.getItems().stream().map(aiResult -> createDegreeInputDto(abbreviation, aiResult)).toList();
+        return wrapper.items().stream().map(aiResult -> createDegreeInputDto(abbreviation, aiResult)).toList();
     }
 
     private DegreeInputDto createDegreeInputDto(String abbreviation, DegreeAiResultDto aiResult) {
