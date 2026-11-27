@@ -49,10 +49,16 @@ public class ExperienceExtractionPipeline
     public String systemPrompt(ExperienceContextModel context) {
         return """
                 IMPORTANT EXTRACTION RULES:
+                1. Map each qualifying row to exactly ONE experience object in the output array. Do not merge or split rows.
+                2. Experience Type Classification:
+                   - If the section or row title is "Internship", classify the entry exclusively as an internship (`INTERNSHIP`).
+                   - If the section or row title is "Work Experience", classify the entry as either professional experience (`WORK_EXPERIENCE`) or a side/part-time job (`SIDE_JOB`).
+                   - Always refer to the schema description of the `type` field to determine the exact classification criteria.
 
                 === Context ===
-                Current date: %s
-                """.formatted(context.currentDate());
+                - Current date: %s
+                """
+                .formatted(context.currentDate());
     }
 
     @Override
