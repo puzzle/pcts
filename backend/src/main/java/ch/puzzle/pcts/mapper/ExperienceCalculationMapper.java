@@ -37,4 +37,15 @@ public class ExperienceCalculationMapper {
                                             model.getRelevancy(),
                                             model.getComment());
     }
+
+    public ExperienceCalculationInputDto toInputDto(ExperienceCalculation model) {
+        return new ExperienceCalculationInputDto(model.getId(),
+                                                 model.getExperience().getId(),
+                                                 model.getRelevancy(),
+                                                 model.getComment());
+    }
+
+    public List<ExperienceCalculationInputDto> toInputDto(List<ExperienceCalculation> models) {
+        return models.stream().map(this::toInputDto).toList();
+    }
 }

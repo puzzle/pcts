@@ -35,4 +35,12 @@ public class CertificateCalculationMapper {
     public CertificateCalculationDto toDto(CertificateCalculation model) {
         return new CertificateCalculationDto(model.getId(), certificateMapper.toDto(model.getCertificate()));
     }
+
+    public CertificateCalculationInputDto toInputDto(CertificateCalculation model) {
+        return new CertificateCalculationInputDto(model.getId(), model.getCertificate().getId());
+    }
+
+    public List<CertificateCalculationInputDto> toInputDto(List<CertificateCalculation> models) {
+        return models.stream().map(this::toInputDto).toList();
+    }
 }
