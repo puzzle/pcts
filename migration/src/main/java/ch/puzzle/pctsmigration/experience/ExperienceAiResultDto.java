@@ -30,7 +30,7 @@ public record ExperienceAiResultDto(
                 """) Integer percent,
         @Nullable
         @JsonPropertyDescription("""
-                This is the comment for an experience. The comment is always in the field farthest to the right, if there is one.
+                This is a comment on an experience. The comment is always located in the field on the far right of the 'Bemerkung' column, if available.
                 """) String comment,
         @NotNull @PastOrPresent @JsonPropertyDescription("""
                 This is the start date of an Experience. The start date is located in the column 'von'
