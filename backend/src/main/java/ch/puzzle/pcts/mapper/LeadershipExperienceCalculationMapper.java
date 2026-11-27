@@ -37,4 +37,12 @@ public class LeadershipExperienceCalculationMapper {
         return new LeadershipExperienceCalculationDto(model
                 .getId(), leadershipExperienceMapper.toDto(model.getLeadershipExperience()));
     }
+
+    public LeadershipExperienceCalculationInputDto toInputDto(LeadershipExperienceCalculation model) {
+        return new LeadershipExperienceCalculationInputDto(model.getId(), model.getLeadershipExperience().getId());
+    }
+
+    public List<LeadershipExperienceCalculationInputDto> toInputDto(List<LeadershipExperienceCalculation> models) {
+        return models.stream().map(this::toInputDto).toList();
+    }
 }

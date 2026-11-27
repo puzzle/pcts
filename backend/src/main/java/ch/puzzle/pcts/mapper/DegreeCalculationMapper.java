@@ -44,4 +44,15 @@ public class DegreeCalculationMapper {
                 .withRelevancy(dto.relevancies())
                 .build();
     }
+
+    public DegreeCalculationInputDto toInputDto(DegreeCalculation model) {
+        return new DegreeCalculationInputDto(model.getId(),
+                                             model.getDegree().getId(),
+                                             model.getRelevancies(),
+                                             model.getComment());
+    }
+
+    public List<DegreeCalculationInputDto> toInputDto(List<DegreeCalculation> models) {
+        return models.stream().map(this::toInputDto).toList();
+    }
 }

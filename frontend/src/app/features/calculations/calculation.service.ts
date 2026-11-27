@@ -29,4 +29,8 @@ export class CalculationService {
   addCalculation(calculation: CalculationModel): Observable<CalculationModel> {
     return this.httpClient.post<CalculationModel>(`${this.API_URL}`, toCalculationInputDto(calculation));
   }
+
+  copyCalculation(memberId: number, roleId: number): Observable<CalculationDto> {
+    return this.httpClient.get<CalculationDto>(`${this.API_URL}/${memberId}/${roleId}/copy`);
+  }
 }

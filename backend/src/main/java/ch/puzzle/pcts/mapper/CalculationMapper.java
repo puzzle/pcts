@@ -91,4 +91,15 @@ public class CalculationMapper {
                         .fromDto(dto.leadershipExperienceCalculations()))
                 .build();
     }
+
+    public CalculationInputDto toInputDto(Calculation model) {
+        return new CalculationInputDto(model.getMember().getId(),
+                                       model.getState(),
+                                       model.getRole().getId(),
+                                       certificateCalculationMapper.toInputDto(model.getCertificateCalculations()),
+                                       leadershipExperienceCalculationMapper
+                                               .toInputDto(model.getLeadershipExperienceCalculations()),
+                                       degreeCalculationMapper.toInputDto(model.getDegreeCalculations()),
+                                       experienceCalculationMapper.toInputDto(model.getExperienceCalculations()));
+    }
 }

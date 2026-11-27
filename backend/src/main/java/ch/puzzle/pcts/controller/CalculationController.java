@@ -72,4 +72,12 @@ public class CalculationController {
         Calculation updatedCalculation = businessService.update(calculationId, mapper.fromDto(dto));
         return ResponseEntity.ok(mapper.toDto(updatedCalculation));
     }
+
+    @Operation(summary = "Get a copy of a calculation")
+    @ApiResponse(responseCode = "200", description = "A single calculation copy.", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = CalculationInputDto.class)) })
+    @GetMapping("{memberId}/{roleId}/copy")
+    public ResponseEntity<CalculationDto> getCalculationCopy(@PathVariable Long memberId, @PathVariable Long roleId) {
+        return ResponseEntity.ok(mapper.toDto(templateBusinessService.getCalculationTemplate(memberId, roleId)));
+    }
 }
