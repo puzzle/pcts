@@ -67,6 +67,4 @@ export class MemberCalculationTableComponent {
       this.roleId()
     ]);
   };
-
-  protected readonly HintBoxComponent = HintBoxComponent;
 }
