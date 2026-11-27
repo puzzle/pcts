@@ -1,10 +1,9 @@
 package ch.puzzle.pctsmigration.leadershipexperience;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
+import ch.puzzle.pctsmigration.ai.AiResultWrapper;
 
 import java.util.List;
 
-public record LeadershipExperienceWrapper(@Valid @NotNull List<LeadershipExperienceAiResultDto> items) {
-
+public record LeadershipExperienceWrapper(
+        List<LeadershipExperienceAiResultDto> items) implements AiResultWrapper<LeadershipExperienceAiResultDto> {
 }

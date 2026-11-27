@@ -1,4 +1,4 @@
-package ch.puzzle.pctsmigration.certificates;
+package ch.puzzle.pctsmigration.certificate;
 
 import ch.puzzle.pctsmigration.api.CertificateService;
 import ch.puzzle.pctsmigration.api.CertificateTypeService;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CertificateExtractionPipeline
         extends
-            ExtractionPipeline<CertificateContextModel, CertificateWrapper, CertificateInputDto> {
+            ExtractionPipeline<CertificateContextModel, CertificateAiResultDto, CertificateWrapper, CertificateInputDto> {
 
     private final CertificateTypeService certificateTypeService;
     private final MemberService memberService;
@@ -33,6 +33,11 @@ public class CertificateExtractionPipeline
         this.memberService = memberService;
         this.certificateService = certificateService;
         this.matchingService = matchingService;
+    }
+
+    @Override
+    protected CertificateWrapper createWrapper(List<CertificateAiResultDto> items) {
+        return new CertificateWrapper(items);
     }
 
     @Override

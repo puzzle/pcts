@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class LeadershipExperienceExtractionPipeline
         extends
-            ExtractionPipeline<LeadershipExperienceContextModel, LeadershipExperienceWrapper, LeadershipExperienceInputDto> {
+            ExtractionPipeline<LeadershipExperienceContextModel, LeadershipExperienceAiResultDto, LeadershipExperienceWrapper, LeadershipExperienceInputDto> {
 
     private final LeadershipExperienceService leadershipExperienceService;
     private final LeadershipExperienceTypeService leadershipExperienceTypeService;
@@ -31,6 +31,11 @@ public class LeadershipExperienceExtractionPipeline
         this.memberService = memberService;
         this.leadershipExperienceTypeService = leadershipExperienceTypeService;
         this.matchingService = matchingService;
+    }
+
+    @Override
+    protected LeadershipExperienceWrapper createWrapper(List<LeadershipExperienceAiResultDto> items) {
+        return new LeadershipExperienceWrapper(items);
     }
 
     @Override

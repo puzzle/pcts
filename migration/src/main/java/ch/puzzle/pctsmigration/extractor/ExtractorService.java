@@ -1,9 +1,12 @@
 package ch.puzzle.pctsmigration.extractor;
 
+import ch.puzzle.pctsmigration.ai.AiResultWrapper;
+import ch.puzzle.pctsmigration.ai.AiService;
 import ch.puzzle.pctsmigration.exception.Error;
 import ch.puzzle.pctsmigration.exception.MigrationException;
 import ch.puzzle.pctsmigration.ods.OdsParserService;
 import jakarta.validation.Validator;
+
 import java.util.List;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
@@ -32,11 +35,18 @@ public class ExtractorService {
      *            the DTO type to which the validated extraction result is mapped
      *            before being returned
      */
-    public <C, R, D> List<D> extract(MultipartFile file, ExtractionPipeline<C, R, D> pipeline) {
-        String parsedToMarkdown = this.odsParserService.parseToPromptText(file, pipeline.odsSheetParseConfig());
-
+    public <C, T, R extends AiResultWrapper<T>, D> List<D> extract(MultipartFile file,
+                                                                   ExtractionPipeline<C, T, R, D> pipeline) {
+        List<String> parsedToMarkdown = this.odsParserService.parseToPromptText(file, pipeline.odsSheetParseConfig());
         C context = pipeline.fetchContext();
-        R result = this.aiService.extract(parsedToMarkdown, pipeline.systemPrompt(context), pipeline.entityClass());
+
+        List<R> partialResults = parsedToMarkdown
+                .stream()
+                .map(markdown -> this.aiService
+                        .extract(markdown, pipeline.systemPrompt(context), pipeline.entityClass()))
+                .toList();
+
+        R result = pipeline.merge(partialResults);
 
         jakartaValidation(result);
         pipeline.additionalValidations(result);

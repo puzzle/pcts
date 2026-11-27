@@ -1,9 +1,8 @@
 package ch.puzzle.pctsmigration.degree;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
+import ch.puzzle.pctsmigration.ai.AiResultWrapper;
 
 import java.util.List;
 
-public record DegreeWrapper(@Valid @NotNull List<DegreeAiResultDto> items) {
+public record DegreeWrapper(List<DegreeAiResultDto> items) implements AiResultWrapper<DegreeAiResultDto> {
 }

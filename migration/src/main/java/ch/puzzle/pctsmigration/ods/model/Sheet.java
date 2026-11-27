@@ -1,39 +1,31 @@
 package ch.puzzle.pctsmigration.ods.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class Sheet {
-    private String name;
-    private List<Row> rows;
+public record Sheet(String name, List<Row> rows) {
 
-    public Sheet(String name, List<Row> rows) {
-        this.name = name;
-        this.rows = rows;
+    public Sheet {
+        name = name == null ? "" : name;
+        rows = rows == null ? List.of() : List.copyOf(rows);
     }
 
-    public Sheet() {
-        this.name = "";
-        this.rows = new ArrayList<>();
+    public boolean isEmpty() {
+        return rows.isEmpty();
     }
 
-    public String getName() {
-        return name;
-    }
+    public Sheet trimTrailingEmptyColumns() {
+        if (rows.isEmpty()) {
+            return this;
+        }
 
-    public List<Row> getRows() {
-        return rows;
-    }
+        int maxCol = rows.stream().mapToInt(Row::lastNonEmptyColumnIndex).max().orElse(-1) + 1;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+        if (maxCol == 0) {
+            return new Sheet(name, List.of());
+        }
 
-    public void setRows(List<Row> rows) {
-        this.rows = rows;
-    }
+        List<Row> trimmedRows = rows.stream().map(row -> row.truncateTo(maxCol)).toList();
 
-    public void addRow(Row row) {
-        rows.add(row);
+        return new Sheet(name, trimmedRows);
     }
 }

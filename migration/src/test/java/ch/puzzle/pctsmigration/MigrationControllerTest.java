@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.puzzle.pctsmigration.certificates.CertificateExtractionPipeline;
+import ch.puzzle.pctsmigration.certificate.CertificateExtractionPipeline;
 import ch.puzzle.pctsmigration.degree.DegreeExtractionPipeline;
 import ch.puzzle.pctsmigration.exception.MigrationException;
 import ch.puzzle.pctsmigration.extractor.ExtractorService;

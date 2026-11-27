@@ -1,63 +1,49 @@
 package ch.puzzle.pctsmigration.ods;
 
 import ch.puzzle.pctsmigration.ods.model.Row;
-import ch.puzzle.pctsmigration.ods.model.Sheet;
+import java.util.ArrayList;
+import java.util.List;
 
-public class SheetRowCollector {
+class SheetRowCollector {
 
     private static final int MAX_TOLERATED_EMPTY_ROWS = 3;
 
-    private final String requiredStartMarker;
+    private final String startMarker;
     private final boolean stopsAfterEmptyRows;
-    private final Sheet sheet;
+    private final List<Row> rows = new ArrayList<>();
 
-    private boolean isRecording;
-    private int consecutiveEmptyRows = 0;
+    private boolean recording;
+    private int consecutiveEmptyRows;
 
-    public SheetRowCollector(String startMarker) {
-        this.sheet = new Sheet();
-        this.requiredStartMarker = startMarker;
-
-        boolean hasNoMarker = startMarker == null || startMarker.isBlank();
-        this.isRecording = hasNoMarker;
-        this.stopsAfterEmptyRows = !hasNoMarker;
+    SheetRowCollector(String startMarker) {
+        this.startMarker = startMarker;
+        boolean hasMarker = startMarker != null && !startMarker.isBlank();
+        this.recording = !hasMarker;
+        this.stopsAfterEmptyRows = hasMarker;
     }
 
-    public void processRow(Row row) {
-        boolean isRowEmpty = row.getCells().stream().allMatch(cell -> cell.getText().isEmpty());
-
-        if (!isRecording) {
-            searchForStartMarker(row, isRowEmpty);
-        } else {
-            saveRow(row, isRowEmpty);
-        }
-    }
-
-    public boolean isDone() {
-        return stopsAfterEmptyRows && consecutiveEmptyRows >= MAX_TOLERATED_EMPTY_ROWS;
-    }
-
-    private void searchForStartMarker(Row row, boolean isRowEmpty) {
-        if (isRowEmpty) {
+    void accept(Row row) {
+        if (row.isEmpty()) {
+            if (recording) {
+                consecutiveEmptyRows++;
+            }
             return;
         }
 
-        if (row.containsStartMarker(requiredStartMarker)) {
-            isRecording = true;
-            sheet.addRow(row);
+        if (!recording && !row.containsText(startMarker)) {
+            return;
         }
+
+        recording = true;
+        consecutiveEmptyRows = 0;
+        rows.add(row);
     }
 
-    private void saveRow(Row row, boolean isRowEmpty) {
-        if (isRowEmpty) {
-            consecutiveEmptyRows++;
-        } else {
-            consecutiveEmptyRows = 0;
-            sheet.addRow(row);
-        }
+    boolean isDone() {
+        return stopsAfterEmptyRows && consecutiveEmptyRows >= MAX_TOLERATED_EMPTY_ROWS;
     }
 
-    public Sheet getSheet() {
-        return sheet;
+    List<Row> collectedRows() {
+        return List.copyOf(rows);
     }
 }
