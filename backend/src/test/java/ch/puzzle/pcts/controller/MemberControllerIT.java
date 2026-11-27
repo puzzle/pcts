@@ -220,6 +220,8 @@ class MemberControllerIT extends ControllerITBase {
 
         CalculationDto calculationDto = mock(CalculationDto.class);
 
+        when(calculationDto.state()).thenReturn(CalculationState.ACTIVE);
+
         when(memberBusinessService.getAllCalculationsByMemberIdAndRoleId(memberId, roleId))
                 .thenReturn(List.of(calculationActive, calculationDraft));
 
@@ -232,7 +234,8 @@ class MemberControllerIT extends ControllerITBase {
                         .with(ownerJwt())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(1));
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].state").value(CalculationState.ACTIVE.toString()));
 
         verify(memberBusinessService, times(1)).getAllCalculationsByMemberIdAndRoleId(memberId, roleId);
         verify(calculationMapper, times(1)).toDto(List.of(calculationActive));
@@ -250,6 +253,7 @@ class MemberControllerIT extends ControllerITBase {
 
         when(calculationDraft.getState()).thenReturn(CalculationState.DRAFT);
         when(calculationActive.getState()).thenReturn(CalculationState.ACTIVE);
+        when(calculationDto.state()).thenReturn(CalculationState.ACTIVE);
 
         when(memberBusinessService.getAllCalculationsByMemberIdAndRoleId(memberId, null))
                 .thenReturn(List.of(calculationActive, calculationDraft));
@@ -262,7 +266,8 @@ class MemberControllerIT extends ControllerITBase {
                         .with(ownerJwt())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(1));
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].state").value(CalculationState.ACTIVE.toString()));
 
         verify(memberBusinessService, times(1)).getAllCalculationsByMemberIdAndRoleId(memberId, null);
         verify(calculationMapper, times(1)).toDto(List.of(calculationActive));
